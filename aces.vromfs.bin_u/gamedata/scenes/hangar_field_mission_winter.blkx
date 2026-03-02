@@ -4,27 +4,25 @@
       "scene": "gamedata/scenes/entities/hangar_field_winter_lights.blk"
     },
     {
+      "scene": "gamedata/scenes/entities/hangar_field_premium_common_lights.blk"
+    },
+    {
       "scene": "gamedata/scenes/entities/hangar_field_winter_units.blk"
     },
     {
       "scene": "gamedata/scenes/hangar_field_winter_objects.blk"
     }
   ],
-  "entity": [
-    {
-      "_template": "outline_renderer"
-    },
-    {
-      "_template": "disable_move",
-      "disable__targets_list:list<t>": {
-        "n": [
-          "ai_shooter1",
-          "ai_shooter2",
-          "ai_shooter3",
-          "ai_shooter4",
-          "ai_shooter5"
-        ]
-      }
+  "entity": {
+    "_template": "disable_move",
+    "disable__targets_list:list<t>": {
+      "n": [
+        "ai_shooter1",
+        "ai_shooter2",
+        "ai_shooter3",
+        "ai_shooter4",
+        "ai_shooter5"
+      ]
     }
-  ]
+  }
 }

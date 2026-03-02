@@ -12,17 +12,17 @@ let { initWeaponParams } = require("%scripts/weaponry/weaponsParams.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
-let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank } = require("%scripts/ranks.nut")
+let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank, calculateMaxRank } = require("%scripts/ranks.nut")
 let { setUnlocksPunctuationWithoutSpace } = require("%scripts/langUtils/localization.nut")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
-let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { initAllUnits, updateAllUnits } = require("%scripts/unit/initUnits.nut")
+let { hasOptionsInitialized } = require("%scripts/options/initOptionsState.nut")
 
 let initOptionsSteps = [
   initAllUnits
   updateAllUnits
+  calculateMaxRank
   function() { return updateAircraftWarpoints(10) }
 
   function() {
@@ -102,7 +102,7 @@ let initOptionsSteps = [
 ]
 
 function initOptions() {
-  if (optionsMeasureUnits.isInitialized() && (isAuthorized.get() || disableNetwork))
+  if (hasOptionsInitialized())
     return
 
   local stepStatus
@@ -112,8 +112,7 @@ function initOptions() {
     } while (stepStatus == PT_STEP_STATUS.SUSPEND)
 }
 
-::init_options_steps <- initOptionsSteps
-
 return {
   initOptions
+  initOptionsSteps
 }

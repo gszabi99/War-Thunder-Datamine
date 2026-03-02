@@ -26,7 +26,7 @@ let logs = {
   console_print = log.console_print
   logerr = log.logerr
   wlog = log.wlog
-  wdlog = @(watched, prefix = null, transform=null) log.wlog(watched, prefix, transform, log.dlog) 
+  wdlog = log.wdlog 
 }
 
 let frpExtras = {

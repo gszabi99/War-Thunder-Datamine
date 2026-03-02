@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
-let { checkUpdateList } = require("%scripts/items/itemsManagerChecks.nut")
-let { itemsList } = require("%scripts/items/itemsManagerState.nut")
+let { checkUpdateList, checkInventoryUpdate } = require("%scripts/items/itemsManagerChecks.nut")
+let { itemsList, inventoryItemById } = require("%scripts/items/itemsManagerState.nut")
 let { itemType, itemsTab } = require("%scripts/items/itemsConsts.nut")
 let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
 
@@ -30,8 +30,14 @@ function canGetDecoratorFromTrophy(decorator) {
     .findindex(@(item) item.getContent().findindex(@(prize) prize?.resource == decorator.id) != null) != null
 }
 
+function getInventoryItemById(id) {
+  checkInventoryUpdate()
+  return inventoryItemById?[id]
+}
+
 return {
   getItemsFromList
   getShopList
+  getInventoryItemById
   canGetDecoratorFromTrophy
 }

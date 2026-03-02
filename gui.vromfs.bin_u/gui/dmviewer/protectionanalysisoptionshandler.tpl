@@ -1,10 +1,6 @@
-EditBox {
-  id:t='filter_edit_box'
+tdiv {
+  id:t='filter_edit_box_nest'
   width:t='pw'
-  on_change_value:t='applyFilter'
-  on_cancel_edit:t='onFilterCancel'
-  text:t=''
-  edit-hint:t='#contacts/search_placeholder'
 }
 
 verticalCellsOptions {

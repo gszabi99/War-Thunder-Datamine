@@ -2,9 +2,22 @@ require ecs
 require Dacoll
 require %game.events
 require %appGame.infantry.client.destroyable_wall_client_common
+require HumanPhys
 
 
-[es(tag=gameClient, REQUIRE=hero)]
+[es(tag=gameClient, REQUIRE=(hero, deadEntity), on_appear)]
+def disable_planting_on_death_es(evt : Event;
+                                 var human_mining_wall__isPlantingAvailable : bool&;
+                                 var human_mining_wall__isContinuePlantingAvailable : bool&;
+                                 var human_mining_wall__isReassemblingAvailable : bool&;
+                                 var human_mining_wall__isContinueReassemblingAvailable : bool&)
+  human_mining_wall__isPlantingAvailable = false
+  human_mining_wall__isContinuePlantingAvailable = false
+  human_mining_wall__isReassemblingAvailable = false
+  human_mining_wall__isContinueReassemblingAvailable = false
+
+
+[es(tag=gameClient, REQUIRE=hero, REQUIRE_NOT=deadEntity)]
 def mining_wall_check_availablity_on_update(evt : ParallelUpdateFrameDelayed;
                                             isDowned : bool;
                                             human__aimTm : float3x4;
@@ -13,6 +26,7 @@ def mining_wall_check_availablity_on_update(evt : ParallelUpdateFrameDelayed;
                                             human_mining_wall__plantingPosDistFromWall : float;
                                             human_mining_wall__plantingTraceInterval : float;
                                             human_mining_wall__bufferDistance : float;
+                                            human_input__standState : int;
                                             var human_mining_wall__isPlantingAvailable : bool&;
                                             var human_mining_wall__isContinuePlantingAvailable : bool&;
                                             var human_mining_wall__wallEid : EntityId&;
@@ -57,6 +71,9 @@ def mining_wall_check_availablity_on_update(evt : ParallelUpdateFrameDelayed;
         human_mining_wall__isContinuePlantingAvailable = true
         human_mining_wall__plantingPos = traceStart + traceDir * (t - human_mining_wall__plantingPosDistFromWall)
         human_mining_wall__wallEid = find_ri_extra_eid(riDesc.riExtraHandle)
+
+    if human_input__standState == int(HumanPhysControlType.HCT_CRAWL)
+      return
     human_mining_wall__reassemblingPosition = traceStart + traceDir * t
     if (riFlags & int(MineWallFlag.CAN_REASSEMBLE)) != 0
       human_mining_wall__isReassemblingAvailable = (t <= human_mining_wall__plantingMaxDist)

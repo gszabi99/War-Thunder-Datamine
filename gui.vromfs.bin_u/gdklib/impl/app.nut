@@ -20,6 +20,13 @@ function register_constrain_callback(callback) {
 }
 
 
+function register_suspend_callback(callback) {
+  eventbus_subscribe(app.suspend_event_name, function(result) {
+    callback?(result?.active)
+  })
+}
+
+
 function register_important_live_error_callback(callback) {
   app.install_important_live_error_handler()
   eventbus_subscribe(app.important_live_error_event_name, function(err) {
@@ -35,5 +42,6 @@ return freeze({
 
   register_activation_callback
   register_constrain_callback
+  register_suspend_callback
   register_important_live_error_callback
 })

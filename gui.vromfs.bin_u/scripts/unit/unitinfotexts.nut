@@ -22,6 +22,8 @@ let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut"
 let icon3dByGameTemplate = require("%globalScripts/iconRender/icon3dByGameTemplate.nut")
 let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
 
+let { havePackage } = require("%scripts/clientState/contentPacks.nut")
+
 local tooltipSize = []
 function getTooltipSize() {
   if (tooltipSize.len())
@@ -43,6 +45,29 @@ let chancesText = [
 
 
 
+let isPkgMainExist = havePackage("pkg_main")
+
+function genUnitTooltipWeaponIcon(templateName) {
+  let tlSize = getTooltipSize()
+  let templateIcon = icon3dByGameTemplate(templateName, {
+    width = tlSize[0]
+    height = tlSize[1]
+    forceRealTimeRenderIcon = forceRealTimeRenderIcon.get()
+    renderSettingsPlace = "unit_tooltip"
+  })
+  if (templateIcon)
+    return templateIcon
+
+  log($"Unit Tooltip: Not found template {templateName}. Render default mosin_m91_gun")
+  
+  return icon3dByGameTemplate($"mosin_m91_gun", {
+    width = tlSize[0]
+    height = tlSize[1]
+    forceRealTimeRenderIcon = forceRealTimeRenderIcon.get()
+    renderSettingsPlace = "unit_tooltip"
+  })
+}
+
 function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)
     return unit.customTooltipImage
@@ -59,25 +84,11 @@ function getUnitTooltipImage(unit) {
   if (unitType == ES_UNIT_TYPE_SHIP)
     return $"!ui/ships/{unit.name}.avif"
   if (unitType == ES_UNIT_TYPE_HUMAN) {
-    let tlSize = getTooltipSize()
-    let { primaryWeaponTemplateName } = getUnitTemplateNames(unit)
-    let templateIcon = icon3dByGameTemplate(primaryWeaponTemplateName, {
-      width = tlSize[0]
-      height = tlSize[1]
-      forceRealTimeRenderIcon = forceRealTimeRenderIcon.get()
-      renderSettingsPlace = "unit_tooltip"
-    })
-    if (templateIcon)
-      return templateIcon
+    if (!isPkgMainExist)
+      return ""
 
-    log($"Unit Tooltip: Not found template {unit.name}_gun. Render default mosin_m91_gun")
-    
-    return icon3dByGameTemplate($"mosin_m91_gun", {
-      width = tlSize[0]
-      height = tlSize[1]
-      forceRealTimeRenderIcon = forceRealTimeRenderIcon.get()
-      renderSettingsPlace = "unit_tooltip"
-    })
+    let { primaryWeaponTemplateName } = getUnitTemplateNames(unit)
+    return genUnitTooltipWeaponIcon(primaryWeaponTemplateName)
   }
   return ""
 }
@@ -272,4 +283,5 @@ return {
   getCantBuyUnitReason
   getCharacteristicActualValue
   getFontIconByBattleType
+  genUnitTooltipWeaponIcon
 }

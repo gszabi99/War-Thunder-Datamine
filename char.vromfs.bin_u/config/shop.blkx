@@ -34,16 +34,16 @@
           "us_xm_800t": {
             "rank": 6
           },
-          "us_m3_bradley": {
-            "rank": 6,
-            "newsLabelId": "rework_tech_tree_2026_02_ground_us"
-          },
           "us_stingray": {
             "rank": 6
           },
-          "us_m3a3_bradley": {
+          "us_m1296_dragoon": {
+            "rank": 6
+          },
+          "us_m1128_mgs": {
             "rank": 7,
-            "newsLabelId": "rework_tech_tree_2026_02_ground_us"
+            "reqAir": "us_stingray",
+            "futureReqAir": "us_m1296_dragoon"
           },
           "us_m10_booker_late": {
             "rank": 7
@@ -331,9 +331,11 @@
           "us_m60a2": {
             "rank": 6
           },
-          "us_m1128_mgs": {
-            "rank": 7,
-            "newsLabelId": "rework_tech_tree_2026_02_ground_us"
+          "us_m3_bradley": {
+            "rank": 6
+          },
+          "us_m3a3_bradley": {
+            "rank": 7
           }
         },
         {
@@ -911,6 +913,14 @@
               3
             ],
             "showOnlyWhenBought": true
+          },
+          "ah_64a_killstreak": {
+            "rank": 6,
+            "rankPosXY": [
+              7,
+              4
+            ],
+            "showOnlyWhenBought": true
           }
         }
       ]
@@ -1005,6 +1015,10 @@
           },
           "f_16c_block_50": {
             "rank": 8
+          },
+          "f_16c_block_52_aesa": {
+            "rank": 9,
+            "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
         {
@@ -1100,7 +1114,7 @@
             "rank": 8
           },
           "f_15c_golden_eagle": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -1196,8 +1210,15 @@
           "f-4j": {
             "rank": 7
           },
-          "fa_18a": {
-            "rank": 8
+          "f_18_group": {
+            "image": "#ui/unitskin#f_18_group",
+            "fa_18a": {
+              "rank": 8
+            },
+            "fa_18c_late": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
           },
           "f_14_group": {
             "image": "#ui/unitskin#f_14_group",
@@ -1208,12 +1229,8 @@
               "rank": 8
             }
           },
-          "fa_18c_late": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
-          },
           "fa_18e_block_2": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -1984,6 +2001,10 @@
             "rank": 1,
             "reqAir": ""
           },
+          "us_destroyer_bagley_class_helm": {
+            "rank": 2,
+            "reqAir": ""
+          },
           "us_destroyer_mitscher_wilkinson": {
             "rank": 2,
             "reqAir": ""
@@ -2674,6 +2695,9 @@
           },
           "germ_wiesel_1_tow": {
             "rank": 7
+          },
+          "germ_boxer_swatrinf": {
+            "rank": 7
           }
         },
         {
@@ -2713,6 +2737,10 @@
             "showOnlyWhenBought": true
           },
           "germ_pzkpfw_III_ausf_N": {
+            "rank": 2,
+            "reqAir": ""
+          },
+          "germ_sdkfz_234_2_mod": {
             "rank": 2,
             "reqAir": ""
           },
@@ -3291,11 +3319,11 @@
             "rank": 8
           },
           "ef_2000_block_10": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           },
           "ef_2000_aesa": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -3475,7 +3503,7 @@
             "rank": 6
           },
           "tornado_ids_de_assta1": {
-            "rank": 8,
+            "rank": 7,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           },
           "tornado_ids_de_assta3_sle": {
@@ -3523,7 +3551,12 @@
               "rank": 2
             }
           },
+          "me_210a_1": {
+            "rank": 2
+          },
           "me-410a-1_group": {
+            "reqAir": "ju-87d-3",
+            "futureReqAir": "me_210a_1",
             "image": "#ui/unitskin#me-410a-1_group",
             "me-410a-1_u4": {
               "rank": 2
@@ -4017,6 +4050,11 @@
             "hideFeature": "!Marketplace",
             "event": "winter_2017"
           },
+          "alpha_jet_a_jabog41": {
+            "rank": 6,
+            "reqAir": "",
+            "gift": "msi_notebook"
+          },
           "ffa_p16": {
             "rank": 6,
             "reqAir": ""
@@ -4061,8 +4099,13 @@
           "germ_destroyer_class1936c_z46": {
             "rank": 3
           },
+          "germ_destroyer_class1944_z52": {
+            "rank": 3
+          },
           "germ_destroyer_lutjens_class_lutjens": {
-            "rank": 4
+            "rank": 4,
+            "reqAir": "germ_destroyer_class1936c_z46",
+            "futureReqAir": "germ_destroyer_class1944_z52"
           },
           "germ_cruiser_leipzig_nurnberg_group": {
             "image": "#ui/unitskin#germ_cruiser_leipzig_nurnberg_group",
@@ -4553,20 +4596,17 @@
           "ussr_object_435": {
             "rank": 6
           },
-          "ussr_t_64_group": {
-            "image": "#ui/unitskin#ussr_t_64_group",
-            "newsLabelId": "rework_tech_tree_2026_1_ground",
-            "ussr_t_64a_1971": {
-              "rank": 6
-            },
-            "ussr_t_64_b_1984": {
-              "rank": 6,
-              "newsLabelId": "rework_tech_tree_2026_1_ground"
-            }
+          "ussr_t_64a_1971": {
+            "rank": 6
           },
-          "ussr_t_80b": {
-            "rank": 7,
-            "newsLabelId": "rework_tech_tree_2026_1_ground"
+          "ussr_t_64_t_80_group": {
+            "image": "#ui/unitskin#ussr_t_64_t_80_group",
+            "ussr_t_64_b_1984": {
+              "rank": 7
+            },
+            "ussr_t_80b": {
+              "rank": 7
+            }
           },
           "ussr_t_80u": {
             "rank": 7
@@ -4811,6 +4851,9 @@
             "rank": 8,
             "slaveUnit": "ussr_buk_m3_launcher",
             "image": "#ui/unitskin#germ_iris_slm_group"
+          },
+          "ussr_pantsyr_sm_sv": {
+            "rank": 8
           }
         },
         {
@@ -5407,6 +5450,14 @@
             ],
             "gift": "msi_notebook"
           },
+          "mi_35m_killstreak": {
+            "rank": 6,
+            "rankPosXY": [
+              7,
+              4
+            ],
+            "showOnlyWhenBought": true
+          },
           "mi_35p": {
             "rank": 7,
             "rankPosXY": [
@@ -5594,8 +5645,13 @@
               "rank": 7
             }
           },
-          "mig_29_9_13": {
+          "mig_29_9_12": {
             "rank": 8
+          },
+          "mig_29_9_13": {
+            "rank": 8,
+            "reqAir": "mig_23m",
+            "futureReqAir": "mig_29_9_12"
           },
           "mig_29smt_9_19": {
             "rank": 8
@@ -5697,11 +5753,11 @@
             "rank": 8
           },
           "su_30sm": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           },
           "su_30sm2": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -6597,8 +6653,14 @@
           }
         },
         {
+          "ussr_d3_tk126": {
+            "rank": 1,
+            "reqAir": ""
+          },
           "ussr_pr253l": {
-            "rank": 2
+            "rank": 2,
+            "reqAir": "",
+            "futureReqAir": "ussr_d3_tk126"
           },
           "ussr_pr_191": {
             "rank": 3
@@ -6948,8 +7010,13 @@
               "rank": 4
             }
           },
+          "uk_as_90_mk_2": {
+            "rank": 4
+          },
           "uk_fv438_swingfire": {
-            "rank": 5
+            "rank": 5,
+            "reqAir": "uk_a39_tortoise",
+            "futureReqAir": "uk_as_90_mk_2"
           },
           "uk_fv510_zt3_group": {
             "image": "#ui/unitskin#uk_fv510_isv",
@@ -7174,6 +7241,11 @@
             "marketplaceItemdefId": 50086,
             "hideFeature": "!Marketplace",
             "event": "winter_2020"
+          },
+          "uk_vickers_gbt_155": {
+            "rank": 4,
+            "reqAir": "",
+            "gift": "msi_notebook"
           },
           "uk_centurion_mk_3_ss11": {
             "rank": 4,
@@ -7526,11 +7598,11 @@
             "rank": 8
           },
           "ef_2000_fgr4": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           },
           "ef_2000_typhoon_aesa": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -7638,7 +7710,7 @@
             "rank": 6
           },
           "tornado_f3": {
-            "rank": 8,
+            "rank": 7,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           },
           "tornado_f3_late": {
@@ -7710,15 +7782,21 @@
           "f-4k": {
             "rank": 7
           },
-          "fa_18a_raaf": {
-            "rank": 8
+          "fa_18a_raaf_group": {
+            "image": "#ui/unitskin#fa_18a_raaf_group",
+            "fa_18a_raaf": {
+              "rank": 8
+            },
+            "fa_18a_hug_2_raaf": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
           },
           "sea_harrier_fa2": {
             "rank": 8
           },
-          "fa_18a_hug_2_raaf": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
+          "fa_18f_block_2_raaf": {
+            "rank": 9
           }
         },
         {
@@ -7899,12 +7977,15 @@
           "buccaneer_s2b": {
             "rank": 7
           },
-          "f_111c_raaf": {
-            "rank": 7
-          },
-          "tornado_gr1": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
+          "f_111c_tornado_group": {
+            "image": "#ui/unitskin#f_111c_tornado_group",
+            "f_111c_raaf": {
+              "rank": 7
+            },
+            "tornado_gr1": {
+              "rank": 7,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
           },
           "tornado_gr4": {
             "rank": 8
@@ -8452,8 +8533,13 @@
           "uk_70ft_mgb": {
             "rank": 1
           },
-          "uk_fairmile_b_ml345": {
+          "uk_73ft_vosper_type1": {
             "rank": 2
+          },
+          "uk_fairmile_b_ml345": {
+            "rank": 2,
+            "reqAir": "uk_70ft_mgb",
+            "futureReqAir": "uk_73ft_vosper_type1"
           },
           "uk_dark_class": {
             "rank": 2
@@ -8733,8 +8819,14 @@
           }
         },
         {
-          "jp_type_4_ho_ro": {
-            "rank": 1
+          "jp_ro_ni_group": {
+            "image": "#ui/unitskin#jp_ho_ni_group",
+            "jp_type_4_ho_ro": {
+              "rank": 1
+            },
+            "jp_type_2_ho_ni_2": {
+              "rank": 1
+            }
           },
           "jp_hiro_sha": {
             "rank": 1
@@ -8824,8 +8916,13 @@
           }
         },
         {
-          "jp_m60a3_tts": {
+          "jp_btr_3e1": {
             "rank": 6
+          },
+          "jp_m60a3_tts": {
+            "rank": 6,
+            "reqAir": "",
+            "futureReqAir": "jp_btr_3e1"
           },
           "jp_stingray": {
             "rank": 6
@@ -9011,6 +9108,15 @@
             ],
             "reqAir": "",
             "showOnlyWhenBought": true
+          },
+          "ah_64d_lightweight_japan": {
+            "rank": 7,
+            "rankPosXY": [
+              6,
+              1
+            ],
+            "gift": "msi_notebook",
+            "reqAir": ""
           }
         }
       ]
@@ -9103,12 +9209,15 @@
           "f-4ej_kai": {
             "rank": 8
           },
-          "f_15j": {
-            "rank": 8
-          },
-          "f_15j_kai": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
+          "f_15j_group": {
+            "image": "#ui/unitskin#f_15j_group",
+            "f_15j": {
+              "rank": 8
+            },
+            "f_15j_kai": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
           }
         },
         {
@@ -9280,12 +9389,15 @@
           "f-5t_thailand": {
             "rank": 7
           },
-          "f-5th_thailand": {
-            "rank": 8
-          },
-          "f_16a_block_15_ocu_thailand": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
+          "f_5_f_16_thailand_group": {
+            "image": "#ui/unitskin#f_5_f_16_thailand_group",
+            "f-5th_thailand": {
+              "rank": 8
+            },
+            "f_16a_block_15_ocu_thailand": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
           },
           "saab_jas39c_thailand": {
             "rank": 8
@@ -9402,7 +9514,7 @@
             "rank": 8
           },
           "su_30mkm": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -9424,6 +9536,10 @@
             "reqAir": ""
           },
           "ki_44_2_otsu": {
+            "rank": 2,
+            "reqAir": ""
+          },
+          "me_210_v22_japan": {
             "rank": 2,
             "reqAir": ""
           },
@@ -9699,8 +9815,13 @@
           }
         },
         {
+          "jp_destroyer_kagero": {
+            "rank": 3
+          },
           "jp_armoredcruiser_ikoma": {
-            "rank": 4
+            "rank": 4,
+            "reqAir": "",
+            "futureReqAir": "jp_destroyer_kagero"
           },
           "jp_battleship_settsu": {
             "rank": 5
@@ -9781,6 +9902,10 @@
           }
         },
         {
+          "jp_destroyer_tade": {
+            "rank": 1,
+            "reqAir": ""
+          },
           "jp_destroyer_hayanami": {
             "rank": 2,
             "reqAir": "",
@@ -10018,12 +10143,7 @@
             "rank": 7
           },
           "cn_vt_4": {
-            "rank": 7,
-            "newsLabelId": "rework_tech_tree_2026_1_ground"
-          },
-          "cn_wz_1001": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_ground"
+            "rank": 8
           },
           "cn_vt_4b": {
             "rank": 8
@@ -10111,6 +10231,9 @@
             "cn_ztz_99_w": {
               "rank": 7
             }
+          },
+          "cn_wz_1001": {
+            "rank": 8
           },
           "cn_ztz_99a": {
             "rank": 8
@@ -10307,6 +10430,11 @@
             "reqAir": "",
             "isClanVehicle": true,
             "reqFeature": "ClanVehicles"
+          },
+          "cn_ztz_96b": {
+            "rank": 7,
+            "reqAir": "",
+            "gift": "msi_notebook"
           },
           "cn_oplot_t": {
             "rank": 8,
@@ -10578,16 +10706,8 @@
           "f_16a_block_20_mlu": {
             "rank": 8
           },
-          "j_10a": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
-          },
           "mirage_2000_5ei": {
             "rank": 8
-          },
-          "j_10c": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
         {
@@ -10661,20 +10781,12 @@
           "j_8f": {
             "rank": 8
           },
-          "j_11_group": {
-            "image": "#ui/unitskin#j_11_group",
-            "newsLabelId": "rework_tech_tree_2026_1_air",
-            "j_11": {
-              "rank": 8,
-              "newsLabelId": "rework_tech_tree_2026_1_air"
-            },
-            "j_11a": {
-              "rank": 8,
-              "newsLabelId": "rework_tech_tree_2026_1_air"
-            }
-          },
-          "j_11b": {
+          "j_10a": {
             "rank": 8,
+            "newsLabelId": "rework_tech_tree_2026_1_air"
+          },
+          "j_10c": {
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -10751,6 +10863,25 @@
           },
           "il_28_china": {
             "rank": 5
+          },
+          "j_11_group": {
+            "image": "#ui/unitskin#j_11_group",
+            "j_11": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            },
+            "j_11a": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
+          },
+          "j_11b": {
+            "rank": 8,
+            "newsLabelId": "rework_tech_tree_2026_1_air"
+          },
+          "j_15t": {
+            "rank": 9,
+            "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
         {
@@ -10924,6 +11055,9 @@
           },
           "it_centauro_mgs_120": {
             "rank": 7
+          },
+          "it_centauro_2": {
+            "rank": 8
           }
         },
         {
@@ -11460,11 +11594,11 @@
             "rank": 8
           },
           "ef_2000a": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           },
           "ef_2000a_aesa": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -11546,7 +11680,7 @@
             "rank": 7
           },
           "tornado_adv": {
-            "rank": 8,
+            "rank": 7,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -11602,13 +11736,12 @@
           },
           "tornado_ids_it_group": {
             "image": "#ui/unitskin#tornado_ids_it_group",
-            "newsLabelId": "rework_tech_tree_2026_1_air",
             "tornado_ids_it_mod95": {
-              "rank": 8,
+              "rank": 7,
               "newsLabelId": "rework_tech_tree_2026_1_air"
             },
             "tornado_ids_it_ret8": {
-              "rank": 8,
+              "rank": 7,
               "newsLabelId": "rework_tech_tree_2026_1_air"
             }
           },
@@ -11680,9 +11813,32 @@
           }
         },
         {
+          "wm_21": {
+            "rank": 1
+          },
+          "re_2000_heja_1": {
+            "rank": 1
+          },
+          "re_2000_heja_2": {
+            "rank": 1
+          },
+          "wm_23": {
+            "rank": 2,
+            "reqAir": ""
+          },
+          "me_210ca_1_hungary_group": {
+            "image": "#ui/unitskin#image_in_progress",
+            "me_210ca_1_hungary": {
+              "rank": 3
+            },
+            "me_210ca_1_40_mm_hungary": {
+              "rank": 3
+            }
+          },
           "yak-9p_hungary": {
             "rank": 4,
-            "reqAir": ""
+            "reqAir": "",
+            "futureReqAir": "me_210ca_1_hungary"
           },
           "mig-15bis_nr23_hungary": {
             "rank": 5
@@ -11750,6 +11906,11 @@
             "rank": 4,
             "reqAir": ""
           },
+          "fw_190f_8_hungary": {
+            "rank": 4,
+            "gift": "msi_notebook",
+            "showOnlyWhenBought": true
+          },
           "mb_326b": {
             "rank": 5,
             "reqAir": ""
@@ -11787,6 +11948,10 @@
           }
         },
         {
+          "ba_65_a80": {
+            "rank": 1,
+            "reqAir": ""
+          },
           "ro_43": {
             "rank": 1,
             "reqAir": "",
@@ -11842,8 +12007,13 @@
           "it_destroyer_dardo": {
             "rank": 1
           },
+          "it_destroyer_oriani_class_gioberti": {
+            "rank": 1
+          },
           "it_destroyer_leone_class": {
-            "rank": 2
+            "rank": 2,
+            "reqAir": "it_destroyer_dardo",
+            "futureReqAir": "it_destroyer_oriani_class_gioberti"
           },
           "it_destroyer_soldati_serie1_camicianera": {
             "rank": 2
@@ -11946,6 +12116,10 @@
           }
         },
         {
+          "it_destroyer_saetta": {
+            "rank": 1,
+            "reqAir": ""
+          },
           "it_destroyer_soldati_serie1": {
             "rank": 3,
             "reqAir": "",
@@ -12735,7 +12909,7 @@
             "rank": 8
           },
           "rafale_c_f3": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -12799,7 +12973,7 @@
             "rank": 8
           },
           "rafale_m_f3r": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -13177,8 +13351,13 @@
           "fr_destroyer_jaguar_class_chacal": {
             "rank": 1
           },
+          "fr_destroyer_guepard_class_verdun": {
+            "rank": 1
+          },
           "fr_destroyer_desaix_class_kleber": {
-            "rank": 2
+            "rank": 2,
+            "reqAir": "fr_destroyer_jaguar_class_chacal",
+            "futureReqAir": "fr_destroyer_guepard_class_verdun"
           },
           "fr_destroyer_aigle_class_milan": {
             "rank": 2
@@ -13875,15 +14054,19 @@
               "rank": 8
             }
           },
-          "saab_jas39a": {
-            "rank": 8
-          },
-          "saab_jas39c": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
+          "saab_jas39_group": {
+            "image": "#ui/unitskin#saab_jas39_group",
+            "saab_jas39a": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            },
+            "saab_jas39c": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
           },
           "saab_jas39e": {
-            "rank": 8,
+            "rank": 9,
             "newsLabelId": "rework_tech_tree_2026_1_air"
           }
         },
@@ -14088,6 +14271,12 @@
             "rank": 8,
             "reqAir": "",
             "gift": "msi_notebook"
+          },
+          "saab_jas39d": {
+            "rank": 8,
+            "reqAir": "",
+            "isClanVehicle": true,
+            "reqFeature": "ClanVehicles"
           }
         },
         {
@@ -14298,8 +14487,13 @@
           "il_namer_rcws_30": {
             "rank": 7
           },
+          "il_eitan": {
+            "rank": 7
+          },
           "il_namer_tsrikhon": {
-            "rank": 8
+            "rank": 8,
+            "reqAir": "il_namer_rcws_30",
+            "futureReqAir": "il_eitan"
           }
         },
         {
@@ -14501,12 +14695,15 @@
           "f-4e_iaf": {
             "rank": 7
           },
-          "f-4e_kurnass_2000": {
-            "rank": 8
-          },
-          "f_15a_iaf": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
+          "f_4e_f_15_iaf_group": {
+            "image": "#ui/unitskin#f_4e_f_15_iaf_group",
+            "f-4e_kurnass_2000": {
+              "rank": 8
+            },
+            "f_15a_iaf": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
           },
           "f_15c_baz_msip": {
             "rank": 8
@@ -14530,12 +14727,15 @@
           "nesher": {
             "rank": 7
           },
-          "f_16d_block_40_barak_2": {
-            "rank": 8
-          },
-          "f_16i_sufa": {
-            "rank": 8,
-            "newsLabelId": "rework_tech_tree_2026_1_air"
+          "f_16d_iaf_group": {
+            "image": "#ui/unitskin#f_16d_iaf_group",
+            "f_16d_block_40_barak_2": {
+              "rank": 8
+            },
+            "f_16i_sufa": {
+              "rank": 8,
+              "newsLabelId": "rework_tech_tree_2026_1_air"
+            }
           },
           "f_15i_raam": {
             "rank": 8

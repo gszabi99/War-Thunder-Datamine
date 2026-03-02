@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
+let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 const CHAPTER_NAME = "worldwar"

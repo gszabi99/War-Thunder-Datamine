@@ -936,7 +936,7 @@ function getCommonWeapons(unitBlk, primaryMod, unitName = "") {
   return res
 }
 
-function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS) {
+function getUnitWeaponry(unit, params = WEAPON_TEXT_PARAMS) {
   if (!unit)
     return null
 
@@ -946,36 +946,58 @@ function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS) {
     return null
 
   local weapons = {}
-  p = WEAPON_TEXT_PARAMS.__merge(p)
+  params = WEAPON_TEXT_PARAMS.__merge(params)
   local primaryMod = ""
-  local weaponPresetIdx = -1
-  if ((type(p.weaponPreset) == "string") || p.weaponPreset < 0) {
-    if (!p.isPrimary) {
-      let curWeap = (type(p.weaponPreset) == "string") ? p.weaponPreset : getLastWeapon(unitName)
-      foreach (idx, w in unit.getWeapons())
-        if (w.name == curWeap || (weaponPresetIdx < 0 && !isWeaponAux(w)))
-          weaponPresetIdx = idx
-      if (weaponPresetIdx < 0)
+
+  let weaponPresetName = (type(params.weaponPreset) == "string") ? params.weaponPreset : null
+  local presets = null
+  local presetOrWeapon = null
+  local curPreset = null
+
+  if (weaponPresetName != null || params.weaponPreset < 0) {
+    if (!params.isPrimary) {
+      let curWeap = weaponPresetName ?? getLastWeapon(unitName)
+      foreach (w in unit.getWeapons())
+        if (w.name == curWeap) {
+          presetOrWeapon = w
+          break
+        }
+      if (presetOrWeapon == null) {
+        presets = getUnitPresets(unitBlk)
+        foreach (w in presets)
+          if (w.name == curWeap) {
+            presetOrWeapon = w
+            curPreset = w
+            break
+          }
+      }
+      if (presetOrWeapon == null)
+        foreach (w in unit.getWeapons())
+          if (!isWeaponAux(w)) {
+            presetOrWeapon = w
+            break
+          }
+
+      if (presetOrWeapon == null)
         return weapons
     }
-    if (p.isPrimary && type(p.weaponPreset) == "string")
-      primaryMod = p.weaponPreset
+    if (params.isPrimary && weaponPresetName != null)
+      primaryMod = params.weaponPreset
     else
       primaryMod = getLastPrimaryWeapon(unit)
   }
   else
-    weaponPresetIdx = p.weaponPreset
+    presetOrWeapon = unit.getWeapons()?[params.weaponPreset]
 
-  if (p.isPrimary || p.isPrimary == null)
-    weapons = addWeaponsFromBlk({}, getCommonWeapons(unitBlk, primaryMod, unitName), unit, p.weaponsFilterFunc)
+  if (params.isPrimary || params.isPrimary == null)
+    weapons = addWeaponsFromBlk({}, getCommonWeapons(unitBlk, primaryMod, unitName), unit, params.weaponsFilterFunc)
 
-  if (!p.isPrimary) {
-    let weapon = unit.getWeapons()?[weaponPresetIdx]
-    let curPreset = weapon != null ? getUnitPresets(unitBlk).findvalue(@(v) v.name == weapon.name) : null
-    weapons = addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, weapon, unitName),
-      unit, p.weaponsFilterFunc, curPreset?.weaponConfig)
+  if (!params.isPrimary && presetOrWeapon) {
+    presets = presets ?? getUnitPresets(unitBlk)
+    curPreset = curPreset ?? presets.findvalue(@(v) v.name == presetOrWeapon.name)
+    weapons = addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, presetOrWeapon, unitName),
+      unit, params.weaponsFilterFunc, curPreset?.weaponConfig)
   }
-
   return weapons
 }
 

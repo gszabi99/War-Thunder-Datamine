@@ -6,6 +6,9 @@ require ecs
 struct InvalidateAnimationDataBase {}
 
 [cpp_event(unicast)]
+struct AnimationDataBaseLoaded {}
+
+[cpp_event(unicast)]
 struct AnimationDataBaseAssigned {}
 
 [cpp_event(broadcast)]

@@ -72,6 +72,10 @@ local SeenList = class {
     this.canBeNew = func
   }
 
+  function notifyChanged() {
+    seenListEvents.notifyChanged(this.id, null)
+  }
+
   
   function onListChanged() {
     this.validateEntitesDays()

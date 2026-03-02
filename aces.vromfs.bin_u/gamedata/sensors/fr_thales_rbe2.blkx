@@ -478,7 +478,7 @@
       ],
       "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
-      "period": 0.04,
+      "period": 0.0416,
       "width": 70.0,
       "barHeight": 2.25,
       "barsCount": 62,
@@ -2847,11 +2847,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }
@@ -2949,11 +2951,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }
@@ -3134,6 +3138,8 @@
         "trackPulse": {
           "updateActiveTargetOfInterest": {
             "dirFilter": {
+              "alpha": 0.8,
+              "betta": 0.1,
               "rateLim": [
                 0.78,
                 0.78
@@ -3142,6 +3148,8 @@
               "inertialTimeMax": 1.0
             },
             "distFilter": {
+              "alpha": 0.8,
+              "betta": 0.2,
               "accelLim": [
                 150.0,
                 150.0
@@ -3164,6 +3172,8 @@
         "trackDoppler": {
           "updateActiveTargetOfInterest": {
             "dirFilter": {
+              "alpha": 0.8,
+              "betta": 0.1,
               "rateLim": [
                 0.78,
                 0.78
@@ -3172,6 +3182,8 @@
               "inertialTimeMax": 1.0
             },
             "distFilter": {
+              "alpha": 0.8,
+              "betta": 0.2,
               "accelLim": [
                 150.0,
                 150.0
@@ -3180,6 +3192,8 @@
               "inertialTimeMax": 1.0
             },
             "dopplerSpeedFilter": {
+              "alpha": 0.2,
+              "betta": 0.02,
               "rateLim": [
                 200.0,
                 200.0
@@ -3388,6 +3402,8 @@
         "trackRadar": {
           "updateActiveTargetOfInterest": {
             "dirFilter": {
+              "alpha": 0.8,
+              "betta": 0.1,
               "rateLim": [
                 0.78,
                 0.78
@@ -3396,6 +3412,8 @@
               "inertialTimeMax": 1.0
             },
             "distFilter": {
+              "alpha": 0.8,
+              "betta": 0.2,
               "accelLim": [
                 150.0,
                 150.0
@@ -3404,6 +3422,8 @@
               "inertialTimeMax": 1.0
             },
             "dopplerSpeedFilter": {
+              "alpha": 0.2,
+              "betta": 0.02,
               "rateLim": [
                 200.0,
                 200.0
@@ -3430,6 +3450,8 @@
         "trackIrst": {
           "updateActiveTargetOfInterest": {
             "dirFilter": {
+              "alpha": 0.8,
+              "betta": 0.1,
               "rateLim": [
                 0.78,
                 0.78
@@ -3438,6 +3460,8 @@
               "inertialTimeMax": 1.0
             },
             "distFilter": {
+              "alpha": 0.8,
+              "betta": 0.2,
               "accelLim": [
                 150.0,
                 150.0
@@ -3637,6 +3661,8 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
+                "alpha": 0.8,
+                "betta": 0.1,
                 "rateLim": [
                   0.78,
                   0.78
@@ -3645,6 +3671,8 @@
                 "inertialTimeMax": 1.0
               },
               "distFilter": {
+                "alpha": 0.8,
+                "betta": 0.2,
                 "accelLim": [
                   150.0,
                   150.0

@@ -1,8 +1,9 @@
 weaponry_item {
   id:t='<<id>>'
-  height:t='1@modItemHeight'
-  width:t='<<itemWidth>>@modItemWidth'
-  pos:t='(<<posX>> + 0.5 * <<itemWidth>>) * 1@modCellWidth - 0.5w, (<<posY>> + 0.5) * 1@modCellHeight - 0.5h'
+  height:t='<<sizeMultiplier>>@modItemHeight'
+  width:t='(<<itemWidth>>*<<sizeMultiplier>>)@modItemWidth'
+  left:t='(<<posX>> + 0.5 * <<itemWidth>>) * <<sizeMultiplier>>@modCellWidth - 0.5w'
+  top:t='(<<posY>> + 0.5) * <<sizeMultiplier>>@modCellHeight - 0.5h'
   position:t='absolute'
   <<#isBundle>>
   isBundle='yes'
@@ -380,7 +381,12 @@ weaponry_item {
       tooltip:t='<<altBtnTooltip>>'
       btnName:t='X'
       on_click:t='onAltModAction'
-      visualStyle:t='purchase'
+      <<#altButtonStyle>>
+        visualStyle:t='<<altButtonStyle>>'
+      <</altButtonStyle>>
+      <<^altButtonStyle>>
+        visualStyle:t='purchase'
+      <</altButtonStyle>>
       skip-navigation:t='yes'
       buttonWink {}
       buttonGlance{}

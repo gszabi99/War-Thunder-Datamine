@@ -13,18 +13,25 @@ def grenade_anim_init(evt : Event;
   grenade__throwProgressVarId = phys_vars |> registerVar("throw_progress", 0.0)
 
 
-[es(no_order)]
-def grenade_thrower_anim_update(info : ParallelUpdateFrameDelayed;
-                                grenade_thrower__projectileEntity : EntityId;
-                                grenade_thrower__throwProgress : float)
-  query(grenade_thrower__projectileEntity) <| $ [es] (grenade__throwProgressVarId : int; var phys_vars : PhysVars)
-    if grenade__throwProgressVarId >= 0
-      phys_vars |> setVar(grenade__throwProgressVarId, grenade_thrower__throwProgress)
+
+
+
+
+
+
+
+
 
 
 [es(tag=gameClient, before=anim_phys_init_es, on_appear)]
-def gun_lean_anim_init(evt : Event; gun_tilt__varName : string; var gun_tilt__varId : int&; var phys_vars : PhysVars)
-  gun_tilt__varId = phys_vars |> registerVar(gun_tilt__varName, 0.0)
+def gun_lean_anim_init(evt : Event;
+                       gun_tilt__weaponRootRotateVarName : string;
+                       gun_tilt__weaponRoot2RotateVarName : string;
+                       var gun_tilt__weaponRootRotateVarId : int&;
+                       var gun_tilt__weaponRoot2RotateVarId : int&;
+                       var phys_vars : PhysVars)
+  gun_tilt__weaponRootRotateVarId = phys_vars |> registerVar(gun_tilt__weaponRootRotateVarName, 0.0)
+  gun_tilt__weaponRoot2RotateVarId = phys_vars |> registerVar(gun_tilt__weaponRoot2RotateVarName, 0.0)
 
 def private approach_var(var phys_vars : PhysVars&;
                          var_id : int;
@@ -40,7 +47,7 @@ def gun_lean_anim_update(info : ParallelUpdateFrameDelayed;
                          human_gun_attached : bool;
                          gun_anim__reloadProgress : float;
                          gun_tilt__reloadProgressLimit : float;
-                         gun_tilt__varId : int;
+                         gun_tilt__weaponRoot2RotateVarId : int;
                          gun_tilt__defaultAngle : float;
                          gun_tilt__tpsAngle : float;
                          gun_tilt__leanTpsAngle : float2 const?;
@@ -63,10 +70,10 @@ def gun_lean_anim_update(info : ParallelUpdateFrameDelayed;
                                bipod__enabled : bool = false)
     if !human_gun_attached
       if grenade_thrower__projectileEntity != null
-        query(*grenade_thrower__projectileEntity) <| $ [es] (gun_tilt__varId : int; var phys_vars aka grenade_phys_vars : PhysVars)
-          grenade_phys_vars |> setVar(gun_tilt__varId, 0.)
+        query(*grenade_thrower__projectileEntity) <| $ [es] (gun_tilt__weaponRoot2RotateVarId : int; var phys_vars aka grenade_phys_vars : PhysVars)
+          grenade_phys_vars |> setVar(gun_tilt__weaponRoot2RotateVarId, 0.)
       else
-        phys_vars |> setVar(gun_tilt__varId, 0.)
+        phys_vars |> setVar(gun_tilt__weaponRoot2RotateVarId, 0.)
       return
 
     assume isAim = is_control_bit_set(phys.appliedCT, HumanPhysControlType.HCT_AIM)
@@ -104,7 +111,7 @@ def gun_lean_anim_update(info : ParallelUpdateFrameDelayed;
         targetTilt = tilt
 
     if grenade_thrower__projectileEntity != null
-      query(*grenade_thrower__projectileEntity) <| $ [es] (gun_tilt__varId : int; var phys_vars aka grenade_phys_vars : PhysVars)
-        grenade_phys_vars |> approach_var(gun_tilt__varId, targetTilt, info.dt, gun_tilt__viscocity)
+      query(*grenade_thrower__projectileEntity) <| $ [es] (gun_tilt__weaponRoot2RotateVarId : int; var phys_vars aka grenade_phys_vars : PhysVars)
+        grenade_phys_vars |> approach_var(gun_tilt__weaponRoot2RotateVarId, targetTilt, info.dt, gun_tilt__viscocity)
     else
-      phys_vars |> approach_var(gun_tilt__varId, targetTilt, info.dt, gun_tilt__viscocity)
+      phys_vars |> approach_var(gun_tilt__weaponRoot2RotateVarId, targetTilt, info.dt, gun_tilt__viscocity)

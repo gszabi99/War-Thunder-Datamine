@@ -15,79 +15,80 @@ require daslib/strings_boost
 require daslib/regex
 require daslib/regex_boost
 
-let verbose = false
+let verbose = false 
 
 
 
 
 
 struct ExEnum {
+    
     name : string
     removePrefix : bool = true
     isFlags : bool = false
 }
 
-var extra_args = ""
+var extra_args = "" 
 
-var local_type_names : array<string>
+var local_type_names : array<string> 
 
-var blocked_type_names : array<string>
+var blocked_type_names : array<string> 
 
-var blocked_functions : array<string> <-  [
+var blocked_functions : array<string> <-  [ 
     "operator delete",
     "operator new",
     "__security_init_cookie",
     "__security_check_cookie"
 ];
 
-var blocked_functions_table : table<string; bool>
+var blocked_functions_table : table<string; bool> 
 
-var blocked_defines : array<string> <- [
+var blocked_defines : array<string> <- [ 
     "true",
     "false"
 ];
 
-var blocked_defines_table : table<string; bool>
+var blocked_defines_table : table<string; bool> 
 
-var blocked_enumerations : array<string>
+var blocked_enumerations : array<string> 
 
-var blocked_enumerations_table : table<string; bool>
+var blocked_enumerations_table : table<string; bool> 
 
-var is_function_blocked : lambda<(name : string) : bool>
+var is_function_blocked : lambda<(name : string) : bool> 
 
-var is_const_blocked : lambda<(name : string) : bool>
+var is_const_blocked : lambda<(name : string) : bool> 
 
-var is_struct_blocked : lambda<(name : string) : bool>
+var is_struct_blocked : lambda<(name : string) : bool> 
 
-var alt_struct_name : lambda<(name : string) : string>
+var alt_struct_name : lambda<(name : string) : string> 
 
-var cmres_functions : array<string>
+var cmres_functions : array<string> 
 
-var allow_extern_c = false
+var allow_extern_c = false 
 
-var ex_enums : table<string; ExEnum>
+var ex_enums : table<string; ExEnum> 
 
-var substitute_field_types : table<string; string>
+var substitute_field_types : table<string; string> 
 
-var alias_types : table<string; string>
+var alias_types : table<string; string> 
 
-var namespace_to_prefix : table<string; string>
+var namespace_to_prefix : table<string; string> 
 
-var generate_split_functions = false
-var split_prefix = ""
-var split_cpp_prefix = ""
-var split_cpp_suffix = ""
+var generate_split_functions = false 
+var split_prefix = "" 
+var split_cpp_prefix = "" 
+var split_cpp_suffix = "" 
 
-var enum_suffix = ""
+var enum_suffix = "" 
 
-var const_type_table : table<string; string>
+var const_type_table : table<string; string> 
 
-var const_uint8_type = "uint8_t"
-var const_uint16_type = "uint16_t"
+var const_uint8_type = "uint8_t" 
+var const_uint16_type = "uint16_t" 
 
-var ex_keywords : table<string; bool>
+var ex_keywords : table<string; bool> 
 
-var all_keywords = fixed_array<string>(
+var all_keywords = fixed_array<string>( 
     "float",    "double",
     "uint",     "uint8",    "uint16",   "uint64",   "uint2",    "uint3",    "uint4",
     "int",      "int8",     "int16",    "int64",    "int2",     "int3",     "int4",
@@ -99,54 +100,64 @@ var all_keywords = fixed_array<string>(
 
 
 enum ScopeKind {
+    
     Namespace
     Struct
 }
 
 struct Scope {
+    
     name : string
     kind : ScopeKind
 }
 
 enum AccessKind {
+    
     Private
     Public
     Protected
 }
 
 struct ClangAstDecl {
+    
     name    : string
     cppName : string
 }
 
 struct ClangTypedef : ClangAstDecl {
+    
     qtype   : string
 }
 
 struct ClangEnum : ClangAstDecl {
+    
     eclass  : bool
     etype   : string
     edecl   : array<string>
 }
 
 struct ClangGlobalVar : ClangAstDecl {
+    
     mangledName : string
     gtype       : string
 }
 
 struct ClangStructField : ClangAstDecl {
+    
     qtype       : string
     access      : AccessKind
     isBitfield  : bool
 }
 
 struct ClangFuncArg : ClangAstDecl {
+    
     atype   : string
     value   : string
     vtype   : string
 }
 
 struct ClangFunc : ClangAstDecl {
+    
     mangledName : string
     ftype       : string
     isMethod    : bool
@@ -156,12 +167,14 @@ struct ClangFunc : ClangAstDecl {
 }
 
 struct ClangStruct : ClangAstDecl {
+    
     tag     : string
     fields  : array<ClangStructField>
     methods : array<ClangFunc>
 }
 
 struct ClangAst {
+    
     typedefs : table<string; ClangTypedef>
     enums : table<string; ClangEnum>
     structs : table<string; ClangStruct>
@@ -169,27 +182,31 @@ struct ClangAst {
     globals : table<string; ClangGlobalVar>
 }
 
-var name_stack : array<Scope>
-var access_stack : array<AccessKind>
-var struct_stack : array<string>
-var ast : ClangAst
-var rev_enums : table<string; string>
+var name_stack : array<Scope> 
+var access_stack : array<AccessKind> 
+var struct_stack : array<string> 
+var ast : ClangAst 
+var rev_enums : table<string; string> 
 
 def is_str(jso, str) {
+    
     return (jso is _string) && ((jso as _string) == str)
 }
 
 def with_object(var jso; field; blk : block<(var val : table<string; JsonValue?>) : void>) {
+    
     assert(jso[field] is _object)
     invoke(blk, jso[field] as _object)
 }
 
 def with_array(var jso; field; blk : block<(var val : array<JsonValue?>) : void>) {
+    
     assert(jso[field] is _array)
     invoke(blk, jso[field] as _array)
 }
 
 def is_valid_loc(var loc) {
+    
     if (loc |> length == 0) {
         return false
     }
@@ -197,13 +214,14 @@ def is_valid_loc(var loc) {
 }
 
 def onInner(var root) {
-    root |> with_array("inner") <| $(inner) {
+    
+    root |> with_array("inner") $(inner) {
         for (idecl in inner) {
             assert(idecl is _object)
             var decl & = unsafe(idecl as _object)
             var skip = false
             if (decl |> key_exists("loc")) {
-                decl |> with_object("loc") <| $(loc) {
+                decl |> with_object("loc") $(loc) {
                     skip = !loc |> is_valid_loc
                 }
             }
@@ -244,6 +262,7 @@ def onInner(var root) {
 
 [sideeffects] 
 def onLinkageSpec(var root) {
+    
     if (!allow_extern_c) {
         return
     }
@@ -259,6 +278,7 @@ def onLinkageSpec(var root) {
 }
 
 def onNamespace(var root) {
+    
     if (!root |> key_exists("inner")) {
         return
     }
@@ -273,6 +293,7 @@ def onNamespace(var root) {
 }
 
 def onEnum(var root) {
+    
     if (!root |> key_exists("name")) {
         print("enum 'name' missing in {root}\n")
         return
@@ -301,7 +322,7 @@ def onEnum(var root) {
             eclass = false
         )
     }
-    root |> with_array("inner") <| $(inner) {
+    root |> with_array("inner") $(inner) {
         for (edo in inner) {
             assert(edo is _object)
             var ed & = unsafe(edo as _object)
@@ -314,6 +335,7 @@ def onEnum(var root) {
 }
 
 def onVar(var root) {
+    
     let name = root["name"] as _string
     let fullName = getCppName(name)
     let mangledName = root["mangledName"] as _string 
@@ -330,11 +352,13 @@ def onVar(var root) {
 }
 
 def getQualType(var root; field : string = "type") {
+    
     var qto & = unsafe(root[field] as _object)
     return qto["qualType"] as _string
 }
 
 def onNumericLiteral(var inner_obj) {
+    
     var value = ""
     var valueType = ""
     let valueCategory = inner_obj["valueCategory"] as _string
@@ -346,10 +370,11 @@ def onNumericLiteral(var inner_obj) {
 }
 
 def onInitArg(var root) {
+    
     var value = ""
     var valueType = ""
     if (root |> key_exists("inner")) {
-        root |> with_array("inner") <| $(inner) {
+        root |> with_array("inner") $(inner) {
             var inner_obj & = unsafe(inner[0] as _object)
             let kind = inner_obj["kind"] as _string
             if (kind == "ImplicitCastExpr") {
@@ -361,7 +386,7 @@ def onInitArg(var root) {
                     valueType = getQualType(inner_obj)
                     if (valueCategory == "rvalue") {
                         if (valueType == "const char *") {
-                            inner_obj |> with_array("inner") <| $(iarr) {
+                            inner_obj |> with_array("inner") $(iarr) {
                                 var iobj & = unsafe(iarr[0] as _object)
                                 value = iobj["value"] as _string
                             }
@@ -378,7 +403,7 @@ def onInitArg(var root) {
                 valueType = literal._1
             } elif (kind == "UnaryOperator") {
                 let opCode = inner_obj["opcode"] as _string
-                inner_obj |> with_array("inner") <| $(iinner) {
+                inner_obj |> with_array("inner") $(iinner) {
                     var iinner_obj & = unsafe(iinner[0] as _object)
                     let ikind = iinner_obj["kind"] as _string
                     if (ikind == "IntegerLiteral" || ikind == "FloatingLiteral") {
@@ -402,6 +427,7 @@ def onInitArg(var root) {
 }
 
 def onFunctionBody(var root; isMethod : bool; ofClass : string = "") : ClangFunc {
+    
     let name = root["name"] as _string
     let fullName = getCppName(name)
     let mangledName = root["mangledName"] as _string 
@@ -425,7 +451,7 @@ def onFunctionBody(var root; isMethod : bool; ofClass : string = "") : ClangFunc
         ofClass = ofClass
     )
     if (root |> key_exists("inner")) {
-        root |> with_array("inner") <| $(inner) {
+        root |> with_array("inner") $(inner) {
             for (fad in inner) {
                 assert(fad is _object)
                 var ad & = unsafe(fad as _object)
@@ -456,6 +482,7 @@ def onFunctionBody(var root; isMethod : bool; ofClass : string = "") : ClangFunc
 }
 
 def onMethod(var root) {
+    
     if (length(struct_stack) > 0) {
         var in_class = struct_stack[length(struct_stack) - 1]
         ast.structs[in_class].methods |> emplace <| onFunctionBody(root, true, join(struct_stack, "::"))
@@ -465,11 +492,13 @@ def onMethod(var root) {
 }
 
 def onFunction(var root) {
+    
     var fdecl <- onFunctionBody(root, false)
     ast.funcs[fdecl.mangledName] <- fdecl
 }
 
 def onStruct(var root) {
+    
     let name = key_exists(root, "name") ? (root["name"] as _string) : ""
     let tagUsed = root["tagUsed"] as _string
     let fullName = getCppName(name)
@@ -499,6 +528,7 @@ def onStruct(var root) {
 }
 
 def onAccess(var root) {
+    
     let access = root["access"] as _string
     var kind = AccessKind.Public
     if (access == "public") {
@@ -514,6 +544,7 @@ def onAccess(var root) {
 }
 
 def isBitfield(var root) {
+    
     if (root |> key_exists("isBitfield")) {
         if (root["isBitfield"] as _bool) {
             return true
@@ -523,6 +554,7 @@ def isBitfield(var root) {
 }
 
 def onField(var root) {
+    
     let name = key_exists(root, "name") ? (root["name"] as _string) : ""
     var qualType = getQualType(root)
     var access = access_stack[length(access_stack) - 1]
@@ -540,6 +572,7 @@ def onField(var root) {
 }
 
 def getCppName(baseName) {
+    
     var name = join([iterator for(n in name_stack); n.name], "::")
     if (length(name) != 0) {
         name = "{name}::{baseName}"
@@ -550,6 +583,7 @@ def getCppName(baseName) {
 }
 
 def onTypeDecl(var root) {
+    
     let name = root["name"] as _string
     let fullName = getCppName(name)
     var qualType = getQualType(root)
@@ -564,6 +598,7 @@ def onTypeDecl(var root) {
 }
 
 def isBlockedType(qtype : string) {
+    
     for (btn in blocked_type_names) {
         if (qtype |> find(btn) != -1) {
             return true
@@ -573,6 +608,7 @@ def isBlockedType(qtype : string) {
 }
 
 def isLocalType(qtype : string) {
+    
     for (btn in local_type_names) {
         if (qtype |> find(btn) != -1) {
             return true
@@ -583,6 +619,7 @@ def isLocalType(qtype : string) {
 
 
 def genEnums(hf, mf, df : FILE const?) {
+    
     fprint(hf, "// ------------\n// enumerations\n// ------------\n\n")
     fprint(mf, "// ------------\n// enumerations\n// ------------\n\n")
     fprint(df, "// ------------\n// enumerations\n// ------------\n\n")
@@ -590,7 +627,7 @@ def genEnums(hf, mf, df : FILE const?) {
         var enName = en.name
         var removePrefix = false
         var isFlags = false
-        get(ex_enums, en.name) <| $(val) {
+        get(ex_enums, en.name) $(val) {
             enName = val.name
             removePrefix = val.removePrefix
             isFlags = val.isFlags
@@ -650,6 +687,7 @@ public:
 }
 
 def needToGenStruct(st) {
+    
     if (empty(st.name)) {
         return false
     }
@@ -662,6 +700,7 @@ def needToGenStruct(st) {
 }
 
 def needToGenField(fld) {
+    
     if (empty(fld.name)) {
         return false
     }
@@ -675,6 +714,7 @@ def needToGenField(fld) {
 }
 
 def getBindFldName(name : string) {
+    
     if (name == "type") {
         return "_{name}"
     }
@@ -682,6 +722,7 @@ def getBindFldName(name : string) {
 }
 
 def genStructs(hf, mf, df : FILE const?) {
+    
     fprint(hf, "// ------------\n// structures\n// ------------\n\n")
     fprint(mf, "// ------------\n// structures\n// ------------\n\n")
     fprint(df, "// ------------\n// structures\n// ------------\n\n")
@@ -738,7 +779,7 @@ def genStructs(hf, mf, df : FILE const?) {
                 continue
             }
             var substType = ""
-            substitute_field_types |> get("{st.cppName}::{fld.cppName}") <| $(val) {
+            substitute_field_types |> get("{st.cppName}::{fld.cppName}") $(val) {
                 substType = val
             }
             if (substType |> empty()) {
@@ -766,9 +807,10 @@ def genStructs(hf, mf, df : FILE const?) {
     fprint(df, "\n")
 }
 
-var op_regex <- %regex~operator[^a-zA-Z_]%%
+var op_regex <- %regex~operator[^a-zA-Z_]%% 
 
 def isBlockedFun(fn) {
+    
     if (fn.isMethod && fn.isStatic) {
         print("warning: skipping static method {fn.name} in {fn.cppName}\n")
         return true
@@ -798,18 +840,21 @@ def isBlockedFun(fn) {
 }
 
 def qType2FnType(st) {
+    
     let ob = find(st, "(")
     assert(ob != -1)
     return slice(st, 0, ob) + "(*)" + slice(st, ob)
 }
 
 def qType2FnTypeClass(st, className) {
+    
     let ob = find(st, "(")
     assert(ob != -1)
     return slice(st, 0, ob) + "({className}::*)" + slice(st, ob)
 }
 
 def getFunRetType(fn) {
+    
     let ob = find(fn.ftype, "(")
     assert(ob != -1)
     var cppResType = slice(fn.ftype, 0, ob)
@@ -820,6 +865,7 @@ def getFunRetType(fn) {
 }
 
 def isRefFun(fn) {
+    
     let ob = find(fn.ftype, "(")
     assert(ob != -1)
     var cppResType = slice(fn.ftype, 0, ob)
@@ -836,6 +882,7 @@ def isRefFun(fn) {
 }
 
 def isCmresFun(fn) {
+    
     
     let ob = find(fn.ftype, "(")
     assert(ob != -1)
@@ -870,18 +917,20 @@ def isCmresFun(fn) {
     return false
 }
 
-var g_method_name = 0
+var g_method_name = 0 
 
 def methodName(name : string) {
+    
     g_method_name ++
     return "_{name}_method_{g_method_name}"
 }
 
-var g_split_count = 0
-var g_split_factor = 20
-var g_split_file : FILE const? = null
+var g_split_count = 0 
+var g_split_factor = 20 
+var g_split_file : FILE const? = null 
 
 def openSplitFile {
+    
     if ((g_split_count % g_split_factor) == 0) {
         closeSplitFile()
         let split_index = g_split_count / g_split_factor
@@ -895,6 +944,7 @@ def openSplitFile {
 }
 
 def closeSplitFile {
+    
     if (g_split_file != null) {
         fprint(g_split_file, split_cpp_suffix)
         fclose(g_split_file)
@@ -903,6 +953,7 @@ def closeSplitFile {
 }
 
 def getFunctions(df, df_method : FILE const?) {
+    
     fprint(df, "// ------------\n// functions\n// ------------\n\n")
     var all_fn : table<string; int>
     for (fn in values(ast.funcs)) {
@@ -945,6 +996,7 @@ var {
 }
 
 def parseQualArgs(qname : string; var rtype : string&) {
+    
     if (regex_match(reg_args, qname) != -1) {
         let qargs = regex_group(reg_args, 2, qname)
         rtype = regex_group(reg_args, 1, qname)
@@ -954,6 +1006,7 @@ def parseQualArgs(qname : string; var rtype : string&) {
 }
 
 def getDefinePrefix(xname : string) {
+    
     for (nn, pn in keys(namespace_to_prefix), values(namespace_to_prefix)) {
         if (xname |> starts_with(nn)) {
             return pn
@@ -962,9 +1015,10 @@ def getDefinePrefix(xname : string) {
     return "GLOBAL_NAMESPACE"
 }
 
-var gen_fn_callback : lambda<(fn : ClangFunc) : void>
+var gen_fn_callback : lambda<(fn : ClangFunc) : void> 
 
 def genFunction(fn : ClangFunc; castbind : bool; df : FILE const?) {
+    
     var bind_enchantation = ""
     var cpp_enchantation = ""
     var using_mname = ""
@@ -1041,7 +1095,7 @@ def genFunction(fn : ClangFunc; castbind : bool; df : FILE const?) {
         revArgs = false
     }
     if (revArgs) {
-        get(rev_enums, rtype) <| $(rt) {
+        get(rev_enums, rtype) $(rt) {
             fprint(df, "\t\t->res_type(makeType<{rt}>(lib))\n")
         }
     }
@@ -1049,7 +1103,7 @@ def genFunction(fn : ClangFunc; castbind : bool; df : FILE const?) {
         let argi = fn.isMethod ? _argi + 1 : _argi
         var thisArgEnum = ""
         if (revArgs) {
-            get(rev_enums, qargs[_argi]) <| $(en) {
+            get(rev_enums, qargs[_argi]) $(en) {
                 thisArgEnum = en
                 fprint(df, "\t\t->arg_type({argi},makeType<{thisArgEnum}>(lib))\n")
             }
@@ -1084,6 +1138,7 @@ def genFunction(fn : ClangFunc; castbind : bool; df : FILE const?) {
 }
 
 def genBindings(hf, df, mf_enum, df_enum, mf_ann, df_ann, df_method : FILE const?) {
+    
     genEnums(hf, mf_enum, df_enum)
     genStructs(hf, mf_ann, df_ann)
     getFunctions(df, df_method)
@@ -1091,6 +1146,7 @@ def genBindings(hf, df, mf_enum, df_enum, mf_ann, df_ann, df_method : FILE const
 }
 
 def bindHeaders(fname, outprefix : string) {
+    
     delete blocked_functions_table
     for (fn in blocked_functions) {
         blocked_functions_table[fn] = true
@@ -1104,11 +1160,11 @@ def bindHeaders(fname, outprefix : string) {
     for (be in blocked_enumerations) {
         blocked_enumerations_table[be] = true
     }
-    fopen(fname, "rb") <| $(f) {
+    fopen(fname, "rb") $(f) {
         if (f == null) {
             print("can't open {fname}")
         } else {
-            fread(f) <| $(data) {
+            fread(f) $(data) {
                 print("\n{fname}\n")
                 var error = ""
                 var json = read_json(data, error)
@@ -1120,14 +1176,14 @@ def bindHeaders(fname, outprefix : string) {
                     verify(root["kind"] |> is_str <| "TranslationUnitDecl")
                     onInner(root)
                     
-                    fopen("{outprefix}.h", "wb") <| $(hf) {
+                    fopen("{outprefix}.h", "wb") $(hf) {
                         fwrite(hf, "#pragma once\n\n")
-                        fopen("{outprefix}.inc", "wb") <| $(df) {
-                            fopen("{outprefix}.enum.cpp_inc", "wb") <| $(mf_enum) {
-                                fopen("{outprefix}.enum.inc", "wb") <| $(df_enum) {
-                                    fopen("{outprefix}.ann.cpp_inc", "wb") <| $(mf_ann) {
-                                        fopen("{outprefix}.ann.inc", "wb") <| $(df_ann) {
-                                            fopen("{outprefix}.method.inc", "wb") <| $(df_method) {
+                        fopen("{outprefix}.inc", "wb") $(df) {
+                            fopen("{outprefix}.enum.cpp_inc", "wb") $(mf_enum) {
+                                fopen("{outprefix}.enum.inc", "wb") $(df_enum) {
+                                    fopen("{outprefix}.ann.cpp_inc", "wb") $(mf_ann) {
+                                        fopen("{outprefix}.ann.inc", "wb") $(df_ann) {
+                                            fopen("{outprefix}.method.inc", "wb") $(df_method) {
                                                 genBindings(hf, df, mf_enum, df_enum, mf_ann, df_ann, df_method)
                                             }
                                         }
@@ -1144,17 +1200,20 @@ def bindHeaders(fname, outprefix : string) {
 
 
 def genDefineConstants(fname, prefix : string) {
+    
     var fnames <-  [ fname ]
-    defer <| $() { delete fnames; }
+    defer() { delete fnames; }
     fnames |> genDefineConstants <| prefix
 }
 
 def getGenConstType(name, default_name : string) {
+    
     return const_type_table?[name] ?? default_name
 }
 
 def searchAndGenConst(var regex_def : Regex; defTName, suffix : string; var ofs : table<int; bool>; data : string; var dup : table<string; bool>; hf : FILE const?) {
-    regex_foreach(regex_def, data) <| $(r) {
+    
+    regex_foreach(regex_def, data) $(r) {
         if (!ofs |> key_exists(r.x)) {
             let DEF = regex_group(regex_def, 1, data)
             let VAL = regex_group(regex_def, 2, data)
@@ -1175,6 +1234,7 @@ def searchAndGenConst(var regex_def : Regex; defTName, suffix : string; var ofs 
 }
 
 def genDefineConstants(fnames : array<string>; prefix : string) {
+    
     delete blocked_defines_table
     for (bd in blocked_defines) {
         blocked_defines_table[bd] = true
@@ -1185,12 +1245,12 @@ def genDefineConstants(fnames : array<string>; prefix : string) {
     var reg_def_UINT16 <- %regex~#define\s+(\w+)\s+UINT16_C\s*\((0x[0-9A-Za-z]+)\)%%
     var reg_def_UINT32 <- %regex~#define\s+(\w+)\s+UINT32_C\s*\((0x[0-9A-Za-z]+)\)%%
     var reg_def_UINT64 <- %regex~#define\s+(\w+)\s+UINT64_C\s*\((0x[0-9A-Za-z]+)\)%%
-    fopen("{prefix}.const_inc", "wb") <| $(hf) {
+    fopen("{prefix}.const_inc", "wb") $(hf) {
         if (hf == null) {
             panic("can't write {prefix}.const_inc")
         }
         for (fname in fnames) {
-            fopen(fname, "rb") <| $(f) {
+            fopen(fname, "rb") $(f) {
                 if (f == null) {
                     panic("can't open {fname}")
                 }

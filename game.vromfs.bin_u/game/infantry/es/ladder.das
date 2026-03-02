@@ -6,6 +6,7 @@ require math.ang
 require math.base
 require DagorMathUtils
 require %game.events
+require %appGame.wt_events
 
 
 def is_suitable_ladder_angle(human_ladder__ladderTm : float3x4;
@@ -235,3 +236,11 @@ def human_attach_and_climb_track(evt : Event;
         human_on_ladder__animation != INVALID_ENTITY_ID)
     destroyEntity(human_on_ladder__animation)
     human_on_ladder__animation = INVALID_ENTITY_ID
+
+[es(tag=server, track=human_ladder__attached)]
+def human_ladder_interrupt_healing(evt : Event;
+                                   eid : EntityId;
+                                   human_inventory__entityToUse : EntityId;
+                                   human_ladder__attached : bool)
+  if human_ladder__attached && human_inventory__entityToUse != INVALID_ENTITY_ID
+    sendEventImmediate(eid, EventInterruptItemUse())

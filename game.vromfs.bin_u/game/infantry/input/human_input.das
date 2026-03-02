@@ -306,7 +306,7 @@ def update_movement(dt : float;
     let prevLookAngle = human_input__lookAngle
     var shouldResetLookAngle = false
     if (asLookBActive || human_input__forceLookMode) && human_input__blockLookModeCounter <= 0
-      if actor.phys |> human_phys_isAiming() && !human_input__forceLookMode
+      if actor.phys |> human_phys_isAiming() && !human_input__forceLookMode && !isTpsView
         ax += double(asLook.x)
         ay += double(asLook.y)
         shouldResetLookAngle = true
@@ -448,6 +448,26 @@ def human_use_object_input(evt : EventOnKeyDown;
                            human_use_object__selectedObject : EntityId;
                            human_use_object__thresholdDist : float = 12.f)
   if evt.eventId == int(ShortcutEventId.ID_HUMAN_USE) && !isDowned
+    var result = false
+    query(human_use_object__selectedObject) <| $ [es] (useful_box__cooldown : float;
+                                                       useful_box__nextUseAtTimes : FloatList;
+                                                       useful_box__requesters : EidList)
+      if useful_box__cooldown <= 0.f
+        return
+      let time = get_sync_time()
+      let findIndex = useful_box__requesters |> find_index(eid)
+      if findIndex >= 0 && findIndex < length(useful_box__nextUseAtTimes)
+        let nextUseAtTime = useful_box__nextUseAtTimes[findIndex]
+        if time < nextUseAtTime
+          let text = "hint:resupply/cooldown_for_use"
+          let cooldown = int(max(nextUseAtTime - time, 1.0f))
+          using() <| $(var eventData : DataBlock)
+            set(eventData, "seconds", cooldown)
+            hud_notify_script(text, eventData)
+          result = true
+          return
+    if result
+      return
     human_try_use_object(eid, transform[3], human_use_object__thresholdDist, human_use_object__selectedObject)
 
 def input_melee(cur_time : float;
@@ -500,10 +520,13 @@ def input_melee(cur_time : float;
 [es(tag=input, on_appear, after=human_save_tm, on_event=(EventUnitRespawn, EventUnitSpawned), REQUIRE=controlledHero)]
 def human_input_appear_es(evt : Event;
                           transform : float3x4;
+                          double_sprint__rotationMaxSpeed : float = 6.28;
                           var human_input__aimAngle : float2&;
-                          var human_input__forceSprintAction : bool&)
+                          var human_input__forceSprintAction : bool&;
+                          var human_input__currentRotationSpeed : float&)
   human_input__aimAngle = dir_to_angles(transform[0])
   human_input__forceSprintAction = false
+  human_input__currentRotationSpeed = double_sprint__rotationMaxSpeed
 
 [es(tag=input, REQUIRE=(human, hero))]
 def human_sprint_is_hold_mode_trigger(evt : EventOnKeyDown;
@@ -646,7 +669,7 @@ def human_input_es(info : UpdateStageUpdateInput;
   else
     human_input__currentRotationSpeed *= 1. + info.dt * double_sprint__rotationRestorationSpeed
     human_input__currentRotationSpeed = clamp(human_input__currentRotationSpeed, double_sprint__rotationSpeed, double_sprint__rotationMaxSpeed)
-  let rotationSpeed = human_input__currentRotationSpeed > double_sprint__rotationMaxSpeed * double_sprint__rotationSpeedThreshold ? -1. : human_input__currentRotationSpeed
+  let rotationSpeed = human_input__currentRotationSpeed >= double_sprint__rotationMaxSpeed * double_sprint__rotationSpeedThreshold ? -1. : human_input__currentRotationSpeed
 
   update_movement(info.dt,
                   human_input__perspWk,
@@ -707,6 +730,7 @@ def human_input_es(info : UpdateStageUpdateInput;
 
   if human_weap__throwMode
     aim = false
+    sprint = false
 
   
   if (crawl || crouch) && phys.producedCT |> is_control_bit_set(HumanPhysControlType.HCT_SPRINT)

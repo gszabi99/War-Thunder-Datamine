@@ -23,6 +23,7 @@ let { isInSessionRoom, getSessionLobbyPublicParam
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { get_bit_value_by_array } = require("%scripts/utils_sa.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 const MAX_FETCH_RETRIES = 5
 
@@ -118,12 +119,14 @@ function updateClustersList() {
 }
 
 function forceUpdateClustersList() {
-  if (!is_online_available())
+  if (!is_online_available() || disableNetwork)
     return
 
   isClustersFetching = false
   updateClustersList()
 }
+
+forceUpdateClustersList() 
 
 function onClustersChanged(params) {
   local needUpdateDefaultClusters = false
@@ -280,7 +283,6 @@ optimalClusters.subscribe(@(_) updateDefaultClusters())
 
 addListenersWithoutEnv({
   MatchingConnect = @(_) forceUpdateClustersList()
-  ScriptsReloaded = @(_) forceUpdateClustersList() 
   SignOut = @(_) clustersList.clear()
   ClustersChanged = onClustersChanged
 }, DEFAULT_HANDLER)

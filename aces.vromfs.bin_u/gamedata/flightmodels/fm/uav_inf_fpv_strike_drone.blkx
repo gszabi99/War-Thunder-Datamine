@@ -94,10 +94,12 @@
   "VneControl": 700.0,
   "CockpitOpenedDoorBreakSpeed": 1000.0,
   "MomentOfInertia": [
-    1.0,
+    0.7,
     2.0,
     1.0
   ],
+  "ConvertAoa": true,
+  "ConvertAoaAI": false,
   "IgnoreErrors": true,
   "AvailableControls": {
     "hasAileronControl": true,
@@ -241,26 +243,26 @@
       "SweptAngle": 28.0,
       "TaperRatio": 1.8,
       "Angle": 0.0,
-      "VAngle": 0.0,
+      "VAngle": 5.0,
       "UseSpinLoss": false,
       "SpinCdloss": 0.0,
       "SpinClloss": 0.0,
       "DownwashType": 0,
       "DownwashCoeff": 0.1,
       "Areas": {
-        "LeftIn": 0.1,
-        "LeftMid": 0.1,
-        "LeftOut": 0.1,
-        "RightIn": 0.1,
-        "RightMid": 0.1,
-        "RightOut": 0.1,
-        "Aileron": 0.05
+        "LeftIn": 0.01,
+        "LeftMid": 0.01,
+        "LeftOut": 0.01,
+        "RightIn": 0.01,
+        "RightMid": 0.01,
+        "RightOut": 0.01,
+        "Aileron": 0.001
       },
       "Arm": {
         "Arm": [
           0.0,
-          0.0,
-          0.0
+          -0.0,
+          0.1
         ],
         "SineAosMultiplier": 0.0,
         "VFocusMultiplier": 0.0,
@@ -291,8 +293,8 @@
         "AfterCritDeclineCoeff": 0.002,
         "AfterCritMaxDistanceAngle": 38.0,
         "CxAfterCoeff": 0.001,
-        "ClAfterCritHigh": 0.1,
-        "ClAfterCritLow": -0.1,
+        "ClAfterCritHigh": 0.05,
+        "ClAfterCritLow": -0.05,
         "MachFactor": 3,
         "MachCrit1": 0.7,
         "MachMax1": 0.9,
@@ -419,7 +421,7 @@
         0.0
       ],
       "Areas": {
-        "Main": 0.3
+        "Main": 0.2
       },
       "Polar": {
         "OswaldsEfficiencyNumber": 0.8,
@@ -428,8 +430,8 @@
         "AfterCritDeclineCoeff": 0.002,
         "AfterCritMaxDistanceAngle": 38.0,
         "CxAfterCoeff": 0.001,
-        "ClAfterCritHigh": 0.1,
-        "ClAfterCritLow": -0.1,
+        "ClAfterCritHigh": 0.2,
+        "ClAfterCritLow": -0.2,
         "MachFactor": 3,
         "MachCrit1": 0.7,
         "MachMax1": 0.9,
@@ -491,7 +493,7 @@
       "FlowInertia": 0.0,
       "ClockWiseAOA": true,
       "Areas": {
-        "Main": 0.02,
+        "Main": 0.4,
         "Elevator": 0.02
       },
       "Polar": {
@@ -550,7 +552,7 @@
         "alphaCritLow": -30.0,
         "ClCritHigh": 0.2,
         "ClCritLow": -0.2,
-        "CdMin": 0.02
+        "CdMin": 0.04
       }
     },
     "VerStabPlane": {
@@ -654,7 +656,7 @@
         0.0,
         1.0
       ],
-      "Sensitivity": 0.15,
+      "Sensitivity": 0.0,
       "SensitivityMultiplier": 1.0,
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [
@@ -695,7 +697,7 @@
         0.0,
         1.0
       ],
-      "Sensitivity": 0.4,
+      "Sensitivity": 0.0,
       "SensitivityMultiplier": 1.0,
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [
@@ -1861,7 +1863,7 @@
     }
   },
   "Mass": {
-    "EmptyMass": 3.0,
+    "EmptyMass": 2.5,
     "MaxFuelMass0": 0.02,
     "MaxFuelMassExternal0": 0.0,
     "FuelAccumulatorCapacity0": 0.001,
@@ -2668,7 +2670,7 @@
         60.0,
         45.0
       ],
-      "RollRateMax": 100.0,
+      "RollRateMax": 150.0,
       "HeadingToRollMultByIas": [
         10.0,
         0.0,
@@ -2682,8 +2684,8 @@
       ],
       "OverridenRollLim": 30.0,
       "PitchMax": 20.0,
-      "PitchRateMax": 50.0,
-      "PitchLim": 20.0,
+      "PitchRateMax": 80.0,
+      "PitchLim": 202.0,
       "YawHeadingToYawRateMultByIas": [
         0.0,
         1.0,
@@ -2706,7 +2708,7 @@
         0.0,
         0.0,
         18.0,
-        60.0
+        90.0
       ],
       "RollPID": {
         "Kp": 1.0,
@@ -2742,7 +2744,7 @@
         ]
       },
       "PitchPID": {
-        "Kp": 1.7,
+        "Kp": 2.0,
         "Ki": 0.05,
         "Imax": 0.5,
         "Kd": 0.0,
@@ -2764,10 +2766,10 @@
         ]
       },
       "YawRatePID": {
-        "Kp": 1.0,
-        "Ki": 0.3,
+        "Kp": 1.8,
+        "Ki": 0.005,
         "Imax": 1.0,
-        "Kd": 0.001,
+        "Kd": 0.05,
         "RateMult": 1.0,
         "Lim": [
           -1.0,

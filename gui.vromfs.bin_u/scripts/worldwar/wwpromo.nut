@@ -7,9 +7,11 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let { isWorldWarEnabled, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { openMainWnd, hasNewNearestAvailableMapToBattle } = require("%scripts/worldWar/worldWarUtils.nut")
 let { isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
+let { getPlayedOperationText } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
+
 
 function getWorldWarPromoText(isWwEnabled = null) {
   local text = loc("mainmenu/btnWorldwar")
@@ -17,7 +19,7 @@ function getWorldWarPromoText(isWwEnabled = null) {
     return text
 
   if ((isWwEnabled ?? canJoinWorldwarBattle())) {
-    let operationText = g_world_war.getPlayedOperationText(false)
+    let operationText = getPlayedOperationText(false)
     if (operationText != "")
       text = operationText
   }
@@ -26,7 +28,7 @@ function getWorldWarPromoText(isWwEnabled = null) {
   return "{0} {1}".subst(loc("icon/worldWar"), text)
 }
 
-addPromoAction("world_war", @(_handler, params, _obj) g_world_war.openMainWnd(params?[0] == "openMainMenu"))
+addPromoAction("world_war", @(_handler, params, _obj) openMainWnd(params?[0] == "openMainMenu"))
 
 let promoButtonId = "world_war_button"
 
@@ -50,7 +52,7 @@ addPromoButtonConfig({
     if ((!shouldDisableMenu && !isProfileReceived.get()) || !isPromoCollapsed(id))
       return
 
-    if (g_world_war.hasNewNearestAvailableMapToBattle())
+    if (hasNewNearestAvailableMapToBattle())
       togglePromoItem(buttonObj.findObject($"{id}_toggle"))
   }
   updateByEvents = ["WWLoadOperation", "WWStopWorldWar",

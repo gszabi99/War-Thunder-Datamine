@@ -5,6 +5,7 @@ let IS_SHIP_HIT_NOTIFICATIONS_VISIBLE = get_game_params_blk()?.isVisibleShipHitC
 enum ShipHitIconId {
   HIT
   HIT_EFFECTIVE
+  HIT_CREW
   HIT_INEFFECTIVE
   HIT_PIERCE_THROUGH
 }
@@ -12,15 +13,17 @@ enum ShipHitIconId {
 let ShipHitIconVisibilityMask = {
   [ShipHitIconId.HIT]                = 1,
   [ShipHitIconId.HIT_EFFECTIVE]      = 2,
-  [ShipHitIconId.HIT_INEFFECTIVE]    = 4,
-  [ShipHitIconId.HIT_PIERCE_THROUGH] = 8
+  [ShipHitIconId.HIT_CREW]           = 4,
+  [ShipHitIconId.HIT_INEFFECTIVE]    = 8,
+  [ShipHitIconId.HIT_PIERCE_THROUGH] = 16,
 }
 
 let ShipHitIconCfgId = {  
   [ShipHitIconId.HIT]                = "simpleHit",
   [ShipHitIconId.HIT_EFFECTIVE]      = "effectiveHit",
+  [ShipHitIconId.HIT_CREW]           = "crewKilled",
   [ShipHitIconId.HIT_INEFFECTIVE]    = "ineffectiveHit",
-  [ShipHitIconId.HIT_PIERCE_THROUGH] = "pierceThroughHit"
+  [ShipHitIconId.HIT_PIERCE_THROUGH] = "pierceThroughHit",
 }
 
 let SHIP_HIT_ICONS_VIS_ALL_FLAGS = ShipHitIconVisibilityMask

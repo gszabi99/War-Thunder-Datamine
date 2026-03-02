@@ -124,7 +124,7 @@ def human_use_action_es(info : ParallelUpdateFrameDelayed;
   if human_use_object__lookAtObject != INVALID_ENTITY_ID && doesEntityExist(human_use_object__lookAtObject)
     lookAtEid = human_use_object__lookAtObject
 
-[es(tag=( render, gameClient), on_appear, track=useActionAvailable, REQUIRE=watchedByPlr)]
+[es(tag=( render, gameClient), on_appear, track=useActionAvailable, REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved)]
 def human_use_action_hud_es(evt : Event;
                             useActionAvailable : int&)
   using() <| $(var eventData : DataBlock)
@@ -146,7 +146,7 @@ def human_use_action_hud_es(evt : Event;
     elif useActionAvailable == int(HumanAction.ACTION_CLOSE_WINDOW)
       hud_notify_script("hint:human_use_close_window:show", eventData)
 
-[es(tag=gameClient, on_appear, REQUIRE=hero, track=human_use_object__selectedBuilding, before=ui_useful_box_ammo_count_changed_es)]
+[es(tag=gameClient, on_appear, REQUIRE=hero, REQUIRE_NOT=isReplayObserved, track=human_use_object__selectedBuilding, before=ui_useful_box_ammo_count_changed_es)]
 def ui_useful_box_hint_es(evt : Event;
                           human_use_object__selectedBuilding : EntityId;
                           team aka hero_team : int)
@@ -177,13 +177,13 @@ def ui_useful_box_hint_es(evt : Event;
 def ui_useful_box_ammo_count_changed_es(evt : Event;
                                         eid aka box_eid : EntityId;
                                         useful_box__useCount : int)
-  query() <| $ [es(REQUIRE=watchedByPlr)] (human_use_object__selectedBuilding : EntityId)
+  query() <| $ [es(REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved)] (human_use_object__selectedBuilding : EntityId)
     if useful_box__useCount <= 0 && human_use_object__selectedBuilding == box_eid
       using() <| $(var eventData : DataBlock)
         hud_notify_script("hint:resupply/useful_box:hide", eventData)
         hud_notify_script("hint:resupply/useful_box_empty:show", eventData)
 
-[es(tag=gameClient, REQUIRE=hero, on_appear, track=(bipod__placeable, bipod__enabled))]
+[es(tag=gameClient, REQUIRE=hero, on_appear, REQUIRE_NOT=isReplayObserved, track=(bipod__placeable, bipod__enabled))]
 def ui_place_bipod_tip_es(evt : Event;
                           bipod__placeable : bool;
                           bipod__enabled : bool)
@@ -193,12 +193,12 @@ def ui_place_bipod_tip_es(evt : Event;
     else
       hud_notify_script("hint:human_place_bipod:hide", eventData)
 
-[es(tag=gameClient, REQUIRE=(hero, bipod__placeable, bipod__enabled), on_disappear)]
+[es(tag=gameClient, REQUIRE=(hero, bipod__placeable, bipod__enabled), REQUIRE_NOT=isReplayObserved, on_disappear)]
 def ui_displace_bipod_tip_es(evt : Event)
   using() <| $(var eventData : DataBlock)
     hud_notify_script("hint:human_place_bipod:hide", eventData)
 
-[es(tag=gameClient, REQUIRE=watchedByPlr, on_appear, track=(burning__isBurning, burning__isPuttingOut))]
+[es(tag=gameClient, REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved, on_appear, track=(burning__isBurning, burning__isPuttingOut))]
 def human_burning_tip_show_es(evt : Event;
                               burning__isBurning : bool;
                               burning__isPuttingOut : bool)
@@ -208,7 +208,7 @@ def human_burning_tip_show_es(evt : Event;
     else
       hud_notify_script("hint:burning_tip:hide", eventData)
 
-[es(tag=gameClient, REQUIRE=watchedByPlr, on_appear, track=(grenade_rethrow__grenadeEid))]
+[es(tag=gameClient, REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved, on_appear, track=(grenade_rethrow__grenadeEid))]
 def grenade_rethrow_tip_show_es(evt : Event;
                                 eid : EntityId;
                                 grenade_rethrow__grenadeEid : EntityId)

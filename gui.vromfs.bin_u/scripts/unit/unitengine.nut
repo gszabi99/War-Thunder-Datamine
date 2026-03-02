@@ -7,6 +7,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { DM_VIEWER_XRAY } = require("hangar")
 let { getInfoBlk } = require("%globalScripts/modeXrayLib.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let unitEngineCache = {}
 
@@ -70,7 +71,7 @@ function getUnitEngineMarkup(unitName) {
       tooltipId = getTooltipType("UNIT_SIMPLE_TOOLTIP").getTooltipId(unitName, { text = "\n".join(info.desc) })
     }
   })
-  return handyman.renderCached("%gui/unitInfo/unitSystems.tpl", { items = engines })
+  return handyman.renderCached("%gui/unitInfo/unitSystems.tpl", { items = engines, isTooltipByHold = showConsoleButtons.get() })
 }
 
 return {

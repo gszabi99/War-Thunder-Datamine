@@ -15,7 +15,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, move_mouse_on_obj, select_editbox } = require("%sqDagui/daguiUtil.nut")
@@ -62,7 +61,7 @@ let { onChatThreadsListEnd } = require("%scripts/chat/chatLatestThreads.nut")
 let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
-let { lastChatSceneShow, globalChatRooms, langsList } = require("%scripts/chat/chatConsts.nut")
+let { globalChatRooms, langsList } = require("%scripts/chat/chatConsts.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { getChatObject, isUserBlockedByPrivateSetting, validateChatMessage,
 filterNameFromHtmlCodes, addTextToEditbox } = require("%scripts/chat/chatUtils.nut")
@@ -70,8 +69,10 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { wwIsOperationLoaded } = require("worldwar")
 let { acceptInviteByLink, addChatRoomInvite } = require("%scripts/invites/invites.nut")
 let { ceil } = require("%sqstd/math.nut")
-let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
-let { joinThread, getRoomById, addRoom, isRoomSquad, isRoomClan, openChatRoom } = require("%scripts/chat/chatRooms.nut")
+let { lastChatSceneShow, chatPrevScenes, addChatScene, clearChatScenes,
+menuChatHandler, chatActiveSceneParam, hideChatHandlerScene } = require("%scripts/chat/chatHandler.nut")
+let { openChatRoom } = require("%scripts/chat/openChat.nut")
+let { joinThread, getRoomById, addRoom, isRoomSquad, isRoomClan } = require("%scripts/chat/chatRooms.nut")
 let { getThreadInfo } = require("%scripts/chat/chatStorage.nut")
 let { updateUserReputationData } = require("%scripts/user/usersReputation.nut")
 
@@ -113,6 +114,8 @@ let defaultChatRooms = ["general"]
 
 let sortChatUsers = @(a, b) a.name <=> b.name
 let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
+
+let MenuChatsPersistentData = persist("MenuChatsPersistentData", @() {roomsInited=false})
 
 function getGlobalRoomsListByLang(lang, roomsList = null) {
   let res = []
@@ -157,7 +160,6 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   roomHandlerWeak = null
   emptyChatRoom = newRoom("#___empty___")
   delayedChatRoom = newRoom("#___empty___")
-  prevScenes = [] 
   roomJoinParamsTable = {} 
   lastShowedInRoomMessageIndex = -1
 
@@ -168,7 +170,6 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   static editboxObjIdList = [ "menuchat_input", "search_edit" ]
 
   constructor(gui_scene, params = {}) {
-    registerPersistentData("MenuChatHandler", this, ["roomsInited"]) 
     base.constructor(gui_scene, params)
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
@@ -242,18 +243,18 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.sceneChanged = true
 
     if (resetList)
-      this.prevScenes = []
+      clearChatScenes()
     this.chatSceneShow(true)
     this.reloadChatScene()
   }
 
   function switchScene(obj, onlyShow = false) {
-    if (!checkObj(obj) || (checkObj(this.scene) && this.scene.isEqual(obj))) {
+    if (!obj?.isValid() || (this.scene?.isValid() && this.scene.isEqual(obj))) {
       if (!onlyShow || !lastChatSceneShow.get())
         this.chatSceneShow()
     }
     else {
-      this.prevScenes.append({
+      addChatScene({
         scene = this.scene
         show = lastChatSceneShow.get()
         roomHandlerWeak = this.roomHandlerWeak && this.roomHandlerWeak.weakref()
@@ -265,28 +266,29 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function removeFromPrevScenes(obj) {
-    for (local i = this.prevScenes.len() - 1; i >= 0; i--) {
-      let scn = this.prevScenes[i].scene
-      if (!checkObj(scn) || scn.isEqual(obj))
-        this.prevScenes.remove(i)
+    for (local i = chatPrevScenes.len() - 1; i >= 0; i--) {
+      let scn = chatPrevScenes[i].scene
+      if (!scn?.isValid() || scn.isEqual(obj))
+        chatPrevScenes.remove(i)
     }
   }
 
   function checkScene() {
-    if (checkObj(this.scene))
+    if (this.scene?.isValid())
       return true
-    for (local i = this.prevScenes.len() - 1; i >= 0; i--)
-      if (checkObj(this.prevScenes[i].scene)) {
-        this.scene = this.prevScenes[i].scene
+    for (local i = chatPrevScenes.len() - 1; i >= 0; i--) {
+      if (chatPrevScenes[i].scene?.isValid()) {
+        this.scene = chatPrevScenes[i].scene
         this.guiScene = this.scene.getScene()
-        let prevRoomHandler = this.prevScenes[i].roomHandlerWeak
+        let prevRoomHandler = chatPrevScenes[i].roomHandlerWeak
         this.roomHandlerWeak = prevRoomHandler && prevRoomHandler.weakref()
         this.sceneChanged = true
-        this.chatSceneShow(this.prevScenes[i].show || lastChatSceneShow.get())
+        this.chatSceneShow(chatPrevScenes[i].show || lastChatSceneShow.get())
         return true
       }
       else
-        this.prevScenes.remove(i)
+        chatPrevScenes.remove(i)
+    }
     this.scene = null
     return false
   }
@@ -880,7 +882,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function rejoinDefaultRooms(initRooms = false) {
     if (!gchat_is_connected() || !isProfileReceived.get())
       return
-    if (this.roomsInited && !initRooms)
+    if (MenuChatsPersistentData.roomsInited && !initRooms)
       return
 
     let baseRoomsList = g_chat.getBaseRoomsList()
@@ -907,11 +909,11 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
         }
       }
     }
-    this.roomsInited = true
+    MenuChatsPersistentData.roomsInited = true
   }
 
   function saveJoinedRooms() {
-    if (!this.roomsInited)
+    if (!MenuChatsPersistentData.roomsInited)
       return
 
     local saveIdx = 0
@@ -927,7 +929,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goBack() {
-    this.chatSceneShow(false)
+    hideChatHandlerScene()
   }
 
   function loadSizes() {
@@ -1060,7 +1062,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
         this.onMessage(db)
     }
     else if (event == GCHAT_EVENT_CONNECTED) {
-      if (this.roomsInited) {
+      if (MenuChatsPersistentData.roomsInited) {
         local thisCapture = this
         newMessage("", loc("chat/connected"), false, false, null, false, false, function(new_message) {
           thisCapture.showRoomPopup(new_message, g_chat.getSystemRoomId())
@@ -2481,7 +2483,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function resetChat() {
     last_send_messages.clear()
-    this.roomsInited = false
+    MenuChatsPersistentData.roomsInited = false
     this.chatSendBtnActivateTime = null
     this.hasErrorOnSendMessage = false
   }
@@ -2834,7 +2836,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.addRoomMsg(roomId, from, msg)
   }
 
-  function ChatCheckVoiceChatSuggestion(_params) {
+  function onEventFirstMainMenuLoaded(_params) {
     this.checkVoiceChatSuggestion()
   }
 
@@ -2873,6 +2875,14 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.switchScene(params.obj, true)
   }
 
+  function onEventChatSceneSwitched(params) {
+    this.switchScene(params.obj, params.onlyShow)
+  }
+
+  function onEventChatSceneHidden(_params) {
+    this.chatSceneShow(false)
+  }
+
   function onEventChatCheckScene(_params) {
     this.checkScene()
   }
@@ -2886,7 +2896,6 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   hasErrorOnSendMessage = false
   scene = null
   sceneChanged = true
-  roomsInited = false
 
   shouldCheckVoiceChatSuggestion = false
   isFirstAskForSession = true
@@ -2909,10 +2918,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   mpostColor = "@chatTextMpostColor"
 }
 
-hasMenuGeneralChats.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))
-hasMenuChatPrivate.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))
-hasMenuChatSquad.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))
-hasMenuChatClan.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))
+gui_handlers.MenuChatHandler <- MenuChatHandler
 
 function createMenuChatHandler(scene, obj = null) {
   if (menuChatHandler.get())
@@ -2920,7 +2926,13 @@ function createMenuChatHandler(scene, obj = null) {
   let chatHandle = MenuChatHandler(scene)
   chatHandle.initChat(obj)
   menuChatHandler.set(chatHandle)
+  chatActiveSceneParam.set({ scene, obj, onlyShow = null, show = null })
 }
+
+hasMenuGeneralChats.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))
+hasMenuChatPrivate.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))
+hasMenuChatSquad.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))
+hasMenuChatClan.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))
 
 addListenersWithoutEnv({
   AuthorizeComplete = @(_p) createMenuChatHandler(get_gui_scene())
@@ -2934,7 +2946,11 @@ eventbus_subscribe("on_sign_out", function(_p) {
 if (isAuthorized.get())
   createMenuChatHandler(get_gui_scene())
 
-return {
-  createMenuChatHandler
-  menuChatHandler
-}
+chatActiveSceneParam.subscribe(function(params) {
+  let { scene, obj, onlyShow, show } = params
+  createMenuChatHandler(scene, obj)
+  if (onlyShow)
+    broadcastEvent("ChatSceneSwitched", { obj, onlyShow })
+  else if (show == false)
+    broadcastEvent("ChatSceneHidden")
+})

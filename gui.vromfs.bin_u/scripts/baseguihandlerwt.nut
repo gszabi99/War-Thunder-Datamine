@@ -46,6 +46,7 @@ let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { topMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
 let { getContact, fillContactTooltip } = require("%scripts/contacts/contacts.nut")
 let { doAction } = require("%scripts/modalInfo/modalInfoActions.nut")
+let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -331,7 +332,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function onInventory() { eventbus_send("gui_start_inventory") }
 
   function onConvertExp(_obj) {
-    ::gui_modal_convertExp()
+    openConvertExpModalWnd()
   }
 
   function notAvailableYetMsgBox() {

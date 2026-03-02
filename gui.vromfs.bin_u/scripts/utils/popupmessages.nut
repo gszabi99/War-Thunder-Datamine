@@ -21,6 +21,7 @@ let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtil
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { isPartnerUnlockAvailable } = require("%scripts/user/partnerUnlocks.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
+let { register_command } = require("console")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -30,19 +31,12 @@ enum POPUP_VIEW_TYPES {
 }
 let passedPopups = persist("passedPopups", @() {})
 
-let g_popup_msg = {
-
-  passedPopups
-  days = 0
-}
-
 function getTimeIntByString(stringDate, defaultValue = 0) {
   let t = stringDate ? time.getTimestampFromStringUtc(stringDate) : -1
   return t >= 0 ? t : defaultValue
 }
 
-
-g_popup_msg.ps4ActivityFeedFromPopup <- function ps4ActivityFeedFromPopup(blk) {
+function ps4ActivityFeedFromPopup(blk) {
   if (blk?.ps4ActivityFeedType != "update")
     return null
 
@@ -72,7 +66,7 @@ g_popup_msg.ps4ActivityFeedFromPopup <- function ps4ActivityFeedFromPopup(blk) {
   return feed
 }
 
-g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needDisplayCheck = true) {
+function verifyPopupBlk(blk, days, hasModalObject, needDisplayCheck = true) {
   let popupId = blk.getBlockName()
 
   if (needDisplayCheck) {
@@ -107,7 +101,7 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
     let viewDay = loadLocalByAccount("".concat("popup/", (blk?.saveId ?? popupId)), 0)
     let canShow = (viewType == POPUP_VIEW_TYPES.EVERY_SESSION)
                     || (viewType == POPUP_VIEW_TYPES.ONCE && !viewDay)
-                    || (viewType == POPUP_VIEW_TYPES.EVERY_DAY && viewDay < this.days)
+                    || (viewType == POPUP_VIEW_TYPES.EVERY_DAY && viewDay < days)
     if (!canShow || !promoConditions.isVisibleByConditions(blk)) {
       passedPopups[popupId] <- true
       return null
@@ -149,15 +143,14 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
   if (blk?.qrUrl != null)
     popupTable.qrUrl <- blk.qrUrl
 
-  let ps4ActivityFeedData = this.ps4ActivityFeedFromPopup(blk)
+  let ps4ActivityFeedData = ps4ActivityFeedFromPopup(blk)
   if (ps4ActivityFeedData)
     popupTable.ps4ActivityFeedData <- ps4ActivityFeedData
 
   return popupTable
 }
 
-g_popup_msg.showPopupWndIfNeed <- function showPopupWndIfNeed(hasModalObject) {
-  this.days = time.getUtcDays()
+function showPopupWndIfNeed(hasModalObject) {
   if (!get_gui_regional_blk())
     return false
 
@@ -165,23 +158,24 @@ g_popup_msg.showPopupWndIfNeed <- function showPopupWndIfNeed(hasModalObject) {
   if (!u.isDataBlock(popupsBlk))
     return false
 
+  let days = time.getUtcDays()
   local result = false
   for (local i = 0; i < popupsBlk.blockCount(); i++) {
     let popupBlk = popupsBlk.getBlock(i)
     let popupId = popupBlk.getBlockName()
-    let popupConfig = this.verifyPopupBlk(popupBlk, hasModalObject)
+    let popupConfig = verifyPopupBlk(popupBlk, days, hasModalObject)
     if (popupConfig) {
       passedPopups[popupId] <- true
       popupConfig["type"] <- "regionalPromoPopup"
       showUnlockWnd(popupConfig)
-      saveLocalByAccount("".concat("popup/", (popupBlk?.saveId ?? popupId)), this.days)
+      saveLocalByAccount("".concat("popup/", (popupBlk?.saveId ?? popupId)), days)
       result = true
     }
   }
   return result
 }
 
-g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId) {
+function showPopupDebug(dbgId) {
   let debugLog = dlog 
   let popupsBlk = get_gui_regional_blk()?.popupItems
   if (!u.isDataBlock(popupsBlk)) {
@@ -189,13 +183,14 @@ g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId) {
     return false
   }
 
+  let days = time.getUtcDays()
   for (local i = 0; i < popupsBlk.blockCount(); i++) {
     let popupBlk = popupsBlk.getBlock(i)
     let popupId = popupBlk.getBlockName()
     if (popupId != dbgId)
       continue
 
-    let popupConfig = this.verifyPopupBlk(popupBlk, false, false)
+    let popupConfig = verifyPopupBlk(popupBlk, days, false, false)
     showUnlockWnd(popupConfig)
     return true
   }
@@ -203,5 +198,8 @@ g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId) {
   return false
 }
 
-::g_popup_msg <- g_popup_msg
-return { g_popup_msg }
+register_command(showPopupDebug, "debug.show_popup")
+
+return {
+  showPopupWndIfNeed
+}

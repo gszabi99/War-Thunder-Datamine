@@ -65,37 +65,57 @@
         "value": 170.0
       },
       "orderedSelector": {
-        "findCoverAroundPoint": [
+        "sequencer": [
           {
-            "centerParam": "regroupPosition",
-            "radius": 7.0,
-            "coverPosParam": "coverPos",
-            "minDist": 0.0,
-            "maxOccupied": 1,
-            "traceVisible": true
+            "isTestPerfAI": {},
+            "findCoverAroundPoint": {
+              "centerParam": "regroupPosition",
+              "radius": 6.0,
+              "coverPosParam": "coverPos",
+              "minDist": 0.0,
+              "maxOccupied": 2,
+              "traceVisible": true
+            }
           },
           {
-            "centerParam": "regroupPosition",
-            "radius": 6.0,
-            "coverPosParam": "coverPos",
-            "minDist": 0.0,
-            "maxOccupied": 2,
-            "traceVisible": true
-          },
-          {
-            "centerParam": "regroupPosition",
-            "radius": 5.0,
-            "possibleAngle": 180.0,
-            "coverPosParam": "coverPos",
-            "minDist": 2.0,
-            "traceVisible": true
-          },
-          {
-            "centerParam": "regroupPosition",
-            "radius": 3.0,
-            "possibleAngle": 180.0,
-            "coverPosParam": "coverPos",
-            "minDist": 2.0
+            "not": {
+              "isTestPerfAI": {}
+            },
+            "orderedSelector": {
+              "findCoverAroundPoint": [
+                {
+                  "centerParam": "regroupPosition",
+                  "radius": 7.0,
+                  "coverPosParam": "coverPos",
+                  "minDist": 0.0,
+                  "maxOccupied": 1,
+                  "traceVisible": true
+                },
+                {
+                  "centerParam": "regroupPosition",
+                  "radius": 6.0,
+                  "coverPosParam": "coverPos",
+                  "minDist": 0.0,
+                  "maxOccupied": 2,
+                  "traceVisible": true
+                },
+                {
+                  "centerParam": "regroupPosition",
+                  "radius": 5.0,
+                  "possibleAngle": 180.0,
+                  "coverPosParam": "coverPos",
+                  "minDist": 2.0,
+                  "traceVisible": true
+                },
+                {
+                  "centerParam": "regroupPosition",
+                  "radius": 3.0,
+                  "possibleAngle": 180.0,
+                  "coverPosParam": "coverPos",
+                  "minDist": 2.0
+                }
+              ]
+            }
           }
         ]
       },

@@ -9,6 +9,7 @@ let { HmdVisible, HmdBlockIls, HmdBrightnessMult } = require("%rGui/planeState/p
 let { PNL_ID_HMD, PNL_ID_INVALID } = require("%rGui/globals/panelIds.nut")
 
 let hmdShelZoom = require("%rGui/planeHmds/hmdShelZoom.nut")
+let hmdSuraZoom = require("%rGui/planeHmds/hmdSuraZoom.nut")
 let hmdVtas = require("%rGui/planeHmds/hmdVtas.nut")
 let hmdF16c = require("%rGui/planeHmds/hmdF16c.nut")
 let hmdAH64 = require("%rGui/planeHmds/hmdAh64.nut")
@@ -20,7 +21,6 @@ let hmdTyphoon = require("%rGui/planeHmds/hmdTyphoon.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { IPoint2, Point2, Point3 } = require("dagor.math")
 let hmdTargo = require("%rGui/planeHmds/hmdTargo.nut")
-
 let hmdF15cBaz = createScriptComponent("%rGui/planeHmds/hmdF15cBazMsip.das", {
   fontId = Fonts.hud
 })
@@ -55,6 +55,7 @@ let hmdSetting = Watched({
 function hmdSettingsUpd(blk) {
   hmdSetting.set({
     isShelZoom = blk.getBool("hmdShelZoom", false),
+    isSuraZoom = blk.getBool("hmdSuraZoom", false),
     isVtas = blk.getBool("hmdVtas", false),
     isF16c = blk.getBool("hmdF16c", false),
     isF15cBaz = blk.getBool("hmdF15cBaz", false),
@@ -76,12 +77,13 @@ function hmdSettingsUpd(blk) {
 
 let isVisible = Computed(@() (HmdVisibleAAM.get() || HmdSensorVisible.get() || HmdVisible.get()) && !HmdBlockIls.get())
 let planeHmd = @(width, height) function() {
-  let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon,
+  let { isShelZoom, isSuraZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon,
     isRafale, isF106, isAh56, isAh1w, isTargo, isFA18 } = hmdSetting.get()
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.get() ? [
       (isShelZoom ? hmdShelZoom(width, height) : null),
+      (isSuraZoom ? hmdSuraZoom(width, height) : null),
       (isVtas ? hmdVtas(width, height) : null),
       (isF16c ? hmdF16c(width, height, isMetric) : null),
       (isF15cBaz ? hmdF15cBaz(width, height) : null),

@@ -1,10 +1,11 @@
 #default:forbid-root-table
 from "%rGui/globals/ui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "frp" import warn_on_deprecated_methods
+from "frp" import warn_on_deprecated_methods, set_slow_subscriber_threshold_usec
 from "dagor.system" import DBGLEVEL
 
 warn_on_deprecated_methods(DBGLEVEL > 0)
+set_slow_subscriber_threshold_usec(1000000) 
 
 clear_vm_entity_systems()
 start_es_loading()
@@ -22,6 +23,7 @@ require("%sqstd/regScriptProfiler.nut")("darg", dlog)
 let widgets = require("%rGui/widgets.nut")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { modalWindowsComponent } = require("%rGui/components/modalWindowsMngr.nut")
+let { tooltipComp } = require("%rGui/components/tooltip.nut")
 
 end_es_loading()
 
@@ -30,6 +32,7 @@ return {
   children = [
     widgets
     modalWindowsComponent
+    tooltipComp
     inspectorRoot
   ]
 }

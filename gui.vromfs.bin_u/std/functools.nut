@@ -280,15 +280,13 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
   let parametersNum = (parameters?.len() ?? 0)-1
   let isOneParam = (parametersNum == 1) && !isVarargved
   let isNoParams = (parametersNum == 0) && !isVarargved
-  local cacheValues = 0
   if (type(hashfunc)=="function")
     return function memoizedfuncHash(...){
       let args = [null].extend(vargv)
       let hashKey = hashfunc.acall(args)
       if (hashKey in cache)
         return cache[hashKey]
-      cacheValues+=1
-      if (cacheValues > maxCacheNum)
+      if (cache.len() > maxCacheNum)
         cache.clear()
       let res = func.acall(args)
       cache[hashKey] <- res
@@ -301,8 +299,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
       let k = v
       if (k in cache)
         return cache[k]
-      cacheValues+=1
-      if (cacheValues > maxCacheNum)
+      if (cache.len() > maxCacheNum)
         cache.clear()
       let res = func(v)
       cache[k] <- res
@@ -317,8 +314,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
       if (key in cache)
         return cache[key]
       if (vargv.len()>0) {
-        cacheValues+=1
-        if (cacheValues > maxCacheNum)
+        if (cache.len() > maxCacheNum)
           cache.clear()
         let res = func.acall([null].extend(vargv))
         cache[key] <- res
@@ -365,8 +361,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
         let cached = getValInCacheVargved(path, cache)
         if (cached != NO_VALUE)
           return cached
-        cacheValues+=1
-        if (cacheValues > maxCacheNum)
+        if (cache.len() > maxCacheNum)
           cache.clear()
         return setValInCacheVargved(path, func.acall([null].extend(vargv)), cache)
 
@@ -378,8 +373,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
       let cached = getValInCache(path, cache)
       if (cached != NO_VALUE)
         return cached
-      cacheValues+=1
-      if (cacheValues > maxCacheNum)
+      if (cache.len() > maxCacheNum)
         cache.clear()
       return setValInCache(path, func.acall([null].extend(vargv)), cache)
 
@@ -392,8 +386,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
       let cached = getValInCacheVargved(vargv, cache)
       if (cached != NO_VALUE)
         return cached
-      cacheValues+=1
-      if (cacheValues > maxCacheNum)
+      if (cache.len() > maxCacheNum)
         cache.clear()
       return setValInCacheVargved(vargv, func.acall([null].extend(vargv)), cache)
 
@@ -404,8 +397,7 @@ function memoize(func, hashfunc = null, cacheExternal=null, maxCacheNum=DEF_MAX_
     let cached = getValInCache(vargv, cache)
     if (cached != NO_VALUE)
       return cached
-    cacheValues+=1
-    if (cacheValues > maxCacheNum)
+    if (cache.len() > maxCacheNum)
       cache.clear()
     return setValInCache(vargv, func.acall([null].extend(vargv)), cache)
 

@@ -1,5 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_can_register_to_ww, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+import "%sqStdLibs/helpers/enums.nut" as enums
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -10,9 +12,10 @@ let { actionWithGlobalStatusRequest,
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let DataBlock  = require("DataBlock")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { getMyClanType } = require("%scripts/clans/clanTextInfo.nut")
 let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 let WwQueue = class {
   map = null
@@ -239,5 +242,25 @@ let WwQueue = class {
 
   getId = @() this.map.getId()
 }
+
+enums.enumsAddTypes(wwStatusType, {
+  QUEUE = {
+    typeMask = WW_GLOBAL_STATUS_TYPE.QUEUE
+    charDataId = "queue"
+    invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.MAPS
+    emptyCharData = {}
+
+    function loadList() {
+      this.cachedList = {}
+      let data = this.getData()
+      if (!u.isTable(data))
+        return
+
+      let mapsList = wwStatusType.MAPS.getList()
+      foreach (mapId, map in mapsList)
+        this.cachedList[mapId] <- WwQueue(map, getTblValue(mapId, data))
+    }
+  }
+})
 
 return WwQueue

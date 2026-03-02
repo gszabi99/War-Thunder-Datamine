@@ -6,9 +6,15 @@ options strict_smart_pointers = true
 
 module fuzzer shared private
 
+
+
+
+
+
+
+
 require daslib/faker
 require daslib/constant_expression
-require dastest/testing_boost
 
 var private total_fuzz_count : int = 1000
 
@@ -55,7 +61,7 @@ def public fuzz_debug(fuzz_count : int; blk : block) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_and_vector_op1(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_and_vector_op1(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int)
@@ -74,7 +80,7 @@ def public fuzz_numeric_and_vector_op1(t : T?; var fake : Faker; funcname : stri
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_and_vector_signed_op1(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_and_vector_signed_op1(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int)
@@ -89,7 +95,7 @@ def public fuzz_numeric_and_vector_signed_op1(t : T?; var fake : Faker; funcname
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_op1(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_op1(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int)
@@ -99,7 +105,7 @@ def public fuzz_numeric_op1(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_and_storage_op1(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_and_storage_op1(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int)
@@ -115,7 +121,7 @@ def public fuzz_numeric_and_storage_op1(t : T?; var fake : Faker; funcname : str
 }
 
 [constant_expression(funcname)]
-def public fuzz_all_ints_op1(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_all_ints_op1(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int)
@@ -125,7 +131,7 @@ def public fuzz_all_ints_op1(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_all_unsigned_ints_op1(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_all_unsigned_ints_op1(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_uint)
@@ -133,7 +139,7 @@ def public fuzz_all_unsigned_ints_op1(t : T?; var fake : Faker; funcname : strin
 }
 
 [constant_expression(funcname)]
-def public fuzz_float_double_or_float_vec_op1(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_float_double_or_float_vec_op1(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_float)
@@ -144,7 +150,7 @@ def public fuzz_float_double_or_float_vec_op1(t : T?; var fake : Faker; funcname
 }
 
 [constant_expression(funcname)]
-def public fuzz_float_or_float_vec_op1(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_float_or_float_vec_op1(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_float)
@@ -154,7 +160,7 @@ def public fuzz_float_or_float_vec_op1(t : T?; var fake : Faker; funcname : stri
 }
 
 [constant_expression(funcname)]
-def public fuzz_float_or_float_vec_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_float_or_float_vec_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_float, fake |> random_float)
@@ -164,7 +170,7 @@ def public fuzz_float_or_float_vec_op2(t : T?; var fake : Faker; funcname : stri
 }
 
 [constant_expression(funcname)]
-def public fuzz_float_double_or_float_vec_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_float_double_or_float_vec_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_float, fake |> random_float)
@@ -175,7 +181,7 @@ def public fuzz_float_double_or_float_vec_op2(t : T?; var fake : Faker; funcname
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_and_vector_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_and_vector_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int)
@@ -194,7 +200,7 @@ def public fuzz_numeric_and_vector_op2(t : T?; var fake : Faker; funcname : stri
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_and_vector_op2_no_unint_vec(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_and_vector_op2_no_unint_vec(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int)
@@ -211,7 +217,7 @@ def public fuzz_numeric_and_vector_op2_no_unint_vec(t : T?; var fake : Faker; fu
 
 
 [constant_expression(funcname)]
-def public fuzz_numeric_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int)
@@ -221,7 +227,7 @@ def public fuzz_numeric_op2(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_compareable_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_compareable_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int)
@@ -234,7 +240,7 @@ def public fuzz_compareable_op2(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_eq_neq_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_eq_neq_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int)
@@ -256,7 +262,7 @@ def public fuzz_eq_neq_op2(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_vec_scal_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_vec_scal_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int2,  fake |> random_int)
@@ -271,7 +277,7 @@ def public fuzz_numeric_vec_scal_op2(t : T?; var fake : Faker; funcname : string
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_scal_vec_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_scal_vec_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int2)
@@ -286,7 +292,7 @@ def public fuzz_numeric_scal_vec_op2(t : T?; var fake : Faker; funcname : string
 }
 
 [constant_expression(funcname)]
-def public fuzz_int_vector_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_int_vector_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int)
@@ -300,7 +306,7 @@ def public fuzz_int_vector_op2(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_shift_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_shift_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int)
@@ -314,7 +320,7 @@ def public fuzz_shift_op2(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_rotate_op2(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_rotate_op2(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int,  fake |> random_int)
@@ -322,7 +328,7 @@ def public fuzz_rotate_op2(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_numeric_op3(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_op3(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int, fake |> random_int, fake |> random_int)
@@ -332,7 +338,7 @@ def public fuzz_numeric_op3(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_vec_op3(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_vec_op3(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_float2, fake |> random_float2, fake |> random_float2)
@@ -347,7 +353,7 @@ def public fuzz_vec_op3(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_vec_mad_op3(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_vec_mad_op3(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_float2, fake |> random_float, fake |> random_float2)
@@ -362,7 +368,7 @@ def public fuzz_vec_mad_op3(t : T?; var fake : Faker; funcname : string) {
 }
 
 [constant_expression(funcname)]
-def public fuzz_float_double_or_float_vec_op3(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_float_double_or_float_vec_op3(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_float, fake |> random_float, fake |> random_float)
@@ -374,7 +380,7 @@ def public fuzz_float_double_or_float_vec_op3(t : T?; var fake : Faker; funcname
 
 
 [constant_expression(funcname)]
-def public fuzz_numeric_op4(t : T?; var fake : Faker; funcname : string) {
+def public fuzz_numeric_op4(t; var fake : Faker; funcname : string) {
     
     
     invoke(funcname, t, fake |> random_int, fake |> random_int, fake |> random_int, fake |> random_int)

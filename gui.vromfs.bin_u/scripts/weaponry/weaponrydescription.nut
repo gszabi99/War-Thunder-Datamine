@@ -25,6 +25,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = get_difficulty_by_ediff(ediff ?? getCurrentGameModeEdiff())
@@ -500,8 +501,9 @@ function getWeaponInfoMarkup(unit, weaponInfoData) {
       if (isInArray(weaponType, CONSUMABLE_TYPES) || weaponType == WEAPON_TYPE.CONTAINER_ITEM) {
         weaponData.weaponName = weaponName
         weaponData.weaponNameLoc = loc($"weapons/{weaponName}")
-        if (!p.isSingle)
-          weaponData.count *= weapon.ammo
+
+        if (weapon.ammo > 0)
+          weaponData.ammo = $"{loc("shop/ammo")}{loc("ui/colon")} {weapon.ammo}"
 
         if (weaponType == "torpedoes" && p.isPrimary != null &&
             isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) {
@@ -559,12 +561,13 @@ function getWeaponInfoMarkup(unit, weaponInfoData) {
         weaponData.isNotLink = false
         weaponData.tooltipId = getTooltipType("UNIT_DM_TOOLTIP").getTooltipId(unit.name, { unitId = unit.name, dmPart })
       }
-
+      weaponData.hiddenCount <- weaponData.count == 1
       data.append(weaponData)
     }
   }
 
-  return handyman.renderCached("%gui/unitInfo/weaponsInfoMarkup.tpl", { weapons = data })
+  return handyman.renderCached("%gui/unitInfo/weaponsInfoMarkup.tpl",
+    { weapons = data, isTooltipByHold = showConsoleButtons.get() })
 }
 
 return {

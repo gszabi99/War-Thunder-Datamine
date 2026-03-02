@@ -136,7 +136,7 @@ class RadarATTKFormatFrame : Canvas
     let ownshipAirSpeedKntsText = fmt(":d", roundi(ownshipAirSpeedKnts))
     printStrLn(ownshipAirSpeedKntsText)
 
-    let ownshipAirSpeedMachText = fmt(":.2f", fmw.fm.Mach)
+    let ownshipAirSpeedMachText = fmt(":.2f", fmw.fm.cache.Mach)
     printStrLn(ownshipAirSpeedMachText)
 
     let operationalModeText = isEmitting ? "OPR" : "STBY"

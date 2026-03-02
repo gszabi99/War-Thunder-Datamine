@@ -7,6 +7,12 @@ options strict_smart_pointers = true
 
 module quote shared private
 
+
+
+
+
+
+
 require daslib/ast_boost public
 require daslib/strings_boost
 require daslib/contracts
@@ -20,11 +26,13 @@ def find_unique_function_ptr(mod : Module?; name : string; canfail : bool = fals
 
 
 struct CaptureEntryInitData {
+    
     name : string
     mode : CaptureMode
 }
 
 def public clone(var a : dasvector`CaptureEntry; b : array<CaptureEntryInitData>) {
+    
     a |> resize(length(b))
     for (e, i in b, count()) {
         a[i].name := e.name
@@ -32,16 +40,18 @@ def public clone(var a : dasvector`CaptureEntry; b : array<CaptureEntryInitData>
     }
 }
 
-struct LineInfoInitData {
-    fileInfo : FileInfo?
-    column : uint
-    line : uint
-    last_column : uint
-    last_line : uint
+struct public LineInfoInitData {
+    
+    fileInfo : FileInfo?  
+    column : uint         
+    line : uint           
+    last_column : uint    
+    last_line : uint      
 }
 
 
 def public clone_line_info(var b : LineInfoInitData) : LineInfo {
+    
     return LineInfo(fileInfo = b.fileInfo,
                     column = b.column,
                     line = b.line,
@@ -50,6 +60,7 @@ def public clone_line_info(var b : LineInfoInitData) : LineInfo {
 }
 
 def public clone(var a : dasvector`LineInfo; b : array<LineInfoInitData>) {
+    
     a |> resize(length(b))
     for (e, i in b, count()) {
         a[i].column := e.column
@@ -60,6 +71,7 @@ def public clone(var a : dasvector`LineInfo; b : array<LineInfoInitData>) {
 }
 
 def public clone(var args : rtti::AnnotationList; var nargs : array<smart_ptr<rtti::AnnotationDeclaration>>) {
+    
     _::clear(args)
     for (narg in nargs) {
         _::emplace(args, narg)
@@ -69,6 +81,7 @@ def public clone(var args : rtti::AnnotationList; var nargs : array<smart_ptr<rt
 
 
 struct EnumEntryInitData {
+    
     name : string
     cppName : string
     
@@ -76,6 +89,7 @@ struct EnumEntryInitData {
 }
 
 def public clone(var a : dasvector`EnumEntry; var b : array<EnumEntryInitData>) {
+    
     a |> resize(length(b))
     for (e, i in b, count()) {
         a[i].name := e.name
@@ -85,6 +99,7 @@ def public clone(var a : dasvector`EnumEntry; var b : array<EnumEntryInitData>) 
 }
 
 struct AnnotationArgumentInitData {
+    
     basicType : Type
     name : string
     sValue : string
@@ -95,6 +110,7 @@ struct AnnotationArgumentInitData {
 }
 
 def public clone(var a : AnnotationArgumentList; b : array<AnnotationArgumentInitData>) {
+    
     a |> resize(length(b))
     for (e, i in b, count()) {
         a[i].name := e.name
@@ -113,6 +129,7 @@ def public clone(var a : AnnotationArgumentList; b : array<AnnotationArgumentIni
 }
 
 def public cvt_to_mks(var args) : smart_ptr<MakeStruct> {
+    
     var inscope res <- new MakeStruct(uninitialized);
     *res |> resize(length(args))
     for (arg, i in args, count()) {
@@ -123,12 +140,14 @@ def public cvt_to_mks(var args) : smart_ptr<MakeStruct> {
     return <- res;
 }
 
-struct FileInfoInitData {
-    name : string
-    tabSize : int
+struct public FileInfoInitData {
+    
+    name : string   
+    tabSize : int   
 }
 
 def public clone_file_info(b : FileInfoInitData) : FileInfo? {
+    
     return clone_file_info(b.name, b.tabSize)
 }
 
@@ -297,7 +316,7 @@ def private convert_quote_structure(mod : Module?; data : uint8 const?;
                                     tstr : string; info : TypeDeclPtr; at : LineInfo) : ExpressionPtr {
     assume ann = info.annotation;
     var inscope mkS1 <- new default<MakeStruct>;
-    for_each_field(*unsafe(reinterpret<BasicStructureAnnotation?>(ann))) <| $(name, cppName, xtype, offset) {
+    for_each_field(*unsafe(reinterpret<BasicStructureAnnotation?>(ann))) $(name, cppName, xtype, offset) {
         var inscope mkFld = convert_quote_struct_field(mod, data, tstr, name, offset, xtype, at);
         if (mkFld != null) {
             emplace(*mkS1, mkFld);
@@ -403,6 +422,7 @@ def convert_quote_to_expression(var arg_expr : ExpressionPtr; at : LineInfo) : E
 }
 
 class QuoteConverter : AstVisitor {
+    
     astChanged : bool = false
     def override visitExprQuote(var expr : smart_ptr<ExprQuote>) : ExpressionPtr {
         astChanged = true
@@ -412,6 +432,7 @@ class QuoteConverter : AstVisitor {
 
 [infer_macro]
 class QuotePass : AstPassMacro {
+    
     def override apply(prog : ProgramPtr; mod : Module?) : bool {
         
         if (!compiling_program().policies.aot_macros) {

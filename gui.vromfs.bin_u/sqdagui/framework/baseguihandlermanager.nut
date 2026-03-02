@@ -1,5 +1,5 @@
 from "%sqDagui/daguiNativeApi.nut" import *
-
+from "dagor.workcycle" import deferOnce
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { handlerType } = require("handlerType.nut")
@@ -491,7 +491,7 @@ let handlersManager = {
       handler.doWhenActiveOnce("fullReloadScene")
   }
 
-  function onEventScriptsReloaded(_p) {
+  function startLastBaseHandler() {
     this.markfullReloadOnSwitchScene(false)
     let startData = this.findLastBaseHandlerStartData(get_gui_scene())
     if (!startData)
@@ -789,6 +789,8 @@ let handlersManager = {
 }
 let isHandlerInScene = @(handlerClass) handlersManager.findHandlerClassInScene(handlerClass) != null
 let is_in_loading_screen = @() handlersManager.isInLoading
+
+deferOnce(@() handlersManager.startLastBaseHandler())
 
 function closeAllModals() {
   let guiScene = get_cur_gui_scene()

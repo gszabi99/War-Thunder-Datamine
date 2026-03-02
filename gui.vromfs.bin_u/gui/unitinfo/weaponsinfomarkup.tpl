@@ -9,13 +9,17 @@ tr {
           width:t='@weaponsCountColWidth'
           textareaNoTab { text:t='<<count>>' }
           textareaNoTab { text:t='#measureUnits/pcs' }
+          <<#hiddenCount>>display:t='hide'<</hiddenCount>>
         }
         <</count>>
         tooltipLink {
           <<#isNotLink>>isNotLink:t='yes'<</isNotLink>>
           textareaNoTab {
             text:t='<<weaponNameLoc>>'
+            <<#isTooltipByHold>>
             tooltipId:t='<<tooltipId>>'
+            <</isTooltipByHold>>
+            <<^isTooltipByHold>>
             tooltip:t='$tooltipObj'
             tooltipObj {
               tooltipId:t='<<tooltipId>>'
@@ -23,6 +27,7 @@ tr {
               on_tooltip_close:t='onTooltipObjClose'
               display:t='hide'
             }
+            <</isTooltipByHold>>
           }
         }
       }

@@ -48,8 +48,8 @@ def take_a_chance(chance : int)
 [es(tag=sound)]
 def human_melee_sound_irq(evt : CmdSoundMeleeIrq;
                           eid : EntityId;
-                          human_melee_sound__repeatThreshold : float;
-                          var human_melee_sound__repeatTime : float&;
+                          human_melee_sound__cooldown : float;
+                          var human_melee_sound__nextTime : float&;
                           @shared_comp human_melee_sound__irqs : Object;
                           sound_tags : Object;
                           var sound_event_group : SoundEventGroup&;
@@ -57,12 +57,10 @@ def human_melee_sound_irq(evt : CmdSoundMeleeIrq;
                           human_weap__gunEids : EidList const?;
                           human_weap__currentGunSlot : int const?;
                           transform : float3x4;
-                          human_voice_effect__isActive = false;
-                          human_speech__isSpeaking = false;
                           human_sound__prefix : string = "infantry/")
-  if get_sync_time() < human_melee_sound__repeatTime + human_melee_sound__repeatThreshold
+  if get_sync_time() < human_melee_sound__nextTime
     return
-  human_melee_sound__repeatTime = get_sync_time()
+  human_melee_sound__nextTime = get_sync_time() + human_melee_sound__cooldown
 
   if !is_watched_sound && !should_play(transform[3])
     return
@@ -82,12 +80,10 @@ def human_melee_sound_irq(evt : CmdSoundMeleeIrq;
 
 
 
-  if take_a_chance((*weapon).chance ?? 100)
-    play_sound("", *weapon, sound_tags, float((*weapon).delay ?? 0) * 0.001, is_watched_sound, sound_event_group, transform, human_sound__prefix)
+  play_sound("", *weapon, sound_tags, float((*weapon).delay ?? 0) * 0.001, is_watched_sound, sound_event_group, transform, human_sound__prefix)
 
   if take_a_chance((*weapon).voiceChance ?? 100)
-    if !human_voice_effect__isActive && !human_speech__isSpeaking
-      sendEvent(eid, CmdHumanVoiceEffect(phrase = "melee"))
+    sendEvent(eid, CmdHumanVoiceEffect(phrase = "melee"))
 
   let secondary = (*weapon).secondary ?as Object
   if secondary != null
@@ -96,5 +92,4 @@ def human_melee_sound_irq(evt : CmdSoundMeleeIrq;
 
 
 
-    if take_a_chance((*secondary).chance ?? 100)
-      play_sound("", *secondary, sound_tags, float((*secondary).delay ?? 0) * 0.001, is_watched_sound, sound_event_group, transform, human_sound__prefix)
+    play_sound("", *secondary, sound_tags, float((*secondary).delay ?? 0) * 0.001, is_watched_sound, sound_event_group, transform, human_sound__prefix)

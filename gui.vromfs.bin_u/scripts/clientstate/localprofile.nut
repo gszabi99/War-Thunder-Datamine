@@ -8,7 +8,7 @@ let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlock
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
-let { get_local_custom_settings_blk, get_common_local_settings_blk, get_local_unit_settings_blk = @() null
+let { get_local_custom_settings_blk, get_common_local_settings_blk, get_local_unit_settings_blk
 } = require("blkGetters")
 let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
@@ -23,7 +23,7 @@ function onUpdateProfile(taskId, action, transactionType) {
   if (!isLoggedIn.get())
     return
 
-  ::update_gamercards()
+  broadcastEvent("RequestUpdateGamercards")
   eventbus_send("request_show_banned_status_msgbox", {showBanOnly = true})
 }
 

@@ -11,6 +11,8 @@
   "haveCCRPForRocket": false,
   "haveCCRPForTurret": true,
   "laserDesignator": true,
+  "mfdCamTads": true,
+  "hmdTopOwl": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -37,8 +39,6 @@
     -50.0,
     50.0
   ],
-  "mfdCamTads": true,
-  "hmdTopOwl": true,
   "rwrIndicator": "AN/APR-39 MFD Ah-1Z",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -862,8 +862,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -923,8 +923,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -984,8 +984,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1045,8 +1045,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1785,10 +1785,6 @@
           "fontScale": 0.7,
           "page": [
             {
-              "type": "custom",
-              "pageName": "ah64Flt"
-            },
-            {
               "type": "rwr",
               "scale": 0.65,
               "grid": {
@@ -1910,10 +1906,6 @@
               "turretIdx": 0
             },
             {
-              "type": "custom",
-              "pageName": "ah64Flt"
-            },
-            {
               "type": "rwr",
               "scale": 0.65,
               "grid": {
@@ -1937,18 +1929,8 @@
             1.0
           ],
           "page": {
-            "type": "rwr",
-            "scale": 0.65,
-            "grid": {
-              "scale": 1.3,
-              "lineWidthScale": 0.8,
-              "fontScale": 0.8
-            },
-            "object": {
-              "scale": 0.8,
-              "lineWidthScale": 0.4,
-              "fontScale": 0.4
-            }
+            "type": "custom",
+            "pageName": "europeanAviaHorizont"
           }
         }
       ]

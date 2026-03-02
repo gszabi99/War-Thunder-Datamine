@@ -7,6 +7,10 @@ module base64 shared private
 
 
 
+
+
+
+
 require daslib/strings
 
 let private BASE64_PAD = '='
@@ -49,10 +53,12 @@ let base64de <- fixed_array<int>(
 );
 
 def public BASE64_DECODE_OUT_SIZE(s : int) {
+    
     return s / 4 * 3
 }
 
 def public BASE64_ENCODE_OUT_SIZE(s : int) {
+    
     return (s + 2) / 3 * 4
 }
 
@@ -60,15 +66,16 @@ def public base64_decode(_in : string) : tuple<text : string; size : int> {
     
     var inscope out : array<uint8>
     var outlen = 0
-    peek_data(_in) <| $(inp) {
+    peek_data(_in) $(inp) {
         outlen = base64_decode(inp, out)
     }
     return (string(out), outlen)
 }
 
 def public base64_decode(_in : string; var out : array<uint8>) : int {
+    
     var outlen = 0
-    peek_data(_in) <| $(inp) {
+    peek_data(_in) $(inp) {
         outlen = base64_decode(inp, out)
     }
     return outlen
@@ -123,13 +130,14 @@ def base64_decode(inp : array<uint8> | #; var out : array<uint8>) : int {
 def public base64_encode(_inp : string) {
     
     var res : string
-    peek_data(_inp) <| $(inp) {
+    peek_data(_inp) $(inp) {
         res = base64_encode(inp)
     }
     return res
 }
 
 def public base64_encode(inp : array<uint8> | #) {
+    
     var inlen = inp |> length
     var j = 0
     var out : array<uint8>

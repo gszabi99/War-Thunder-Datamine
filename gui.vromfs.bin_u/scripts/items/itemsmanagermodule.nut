@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { search } = require("%sqStdLibs/helpers/u.nut")
-let { itemsList, inventory, shopItemById, itemsByItemdefId, inventoryItemById
+let { itemsList, inventory, shopItemById, itemsByItemdefId, generatorsCollection
 } = require("%scripts/items/itemsManagerState.nut")
 let { checkInventoryUpdate, checkUpdateList } = require("%scripts/items/itemsManagerChecks.nut")
 let { checkAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
@@ -27,11 +27,6 @@ function findItemById(id) {
   if (!item && isItemdefId(id))
     inventoryClient.requestItemdefsByIds([id])
   return item
-}
-
-function getInventoryItemById(id) {
-  checkInventoryUpdate()
-  return inventoryItemById?[id]
 }
 
 function getInventoryListByShopMask(typeMask, filterFunc = null) {
@@ -66,14 +61,21 @@ function getItemsSortComparator(itemsSeenList = null) {
   }
 }
 
+
+function getItemGenerator(itemdefId) {
+  findItemById(itemdefId) 
+  return generatorsCollection?[itemdefId]
+}
+
+
 return {
   getUniversalSparesForUnit
   getInventoryList
   findItemByUid
   findItemById
-  getInventoryItemById
   getInventoryListByShopMask
   getItemsList
   getInventoryItemByCraftedFrom
   getItemsSortComparator
+  getItemGenerator
 }

@@ -43,6 +43,9 @@ def private apply_entity_mods(curTime : float;
   currentState.climbingSpeedMult = entity_mods__climbingSpeedMult
   currentState.restoreStaminaMult = entity_mods__restoreStaminaMult
   currentState.staminaSprintDrainMult = entity_mods__sprintStaminaDrain
+  currentState.walkSpeedMult = 1.0f
+  currentState.runSpeedMult = 1.0f
+  currentState.speedInAimStateMult = 1.0f
   currentState.sprintSpeedMult = currentState.height < 1.0 ? 1.0 : entity_mods__sprintSpeedMult
   currentState.accelerationMult = entity_mods__accelerationMult
   currentState.fasterChangeWeaponMult = entity_mods__fasterChangeWeaponMult

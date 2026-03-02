@@ -4,6 +4,15 @@
     "_group": {
       "_tags": "sound",
       "reverb_sound__path": "infantry/snapshots/reverb_indoor",
+      "reverb_sound__maxT": 0.0,
+      "reverb_sound__midT": 0.0,
+      "reverb_sound__curNumTraces": 0,
+      "reverb_sound__elongation": 0.0,
+      "reverb_sound__lastPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "reverb_sound__physmatAbsorption:array": {
         "metal:object": {
           "valueMinMax": [
@@ -110,6 +119,60 @@
           }
         }
       }
+    }
+  },
+  "wt_tree_collision_sound": {
+    "wt_tree_collision_sound__name": "infantry/env_effects/object_crash/tree"
+  },
+  "wt_enemy_reverb_sound_calculator": {
+    "_group": {
+      "_tags": "sound",
+      "wt_enemy_reverb_sound_calculator__distSq": 2500.0,
+      "wt_enemy_reverb_sound_calculator__traceLen": 30.0,
+      "wt_enemy_reverb_sound_calculator__curEidIdx": 0,
+      "wt_enemy_reverb_sound_calculator__eids:list<eid>": {},
+      "wt_enemy_reverb_sound_calculator__rays:list<p3>": {
+        "ray": [
+          [
+            0.7071,
+            0.7071,
+            0.0
+          ],
+          [
+            -0.7071,
+            0.7071,
+            0.0
+          ],
+          [
+            0.0,
+            0.7071,
+            0.7071
+          ],
+          [
+            0.0,
+            0.7071,
+            -0.7071
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ]
+        ]
+      }
+    }
+  },
+  "wt_enemy_reverb_sound": {
+    "wt_enemy_reverb_sound__value": 0.0,
+    "wt_enemy_reverb_sound__rayIdx": 0,
+    "wt_enemy_reverb_sound__raysLen:list<r>": {
+      "len": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
     }
   }
 }

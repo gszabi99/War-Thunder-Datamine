@@ -6,7 +6,7 @@ let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationU
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
 let { wwGetSpeedupFactor, wwGetOperationId } = require("worldwar")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let getForceControlledByAIUnitTypes = memoize(function() {
   let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
@@ -109,9 +109,20 @@ function setMaxCountColumnWidth(wwUnits) {
   wwUnits.each(@(v) v.columnCountWidth = maxWidth)
 }
 
+function sortUnitsBySortCodeAndCount(a, b) {
+  let aSortCode = a.wwUnitType.sortCode
+  let bSortCode = b.wwUnitType.sortCode
+  if (aSortCode != bSortCode)
+    return aSortCode - bSortCode
+
+  let aCount = a.count
+  let bCount = b.count
+  return aCount.tointeger() - bCount.tointeger()
+}
+
 function getUnitsListViewParams(wwUnits, params = {}, needSort = true) {
   if (needSort)
-    wwUnits.sort(::g_world_war.sortUnitsBySortCodeAndCount)
+    wwUnits.sort(sortUnitsBySortCodeAndCount)
   wwUnits = wwUnits.map(@(wwUnit) wwUnit.getShortStringView(params))
   setMaxCountColumnWidth(wwUnits)
   return wwOperationUnitsGroups.overrideUnitsViewParamsByGroups(wwUnits)
@@ -132,6 +143,7 @@ return {
   loadWWUnitsFromUnitsArray
   getFakeUnitsArray
   unitsCount
+  sortUnitsBySortCodeAndCount
   getUnitsListViewParams = kwarg(getUnitsListViewParams)
   getMaxFlyTime
 }

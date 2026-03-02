@@ -61,8 +61,31 @@
     "gunmod__type": "optics_collimator",
     "gunAttachable:tag": {}
   },
+  "collimator_moa_plain_filling": {
+    "gunmod__collimator_moa_border_min": 0.1,
+    "gunmod__collimator_moa_border_scale": 0.925,
+    "gunmod__collimator_moa_use_noise": true,
+    "gunmod__collimator_moa_noise_min_intensity": 40.0,
+    "gunmod__collimator_moa_light_noise_thinness": 0.0,
+    "gunmod__collimator_moa_light_noise_intensity_scale": 10.0,
+    "gunmod__collimator_moa_static_noise_uv_scale": 0.1,
+    "gunmod__collimator_moa_static_noise_add": 0.0,
+    "gunmod__collimator_moa_static_noise_scale": 0.6,
+    "gunmod__collimator_moa_dynamic_noise_uv_scale": 17.0,
+    "gunmod__collimator_moa_dynamic_noise_sub_scale": 0.95,
+    "gunmod__collimator_moa_dynamic_noise_scale": 2.0,
+    "gunmod__collimator_moa_dynamic_noise_add": 0.0,
+    "gunmod__collimator_moa_dynamic_noise_intensity_scale": 0.0,
+    "gunmod__collimator_moa_dynamic_noise_speed": [
+      0.0,
+      0.0
+    ]
+  },
   "scope_2moa_dot_reticle": {
-    "_use": "scope_collimator_moa",
+    "_use": [
+      "scope_collimator_moa",
+      "collimator_moa_plain_filling"
+    ],
     "gunmod__collimator_moa_img_template": "scope_2moa_dot_collimator_image",
     "gunmod__collimator_moa_parallax_plane_dist": 3.0,
     "gunmod__collimator_moa_color": [
@@ -73,7 +96,10 @@
     ]
   },
   "scope_4moa_dot_reticle": {
-    "_use": "scope_collimator_moa",
+    "_use": [
+      "scope_collimator_moa",
+      "collimator_moa_plain_filling"
+    ],
     "gunmod__collimator_moa_img_template": "scope_4moa_dot_collimator_image",
     "gunmod__collimator_moa_parallax_plane_dist": 3.0,
     "gunmod__collimator_moa_color": [
@@ -247,7 +273,7 @@
     "item__template": "scope_pk_06_red_dot_item",
     "item__proto": "scope_pk_06_red_dot",
     "item__locDetails": "",
-    "item__weight": 0.03,
+    "item__weight": 0.09,
     "item__volume": 0.3,
     "item__name": "items/scope_pk_06_red_dot",
     "gunAttachable__slotName": "scope",
@@ -297,9 +323,9 @@
     "gun_attachable_mod_params__adderValues:list<r>": {
       "val": [
         -0.01,
-        0.03,
-        0.03,
-        0.03
+        0.09,
+        0.09,
+        0.09
       ]
     },
     "attachmentUpdate:tag": {}
@@ -1031,94 +1057,6 @@
       ]
     },
     "attachmentUpdate:tag": {}
-  },
-  "scope_ksvk_12_7_base": {
-    "animchar__res": "scope_ksvk_12_7_char",
-    "collres__res": "scope_ksvk_12_7_collision",
-    "item__template": "scope_ksvk_12_7_item",
-    "item__proto": "scope_ksvk_12_7_item",
-    "item__name": "items/scope_ksvk_12_7",
-    "item__locDetails": "",
-    "gunAttachable__slotName": "scope",
-    "gunAttachable__gunSlotName": "scope",
-    "gunAttachable__slotTag": "scope_ksvk_12_7",
-    "item__weight": 0.9,
-    "item__volume": 0.9,
-    "gunmod__type": "optics_sniper_zoom",
-    "gunAttachable:tag": {}
-  },
-  "scope_ksvk_12_7": {
-    "_use": [
-      "scope_collimator_gunmod",
-      "scope_ksvk_12_7_base"
-    ],
-    "gunmod__variableScope": true,
-    "gunmod__zoomFactor": 6.0,
-    "gunmod__camShiftMin": 0.25,
-    "gunmod__camShiftMax": 0.25,
-    "gunmod__distortionParams": [
-      0.02,
-      0.1,
-      0.07
-    ],
-    "gunmod__closeLensShadingParams": [
-      15.0,
-      22.5,
-      1.0,
-      100.0
-    ],
-    "gunmod__farLensShadingParams": [
-      2.0,
-      1.3,
-      2.0
-    ],
-    "gun_attachable_mod_params__adderNames:list<t>": {
-      "name": [
-        "gun_anim_var__fpsGunOffsetUp",
-        "gun__mass",
-        "gun__inertialMass",
-        "item__weight",
-        "gun__adsSpeedMult"
-      ]
-    },
-    "gun_attachable_mod_params__adderValues:list<r>": {
-      "val": [
-        -0.045,
-        0.9,
-        0.9,
-        0.9,
-        -0.15
-      ]
-    },
-    "_group": {
-      "_tags": "gameClient",
-      "gunmod__currentZoomIndex": 0,
-      "gunmod__zoomAnimationTime": 0.0,
-      "gunmod__zoomAnimationViscocity": 0.3,
-      "gunmod__previousZoomFactor": 6.0,
-      "gunmod__previousCamShiftMin": 0.25,
-      "gunmod__previousCamShiftMax": 0.25,
-      "gunmod__variableZoomOptions:array": {
-        "gunmod__variableZoom:object": [
-          {
-            "gunmod__zoomFactor": 6.0,
-            "gunmod__camShiftMin": 0.25,
-            "gunmod__camShiftMax": 0.25
-          },
-          {
-            "gunmod__zoomFactor": 14.0,
-            "gunmod__camShiftMin": 0.45,
-            "gunmod__camShiftMax": 0.45
-          }
-        ]
-      }
-    }
-  },
-  "scope_ksvk_12_7_item": {
-    "_use": [
-      "item_scope",
-      "scope_ksvk_12_7_base"
-    ]
   },
   "scope_1p69_giperon_base": {
     "animchar__res": "1p69_giperon_sight_char",

@@ -120,6 +120,7 @@
   "ElevatorMaxDv": 6.0,
   "RudderMaxDv": 6.0,
   "VneControl": 780.0,
+  "ExtThrustBaseMult": 1.0,
   "CockpitOpenedDoorBreakSpeed": -1.0,
   "MomentOfInertia": [
     9094.0,
@@ -155,6 +156,7 @@
     "hasBuoyancyControl": false,
     "hasLightsControl": false,
     "hasManeuverabilityMode": false,
+    "hasThrustVectoringMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -460,7 +462,7 @@
         0.45,
         0.8
       ],
-      "FlowInertia": 0.0499589,
+      "FlowInertia": 0.0499179,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 2.867,
@@ -532,7 +534,7 @@
         0.82,
         0.0
       ],
-      "FlowInertia": 0.0299753,
+      "FlowInertia": 0.0299506,
       "SlipStreamDistance": 5.8,
       "Areas": {
         "Main": 0.65,
@@ -726,6 +728,7 @@
     "Main": {
       "Type": "Inline",
       "Cylinders": 12,
+      "AllowDamageAfterPropeller": true,
       "Mass": 594.0,
       "Thrust": 10.7,
       "ThrottleBoost": 1.0001,
@@ -906,41 +909,41 @@
         "Altitude": 1000.0,
         "RPM": 2999.0,
         "ManifoldPressure": 1.477,
-        "WaterTemperature": 120.0,
+        "WaterTemperature": 115.0,
         "OilTemperature": 73.0
       },
       "Mode4": {
         "Altitude": 1000.0,
         "RPM": 3000.0,
         "ManifoldPressure": 1.871,
-        "WaterTemperature": 133.0,
-        "OilTemperature": 89.0
+        "WaterTemperature": 125.0,
+        "OilTemperature": 95.0
       },
       "Load0": {
-        "WaterTemperature": 105.0,
-        "OilTemperature": 70.0
+        "WaterTemperature": 120.0,
+        "OilTemperature": 85.0
       },
       "Load1": {
-        "WaterTemperature": 110.0,
-        "OilTemperature": 72.0,
+        "WaterTemperature": 122.0,
+        "OilTemperature": 86.0,
         "WorkTime": 5400.0,
         "RecoverTime": 80.0
       },
       "Load2": {
-        "WaterTemperature": 115.0,
-        "OilTemperature": 75.0,
+        "WaterTemperature": 123.0,
+        "OilTemperature": 90.0,
         "WorkTime": 900.0,
         "RecoverTime": 60.0
       },
       "Load3": {
         "WaterTemperature": 125.0,
-        "OilTemperature": 85.0,
+        "OilTemperature": 95.0,
         "WorkTime": 300.0,
         "RecoverTime": 40.0
       },
       "Load4": {
         "WaterTemperature": 130.0,
-        "OilTemperature": 95.0,
+        "OilTemperature": 96.0,
         "WorkTime": 60.0,
         "RecoverTime": 20.0
       },
@@ -956,13 +959,13 @@
       },
       "RadiatorMode2": {
         "Throttle": 1.0,
-        "WaterTemperature": 113.0,
-        "OilTemperature": 73.0
+        "WaterTemperature": 120.0,
+        "OilTemperature": 85.0
       },
       "RadiatorMode3": {
         "Throttle": 1.1,
-        "WaterTemperature": 123.0,
-        "OilTemperature": 83.0
+        "WaterTemperature": 130.0,
+        "OilTemperature": 95.0
       }
     },
     "Compressor": {
@@ -1071,6 +1074,7 @@
       "ThrustRatio": 1.0,
       "ThrustMax": 2147440000.0,
       "TipPosition": false,
+      "HasThrustVecMainControlsMode": false,
       "AileronsToThrustDeflection": [
         0.0,
         0.0,
@@ -1336,7 +1340,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      90.0,
       90.0
     ],
     "Pos": [
@@ -1361,7 +1365,8 @@
     ],
     "UseAutoPropInertia": true,
     "EngineAcceleration": 1.0,
-    "CorrectPropellerToTransmissionLink": true
+    "CorrectPropellerToTransmissionLink": true,
+    "AllowDamageAfterLinksDamage": true
   },
   "Mass": {
     "EmptyMass": 3276.0,
@@ -1485,7 +1490,7 @@
   },
   "Gear": {
     "SinkFactor": 500.0,
-    "SinkRateMult": 1.01286,
+    "SinkRateMult": 1.02588,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": -0.2,
@@ -1900,6 +1905,12 @@
         0.0,
         0.0
       ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
       "AngleLim": 190.0,
       "RollTimeMult": 1.0,
       "AutoAngleMax": [
@@ -1971,6 +1982,12 @@
       "VelMax": [
         0.0,
         0.0
+      ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
       ],
       "AngleLim": 190.0,
       "BalanceLoadFactor": true,
@@ -2188,7 +2205,8 @@
           0.0,
           0.0
         ]
-      }
+      },
+      "CruiseAssist": {}
     },
     "Buoyancy": {},
     "Aim": {

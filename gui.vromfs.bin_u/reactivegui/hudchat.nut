@@ -14,6 +14,7 @@ let hints = require("%rGui/hints/hints.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
 let { ReputationType } = require("%globalScripts/chatState.nut")
 let { isChatReputationFilterEnabled } = require("%rGui/options/options.nut")
+let { isModeWithTeams } = require("%appGlobals/missions/missionStateShared.nut")
 
 let { chat_on_text_update, toggle_ingame_chat, chat_on_send,
   CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE
@@ -207,7 +208,7 @@ let getSenderColor = function (message) {
     return colors.hud.mainPlayerColor
   else if (cross_call.isPlayerDedicatedSpectator(message.sender))
     return colors.hud.spectatorColor
-  else if (message.team != hudState.playerArmyForHud.get() || !cross_call.is_mode_with_teams())
+  else if (message.team != hudState.playerArmyForHud.get() || !isModeWithTeams())
     return teamColors.get().teamRedColor
   else if (cross_call.squad_manger.isInMySquadById(message.uid))
     return teamColors.get().squadColor

@@ -71,6 +71,8 @@ let { hasSessionInLobby, canChangeCrewUnits, canChangeCountry } = require("%scri
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 let { getCountryOverride, getCountryStyle, countryDisplayStyle, isCountryOverrided } = require("%scripts/countries/countriesCustomization.nut")
+let { isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
+let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -385,7 +387,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!countryData.isEnabled)
         continue
 
-      let curPreset = slotbarPresets.getCurrentPreset(listCountry)
+      let curPreset = getCurrentSlotbarPreset(listCountry)
       local crewInSlots = curPreset?.crewInSlots ?? []
       if (!needEmptySlot)
         crewInSlots = crewInSlots.filter(@(id) curPreset?.crews.contains(id) ?? false)
@@ -1229,7 +1231,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkSlotbar() {
-    if(slotbarPresets.isLoading)
+    if(isSlotbarPresetsLoading.get())
       return
 
     if (this.ignoreCheckSlotbar || !isInMenu.get())
@@ -1561,7 +1563,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local countryDataCrews = countryData.crews
-    let crewInSlots = slotbarPresets.getCurrentPreset(countryData.country)?.crewInSlots
+    let crewInSlots = getCurrentSlotbarPreset(countryData.country)?.crewInSlots
     if(crewInSlots != null) {
       countryDataCrews = countryData.crews.map(function(c, idx) {
         c.slotIndex <- crewInSlots.indexof(c?.crew.id) ?? idx

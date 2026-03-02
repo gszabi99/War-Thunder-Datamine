@@ -116,14 +116,23 @@ def camera_shake_on_reload_update(info : UpdateStageInfoAct;
 
     query(cameraEid) <| $ [es] (var transform aka camera_transform : float3x4&)
       if needUpdate
-        let weaponDirInWorld = get_weapon_direction(animchar, gun_reload_camera_shake__node1Index, gun_reload_camera_shake__node2Index)
-        let weaponDirLocal = rotate(inverse(soldier_transform), weaponDirInWorld)
-        let weaponRotateQuat = quat(quat_from_unit_arc(gun_reload_camera_shake__restWeaponDirection, weaponDirLocal))
-        let cameraRotatedDirection = weaponRotateQuat * camera__lookDir
-        let cameraDiffDir = cameraRotatedDirection - camera__lookDir
+        let inverseSoldierTransform = inverse(soldier_transform)
+        let lookDirLocal = rotate(inverseSoldierTransform, camera__lookDir)
 
-        let projX = dot(cameraDiffDir, -soldier_transform[2])
-        let projY = dot(cameraDiffDir, soldier_transform[1])
+        
+        
+        
+        let aimDirZ = normalize(cross(lookDirLocal, float3(0.f, 1.f, 0.f))) 
+        let aimDirY = normalize(cross(aimDirZ, lookDirLocal))
+
+        let weaponDirInWorld = get_weapon_direction(animchar, gun_reload_camera_shake__node1Index, gun_reload_camera_shake__node2Index)
+        let weaponDirLocal = rotate(inverseSoldierTransform, weaponDirInWorld)
+        let weaponRotateQuat = quat(quat_from_unit_arc(gun_reload_camera_shake__restWeaponDirection, weaponDirLocal))
+        let cameraRotatedDirection = weaponRotateQuat * lookDirLocal
+        let cameraDiffDir = cameraRotatedDirection - lookDirLocal
+
+        let projX = dot(cameraDiffDir, -aimDirZ)
+        let projY = dot(cameraDiffDir, aimDirY)
 
         offsetX = clamp(projX * gun_reload_camera_shake__scale.x, gun_reload_camera_shake__limitX)
         offsetY = clamp(projY * gun_reload_camera_shake__scale.y, gun_reload_camera_shake__limitY)

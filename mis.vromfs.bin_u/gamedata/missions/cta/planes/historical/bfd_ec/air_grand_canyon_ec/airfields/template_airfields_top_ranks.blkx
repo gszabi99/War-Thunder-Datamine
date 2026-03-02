@@ -1,0 +1,493 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/ruhr.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "airfileds_top_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": {
+          "value": "air spawns for top ranks"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "force_air_spawn"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "t1_airfield_top",
+        "tm": [
+          [
+            0.999669,
+            0.0,
+            0.0256662
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0256662,
+            0.0,
+            0.999669
+          ],
+          [
+            47871.0,
+            1301.5,
+            15387.7
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_top",
+        "tm": [
+          [
+            -0.992489,
+            0.0,
+            -0.122332
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.122332,
+            0.0,
+            -0.992489
+          ],
+          [
+            -48811.1,
+            1169.66,
+            10799.8
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield_top_reload",
+        "tm": [
+          [
+            0.999837,
+            0.0,
+            -0.0179631
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0179631,
+            0.0,
+            0.999837
+          ],
+          [
+            29029.8,
+            2744.24,
+            -15268.7
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_top_reload",
+        "tm": [
+          [
+            -0.999375,
+            0.0,
+            -0.0353656
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0353656,
+            0.0,
+            -0.999375
+          ],
+          [
+            -28798.2,
+            1660.09,
+            -18133.9
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    ]
+  },
+  "areas": {
+    "t1_bombers_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -33.3961,
+          0.0,
+          -5999.92
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          5999.92,
+          0.0,
+          -33.3961
+        ],
+        [
+          47692.9,
+          3500.0,
+          14995.3
+        ]
+      ],
+      "props": {}
+    },
+    "t1_fighters_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -22.2632,
+          0.0,
+          -3999.96
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          3999.96,
+          0.0,
+          -22.2632
+        ],
+        [
+          47692.7,
+          2500.0,
+          14995.3
+        ]
+      ],
+      "props": {}
+    },
+    "t2bombers_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -434.611,
+          0.0,
+          5984.25
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          -5984.25,
+          0.0,
+          -434.611
+        ],
+        [
+          -48745.8,
+          3500.0,
+          11207.4
+        ]
+      ],
+      "props": {}
+    },
+    "t2_fighters_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -289.758,
+          0.0,
+          3989.52
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          -3989.52,
+          0.0,
+          -289.758
+        ],
+        [
+          -48745.8,
+          2500.0,
+          11207.4
+        ]
+      ],
+      "props": {}
+    },
+    "location__top_border": {
+      "type": "Box",
+      "tm": [
+        [
+          128000.0,
+          0.0,
+          -0.000600962
+        ],
+        [
+          0.0,
+          1000.0,
+          0.0
+        ],
+        [
+          0.000600962,
+          0.0,
+          128000.0
+        ],
+        [
+          1942.35,
+          0.000488281,
+          1199.16
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "airfields_top_46km": {
+      "type": "Box",
+      "tm": [
+        [
+          92000.0,
+          0.0,
+          -0.00488281
+        ],
+        [
+          0.0,
+          92000.0,
+          0.0
+        ],
+        [
+          0.00806725,
+          0.0,
+          152000.0
+        ],
+        [
+          0.0,
+          3348.55,
+          862.752
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_air_spawn_bomber_top": {
+      "type": "Box",
+      "tm": [
+        [
+          99.7379,
+          0.0,
+          7.23679
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -2171.04,
+          0.0,
+          29921.3
+        ],
+        [
+          -51718.8,
+          3500.0,
+          10991.1
+        ]
+      ],
+      "props": {}
+    },
+    "t2_air_spawn_top": {
+      "type": "Box",
+      "tm": [
+        [
+          99.7379,
+          0.0,
+          7.23679
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -2171.04,
+          0.0,
+          29921.3
+        ],
+        [
+          -50733.6,
+          2500.0,
+          11062.6
+        ]
+      ],
+      "props": {}
+    },
+    "t1_air_spawn_bomber_top": {
+      "type": "Box",
+      "tm": [
+        [
+          -99.8776,
+          0.0,
+          4.94565
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -1483.7,
+          0.0,
+          -29963.3
+        ],
+        [
+          50711.0,
+          3500.0,
+          14938.0
+        ]
+      ],
+      "props": {}
+    },
+    "t1_air_spawn_top": {
+      "type": "Box",
+      "tm": [
+        [
+          -99.8776,
+          0.0,
+          4.94565
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -1483.7,
+          0.0,
+          -29963.3
+        ],
+        [
+          49700.3,
+          2500.0,
+          14911.5
+        ]
+      ],
+      "props": {}
+    },
+    "airfields_reload_top_26km": {
+      "type": "Box",
+      "tm": [
+        [
+          52000.0,
+          0.0,
+          -0.00133947
+        ],
+        [
+          0.0,
+          52000.0,
+          0.0
+        ],
+        [
+          0.00285457,
+          0.0,
+          152000.0
+        ],
+        [
+          0.0,
+          3348.55,
+          862.752
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -2327,6 +2327,34 @@
             20.0
           ]
         }
+      },
+      {
+        "trigger": "gunner4",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 90.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -5.0,
+            10.0
+          ]
+        }
       }
     ],
     "hideNodes": {
@@ -2363,14 +2391,14 @@
       ],
       "CenterOfGravity": [
         0.4,
-        0.4,
+        0.5,
         0.0
       ],
       "AdvancedMass": false,
       "trackMass": 800.0,
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.7
       ]
     },
     "tracks": {
@@ -3564,6 +3592,15 @@
       }
     }
   },
+  "commanderView": {
+    "optics": "commander_optics_square",
+    "zoomOutFov": 15.0,
+    "zoomInFov": 14.7,
+    "sightSize": [
+      0.29,
+      0.2
+    ]
+  },
   "cockpit": {
     "zoomOutFov": 18.494,
     "zoomInFov": 9.217,
@@ -3842,6 +3879,34 @@
               }
             },
             {
+              "trigger": "gunner4",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 90.0,
+              "speedPitch": 90.0,
+              "turret": {
+                "head": "bone_commander_sight_h",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -5.0,
+                  10.0
+                ]
+              }
+            },
+            {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
@@ -4005,6 +4070,15 @@
       "replace_tex": {
         "from": "ger_camo_bronzegruen*",
         "to": "ger_camo_carc_winter*"
+      }
+    },
+    {
+      "name": "ger_camo_modern_desert_threecolor",
+      "nameLocId": "skin/ger_camo_modern_desert_threecolor",
+      "descLocId": "skin/ger_camo_modern_desert_threecolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_modern_desert_threecolor*"
       }
     }
   ]

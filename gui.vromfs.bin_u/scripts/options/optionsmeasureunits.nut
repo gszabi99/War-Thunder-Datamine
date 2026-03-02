@@ -1,11 +1,9 @@
 from "%scripts/dagui_library.nut" import *
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { Point2 } = require("dagor.math")
 let { pow } = require("math")
 let { format } = require("string")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { floatToStringRounded } = require("%sqstd/string.nut")
 let { getMeasureUnitOptionType } = require("guiOptions")
 let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST,
@@ -14,10 +12,7 @@ let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS
   USEROPT_MEASUREUNITS_RADIAL_SPEED
 } = require("%scripts/options/optionsExtNames.nut")
 
-let persistent = {
-  unitsCfg = null
-}
-registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
+let OptionsMeasureUnits = persist("OptionsMeasureUnits", @() {unitsCfg = []})
 
 
 let optionsByIndex = [
@@ -32,15 +27,11 @@ let optionsByIndex = [
 ]
 
 function isInitialized() {
-  return (persistent.unitsCfg?.len() ?? 0) != 0
+  return (OptionsMeasureUnits.unitsCfg?.len() ?? 0) != 0
 }
 
-let getMeasureUnitsNames = @() isInitialized()
-  ? ::g_measure_type.types.reduce(@(acc, v) acc.__update({ [v.name] = v.getMeasureUnitsLocKey() }), {})
-  : null
-
 function init() {
-  persistent.unitsCfg = []
+  OptionsMeasureUnits.unitsCfg.clear()
   let blk = DataBlock()
   blk.load("config/measureUnits.blk")
   for (local i = 0; i < blk.blockCount(); i++) {
@@ -58,15 +49,15 @@ function init() {
       }
       units.append(unit)
     }
-    persistent.unitsCfg.append(units)
+    OptionsMeasureUnits.unitsCfg.append(units)
   }
-  updateExtWatched({ measureUnitsNames = getMeasureUnitsNames() })
+  broadcastEvent("MeasureUnitsInited")
 }
 
 function getOption(useroptId) {
   let unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId) ?? 0
   let option = optionsByIndex[unitNo]
-  let units = persistent.unitsCfg[unitNo]
+  let units = OptionsMeasureUnits.unitsCfg[unitNo]
   let unitName = getMeasureUnitOptionType(unitNo)
 
   return {
@@ -79,7 +70,7 @@ function getOption(useroptId) {
 
 function getMeasureCfg(unitNo) {
   let unitName = getMeasureUnitOptionType(unitNo)
-  return persistent.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
+  return OptionsMeasureUnits.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
 function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false, isPresize = true) {
@@ -110,12 +101,8 @@ function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, 
 
 function isMetricSystem(unitNo) {
   let unitName = getMeasureUnitOptionType(unitNo)
-  return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
+  return OptionsMeasureUnits.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
-
-addListenersWithoutEnv({
-  MeasureUnitsChanged = @(_) updateExtWatched({ measureUnitsNames = getMeasureUnitsNames() })
-})
 
 return {
   init = init

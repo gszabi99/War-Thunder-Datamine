@@ -3,11 +3,12 @@ from "%scripts/dagui_library.nut" import *
 from "hitCamera" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_mission_time } = require("mission")
-let { g_hud_enemy_debuffs, getStateByValue } = require("%scripts/hud/hudEnemyDebuffsType.nut")
+let { g_hud_enemy_debuffs } = require("%scripts/hud/hudEnemyDebuffsType.nut")
+let { updateCrewLifebar, setCrewLostText } = require("%scripts/hud/hudCrewLifebarUtils.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { setInterval, setTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
+let { setInterval, setTimeout, clearTimer, deferOnce, resetTimeout } = require("dagor.workcycle")
 let { get_game_params_blk } = require("blkGetters")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -15,16 +16,13 @@ let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { get_mission_difficulty_int } = require("guiMission")
 let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 let { isInFlight } = require("gameplayBinding")
-let { format } =  require("string")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let stdMath = require("%sqstd/math.nut")
 let { register_command } = require("console")
 let { get_charserver_time_sec } = require("chard")
 let { rnd_int, rnd_float } = require("dagor.random")
 
 const TIME_TITLE_SHOW_SEC = 3
-const TIME_TO_SUM_CREW_LOST_SEC = 1 
-const TIME_TO_SUM_RELATIVE_CREW_LOST = 0.15
+const TIME_TO_SUM_CREW_LOST = 0.15
 
 let animTimerPid = dagui_propid_add_name_id("_transp-timer")
 let animSizeTimerPid = dagui_propid_add_name_id("_size-timer")
@@ -63,7 +61,7 @@ let debuffsListsByUnitType = {}
 let trackedPartNamesByUnitType = {}
 let fireIndicators = {}
 
-local scene     = null
+local hitCamNest  = null
 local titleObj  = null
 local infoObj   = null
 local damageStatusObj = null
@@ -80,18 +78,11 @@ local unitsInfo = {}
 local minAliveCrewCount = 2
 local canShowCritAnimation = false
 local hasImportantTitle = false
-local coverPartsHpData = []
+local canAddLossText = false
 
-let coverPartHPBlockTemplate =
-@"div {
-  position:t='relative'
-  top:t='ph/2-h/2'
-  margin-left:t='{margin}'
-  hitCamStateBlock {
-    size:t='{coverPartBlockWidth},@shipCoverPartHeight'
-    state:t='{stateColor}'
-  }
-}"
+function canAddLossTextTimer() {
+  canAddLossText = false
+}
 
 function getMinAliveCrewCount() {
   let diffCode = get_mission_difficulty_int()
@@ -126,40 +117,13 @@ function setDamageStatus(statusObjId, health, isCritical = true) {
   setTimeout(10, @() stopDamageStatusBlink(statusObjId))
 }
 
-function updateCoverPartsHp() {
-  if (!(scene?.isValid() ?? false))
-    return
-  let coverPartsHpLen = coverPartsHpData.len()
-  if (coverPartsHpLen == 0)
-    return
-
-  let compartmentsBlocks = scene.findObject("ship_compartments_blocks")
-  if (!compartmentsBlocks?.isValid())
-    return
-
-  let coverPartBlockWidth = $"((@hitCameraWidth/3)-(({coverPartsHpLen-1})*@shipCoverPartInterval))/{coverPartsHpLen}"
-  local compartmentsBlkData = ""
-
-  foreach(idx, coverPartHp in coverPartsHpData) {
-    let stateColor = getStateByValue(coverPartHp, 0.995, 0.505, 0.005)
-    let margin = idx == 0 ? "" : "@shipCoverPartInterval"
-
-    let block = coverPartHPBlockTemplate.subst({ margin, coverPartBlockWidth, stateColor })
-    compartmentsBlkData = "".concat(compartmentsBlkData, block)
-  }
-  scene.getScene().replaceContentFromText(compartmentsBlocks, compartmentsBlkData, compartmentsBlkData.len(), null)
-}
-
 function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null) {
-  local data = null
-  if (item.id == "SHIP_COMPARTMENTS")
-    data =  item.getInfo(coverPartsHpData, unitInfo)
-  else
-    data = item.getInfo(camInfo, unitInfo, partName, dmgParams)
+  let data = item.getInfo(camInfo, unitInfo, partName, dmgParams)
+
   let isShow = data != null
-  if (item?.needShowChange) {
-    unitInfo.crewRelativeCurr = stdMath.round(data?.value ?? unitInfo.crewRelativePrev)
-  }
+  if (item?.needShowChange)
+    unitInfo.crewCurrCount = data?.value ?? unitInfo.crewPrevCount
+
   if (!(infoObj?.isValid() ?? false))
     return
 
@@ -170,9 +134,6 @@ function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null) {
   if (!isShow)
     return
 
-  if (item.id == "SHIP_COMPARTMENTS" && data)
-    updateCoverPartsHp()
-
   if (data?.state)
     obj.state = data.state
 
@@ -181,17 +142,23 @@ function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null) {
   let labelObj = obj.findObject("label")
   if (labelObj?.isValid() ?? false)
     labelObj.setValue(data.label)
+
+  if (data?.maxSizeLabel == null)
+    return
+  let labelNestObj = obj.findObject("label_nest")
+  if (labelNestObj?.isValid() ?? false)
+    labelNestObj.setValue(data?.maxSizeLabel)
 }
 
 function updateFadeAnimation() {
   let needFade = stopFadeTimeS > 0
-  scene["transp-time"] = needFade ? (stopFadeTimeS * 1000).tointeger() : 1
-  scene["transp-base"] = needFade ? 255 : 0
-  scene["transp-end"]  = needFade ? 0 : 255
-  scene.setFloatProp(animTimerPid, 0.0)
+  hitCamNest["transp-time"] = needFade ? (stopFadeTimeS * 1000).tointeger() : 1
+  hitCamNest["transp-base"] = needFade ? 255 : 0
+  hitCamNest["transp-end"]  = needFade ? 0 : 255
+  hitCamNest.setFloatProp(animTimerPid, 0.0)
 }
 
-let getHitCameraAABB = @() getDaguiObjAabb(scene)
+let getHitCameraAABB = @() getDaguiObjAabb(hitCamNest)
 let isKillingHitResult = @(result) result >= DM_HIT_RESULT_KILL && result != DM_HIT_RESULT_INVULNERABLE
 
 function reset() {
@@ -205,7 +172,6 @@ function reset() {
   fireIndicators.clear()
   camInfo.clear()
   unitsInfo.clear()
-  coverPartsHpData = []
 }
 
 function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled, unitName = null) {
@@ -219,11 +185,9 @@ function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled, unitName = n
       isKilled = isUnitKilled
       isKillProcessed = false
       time = 0
-      crewCount = -1
       crewTotalCount = 0
-      crewLostCount = 0
-      crewRelativePrev = -1
-      crewRelativeCurr = -1
+      crewPrevCount = -1
+      crewCurrCount = -1
       importantEvents = {}
       unitName
     }
@@ -273,11 +237,11 @@ function getNextImportantTitle() {
 }
 
 function showCritAnimation() {
-  if (!canShowCritAnimation || !(scene?.isValid() ?? false))
+  if (!canShowCritAnimation || !(hitCamNest?.isValid() ?? false))
     return
 
   canShowCritAnimation = false
-  let animObj = scene.findObject("critAnim")
+  let animObj = hitCamNest.findObject("critAnim")
   animObj["_size-timer"] = "0"
   animObj.width = 1
   animObj.setFloatProp(animSizeTimerPid, 0.0)
@@ -292,7 +256,7 @@ function updateTitle() {
     return
 
   let style = styles?[hitResult] ?? "none"
-  scene.result = style
+  hitCamNest.result = style
   let isVisibleTitle = hitResult != DM_HIT_RESULT_NONE
   titleObj.show(isVisibleTitle)
   if (isVisibleTitle) {
@@ -310,7 +274,7 @@ function updateImportantTitle() {
   let title = getNextImportantTitle()
   if (title != "") {
     setTimeout(TIME_TITLE_SHOW_SEC, updateImportantTitle)
-    scene.result = "kill"
+    hitCamNest.result = "kill"
     titleObj.show(true)
     titleObj.setValue(title)
     hasImportantTitle = true
@@ -322,79 +286,59 @@ function updateImportantTitle() {
   updateTitle()
 }
 
-function showRelativeCrewLoss() {
+function showCrewLoss() {
   let unitInfo = getTargetInfo(curUnitId, curUnitVersion, curUnitType, isKillingHitResult(hitResult))
-  let { crewRelativePrev, crewRelativeCurr } = unitInfo
-  if (crewRelativePrev <= 0) {
-    unitInfo.crewRelativePrev = crewRelativeCurr
+  let { crewPrevCount, crewCurrCount, crewTotalCount } = unitInfo
+  if (crewPrevCount <= 0) {
+    unitInfo.crewPrevCount = crewCurrCount
     return
   }
-  let crewLostRelative = crewRelativeCurr - crewRelativePrev
-  if (!crewLostRelative || crewLostRelative > -1 || !(scene?.isValid() ?? false))
+  let crewLostCount = crewCurrCount - crewPrevCount
+  if (!crewLostCount || crewLostCount > -1 || !(hitCamNest?.isValid() ?? false))
     return
 
-  unitInfo.crewRelativePrev = crewRelativeCurr
+  unitInfo.crewPrevCount = crewCurrCount
 
-  let crewNestObj = scene.findObject("crew_relative_nest")
-  crewNestObj._blink = "yes"
+  let nest = hitCamNest.findObject("crew_lifebar_nest").findObject("lost_text_nest")
+  let leftPos = (crewCurrCount + crewPrevCount)/2.0/crewTotalCount.tofloat() * 100
 
-  let lostTxt = format("%2.f%s", crewLostRelative, loc("measureUnits/percent"))
-  let data = "".concat("hitCamLostCrewRelativeText { text:t='", lostTxt, "' }")
-  get_cur_gui_scene().prependWithBlk(crewNestObj.findObject("crew_relative_lost"), data, this)
+  setCrewLostText(nest, crewLostCount, leftPos, canAddLossText)
+  canAddLossText = true
+  resetTimeout(1.5, canAddLossTextTimer)
 }
 
-function showCrewCount() {
-  let unitInfo = getTargetInfo(curUnitId, curUnitVersion,
-    curUnitType, isKillingHitResult(hitResult))
-  let { crewCount, crewTotalCount, crewLostCount } = unitInfo
-  unitInfo.crewLostCount = 0
-  if (!isVisible || crewLostCount == 0)
-    return
-  if (!(scene?.isValid() ?? false))
-    return
-
-  let crewNestObj = scene.findObject("crew_nest")
-  crewNestObj._blink = "yes"
-
-  let data = "".concat("hitCameraLostCrewText { text:t='", crewLostCount, "' }")
-  get_cur_gui_scene().prependWithBlk(
-    crewNestObj.findObject("lost_crew_count"), data, this)
-
-  let crewColor = crewCount <= minAliveCrewCount ? "warningTextColor" : "activeTextColor"
-  crewNestObj.findObject("crew_count").setValue(colorize(crewColor, crewCount))
-  let totalText = crewTotalCount > 0 ? $"{loc("ui/slash")}{crewTotalCount}" : ""
-  crewNestObj.findObject("max_crew_count").setValue(totalText)
-}
-
-function updateCrewCount(unitInfo, data = null) {
-  clearTimer(showCrewCount)
-  clearTimer(showRelativeCrewLoss)
-  if (!(scene?.isValid() ?? false))
+function updateCrewCount(unitInfo, data = null, isInitUpdate = false) {
+  clearTimer(showCrewLoss)
+  if (!(hitCamNest?.isValid() ?? false))
     return
   let isShowCrew = !unitInfo.isKilled
     && (curUnitType == ES_UNIT_TYPE_SHIP || curUnitType == ES_UNIT_TYPE_BOAT)
-  if (!isShowCrew) {
-    scene.findObject("crew_nest")._blink = "no"
+  if (!isShowCrew)
     return
-  }
+
+  let { crewPrevCount, crewCurrCount } = unitInfo
+  if (isInitUpdate || crewPrevCount <= 0)
+    unitInfo.crewPrevCount = crewCurrCount
+
+  let crewLost = crewCurrCount - crewPrevCount
+  let needSkipAnim = isInitUpdate || crewLost == 0
 
   unitInfo.crewTotalCount = data?.crewTotalCount ?? camInfo?.crewTotal ?? -1
-  let crewCount = data?.crewAliveCount ?? camInfo?.crewAlive ?? -1
-  if (unitInfo.crewCount == -1)
-    unitInfo.crewCount = crewCount
-  let crewLostCount = crewCount - unitInfo.crewCount
-
-  setTimeout(TIME_TO_SUM_RELATIVE_CREW_LOST, showRelativeCrewLoss)
-
-  if (crewCount != -1 && crewLostCount < 0) {
-    unitInfo.crewLostCount = unitInfo.crewLostCount + crewLostCount
-    unitInfo.crewCount = crewCount
-  }
-  if (unitInfo.crewLostCount == 0)
-    return
+  let aliveCount = data?.crewAliveCount ?? camInfo?.crewAlive ?? -1
 
   minAliveCrewCount = data?.crewAliveMin ?? camInfo?.crewAliveMin ?? minAliveCrewCount
-  setTimeout(TIME_TO_SUM_CREW_LOST_SEC, showCrewCount)
+
+  let crewNestObj = hitCamNest.findObject("crew_lifebar_nest")
+  let alivePercent = unitInfo.crewTotalCount > 0 ? aliveCount / unitInfo.crewTotalCount.tofloat() : 1
+  let minAliveCrewPercent = unitInfo.crewTotalCount > 0 ? minAliveCrewCount / unitInfo.crewTotalCount.tofloat() : 0
+  updateCrewLifebar(crewNestObj, alivePercent, { minAliveCrewPercent, needSkipAnim })
+
+  if (isInitUpdate) {
+    clearTimer(canAddLossTextTimer)
+    canAddLossText = false
+    return
+  }
+  setTimeout(TIME_TO_SUM_CREW_LOST, showCrewLoss)
 }
 
 let fullHealthColor = "#909E35"
@@ -434,10 +378,10 @@ function sendHudHitCameraState() {
 }
 
 function update() {
-  if (!(scene?.isValid() ?? false))
+  if (!(hitCamNest?.isValid() ?? false))
     return
 
-  scene.show(isVisible)
+  hitCamNest.show(isVisible)
   if (!isVisible)
     return
 
@@ -450,6 +394,25 @@ function update() {
 function hitCameraReinit() {
   isEnabled = get_option_xray_kill()
   update()
+}
+
+function updateHitcamContentBlk() {
+  if (infoObj?.isValid() ?? false) {
+    let guiScene = infoObj.getScene()
+    let markupFilename = debuffTemplates?[curUnitType]
+    if (markupFilename)
+      guiScene.replaceContent(infoObj, markupFilename, this)
+    else
+      guiScene.replaceContentFromText(infoObj, "", 0, this)
+  }
+  if (damageStatusObj?.isValid() ?? false) {
+    let guiScene = damageStatusObj.getScene()
+    let markupFilename = damageStatusTemplates?[curUnitType]
+    if (markupFilename)
+      guiScene.replaceContent(damageStatusObj, markupFilename, this)
+    else
+      guiScene.replaceContentFromText(damageStatusObj, "", 0, this)
+  }
 }
 
 function onHitCameraEvent(mode, result, info) {
@@ -468,53 +431,39 @@ function onHitCameraEvent(mode, result, info) {
 
   if (isStarted) {
     camInfo.replace_with(clone info)
-    if ((scene?.isValid() ?? false)) {
-      let animObj = scene.findObject("critAnim")
+    if ((hitCamNest?.isValid() ?? false)) {
+      let animObj = hitCamNest.findObject("critAnim")
       animObj["color-factor"] = "0"
       animObj.needAnim = "no"
     }
     canShowCritAnimation = true
   }
 
-  if (needResetUnitType && (infoObj?.isValid() ?? false)) {
-    let guiScene = infoObj.getScene()
-    let markupFilename = debuffTemplates?[curUnitType]
-    if (markupFilename)
-      guiScene.replaceContent(infoObj, markupFilename, this)
-    else
-      guiScene.replaceContentFromText(infoObj, "", 0, this)
-  }
-
-  if (needResetUnitType && damageStatusObj?.isValid()) {
-    let guiScene = damageStatusObj.getScene()
-    let markupFilename = damageStatusTemplates?[curUnitType]
-    if (markupFilename)
-      guiScene.replaceContent(damageStatusObj, markupFilename, this)
-    else
-      guiScene.replaceContentFromText(damageStatusObj, "", 0, this)
-  }
+  if (needResetUnitType)
+    updateHitcamContentBlk()
 
   if (isVisible) {
+    let isFirstEvent = unitsInfo?[curUnitId] == null
     local unitInfo = getTargetInfo(curUnitId, curUnitVersion,
       curUnitType, isKillingHitResult(hitResult), info?.unitName)
+
     foreach (item in (debuffsListsByUnitType?[curUnitType] ?? [])) {
       updateDebuffItem(item, unitInfo)
 
       if (item?.needShowChange && (!isStarted || needFade)) {
-        unitInfo.crewRelativePrev = unitInfo.crewRelativeCurr
+        unitInfo.crewPrevCount = unitInfo.crewCurrCount
       }
     }
 
     if (unitInfo.isKilled)
       unitInfo.isKillProcessed = true
-    updateCrewCount(unitInfo)
+    updateCrewCount(unitInfo, null, isFirstEvent)
   }
   else
     cleanupUnitsInfo()
 
   update()
 }
-
 
 function addFireIndicator(fireData) {
   let iconBlk = handyman.renderCached("%gui/hud/hitCamIndicator.tpl",
@@ -527,28 +476,28 @@ function addFireIndicator(fireData) {
     }
   )
 
-  let camRenderObj = scene.findObject("indicators_nest")
-  scene.getScene().appendWithBlk(camRenderObj, iconBlk, null)
-  let indicator = scene.findObject($"fire_{fireData.partId}")
+  let camRenderObj = hitCamNest.findObject("indicators_nest")
+  hitCamNest.getScene().appendWithBlk(camRenderObj, iconBlk, null)
+  let indicator = hitCamNest.findObject($"fire_{fireData.partId}")
   fireIndicators[$"{fireData.partId}"] <- {data = fireData, obj = indicator, waitRemove = false}
 }
 
 function removeFireIndicator(fireName) {
   let fire = fireIndicators[fireName]
   if (fire.obj.isValid())
-    scene.getScene().destroyElement(fire.obj)
+    hitCamNest.getScene().destroyElement(fire.obj)
   fireIndicators.$rawdelete(fireName)
 }
 
 function removeAllFireIndicators() {
   foreach (fire in fireIndicators) {
-    scene.getScene().destroyElement(fire.obj)
+    hitCamNest.getScene().destroyElement(fire.obj)
   }
   fireIndicators.clear()
 }
 
 function onHitCameraUpdateFiresEvent(fireArr, hasCriticalFire) {
-  if (scene == null || !scene.isValid())
+  if (hitCamNest == null || !hitCamNest.isValid())
     return
 
   if ((fireArr?.len() ?? 0) == 0) {
@@ -663,6 +612,15 @@ function onHitCameraImportantEvents(data) {
 }
 
 function onEnemyDamageState(event) {
+  let needResetUnitType = curUnitType != event?.unitType
+  let isNewUnit = curUnitId != event?.unitId
+  curUnitId = event?.unitId ?? curUnitId
+  curUnitType = event?.unitType ?? curUnitType
+  curUnitVersion = event?.unitVersion ?? curUnitVersion
+
+  if (needResetUnitType)
+    updateHitcamContentBlk()
+
   if (curUnitType in (damageStatusTemplates)) {
     let { artilleryHealth = 100, auxiliaryHealth = 100, hasFire = false,
     hasCriticalFire = false, engineHealth = 100, torpedoTubesHealth = 100, ruddersHealth = 100, hasBreach = false } = event
@@ -675,16 +633,14 @@ function onEnemyDamageState(event) {
     setDamageStatus("breach_status", hasBreach ? 1 : -1)
   }
 
-  if (event?.coverPartsRelHp)
-    coverPartsHpData = event?.coverPartsRelHp.val ?? []
-
   let unitInfo = getTargetInfo(curUnitId, curUnitVersion,
     curUnitType, isKillingHitResult(hitResult))
+
   foreach (item in (debuffsListsByUnitType?[curUnitType] ?? []))
     if (item.isUpdateByEnemyDamageState)
       updateDebuffItem(item, unitInfo, null, event)
 
-  updateCrewCount(unitInfo, event)
+  updateCrewCount(unitInfo, event, isNewUnit)
   
 
 
@@ -694,13 +650,13 @@ function hitCameraInit(nest) {
   if (!(nest?.isValid() ?? false))
     return
 
-  if ((scene?.isValid() ?? false) && scene.isEqual(nest))
+  if ((hitCamNest?.isValid() ?? false) && hitCamNest.isEqual(nest))
     return
 
-  scene = nest
-  titleObj = scene.findObject("title")
-  infoObj  = scene.findObject("info")
-  damageStatusObj = scene.findObject("damageStatus")
+  hitCamNest = nest
+  titleObj = hitCamNest.findObject("title")
+  infoObj = hitCamNest.findObject("info")
+  damageStatusObj = hitCamNest.findObject("damageStatus")
 
   if (!hasFeature("HitCameraTargetStateIconsTank") && (ES_UNIT_TYPE_TANK in debuffTemplates))
     debuffTemplates.$rawdelete(ES_UNIT_TYPE_TANK)
@@ -712,9 +668,9 @@ function hitCameraInit(nest) {
 
   minAliveCrewCount = getMinAliveCrewCount()
 
-  g_hud_event_manager.subscribe("EnemyDamageState", onEnemyDamageState, scene)
-  g_hud_event_manager.subscribe("HitCameraImportanEvents", onHitCameraImportantEvents, scene)
-  g_hud_event_manager.subscribe("LocalPlayerDead", @(_eventData) reset(), scene)
+  g_hud_event_manager.subscribe("EnemyDamageState", onEnemyDamageState, hitCamNest)
+  g_hud_event_manager.subscribe("HitCameraImportanEvents", onHitCameraImportantEvents, hitCamNest)
+  g_hud_event_manager.subscribe("LocalPlayerDead", @(_eventData) reset(), hitCamNest)
 
   if (!continueShowingOnSwitchHud)
     reset()
@@ -772,6 +728,45 @@ eventbus_subscribe("on_hitcamera_update_fires_event", function(event) {
     return
   onHitCameraUpdateFiresEvent(fireArr, hasCriticalFire)
 })
+
+function debugCreateEnemyDamage(crewTotal, alivePercent) {
+  let data = {
+    unitId = curUnitId >= 0 ? curUnitId : 0
+    unitVersion = 0
+    unitType = 2
+    hasFire = false
+    hasCriticalFire = false
+    crewAliveMin = 100
+    crewAliveCount = (crewTotal * alivePercent).tointeger()
+    crewTotalCount = crewTotal
+    buoyancy = 1.0
+    hasBreach = false
+    engineHealth = 100
+    torpedoTubesHealth = 100
+    artilleryHealth = 100
+    auxiliaryHealth = 100
+    ruddersHealth = 100
+    curRelativeHealth = 1.0
+    updateDebuffsOnly = true
+    coverPartsRelHp = {
+      val = [ 1.0
+      ,1.0
+      ,1.0
+      ,1.0
+      ,1.0
+      ,1.0
+      ,1.0
+      ,1.0]
+    }
+  }
+  g_hud_event_manager.onHudEvent("EnemyDamageState", data)
+}
+
+function dropEnemyDamage(crewTotal, alivePercent) {
+  debugCreateEnemyDamage(crewTotal, alivePercent/100.0)
+}
+
+register_command(@(crewTotal, alivePercent) dropEnemyDamage(crewTotal, alivePercent), "hud.simCrewDamage")
 
 registerForNativeCall("get_hit_camera_aabb", getHitCameraAABB)
 

@@ -14,9 +14,7 @@ let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
 let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
 let { is_xboxone_X, is_ps5_pro, isPC, is_android, is_gdk } = require("%sqstd/platform.nut")
-
-
-
+let { canSetVSyncMode } = require("%scripts/options/consoleSettings.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
 let { get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values } = require("radarOptions")
@@ -24,7 +22,7 @@ let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
 let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
-let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
+let { hasCustomSoundMods, isEnabledCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 let { getDevFeaturesList } = require("%scripts/features/devFeatures.nut")
@@ -94,9 +92,7 @@ let getMainOptions = function() {
       [USEROPT_PS4_CROSSPLAY, "spinner", isPlatformSony && hasFeature("PS4CrossNetwork") && !isInFlight()],
       [USEROPT_PS4_ONLY_LEADERBOARD, "spinner", isPlatformSony && hasFeature("ConsoleSeparateLeaderboards")],
       [USEROPT_CLUSTERS, "spinner", ! isInFlight() && isPlatformSony],
-      
-
-
+      [USEROPT_VSYNC_MODE, "combobox", canSetVSyncMode()],
       [USEROPT_FONTS_CSS, "spinner"],
       [USEROPT_GAMMA, "slider", !isHdrEnabled()],
       [USEROPT_AUTOLOGIN, "spinner", !isInFlight() && !(isPlatformSony || is_gdk)],
@@ -223,6 +219,7 @@ let getMainOptions = function() {
       [USEROPT_RADAR_MODE_SELECT, "spinner", isTank && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isTank && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isTank && isAllowRadarMode],
+      [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_TANKS, "spinner"],
 
       ["options/header/ship"],
       [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! isInFlight()],
@@ -344,6 +341,8 @@ function getSoundOptions() {
     options = [
       ["options/sound"],
       [USEROPT_SOUND_ENABLE, "switchbox", isPC],
+      [USEROPT_SOUND_SPEAKERS_WIDE_SNAPSHOT, "combobox", !isEnabledCustomSoundMods()],
+      [USEROPT_SOUND_TEST_HEADPHONES, "button", !isEnabledCustomSoundMods()],
       [USEROPT_CUSTOM_SOUND_MODS, "switchbox", isPC && hasCustomSoundMods()],
       [USEROPT_SOUND_DEVICE_OUT, "combobox", isPC && soundDevice.get_out_devices().len() > 0],
       [USEROPT_SOUND_SPEAKERS_MODE, "combobox", isPC],

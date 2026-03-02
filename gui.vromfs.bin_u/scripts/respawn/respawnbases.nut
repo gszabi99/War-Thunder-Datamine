@@ -16,8 +16,9 @@ const SAVED_RESPAWN_BASE_ID = "respawns"
 local savedRespawnBases = null
 
 local respawnBases = {
-  MAP_ID_NOTHING = RespawnBase.MAP_ID_NOTHING
+  MAP_ID_NOTHING = -1
   selectedBaseData = null 
+  selectedSquadmateBasePlayerId = -1
 
   function getSelectedBase() {
     return this.selectedBaseData?.respBase

@@ -85,10 +85,14 @@ def drone_launcher_on_owner_changed(evt : Event;
 [es(on_appear)]
 def drone_launcher_appear(evt : Event;
                           drone_launcher__firstLaunchTimeout : float;
+                          drone_launcher__maxLaunches : int;
                           var drone_launcher__state : int&;
-                          var drone_launcher__nextUseAtTime : float&)
+                          var drone_launcher__nextUseAtTime : float&;
+                          var drone_launcher__launchesRemaining : int&)
   drone_launcher__state = drone_launcher__firstLaunchTimeout > 0.0 ? int(DroneLauncherState.DLS_OFFLINE) : int(DroneLauncherState.DLS_READY)
   drone_launcher__nextUseAtTime = get_sync_time() + drone_launcher__firstLaunchTimeout
+  if drone_launcher__maxLaunches > 0
+    drone_launcher__launchesRemaining = drone_launcher__maxLaunches
 
 
 [es(tag=server, on_appear)]
@@ -111,15 +115,17 @@ def drone_launcher_on_instant_launch_request(evt : RequestDroneLauncherInstantLa
                                          drone_launcher__instantLaunchFromPhone : bool;
                                          var drone_launcher__drone : EntityId&;
                                          var drone_launcher__state : int&;
-                                         var drone_launcher__nextUseAtTime : float&)
+                                         var drone_launcher__nextUseAtTime : float&;
+                                         var drone_launcher__launchesRemaining : int&)
     if human_eid != gun__owner || human_weap__currentGunEid != drone_launcher__tacticalPhone
       return
 
     let time = get_sync_time()
     let droneAlreadyExists = drone_launcher__drone != INVALID_ENTITY_ID
     let isCooldown = time < drone_launcher__nextUseAtTime
+    let noLaunchesLeft = drone_launcher__launchesRemaining == 0
     let respawn = get_respawn_base_for_drone(team)
-    if droneAlreadyExists || isCooldown || (respawn is nothing) || !drone_launcher__instantLaunchFromPhone
+    if droneAlreadyExists || isCooldown || noLaunchesLeft || (respawn is nothing) || !drone_launcher__instantLaunchFromPhone
       drone_launcher_server_report_fail_launch(evt.droneLauncherEid)
       return
 
@@ -128,6 +134,8 @@ def drone_launcher_on_instant_launch_request(evt : RequestDroneLauncherInstantLa
     drone_launcher__drone = create_drone_entity(respawn as transform, drone_launcher__droneTemplate, human_eid, possessedByPlr, team, evt.droneLauncherEid, true)
     drone_launcher__nextUseAtTime = time + drone_launcher__cooldown
     drone_launcher__state = int(DroneLauncherState.DLS_LAUNCHED)
+    if drone_launcher__launchesRemaining > 0
+      drone_launcher__launchesRemaining -= 1
 
 
 [es(tag=server)]
@@ -144,6 +152,7 @@ def drone_launcher_on_start_launch_request(evt : RequestDroneLauncherStartLaunch
                                          drone_launcher__instantLaunchFromPhone : bool;
                                          drone_launcher__drone : EntityId&;
                                          var drone_launcher__state : int&;
+                                         var drone_launcher__launchesRemaining : int&;
                                          var drone_launcher_launch__start : float&;
                                          var drone_launcher_launch__applyTransformAndVelocityStatus : bool&;
                                          var drone_launcher_launch__enableSoundStatus : bool&;
@@ -157,14 +166,18 @@ def drone_launcher_on_start_launch_request(evt : RequestDroneLauncherStartLaunch
 
     let droneAlreadyExists = drone_launcher__drone != INVALID_ENTITY_ID
     let isCooldown = evt.atTime < drone_launcher__nextUseAtTime
+    let noLaunchesLeft = drone_launcher__launchesRemaining == 0
     let requestTimeIsTooOld = (get_sync_time() - evt.atTime) > 0.4 
     let requestTimeIsFuture = get_sync_time() < evt.atTime 
 
-    if droneAlreadyExists || requestTimeIsTooOld || requestTimeIsFuture || isCooldown || drone_launcher__instantLaunchFromPhone
+    if droneAlreadyExists || requestTimeIsTooOld || requestTimeIsFuture || isCooldown || noLaunchesLeft || drone_launcher__instantLaunchFromPhone
       drone_launcher_server_report_fail_launch(evt.droneLauncherEid)
       return
 
     beh_tree__wantRoleDroner = true
+
+    if drone_launcher__launchesRemaining > 0
+      drone_launcher__launchesRemaining -= 1
 
     drone_launcher__state = int(DroneLauncherState.DLS_LAUNCH)
     drone_launcher_launch__start = evt.atTime
@@ -206,6 +219,7 @@ def drone_launcher_launching_server(info : UpdateStageInfoAct;
                                     gun__owner : EntityId;
                                     var drone_launcher__drone : EntityId&;
                                     drone_launcher__nextUseAtTime : float;
+                                    drone_launcher__launchesRemaining : int;
                                     drone_launcher__droneTemplate : string;
                                     drone_launcher_launch__positionOffset : float3;
                                     drone_launcher_launch__start : float;
@@ -219,6 +233,8 @@ def drone_launcher_launching_server(info : UpdateStageInfoAct;
                                     var drone_launcher_anim__replaceAnimationWithEntity : bool&)
   if drone_launcher__state == int(DroneLauncherState.DLS_OFFLINE)
     if info.curTime >= drone_launcher__nextUseAtTime
+      if drone_launcher__launchesRemaining == 0
+        return
       drone_launcher__state = int(DroneLauncherState.DLS_READY)
 
   if drone_launcher__state != int(DroneLauncherState.DLS_LAUNCH)

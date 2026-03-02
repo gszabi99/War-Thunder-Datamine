@@ -4,7 +4,7 @@
       "_tags": "render",
       "gun_smoke_fx__amount": 0.0,
       "gun_smoke_fx__incAmountPerShot": 0.07,
-      "gun_smoke_fx__halfLife": 2.0,
+      "gun_smoke_fx__halfLife": 1.0,
       "gun_smoke_fx__thresholdDistSq": 30.0,
       "gun_smoke_fx__fxEids:list<eid>": {},
       "gun_smoke_fx__nodeIds:list<i>": {},
@@ -128,7 +128,7 @@
       "_tags": "render",
       "gun_smoke_fx__amount": 0.0,
       "gun_smoke_fx__incAmountPerShot": 0.04,
-      "gun_smoke_fx__halfLife": 2.0,
+      "gun_smoke_fx__halfLife": 1.0,
       "gun_smoke_fx__thresholdDistSq": 30.0,
       "gun_smoke_fx__fxEids:list<eid>": {},
       "gun_smoke_fx__nodeIds:list<i>": {},
@@ -154,7 +154,7 @@
       "_tags": "render",
       "gun_smoke_fx__amount": 0.0,
       "gun_smoke_fx__incAmountPerShot": 0.5,
-      "gun_smoke_fx__halfLife": 2.0,
+      "gun_smoke_fx__halfLife": 1.5,
       "gun_smoke_fx__thresholdDistSq": 50.0,
       "gun_smoke_fx__fxEids:list<eid>": {},
       "gun_smoke_fx__nodeIds:list<i>": {},
@@ -206,6 +206,38 @@
           1.0
         ]
       }
+    }
+  },
+  "base_effect": {
+    "_use": "ecs_no_debug",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "effect": {
+      "_tags": "render"
+    },
+    "_group": {
+      "_tags": "render",
+      "effect__name": "misc_placeholder_cmps_fx"
     }
   }
 }

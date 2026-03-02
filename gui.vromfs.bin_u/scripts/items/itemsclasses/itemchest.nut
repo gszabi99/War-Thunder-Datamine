@@ -5,7 +5,6 @@ from "%scripts/items/itemsConsts.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let { getRequirementsMarkup, getRequirementsText, tryUseRecipes
 } = require("%scripts/items/exchangeRecipes.nut")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
@@ -14,7 +13,7 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { findItemById, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
 let { getPrizesStacksViewByWeight, getPrizesStacksViewByCategory, getPrizesListText,
   getPrizesListView, getPrizesStacksView
 } = require("%scripts/items/prizesView.nut")

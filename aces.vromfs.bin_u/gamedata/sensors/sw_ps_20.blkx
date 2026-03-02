@@ -3,48 +3,110 @@
   "name": "PS-20",
   "transivers": {
     "search": {
-      "pulsePower": 450.0,
-      "pulseWidth": 0.000001,
-      "prf": 750.0,
-      "band": 0,
-      "range": 6100.0,
-      "rangeMax": 6100.0,
+      "sideLobesAttenuation": -15.0,
+      "power": 70000.0,
+      "pulseWidth": 7.5e-7,
+      "prf": 2400.0,
+      "band": 5,
+      "rcs": 3.0,
+      "range": 8500.0,
+      "rangeMax": 14000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
       "antenna": {
-        "angleHalfSens": 120.0,
-        "sideLobesSensitivity": -10.0
+        "angleHalfSens": 10.0,
+        "sideLobesSensitivity": -20.0
       }
     }
   },
   "scanPatterns": {
-    "search": {
+    "searchMinBars": {
+      "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -75.0,
+        75.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        50.0
       ],
-      "type": "no"
+      "rollStabLimit": 45.0,
+      "period": 1.0,
+      "width": 75.0,
+      "barHeight": 2.5,
+      "barsCount": 6,
+      "rowMajor": true,
+      "barsOneWay": false
+    },
+    "searchMidBars": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -75.0,
+        75.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        50.0
+      ],
+      "rollStabLimit": 45.0,
+      "period": 2.0,
+      "width": 75.0,
+      "barHeight": 2.5,
+      "barsCount": 12,
+      "rowMajor": true,
+      "barsOneWay": false
+    },
+    "searchMaxBars": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -75.0,
+        75.0
+      ],
+      "elevationLimits": [
+        -20.0,
+        40.0
+      ],
+      "rollStabLimit": 45.0,
+      "period": 4.0,
+      "width": 75.0,
+      "barHeight": 2.5,
+      "barsCount": 24,
+      "rowMajor": true,
+      "barsOneWay": false
     }
   },
   "signals": {
     "search": {
       "groundClutter": true,
-      "dynamicRange": [
-        30.0,
-        3.0
-      ],
+      "aircraftAsTarget": true,
+      "shipsAsTarget": true,
+      "showCScope": true,
+      "friendFoeId": true,
       "distance": {
         "presents": true,
-        "minValue": 120.0,
-        "maxValue": 6100.0,
-        "maxUnambiguousValue": 220000.0
+        "minValue": 100.0,
+        "maxValue": 18600.0,
+        "maxUnambiguousValue": 250000.0
       }
     }
   },
-  "scopeRanges": {
-    "range1": 6100.0
+  "scanPatternSets": {
+    "search": {
+      "scanPattern2": "searchMidBars",
+      "scanPattern3": "searchMaxBars",
+      "scanPattern1": "searchMinBars"
+    }
+  },
+  "scopeRangeSets": {
+    "search": {
+      "range0": 9300.0,
+      "range1": 18600.0,
+      "range2": 3700.0
+    }
   },
   "fsms": {
     "main": {
@@ -54,17 +116,45 @@
           "setEnabled": {
             "value": false
           },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "constant",
+              "value": 5.0
+            }
+          ],
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
+          },
           "setTransiver": {
             "transiver": "search"
           },
+          "setSignal": {
+            "signal": "search"
+          },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -30.0,
-              30.0
+              -75.0,
+              75.0
+            ],
+            "azimuthWidth": 75.0,
+            "elevationRange": [
+              -20.0,
+              40.0
             ],
             "distanceRange": [
               0.0,
-              6100.0
+              18600.0
             ]
           }
         },
@@ -74,14 +164,9 @@
           },
           "setEnabled": {
             "value": false
-          },
-          "setSignal": {
-            "signal": "search"
-          },
-          "setScanPattern": {
-            "scanPattern": "search"
           }
         },
+        "resetStandbyMode": {},
         "setSearchMode": {
           "setModeName": {
             "name": "search"
@@ -92,6 +177,19 @@
           "setFsmActive": {
             "fsm": "search",
             "active": true
+          },
+          "setCueEnabled": {
+            "value": true
+          }
+        },
+        "resetSearchMode": {
+          "clearTargets": {},
+          "setFsmActive": {
+            "fsm": "search",
+            "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -120,7 +218,18 @@
           "event": "disable",
           "stateTo": "standby",
           "actions": {
+            "resetSearchMode": {},
             "setStandbyMode": {}
+          }
+        },
+        "switchScanPattern": {
+          "stateFrom": [
+            "standby",
+            "search"
+          ],
+          "command": "scanPatternSwitch",
+          "actions": {
+            "setNextScanPattern": {}
           }
         },
         "switchScopeRange": {
@@ -145,11 +254,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }
@@ -157,7 +268,32 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": {}
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": {}
           }
         }
       }

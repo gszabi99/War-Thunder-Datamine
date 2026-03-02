@@ -191,6 +191,31 @@
       ]
     }
   },
+  "light_spot_warm_r12_b2_a": {
+    "_use": "spot_light",
+    "light__max_radius": 12.0,
+    "light__color": [
+      120,
+      180,
+      255,
+      255
+    ],
+    "light__brightness": 2.0,
+    "light__nightly": false,
+    "light__radius_scale": 5.0,
+    "_group": {
+      "_tags": "render",
+      "spot_light__shadows": true,
+      "spot_light__cone_angle": 160.0,
+      "spot_light__inner_attenuation": 0.9,
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_cone_angle": 140.0,
+      "spot_light__shadow_near_far_planes": [
+        0.2,
+        12.0
+      ]
+    }
+  },
   "light_bunker_wall": {
     "_use": "omni_light",
     "light__max_radius": 2.0,
@@ -263,7 +288,7 @@
   },
   "light_bunker_ceiling": {
     "_use": "spot_light",
-    "light__max_radius": 7.0,
+    "light__max_radius": 10.0,
     "light__color": [
       200,
       230,
@@ -573,6 +598,40 @@
       "omni_light__shadow_quality": 2
     }
   },
+  "omni_light_wall_6_shadow": {
+    "_use": "omni_light",
+    "light__max_radius": 6.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      80,
+      170,
+      255,
+      255
+    ],
+    "light__brightness": 0.25,
+    "light__radius_scale": 5.0,
+    "light__contact_shadows": false,
+    "light__direction": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "light__use_box": true,
+    "light__enable_lens_flares": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": true,
+      "omni_light__shadow_shrink": 0,
+      "omni_light__shadow_quality": 2
+    }
+  },
   "omni_light_fluorescent_6_cold_a": {
     "_use": "omni_light",
     "light__max_radius": 6.0,
@@ -790,16 +849,20 @@
       255,
       255
     ],
-    "light__brightness": 130.0,
+    "light__brightness": 10.0,
     "light__nightly": false,
+    "light__texture_name": "ies_flashlight_a",
+    "light__enable_lens_flares": true,
     "_group": {
       "_tags": "render",
-      "spot_light__inner_attenuation": 0.1,
+      "spot_light__inner_attenuation": 0.5,
       "spot_light__dynamic_light": true,
       "spot_light__shadows": true,
       "spot_light__dynamic_obj_shadows": true,
-      "spot_light__cone_angle": 40.0,
-      "spot_light__priority": 200
+      "spot_light__cone_angle": 45.0,
+      "spot_light__shadow_frustum_offset": 0.15,
+      "spot_light__priority": 200,
+      "light__high_priority_update:tag": {}
     }
   },
   "spot_light_little_b": {
@@ -1098,10 +1161,11 @@
     "light__nightly": false,
     "_group": {
       "_tags": "render",
-      "spot_light__cone_angle": 160.0,
+      "spot_light__cone_angle": 90.0,
       "spot_light__inner_attenuation": 0.5,
       "spot_light__shadows": true,
-      "spot_light__dynamic_obj_shadows": false
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 1
     }
   },
   "spot_light_warm_r7_b4": {
@@ -1362,7 +1426,7 @@
     ],
     "light__brightness": 0.5,
     "light__radius_scale": 3.0,
-    "light__texture_name": "ies_sovmod_lamp_fluorescent_a_type_a",
+    "light__texture_name": "",
     "light__direction": [
       0.0,
       0.0,
@@ -1406,6 +1470,186 @@
       "_replicate": true,
       "omni_light__shadows": true,
       "omni_light__shadow_shrink": 1,
+      "omni_light__shadow_quality": 2
+    }
+  },
+  "m_east_lantern_c": {
+    "_use": "omni_light",
+    "light__max_radius": 8.0,
+    "light__radius_scale": 2.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      250,
+      240,
+      255,
+      255
+    ],
+    "light__brightness": 0.75,
+    "light__contact_shadows": false,
+    "light__texture_name": "ies_ceiling_smooth_a",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": false,
+      "omni_light__dynamic_obj_shadows": false,
+      "omni_light__shadow_shrink": 0,
+      "omni_light__shadow_quality": 2
+    }
+  },
+  "m_east_lantern_b": {
+    "_use": "omni_light",
+    "light__max_radius": 8.0,
+    "light__radius_scale": 2.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      250,
+      240,
+      255,
+      255
+    ],
+    "light__brightness": 0.75,
+    "light__contact_shadows": false,
+    "light__texture_name": "ies_ceiling_smooth_a",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": false,
+      "omni_light__dynamic_obj_shadows": false,
+      "omni_light__shadow_shrink": 0,
+      "omni_light__shadow_quality": 2
+    }
+  },
+  "m_east_lantern_d": {
+    "_use": "omni_light",
+    "light__max_radius": 8.0,
+    "light__radius_scale": 2.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      250,
+      240,
+      255,
+      255
+    ],
+    "light__brightness": 0.75,
+    "light__contact_shadows": false,
+    "light__texture_name": "ies_ceiling_smooth_a",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": false,
+      "omni_light__dynamic_obj_shadows": false,
+      "omni_light__shadow_shrink": 0,
+      "omni_light__shadow_quality": 2
+    }
+  },
+  "m_east_lamp_wall_a": {
+    "_use": "omni_light",
+    "light__max_radius": 8.0,
+    "light__radius_scale": 2.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      250,
+      240,
+      255,
+      255
+    ],
+    "light__brightness": 0.75,
+    "light__contact_shadows": false,
+    "light__texture_name": "ies_ceiling_smooth_a",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": false,
+      "omni_light__dynamic_obj_shadows": false,
+      "omni_light__shadow_shrink": 0,
+      "omni_light__shadow_quality": 2
+    }
+  },
+  "m_east_lamp_wall_b": {
+    "_use": "omni_light",
+    "light__max_radius": 8.0,
+    "light__radius_scale": 2.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      250,
+      240,
+      255,
+      255
+    ],
+    "light__brightness": 0.75,
+    "light__contact_shadows": false,
+    "light__texture_name": "ies_ceiling_smooth_a",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": false,
+      "omni_light__dynamic_obj_shadows": false,
+      "omni_light__shadow_shrink": 0,
+      "omni_light__shadow_quality": 2
+    }
+  },
+  "m_east_lamp_wall_c": {
+    "_use": "omni_light",
+    "light__max_radius": 8.0,
+    "light__radius_scale": 2.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      250,
+      240,
+      255,
+      255
+    ],
+    "light__brightness": 0.75,
+    "light__contact_shadows": false,
+    "light__texture_name": "ies_ceiling_smooth_a",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": false,
+      "omni_light__dynamic_obj_shadows": false,
+      "omni_light__shadow_shrink": 0,
       "omni_light__shadow_quality": 2
     }
   },
@@ -1455,18 +1699,18 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
-      "omni_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
       "spot_light__inner_attenuation": 0.2,
       "spot_light__cone_angle": 150.0,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "modern_spotlight_bazaar_b_b": {
     "_use": "spot_light",
     "light__max_radius": 15.0,
-    "light__radius_scale": 4.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -1487,18 +1731,18 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
+      "spot_light__shadows": true,
       "spot_light__cone_angle": 170.0,
       "spot_light__inner_attenuation": 0.4,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "modern_spotlight_bazaar_b_c": {
     "_use": "spot_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -1506,8 +1750,8 @@
     ],
     "light__color": [
       250,
-      150,
-      105,
+      220,
+      220,
       255
     ],
     "light__brightness": 0.4,
@@ -1519,27 +1763,27 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
+      "spot_light__shadows": true,
       "spot_light__cone_angle": 170.0,
       "spot_light__inner_attenuation": 0.01,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "modern_spotlight_bazaar_b_d": {
     "_use": "spot_light",
     "light__max_radius": 15.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
       0.0
     ],
     "light__color": [
-      50,
-      80,
-      50,
+      150,
+      180,
+      150,
       255
     ],
     "light__brightness": 1.55,
@@ -1551,12 +1795,12 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
+      "spot_light__shadows": true,
       "spot_light__cone_angle": 150.0,
       "spot_light__inner_attenuation": 0.2,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "modern_spotlight_bazaar_b_e": {
@@ -1582,12 +1826,12 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
+      "spot_light__shadows": true,
       "spot_light__inner_attenuation": 0.2,
       "spot_light__cone_angle": 150.0,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "light_modern_spotlight_b_f": {
@@ -1614,12 +1858,12 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
-      "omni_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
       "spot_light__inner_attenuation": 0.2,
       "spot_light__cone_angle": 150.0,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "modern_spotlight_bazaar_c": {
@@ -1646,12 +1890,12 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
-      "omni_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
       "spot_light__inner_attenuation": 0.2,
       "spot_light__cone_angle": 150.0,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "light_m_east_bazaar_big_a_a": {
@@ -1686,7 +1930,7 @@
   "light_m_east_bazaar_big_d_a": {
     "_use": "spot_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -1707,17 +1951,17 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
+      "spot_light__shadows": true,
       "spot_light__cone_angle": 170.0,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "light_m_east_bazaar_big_d_b": {
-    "_use": "omni_light",
+    "_use": "spot_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -1738,16 +1982,16 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "light_m_east_bazaar_big_d_c": {
-    "_use": "omni_light",
+    "_use": "spot_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -1768,10 +2012,10 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "light_m_east_bazaar_big_e_a": {
@@ -1837,7 +2081,7 @@
   "antic_lamp_b": {
     "_use": "omni_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -1937,7 +2181,7 @@
       255
     ],
     "light__brightness": 0.1,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2015,7 +2259,7 @@
   "light_m_east_lampshade_b": {
     "_use": "omni_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2066,18 +2310,18 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
+      "spot_light__shadows": true,
       "spot_light__cone_angle": 150.0,
       "spot_light__inner_attenuation": 0.2,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "light_middle_east_palace_l_medium_a_a": {
     "_use": "spot_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2091,7 +2335,7 @@
     ],
     "light__brightness": 0.5,
     "light__contact_shadows": false,
-    "light__texture_name": "ies_singlelamp_sconce_b",
+    "light__texture_name": "",
     "light__use_box": false,
     "light__nightly": false,
     "_group": {
@@ -2099,7 +2343,11 @@
       "_track": true,
       "_replicate": true,
       "omni_light__shadows": true,
-      "spot_light__cone_angle": 150.0,
+      "spot_light__shadow_near_far_planes": [
+        1.0,
+        0.0
+      ],
+      "spot_light__cone_angle": 140.0,
       "spot_light__inner_attenuation": 0.2,
       "spot_light__dynamic_obj_shadows": false,
       "spot_light__shadow_shrink": 0,
@@ -2109,7 +2357,7 @@
   "light_middle_east_palace_l_medium_a_a_b": {
     "_use": "spot_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2123,16 +2371,19 @@
     ],
     "light__brightness": 0.3,
     "light__contact_shadows": false,
-    "light__texture_name": "ies_singlelamp_sconce_b",
+    "light__texture_name": "",
     "light__use_box": false,
     "light__nightly": false,
     "_group": {
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
-      "spot_light__cone_angle": 150.0,
-      "spot_light__inner_attenuation": 0.2,
+      "spot_light__shadows": true,
+      "spot_light__shadow_near_far_planes": [
+        1.0,
+        0.0
+      ],
+      "spot_light__cone_angle": 170.0,
       "spot_light__dynamic_obj_shadows": false,
       "spot_light__shadow_shrink": 0,
       "spot_light__shadow_quality": 2
@@ -2172,7 +2423,7 @@
   "light_middle_east_palace_l_big_a_a": {
     "_use": "omni_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2283,7 +2534,7 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
+      "omni_light__shadows": false,
       "omni_light__dynamic_obj_shadows": false,
       "omni_light__shadow_shrink": 0,
       "omni_light__shadow_quality": 2
@@ -2319,10 +2570,75 @@
       "omni_light__shadow_quality": 2
     }
   },
+  "light_middle_east_palace_h_build_a_a": {
+    "_use": "spot_light",
+    "light__max_radius": 12.0,
+    "light__radius_scale": 2.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      240,
+      240,
+      250,
+      255
+    ],
+    "light__brightness": 3.05,
+    "light__contact_shadows": false,
+    "light__texture_name": "ies_flashlight_a",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
+    }
+  },
+  "light_middle_east_palace_h_build_b_a": {
+    "_use": "spot_light",
+    "light__max_radius": 6.0,
+    "light__radius_scale": 1.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      107,
+      206,
+      237,
+      255
+    ],
+    "light__brightness": 2.05,
+    "light__contact_shadows": false,
+    "light__texture_name": "",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "spot_light__shadows": true,
+      "spot_light__cone_angle": 160.0,
+      "spot_light__shadow_near_far_planes": [
+        0.0,
+        4.5
+      ],
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
+    }
+  },
   "light_middle_east_palace_h_medium_a_a": {
     "_use": "spot_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2343,10 +2659,10 @@
       "_tags": "render",
       "_track": true,
       "_replicate": true,
-      "omni_light__shadows": true,
-      "omni_light__dynamic_obj_shadows": false,
-      "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0,
+      "spot_light__shadow_quality": 2
     }
   },
   "light_middle_east_palace_h_medium_a_b": {
@@ -2473,7 +2789,7 @@
   "light_middle_east_palace_h_medium_a_f": {
     "_use": "omni_light",
     "light__max_radius": 10.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2485,7 +2801,7 @@
       250,
       255
     ],
-    "light__brightness": 0.3,
+    "light__brightness": 1.6,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2503,7 +2819,7 @@
   "light_middle_east_palace_h_big_a_a": {
     "_use": "omni_light",
     "light__max_radius": 20.0,
-    "light__radius_scale": 5.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2515,7 +2831,7 @@
       220,
       255
     ],
-    "light__brightness": 11.1,
+    "light__brightness": 9.1,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2527,13 +2843,17 @@
       "omni_light__shadows": true,
       "omni_light__dynamic_obj_shadows": false,
       "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "omni_light__shadow_quality": 2,
+      "omni_light__shadow_near_far_planes": [
+        5.0,
+        20.0
+      ]
     }
   },
   "light_middle_east_palace_h_big_a_b": {
     "_use": "omni_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2590,22 +2910,22 @@
       "omni_light__shadow_quality": 2
     }
   },
-  "light_middle_east_palace_h_l_a": {
+  "light_middle_east_palace_h_c_a": {
     "_use": "omni_light",
-    "light__max_radius": 15.0,
-    "light__radius_scale": 3.0,
+    "light__max_radius": 8.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
       0.0
     ],
     "light__color": [
-      250,
-      250,
-      240,
+      97,
+      196,
+      237,
       255
     ],
-    "light__brightness": 0.05,
+    "light__brightness": 0.5,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2617,25 +2937,63 @@
       "omni_light__shadows": true,
       "omni_light__dynamic_obj_shadows": false,
       "omni_light__shadow_shrink": 0,
-      "omni_light__shadow_quality": 2
+      "omni_light__shadow_quality": 2,
+      "omni_light__shadow_near_far_planes": [
+        1.0,
+        10.0
+      ]
     }
   },
-  "light_middle_east_palace_h_l_b": {
+  "light_middle_east_palace_h_l_a": {
     "_use": "omni_light",
-    "light__max_radius": 15.0,
-    "light__radius_scale": 3.0,
+    "light__max_radius": 8.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
       0.0
     ],
     "light__color": [
-      230,
-      230,
-      240,
+      97,
+      196,
+      237,
       255
     ],
-    "light__brightness": 0.05,
+    "light__brightness": 0.5,
+    "light__contact_shadows": false,
+    "light__texture_name": "",
+    "light__use_box": false,
+    "light__nightly": false,
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": true,
+      "omni_light__dynamic_obj_shadows": false,
+      "omni_light__shadow_shrink": 0,
+      "omni_light__shadow_quality": 2,
+      "omni_light__shadow_near_far_planes": [
+        1.0,
+        10.0
+      ]
+    }
+  },
+  "light_middle_east_palace_h_l_b": {
+    "_use": "omni_light",
+    "light__max_radius": 12.0,
+    "light__radius_scale": 2.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      114,
+      223,
+      241,
+      255
+    ],
+    "light__brightness": 1.0,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2683,7 +3041,7 @@
   "light_middle_east_palace_h_r_a": {
     "_use": "omni_light",
     "light__max_radius": 15.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2713,7 +3071,7 @@
   "light_middle_east_palace_h_r_b": {
     "_use": "omni_light",
     "light__max_radius": 15.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2743,7 +3101,7 @@
   "light_middle_east_palace_h_r_c": {
     "_use": "omni_light",
     "light__max_radius": 15.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2772,20 +3130,20 @@
   },
   "light_middle_east_palace_r_big_a_a": {
     "_use": "omni_light",
-    "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__max_radius": 15.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
       0.0
     ],
     "light__color": [
-      150,
-      170,
+      200,
+      200,
       230,
       255
     ],
-    "light__brightness": 0.1,
+    "light__brightness": 4.0,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2803,7 +3161,7 @@
   "light_middle_east_palace_r_big_a_b": {
     "_use": "omni_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2811,11 +3169,11 @@
     ],
     "light__color": [
       240,
-      150,
-      150,
+      250,
+      250,
       255
     ],
-    "light__brightness": 0.1,
+    "light__brightness": 0.3,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2863,7 +3221,7 @@
   "light_middle_east_palace_r_medium_a_a": {
     "_use": "omni_light",
     "light__max_radius": 12.0,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__offset": [
       0.0,
       0.0,
@@ -2900,12 +3258,12 @@
       0.0
     ],
     "light__color": [
-      40,
-      150,
+      120,
+      170,
       250,
       255
     ],
-    "light__brightness": 0.1,
+    "light__brightness": 0.2,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2960,7 +3318,7 @@
       255
     ],
     "light__brightness": 0.4,
-    "light__radius_scale": 4.0,
+    "light__radius_scale": 2.0,
     "light__nightly": false,
     "light__enable_lens_flares": false,
     "_group": {
@@ -2982,7 +3340,7 @@
       255
     ],
     "light__brightness": 1.2,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 2.0,
     "light__nightly": false,
     "light__enable_lens_flares": false,
     "_group": {
@@ -3004,7 +3362,7 @@
       255
     ],
     "light__brightness": 0.4,
-    "light__radius_scale": 4.0,
+    "light__radius_scale": 2.0,
     "light__nightly": false,
     "light__enable_lens_flares": false,
     "_group": {
@@ -3026,7 +3384,7 @@
       255
     ],
     "light__brightness": 1.4,
-    "light__radius_scale": 4.0,
+    "light__radius_scale": 2.0,
     "light__nightly": false,
     "light__enable_lens_flares": false,
     "_group": {
@@ -3048,7 +3406,7 @@
       255
     ],
     "light__brightness": 0.4,
-    "light__radius_scale": 4.0,
+    "light__radius_scale": 2.0,
     "light__nightly": false,
     "light__enable_lens_flares": false,
     "_group": {
@@ -3070,7 +3428,7 @@
       255
     ],
     "light__brightness": 1.4,
-    "light__radius_scale": 4.0,
+    "light__radius_scale": 2.0,
     "light__nightly": false,
     "light__enable_lens_flares": false,
     "_group": {

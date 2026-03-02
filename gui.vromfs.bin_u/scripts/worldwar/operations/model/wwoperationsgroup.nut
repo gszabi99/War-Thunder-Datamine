@@ -1,9 +1,12 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+import "%sqStdLibs/helpers/enums.nut" as enums
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
-::WwOperationsGroup <- class {
+let WwOperationsGroup = class {
   mapId = ""
 
   constructor(v_mapId) {
@@ -37,9 +40,8 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
   function getOperationsList() {
     if (!this._operationsList) {
       let mapId = this.mapId
-      this._operationsList = ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(
-                          @(op) op.getMapId() == mapId
-                        )
+      this._operationsList = wwStatusType.ACTIVE_OPERATIONS
+        .getList(@(op) op.getMapId() == mapId)
     }
     return this._operationsList
   }
@@ -118,3 +120,21 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
     return false
   }
 }
+
+enums.enumsAddTypes(wwStatusType, {
+  OPERATIONS_GROUPS = {
+    typeMask = WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
+    invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS | WW_GLOBAL_STATUS_TYPE.MAPS
+
+    function loadList() {
+      let mapsList = wwStatusType.MAPS.getList()
+      this.cachedList = mapsList.map(@(map) WwOperationsGroup(map.name))
+    }
+  }
+})
+
+let getOperationGroupByMapId = @(mapId)
+  u.search(wwStatusType.OPERATIONS_GROUPS.getList(), @(og) og.mapId == mapId)
+    ?? WwOperationsGroup(mapId)
+
+return { getOperationGroupByMapId }

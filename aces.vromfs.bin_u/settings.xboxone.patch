@@ -1,14 +1,3 @@
-"@delete:dx12" {}
-dx12{
-  debug {
-    loadPixCapturer:b=no
-  }
-  onlyPreallocatedHeaps:b=no
-  preallocHeap { sizeMB:i=1024; }
-  preallocHeap { sizeMB:i=32;   cpuCached:b=yes; }
-  preallocHeap { sizeMB:i=4;    gpuExec:b=yes; }
-}
-
 "@override:cfdWind"
 {
   "@override:particleInfluenceThresholdMin":r=15.0
@@ -53,6 +42,7 @@ dx12{
   lastClipSize:i=8192
   panoramaResolution:i=2560
   waterQuality:t="high"
+  waterChopDetailWavesAllowed:b=no
   giQuality:t="low"
   mirrorQuality:i=2
   forceLqFx:b=yes
@@ -60,13 +50,14 @@ dx12{
   dynamicHoles:b=yes
   proximityDamage:b=no
   lerxVapor:b=no
+  hitCameraFilteringQuality:i=0
 }
 
 "@override:render" {
   waterReflection:b=yes
   wake:b=yes
   softFx:b=yes
-  ssaoQuality:i=2
+  ssaoQuality:i=1
   rendinstGlobalShadows:b=yes
   shadows:b=yes
   ssrQuality:i=0

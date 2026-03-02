@@ -4,7 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { endsWith, slice, cutPrefix } = require("%sqstd/string.nut")
@@ -31,9 +30,7 @@ enum MESSAGE_TYPE {
   CUSTOM      = "custom"
 }
 
-let persistent = {
-  lastCreatedMessageIndex = 0
-}
+let chatPersistStorage = persist("chatPersistStorage", @() { lastCreatedMessageIndex = 0})
 
 let punctuation_list = [" ", ".", ",", ":", ";", "\"", "'", "~", "!", "@", "#", "$", "%", "^", "&", "*",
                        "(", ")", "+", "|", "-", "=", "\\", "/", "<", ">", "[", "]", "{", "}", "`", "?"]
@@ -41,8 +38,6 @@ let punctuation_list = [" ", ".", ",", ":", ";", "\"", "'", "~", "!", "@", "#", 
 let privateColor = "@chatTextPrivateColor"
 let blockedColor = "@chatTextBlockedColor"
 let systemColor = "@chatInfoColor"
-
-registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
 
 function localizeSystemMsg(msg) {
   local localized = false
@@ -280,7 +275,7 @@ function newRoom(id, customScene = null, ownerHandler = null) {
 
       this.updateMessageText(mBlock)
 
-      mBlock.messageIndex = persistent.lastCreatedMessageIndex++
+      mBlock.messageIndex = chatPersistStorage.lastCreatedMessageIndex++
       if (this.mBlocks.len() > g_chat.getMaxRoomMsgAmount())
         this.removeMblockAt(0)
     }

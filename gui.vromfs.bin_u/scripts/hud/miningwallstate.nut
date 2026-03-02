@@ -39,6 +39,7 @@ ecs.register_es("mining_wall_available_track_ui",
   },
   {
     comps_rq=["watchedByPlr"]
+    comps_no=["isReplayObserved"]
     comps_track=[["human_mining_wall__isPlantingAvailable", ecs.TYPE_BOOL]]
   }
 )
@@ -111,6 +112,7 @@ ecs.register_es("reassembling_wall_available_track_ui",
   },
   {
     comps_rq=["watchedByPlr"]
+    comps_no=["isReplayObserved"]
     comps_track=[["human_mining_wall__isReassemblingAvailable", ecs.TYPE_BOOL]]
   }
 )

@@ -17,41 +17,7 @@
         "pos": "0, 0.03@shHud",
         "position": "relative",
         "fontSize": "small",
-        "css-hier-invalidate": "yes",
-        "background": {
-          "id": "tank_background",
-          "size": "ph, ph",
-          "position": "absolute",
-          "pos": "0, 0",
-          "css-hier-invalidate": "yes",
-          "debuffs": {
-            "id": "tank_debuffs",
-            "width": "ph",
-            "height": "w",
-            "position": "absolute",
-            "pos": "pw/2 - w/2, ph/2 - h/2",
-            "flow": "v-flow",
-            "css-hier-invalidate": "yes"
-          },
-          "crew": {
-            "id": "crew_state",
-            "unit_type": "tank",
-            "width": "ph",
-            "height": "w",
-            "position": "absolute",
-            "pos": "pw/2 - w/2, ph/2 - h/2",
-            "flow": "v-flow",
-            "css-hier-invalidate": "yes",
-            "input-transparent": "yes"
-          },
-          "tdiv": {
-            "id": "hud_movement_info",
-            "position": "absolute",
-            "pos": "0.006@shHud, ph - h - 0.003@shHud",
-            "flow": "vertical",
-            "css-hier-invalidate": "yes"
-          }
-        }
+        "css-hier-invalidate": "yes"
       },
       "tdiv": {
         "id": "mission_progress_place",
@@ -177,38 +143,6 @@
           "hitCameraTitle": {
             "id": "title"
           },
-          "hitCameraCrew": {
-            "id": "crew_nest",
-            "pos": "1@blockInterval, 0.2ph",
-            "position": "absolute",
-            "img": {
-              "size": "1@cIco, 1@cIco",
-              "pos": "0, ph-h",
-              "position": "relative",
-              "margin-left": "1@blockInterval",
-              "background-image": "#ui/gameuiskin#ship_crew.svg",
-              "background-svg-size": "1@cIco, 1@cIco"
-            },
-            "tdiv": {
-              "pos": "0, ph-h",
-              "position": "relative",
-              "hitCameraLostCrew": {
-                "id": "lost_crew_count",
-                "pos": "pw-w, -h",
-                "position": "absolute",
-                "flow": "vertical"
-              },
-              "textareaNoTab": {
-                "id": "crew_count"
-              }
-            },
-            "textareaNoTab": {
-              "id": "max_crew_count",
-              "pos": "0, ph-h",
-              "position": "relative",
-              "overlayTextColor": "active"
-            }
-          },
           "enemyDamageStatusPanel": {
             "flow": "vertical",
             "tdiv": {
@@ -218,7 +152,9 @@
             }
           },
           "hitCameraInfo": {
-            "id": "info"
+            "id": "info",
+            "margin-top": "0.5@hitcamDebuffPadding",
+            "flow": "horizontal"
           }
         }
       },
@@ -510,6 +446,13 @@
               "width": "@shHud",
               "pos": "pw/2 - w/2, 0",
               "position": "relative",
+              "flow": "vertical"
+            },
+            {
+              "id": "naval_top_hints",
+              "width": "0.5@rwHud",
+              "position": "relative",
+              "pos": "pw/2-w/2, 0.08@shHud",
               "flow": "vertical"
             }
           ],

@@ -160,6 +160,12 @@ def squad_suicide_bots_debug(@net_hero hero_eid : EntityId)
   let squadEid = get_Eid(hero_eid, "squad_member__squad") ?? INVALID_ENTITY_ID
   suicideBots(squadEid)
 
+[net_console_cmd(name="hitpoints.kill_except_hero")]
+def hitpoints_kill_all_except_hero(@net_hero hero_eid : EntityId)
+  query() <| $ [es(REQUIRE=human)] (eid aka soldier_eid : EntityId)
+    if soldier_eid != hero_eid
+      suicide_kill(soldier_eid)
+
 [console_cmd(name="squad.personal_order_grenade")]
 def squad_orderPersonalGrenadeThrow(grenade_type : string)
   let hero_eid = get_controlled_hero_eid()
@@ -193,3 +199,29 @@ def squad_orderPersonalGrenadeThrow(grenade_type : string)
 def squad_cancelContextCommand()
   let hero_eid = get_controlled_hero_eid()
   sendEvent(hero_eid, RqCancelContextCommand(include_personal_orders = true))
+
+[console_cmd(name="squad.spawnEquippedSoldiers")]
+def squad_spawnMoreEquippedSoldiers(count = 1;  team = 0; isAi = true; isAlive = true; cellSize = 1.f)
+  find_query() <| $ [es] (camera__active : bool; transform : float3x4)
+    var tm : float3x4
+    if !camera__active
+      return false
+    var len = 100.0
+    var norm = float3()
+    tm = transform
+    let dir = tm[2]
+    let pos = tm[3]
+    traceray_normalized(pos, dir, len, norm)
+    let center = pos + dir * len
+    if is_server()
+      spawn_soldiers_at_pos(center, count, team, isAi, isAlive ? "base_equipped_soldier+dev_soldier_tag+dev_soldier_equip" : "dead_base_soldier+dev_soldier_tag+dev_soldier_equip", cellSize)
+    else
+      exec_server_cmd("squad.spawnEquippedSoldiersPos {count} {center[0]} {center[1]} {center[2]} {team} {isAi} {isAlive} {cellSize}")
+    return true
+
+[console_cmd(name="squad.spawnEquippedSoldiersPos")]
+def squad_spawnMoreEquippedSoldiers(count = 7; x, y, z : float = 0.f; team = 0; isAi = true; isAlive = true;  cellSize = 1.f)
+  if is_server()
+    spawn_soldiers_at_pos(float3(x, y, z), count, team, isAi, isAlive ? "base_equipped_soldier+dev_soldier_tag+dev_soldier_equip" : "dead_base_soldier+dev_soldier_tag+dev_soldier_equip", cellSize)
+  else
+    exec_server_cmd("squad.spawnEquippedSoldiersPos {count} {x} {y} {z} {team} {isAi} {isAlive} {cellSize}")

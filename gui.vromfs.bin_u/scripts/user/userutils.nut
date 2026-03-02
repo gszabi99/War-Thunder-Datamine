@@ -8,7 +8,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { getMyCrewUnitsState } = require("%scripts/slotbar/crewsListInfo.nut")
+let { getMyCrewUnitsState } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { queueProfileJwt } = require("%scripts/queue/queueBattleData.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_DISPLAY_MY_REAL_CLAN

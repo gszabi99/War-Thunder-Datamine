@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 
+let { get_current_mission_info_cached } = require("blkGetters")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -229,17 +230,19 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
         buttonId = "btn_apply"
       },
       {
-        title = "hotkeys/ID_CHANGE_ARTILLERY_TARGETING_MODE"
-        shortcuts = ["ID_CHANGE_ARTILLERY_TARGETING_MODE"]
-        buttonCb = "onChangeTargetingMode"
-        show = get_mission_difficulty_int() != DIFFICULTY_HARDCORE && !this.isSuperArtillery
-      },
-      {
         title = "mainmenu/btnCancel"
         shortcuts = ["ID_ARTILLERY_CANCEL", "ID_ACTION_BAR_ITEM_5"]
         buttonCb = "goBack"
       },
     ]
+
+    if (!get_current_mission_info_cached()?.restrictArtilleryCameraUse)
+      showShortcuts.insert(1, {
+        title = "hotkeys/ID_CHANGE_ARTILLERY_TARGETING_MODE"
+        shortcuts = ["ID_CHANGE_ARTILLERY_TARGETING_MODE"]
+        buttonCb = "onChangeTargetingMode"
+        show = get_mission_difficulty_int() != DIFFICULTY_HARDCORE && !this.isSuperArtillery
+      })
 
     local reqDevice = STD_MOUSE_DEVICE_ID
     if (showConsoleButtons.get())

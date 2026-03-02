@@ -1,4 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { get_mplayer_by_userid } = require("mission")
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -11,7 +14,7 @@ let { getSessionLobbyPlayersInfo
 let { get_mission_difficulty } = require("guiMission")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getSquadInfo } = require("%scripts/statistics/squadIcon.nut")
-let { calcBattleRatingFromRank, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
+let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -77,10 +80,11 @@ function getPlayerInfoFromDebriefing(playerUserId) {
 function getPlayerInfo(playerUserId) {
   let userIdInt = playerUserId.tointeger()
   let playersInfo = getSessionLobbyPlayersInfo()
+
   return {
     player = get_mplayer_by_userid(userIdInt)
     playerInfo = playersInfo?[playerUserId] ?? playersInfo?[userIdInt]
-    ediff = isInFlight() ? get_mission_mode() : getCurrentShopDifficulty().diffCode
+    ediff = isInFlight() ? events.getCurBattleEdiff() : getCurrentShopDifficulty().diffCode
   }
 }
 

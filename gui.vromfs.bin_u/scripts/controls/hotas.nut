@@ -8,6 +8,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getControlsPresetFilename } = require("%scripts/controls/controlsPresets.nut")
 let { isDeviceConnected } = require("%scripts/controls/isDeviceConnected.nut")
+let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
 
 let hotasPS4DevId = "044F:B67B"
 let hotasXONEDevId = "044F:B68C"
@@ -37,7 +38,7 @@ function askHotasPresetChange() {
       isPlatformSony ? "thrustmaster_hotas4" :
       isPlatformXbox ? "xboxone_thrustmaster_hotas_one" :
       unreachable()
-    ::apply_joy_preset_xchange(getControlsPresetFilename(presetName))
+    applyJoyPresetXchange(getControlsPresetFilename(presetName))
   }
 
   addPopup(

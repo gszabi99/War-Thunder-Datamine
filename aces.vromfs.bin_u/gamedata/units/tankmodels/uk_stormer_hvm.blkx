@@ -1714,7 +1714,7 @@
           "power_system_dm"
         ],
         "createGunEffects": true,
-        "staticElevation": 0.4,
+        "staticElevation": 0.625,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 70.0,
@@ -1905,25 +1905,25 @@
       "maxBrakeForce": 54000.0,
       "driveGearRadius": 0.23,
       "mainGearRatio": 1.0,
-      "sideGearRatio": 3.47,
+      "sideGearRatio": 3.41,
       "neutralGearRatio": 12.0,
       "gearRatios": {
         "ratio": [
-          -0.81,
-          -1.0,
-          -1.39,
-          -1.936,
-          -2.691,
-          -3.81,
-          -5.294,
+          -0.826,
+          -1.3,
+          -1.73,
+          -3.1,
+          -5.17,
+          -7.2,
+          -16.2,
           0.0,
-          5.294,
-          3.81,
-          2.691,
-          1.936,
-          1.39,
-          1.0,
-          0.81
+          16.2,
+          7.2,
+          5.17,
+          3.1,
+          1.73,
+          1.3,
+          0.826
         ]
       }
     },
@@ -2827,7 +2827,7 @@
                 "power_system_dm"
               ],
               "createGunEffects": true,
-              "staticElevation": 0.4,
+              "staticElevation": 0.625,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 70.0,
@@ -3125,6 +3125,15 @@
         "from": "uk_camo_very_dark_drab*",
         "to": "fr_camo_winter_green_white*"
       }
+    },
+    {
+      "name": "uk_camo_winter_modern_bicolor",
+      "nameLocId": "skin/uk_camo_winter_modern_bicolor",
+      "descLocId": "skin/uk_camo_winter_modern_bicolor/desc",
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "uk_camo_winter_modern_bicolor*"
+      }
     }
   ],
   "sensors": {
@@ -3154,6 +3163,10 @@
     ]
   },
   "antiAirComplexMenu": {
-    "available": false
+    "isVerticalViewAvailable": true,
+    "hasTargetList": true,
+    "hasTurretView": true,
+    "hasVerticalView": true,
+    "verticalViewMaxAltitude": 8.0
   }
 }

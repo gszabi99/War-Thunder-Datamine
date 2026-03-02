@@ -13,9 +13,9 @@ let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXbox,
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let psnSocial = require("sony.social")
-let { fillProfileSummary, getExternalPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
+let { fillProfileSummary, getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
 let { APP_ID } = require("app")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { encode_uri_component } = require("url")
 let { get_local_mplayer } = require("mission")
@@ -264,7 +264,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    this.player = getExternalPlayerStatsFromBlk(blk)
+    this.player = getPlayerStatsFromBlk(blk)
     if ("uid" in this.player) {
       externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
       forceRequestUserInfoData(this.player.uid)
@@ -628,6 +628,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let pilotIcon = getAvatarIconIdByUserInfo(infos)
     this.terseInfo = {}
+    this.terseInfo.uid <- stats?.uid
     this.terseInfo.schType <- infos.shcType
     this.terseInfo.background <- infos.background
     this.terseInfo.frame <- infos.frame
@@ -699,7 +700,12 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     avatarFrame.show(true)
   }
 
-  changeAvatarImage = @(image) this.scene.findObject("profile-icon").setValue(image)
+  function changeAvatarImage(image) {
+    let avatarImage = this.scene.findObject("profile-icon")
+    if (!avatarImage?.isValid() || image == null)
+      return
+    avatarImage.setValue(image)
+  }
 
   setCurrentHeaderBackground = @() this.changeHeaderBackgroundImage(this.currentHeaderBackgroundId)
 

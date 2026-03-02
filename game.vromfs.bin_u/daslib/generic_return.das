@@ -6,6 +6,11 @@ options strict_smart_pointers = true
 
 module generic_return shared private
 
+
+
+
+
+
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/macro_boost
@@ -24,16 +29,16 @@ class GenericReturn : AstCallMacro {
             return <- default<ExpressionPtr>
         }
         if (ret_expr._type.isVoid) {
-            return <- qmacro_block <| $() {
+            return <- qmacro_block() {
                 $e(ret_expr)
                 return
             }
         } elif (ret_expr._type.canCopy) {
-            return <- qmacro_block <| $() {
+            return <- qmacro_block() {
                 return $e(ret_expr)
             }
         } elif (ret_expr._type.canMove) {
-            return <- qmacro_block <| $() {
+            return <- qmacro_block() {
                 return <- $e(ret_expr)
             }
         } else {

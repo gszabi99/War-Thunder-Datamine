@@ -476,6 +476,11 @@
     "agent_dangers__maxDangerDist": 90.0,
     "agent_dangers__frustumAngle": 45.0,
     "agent_dangers__keepDangerToTime": 0.0,
+    "agent_dangers__traceMultipointsLast": 0,
+    "agent_dangers__traceMultipointsMax": 4,
+    "agent_dangers__traceMultipointMaxDistance": 50.0,
+    "agent_dangers__forceTraceTargetToTime": 0.0,
+    "agent_dangers__forceTraceTargetWaitTime": 1.5,
     "agent_dangers__initialDangersTraceCheckTime": 1.0,
     "agent_dangers__nextDangersTraceTime": 0.0,
     "agent_dangers__hmapTraceOffset": [
@@ -490,7 +495,11 @@
     "agent_dangers": {
       "_tags": "server"
     },
-    "agent_dangers__keepDangerEid:eid": {}
+    "agent_dangers__keepDangerEid:eid": {},
+    "agent_dangers__traceMultipoints:list<ip2>": {},
+    "agent_dangers__forceTraceTargetEid1:eid": {},
+    "agent_dangers__forceTraceTargetEid2:eid": {},
+    "agent_dangers__debugTraceds:ip4": {}
   },
   "modern_soldier_ai_recons": {
     "_tags": "server",
@@ -728,6 +737,12 @@
       "aware__dangersEids:list<eid>": {},
       "aware__dangersData:list<i>": {}
     }
+  },
+  "simplified_ai": {
+    "_singleton": true,
+    "_tags": "server",
+    "simplified_ai__limitedMode": 0,
+    "_tracked": "simplified_ai__limitedMode"
   },
   "crawler_ai": {
     "_use": "modern_soldier_ai",

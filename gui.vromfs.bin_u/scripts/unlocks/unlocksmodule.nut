@@ -13,8 +13,7 @@ let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings
 } = require("%scripts/time.nut")
 let { strip, split_by_chars, format } = require("string")
 let { isUnlockReadyToOpen, get_charserver_time_sec } = require("chard")
-let { getUnlockById, getAllUnlocksWithBlkOrder, getAllUnlocks
-} = require("%scripts/unlocks/unlocksCache.nut")
+let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 let { isInstance, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getUnlockTypeById } = require("unlocks")
 let { isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById,
@@ -365,11 +364,6 @@ function getFakeUnlockData(config) {
   return res
 }
 
-let showNextAwardModeTypes = { 
-  char_versus_battles_end_count_and_rank_test = "battle_participate_award"
-  char_login_count                            = "day_login_award"
-}
-
 function checkAwardsAmountPeerSession(res, config, streak, name) {
   local maxStreak = streak
 
@@ -391,66 +385,6 @@ function checkAwardsAmountPeerSession(res, config, streak, name) {
   else
     res.similarAwardNamesList[mainAwName] <- 1
   res.similarAwardNamesList.maxStreak <- maxStreak
-}
-
-function getNextAwardText(unlockId) {
-  local res = ""
-  if (!hasFeature("ShowNextUnlockInfo"))
-    return res
-
-  let unlockBlk = getUnlockById(unlockId)
-  if (!unlockBlk)
-    return res
-
-  local modeType = null
-  local num = 0
-  foreach (mode in unlockBlk % "mode") {
-    let mType = mode.getStr("type", "")
-    if (mType in showNextAwardModeTypes) {
-      modeType = mType
-      num = mode.getInt("num", 0)
-      break
-    }
-    if (mType == "char_unlocks") { 
-      foreach (uId in mode % "unlock") {
-        res = getNextAwardText(uId)
-        if (res != "")
-          return res
-      }
-      break
-    }
-  }
-  if (!modeType)
-    return res
-
-  local nextUnlock = null
-  local nextStage = -1
-  local nextNum = -1
-  foreach (cb in getAllUnlocksWithBlkOrder())
-    if (!cb.hidden || (cb.type && get_unlock_type(cb.type) == UNLOCKABLE_AUTOCOUNTRY))
-      foreach (modeIdx, mode in cb % "mode")
-        if (mode.getStr("type", "") == modeType) {
-          let n = mode.getInt("num", 0)
-          if (n > num && (!nextUnlock || n < nextNum)) {
-            nextUnlock = cb
-            nextNum = n
-            nextStage = modeIdx
-            break
-          }
-        }
-  if (!nextUnlock)
-    return res
-
-  let { name, rewardText } = ::build_log_unlock_data({ id = nextUnlock.id, stage = nextStage })
-  res = loc("next_award", { awardName = name })
-  if (rewardText != "") {
-      let amount = nextNum - num
-      let locId = "/".concat(
-        showNextAwardModeTypes[modeType],
-        (amount == 1) ? "one_more" : "several")
-      res = $"{res}{"\n".concat(loc("ui/colon"), loc(locId, { amount, reward = rewardText }))}"
-  }
-  return res
 }
 
 function combineSimilarAwards(awardsList) {
@@ -533,6 +467,5 @@ return {
   reqUnlockByClient
   isAnyAwardReceivedByModeType
   checkAwardsAmountPeerSession
-  getNextAwardText
   combineSimilarAwards
 }

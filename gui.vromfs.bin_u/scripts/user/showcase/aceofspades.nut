@@ -6,6 +6,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let DataBlock = require("DataBlock")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let uTypes = [unitTypes.AIRCRAFT, unitTypes.TANK, unitTypes.SHIP, unitTypes.HELICOPTER, unitTypes.BOAT]
 const whiteLineColor = "#05111111"
@@ -26,7 +27,7 @@ function updateLinesBackground(isEditMode, container) {
   }
 }
 
-function getFlagAndEliteData(terseInfo, playerStats) {
+function getFlagAndEliteData(terseInfo, _playerStats) {
   let acedUnits = terseInfo.showcase?.aced_units
 
   let shortCountryNames = {}
@@ -50,20 +51,21 @@ function getFlagAndEliteData(terseInfo, playerStats) {
   }
 
   local totalSelectedCount = 0
-  let unitsData = playerStats?.userstat.units
-  let allUnits = getAllUnits()
-
-  if (acedUnits != null)
+  let isMyProfile = terseInfo?.uid
+    ? terseInfo?.uid == userIdStr.get()
+    : true
+  if (isMyProfile) {
+    let allUnits = getAllUnits()
     foreach (unit in allUnits) {
       let countryShortName = shortCountryNames?[unit.shopCountry]
       if (acedUnits?[unit.unitType.name][countryShortName] == null)
         continue
-
-      if (unitsData)
-        totalSelectedCount += unitsData?[unit.shopCountry].contains(unit.name) ? 1 : 0
-      else if (unit.isBought())
+      if (unit.isBought())
         totalSelectedCount = totalSelectedCount + 1
     }
+  } else
+    totalSelectedCount = terseInfo.showcase?.aced_units.filtered_total ?? 0
+
   return {flags, eliteCount = $"{eliteUnitsCount}/{totalSelectedCount}"}
 }
 

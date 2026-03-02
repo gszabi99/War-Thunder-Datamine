@@ -6,6 +6,7 @@ let interopGen = require("%rGui/interopGen.nut")
 let fcsState = {
   IsVisible = Watched(false)
   IsBinocular = Watched(false)
+  isHydrophoneMode = Watched(false)
   OpticsWidth = Watched(0.0)
   StaticFov = Watched(0.0)
   CalcProgress = Watched(-1.0)

@@ -6,14 +6,41 @@ options strict_smart_pointers = true
 
 module coroutines shared public
 
+
+
+
+
+
+
+
+
+
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/macro_boost
 require daslib/defer
 
-typedef Coroutine = iterator<bool> 
 
-typedef Coroutines = array<Coroutine> 
+typedef Coroutine = iterator<bool>
+
+
+typedef Coroutines = array<Coroutine>
+
+[macro_function]
+def private verify_inside_coroutine(prog : ProgramPtr; call : smart_ptr<ExprCallMacro>&) : bool {
+    
+    
+    if (call.inFunction == null) {
+        return true
+    }
+    for (ann in call.inFunction.annotations) {
+        if (ann.annotation.name == "coroutine" || ann.annotation.name == "async") {
+            return true
+        }
+    }
+    macro_error(prog, call.at, "{call.name}() can only be used inside a [coroutine] or [async] function")
+    return false
+}
 
 [call_macro(name="yeild_from")]
 class private YieldFrom : AstCallMacro {
@@ -24,11 +51,12 @@ class private YieldFrom : AstCallMacro {
     
     
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+        
         macro_verify(call.arguments |> length == 1, prog, call.at, "expecting yeild_from(iterator)")
         macro_verify(call.arguments[0]._type != null, prog, call.at, "expecting iterator")
         macro_verify(call.arguments[0]._type.isIterator, prog, call.at, "expecting iterator")
         let iname = make_unique_private_name("_yield_from_iterator", call.at)
-        return <- qmacro_block <| $() {
+        return <- qmacro_block() {
             for ($i(iname) in $e(call.arguments[0])) {
                 yield $i(iname)
             }
@@ -43,9 +71,11 @@ class private CoContinue : AstCallMacro {
     
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
         
-        
         macro_verify(call.arguments |> length == 0, prog, call.at, "expecting co_continue()")
-        return <- qmacro_expr <| $() {
+        if (!verify_inside_coroutine(prog, call)) {
+            return <- default<ExpressionPtr>
+        }
+        return <- qmacro_expr() {
             yield true
         }
     }
@@ -62,8 +92,11 @@ class private CoAwait : AstCallMacro {
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
         
         macro_verify(call.arguments |> length == 1, prog, call.at, "expecting co_await(subroutine)")
+        if (!verify_inside_coroutine(prog, call)) {
+            return <- default<ExpressionPtr>
+        }
         let iname = make_unique_private_name("_co_await_iterator", call.at)
-        return <- qmacro_block <| $() {
+        return <- qmacro_block() {
             for ($i(iname) in $e(call.arguments[0])) {
                 yield $i(iname)
             }
@@ -79,13 +112,14 @@ class private CoroutineMacro : AstFunctionAnnotation {
     
     
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
+        
         var inscope retT : TypeDeclPtr
         if (func.result.baseType == Type.tVoid || func.result.baseType == Type.autoinfer) {
             move_new(retT) <| qmacro_type(type<bool>)
         } else {
             move_new(retT) <| clone_type(func.result)
         }
-        var inscope blk <- qmacro_block <| $() {
+        var inscope blk <- qmacro_block() {
             return <- generator<$t(retT)>() <| $() {
                 $e(func.body)
                 return false

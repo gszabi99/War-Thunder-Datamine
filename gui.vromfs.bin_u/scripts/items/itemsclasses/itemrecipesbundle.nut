@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
+let { getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
 let { getRequirementsMarkup, getRequirementsText } = require("%scripts/items/exchangeRecipes.nut")
 let { Chest } = require("itemChest.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")

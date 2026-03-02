@@ -56,6 +56,8 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let { canJoinFlightMsgBox, updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
 let { sendMemberDataToMatching } = require("%scripts/squads/sendMemberData.nut")
 let { wwGlobalStatusActions } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -570,7 +572,7 @@ g_squad_manager = {
     let wwOperations = []
     if (isWorldwarEnabled) {
       data.canPlayWorldWar = canPlayWorldwar()
-      foreach (wwOperation in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList()) {
+      foreach (wwOperation in wwStatusType.ACTIVE_OPERATIONS.getList()) {
         if (!wwOperation.isValid())
           continue
 
@@ -765,7 +767,7 @@ g_squad_manager = {
   }
 
   function createSquad(callback) {
-    if (!hasFeature("Squad"))
+    if (!hasFeature("Squad") || disableNetwork)
       return
 
     if (!g_squad_manager.canJoinSquad() || !g_squad_manager.canManageSquad() || isAnyQueuesActive())
@@ -821,7 +823,7 @@ g_squad_manager = {
   }
 
   function checkForSquad() {
-    if (!isLoggedIn.get())
+    if (!isLoggedIn.get() || disableNetwork)
       return
 
     let callback = function(response) {
@@ -883,7 +885,7 @@ g_squad_manager = {
   }
 
   function joinToSquad(uid) {
-    if (!g_squad_manager.canJoinSquad())
+    if (!g_squad_manager.canJoinSquad() || disableNetwork)
       return
 
     g_squad_manager.setState(squadState.JOINING)
@@ -897,6 +899,8 @@ g_squad_manager = {
   }
 
   function inviteToSquad(uid, name = null) {
+    if (disableNetwork)
+      return
     if (g_squad_manager.isInSquad() && !g_squad_manager.isSquadLeader())
       return
 
@@ -961,7 +965,7 @@ g_squad_manager = {
   }
 
   function revokeSquadInvite(uid, callback = null) {
-    if (!g_squad_manager.isSquadLeader())
+    if (!g_squad_manager.isSquadLeader() || disableNetwork)
       return
 
     let fullCallback = @(_response) g_squad_manager.requestSquadData(@() callback?())
@@ -1091,7 +1095,7 @@ g_squad_manager = {
   }
 
   function acceptSquadInvite(sid) {
-    if (!g_squad_manager.canJoinSquad())
+    if (!g_squad_manager.canJoinSquad() || disableNetwork)
       return
 
     g_squad_manager.setState(squadState.JOINING)

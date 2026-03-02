@@ -392,6 +392,10 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
                       ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
                       >) : bool
   let explosion_params = calc_explosion_params(unit, cluster_id, grnd()) <| v
+  if explosion_params.splashDamageTypeId < 0
+    logerr("do_fire_delayed: invalid splash damage type")
+    return false
+
   if explosion_params.powderMass == 0.f
     return false
 
@@ -462,7 +466,7 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
   if unit.isAuthority
     var unit_fx = unit |> get_unit_fx()
     if unit_fx != null
-      let geom_node_id = *unit.visual |> dm_get_geom_node_id_by_part_id(int(hit_slot_part_id.globalId))
+      let geom_node_id = *unit.visual |> dm_get_geom_node_id_by_part_id(int(hit_slot_part_id.id))
       let coll_node = *unit.visual |> dm_get_collision_node_by_part_id(int(hit_slot_part_id.globalId))
       let zero = float3(0.0f)
       *unit_fx |> startFxEvent(v.ammo_clusters__explosionEvtId[cluster_id], geom_node_id, zero, coll_node.boundingSphere.c)

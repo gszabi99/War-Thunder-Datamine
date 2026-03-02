@@ -1,25 +1,18 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
-import "%sqStdLibs/helpers/enums.nut" as enums
-
+let { dynamic_content } = require("%sqstd/analyzer.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
-let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
-
-let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
-
-let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let {
   refreshGlobalStatusData,
   getValidGlobalStatusListMask,
   setValidGlobalStatusListMask,
-  getGlobalStatusData
+  getGlobalStatusData,
+  updateCurData,
+  pushStatusChangedEvent,
 } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
-const MAPS_OUT_OF_DATE_DAYS = 1
-
-let g_ww_global_status_type = {
+let wwStatusType = {
   types = []
   template = {
     typeMask = 0 
@@ -51,83 +44,36 @@ let g_ww_global_status_type = {
 
 }
 
-enums.enumsAddTypes(g_ww_global_status_type, {
-  QUEUE = {
-    typeMask = WW_GLOBAL_STATUS_TYPE.QUEUE
-    charDataId = "queue"
-    invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.MAPS
+function onGlobalStatusReceived(newData) {
+  local changedListsMask = 0
+  foreach (gsType in wwStatusType.types)
+    if (!u.isEqual(gsType.getData(getGlobalStatusData()), gsType.getData(newData)))
+      changedListsMask = changedListsMask | gsType.typeMask
 
-    emptyCharData = {}
+  if (!changedListsMask)
+    return
 
-    loadList = function() {
-      this.cachedList = {}
-      let data = this.getData()
-      if (!u.isTable(data))
-        return
+  foreach (gsType in wwStatusType.types)
+    if (gsType.invalidateByOtherStatusType & changedListsMask)
+      changedListsMask = changedListsMask | gsType.typeMask
 
-      let mapsList = g_ww_global_status_type.MAPS.getList()
-      foreach (mapId, map in mapsList)
-        this.cachedList[mapId] <- WwQueue(map, getTblValue(mapId, data))
-    }
-  }
+  updateCurData(newData)
+  setValidGlobalStatusListMask(getValidGlobalStatusListMask() & ~changedListsMask)
+  pushStatusChangedEvent(changedListsMask)
+}
 
-  ACTIVE_OPERATIONS = {
-    typeMask = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
-    charDataId = "activeOperations"
-
-    loadList = function() {
-      this.cachedList = []
-      let data = this.getData()
-      if (!u.isArray(data))
-        return
-
-      foreach (opData in data) {
-        let operation = WwOperation(opData)
-        if (operation.isValid())
-          this.cachedList.append(operation)
-      }
-    }
-  }
-
-  MAPS = {
-    typeMask = WW_GLOBAL_STATUS_TYPE.MAPS
-    charDataId = "maps"
-    emptyCharData = {}
-
-    loadList = function() {
-      this.cachedList = {}
-      let data = this.getData()
-      if (!u.isTable(data) || (data.len() <= 0))
-        return
-
-      foreach (name, mapData in data)
-        this.cachedList[name] <- WwMap(name, mapData)
-
-      let guiScene = get_cur_gui_scene()
-      if (guiScene) 
-        guiScene.performDelayed(this,
-          function() {
-            seenWWMapsAvailable.setDaysToUnseen(MAPS_OUT_OF_DATE_DAYS)
-            seenWWMapsAvailable.onListChanged()
-          })
-    }
-  }
-
-  OPERATIONS_GROUPS = {
-    typeMask = WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
-    invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS | WW_GLOBAL_STATUS_TYPE.MAPS
-
-    loadList = function() {
-      let mapsList = g_ww_global_status_type.MAPS.getList()
-      this.cachedList = mapsList.map(@(map) ::WwOperationsGroup(map.name))
-    }
+addListenersWithoutEnv({
+  WWRawGlobalStatusReceived = @(p) onGlobalStatusReceived(p.data)
+  function MyClanIdChanged(_p) {
+    foreach (op in wwStatusType.ACTIVE_OPERATIONS.getList())
+      op.resetCache()
+    foreach (q in wwStatusType.QUEUE.getList())
+      q.resetCache()
+    pushStatusChangedEvent(WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
+      | WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
+      | WW_GLOBAL_STATUS_TYPE.MAPS
+      | WW_GLOBAL_STATUS_TYPE.QUEUE)
   }
 })
 
-seenWWMapsAvailable.setListGetter(function() {
-  return g_ww_global_status_type.MAPS.getList()
-    .filter(@(map) map.isAnnounceAndNotDebug())
-    .map(@(map) map.name)
-})
-
-::g_ww_global_status_type<- g_ww_global_status_type
+return { wwStatusType = dynamic_content(wwStatusType) }

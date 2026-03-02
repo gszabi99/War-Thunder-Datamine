@@ -134,10 +134,7 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 60.0,
       "rollStabLimit": 30.0,
-      "period": [
-        0.025,
-        0.05
-      ],
+      "period": 0.0416,
       "width": 7.5,
       "barHeight": 0.5,
       "barsCount": 30,
@@ -938,6 +935,8 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
+                "alpha": 0.8,
+                "betta": 0.1,
                 "rateLim": [
                   0.78,
                   0.78
@@ -946,6 +945,8 @@
                 "inertialTimeMax": 1.0
               },
               "distFilter": {
+                "alpha": 0.8,
+                "betta": 0.2,
                 "accelLim": [
                   150.0,
                   150.0

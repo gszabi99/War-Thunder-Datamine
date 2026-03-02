@@ -1179,8 +1179,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1239,8 +1239,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1299,8 +1299,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1359,8 +1359,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1419,8 +1419,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1479,8 +1479,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1539,8 +1539,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1599,8 +1599,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2540,32 +2540,10 @@
       ]
     }
   },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump_small",
-    "burningFx": "fuel_dump_fire_small",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
-      ]
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_apg_30.blk",
+      "dmPart": "radar_dm"
     }
   },
   "commonWeapons": {
@@ -3187,12 +3165,6 @@
     "maxSpeedMultiplier": 1.01,
     "wepOverspeed": 1.05
   },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/us_an_apg_30.blk",
-      "dmPart": "radar_dm"
-    }
-  },
   "damagePartsDependencyMap": {
     "dp": [
       {
@@ -3469,6 +3441,34 @@
     "replace_tex": {
       "from": "f9f_8_navy_blue_a*",
       "to": "f9f_8_navy_blue_a_tomoe*"
+    }
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
     }
   },
   "cutting": {

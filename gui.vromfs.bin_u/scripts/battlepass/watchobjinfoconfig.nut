@@ -8,10 +8,10 @@ let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopStat
 let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isMediumTaskComplete, isEasyTaskComplete, getCurrentBattleTasks
-} = require("%scripts/unlocks/battleTasks.nut")
+let { isEasyTaskComplete, isMediumTaskComplete } = require("%scripts/unlocks/battleTasksState.nut")
+let { getCurrentBattleTasks } = require("%scripts/unlocks/battleTasks.nut")
 let { getBattleTaskDifficultyImage } = require("%scripts/unlocks/battleTasksView.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 
 let seasonLvlWatchObj = [{
   watch = seasonLevel

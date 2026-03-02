@@ -4,11 +4,15 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { addTask, TASK_CB_TYPE } = require("%scripts/tasker.nut")
-let { getUserstatItemRewardData } = require("%scripts/userstat/userstatItemsRewards.nut")
+let { getUserstatItemRewardData } = require("%scripts/userstat/userstat.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let { checkInventoryUpdate } = require("%scripts/items/itemsManagerChecks.nut")
+let { getItemsFromList, getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
+let { inventory, getShouldCheckAutoConsume, setShouldCheckAutoConsume
+} = require("%scripts/items/itemsManagerState.nut")
+
 
 const MAX_ITEMS_TO_MULTICONSUME_PER_REQUEST = 300
-local shouldCheckAutoConsume = false
 
 let failedAutoConsumeItemsByItemdefId = {}
 let failedAutoConsumeItemsById = {}
@@ -19,7 +23,7 @@ let singleConsumeList = []
 
 function decreaseItemsAmountIfNeed(itemsList) {
   foreach (item in itemsList) {
-    let newItem = ::ItemsManager.getInventoryItemById(item.id)
+    let newItem = getInventoryItemById(item.id)
     if (!newItem || item.amount != newItem.amount)
       continue
 
@@ -55,7 +59,8 @@ function onFinishMultiItemsConsumeError() {
 }
 
 function fillItemsListsForAutoConsume() {
-  let itemList = ::ItemsManager.getInventoryList(itemType.ALL, @(i) i.shouldAutoConsume)
+  checkInventoryUpdate()
+  let itemList = getItemsFromList(inventory, itemType.ALL, @(i) i.shouldAutoConsume)
 
   foreach (item in itemList) {
     if (!item.uids?[0])
@@ -150,9 +155,10 @@ function autoConsumeItems() {
 }
 
 function checkAutoConsume() {
-  if (!shouldCheckAutoConsume)
+  if (!getShouldCheckAutoConsume())
     return
-  shouldCheckAutoConsume = false
+
+  setShouldCheckAutoConsume(false)
   autoConsumeItems()
 }
 
@@ -164,7 +170,6 @@ addListenersWithoutEnv({
 })
 
 return {
-  setShouldCheckAutoConsume = @(value) shouldCheckAutoConsume = value
   checkAutoConsume
   autoConsumeItems
 }

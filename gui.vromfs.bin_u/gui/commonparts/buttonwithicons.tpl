@@ -26,7 +26,7 @@ Button_text {
         size:t='1@cIco, 1@cIco'
         background-image:t='<<firstIcon>>'
         background-svg-size:t='1@cIco, 1@cIco'
-        margin-right:t='1@blockInteraval'
+        margin-right:t='1@blockInterval'
       }
     <</firstIcon>>
 
@@ -40,7 +40,7 @@ Button_text {
         background-image:t='<<secondIcon>>'
         background-svg-size:t='1@cIco, 1@cIco'
         background-color:t='@buttonFontColor'
-        margin-left:t='1@blockInteraval'
+        margin-left:t='1@blockInterval'
       }
     <</secondIcon>>
   }

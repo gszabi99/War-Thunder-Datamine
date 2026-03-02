@@ -74,10 +74,15 @@ struct CanvasParams
   cueUndergroundColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   radarModeNameLangId : int = -1
   annotateTargets : bool = false
+  usePictureTargets : bool = false
   planeTargetPicture : Picture?
   helicopterTargetPicture : Picture?
   rocketTargetPicture : Picture?
   handleClicks : bool = false
+  canZoom : bool = false
+  magnifiedIndicator : bool = false
+  moveMagnifiedIndicatorRight : bool = false
+  targetSizeMaxZoomFactor : float = 1.5
   isAAComplexMenuLayout : bool = false
   vignetteColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
 
@@ -156,43 +161,69 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.cueUndergroundColor = props |> getColor("cueUndergroundColor", storage.color)
   storage.radarModeNameLangId = props |> getInt("radarModeNameLangId", -1)
   storage.annotateTargets = props |> getBool("annotateTargets", false)
+  storage.usePictureTargets = props |> getBool("usePictureTargets", false)
   storage.planeTargetPicture = props |> getPicture("planeTargetPicture")
   storage.helicopterTargetPicture = props |> getPicture("helicopterTargetPicture")
   storage.rocketTargetPicture = props |> getPicture("rocketTargetPicture")
   storage.handleClicks = props |> getBool("handleClicks", false)
+  storage.canZoom = props |> getBool("canZoom", storage.handleClicks)
+  storage.magnifiedIndicator = props |> getBool("magnifiedIndicator", false)
+  storage.moveMagnifiedIndicatorRight = props |> getBool("moveMagnifiedIndicatorRight", false)
+  storage.targetSizeMaxZoomFactor = props |> getFloat("targetSizeMaxZoomFactor", 1.5)
   storage.isAAComplexMenuLayout = props |> getBool("isAAComplexMenuLayout", false)
   storage.vignetteColor = props |> getColor("vignetteColor", storage.color)
 
 [export]
-def handle_click(var elem : Element&; elemPosX, elemPosY : float; elemSizeX, elemSizeY : float; clickPosX, clickPosY : float)
-  let clickPos = float2(clickPosX, clickPosY)
+def handle_click(var elem : Element&; click_pos_x, click_pos_y : float; dev_id, button_id : int)
+  let clickPos = float2(click_pos_x, click_pos_y)
   var storage = CanvasParams()
   setup_radar_data(elem.props, storage)
 
-  var mainEll = RadarMain(float2(elemPosX, elemPosY), float2(elemSizeX, elemSizeY), storage)
-  var clickVisisitor = ClickVisitor(clickPos)
+  var mainEll = RadarMain(elem.screenCoord.screenPos, elem.screenCoord.size, storage)
+  var clickVisisitor = ClickVisitor(clickPos, dev_id, button_id)
   mainEll.walkLayout(clickVisisitor)
 
 [export]
-def handle_double_click(var elem : Element&; elemPosX, elemPosY : float; elemSizeX, elemSizeY : float; clickPosX, clickPosY : float)
-  let clickPos = float2(clickPosX, clickPosY)
+def handle_double_click(var elem : Element&; click_pos_x, click_pos_y : float; dev_id, button_id : int)
+  let clickPos = float2(click_pos_x, click_pos_y)
   var storage = CanvasParams()
   setup_radar_data(elem.props, storage)
 
-  var mainEll = RadarMain(float2(elemPosX, elemPosY), float2(elemSizeX, elemSizeY), storage)
-  var doubleClickVisitor = DoubleClickVisitor(clickPos)
+  var mainEll = RadarMain(elem.screenCoord.screenPos, elem.screenCoord.size, storage)
+  var doubleClickVisitor = DoubleClickVisitor(clickPos, dev_id, button_id)
   mainEll.walkLayout(doubleClickVisitor)
 
 [export]
-def handle_press(var elem : Element&; elemPosX, elemPosY : float; elemSizeX, elemSizeY : float; startPosX, startPosY : float)
-  let startPos = float2(startPosX, startPosY)
+def handle_press(var elem : Element&; start_pos_x, start_pos_y : float; dev_id, button_id : int)
+  let startPos = float2(start_pos_x, start_pos_y)
   let currPos = get_mouse_pos()
   var storage = CanvasParams()
   setup_radar_data(elem.props, storage)
 
-  var mainEll = RadarMain(float2(elemPosX, elemPosY), float2(elemSizeX, elemSizeY), storage)
-  var pressVisitor = PressVisitor(startPos, currPos)
+  var mainEll = RadarMain(elem.screenCoord.screenPos, elem.screenCoord.size, storage)
+  var pressVisitor = PressVisitor(startPos, currPos, dev_id, button_id)
   mainEll.walkLayout(pressVisitor)
+
+[export]
+def handle_press_end(var elem : Element&; start_pos_x, start_pos_y : float; dev_id, button_id : int)
+  let startPos = float2(start_pos_x, start_pos_y)
+  let currPos = get_mouse_pos()
+  var storage = CanvasParams()
+  setup_radar_data(elem.props, storage)
+
+  var mainEll = RadarMain(elem.screenCoord.screenPos, elem.screenCoord.size, storage)
+  var pressVisitor = EndPressVisitor(startPos, currPos, dev_id, button_id)
+  mainEll.walkLayout(pressVisitor)
+
+[export]
+def handle_mouse_wheel(var elem : Element&; mouse_x, mouse_y : float; delta : float)
+  let pos = float2(mouse_x, mouse_y)
+  var scrollVisitor = ScrollVisitor(pos, delta)
+
+  var storage = CanvasParams()
+  setup_radar_data(elem.props, storage)
+  var mainEll = RadarMain(elem.screenCoord.screenPos, elem.screenCoord.size, storage)
+  mainEll.walkLayout(scrollVisitor)
 
 [export]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -221,29 +252,41 @@ struct RadarMain : RadarInteractableEll
       return
 
     if get_radar_hud_is_b_scope_visible()
-      let mode = data.overrideMode >= 0 ? data.overrideMode : int(get_radar_hud_view_mode())
+      var mode = data.overrideMode >= 0 ? data.overrideMode : int(get_radar_hud_view_mode())
+      if data.isAAComplexMenuLayout
+        mode = int(RadarViewMode.B_SCOPE_ROUND)
 
-      let watchedHero = get_watched_hero()
-      let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-      let circleOverride = azimuthRange > PI * 1.5
+      let mainIndicatorSize = float2(min(self.size.x, self.size.y))
+      let mainIndicatorPos = self.pos + float2(0.0, self.size.y - mainIndicatorSize.y)
 
-      var elemPos = get_radar_hud_is_c_scope_visible() ? self.pos - float2(0., self.size.y * 0.42) : self.pos
+      var elemPos = get_radar_hud_is_c_scope_visible() ? mainIndicatorPos - float2(0., self.size.y * 0.42) : mainIndicatorPos
       if data.enableByMfd
         elemPos += get_radar_hud_mfd_radar_offset()
+
       if mode == int(RadarViewMode.B_SCOPE_ROUND)
+        let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
+        let circleOverride = (azimuthRange > PI * 1.5) || get_radar_hud_is_north_correction_active()
         if circleOverride
-          var bScope = BScopeMain(self.pos, self.size, *self.data)
+          var bScope = BScopeMain(elemPos, mainIndicatorSize, *self.data)
           bScope.walkLayout(visitor)
         else
-          var bScopeHalfEl = BScopeHalfMain(elemPos, self.size, *self.data)
+          var bScopeHalfEl = BScopeHalfMain(elemPos, mainIndicatorSize, *self.data)
           bScopeHalfEl.walkLayout(visitor)
+
+        if self.data.canZoom && self.data.magnifiedIndicator
+          let zoomedIndicatorSize = mainIndicatorSize * float2(0.6, 0.3)
+          var zoomedIndicatorPosX = (self.size.x - zoomedIndicatorSize.x) * 0.5
+          var zoomedIndicatorPosY =  mainIndicatorSize.y * 0.1 - zoomedIndicatorSize.y
+          if self.data.moveMagnifiedIndicatorRight
+            zoomedIndicatorPosX = mainIndicatorSize.x + *self.data |> hdpx(20.0)
+            zoomedIndicatorPosY = (mainIndicatorSize.y - zoomedIndicatorSize.y) * 0.5
+          let zoomedIndicatorPos = elemPos + float2(zoomedIndicatorPosX, zoomedIndicatorPosY)
+          var zoomedIndicator = MagnifiedSquareIndicator(zoomedIndicatorPos, zoomedIndicatorSize, *self.data)
+          zoomedIndicator.walkLayout(visitor)
+
       if mode == int(RadarViewMode.B_SCOPE_SQUARE)
-        if circleOverride
-          var bScope = BScopeMain(self.pos, self.size, *self.data)
-          bScope.walkLayout(visitor)
-        else
-          var bScopeSquare = BScopeSquareMain(elemPos, self.size, *self.data)
-          bScopeSquare.walkLayout(visitor)
+        var bScopeSquare = BScopeSquareMain(elemPos, mainIndicatorSize, *self.data)
+        bScopeSquare.walkLayout(visitor)
 
     if get_radar_hud_is_c_scope_visible()
       let elemSize = float2(self.size.x, self.size.y * 0.42)
@@ -259,6 +302,21 @@ def mfd_radar_background(var ctx : GuiContext&; rdata : ElemRenderData& const; d
   let pos = float2(rdata.pos.x - (1. - scale) * 0.5 * size.x, rdata.pos.y - (1. - scale) * 0.5 * size.y)
   ctx |> set_color(data.backgroundColor)
   ctx |> render_box(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
+
+struct MagnifiedSquareIndicator : RadarInteractableEll
+  def MagnifiedSquareIndicator(pos, size : float2; in_params : CanvasParams&)
+    RadarInteractableEll`RadarInteractableEll(self, pos, size, in_params)
+
+    let hud = get_cur_hud()
+    isActive = hud != null && hud.radarZoom.isZoomActive
+
+  def override walkLayout(var visitor : InteractableVisitor&)
+    if !isActive
+      return
+    InteractableCanvasEll`walkLayout(self, visitor)
+
+    var indicatorEl = BScopeSquareIndicator(self.pos, self.size, *self.data)
+    indicatorEl.walkLayout(visitor)
 
 struct BScopeHalfMain : RadarInteractableEll
   def BScopeHalfMain(pos, size : float2; in_params : CanvasParams&)
@@ -298,6 +356,8 @@ struct PolarTargetsElement : InteractableButton
   data : CanvasParams const? = null
   origin : float2 = float2(0.0)
 
+  hud : Hud? = null
+
   radius : float2 = float2(0.0)
   azimuthRange : float = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   fullCircle : bool = false
@@ -314,6 +374,8 @@ struct PolarTargetsElement : InteractableButton
       let bottomAngle = max(0.0, azimuthRange * 0.5 - PI_2)
       let bottomOffset = sin(bottomAngle) * radius.y
       self.origin = pos + float2(size.x * 0.5, size.y - bottomOffset)
+
+    hud = get_cur_hud()
 
   def override walkLayout(var visitor : InteractableVisitor&)
     InteractableButton`walkLayout(self, visitor)
@@ -344,19 +406,42 @@ struct PolarTargetsElement : InteractableButton
     )
 
     let distRel = sqrt(p.x * p.x + p.y * p.y)
-    let azimuthCorrection = fullCircle ? -PI * 0.5 : 0.0
-    let azimuth = norm_s_ang(atan2(p.x, -p.y) + azimuthCorrection)
-    return float2(distRel, azimuth)
+    let azimuth = atan2(p.x, -p.y)
+    let azRel = (azimuth - get_radar_hud_azimuth_min()) / azimuthRange
+    return float2(azRel, distRel)
 
-  def override const isPointInside(rel_pos : float2)
-    return rel_pos.x <= 1.0 && get_radar_hud_azimuth_min() <= rel_pos.y && rel_pos.y <= get_radar_hud_azimuth_max()
+  def const angleRelToAngle(angle_rel : float)
+    let angle = get_radar_hud_azimuth_min() + azimuthRange * angle_rel
+    return norm_s_ang(angle)
 
-  [unused_argument(start_pos)] def override onPress(start_pos, curr_pos : float2)
-    let pressAzimuth = curr_pos.y
-    let pressDistRel = curr_pos.x
+  def override onMouseScroll(pos : float2; delta : float)
+    if !data.canZoom || hud == null
+      return
+    if azimuthRange < FLT_EPSILON
+      return
+    hud.radarZoom.addZoomFactor(delta)
+    hud.radarZoom.setZoomCenter(float2(pos))
+
+  def override onPressButton(start_pos_rel, curr_pos_rel : float2; devId, buttonId : int)
+    if devId != int(InputDevice.DEVID_MOUSE) && devId != int(InputDevice.DEVID_JOYSTICK)
+      return
+
+    if buttonId == 0
+      setCuePos(curr_pos_rel)
+    elif buttonId == 2
+      dragZoom(start_pos_rel, curr_pos_rel)
+
+  [unused_argument(start_pos_rel)] def dragZoom(start_pos_rel, curr_pos_rel : float2)
+    if !data.canZoom || hud == null
+      return
+    hud.radarZoom.setZoomCenter(curr_pos_rel)
+
+  def setCuePos(curr_pos : float2)
+    let azimuthCorrection = fullCircle ? -PI_2 : 0.0
+    let pressAzimuth = norm_s_ang(angleRelToAngle(curr_pos.x) + azimuthCorrection)
+    let pressDistRel = curr_pos.y
     let pressDist = pressDistRel * get_radar_hud_distance_max() * 1000.0
 
-    let azimuthCorrection = fullCircle ? -PI * 0.5 : 0.0
     var foundTarget = false
     Radar`foreach_visible_target() <| $(var target)
       var distanceRel = 0.9
@@ -368,7 +453,7 @@ struct PolarTargetsElement : InteractableButton
       var angle = -PI * 0.5
       var angularWidth = azimuthRange
       if get_radar_hud_has_azimuth_scale()
-        angle = get_radar_hud_azimuth_min() + azimuthRange * target.azimuthRel + azimuthCorrection
+        angle = norm_s_ang(angleRelToAngle(target.azimuthRel) + azimuthCorrection)
         angularWidth = max(azimuthRange * target.azimuthWidthRel, angularWidthMin)
 
       let distCheck = abs(distanceRel - pressDistRel) <= radialWidthRel
@@ -387,16 +472,23 @@ struct PolarTargetsElement : InteractableButton
     fcm.ctrlMap |> onSensorTargetLock()
 
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
-    polar_radar_targets(ctx, *self.data, origin)
+    polar_radar_targets(ctx, *self.data)
 
-  def const polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2)
+  def const relPosToPos(az_rel, dist_rel : float)
+    let angle = angleRelToAngle(az_rel) - PI * 0.5
+    var sina, cosa : float
+    sincos(angle, sina, cosa)
+    let direction = float2(cosa, sina) * float2(dist_rel * radius.x, dist_rel * radius.y)
+    return origin + direction
+
+  def const polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&)
     var fctx : StdGuiFontContext
     get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
     Radar`foreach_visible_target() <| $(var target)
       var distanceRel = 0.9
       var radialWidthRel = 0.05
-      if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
+      if get_radar_hud_has_distance_scale()
         distanceRel = target.distanceRel
         radialWidthRel = max(target.distanceWidthRel, 0.05)
 
@@ -422,16 +514,15 @@ struct PolarTargetsElement : InteractableButton
 
       let targetCircleRadius = radius * 0.04
 
-      var needToAnnotateTarget = data.annotateTargets
       var targetAnnotationRadialOffset = float2(0.0)
+      var targetAnnotationRadialOffsetMult = distanceRel < 0.5 ? 1.0 : -1.0
 
       if target.targetType == int(RadarTargetType.TYPE_TARGET)
         let angleLeft = fullCircle ? (angle - 0.5 * angularWidth) : max(angle - 0.5 * angularWidth, get_radar_hud_azimuth_min() - PI * 0.5)
         let angleRight = fullCircle ? (angle + 0.5 * angularWidth) : min(angle + 0.5 * angularWidth, get_radar_hud_azimuth_max() - PI * 0.5)
 
         if target.isSelected && get_radar_hud_has_azimuth_scale()
-          let replaceTargetWithFullAnnotation = data.annotateTargets && data.isAAComplexMenuLayout && target.iconType != int(RadarTargetIconType.NONE)
-          if replaceTargetWithFullAnnotation
+          if data.usePictureTargets && target.iconType != int(RadarTargetIconType.NONE)
             let pictureSize = targetCircleRadius * 1.5
 
             var hasValidLos = false
@@ -458,27 +549,15 @@ struct PolarTargetsElement : InteractableButton
             render_picture(ctx, targetPicture, picturePos, pictureSize, data.targetColor)
             resetViewTm(ctx)
 
-            let targetIndex = "{int(target.persistentIndex)}"
-            let annotationBox = get_str_bbox(targetIndex, targetIndex |> length(), fctx)
-
-            var radialOffsetSign = 1.0
             if hasValidLos
               let dotProd = dot(losDirection, targetDirection)
               if dotProd < -0.7
-                radialOffsetSign = 1.0
+                targetAnnotationRadialOffsetMult = 1.0
               elif dotProd < 0.7
-                radialOffsetSign = distanceRel < 0.5 ? 1.0 : -1.0
+                targetAnnotationRadialOffsetMult = distanceRel < 0.5 ? 1.0 : -1.0
               else
-                radialOffsetSign = -1.0
-            let radialOffset = (pictureSize * 0.5 + float2(data |> hdpx(4.0)) + annotationBox.width * 0.5) * radialOffsetSign
-            let annotationPos = origin + float2(distanceRel * radius.x + radialOffset.x, distanceRel * radius.y + radialOffset.y) * float2(cosa, sina)
-
-            let offsetX = -annotationBox.width.x * 0.5
-            let offsetY = annotationBox.width.y * 0.5
-
-            ctx |> goto_xy(annotationPos.x + offsetX, annotationPos.y + offsetY)
-            ctx |> draw_str_scaled(1.0, targetIndex, targetIndex |> length())
-            needToAnnotateTarget = false
+                targetAnnotationRadialOffsetMult = -1.0
+            targetAnnotationRadialOffset = pictureSize * 0.5
           else
             ctx |> render_ellipse_aa(targetPos, targetCircleRadius, data |> hdpx(2. * data.lineWidth), e3dColor, transparentColor)
             targetAnnotationRadialOffset = targetCircleRadius
@@ -490,11 +569,10 @@ struct PolarTargetsElement : InteractableButton
         else
           ctx |> render_sector_aa(origin, radius * distanceRel, float2(angleLeft, angleRight), 100. * radialWidthRel, e3dColor, transparentColor)
 
-        if needToAnnotateTarget
+        if data.annotateTargets
           let targetIndex = "{int(target.persistentIndex)}"
           let annotationBox = get_str_bbox(targetIndex, targetIndex |> length(), fctx)
-          let radialOffsetSign = distanceRel < 0.5 ? 1.0 : -1.0
-          let radialOffset = (float2(data |> hdpx(4.0)) + annotationBox.width * 0.5 + targetAnnotationRadialOffset) * radialOffsetSign
+          let radialOffset = (float2(data |> hdpx(4.0)) + annotationBox.width * 0.5 + targetAnnotationRadialOffset) * targetAnnotationRadialOffsetMult
           let annotationPos = origin + float2(distanceRel * radius.x + radialOffset.x, distanceRel * radius.y + radialOffset.y) * float2(cosa, sina)
           let offsetX = -annotationBox.width.x * 0.5
           let offsetY = annotationBox.width.y * 0.5
@@ -560,6 +638,31 @@ struct PolarTargetsElement : InteractableButton
               ctx |> render_line_dashed(lockPos, ownWeaponTargetPos, data |> hdpx(10.), data |> hdpx(5.), data |> hdpx(2.), e3dColor)
             else
               ctx |> draw_line(ownWeaponPos, ownWeaponTargetPos, data |> hdpx(2.))
+
+    drawZoom(ctx, data)
+
+  def const drawZoom(var ctx : GuiContext&; data : CanvasParams&)
+    if !data.canZoom || hud == null || !hud.radarZoom.isZoomActive
+      return
+
+    let minAzimuthRel = hud.radarZoom.zoomCenter.x - 0.5 * hud.radarZoom.zoomFactorInv
+    let maxAzimuthRel = hud.radarZoom.zoomCenter.x + 0.5 * hud.radarZoom.zoomFactorInv
+    let minDistRel = hud.radarZoom.zoomCenter.y - 0.5 * hud.radarZoom.zoomFactorInv
+    let maxDistRel = hud.radarZoom.zoomCenter.y + 0.5 * hud.radarZoom.zoomFactorInv
+
+    let lb = relPosToPos(minAzimuthRel, minDistRel)
+    let lt = relPosToPos(minAzimuthRel, maxDistRel)
+    let rb = relPosToPos(maxAzimuthRel, minDistRel)
+    let rt = relPosToPos(maxAzimuthRel, maxDistRel)
+
+    let lineWidth =  data |> hdpx(2.)
+    ctx |> draw_line(lb, lt, lineWidth)
+    ctx |> draw_line(rb, rt, lineWidth)
+
+    let minAzimuth = angleRelToAngle(minAzimuthRel) - PI * 0.5
+    let maxAzimuth = angleRelToAngle(maxAzimuthRel) - PI * 0.5
+    ctx |> render_sector_aa(origin, radius * minDistRel, float2(minAzimuth, maxAzimuth), lineWidth, data.targetColor, transparentColor)
+    ctx |> render_sector_aa(origin, radius * maxDistRel, float2(minAzimuth, maxAzimuth), lineWidth, data.targetColor, transparentColor)
 
 struct BScopeHalfElevationCurret : InteractableButton
   data : CanvasParams const? = null
@@ -1020,8 +1123,24 @@ struct BScopeSquareMain : RadarInteractableEll
     let frameSize = get_radar_hud_has_azimuth_scale() ? self.size : float2(self.size.x * 0.2, self.size.y)
     let offsets = b_scope_square_labels(*self.data, self.pos, frameSize, visitor)
 
-    let sz = frameSize - float2(offsets.x, offsets.y + offsets.z)
+    var sz = frameSize - float2(offsets.x, offsets.y + offsets.z)
     let elemPos = data.centerRadar ? (self.pos + frameSize * 0.5 - sz * 0.5) : (self.pos + float2(offsets.x, offsets.y))
+
+    if data.canZoom && get_cur_hud() != null && get_cur_hud().radarZoom.isZoomActive
+      let curretHeight = size.y * 0.05
+      let padding = size.y * 0.01
+
+      sz -= float2(padding + curretHeight)
+
+      let horCurretPos = float2(elemPos.x, elemPos.y + sz.y + padding)
+      let horCurretSize = float2(sz.x, curretHeight)
+      var horCurret = BScopeSquareZoomHorCurret(horCurretPos, horCurretSize, *self.data)
+      horCurret.walkLayout(visitor)
+
+      let vertCurretPos = float2(elemPos.x + sz.x + padding, elemPos.y)
+      let vertCurretSize = float2(curretHeight, sz.y)
+      var vertCurret = BScopeSquareZoomVertCurret(vertCurretPos, vertCurretSize, *self.data)
+      vertCurret.walkLayout(visitor)
 
     var centerEl = BScopeSquareCenter(elemPos, sz, *self.data)
     centerEl.walkLayout(visitor)
@@ -1033,35 +1152,201 @@ struct BScopeSquareMain : RadarInteractableEll
 
     InteractableCanvasEll`walkLayout(self, visitor)
 
+struct BScopeSquareZoomHorCurret : InteractableButton
+  data : CanvasParams const? = null
+
+  def BScopeSquareZoomHorCurret(pos, size : float2; in_params : CanvasParams&)
+    InteractableButton`InteractableButton(self, pos, size)
+    data = unsafe(addr(in_params))
+
+    isActive = get_cur_hud() != null
+
+  [unused_argument(rdata, rstate)] def override draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
+    InteractableCanvasEll`draw(self, ctx, rdata, rstate)
+
+    var color = float4(Color4(is_color_or_white(data.color)))
+    color *= 0.42
+    let e3dColorGrid = E3DCOLOR(Color4(color))
+    ctx |> set_color(e3dColorGrid)
+
+    let hud = get_cur_hud()
+
+    let halfRangeX = 0.5 * hud.radarZoom.zoomFactorInv
+    let zoomMinXRel = hud.radarZoom.zoomCenter.x - halfRangeX
+    let zoomMaxXRel = hud.radarZoom.zoomCenter.x + halfRangeX
+
+    let lineY = self.pos.y + self.size.y * 0.5
+
+    let l = self.pos.x
+    let r = self.pos.x + self.size.x
+
+    ctx |> draw_line(lerp(l, r, zoomMinXRel), lineY,
+      lerp(l, r, zoomMaxXRel), lineY, *data |> hdpx(4.0))
+
+struct BScopeSquareZoomVertCurret : InteractableButton
+  data : CanvasParams const? = null
+
+  def BScopeSquareZoomVertCurret(pos, size : float2; in_params : CanvasParams&)
+    InteractableButton`InteractableButton(self, pos, size)
+    data = unsafe(addr(in_params))
+
+    isActive = get_cur_hud() != null
+
+  [unused_argument(rdata, rstate)] def override draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
+    InteractableCanvasEll`draw(self, ctx, rdata, rstate)
+
+    var color = float4(Color4(is_color_or_white(data.color)))
+    color *= 0.42
+    let e3dColorGrid = E3DCOLOR(Color4(color))
+    ctx |> set_color(e3dColorGrid)
+
+    let hud = get_cur_hud()
+
+    let halfRangeY = 0.5 * hud.radarZoom.zoomFactorInv
+    let zoomMinYRel = hud.radarZoom.zoomCenter.y - halfRangeY
+    let zoomMaxYRel = hud.radarZoom.zoomCenter.y + halfRangeY
+
+    let lineX = self.pos.x + self.size.x * 0.5
+
+    let top = self.pos.y + self.size.y
+    let bot = self.pos.y
+
+    ctx |> draw_line(lineX, lerp(top, bot, zoomMinYRel),
+      lineX, lerp(top, bot, zoomMaxYRel), *data |> hdpx(4.0))
+
+struct ZoomIndicatorButton : InteractableButton
+  data : CanvasParams const? = null
+
+  def ZoomIndicatorButton(pos, size : float2; in_params : CanvasParams&)
+    InteractableButton`InteractableButton(self, pos, size)
+    data = unsafe(addr(in_params))
+
+    let hud = get_cur_hud()
+    isActive = hud != null && hud.radarZoom.isZoomActive && in_params.canZoom
+
+  [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
+    let lb = float2(pos.x, pos.y + size.y)
+    let rt = float2(pos.x + size.x, pos.y)
+
+    ctx |> set_viewport(lb.x, lb.y, rt.x, rt.y)
+
+    let frame <- to_array_move(fixed_array<float2>(lb, float2(lb.x, rt.y), rt, float2(rt.x, lb.y)))
+    ctx |> render_line_aa(frame, true, *data |> hdpx(2.0 * data.lineWidth), float2(0, 0), data.lineColor)
+
+    ctx |> draw_line(lb.x, lb.y, rt.x, rt.y, *data |> hdpx(data.lineWidth))
+
+    // no constexpressions in language, unfortunately
+    // let d = 0.25 * 0.5
+    // let h = 0.4
+    // let l = sqrt(d*d + h*h)
+    // let alpha = atan2(d, h)
+    // let ang = PI * 0.25 + alpha
+    // let a = l * float2(sin(ang), -cos(ang))
+    // logerr("{a}")
+
+    let a = float2(0.3712, -0.1944)
+    let a2 = float2(-a.y, -a.x)
+    let arrow <- to_array_move(fixed_array<float2>(
+      lb,
+      lb + size * a,
+      lb + size * a2))
+    ctx |> render_poly(arrow, data.lineColor)
+    let arrow2 <- to_array_move(fixed_array<float2>(
+      rt,
+      rt - size * a,
+      rt - size * a2))
+    ctx |> render_poly(arrow2, data.lineColor)
+
+    ctx |> restore_viewport()
+
+  [unused_argument(start_pos_rel, cur_pos_rel)] def override onPress(start_pos_rel, cur_pos_rel : float2)
+    get_cur_hud().radarZoom.reset()
 
 struct BScopeSquareCenter : RadarInteractableEll
   def BScopeSquareCenter(pos, size : float2; in_params : CanvasParams&)
     RadarInteractableEll`RadarInteractableEll(self, pos, size, in_params)
 
   def override walkLayout(var visitor : InteractableVisitor&)
-    InteractableCanvasEll`walkLayout(self, visitor)
+    var indicatorEl = BScopeSquareIndicator(self.pos, self.size, *self.data)
+    indicatorEl.walkLayout(visitor)
 
     let elevationCurretWidth = self.size.x * 0.05
     let elevationCurretSize = float2(elevationCurretWidth, self.size.y)
     var elevationCurret = BScopeSquareElevationCurret(self.pos - float2(elevationCurretWidth, 0.0), elevationCurretSize, *self.data)
     elevationCurret.walkLayout(visitor)
 
-    var targetsEl = BScopeSquareTargets(self.pos, self.size, *self.data)
-    targetsEl.walkLayout(visitor)
+    InteractableCanvasEll`walkLayout(self, visitor)
 
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
-    b_scope_square(ctx, self.pos, self.size, *self.data)
+    ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
+
+    if get_radar_hud_aam_launch_zone_visible() && get_radar_hud_has_azimuth_scale() && !data.hideLaunchZone
+      b_scope_square_launch_range(ctx, *data, pos, size)
+
+    ctx |> restore_viewport()
+
+    if data.hasAviaHorizont
+      b_scope_square_aviahorizont(ctx, *data, pos, size)
+
     draw_additional_net(ctx, *self.data, rdata.pos, rdata.size)
 
 
-struct BScopeSquareTargets : InteractableButton
-  data : CanvasParams const? = null
+struct BScopeSquareIndicator : InteractableButton
+  dataPtr : CanvasParams const? = null
+  hud : Hud? -const = null
 
-  def BScopeSquareTargets(pos, size : float2; in_params : CanvasParams&)
+  def BScopeSquareIndicator(pos, size : float2; in_params : CanvasParams&)
     InteractableButton`InteractableButton(self, pos, size)
-    data = unsafe(addr(in_params))
+    dataPtr = unsafe(addr(in_params))
 
-  [unused_argument(start_pos_rel)] def override onPress(start_pos_rel, curr_pos_rel : float2)
+    hud = get_cur_hud()
+    isActive = hud != null
+
+  def override const toRelativePos(abs_pos : float2)
+    let unflippedPos = InteractableButton`toRelativePos(self, abs_pos)
+    let flippedPos = float2(unflippedPos.x, 1.0 - unflippedPos.y)
+    return flippedPos
+
+  def unzoomRelPos(pos : float2)
+    if !self.dataPtr.canZoom
+      return pos
+
+    let scaledHalfSize = float2(0.5 * hud.radarZoom.zoomFactorInv)
+    let scaledLT = hud.radarZoom.zoomCenter - scaledHalfSize
+    let scaledPos = scaledLT + pos * hud.radarZoom.zoomFactorInv
+
+    return scaledPos
+
+  def override onPressButton(start_pos_rel, curr_pos_rel : float2; devId, buttonId : int)
+    if devId != int(InputDevice.DEVID_MOUSE) && devId != int(InputDevice.DEVID_JOYSTICK)
+      return
+
+    if buttonId == 0
+      setCuePos(curr_pos_rel)
+    elif buttonId == 2
+      dragZoom(start_pos_rel, curr_pos_rel)
+
+  [unused_argument(start_pos_rel, curr_pos_rel)] def override onPressButtonEnd(start_pos_rel, curr_pos_rel : float2; devId, buttonId : int)
+    if devId == int(InputDevice.DEVID_MOUSE) && buttonId == 2
+      hud.radarZoom.endDrag()
+
+  [unused_argument(pos)] def override onDoubleClickButton(pos : float2; devId, buttonId : int)
+    if (devId == int(InputDevice.DEVID_MOUSE) || devId == int(InputDevice.DEVID_JOYSTICK)) && buttonId == 0
+      var fcm = get_flight_control_mode()
+      fcm.ctrlMap |> onSensorTargetLock()
+
+  def override onMouseScroll(pos : float2; delta : float)
+    let scaledPos = unzoomRelPos(pos)
+    hud.radarZoom.zoom(scaledPos, delta)
+
+  def dragZoom(start_pos_rel, curr_pos_rel : float2)
+    let delta = curr_pos_rel - start_pos_rel
+    hud.radarZoom.updateDrag(delta)
+
+  def setCuePos(curr_pos_rel_zoomed : float2)
+    let curPosRel = unzoomRelPos(curr_pos_rel_zoomed)
+    let zoomFactorInv = hud.radarZoom.zoomFactorInv
+
     let hasDistanceScale = get_radar_hud_has_distance_scale()
     let hasAzimuthScale = get_radar_hud_has_azimuth_scale()
 
@@ -1071,16 +1356,16 @@ struct BScopeSquareTargets : InteractableButton
       var angularWidthRel = 1.
       if hasAzimuthScale
         angleRel = target.azimuthRel
-        angularWidthRel = target.azimuthWidthRel
+        angularWidthRel = target.azimuthWidthRel * zoomFactorInv
 
       var distanceRel = 0.9
       var radialWidthRel = 0.02
       if hasDistanceScale && target.distanceRel >= 0.
         distanceRel = target.distanceRel
-        radialWidthRel = max(radialWidthRel, target.distanceWidthRel)
+        radialWidthRel = max(radialWidthRel, target.distanceWidthRel) * zoomFactorInv
 
       let targetSize = float2(angularWidthRel, radialWidthRel) * 0.5
-      let mouseToTarget = float2(angleRel, 1.0 - distanceRel) - curr_pos_rel
+      let mouseToTarget = float2(angleRel, distanceRel) - curPosRel
       let isInXBounds = abs(mouseToTarget.x) <= targetSize.x
       let isInYBounds = abs(mouseToTarget.y) <= targetSize.y
       if isInXBounds && isInYBounds
@@ -1089,26 +1374,62 @@ struct BScopeSquareTargets : InteractableButton
         return
     return if foundTarget
 
-    let dist = (1.0 - curr_pos_rel.y) * get_radar_hud_distance_max() * 1000.0
-    let azimuth = cvt(curr_pos_rel.x, 0.0, 1.0, get_radar_hud_azimuth_min(), get_radar_hud_azimuth_max())
+    let dist = curPosRel.y * get_radar_hud_distance_max() * 1000.0
+
+    let azMin = get_radar_hud_azimuth_min()
+    let azMax = get_radar_hud_azimuth_max()
+    let azimuthCorrection = get_radar_hud_is_north_correction_active() ? -PI_2 : 0.0
+    let azimuth = cvt(curPosRel.x, 0.0, 1.0, azMin, azMax) + azimuthCorrection
+
     set_radar_cue_pos(azimuth, dist)
 
-  [unused_argument(pos)] def override onDoubleClick(pos : float2)
-    var fcm = get_flight_control_mode()
-    fcm.ctrlMap |> onSensorTargetLock()
+  [unused_argument(rdata, rstate)] def override draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
+    var scaledSize = size
+    var scaledPos = pos
+    if self.dataPtr.canZoom
+      scaledSize *= hud.radarZoom.zoomFactor
 
-  [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
-    square_radar_targets(ctx, *self.data)
+      let scaledHalfSize = float2(0.5 * hud.radarZoom.zoomFactorInv)
+      let flippedCenter = float2(hud.radarZoom.zoomCenter.x, 1.0 - hud.radarZoom.zoomCenter.y)
+      let scaledLT = flippedCenter - scaledHalfSize
+      scaledPos -= size * scaledLT * hud.radarZoom.zoomFactor
 
-  def const convertDistToY(dist_rel : float)
-    return pos.y + (1. - dist_rel) * size.y
-
-  def const convertAngleToX(angle_rel : float)
-    return pos.x + angle_rel * size.x
-
-  def const square_radar_targets(var ctx : GuiContext&; data : CanvasParams&)
     ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
+    drawScaled(ctx, scaledPos, scaledSize)
+    ctx |> restore_viewport()
 
+    if !self.dataPtr.hideHorAngle
+      b_scope_square_inner_labels(ctx, *self.dataPtr, pos, size, self.dataPtr.fontSize)
+
+  def drawScaled(var ctx : GuiContext&; pos, size : float2)
+    let data = *self.dataPtr
+    if !data.hideBack || data.showScanAzimuth
+      b_scope_square_bkg(ctx, data, pos, size)
+
+    if !data.hideBack
+      b_scope_square_target_sector(ctx, data, pos, size)
+
+    let hero = get_watched_hero()
+    let isTank = hero != null && hero.unitType == UnitType.UT_HeavyVehicle
+    if isTank
+      b_scope_square_azimuth(ctx, data, pos, size, get_radar_hud_turret_azimuth(), 1., 0.)
+
+    render_ground_reflection(ctx, size, pos, is_color_or_white(data.lineColor), int2(20, 10), true)
+    if get_radar_hud_is_visible()
+      if get_radar_hud_is_emitting() && !data.hideBeam
+        b_scope_square_azimuth(ctx, data, pos, size, get_radar_hud_azimuth(), get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
+        foreach_additional_beams() <| $(var additionalBeam)
+          b_scope_square_azimuth(ctx, data, pos, size, additionalBeam.azimuth, get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
+
+    if get_radar_hud_is_visible2()
+      if get_radar_hud_is_emitting2() && !data.hideBeam
+        b_scope_square_azimuth(ctx, data, pos, size, get_radar_hud_azimuth2(), get_radar_hud_distance2(), get_radar_hud_azimuth_half_width2())
+
+    b_scope_square_cue(ctx, data, pos, size, self.size)
+
+    square_radar_targets(ctx, data, pos, size)
+
+  def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; scaled_pos, scaled_size : float2)
     let hasAzimuthScale = get_radar_hud_has_azimuth_scale()
     let hasDistanceScale = get_radar_hud_has_distance_scale()
     let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
@@ -1119,16 +1440,17 @@ struct BScopeSquareTargets : InteractableButton
         angleRel = target.azimuthRel
         angularWidthRel = target.azimuthWidthRel
       angleRel = clamp(angleRel, 0.0, 1.0)
-      let angleLeft = max(0., angleRel - 0.5 * angularWidthRel)
-      let angleRight = min(angleRel + 0.5 * angularWidthRel, 1.)
 
       var distanceRel = 0.9
       var radialWidthRel = 0.02
-      if hasDistanceScale && target.distanceRel >= 0.
+      if hasDistanceScale
         distanceRel = target.distanceRel
         radialWidthRel = max(radialWidthRel, target.distanceWidthRel)
 
-      let p = float2(convertAngleToX(angleRel), convertDistToY(distanceRel))
+      let scaledTargetCanvasSize = self.size * (data.canZoom ? min(hud.radarZoom.zoomFactor, data.targetSizeMaxZoomFactor) : 1.0)
+      let targetHalfSize = scaledTargetCanvasSize * 0.5 * float2(angularWidthRel, radialWidthRel)
+
+      let p = float2(scaled_pos.x + angleRel * scaled_size.x, scaled_pos.y + (1. - distanceRel) * scaled_size.y)
 
       var color = float4(Color4(is_color_or_white(data.targetColor)))
       let signalRel = target.signalRel < 0.01 ? 0. : cvt(target.signalRel, 0.05, 1., 0.3, 1.)
@@ -1136,82 +1458,102 @@ struct BScopeSquareTargets : InteractableButton
       let e3dColor = E3DCOLOR(Color4(color))
 
       if target.targetType == int(RadarTargetType.TYPE_TARGET)
-        let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
-        let angularGateHalfWidthRel = angularGateWidthMultSquare * azimuthHalfWidth / azimuthRange
-        let angleGateLeftRel = angleRel - angularGateHalfWidthRel
-        let angleGateRightRel = angleRel + angularGateHalfWidthRel
-
-        let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
-        let distanceInner = distanceRel - distanceGateHalfWidthRel
-        let distanceOuter = distanceRel + distanceGateHalfWidthRel
         if target.isDetected
-          let lcoord <- to_array_move(fixed_array<float2>(float2(convertAngleToX(angleGateLeftRel), pos.y + (1. - distanceInner) * size.y),
-          float2(convertAngleToX(angleGateLeftRel), pos.y + (1. - distanceOuter) * size.y)))
+          let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
+          let angularGateHalfWidthRel = angularGateWidthMultSquare * azimuthHalfWidth / azimuthRange
+          let angulaGateHalfWidth = angularGateHalfWidthRel * scaledTargetCanvasSize.x
+
+          let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
+          let distanceGateHalfWidth = distanceGateHalfWidthRel * scaledTargetCanvasSize.y
+
+          let gateHalfSize = float2(angulaGateHalfWidth, distanceGateHalfWidth)
+          let lt = p - float2(gateHalfSize)
+          let rb = p + float2(gateHalfSize)
+
+          let lcoord <- to_array_move(fixed_array<float2>(lt, float2(lt.x, rb.y)))
           ctx |> render_line_aa(lcoord, false, data |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
-          let rcoord <- to_array_move(fixed_array<float2>(float2(convertAngleToX(angleGateRightRel), pos.y + (1. - distanceInner) * size.y),
-          float2(convertAngleToX(angleGateRightRel), pos.y + (1. - distanceOuter) * size.y)))
+          let rcoord <- to_array_move(fixed_array<float2>(rb, float2(rb.x, lt.y)))
           ctx |> render_line_aa(rcoord, false, data |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
         if !target.isEnemy
-          let iffMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
-          let coord <- to_array_move(fixed_array<float2>(float2(convertAngleToX(angleLeft), pos.y + (1. - iffMarkDistRel) * size.y),
-          float2(convertAngleToX(angleRight), pos.y + (1. - iffMarkDistRel) * size.y)))
+          let markY = p.y - targetHalfSize.y - self.size.y * 0.02
+          let coord <- to_array_move(fixed_array<float2>(float2(p.x - targetHalfSize.x, markY), float2(p.x + targetHalfSize.x, markY)))
           ctx |> render_line_aa(coord, false, data |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
         if target.isAttacked
-          let attackMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + attackDistRelMult) * radialWidthRel
-          let coord <- to_array_move(fixed_array<float2>(float2(convertAngleToX(angleRel), pos.y + (1. - attackMarkDistRel) * size.y),
-          float2(convertAngleToX(angleRel), pos.y + (1. - attackMarkDistRel + attackHeightRel) * size.y)))
+          let markY = p.y - targetHalfSize.y - self.size.y * 0.03
+          let coord <- to_array_move(fixed_array<float2>(float2(p.x, markY),
+          float2(p.x, markY - self.size.y * attackHeightRel)))
           ctx |> render_line_aa(coord, false, data |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
         //animation
 
         if target.isSelected && hasAzimuthScale
-          if data.targetFormType == 0
-            ctx |> render_ellipse_aa(p, size * 0.02, data |> hdpx(2.), e3dColor, e3dColor)
+          var losSpeedAngle = 0.0
+          let losSpeedValid = target.losSpeed < 3000.
+          var losSpeedOffsetRadial = float2(0.0)
+          if losSpeedValid
+            losSpeedAngle = atan2(target.losHorSpeed, target.losSpeed)
+
+          if data.usePictureTargets && target.iconType != int(RadarTargetIconType.NONE)
+            let pictureSize = float2(self.size.x * 0.05)
+            losSpeedOffsetRadial = pictureSize * 0.7
+            let targetPicture = Radar`getImageForTarget(target, data.planeTargetPicture, data.helicopterTargetPicture, data.rocketTargetPicture)
+            let picturePos = p - pictureSize * 0.5
+            setRotViewTm(ctx, p.x, p.y, -losSpeedAngle, 0.0, false)
+            render_picture(ctx, targetPicture, picturePos, pictureSize, data.targetColor)
+            resetViewTm(ctx)
+          elif data.targetFormType == 0
+            ctx |> render_ellipse_aa(p, self.size.x * float2(0.02), data |> hdpx(2.), e3dColor, e3dColor)
           elif data.targetFormType == 1 || data.targetFormType == 2
-            ctx |> render_ellipse_aa(p, size * 0.03, data |> hdpx(2.), e3dColor, transparentColor)
+            ctx |> render_ellipse_aa(p, self.size.x * float2(0.03), data |> hdpx(2.), e3dColor, transparentColor)
             let sign = data.targetFormType == 1 ? 1. : -1.
+            let sz = self.size.y * 0.015 * sign
             let coord <- to_array_move(fixed_array<float2>(
-            float2(p.x - size.x * 0.02, p.y + size.y * 0.015 * sign),
-            float2(p.x, p.y - size.y * 0.03 * sign),
-            float2(p.x + size.x * 0.02, p.y + size.y * 0.015 * sign)))
+            float2(p.x - targetHalfSize.x, p.y + sz),
+            float2(p.x, p.y - sz * 1.41),
+            float2(p.x + targetHalfSize.x, p.y + sz)))
             ctx |> render_line_aa(coord, true, 1., float2(0, 0), e3dColor)
-          if target.losSpeed < 3000.
-            let coord <- to_array_move(fixed_array<float2>(float2(pos.x + angleRel * size.x, pos.y + (1. - distanceRel) * size.y),
-            float2(pos.x + (angleRel - target.losHorSpeed * 0.0002) * size.x, pos.y + (1. - (distanceRel + target.losSpeed * 0.0002)) * size.y)))
+
+          if losSpeedValid
+            var sina, cosa = 0.0
+            sincos(losSpeedAngle, sina, cosa)
+            let losOffset = -losSpeedOffsetRadial * float2(sina, cosa)
+            let velocityVector = float2(-target.losHorSpeed, -target.losSpeed) * 0.0002 * scaledTargetCanvasSize
+            let coord <- to_array_move(fixed_array<float2>(p + losOffset, p + velocityVector + losOffset))
             ctx |> render_line_aa(coord, false, data |> hdpx(2. * data.lineWidth), float2(0, 0), e3dColor)
         else
-          let angleCenter = (angleRight + angleLeft) * 0.5
           if data.targetFormType == 0
             let tc = float2(0., 0.)
-            ctx |> render_rect(
-              pos.x + angleLeft  * size.x, pos.y + (1. - distanceRel - 0.5 * radialWidthRel) * size.y,
-              pos.x + angleRight * size.x, pos.y + (1. - distanceRel + 0.5 * radialWidthRel) * size.y, tc, tc, tc)
+            let lt = p - targetHalfSize
+            let rb = p + targetHalfSize
+            ctx |> render_rect(lt.x, lt.y, rb.x, rb.y, tc, tc, tc)
           elif data.targetFormType == 1
+            let sz = scaledTargetCanvasSize.y * 0.02
             let coord <- to_array_move(fixed_array<float2>(
-            float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel + 0.02) * size.y),
-            float2(pos.x + angleCenter * size.x, pos.y + (1. - distanceRel - 0.02) * size.y),
-            float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel + 0.02) * size.y)))
+            float2(p.x - targetHalfSize.x, p.y +   sz),
+            float2(p.x, p.y - sz),
+            float2(p.x + targetHalfSize.x, p.y + sz)))
             ctx |> render_line_aa(coord, true, data |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
           elif data.targetFormType == 2
             let tc = float2(0., 0.)
-            let boxSize = 0.02 * size.x
-            ctx |> render_rect(pos.x + angleCenter * size.x - boxSize, pos.y + (1. - distanceRel) * size.y - boxSize,
-            pos.x + angleCenter * size.x + boxSize, pos.y + (1. - distanceRel) * size.y + boxSize, tc, tc, tc)
+            let boxSize = float2(0.02 * scaledTargetCanvasSize.x)
+            let lt = p - boxSize
+            let rb = p + boxSize
+            ctx |> render_rect(lt.x, lt.y, rb.x, rb.y, tc, tc, tc)
 
       elif (target.targetType == int(RadarTargetType.TYPE_OWN_WEAPON) && !data.hideWeaponIndication)
         if hasAzimuthScale
-          ctx |> render_ellipse_aa(p, size * 0.005, data |> hdpx(2.), e3dColor, e3dColor)
+          ctx |> render_ellipse_aa(p, float2(scaledTargetCanvasSize.x * 0.005), data |> hdpx(2.), e3dColor, e3dColor)
 
       elif (target.targetType == int(RadarTargetType.TYPE_OWN_WEAPON_TARGET) && !data.hideWeaponIndication)
         if hasAzimuthScale && !target.isAttacked
-          ctx |> render_ellipse_aa(p, size * 0.04, data |> hdpx(2.), e3dColor, transparentColor)
+          ctx |> render_ellipse_aa(p, float2(scaledTargetCanvasSize.x * 0.04), data |> hdpx(2.), e3dColor, transparentColor)
 
     if hasAzimuthScale && hasDistanceScale && !data.hideWeaponIndication
       let color = float4(Color4(is_color_or_white(data.targetColor)))
       let e3dColor = E3DCOLOR(Color4(color))
       Radar`foreach_own_weapon_links() <| $(var ownWeaponLink)
         Radar`foreach_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
-          let ownWeaponPos = float2(pos.x + ownWeapon.azimuthRel * size.x, pos.y + (1. - ownWeapon.distanceRel) * size.y)
-          let ownWeaponTargetPos = float2(pos.x + ownWeaponTarget.azimuthRel * size.x, pos.y + (1. - ownWeaponTarget.distanceRel) * size.y)
+          let ownWeaponPos = float2(scaled_pos.x + ownWeapon.azimuthRel * scaled_size.x, scaled_pos.y + (1. - ownWeapon.distanceRel) * scaled_size.y)
+          let ownWeaponTargetPos = float2(scaled_pos.x + ownWeaponTarget.azimuthRel * scaled_size.x, scaled_pos.y + (1. - ownWeaponTarget.distanceRel) * scaled_size.y)
           if ownWeaponLink.lockDistanceToDistance < 1.0
             let direction = float2(ownWeaponTargetPos[0] - ownWeaponPos[0], ownWeaponTargetPos[1] - ownWeaponPos[1])
             let lockPos = float2(ownWeaponPos[0] + direction[0] * ownWeaponLink.lockDistanceToDistance, ownWeaponPos[1] + direction[1] * ownWeaponLink.lockDistanceToDistance)
@@ -1221,8 +1563,6 @@ struct BScopeSquareTargets : InteractableButton
           else
             let coord <- to_array_move(fixed_array<float2>(ownWeaponPos, ownWeaponTargetPos))
             ctx |> render_line_aa(coord, false, data |> hdpx(2.), float2(0, 0), e3dColor)
-
-    ctx |> restore_viewport()
 
 struct BScopeSquareElevationCurret : InteractableButton
   data : CanvasParams const? = null
@@ -1308,36 +1648,6 @@ struct BScopeSquareElevationCurret : InteractableButton
       float2(rx - markLen * self.size.x, pos.y + elevationScanMax * self.size.y), float2(rx, pos.y + elevationScanMax * self.size.y)))
       ctx |> render_line_aa(scanCoord, false, *data |> hdpx(4.), float2(0, 0), e3dColor)
 
-def b_scope_square(var ctx : GuiContext&; pos, sz : float2; data : CanvasParams&)
-  if !data.hideBack || data.showScanAzimuth
-    b_scope_square_bkg(ctx, data, pos, sz)
-  if !data.hideBack
-    b_scope_square_target_sector(ctx, data, pos, sz)
-  b_scope_square_azimuth(ctx, data, pos, sz, true, get_radar_hud_turret_azimuth(), -1., -1.)
-  render_ground_reflection(ctx, sz, pos, is_color_or_white(data.lineColor), int2(20, 10), true)
-  if get_radar_hud_is_visible()
-    if get_radar_hud_is_emitting() && !data.hideBeam
-      b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth(), get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
-      foreach_additional_beams() <| $(var additionalBeam)
-        b_scope_square_azimuth(ctx, data, pos, sz, false, additionalBeam.azimuth, get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
-
-  ctx |> set_viewport(pos.x, pos.y, pos.x + sz.x, pos.y + sz.y)
-
-  if get_radar_hud_is_visible2()
-    if get_radar_hud_is_emitting2() && !data.hideBeam
-      b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth2(), get_radar_hud_distance2(), get_radar_hud_azimuth_half_width2())
-
-  if get_radar_hud_aam_launch_zone_visible() && get_radar_hud_has_azimuth_scale() && !data.hideLaunchZone
-    b_scope_square_launch_range(ctx, data, pos, sz)
-  b_scope_square_cue(ctx, data, pos, sz)
-
-  ctx |> restore_viewport()
-
-  if !data.hideHorAngle
-    b_scope_square_inner_labels(ctx, data, pos, sz, data.fontSize)
-  if data.hasAviaHorizont
-    b_scope_square_aviahorizont(ctx, data, pos, sz)
-
 def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var visitor : InteractableVisitor&)
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
@@ -1396,6 +1706,7 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
       var noiseEl = NoiseSignalElement(noisePos, noiseSize, data, get_radar_hud_noise_signal2())
       noiseEl.walkLayout(visitor)
 
+  var zoomIndicatorOffsetX = horOffset
   if get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
     var azimuthScaleStyle := textButtonStyle
     azimuthScaleStyle.color = data.horAngleColor
@@ -1418,6 +1729,12 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
     azScaleEl.walkLayout(visitor)
     let strBoxScan = azScaleEl.textBox
     vertOffset2 += strBoxScan.width.y
+    zoomIndicatorOffsetX += strBoxScan.width.x
+
+  let zoomIndicatorPos = float2(pos.x + zoomIndicatorOffsetX, pos.y + vertOffset)
+  let zoomIndicatorSize = float2(size.x * 0.045)
+  var zoomIndicator = ZoomIndicatorButton(zoomIndicatorPos, zoomIndicatorSize, data)
+  zoomIndicator.walkLayout(visitor)
 
   if get_radar_hud_has_distance_scale() && !data.hideScale
     var style := textButtonStyle
@@ -1427,8 +1744,15 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
     style.anchorVert = AnchorVert.Bottom
     style.anchorHorz = AnchorHorz.Right
 
-    let textMin = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_min(), true, 1.) :
-      get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, get_radar_hud_distance_min() * 1000., true, 1.))
+    var distMin = get_radar_hud_distance_min()
+    var distMax = get_radar_hud_distance_max()
+    let hud = get_cur_hud()
+    if data.canZoom && hud != null
+      distMin = lerp(distMin, distMax, hud.radarZoom.zoomCenter.y - 0.5 * hud.radarZoom.zoomFactorInv)
+      distMax = lerp(distMin, distMax, hud.radarZoom.zoomCenter.y + 0.5 * hud.radarZoom.zoomFactorInv)
+
+    let textMin = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, distMin, true, 1.) :
+      get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, distMin * 1000., true, 1.))
 
     let minPos = float2(pos.x + size.x, pos.y + size.y)
     var rangeScaleEl = TextButton(minPos, textMin, style)
@@ -1439,8 +1763,8 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
     let strBoxMin = rangeScaleEl.textBox
     bottomOffset = strBoxMin.width.y
 
-    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
-      get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
+    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, distMax, true, 1.) :
+      get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, distMax * 1000., true, 1.))
     let text = textMax + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
 
     var maxTextPos = float2(0.0)
@@ -1513,12 +1837,19 @@ def b_scope_square_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos
   ctx |> set_color(color)
   ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(color), get_font_fx_factor(color, data))
 
-  let azMinText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
+  var azMin = get_radar_hud_azimuth_min()
+  var azMax = get_radar_hud_azimuth_max()
+  let hud = get_cur_hud()
+  if data.canZoom && hud != null
+    azMin = lerp(azMin, azMax, hud.radarZoom.zoomCenter.x - 0.5 * hud.radarZoom.zoomFactorInv)
+    azMax = lerp(get_radar_hud_azimuth_min(), get_radar_hud_azimuth_max(), hud.radarZoom.zoomCenter.x  + 0.5 * hud.radarZoom.zoomFactorInv)
+
+  let azMinText = fmt(":.0f", floor(rad_to_deg(azMin) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMin = get_str_bbox(azMinText, azMinText |> length(), fctx)
   ctx |> goto_xy(pos.x + data |> hdpx(4.), pos.y + strBoxAzMin.width.y + data |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMinText, azMinText |> length())
 
-  let azMaxText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_max()) + 0.5)) + loc("measureUnits/deg")
+  let azMaxText = fmt(":.0f", floor(rad_to_deg(azMax) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMax = get_str_bbox(azMaxText, azMaxText |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x - strBoxAzMax.width.x - data |> hdpx(4.), pos.y + strBoxAzMax.width.y + data |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMaxText, azMaxText |> length())
@@ -1526,8 +1857,13 @@ def b_scope_square_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos
 def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let azimuthRangeInv = azimuthRange != 0. ? 1. / azimuthRange : 1.
-  let scanAzimuthMinRelW = 0.5 + get_radar_hud_scan_azimuth_min() * azimuthRangeInv
-  let scanAzimuthMaxRelW = 0.5 + get_radar_hud_scan_azimuth_max() * azimuthRangeInv
+  let northCorrection = get_radar_hud_is_north_correction_active() ? PI_2 : 0.0
+  var scanAzimuthMinRelW = 0.5 + (get_radar_hud_scan_azimuth_min() + northCorrection) * azimuthRangeInv
+  var scanAzimuthMaxRelW = 0.5 + (get_radar_hud_scan_azimuth_max() + northCorrection) * azimuthRangeInv
+  let scanAzimuwhW = scanAzimuthMaxRelW - scanAzimuthMinRelW
+  if abs(scanAzimuwhW - 1.0) < 2.0 * FLT_EPSILON
+    scanAzimuthMinRelW = 0.0
+    scanAzimuthMaxRelW = 1.0
   ctx |> set_color(areaBackgroundColor)
   let rb = pos + size
   let tc = float2(0., 0.)
@@ -1569,27 +1905,24 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
       ctx |> draw_line(pos.x + azRel * size.x, pos.y, pos.x + azRel * size.x, pos.y + distanceMinY * size.y, data |> hdpx(1.2 * data.lineWidth))
       azRel -= azimuthRelStep
 
-def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+def is_full_circle()
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
+  return azimuthRange >= PI2 - FLT_EPSILON * 2.
 
-  let halfAzimuthWidth = min(azimuthRange > 0. ? get_radar_hud_target_azimuth_width() / azimuthRange : 0., 0.5)
-  let tc = float2(0., 0.)
-  var color = float4(Color4(data.color))//isColorOrWhite ???
-  color *= 0.2
-  let e3dColor = E3DCOLOR(Color4(color))
-  ctx |> set_color(e3dColor)
-  ctx |> render_rect(pos.x + (0.5 - halfAzimuthWidth) * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
-    pos.x + (0.5 + halfAzimuthWidth) * size.x, pos.y + size.y, tc, tc, tc)
+def b_scope_square_norm_rel_azimuth(var val : float)
+  if !is_full_circle()
+    return clamp(val, 0., 1.)
 
-def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; for_tank_only : bool;
+  if val < 0.
+    val = val + 1.0
+  elif val > 1.
+    val = val - 1.0
+  return val
+
+def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2;
                            val : float; dist : float; half_width : float)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-  let hero = get_watched_hero()
-  let isTank = hero != null && hero.unitType == UnitType.UT_HeavyVehicle
-  if for_tank_only && (!isTank || azimuthRange <= PI + 0.035)
-    return
-  let var1 = for_tank_only || (dist == 1. && half_width > 0.)
-  if var1
+  if dist == 1. && half_width > 0.
     let halfAzimuthWidth = min(azimuthRange > 0. ? half_width / azimuthRange : 0., 0.5)
     var color = float4(Color4(is_color_or_white(data.color)))
     color *= 0.4
@@ -1601,17 +1934,50 @@ def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : fl
       ctx |> draw_line(pos.x + (val - 0.02) * size.x, pos.y + size.y * 0.97, pos.x + (val + 0.02) * size.x, pos.y + size.y * 0.97, data |> hdpx(data.lineWidth * 5.))
       ctx |> draw_line(pos.x + val * size.x, pos.y + size.y * 0.97, pos.x + val * size.x, pos.y + size.y, data |> hdpx(data.lineWidth * 5.))
     else
-      ctx |> render_rect(pos.x + (val - halfAzimuthWidth) * size.x, pos.y,
-       pos.x + (val + halfAzimuthWidth) * size.x, pos.y + size.y, tc, tc, tc)
+      let lVal = val - halfAzimuthWidth
+      let rVal = val + halfAzimuthWidth
+
+      let canMirror = is_full_circle()
+      if canMirror
+        let lValOutOfBounds = lVal < 0. || lVal > 1.
+        let rValOutOfBounds = lVal < 0. || rVal > 1.
+        if lValOutOfBounds
+          ctx |> render_rect(pos.x + (0.) * size.x, pos.y,
+          pos.x + (rVal) * size.x, pos.y + size.y, tc, tc, tc)
+
+          let lValMirrored = b_scope_square_norm_rel_azimuth(lVal)
+          ctx |> render_rect(pos.x + (lValMirrored) * size.x, pos.y,
+          pos.x + (1.) * size.x, pos.y + size.y, tc, tc, tc)
+          return
+        if rValOutOfBounds
+          ctx |> render_rect(pos.x + (lVal) * size.x, pos.y,
+          pos.x + (1.) * size.x, pos.y + size.y, tc, tc, tc)
+
+          let rValMirrored = b_scope_square_norm_rel_azimuth(rVal)
+          ctx |> render_rect(pos.x + (0.) * size.x, pos.y,
+          pos.x + (rValMirrored) * size.x, pos.y + size.y, tc, tc, tc)
+          return
+      ctx |> render_rect(pos.x + lVal * size.x, pos.y,
+       pos.x + rVal * size.x, pos.y + size.y, tc, tc, tc)
   else
     let color = is_color_or_white(data.lineColor)
     ctx |> set_color(color)
-    if for_tank_only
-      ctx |> draw_line(pos.x + val * size.x, pos.y, pos.x + val * size.x, pos.y + size.y, data |> hdpx(1.6))
-    else
-      let p1 = float2(pos.x + val * size.x, pos.y + max(1. - dist, 0.) * size.y)
-      let p2 = float2(pos.x + val * size.x, pos.y + size.y)
-      ctx |> render_line_dashed(p1, p2, data |> hdpx(10.), data |> hdpx(5.), data |> hdpx(1.6 * data.lineWidth), color)
+    let p1 = float2(pos.x + val * size.x, pos.y + max(1. - dist, 0.) * size.y)
+    let p2 = float2(pos.x + val * size.x, pos.y + size.y)
+    ctx |> render_line_dashed(p1, p2, data |> hdpx(10.), data |> hdpx(5.), data |> hdpx(1.6 * data.lineWidth), color)
+
+def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+  let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
+
+  let halfAzimuthWidth = min(azimuthRange > 0. ? get_radar_hud_target_azimuth_width() / azimuthRange : 0., 0.5)
+  let tc = float2(0., 0.)
+  var color = float4(Color4(data.color))
+  color *= 0.2
+  let e3dColor = E3DCOLOR(Color4(color))
+  ctx |> set_color(e3dColor)
+  let turretAzimuth = get_radar_hud_turret_azimuth()
+  ctx |> render_rect(pos.x + (turretAzimuth - halfAzimuthWidth) * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
+    pos.x + (turretAzimuth + halfAzimuthWidth) * size.x, pos.y + size.y, tc, tc, tc)
 
 def b_scope_square_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   var color = float4(Color4(is_color_or_white(data.lineColor)))
@@ -1643,18 +2009,36 @@ def b_scope_square_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos
     ctx |> draw_line(pos.x + 0.92 * size.x, pos.y + (1. - dgftDistMin) * size.y,
      pos.x + 0.92 * size.x, pos.y + (1. - min(dgftDistMax, 1.)) * size.y, data |> hdpx(4. * data.lineWidth))
 
-def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos, zoomed_size, elem_size : float2)
   if !get_radar_hud_cue_visible()
     return
 
   return if has_a_detected_target()
 
-  let color = is_color_or_white(data.lineColor)//remove is_color_or_white if use is_color on target sector
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let cueAzimuthHwr = get_radar_hud_cue_azimuth_half_width_rel()
   let cueDistWidthRel =  get_radar_hud_cue_dist_width_rel()
-  let cuePos = pos + float2((get_radar_hud_cue_azimuth() * (get_radar_hud_target_azimuth_width() / azimuthRange - cueAzimuthHwr) + 0.5) * size.x,
-          (1. - (0.5 * cueDistWidthRel + get_radar_hud_cue_distance() * get_radar_hud_target_distance() * (1. - cueDistWidthRel))) * size.y)
+  let cuePosRel = float2(get_radar_hud_cue_reference_turret_azimuth() + get_radar_hud_cue_azimuth() * (get_radar_hud_cue_reference_target_azimuth_width() / azimuthRange - cueAzimuthHwr),
+          1. - (0.5 * cueDistWidthRel + get_radar_hud_cue_distance() * get_radar_hud_target_distance() * (1. - cueDistWidthRel)))
+
+  let canMirror = is_full_circle()
+
+  let outOfBoundsL = cuePosRel.x - cueAzimuthHwr * 1.5 < 0.
+  let outOfBoundsR = cuePosRel.x + cueAzimuthHwr * 1.5 > 1.
+  let mightBeMirrored = canMirror && (outOfBoundsL || outOfBoundsR)
+  if mightBeMirrored
+    let mirrorX = outOfBoundsR ? cuePosRel.x - 1.0 : cuePosRel.x + 1.0
+    let mirrorPos = pos + float2(mirrorX, cuePosRel.y) * zoomed_size
+    b_scope_square_cue_internal(ctx, data, mirrorPos, elem_size)
+
+  let cuePos = pos + cuePosRel * zoomed_size
+  b_scope_square_cue_internal(ctx, data, cuePos, elem_size)
+
+def b_scope_square_cue_internal(var ctx : GuiContext&; data : CanvasParams&; cuePos, size : float2)
+  let color = is_color_or_white(data.lineColor)//remove is_color_or_white if use is_color on target sector
+
+  let cueAzimuthHwr = get_radar_hud_cue_azimuth_half_width_rel()
+  let cueDistWidthRel =  get_radar_hud_cue_dist_width_rel()
   let lcoord <- to_array_move(fixed_array<float2>(float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y - cueDistWidthRel * size.y * 0.5),
    float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)))
   ctx |> render_line_aa(lcoord, false, data |> hdpx(2. * data.lineWidth), float2(0, 0), color)
@@ -1964,21 +2348,39 @@ def b_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2
     b_scope_background_aa_complex(ctx, data, pos, size)
     return
 
-  let center = pos + size * 0.5
-  ctx |> render_ellipse_aa(center, size * 0.5, data |> hdpx(1.6), data.color, areaBackgroundColor)
-  let color = is_color_or_white(data.color)
-  if get_radar_hud_has_distance_scale()
-    ctx |> render_ellipse_aa(center, size * 0.125, data |> hdpx(1.2), color, transparentColor)
-    ctx |> render_ellipse_aa(center, size * 0.25, data |> hdpx(1.2), color, transparentColor)
-    ctx |> render_ellipse_aa(center, size * 0.375, data |> hdpx(1.2), color, transparentColor)
-  else
-    ctx |> render_ellipse_aa(center, size * 0.45, data |> hdpx(1.2), color, transparentColor)
+  let radius = size * 0.5
+  let origin = pos + radius
 
-  let angle = PI / 6.
-  for i in range(0, 12)
-    let edge = center + float2(size.x * 0.5 * cos(float(i) * angle), size.x * 0.5 * sin(float(i) * angle))
-    let coord <- to_array_move(fixed_array<float2>(center, edge))
-    ctx |> render_line_aa(coord, false, data |> hdpx(1.2), float2(0, 0), color)
+  ctx |> render_ellipse_aa(origin, radius, data |> hdpx(1.6), data.color, areaBackgroundColor)
+
+  let anglesExternal = float2(get_radar_hud_azimuth_min(), get_radar_hud_azimuth_max())
+  let anglesInternal = float2(get_radar_hud_scan_azimuth_min(), get_radar_hud_scan_azimuth_max())
+
+  let color = is_color_or_white(data.lineColor)
+
+  let anglesInternalGrid = anglesInternal.y > anglesInternal.x ? anglesInternal : anglesExternal
+  let isFullCircle = (anglesInternalGrid.y - anglesInternalGrid.x) >= PI2 - 2.0 * FLT_EPSILON
+  let distMinRel = max(0., get_radar_hud_distance_min() / max(get_radar_hud_distance_max(), 1.0))
+  if get_radar_hud_has_distance_scale()
+    let distMarkNum = 3
+    for i in range(1, distMarkNum + 1)
+      let dist = float(i) / float(distMarkNum + 1)
+      if isFullCircle
+        ctx |> render_ellipse_aa(origin, dist * radius, data.lineWidth, color, E3DCOLOR(0u))
+      else
+        ctx |> render_sector_aa(origin, dist * radius, anglesInternalGrid, data.lineWidth, color, E3DCOLOR(0u))
+
+  let angleStep = PI * 15.0 / 180.0
+  for i in range(int(anglesInternalGrid.x / angleStep), int(anglesInternalGrid.y / angleStep))
+    let angle = float(i) * angleStep
+    let coord <- to_array_move(fixed_array<float2>(origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5 * distMinRel,
+     origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5))
+    ctx |> render_line_aa(coord, false, 1.2 * data.lineWidth, float2(0, 0), color)
+
+  let rscoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesInternal.y) * size.x, sin(anglesInternal.y) * size.y) * 0.5))
+  ctx |> render_line_aa(rscoord, false, 2.4 * data.lineWidth, float2(0, 0), color)
+  let lscoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesInternal.x) * size.x, sin(anglesInternal.x) * size.y) * 0.5))
+  ctx |> render_line_aa(lscoord, false, 2.4 * data.lineWidth, float2(0, 0), color)
 
 def b_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   if !get_radar_hud_cue_visible()

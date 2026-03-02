@@ -182,7 +182,6 @@ addListenersWithoutEnv({
   SquadStatusChanged = @(...) onSquadStatusChanged()
   SquadSizeChanged = @(...) onSquadSizeChange()
   SquadLeadershipTransfered = @(...) onSquadLeadershipTransfer()
-  XboxSignOut = @(...) clearActivity()
   LoginComplete  = @(...) updateActivity()
 })
 

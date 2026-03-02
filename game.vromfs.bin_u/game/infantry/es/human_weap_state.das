@@ -93,28 +93,27 @@ def human_weap_throw_on_equip(evt : CmdPostPhysUpdate;
 [es(tag=server, REQUIRE=grenadeThrowViaRethrowEnabled, track=human_weap__throwMode)]
 def human_weap_grenade_throw_via_rethrow_track_throw_mode_es(evt : Event;
                                                              human_weap__throwMode : bool;
-                                                             human_weap__grenadeThrower : EntityId;
                                                              var human_weap__grenadeThrowModeServer : bool&)
-  query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
-    human_weap__grenadeThrowModeServer = human_weap__throwMode || (grenade_thrower__projectileEntity != INVALID_ENTITY_ID)
-
-
-[es(tag=server, track=grenade_thrower__projectileEntity)]
-def human_weap_grenade_throw_via_rethrow_track_grenade_eid_es(evt : Event; gun__owner, grenade_thrower__projectileEntity : EntityId)
-  query(gun__owner) <| $ [es(REQUIRE=grenadeThrowViaRethrowEnabled)] (human_weap__throwMode : bool;
-                                                                      var human_weap__grenadeThrowModeServer : bool&)
-    human_weap__grenadeThrowModeServer = human_weap__throwMode || (grenade_thrower__projectileEntity != INVALID_ENTITY_ID)
+  human_weap__grenadeThrowModeServer = human_weap__throwMode
 
 
 [es(REQUIRE=grenadeThrowViaRethrowEnabled)]
 def human_weap_grenade_throw_via_rethrow(evt : RequestQuickThrowGrenade;
                                          eid : EntityId;
+                                         human_net_phys : HumanActor;
                                          human_net_phys__isClimbing : bool;
                                          human_weap__throwMode : bool;
                                          human_weap__grenadeThrowModeServer : bool;
+                                         var human_weap__grenadeThrowViaRethrow : bool&;
                                          human_weap__grenadeThrower : EntityId)
   if human_net_phys__isClimbing || human_weap__throwMode || human_weap__grenadeThrowModeServer
     return
+
+  assume phys = human_net_phys.phys
+  if phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_HOLSTERING || \
+     phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_EQUIPING
+    return
+
   sendEventImmediate(eid, CmdInterruptReloadImmediately())
 
   
@@ -124,10 +123,12 @@ def human_weap_grenade_throw_via_rethrow(evt : RequestQuickThrowGrenade;
 
   query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
     if grenade_thrower__projectileEntity == INVALID_ENTITY_ID
-      if reload_impl(eid, human_weap__grenadeThrower, ReloadAmmoMode.CONSUME)
+      if reload_impl(eid, human_weap__grenadeThrower, ReloadAmmoMode.INFINITE)
         let grenadeEid = reload_projectile(eid, human_weap__grenadeThrower)
         addSubTemplate(grenadeEid, "grenade_thrown_via_rethrow") <| $(var init)
           set(init, "grenade_thrown_via_rethrow__ownerEid", eid)
+    else
+      human_weap__grenadeThrowViaRethrow = true
 
 
 [es(on_appear, REQUIRE=grenadeThrownViaRethrow)]

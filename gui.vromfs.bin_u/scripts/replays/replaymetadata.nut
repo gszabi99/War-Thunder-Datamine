@@ -79,7 +79,7 @@ function saveReplayScriptCommentsBlk(blk) {
   blk.uiScriptsData.playersInfo = datablockConverter.dataToBlk(getSessionLobbyPlayersInfo())
 }
 
-function updateReplayMatchingPlayersInfoFromMplayerList() {
+function updateReplayMatchingPlayersInfoFromMplayerList(force = false) {
   if (!is_replay_playing())
     return
 
@@ -87,7 +87,7 @@ function updateReplayMatchingPlayersInfoFromMplayerList() {
   if (curPlayersInfo.len() != 0 && !(curPlayersInfo.findvalue(@(_) true)?.isFromMplayersList ?? false))
     return
   let mplayersList = get_mplayers_list(GET_MPLAYERS_LIST, true).filter(@(v) !v?.isBot && v?.userId != null)
-  if (curPlayersInfo.len() == mplayersList.len())
+  if (!force && curPlayersInfo.len() == mplayersList.len())
     return
   let playersInfo = {}
   foreach (mplayer in mplayersList) {
@@ -109,7 +109,7 @@ function updateReplayMatchingPlayersInfoFromMplayerList() {
   setCustomPlayersInfo(playersInfo)
 }
 
-function restoreReplayScriptCommentsBlk(replayPath) {
+function restoreReplayScriptCommentsBlk(replayPath, force = false) {
   
   let commentsBlk = get_replay_info(replayPath)?.comments
   let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData.playersInfo) ?? {}
@@ -120,7 +120,7 @@ function restoreReplayScriptCommentsBlk(replayPath) {
   }
 
   
-  updateReplayMatchingPlayersInfoFromMplayerList()
+  updateReplayMatchingPlayersInfoFromMplayerList(force)
 }
 
 

@@ -18,7 +18,7 @@
         "to": "lastStayCrawl",
         "value": 0
       },
-      "subTree": [
+      "callTree": [
         {
           "treeName": "prep.chooseMaxStance"
         },
@@ -56,7 +56,21 @@
                 {
                   "reaction": {
                     "event": "regularCheck",
-                    "findObstaclesAlongsidePath": {}
+                    "repeat": {
+                      "count": 1,
+                      "findObstaclesAlongsidePath": {},
+                      "subTree": [
+                        {
+                          "treeName": "react.nearDangerGrenade"
+                        },
+                        {
+                          "treeName": "react.nearDamageZone"
+                        },
+                        {
+                          "treeName": "react.isBurning"
+                        }
+                      ]
+                    }
                   },
                   "ignoreChance": {
                     "chance": 0.5
@@ -79,6 +93,16 @@
                     "other": 1,
                     "paramName": "meleeEnemy"
                   },
+                  "setIntVar": [
+                    {
+                      "to": "defReact",
+                      "value": 10
+                    },
+                    {
+                      "to": "defReact",
+                      "value": 0
+                    }
+                  ],
                   "success": {
                     "moveToPos": {
                       "posParam": "posNearTarget",
@@ -99,7 +123,11 @@
                     }
                   }
                 }
-              ]
+              ],
+              "setIntVar": {
+                "to": "defReact",
+                "value": 0
+              }
             },
             "sequencer": {
               "reaction": [
@@ -117,7 +145,20 @@
                 },
                 {
                   "event": "regularCheck",
-                  "continue": {}
+                  "repeat": {
+                    "count": 1,
+                    "subTree": [
+                      {
+                        "treeName": "react.nearDangerGrenade"
+                      },
+                      {
+                        "treeName": "react.nearDamageZone"
+                      },
+                      {
+                        "treeName": "react.isBurning"
+                      }
+                    ]
+                  }
                 }
               ],
               "forceWeaponReady": {
@@ -260,6 +301,9 @@
       "name": "attack.refindTarget",
       "not": [
         {
+          "isTestPerfOrSimplifiedAI": {}
+        },
+        {
           "isOrderOverwatch": {}
         },
         {
@@ -284,6 +328,24 @@
       "orderedSelector": {
         "sequencer": [
           {
+            "reaction": {
+              "event": "regularCheck",
+              "repeat": {
+                "count": 1,
+                "findObstaclesAlongsidePath": {},
+                "subTree": [
+                  {
+                    "treeName": "react.nearDangerGrenade"
+                  },
+                  {
+                    "treeName": "react.nearDamageZone"
+                  },
+                  {
+                    "treeName": "react.isBurning"
+                  }
+                ]
+              }
+            },
             "traceMoveToSeeTarget": {
               "targetEidParam": "shootEnemy",
               "outMoveToPosParam": "movePos",
@@ -298,6 +360,32 @@
               ],
               "stepDist": 0.9,
               "stepTryTwoDirs": true
+            },
+            "getRandomPointAroundTarget": {
+              "targetUnitParam": "shootEnemy",
+              "posParam": "posNearTarget",
+              "radiusRange": [
+                3.0,
+                6.0
+              ],
+              "awayMinRadius": 7.0,
+              "minDistanceFromAllies": 7.0
+            },
+            "orderedSelector": {
+              "isLookingToPos": {
+                "posParam": "posNearTarget",
+                "offAngle": 5.0
+              },
+              "rotateToPoint": {
+                "posParam": "posNearTarget",
+                "aimSpeedCoef": 0.5,
+                "maxSimAngle": [
+                  70.0,
+                  90.0
+                ],
+                "minSimAngle": 33.0,
+                "minSimSpeedCoef": 0.5
+              }
             },
             "setDebugSym": [
               {
@@ -317,21 +405,25 @@
                 "value": 1
               }
             ],
-            "copyPoint3Var": [
-              {
-                "to": "wishPosition",
-                "from": "movePos"
-              },
-              {
-                "to": "regroupPosition",
-                "from": "movePos"
-              },
-              {
-                "to": "storedRegroupPosition",
-                "from": "movePos"
-              }
-            ],
             "success": [
+              {
+                "sequencer": {
+                  "copyPoint3Var": [
+                    {
+                      "to": "wishPosition",
+                      "from": "movePos"
+                    },
+                    {
+                      "to": "regroupPosition",
+                      "from": "movePos"
+                    },
+                    {
+                      "to": "storedRegroupPosition",
+                      "from": "movePos"
+                    }
+                  ]
+                }
+              },
               {
                 "parallel": {
                   "moveToPos": {
@@ -344,6 +436,10 @@
                     "distThreshold": 0.1,
                     "minStanceParam": "minStance",
                     "maxStanceParam": "maxStanceInAttack",
+                    "incLadders": [
+                      false,
+                      false
+                    ],
                     "avoidAiObstacles": true,
                     "timeToStuck": 0.25,
                     "jumpDownTraceCheck": [
@@ -351,7 +447,6 @@
                       1.0,
                       0.15
                     ],
-                    "incLadders": false,
                     "strafeNearDist": 7.0,
                     "maxAroundCoef": 1.33
                   },
@@ -388,6 +483,7 @@
                       1,
                       2
                     ],
+                    "incLadders": false,
                     "shootTime": [
                       1.5,
                       2.1
@@ -487,7 +583,7 @@
           "event": "regularCheck",
           "repeat": {
             "count": 1,
-            "subTree": [
+            "callTree": [
               {
                 "treeName": "prep.chooseMaxStance"
               },
@@ -499,12 +595,6 @@
               },
               {
                 "treeName": "prep.deactivateWeapMod"
-              },
-              {
-                "treeName": "react.isHurt"
-              },
-              {
-                "treeName": "react.isBurning"
               }
             ],
             "copyIntVar": {
@@ -524,6 +614,14 @@
                 "value": 2
               }
             },
+            "subTree": [
+              {
+                "treeName": "react.isHurt"
+              },
+              {
+                "treeName": "react.isBurning"
+              }
+            ],
             "sequencer": {
               "not": {
                 "isGrenadeSelected": {}
@@ -959,15 +1057,34 @@
                         "posParam": "posNearTarget",
                         "offAngle": 5.0
                       },
+                      "sequencer": {
+                        "checkAtTime": {
+                          "timeParam": "lastAttackedTime",
+                          "range": [
+                            0.0,
+                            5.0
+                          ]
+                        },
+                        "rotateToPoint": {
+                          "posParam": "posNearTarget",
+                          "aimSpeedCoef": 0.7,
+                          "maxSimAngle": [
+                            100.0,
+                            120.0
+                          ],
+                          "minSimAngle": 15.0,
+                          "minSimSpeedCoef": 0.7
+                        }
+                      },
                       "rotateToPoint": {
                         "posParam": "posNearTarget",
                         "aimSpeedCoef": 0.5,
                         "maxSimAngle": [
-                          60.0,
-                          80.0
+                          80.0,
+                          100.0
                         ],
                         "minSimAngle": 5.0,
-                        "minSimSpeedCoef": 0.45
+                        "minSimSpeedCoef": 0.55
                       }
                     },
                     {
@@ -1001,7 +1118,21 @@
                           "sequencer": {
                             "reaction": {
                               "event": "regularCheck",
-                              "findObstaclesAlongsidePath": {}
+                              "repeat": {
+                                "count": 1,
+                                "findObstaclesAlongsidePath": {},
+                                "subTree": [
+                                  {
+                                    "treeName": "react.nearDangerGrenade"
+                                  },
+                                  {
+                                    "treeName": "react.nearDamageZone"
+                                  },
+                                  {
+                                    "treeName": "react.isBurning"
+                                  }
+                                ]
+                              }
                             },
                             "parallel": {
                               "wait": {
@@ -1170,7 +1301,20 @@
                                 {
                                   "reaction": {
                                     "event": "regularCheck",
-                                    "continue": {}
+                                    "repeat": {
+                                      "count": 1,
+                                      "subTree": [
+                                        {
+                                          "treeName": "react.nearDangerGrenade"
+                                        },
+                                        {
+                                          "treeName": "react.nearDamageZone"
+                                        },
+                                        {
+                                          "treeName": "react.isBurning"
+                                        }
+                                      ]
+                                    }
                                   },
                                   "isCurrentWeaponRequiresLongAiming": {},
                                   "setDebugSym": {
@@ -1309,15 +1453,50 @@
                                               },
                                               {
                                                 "event": "regularCheck",
-                                                "continue": {}
+                                                "repeat": {
+                                                  "count": 1,
+                                                  "subTree": [
+                                                    {
+                                                      "treeName": "react.nearDangerGrenade"
+                                                    },
+                                                    {
+                                                      "treeName": "react.nearDamageZone"
+                                                    },
+                                                    {
+                                                      "treeName": "react.isBurning"
+                                                    }
+                                                  ]
+                                                }
                                               }
                                             ],
                                             "success": {
-                                              "checkReloadWeapon": {
-                                                "waitReloadFinish": true,
-                                                "enoughAmmoRatio": 0.1
+                                              "orderedSelector": {
+                                                "not": [
+                                                  {
+                                                    "checkReloadWeapon": {
+                                                      "checkOnly": true,
+                                                      "enoughAmmoRatio": 0.1
+                                                    }
+                                                  },
+                                                  {
+                                                    "isAtStance": {
+                                                      "stanceParam": "standStance"
+                                                    }
+                                                  }
+                                                ],
+                                                "sequencer": {
+                                                  "changeStance": {
+                                                    "stanceName": "crouch",
+                                                    "maxStanceParam": "maxStance"
+                                                  },
+                                                  "checkReloadWeapon": {
+                                                    "waitReloadFinish": true,
+                                                    "enoughAmmoRatio": 0.1
+                                                  }
+                                                }
                                               }
                                             },
+                                            "blockReload": {},
                                             "debugDanger": [
                                               {
                                                 "type": 5,
@@ -1377,7 +1556,8 @@
                                               "criticalShotTime": 2.0,
                                               "criticalShotAngle": 60.0,
                                               "checkFriendlyFireRadius": 0.05
-                                            }
+                                            },
+                                            "unblockReload": {}
                                           }
                                         }
                                       },
@@ -1389,9 +1569,192 @@
                                         "orderedSelector": {
                                           "sequencer": [
                                             {
-                                              "ignoreChance": {
-                                                "chance": 0.15
-                                              },
+                                              "break": {},
+                                              "sequencer": {
+                                                "name": "soldier.find_safe_pos_to_reload_and_get_there2",
+                                                "not": [
+                                                  {
+                                                    "isTestPerfAI": {}
+                                                  },
+                                                  {
+                                                    "checkAtTime": {
+                                                      "timeParam": "waitBeforeUpdateDestinationTime",
+                                                      "range": [
+                                                        -5.0,
+                                                        5.0
+                                                      ]
+                                                    }
+                                                  },
+                                                  {
+                                                    "isSquadLeaderFollowingAutoRoute": {}
+                                                  }
+                                                ],
+                                                "success": {
+                                                  "sequencer": {
+                                                    "traceMoveToHideFromEnemies": {
+                                                      "stepLocalDir": [
+                                                        1.0,
+                                                        0.0,
+                                                        -0.61
+                                                      ],
+                                                      "outMoveToPosParam": "safePos",
+                                                      "mainEnemyEidParam": "rememberEnemy"
+                                                    },
+                                                    "not": {
+                                                      "checkDistance": {
+                                                        "posParam": "safePos",
+                                                        "radius": 0.5,
+                                                        "yRadius": 0.5
+                                                      }
+                                                    },
+                                                    "setDebugSym": [
+                                                      {
+                                                        "act": "r300"
+                                                      },
+                                                      {
+                                                        "act": "r301"
+                                                      }
+                                                    ],
+                                                    "success": {
+                                                      "checkReloadWeapon": {
+                                                        "waitReloadFinish": false,
+                                                        "enoughAmmoRatio": 0.9
+                                                      }
+                                                    },
+                                                    "orderedSelector": {
+                                                      "not": {
+                                                        "checkDistance": {
+                                                          "posParam": "safePos",
+                                                          "radius": 2.0,
+                                                          "yRadius": 1.0
+                                                        }
+                                                      },
+                                                      "sequencer": {
+                                                        "isAtStance": {
+                                                          "stanceParam": "standStance"
+                                                        },
+                                                        "changeStance": {
+                                                          "stanceName": "crouch",
+                                                          "maxStanceParam": "maxStance"
+                                                        }
+                                                      },
+                                                      "continue": {}
+                                                    },
+                                                    "sequencer": {
+                                                      "reaction": {
+                                                        "event": "regularCheck",
+                                                        "repeat": {
+                                                          "count": 1,
+                                                          "findObstaclesAlongsidePath": {},
+                                                          "subTree": [
+                                                            {
+                                                              "treeName": "react.nearDangerGrenade"
+                                                            },
+                                                            {
+                                                              "treeName": "react.nearDamageZone"
+                                                            },
+                                                            {
+                                                              "treeName": "react.isBurning"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "orderedSelector": {
+                                                        "not": {
+                                                          "isAtStance": {
+                                                            "stanceParam": "crawlStance"
+                                                          }
+                                                        },
+                                                        "sequencer": {
+                                                          "setIntVar": [
+                                                            {
+                                                              "to": "minStance",
+                                                              "value": 0
+                                                            },
+                                                            {
+                                                              "to": "maxStance",
+                                                              "value": 0
+                                                            },
+                                                            {
+                                                              "to": "maxStanceInAttack",
+                                                              "value": 0
+                                                            },
+                                                            {
+                                                              "to": "lastStayCrawl",
+                                                              "value": 1
+                                                            }
+                                                          ],
+                                                          "getTime": {
+                                                            "to": "lastStayCrawlTime",
+                                                            "addRange": [
+                                                              2.0,
+                                                              3.0
+                                                            ]
+                                                          }
+                                                        }
+                                                      },
+                                                      "parallel": {
+                                                        "success": {
+                                                          "moveToPos": {
+                                                            "posParam": "safePos",
+                                                            "sprintTimerRange": [
+                                                              20.0,
+                                                              20.0
+                                                            ],
+                                                            "minDistToSprint": 1000.0,
+                                                            "distThreshold": 0.5,
+                                                            "minStanceParam": "minStance",
+                                                            "maxStanceParam": "maxStanceInAttack",
+                                                            "incLadders": [
+                                                              false,
+                                                              false
+                                                            ],
+                                                            "restTimerRange": [
+                                                              3.0,
+                                                              5.0
+                                                            ],
+                                                            "avoidAiObstacles": true,
+                                                            "timeToStuck": 0.25,
+                                                            "jumpDownTraceCheck": [
+                                                              0.4,
+                                                              1.0,
+                                                              0.15
+                                                            ],
+                                                            "strafeNearDist": 7.0,
+                                                            "maxAroundCoef": 1.33,
+                                                            "useTeamCustomNav": true
+                                                          }
+                                                        },
+                                                        "wait": {
+                                                          "range": [
+                                                            2.0,
+                                                            3.0
+                                                          ],
+                                                          "resetable": true
+                                                        }
+                                                      },
+                                                      "success": {
+                                                        "sequencer": {
+                                                          "isAgentPlayerBot": {},
+                                                          "getAgentAIPos": {
+                                                            "outPosParam": "wishPosition"
+                                                          }
+                                                        }
+                                                      },
+                                                      "getTime": {
+                                                        "to": "waitBeforeUpdateDestinationTime",
+                                                        "addRange": [
+                                                          2.0,
+                                                          3.0
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "name": "soldier.find_safe_pos_to_reload_and_get_there",
                                               "not": [
                                                 {
                                                   "checkAtTime": {
@@ -1407,51 +1770,44 @@
                                                 },
                                                 {
                                                   "checkDistance": {
-                                                    "posParam": "safePosToReload",
+                                                    "posParam": "safePos",
                                                     "radius": 0.5,
                                                     "yRadius": 0.5
                                                   }
                                                 }
                                               ],
-                                              "getAgentAIPos": {
-                                                "outPosParam": "moveFromPos"
-                                              },
-                                              "findCoverAroundPoint": {
-                                                "centerParam": "moveFromPos",
-                                                "radius": 5.0,
-                                                "coverPosParam": "safePosToReload",
-                                                "minDist": 0.0
-                                              },
-                                              "setDebugSym": [
-                                                {
-                                                  "act": "a100"
-                                                },
-                                                {
-                                                  "act": "a101"
-                                                },
-                                                {
-                                                  "act": "a102"
-                                                }
-                                              ],
-                                              "success": {
-                                                "checkReloadWeapon": {
-                                                  "waitReloadFinish": false,
-                                                  "enoughAmmoRatio": 0.9
-                                                }
-                                              },
                                               "orderedSelector": [
+                                                {
+                                                  "traceMoveToHideFromEnemies": {
+                                                    "stepLocalDir": [
+                                                      1.0,
+                                                      0.0,
+                                                      -0.61
+                                                    ],
+                                                    "outMoveToPosParam": "safePos",
+                                                    "mainEnemyEidParam": "shootEnemy"
+                                                  },
+                                                  "sequencer": {
+                                                    "getAgentAIPos": {
+                                                      "outPosParam": "moveFromPos"
+                                                    },
+                                                    "findCoverAroundPoint": {
+                                                      "centerParam": "moveFromPos",
+                                                      "radius": 5.0,
+                                                      "coverPosParam": "safePos",
+                                                      "minDist": 0.0
+                                                    }
+                                                  }
+                                                },
                                                 {
                                                   "not": {
                                                     "checkDistance": {
-                                                      "posParam": "safePosToReload",
+                                                      "posParam": "safePos",
                                                       "radius": 2.0,
                                                       "yRadius": 1.0
                                                     }
                                                   },
                                                   "sequencer": {
-                                                    "ignoreChance": {
-                                                      "chance": 0.3
-                                                    },
                                                     "isAtStance": {
                                                       "stanceParam": "standStance"
                                                     },
@@ -1479,10 +1835,41 @@
                                                   }
                                                 }
                                               ],
+                                              "setDebugSym": [
+                                                {
+                                                  "act": "a100"
+                                                },
+                                                {
+                                                  "act": "a101"
+                                                },
+                                                {
+                                                  "act": "a102"
+                                                }
+                                              ],
+                                              "success": {
+                                                "checkReloadWeapon": {
+                                                  "waitReloadFinish": false,
+                                                  "enoughAmmoRatio": 0.9
+                                                }
+                                              },
                                               "sequencer": {
                                                 "reaction": {
                                                   "event": "regularCheck",
-                                                  "findObstaclesAlongsidePath": {}
+                                                  "repeat": {
+                                                    "count": 1,
+                                                    "findObstaclesAlongsidePath": {},
+                                                    "subTree": [
+                                                      {
+                                                        "treeName": "react.nearDangerGrenade"
+                                                      },
+                                                      {
+                                                        "treeName": "react.nearDamageZone"
+                                                      },
+                                                      {
+                                                        "treeName": "react.isBurning"
+                                                      }
+                                                    ]
+                                                  }
                                                 },
                                                 "orderedSelector": {
                                                   "not": {
@@ -1521,7 +1908,7 @@
                                                 "parallel": {
                                                   "success": {
                                                     "moveToPos": {
-                                                      "posParam": "safePosToReload",
+                                                      "posParam": "safePos",
                                                       "sprintTimerRange": [
                                                         20.0,
                                                         20.0
@@ -1530,6 +1917,10 @@
                                                       "distThreshold": 0.5,
                                                       "minStanceParam": "minStance",
                                                       "maxStanceParam": "maxStanceInAttack",
+                                                      "restTimerRange": [
+                                                        3.0,
+                                                        5.0
+                                                      ],
                                                       "avoidAiObstacles": true,
                                                       "timeToStuck": 0.25,
                                                       "jumpDownTraceCheck": [
@@ -1551,8 +1942,13 @@
                                                     "resetable": true
                                                   }
                                                 },
-                                                "getAgentAIPos": {
-                                                  "outPosParam": "wishPosition"
+                                                "success": {
+                                                  "sequencer": {
+                                                    "isAgentPlayerBot": {},
+                                                    "getAgentAIPos": {
+                                                      "outPosParam": "wishPosition"
+                                                    }
+                                                  }
                                                 },
                                                 "getTime": {
                                                   "to": "waitBeforeUpdateDestinationTime",
@@ -1583,7 +1979,7 @@
                                                   "enoughAmmoRatio": 0.05
                                                 },
                                                 {
-                                                  "waitReloadFinish": true,
+                                                  "waitReloadFinish": false,
                                                   "enoughAmmoRatio": 0.05
                                                 }
                                               ],
@@ -1705,8 +2101,13 @@
                                                     "changeStance": {
                                                       "stanceName": "crawl"
                                                     },
-                                                    "getAgentAIPos": {
-                                                      "outPosParam": "wishPosition"
+                                                    "success": {
+                                                      "sequencer": {
+                                                        "isAgentPlayerBot": {},
+                                                        "getAgentAIPos": {
+                                                          "outPosParam": "wishPosition"
+                                                        }
+                                                      }
                                                     }
                                                   },
                                                   {
@@ -1740,7 +2141,120 @@
                                                 {
                                                   "to": "lastReloadTime"
                                                 }
-                                              ]
+                                              ],
+                                              "parallel": {
+                                                "sequencer": {
+                                                  "wait": [
+                                                    {
+                                                      "range": [
+                                                        0.2,
+                                                        0.6
+                                                      ],
+                                                      "resetable": true
+                                                    },
+                                                    {
+                                                      "range": [
+                                                        0.5,
+                                                        1.0
+                                                      ],
+                                                      "resetable": true
+                                                    }
+                                                  ],
+                                                  "success": [
+                                                    {
+                                                      "sequencer": {
+                                                        "traceMoveToHideFromEnemies": {
+                                                          "stepLocalDir": [
+                                                            1.0,
+                                                            0.0,
+                                                            -0.61
+                                                          ],
+                                                          "outMoveToPosParam": "safePos",
+                                                          "mainEnemyEidParam": "shootEnemy"
+                                                        },
+                                                        "moveToPos": {
+                                                          "posParam": "safePos",
+                                                          "sprintTimerRange": [
+                                                            20.0,
+                                                            20.0
+                                                          ],
+                                                          "minDistToSprint": 1000.0,
+                                                          "distThreshold": 0.5,
+                                                          "minStanceParam": "minStance",
+                                                          "maxStanceParam": "crouchStance",
+                                                          "incLadders": [
+                                                            false,
+                                                            false
+                                                          ],
+                                                          "restTimerRange": [
+                                                            3.0,
+                                                            5.0
+                                                          ],
+                                                          "avoidAiObstacles": true,
+                                                          "timeToStuck": 0.25,
+                                                          "jumpDownTraceCheck": [
+                                                            0.4,
+                                                            1.0,
+                                                            0.15
+                                                          ],
+                                                          "strafeNearDist": 7.0,
+                                                          "maxAroundCoef": 1.33,
+                                                          "useTeamCustomNav": true
+                                                        }
+                                                      }
+                                                    },
+                                                    {
+                                                      "sequencer": {
+                                                        "traceMoveToHideFromEnemies": {
+                                                          "stepLocalDir": [
+                                                            1.0,
+                                                            0.0,
+                                                            -0.61
+                                                          ],
+                                                          "outMoveToPosParam": "safePos",
+                                                          "mainEnemyEidParam": "shootEnemy"
+                                                        },
+                                                        "moveToPos": {
+                                                          "posParam": "safePos",
+                                                          "sprintTimerRange": [
+                                                            20.0,
+                                                            20.0
+                                                          ],
+                                                          "minDistToSprint": 1000.0,
+                                                          "distThreshold": 0.5,
+                                                          "minStanceParam": "minStance",
+                                                          "maxStanceParam": "crouchStance",
+                                                          "incLadders": [
+                                                            false,
+                                                            false
+                                                          ],
+                                                          "restTimerRange": [
+                                                            3.0,
+                                                            5.0
+                                                          ],
+                                                          "avoidAiObstacles": true,
+                                                          "timeToStuck": 0.25,
+                                                          "jumpDownTraceCheck": [
+                                                            0.4,
+                                                            1.0,
+                                                            0.15
+                                                          ],
+                                                          "strafeNearDist": 7.0,
+                                                          "maxAroundCoef": 1.33,
+                                                          "useTeamCustomNav": true
+                                                        }
+                                                      }
+                                                    }
+                                                  ]
+                                                },
+                                                "wait": {
+                                                  "range": [
+                                                    2.0,
+                                                    3.0
+                                                  ],
+                                                  "resetable": true
+                                                }
+                                              }
                                             }
                                           ],
                                           "continue": {}
@@ -1905,8 +2419,8 @@
                                               "alwaysAiming": true,
                                               "cyclesSuccess": true,
                                               "lostTargetCooldownRange": [
-                                                1.0,
-                                                2.0
+                                                0.6,
+                                                0.9
                                               ],
                                               "closeShootRange": [
                                                 1.0,
@@ -1969,7 +2483,20 @@
                                             },
                                             {
                                               "event": "regularCheck",
-                                              "continue": {}
+                                              "repeat": {
+                                                "count": 1,
+                                                "subTree": [
+                                                  {
+                                                    "treeName": "react.nearDangerGrenade"
+                                                  },
+                                                  {
+                                                    "treeName": "react.nearDamageZone"
+                                                  },
+                                                  {
+                                                    "treeName": "react.isBurning"
+                                                  }
+                                                ]
+                                              }
                                             }
                                           ],
                                           "blockReload": {},
@@ -2136,7 +2663,17 @@
                                             },
                                             {
                                               "event": "regularCheck",
-                                              "continue": {}
+                                              "repeat": {
+                                                "count": 1,
+                                                "subTree": [
+                                                  {
+                                                    "treeName": "react.nearDangerGrenade"
+                                                  },
+                                                  {
+                                                    "treeName": "react.nearDamageZone"
+                                                  }
+                                                ]
+                                              }
                                             }
                                           ],
                                           "blockReload": {},
@@ -2297,7 +2834,17 @@
                                           },
                                           {
                                             "event": "regularCheck",
-                                            "continue": {}
+                                            "repeat": {
+                                              "count": 1,
+                                              "subTree": [
+                                                {
+                                                  "treeName": "react.nearDangerGrenade"
+                                                },
+                                                {
+                                                  "treeName": "react.nearDamageZone"
+                                                }
+                                              ]
+                                            }
                                           }
                                         ],
                                         "blockReload": {},

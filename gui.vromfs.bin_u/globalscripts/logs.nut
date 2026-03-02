@@ -13,14 +13,14 @@ let log = require("%sqstd/log.nut")([
   }
 ])
 
-let { console_print, dlog, wlog, with_prefix, logerr, debugTableData } = log
+let { console_print, dlog, wlog, wdlog, with_prefix, logerr, debugTableData } = log
 
 return {
   log = log.log
   console_print
   wlog
   dlog  
-  wdlog = @(watched, prefix = null, transform = null) log.wlog(watched, prefix, transform, log.dlog) 
+  wdlog 
   log_with_prefix = with_prefix
   logerr
   debugTableData

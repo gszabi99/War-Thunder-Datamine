@@ -29,7 +29,6 @@ function canBuyUnitOnline(unit) {
     return false
   return isAvailableBuyUnitOnline(unit)
 }
-::canBuyUnitOnline <- canBuyUnitOnline
 
 return {
   isAvailableBuyUnitOnline

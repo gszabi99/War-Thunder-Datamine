@@ -60,6 +60,10 @@
                 "minDanger": -1.0,
                 "tag": "human"
               },
+              "setPosFromEntity": {
+                "to": "potentialEnemyPos",
+                "from": "testEnemy"
+              },
               "setIntVar": {
                 "to": "hasPotentialPos",
                 "value": 1
@@ -69,6 +73,21 @@
               "ignoreChance": {
                 "chance": 0.1
               },
+              "not": [
+                {
+                  "isVarsIntEqual": {
+                    "lhs": "rememberEnemy",
+                    "rhs_value": 0
+                  }
+                },
+                {
+                  "checkDistance": {
+                    "posParam": "rememberEnemyPos",
+                    "radius": 2.0,
+                    "yRadius": 3.0
+                  }
+                }
+              ],
               "checkAtTime": {
                 "timeParam": "rememberEnemyTime",
                 "range": [
@@ -76,20 +95,13 @@
                   15.0
                 ]
               },
-              "not": {
-                "checkDistance": {
-                  "posParam": "rememberEnemyPos",
-                  "radius": 2.0,
-                  "yRadius": 3.0
-                }
-              },
               "copyPoint3Var": {
                 "to": "potentialEnemyPos",
                 "from": "rememberEnemyPos"
               },
               "setIntVar": {
                 "to": "hasPotentialPos",
-                "value": 1
+                "value": 2
               }
             },
             {
@@ -100,25 +112,37 @@
               },
               "setIntVar": {
                 "to": "hasPotentialPos",
-                "value": 1
+                "value": 3
               }
             },
             {
               "isLeader": {},
-              "not": {
-                "checkDistance": {
-                  "posParam": "leaderTargetPos",
-                  "radius": 5.0,
-                  "yRadius": 5.0
+              "not": [
+                {
+                  "isZeroPoint3": {
+                    "var": "leaderTargetPos"
+                  }
+                },
+                {
+                  "checkDistance": {
+                    "posParam": "leaderTargetPos",
+                    "radius": 5.0,
+                    "yRadius": 5.0
+                  }
+                },
+                {
+                  "isAtCapzone": {
+                    "zoneEidParam": "leaderTargetEid"
+                  }
                 }
-              },
+              ],
               "copyPoint3Var": {
                 "to": "potentialEnemyPos",
                 "from": "leaderTargetPos"
               },
               "setIntVar": {
                 "to": "hasPotentialPos",
-                "value": 1
+                "value": 4
               }
             },
             {
@@ -128,7 +152,7 @@
               },
               "setIntVar": {
                 "to": "hasPotentialPos",
-                "value": 1
+                "value": 5
               }
             },
             {
@@ -138,14 +162,16 @@
               },
               "setIntVar": {
                 "to": "hasPotentialPos",
-                "value": 1
+                "value": 6
               }
             },
             {
-              "findDangerAttractionPos": {
-                "posParam": "potentialEnemyPos",
-                "radius": 0.0,
-                "minNoiseLevel": 3.0
+              "findDangerPosAround": {
+                "posParam": "potentialEnemyPos"
+              },
+              "setIntVar": {
+                "to": "hasPotentialPos",
+                "value": 0
               }
             }
           ],
@@ -195,194 +221,180 @@
               "isAgentPlayerBot": {}
             }
           ],
-          "sequencer": {
-            "reaction": [
-              {
-                "event": "regularCheck",
-                "subTree": {
-                  "treeName": "react.defaultRegularCheck"
-                }
+          "exitHandler": {
+            "sequencer": {
+              "copyIntVar": {
+                "to": "defReactPreStay",
+                "from": "defReact"
               },
-              {
-                "event": "onHit",
-                "sequencer": {
-                  "subTree": {
-                    "treeName": "react.onHit"
-                  }
-                }
+              "setIntVar": {
+                "to": "defReact",
+                "value": 801
               },
-              {
-                "event": "onBulletNearby",
-                "sequencer": {
-                  "subTree": {
-                    "treeName": "react.onBulletNearby"
-                  }
-                }
-              },
-              {
-                "event": "onTraceableDanger",
-                "sequencer": {
-                  "subTree": {
-                    "treeName": "react.decideToAttackEnemy"
-                  }
-                }
-              },
-              {
-                "event": "onEnemyPlayerNear",
-                "sequencer": {
-                  "subTree": {
-                    "treeName": "react.decideToAttackEnemyNear"
-                  }
-                }
-              }
-            ],
-            "orderedSelector": [
-              {
-                "isVarsIntEqual": {
-                  "lhs": "hasPotentialPos",
-                  "rhs_value": 0
+              "orderedSelector": [
+                {
+                  "isVarsIntEqual": {
+                    "lhs": "hasPotentialPos",
+                    "rhs_value": 0
+                  },
+                  "checkDistance": {
+                    "posParam": "potentialEnemyPos",
+                    "radius": 2.5,
+                    "yRadius": 1.0
+                  },
+                  "isLookingToPos": {
+                    "posParam": "potentialEnemyPos",
+                    "offAngle": 10.0
+                  },
+                  "rotateToPoint": {
+                    "posParam": "potentialEnemyPos",
+                    "aimSpeedCoef": 0.25,
+                    "maxSimAngle": [
+                      60.0,
+                      80.0
+                    ],
+                    "minSimAngle": 30.0,
+                    "minSimSpeedCoef": 0.5,
+                    "pitchRange": [
+                      -5.0,
+                      5.0
+                    ]
+                  },
+                  "continue": {}
                 },
-                "checkDistance": {
-                  "posParam": "potentialEnemyPos",
-                  "radius": 2.5,
-                  "yRadius": 1.0
-                },
-                "isLookingToPos": {
-                  "posParam": "potentialEnemyPos",
-                  "offAngle": 10.0
-                },
-                "rotateToPoint": {
-                  "posParam": "potentialEnemyPos",
-                  "aimSpeedCoef": 0.25,
-                  "maxSimAngle": [
-                    60.0,
-                    80.0
+                {
+                  "sequencer": [
+                    {
+                      "checkReloadWeapon": [
+                        {
+                          "checkOnly": true,
+                          "enoughAmmoRatio": 0.1
+                        },
+                        {
+                          "waitReloadFinish": true,
+                          "enoughAmmoRatio": 1.0
+                        }
+                      ],
+                      "callTree": {
+                        "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+                      }
+                    },
+                    {
+                      "ignoreChance": {
+                        "chance": 0.5
+                      },
+                      "not": {
+                        "checkAtTime": {
+                          "timeParam": "rememberEnemyTime",
+                          "range": [
+                            0.0,
+                            5.0
+                          ]
+                        }
+                      },
+                      "checkReloadWeapon": [
+                        {
+                          "checkOnly": true,
+                          "enoughAmmoRatio": 0.25
+                        },
+                        {
+                          "waitReloadFinish": false,
+                          "enoughAmmoRatio": 1.0,
+                          "skipEnemyNearRadius": 7.0
+                        }
+                      ],
+                      "callTree": {
+                        "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+                      }
+                    },
+                    {
+                      "ignoreChance": {
+                        "chance": 0.5
+                      },
+                      "not": {
+                        "checkAtTime": {
+                          "timeParam": "rememberEnemyTime",
+                          "range": [
+                            0.0,
+                            8.0
+                          ]
+                        }
+                      },
+                      "checkReloadWeapon": [
+                        {
+                          "checkOnly": true,
+                          "enoughAmmoRatio": 0.5
+                        },
+                        {
+                          "waitReloadFinish": false,
+                          "enoughAmmoRatio": 1.0,
+                          "skipEnemyNearRadius": 10.0
+                        }
+                      ],
+                      "callTree": {
+                        "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+                      }
+                    },
+                    {
+                      "not": {
+                        "checkAtTime": {
+                          "timeParam": "rememberEnemyTime",
+                          "range": [
+                            0.0,
+                            11.0
+                          ]
+                        }
+                      },
+                      "checkReloadWeapon": [
+                        {
+                          "checkOnly": true,
+                          "enoughAmmoRatio": 0.7
+                        },
+                        {
+                          "waitReloadFinish": false,
+                          "enoughAmmoRatio": 1.0,
+                          "skipEnemyNearRadius": 15.0
+                        }
+                      ],
+                      "callTree": {
+                        "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+                      }
+                    }
                   ],
-                  "minSimAngle": 30.0,
-                  "minSimSpeedCoef": 0.5,
-                  "pitchRange": [
-                    -5.0,
-                    5.0
-                  ]
+                  "continue": {}
                 },
-                "continue": {}
-              },
-              {
-                "sequencer": [
-                  {
-                    "checkReloadWeapon": [
-                      {
-                        "checkOnly": true,
-                        "enoughAmmoRatio": 0.1
-                      },
-                      {
-                        "waitReloadFinish": true,
-                        "enoughAmmoRatio": 1.0
-                      }
-                    ]
+                {
+                  "ignoreChance": {
+                    "chance": 0.55
                   },
-                  {
-                    "ignoreChance": {
-                      "chance": 0.5
-                    },
-                    "not": {
-                      "checkAtTime": {
-                        "timeParam": "rememberEnemyTime",
-                        "range": [
-                          0.0,
-                          5.0
-                        ]
-                      }
-                    },
-                    "checkReloadWeapon": [
-                      {
-                        "checkOnly": true,
-                        "enoughAmmoRatio": 0.25
-                      },
-                      {
-                        "waitReloadFinish": false,
-                        "enoughAmmoRatio": 1.0,
-                        "skipEnemyNearRadius": 7.0
-                      }
-                    ]
+                  "changeStance": {
+                    "stanceName": "crouch",
+                    "maxStanceParam": "maxStance",
+                    "wait": true
                   },
-                  {
-                    "ignoreChance": {
-                      "chance": 0.5
-                    },
-                    "not": {
-                      "checkAtTime": {
-                        "timeParam": "rememberEnemyTime",
-                        "range": [
-                          0.0,
-                          8.0
-                        ]
-                      }
-                    },
-                    "checkReloadWeapon": [
-                      {
-                        "checkOnly": true,
-                        "enoughAmmoRatio": 0.5
-                      },
-                      {
-                        "waitReloadFinish": false,
-                        "enoughAmmoRatio": 1.0,
-                        "skipEnemyNearRadius": 10.0
-                      }
-                    ]
-                  },
-                  {
-                    "not": {
-                      "checkAtTime": {
-                        "timeParam": "rememberEnemyTime",
-                        "range": [
-                          0.0,
-                          11.0
-                        ]
-                      }
-                    },
-                    "checkReloadWeapon": [
-                      {
-                        "checkOnly": true,
-                        "enoughAmmoRatio": 0.7
-                      },
-                      {
-                        "waitReloadFinish": false,
-                        "enoughAmmoRatio": 1.0,
-                        "skipEnemyNearRadius": 15.0
-                      }
-                    ]
-                  }
-                ],
-                "continue": {}
-              },
-              {
-                "ignoreChance": {
-                  "chance": 0.55
-                },
-                "changeStance": {
-                  "stanceName": "crouch",
-                  "maxStanceParam": "maxStance",
-                  "wait": true
-                },
-                "continue": {}
-              }
-            ],
-            "initPeriodicTimer": {
-              "timeParam": "onChangeLeaderFollowPos",
-              "timePeriod": [
-                0.0,
-                0.0
-              ]
-            },
-            "wait": {
-              "range": [
-                0.2,
-                0.3
+                  "continue": {}
+                }
               ],
-              "resetable": true
+              "initPeriodicTimer": {
+                "timeParam": "onChangeLeaderFollowPos",
+                "timePeriod": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "wait": {
+                "range": [
+                  0.2,
+                  0.3
+                ],
+                "resetable": true
+              },
+              "break": {}
             },
-            "break": {}
+            "copyIntVar": {
+              "to": "defReact",
+              "from": "defReactPreStay"
+            }
           }
         },
         {
@@ -415,6 +427,21 @@
             "ignoreChance": {
               "chance": 0.25
             },
+            "not": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "rememberEnemy",
+                  "rhs_value": 0
+                }
+              },
+              {
+                "checkDistance": {
+                  "posParam": "rememberEnemyPos",
+                  "radius": 5.0,
+                  "yRadius": 5.0
+                }
+              }
+            ],
             "checkAtTime": {
               "timeParam": "rememberEnemyTime",
               "range": [
@@ -422,35 +449,32 @@
                 25.0
               ]
             },
-            "not": {
-              "checkDistance": {
-                "posParam": "rememberEnemyPos",
-                "radius": 5.0,
-                "yRadius": 5.0
-              }
-            },
             "copyPoint3Var": {
               "to": "potentialEnemyPos",
               "from": "rememberEnemyPos"
             },
-            "fixLookDirPos": {
-              "posParam": "potentialEnemyPos"
-            },
             "setIntVar": {
               "to": "hasPotentialPos",
-              "value": 1
+              "value": 8
+            },
+            "fixLookDirPos": {
+              "posParam": "potentialEnemyPos"
             }
           },
           "continue": {}
         },
         {
+          "isVarsIntEqual": {
+            "lhs": "rememberEnemy",
+            "rhs_value": 0
+          },
           "not": [
             {
               "checkAtTime": {
                 "timeParam": "rememberEnemyTime",
                 "range": [
                   0.0,
-                  4.0
+                  7.0
                 ]
               }
             },
@@ -463,7 +487,7 @@
                   "timeParam": "rememberEnemyTime",
                   "range": [
                     0.0,
-                    7.0
+                    4.0
                   ]
                 }
               }
@@ -518,6 +542,7 @@
             "rhs_value": 0
           },
           "sequencer": {
+            "break": {},
             "ignoreChance": {
               "chance": 0.5
             },
@@ -690,6 +715,20 @@
         ],
         "resetable": true
       },
+      "success": {
+        "sequencer": {
+          "periodicTimer": {
+            "timeParam": "onStayFindSaferPlace",
+            "timePeriod": [
+              3.0,
+              7.0
+            ]
+          },
+          "callTree": {
+            "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+          }
+        }
+      },
       "fixLookDirPos": {
         "posParam": "potentialEnemyPos"
       },
@@ -742,9 +781,11 @@
                   {
                     "sequencer": [
                       {
-                        "isVarsIntEqual": {
-                          "lhs": "hasPotentialPos",
-                          "rhs_value": 1
+                        "not": {
+                          "isVarsIntEqual": {
+                            "lhs": "hasPotentialPos",
+                            "rhs_value": 0
+                          }
                         },
                         "initPeriodicTimer": {
                           "timeParam": "onChangeLeaderFollowPos",
@@ -780,7 +821,10 @@
                             "waitReloadFinish": true,
                             "enoughAmmoRatio": 1.0
                           }
-                        ]
+                        ],
+                        "callTree": {
+                          "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+                        }
                       },
                       {
                         "ignoreChance": {
@@ -805,7 +849,10 @@
                             "enoughAmmoRatio": 1.0,
                             "skipEnemyNearRadius": 7.0
                           }
-                        ]
+                        ],
+                        "callTree": {
+                          "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+                        }
                       },
                       {
                         "ignoreChance": {
@@ -830,7 +877,10 @@
                             "enoughAmmoRatio": 1.0,
                             "skipEnemyNearRadius": 10.0
                           }
-                        ]
+                        ],
+                        "callTree": {
+                          "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+                        }
                       },
                       {
                         "not": {
@@ -852,7 +902,10 @@
                             "enoughAmmoRatio": 1.0,
                             "skipEnemyNearRadius": 15.0
                           }
-                        ]
+                        ],
+                        "callTree": {
+                          "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+                        }
                       }
                     ],
                     "continue": {}
@@ -948,6 +1001,9 @@
                   "stanceToParam": "tmp_hide_stance",
                   "maxStanceParam": "standStance",
                   "wait": true
+                },
+                "callTree": {
+                  "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
                 }
               },
               {
@@ -976,6 +1032,9 @@
                   "stanceToParam": "tmp_hide_stance",
                   "maxStanceParam": "standStance",
                   "wait": true
+                },
+                "callTree": {
+                  "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
                 }
               },
               {
@@ -1004,6 +1063,9 @@
                   "stanceToParam": "tmp_hide_stance",
                   "maxStanceParam": "standStance",
                   "wait": true
+                },
+                "callTree": {
+                  "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
                 }
               },
               {
@@ -1026,6 +1088,9 @@
                   "stanceToParam": "tmp_hide_stance",
                   "maxStanceParam": "standStance",
                   "wait": true
+                },
+                "callTree": {
+                  "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
                 }
               }
             ],
@@ -1395,6 +1460,9 @@
                 "to": "lastReloadTime"
               }
             ],
+            "callTree": {
+              "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+            },
             "checkReloadWeapon": {
               "waitReloadFinish": false,
               "enoughAmmoRatio": 0.5,
@@ -1408,19 +1476,27 @@
               "ignoreChance": {
                 "chance": 0.1
               },
+              "not": [
+                {
+                  "isVarsIntEqual": {
+                    "lhs": "rememberEnemy",
+                    "rhs_value": 0
+                  }
+                },
+                {
+                  "checkDistance": {
+                    "posParam": "rememberEnemyPos",
+                    "radius": 5.0,
+                    "yRadius": 5.0
+                  }
+                }
+              ],
               "checkAtTime": {
                 "timeParam": "rememberEnemyTime",
                 "range": [
                   0.0,
                   25.0
                 ]
-              },
-              "not": {
-                "checkDistance": {
-                  "posParam": "rememberEnemyPos",
-                  "radius": 5.0,
-                  "yRadius": 5.0
-                }
               },
               "copyPoint3Var": {
                 "to": "potentialEnemyPos",
@@ -1797,6 +1873,9 @@
                 "to": "lastReloadTime"
               }
             ],
+            "callTree": {
+              "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+            },
             "checkReloadWeapon": {
               "waitReloadFinish": false,
               "enoughAmmoRatio": 0.5,
@@ -1810,19 +1889,27 @@
               "ignoreChance": {
                 "chance": 0.2
               },
+              "not": [
+                {
+                  "isVarsIntEqual": {
+                    "lhs": "rememberEnemy",
+                    "rhs_value": 0
+                  }
+                },
+                {
+                  "checkDistance": {
+                    "posParam": "rememberEnemyPos",
+                    "radius": 5.0,
+                    "yRadius": 5.0
+                  }
+                }
+              ],
               "checkAtTime": {
                 "timeParam": "rememberEnemyTime",
                 "range": [
                   0.0,
                   20.0
                 ]
-              },
-              "not": {
-                "checkDistance": {
-                  "posParam": "rememberEnemyPos",
-                  "radius": 5.0,
-                  "yRadius": 5.0
-                }
               },
               "copyPoint3Var": {
                 "to": "potentialEnemyPos",
@@ -2012,7 +2099,7 @@
       "forceWeaponReady": {
         "forceReady": false
       },
-      "subTree": [
+      "callTree": [
         {
           "treeName": "prep.limitMinStanceByOrder"
         },
@@ -2045,6 +2132,16 @@
           },
           "sequencer": [
             {
+              "checkReloadWeapon": [
+                {
+                  "checkOnly": true,
+                  "enoughAmmoRatio": 0.1
+                },
+                {
+                  "waitReloadFinish": false,
+                  "enoughAmmoRatio": 0.1
+                }
+              ],
               "getTime": [
                 {
                   "to": "lastReloadTime"
@@ -2053,9 +2150,8 @@
                   "to": "lastReloadTime"
                 }
               ],
-              "checkReloadWeapon": {
-                "waitReloadFinish": false,
-                "enoughAmmoRatio": 0.1
+              "callTree": {
+                "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
               }
             },
             {
@@ -2068,6 +2164,17 @@
                   ]
                 }
               },
+              "checkReloadWeapon": [
+                {
+                  "checkOnly": true,
+                  "enoughAmmoRatio": 0.5
+                },
+                {
+                  "waitReloadFinish": false,
+                  "enoughAmmoRatio": 0.5,
+                  "skipEnemyNearRadius": 15.0
+                }
+              ],
               "getTime": [
                 {
                   "to": "lastReloadTime"
@@ -2076,10 +2183,8 @@
                   "to": "lastReloadTime"
                 }
               ],
-              "checkReloadWeapon": {
-                "waitReloadFinish": false,
-                "enoughAmmoRatio": 0.5,
-                "skipEnemyNearRadius": 15.0
+              "callTree": {
+                "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
               }
             },
             {
@@ -2092,6 +2197,17 @@
                   ]
                 }
               },
+              "checkReloadWeapon": [
+                {
+                  "checkOnly": true,
+                  "enoughAmmoRatio": 0.25
+                },
+                {
+                  "waitReloadFinish": false,
+                  "enoughAmmoRatio": 0.25,
+                  "skipEnemyNearRadius": 15.0
+                }
+              ],
               "getTime": [
                 {
                   "to": "lastReloadTime"
@@ -2100,10 +2216,8 @@
                   "to": "lastReloadTime"
                 }
               ],
-              "checkReloadWeapon": {
-                "waitReloadFinish": false,
-                "enoughAmmoRatio": 0.25,
-                "skipEnemyNearRadius": 15.0
+              "callTree": {
+                "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
               }
             }
           ],

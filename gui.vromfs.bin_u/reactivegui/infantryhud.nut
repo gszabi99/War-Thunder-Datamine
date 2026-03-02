@@ -5,14 +5,16 @@ require("%rGui/hud/humanPhysState.nut")
 let { isSpectatorMode, unitType, tacticalMapStates } = require("%rGui/hudState.nut")
 let { rw, rh } = require("%rGui/style/screenState.nut")
 let hudSquadMembers = require("%rGui/hud/humanSquad/hudSquadMembers.nut")
-let { hitMarks } = require("%rGui/hud/humanSquad/hitMarks.nut")
+let { hitMarks } = require("%rGui/hud/hitMarks.nut")
 let killMarks = require("%rGui/hud/humanSquad/killMarks.nut")
 let mkHealth = require("%rGui/hud/humanSquad/mkHealth.nut")
 let mkStamina = require("%rGui/hud/humanSquad/mkStamina.nut")
 let mkCurWeapon = require("%rGui/hud/humanSquad/mkWeapons.nut")
-let mkEquipment = require("%rGui/hud/humanSquad/mkEquipment.nut")
+let mkWeaponsList = require("%rGui/hud/humanSquad/mkWeaponsList.nut")
 let { weaponBlockGap, healthStateBlockGap } = require("%rGui/hud/humanSquad/humanConst.nut")
 let { isHuman } = require("%rGui/hudUnitType.nut")
+let { eventbus_subscribe } = require("eventbus")
+
 
 let activeOrder = require("%rGui/activeOrder.nut")
 let voiceChat = require("%rGui/chat/voiceChat.nut")
@@ -20,6 +22,17 @@ let hudLogs = require("%rGui/hudLogs.nut")
 
 let leftPanelGap = hdpxi(20)
 let smallPadding = hdpxi(4)
+let bigPadding = hdpxi(12)
+
+
+let isMapSpectatorVisible = Watched(true)
+let rightPanelOffset = Computed(@()
+  !isSpectatorMode.get() || !isMapSpectatorVisible.get() ? 0
+    : (tacticalMapStates.get()?.size[0] ?? 0) + bigPadding)
+
+eventbus_subscribe("updateSpectatorMapStates",
+  @(v) isMapSpectatorVisible.set(v?.isVisible ?? false))
+
 
 let centerPanel = {
   halign = ALIGN_CENTER
@@ -57,7 +70,9 @@ let leftPanel = {
   ]
 }
 
-let rightPanel = {
+let rightPanel = @() {
+  watch = rightPanelOffset
+  margin = [0,rightPanelOffset.get(),0,0]
   flow = FLOW_VERTICAL
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
@@ -68,18 +83,17 @@ let rightPanel = {
       gap = healthStateBlockGap
       hplace = ALIGN_RIGHT
       children = [
-        mkHealth
+        {
+          hplace = ALIGN_RIGHT
+          children = [
+            mkHealth
+            mkWeaponsList
+          ]
+        }
         mkStamina
       ]
     }
-    {
-      flow = FLOW_HORIZONTAL
-      gap = weaponBlockGap
-      children = [
-        mkEquipment
-        mkCurWeapon
-      ]
-    }
+    mkCurWeapon
   ]
 }
 

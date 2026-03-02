@@ -31,12 +31,12 @@
         55.0
       ],
       "elevationLimits": [
-        -40.0,
-        45.0
+        -30.0,
+        30.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 45.0,
-      "period": 2.4,
+      "rollStabLimit": 100.0,
+      "pitchStabLimit": 30.0,
+      "period": 2.75,
       "width": 55.0,
       "barHeight": 5.5,
       "barsCount": 2,
@@ -49,13 +49,13 @@
         55.0
       ],
       "elevationLimits": [
-        -40.0,
-        45.0
+        -30.0,
+        30.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 45.0,
-      "period": 0.5,
-      "width": 10.0,
+      "rollStabLimit": 100.0,
+      "pitchStabLimit": 30.0,
+      "period": 0.75,
+      "width": 15.0,
       "barHeight": 5.5,
       "barsCount": 2,
       "rowMajor": true
@@ -67,8 +67,8 @@
         55.0
       ],
       "elevationLimits": [
-        -40.0,
-        45.0
+        -30.0,
+        30.0
       ],
       "period": 0.1,
       "width": 0.1,
@@ -81,11 +81,11 @@
         55.0
       ],
       "elevationLimits": [
-        -40.0,
-        45.0
+        -30.0,
+        30.0
       ],
-      "rollStabLimit": 70.0,
-      "pitchStabLimit": 45.0,
+      "rollStabLimit": 100.0,
+      "pitchStabLimit": 30.0,
       "period": 0.2,
       "width": 4.0,
       "barHeight": 5.0,
@@ -100,8 +100,8 @@
         55.0
       ],
       "elevationLimits": [
-        -40.0,
-        45.0
+        -30.0,
+        30.0
       ]
     }
   },
@@ -187,8 +187,8 @@
             ],
             "azimuthWidth": 8.0,
             "elevationRange": [
-              -40.0,
-              45.0
+              -30.0,
+              30.0
             ],
             "distanceRange": [
               0.0,
@@ -653,11 +653,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }
@@ -752,6 +754,8 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
+                "alpha": 0.8,
+                "betta": 0.1,
                 "rateLim": [
                   0.78,
                   0.78
@@ -760,6 +764,8 @@
                 "inertialTimeMax": 1.0
               },
               "distFilter": {
+                "alpha": 0.8,
+                "betta": 0.2,
                 "accelLim": [
                   150.0,
                   150.0

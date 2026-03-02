@@ -186,7 +186,8 @@
         "hidableInViewer": true
       },
       "turret_08_side_dm": {
-        "armorThickness": 35.0
+        "armorThickness": 35.0,
+        "armorClass": "CHA_tank_modern"
       },
       "composite_armor_hull_08_dm": {
         "armorThickness": 20.0,
@@ -272,7 +273,8 @@
         "armorThickness": 90.0
       },
       "turret_01_front_dm": {
-        "armorThickness": 45.0
+        "armorThickness": 45.0,
+        "armorClass": "RHA_tank_modern"
       },
       "turret_side_dm": {
         "armorThickness": 157.0
@@ -4783,6 +4785,33 @@
       }
     },
     {
+      "name": "ussr_camo_arctic",
+      "nameLocId": "skin/ussr_camo_arctic",
+      "descLocId": "skin/ussr_camo_arctic/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_arctic*"
+      }
+    },
+    {
+      "name": "ussr_modern_def_gray",
+      "nameLocId": "skin/ussr_modern_def_gray",
+      "descLocId": "skin/ussr_modern_def_gray/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_def_gray*"
+      }
+    },
+    {
+      "name": "ussr_modern_def_sand",
+      "nameLocId": "skin/ussr_modern_def_sand",
+      "descLocId": "skin/ussr_modern_def_sand/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_def_sand*"
+      }
+    },
+    {
       "name": "tank_biathlon_red",
       "nameLocId": "skin/tank_biathlon_red",
       "descLocId": "skin/tank_biathlon_red/desc",
@@ -4820,6 +4849,10 @@
     }
   ],
   "dmgAngles": {
+    "hatch_01": [
+      115.0,
+      115.0
+    ],
     "hatch_05": [
       10.0,
       40.0
@@ -4827,6 +4860,13 @@
     "hatch_06": [
       45.0,
       90.0
+    ]
+  },
+  "dmgPosOffset": {
+    "hatch_01": [
+      -0.04,
+      0.0,
+      0.0
     ]
   },
   "ammoStowages": {

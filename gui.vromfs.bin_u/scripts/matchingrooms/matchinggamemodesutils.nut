@@ -2,7 +2,6 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
 let { get_game_mode } = require("mission")
-let { get_cd_preset, set_cd_preset } = require("guiOptions")
 
 function isGameModeCoop(gm) {
   return gm == -1 || gm == GM_SINGLE_MISSION || gm == GM_BUILDER
@@ -53,27 +52,8 @@ function getCustomDifficultyOptions() {
     ]
 }
 
-function getCustomDifficultyTooltipText(custDifficulty) {
-  let wasDiff = get_cd_preset(DIFFICULTY_CUSTOM)
-  set_cd_preset(custDifficulty)
-
-  local text = ""
-  let options = getCustomDifficultyOptions()
-  foreach (o in options) {
-    let opt = ::get_option(o[0])
-    let valueText = opt.items ?
-      loc(opt.items[opt.value]) :
-      loc(opt.value ? "options/yes" : "options/no")
-    text = "".concat(text, (text != "") ? "\n" : "", loc($"options/{opt.id}"), loc("ui/colon"), colorize("userlogColoredText", valueText))
-  }
-
-  set_cd_preset(wasDiff)
-  return text
-}
-
 return {
   isGameModeCoop
   isGameModeVersus
-  getCustomDifficultyTooltipText
   getCustomDifficultyOptions
 }

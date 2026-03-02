@@ -22,6 +22,8 @@
   "maxAngAccel": 40.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
+  "detectDistance": 600.0,
+  "instantDetectDistance": 60.0,
   "expClass": "exp_human",
   "sprintStaminaDrain": 1.5,
   "jumpStaminaDrain": 4.5,
@@ -140,7 +142,7 @@
     0.0
   ],
   "aimingMoveSpeed": [
-    1.0,
+    1.3,
     1.0
   ],
   "aimSpeed": 10.0,
@@ -193,9 +195,9 @@
     }
   },
   "standState": {
-    "walkSpeed": 1.8,
-    "runSpeed": 3.5,
-    "sprintSpeed": 5.6,
+    "walkSpeed": 2.6,
+    "runSpeed": 3.65,
+    "sprintSpeed": 6.75,
     "rotateAngles": [
       -60.0,
       60.0
@@ -240,6 +242,7 @@
   "crouchState": {
     "walkSpeed": 1.0,
     "runSpeed": 1.7,
+    "sprintSpeed": 1.7,
     "rotateAngles": [
       -60.0,
       60.0
@@ -284,6 +287,7 @@
   "crawlState": {
     "walkSpeed": 0.5,
     "runSpeed": 1.15,
+    "sprintSpeed": 1.15,
     "rotateAngles": [
       -60.0,
       60.0
@@ -375,6 +379,7 @@
   "downedState": {
     "walkSpeed": 1.0,
     "runSpeed": 1.0,
+    "sprintSpeed": 1.0,
     "rotateAngles": [
       -80.0,
       80.0
@@ -476,9 +481,9 @@
     }
   },
   "climbLadderState": {
-    "walkSpeed": 1.5,
-    "runSpeed": 3.5,
-    "sprintSpeed": 5.6,
+    "walkSpeed": 2.6,
+    "runSpeed": 3.65,
+    "sprintSpeed": 6.75,
     "rotateAngles": [
       -60.0,
       60.0
@@ -756,6 +761,20 @@
     }
   },
   "modifications": {
+    "tactical_laser_ussr": {},
+    "tactical_block_ussr": {
+      "reqModification": "tactical_laser_ussr"
+    },
+    "scope_ekp_8_18_cobra": {},
+    "scope_1p87": {
+      "reqModification": "scope_ekp_8_18_cobra"
+    },
+    "scope_vortex_lpvo": {
+      "reqModification": "scope_1p87"
+    },
+    "scope_shakhin": {
+      "reqModification": "scope_vortex_lpvo"
+    },
     "shotgun_ks_p": {},
     "machinegun_pkp_pecheneg": {},
     "at_laucher_rpg_7": {},
@@ -807,20 +826,20 @@
             "name": "rpg_7_default",
             "ecsTemplate": "rpg_7_default_gun",
             "inventoryItemEcsTemplate": "rpg_7_rocket_item",
-            "inventoryItemNum": 5
+            "inventoryItemNum": 4
           },
           {
             "name": "rpg_7",
             "ecsTemplate": "rpg_7_gun",
             "inventoryItemEcsTemplate": "rpg_7_rocket_item",
-            "inventoryItemNum": 3,
+            "inventoryItemNum": 4,
             "reqModification": "at_laucher_rpg_7"
           },
           {
             "name": "mpads_igla",
             "ecsTemplate": "mpads_igla_gun",
             "inventoryItemEcsTemplate": "9m39_missile_item",
-            "inventoryItemNum": 3,
+            "inventoryItemNum": 2,
             "reqModification": "mpads_igla"
           },
           {
@@ -843,7 +862,17 @@
           {
             "name": "frag_grenade",
             "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "frag_grenade_medium",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
             "inventoryItemNum": 2
+          },
+          {
+            "name": "frag_grenade_light",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 1
           },
           {
             "name": "smoke_grenade",
@@ -852,9 +881,15 @@
             "reqModification": "smoke_grenade"
           },
           {
+            "name": "smoke_grenade_light",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 1,
+            "reqModification": "smoke_grenade"
+          },
+          {
             "name": "stun_grenade",
             "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
-            "inventoryItemNum": 4,
+            "inventoryItemNum": 6,
             "reqModification": "stun_grenade"
           }
         ]
@@ -862,9 +897,19 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "kord_6p68_default",
-      "blk": "gameData/units/humans/weaponPresets/kord_6p68_default.blk"
-    }
+    "preset": [
+      {
+        "name": "kord_6p68_default",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/ussr_class_antivehicle_preset_1.blk"
+      },
+      {
+        "name": "kord_6p68_preset_2",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/ussr_class_antivehicle_preset_2.blk"
+      },
+      {
+        "name": "kord_6p68_preset_3",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/ussr_class_antivehicle_preset_3.blk"
+      }
+    ]
   }
 }

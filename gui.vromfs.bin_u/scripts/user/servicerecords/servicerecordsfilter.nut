@@ -5,7 +5,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let filterTypes = {}
 
@@ -43,7 +43,8 @@ function fillCountries() {
 
 function fillRanks() {
   let res = {}
-  for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
+  let maxRank = maxCountryRank.get()
+  for (local i = 1; i <= maxRank; i++) {
     res[i] <- {
       id = $"rank_{i}"
       idx = i

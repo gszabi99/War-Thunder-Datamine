@@ -15,16 +15,18 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getDefaultDifficultyGroup } = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { getDifficultyTypeByTask } = require("%scripts/unlocks/battleTasksState.nut")
 let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskExpired,
   canActivateSpecialTask, canGetBattleTaskReward, getBattleTaskWithAvailableAward,
   getBattleTasksOrderedByDiff, filterBattleTasksByGameModeId, getBattleTaskDiffGroups,
-  requestBattleTaskReward, getDifficultyTypeByTask
+  requestBattleTaskReward
 } = require("%scripts/unlocks/battleTasks.nut")
 let { setBattleTasksUpdateTimer, getBattleTaskView, getBattleTaskDifficultyImage
 } = require("%scripts/unlocks/battleTasksView.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { buildUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
 

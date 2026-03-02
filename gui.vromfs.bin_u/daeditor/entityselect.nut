@@ -11,7 +11,7 @@ let closeButton = require("components/closeButton.nut")
 let { setTooltip } = require("components/cursors.nut")
 let nameFilter = require("components/nameFilter.nut")
 let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
-let { getEntityExtraName, getSceneLoadTypeText, sceneGenerated, sceneSaved, getNumMarkedScenes, matchEntityByScene } = require("%daeditor/daeditor_es.nut")
+let { getEntityExtraName, getSceneLoadTypeText, getNumMarkedScenes, matchEntityByScene } = require("%daeditor/daeditor_es.nut")
 let mkSortModeButton = require("components/mkSortModeButton.nut")
 let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
 
@@ -59,9 +59,7 @@ let filteredEntites = Computed(function() {
 
   if (filterEntitiesByMarkedScenes.get()) {
     if (getNumMarkedScenes() > 0) {
-      local savedMarked = markedScenes.get()?[sceneSaved.id]
-      local generatedMarked = markedScenes.get()?[sceneGenerated.id]
-      entities = entities.filter(@(eid) matchEntityByScene(eid, savedMarked, generatedMarked))
+      entities = entities.filter(@(eid) matchEntityByScene(eid))
     }
   }
 
@@ -531,4 +529,5 @@ return {
   id = EntitySelectWndId
   mkContent = mkEntitySelect
   saveState=true
+  headerText = "Entity Select"
 }

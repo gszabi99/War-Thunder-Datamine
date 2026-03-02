@@ -27,9 +27,9 @@ def replay_detach_from_weapon_cmd()
     return true
 
 [console_cmd(name="replay.save_post_production_entities")]
-def replay_post_production_save_cmd()
+def replay_post_production_save_cmd(saveWithZeroTime : bool = false)
   find_query() <| $ [es(REQUIRE=replayPostProduction)] (eid : EntityId)
-    sendEvent(eid, ReplayPostProdSaveFile())
+    sendEvent(eid, ReplayPostProdSaveFile(saveWithZeroTime = saveWithZeroTime))
     return true
 
 [console_cmd(name="replay.load_post_production_entities")]
@@ -54,12 +54,17 @@ def replay_post_production_draw_save_list()
 
 [es(tag=gameClient, no_order, REQUIRE=draw_post_production_entities)]
 def replay_post_production_drawing(info : UpdateStageInfoRenderDebug)
-  query() <| $ [es(REQUIRE=postProductionEntityToSave)] (transform : float3x4;
-                                                         saving_entity__template : string;
-                                                         saving_entity__creationTime : float)
-    begin_draw_cached_debug_lines(false, false, false)
+  begin_draw_cached_debug_lines(false, false, false)
 
-    draw_cached_debug_sphere(transform[3], 0.25, E3DCOLOR(0xFFFF0000), 8)
-    add_debug_text_mark(transform[3], "time = {saving_entity__creationTime}, template = {saving_entity__template}", -1, 3.5f, E3DCOLOR(0x00000000))
+  query() <| $ [es(REQUIRE=postProductionEntityToSave)] (saving_entity__template : string;
+                                                         saving_entity__creationTime : float;
+                                                         saving_entity__eid : EntityId;
+                                                         saving_entity__transform : float3x4)
+    var tm = saving_entity__transform
+    query(saving_entity__eid) <| $ [es] (transform : float3x4)
+      tm = transform
 
-    end_draw_cached_debug_lines()
+    draw_cached_debug_sphere(tm[3], 0.25, E3DCOLOR(0xFFFF0000), 32)
+    add_debug_text_mark(tm[3], "time = {saving_entity__creationTime}, template = {saving_entity__template}", -1, 3.5f, E3DCOLOR(0x00000000))
+
+  end_draw_cached_debug_lines()

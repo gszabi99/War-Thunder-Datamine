@@ -24,7 +24,7 @@ let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/wishlist/wishlistFilter.nut")
-let { showAirInfo } = require("%scripts/airInfo.nut")
+let { fillAirInfo } = require("%scripts/airInfo.nut")
 let { isUnitResearched, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType } = require("%scripts/wishlist/filterUtils.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
@@ -354,7 +354,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
       return
     let unit = getAircraftByName(itemObj.id)
     this.restoreUnitInfoSize()
-    showAirInfo(unit, true, this.unitInfoObj, this, { parentWidth = true, needShopInfo = true, needShowExpiredMessage = true })
+    fillAirInfo(unit, true, this.unitInfoObj, this, { parentWidth = true, needShopInfo = true, needShowExpiredMessage = true })
     this.updateUnitInfoSize()
 
     this.updateButtons()

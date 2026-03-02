@@ -108,7 +108,7 @@ def human_sprint_jump_height(human_sprint__staminaStages : float2;
     : stamina > human_sprint__staminaStages[0] ? human__sprintJumpHeightMultBySprintStage[1]
     : human__sprintJumpHeightMultBySprintStage[0])
 
-  let runSpeed = human_net_phys.phys |> human_phys_getWalkSpeed(HUStandState.ESS_STAND, HUMoveState.EMS_RUN) * currentState.moveSpeedMult
+  let runSpeed = human_net_phys.phys |> human_phys_getWalkSpeed(HUStandState.ESS_STAND, HUMoveState.EMS_RUN) * currentState.moveSpeedMult * currentState.runSpeedMult
   let sprintSpeed = human_net_phys.phys |> human_phys_getWalkSpeed(HUStandState.ESS_STAND, HUMoveState.EMS_SPRINT) * currentState.moveSpeedMult * currentState.sprintSpeedMult
 
   let speed = cvt(length(currentState.velocity.xz), runSpeed, sprintSpeed, 0., 1.)

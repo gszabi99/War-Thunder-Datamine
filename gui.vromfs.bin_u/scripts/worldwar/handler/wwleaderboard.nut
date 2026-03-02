@@ -17,6 +17,7 @@ let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 let wwLeaderboardsList = [
   lbCategoryTypes.UNIT_RANK
@@ -97,7 +98,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
 
   function fillMapsList() {
     this.wwMapsList = []
-    foreach (map in ::g_ww_global_status_type.MAPS.getList())
+    foreach (map in wwStatusType.MAPS.getList())
       if (map.isVisible())
         this.wwMapsList.append(map)
   }

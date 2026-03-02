@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let {
-  onPsnInvitation = @(...) null,
   invite = @(...) null,
   checkInvitesAfterFlight = @() null
 } = isPlatformSony
@@ -12,7 +11,6 @@ let {
 
 
 return {
-  onPsnInvitation
   invite
   checkInvitesAfterFlight
 }

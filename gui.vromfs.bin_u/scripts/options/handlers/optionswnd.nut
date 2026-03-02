@@ -23,7 +23,7 @@ let openTankSightSettings = require("%scripts/options/handlers/tankSightSettings
 let { isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsState.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
+let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes, toggle_test_headphones_sound, stop_test_headphones_sound } = require("soundOptions")
 let { showGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
 let { canRestartClient } = require("%scripts/utils/restartClient.nut")
 let { isOptionReqRestartChanged, setOptionReqRestartValue
@@ -636,6 +636,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   function doApply() {
     this.joinEchoChannel(false);
+    stop_test_headphones_sound();
     let result = base.doApply();
 
     let group = this.curGroup == -1 ? null : this.optGroups[this.curGroup];
@@ -716,6 +717,14 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   function resetVolumes() {
     reset_volumes()
     this.fillSoundOptions(this.curGroup)
+  }
+
+  function testHeadphones() {
+    let obj = this.scene.findObject("sound_test_headphones")
+    if (!(obj?.isValid() ?? false))
+      return
+    let isPlaying = toggle_test_headphones_sound()
+    obj.setValue(isPlaying ? loc("options/stopTestHeadphones") : loc("options/playTestHeadphones"))
   }
 
   function isRestartPending() {

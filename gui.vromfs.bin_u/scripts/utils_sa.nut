@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, get_player_army_for_hud, is_myself_grand_moderator, is_myself_moderator
 from "%scripts/dagui_library.nut" import *
-
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 let { object_to_json_string } = require("json")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
@@ -8,7 +8,6 @@ let { stripTags, cutPrefix } = require("%sqstd/string.nut")
 let { rnd } = require("dagor.random")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { is_mplayer_host, is_mplayer_peer } = require("multiplayer")
-let { get_game_type } = require("mission")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { fabs } = require("math")
 
@@ -104,15 +103,8 @@ let roman_numerals = freeze(["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII
 
 let is_multiplayer = @() is_mplayer_host() || is_mplayer_peer()
 
-
-function is_mode_with_teams(gt = null) {
-  if (gt == null)
-    gt = get_game_type()
-  return !(gt & (GT_FFA_DEATHMATCH | GT_FFA))
-}
-
 function is_team_friendly(teamId) {
-  return is_mode_with_teams() &&
+  return isModeWithTeams() &&
     teamId == get_player_army_for_hud()
 }
 
@@ -206,8 +198,6 @@ function call_for_handler(handler, func) {
   return func()
 }
 
-::cross_call_api.is_mode_with_teams <- is_mode_with_teams
-
 return {
   getAmountAndMaxAmountText
   colorTextByValues
@@ -222,7 +212,6 @@ return {
   is_myself_anyof_moderators
   buildTableRow
   buildTableRowNoPad
-  is_mode_with_teams
   is_multiplayer
   get_team_color
   get_mplayer_color

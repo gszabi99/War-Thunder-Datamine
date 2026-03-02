@@ -144,7 +144,7 @@ def charge_melee_weapon_phys_es(evt : CmdWeapPhysUpdate;
 
     let shouldPlayChargeAction = human_melee_charge__isActive && !isChargeInputTriggered
     let wasCharging = human_melee_charge__isActive
-    let walkSpeed = phys |> human_phys_getWalkSpeed(HUStandState.ESS_STAND, HUMoveState.EMS_WALK) * currentState.moveSpeedMult
+    let walkSpeed = phys |> human_phys_getWalkSpeed(HUStandState.ESS_STAND, HUMoveState.EMS_WALK) * currentState.moveSpeedMult * currentState.walkSpeedMult
     let isSprintContol = phys.appliedCT |> is_control_bit_set(HumanPhysControlType.HCT_SPRINT)
     let isRunSpeed = length_sq(currentState.velocity) > square(walkSpeed)
     let forbiddenState = (int(StateFlag.ST_CROUCH) | int(StateFlag.ST_CRAWL) | int(StateFlag.ST_SWIM) | int(StateFlag.ST_DOWNED))

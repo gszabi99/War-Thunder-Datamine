@@ -2,11 +2,11 @@ from "%scripts/dagui_library.nut" import *
 
 let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let DataBlock = require("DataBlock")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"

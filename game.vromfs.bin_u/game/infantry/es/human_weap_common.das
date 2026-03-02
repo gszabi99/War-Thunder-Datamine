@@ -658,6 +658,7 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
 
   let allowShootingNoAttach = is_human_allowed_shooting(ctx.eid) && !human_attached_gun__attachedGunEid
   var hasGrenade = false
+  var reloadGrenade = false
   var grenadeThrowViaRethrow = false
   query(human_weap__grenadeThrower) <| $ [es(REQUIRE=grenade_thrower)] (gun__owner : EntityId;
                                                                         gun__totalAmmo : int = 0;
@@ -668,12 +669,13 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
       human_weap__grenadeThrowViaRethrow = false
 
   if ((ct |> is_control_bit_set(HumanPhysControlType.HCT_THROW_BACK) || grenadeThrowViaRethrow) &&
-      ctx.isForReal && !human_weap__throwMode && allowShootingNoAttach)
+      ctx.isForReal && !human_weap__throwMode && (allowShootingNoAttach || grenadeThrowViaRethrow))
     var grenadeEid = INVALID_ENTITY_ID
 
     if grenadeThrowViaRethrow
       query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
         grenadeEid = grenade_thrower__projectileEntity
+        reloadGrenade = true
         query(grenadeEid) <| $ [es] (shell__explosionTimer : float; var shell__explTime : float&)
           shell__explTime = ctx.atTime + shell__explosionTimer
     else
@@ -686,7 +688,6 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
     if is_server() && !human_weap__throwMode
       send_net_event(ctx.eid, HumanWeapThrowBackAbort())
 
-  var reloadGrenade = false
   var isFastThrow = false
 
   var isHctShootSet = ct |> is_control_bit_set(HumanPhysControlType.HCT_SHOOT)
@@ -757,7 +758,7 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
   var jumpDeviation = human_weap__jumpDeviation
   var grenadeThrower : GrenadeThrower const? = null
   var defaultInit = false
-  if curGun == HUWeaponSlots.EWS_MELEE || isLungeMine
+  if (curGun == HUWeaponSlots.EWS_MELEE || isLungeMine) && !human_weap__throwMode
     if !has(gunEid, "melee_weapon__propsId")
       return
   elif gunEid == human_weap__grenadeThrower
@@ -887,8 +888,11 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
   if ctx.isForReal && !isFastThrow
     let isRequestingReload = ct |> is_control_bit_set(HumanPhysControlType.HCT_RELOAD)
     var isInspecting = false
-    query(overrideGunEid) <| $ [es] (gun_anim__inspectProgress : float)
+    var isReloadingStarted = false
+    query(overrideGunEid) <| $ [es] (gun_anim__inspectProgress : float; gun_anim__reloadProgress : float)
       isInspecting = gun_anim__inspectProgress < 1.0
+      isReloadingStarted = gun_anim__reloadProgress > 0.2 && gun_anim__reloadProgress < 0.21
+
     
     if !isInspecting && isRequestingReload && ct.dodgeState != DodgeState.No
       if gunAmmo < gunMaxAmmo + gunSaveAmmoInBarrel
@@ -897,6 +901,10 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
         sendEvent(ctx.eid, CmdGunRequestInspect(atTime = ctx.atTime, gunEid = overrideGunEid))
     elif !isInspecting && isRequestingReload && ct.dodgeState == DodgeState.No 
       sendEvent(ctx.eid, CmdGunRequestInspect(atTime = ctx.atTime, gunEid = overrideGunEid))
+
+    if isReloadingStarted && !isInspecting
+      sendEvent(ctx.eid, EventHumanStartedReload())
+
     query(overrideGunEid) <| $ [es] (var gun_reload__isRequesting : bool&)
       gun_reload__isRequesting = isRequestingReload
 

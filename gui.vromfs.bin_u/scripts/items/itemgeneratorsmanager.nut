@@ -1,10 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 
 let { search } = require("%sqStdLibs/helpers/u.nut")
+let { generatorsCollection } = require("%scripts/items/itemsManagerState.nut")
+
 
 local itemGeneratorClass = null
-
-let collection = {}
 
 function registerItemGeneratorClass(generatorClass) {
   if (itemGeneratorClass != null) {
@@ -14,28 +14,22 @@ function registerItemGeneratorClass(generatorClass) {
   itemGeneratorClass = generatorClass
 }
 
-function getItemGenerator(itemdefId) {
-  ::ItemsManager.findItemById(itemdefId) 
-  return collection?[itemdefId]
-}
-
 function addItemGenerator(itemDefDesc) {
   if (itemGeneratorClass == null) {
     assert(false, "itemGeneratorClass is not register")
     return
   }
-  if (itemDefDesc?.Timestamp != collection?[itemDefDesc.itemdefid].timestamp)
-    collection[itemDefDesc.itemdefid] <- itemGeneratorClass(itemDefDesc)
+  if (itemDefDesc?.Timestamp != generatorsCollection?[itemDefDesc.itemdefid].timestamp)
+    generatorsCollection[itemDefDesc.itemdefid] <- itemGeneratorClass(itemDefDesc)
 }
 
 let findItemGeneratorByReceptUid = @(recipeUid)
-  search(collection, @(gen) search(gen.getRecipes(false),
+  search(generatorsCollection, @(gen) search(gen.getRecipes(false),
     @(recipe) recipe.uid == recipeUid
      && (recipe.isDisassemble || !gen.isDelayedxchange())) != null) 
 
 return {
   registerItemGeneratorClass
-  getItemGenerator
   addItemGenerator
   findItemGeneratorByReceptUid
 }

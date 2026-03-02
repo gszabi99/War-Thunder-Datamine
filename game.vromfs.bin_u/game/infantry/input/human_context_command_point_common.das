@@ -218,8 +218,11 @@ def human_point_order_trace(human_eid : EntityId; order_type : int;
     var pos : float3
     var res = false
     let activeTracing = true
-    query() <| $ [es(REQUIRE=human_context_point_order_common)] (var trace_mesh_faces : TraceMeshFaces?)
-      if trace_human_context_command_order_pos(pos, human_eid, trace_pos, trace_dir, activeTracing, trace_mesh_faces)
+    query() <| $ [es(REQUIRE=human_context_point_order_common)] (human_context_command__traceHandleResetDist : float;
+                                                                 var human_context_command__traceHandlePosCached : float3&;
+                                                                 var trace_mesh_faces : TraceMeshFaces?)
+      if trace_human_context_command_order_pos(pos, human_eid, trace_pos, trace_dir, activeTracing, human_context_command__traceHandleResetDist,
+                                               human_context_command__traceHandlePosCached, trace_mesh_faces)
         out_traced.pos = pos
         out_traced.dir = float3()
         out_traced.kind = int(HumanPointTargetKind.NONOBJ)

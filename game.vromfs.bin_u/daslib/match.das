@@ -6,6 +6,14 @@ options strict_smart_pointers = true
 
 module match shared private
 
+
+
+
+
+
+
+
+
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/macro_boost
@@ -20,16 +28,18 @@ require daslib/defer
 let LOG_MATCH = false
 
 struct MatchError {
-    msg : string
-    @do_not_delete at : LineInfo const?
+    
+    msg : string                        
+    @do_not_delete at : LineInfo const? 
 }
 
 struct MatchTo {
-    conditions   : array<ExpressionPtr>
-    declarations : table<string; ExpressionPtr>
-    prefix       : array<ExpressionPtr>
-    errors       : array<MatchError>
-    failed       : bool
+    
+    conditions   : array<ExpressionPtr>             
+    declarations : table<string; ExpressionPtr>     
+    prefix       : array<ExpressionPtr>             
+    errors       : array<MatchError>                
+    failed       : bool                             
 }
 
 [macro_function]
@@ -45,6 +55,7 @@ def match_error(var errors : array<MatchError>; msg : string; at : LineInfo) {
 }
 
 enum MatchType {
+    
     none
     as_is
     copy
@@ -86,7 +97,7 @@ def match_copy(what : TypeDeclPtr; wths : Expression?; makeType : TypeDeclPtr; a
     log_m("\tmatch_copy {describe(what)} {describe(makeType)} {describe(access)}")
     let tempName = make_unique_private_name("__`match`copy", wths.at)
     var inscope prefixType <- clone_type(makeType)
-    var inscope prefix <- qmacro_expr <| $() {
+    var inscope prefix <- qmacro_expr() {
         let $i(tempName) : $t(prefixType)
     }
     prefix |> force_at(wths.at)
@@ -395,11 +406,13 @@ def match_expr(what : TypeDeclPtr; wthmt : ExprCall?; access : ExpressionPtr; va
         return false
     }
     var inscope expr <- clone_expression(value)
-    apply_template(expr) <| $(rules) {
-        for (dv, dn in keys(to.declarations), values(to.declarations)) {
-            rules |> replaceVariable(dv) <| clone_expression(dn)
+    unsafe {
+        expr <- apply_template(expr) $(rules) {
+            for (dv, dn in keys(to.declarations), values(to.declarations)) {
+                rules |> replaceVariable(dv) <| clone_expression(dn)
+            }
+            rules |> replaceVarTag("_") <| clone_expression(access)
         }
-        rules |> replaceVarTag("_") <| clone_expression(access)
     }
     var inscope cond <- qmacro($e(access) == $e(expr))
     cond |> force_at(value.at)
@@ -412,11 +425,13 @@ def match_guards(what : TypeDeclPtr; wth : ExprOp2?; access : ExpressionPtr; var
     if (match_any(what, get_ptr(wth.left), access, to)) {
         log_m("\tguards {describe(wth.right)} at {wth.right.at}\n")
         var inscope guards <- clone_expression(wth.right)
-        apply_template(guards) <| $(rules) {
-            for (dv, dn in keys(to.declarations), values(to.declarations)) {
-                rules |> replaceVariable(dv) <| clone_expression(dn)
+        unsafe {
+            guards <- apply_template(guards) $(rules) {
+                for (dv, dn in keys(to.declarations), values(to.declarations)) {
+                    rules |> replaceVariable(dv) <| clone_expression(dn)
+                }
+                rules |> replaceVarTag("_") <| clone_expression(access)
             }
-            rules |> replaceVarTag("_") <| clone_expression(access)
         }
         to.conditions |> emplace(guards)
         return true
@@ -604,9 +619,10 @@ class MatchMacro : AstCallMacro {
     def override preVisit(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprCallMacro>) : void {
         return if (length(expr.arguments) != 2)
         assume blk = expr.arguments[1]
-        return if (blk._type == null)
-        return if (!blk._type.isGoodBlockType)
         return if (!(blk is ExprMakeBlock))
+        
+        
+        
         
         var eblk = ((blk as ExprMakeBlock)._block as ExprBlock)
         for (ee in eblk.list) {
@@ -630,6 +646,7 @@ class MatchMacro : AstCallMacro {
                 macro_verify(eite.if_false == null, prog, expr.at, "match to `if` can't have `else` section")
             } else {
                 macro_error(prog, ee.at, "match `block` argument can only contain match-to calls, not {ee.__rtti}")
+                return <- default<ExpressionPtr>
             }
         }
         var inscope access <- clone_expression(what)
@@ -652,7 +669,7 @@ class MatchMacro : AstCallMacro {
                     for (l in (eto.if_true as ExprBlock).finalList) {
                         nblk.finalList |> emplace_new <| clone_expression(l)
                     }
-                    apply_template(nblk) <| $(rules) {
+                    apply_template(nblk) $(rules) {
                         for (dv, dn in keys(to.declarations), values(to.declarations)) {
                             rules |> replaceVariable(dv) <| clone_expression(dn)
                         }
@@ -741,10 +758,12 @@ class MatchCopy : AstStructureAnnotation {
 
 def public match_type(anytype, anything) : void {
     
+    
     pass
 }
 
 def public match_expr(anything) : void {
+    
     
     pass
 }

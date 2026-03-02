@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import set_option_favorite_voice_message, add_voice_message, on_voice_message_button, get_option_favorite_voice_message
 from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import is_multiplayer, is_mode_with_teams
+from "%scripts/utils_sa.nut" import is_multiplayer
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
 let { get_player_unit_name } = require("unit")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -121,7 +122,7 @@ function getVoiceMessageListLine(index, is_category, name, squad, targetName, _m
 function getCantUseVoiceMessagesReason(isForSquad) {
   if (!is_multiplayer())
     return loc("ui/unavailable")
-  if (!is_mode_with_teams(get_game_type()))
+  if (!isModeWithTeams(get_game_type()))
     return loc("chat/no_team")
   if (isForSquad && get_game_mode() == GM_SKIRMISH)
     return loc("squad/no_squads_in_custom_battles")
@@ -194,16 +195,17 @@ function showVoiceMessageList(show, category, squad, targetName) {
       if (record.category != category)
         continue;
 
-      if ((getTblValue("forAircraft", record, false) && (heroIsTank || heroIsHuman))
-         || (getTblValue("forTank", record, false) && !heroIsTank)
-         || (getTblValue("forHuman", record, false) && !heroIsHuman)
-         || (getTblValue("haveTarget", record, false) && targetName == "")) {
-        shortcutTable = {}
-      }
-      else {
+      let hasUnitTypeCondition = record?.forAircraft != null
+        || record?.forTank != null || record?.forHuman != null
+
+      let isTrueUnitType = !hasUnitTypeCondition || (record?.forAircraft && !(heroIsTank || heroIsHuman))
+        || (record?.forTank && heroIsTank) || (record?.forHuman && heroIsHuman)
+
+      if (isTrueUnitType && (!(record?.haveTarget ?? false) || targetName != "")) {
         shortcutTable = getVoiceMessageListLine(menu.len(), false, record.name, squad, targetName, idx)
         shortcutTable.type <- "shortcut"
-      }
+      } else
+        shortcutTable = {}
     }
     menu.append(shortcutTable)
   }

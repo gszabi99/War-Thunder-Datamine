@@ -25,6 +25,7 @@ button {
     background-repeat:t='aspect-ratio'
     background-color:t='#FFFFFF'
     background-svg-size:t='<<scale>>*<<width>> \ 1, <<scale>>*<<height>> \ 1'
+    background-align:t='center-pixel-perfect'
   <</image>>
   <<^image>>
     background-image:t=''

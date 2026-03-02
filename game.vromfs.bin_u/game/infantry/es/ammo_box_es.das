@@ -3,6 +3,7 @@ require ecs.safe
 require ecs.common
 require %appGame.infantry.es.inventory_common
 require %appGame.infantry.es.team_common
+require %appGame.infantry.es.drone_common
 require DagorMath
 require net
 require DagorSystem
@@ -222,13 +223,17 @@ def try_to_refill_ammo(requester; box_use_count; box_team; any_team : bool; resu
           let gunMods = human_weap__gunMods[i] |> get_ecs_EidList()
           if gunMods != null
             for gunModEid in *gunMods
-              let gun__ammoHolderEid = gunModEid |> get_Eid("gun__ammoHolderEid") ?? INVALID_ENTITY_ID
-              if !!gun__ammoHolderEid
-                let ammo_holder__templateName = gun__ammoHolderEid |> get_ecs_string("ammo_holder__templateName") ?? ""
-                if !empty(ammo_holder__templateName)
-                  let success = try_to_refill_grenades_launcher(requester, ammo_holder__templateName)
-                  if success
-                    newBoxUseCount -= 1
+              var gunAmmoHolderEid = INVALID_ENTITY_ID
+              var requiredAmmoNum = 1
+              query(gunModEid) <| $ [es] (gun__ammoHolderEid : EntityId = INVALID_ENTITY_ID;
+                                          gun__numAmmoOnInit : int = 1;
+                                          gun__isAmmoLoaded : bool = false)
+                gunAmmoHolderEid = gun__ammoHolderEid
+                requiredAmmoNum = gun__numAmmoOnInit - (gun__isAmmoLoaded ? 1 : 0)
+              if !!gunAmmoHolderEid
+                let ammo_holder__templateName = gunAmmoHolderEid |> get_ecs_string("ammo_holder__templateName") ?? ""
+                if try_to_refill_grenades_launcher(requester, ammo_holder__templateName, requiredAmmoNum)
+                  newBoxUseCount -= 1
 
   ret.boxUses = box_use_count - newBoxUseCount
 
@@ -284,14 +289,24 @@ def ammo_box_resupply_grenade_es(evt : CmdUseUsefulBox;
   useful_box__requiredUseCount = 1
   query(evt.requesterEid) <| $ [es] (human_inventory__grenadesOnInit : StringList&)
     if human_inventory__grenadesOnInit |> empty()
-      let success = try_to_refill_grenades(evt.requesterEid, grenadeResupplyItem)
+      let success = try_to_refill_grenades(evt.requesterEid, grenadeResupplyItem, 1)
       useful_box__successUse ||= success
     else
-      for grenadeItem in human_inventory__grenadesOnInit
-        let success = try_to_refill_grenades(evt.requesterEid, string(grenadeItem))
-        useful_box__successUse ||= success
+      let success = try_to_refill_grenades(evt.requesterEid, string(human_inventory__grenadesOnInit[0]), length(human_inventory__grenadesOnInit))
+      useful_box__successUse ||= success
     if useful_box__successUse
       send_net_event(eid, CmdPlayItemUseSound(requesterEid = evt.requesterEid))
+
+
+[es(tag=server, before=useful_box_use_finish_es, REQUIRE=(ammunitionBox, explosiveBox))]
+def ammo_box_resupply_drone_launches_es(evt : CmdUseUsefulBox;
+                                        eid : EntityId;
+                                        var useful_box__successUse : bool&;
+                                        var useful_box__requiredUseCount : int&)
+  useful_box__requiredUseCount = 1
+  useful_box__successUse = refill_drone_launches(evt.requesterEid)
+  if useful_box__successUse
+    send_net_event(eid, CmdPlayItemUseSound(requesterEid = evt.requesterEid))
 
 
 def try_fill_additional_ammo_templates(weap_info : Object const?; var additional_ammo_templates : StringList)

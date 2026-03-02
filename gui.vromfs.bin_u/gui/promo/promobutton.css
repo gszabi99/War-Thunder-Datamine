@@ -93,6 +93,16 @@ promoButton fillBlock[animation=hide] {
   needAnim:yes;
 }
 
+promoButton[type=imageRoulette] fillBlock[animation=show] {
+  transp-time: 500;
+  needAnim: yes;
+}
+
+promoButton[type=imageRoulette] fillBlock[animation=hide] {
+  transp-time: -500;
+  needAnim: yes;
+}
+
 promoButton fillBlock[_transp-timer=1][color-factor=255][animation=show] {
   needAnim:no;
 }

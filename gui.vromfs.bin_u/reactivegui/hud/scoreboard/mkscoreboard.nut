@@ -60,7 +60,7 @@ return function mkScoreboard() {
     if (!isInRespawnWnd.get())
       return HasCompass.get() && !isAAComplexMenuActive.get()
         ? customHUD.get() == "infantryMission"
-          ? (hdpx(20) + (1-safeAreaHud.get()[1]/2)*hdpx(40))
+          ? (hdpx(34) + (safeAreaHud.get()[1] == 1.0 ? 0 : hdpx(8)))
           : hdpx(50)
         : 0
     if (isInSpectatorMode.get())

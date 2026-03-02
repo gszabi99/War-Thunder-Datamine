@@ -73,17 +73,19 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  {
-    id = "ID_EMERGENCY_SURFACING"
-    checkAssign = false
-    needShowInHelp = true
-  }
 
   {
     id = "ID_SUBMARINE_FIRE_HEADER"
     type = CONTROL_TYPE.SECTION
     needShowInHelp = true
   }
+  
+
+
+
+
+
+
   {
     id = "ID_TOGGLE_VIEW_SUBMARINE"
     checkAssign = false

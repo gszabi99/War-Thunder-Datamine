@@ -86,6 +86,7 @@
       "riExLod0InCascade0": true,
       "maxUpdateTexelPart": 0.1,
       "minSizeForRiextraCascade1": -1.0,
+      "useAsyncRiExtraJob": true,
       "aircraft": {
         "cascadeCount": 0
       },
@@ -370,11 +371,13 @@
         "splitsH": 2,
         "aircraft": {
           "shadowDist": 340.0,
-          "powWeight": 0.92
+          "powWeight": 0.92,
+          "cullSmallRi": 0.075
         },
         "cockpit": {
           "shadowDist": 300.0,
-          "powWeight": 0.992
+          "powWeight": 0.992,
+          "cullSmallRi": 0.075
         },
         "underwater": {
           "shadowDist": 80.0,
@@ -456,11 +459,13 @@
         "renderHeightmap": true,
         "aircraft": {
           "shadowDist": 340.0,
-          "powWeight": 0.92
+          "powWeight": 0.92,
+          "cullSmallRi": 0.075
         },
         "cockpit": {
           "shadowDist": 300.0,
-          "powWeight": 0.992
+          "powWeight": 0.992,
+          "cullSmallRi": 0.075
         },
         "underwater": {
           "shadowDist": 90.0,
@@ -554,11 +559,13 @@
         "renderHeightmap": true,
         "aircraft": {
           "shadowDist": 810.0,
-          "powWeight": 0.91
+          "powWeight": 0.91,
+          "cullSmallRi": 0.075
         },
         "cockpit": {
           "shadowDist": 600.0,
-          "powWeight": 0.997
+          "powWeight": 0.997,
+          "cullSmallRi": 0.075
         },
         "underwater": {
           "shadowDist": 200.0,
@@ -585,6 +592,14 @@
           "powWeight": 0.9
         },
         "infantry": {}
+      },
+      "contactShadows": {
+        "aircraft": {
+          "contactShadowsQuality": 2
+        },
+        "cockpit": {
+          "contactShadowsQuality": 2
+        }
       },
       "dynamicLightsShadows": {
         "shadowQuality": 2,
@@ -654,11 +669,13 @@
         "renderHeightmap": true,
         "aircraft": {
           "shadowDist": 1800.0,
-          "powWeight": 0.99
+          "powWeight": 0.99,
+          "cullSmallRi": 0.075
         },
         "cockpit": {
           "shadowDist": 1500.0,
-          "powWeight": 0.9991
+          "powWeight": 0.9991,
+          "cullSmallRi": 0.075
         },
         "underwater": {
           "shadowDist": 380.0,
@@ -687,6 +704,14 @@
         "infantry": {
           "shadowDist": 150.0,
           "powWeight": 0.9
+        }
+      },
+      "contactShadows": {
+        "aircraft": {
+          "contactShadowsQuality": 2
+        },
+        "cockpit": {
+          "contactShadowsQuality": 2
         }
       },
       "dynamicLightsShadows": {

@@ -8,13 +8,14 @@ let { format } = require("string")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { blkFromPath, eachParam, copyParamsToTable, blkOptFromPath } = require("%sqstd/datablock.nut")
+let { blkFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
 let { ceil, change_bit, interpolateArray } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
   getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath,
   getBulletBeltShortLocId
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
-let { isModResearched, isModAvailableOrFree, getModificationByName,
+let { isModResearched, isModAvailableOrFree, getModificationByName, isReqModificationsUnlocked,
   updateRelationModificationList, getModificationBulletsGroup
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
@@ -63,6 +64,7 @@ let DEFAULT_PRIMARY_BULLETS_INFO = {
   forcedMaxBulletsInRespawn = false
   groupName                 = null
   bulletSetAvailiable       = null
+  bulletSetCount            = 2
 }
 
 let BULLETS_LIST_PARAMS = {
@@ -296,7 +298,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
   local index = -1
   foreach (wBlkIdx, wBlkName in wpList) {
     index++
-    let wBlk = blkFromPath(wBlkName)
+    let wBlk = blkFromPathCachedByUnit(wBlkName, unitName)
     if (u.isEmpty(wBlk) || (!wBlk?[getModificationBulletsEffect(searchName)] && !noModList))
       continue
     if (noModList) {
@@ -522,7 +524,7 @@ function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBulletMask
   return res
 }
 
-function findIdenticalWeaponIdx(weapon, weaponList, modsList) {
+function findIdenticalWeaponIdx(weapon, weaponList, modsList, unitName) {
   let bulletSetAvailiable = weapon % "bulletSetAvailiable"
   let sameIdx = findWeaponIdxInListByBulletSet(weapon, weaponList, bulletSetAvailiable)
   if (sameIdx != null)
@@ -531,7 +533,7 @@ function findIdenticalWeaponIdx(weapon, weaponList, modsList) {
   if (bulletSetAvailiable.len() > 0) 
     return null
 
-  let weaponBlk = blkFromPath(weapon.blk)
+  let weaponBlk = blkFromPathCachedByUnit(weapon.blk, unitName)
   if (u.isEmpty(weaponBlk))
     return null
 
@@ -600,7 +602,7 @@ function getBulletsInfoForPrimaryGuns(air) {
   let wpList = []
   foreach (weapon in weapons)
     if (weapon?.blk && !weapon?.dummy) {
-      local weapIdx = findIdenticalWeaponIdx(weapon, wpList, modsList)
+      local weapIdx = findIdenticalWeaponIdx(weapon, wpList, modsList, unitName)
       if (weapIdx != null) {
         wpList[weapIdx].guns++
       }
@@ -615,11 +617,12 @@ function getBulletsInfoForPrimaryGuns(air) {
           continue
 
         wpList[weapIdx].total = weapon?.bullets ?? 0
-        let wBlk = blkFromPath(weapon.blk)
+        let wBlk = blkFromPathCachedByUnit(weapon.blk, unitName)
         if (u.isEmpty(wBlk))
           continue
 
         wpList[weapIdx].isBulletBelt = wBlk?.isBulletBelt ?? true
+        wpList[weapIdx].bulletSetCount = wBlk?.bulletSetCount ?? 2
         wpList[weapIdx].cartridge = max((weapon?.bulletsCartridge ?? wBlk?.bulletsCartridge ?? 1), 1)
         wpList[weapIdx].total = ceil(wpList[weapIdx].total * 1.0 /
           wpList[weapIdx].cartridge).tointeger()
@@ -683,16 +686,28 @@ function canBulletsBeDuplicate(unit) {
   return unit?.unitType.canUseSeveralBulletsForGun ?? false
 }
 
-function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit, canBeDuplicate = true) {
+function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit,
+  unitGunsInfo = null, canBeDuplicate = true
+) {
   if (!canBeDuplicate)
     return groupIdx
+
+  let gunsInfo = unitGunsInfo ?? getBulletsInfoForPrimaryGuns(unit)
+  let bulletSetsCount = gunsInfo.reduce(@(res, val) res + val.bulletSetCount, 0)
+  if (bulletSetsCount <= bulletSetsQuantity) {
+    local count = 0
+    foreach (idx, gunInfo in gunsInfo) {
+      count += gunInfo.bulletSetCount
+      if (count > groupIdx)
+        return idx
+    }
+  }
 
   if (totalGroups * 2 <= bulletSetsQuantity)
     return (groupIdx.tofloat() * totalGroups / bulletSetsQuantity + 0.001).tointeger()
 
   
   
-  let gunsInfo = getBulletsInfoForPrimaryGuns(unit)
   local groupCount = 0
   let gunIdxWithDupicate = []
   foreach (gunIdx, gunInfo in gunsInfo) {
@@ -1010,6 +1025,7 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
     caliber = 0
     duplicate = false 
     supportUnitName = null
+    maxCntPerPilon = {}
 
     
     items = []
@@ -1017,6 +1033,14 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
   let air = getAircraftByName(airName)
   if (!air || !("modifications" in air))
     return descr
+
+  let { WeaponPilons = null } = getFullUnitBlk(airName)
+  if (WeaponPilons != null)
+    foreach (slot in (WeaponPilons % "WeaponSlot")) {
+      let { name, maxCntPerPilon = null } = slot.WeaponPreset
+      if (maxCntPerPilon != null)
+        descr.maxCntPerPilon[name] <- maxCntPerPilon
+    }
 
   let canBeDuplicate = canBulletsBeDuplicate(air)
   let groupCount = getBulletsGroupCount(air, true)
@@ -1043,11 +1067,13 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
     return descr
   }
 
-  let linked_index = getLinkedGunIdx(groupIdx, modTotal, bulletSetsQuantity, air, canBeDuplicate)
-  descr.duplicate = canBeDuplicate && groupIdx > 0 &&
-    linked_index == getLinkedGunIdx(groupIdx - 1, modTotal, bulletSetsQuantity, air, canBeDuplicate)
-
   let bulletsInfo = getBulletsInfoForPrimaryGuns(air)
+  let linkedIndex = getLinkedGunIdx(groupIdx, modTotal, bulletSetsQuantity, air,
+    bulletsInfo, canBeDuplicate)
+  descr.duplicate = canBeDuplicate && groupIdx > 0 &&
+    linkedIndex == getLinkedGunIdx(groupIdx - 1, modTotal, bulletSetsQuantity, air,
+      bulletsInfo, canBeDuplicate)
+
   for (local modifNo = 0; modifNo < air.modifications.len(); modifNo++) {
     let modif = air.modifications[modifNo]
     let modifName = modif.name
@@ -1057,7 +1083,7 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
       continue
 
     let hasBulletInfo = bulletsInfo.findvalue(@(v, idx) v.groupName == groupName
-      && (v.bulletSetAvailiable?[0] ?? idx) == linked_index)
+      && (v.bulletSetAvailiable?[0] ?? idx) == linkedIndex)
     if (!hasBulletInfo)
       continue
 
@@ -1076,7 +1102,7 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
     }
 
     if (params.needOnlyAvailable && !params.isForcedAvailable
-        && !isModAvailableOrFree(airName, modifName))
+        && !(isModAvailableOrFree(airName, modifName) && isReqModificationsUnlocked(air, modif)))
       continue
 
     let enabled = !params.isOnlyBought ||
@@ -1454,7 +1480,7 @@ local projectileNameToIconsBlk = null
 function getProjectileIconLayers(projectileName) {
   if (projectileNameToIconsBlk == null) {
     projectileNameToIconsBlk = DataBlock()
-    projectileNameToIconsBlk.tryLoad("config/killer_projectile_icon.blk")
+    projectileNameToIconsBlk.tryLoad("config/killer_projectile_icon.blk") 
   }
 
   return projectileNameToIconsBlk.getStr(stripProjectileStrikPartSuffix(projectileName), "")
@@ -1472,11 +1498,28 @@ function getBulletsOptForRandomUnit(optName, unitName, groupIndex) {
   return loadLocalUnitSettings(tempUnitOptPath)
 }
 
+function removePresetFromCache(unit, presetName) {
+  let primaryWeapon = getLastPrimaryWeapon(unit)
+  let cachedPreset = unitsPrimaryBulletsInfo?[unit.name][primaryWeapon][presetName]
+  if (cachedPreset == null)
+    return
+  unitsPrimaryBulletsInfo[unit.name][primaryWeapon][presetName] = null
+}
+
+function onCustomPresetChanged(params) {
+  let unit = getAircraftByName(params.unitName)
+  if (unit == null)
+    return
+  removePresetFromCache(unit, params.presetId)
+}
+
 addListenersWithoutEnv({
   SignOut = @(_) unitLastBulletsCache.clear()
   UnitWeaponChanged = @(p) clearUnitLastBulletsCache(p.unitName)
   BulletsGroupsChanged = @(p) clearUnitLastBulletsCache(p.unit.name)
   UnitBulletsChanged = @(p) clearUnitLastBulletsCache(p.unit.name)
+  CustomPresetRemoved = onCustomPresetChanged
+  CustomPresetChanged = onCustomPresetChanged
 })
 
 return {

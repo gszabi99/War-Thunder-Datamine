@@ -54,7 +54,7 @@ def server_ai_human_teammate_keep_distance(info : UpdateStageInfoAct;
                                            beh_tree__enabled : bool;
                                            var walker_agent__keepDistanceTimer : float&;
                                            walker_agent__keepDistanceTimes : float2 = float2(0.1, 0.1);
-                                           walker_agent__waitSquadMemberRunningTime : float2 = float2(0.1, 0.15);
+                                           walker_agent__waitSquadMemberRunningTime : float2 = float2(0.2, 0.3);
                                            walker_agent__waitSquadMemberOnLadderTime : float2 = float2(1.5, 2.5);
                                            walker_agent__scanSquadMemberDist : float = 2.0;
                                            walker_agent__waitSquadMemberDist : float2 = float2(-0.2, 1.6))

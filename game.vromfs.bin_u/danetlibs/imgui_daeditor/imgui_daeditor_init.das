@@ -31,6 +31,8 @@ def load_imgui_daeditor(base_path : string) : bool
       ok = load_sub_folder(base_path, "daEditor/vehicle") && ok
     if typeinfo builtin_module_exists(DngShip)
       ok = load_sub_folder(base_path, "daEditor/ship") && ok
+    if typeinfo builtin_module_exists(DngPlane)
+      ok = load_sub_folder(base_path, "daEditor/plane") && ok
 
   ok = ok 
   return ok

@@ -14,7 +14,10 @@ let { deep_clone } = require("%sqstd/underscore.nut")
 let { disableSeenUserlogs, getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarStates.nut")
+let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
+let { getOppositeSide } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
+
 
 let STATS_FIELDS = [
   lbCategoryTypes.PLAYER_KILLS
@@ -48,7 +51,7 @@ local WwOperationRewardPopup = class (gui_handlers.BaseGuiHandlerWT) {
     let mySide = ww_side_name_to_val(uLog.side)
     this.isMeWinner = uLog?.winner ?? false
     this.myClanId = uLog?[$"side{mySide}Clan0"].tostring()
-    this.opClanId = uLog?[$"side{::g_world_war.getOppositeSide(mySide)}Clan0"].tostring()
+    this.opClanId = uLog?[$"side{getOppositeSide(mySide)}Clan0"].tostring()
     let clansInfo = getClansInfoByClanIds([this.myClanId, this.opClanId])
     let myClanTag = clansInfo?[this.myClanId].tag ?? ""
     let opClanTag = clansInfo?[this.opClanId].tag ?? ""
@@ -136,7 +139,7 @@ register_command(
       let operationId = getLastPlayedOperationId()
       uLogObj = operationId ? {
           operationId = operationId
-          mapName = ::g_ww_global_status_type.MAPS.getList()?.keys()[0] ?? ""
+          mapName = wwStatusType.MAPS.getList()?.keys()[0] ?? ""
           winner = true
           wp = rnd() % 10000
           side = "SIDE_1"

@@ -3,14 +3,11 @@ from "%scripts/dagui_library.nut" import *
 log($"onScriptLoadAfterLogin: wt")
 
 
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-
 require("unit/initUnitTypes.nut")
 require("controls/shortcutsList/updateShortcutsModulesList.nut")
 require("slotInfoPanel/updateSlotInfoPanelButtons.nut")
 require("mainmenu/instantActionHandler.nut")
 require("mainmenu/mainMenuHandler.nut")
-require("hud/updateHudConfig.nut")
 require("flightMenu/updateFlightMenuButtonTypes.nut")
 require("mainmenu/autoStartBattleHandler.nut")
 require("%scripts/items/itemsClasses/itemsClasses.nut")
@@ -23,6 +20,7 @@ foreach (fn in [
   "%scripts/teams.nut"
   "%scripts/airInfo.nut"
   "%scripts/options/optionsExt.nut"
+  "%scripts/customization/initCustomizationOptions.nut"
 
   "%scripts/gamercard/gamercard.nut"
   "%scripts/popups/popups.nut"
@@ -54,7 +52,6 @@ foreach (fn in [
   "%scripts/leaderboard/leaderboard.nut"
 
   "%scripts/events/eventDisplayType.nut"
-  "%scripts/events/eventsChapter.nut"
   "%scripts/events/eventsManager.nut"
   "%scripts/events/eventsHandler.nut"
   "%scripts/events/eventRoomsHandler.nut"
@@ -82,7 +79,7 @@ foreach (fn in [
   "%scripts/chat/chatRoomType.nut"
   "%scripts/chat/chat.nut"
   "%scripts/chat/chatCategories.nut"
-  "%scripts/chat/menuChat.nut"
+  "%scripts/chat/menuChatHandler.nut"
   "%scripts/chat/createRoomWnd.nut"
   "%scripts/chat/chatThreadInfoTags.nut"
   "%scripts/chat/chatThreadInfo.nut"
@@ -139,7 +136,7 @@ foreach (fn in [
 
   "%scripts/replays/replayPlayer.nut"
 
-  "%scripts/customization/types.nut"
+  "%scripts/customization/checkDecoratorTypes.nut"
   "%scripts/customization/decorator.nut"
   "%scripts/customization/customizationWnd.nut"
   "%scripts/customization/infantryCamouflageWnd.nut"
@@ -164,7 +161,7 @@ foreach (fn in [
   "%scripts/shop/shop.nut"
   "%scripts/shop/shopCheckResearch.nut"
   "%scripts/shop/shopViewWnd.nut"
-  "%scripts/convertExpHandler.nut"
+  "%scripts/convertExp/convertExpHandler.nut"
 
   "%scripts/weaponry/weaponrySelectModal.nut"
   "%scripts/weaponry/weaponryPresetsWnd.nut"
@@ -252,8 +249,6 @@ foreach (fn in [
   "%scripts/hud/hud.nut"
   "%scripts/hud/hudActionBarType.nut"
   "%scripts/replays/spectator.nut"
-  "%scripts/hud/hudTankDebuffs.nut"
-  "%scripts/hud/hudCrewState.nut"
   "%scripts/hud/hudEnemyDebuffsType.nut"
   "%scripts/hud/hudRewardMessage.nut"
   "%scripts/hud/hudMessages.nut"
@@ -270,7 +265,6 @@ foreach (fn in [
   "%scripts/warbonds/warbondsManager.nut"
   "%scripts/warbonds/warbondShop.nut"
 
-  "%scripts/utils/popupMessages.nut"
   "%scripts/fileDialog/fileDialog.nut"
   "%scripts/fileDialog/saveDataDialog.nut"
   "%scripts/controls/controlsBackupManager.nut"
@@ -284,10 +278,11 @@ foreach (fn in [
 
   "%scripts/user/profileOpener.nut"
 ]) {
-  loadOnce(fn)
+  require(fn)
 }
 
 require("%scripts/hud/miningWallState.nut")
+require("%scripts/hud/reanimationState.nut")
 require("%scripts/hud/medkitsUseState.nut")
 require("%scripts/hud/firePutOutState.nut")
 require("%scripts/hud/humanPhysState.nut")

@@ -59,12 +59,12 @@ def draw_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
     if visible
       let limited = (screenPos.x < rdata.pos.x + markSize * 1.5 || screenPos.y < rdata.pos.y + markSize * 1.5 ||
        screenPos.x > rdata.pos.x + rdata.size.x - markSize * 1.5 || screenPos.y > rdata.pos.y + rdata.size.y - markSize * 1.5)
-      if target.isTracked
-        if limited
-          if fract(float(get_total_time()) * 2.) < 0.5
-            return
+      if limited
+        if fract(float(get_total_time()) * 2.) < 0.5
+          return
         screenPos.x = clamp(screenPos.x, rdata.pos.x + markSize * 1.5, rdata.pos.x + rdata.size.x - markSize * 1.5)
         screenPos.y = clamp(screenPos.y, rdata.pos.y + markSize * 1.5, rdata.pos.y + rdata.size.y - markSize * 1.5)
+      if target.isTracked
         let lt = screenPos - float2(markSize)
         let rb = screenPos + float2(markSize)
         ctx |> render_frame(lt.x, lt.y, rb.x, rb.y, data.lineWidth)
@@ -85,11 +85,6 @@ def draw_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
         ctx |> render_line_aa(l3, true, data.lineWidth, float2(0.), data.color)
         ctx |> render_line_aa(l4, true, data.lineWidth, float2(0.), data.color)
       elif target.isEnemy
-        if limited && fract(float(get_total_time()) * 2.) < 0.5
-          return
-        if target.isDetected
-          screenPos.x = clamp(screenPos.x, rdata.pos.x + markSize * 1.5, rdata.pos.x + rdata.size.x - markSize * 1.5)
-          screenPos.y = clamp(screenPos.y, rdata.pos.y + markSize * 1.5, rdata.pos.y + rdata.size.y - markSize * 1.5)
         let diamond <- to_array_move(fixed_array(
           screenPos + float2(markSize, 0.),
           screenPos + float2(0., markSize),

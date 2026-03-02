@@ -24,6 +24,11 @@ struct global_debug_beh_tree
   global_beh_tree__showDebugLog : bool
   global_entity_danger__debug : bool
 
+  global_danger_traces_count : int
+  global_danger_traces_time0 : float
+  global_danger_traces_count1 : int
+  global_danger_traces_time1 : float
+
 
 [ecs_template]
 struct debug_bot_temp_template
@@ -70,7 +75,7 @@ def draw_server_beh_tree_state(evt : UpdateStageInfoRenderDebug; transform : flo
 def beh_tree_debug_es(evt : UpdateStageInfoRenderDebug; transform : float3x4;
                       eid : EntityId;
                       squad_member__squad : EntityId = INVALID_ENTITY_ID;
-                      human_net_phys : HumanActor const?;
+                      
                       beh_tree : BehaviourTree; team : int = 0;
                       beh_tree__debug : bool;
                       beh_tree__debugMode : int = 1;
@@ -144,12 +149,12 @@ def beh_tree_debug_es(evt : UpdateStageInfoRenderDebug; transform : float3x4;
         add_debug_text_mark(pos, "={team}: {symA}{sym2.x} ~{updA}=", -1, 1.0, E3DCOLOR(0x000000))
       else
         add_debug_text_mark(pos, "{team}: {symA}{sym2.x} ~{updA}", -1, 1.0, E3DCOLOR(0x000000))
-      if human_net_phys != null
-        let shootDir = human_net_phys.phys.appliedCT.wishShootDir
-        let p1 = transform[3] + float3(0.0, 1.5, 0.0) + transform[0] * 0.3
-        let p2 = p1 + shootDir * 0.5
-        draw_debug_line_buffered(p1, p2, E3DCOLOR(0xFFFF0000), 1)
-        draw_debug_sphere_buffered(p2, 0.05, E3DCOLOR(0xFF00FFFF), 8, 1)
+      
+      
+      
+      
+      
+      
 
 
 [console_cmd(name="ai.beh_tree_enabled")]
@@ -180,7 +185,35 @@ def debug_behaviour_tree(debug_beh_tree : int; log_ai : bool = false; debug_dang
       init |> set("global_beh_tree__debug", debug_beh_tree)
       init |> set("global_beh_tree__showDebugLog", log_ai)
       init |> set("global_entity_danger__debug", debug_dangers)
+      init |> set("global_danger_traces_count", 0)
+      init |> set("global_danger_traces_time0", -1.0)
+      init |> set("global_danger_traces_count1", 0)
+      init |> set("global_danger_traces_time1", -1.0)
 
+[console_cmd(name="ai.print_danger_traces_stats")]
+def debug_print_danger_traces_stats()
+  var printed = false
+  query() <| $ [es] (global_danger_traces_count : int; global_danger_traces_time0 : float;
+                     var global_danger_traces_count1 : int&; var global_danger_traces_time1 : float&)
+    let curTime = get_sync_time()
+
+    let num = global_danger_traces_count
+    let dt =  curTime - global_danger_traces_time0
+    let avg = float(num) / dt
+
+    if global_danger_traces_time1 < 0.0
+      console_print("danger traces: {num} in {dt} s, average {avg}/s")
+    else
+      let num2 = num - global_danger_traces_count1
+      let dt2 = curTime - global_danger_traces_time1
+      let avg2 = float(num2) / dt2
+      console_print("danger traces: {num} in {dt} s, average {avg}/s, since last {num2}, {dt2} s, {avg2}/s")
+
+    global_danger_traces_count1 = global_danger_traces_count
+    global_danger_traces_time1 = get_sync_time()
+    printed = true
+  if !printed
+    console_print("to enable danger traces stats, please, activate ai.debug_bots with debug_dangers 1")
 
 [es(tag=(server, dev), no_order)]
 def debug_behaviour_tree_update(evt : UpdateStageInfoAct; eid : EntityId;
@@ -274,44 +307,47 @@ def debug_obstacles_render_navphys(evt : UpdateStageInfoRenderDebug; agent_obsta
 
 
 [es(tag=(render, dev), no_order)]
-def entity_dangers_debug(evt : UpdateStageInfoRenderDebug; eid : EntityId; agent_dangers__standShootPos : float3; agent_dangers : AgentDangers; transform : float3x4; entity_danger__debug : bool)
+def entity_dangers_debug(evt : UpdateStageInfoRenderDebug;
+                         entity_danger__debug : bool;
+                         agent_dangers__standShootPos : float3;
+                         transform : float3x4;
+                         agent_dangers : AgentDangers;
+                         agent_dangers__debugTraceds : int4;
+                         danger_calc__keepPrimaryTime : float)
   if !entity_danger__debug || length(agent_dangers.dangers) == 0
     return
-  draw_cached_debug_sphere(agent_dangers__standShootPos, 0.1, E3DCOLOR(0xFF0000FF), 12)
-  let index = uint(eid)
-  let idx1 = index & 7u
-  let idx2 = (index >> 3u) & 3u
-  let idx3 = (index >> 5u) & 3u
-  let offset = float3(0f, float(idx1 + 1u) * 0.2, 0f)
-  let color = E3DCOLOR(uint4(idx1 << 5u, idx2 << 6u, idx3 << 6u, 255u))
+  draw_cached_debug_sphere(agent_dangers__standShootPos, 0.1, E3DCOLOR(0xFF3333FF), 1)
+  let offset = float3(0.0, 1.6, 0.0)
   let agentPos = transform[3] + offset
-  draw_debug_sphere_buffered(agentPos, 0.2, color, 6, 20)
-  let atTime = get_sync_time()
+  let curTime = get_sync_time()
   for danger in agent_dangers.dangers
-    if !danger.traceable
-      continue
     let tm = get_TMatrix(danger.eid, "transform")
     if tm == null
       continue
-    let pos = (*tm)[3] + offset
-    var dir = agentPos - pos
-    let lenSq = length_sq(dir)
-    let str = "{danger.traceable?"* ":""}{danger.dangerMeter} noise {danger.noiseMeter} " + (danger.lastTime > 0f ? "{danger.lastTime}" : "{atTime - danger.lastTraceTime}")
-    if lenSq > 4f
-      let len = sqrt(lenSq)
-      dir = dir * safeinv(len)
-      let from = agentPos - dir * (len - 1.f)
-      let to = pos + dir * (len - 0.7f)
-      add_debug_text_mark(from, str, -1, 0f, color)
-      add_debug_text_mark(to, str, -1, 0f, color)
-    else
-      let markPos = (pos + agentPos) * 0.5
-      add_debug_text_mark(markPos, str, -1, 0f, color)
+    let dangerPos = (*tm)[3] + offset
+    let delta = dangerPos - agentPos
+    if length_sq(delta) > square(90.0)
+      continue
+    let dir = normalize(delta)
+    let toDangerPos = agentPos + dir * 1.5
+    let thatEid = int(uint(danger.eid))
 
-    if danger.lastTraceTime > 0f && atTime - danger.lastTraceTime < 0.2f
-      draw_cached_debug_line(agentPos, pos, E3DCOLOR(0xFFFF0000))
-    else
-      draw_cached_debug_line(agentPos, pos, color)
+    var color = danger.traceable ? E3DCOLOR(0xFFFF0000) : E3DCOLOR(0xFFFFFFFF)
+    if danger.traceable && danger.primarySinceTime >= 0.0 && curTime < danger.primarySinceTime + danger_calc__keepPrimaryTime
+      color = E3DCOLOR(0xFFFFFF00)
+    elif !danger.traceable
+      if thatEid == agent_dangers__debugTraceds.x
+        color = E3DCOLOR(0xFFFF00FF)
+      elif thatEid == agent_dangers__debugTraceds.y
+        color = E3DCOLOR(0xFF0000FF)
+      elif thatEid == agent_dangers__debugTraceds.z
+        color = E3DCOLOR(0xFF0000FF)
+
+    draw_cached_debug_line(agentPos, toDangerPos, color)
+
+    if thatEid == agent_dangers__debugTraceds.x || thatEid == agent_dangers__debugTraceds.y || thatEid == agent_dangers__debugTraceds.z
+      color = ((agent_dangers__debugTraceds.w % 2) == 1) ? E3DCOLOR(0xFF00FF00) : E3DCOLOR(0xFFFF0000)
+      draw_cached_debug_sphere(toDangerPos, 0.05, color, 1)
 
 
 [es(tag=dev, before=walker_agent_es)]
@@ -371,6 +407,8 @@ def walker_agent_debug_reaction(act : UpdateStageInfoRenderDebug; transform : fl
 
 [console_cmd(name="ai.reload_beh_tree")]
 def reload_beh_tree(id : uint = 0u)
+  query() <| $ [es(REQUIRE=beh_tree)] (eid : EntityId)
+    DngBehTree::unload_beh_tree(eid)
   sceneload_reload_ai()
   if id != 0u
     DngBehTree::load_beh_tree_from_ecs(EntityId(id))
@@ -445,3 +483,26 @@ def debug_render_squads_ai_debug_primitives(evt : UpdateStageInfoRenderDebug;
         draw_debug_sphere_buffered(squadAIDebug__drawPoint1[i] + drawOfs, radius * popRatio, color, 12, 1)
       elif elem_type == 2 
         add_debug_text_mark(squadAIDebug__drawPoint1[i], string(squadAIDebug__drawTexts[i]), -1, 0f, E3DCOLOR(0x00000000))
+
+
+[console_cmd(name="ai.print_behtree_stats")]
+def print_behtree_stats()
+  var trees = 0
+  query() <| $ [es] (var beh_tree : BehaviourTree)
+    var nodes = 0
+    find_beh_node(*(beh_tree.root)) <| $ [unused_argument(node)] (node)
+      ++nodes
+      return false
+    console_print("beh tree #{trees} has {nodes} nodes")
+    ++trees
+  console_print("beh trees total {trees}")
+
+
+[net_console_cmd(name="ai.limitedMode")]
+def debug_enable_bots_simplified_mode(limitedMode : int = 0)
+  let hasGlobal = find_query() <| $ [es] (var simplified_ai__limitedMode : int&)
+    simplified_ai__limitedMode = limitedMode
+    return true
+  if !hasGlobal && limitedMode > 0
+    createEntity("simplified_ai") <| $(init)
+      init |> set("simplified_ai__limitedMode", limitedMode)

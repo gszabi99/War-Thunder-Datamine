@@ -137,10 +137,7 @@
       ],
       "pitchStabLimit": 60.0,
       "rollStabLimit": 30.0,
-      "period": [
-        0.05,
-        0.05
-      ],
+      "period": 0.0416,
       "width": 45.0,
       "barHeight": 1.5,
       "barsCount": 40,
@@ -1032,6 +1029,8 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
+                "alpha": 0.8,
+                "betta": 0.1,
                 "rateLim": [
                   0.78,
                   0.78
@@ -1040,6 +1039,8 @@
                 "inertialTimeMax": 1.0
               },
               "distFilter": {
+                "alpha": 0.8,
+                "betta": 0.2,
                 "accelLim": [
                   150.0,
                   150.0

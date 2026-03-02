@@ -35,11 +35,8 @@
   "havePointOfInterestDesignator": true,
   "verifyEcsTemplate": false,
   "disableAerobaticsSmoke": true,
-  "orbitAvaible": [
-    true,
-    false
-  ],
   "mustHaveCockpit": false,
+  "orbitAvaible": true,
   "gyroSight": false,
   "radarCrossSectionAspectMultFront": 1e-9,
   "radarCrossSectionAspectMultSide": 1e-9,
@@ -319,8 +316,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -379,7 +376,8 @@
     "explosionPiecesEffect": "",
     "cutPartEffect": "",
     "createExplosionCrater": false,
-    "shouldHaveFlightModelEffectsIfDead": false
+    "shouldHaveFlightModelEffectsIfDead": false,
+    "shouldHaveExplosionEffects": false
   },
   "cockpit": {
     "zoomOutFov": 22.46,

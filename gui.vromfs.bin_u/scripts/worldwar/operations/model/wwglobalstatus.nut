@@ -1,10 +1,8 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { get_time_msec } = require("dagor.time")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
@@ -12,7 +10,7 @@ let DataBlock  = require("DataBlock")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { charRequestJson } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { getWWConfigurableValue, getLastPlayedOperationId } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWWConfigurableValue, getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  
@@ -58,25 +56,6 @@ function updateCurData(newData) {
   curData.set(data)
 }
 
-function onGlobalStatusReceived(newData) {
-  lastUpdatetTime.set(get_time_msec())
-  local changedListsMask = 0
-  foreach (gsType in ::g_ww_global_status_type.types)
-    if (!u.isEqual(gsType.getData(curData.get()), gsType.getData(newData)))
-      changedListsMask = changedListsMask | gsType.typeMask
-
-  if (!changedListsMask)
-    return
-
-  foreach (gsType in ::g_ww_global_status_type.types)
-    if (gsType.invalidateByOtherStatusType & changedListsMask)
-      changedListsMask = changedListsMask | gsType.typeMask
-
-  updateCurData(newData)
-  validListsMask.set(validListsMask.get() & ~changedListsMask)
-  pushStatusChangedEvent(changedListsMask)
-}
-
 
 function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOptions = null, onSuccessCb = null) {
   if (isDeveloperMode.get()) { 
@@ -86,7 +65,8 @@ function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOption
 
   lastRequestTime.set(get_time_msec())
   let cb = Callback(function(data) {
-    onGlobalStatusReceived(data)
+    lastUpdatetTime.set(get_time_msec())
+    wwEvent("RawGlobalStatusReceived", { data })
     if (onSuccessCb)
       onSuccessCb()
   }, this)
@@ -97,20 +77,8 @@ function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOption
   charRequestJson(actionName, requestBlk, taskOptions, cb)
 }
 
-function onEventMyClanIdChanged(_p) {
-  foreach (op in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList())
-    op.resetCache()
-  foreach (q in ::g_ww_global_status_type.QUEUE.getList())
-    q.resetCache()
-  pushStatusChangedEvent(WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
-                         | WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
-                         | WW_GLOBAL_STATUS_TYPE.MAPS
-                         | WW_GLOBAL_STATUS_TYPE.QUEUE)
-}
-
 subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) reset()
-  MyClanIdChanged = onEventMyClanIdChanged
 })
 
 function refreshGlobalStatusData(refreshDelay = null) {
@@ -138,4 +106,6 @@ return {
   setValidGlobalStatusListMask = @(mask) validListsMask.set(mask)
   getGlobalStatusData = @() curData.get()
   setDeveloperMode = @(p) isDeveloperMode.set(p)
+  updateCurData
+  pushStatusChangedEvent
 }

@@ -4,11 +4,12 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getCachedDataByType } = require("%scripts/customization/decorCache.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { getCachedDataByType } = require("%scripts/customization/decoratorGetters.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg,
-  buildConditionsConfig, buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+  buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { canStartPreviewScene, useDecorator, showDecoratorAccessRestriction,
   getDecoratorDataToUse } = require("%scripts/customization/contentPreview.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
@@ -223,8 +224,8 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         tooltipId = getTooltipType("DECORATION").getTooltipId(decorator.id, decorator.decoratorType.unlockedItemType)
         unlocked = true
         tag = "imgSelectable"
-        image = decorator.decoratorType.getImage(decorator)
-        imgRatio = decorator.decoratorType.getRatio(decorator)
+        image = decorator.decoratorViewType.getImage(decorator)
+        imgRatio = decorator.decoratorViewType.getRatio(decorator)
         statusLock
         lockText
         imgClass = "profileMedals"
@@ -251,7 +252,7 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!decal)
       return
 
-    let img = decal.decoratorType.getImage(decal)
+    let img = decal.decoratorViewType.getImage(decal)
     let imgObj = infoObj.findObject("decalImage")
     imgObj["background-image"] = img
 

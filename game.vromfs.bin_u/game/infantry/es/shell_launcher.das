@@ -76,18 +76,22 @@ def launch_shell_es(evt : CmdLaunchShell;
     var explTime = 0.f
     var grenadeOwner = eid
     var grenadeRethrower = INVALID_ENTITY_ID
+    var grenadeAttachSlotId = -1
 
     
     if projectileEntity != INVALID_ENTITY_ID
       query(projectileEntity) <| $ [es] (shell__owner : EntityId const?;
                                          shell__rethrower : EntityId const?;
-                                         shell__explTime : float const?)
+                                         shell__explTime : float const?;
+                                         gun_attach__mainSlotId : int const?)
         if shell__owner != null
           grenadeOwner = *shell__owner
         if shell__rethrower != null
           grenadeRethrower = *shell__rethrower
         if shell__explTime != null
           explTime = *shell__explTime
+        if gun_attach__mainSlotId != null
+          grenadeAttachSlotId = *gun_attach__mainSlotId
 
       if is_server()
         destroyEntity(projectileEntity)
@@ -98,12 +102,23 @@ def launch_shell_es(evt : CmdLaunchShell;
     var launchTm = launchDesc.tm
 
     if human_weap__throwMode && human_net_phys != null
-      assume curState = human_net_phys.phys.currentState
-      let baseThrowPoint = human_net_phys.phys |> human_phys_calcGunPos(PrecomputedPresetMode.FPV,
-                                                                        curState.location |> location_makeTM(),
-                                                                        curState.gunAngles.y,
-                                                                        curState.leanPosition,
-                                                                        curState.height)
+      var baseThrowPoint : float3
+      if grenadeAttachSlotId != -1
+        assume ct = human_net_phys.phys.appliedCT
+        if ct |> human_control_state_get_shootPos_packed() > 0u
+          let physTransform = human_net_phys.phys.currentState.location |> location_makeTM()
+          baseThrowPoint = physTransform * ct |> human_control_state_unpack_shootPos()
+        else
+          let wofs = geomtree_getWtmOfs(*animchar.nodeTree)
+          let slotNodeWtm = animchar_getSlotNodeWtm(animchar, grenadeAttachSlotId)
+          baseThrowPoint = float3x4(*slotNodeWtm)[3] + wofs
+      else
+        assume curState = human_net_phys.phys.currentState
+        baseThrowPoint = human_net_phys.phys |> human_phys_calcGunPos(PrecomputedPresetMode.FPV,
+                                                                      curState.location |> location_makeTM(),
+                                                                      curState.gunAngles.y,
+                                                                      curState.leanPosition,
+                                                                      curState.height)
       let throwPoint = baseThrowPoint + human_net_phys__aimDir * human_phys__grenadeThrowOffset
       let inBodyPoint = *animchar.nodeTree |> geomtree_getNodeWpos(trajectory__startNodeIdx)
 

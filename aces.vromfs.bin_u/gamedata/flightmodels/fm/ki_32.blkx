@@ -16,13 +16,8 @@
   "AlphaRudderMin": 0.1,
   "AlphaElevatorMin": 0.1,
   "AllowStrongControlsRestrictions": true,
-  "RudderSens": 0.35,
-  "ElevatorSens": 0.35,
-  "AileronSens": 0.13,
-  "RudderSensMultipler": 1.0,
-  "ElevatorSensMultipler": 1.0,
-  "AileronSensMultipler": 1.0,
-  "ElevatorSensCl": 0.0,
+  "InvertElevator": false,
+  "FlapsRadiator": 0.0,
   "GearActuatorSpeed": 0.2,
   "CockpitDoorSpeedOpen": [
     150.0,
@@ -38,8 +33,21 @@
   ],
   "CockpitDoorBlockSpeed": 450.0,
   "AirBrakeSpeed": 0.5,
+  "AirbrakeLimMinByMach": [
+    0.0,
+    1.0,
+    0.0,
+    0.0
+  ],
+  "AirbrakeLimMaxByMach": [
+    0.0,
+    1.0,
+    1.0,
+    1.0
+  ],
   "BayDoorSpeed": 1.0,
   "BombLauncherSpeed": 2.0,
+  "SweepWingActuatorSpeed": 0.2,
   "dvFlapsIn": [
     150.0,
     280.0,
@@ -52,38 +60,32 @@
     0.15,
     0.12
   ],
+  "flapsLimByMach": [
+    0.5,
+    0.7,
+    1.0,
+    1.0
+  ],
+  "flapsLimByIas": [
+    0.0,
+    3000.0,
+    1.0,
+    1.0
+  ],
   "maxChuteSpeed": 0.0,
   "minChuteSpeed": 0.0,
   "chuteRipSpeed": 0.0,
-  "Wingspan": 15.0,
-  "SweptWingAngle": 6.0,
-  "WingTaperRatio": 2.0,
+  "BuoyancySpeed": 0.2,
   "Length": 11.64,
-  "StabWidth": 5.0,
-  "FinHeight": 2.4,
   "Crew": 2,
-  "WingAngle": 0.0,
-  "StabAngle": 1.0,
-  "KeelAngle": 0.0,
-  "clockWiseStabAOA0": false,
-  "AileronAngles": [
-    21.0,
-    17.0
-  ],
-  "ElevatorAngles": [
-    28.0,
-    20.0
-  ],
-  "InvertElevator": false,
-  "FlapsRadiator": 0.0,
-  "RudderAngles": [
-    28.0,
-    28.0
-  ],
-  "ElevonPitchAngleSens": 0.0,
+  "FlapsAngle": 60.0,
   "VSlats": [
     100.0,
     140.0
+  ],
+  "SlatsRelAoa": [
+    0.7,
+    0.8
   ],
   "FlapsToSlats": [
     0.0,
@@ -96,14 +98,13 @@
     0.5,
     0.005
   ],
-  "Vne": 600.0,
-  "VneControl": 600.0,
-  "VneMach": 0.7,
   "MaxSpeedNearGround": 423.0,
   "MaxSpeedAtAltitude": 370.0,
   "CriticalSpeed": 25.0,
   "ArcadeHelpersSensitivity": 1.0,
   "AllowModsToChangeLongidutialBalance": true,
+  "ConvertAoa": false,
+  "ConvertAoaAI": false,
   "ArcadeRollCorrectionMultiplier": 1.0,
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 1.0,
@@ -115,18 +116,19 @@
     0.0,
     1.0
   ],
-  "ArcadeRudderSensMultiplier": 1.0,
-  "ArcadeElevatorSensMultiplier": 1.0,
-  "ArcadeAileronSensMultiplier": 1.0,
   "AileronMaxDv": 7.69231,
   "ElevatorMaxDv": 3.17073,
   "RudderMaxDv": 3.75,
+  "VneControl": 600.0,
+  "ExtThrustBaseMult": 1.0,
   "CockpitOpenedDoorBreakSpeed": -1.0,
   "MomentOfInertia": [
     7300.0,
     19400.0,
     8500.0
   ],
+  "DisableRendinstCollision": false,
+  "SpawnSpeed": 275.081,
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": false,
@@ -150,83 +152,19 @@
     "hasLockGearControl": false,
     "bHasBoosterSwitcher": false,
     "hasChutes": false,
-    "hasParkingBrake": true,
-    "hasLightsControl": false
+    "hasParkingBrakeControl": false,
+    "hasBuoyancyControl": false,
+    "hasLightsControl": false,
+    "hasManeuverabilityMode": false,
+    "hasThrustVectoringMode": false,
+    "HasSweepControlMode": {
+      "Manual": false,
+      "SemiAuto": false,
+      "Auto": false
+    }
   },
   "FlyByWire": {},
-  "MouseAim": {
-    "PreciseRotStopDetection": false
-  },
-  "Areas": {
-    "WingLeftIn": 11.56,
-    "WingLeftMid": 6.17,
-    "WingLeftOut": 2.69,
-    "WingRightIn": 11.56,
-    "WingRightMid": 6.17,
-    "WingRightOut": 2.69,
-    "Aileron": 1.3,
-    "Fuselage": 40.84,
-    "Stabilizer": 3.46,
-    "Elevator": 2.05,
-    "Keel": 1.8,
-    "Rudder": 1.6
-  },
-  "Focus": {
-    "FocusOffset": 0.03,
-    "WingVertPos": 0.5,
-    "AlphaShift": -0.1,
-    "FlapsShift": [
-      0.1,
-      0.0
-    ],
-    "AirbrakesShift": [
-      -0.04,
-      0.0
-    ],
-    "GearFocusShift": [
-      0.0,
-      0.0
-    ],
-    "ElevonFocusShift": [
-      0.0,
-      0.0
-    ],
-    "GearShift": 0.0,
-    "WingInFocus": 0.55,
-    "WingMidFocus": 2.2,
-    "WingOutFocus": 4.7,
-    "WingV": 5.5,
-    "Stabilizer": 4.97,
-    "Keel": 1.05,
-    "Rudder": 10.54,
-    "Fuselage": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "LeftStab": [
-      -7.0,
-      0.3,
-      1.0
-    ],
-    "RightStab": [
-      -7.0,
-      0.3,
-      -1.0
-    ],
-    "VertStab": [
-      -6.8,
-      1.2,
-      0.0
-    ],
-    "WingVWingFocusMultiplier": 1.0,
-    "SineAOSMultiplier": 0.2
-  },
   "Aerodynamics": {
-    "AileronCd": [
-      0.015,
-      0.0027
-    ],
     "GearCd": 0.0021,
     "GearCentralCd": 0.0001,
     "RadiatorCd": 0.002,
@@ -235,60 +173,12 @@
     "FuseCd": 0.000001,
     "AirbrakeCd": 0.09,
     "CockpitDoorCd": 0.1,
-    "ClToCmCoeff": 0.0,
-    "UseSpinLoss": true,
-    "SpinClLoss": 0.08,
-    "SpinCdLoss": 0.06,
+    "SweepAxisByMachAuto": [
+      0.0,
+      0.0,
+      1.0
+    ],
     "chuteCx": 0.0,
-    "OswaldsEfficiencyNumber": 0.91,
-    "lineClCoeff": 0.075,
-    "AfterCritParabAngle": 4.0,
-    "AfterCritDeclineCoeff": 0.03,
-    "AfterCritMaxDistanceAngle": 38.0,
-    "CxAfterCoeff": 0.01,
-    "ClAfterCritHigh": 0.87,
-    "ClAfterCritLow": -0.87,
-    "MachFactor": 3,
-    "MachCrit1": 0.38,
-    "MachMax1": 0.9,
-    "MultMachMax1": 18.0,
-    "MultLineCoeff1": -5.2,
-    "MultLimit1": 1.0,
-    "MachCrit2": 0.4,
-    "MachMax2": 1.0,
-    "MultMachMax2": 0.8,
-    "MultLineCoeff2": -0.2,
-    "MultLimit2": 0.25,
-    "MachCrit3": 0.4,
-    "MachMax3": 0.65,
-    "MultMachMax3": 0.7,
-    "MultLineCoeff3": -0.2,
-    "MultLimit3": 0.25,
-    "MachCrit4": 0.4,
-    "MachMax4": 0.65,
-    "MultMachMax4": 0.8,
-    "MultLineCoeff4": -0.12,
-    "MultLimit4": 0.25,
-    "MachCrit5": 0.5,
-    "MachMax5": 1.0,
-    "MultMachMax5": 2.06666,
-    "MultLineCoeff5": 0.0,
-    "MultLimit5": 7.4,
-    "MachCrit6": 0.41,
-    "MachMax6": 0.8,
-    "MultMachMax6": 0.6,
-    "MultLineCoeff6": -5.0,
-    "MultLimit6": 0.3,
-    "MachCrit7": 0.0,
-    "MachMax7": 1.0,
-    "MultMachMax7": 0.4,
-    "MultLineCoeff7": 0.0,
-    "MultLimit7": 1.0,
-    "CombinedCl": false,
-    "DownwashType": 2,
-    "DownwashCoeff": 1.0,
-    "StabFlowInertia": 0.0299843,
-    "VertStabFlowInertia": 0.0499738,
     "FlapsAxis": {
       "Retracted": {
         "Presents": true,
@@ -321,180 +211,515 @@
       "Stab": 0.0,
       "Slats": 0.0
     },
-    "NoFlaps": {
-      "Cl0": 0.17,
-      "alphaCritHigh": 18.0,
-      "alphaCritLow": -13.0,
-      "ClCritHigh": 1.3,
-      "ClCritLow": -0.7,
-      "CdMin": 0.0096
+    "WingPlane": {
+      "Span": 15.0,
+      "SweptAngle": 6.0,
+      "TaperRatio": 2.0,
+      "Angle": 0.0,
+      "VAngle": 5.5,
+      "UseSpinLoss": true,
+      "SpinCdloss": 0.06,
+      "SpinClloss": 0.08,
+      "DownwashType": 2,
+      "DownwashCoeff": 1.0,
+      "Areas": {
+        "LeftIn": 11.56,
+        "LeftMid": 6.17,
+        "LeftOut": 2.69,
+        "RightIn": 11.56,
+        "RightMid": 6.17,
+        "RightOut": 2.69,
+        "Aileron": 0.65
+      },
+      "Arm": {
+        "Arm": [
+          0.03,
+          0.5,
+          2.2
+        ],
+        "SineAosMultiplier": 0.2,
+        "VFocusMultiplier": 1.0,
+        "FlapsShift": [
+          0.1,
+          0.0
+        ],
+        "AirbrakesShift": [
+          -0.04,
+          0.0
+        ],
+        "GearShift": [
+          0.0,
+          0.0
+        ],
+        "ElevonShift": [
+          0.0,
+          0.0
+        ],
+        "AoaShift": -0.1,
+        "AoaShiftAdd": 0.0
+      },
+      "FlapsPolar0": {
+        "Flaps": 0.0,
+        "OswaldsEfficiencyNumber": 0.91,
+        "lineClCoeff": 0.075,
+        "AfterCritParabAngle": 4.0,
+        "AfterCritDeclineCoeff": 0.03,
+        "AfterCritMaxDistanceAngle": 38.0,
+        "CxAfterCoeff": 0.01,
+        "ClAfterCritHigh": 0.87,
+        "ClAfterCritLow": -0.87,
+        "MachFactor": 3,
+        "MachCrit1": 0.38,
+        "MachMax1": 0.9,
+        "MultMachMax1": 18.0,
+        "MultLineCoeff1": -5.2,
+        "MultLimit1": 1.0,
+        "MachCrit2": 0.4,
+        "MachMax2": 1.0,
+        "MultMachMax2": 0.8,
+        "MultLineCoeff2": -0.2,
+        "MultLimit2": 0.25,
+        "MachCrit3": 0.4,
+        "MachMax3": 0.65,
+        "MultMachMax3": 0.7,
+        "MultLineCoeff3": -0.2,
+        "MultLimit3": 0.25,
+        "MachCrit4": 0.4,
+        "MachMax4": 0.65,
+        "MultMachMax4": 0.8,
+        "MultLineCoeff4": -0.12,
+        "MultLimit4": 0.25,
+        "MachCrit5": 0.5,
+        "MachMax5": 1.0,
+        "MultMachMax5": 2.06666,
+        "MultLineCoeff5": 0.0,
+        "MultLimit5": 7.4,
+        "MachCrit6": 0.41,
+        "MachMax6": 0.8,
+        "MultMachMax6": 0.6,
+        "MultLineCoeff6": -5.0,
+        "MultLimit6": 0.3,
+        "MachCrit7": 0.0,
+        "MachMax7": 1.0,
+        "MultMachMax7": 0.4,
+        "MultLineCoeff7": 0.0,
+        "MultLimit7": 1.0,
+        "CombinedCl": false,
+        "ClToCmByMach": [
+          0.0,
+          0.0
+        ],
+        "Cl0": 0.17,
+        "alphaCritHigh": 18.0,
+        "alphaCritLow": -13.0,
+        "ClCritHigh": 1.3,
+        "ClCritLow": -0.7,
+        "CdMin": 0.0096
+      },
+      "FlapsPolar1": {
+        "Flaps": 1.0,
+        "OswaldsEfficiencyNumber": 0.91,
+        "lineClCoeff": 0.075,
+        "AfterCritParabAngle": 4.0,
+        "AfterCritDeclineCoeff": 0.03,
+        "AfterCritMaxDistanceAngle": 38.0,
+        "CxAfterCoeff": 0.01,
+        "ClAfterCritHigh": 0.87,
+        "ClAfterCritLow": -0.87,
+        "MachFactor": 3,
+        "MachCrit1": 0.38,
+        "MachMax1": 0.9,
+        "MultMachMax1": 18.0,
+        "MultLineCoeff1": -5.2,
+        "MultLimit1": 1.0,
+        "MachCrit2": 0.4,
+        "MachMax2": 1.0,
+        "MultMachMax2": 0.8,
+        "MultLineCoeff2": -0.2,
+        "MultLimit2": 0.25,
+        "MachCrit3": 0.4,
+        "MachMax3": 0.65,
+        "MultMachMax3": 0.7,
+        "MultLineCoeff3": -0.2,
+        "MultLimit3": 0.25,
+        "MachCrit4": 0.4,
+        "MachMax4": 0.65,
+        "MultMachMax4": 0.8,
+        "MultLineCoeff4": -0.12,
+        "MultLimit4": 0.25,
+        "MachCrit5": 0.5,
+        "MachMax5": 1.0,
+        "MultMachMax5": 2.06666,
+        "MultLineCoeff5": 0.0,
+        "MultLimit5": 7.4,
+        "MachCrit6": 0.41,
+        "MachMax6": 0.8,
+        "MultMachMax6": 0.6,
+        "MultLineCoeff6": -5.0,
+        "MultLimit6": 0.3,
+        "MachCrit7": 0.0,
+        "MachMax7": 1.0,
+        "MultMachMax7": 0.4,
+        "MultLineCoeff7": 0.0,
+        "MultLimit7": 1.0,
+        "CombinedCl": false,
+        "ClToCmByMach": [
+          0.0,
+          0.0
+        ],
+        "Cl0": 0.8,
+        "alphaCritHigh": 17.0,
+        "alphaCritLow": -14.5,
+        "ClCritHigh": 1.92,
+        "ClCritLow": -0.28,
+        "CdMin": 0.09
+      },
+      "Strength": {
+        "CritOverload": [
+          -148176.0,
+          197568.0
+        ],
+        "VNE": 600.0,
+        "MNE": 0.7
+      }
     },
-    "FullFlaps": {
-      "Cl0": 0.8,
-      "alphaCritHigh": 17.0,
-      "alphaCritLow": -14.5,
-      "ClCritHigh": 1.92,
-      "ClCritLow": -0.28,
-      "CdMin": 0.09
+    "FuselagePlane": {
+      "Span": 15.0,
+      "Angle": 0.0,
+      "Arm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "FlowInertia": 0.0,
+      "ClockWiseAOA": false,
+      "Areas": {
+        "Main": 40.84
+      },
+      "Polar": {
+        "OswaldsEfficiencyNumber": 0.01,
+        "lineClCoeff": 0.012,
+        "AfterCritParabAngle": 5.0,
+        "AfterCritDeclineCoeff": 0.007,
+        "AfterCritMaxDistanceAngle": 30.0,
+        "CxAfterCoeff": 0.01,
+        "ClAfterCritHigh": 0.13,
+        "ClAfterCritLow": -0.13,
+        "MachFactor": 3,
+        "MachCrit1": 0.6,
+        "MachMax1": 1.0,
+        "MultMachMax1": 7.0,
+        "MultLineCoeff1": -5.2,
+        "MultLimit1": 1.0,
+        "MachCrit2": 0.65,
+        "MachMax2": 0.97,
+        "MultMachMax2": 6.7,
+        "MultLineCoeff2": -3.7,
+        "MultLimit2": 1.0,
+        "MachCrit3": 0.3,
+        "MachMax3": 1.0,
+        "MultMachMax3": 0.32,
+        "MultLineCoeff3": -0.44,
+        "MultLimit3": 0.25,
+        "MachCrit4": 0.3,
+        "MachMax4": 1.0,
+        "MultMachMax4": 0.4,
+        "MultLineCoeff4": -0.2,
+        "MultLimit4": 0.25,
+        "MachCrit5": 0.6,
+        "MachMax5": 1.5,
+        "MultMachMax5": 2.0,
+        "MultLineCoeff5": 1.1,
+        "MultLimit5": 5.0,
+        "MachCrit6": 0.0,
+        "MachMax6": 0.0,
+        "MultMachMax6": 0.0,
+        "MultLineCoeff6": 0.0,
+        "MultLimit6": 0.0,
+        "MachCrit7": 0.0,
+        "MachMax7": 1.0,
+        "MultMachMax7": 1.0,
+        "MultLineCoeff7": 0.0,
+        "MultLimit7": 1.0,
+        "CombinedCl": true,
+        "ClToCmByMach": [
+          0.0,
+          0.0
+        ],
+        "Cl0": 0.0,
+        "alphaCritHigh": 16.0,
+        "alphaCritLow": -16.0,
+        "ClCritHigh": 0.12,
+        "ClCritLow": -0.12,
+        "CdMin": 0.009
+      }
     },
-    "Fuselage": {
-      "OswaldsEfficiencyNumber": 0.01,
-      "lineClCoeff": 0.012,
-      "AfterCritParabAngle": 5.0,
-      "AfterCritDeclineCoeff": 0.007,
-      "AfterCritMaxDistanceAngle": 30.0,
-      "CxAfterCoeff": 0.01,
-      "ClAfterCritHigh": 0.13,
-      "ClAfterCritLow": -0.13,
-      "MachFactor": 3,
-      "MachCrit1": 0.6,
-      "MachMax1": 1.0,
-      "MultMachMax1": 7.0,
-      "MultLineCoeff1": -5.2,
-      "MultLimit1": 1.0,
-      "MachCrit2": 0.65,
-      "MachMax2": 0.97,
-      "MultMachMax2": 6.7,
-      "MultLineCoeff2": -3.7,
-      "MultLimit2": 1.0,
-      "MachCrit3": 0.3,
-      "MachMax3": 1.0,
-      "MultMachMax3": 0.32,
-      "MultLineCoeff3": -0.44,
-      "MultLimit3": 0.25,
-      "MachCrit4": 0.3,
-      "MachMax4": 1.0,
-      "MultMachMax4": 0.4,
-      "MultLineCoeff4": -0.2,
-      "MultLimit4": 0.25,
-      "MachCrit5": 0.6,
-      "MachMax5": 1.5,
-      "MultMachMax5": 2.0,
-      "MultLineCoeff5": 1.1,
-      "MultLimit5": 5.0,
-      "MachCrit6": 0.0,
-      "MachMax6": 0.0,
-      "MultMachMax6": 0.0,
-      "MultLineCoeff6": 0.0,
-      "MultLimit6": 0.0,
-      "MachCrit7": 0.0,
-      "MachMax7": 1.0,
-      "MultMachMax7": 1.0,
-      "MultLineCoeff7": 0.0,
-      "MultLimit7": 1.0,
-      "CombinedCl": true,
-      "Cl0": 0.0,
-      "alphaCritHigh": 16.0,
-      "alphaCritLow": -16.0,
-      "ClCritHigh": 0.12,
-      "ClCritLow": -0.12,
-      "CdMin": 0.009
+    "HorStabPlane": {
+      "Span": 5.0,
+      "Angle": 1.0,
+      "Arm": [
+        -7.0,
+        0.3,
+        1.0
+      ],
+      "FlowInertia": 0.0299877,
+      "ClockWiseAOA": false,
+      "Areas": {
+        "Main": 3.46,
+        "Elevator": 2.05
+      },
+      "Polar": {
+        "OswaldsEfficiencyNumber": 0.8,
+        "lineClCoeff": 0.06,
+        "AfterCritParabAngle": 1.7,
+        "AfterCritDeclineCoeff": 0.025,
+        "AfterCritMaxDistanceAngle": 22.0,
+        "CxAfterCoeff": 0.01,
+        "ClAfterCritHigh": 0.7,
+        "ClAfterCritLow": -0.7,
+        "MachFactor": 3,
+        "MachCrit1": 0.75,
+        "MachMax1": 0.95,
+        "MultMachMax1": 7.0,
+        "MultLineCoeff1": -5.2,
+        "MultLimit1": 1.0,
+        "MachCrit2": 0.4,
+        "MachMax2": 1.0,
+        "MultMachMax2": 0.75,
+        "MultLineCoeff2": -0.2,
+        "MultLimit2": 0.25,
+        "MachCrit3": 0.4,
+        "MachMax3": 0.8,
+        "MultMachMax3": 0.8,
+        "MultLineCoeff3": -0.1,
+        "MultLimit3": 0.25,
+        "MachCrit4": 0.4,
+        "MachMax4": 1.0,
+        "MultMachMax4": 0.8,
+        "MultLineCoeff4": -0.1,
+        "MultLimit4": 0.25,
+        "MachCrit5": 0.6,
+        "MachMax5": 1.5,
+        "MultMachMax5": 2.0,
+        "MultLineCoeff5": 1.1,
+        "MultLimit5": 5.0,
+        "MachCrit6": 0.0,
+        "MachMax6": 0.0,
+        "MultMachMax6": 0.0,
+        "MultLineCoeff6": 0.0,
+        "MultLimit6": 0.0,
+        "MachCrit7": 0.0,
+        "MachMax7": 1.0,
+        "MultMachMax7": 1.0,
+        "MultLineCoeff7": 0.0,
+        "MultLimit7": 1.0,
+        "CombinedCl": false,
+        "ClToCmByMach": [
+          0.0,
+          0.0
+        ],
+        "Cl0": 0.0,
+        "alphaCritHigh": 17.0,
+        "alphaCritLow": -17.0,
+        "ClCritHigh": 1.0,
+        "ClCritLow": -1.0,
+        "CdMin": 0.006
+      }
     },
-    "Stab": {
-      "OswaldsEfficiencyNumber": 0.8,
-      "lineClCoeff": 0.06,
-      "AfterCritParabAngle": 1.7,
-      "AfterCritDeclineCoeff": 0.025,
-      "AfterCritMaxDistanceAngle": 22.0,
-      "CxAfterCoeff": 0.01,
-      "ClAfterCritHigh": 0.7,
-      "ClAfterCritLow": -0.7,
-      "MachFactor": 3,
-      "MachCrit1": 0.75,
-      "MachMax1": 0.95,
-      "MultMachMax1": 7.0,
-      "MultLineCoeff1": -5.2,
-      "MultLimit1": 1.0,
-      "MachCrit2": 0.4,
-      "MachMax2": 1.0,
-      "MultMachMax2": 0.75,
-      "MultLineCoeff2": -0.2,
-      "MultLimit2": 0.25,
-      "MachCrit3": 0.4,
-      "MachMax3": 0.8,
-      "MultMachMax3": 0.8,
-      "MultLineCoeff3": -0.1,
-      "MultLimit3": 0.25,
-      "MachCrit4": 0.4,
-      "MachMax4": 1.0,
-      "MultMachMax4": 0.8,
-      "MultLineCoeff4": -0.1,
-      "MultLimit4": 0.25,
-      "MachCrit5": 0.6,
-      "MachMax5": 1.5,
-      "MultMachMax5": 2.0,
-      "MultLineCoeff5": 1.1,
-      "MultLimit5": 5.0,
-      "MachCrit6": 0.0,
-      "MachMax6": 0.0,
-      "MultMachMax6": 0.0,
-      "MultLineCoeff6": 0.0,
-      "MultLimit6": 0.0,
-      "MachCrit7": 0.0,
-      "MachMax7": 1.0,
-      "MultMachMax7": 1.0,
-      "MultLineCoeff7": 0.0,
-      "MultLimit7": 1.0,
-      "CombinedCl": false,
-      "Cl0": 0.0,
-      "alphaCritHigh": 17.0,
-      "alphaCritLow": -17.0,
-      "ClCritHigh": 1.0,
-      "ClCritLow": -1.0,
-      "CdMin": 0.006
+    "VerStabPlane": {
+      "Span": 2.4,
+      "Angle": 0.0,
+      "Arm": [
+        -6.8,
+        1.2,
+        0.0
+      ],
+      "FlowInertia": 0.0499794,
+      "SlipStreamDistance": 10.54,
+      "Areas": {
+        "Main": 1.8,
+        "Rudder": 1.6
+      },
+      "Polar": {
+        "OswaldsEfficiencyNumber": 0.4,
+        "lineClCoeff": 0.045,
+        "AfterCritParabAngle": 5.0,
+        "AfterCritDeclineCoeff": 0.007,
+        "AfterCritMaxDistanceAngle": 30.0,
+        "CxAfterCoeff": 0.01,
+        "ClAfterCritHigh": 0.9,
+        "ClAfterCritLow": -0.9,
+        "MachFactor": 3,
+        "MachCrit1": 0.75,
+        "MachMax1": 0.95,
+        "MultMachMax1": 7.0,
+        "MultLineCoeff1": -5.2,
+        "MultLimit1": 1.0,
+        "MachCrit2": 0.4,
+        "MachMax2": 1.0,
+        "MultMachMax2": 0.75,
+        "MultLineCoeff2": -0.2,
+        "MultLimit2": 0.25,
+        "MachCrit3": 0.4,
+        "MachMax3": 0.8,
+        "MultMachMax3": 0.8,
+        "MultLineCoeff3": -0.1,
+        "MultLimit3": 0.25,
+        "MachCrit4": 0.4,
+        "MachMax4": 1.0,
+        "MultMachMax4": 0.8,
+        "MultLineCoeff4": -0.1,
+        "MultLimit4": 0.25,
+        "MachCrit5": 0.6,
+        "MachMax5": 1.5,
+        "MultMachMax5": 2.0,
+        "MultLineCoeff5": 1.1,
+        "MultLimit5": 5.0,
+        "MachCrit6": 0.0,
+        "MachMax6": 0.0,
+        "MultMachMax6": 0.0,
+        "MultLineCoeff6": 0.0,
+        "MultLimit6": 0.0,
+        "MachCrit7": 0.0,
+        "MachMax7": 1.0,
+        "MultMachMax7": 1.0,
+        "MultLineCoeff7": 0.0,
+        "MultLimit7": 1.0,
+        "CombinedCl": false,
+        "ClToCmByMach": [
+          0.0,
+          0.0
+        ],
+        "Cl0": 0.0,
+        "alphaCritHigh": 22.0,
+        "alphaCritLow": -22.0,
+        "ClCritHigh": 0.9,
+        "ClCritLow": -0.9,
+        "CdMin": 0.006
+      }
     },
-    "Fin": {
-      "OswaldsEfficiencyNumber": 0.4,
-      "lineClCoeff": 0.045,
-      "AfterCritParabAngle": 5.0,
-      "AfterCritDeclineCoeff": 0.007,
-      "AfterCritMaxDistanceAngle": 30.0,
-      "CxAfterCoeff": 0.01,
-      "ClAfterCritHigh": 0.9,
-      "ClAfterCritLow": -0.9,
-      "MachFactor": 3,
-      "MachCrit1": 0.75,
-      "MachMax1": 0.95,
-      "MultMachMax1": 7.0,
-      "MultLineCoeff1": -5.2,
-      "MultLimit1": 1.0,
-      "MachCrit2": 0.4,
-      "MachMax2": 1.0,
-      "MultMachMax2": 0.75,
-      "MultLineCoeff2": -0.2,
-      "MultLimit2": 0.25,
-      "MachCrit3": 0.4,
-      "MachMax3": 0.8,
-      "MultMachMax3": 0.8,
-      "MultLineCoeff3": -0.1,
-      "MultLimit3": 0.25,
-      "MachCrit4": 0.4,
-      "MachMax4": 1.0,
-      "MultMachMax4": 0.8,
-      "MultLineCoeff4": -0.1,
-      "MultLimit4": 0.25,
-      "MachCrit5": 0.6,
-      "MachMax5": 1.5,
-      "MultMachMax5": 2.0,
-      "MultLineCoeff5": 1.1,
-      "MultLimit5": 5.0,
-      "MachCrit6": 0.0,
-      "MachMax6": 0.0,
-      "MultMachMax6": 0.0,
-      "MultLineCoeff6": 0.0,
-      "MultLimit6": 0.0,
-      "MachCrit7": 0.0,
-      "MachMax7": 1.0,
-      "MultMachMax7": 1.0,
-      "MultLineCoeff7": 0.0,
-      "MultLimit7": 1.0,
-      "CombinedCl": false,
-      "Cl0": 0.0,
-      "alphaCritHigh": 22.0,
-      "alphaCritLow": -22.0,
-      "ClCritHigh": 0.9,
-      "ClCritLow": -0.9,
-      "CdMin": 0.006
+    "Ailerons": {
+      "AnglesRoll": [
+        21.0,
+        17.0
+      ],
+      "AnglesMultiplierRoll": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesPitch": [
+        0.0,
+        0.0
+      ],
+      "AnglesMultiplierPitch": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesYaw": [
+        0.0,
+        0.0
+      ],
+      "AnglesMultiplierYaw": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "Sensitivity": 0.13,
+      "SensitivityMultiplier": 1.0,
+      "ArcadeSensitivityMultiplier": 1.0,
+      "SensitivityCl": [
+        0.0,
+        0.0
+      ],
+      "SensitivityCd": [
+        0.015,
+        0.0027
+      ],
+      "SensitivityWingAoa": 0.0
+    },
+    "Elevator": {
+      "AnglesRoll": [
+        0.0,
+        0.0
+      ],
+      "AnglesMultiplierRoll": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesPitch": [
+        28.0,
+        20.0
+      ],
+      "AnglesMultiplierPitch": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesYaw": [
+        0.0,
+        0.0
+      ],
+      "AnglesMultiplierYaw": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "Sensitivity": 0.35,
+      "SensitivityMultiplier": 1.0,
+      "ArcadeSensitivityMultiplier": 1.0,
+      "SensitivityCl": [
+        0.0,
+        0.0
+      ],
+      "SensitivityCd": [
+        0.0,
+        0.0
+      ],
+      "SensitivityWingAoa": 0.0
+    },
+    "Rudder": {
+      "AnglesRoll": [
+        0.0,
+        0.0
+      ],
+      "AnglesMultiplierRoll": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesPitch": [
+        0.0,
+        0.0
+      ],
+      "AnglesMultiplierPitch": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesYaw": [
+        28.0,
+        28.0
+      ],
+      "AnglesMultiplierYaw": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "Sensitivity": 0.35,
+      "SensitivityMultiplier": 1.0,
+      "ArcadeSensitivityMultiplier": 1.0,
+      "SensitivityCl": [
+        0.0,
+        0.0
+      ],
+      "SensitivityCd": [
+        0.0,
+        0.0
+      ],
+      "SensitivityWingAoa": 0.0
     }
   },
   "EngineType0": {
@@ -503,6 +728,7 @@
     "Main": {
       "Type": "Inline",
       "Cylinders": 12,
+      "AllowDamageAfterPropeller": true,
       "Mass": 575.0,
       "Thrust": 10.7,
       "ThrottleBoost": 1.0001,
@@ -580,8 +806,18 @@
       "hasOilRadiatorControl": true,
       "hasCommonRadiator": false,
       "hasVtolControl": false,
+      "hasBoosterSwitcher": false,
+      "hasThrustReverseControl": false,
       "dvVtol": 0.2,
+      "dvThrustRev": 0.2,
       "vtolToThrottleLim": [
+        0.0,
+        1.1,
+        1.0,
+        1.1
+      ],
+      "requireGearContactForReverseThrust": false,
+      "reverseToThrottleLim": [
         0.0,
         1.1,
         1.0,
@@ -643,6 +879,7 @@
       "OilTemperatureNoFlow": 114.723,
       "WaterTemperatureInertia": 0.921778,
       "OilTemperatureInertia": 1.0,
+      "HasOil": true,
       "Mode0": {
         "Altitude": 1000.0,
         "RPM": 500.0,
@@ -730,6 +967,7 @@
       "PowerConstRPMCurvature0": 1.0,
       "Ceiling0": 3800.01,
       "PowerAtCeiling0": 949.999,
+      "AfterburnerPressureBoost0": 1.0,
       "AfterburnerManifoldPressure": 1.18,
       "SpeedManifoldMultiplier": 0.4,
       "AllowAutoTurboCharger": false,
@@ -813,6 +1051,8 @@
       ],
       "ThrustRatio": 1.0,
       "ThrustMax": 2147440000.0,
+      "TipPosition": false,
+      "HasThrustVecMainControlsMode": false,
       "AileronsToThrustDeflection": [
         0.0,
         0.0,
@@ -832,6 +1072,10 @@
         0.0,
         0.0
       ],
+      "ReverseToThrustDeflection": [
+        0.0,
+        0.0
+      ],
       "AileronsToThrust": [
         0.0,
         0.0,
@@ -847,7 +1091,15 @@
         0.0,
         0.0
       ],
+      "AirbrakeToThrust": [
+        0.0,
+        0.0
+      ],
       "VtolToThrust": [
+        0.0,
+        0.0
+      ],
+      "ReverseToThrust": [
         0.0,
         0.0
       ],
@@ -856,7 +1108,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "PropellerType0": {
@@ -935,50 +1213,6 @@
         0.0
       ]
     },
-    "Mass": {
-      "Mass": 100.0,
-      "Diameter": 2.87,
-      "InertiaMomentCoeff": 1.0
-    },
-    "Governor": {
-      "PitchMin": 18.0,
-      "PitchMax": 58.0,
-      "Aoa0": 11.0,
-      "PitchCyclicPitchAngles": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "PitchCyclicRollAngles": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "PitchCoaxialDiffAngles": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "GovernorType": 2,
-      "GovernorSpeed": 0.03,
-      "GovernorFast": false,
-      "GovernorMinParam": 800.0,
-      "GovernorMaxParam": 1850.0,
-      "GovernorAfterburnerParam": 2000.0,
-      "AlwaysEnableTorqueAndGyro": false,
-      "AlwaysEnableForce": true
-    },
-    "Damage": {
-      "CriticalIas": 3600.0,
-      "DamagedFrictionAccel": 25.0
-    },
-    "Controls": {
-      "HasManualPitchControl": true,
-      "HasAutoPitchControl": false,
-      "HasFeatheringControl": true,
-      "HasCyclicPitchControl": false,
-      "HasPitchCoaxialDiffControl": false
-    },
     "Polar": {
       "lineClCoeff": 0.075,
       "Cl0": 0.18,
@@ -1031,6 +1265,50 @@
       "MultMachMax7": 1.0,
       "MultLineCoeff7": 0.0,
       "MultLimit7": 1.0
+    },
+    "Mass": {
+      "Mass": 100.0,
+      "Diameter": 2.87,
+      "InertiaMomentCoeff": 1.0
+    },
+    "Governor": {
+      "PitchMin": 18.0,
+      "PitchMax": 58.0,
+      "Aoa0": 11.0,
+      "PitchCyclicPitchAngles": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "PitchCyclicRollAngles": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "PitchCoaxialDiffAngles": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "GovernorType": 2,
+      "GovernorSpeed": 0.03,
+      "GovernorFast": false,
+      "GovernorMinParam": 800.0,
+      "GovernorMaxParam": 1850.0,
+      "GovernorAfterburnerParam": 2000.0,
+      "AlwaysEnableTorqueAndGyro": false,
+      "AlwaysEnableForce": true
+    },
+    "Damage": {
+      "CriticalIas": 3600.0,
+      "DamagedFrictionAccel": 25.0
+    },
+    "Controls": {
+      "HasManualPitchControl": true,
+      "HasAutoPitchControl": false,
+      "HasFeatheringControl": true,
+      "HasCyclicPitchControl": false,
+      "HasPitchCoaxialDiffControl": false
     }
   },
   "Propeller0": {
@@ -1040,7 +1318,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      90.0,
       90.0
     ],
     "Pos": [
@@ -1058,18 +1336,26 @@
     "Propeller0": 0,
     "PropellerReductor0": 1.0,
     "PropellerPitchSource0": "pitch",
-    "MidAxisPitch0": 0.5,
+    "AxisPitch0": [
+      0.0,
+      0.5,
+      1.0
+    ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 4.0,
-    "CorrectPropellerToTransmissionLink": false
+    "CorrectPropellerToTransmissionLink": false,
+    "AllowDamageAfterLinksDamage": true
   },
   "Mass": {
     "EmptyMass": 2679.0,
     "MaxFuelMass0": 460.0,
+    "MaxFuelMassExternal0": 0.0,
     "FuelAccumulatorCapacity0": 0.4,
     "MinimalLoadFactor0": 0.0,
     "FuelAccumulatorFlowRate0": 0.38,
     "FuelEngineFlowRate0": 1000000.0,
+    "hasFuelDumping": false,
+    "fuelDumpingRate": -1.0,
     "MaxNitro": 0.0,
     "OilMass": 38.0,
     "AdvancedMass": true,
@@ -1081,17 +1367,11 @@
       0.0458186,
       0.00437353
     ],
-    "WingCritOverload": [
-      -148176.0,
-      197568.0
-    ],
     "GearDestructionIndSpeed": 600.0,
     "AirbrakeDestructionIndSpeed": -1.0,
-    "FlapsDestructionIndSpeedP0": [
+    "FlapsDestructionIndSpeedP": [
       0.1,
-      600.0
-    ],
-    "FlapsDestructionIndSpeedP1": [
+      600.0,
       1.0,
       280.0
     ],
@@ -1120,51 +1400,50 @@
       "tank6_system": 0,
       "tank6_external": false,
       "tank6_priority": 1,
-      "gun1_dm": 28.0,
-      "gear_c_dm": 3.45,
-      "tail_dm": 75.0,
-      "fuse_dm": 89.02,
-      "elevator0_dm": 6.0,
-      "elevator1_dm": 6.0,
-      "fin_dm": 12.0,
-      "stab_dm": 16.0,
-      "stab1_dm": 8.0,
-      "stab2_dm": 8.0,
-      "cover2_dm": 12.0,
-      "cover1_dm": 250.0,
-      "fuse2_dm": 245.0,
-      "fuse1_dm": 200.0,
-      "oil1_dm": 33.4,
-      "water1_dm": 35.0,
-      "engine1_dm": 575.0,
-      "gear_l_dm": 30.0,
-      "spar2_l_dm": 28.54,
-      "aileron_l_dm": 5.0,
-      "wing1_l_dm": 108.92,
-      "wing2_l_dm": 65.31,
-      "spar1_l_dm": 50.0,
-      "spar_l_dm": 80.0,
-      "wing_l_dm": 158.35,
-      "flap1_l_dm": 15.0,
-      "flap_l_dm": 5.0,
-      "gear_r_dm": 30.0,
-      "spar2_r_dm": 28.54,
-      "rudder_dm": 8.0,
-      "spar1_r_dm": 50.0,
-      "spar_r_dm": 80.0,
-      "wing_r_dm": 158.01,
-      "flap1_r_dm": 15.0,
-      "flap_r_dm": 5.0,
-      "pilot_dm": 90.0,
-      "gunner2_dm": 90.0,
-      "water2_dm": 15.0,
       "tailcontrol_dm": 3.5,
       "wingcontrol_l_dm": 1.5,
       "wingcontrol_r_dm": 1.5,
-      "mgun1_dm": 12.7,
+      "wing_l_dm": 158.35,
+      "wing_r_dm": 158.01,
+      "tail_dm": 75.0,
+      "wing1_l_dm": 108.92,
       "wing1_r_dm": 108.92,
+      "aileron_r_dm": 5.0,
+      "aileron_l_dm": 5.0,
+      "stab1_dm": 8.0,
+      "stab2_dm": 8.0,
+      "cover1_dm": 250.0,
+      "fuse2_dm": 245.0,
+      "cover2_dm": 12.0,
+      "fin_dm": 12.0,
+      "fuse1_dm": 200.0,
+      "wing2_l_dm": 65.31,
       "wing2_r_dm": 65.31,
-      "aileron_r_dm": 5.0
+      "spar_l_dm": 80.0,
+      "spar_r_dm": 80.0,
+      "flap1_l_dm": 15.0,
+      "flap1_r_dm": 15.0,
+      "spar1_l_dm": 50.0,
+      "spar1_r_dm": 50.0,
+      "fuse_dm": 89.02,
+      "spar2_l_dm": 28.54,
+      "spar2_r_dm": 28.54,
+      "gear_l_dm": 30.0,
+      "gear_r_dm": 30.0,
+      "engine1_dm": 575.0,
+      "rudder_dm": 8.0,
+      "elevator0_dm": 6.0,
+      "elevator1_dm": 6.0,
+      "gunner2_dm": 90.0,
+      "pilot_dm": 90.0,
+      "gun1_dm": 28.0,
+      "mgun1_dm": 12.7,
+      "flap_l_dm": 5.0,
+      "flap_r_dm": 5.0,
+      "oil1_dm": 33.4,
+      "water1_dm": 35.0,
+      "gear_c_dm": 3.45,
+      "water2_dm": 15.0
     },
     "PartsWithSurface": {}
   },
@@ -1188,10 +1467,12 @@
   },
   "Gear": {
     "SinkFactor": 3000.0,
-    "SinkRateMult": 0.100789,
+    "SinkRateMult": 0.101238,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 1.0,
+    "GearOffset": 0.0,
     "UseCenterOfGravity": false,
+    "HasGear": true,
     "HasWheels": true,
     "Height": 1.5379,
     "Pitch": 14.154,
@@ -1210,45 +1491,73 @@
     "StrutL": {
       "SpringHeight": 0.3,
       "SpringCoeff": 354001.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
       "WheelRadus": 0.4,
       "Retractable": true,
       "LeftBrake": true,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.4,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
       "SteerType": "Fixed"
     },
     "StrutR": {
       "SpringHeight": 0.3,
       "SpringCoeff": 354001.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
       "WheelRadus": 0.4,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": true,
-      "FullBrakeSlidingFrictionMult": 0.4,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
       "SteerType": "Fixed"
     },
     "StrutC": {
       "SpringHeight": 0.1,
       "SpringCoeff": 414001.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
       "WheelRadus": 0.1,
       "Retractable": false,
       "LeftBrake": false,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.4,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
       "SteerType": "SelfSteering"
     }
   },
   "Passport": {
     "unitSystem": "Metric-German",
     "mass": 3757.99,
+    "maxSpeedSpeedType": "TAS",
     "climbSpeedNum": 1,
     "alt0": 0.0,
+    "speedType0": "IAS",
     "speedMax0": 220.0,
     "speedWEP0": 220.0,
-    "climbSpeedIAS": true,
     "turnTimeFlaps": 0,
     "Alt": {
       "stallSpeed": [
@@ -1537,6 +1846,77 @@
       ]
     }
   },
+  "Instructor": {
+    "critMult": [
+      -1.0,
+      -1.0
+    ],
+    "limitOverload": true,
+    "overloadMult": [
+      0.85,
+      0.92,
+      0.85,
+      0.92
+    ],
+    "overloadTimeRange": [
+      0.9,
+      1.0
+    ],
+    "overloadTimeRate": 0.45,
+    "limitLoadfactor": false,
+    "loadFactorLimit": [
+      -5.0,
+      12.0
+    ],
+    "constPitchDerrCoeffMultByClLinearRatio": [
+      0.0,
+      1.0,
+      0.01,
+      2.0
+    ],
+    "MouseAim": {
+      "forceAdvanced": false,
+      "preciseRotStopDetection": false,
+      "localDirYawPitchRotYZMax0": 0.125,
+      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
+      "rollAndPullUpWishDirYMin": -0.7,
+      "rollandPullUpWishDirMin": 0.3,
+      "allowedRollRateCoeff": [
+        0.17,
+        0.3,
+        0.4,
+        1.5
+      ],
+      "rollTimeMult": 0.44,
+      "rollPidKpMult": 1.25,
+      "dirXZFactorPitch0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorPitchMin": 0.02,
+      "dirXZFactorYaw0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorYawMin": 0.02,
+      "dirXZToRollRateLim": [
+        0.0,
+        0.0
+      ],
+      "rollRateLimToDirXZFactorMin": [
+        0.7,
+        1000000.0
+      ],
+      "rollRateLimToDirXZFactorMax": [
+        0.7,
+        1000000.0
+      ]
+    }
+  },
   "Autopilot": {
     "Roll": {
       "AngleMax": [
@@ -1546,6 +1926,12 @@
       "VelMax": [
         0.0,
         0.0
+      ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
       ],
       "AngleLim": 190.0,
       "RollTimeMult": 1.0,
@@ -1559,7 +1945,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1570,7 +1956,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1581,7 +1967,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1592,7 +1978,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1603,7 +1989,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1619,6 +2005,12 @@
         0.0,
         0.0
       ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
       "AngleLim": 190.0,
       "BalanceLoadFactor": true,
       "MaxAoaFactorMult": 0.95,
@@ -1631,12 +2023,37 @@
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
+      "RateMaxLoadFactorMax": [
+        -2147440000.0,
+        2147440000.0
+      ],
+      "AoaLimits": [
+        -2147440000.0,
+        2147440000.0
+      ],
+      "AoaLimitsMult": [
+        1.0,
+        1.0
+      ],
+      "AoaLimitsManeuverabilityMult": [
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMargin": 5.0,
+      "AoaLimiterPushBackRateMult": [
+        0.0,
+        0.0
+      ],
+      "AoAAntiHangRateDecline": -10.0,
+      "UseAoAGLimits": false,
+      "LoadFactorFilterSmoothCoeff": 0.0,
+      "LoadFactorLimiterStrengthMax": 1.0,
       "RatePID": {
         "Kp": 0.0,
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1647,7 +2064,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1658,7 +2075,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1669,7 +2086,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1680,7 +2097,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1691,7 +2108,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1714,7 +2131,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1725,7 +2142,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1736,7 +2153,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1747,20 +2164,10 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
-        ]
-      }
-    },
-    "Propulsor": {
-      "Trim": {
-        "Source": "",
-        "PropTorqueAxis": [
-          0.0,
-          0.0,
-          0.0
         ]
       }
     },
@@ -1770,6 +2177,10 @@
         1.0
       ],
       "ClimbMax": [
+        0.0,
+        0.0
+      ],
+      "SpeedMult": [
         0.0,
         0.0
       ],
@@ -1790,7 +2201,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1801,13 +2212,25 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
         ]
       }
     },
+    "Propulsor": {
+      "Trim": {
+        "Source": "",
+        "PropTorqueAxis": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "CruiseAssist": {}
+    },
+    "Buoyancy": {},
     "Aim": {
       "Horizontal": true,
       "HeadingToRoll": [
@@ -1859,7 +2282,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1870,7 +2293,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1881,7 +2304,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1892,7 +2315,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1903,7 +2326,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1914,7 +2337,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0

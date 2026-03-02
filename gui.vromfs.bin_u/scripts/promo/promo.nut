@@ -44,11 +44,12 @@ local cache = null
 let getPromoConfig = @() cache
 
 let multiblockData = {}
+let timestampCache = {}
 
 
 
 let actionParamsByBlockId = {}
-let getActionParamsData = @(blockId) getTblValue(blockId, actionParamsByBlockId)
+let getActionParamsData = @(blockId) actionParamsByBlockId?[blockId]
 
 let createActionParamsData = @(actionName, paramsArray = null) {
   action = actionName
@@ -56,7 +57,7 @@ let createActionParamsData = @(actionName, paramsArray = null) {
 }
 
 function gatherPromoActionsParamsData(block) {
-  let actionStr = getTblValue("action", block)
+  let actionStr = block?.action
   if (isEmpty(actionStr))
     return null
 
@@ -161,8 +162,29 @@ function manualSwitchPromoBlock(obj, promoHolderObj) {
 
   let data = multiblockData[obj.blockId]
   data.life_time = data.manual_switch_time_multiplayer * data.switch_time_sec
-
+  data.isManualSwitched = true
   switchPromoBlock(obj, promoHolderObj)
+}
+
+let getCurrentPromoRadioButtonIndex = @(listObj) listObj.getValue()
+
+function getCurrentPromoRadioButton(listObj) {
+  let index = getCurrentPromoRadioButtonIndex(listObj)
+
+  for (local i = 0; i < listObj.childrenCount(); i++)
+    listObj.getChild(i)["type"] = i == index ? "current"
+      : i < index ? "prev"
+      : "next"
+
+  return listObj.getChild(index)
+}
+
+function getNextPromoRadioButtonIndex(listObj) {
+  let index = listObj.getValue()
+  local nextIndex = index + 1
+  if (nextIndex >= listObj.childrenCount())
+    nextIndex = 0
+  return nextIndex
 }
 
 function selectNextPromoBlock(obj, dt) {
@@ -170,20 +192,32 @@ function selectNextPromoBlock(obj, dt) {
   if (objId not in multiblockData)
     return
 
-  multiblockData[objId].life_time -= dt
-  if (multiblockData[objId].life_time > 0)
-    return
-
-  multiblockData[objId].life_time = multiblockData[objId].switch_time_sec
+  let blockData = multiblockData[objId]
+  blockData.life_time -= dt
 
   let listObj = obj.findObject("multiblock_radiobuttons_list")
-  if (!checkObj(listObj))
+
+  if (blockData.life_time > 0) {
+    if (listObj?.isValid()) {
+      local switchProgress = blockData.life_time / blockData.switch_time_sec
+      if (blockData.isManualSwitched)
+        switchProgress /= blockData.manual_switch_time_multiplayer
+      switchProgress = min(1 - switchProgress, 1)
+
+      let buttonObj = getCurrentPromoRadioButton(listObj)
+      let progressObj = buttonObj.findObject("progress")
+      progressObj["width"] = $"{switchProgress}pw"
+    }
+    return
+  }
+
+  blockData.life_time = blockData.switch_time_sec
+  blockData.isManualSwitched = false
+
+  if (!listObj?.isValid())
     return
 
-  let curVal = listObj.getValue()
-  local nextVal = curVal + 1
-  if (nextVal >= listObj.childrenCount())
-    nextVal = 0
+  let nextVal = getNextPromoRadioButtonIndex(listObj)
   listObj.setValue(nextVal)
 }
 
@@ -299,7 +333,7 @@ function setSimpleWidgetData(widgetsTable, id, widgetsWithCounter = []) {
   if (id not in table)
     table[id] <- time.getUtcDays()
 
-  if (getTblValue(id, widgetsTable) != null)
+  if (widgetsTable?[id] != null)
     widgetsTable[id].setWidgetVisible(false)
 
   updateSimpleWidgetsData(table)
@@ -339,10 +373,16 @@ function checkOldRecordsOnInit() {
 }
 
 function getUTCTimeFromBlock(block, timeProperty) {
-  let timeText = getTblValue(timeProperty, block, null)
+  let timeText = block?[timeProperty]
   if (!isString(timeText) || timeText.len() == 0)
     return -1
-  return time.getTimestampFromStringUtc(timeText)
+
+  if (timeText in timestampCache)
+    return timestampCache[timeText]
+
+  let timestamp = time.getTimestampFromStringUtc(timeText)
+  timestampCache[timeText] <- timestamp
+  return timestamp
 }
 
 function checkBlockTime(block) {
@@ -362,20 +402,6 @@ function checkBlockTime(block) {
   return true
 }
 
-function isMultiBlockActiveChanged(blockBlk) {
-  if (!blockBlk?.multiple)
-    return false
-
-  let id = blockBlk.getBlockName()
-  for (local i = 0; i < blockBlk.blockCount(); ++i) {
-    let isActiveBlock = checkBlockTime(blockBlk.getBlock(i))
-    let isMultiblockDataActive = multiblockData?[id].subBlockInfo[i] ?? false
-    if (isActiveBlock != isMultiblockDataActive)
-      return true
-  }
-  return false
-}
-
 function checkPromoBlockReqEntitlement(block) {
   if ("reqEntitlement" not in block)
     return true
@@ -391,6 +417,26 @@ function checkPromoBlockReqFeature(block) {
   return hasAllFeatures(split_by_chars(block.reqFeature, "; "))
 }
 
+let checkPromoBlockUnlock = @(block)
+  ("reqUnlock" in block) ? checkUnlockString(block.reqUnlock) : true
+
+let checkSubBlockVisible = @(block) checkBlockTime(block) && checkPromoBlockReqFeature(block)
+  && checkPromoBlockReqEntitlement(block) && checkPromoBlockUnlock(block)
+
+function isMultiBlockActiveChanged(blockBlk) {
+  if (!blockBlk?.multiple)
+    return false
+
+  let id = blockBlk.getBlockName()
+  for (local i = 0; i < blockBlk.blockCount(); ++i) {
+    let isActiveBlock = checkSubBlockVisible(blockBlk.getBlock(i))
+    let isMultiblockDataActive = multiblockData?[id].subBlockInfo[i] ?? false
+    if (isActiveBlock != isMultiblockDataActive)
+      return true
+  }
+  return false
+}
+
 function isPromoVisibleByAction(block) {
   let actionData = gatherPromoActionsParamsData(block)
   if (!actionData)
@@ -399,16 +445,13 @@ function isPromoVisibleByAction(block) {
   return isVisiblePromoByAction(actionData.action, actionData.paramsArray)
 }
 
-let checkPromoBlockUnlock = @(block)
-  ("reqUnlock" in block) ? checkUnlockString(block.reqUnlock) : true
-
 let isPromoLinkVisible = @(block) isEmpty(block?.link) || hasFeature("AllowExternalLink")
 
 function checkMultiVisibleBlocks(block) {
   local countVisible = 0
   let blocksCount = block.blockCount()
   for (local i = 0; i < blocksCount; ++i)
-    if (checkBlockTime(convertBlk(block.getBlock(i)))) {
+    if (checkSubBlockVisible(convertBlk(block.getBlock(i)))) {
       ++countVisible
       if (countVisible > 1)
         return true
@@ -419,7 +462,7 @@ function checkMultiVisibleBlocks(block) {
 function hasVisibleBlocksInMultiblock(block) {
   let blocksCount = block.blockCount()
   for (local i = 0; i < blocksCount; ++i)
-    if (checkBlockTime(convertBlk(block.getBlock(i))))
+    if (checkSubBlockVisible(convertBlk(block.getBlock(i))))
       return true
   return false
 }
@@ -438,7 +481,7 @@ let checkBlockVisibility = @(block) getShowAllPromoBlocks() ||
     && (!isMultiblock(block) || hasVisibleBlocksInMultiblock(block)))
 
 let visibilityStatuses = {}
-let getPromoVisibilityById = @(id) getTblValue(id, visibilityStatuses, false)
+let getPromoVisibilityById = @(id) visibilityStatuses?[id] ?? false
 
 function needUpdate(newData) {
   local reqForceUpdate = false
@@ -447,7 +490,7 @@ function needUpdate(newData) {
     let id = block.getBlockName()
 
     let show = checkBlockVisibility(block)
-    if (getTblValue(id, visibilityStatuses) != show) {
+    if (visibilityStatuses?[id] != show) {
       visibilityStatuses[id] <- show
       reqForceUpdate = true
     }
@@ -497,12 +540,13 @@ function requestPromoUpdate() {
   cache = DataBlock()
   cache.setFrom(promoBlk)
   actionParamsByBlockId.clear()
+  timestampCache.clear()
   return true
 }
 
 function getFirstActiveSubBlockIndex(block) {
   for (local i = 0; i < block.blockCount(); ++i)
-    if (checkBlockTime(block.getBlock(i)))
+    if (checkSubBlockVisible(block.getBlock(i)))
       return i
   return -1
 }
@@ -513,7 +557,7 @@ function getActiveSubBlockCount(block) {
     return activeBlockCounter
 
   for (local i = 0; i < block.blockCount(); ++i) {
-    let isVisibleSubBlock = checkBlockTime(block.getBlock(i))
+    let isVisibleSubBlock = checkSubBlockVisible(block.getBlock(i))
     if (isVisibleSubBlock)
       ++activeBlockCounter
   }
@@ -531,7 +575,7 @@ function getType(block) {
   else if (activeBlockCount == 1)
     block = block.getBlock(getFirstActiveSubBlockIndex(block))
 
-  if (getTblValue("image", block, "") != "")
+  if ((block?.image ?? "") != "")
     return PROMO_BUTTON_TYPE.IMAGE
   return getPromoButtonConfig(block.getBlockName())?.buttonType ?? PROMO_BUTTON_TYPE.ARROW
 }
@@ -540,14 +584,14 @@ let defaultCollapsedIcon = "icon/news"
 
 function getPromoCollapsedIcon(view, promoButtonId) {
   let icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon
-  let res = (icon != null) ? getTblValue(icon, view, icon) 
+  let res = (icon != null) ? (view?[icon] ?? icon) 
     : getLocTextFromConfig(view, "collapsedIcon", defaultCollapsedIcon)
   return loc(res)
 }
 
 function getPromoCollapsedText(view, promoButtonId) {
   let text = getPromoButtonConfig(promoButtonId)?.collapsedText
-  let res = (text != null) ? getTblValue(text, view, "") 
+  let res = (text != null) ? (view?.text ?? "") 
     : getLocTextFromConfig(view, "collapsedText", "")
   return loc(res)
 }
@@ -604,6 +648,7 @@ function generatePromoBlockView(block) {
       switch_time_sec = switchVal,
       manual_switch_time_multiplayer = mSwitchVal,
       life_time = lifeTimeVal
+      isManualSwitched = false
     }
   }
 
@@ -614,7 +659,7 @@ function generatePromoBlockView(block) {
   for (local i = 0; i < requiredBlocks; ++i) {
     let checkBlock = isMulti ? block.getBlock(i) : block
     let fillBlock = convertBlk(checkBlock)
-    let isVisibleSubBlock = checkBlockTime(fillBlock)
+    let isVisibleSubBlock = checkSubBlockVisible(fillBlock)
 
     if (isMulti)
       multiBlockTbl[i] <- isVisibleSubBlock
@@ -642,7 +687,7 @@ function generatePromoBlockView(block) {
       link = getPromoLinkText(block)
     if (!isEmpty(link)) {
       fillBlock.link <- link
-      setPromoActionsParamsData(actionParamsKey, "url", [link, getTblValue("forceExternalBrowser", checkBlock, false)])
+      setPromoActionsParamsData(actionParamsKey, "url", [link, checkBlock?.forceExternalBrowser ?? false])
       fillBlock.action <- PERFORM_PROMO_ACTION_NAME
       view.collapsedAction <- PERFORM_PROMO_ACTION_NAME
     }

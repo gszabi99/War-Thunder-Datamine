@@ -1,11 +1,15 @@
 
 require ecs
 require net
+require hud
+require DagorMath
+require DagorDataBlock
 require inventory
 require DngHuman
 require WTInput
+require AnimV20
+require GeomNodeTree
 require %game.input.input_events
-
 require %appGame.wt_events
 
 
@@ -37,6 +41,7 @@ def set_throwbit(var ct : HumanControlState&;
 [es(tag=input, REQUIRE=hero)]
 def human_grenade_input_action_triggered_es(evt : EventOnKeyDown;
                                             eid : EntityId;
+                                            human_weap__currentGunEid : EntityId;
                                             human_weap__throwMode : bool;
                                             human_weap__grenadeThrowModeServer : bool;
                                             input__enabled : bool = true;
@@ -46,6 +51,10 @@ def human_grenade_input_action_triggered_es(evt : EventOnKeyDown;
   if evt.eventId != int(ShortcutEventId.ID_HUMAN_THROW)
     return
   if human_weap__throwMode || human_weap__grenadeThrowModeServer
+    return
+  if has(human_weap__currentGunEid, "disableQuickThrow")
+    using() <| $(var eventData : DataBlock)
+      hud_notify_script("hint:human_hands_full:show", eventData)
     return
   try_quick_throw_grenade_slot(eid, itemContainer, "")
 
@@ -87,3 +96,18 @@ def downed_human_cancel_throw_grenade_es(evt : EventOnKeyUp;
   if input__enabled && isDowned && evt.eventId == int(ShortcutEventId.ID_HUMAN_USE)
     human_net_phys.phys.producedCT |> human_control_state_set_control_bit(HumanPhysControlType.HCT_THROW_BACK, false)
 
+[es(tag=input)]
+def set_human_weap_throw_pos_local_es(info : UpdateStageUpdateInput;
+                                      human_net_phys : HumanActor;
+                                      animchar : AnimcharBaseComponent;
+                                      human_weap__throwMode : bool;
+                                      human_weap__grenadeThrower : EntityId;
+                                      var human_weap__throwPosLocal : float3&)
+  if human_weap__throwMode
+    query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
+      query(grenade_thrower__projectileEntity) <| $ [es] (gun_attach__mainSlotId : int)
+        if gun_attach__mainSlotId != -1
+          let physTransform = human_net_phys.phys.currentState.location |> location_makeTM()
+          let wofs = geomtree_getWtmOfs(*animchar.nodeTree)
+          let slotNodeWtm = animchar_getSlotNodeWtm(animchar, gun_attach__mainSlotId)
+          human_weap__throwPosLocal = inverse(physTransform) * (float3x4(*slotNodeWtm)[3] + wofs)

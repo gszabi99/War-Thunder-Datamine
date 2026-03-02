@@ -30,6 +30,10 @@ let { deferOnce } = require("dagor.workcycle")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isQueueActive, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
 let { get_game_mode } = require("mission")
+let { getPlayedOperationText } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
+let { slotbarPresetsByCountry } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 
 
@@ -133,20 +137,18 @@ function setCurrentGameModeById(id, isUserSelected = false) {
   setCurrentGameModeId(id, true, isUserSelected)
 }
 
+let imgFolder = "#ui/images/game_modes_tiles/"
+
 let featuredModes = [
   {
     
     modeId = "world_war_featured_game_mode"
     text = @() loc("mainmenu/btnWorldwar")
-    textDescription = @() ::g_world_war.getPlayedOperationText()
+    textDescription = @() getPlayedOperationText()
     isWide = @() isMeNewbie() || !isPC
-    image = function() {
-      let operation = ::g_world_war.getLastPlayedOperation()
-      if (operation != null)
-        return $"#ui/images/game_modes_tiles/worldwar_active_{(this.isWide() ? "wide" : "thin")}?P1"
-      else
-        return $"#ui/images/game_modes_tiles/worldwar_live_{(this.isWide() ? "wide" : "thin")}?P1"
-    }
+    image = @() getOperationById(getLastPlayedOperationId()) != null
+      ? $"{imgFolder}{this.isWide() ? "worldwar_active_wide" : "worldwar_active_thin"}?P1"
+      : $"{imgFolder}{this.isWide() ? "worldwar_live_wide" : "worldwar_live_thin"}?P1"
     videoPreview = null
     isVisible = @() isWorldWarEnabled()
     isCrossPlayRequired = needShowCrossPlayInfo
@@ -156,7 +158,7 @@ let featuredModes = [
     updateByTimeFunc = function(scene, objId) {
       let descObj = scene.findObject($"{objId}_text_description")
       if (checkObj(descObj))
-        descObj.setValue(::g_world_war.getPlayedOperationText())
+        descObj.setValue(getPlayedOperationText())
     }
   }
   {
@@ -165,7 +167,8 @@ let featuredModes = [
     text = @() loc("mainmenu/btnTournamentsTSS")
     textDescription = @() null
     isWide = false
-    image = @() $"#ui/images/game_modes_tiles/tss_{(this.isWide ? "wide" : "thin")}?P1"
+    
+    image = @() $"{imgFolder}tss_thin?P1"
     videoPreview = null
     isVisible = @() hasFeature("Tournaments") && hasFeature("AllowExternalLink")
     hasNewIconWidget = true
@@ -185,13 +188,11 @@ let featuredModes = [
         return loc("mainmenu/events/eventlist_btn_no_active_events")
       else
         return loc("mainmenu/btnTournamentsAndEvents")
-
     }
     textDescription = function() { return null }
     isWide = false
-    image = function () {
-      return $"#ui/images/game_modes_tiles/events_{(this.isWide ? "wide" : "thin")}?P1"
-    }
+    
+    image = @() $"{imgFolder}events_thin?P1"
     videoPreview = null
     isVisible = @() hasFeature("Events") && events.getEventsVisibleInEventsWindowCount() > 0
     hasNewIconWidget = false
@@ -205,9 +206,8 @@ let featuredModes = [
     }
     textDescription = function() { return null }
     isWide = false
-    image = function () {
-      return $"#ui/images/game_modes_tiles/custom_battles_{(this.isWide ? "wide" : "thin")}?P1"
-    }
+    
+    image = @() $"{imgFolder}custom_battles_thin?P1"
     videoPreview = null
     isVisible = @() true
     hasNewIconWidget = false
@@ -228,7 +228,7 @@ let customGameModesBattles = [
     
     id = "custom_mode_fullreal"
     difficulty = g_difficulty.SIMULATOR
-    image = "#ui/images/game_modes_tiles/mixed_event_02_wide?P1"
+    image = $"{imgFolder}mixed_event_02_wide?P1"
     type = g_event_display_type.REGULAR
     displayWide = true
     getEventId = function() {
@@ -744,7 +744,7 @@ function isPresetValidForGameMode(preset, gameMode = null) {
 }
 
 function findPresetValidForGameMode(countryId, gameMode = null  ) {
-  let presets = getTblValue(countryId, ::slotbarPresets.presets, null)
+  let presets = slotbarPresetsByCountry?[countryId]
   if (presets == null)
     return null
   foreach (preset in presets) {

@@ -12,6 +12,7 @@ let { get_shop_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { usageRatingAmount } = require("%scripts/airInfo.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
+let { calculateMaxRank } = require("%scripts/ranks.nut")
 
 let allUnits = getAllUnits()
 
@@ -19,6 +20,7 @@ foreach (name, unit in allUnits)
   allUnits[name] = Unit({}).setFromUnit(unit)
 if (showedUnit.get() != null)
   showedUnit.set(allUnits?[showedUnit.get().name])
+calculateMaxRank()
 
 function initAllUnits() { 
   allUnits.clear()

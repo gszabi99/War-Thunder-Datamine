@@ -18,7 +18,8 @@ let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTime,
-  getHintByShowEvent, g_hud_hints} = require("%scripts/hud/hudHints.nut")
+  getHintByShowEvent, g_hud_hints
+} = require("%scripts/hud/hudHints.nut")
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -36,6 +37,8 @@ enum HintShowState {
 }
 
 let activeHints = persist("activeHints", @() [])
+foreach (hintData in activeHints) 
+  hintData.hint = g_hud_hints.getByName(hintData.hint.name)
 
 let shipFireControlPos = persist("shipFireControlPos", @() {
   x = 0
@@ -692,11 +695,6 @@ let isHintWillBeShown = @(event_name) isHintShowAllowed(event_name, null, {needC
 eventbus_subscribe("update_ship_fire_control_panel", @(value) onUpdateShipFireControlPanel(value))
 
 addListenersWithoutEnv({
-  function ScriptsReloaded(_) {
-    foreach (hintData in activeHints)
-      hintData.hint = g_hud_hints.getByName(hintData.hint.name)
-  }
-
   function LoadingStateChange(_) {
     if (!isInFlight()) {
       activeHints.clear()

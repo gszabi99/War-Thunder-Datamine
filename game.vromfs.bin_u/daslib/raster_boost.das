@@ -1,10 +1,16 @@
 options gen2
 module raster_boost private
 
+
+
+
+
+
 require math
 require raster public
 
 bitfield RasterFlags {
+    
     column_major
 }
 
@@ -16,6 +22,7 @@ struct public SurfaceData {
 }
 
 def public bitmap8_size(size : int2) {
+    
     return uint64(size.x * size.y) + 1024ul
 }
 

@@ -2362,12 +2362,12 @@
       ],
       "CenterOfGravity": [
         -0.15,
-        1.4,
+        0.5,
         0.0
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.5
+        0.7
       ],
       "AdvancedMass": false,
       "trackMass": 40.0,
@@ -4031,10 +4031,6 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
-              "stabilizerDmPart": [
-                "fire_control_system_dm",
-                "power_system_dm"
-              ],
               "speedYaw": 57.0,
               "speedPitch": 45.0,
               "rotationAnimScale": "gun_rotate_01:CRS",
@@ -4130,10 +4126,6 @@
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.1,
               "barrelDP": "gun_barrel_01_dm",
-              "stabilizerDmPart": [
-                "fire_control_system_dm",
-                "power_system_dm"
-              ],
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4273,14 +4265,8 @@
                 "gun": "bone_gun",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "verDriveDm": [
-                  "drive_turret_v_dm",
-                  "fire_control_system_dm"
-                ],
-                "horDriveDm": [
-                  "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
+                "verDriveDm": "drive_turret_v_dm",
+                "horDriveDm": "drive_turret_h_dm",
                 "shootingDmPart": "fire_control_system_dm",
                 "rotatedTurret": "bone_turret"
               },
@@ -4311,9 +4297,10 @@
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "shotFreq": 40.0,
               "allowableDelta": 360.0,
-              "salvo": 4,
-              "salvoDelay": 0.5,
+              "salvo": 2,
+              "salvoDelay": 5.0,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
               "fireConeAngle": [

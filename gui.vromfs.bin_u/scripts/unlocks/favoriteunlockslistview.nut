@@ -6,8 +6,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getFavoriteUnlocks, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { storeUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { updateProgress, getSubunlockCfg, buildConditionsConfig,
-  fillSimplifiedUnlockInfo } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { updateProgress, getSubunlockCfg, fillSimplifiedUnlockInfo
+} = require("%scripts/unlocks/unlocksViewModule.nut")
 
 gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM

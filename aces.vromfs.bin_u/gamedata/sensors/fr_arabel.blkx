@@ -54,7 +54,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 120000.0,
+        "maxValue": 80000.0,
         "width": 70.0
       },
       "dopplerSpeed": {
@@ -75,10 +75,8 @@
     "common": {
       "range1": 10000.0,
       "range2": 20000.0,
-      "range3": [
-        50000.0,
-        100000.0
-      ]
+      "range3": 40000.0,
+      "range4": 80000.0
     }
   },
   "fsms": {
@@ -117,7 +115,7 @@
             "azimuthWidth": 5.0,
             "distanceRange": [
               0.0,
-              120000.0
+              80000.0
             ]
           }
         },
@@ -281,11 +279,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }
@@ -305,10 +305,7 @@
       }
     },
     "tws": {
-      "stateInit": [
-        "search",
-        "search"
-      ],
+      "stateInit": "search",
       "transitions": {
         "scan": {
           "event": "update",
@@ -361,7 +358,15 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": {
+            "addTargetOfInterestCandidate": {},
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "matchTargets": {
+          "event": "scanFinished",
+          "actions": {
+            "matchTargetsOfInterest": {
               "limit": 136,
               "timeMin": 2.0,
               "posGateTimeInitial": [
@@ -372,7 +377,7 @@
               "posGateMaxTime": 2.0,
               "posGateRange": [
                 0.0,
-                1000.0
+                300.0
               ],
               "dopplerSpeedGateMaxTime": 2.0,
               "dopplerSpeedGateRange": [
@@ -401,9 +406,7 @@
                 "dt": 0.0208,
                 "limTimeOut": 3.0
               }
-            },
-            "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {}
+            }
           }
         },
         "switchSelectedTarget": {

@@ -8,7 +8,7 @@ let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.n
 let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let DataBlock = require("DataBlock")
-let { getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarStates.nut")
+let { getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let WwReinforcementArmy = class (WwFormation) {
   suppliesEndMillisec = 0

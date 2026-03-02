@@ -2042,7 +2042,7 @@
       ],
       "CenterOfGravity": [
         0.2,
-        0.6,
+        0.4,
         0.0
       ],
       "CenterOfGravityClampY": [
@@ -2074,6 +2074,7 @@
     "collisionProps": {
       "cls_turret_01": "convex_hull",
       "cls_turret_02": "convex_hull",
+      "cls_turret_04": "convex_hull",
       "cls_body": "convex_hull"
     },
     "engine": {
@@ -3117,6 +3118,24 @@
       "from": "ger_camo_bronzegruen*"
     }
   },
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": [
+        "cls_turret_04",
+        "cls_turret_02"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        true,
+        false,
+        false,
+        true
+      ]
+    }
+  },
   "skin": [
     {
       "name": "lederbraun",
@@ -3161,6 +3180,15 @@
       "replace_tex": {
         "from": "ger_camo_bronzegruen*",
         "to": "ger_camo_carc_winter*"
+      }
+    },
+    {
+      "name": "ger_camo_modern_desert_threecolor",
+      "nameLocId": "skin/ger_camo_modern_desert_threecolor",
+      "descLocId": "skin/ger_camo_modern_desert_threecolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_modern_desert_threecolor*"
       }
     }
   ],

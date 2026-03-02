@@ -1,7 +1,9 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud, get_mp_kick_countdown
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import locOrStrip
 
+let { register_command } = require("console")
+let { rnd } = require("dagor.random")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
@@ -39,6 +41,8 @@ let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 require("%scripts/statistics/mpStatisticsPlayerTooltip.nut")
 let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsInfo.nut")
+let { getCurMissionWWBattleName } = require("%scripts/worldWar/worldWarState.nut")
+
 
 const ICON_SKIP_BG_COLORING = "image_in_progress_ico.svg"
 
@@ -142,6 +146,28 @@ function get_in_battle_time_to_kick_show_alert() {
 }
 
 let set_in_battle_time_to_kick_show_alert = @(v) in_battle_time_to_kick_show_alert = v
+
+local getMpKickCountdownDebug = null
+let getMpKickCountdown = @() (getMpKickCountdownDebug ?? get_mp_kick_countdown)()
+
+function hud_show_in_battle_time_to_kick_timer() {
+  let time = get_mp_kick_countdown() + 5000
+  getMpKickCountdownDebug = @() time
+  set_in_battle_time_to_kick_show_timer(time)
+}
+
+function hud_show_in_battle_time_to_kick_alert() {
+  let getrndtime = @() rnd() % 5000
+  getMpKickCountdownDebug = getrndtime
+  set_in_battle_time_to_kick_show_alert(getrndtime())
+}
+
+function hud_reset_in_battle_time_to_kick() {
+  getMpKickCountdownDebug = null
+  let gmSettingsBlk = get_game_settings_blk()
+  set_in_battle_time_to_kick_show_timer(gmSettingsBlk?.time_to_kick.in_battle_show_timer_threshold ?? 150)
+  set_in_battle_time_to_kick_show_alert(gmSettingsBlk?.time_to_kick.in_battle_show_alert_threshold ?? 50)
+}
 
 function getLocalTeamForMpStats(team = null) {
   return (team ?? get_mp_local_team()) != g_team.B.code ? g_team.A.code : g_team.B.code
@@ -695,7 +721,7 @@ function getCurMpTitle() {
   let text = []
 
   if (getCurMissionRules().isWorldWar && isWorldWarEnabled()) {
-    text.append(::g_world_war.getCurMissionWWBattleName())
+    text.append(getCurMissionWWBattleName())
   }
   else {
     let gm = get_game_mode()
@@ -746,15 +772,17 @@ function countWidthForMpTable(objTbl, markup) {
   }
 }
 
+register_command(hud_show_in_battle_time_to_kick_timer, "debug.hud.show_in_battle_time_to_kick_timer")
+register_command(hud_show_in_battle_time_to_kick_alert, "debug.hud.show_in_battle_time_to_kick_alert")
+register_command(hud_reset_in_battle_time_to_kick, "debug.hud.reset_in_battle_time_to_kick")
+
 return {
   guiStartMPStatScreen
   guiStartMPStatScreenFromGame
   set_time_to_kick_show_alert
   get_time_to_kick_show_alert
-  set_in_battle_time_to_kick_show_alert
   get_in_battle_time_to_kick_show_alert
   get_in_battle_time_to_kick_show_timer
-  set_in_battle_time_to_kick_show_timer
   get_time_to_kick_show_timer
   set_time_to_kick_show_timer
   getCurMpTitle
@@ -763,4 +791,5 @@ return {
   buildMpTable
   updateTeamCssLabel
   countWidthForMpTable
+  getMpKickCountdown
 }

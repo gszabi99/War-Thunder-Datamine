@@ -313,6 +313,12 @@
         "armorThickness": 15.0,
         "armorClass": "RHAHH_tank",
         "hidableInViewer": true
+      },
+      "firewall_armor_01_dm": {
+        "armorThickness": 35.0,
+        "hp": 150.0,
+        "ignoreDeadWithSplash": true,
+        "armorEffectiveThicknessMax": 50.0
       }
     },
     "turret": {
@@ -1936,7 +1942,16 @@
           }
         }
       }
-    ]
+    ],
+    "armorArrayTurret": {
+      "xrayDmPart": "firewall_armor_01_dm",
+      "titleLoc": "RHA_tank_modern",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "firewall_armor_01_dm"
+        }
+      }
+    }
   },
   "MetaParts": {
     "closed_fightning_compartment": {
@@ -2249,7 +2264,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG58_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame",
         "defaultYaw": 0.0,
@@ -2262,7 +2277,7 @@
           1.0,
           15.0
         ],
-        "bullets": 1800,
+        "bullets": 2200,
         "isBulletBelt": true,
         "ChainfireTime": 3.0,
         "DelayAfterShoot": 3.0,
@@ -4167,7 +4182,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG58_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame",
               "defaultYaw": 0.0,
@@ -4180,7 +4195,7 @@
                 1.0,
                 15.0
               ],
-              "bullets": 1800,
+              "bullets": 2200,
               "isBulletBelt": true,
               "ChainfireTime": 3.0,
               "DelayAfterShoot": 3.0,
@@ -5769,7 +5784,7 @@
       }
     },
     "Right5": {
-      "shotCount": 2,
+      "shotCount": 4,
       "sensorPos": [
         0.0,
         0.0,

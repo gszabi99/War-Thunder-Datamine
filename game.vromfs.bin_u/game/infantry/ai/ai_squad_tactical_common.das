@@ -61,23 +61,66 @@ def ai_squad_tactical_add_update_target(squad_eid : EntityId; target_eid : Entit
       targetsAcqTime[oldestIdx] = 0.0
 
 
-def ai_find_acqure_tactical_target(squad_eid : EntityId)
-  var resultEid = INVALID_ENTITY_ID
-  let atTime = get_sync_time()
+def ai_check_has_tactical_targets_to_acquire(squad_eid : EntityId; max_actual_time : float; allow_already_acquired : bool)
+  var result = false
   query(squad_eid) <| $ [es] (squadAI_tactical__targetsPosTime : Point4List;
                               squadAI_tactical__targetsEids : EidList;
-                              var squadAI_tactical__targetsAcqTime : FloatList&)
+                              squadAI_tactical__targetsAcqTime : FloatList)
+    let atTime = get_sync_time()
+    let actualTime = max_actual_time < 0.0 ? AI_SQUAD_TACTICAL_ACTUAL_TARGET_TIMEOUT : max_actual_time
     for i in iter_range(squadAI_tactical__targetsEids)
-      if atTime > squadAI_tactical__targetsPosTime[i].w + AI_SQUAD_TACTICAL_ACTUAL_TARGET_TIMEOUT
-        continue
-      if atTime < squadAI_tactical__targetsAcqTime[i] 
+      if atTime > squadAI_tactical__targetsPosTime[i].w + actualTime
         continue
       let targetEid = squadAI_tactical__targetsEids[i]
       if targetEid == INVALID_ENTITY_ID
         continue
-      squadAI_tactical__targetsAcqTime[i] = atTime + AI_SQUAD_TACTICAL_ACQUIRE_TARGET_TIMEOUT
-      resultEid = targetEid
-      return
+      if atTime < squadAI_tactical__targetsAcqTime[i] 
+        if !allow_already_acquired
+          continue
+      result = true
+      break
+  return result
+
+def ai_find_acqure_tactical_target(var out_last_pos : float3&; squad_eid : EntityId; for_pos : float3; max_actual_time : float; allow_already_acquired : bool)
+  var resultEid = INVALID_ENTITY_ID
+  var resultPos = float3()
+  query(squad_eid) <| $ [es] (squadAI_tactical__targetsPosTime : Point4List;
+                              squadAI_tactical__targetsEids : EidList;
+                              var squadAI_tactical__targetsAcqTime : FloatList&)
+    let atTime = get_sync_time()
+    let actualTime = max_actual_time < 0.0 ? AI_SQUAD_TACTICAL_ACTUAL_TARGET_TIMEOUT : max_actual_time
+    var acqEid = INVALID_ENTITY_ID
+    var acqPos = float3()
+    var acqBestDistSq = -1.0
+    var bestDistSq = -1.0
+    var bestIdx = -1
+    for i in iter_range(squadAI_tactical__targetsEids)
+      if atTime > squadAI_tactical__targetsPosTime[i].w + actualTime
+        continue
+      let targetEid = squadAI_tactical__targetsEids[i]
+      if targetEid == INVALID_ENTITY_ID
+        continue
+      let targetPos = squadAI_tactical__targetsPosTime[i].xyz
+      let targetDistSq = length_sq(targetPos - for_pos)
+
+      if atTime < squadAI_tactical__targetsAcqTime[i] 
+        if allow_already_acquired && (acqBestDistSq < 0.0 || targetDistSq < acqBestDistSq)
+          acqEid = targetEid
+          acqPos = targetPos
+          acqBestDistSq = targetDistSq
+        continue
+
+      if bestIdx < 0 || targetDistSq < bestDistSq
+        resultEid = targetEid
+        resultPos = targetPos
+        bestDistSq = targetDistSq
+        bestIdx = i
+    if bestIdx >= 0
+      squadAI_tactical__targetsAcqTime[bestIdx] = atTime + AI_SQUAD_TACTICAL_ACQUIRE_TARGET_TIMEOUT
+    elif acqEid != INVALID_ENTITY_ID
+      resultEid = acqEid
+      resultPos = acqPos
+  out_last_pos = resultPos
   return resultEid
 
 def ai_keep_acqure_tactical_target(squad_eid : EntityId; target_eid : EntityId; only_actual : bool)

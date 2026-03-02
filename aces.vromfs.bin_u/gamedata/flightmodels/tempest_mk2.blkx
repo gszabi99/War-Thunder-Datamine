@@ -3,7 +3,7 @@
   "fmFile": "fm/tempest_mk2.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/postwar_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
-  "gyroSight": false,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "raf_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -442,8 +442,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1158,8 +1157,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1214,8 +1213,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1270,8 +1269,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1326,8 +1325,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2054,12 +2053,12 @@
   "cockpit": {
     "headPos": [
       -1.38,
-      0.915,
+      0.935,
       0.0
     ],
     "headPosOnShooting": [
       -1.395,
-      0.915,
+      0.935,
       0.0
     ],
     "lightPos": [
@@ -2283,21 +2282,6 @@
         "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_default.blk"
       },
       {
-        "name": "tempest_mkv_250lbs_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_250lbs_bombs.blk",
-        "reqModification": "halker_sbc"
-      },
-      {
-        "name": "tempest_mkv_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_bombs.blk",
-        "reqModification": "halker_mbc"
-      },
-      {
-        "name": "tempest_mkv_1000lbs_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_1000lbs_bombs.blk",
-        "reqModification": "halker_lbc"
-      },
-      {
         "name": "rockets",
         "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_rockets.blk",
         "reqModification": "halker_rc",
@@ -2307,6 +2291,44 @@
             "amountPerTier": 1.0,
             "iconType": "rockets_he_small"
           }
+        }
+      },
+      {
+        "name": "tempest_mkv_250lbs_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_250lbs_bombs.blk",
+        "reqModification": "halker_sbc"
+      },
+      {
+        "name": "tempest_mkv_250lbs_mc_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_250lbs_mc_bombs.blk",
+        "reqModification": "halker_sbc"
+      },
+      {
+        "name": "tempest_mkv_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_bombs.blk",
+        "reqModification": "halker_mbc"
+      },
+      {
+        "name": "tempest_mkv_500lbs_mc_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_500lbs_mc_bombs.blk",
+        "reqModification": "halker_mbc"
+      },
+      {
+        "name": "tempest_mkv_anm65_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_anm65_bombs.blk",
+        "reqModification": "halker_lbc"
+      },
+      {
+        "name": "tempest_mkv_1000lbs_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_1000lbs_bombs.blk",
+        "reqModification": "halker_lbc"
+      },
+      {
+        "name": "tempest_mkv_500_sap_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_500_sap_bombs.blk",
+        "reqModification": "halker_mbc",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
         }
       }
     ]

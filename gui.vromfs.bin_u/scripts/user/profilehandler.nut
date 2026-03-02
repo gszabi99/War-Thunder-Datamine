@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_unlock_type, select_current_title
+from "%scripts/dagui_natives.nut" import get_unlock_type, select_current_title, get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
@@ -17,7 +17,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
+let { getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder, getUnlockById
+} = require("%scripts/unlocks/unlocksCache.nut")
 let time = require("%scripts/time.nut")
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let { isMeXBOXPlayer, isMePS4Player, isPlatformPC, isPlatformSony } = require("%scripts/clientState/platform.nut")
@@ -34,7 +35,7 @@ let seenList = require("%scripts/seen/seenList.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
   needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { get_gui_regional_blk } = require("blkGetters")
@@ -65,6 +66,10 @@ let { openAchievementsPage } = require("%scripts/user/achievements/achievementsH
 require("%scripts/user/userCard/userCard.nut") 
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
+let { Cost } = require("%scripts/money.nut")
+let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
@@ -146,6 +151,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   editModeTempData = null
   curUnitImageIdx = -1
 
+  chosenIconsList = null
+  purchaseCostGoldTotal = 0
+  itemsCanBuy = null
+  itemsCanNotBuy = null
+
   unlockFilters = {
     UnlockAchievement = null
     UnlockChallenge = null
@@ -172,6 +182,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function actualInitScreen() {
     this.editModeTempData = {}
+    this.chosenIconsList = {}
+    this.itemsCanBuy = []
+    this.itemsCanNotBuy = []
 
     setBreadcrumbGoBackParams(this)
     if (!this.scene)
@@ -207,6 +220,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     this.initShortcuts()
     this.updateProfileAppearance()
+    this.updateApplyButtonView()
   }
 
   function initSheetsList() {
@@ -327,7 +341,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let isProfileOpened = this.selectedSheet == "UserCard"
     let needHideChangeAccountBtn = steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
     let buttonsList = {
-      btn_changeAccount = isInMenu.get() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn && !this.isEditModeEnabled
+      btn_changeAccount = isInMenu.get() && isProfileOpened && !isPlatformSony && !is_gdk && !needHideChangeAccountBtn && !this.isEditModeEnabled
       btn_changeName = isInMenu.get() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !this.isEditModeEnabled
       btn_editPage = isInMenu.get() && isProfileOpened && !this.isEditModeEnabled
       btn_cancelEditPage = isInMenu.get() && isProfileOpened && this.isEditModeEnabled
@@ -383,6 +397,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       handler.saveProfileTitle(titleName)
   }
 
+  
   function onProfileEditCancelBtn() {
     this.setEditMode(!this.isEditModeEnabled)
     if (this.editModeTempData?.title) {
@@ -396,6 +411,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.resetHeaderBackgroundImage()
     this.resetAvatarFrameImage()
     this.resetAvatarImage()
+    this.clearUnpurchasedItems()
   }
 
   function saveProfileTitle(title) {
@@ -411,8 +427,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function setEditMode(val) {
     this.isEditModeEnabled = val
     this.updateButtons()
-    if (val)
+    if (val) {
       this.editModeTempData = {}
+      this.chosenIconsList = {}
+    }
     else {
       this.onHeaderBackgroundListHide()
       this.onChooseImageWndHide()
@@ -422,17 +440,72 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       showcase.onChangeEditMode(val, this.terseInfo, this.scene)
   }
 
-  function onIconChoosen(imageType, data) {
-    if (imageType == "pilotIcon") {
-      this.fillProfileIcon(data.unlockId)
-      if (this.isEditModeEnabled)
-        this.editModeTempData.pilotIcon <- data.unlockId
+  function calculateIconAndFrameCost() {
+    if (this.chosenIconsList == null)
       return
-    }
+    this.purchaseCostGoldTotal = 0
+    this.itemsCanBuy.clear()
+    this.itemsCanNotBuy.clear()
+    foreach (tempDataKey, data in this.chosenIconsList) {
+      if (data.enabled)
+        continue
+      let cost = getUnlockCost(data.unlockId)
+      let canBuy = !data.enabled && cost.gold != 0
 
-    this.fillProfileAvatarFrame(data)
+      let realId = data?.unlockId ?? data?.id ?? ""
+      let unlockBlk = getUnlockById(realId)
+      let uType = unlockBlk?.type != null ? get_unlock_type(unlockBlk.type) : -1
+      let unlockName = loc($"unlocks/{get_name_by_unlock_type(uType)}")
+      let unlockItem = { unlockId = realId, unlockName, tempDataKey }
+      if (canBuy) {
+        this.purchaseCostGoldTotal = this.purchaseCostGoldTotal + cost.gold
+        this.itemsCanBuy.append(unlockItem)
+      }
+      else {
+        this.itemsCanNotBuy.append(unlockItem)
+      }
+    }
+  }
+
+  function updateApplyButtonView() {
+    this.calculateIconAndFrameCost()
+
+    let applyBtnObj = this.scene.findObject("btn_applyEditPage")
+    if (!applyBtnObj?.isValid())
+      return
+
+    let isBalanceEnough = checkBalanceMsgBox(Cost(0, this.purchaseCostGoldTotal), null, true)
+    let isApplyActive = this.itemsCanNotBuy.len() == 0 && isBalanceEnough
+    let isApplyFree = this.purchaseCostGoldTotal == 0
+
+    let msgText = isApplyFree ? loc("msgbox/btn_apply") : loc("mainmenu/btnOrder")
+    local msgTextWithPrice = msgText
+    local msgTextWithPriceColored = null
+    if (!isApplyFree) {
+      let msgPrice = Cost(0, this.purchaseCostGoldTotal).getUncoloredText()
+      msgTextWithPrice = "".concat(msgText, loc("ui/parentheses/space", { text = msgPrice }))
+      msgTextWithPriceColored = "".concat(msgText, loc("ui/parentheses/space", {
+        text = colorize(isBalanceEnough ? "activeTextColor" : "badTextColor", msgPrice)
+      }))
+    }
+    setDoubleTextToButton(this.scene, "btn_applyEditPage", msgTextWithPrice, msgTextWithPriceColored)
+    applyBtnObj.visualStyle = isApplyFree ? "" : "purchase"
+    applyBtnObj.inactiveColor = !isApplyActive ? "yes" : "no"
+  }
+
+  function onIconChoosen(imageType, data) {
+    let tempDataKey = imageType == "pilotIcon" ? "pilotIcon"
+      : imageType == "frame" ? "avatarFrameId"
+      : imageType
+
+    this.chosenIconsList[tempDataKey] <- data
+
     if (this.isEditModeEnabled)
-      this.editModeTempData.avatarFrameId <- data.id
+      this.editModeTempData[tempDataKey] <- data?.id ?? data.unlockId
+
+    this.fillSelectedItems(imageType, data)
+
+    this.updateApplyButtonView()
   }
 
   function fillProfileIcon(icon) {
@@ -471,10 +544,15 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function askAboutSaveProfile(cb) {
-    this.msgBox("safe_unfinished", loc("hotkeys/msg/wizardSaveUnfinished"),
+    this.msgBox("safe_unfinished", loc("msgbox/has_unsaved_items"),
     [
-      ["ok", function() {
-        if (this.canSaveShowcase()) {
+      ["apply", function() {
+        if (this.hasUnpurchasedItems()) {
+          this.notifyUserAboutUnpurchasedItems()
+          return
+        }
+        let canSaveShowcase = this.editModeTempData?.terseInfo && this.canSaveShowcase()
+        if (canSaveShowcase || this.chosenIconsList.len()) {
           this.onProfileEditApplyBtn()
           cb()
           return
@@ -486,11 +564,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         this.getSheetList().setValue(selectedSheetIdx)
         this.needSkipSheetListEvents = false
       }],
-      ["cancel", function() {
+      ["#mainmenu/btnBack", @() null],
+      ["#mainmenu/btnClose", Callback(function() {
         this.onProfileEditCancelBtn()
         cb()
-      }]
-    ], "cancel")
+      }, this)]
+    ], "#mainmenu/btnBack")
   }
 
   function switchToCollectionSheet() {
@@ -692,6 +771,22 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     return buildTableRowNoPad("", row)
   }
 
+  function updateUnpurchasedItems() {
+    let itemsToRestoreView = []
+    if (this.itemsCanBuy.len())
+      itemsToRestoreView.extend(this.itemsCanBuy)
+    if (this.itemsCanNotBuy.len())
+      itemsToRestoreView.extend(this.itemsCanNotBuy)
+    foreach(uItem in itemsToRestoreView) {
+      let { unlockId } = uItem
+      let uType = this.chosenIconsList.findindex(@(v) v?.unlockId == unlockId || v?.id == unlockId)
+      if (uType == null)
+        continue
+      let data = this.chosenIconsList[uType]
+      this.fillSelectedItems(uType, data)
+    }
+  }
+
   function updateStats() {
     let myStats = getStats()
     if (!myStats || !checkObj(this.scene))
@@ -700,6 +795,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.isProfileInited = true
     this.fillProfileStats(myStats)
     this.updateShowcase(needFrequentRequestShowcase)
+    this.updateUnpurchasedItems()
   }
 
   function openChooseTitleWnd(_obj) {
@@ -859,6 +955,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     fillGamercard(getProfileInfo(), "profile-", this.scene)
   }
 
+  function fillSelectedItems(imageType, data) {
+    if (imageType == "pilotIcon")
+      this.fillProfileIcon(data.unlockId)
+    else if (imageType == "frame")
+      this.fillProfileAvatarFrame(data)
+  }
+
   function onEventMyStatsUpdated(_params) {
     let sheet = this.selectedSheet
     if (sheet == "Statistics")
@@ -892,10 +995,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       false, false, "profile_page")
   }
 
+  
   function onCloseOrCancelEditMode() {
     if (!this.scene.isValid())
       return
-
     if (this.hasEditProfileChanges()) {
       this.askAboutSaveProfile(@() null)
       return
@@ -912,10 +1015,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     base.goBack()
   }
 
+  
   function goBack() {
     if (!this.scene.isValid())
       return
-
     if (this.hasEditProfileChanges()) {
       this.askAboutSaveProfile(@() this.isEditModeEnabled ? null : this.goBack())
       return
@@ -1002,7 +1105,122 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     return true
   }
 
+  function purchaseChosenItems(callback = @() null) {
+    if (this.itemsCanBuy.len() == 0) {
+      callback()
+      return
+    }
+
+    let { unlockId } = this.itemsCanBuy[this.itemsCanBuy.len() - 1]
+    let onSuccess = Callback(function() {
+      this.itemsCanBuy.pop()
+      this.purchaseChosenItems(callback)
+    }, this)
+    buyUnlock(unlockId, onSuccess)
+  }
+
+  function getCanNotBuyItemsList() {
+    let canNotBuyItemsList = colorize("unlockHeaderColor", "\n".join(this.itemsCanNotBuy.map(@(i) i.unlockName)))
+    return "".concat(loc("msgbox/has_items_can_not_buy", { items = canNotBuyItemsList }))
+  }
+
+  function getCanBuyItemsList() {
+    let canBuyItemsList = colorize("unlockHeaderColor","\n".join(this.itemsCanBuy.map(@(i) i.unlockName)))
+    return "".concat(loc("msgbox/has_items_to_buy_before", {
+        items = canBuyItemsList, price = Cost(0, this.purchaseCostGoldTotal)
+      }))
+  }
+
+  function resetUnsavedIconAndFrame() {
+    this.chosenIconsList = {}
+    this.purchaseCostGoldTotal = 0
+    this.clearUnpurchasedItems()
+    this.updateApplyButtonView()
+    if (this.editModeTempData?.len())
+      return
+    this.onProfileEditCancelBtn()
+  }
+
+  function notifyUserAboutUnpurchasedItems() {
+    let onPurchase = Callback(function() {
+      let callback = function() {
+        this.profileEditApplyImpl()
+        this.clearUnpurchasedItems()
+      }
+      this.purchaseChosenItems(callback)
+    }, this)
+    if (this.itemsCanNotBuy.len()) {
+      this.msgBox(
+        "hasItemsCanNotBuy",
+        this.getCanNotBuyItemsList(),
+        [
+          ["#mainmenu/btnClose", Callback(@() this.resetUnsavedIconAndFrame(), this)],
+          ["#mainmenu/btnBack", @() null]
+        ],
+        "#mainmenu/btnBack"
+      )
+      return
+    }
+    if (this.itemsCanBuy.len() && checkBalanceMsgBox(Cost(0, this.purchaseCostGoldTotal))) {
+      purchaseConfirmation("hasItemsCanBuy", this.getCanBuyItemsList(), onPurchase, @() null)
+      return
+    }
+  }
+
+  function proceedToPurchaseChosenItems() {
+    if (this.itemsCanNotBuy.len()) {
+      this.msgBox(
+        "hasItemsCanNotBuy",
+        this.getCanNotBuyItemsList(),
+        [
+          ["ok", @() null]
+        ],
+        "ok"
+      )
+      return
+    }
+    if (this.itemsCanBuy.len() && checkBalanceMsgBox(Cost(0, this.purchaseCostGoldTotal))) {
+      purchaseConfirmation(
+        "needBuyItemsBefore",
+        this.getCanBuyItemsList(),
+        Callback(@() this.purchaseChosenItems(this.profileEditApplyImpl), this),
+        @() null
+      )
+      return
+    }
+  }
+
+  function clearUnpurchasedItems() {
+    this.clearItemsToBuy(this.itemsCanBuy)
+    this.clearItemsToBuy(this.itemsCanNotBuy)
+  }
+
+  function clearItemsToBuy(arr) {
+    foreach(item in arr) {
+      let { tempDataKey } = item
+      if (tempDataKey == "pilotIcon")
+        this.resetAvatarImage()
+      if (tempDataKey == "avatarFrameId")
+        this.resetAvatarFrameImage()
+      if (tempDataKey in this.editModeTempData)
+        this.editModeTempData.$rawdelete(tempDataKey)
+    }
+    arr.clear()
+  }
+
+  function hasUnpurchasedItems() {
+    return this.itemsCanBuy.len() || this.itemsCanNotBuy.len()
+  }
+
   function onProfileEditApplyBtn() {
+    if (this.hasUnpurchasedItems()) {
+      this.proceedToPurchaseChosenItems()
+      return
+    }
+    this.profileEditApplyImpl()
+  }
+
+  function profileEditApplyImpl() {
     this.saveProfileAppearance()
 
     if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
@@ -1020,6 +1238,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       )
     }
     this.setEditMode(!this.isEditModeEnabled)
+    this.updateApplyButtonView()
   }
 
   function onSaveShowcaseComplete(savedShowcase) {

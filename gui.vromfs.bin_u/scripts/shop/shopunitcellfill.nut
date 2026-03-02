@@ -41,7 +41,7 @@ let { get_ranks_blk } = require("blkGetters")
 let { get_charserver_time_sec } = require("chard")
 let { getUtcMidnight, secondsToString, buildDateStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let timeBase = require("%appGlobals/timeLoc.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discountsState.nut")
@@ -621,10 +621,7 @@ function getGroupStatusTbl(group, params) {
 
   let primaryUnit = rentedUnit || mountedUnit || (isGroupInResearch && researchingUnit)
     || firstUnboughtUnit || unitsList[0]
-  let needUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
-    || (isGroupInResearch && researchingUnit != null)
-    || (firstUnboughtUnit != null && !isUnitSpecial(firstUnboughtUnit) && researchingUnit == null)
-  let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || group
+  let unitForBR = isGroupInResearch ? researchingUnit : group
 
   let researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
   let unitImage = get_unit_preset_img(group.name)
@@ -647,7 +644,7 @@ function getGroupStatusTbl(group, params) {
     
     primaryUnitId       = primaryUnit.name,
     unitImage,
-    nameText            = needUnitNameOnPlate ? getUnitName(primaryUnit) : loc($"shop/group/{group.name}")
+    nameText            = isGroupInResearch ? getUnitName(researchingUnit) : loc($"shop/group/{group.name}")
     unitRarity          = getUnitRarity(primaryUnit)
     unitClassIcon       = getUnitRoleIcon(primaryUnit)
     unitClass           = getUnitRole(primaryUnit)

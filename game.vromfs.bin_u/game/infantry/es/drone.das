@@ -47,7 +47,7 @@ def drone_enable_sound(evt : Event;
 [es(tag=server, REQUIRE=isDrone)]
 def drone_destroy_on_unit_collision_es(evt : EventUnitToUnitCollision; eid : EntityId)
   if !evt.isFriction
-    sendEventImmediate(eid, CmdDestroyDrone())
+    sendEventImmediate(eid, CmdDestroyDrone(target = evt.toUnit))
 
 
 [es(tag=server, REQUIRE=isDrone)]
@@ -83,10 +83,13 @@ def private drone_weak_signal_hint(drone_eid : EntityId; show : bool)
 [es(tag=server, no_order, REQUIRE=isDrone)]
 def drone_camera_check_distance(info : ParallelUpdateFrameDelayed;
                                 eid : EntityId;
+                                isAlive : bool;
                                 transform aka drone_transform : float3x4;
                                 drone__owner : EntityId;
                                 drone__coverageArea : float2;
                                 drone__isWeakSignalHintActive : bool)
+  if !isAlive
+    return
   query(drone__owner) <| $ [es] (transform aka owner_transform : float3x4)
     let distSquare = distance_sq(owner_transform[3], drone_transform[3])
     if distSquare > square(drone__coverageArea.y)
@@ -113,7 +116,7 @@ def drone_destroy_request(evt : CmdRequestDestroyDrone;
     sendEventImmediate(evt.droneEid, CmdDestroyDrone())
 
 
-[es]
+[es(REQUIRE=isDrone)]
 def drone_on_became_dead(evt : EventUnitBecameDead; var isAlive : bool&)
   isAlive = false
 

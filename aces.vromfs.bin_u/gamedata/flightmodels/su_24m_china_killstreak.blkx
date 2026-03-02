@@ -1083,8 +1083,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1144,8 +1144,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1199,8 +1199,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1255,8 +1255,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1311,8 +1311,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1367,8 +1367,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2847,15 +2847,17 @@
             "name": "A/D",
             "priority": 1,
             "type": [
-              "1RL34",
               "AN/VPS-2",
+              "1RL34",
               "M-247 TA",
-              "ESD RA-20 S",
               "TriAD TA",
+              "Marconi S-400",
               "ADATS TA",
               "ASRAD TA",
               "Giraffe 1X",
-              "Arabel"
+              "Arabel",
+              "Type 81 TA",
+              "AN/MPQ-64"
             ]
           },
           {
@@ -3200,34 +3202,6 @@
     "prop1": -1,
     "engine0": 0,
     "engine1": 1
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump",
-    "burningFx": "fuel_dump_fire",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
-      ]
-    }
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -3684,64 +3658,6 @@
     ],
     "fxType": "catapult_expl_ejection"
   },
-  "cutting": {
-    "emtr_break_wing1_l_from": [
-      -0.999142,
-      -0.191786,
-      2.62057
-    ],
-    "emtr_break_wing1_l_to": [
-      -0.999142,
-      -0.191786,
-      4.57969
-    ],
-    "emtr_break_wing2_l_from": [
-      -0.999142,
-      -0.191786,
-      5.36838
-    ],
-    "emtr_break_wing2_l_to": [
-      -0.999142,
-      -0.191786,
-      5.88303
-    ],
-    "emtr_break_wing1_r_from": [
-      -0.999142,
-      -0.191786,
-      -2.62057
-    ],
-    "emtr_break_wing1_r_to": [
-      -0.999142,
-      -0.191786,
-      -4.57969
-    ],
-    "emtr_break_wing2_r_from": [
-      -0.999142,
-      -0.191786,
-      -5.36838
-    ],
-    "emtr_break_wing2_r_to": [
-      -0.999142,
-      -0.191786,
-      -5.88303
-    ],
-    "emtr_break_wing_tail": [
-      -5.21727,
-      0.0,
-      0.0
-    ],
-    "finCut": true,
-    "emtr_break_tail_from": [
-      -4.5418,
-      -0.0259136,
-      -3.66957e-8
-    ],
-    "emtr_break_tail_to": [
-      -7.19749,
-      -0.0259136,
-      -3.66957e-8
-    ]
-  },
   "AfterBurner0": {
     "volumetricAfterBurner": {
       "name": "_jet_su_24m_al_21",
@@ -3876,6 +3792,92 @@
         }
       }
     }
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump",
+    "burningFx": "fuel_dump_fire",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
+  },
+  "cutting": {
+    "emtr_break_wing1_l_from": [
+      -0.999142,
+      -0.191786,
+      2.62057
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.999142,
+      -0.191786,
+      4.57969
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.999142,
+      -0.191786,
+      5.36838
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.999142,
+      -0.191786,
+      5.88303
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.999142,
+      -0.191786,
+      -2.62057
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.999142,
+      -0.191786,
+      -4.57969
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.999142,
+      -0.191786,
+      -5.36838
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.999142,
+      -0.191786,
+      -5.88303
+    ],
+    "emtr_break_wing_tail": [
+      -5.21727,
+      0.0,
+      0.0
+    ],
+    "finCut": true,
+    "emtr_break_tail_from": [
+      -4.5418,
+      -0.0259136,
+      -3.66957e-8
+    ],
+    "emtr_break_tail_to": [
+      -7.19749,
+      -0.0259136,
+      -3.66957e-8
+    ]
   },
   "commonWeapons": {
     "hideNodes": {
@@ -4025,7 +4027,8 @@
         "pylon_6_s_25of_pod",
         "pylon_6_s_25ofm_pod",
         "pylon_6_s_25l_pod",
-        "flare_dop_off"
+        "flare_dop_off",
+        "apk_9_pod"
       ]
     },
     "hideDmParts": {

@@ -1,9 +1,16 @@
-options gen2
+﻿options gen2
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
 
 module linq_boost shared public
+
+
+
+
+
+
+
 
 require daslib/linq public
 
@@ -19,11 +26,13 @@ def private clone_iterator_type(it : TypeDeclPtr) : TypeDeclPtr {
 }
 
 class private AstCallMacro_LinqPred2 : AstCallMacro {
+    
     predName = "where_"
     
     
     
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+        
         
         macro_verify(call.arguments |> length == 2, prog, call.at, "expecting {predName}(iterator, predicate)")
         assume arg0 = call.arguments[0]
@@ -45,11 +54,13 @@ class private LinqWhere : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "where_"
 }
 
 [call_macro(name="_where_to_array")]
 class private LinqWhereToArray : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -63,11 +74,13 @@ class private LinqSelect : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "select"
 }
 
 [call_macro(name="_select_to_array")]
 class private LinqSelectToArray : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -81,11 +94,13 @@ class private LinqMinBy : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "min_by"
 }
 
 [call_macro(name="_max_by")]
 class private LinqMaxBy : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -99,11 +114,13 @@ class private LinqMinMaxBy : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "min_max_by"
 }
 
 [call_macro(name="_min_max_average_by")]
 class private LinqMinMaxAverageBy : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -117,11 +134,13 @@ class private LinqSkipWhile : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "skip_while"
 }
 
 [call_macro(name="_take_while")]
 class private LinqTakeWhile : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -135,6 +154,7 @@ class private LinqAll : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "all"
 }
 
@@ -144,11 +164,23 @@ class private LinqAny : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "any"
+}
+
+[call_macro(name="_count")]
+class private LinqCount : AstCallMacro_LinqPred2 {
+    
+    
+    
+    
+    
+    override predName = "count"
 }
 
 [call_macro(name="_unique_by")]
 class private LinqUnique : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -162,11 +194,13 @@ class private LinqUniqueToArray : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "unique_by_to_array"
 }
 
 [call_macro(name="_distinct_by")]
 class private LinqDistinctBy : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -180,11 +214,13 @@ class private LinqDistinctByToArray : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "distinct_by_to_array"
 }
 
 [call_macro(name="_order_by")]
 class private LinqOrderBy : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -198,11 +234,13 @@ class private LinqOrderByToArray : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "order_by_to_array"
 }
 
 [call_macro(name="_order_by_descending")]
 class private LinqOrderByDescending : AstCallMacro_LinqPred2 {
+    
     
     
     
@@ -216,16 +254,20 @@ class private LinqOrderByDescendingToArray : AstCallMacro_LinqPred2 {
     
     
     
+    
     override predName = "order_by_descending_to_array"
 }
 
 class private AstCallMacro_LinqPredII2 : AstCallMacro {
+    
     predName = "sequence_equal_by"
     
     
     
     
+    
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+        
         
         macro_verify(call.arguments |> length == 3, prog, call.at, "expecting {predName}(iterator or array, iterator or array, predicate)")
         macro_verify(call.arguments[0]._type != null, prog, call.at, "expecting iterator or array")
@@ -247,11 +289,13 @@ class private LinqPred3 : AstCallMacro_LinqPredII2 {
     
     
     
+    
     override predName = "sequence_equal_by"
 }
 
 [call_macro(name="_except_by")]
 class private LinqExceptBy : AstCallMacro_LinqPredII2 {
+    
     
     
     
@@ -265,11 +309,13 @@ class private LinqExceptByToArray : AstCallMacro_LinqPredII2 {
     
     
     
+    
     override predName = "except_by_to_array"
 }
 
 [call_macro(name="_intersect_by")]
 class private LinqIntersectBy : AstCallMacro_LinqPredII2 {
+    
     
     
     
@@ -283,6 +329,7 @@ class private LinqIntersectByToArray : AstCallMacro_LinqPredII2 {
     
     
     
+    
     override predName = "intersect_by_to_array"
 }
 
@@ -292,11 +339,13 @@ class private LinqUnionBy : AstCallMacro_LinqPredII2 {
     
     
     
+    
     override predName = "union_by"
 }
 
 [call_macro(name="_union_by_to_array")]
 class private LinqUnionByToArray : AstCallMacro_LinqPredII2 {
+    
     
     
     
@@ -345,6 +394,7 @@ def private fold_linq_cond(var expr : ExpressionPtr; argName : string) : Express
 }
 
 struct private LinqCall {
+    
     name : string
     moduleName : string = "linq"
     skip : bool = false             
@@ -397,6 +447,10 @@ var private linqCalls = {
     "take_to_array" => LinqCall(name = "take", inplace = true),
     "take_while" => LinqCall(name = "take_while"),
     "take_while_to_array" => LinqCall(name = "take_while"),
+    "skip_last" => LinqCall(name = "skip_last", inplace = true),
+    "skip_last_to_array" => LinqCall(name = "skip_last", inplace = true),
+    "take_last" => LinqCall(name = "take_last", inplace = true),
+    "take_last_to_array" => LinqCall(name = "take_last", inplace = true),
     "chunk" => LinqCall(name = "chunk"),
     "chunk_to_array" => LinqCall(name = "chunk"),
 
@@ -505,6 +559,7 @@ def private flatten_linq(var expr : ExpressionPtr)  {
 }
 
 struct private FoldSequence {
+    
     calls : array<string>
     folder : function<(
         argIndex : int;
@@ -703,9 +758,7 @@ def private fold_linq_default(var expr : ExpressionPtr) : ExpressionPtr {
             }
             if (found != null) {
                 var sub = subarray(calls, argIndex .. argIndex + found.calls |> length)
-                print("before topValue = {describe(topValue)}\n")
                 topValue |> move_new <| found.folder(argIndex, topValue, blk.get_ptr(), sub)
-                print("after topValue = {describe(topValue)}\n")
                 argIndex += found.calls |> length
             } else {
                 if (cll._0._type.isIterator || cll._0._type.isGoodArrayType) {
@@ -768,7 +821,10 @@ class private LinqFold : AstCallMacro {
     
     
     
+    
+    
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+        
         macro_verify(call.arguments |> length == 1, prog, call.at, "expecting _fold(expression)")
         macro_verify(call.arguments[0]._type != null, prog, call.at, "expecting linq expression")
         var inscope res : ExpressionPtr <- fold_linq_default(call.arguments[0])

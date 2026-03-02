@@ -56,21 +56,62 @@
                   {
                     "id": "unit_options",
                     "width": "pw",
-                    "padding-bottom": "0.03@scrn_tgt",
                     "tdiv": [
                       {
                         "id": "CA_div",
-                        "size": "pw + 2@scrollBarSize, ph",
+                        "width": "pw + 2@scrollBarSize",
                         "pos": "50%pw-50%w, 0",
                         "position": "relative",
                         "flow": "vertical",
                         "display": "hide",
                         "overflow-y": "auto",
                         "div": {
-                          "id": "unit_weapons_selector",
-                          "left": "@scrollBarSize",
+                          "width": "pw",
                           "position": "relative",
-                          "width": "3@modCellWidth"
+                          "div": [
+                            {
+                              "id": "unit_info_nest",
+                              "width": "0.5pw",
+                              "position": "relative",
+                              "flow": "vertical",
+                              "padding-left": "2@scrollBarSize",
+                              "padding-right": "1@scrollBarSize",
+                              "padding-bottom": "0.02@scrn_tgt",
+                              "div": {
+                                "size": "pw, 0.3@modCellHeight",
+                                "bgcolor": "@separatorBlockColor",
+                                "div": {
+                                  "size": "1@cIco, 1@cIco",
+                                  "position": "relative",
+                                  "pos": "0, ph/2-h/2",
+                                  "classIcon": {
+                                    "id": "class_icon",
+                                    "text": "",
+                                    "shopItemType": ""
+                                  }
+                                },
+                                "textareaNoTab": {
+                                  "id": "class_name",
+                                  "position": "relative",
+                                  "pos": "0, ph/2-h/2",
+                                  "text": ""
+                                }
+                              },
+                              "textareaNoTab": {
+                                "id": "unit_info",
+                                "position": "relative",
+                                "left": "0.01@scrn_tgt",
+                                "top": "0.01@scrn_tgt",
+                                "text": ""
+                              }
+                            },
+                            {
+                              "id": "unit_weapons_selector",
+                              "left": "@scrollBarSize",
+                              "position": "relative",
+                              "width": "3@modCellWidth"
+                            }
+                          ]
                         },
                         "PosOptionsNavigator": {
                           "id": "respawn_options_table",
@@ -98,11 +139,12 @@
                   },
                   {
                     "id": "separate_block",
-                    "width": "pw"
+                    "width": "pw",
+                    "min-height": "0.01@scrn_tgt"
                   },
                   {
                     "id": "objectives",
-                    "width": "pw",
+                    "width": "pw + 1@scrollBarSize",
                     "flow": "vertical",
                     "text": {
                       "id": "mis_obj_text_header",

@@ -26,7 +26,7 @@ let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarStateData.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
@@ -230,9 +230,10 @@ function getTimePlayedOnUnitType(unitType) {
 function calculateMaxUnitsUsedRanks() {
   local needRecalculate = false
   let loadedBlk = loadLocalByAccount("tutor/newbieBattles/unitsRank", DataBlock())
+  let maxRank = maxCountryRank.get()
   foreach (unitType in unitTypes.types)
     if (unitType.isAvailable()
-        && (loadedBlk?[unitType.esUnitType.tostring()] ?? 0) < MAX_COUNTRY_RANK) {
+        && (loadedBlk?[unitType.esUnitType.tostring()] ?? 0) < maxRank) {
       needRecalculate = true
       break
     }

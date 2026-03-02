@@ -7,23 +7,27 @@ let { Cost } = require("%scripts/money.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getUnlockLocName, getSubUnlockLocName, getFullUnlockDesc, getIconByUnlockBlk,
-  getUnlockNameText, getUnlockTypeText, getUnlockCostText, buildUnlockDesc, getUnlockableMedalImage,
-  buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+  getUnlockNameText, getUnlockableMedalImage, buildConditionsConfig
+} = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockTypeText, getUnlockCostText, buildUnlockDesc,
+  buildUnlockTooltipByConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getUnlockById, getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, hasMultiStageLocId, getMultiStageLocId,
   cloneDefaultUnlockData, checkAwardsAmountPeerSession, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { isBattleTask, isBattleTaskDone, isBattleTaskExpired, getBattleTaskById,
-  getBattleTaskNameById, getDifficultyTypeByTask
-} = require("%scripts/unlocks/battleTasks.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { isBattleTask, getBattleTaskById, getBattleTaskNameById, getDifficultyTypeByTask
+} = require("%scripts/unlocks/battleTasksState.nut")
+let { isBattleTaskDone, isBattleTaskExpired } = require("%scripts/unlocks/battleTasks.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
+let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/decoratorBaseType.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { shopSmokeItems } = require("%scripts/items/itemsTypeClasses.nut")
+let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
 let { isStringInteger } = require("%sqstd/string.nut")
 let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
@@ -31,7 +35,7 @@ let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
 let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
-function build_log_unlock_data(config) {
+function buildLogUnlockData(config) {
   let showLocalState = config?.showLocalState ?? true
   let showProgress   = showLocalState && (config?.showProgress ?? false)
   let needTitle      = config?.needTitle ?? true
@@ -94,15 +98,16 @@ function build_log_unlock_data(config) {
 
   if (uType == UNLOCKABLE_SKIN || uType == UNLOCKABLE_ATTACHABLE || uType == UNLOCKABLE_DECAL) {
     let decoratorType = getTypeByUnlockedItemType(uType)
+    let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
     res.image = decoratorType.userlogPurchaseIcon
-    res.name = decoratorType.getLocName(id)
+    res.name = viewDecoratorType.getLocName(id)
 
     let decorator = getDecorator(id, decoratorType)
     if (decorator && !is_in_loading_screen()) {
-      res.image = decoratorType.getImage(decorator)
+      res.image = viewDecoratorType.getImage(decorator)
       res.descrImage <- res.image
-      res.descrImageSize <- decoratorType.getImageSize(decorator)
-      res.descrImageRatio <- decoratorType.getRatio(decorator)
+      res.descrImageSize <- viewDecoratorType.getImageSize(decorator)
+      res.descrImageRatio <- viewDecoratorType.getRatio(decorator)
     }
   }
   else if ( uType == UNLOCKABLE_MEDAL) {
@@ -207,13 +212,14 @@ function build_log_unlock_data(config) {
     else if (id.contains("ship_flag_")) {
       let decoratorType = decoratorTypes.FLAGS
       res.image = decoratorType.userlogPurchaseIcon
-      res.name = decoratorType.getLocName(id)
+      let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+      res.name = viewDecoratorType.getLocName(id)
       let decorator = getDecorator(id, decoratorType)
       if (decorator) {
-        res.image = decoratorType.getImage(decorator)
+        res.image = viewDecoratorType.getImage(decorator)
         res.descrImage <- res.image
-        res.descrImageSize <- decoratorType.getImageSize(decorator)
-        res.descrImageRatio <- decoratorType.getRatio(decorator)
+        res.descrImageSize <- viewDecoratorType.getImageSize(decorator)
+        res.descrImageRatio <- viewDecoratorType.getRatio(decorator)
       }
     }
     else {
@@ -437,9 +443,90 @@ function build_log_unlock_data(config) {
   return res
 }
 
+let showNextAwardModeTypes = { 
+  char_versus_battles_end_count_and_rank_test = "battle_participate_award"
+  char_login_count                            = "day_login_award"
+}
 
-::build_log_unlock_data <- build_log_unlock_data
+function getNextAwardText(unlockId) {
+  local res = ""
+  if (!hasFeature("ShowNextUnlockInfo"))
+    return res
+
+  let unlockBlk = getUnlockById(unlockId)
+  if (!unlockBlk)
+    return res
+
+  local modeType = null
+  local num = 0
+  foreach (mode in unlockBlk % "mode") {
+    let mType = mode.getStr("type", "")
+    if (mType in showNextAwardModeTypes) {
+      modeType = mType
+      num = mode.getInt("num", 0)
+      break
+    }
+    if (mType == "char_unlocks") { 
+      foreach (uId in mode % "unlock") {
+        res = getNextAwardText(uId)
+        if (res != "")
+          return res
+      }
+      break
+    }
+  }
+  if (!modeType)
+    return res
+
+  local nextUnlock = null
+  local nextStage = -1
+  local nextNum = -1
+  foreach (cb in getAllUnlocksWithBlkOrder())
+    if (!cb.hidden || (cb.type && get_unlock_type(cb.type) == UNLOCKABLE_AUTOCOUNTRY))
+      foreach (modeIdx, mode in cb % "mode")
+        if (mode.getStr("type", "") == modeType) {
+          let n = mode.getInt("num", 0)
+          if (n > num && (!nextUnlock || n < nextNum)) {
+            nextUnlock = cb
+            nextNum = n
+            nextStage = modeIdx
+            break
+          }
+        }
+  if (!nextUnlock)
+    return res
+
+  let { name, rewardText } = buildLogUnlockData({ id = nextUnlock.id, stage = nextStage })
+  res = loc("next_award", { awardName = name })
+  if (rewardText != "") {
+      let amount = nextNum - num
+      let locId = "/".concat(
+        showNextAwardModeTypes[modeType],
+        (amount == 1) ? "one_more" : "several")
+      res = $"{res}{"\n".concat(loc("ui/colon"), loc(locId, { amount, reward = rewardText }))}"
+  }
+  return res
+}
+
+addTooltipTypes({
+  UNLOCK = { 
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, unlockId, params) {
+      if (!checkObj(obj))
+        return false
+
+      let config = buildLogUnlockData(params.__merge({ id = unlockId }))
+
+      if (config.type == -1)
+        return false
+
+      buildUnlockTooltipByConfig(obj, config, handler)
+      return true
+    }
+  }
+})
 
 return {
-  build_log_unlock_data
+  buildLogUnlockData
+  getNextAwardText
 }

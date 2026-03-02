@@ -6,7 +6,7 @@ let randomUnitsForceWeaponCache = persist("randomUnitsForceWeaponCache", @() {})
 function cacheRandomUnitsForceWeapon() {
   let gameplayBlk = DataBlock()
 
-  gameplayBlk.tryLoad("config/gameplay.blk")
+  gameplayBlk.tryLoad("config/gameplay.blk") 
   let randomSpawnUnits = gameplayBlk?["RandomSpawnUnits"]
   if (randomSpawnUnits == null)
     return

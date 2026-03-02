@@ -198,6 +198,7 @@ ecs.register_es("next_soldier_spawn_time_es", {
 }, {
   comps_track=[["unit__deathControlLostAtTime", ecs.TYPE_FLOAT, -1.0]],
   comps_rq=["controlledHero"]
+  comps_no=["isReplayObserved"]
 })
 
 

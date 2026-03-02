@@ -96,8 +96,7 @@ def skeleton_attached_to(base_eid : EntityId;
         bbox3f_add_box(*base_animchar_attaches_bbox_precalculated, animchar_bbox)
 
 
-
-[es(tag=gameClient, after=slot_attach_init_tms_es, before=(human_los_traces_wait_job_es, start_async_phys_sim_es), parallel_for=4, REQUIRE_NOT=attachedToParent)]
+[es(tag=gameClient, after=slot_attach_init_tms_es, before=(human_spawn_traces_wait_job_es, human_los_traces_wait_job_es), parallel_for=4, REQUIRE_NOT=attachedToParent)]
 def skeleton_attach_es(info : ParallelUpdateFrameDelayed;
                        eid : EntityId;
                        animchar : AnimcharBaseComponent&;
@@ -213,6 +212,16 @@ def skeleton_attach_save_for_grid_es(evt : UpdateStageInfoAct;
   save_cur_geom_node_tree(animchar, saved_animchar)
 
 
+[es(tag=render, REQUIRE=deadEntity, no_order)]
+def skeleton_attach_save_for_knocked_down_es(evt : UpdateStageInfoAct;
+                                             animchar : AnimcharBaseComponent&;
+                                             reanimation__knockedDown : bool;
+                                             var saved_animchar : AnimcharBaseComponent?)
+  if reanimation__knockedDown
+    save_cur_geom_node_tree(animchar, saved_animchar)
+
+
+
 
 
 
@@ -245,5 +254,6 @@ def skeleton_hide_node_attach_es(info : ParallelUpdateFrameDelayed;
     if recalc
       geomtree_calcWtmForBranch(nodeTree, nodeId)
 
+  if length(animchar__scaledWtmNodeIds) > 0
     animchar_copy_nodes(animchar, animchar_node_wtm, animchar_render__root_pos)
 

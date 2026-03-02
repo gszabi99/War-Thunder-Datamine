@@ -8,6 +8,7 @@ require math.random
 require DagorMath
 require BehNodes
 require DagorDataBlock
+require walkerai
 require %appGame.infantry.ai.ai_squad_tactical_common
 
 [beh_node(name="addUpdateTacticalTarget")]
@@ -27,6 +28,72 @@ class AddUpdateTacticalTarget : BehNodeAdapter
         if isAlive
           ai_squad_tactical_add_update_target(squad_member__squad, targetEid, updateOnly)
     return EBehResult.ER_SUCCESS
+
+
+[beh_node(name="hasTacticalTargets")]
+class HasTacticalTargets : BehNodeAdapter
+  maxActualTime : float = -1.0
+
+  def override loadFromBlk(data : DataBlock) : void
+    maxActualTime = datablock_getReal(data, "maxActualTime", maxActualTime)
+
+  def override update(dt : float) : EBehResult
+    let agentEid = beh_tree_eid(owner)
+    var result = false
+    query(agentEid) <| $ [es] (squad_member__squad : EntityId)
+      if squad_member__squad == INVALID_ENTITY_ID
+        return
+      if ai_check_has_tactical_targets_to_acquire(squad_member__squad, maxActualTime, true )
+        result = true
+    return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
+
+[beh_node(name="findTacticalTarget")]
+class FindTacticalTarget : BehNodeAdapter
+  outTargetPosParam : int = -1
+  outTargetEidParam : int = -1
+  maxActualTime : float = -1.0
+
+  def override loadFromBlk(data : DataBlock) : void
+    if datablock_find_param(data, "outTargetPosParam") >= 0
+      outTargetPosParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outTargetPosParam", ""), float3())
+    if datablock_find_param(data, "outTargetEidParam") >= 0
+      outTargetEidParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outTargetEidParam", ""), 0)
+    maxActualTime = datablock_getReal(data, "maxActualTime", maxActualTime)
+
+  def override update(dt : float) : EBehResult
+    let agentEid = beh_tree_eid(owner)
+    var result = false
+    query(agentEid) <| $ [es] (squad_member__squad : EntityId; transform : float3x4)
+      if squad_member__squad == INVALID_ENTITY_ID
+        return
+      let agentPos = transform[3]
+      var lastPos = float3()
+      let targetEid = ai_find_acqure_tactical_target(lastPos, squad_member__squad, agentPos, maxActualTime, true )
+      if targetEid != INVALID_ENTITY_ID
+        if outTargetPosParam >= 0
+          owner.blackBoard |> set(outTargetPosParam, lastPos)
+        if outTargetEidParam >= 0
+          owner.blackBoard |> set(outTargetEidParam, int(uint(targetEid)))
+        result = true
+    return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
+
+[beh_node(name="isTargetTraceable")]
+class IsTargetTraceable : BehNodeAdapter
+  targetEidParam : int = -1
+
+  def override loadFromBlk(data : DataBlock) : void
+    targetEidParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "targetEidParam", ""), 0)
+
+  def override update(dt : float) : EBehResult
+    let agentEid = beh_tree_eid(owner)
+    let targetEid = EntityId(uint(owner.blackBoard |> datablock_getInt(targetEidParam)))
+    var result = false
+    query(agentEid) <| $ [es] (agent_dangers : AgentDangers)
+      for danger in agent_dangers.dangers
+        if danger.eid == targetEid
+          result = danger.traceable
+    return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
+
 
 [beh_node(name="checkActualTacticalTargets")]
 class CheckActualTacticalTargets : BehNodeAdapter

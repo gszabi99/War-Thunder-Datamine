@@ -10,6 +10,37 @@ hint {
   animation:t='<<animation>>'
   <</animation>>
 
+  <<#topImages>>
+  hintImagesRow {
+    halign:t='center'
+    margin-bottom:t='0.015@shHud'
+    <<#images>>
+    hintImageCell {
+      flow:t='vertical'
+      margin-x:t='0.038@shHud'
+      tdiv {
+        height:t='<<maxSize>>'
+        halign:t='center'
+        img {
+          size:t='<<size>>, <<size>>'
+          valign:t='center'
+          background-image:t='<<image>>'
+          background-repeat:t='aspect-ratio'
+          background-svg-size:t='<<size>>, <<size>>'
+        }
+      }
+      <<#caption>>
+      textareaNoTab {
+        halign:t='center'
+        margin-top:t='0.005@shHud'
+        text:t='<<caption>>'
+      }
+      <</caption>>
+    }
+    <</images>>
+  }
+  <</topImages>>
+
   <<#rows>>
   hintRow {
     <<#isWrapInRowAllowed>>

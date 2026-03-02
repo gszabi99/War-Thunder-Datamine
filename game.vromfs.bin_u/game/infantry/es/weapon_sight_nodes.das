@@ -1,10 +1,12 @@
 require ecs
 require math
+require net
 
 require %appGame.wt_events
 require DagorSystem
 require DagorMath
 require AnimV20
+require PhysVars
 require GeomNodeTree
 
 def find_weapon_sight_node_idx(eid : EntityId;
@@ -63,18 +65,38 @@ def weapon_change_eid_for_sights_es(evt : Event;
                                     gun_anim__weapModEid : EntityId;
                                     var weap__sightEid : EntityId&)
   if has(gun_anim__weapModEid, "weapon_rearsight_node__nodeIdx")
-    weap__sightEid = gun_anim__weapModEid
+    var useParentSight = false
+    query(gun_anim__weapModEid) <| $ [es] (sightPresets : Array;
+                                           weap__current_sight_preset : int)
+      let presetsCount = length(sightPresets)
+      if presetsCount > 0
+        let presetIdx = clamp(weap__current_sight_preset, 0, presetsCount - 1)
+        let preset = get_ecs_object(sightPresets[presetIdx])
+        if preset != null
+          let useWeaponSight = preset |> get_bool("useWeaponSight")
+          if useWeaponSight != null && *useWeaponSight
+            useParentSight = true
+    weap__sightEid = useParentSight ? eid : gun_anim__weapModEid
   else
     weap__sightEid = eid
 
 [es]
 def weapon_switch_sight_es(evt : CmdWeapSwitchSight;
+                           eid : EntityId;
+                           gun_anim__weapModEid : EntityId;
                            weap__sightEid : EntityId)
-  query(weap__sightEid) <| $ [es] (animchar : AnimcharBaseComponent;
-                                   sightPresets : Array;
-                                   var weap__current_sight_preset : int&;
-                                   var weapon_frontsight_node__nodeIdx : int&;
-                                   var weapon_rearsight_node__nodeIdx : int&)
+  let parentGunEid = eid
+  let presetsEid = !!gun_anim__weapModEid ? gun_anim__weapModEid : weap__sightEid
+  query(presetsEid) <| $ [es] (animchar : AnimcharBaseComponent;
+                               sightPresets : Array;
+                               gun__owner : EntityId;
+                               weapon__aimSightPresetIndex : int const?;
+                               var weap__current_sight_preset : int&;
+                               var gun__launchVerticalAngle : float&;
+                               var phys_vars : PhysVars&;
+                               var weapon__aimNodeOffset : float&;
+                               var weapon_frontsight_node__nodeIdx : int&;
+                               var weapon_rearsight_node__nodeIdx : int&)
     let sightPresetsCount = sightPresets |> length()
     assert(sightPresetsCount > 0)
     let inc = evt.toNext ? +1 : -1
@@ -82,12 +104,66 @@ def weapon_switch_sight_es(evt : CmdWeapSwitchSight;
 
     let preset = get_ecs_object(sightPresets[weap__current_sight_preset])
 
+    let isUseWeaponSight = (preset |> get_bool("useWeaponSight")) ?? false
+    let additionalAngle = preset |> get_float("additionalVertAngle")
+
+    if isUseWeaponSight || additionalAngle != null
+      let angle = isUseWeaponSight ? 0.0 : *additionalAngle
+      gun__launchVerticalAngle = angle
+      send_net_event(gun__owner, CmdSetGunLaunchVerticalAngle(gunEid = presetsEid, angle = angle))
+
+    if isUseWeaponSight
+      set(parentGunEid, "weap__sightEid", parentGunEid)
+      return
+
+    if weap__sightEid != presetsEid
+      set(parentGunEid, "weap__sightEid", presetsEid)
+
+    let aimOffset = preset |> get_float("aimNodeOffset")
+    if aimOffset != null
+      weapon__aimNodeOffset = *aimOffset
+
+    let useAnimIndex = preset |> get_int("useAnimNodeIndex")
+    if useAnimIndex != null && weapon__aimSightPresetIndex != null
+      setVar(phys_vars, *weapon__aimSightPresetIndex, float(*useAnimIndex))
+      return
+
     let frontsightNodeName = preset |> get_string("frontsightNode", "")
     if frontsightNodeName != ""
-      let nodeIdx = find_weapon_sight_node_idx(weap__sightEid, animchar, frontsightNodeName)
+      let nodeIdx = find_weapon_sight_node_idx(presetsEid, animchar, frontsightNodeName)
       weapon_frontsight_node__nodeIdx = nodeIdx
 
     let rearsightNodeName = preset |> get_string("rearsightNode", "")
     if rearsightNodeName != ""
-      let nodeIdx = find_weapon_sight_node_idx(weap__sightEid, animchar, rearsightNodeName)
+      let nodeIdx = find_weapon_sight_node_idx(presetsEid, animchar, rearsightNodeName)
       weapon_rearsight_node__nodeIdx = nodeIdx
+
+
+[es(on_appear)]
+def init_sight_preset_index_id(evt : Event;
+                               var phys_vars : PhysVars&;
+                               var weapon__gunAnimSightPresetIndexId : int&)
+  weapon__gunAnimSightPresetIndexId = registerVar(phys_vars, "sight_preset_index", float(0))
+
+[es(on_appear)]
+def init_gun_launch_vertical_angle_es(evt : Event;
+                                      sightPresets : Array;
+                                      weap__current_sight_preset : int;
+                                      var gun__launchVerticalAngle : float&;
+                                      var weapon__aimNodeOffset : float&)
+  let presetsCount = length(sightPresets)
+  if presetsCount > 0
+    let presetIdx = clamp(weap__current_sight_preset, 0, presetsCount - 1)
+    let preset = get_ecs_object(sightPresets[presetIdx])
+    if preset != null
+      let aimOffset = preset |> get_float("aimNodeOffset")
+      if aimOffset != null
+        weapon__aimNodeOffset = *aimOffset
+      let additionalAngle = preset |> get_float("additionalVertAngle")
+      if additionalAngle != null
+        gun__launchVerticalAngle = *additionalAngle
+
+[es(tag=server, REQUIRE=human)]
+def set_gun_launch_vertical_angle_es(evt : CmdSetGunLaunchVerticalAngle)
+  query(evt.gunEid) <| $ [es] (var gun__launchVerticalAngle : float&)
+    gun__launchVerticalAngle = evt.angle

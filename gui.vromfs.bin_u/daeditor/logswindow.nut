@@ -206,4 +206,5 @@ return {
   content = logsRoot
   onAttach = @() hasNewLogerr.set(false)
   saveState=true
+  headerText = "Log"
 }

@@ -49,6 +49,7 @@ let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { canSquad } = require("%scripts/squads/squadUtils.nut")
 let { cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
+let { openChatPrivate } = require("%scripts/chat/openChat.nut")
 
 let contactsPrevScenes = [] 
 
@@ -1063,7 +1064,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.curPlayer || !this.owner)
       return
 
-    ::openChatPrivate(this.curPlayer.name, this.owner)
+    openChatPrivate(this.curPlayer.name, this.owner)
   }
 
   function onSquadInvite(obj) {

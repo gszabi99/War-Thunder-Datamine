@@ -13,15 +13,16 @@ let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg,
-  getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig, buildConditionsConfig,
+  buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig,
   getRewardCfgByUnlockCfg, getSubunlocksView, getUnlockStagesView
 } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskById,
-  getCurBattleTasksByGm
+let { isBattleTask, getBattleTaskById } = require("%scripts/unlocks/battleTasksState.nut")
+let { isBattleTasksAvailable, isBattleTaskDone, getCurBattleTasksByGm
 } = require("%scripts/unlocks/battleTasks.nut")
 let { mkUnlockConfigByBattleTask, getBattleTaskView } = require("%scripts/unlocks/battleTasksView.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -189,7 +190,7 @@ let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
       : getUnlockById(obj.task_id)
     let unlockCfg = buildConditionsConfig(unlockBlk)
     let reqUnlocks = unlockCfg.names.map(
-      @(id) build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
+      @(id) buildLogUnlockData(buildConditionsConfig(getUnlockById(id))))
     showUnlocksGroupWnd(reqUnlocks, loc("unlocks/requirements"))
   }
 }

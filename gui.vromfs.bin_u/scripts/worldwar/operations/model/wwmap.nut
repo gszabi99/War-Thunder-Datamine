@@ -1,22 +1,27 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
+import "%sqStdLibs/helpers/enums.nut" as enums
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { fabs } = require("math")
 let time = require("%scripts/time.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationGroupByMapId } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
+let { getOperationGroupByMapId } = require("%scripts/worldWar/operations/model/wwOperationsGroup.nut")
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { get_charserver_time_sec } = require("chard")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
+let { sortUnitsBySortCodeAndCount, loadUnitsFromNameCountTbl, loadWWUnitsFromUnitsArray
+} = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let WwMap = class {
   name = ""
@@ -188,8 +193,8 @@ let WwMap = class {
     if (u.isEmpty(unitsList))
       return wwUnitsList
 
-    unitsList = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(unitsList).filter(@(unit) !unit.isControlledByAI())
-    unitsList.sort(g_world_war.sortUnitsBySortCodeAndCount)
+    unitsList = loadUnitsFromNameCountTbl(unitsList).filter(@(unit) !unit.isControlledByAI())
+    unitsList.sort(sortUnitsBySortCodeAndCount)
     if (unitsGroupsByCountry != null) {
       foreach (wwUnit in unitsList) {
         let country = wwUnit?.unit.shopCountry
@@ -204,7 +209,7 @@ let WwMap = class {
           shopItemType = getUnitRole(defaultUnit)
         })
 
-        local wwUnits = wwActionsWithUnitsList.loadWWUnitsFromUnitsArray(group.units)
+        local wwUnits = loadWWUnitsFromUnitsArray(group.units)
         wwUnits.sort(@(a, b) a.name <=> b.name)
         wwUnitsList.extend(wwUnits.map(@(unit)
           unit.getShortStringView({ addPreset = false, needShopInfo = true, hasIndent = true })))
@@ -254,7 +259,7 @@ let WwMap = class {
 
   
   function getQueue() {
-    return ::g_ww_global_status_type.QUEUE.getList()?[this.name] ?? WwQueue(this.name)
+    return wwStatusType.QUEUE.getList()?[this.name] ?? WwQueue(this.name)
   }
 
   function getOpGroup() {
@@ -350,5 +355,39 @@ let WwMap = class {
            (reasonData.canJoin || reasonData.hasRestrictClanRegister)
   }
 }
+
+const MAPS_OUT_OF_DATE_DAYS = 1
+
+enums.enumsAddTypes(wwStatusType, {
+  MAPS = {
+    typeMask = WW_GLOBAL_STATUS_TYPE.MAPS
+    charDataId = "maps"
+    emptyCharData = {}
+
+    function loadList() {
+      this.cachedList = {}
+      let data = this.getData()
+      if (!u.isTable(data) || (data.len() <= 0))
+        return
+
+      foreach (name, mapData in data)
+        this.cachedList[name] <- WwMap(name, mapData)
+
+      let guiScene = get_cur_gui_scene()
+      if (guiScene) 
+        guiScene.performDelayed(this,
+          function() {
+            seenWWMapsAvailable.setDaysToUnseen(MAPS_OUT_OF_DATE_DAYS)
+            seenWWMapsAvailable.onListChanged()
+          })
+    }
+  }
+})
+
+seenWWMapsAvailable.setListGetter(function() {
+  return wwStatusType.MAPS.getList()
+    .filter(@(map) map.isAnnounceAndNotDebug())
+    .map(@(map) map.name)
+})
 
 return { WwMap }

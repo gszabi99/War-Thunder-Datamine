@@ -1088,8 +1088,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1148,8 +1148,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2157,6 +2157,21 @@
       ]
     }
   },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/su_rp-5_search.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/su_rp-5_track.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/su_spo-2.blk"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": [
       {
@@ -2211,21 +2226,6 @@
       "name": "mig_17p_lim_5p_default",
       "blk": "gameData/FlightModels/weaponPresets/mig_17_default.blk"
     }
-  },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/su_rp-5_search.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/su_rp-5_track.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/su_spo-2.blk"
-      }
-    ]
   },
   "turbulence": {
     "segmentlength": 100.0,

@@ -1,6 +1,6 @@
 require ecs
 
-[es(track=(human_weap__currentGunSlot, human_weap__gunMods, human_weap__gunEids))]
+[es(tag=server, track=(human_weap__currentGunSlot, human_weap__gunMods, human_weap__gunEids))]
 def human_weap_update_current_gun_es(evt : Event;
                                      human_weap__currentGunSlot : int;
                                      var human_weap__currentGunEid : EntityId&;

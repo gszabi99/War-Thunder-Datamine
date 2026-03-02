@@ -1,10 +1,10 @@
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud, mpstat_get_sort_func, is_spectator_rotation_forced
-from "app" import is_dev_version, isGamePaused
+from "app" import isGamePaused
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/mainConsts.nut" import global_max_players_versus
-from "%scripts/utils_sa.nut" import is_mode_with_teams
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
@@ -22,7 +22,6 @@ let { INVALID_SQUAD_ID } = require("matching.errors")
 let { move_mouse_on_child_by_value, getObjValidIndex, enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -224,12 +223,13 @@ let sensorFiltersTable = {
   ]
 }
 
+let SpectatorPersistentStorage = persist("SpectatorPersistentStorage", @(){debugMode = false})
+
 let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
   wndType      = handlerType.CUSTOM
 
-  debugMode = false
   spectatorModeInited = false
   catchingFirstTarget = false
   ignoreUiInput = false
@@ -317,8 +317,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   ]
 
   function initScreen() {
-    registerPersistentData("Spectator", this, [ "debugMode" ])
-
     this.gameType = get_game_type()
     let mplayerTable = get_local_mplayer() ?? {}
     let isReplay = is_replay_playing()
@@ -333,10 +331,9 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       }
       setBackFromReplaysFn(backFn)
       currentReplay.path = currentReplay.path.len() ? currentReplay.path : getFromSettingsBlk("viewReplay", "")
-      let pathForMetadata = currentReplay.path.replace("/0000.wrpl", "/0001.wrpl")
 
       
-      restoreReplayScriptCommentsBlk(pathForMetadata)
+      restoreReplayScriptCommentsBlk(currentReplay.path)
     }
 
     this.gotRefereeRights = (mplayerTable?.spectator ?? 0) == 1
@@ -483,6 +480,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       }
     }
     this.setTacticalMapBackgroundColors()
+    eventbus_send("updateSpectatorMapStates", { isVisible = true })
   }
 
   function setTacticalMapBackgroundColors() {
@@ -609,7 +607,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       this.updateStats()
     }
 
-    if (isTargetSwitched || friendlyTeamSwitched) {
+    if (isTargetSwitched || friendlyTeamSwitched || isUpdateByCooldown) {
       this.updateTarget(isTargetSwitched)
     }
 
@@ -664,10 +662,15 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getPlayerStateDesc(player) {
-    return !player ? "" :
-      !player.ingame ? loc(player.deaths ? "spectator/player_quit" : "multiplayer/state/player_not_in_game") :
-      player.isDead ? loc(player.deaths ? "spectator/player_vehicle_lost" : "spectator/player_connecting") :
-      !player.canBeSwitchedTo ? loc("multiplayer/state/player_in_game/location_unknown") : ""
+    return !player ? ""
+      : !player.ingame ? loc(player.deaths ? "spectator/player_quit"
+        : "multiplayer/state/player_not_in_game")
+      : player.isDead
+        ? loc(!player.deaths ? "spectator/player_connecting"
+          : this.lastHudUnitType == HUD_UNIT_TYPE.HUMAN ? "spectator/player_control_lost"
+          : "spectator/player_vehicle_lost")
+      : !player.canBeSwitchedTo ? loc("multiplayer/state/player_in_game/location_unknown")
+      : ""
   }
 
   function getUnitMalfunctionDesc(player) {
@@ -1000,6 +1003,8 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     toggleObj.show(toggle)
     obj.toggled = toggle ? "yes" : "no"
 
+    eventbus_send("updateSpectatorMapStates", { isVisible = toggle })
+
     this.updateHistoryLog(true)
     this.updateClientHudOffset()
   }
@@ -1070,7 +1075,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     let _teams = array(2, null)
     let isMpMode = !!(this.gameType & GT_VERSUS) || !!(this.gameType & GT_COOPERATIVE)
     let isPvP = !!(this.gameType & GT_VERSUS)
-    let isTeamplay = isPvP && is_mode_with_teams(this.gameType)
+    let isTeamplay = isPvP && isModeWithTeams(this.gameType)
 
     if (isTeamplay || !this.canSeeOppositeTeam) {
       let localTeam = get_mp_local_team() != 2 ? 1 : 2
@@ -1176,7 +1181,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isPlayerChanged(p1, p2) {
-    if (this.debugMode)
+    if (SpectatorPersistentStorage.debugMode)
       return true
     if (!p1 != !p2)
       return true
@@ -1238,7 +1243,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       obj.tooltip = "".concat(playerName, unitId ? loc("ui/parentheses/space", { text = getUnitName(unitId, false) }) : "",
         stateDesc != "" ? $"\n{stateDesc}" : "", malfunctionDesc != "" ? $"\n{malfunctionDesc}" : "")
 
-      if (this.debugMode)
+      if (SpectatorPersistentStorage.debugMode)
         obj.tooltip = "\n\n".concat(obj.tooltip, this.getPlayerDebugTooltipText(player))
 
       let unitIcoObj = obj.findObject("unit-ico")
@@ -1604,11 +1609,8 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 gui_handlers.Spectator <- Spectator
 
 function spectatorDebugMode() {
-  let handler = is_dev_version() && handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
-  if (!handler)
-    return null
-  handler.debugMode = !handler.debugMode
-  return handler.debugMode
+  SpectatorPersistentStorage.debugMode = !SpectatorPersistentStorage.debugMode
+  return SpectatorPersistentStorage.debugMode
 }
 
 register_command(spectatorDebugMode, "debug.spectatorDebugMode")
@@ -1647,5 +1649,6 @@ eventbus_subscribe("on_open_replay_system_window", @(_p) on_open_replay_system_w
 eventbus_subscribe("replayWait", function (event) {
   broadcastEvent("ReplayWait", event)
 })
+eventbus_subscribe("replayCommentsReady", @(_) restoreReplayScriptCommentsBlk("", true))
 
 registerRespondent("onGetSpectatorAirHudOffsetX", @() spectator_air_hud_offset_x)

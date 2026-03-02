@@ -23,15 +23,17 @@ let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiA
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getFullUnlockDescByName, getUnlockNameText, buildConditionsConfig
-} = require("%scripts/unlocks/unlocksViewModule.nut")
+} = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockType, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { getViewTypeByResourceType, getViewTypeByUnlockedItemType
+} = require("%scripts/customization/decoratorViewType.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 let { getUnitName, getUnitCountryIcon, image_for_air, getUnitTypeText } = require("%scripts/unit/unitInfo.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { BASE_ITEM_TYPE_ICON } = require("%scripts/items/itemsTypeClasses.nut")
@@ -44,6 +46,10 @@ let { unlockAddProgressView, getPrizeType, hasKnowPrize, PRIZE_TYPE } = require(
 let { getTrophyRewardType, isRewardMultiAward, isRewardItem, getRewardList
 } = require("%scripts/items/trophyReward.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getFullWPIcon } = require("%scripts/items/prizeUtils.nut")
+let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
+
 
 
 
@@ -85,28 +91,9 @@ let unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
 let template = "%gui/items/trophyDesc.tpl"
 
-let wpIcons = [
-  { value = 1000, icon = "battle_trophy1k" },
-  { value = 5000, icon = "battle_trophy5k" },
-  { value = 10000, icon = "battle_trophy10k" },
-  { value = 50000, icon = "battle_trophy50k" },
-  { value = 100000, icon = "battle_trophy100k" },
-  { value = 1000000, icon = "battle_trophy1kk" },
-]
 
-local getPrizesViewData = @(_prize, _showCount = true, _params = null) "" 
-
-function getWPIcon(wp) {
-  local icon = ""
-  foreach (v in wpIcons)
-    if (wp >= v.value || icon == "")
-      icon = v.icon
-  return icon
-}
-
-function getFullWPIcon(wp) {
-  return LayersIcon.getIconData(getWPIcon(wp), null, null, "reward_warpoints")
-}
+local getPrizesViewData = @(_prize, _showCount = true, _params = null) ""
+local getMultiAwardDescription = @(_tma, _useBoldAsSmaller = false) ""
 
 function getFullWarbondsIcon() {
   return LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg("item_warbonds"))
@@ -119,10 +106,11 @@ function getDecoratorVisualConfig(config) {
   }
 
   let decoratorType = getTypeByResourceType(config.resourceType)
+  let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
   if (decoratorType) {
     let decorator = getDecorator(config?.resource, decoratorType)
     let cfg = clone LayersIcon.findLayerCfg("item_decal")
-    cfg.img <- decoratorType.getImage(decorator)
+    cfg.img <- viewDecoratorType.getImage(decorator)
     if (cfg.img != "")
       res.image = LayersIcon.genDataFromLayer(cfg)
   }
@@ -165,7 +153,7 @@ let prizeViewConfig = {
     getTooltipConfig = @(prize) { tooltip = getEntitlementName(getEntitlementConfig(prize.entitlement)) }
   },
   [PRIZE_TYPE.MULTI_AWARD] = {
-    getDescription = @(config) TrophyMultiAward(DataBlockAdapter(config)).getDescription(true)
+    getDescription = @(config) getMultiAwardDescription(TrophyMultiAward(DataBlockAdapter(config)), true)
     getTooltipConfig = @(prize) { tooltip = TrophyMultiAward(DataBlockAdapter(prize)).getName() }
   },
   [PRIZE_TYPE.UNLOCK] = {
@@ -251,7 +239,7 @@ function getPrizeText(prize, colored = true, v_typeName = false,
   local color = "activeTextColor"
   if (isPrizeMultiAward(prize)) {
     if (full) {
-      name = TrophyMultiAward(prize).getDescription(true)
+      name = getMultiAwardDescription(TrophyMultiAward(prize), true)
       color = ""
     }
     else
@@ -337,7 +325,8 @@ function getPrizeText(prize, colored = true, v_typeName = false,
   else if (prize?.resource) {
     if (prize?.resourceType) {
       let decoratorType = getTypeByResourceType(prize.resourceType)
-      let locName = decoratorType.getLocName(prize.resource, true)
+      let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+      let locName = viewDecoratorType.getLocName(prize.resource, true)
       let valid = decoratorType != decoratorTypes.UNKNOWN
       let decorator = getDecorator(prize.resource, decoratorType)
       name = locName
@@ -360,7 +349,7 @@ function getPrizeText(prize, colored = true, v_typeName = false,
   else if (prize?.exp)
     name = Cost().setFrp(prize.exp).toStringWithParams({ isColored = colored })
   else if (prize?.warbonds) {
-    let wb = ::g_warbonds.findWarbond(prize.warbonds)
+    let wb = findWarbond(prize.warbonds)
     name = wb && prize?.count ? wb.getPriceText(prize.count, true, false) : ""
     showCount = false
   }
@@ -482,7 +471,11 @@ function getPrizeCurrencyCfg(prize) {
     return {  type = PRIZE_TYPE.EXP, val = prize.exp, printFunc = @(val) Cost().setFrp(val).tostring() }
   if (prize?.warbonds && (prize?.count ?? 0) > 0) {
     let wbId = prize.warbonds
-    return {  type = PRIZE_TYPE.WARBONDS, val = prize.count, printFunc = @(val) ::g_warbonds.findWarbond(wbId).getPriceText(val, true, false) }
+    return {
+      type = PRIZE_TYPE.WARBONDS
+      val = prize.count
+      printFunc = @(val) findWarbond(wbId).getPriceText(val, true, false)
+    }
   }
   return null
 }
@@ -864,13 +857,14 @@ function getViewDataDecorator(prize, params = null) {
   let { showTooltip = true } = params
   let id = prize?.resource ?? ""
   let decoratorType = getTypeByResourceType(prize?.resourceType)
+  let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
   let isHave = decoratorType.isPlayerHaveDecorator(id)
   let isReceivedPrizes = params?.receivedPrizes ?? false
   let buttons = getPrizeActionButtonsView(prize, params)
   let receiveOnce = params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"
 
   return {
-    icon  = decoratorType.prizeTypeIcon
+    icon  = viewDecoratorType.prizeTypeIcon
     title = getPrizeText(prize)
     tooltipId = showTooltip ? getTooltipType("DECORATION").getTooltipId(id, decoratorType.unlockedItemType, params) : null
     commentText = !isReceivedPrizes && isHave ?  colorize("badTextColor", loc(receiveOnce)) : null
@@ -912,7 +906,7 @@ function getViewDataMultiAward(prize, _params = null) {
   let multiAward = TrophyMultiAward(prize)
   return {
     icon = multiAward.getTypeIcon()
-    title = multiAward.getDescription(true)
+    title = getMultiAwardDescription(multiAward, true)
   }
 }
 
@@ -957,11 +951,11 @@ function getPrizeTypeIcon(prize, unitImage = false) {
     local unlockType = prize?.unlockType || getUnlockType(prize?.unlock)
     if (type(unlockType) == "string")
       unlockType = get_unlock_type(unlockType)
-    return getTypeByUnlockedItemType(unlockType).prizeTypeIcon
+    return getViewTypeByUnlockedItemType(unlockType).prizeTypeIcon
   }
 
   if (prize?.resourceType)
-    return getTypeByResourceType(prize.resourceType).prizeTypeIcon
+    return getViewTypeByResourceType(prize.resourceType).prizeTypeIcon
 
   if (prize?.gold)
     return "#ui/gameuiskin#item_type_eagles.svg"
@@ -1036,7 +1030,7 @@ function getPrizeImageByConfig(config = null, onlyImage = true, layerCfgName = "
     let rewardConfig = getUnlockById(rewardValue)
     if (rewardConfig != null) {
       let unlockConditions = buildConditionsConfig(rewardConfig)
-      unlock = ::build_log_unlock_data(unlockConditions)
+      unlock = buildLogUnlockData(unlockConditions)
     }
     image = LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
   }
@@ -1472,6 +1466,16 @@ function getPrizesListText(content, fixedAmountHeaderFunc = null, hasHeaderWitho
   return "\n".join(list, true)
 }
 
+getMultiAwardDescription = function(multiAward, useBoldAsSmaller = false) {
+  let resList = multiAward.getResultPrizesList()
+  if (resList?.len()) {
+    let resDesc = getPrizesListText(resList)
+    if (resDesc != "")
+      return resDesc
+  }
+  return multiAward.getDescription(useBoldAsSmaller)
+}
+
 function getMarkingPreset(item) {
   let markPresetName = item?.itemDef.tags.markingPreset
   if (!markPresetName)
@@ -1740,10 +1744,6 @@ function getRewardsListViewData(config, params = {}) {
   return getPrizesListView(rewardsList, params)
 }
 
-::PrizesView <- {
-  getPrizesListText
-}
-
 return {
   getPrizeText
   getTrophyRewardText
@@ -1754,8 +1754,6 @@ return {
   getDescriptonView
   getPrizeActionButtonsView
   getPrizeTooltipConfig
-  getWPIcon
-  getFullWPIcon
   getPrizeImageByConfig
   getPrizeFullDescriptonView
   getRewardsListViewData

@@ -2,10 +2,21 @@ from "%scripts/dagui_library.nut" import *
 
 let { eventbus_send } = require("eventbus")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { userstatUnlocks, receiveUnlockRewards, waitingToShowRewardsArray
+} = require("%scripts/userstat/userstat.nut")
+let { activeUnlocks, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { unclaimedUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
+let { checkWarbondsOverLimit } = require("%scripts/warbonds/warbondsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+
 
 let userstatItemsListLocId = "mainmenu/rewardsList"
 
-let waitingToShowRewardsArray = persist("waitingToShowRewardsArray", @() [])
+let rewardsInProgress = Watched({})
+let servUnlockProgress = Computed(@() userstatUnlocks.get()?.unlocks ?? {})
+
 
 function showRewardWnd(params) {
   let { rewards, rewardTitleLocId } = params
@@ -16,7 +27,7 @@ function showRewardWnd(params) {
   local firstItemId = null
   foreach (itemIdSrc, count in rewards) {
     let itemId = itemIdSrc.tointeger()
-    let item = ::ItemsManager.findItemById(itemId)
+    let item = findItemById(itemId)
     if (item == null)
       continue
     if (item.shouldAutoConsume) 
@@ -38,9 +49,6 @@ function showRewardWnd(params) {
     })
 }
 
-let getUserstatItemRewardData = @(itemId) waitingToShowRewardsArray.findvalue(
-  @(itemData) itemData.itemId == itemId)
-
 function removeUserstatItemRewardToShow(itemId) {
   let rewardIdx = waitingToShowRewardsArray.findindex(@(itemData) itemData.itemId == itemId)
   if (rewardIdx == null)
@@ -54,9 +62,9 @@ function canGetRewards(onAcceptFn, params) {
     return true
 
   local waitingWarbondsToReciveAmount = waitingToShowRewardsArray.reduce(
-    @(res, a) res + (::ItemsManager.findItemById(a.itemId)?.getWarbondsAmount() ?? 0), 0)
+    @(res, a) res + (findItemById(a.itemId)?.getWarbondsAmount() ?? 0), 0)
   foreach (itemId, count in params.rewards) {
-    let item = ::ItemsManager.findItemById(itemId.tointeger())
+    let item = findItemById(itemId.tointeger())
     if (item == null)
       continue
     let warbondsAmount = item?.getWarbondsAmount() ?? 0
@@ -64,12 +72,68 @@ function canGetRewards(onAcceptFn, params) {
       continue
 
     waitingWarbondsToReciveAmount += warbondsAmount * count
-    if (!::g_warbonds.checkWarbondsOverLimit(waitingWarbondsToReciveAmount, onAcceptFn, params))
+    if (!checkWarbondsOverLimit(waitingWarbondsToReciveAmount, onAcceptFn, params))
       return false
   }
 
   return true
 }
+
+
+function sendReceiveRewardRequest(params) {
+  let { stage, unlockName, taskOptions, needShowRewardWnd } = params
+  let receiveRewardsCallback = function(res) {
+    log($"Userstat: receive reward {unlockName}, stage: {stage}, results: {res}")
+    rewardsInProgress.mutate(@(val) val.$rawdelete(unlockName))
+  }
+  rewardsInProgress.mutate(@(val) val[unlockName] <- stage)
+  receiveUnlockRewards(unlockName, stage, function(_res) {
+    receiveRewardsCallback("success")
+    if (needShowRewardWnd)
+      showRewardWnd(params)
+  }, receiveRewardsCallback, taskOptions)
+}
+
+
+let RECEIVE_REWARD_DEFAULT_OPTIONS = {
+  showProgressBox = true
+}
+
+function receiveRewards(unlockName, params = {}) {
+  if (!unlockName || unlockName in rewardsInProgress.get())
+    return
+
+  let { needShowRewardWnd = true, rewardTitleLocId = "rewardReceived" } = params
+  let taskOptions = RECEIVE_REWARD_DEFAULT_OPTIONS.__merge(params?.taskOptions ?? {})
+  let progressData = servUnlockProgress.get()?[unlockName]
+  let stage = progressData?.stage ?? 0
+  let lastReward = progressData?.lastRewardedStage ?? 0
+  params = {
+    rewards = getStageByIndex(activeUnlocks.get()?[unlockName], stage - 1)?.rewards,
+    stage, unlockName, taskOptions, needShowRewardWnd, rewardTitleLocId
+  }
+  if (lastReward < stage && canGetRewards(sendReceiveRewardRequest,
+      params.__merge({ needShowRewardWnd = false })))
+    sendReceiveRewardRequest(params)
+}
+
+
+function claimRegionalUnlockRewards() {
+  let unlocks = unclaimedUnlocks.get().filter(@(u) !(u?.manualOpen ?? false))
+  if (unlocks.len() == 0)
+    return
+
+  let handler = handlersManager.getActiveBaseHandler()
+  let handlerClass = handler?.getclass()
+  if (!handler?.isValid() || handlerClass != gui_handlers.MainMenu)
+    return
+
+  let unlockId = unlocks.findindex(@(_) true)
+  if (unlockId != null)
+    handler.doWhenActive(@() receiveRewards(unlockId))
+}
+
+unclaimedUnlocks.subscribe(@(_) claimRegionalUnlockRewards())
 
 addListenersWithoutEnv({
   SignOut = @(_p) waitingToShowRewardsArray.clear()
@@ -77,8 +141,10 @@ addListenersWithoutEnv({
 
 return {
   showRewardWnd
-  getUserstatItemRewardData
   removeUserstatItemRewardToShow
   userstatItemsListLocId
   canGetRewards
+  receiveRewards
+  rewardsInProgress
+  claimRegionalUnlockRewards
 }

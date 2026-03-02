@@ -25,7 +25,11 @@ let { getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizes
 let { getPlayerCountryCode } = require("%scripts/user/countryUtils.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 
-function fillContentRaw(contentRaw, blksArray) {
+function fillContentRaw(contentRaw, blk) {
+  let blksArray = [blk]
+  if (u.isDataBlock(blk?.prizes))
+    blksArray.insert(0, blk.prizes)
+
   foreach (datablock in blksArray) {
     let addContent = (datablock % "d").map(function(item) {
       let prize = DataBlock()
@@ -71,7 +75,7 @@ let Trophy = class (BaseItem) {
 
   allowBigPicture = false
 
-  contentRaw = []
+  contentRaw = null
   contentUnpacked = []
   topPrize = null
 
@@ -89,6 +93,7 @@ let Trophy = class (BaseItem) {
 
   beginDate = null
   endDate = null
+  blk = null
 
   constructor(blk, invBlk = null, slotData = null) {
     base.constructor(blk, invBlk, slotData)
@@ -119,12 +124,8 @@ let Trophy = class (BaseItem) {
       this.endDate = endTime
     }
 
-    let blksArray = [blk]
-    if (u.isDataBlock(blk?.prizes))
-      blksArray.insert(0, blk.prizes) 
-
-    this.contentRaw = []
-    fillContentRaw(this.contentRaw, blksArray)
+    this.blk = DataBlock()
+    this.blk.setFrom(blk)
   }
 
   hasLifetime = @() this.beginDate != null
@@ -233,6 +234,11 @@ let Trophy = class (BaseItem) {
     }
 
     recursionUsedIds.append(this.id)
+    if (this.contentRaw == null) {
+      this.contentRaw = []
+      fillContentRaw(this.contentRaw, this.blk)
+    }
+
     let content = []
     foreach (i in this.contentRaw) {
       if (!i?.trophy || i?.showAsPack) {
@@ -278,12 +284,9 @@ let Trophy = class (BaseItem) {
       logerr($"Didn't found trophie's prize chances for id = {this.id}")
       return null
     }
-    let blksArray = [blkWithChances]
-    if (u.isDataBlock(blkWithChances?.prizes))
-      blksArray.insert(0, blkWithChances.prizes)
 
     let contentRawWithPrize = []
-    fillContentRaw(contentRawWithPrize, blksArray)
+    fillContentRaw(contentRawWithPrize, blkWithChances)
 
     let contentWithChances = []
     foreach (i in contentRawWithPrize) {
@@ -352,6 +355,12 @@ let Trophy = class (BaseItem) {
     }
 
     recursionUsedIds.append(this.id)
+
+    if (this.contentRaw == null) {
+      this.contentRaw = []
+      fillContentRaw(this.contentRaw, this.blk)
+    }
+
     local topPrizeBlk = null
     foreach (prize in this.contentRaw) {
       if (prize?.ignoreForTrophyType)

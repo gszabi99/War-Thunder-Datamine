@@ -97,6 +97,7 @@ let { getQueueSlots } = require("%scripts/queue/queueInfo.nut")
 let { leaveQueue, joinQueue } = require("%scripts/queue/queueManager.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 
 enum GM_CHANGED_STATUS {
   NONE              = 0,
@@ -1334,7 +1335,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventPartnerUnlocksUpdated(_p) {
     let hasModalObjectVal = this.guiScene.hasModalObject()
-    this.doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal))
+    this.doWhenActive(@() showPopupWndIfNeed(hasModalObjectVal))
   }
 
   function onEventCrossPlayOptionChanged(_p) {

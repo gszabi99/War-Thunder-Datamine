@@ -426,8 +426,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1087,8 +1086,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1142,8 +1141,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2193,6 +2192,17 @@
               "traceOffset": 1
             },
             {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "shell": "emtr_shellrejection4",
+              "bullets": 65,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
               "trigger": "machine gun",
               "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
               "emitter": "flare2",
@@ -2204,23 +2214,12 @@
               "traceOffset": 1
             },
             {
-              "trigger": "cannon",
+              "trigger": "machine gun",
               "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "cannon3_dm",
               "shell": "emtr_shellrejection3",
-              "bullets": 65,
-              "spread": 1.2,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
-              "emitter": "flare4",
-              "flash": "flare4",
-              "dm": "cannon4_dm",
-              "shell": "emtr_shellrejection4",
               "bullets": 65,
               "spread": 1.2,
               "traceOffset": 1

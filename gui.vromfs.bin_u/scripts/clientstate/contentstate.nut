@@ -1,16 +1,11 @@
 from "%scripts/dagui_natives.nut" import ps4_get_chunk_progress_percent, ps4_is_chunk_available
 from "%scripts/dagui_library.nut" import *
 
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 
 let { getContentPackStatus, ContentPackStatus } = require("contentpacks")
 
-let persistentData = {
-  isConsoleClientFullOnStart = !platformModule.isPlatformXbox && !platformModule.isPlatformSony
-}
-registerPersistentData("contentState", persistentData,
-  ["isConsoleClientFullOnStart"])
+let persistentData = persist("persistentData", @() {isConsoleClientFullOnStart = !platformModule.isPlatformXbox && !platformModule.isPlatformSony})
 
 local isConsoleClientFullyDownloaded = @() true
 local getClientDownloadProgressText = @() ""

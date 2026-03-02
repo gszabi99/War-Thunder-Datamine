@@ -61,8 +61,9 @@ def switch_blinking_flash_light(info : ParallelUpdateFrameDelayed;
   flashlight__on = !flashlight__on
   flashlight__blinkNextTime = info.curTime + (flashlight__on ? flashlight__blinkOnPeriod : flashlight__blinkOffPeriod)
 
-[es(tag=render, on_event=ParallelUpdateFrameDelayed)]
-def flash_light_update(evt : Event;
+
+[es(tag=render, after=after_main_update_es)]
+def flash_light_update(evt : UpdateStageInfoAct;
                        animchar : AnimcharBaseComponent;
                        flashlight__nodeId : int;
                        flashlight__eid : EntityId;

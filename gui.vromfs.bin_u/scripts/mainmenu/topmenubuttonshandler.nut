@@ -243,8 +243,11 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (u.isEmpty(section))
       return
 
-    if (showConsoleButtons.get() && section.mergeIndex >= -1) {
-      this.scene.findObject("top_menu_panel_place").setValue(section.mergeIndex)
+    let { mergeIndex } = section
+    if (showConsoleButtons.get() && mergeIndex >= -1) {
+      let panelObj = this.scene.findObject("top_menu_panel_place")
+      this.onGCDropdown(panelObj.getChild(mergeIndex))
+      panelObj.setValue(mergeIndex)
       return
     }
 

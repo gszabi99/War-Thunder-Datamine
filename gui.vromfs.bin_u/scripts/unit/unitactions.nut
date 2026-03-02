@@ -13,10 +13,9 @@ let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
 let { canBuyNotResearched, canResearchUnit, isUnitInResearch, isUnitResearched, isUnitFeatureLocked
 } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
+let { canBuyUnit, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -27,15 +26,6 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 enum CheckFeatureLockAction {
   BUY,
   RESEARCH
-}
-
-function canSpendGoldOnUnitWithPopup(unit) {
-  if (unit.unitType.canSpendGold())
-    return true
-
-  addPopup(getUnitName(unit), loc("msgbox/unitTypeRestrictFromSpendGold"),
-    null, null, null, "cant_spend_gold_on_unit")
-  return false
 }
 
 function impl_buyUnit(unit, needSelectCrew = true) {
@@ -281,5 +271,4 @@ return {
   flushExcessExpToUnit
   flushExcessExpToModule
   showCantBuyOrResearchUnitMsgbox
-  canSpendGoldOnUnitWithPopup
 }

@@ -9,7 +9,6 @@ let statsd = require("statsd")
 let psnStore = require("sony.store")
 let psnSystem = require("sony.sys")
 let { defer } = require("dagor.workcycle")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
@@ -31,11 +30,7 @@ let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpd
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { updateOnlineShopDiscounts } = require("%scripts/discounts/discounts.nut")
 
-let persistent = {
-  sheetsArray = []
-}
-registerPersistentData("PS4Shop", persistent, ["sheetsArray"])
-
+let PS4Shop = persist("PS4Shop", @() { sheetsArray = [] })
 
 let defaultsSheetData = {
   WARTHUNDEREAGLES = {
@@ -67,12 +62,12 @@ let fillSheetsArray = function(bcEventParams = {}) {
     return
   }
 
-  if (!persistent.sheetsArray.len()) {
+  if (!PS4Shop.sheetsArray.len()) {
     for (local i = 0; i < getShopData().blockCount(); i++) {
       let block = getShopData().getBlock(i)
       let categoryId = block.getBlockName()
 
-      persistent.sheetsArray.append({
+      PS4Shop.sheetsArray.append({
         id = $"sheet_{categoryId}"
         locText = block?.name ?? block.displayName ?? ""
         getSeenId = @() $"##ps4_item_sheet_{categoryId}"
@@ -84,7 +79,7 @@ let fillSheetsArray = function(bcEventParams = {}) {
     }
   }
 
-  foreach (sh in persistent.sheetsArray) {
+  foreach (sh in PS4Shop.sheetsArray) {
     let sheet = sh
     seenList.setSubListGetter(sheet.getSeenId(), function() {
       let res = []
@@ -236,7 +231,7 @@ let openIngameStoreImpl = kwarg(
         openStoreLocId = "items/openIn/Ps4Store"
         seenEnumId = seenEnumId
         seenList = seenList
-        sheetsArray = persistent.sheetsArray
+        sheetsArray = PS4Shop.sheetsArray
       })
       return true
     }

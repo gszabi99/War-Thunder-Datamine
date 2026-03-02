@@ -19,13 +19,15 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { EASY_TASK, MEDIUM_TASK, HARD_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { isHardTaskIncomplete, getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable,
-  isBattleTaskActual, isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
+let { isHardTaskIncomplete, isBattleTask, getBattleTaskNameById, getBattleTaskById
+} = require("%scripts/unlocks/battleTasksState.nut")
+let { getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable,
+  isBattleTaskActual, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
   isBattleTaskSameDiff, isBattleTaskNew, getBattleTaskRerollCost, canGetBattleTaskReward,
-  getBattleTaskById, getBattleTaskWithAvailableAward, getShowAllTasks,
+  getBattleTaskWithAvailableAward, getShowAllTasks,
   getBattleTasksByDiff, markBattleTaskSeen, markAllBattleTasksSeen, saveSeenBattleTasksData,
   requestBattleTaskReward, rerollBattleTask, rerollSpecialTask,
-  getBattleTaskNameById, canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty
+  canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty
 } = require("%scripts/unlocks/battleTasks.nut")
 let { mkUnlockConfigByBattleTask, getBattleTaskView, setBattleTasksUpdateTimer } = require("%scripts/unlocks/battleTasksView.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -36,8 +38,8 @@ let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut
 let { getWarbondsBalanceText, getCurrentWarbond, openWarbondsShop, isWarbondsShopButtonVisible
 } = require("%scripts/warbonds/warbondsManager.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -257,7 +259,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
                { textType = "textarea", text = loc("debriefing/sessionTime"), tdalign = "right", width = "35%pw" }])
 
       foreach (idx, uLog in finishedTasksUserlogsArray) {
-        let config = build_log_unlock_data(uLog)
+        let config = buildLogUnlockData(uLog)
         local text = config.name
         if (!u.isEmpty(config.rewardText))
           text = "".concat(text, loc("ui/parentheses/space", { text = config.rewardText }))
@@ -505,7 +507,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let awardsList = []
     foreach (id in config.names)
-      awardsList.append(build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
+      awardsList.append(buildLogUnlockData(buildConditionsConfig(getUnlockById(id))))
 
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }

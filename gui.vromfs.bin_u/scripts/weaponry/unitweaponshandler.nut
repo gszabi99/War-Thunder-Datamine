@@ -104,6 +104,8 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
+    columnsConfig.sizeMultiplier <- this.unit.isHuman() ? 1.2 : 1
+
     this.fillWeaponryByColumnsConfig(columnsConfig)
     this.updateAllItems()
 
@@ -145,8 +147,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       weaponryList = ""
     }
 
-    let itemWidth = config.itemWidth
-    let columns = config.columns
+    let { itemWidth, columns, sizeMultiplier } = config
 
     local isLineEmpty = false
     local lineOffset = 0.0
@@ -175,7 +176,9 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         needHeader = needHeader || cell.header != null
 
         if (cell.header)
-          bgBlock.columnsList.append(this.getColumnConfig(cell.id, cell.header, bgBlock.columnsList.len() > 0, itemWidth))
+          bgBlock.columnsList.append(this.getColumnConfig(
+            cell.id, cell.header, bgBlock.columnsList.len() > 0, itemWidth * sizeMultiplier
+          ))
       }
 
       if (isLineEmpty)
@@ -199,7 +202,9 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       })
 
       view.weaponryList = "".concat(view.weaponryList,
-        this.addItemsByCellsRow(cellsRow, lineOffset + line, itemWidth, showItemParams))
+        this.addItemsByCellsRow(
+          cellsRow, lineOffset + line, itemWidth, sizeMultiplier, showItemParams
+        ))
     }
 
     this.scene.height = $"{lineOffset + line}@modCellHeight"
@@ -211,7 +216,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getBgBlockBaseTemplate(width) {
     return {
-      width = width
+      width
       height = 1
       offsetX = 0
       offsetY = 0
@@ -224,19 +229,20 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function getColumnConfig(id, header, needDivLine = false, width = 1) {
     return {
       id
+      needDivLine
+      width
       name = header
-      needDivLine = needDivLine
-      width = width
       isSmallFont = true
     }
   }
 
-  function addItemsByCellsRow(cellsRow, offsetY, itemWidth, showItemParams) {
+  function addItemsByCellsRow(cellsRow, offsetY, itemWidth, sizeMultiplier, showItemParams) {
     let res = []
     let params = {
       posX = 0
       posY = offsetY
-      itemWidth = itemWidth
+      itemWidth
+      sizeMultiplier
       needSliderButtons = true
       wideItemWithSlider = itemWidth > 1
     }.__update(showItemParams)

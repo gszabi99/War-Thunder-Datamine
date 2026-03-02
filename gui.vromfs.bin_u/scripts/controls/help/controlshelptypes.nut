@@ -315,7 +315,6 @@ enums.addTypes(result, {
     }
     linkLines = {
       obstacles = [
-        "emergency_surfacing_text"
         "depth_indicator_help"
         "hud_2_calculating"
         "submorine_hull_obstacle"
@@ -326,7 +325,6 @@ enums.addTypes(result, {
         { start = "mines_label", end = "bar_item_mine_1" }
         { start = "torpedo_launch_label", end = "bar_item_torpedo_1" }
         { start = "periscope_label", end = "bar_item_periscope_1" }
-        { start = "emergency_surfacing_label", end = "bar_item_emergency_surfacing_1" }
         { start = "depth_indicator_label", end = "depth_indicator_point" }
         { start = "periscope_usage_label", end = "periscope_usage_point" }
         { start = "ship_target_label", end = "ship_target_point" }

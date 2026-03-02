@@ -7,6 +7,12 @@ options strict_smart_pointers = true
 
 module decs_state shared private
 
+
+
+
+
+
+
 require daslib/decs
 require daslib/strings_boost
 require debugapi
@@ -18,6 +24,7 @@ def report_to_debugger(var ctx : Context; category, name : string; value : auto(
 }
 
 struct EcsRequestView {
+    
     hash        : uint64
     REQUIRE     : string
     REQUIRE_NOT : string
@@ -27,6 +34,7 @@ struct EcsRequestView {
 }
 
 struct EcsComponentView {
+    
     name        : string
     vtype       : string
     values      : string
@@ -34,12 +42,14 @@ struct EcsComponentView {
 }
 
 struct EcsArchetypeView {
+    
     hash        : uint64
     size        : int
     components  : array<EcsComponentView>
 }
 
 class ContextStateAgent : DapiDebugAgent {
+    
     def override onCollect(var ctx : Context; at : LineInfo) {
         let pState = unsafe(get_context_global_variable(ctx, "decsState"))
         if (pState == null) {

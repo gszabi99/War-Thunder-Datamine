@@ -23,7 +23,7 @@ require Weapon
 def is_armored(parts_armor : FloatList const?; node_id : int; sound_tags : Object)
   return parts_armor != null ? (node_id >= 0 && node_id < length(*parts_armor) && (*parts_armor)[node_id] != 0.) : read_sound_tag("armored", sound_tags)
 
-[es(tag=sound, after=on_entity_hit, REQUIRE_NOT=shootingRangeDummy)]
+[es(tag=sound, after=on_entity_hit, REQUIRE_NOT=(shootingRangeDummy, controlledHero))]
 def projectile_impact_sounds_on_intersected_entity_with_hp(evt : EventOnHitEntity;
                                                            @shared_comp entity_intersected_with_projectile_sound__paths : Object;
                                                            is_watched_sound : bool = false;

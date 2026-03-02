@@ -8,12 +8,18 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { WwBattleView } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let WwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
 let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { setWwTooltipTypes } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { requestMyClanData } = require("%scripts/clans/clanActions.nut")
+let { getArmyGroups, getBattleById } = require("%scripts/worldWar/worldWarState.nut")
+let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
+let { isStillInOperation, isAutoBattle
+} = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
+
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { 
@@ -35,7 +41,7 @@ let wwTooltipTypes = {
       if (!isWorldWarEnabled())
         return ""
 
-      let airfield = ::g_world_war.getAirfieldByIndex(params.currentId)
+      let airfield = WwAirfield(params.currentId)
       if (airfield) {
         let view = airfield.getView()
         return handyman.renderCached("%gui/worldWar/worldWarMapArmyTooltip.tpl", { view, tooltipWidth = view.getTooltipWidth() })
@@ -49,22 +55,28 @@ let wwTooltipTypes = {
       if (!isWorldWarEnabled())
         return ""
 
-      let battle = ::g_world_war.getBattleById(params.currentId)
+      let battle = getBattleById(params.currentId)
       if (!battle.isValid())
         return ""
 
-      let view = battle.getView()
-      view.defineTeamBlock(::g_world_war.getSidesOrder(), { canAlignRight = false })
-      view.showBattleStatus = true
-      view.hideDesc = true
-      return handyman.renderCached("%gui/worldWar/battleDescription.tpl", view)
+      let battleView = WwBattleView(battle, {
+        isStillInOperation = isStillInOperation(battle)
+        isAutoBattle = isAutoBattle(battle)
+      })
+      battleView.defineTeamBlock(getSidesOrder(), { canAlignRight = false })
+      battleView.showBattleStatus = true
+      battleView.hideDesc = true
+      return handyman.renderCached("%gui/worldWar/battleDescription.tpl", battleView)
     }
   }
 
   WW_LOG_BATTLE_TOOLTIP = {
     getTooltipContent = function(_id, params) {
-      let battle = ::g_world_war.getBattleById(params.currentId)
-      let battleView = battle.isValid() ? battle.getView() : WwBattleView()
+      let battle = getBattleById(params.currentId)
+      let battleView = WwBattleView(battle, {
+        isStillInOperation = isStillInOperation(battle)
+        isAutoBattle = isAutoBattle(battle)
+      })
       return handyman.renderCached("%gui/worldWar/wwControlHelp.tpl", battleView)
     }
   }
@@ -75,7 +87,7 @@ let wwTooltipTypes = {
       if (!isWorldWarEnabled())
         return false
 
-      let group = u.search(::g_world_war.getArmyGroups(),  function(group) { return group.clanId == id })
+      let group = u.search(getArmyGroups(),  function(group) { return group.clanId == id })
       if (!group)
         return false
 

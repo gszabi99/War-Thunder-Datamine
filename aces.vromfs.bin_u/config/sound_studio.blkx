@@ -7,11 +7,11 @@
   "sampleRate": 48000,
   "fmodEnableSpatialSound": false,
   "rejectFarOneshots": true,
-  "memoryPc": 210,
+  "memoryPc": 300,
   "memoryPS4": 210,
   "checkMemPS4": true,
   "memoryPCLowMode": 190,
-  "memoryPCHighMode": 210,
+  "memoryPCHighMode": 300,
   "isFixedPool": false,
   "occlusionInit": true,
   "occlusionFarAttenuation": 100.0,
@@ -20,6 +20,9 @@
   "acquireSndThresholdPercent": 95.0,
   "preloadSndThresholdPercent": 95.0,
   "patchSoundForInfantry": true,
+  "snapshotHeadphones": "snapshots/headphones",
+  "snapshotWidening": "snapshots/widening",
+  "headphonesTestSoundName": "utility/test_tones",
   "language": "Russian",
   "waitForMenuMusic": true,
   "useOneshotForAirGunSound": true,
@@ -388,6 +391,16 @@
           "preload": false,
           "optional": true
         },
+        "infantry_music": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "infantry_music.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
         "event": {
           "async": true,
           "preload": false
@@ -611,7 +624,9 @@
           "async": true,
           "preload": false,
           "optional": true
-        },
+        }
+      },
+      "mission_inf": {
         "_infantry_voices_narrator_<lang>": {
           "async": true,
           "preload": false,
@@ -773,6 +788,7 @@
         "sounds/fx/miscellaneous_inside",
         "sounds/fx/taken_hits_inside",
         "sounds/fx/unit_destroy",
+        "sounds/fx/utility",
         "sounds/outside/fx/ai_hits",
         "sounds/outside/fx/ambient",
         "sounds/outside/fx/bomb_whistle",
@@ -1141,9 +1157,9 @@
     "eventShipBulletFall": "buzzer",
     "eventShipBulletHit": "main_caliber_hit",
     "eventBulletPassByInf": "bullet_passby",
+    "eventRocketPassByInf": "rocket_passby",
     "eventPeriscopeUps": "anniversary_11/effects/periscope_up",
     "eventPeriscopeDowns": "anniversary_11/effects/periscope_down",
-    "eventEmergencySurfacing": "event/anniversary_11/effects/alarm_emergency",
     "eventEmergencyBlow": "event/anniversary_11/effects/blow",
     "windAcelerateSpeed": 0.1,
     "windTransitionSpeed": 0.1,
@@ -1210,19 +1226,19 @@
     "bulletPassbyInfRadByCaliber": {
       "param": [
         [
-          10.0,
+          5.0,
           12.0
         ],
         [
-          20.0,
+          10.0,
           37.0
         ],
         [
-          40.0,
+          20.0,
           140.0
         ],
         [
-          60.0,
+          30.0,
           1000.0
         ]
       ]
@@ -1302,7 +1318,8 @@
     "obj_new3d": "obj_new3d",
     "enemy_kill_assist": "enemy_kill_assist",
     "enemy_ammo_burn": "enemy_ammo_burn",
-    "enemy_kill": "enemy_kill"
+    "enemy_kill": "enemy_kill",
+    "enemy_torpedo_hit": "enemy_torpedo_hit"
   },
   "rocket_effects": {
     "hellfire": {

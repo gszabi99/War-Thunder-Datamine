@@ -1,4 +1,5 @@
-from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_operation_get_log
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_operation_get_log,
+  ww_operation_request_log
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -7,9 +8,13 @@ let { wwGetPlayerSide } = require("worldwar")
 let { copy, search } = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_log_type } = require("%scripts/worldWar/inOperation/model/wwOperationLogTypes.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { getSaveOperationLogId, getOperationObjectives
+} = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+
 
 let logsData = {
   loaded = []
@@ -97,7 +102,7 @@ function getLogArmyId(logId, armyName) {
 }
 
 function getObjectivesBlk() {
-  let objectivesBlk = ::g_world_war.getOperationObjectives()
+  let objectivesBlk = getOperationObjectives()
   return objectivesBlk ? copy(objectivesBlk?.data) : DataBlock()
 }
 
@@ -260,6 +265,21 @@ function loadNewLogs(useLogMark, handler) {
   saveLoadedLogs(logsBlk, useLogMark, handler)
 }
 
+
+function requestLogs(loadAmount, useLogMark, cb, errorCb) {
+  let logMark = useLogMark ? getWWLogsData().lastMark : ""
+  let reqBlk = DataBlock()
+  reqBlk.setInt("count", loadAmount)
+  reqBlk.setStr("last", logMark)
+  let taskId = ww_operation_request_log(reqBlk)
+
+  if (taskId < 0) 
+    cb()
+  else
+    addTask(taskId, null, cb, errorCb)
+}
+
+
 function requestNewLogs(loadAmount, useLogMark, handler = null) {
   if (useLogMark && logsData.lastMark != "")
     return
@@ -269,7 +289,7 @@ function requestNewLogs(loadAmount, useLogMark, handler = null) {
     loadNewLogs(useLogMark, handler)
     changeLogsLoadStatus()
   }
-  ::g_world_war.requestLogs(loadAmount, useLogMark, cb, changeLogsLoadStatus)
+  requestLogs(loadAmount, useLogMark, cb, changeLogsLoadStatus)
 }
 
 function getLastReadLogMark() {
@@ -278,7 +298,7 @@ function getLastReadLogMark() {
 
 function saveLastReadLogMark() {
   logsData.lastReadLogMark = getLastReadLogMark()
-  saveLocalByAccount(::g_world_war.getSaveOperationLogId(), logsData.lastReadLogMark)
+  saveLocalByAccount(getSaveOperationLogId(), logsData.lastReadLogMark)
 }
 
 function clearWWLogs() {

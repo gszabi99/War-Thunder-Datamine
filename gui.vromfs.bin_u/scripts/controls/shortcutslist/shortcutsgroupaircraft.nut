@@ -272,6 +272,10 @@ return [
     reqInMouseAim = false
   }
   {
+    id = "ID_THRUST_VECTORING_MODE"
+    checkAssign = false
+  }
+  {
     id = "ID_GEAR"
     needShowInHelp = true
   }
@@ -607,6 +611,16 @@ return [
   {
     id = "ID_RADAR_NEXT_IFF_FILTER_MODE"
     checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION"
+    checkAssign = false
+    needShowInHelp = false
+  }
+  {
+    id = "ID_TOGGLE_AIR_RADAR_NCTR_APPLY"
+    checkAssign = false
+    needShowInHelp = false
   }
 
   {

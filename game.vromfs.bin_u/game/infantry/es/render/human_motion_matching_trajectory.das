@@ -15,6 +15,8 @@ def motion_matching_set_wish_speed(act : ParallelUpdateFrameDelayed;
   assume phys = human_net_phys.phys
   assume currentState = phys.currentState
   if phys.currentState.isWishToMove
+    if int(currentState.moveState) >= int(HUMoveState.EMS_NUM)
+      return
     var wishMoveState = currentState.moveState
     let reduceToWalk = human_phys_state_get_reduceToWalk(currentState)
     let isAiming = currentState.isAiming
@@ -30,11 +32,10 @@ def motion_matching_set_wish_speed(act : ParallelUpdateFrameDelayed;
                             phys.currentState.standState != HUStandState.ESS_CRAWL &&
                             phys.currentState.standState != HUStandState.ESS_DOWNED)
     wishSpeed *= useMoveSpeedMult ? phys.currentState.moveSpeedMult : phys.currentState.crawlCrouchSpeedMult
-    if phys.currentState.moveState == HUMoveState.EMS_SPRINT
-      wishSpeed *= phys.currentState.sprintSpeedMult
-      if phys.currentState.sprintLerpSpeedMult != 1.f
-        let runSpeed = phys |> human_phys_getWalkSpeed(phys.currentState.standState, HUMoveState.EMS_RUN) * phys.currentState.moveSpeedMult
-        wishSpeed = lerp(runSpeed, wishSpeed, phys.currentState.sprintLerpSpeedMult)
+    wishSpeed *= phys.currentState.getSpeedMultForMoveState(phys.currentState.moveState)
+    if phys.currentState.moveState == HUMoveState.EMS_SPRINT && phys.currentState.sprintLerpSpeedMult != 1.f
+      let runSpeed = phys |> human_phys_getWalkSpeed(phys.currentState.standState, HUMoveState.EMS_RUN) * phys.currentState.moveSpeedMult * phys.currentState.runSpeedMult
+      wishSpeed = lerp(runSpeed, wishSpeed, phys.currentState.sprintLerpSpeedMult)
     let bodyDir = float3(phys.currentState.bodyOrientDir.x, 0.0, phys.currentState.bodyOrientDir.y)
     
     
@@ -86,6 +87,11 @@ def motion_matching_update_trajectory(act : ParallelUpdateFrameDelayed;
   else
     let bodyDir = float3(curState.bodyOrientDir.x, 0.0, curState.bodyOrientDir.y)
     mm_trajectory__wishRotation = quat_from_unit_arc(MotionMatching::FORWARD_DIRECTION.xyz, bodyDir)
+
+  if !motion_matching__controller.hasActiveAnimation() && curState.standState == HUStandState.ESS_CRAWL
+    motion_matching__controller.rootRotation = mm_trajectory__wishRotation
+    mm_trajectory__currRotation = mm_trajectory__wishRotation
+    mm_trajectory__angularVelocity = float3(0, 0, 0)
 
   if (curState.moveState == HUMoveState.EMS_ROTATE_LEFT ||
       curState.moveState == HUMoveState.EMS_ROTATE_RIGHT ||

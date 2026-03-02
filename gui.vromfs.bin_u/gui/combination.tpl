@@ -1,7 +1,9 @@
 combination {
   <<#hasHoldButtonSign>>
-  holdButtonSign { margin-right:t='0.01@shHud' }
+  padding-left:t='-1@cIco -5*@sf/@pf'
+  holdButtonSign { isCombination:t='yes' }
   <</hasHoldButtonSign>>
+
   <<#elements>>
   <<@element>>
   <<^last>>

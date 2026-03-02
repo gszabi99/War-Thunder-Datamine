@@ -235,6 +235,7 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
                          human_weap__aimInertiaCrawlMult : float;
                          human_weap__aimInertiaAimingMult : float;
                          human_weap__aimInertiaStrengthMult : float;
+                         human_weap__aimInertiaStrengthPow : float;
                          human_weap__aimInertiaDampingMult : float;
                          human_weap__aimInertiaStiffnessMultStart : float;
                          human_weap__aimInertiaStiffnessMultEnd : float;
@@ -246,7 +247,6 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
                          human_weap__aimInertiaVelocityMax : float;
                          human_weap__aimInertiaMinWeight : float;
                          human_weap__aimInertiaMaxWeight : float;
-                         human_weap__aimInertiaHugeWeightBound : float = -1.0;
                          human_weap__aimInertiaViscosity : float;
                          human_weap__crawlClampVertAngleRad : float2;
                          human_weap__clampVertAngleRad : float2;
@@ -273,7 +273,9 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
   assume inertiaVel = human_weap__aimInertiaVelocity
 
   let curTick = int(safediv(info.curTime, human_weap__aimInertiaDeltaTime))
-  var weight = get_float(human_weap__currentGunEid, "item__weight") ?? 0.0
+  var weight = get_float(human_weap__currentGunEid, "gun__inertialMass") ?? 0.0
+  if weight == 0.0
+    weight = get_float(human_weap__currentGunEid, "item__weight") ?? 0.0
   weight = clamp(weight, 0.0, human_weap__aimInertiaMaxWeight)
 
   if (!isAlive || isDowned || isInVehicle
@@ -312,9 +314,7 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
   if human_weap__aimInertiaExtraInertiaRest > 0.0
     human_weap__aimInertiaExtraInertiaRest -= float(curTick - human_weap__aimInertiaLastTick) * human_weap__aimInertiaDeltaTime
 
-  var strength = weight * get_float(human_weap__currentGunEid, "item__inertiaMult") ?? human_weap__aimInertiaStrengthMult
-  if weight > human_weap__aimInertiaHugeWeightBound
-    strength *= weight * 0.5
+  var strength = pow(weight, human_weap__aimInertiaStrengthPow) * human_weap__aimInertiaStrengthMult
 
   if human_net_phys.phys.currentState.isCrouch
     strength *= human_weap__aimInertiaCrouchMult
@@ -338,6 +338,11 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
     c *= human_weap__aimInertiaDampingMultStart
 
   let inertiaMax = human_weap__aimInertiaMaxMult * deg_to_rad(human_input__gunToAimAngleLimit)
+
+  let localInertiaSpd = length(localInertia)
+  k *= cvt(localInertiaSpd, deg_to_rad(40.), inertiaMax.x, 1.f, 2.f)
+  c *= 1. - cvt(localInertiaSpd, deg_to_rad(40.), inertiaMax.x, 0., 0.6)
+
   for _ in range(human_weap__aimInertiaLastTick, curTick)
     let inertiaAccel = -localInertia * k - inertiaVel * c
     localInertia += inertiaVel * human_weap__aimInertiaDeltaTime

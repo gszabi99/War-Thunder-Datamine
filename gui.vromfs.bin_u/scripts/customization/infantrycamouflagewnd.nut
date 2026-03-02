@@ -138,7 +138,7 @@ gui_handlers.InfantryCamouflageHandler <- class (gui_handlers.BaseGuiHandlerWT) 
     this.checkSkinByPath(branchObj.id)
   }
 
-  function checkSkinByPath(path) {
+  function checkSkinByPath(path, needSave = true) {
     let parentPath = path.slice(0, lastIndexOf(path, "/"))
     let skinList = this.scene.findObject("teams_skins")
 
@@ -158,6 +158,8 @@ gui_handlers.InfantryCamouflageHandler <- class (gui_handlers.BaseGuiHandlerWT) 
     skinObj = skinList.findObject(path)
     radioBtn = skinObj.findObject("radio_button")
     radioBtn.isChecked = "yes"
+    if (!needSave)
+      return
     saveInfantrySkinByPath(path, this.unit.name)
 
     let {location, team, tier} = parseSkinPathArr(path.split("/"))
@@ -359,6 +361,28 @@ gui_handlers.InfantryCamouflageHandler <- class (gui_handlers.BaseGuiHandlerWT) 
       let btn = this.scene.findObject($"apply_to_all_{i+1}")
       btn.isSelected = getApplyToAllState(location, i+1, tier) ? "yes" : "no"
     }
+  }
+
+  function onEventHangarModelLoading(eventData) {
+    if (eventData.modelName == this.unit.name)
+      return
+    let unit = getAircraftByName(eventData.modelName)
+    if (unit == null || !unit.isHuman())
+      return
+    this.unit = unit
+    let location = convertFromTemplateName.location(selectedState.locationBlkName)
+    let tier = this.getTierByTierIndex(selectedState.tierIndex)
+    let skin = getInfantrySkinOnLocation(location, selectedState.team, tier, this.unit.name)
+    apply_human_skin(skin, selectedState.locationBlkName, tier, selectedState.team)
+
+    let locationData =  this.skinListTree.branches[selectedState.locationBlkName]
+    foreach (teamId, _teamData in locationData.branches) {
+      let teamIndex = convertFromTemplateName.team(teamId)
+      let skinOnLocation = getInfantrySkinOnLocation(location, teamIndex, tier, this.unit.name)
+      let path = $"{selectedState.locationBlkName}/{teamId}/tier_{tier}_squad/{skinOnLocation}"
+      this.checkSkinByPath(path, false)
+    }
+    this.updateSelectedSkin()
   }
 
   function onPresentationAnim(_btn) {}

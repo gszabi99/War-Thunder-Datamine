@@ -18,7 +18,6 @@ let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { hasLoadedModel } = require("%scripts/hangarModelLoadManager.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
@@ -166,13 +165,19 @@ function applyXrayFilter(objId, _tName, value) {
     : (xrayFilterOption.value & ~xrayFilterOption.values[idx])
   set_option(optionId, optionValue, xrayFilterOption)
 }
+let dmViewerStorage = persist("dmViewerStorage", @() {
+  view_mode = DM_VIEWER_NONE
+  _currentViewMode = DM_VIEWER_NONE
+  viewModeForRestore = null
+  isVisibleExternalPartsArmor = true
+  active = false
+  isDebugMode = false
+})
 
 local dmViewer
 dmViewer = {
-  active = false
   
   
-  view_mode = DM_VIEWER_NONE
   unit = null
   simUnitType = S_UNDEFINED
   crew = null
@@ -188,8 +193,6 @@ dmViewer = {
     [DM_VIEWER_XRAY]  = "xray",
   }
 
-  isVisibleExternalPartsArmor = true
-
   prevHintParams = {}
 
   screen = [ 0, 0 ]
@@ -203,17 +206,24 @@ dmViewer = {
   armorClassToSteel = null
 
   xrayDescriptionCache = {}
-  isDebugMode = false
   isDebugBatchExportProcess = false
   isSecondaryModsValid = false
 
-  _currentViewMode = DM_VIEWER_NONE
-  function getCurrentViewMode() { return this._currentViewMode }
+  function getCurrentViewMode() { return dmViewerStorage._currentViewMode }
   function setCurrentViewMode(value) {
-    this._currentViewMode = value
+    dmViewerStorage._currentViewMode = value
     hangar_set_dm_viewer_mode(value)
     this.updateNoPartsNotification()
   }
+
+  function restoreSavedViewMode() {
+    if (dmViewerStorage.viewModeForRestore == null)
+      return
+    this.toggle(dmViewerStorage.viewModeForRestore)
+    dmViewerStorage.viewModeForRestore = null
+  }
+
+  saveViewModeForRestore = @() dmViewerStorage.viewModeForRestore = dmViewerStorage.view_mode
 
   function init(handler) {
     this.screen = [ screen_width(), screen_height() ]
@@ -334,26 +344,26 @@ dmViewer = {
   }
 
   function toggle(state = null) {
-    if (state == this.view_mode)
+    if (state == dmViewerStorage.view_mode)
       return
 
-    this.view_mode =
-      (state == null) ? ((this.view_mode + 1) % this.modes.len()) :
+    dmViewerStorage.view_mode =
+      (state == null) ? ((dmViewerStorage.view_mode + 1) % this.modes.len()) :
       (state in this.modes) ? state :
       DM_VIEWER_NONE
 
     
-    if (!this.update() && this.active)
+    if (!this.update() && dmViewerStorage.active)
       this.show()
-    if (!this.active || this.view_mode == DM_VIEWER_NONE)
+    if (!dmViewerStorage.active || dmViewerStorage.view_mode == DM_VIEWER_NONE)
       this.clearHint()
   }
 
   function show(vis = true) {
-    this.active = vis
-    let viewMode = (this.active && this.canUse()) ? this.view_mode : DM_VIEWER_NONE
+    dmViewerStorage.active = vis
+    let viewMode = (dmViewerStorage.active && this.canUse()) ? dmViewerStorage.view_mode : DM_VIEWER_NONE
     this.setCurrentViewMode(viewMode)
-    if (!this.active)
+    if (!dmViewerStorage.active)
       this.clearHint()
     this.repaint()
   }
@@ -362,7 +372,7 @@ dmViewer = {
     this.updateNoPartsNotification()
 
     local newActive = this.canUse() && !handlersManager.isAnyModalHandlerActive()
-    if (!newActive && !this.active) 
+    if (!newActive && !dmViewerStorage.active) 
       return false
 
     let handler = handlersManager.getActiveBaseHandler()
@@ -370,7 +380,7 @@ dmViewer = {
     if (topMenuHandler.get()?.isSceneActive() ?? false)
       newActive = newActive && topMenuHandler.get().canShowDmViewer()
 
-    if (newActive == this.active) {
+    if (newActive == dmViewerStorage.active) {
       this.repaint()
       return false
     }
@@ -384,7 +394,7 @@ dmViewer = {
   }
 
   function checkShowViewModeTutor(modeId) {
-    if (this.view_mode == modeId)
+    if (dmViewerStorage.view_mode == modeId)
       return
 
     if (!this.unit?.isShipOrBoat())
@@ -449,11 +459,11 @@ dmViewer = {
     if (!checkObj(obj))
       return
 
-    obj.setValue(this.view_mode)
+    obj.setValue(dmViewerStorage.view_mode)
 
     
     if (hasFeature("DmViewerProtectionAnalysis")) {
-      let isEnabled = this.view_mode == DM_VIEWER_ARMOR
+      let isEnabled = dmViewerStorage.view_mode == DM_VIEWER_ARMOR
         && (this.unit?.unitType.canShowProtectionAnalysis() ?? false)
       showObjById("dmviewer_protection_analysis_btn", isEnabled, handler.scene)
     }
@@ -463,17 +473,17 @@ dmViewer = {
     if (hasFeature("DmViewerExternalArmorHiding")) {
       obj = handler.scene.findObject("dmviewer_show_external_dm")
       if (checkObj(obj)) {
-        let isShowOption = this.view_mode == DM_VIEWER_ARMOR && isTankOrShip
+        let isShowOption = dmViewerStorage.view_mode == DM_VIEWER_ARMOR && isTankOrShip
         obj.show(isShowOption)
         if (isShowOption)
-          obj.setValue(this.isVisibleExternalPartsArmor)
+          obj.setValue(dmViewerStorage.isVisibleExternalPartsArmor)
       }
     }
 
     obj = handler.scene.findObject("filter_nest")
     if (obj?.isValid()) {
       let xrayFilterOption = getXrayFilterOption()
-      let isShowOption = this.view_mode == DM_VIEWER_XRAY && isTankOrShip
+      let isShowOption = dmViewerStorage.view_mode == DM_VIEWER_XRAY && isTankOrShip
         && (xrayFilterOption?.values.len() ?? 0) > 0
       obj.show(isShowOption)
       if (isShowOption) {
@@ -491,13 +501,13 @@ dmViewer = {
         else
           broadcastEvent("UpdateFiltersCount") 
         set_xray_parts_filter(xrayFilterOption.value)
-      } else if (this.view_mode == DM_VIEWER_XRAY && hasLoadedModel())
+      } else if (dmViewerStorage.view_mode == DM_VIEWER_XRAY && hasLoadedModel())
         set_xray_parts_filter(0)
     }
 
     obj = handler.scene.findObject("dmviewer_show_extended_hints")
     if (obj?.isValid()) {
-      let isShowOption = this.view_mode == DM_VIEWER_XRAY && !!this.unit?.isShipOrBoat()
+      let isShowOption = dmViewerStorage.view_mode == DM_VIEWER_XRAY && !!this.unit?.isShipOrBoat()
       obj.show(isShowOption)
       if (isShowOption)
         obj.setValue(this.needShowExtHints())
@@ -508,8 +518,8 @@ dmViewer = {
     if (!checkObj(obj))
       return
 
-    let modeNameCur  = this.modes[ this.view_mode  ]
-    let modeNameNext = this.modes[ (this.view_mode + 1) % this.modes.len() ]
+    let modeNameCur  = this.modes[ dmViewerStorage.view_mode  ]
+    let modeNameNext = this.modes[ (dmViewerStorage.view_mode + 1) % this.modes.len() ]
 
     obj.tooltip = loc($"mainmenu/viewDamageModel/tooltip_{modeNameNext}")
     obj.setValue(loc($"mainmenu/btn_dm_viewer_{modeNameNext}"))
@@ -562,7 +572,7 @@ dmViewer = {
   }
 
   function updateHint(params) {
-    if (!this.active) {
+    if (!dmViewerStorage.active) {
       if (this.hasPrevHint()) {
         this.resetPrevHint()
         let hintObj = this.getHintObj()
@@ -578,7 +588,7 @@ dmViewer = {
     local needUpdatePos = false
     local needUpdateContent = false
 
-    if (this.view_mode == DM_VIEWER_XRAY || (params?.weapon_item_desc ?? false))
+    if (dmViewerStorage.view_mode == DM_VIEWER_XRAY || (params?.weapon_item_desc ?? false))
       
       needUpdateContent = (getTblValue("name", params, true) != getTblValue("name", this.prevHintParams, false))
     else
@@ -601,7 +611,7 @@ dmViewer = {
       return this.placeHint(obj)
 
     let partName = params?.name ?? ""
-    let partType = this.view_mode == DM_VIEWER_XRAY ? getPartType(partName, this.xrayRemap) : partName
+    let partType = dmViewerStorage.view_mode == DM_VIEWER_XRAY ? getPartType(partName, this.xrayRemap) : partName
 
     let isVisible = partType != ""
     obj.show(isVisible)
@@ -610,7 +620,7 @@ dmViewer = {
 
     let handler = handlersManager.getActiveBaseHandler()
     local info = { title = "", desc = [] }
-    let isUseCache = this.view_mode == DM_VIEWER_XRAY && !this.isDebugMode
+    let isUseCache = dmViewerStorage.view_mode == DM_VIEWER_XRAY && !dmViewerStorage.isDebugMode
 
     if (isUseCache && (partName in this.xrayDescriptionCache))
       info = this.xrayDescriptionCache[partName]
@@ -632,7 +642,7 @@ dmViewer = {
       obj.findObject("topValueHint").show(info.desc.findindex(@(v) "topValue" in v) != null)
     }
 
-    let debugStr = params?.raw_name ?? (this.isDebugMode ? partName : null)
+    let debugStr = params?.raw_name ?? (dmViewerStorage.isDebugMode ? partName : null)
     let isShowDebugStr = debugStr != null
     let debugTxtObj = obj.findObject("dmviewer_debug")
     debugTxtObj.show(isShowDebugStr)
@@ -682,7 +692,7 @@ dmViewer = {
       animation   = null
     }
 
-    let viewMode = params?.viewMode ?? this.view_mode
+    let viewMode = params?.viewMode ?? dmViewerStorage.view_mode
 
     if (partType == null) {
       let partName = params?.name ?? ""
@@ -840,7 +850,7 @@ dmViewer = {
   }
 
   function showExternalPartsArmor(isShow) {
-    this.isVisibleExternalPartsArmor = isShow
+    dmViewerStorage.isVisibleExternalPartsArmor = isShow
     hangar_show_external_dm_parts_change(isShow)
   }
 
@@ -877,14 +887,14 @@ dmViewer = {
 
   onEventGameLocalizationChanged = @(_p) this.resetXrayCache()
   onEventModificationChanged = @(_p) this.resetXrayCache()
+  onEventMainMenuReturn = @(_p) this.restoreSavedViewMode()
+  onEventSignOut = @(_p) dmViewerStorage.viewModeForRestore = null
 }
 
-registerPersistentData("dmViewer", dmViewer, [ "active", "view_mode", "_currentViewMode", "isDebugMode",
-    "isVisibleExternalPartsArmor" ])
 subscribe_handler(dmViewer, g_listener_priority.DEFAULT_HANDLER)
 
 eventbus_subscribe("on_hangar_damage_part_pick", @(p) dmViewer.updateHint(p))
 
-register_command(@() dmViewer.isDebugMode = !dmViewer.isDebugMode, "ui.debug.dm_viewer")
+register_command(@() dmViewerStorage.isDebugMode = !dmViewerStorage.isDebugMode, "ui.debug.dm_viewer")
 
 return dmViewer

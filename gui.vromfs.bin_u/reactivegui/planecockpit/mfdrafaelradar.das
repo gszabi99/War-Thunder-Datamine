@@ -10,6 +10,7 @@ require FlightModelWrap
 require math
 require GamePhys
 require %rGui.utils.radar_common
+require %rGui.utils.constants_common
 
 let white = E3DCOLOR(Color4(float4(1.0, 1.0, 1.0, 1.)))
 let red = E3DCOLOR(Color4(float4(1., 0., 0., 1.)))
@@ -82,6 +83,11 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
       let cosa = cos(angle)
       let pos = origin + float2(cosa * distanceRel * radius, sina * distanceRel * radius)
       if target.isSelected && get_radar_hud_has_azimuth_scale() && target.losSpeed < 30000.0
+        if target.isSelectedTargetOfInterest
+          let lockColor = get_radar_hud_is_irst() ? YELLOW : WHITE
+          let targetLock <- to_array_move(fixed_array<float2>(pos, origin))
+          ctx |> render_line_aa(targetLock, false, data.lineWidth, float2(0, 0), lockColor)
+
         let losAngle = atan2(target.losHorSpeed, -target.losSpeed)
         ctx |> setRotViewTm(pos.x, pos.y, losAngle, 0., false)
 
@@ -235,12 +241,30 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   let compassBoundingRadius = radius * 1.1
   ctx |> set_viewport(origin.x - compassBoundingRadius, origin.y - compassBoundingRadius, origin.x + compassBoundingRadius, origin.y + size.y * 0.1)
   draw_compass(ctx, data, origin, radius * 1.0, compass)
+  draw_launch_zone(ctx, origin, size)
   ctx |> restore_viewport()
 
   ctx |> render_sector_aa(origin, radius2 * 0.5, float2(PI, 2.0 * PI), data.lineWidth, radarInnerRingColor, transparentColor)
 
   let lowerBorder <- to_array_move(fixed_array<float2>(origin + float2(-radius2.x, 0.0), origin + float2(-radius2.x, size.y * 0.1), origin + float2(radius2.x, size.y * 0.1), origin + float2(radius2.x, 0.0)))
   ctx |> render_line_aa(lowerBorder, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
+
+
+def draw_launch_zone(var ctx : GuiContext&; origin : float2; size : float2)
+  if !get_radar_hud_aam_launch_zone_visible()
+    return
+
+  let distMax = get_radar_hud_aam_launch_zone_dist_max()
+  if distMax <= 1.
+    ctx |> render_ellipse_aa(origin, float2(size.y * distMax), 0.1, YELLOW,  transparentColor)
+
+  let dgftDistMin = get_radar_hud_aam_launch_zone_dist_dgft_min()
+  if dgftDistMin <= 1.
+    let numDashes = 10
+    let dashAngle = PI / (float(numDashes) * 2.0 + 1.0)
+    for i in range(numDashes + 1)
+      let angle = PI + dashAngle * 2.0 * float(i)
+      ctx |> render_sector_aa(origin, float2(size.y * dgftDistMin), float2(angle, angle + dashAngle), 0.1, YELLOW,  transparentColor)
 
 def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
   let hero = get_controlled_hero()

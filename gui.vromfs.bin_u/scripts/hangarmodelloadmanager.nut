@@ -36,7 +36,8 @@ function loadModel(modelName) {
   if (modelName == "" || (modelName == hangar_get_current_unit_name() && !hangar_is_squad_loaded()))
     return
   isLoading.set(true)
-  hangar_load_model(modelName, isUnitSpecial(getAircraftByName(modelName)), false)
+  let unit = getAircraftByName(modelName)
+  hangar_load_model(modelName, isUnitSpecial(unit) || unit.marketplaceItemdefId, false)
   broadcastEvent("HangarModelLoading", { modelName })
 }
 

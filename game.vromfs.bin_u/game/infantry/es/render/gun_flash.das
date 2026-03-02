@@ -4,6 +4,7 @@ require GeomNodeTree
 require DagorSystem
 require math.base
 require %game.events
+require %appGame.infantry.client.ground_wave_common
 
 [es(tag=render, on_appear, REQUIRE=gun_flash_fx_mod)]
 def gun_flash_fx_mod_init(evt : Event;
@@ -125,6 +126,10 @@ def gun_flash_fx_on_shot(evt : Event;
                          gun_flash_fx__modEid : EntityId;
                          @shared_comp gun_flash_fx__template : StringList;
                          @shared_comp gun_flash_fx__scale : FloatList;
+                         gun__barrelTipNode : string = "gunFx_main";
+                         gun__curShellImpulse : float = 0.0;
+                         gun_flash_fx__shellImpulse : float = 0.0;
+                         gun_flash_fx__spawnGroundWave : bool = false;
                          animchar__visible : bool = true;
                          auto_gun_controller__enabled : bool = false)
   if !animchar__visible && !auto_gun_controller__enabled
@@ -133,6 +138,13 @@ def gun_flash_fx_on_shot(evt : Event;
     flash_unmodded(eid, animchar, gun_flash_fx__nodeIds, gun_flash_fx__template, gun_flash_fx__scale)
   else
     flash_modded(eid, animchar, gun_flash_fx__modEid)
+  let barrelTipNodeId = geomtree_findNodeIndex(*animchar.nodeTree, gun__barrelTipNode)
+  if gun_flash_fx__spawnGroundWave
+    let impulse = gun_flash_fx__shellImpulse <= 0.0 ? gun__curShellImpulse : gun_flash_fx__shellImpulse
+    var tm : float3x4
+    geomtree_getNodeWtmScalar(*animchar.nodeTree, barrelTipNodeId, tm)
+    spawn_ground_wave_fx(impulse, float3(), tm[0], tm[3],  true)
+
 
 [es(tag=render, on_event=(CmdNetShot, EventShot), after=gun_barrel_index_update)]
 def gun_flash_fx_multiple_barrels_on_shot(evt : Event;

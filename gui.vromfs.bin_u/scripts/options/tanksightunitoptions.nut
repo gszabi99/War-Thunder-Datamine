@@ -7,7 +7,7 @@ let { hasUnitAtRank, get_units_list } = require("%scripts/shop/shopCountryInfo.n
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
@@ -97,7 +97,7 @@ sightUnitOptions.addTypes({
 
     function updateOptions() {
       let country = sightUnitOptions.COUNTRY.value
-      this.options = array(MAX_COUNTRY_RANK)
+      this.options = array(maxCountryRank.get())
         .map(@(_, idx) idx + 1)
         .filter(@(rank) hasUnitAtRank(rank, ES_UNIT_TYPE_TANK, country, true, false))
         .map(@(rank) {

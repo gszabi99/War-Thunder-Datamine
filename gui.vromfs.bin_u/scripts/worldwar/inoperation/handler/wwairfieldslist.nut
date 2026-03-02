@@ -15,6 +15,8 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getCurrentOperation, getAirArmiesNumberByGroupIdx
 } = require("%scripts/worldWar/inOperation/wwOperations.nut")
+let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
+
 
 gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -101,7 +103,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
     if (!getTblValue("army", cooldownView))
       return
 
-    let airfield = g_world_war.getAirfieldByIndex(airfieldIdx)
+    let airfield = WwAirfield(airfieldIdx)
     if (!airfield)
       return
 
@@ -137,7 +139,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
       return
     }
 
-    let airfield = g_world_war.getAirfieldByIndex(index)
+    let airfield = WwAirfield(index)
     let formationView = {
       army = []
       showArmyGroupText = false
@@ -190,7 +192,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
       formationType = "cooldown"
     }
 
-    let airfield = g_world_war.getAirfieldByIndex(index)
+    let airfield = WwAirfield(index)
     let cooldownFormations = airfield.getCooldownsWithManageAccess()
     foreach (_i, cooldown in cooldownFormations)
       cooldownView.army.append(cooldown.getView())
@@ -209,7 +211,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
   }
 
   function calcGroupAirArmiesNumber(index) {
-    let airfield = g_world_war.getAirfieldByIndex(index)
+    let airfield = WwAirfield(index)
     if (!airfield.isValid())
       return
 
@@ -222,7 +224,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
     if (!checkObj(textObj))
       return
 
-    let airfield = g_world_war.getAirfieldByIndex(index)
+    let airfield = WwAirfield(index)
     let isAirfielValid = airfield.isValid()
     if (!isAirfielValid)
       return
@@ -239,7 +241,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
     local armyCount = getAirArmiesNumberByGroupIdx(selectedGroupIdx,
       airfield.airfieldType.overrideUnitType)
     for (local idx = 0; idx < g_world_war.getAirfieldsCount(); idx++) {
-      let af = g_world_war.getAirfieldByIndex(idx)
+      let af = WwAirfield(idx)
       if (airfield.airfieldType == af.airfieldType)
         armyCount += af.getCooldownArmiesNumberByGroupIdx(selectedGroupIdx)
     }
@@ -251,7 +253,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
     if (!checkObj(airfieldBlockObj))
       return
 
-    let airfield = g_world_war.getAirfieldByIndex(index)
+    let airfield = WwAirfield(index)
     let isAirfielValid = airfield.isValid()
 
     airfieldBlockObj.show(isAirfielValid)

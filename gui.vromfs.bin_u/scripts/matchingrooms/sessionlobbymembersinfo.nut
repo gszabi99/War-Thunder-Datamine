@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import script_net_assert
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
-from "%scripts/utils_sa.nut" import is_mode_with_teams
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
 let { getRoomMembers, isUserCanChangeReadyInLobby, hasSessionInLobby, isInSessionRoom,
   SessionLobbyState, isMeSessionLobbyRoomOwner, getSessionLobbyGameType, getSessionLobbyMissionParam,
@@ -142,7 +142,7 @@ function getRoomMembersReadyStatus() {
     res.statusText = loc("multiplayer/not_all_ready")
 
   let gt = getSessionLobbyGameType()
-  let checkTeams = is_mode_with_teams(gt)
+  let checkTeams = isModeWithTeams(gt)
   if (!checkTeams)
     return res
 

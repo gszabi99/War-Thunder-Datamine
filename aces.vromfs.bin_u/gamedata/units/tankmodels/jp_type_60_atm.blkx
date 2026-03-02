@@ -1211,14 +1211,54 @@
           "gun": "bone_mg_aa_v_01",
           "gunnerDm": "commander_dm"
         },
-        "limits": {
-          "yaw": [
-            -45.0,
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -175.0,
+            30.0,
             45.0
           ],
-          "pitch": [
+          "lim2": [
+            -175.0,
+            -160.0,
             -5.0,
-            25.0
+            45.0
+          ],
+          "lim3": [
+            -160.0,
+            -145.0,
+            30.0,
+            45.0
+          ],
+          "lim4": [
+            -145.0,
+            -118.0,
+            -3.0,
+            45.0
+          ],
+          "lim5": [
+            -118.0,
+            -90.0,
+            -10.0,
+            45.0
+          ],
+          "lim6": [
+            -90.0,
+            -45.0,
+            -4.0,
+            45.0
+          ],
+          "lim7": [
+            -45.0,
+            170.0,
+            -10.0,
+            45.0
+          ],
+          "lim8": [
+            170.0,
+            180.0,
+            30.0,
+            45.0
           ]
         }
       },
@@ -1257,12 +1297,12 @@
         },
         "limits": {
           "yaw": [
-            -22.0,
-            22.0
+            -30.0,
+            30.0
           ],
           "pitch": [
-            -22.0,
-            22.0
+            -10.0,
+            10.0
           ]
         }
       }
@@ -1280,16 +1320,16 @@
       "Fuel": 300.0,
       "TakeOff": 12000.0,
       "momentOfInertia": [
-        2.0,
-        2.0,
-        4.0
+        0.9,
+        2.42,
+        2.16
       ],
       "CenterOfGravity": [
-        0.4,
+        -0.05,
         0.4,
         0.0
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 800.0,
       "CenterOfGravityClampY": [
         0.0,
@@ -1298,7 +1338,7 @@
     },
     "tracks": {
       "animationMultiplier": -0.64,
-      "height": 0.02,
+      "height": 0.03,
       "width": 0.4
     },
     "collisionProps": {
@@ -1314,16 +1354,20 @@
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 55000.0,
-      "driveGearRadius": 0.3,
-      "mainGearRatio": 1.8,
-      "sideGearRatio": 3.77573,
+      "driveGearRadius": 0.24,
+      "mainGearRatio": 4.82,
+      "sideGearRatio": 1.0,
       "gearRatios": {
         "ratio": [
-          -4.35,
+          -2.54,
+          -6.0,
           0.0,
-          3.81,
-          1.94,
-          0.88
+          6.0,
+          3.0,
+          2.28,
+          1.56,
+          1.28,
+          1.0
         ]
       }
     },
@@ -1333,9 +1377,9 @@
         -0.07,
         0.05
       ],
-      "defaultGearRadius": 0.33,
+      "defaultGearRadius": 0.3,
       "topGearRadius": 0.125,
-      "frontBackGearRadius": 0.324,
+      "frontBackGearRadius": 0.25,
       "defaultDampeningForce": [
         110000.0,
         110000.0

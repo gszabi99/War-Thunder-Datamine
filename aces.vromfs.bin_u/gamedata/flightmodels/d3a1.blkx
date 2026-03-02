@@ -4,6 +4,8 @@
   "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_bomber_metaparts.blk",
+  "gearSinkRangeLR": 0.08,
+  "gearSinkRangeC": 0.041,
   "gyroSight": false,
   "type": [
     "typeBomber",
@@ -418,8 +420,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1032,8 +1033,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1088,8 +1089,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1144,8 +1145,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1200,8 +1201,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1984,14 +1985,14 @@
   },
   "cockpit": {
     "headPos": [
-      0.0,
-      0.823,
-      0.002
+      -0.582,
+      0.92,
+      0.0
     ],
     "headPosOnShooting": [
-      0.3,
-      0.823,
-      0.002
+      -0.04,
+      0.876,
+      0.0
     ],
     "lightPos": [
       0.516,
@@ -2167,7 +2168,6 @@
         "blk": "gameData/Weapons/gunType97.blk",
         "emitter": "flare1",
         "flash": "flare1",
-        "shell": "emtr_shellrejection1",
         "dm": "mgun1_dm",
         "bullets": 900,
         "spread": 1.1,
@@ -2178,7 +2178,6 @@
         "blk": "gameData/Weapons/gunType97.blk",
         "emitter": "flare2",
         "flash": "flare2",
-        "shell": "emtr_shellrejection2",
         "dm": "mgun2_dm",
         "bullets": 900,
         "spread": 1.1,
@@ -2224,7 +2223,7 @@
   "gunnerFps": {
     "pos": [
       -0.5,
-      0.4,
+      1.167,
       0.0
     ],
     "head": "turret1"

@@ -287,7 +287,6 @@
     "thresholdBlink": 0.2,
     "thresholdDead": 0.1,
     "bgd": "damage_background",
-    "tank_bgd": "tank_background",
     "alignAnchor": "lt",
     "color": [
       200,
@@ -374,6 +373,10 @@
     "tankHull": "map_player_tank_hull.svg:17:17:K",
     "mapCamera": "map_camera",
     "deadUnitIcon": "objective_kill",
+    "enableTorpedoDrawing": true,
+    "launchedTorpedo": "torpedo_icon.svg:10:10:K",
+    "launchedRocket": "rocket_icon.svg:10:10:K",
+    "selectedProjectile": "selected_projectile.svg:10:10:K",
     "deadUnitIconScale": 0.5,
     "captureZoneAlpha": 1.0,
     "textOffset": [
@@ -507,6 +510,8 @@
     "icon_artillery_attack": "chat_icon_artillery_attack",
     "icon_marker_from_uav": "chat_icon_attention",
     "respawnbase_select": "respawnbase_select.svg:44:54:K",
+    "unit_respawn_select": "respawnbase_select.svg:32:39:K",
+    "unit_respawn_highlight": "respawnbase_highlight.svg:32:39:K",
     "icon_marker_point_of_interest": "map_interestpoint.svg:20:20:K",
     "iconArtilleryAttackBlinkTime": 20.0,
     "iconArtilleryAttackDist": 150.0,
@@ -2257,6 +2262,7 @@
     "iconHumanAmmoBox": "human_ammo_box.svg:48:48:K",
     "iconHumanExplosiveBox": "human_explosives_box.svg:48:48:K",
     "iconHumanMedBox": "human_med_box.svg:48:48:K",
+    "iconKnockedDownTeammate": "medic_status_indicator.svg:48:48:K",
     "iconSquadMember0": "infantry_1.svg:24:24:K",
     "iconSquadMember1": "infantry_2.svg:24:24:K",
     "iconSquadMember2": "infantry_3.svg:24:24:K",
@@ -2483,10 +2489,11 @@
         0,
         220,
         0,
-        255
+        220
       ],
       "scale": 10.0,
-      "height": 0.3
+      "height": 0.3,
+      "trackAlphaDecay": 3.0
     },
     "exitZones": {
       "hudIcon": "exit_zone.svg:40:197:K",
@@ -2876,7 +2883,7 @@
   "progress": {
     "position": [
       30.0,
-      -16.0
+      -5.0
     ],
     "iconOffset": [
       106.0,
@@ -4063,6 +4070,9 @@
       "maneveurability_mode": {
         "shortcutIdx": -1
       },
+      "thrust_vectoring_mode": {
+        "shortcutIdx": -1
+      },
       "hover_mode": {
         "shortcutIdx": -1
       },
@@ -4116,9 +4126,6 @@
       },
       "periscope": {
         "shortcutIdx": 49
-      },
-      "emergency_surfacing": {
-        "shortcutIdx": 50
       },
       "mission_support_plane": {
         "shortcutIdx": 8
@@ -4754,7 +4761,7 @@
       50,
       5
     ],
-    "torpForestall": "",
+    "torpForestall": "white@@vs",
     "forestallFadeTime": 0.5,
     "forestallTimeToStabilze": 1.0,
     "forestallIterationsToStabilize": 50,
@@ -4973,6 +4980,19 @@
           200,
           255
         ]
+      }
+    },
+    "crewKilled": {
+      "enabled": true,
+      "text": {
+        "enabled": true,
+        "color": [
+          200,
+          200,
+          200,
+          255
+        ],
+        "template": "-%d"
       }
     }
   },

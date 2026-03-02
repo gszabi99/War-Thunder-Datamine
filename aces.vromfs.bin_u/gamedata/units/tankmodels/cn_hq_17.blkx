@@ -2011,6 +2011,7 @@
     "collisionProps": {
       "cls_turret_01": "convex_hull",
       "cls_turret_02": "convex_hull",
+      "cls_turret_03": "convex_hull",
       "cls_body": "convex_hull"
     },
     "engine": {
@@ -2982,6 +2983,33 @@
         "from": "ussr_camo_green*",
         "to": "ussr_camo_winter*"
       }
+    },
+    {
+      "name": "cn_camo_winter_lines",
+      "nameLocId": "skin/cn_camo_winter_lines",
+      "descLocId": "skin/cn_camo_winter_lines/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "cn_camo_winter_lines*"
+      }
+    },
+    {
+      "name": "cn_camo_sand_ltgreen_dkgreen_lines",
+      "nameLocId": "skin/cn_camo_sand_ltgreen_dkgreen_lines",
+      "descLocId": "skin/cn_camo_sand_ltgreen_dkgreen_lines/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "cn_camo_sand_ltgreen_dkgreen_lines*"
+      }
+    },
+    {
+      "name": "cn_camo_summer_green",
+      "nameLocId": "skin/cn_camo_summer_green",
+      "descLocId": "skin/cn_camo_summer_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "cn_camo_summer_green*"
+      }
     }
   ],
   "sensors": {
@@ -3006,6 +3034,24 @@
         "powerButtonIdx": -1
       }
     ]
+  },
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": [
+        "cls_turret_03",
+        "cls_turret_02"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        true,
+        false,
+        false,
+        true
+      ]
+    }
   },
   "antiAirComplexMenu": {
     "isVerticalViewAvailable": true,

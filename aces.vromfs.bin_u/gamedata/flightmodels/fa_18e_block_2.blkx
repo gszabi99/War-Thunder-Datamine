@@ -3,7 +3,7 @@
   "fmFile": "fm/fa_18e_block_2.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
-  "gearSinkRangeLR": 0.5,
+  "gearSinkRangeLR": 0.45,
   "gearSinkRangeC": 0.37,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
@@ -19,18 +19,6 @@
   "rwrIndicator": "AN/ALR-67 MFD",
   "mfdCamLitening2": true,
   "hmdFA18": true,
-  "isBwOpticSight": true,
-  "needTpsNightVision": true,
-  "tpsCameraOffset": [
-    -2.0,
-    0.0,
-    0.0
-  ],
-  "tpsCameraTargetOffsetAtZoom": [
-    -1.0,
-    2.0,
-    0.0
-  ],
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -56,6 +44,18 @@
     40.0,
     -50.0,
     50.0
+  ],
+  "isBwOpticSight": true,
+  "needTpsNightVision": true,
+  "tpsCameraOffset": [
+    -2.0,
+    0.0,
+    0.0
+  ],
+  "tpsCameraTargetOffsetAtZoom": [
+    -1.0,
+    2.0,
+    0.0
   ],
   "type": "typeFighter",
   "advancedInstructor": true,
@@ -313,6 +313,9 @@
         "hp": 75.5
       },
       "tank11_dm": {
+        "hp": 75.5
+      },
+      "tank12_dm": {
         "hp": 75.5
       }
     }
@@ -758,6 +761,88 @@
       },
       {
         "name": "flap_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -1539,8 +1624,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1599,8 +1684,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1659,8 +1744,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1719,8 +1804,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1774,8 +1859,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -1830,8 +1916,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -1886,8 +1973,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1942,8 +2029,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1998,8 +2085,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2054,8 +2141,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2110,8 +2197,64 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 0.5,
+            "spar1_r_dm": 0.5,
+            "expl": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          },
+          {
+            "damage": 200.0,
+            "expl": 1.0
+          }
+        ]
+      },
+      {
+        "name": "tank12_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -3375,21 +3518,23 @@
               "DR-VC-1A",
               "PGZ-09 TA",
               "1RS1",
-              "1RL34",
-              "AN/VPS-2",
-              "M-247 TA",
+              "CLC-1",
+              "SMA VPS-A05",
               "ESD RA-20 S",
+              "AN/VPS-2",
+              "1RL34",
+              "M-247 TA",
               "TriAD TA",
-              "1RL33",
-              "1RL114 TT",
               "Marconi S-400",
-              "Gepard TT",
               "Antelope",
+              "Phalanx Search Radar",
+              "1RL114 TT",
+              "Phalanx Track Radar",
+              "Gepard TT",
               "PGZ-09 TT",
               "Type-87 TT",
-              "Phalanx Search Radar",
-              "Phalanx Track Radar",
-              "PGZ-625 TA"
+              "PGZ-625 TT",
+              "1RL33"
             ]
           },
           {
@@ -4080,7 +4225,8 @@
             },
             {
               "type": "custom",
-              "pageName": "f18Wpn"
+              "pageName": "f18Wpn",
+              "stationType": "f_18e"
             }
           ]
         },
@@ -4118,7 +4264,8 @@
             },
             {
               "type": "custom",
-              "pageName": "f18Wpn"
+              "pageName": "f18Wpn",
+              "stationType": "f_18e"
             }
           ]
         },
@@ -4129,6 +4276,7 @@
             0.5,
             1.0
           ],
+          "cameraFromTargetingPod": true,
           "page": [
             {
               "type": "hsd",
@@ -4212,7 +4360,8 @@
             },
             {
               "type": "custom",
-              "pageName": "f18Wpn"
+              "pageName": "f18Wpn",
+              "stationType": "f_18e"
             },
             {
               "type": "radar",
@@ -4288,34 +4437,6 @@
     "wingStrainCoeff": 0.4,
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump_small",
-    "burningFx": "fuel_dump_fire_small",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
-      ]
-    }
   },
   "nightVision": {
     "sightTPodThermal": {
@@ -4445,16 +4566,12 @@
         "blk": "gameData/FlightModels/weaponPresets/fa_18e_block_2_aim_9m.blk"
       },
       {
-        "name": "fa_18e_block_2_aim_7p",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18e_block_2_aim_7p.blk"
-      },
-      {
-        "name": "fa_18e_block_2_aim_120",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18e_block_2_aim_120.blk"
-      },
-      {
         "name": "fa_18e_block_2_aim_120c",
         "blk": "gameData/FlightModels/weaponPresets/fa_18e_block_2_aim_120c.blk"
+      },
+      {
+        "name": "fa_18e_block_2_aim_120d",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18e_block_2_aim_120d.blk"
       },
       {
         "name": "fa_18e_block_2_mk82",
@@ -4597,6 +4714,7 @@
         "tank9_dm",
         "tank10_dm",
         "tank11_dm",
+        "tank12_dm",
         "electronic_block5_dm",
         "cover2_dm"
       ]
@@ -4771,7 +4889,7 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "aim_7p_slot2",
-            "reqModification": "us_aim_7p",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": [
                 "pylon1_lau",
@@ -4790,7 +4908,7 @@
           {
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "aim_120_slot2",
-            "reqModification": "us_aim_120b",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": [
                 "pylon1_lau",
@@ -4819,6 +4937,25 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+              "bullets": 1,
+              "emitter": "aim_120a_2",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "aim_120d_slot2",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": [
+                "pylon1_lau",
+                "lau_127ea_launcher_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120d.blk",
               "bullets": 1,
               "emitter": "aim_120a_2",
               "external": true,
@@ -5029,21 +5166,24 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
-            "name": "us_gbu_64_slot2",
-            "reqModification": "us_jdam",
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot2",
+            "reqModification": "us_gbu54b",
             "ShowNodes": {
               "node": "pylon1"
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
               "emitter": "bomb1_mk_84",
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01,
-              "dragCx": 0.02
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "an_asq_228_pod"
             }
           },
           {
@@ -5155,7 +5295,7 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "aim_7p_slot3",
-            "reqModification": "us_aim_7p",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -5170,7 +5310,7 @@
           {
             "iconType": "missile_type_f_air_to_air_midrange_group",
             "name": "aim_120_x2_slot3",
-            "reqModification": "us_aim_120b",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -5192,6 +5332,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115ca_aim120c_x2.blk",
+              "emitter": "lau_115a_1",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special_group",
+            "name": "aim_120d_x2_slot3",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/us_lau_115ca_aim120d_x2.blk",
               "emitter": "lau_115a_1",
               "external": true,
               "separate": true
@@ -5801,6 +5956,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 9,
+              "preset": "ptb_slot9"
             }
           }
         ]
@@ -5828,7 +5987,7 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "aim_7p_slot4",
-            "reqModification": "us_aim_7p",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": "pylon3"
             },
@@ -5843,7 +6002,7 @@
           {
             "iconType": "missile_type_f_air_to_air_midrange_group",
             "name": "aim_120_x2_slot4",
-            "reqModification": "us_aim_120b",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": "pylon3"
             },
@@ -5865,6 +6024,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115ca_aim120c_x2.blk",
+              "emitter": "lau_115a_2",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special_group",
+            "name": "aim_120d_x2_slot4",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/us_lau_115ca_aim120d_x2.blk",
               "emitter": "lau_115a_2",
               "external": true,
               "separate": true
@@ -6457,6 +6631,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 8,
+              "preset": "ptb_slot8"
             }
           }
         ]
@@ -6470,7 +6648,7 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "aim_7p_slot5",
-            "reqModification": "us_aim_7p",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": [
                 "lau_116_1_lift",
@@ -6528,6 +6706,28 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5_default.blk",
+              "emitter": "aim_120a_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "aim_120d_default_slot5",
+            "ShowNodes": {
+              "node": [
+                "lau_116_1_lift",
+                "lau_116_1_aim_120_adapter",
+                "lau_116_1"
+              ]
+            },
+            "HideNodes": {
+              "node": "lau_116_1_cap"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120d_default.blk",
               "emitter": "aim_120a_3",
               "bullets": 1,
               "external": true,
@@ -6654,6 +6854,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "rls",
+            "name": "ptb_irst_slot6",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_central"
+            },
+            "ShowDmParts": {
+              "node": "tank12_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_340gal_irst_fa_18e_drop_tank_centr.blk",
+              "emitter": "an_asg_34_drop_tank_pod",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -6666,7 +6885,7 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "aim_7p_slot7",
-            "reqModification": "us_aim_7p",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": [
                 "lau_116_2_lift",
@@ -6729,6 +6948,28 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "aim_120d_default_slot7",
+            "ShowNodes": {
+              "node": [
+                "lau_116_2_lift",
+                "lau_116_2_aim_120_adapter",
+                "lau_116_2"
+              ]
+            },
+            "HideNodes": {
+              "node": "lau_116_2_cap"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120d_default.blk",
+              "emitter": "aim_120a_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -6755,7 +6996,7 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "aim_7p_slot8",
-            "reqModification": "us_aim_7p",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -6770,7 +7011,7 @@
           {
             "iconType": "missile_type_f_air_to_air_midrange_group",
             "name": "aim_120_x2_slot8",
-            "reqModification": "us_aim_120b",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -6792,6 +7033,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115ca_aim120c_x2.blk",
+              "emitter": "lau_115a_3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special_group",
+            "name": "aim_120d_x2_slot8",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/us_lau_115ca_aim120d_x2.blk",
               "emitter": "lau_115a_3",
               "external": true,
               "separate": true
@@ -7384,6 +7640,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "ptb_slot4"
             }
           }
         ]
@@ -7411,7 +7671,7 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "aim_7p_slot9",
-            "reqModification": "us_aim_7p",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -7426,7 +7686,7 @@
           {
             "iconType": "missile_type_f_air_to_air_midrange_group",
             "name": "aim_120_x2_slot9",
-            "reqModification": "us_aim_120b",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -7448,6 +7708,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115ca_aim120c_x2.blk",
+              "emitter": "lau_115a_4",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special_group",
+            "name": "aim_120d_x2_slot9",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/us_lau_115ca_aim120d_x2.blk",
               "emitter": "lau_115a_4",
               "external": true,
               "separate": true
@@ -8057,6 +8332,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_slot3"
             }
           }
         ]
@@ -8088,7 +8367,7 @@
           {
             "iconType": "missile_type_c_air_to_air_midrange",
             "name": "aim_7p_slot10",
-            "reqModification": "us_aim_7p",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": [
                 "pylon6_lau",
@@ -8107,7 +8386,7 @@
           {
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "aim_120_slot10",
-            "reqModification": "us_aim_120b",
+            "reqModification": "us_aim_120c",
             "ShowNodes": {
               "node": [
                 "pylon6_lau",
@@ -8136,6 +8415,25 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+              "bullets": 1,
+              "emitter": "aim_120a_5",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "aim_120d_slot10",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": [
+                "pylon6_lau",
+                "lau_127ea_launcher_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120d.blk",
               "bullets": 1,
               "emitter": "aim_120a_5",
               "external": true,
@@ -8346,21 +8644,24 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
-            "name": "us_gbu_64_slot10",
-            "reqModification": "us_jdam",
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot10",
+            "reqModification": "us_gbu54b",
             "ShowNodes": {
               "node": "pylon6"
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
               "emitter": "bomb7_mk_84",
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01,
-              "dragCx": 0.02
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "an_asq_228_pod"
             }
           },
           {
@@ -9630,22 +9931,17 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "us_aim_7p": {
+    "us_aim_9m": {
       "tier": 1,
       "modClass": "weapon"
     },
-    "us_aim_9m": {
-      "reqModification": "us_aim_7p",
+    "us_aim_120c": {
+      "reqModification": "us_aim_9m",
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_aim_120b": {
-      "reqModification": "us_aim_9m",
-      "tier": 3,
-      "modClass": "weapon"
-    },
-    "us_aim_120c": {
-      "reqModification": "us_aim_120b",
+    "us_aim_120d": {
+      "reqModification": "us_aim_120c",
       "tier": 4,
       "modClass": "weapon"
     },
@@ -10438,6 +10734,34 @@
         "endPositionNoiseSpeed": 1.0
       }
     ]
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

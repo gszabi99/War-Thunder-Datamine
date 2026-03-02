@@ -1,11 +1,13 @@
 from "%scripts/dagui_library.nut" import *
+from "auth_wt" import getCountryCode
+from "language" import getLocalLanguage
 let { eventbus_subscribe } = require("eventbus")
 
 let path = "%globalScripts/dirtyWords"
 let dirtyWordsFilter = require($"{path}/dirtyWords.nut")
 let { init } =  dirtyWordsFilter
 
-let initialize = @() init([
+let initialize = @() init(getCountryCode(), getLocalLanguage(), [
   require($"{path}/dirtyWordsEnglish.nut"),
   require($"{path}/dirtyWordsRussian.nut"),
   require($"{path}/dirtyWordsChinese.nut"),

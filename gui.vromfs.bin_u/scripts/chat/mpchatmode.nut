@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_steam_big_picture
 from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import is_mode_with_teams
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
 let { is_android } = require("%sqstd/platform.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -54,7 +54,7 @@ enumsAddTypes(g_mp_chat_mode, {
     textColor = "@chatTextTeamColor"
 
     isEnabled = @() hasBattleChatModeTeam.get() && !isPlayerDedicatedSpectator()
-      && is_mode_with_teams()
+      && isModeWithTeams()
   }
 
   SQUAD = {

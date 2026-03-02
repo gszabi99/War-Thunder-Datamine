@@ -2,15 +2,16 @@ from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 
 let { format } = require("string")
-let { fabs } = require("math")
+let { fabs, floor } = require("math")
 let compass = require("%rGui/compass.nut")
 let { greenColor } = require("%rGui/style/airHudStyle.nut")
 let { IsRadarVisible } = require("%rGui/radarState.nut")
 let { OpticsWidth, StaticFov, CalcProgress, IsVisible, IsTargetSelected, IsTargetDataAvailable,
   IsForestallVisible, IsForestallCalculating, TargetSpeed, TargetAzimuth, TargetType, TargetLength,
-  TargetHeight, TargetDistance, TorpedoDistToLive, BearingAngle, HeroAzimuthAngle, IsBinocular
+  TargetHeight, TargetDistance, TorpedoDistToLive, BearingAngle, HeroAzimuthAngle, IsBinocular, isHydrophoneMode
 } = require("%rGui/fcsState.nut")
 let { drawArrow } = require("%rGui/fcsComponent.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 
 let compassSize = [hdpx(500), hdpx(32)]
@@ -23,6 +24,8 @@ let textPadding = hdpx(5)
 let greyColor = Color(15, 25, 25, 255)
 let highlightColor = Color(255, 255, 255, 180)
 let highlightScale = 2.5
+
+let hydrophoneDistance = Computed(@() floor(TargetDistance.get() / 100) * 100)
 
 let compassComponent = {
   pos = compassPos
@@ -107,6 +110,32 @@ let processingBlock = @() {
   ]
 }
 
+let hydrophoneProcessingBlock = @() {
+  watch = [OpticsWidth, StaticFov]
+  pos = [sw(52) + OpticsWidth.get(), StaticFov.get() > 6. ? sh(56.5) : sh(55)]
+  flow = FLOW_VERTICAL
+  children = [
+    @() {
+      watch = [TargetType, CalcProgress]
+      children = CalcProgress.get() < 0.10 ? null
+        : mkText({
+          text = "".concat(loc("fcs_target_class"), loc(format($"mainmenu/type_%s", cutPrefix(TargetType.get(), "exp_"))))
+        })
+    }
+    @() {
+      watch = [TargetAzimuth, CalcProgress]
+      children = CalcProgress.get() < 0.3 ? null
+        : mkText({ text = format("%s%d", loc("fcs_target_course"), TargetAzimuth.get()) })
+    }
+    @() {
+      watch = [hydrophoneDistance, CalcProgress]
+      children = CalcProgress.get() < 0.6 ? null
+        : mkText({ text = format("%s%s", loc("fcs_target_distance"),
+          cross_call.measureTypes.DEPTH.getMeasureUnitsText(hydrophoneDistance.get())) })
+    }
+  ]
+}
+
 let redColor = Color(210, 20, 20, 250)
 let yellowColor = Color(210,210,0)
 let orangeColor = Color(210,120,20)
@@ -183,7 +212,7 @@ let crosshairZeroMark = {
 let isProcessing = Computed(@() !IsForestallCalculating.get() && IsTargetSelected.get() && IsTargetDataAvailable.get() && !IsForestallVisible.get())
 
 return @() {
-  watch = [ IsVisible, isProcessing, IsForestallCalculating, IsBinocular ]
+  watch = [ IsVisible, isProcessing, IsForestallCalculating, IsBinocular, isHydrophoneMode ]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = const [sw(100), sh(100)]
@@ -191,7 +220,8 @@ return @() {
       !IsRadarVisible.get() ? compassComponent : null
       isProcessing.get() ? processingHint : null
       IsForestallCalculating.get() ? calculatingBlock
-        : isProcessing.get() ? processingBlock : null
+        : !isProcessing.get() ? null
+        : isHydrophoneMode.get() ? processingBlock : hydrophoneProcessingBlock
     ]
     : IsBinocular.get() ? crosshairZeroMark
     : null

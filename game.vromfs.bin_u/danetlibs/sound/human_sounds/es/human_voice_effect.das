@@ -97,22 +97,29 @@ def human_voice_effect_on_change(evt : Event;
 
 [es(tag=sound, on_event=ParallelUpdateFrameDelayed, after=sound_begin_update_es, before=sound_end_update_es)]
 def human_voice_effect_update(evt : Event;
+                              eid : EntityId;
                               human_sound_geomtree_nodes__headNodeId = -1;
                               is_watched_sound : bool = false;
                               animchar : AnimcharBaseComponent const?;
                               transform : float3x4;
                               var human_voice_effect__event : SoundEvent&;
-                              var human_voice_effect__isActive : bool&;
+                              human_voice_effect__isActive : bool;
                               human_voice_effect__type : string)
   if is_valid_handle_value(human_voice_effect__event)
     if is_playing(human_voice_effect__event)
       let pos = get_human_voice_3d_pos(is_watched_sound, transform, human_sound_geomtree_nodes__headNodeId, animchar)
       set_pos(human_voice_effect__event, pos)
-      human_voice_effect__isActive = true
+      if !human_voice_effect__isActive
+        
+        query(eid) <| $[es] (var human_voice_effect__isActive : bool&)
+          human_voice_effect__isActive = true
       return
     release(human_voice_effect__event)
-  human_voice_effect__isActive = !empty(human_voice_effect__type)
-
+  let shouldBeActive = !empty(human_voice_effect__type)
+  if human_voice_effect__isActive != shouldBeActive
+    
+    query(eid) <| $[es] (var human_voice_effect__isActive : bool&)
+      human_voice_effect__isActive = shouldBeActive
 
 
 

@@ -12,6 +12,7 @@ let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 
 let HudShip = class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudShip.blk"
+
   widgetsList = [
     {
       widgetId = DargWidgets.SHIP_OBSTACLE_RF

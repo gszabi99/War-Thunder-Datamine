@@ -116,7 +116,7 @@ class Component : Canvas
     setFontSize(42)
 
     fm = fmw.fm
-    isArmed = !(fmw.isOnGround || fm.currentAlt < fmw.minAltitudeForDropShells)
+    isArmed = !(fmw.isOnGround || fm.input.currentAlt < fmw.minAltitudeForDropShells)
     isWeaponSelectorOn = app.flightControlMode.isWeaponSelectorOn
 
 

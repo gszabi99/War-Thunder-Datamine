@@ -83,7 +83,7 @@ class Component : Canvas
       let t = float(i) / float(numOfDashes)
       drawLine(float2(0.6, t), float2(1.0, t))
 
-    let altitude = fmw.fm.currentAlt
+    let altitude = fmw.fm.input.currentAlt
     let maxAlt = altitude > minAltitude ? maxAltitude : minAltitude
     let t = altitude / maxAlt
     drawLine(float2(0.0, t), float2(0.5, t))
@@ -146,7 +146,7 @@ class Component : Canvas
 
   def drawWeapons()
     let size = float2(borderScalePos.x * 0.8, 0.01) * canvasSize
-    let pos = toAbsPos(float2(0.0, 0.21))
+    let pos = toAbsPos(float2(0.0, 0.20))
     pushAxes(pos, size)
 
     setLineWidth(5.0)

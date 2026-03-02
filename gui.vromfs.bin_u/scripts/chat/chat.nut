@@ -146,11 +146,6 @@ g_chat.getSystemRoomId <- function getSystemRoomId() {
   return g_chat_room_type.SYSTEM.getRoomId("")
 }
 
-g_chat.openPrivateRoom <- function openPrivateRoom(name, ownerHandler) {
-  if (::openChatScene(ownerHandler))
-    broadcastEvent("ChatChangePrivateTo", { user = name })
-}
-
 g_chat.joinSquadRoom <- function joinSquadRoom(callback) {
   let name = g_chat_room_type.getMySquadRoomId()
   if (u.isEmpty(name))

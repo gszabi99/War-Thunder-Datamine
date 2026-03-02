@@ -10,9 +10,11 @@ let { get_game_mode } = require("mission")
 let { setGuiOptionsMode } = require("guiOptions")
 let { restart_mission, get_meta_mission_info_by_name, get_meta_mission_info_by_gm_and_name
 } = require("guiMission")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { getViewTypeByResourceType, getViewTypeByUnlockedItemType
+} = require("%scripts/customization/decoratorViewType.nut")
+let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { buildRewardText } = require("%scripts/missions/missionsText.nut")
 let { getSessionLobbyMissionData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
@@ -116,11 +118,13 @@ function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
     if (isBaseReward && misDataBlk?.decal != null) {
       let id = misDataBlk.decal
       let decoratorType = getTypeByResourceType("decal")
+      let decoratorViewType = getViewTypeByResourceType("decal")
       let decorator = getDecorator(id, decoratorType)
       if (decorator != null) {
-        resourceImage = decoratorType.getImage(decorator)
-        resourceImageSize = decoratorType.getImageSize(decorator)
-        rewardTextArray = addRewardText(rewardTextArray, decoratorType.getLocName(id), locId)
+        let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+        resourceImage = viewDecoratorType.getImage(decorator)
+        resourceImageSize = decoratorViewType.getImageSize(decorator)
+        rewardTextArray = addRewardText(rewardTextArray, viewDecoratorType.getLocName(id), locId)
         isComplete = decorator.isUnlocked()
       }
     }

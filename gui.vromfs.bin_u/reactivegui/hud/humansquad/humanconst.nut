@@ -6,10 +6,14 @@ let actionBarItemWidth = shHud(8)
 let weaponBlockGap = shHud(1)
 let healthStateBlockGap = evenPx(4)
 
+let hpBarHeight = hdpxi(6)
+
+
 return {
   heroStateWidth
   actionBarItemHeight
   actionBarItemWidth
   weaponBlockGap
   healthStateBlockGap
+  hpBarHeight
 }

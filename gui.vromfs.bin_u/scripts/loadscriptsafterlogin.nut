@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import COLOR_TAG
 from "ecs" import start_es_loading, end_es_loading
+from "auth_wt" import getCountryCode
 let { is_gdk, isSony, isPS5 } = require("%sqstd/platform.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
@@ -35,15 +36,15 @@ function loadScriptsAfterLoginOnce() {
   require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
   require("%scripts/bhvHangarControlTracking.nut")
   require("%scripts/hangar/hangarEvent.nut")
-  require("%scripts/dirtyWordsFilter.nut").continueInitAfterLogin()
+  require("%scripts/dirtyWordsFilter.nut").continueInitAfterLogin(getCountryCode())
   require("%scripts/debugTools/dbgImage.nut")
+  require("%scripts/unlocks/unlockRewardsAutoReceiver.nut")
   require("%scripts/slotbar/slotbarTooltips.nut")
 
   if (is_gdk)
     require("%scripts/global/xboxCallbacks.nut")
 
   if (isSony) {
-    require("%scripts/global/psnCallbacks.nut")
     require("%scripts/social/psnSessionManager/loadPsnSessionManager.nut")
     require("%scripts/social/psnMatches.nut").enableMatchesReporting()
   }

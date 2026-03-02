@@ -239,3 +239,23 @@ class ZeroPoint3 : BehNodeAdapter
   def override update(dt : float) : EBehResult
     owner.blackBoard |> set(varParam, float3())
     return EBehResult.ER_SUCCESS
+
+[beh_node(name="isDigitIntVar")]
+class IsDigitIntVar : BehNodeAdapter
+  varParam : int = -1
+  code : int = -1
+  def override loadFromBlk(var data : DataBlock) : void
+    varParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "var", ""), -1)
+    code = datablock_getInt(data, "code", -1)
+  def override update(dt : float) : EBehResult
+    if code < 0
+      return EBehResult.ER_FAILED
+    var value = owner.blackBoard |> datablock_getInt(varParam)
+    if value < 0
+      return EBehResult.ER_FAILED
+    var pos = code / 10
+    while pos-- > 1
+      value /= 10
+    value %= 10
+    let digit = code % 10
+    return value == digit ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED

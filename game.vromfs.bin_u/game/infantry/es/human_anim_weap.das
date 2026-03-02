@@ -1,10 +1,14 @@
 require ecs
 require DngHuman
 require PhysVars
+require DagorMath
 require DagorSystem
 require DngWeapon
+require AnimV20
+require GeomNodeTree
 require %game.events
 require PropsManager
+
 
 def set_phys_selected_weapon_var_from_props(var phys_vars : PhysVars;
                                             gunPropsId : PropsId;
@@ -105,3 +109,46 @@ def base_menu_animchar_set_weapon_selected(info : ParallelUpdateFrameDelayed;
     if gun__propsId.valid
       set_phys_selected_weapon_var_from_props(phys_vars, gun__propsId, gunEid,
                                               human_anim__selectedWeaponVarId, "base_menu_animchar_set_weapon_selected")
+
+
+[es(tag=gameClient, on_appear)]
+def human_spine_gun_length_compensation_init(evt : Event;
+                                             human_anim__gunLengthCompensationVar : string;
+                                             var human_anim__gunLengthCompensationVarId : int&;
+                                             var phys_vars : PhysVars)
+  human_anim__gunLengthCompensationVarId = phys_vars |> registerVar(human_anim__gunLengthCompensationVar, 0.0)
+
+
+[es(tag=gameClient, on_appear)]
+def gun_anim_length_compensation_init(evt : Event;
+                                      animchar : AnimcharBaseComponent;
+                                      gun_anim_length_compensation__lHandNode : string;
+                                      gun_anim_length_compensation__rHandNode : string;
+                                      var gun_anim_length_compensation__lHandNodeId : int&;
+                                      var gun_anim_length_compensation__rHandNodeId : int&)
+  gun_anim_length_compensation__lHandNodeId = *animchar.nodeTree |> geomtree_findNodeIndex(gun_anim_length_compensation__lHandNode)
+  gun_anim_length_compensation__rHandNodeId = *animchar.nodeTree |> geomtree_findNodeIndex(gun_anim_length_compensation__rHandNode)
+
+
+[es(tag=gameClient, after=human_anim_es)]
+def human_spine_gun_length_compensation_update(info : ParallelUpdateFrameDelayed;
+                                               camera__lookDir : float3;
+                                               human_weap__currentGunEid : EntityId;
+                                               human_anim__leanVarId : int;
+                                               human_anim__gunLengthCompensationVarId : int;
+                                               var phys_vars : PhysVars)
+  if human_anim__gunLengthCompensationVarId > -1 && human_anim__leanVarId > -1
+    query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
+                                                gun_anim_length_compensation__lHandNodeId : int;
+                                                gun_anim_length_compensation__rHandNodeId : int;
+                                                gun_anim_length_compensation__handDistanceMin : float;
+                                                gun_anim_length_compensation__handDistanceMax : float;
+                                                gun_anim_length_compensation__spineRotationMin : float;
+                                                gun_anim_length_compensation__spineRotationMax : float)
+      if gun_anim_length_compensation__lHandNodeId != -1 && gun_anim_length_compensation__rHandNodeId != -1
+        let leftP = *animchar.nodeTree |> geomtree_getNodeWpos(gun_anim_length_compensation__lHandNodeId)
+        let rightP = *animchar.nodeTree |> geomtree_getNodeWpos(gun_anim_length_compensation__rHandNodeId)
+        let projectedLength = dot(camera__lookDir, leftP - rightP) 
+        let compensation = cvt(projectedLength, gun_anim_length_compensation__handDistanceMin, gun_anim_length_compensation__handDistanceMax, gun_anim_length_compensation__spineRotationMin, gun_anim_length_compensation__spineRotationMax)
+        let leanValue = cvt(phys_vars |> getVar(human_anim__leanVarId), -45.0, 0.0, 1.0, 0.0)
+        phys_vars |> setVar(human_anim__gunLengthCompensationVarId, compensation * (1.0 - leanValue))

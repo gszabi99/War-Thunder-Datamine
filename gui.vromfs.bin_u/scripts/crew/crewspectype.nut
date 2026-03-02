@@ -194,18 +194,18 @@ crewSpecTypes = {
       let reqSpecLevelImg = "".concat("{{img=", nextType.trainedIcon, "}}")
       qualifyBonusesTotalText = loc("crew/qualifyBonuses/total", {
         wantedQualify = "".concat(reqSpecLevelImg, colorize("activeTextColor", nextType.getName()))
-        bonusValue = colorize("goodTextColor", $"+{bonusValue}")
+        bonusValue = colorize("goodTextColor", $"{bonusValue}")
       })
       return qualifyBonusesTotalText
     }
 
-    function getReqLevelText(crew, unit) {
+    function getReqLevelText(crew, unit, skipImg = false) {
       let res = []
       let levels = this.getCurAndReqLevel(crew, unit)
       let reqLevel = levels.reqLevel
       let crewLevel = levels.curLevel
 
-      let reqSpecLevelImg = "".concat("{{img=", this.trainedIcon, "}}")
+      let reqSpecLevelImg = skipImg ? "" : "".concat("{{img=", this.trainedIcon, "}}")
       let wantedQualify = hasFeature("FullScreenCrewWindow") ? "".concat(reqSpecLevelImg, this.getName())
         : colorize("activeTextColor", this.getName())
       let locParams = {
@@ -225,7 +225,6 @@ crewSpecTypes = {
           res.append(loc(reqLevelLocId, locParams.__merge({
             reqLevel
             currentLevelText = colorize("badTextColor", loc("crew/currentLevel", { level = crewLevel }))
-            trainCost = curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, this.code)
           })))
         }
         else {
@@ -338,7 +337,7 @@ crewSpecTypes = {
       }
       else {
         let curSpecType = getSpecTypeByCrewAndUnit(crew, unit)
-        view.tooltipText = this.getReqLevelText(crew, unit)
+        view.tooltipText = this.getReqLevelText(crew, unit, true)
         if (!view.tooltipText.len())
           view.tooltipText = loc("crew/qualification/buy", {
             qualify = colorize("activeTextColor", this.getName())

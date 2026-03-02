@@ -11,9 +11,11 @@
       0.0,
       0.0
     ],
-    "gun_tilt__varId": -1,
     "gun_tilt__viscocity": 0.08,
-    "gun_tilt__varName": "weapon_root_rotate_roll_param",
+    "gun_tilt__weaponRootRotateVarName": "weapon_root_rotate_roll_param",
+    "gun_tilt__weaponRootRotateVarId": -1,
+    "gun_tilt__weaponRoot2RotateVarName": "weapon_root_2_rotate_roll_param",
+    "gun_tilt__weaponRoot2RotateVarId": -1,
     "gun_tilt__reloadProgressLimit": 0.8
   },
   "grenade_thrower_tilt": {
@@ -37,7 +39,7 @@
   },
   "vog_25m_grenade_shell": {
     "animchar__res": "gp_34_ammo_char",
-    "collres__res": "grenade_f1_collision",
+    "collres__res": "gp_34_ammo_collision",
     "shell_explosion_fx__infoTemplate": "effect_group_grenade_explosion",
     "shell_contact_fx__infoTemplate": "effect_group_grenade_contact"
   },
@@ -103,7 +105,7 @@
       "shell_launch_sound"
     ],
     "animchar__res": "m320_projectile_char",
-    "collres__res": "grenade_f1_collision",
+    "collres__res": "m320_projectile_collision",
     "havePairCollision": false,
     "start_omega": [
       0.0,
@@ -170,6 +172,7 @@
       "grenade_thrower__currentGrenadeTypeIndex"
     ],
     "gun__visible": true,
+    "gun__wasVisible": false,
     "multiple_guns_slot_gun__slot": 4,
     "gun__blk": "gameData/weapons/grenade_thrower.blk",
     "item__template": "",
@@ -191,12 +194,12 @@
     "grenade_thrower__selectedGrenadeVarId": -1,
     "grenade_thrower__shootNode": "weapon",
     "grenade_thrower__shootNodeId": -1,
-    "grenade_throw__drawTime": 0.5,
-    "grenade_throw__throwTime": 1.2,
+    "grenade_throw__drawTime": 0.4,
+    "grenade_throw__throwTime": 0.6,
     "grenade_throw__cookProgressTime": 0.5,
     "grenade_throw__throwProgressTime": 0.6,
     "grenade_throw__fastThrowCookProgressTime": 0.3,
-    "grenade_throw__fastThrowProgressTime": 0.68,
+    "grenade_throw__fastThrowProgressTime": 0.6,
     "shell__autoThrowCountdown": 0.0,
     "item__id:i": {
       "value": 0,
@@ -211,7 +214,7 @@
     "grenade_thrower__projectileEntity:eid": {},
     "gun__shells:array": {
       "shells": [
-        "gameData/weapons/human_weapons/grenades/f1.blk",
+        "gameData/weapons/human_weapons/grenades/f1_grenade.blk",
         "gameData/weapons/human_weapons/grenades/rdg1_smoke.blk",
         "gameData/weapons/human_weapons/grenades/ussr_molotov.blk",
         "gameData/weapons/human_weapons/grenades/m67_grenade.blk",
@@ -764,7 +767,7 @@
   "grenade_base": {
     "gun__visible": true,
     "_tracked": "gun__visible",
-    "gun_attach__slot": "r_hand",
+    "gun_attach__slot": "l_hand",
     "gun_attach__mainSlotId": -1,
     "gun_attach__alternativeSlot": "r_hand",
     "gun_attach__altSlotId": -1,
@@ -790,7 +793,7 @@
       "m24_grenade_base"
     ],
     "item__name": "items/m24_grenade",
-    "gun_attach__slot": "r_hand",
+    "gun_attach__slot": "l_hand",
     "animchar__actOnDemand:tag": {}
   },
   "geballte_ladung_grenade": {
@@ -799,7 +802,7 @@
       "geballte_ladung_grenade_base"
     ],
     "item__name": "items/geballte_ladung",
-    "gun_attach__slot": "r_hand",
+    "gun_attach__slot": "l_hand",
     "animchar__actOnDemand:tag": {}
   },
   "projectile_phys": {

@@ -7,11 +7,11 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { getDecoratorById } = require("%scripts/customization/decoratorGetters.nut")
+let { decoratorViewTypes } = require("%scripts/customization/decoratorViewType.nut")
 let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getUnlockCondsDescByCfg, getLocForBitValues, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg,
-  buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+  buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
@@ -330,7 +330,7 @@ local SkinsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let skinView = {
       skinName = decorator.getName()
-      image = config?.image ?? decoratorTypes.SKINS.getImage(decorator)
+      image = config?.image ?? decoratorViewTypes.SKINS.getImage(decorator)
       unlocked = skin.isUnlocked
       skinDesc = this.getSkinDesc(decorator)
       unlockProgress = progressData?.value

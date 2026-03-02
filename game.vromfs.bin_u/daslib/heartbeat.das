@@ -7,6 +7,13 @@ options strict_smart_pointers = true
 
 module heartbeat private
 
+
+
+
+
+
+
+
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/strings_boost
@@ -15,11 +22,13 @@ var g_hbCallback : lambda<() : void>
 var g_inHB : bool = false
 
 def public set_heartbeat(var cb : lambda<() : void>) {
+    
     delete g_hbCallback
     g_hbCallback <- cb
 }
 
 def public heartbeat() {
+    
     if (g_inHB) {
         return
     }
@@ -31,6 +40,7 @@ def public heartbeat() {
 }
 
 class AddHeartbeat : AstVisitor {
+    
     astChanged : bool = false
     @do_not_delete func : Function?
     def heartbeatBlock(var body : ExprBlock?) {
@@ -75,6 +85,7 @@ class AddHeartbeat : AstVisitor {
 
 [infer_macro]
 class HeartbeatPass : AstPassMacro {
+    
     def override apply(prog : ProgramPtr; mod : Module?) : bool {
         var astVisitor = new AddHeartbeat()
         var inscope astVisitorAdapter <- make_visitor(*astVisitor)

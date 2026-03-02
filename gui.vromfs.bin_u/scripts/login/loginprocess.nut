@@ -1,8 +1,8 @@
 from "%scripts/dagui_natives.nut" import get_online_client_cur_state
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
-
-let { LOGIN_PROCESS, CONFIG_VALIDATION } = require("%scripts/g_listener_priority.nut")
+from "dagor.workcycle" import deferOnce
+let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -11,7 +11,7 @@ let { isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted, isProfileRece
 let { setCurLoginProcess, getCurLoginProcess } = require("%scripts/login/loginStates.nut")
 let { loadLoginHandler, addLoginState, onProfileReceived
 } = require("%scripts/login/loginManager.nut")
-let { initLoginPseudoThreadsConfig, restartLoginPseudoThreads } = require("%scripts/login/loginPseudoThreadsConfig.nut")
+let { initLoginPseudoThreadsConfig } = require("%scripts/login/loginPseudoThreadsConfig.nut")
 
 enum LOGIN_PROGRESS {
   NOT_STARTED
@@ -115,13 +115,11 @@ function startLoginProcess(shouldCheckScriptsReload = false) {
   setCurLoginProcess(LoginProcess(shouldCheckScriptsReload))
 }
 
-addListenersWithoutEnv({
-  function ScriptsReloaded(_) {
-    if (!isLoggedIn.get() && isAuthorized.get())
-      startLoginProcess(true)
-    restartLoginPseudoThreads()
-  }
-}, CONFIG_VALIDATION)
+function startLoginProcessOnScriptsLoad() {
+  if (!isLoggedIn.get() && isAuthorized.get())
+    startLoginProcess(true)
+}
+deferOnce(startLoginProcessOnScriptsLoad)
 
 addListenersWithoutEnv({
   function ProfileUpdated(_) {

@@ -6,9 +6,15 @@ options strict_smart_pointers = true
 
 module ast_block_to_loop shared private
 
+
+
+
+
+
 require daslib/ast_boost
 
 class B2LVisitor : AstVisitor {
+    
     inClosure : int
     inArchetype : int
     failOnReturn : bool

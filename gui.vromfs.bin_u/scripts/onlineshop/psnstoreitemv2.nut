@@ -13,7 +13,6 @@ let { eventbus_subscribe } = require("eventbus")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { defer } = require("dagor.workcycle")
@@ -199,8 +198,6 @@ local psnV2ShopPurchasableItem = class {
     headerText = this.shortName
     havePsPlusDiscount = this.havePsPlusDiscount()
   }.__merge(params)
-
-  getItemsView = @() getEntitlementView(this.entitlementId)
 
   isCanBuy = @() this.isPurchasable && !this.isBought
   isInactive = @() !this.isPurchasable || this.isBought

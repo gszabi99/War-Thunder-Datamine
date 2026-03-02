@@ -349,7 +349,7 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
     let gathered_stowage_data = ammo_stowage_gather_and_update_ammo(unit, stowage_id, v)
 
     
-    if replenishment_time.x < VERY_SMALL_NUMBER || !allow_replenishment || unit.isBurn
+    if replenishment_time.x < VERY_SMALL_NUMBER || !allow_replenishment || (unit.isBurn && !unit.isShip)
       replenishment_start_end = float2(-1.0f)
       v.ammo_stowages__cachedAmmoHash[stowage_id] = 0u
       continue

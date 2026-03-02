@@ -22,6 +22,339 @@ require %appGame.wt_events
 require %game.events
 
 
+[es(on_appear)]
+def init_human_anim_states(evt : Event;
+                           animchar : AnimcharBaseComponent;
+                           var human_anim__lowerStateStand : int&;
+                           var human_anim__lowerStateStandStill : int&;
+                           var human_anim__lowerStateRun : int&;
+                           var human_anim__lowerStateWalk : int&;
+                           var human_anim__lowerStateCrawlMove : int&;
+                           var human_anim__lowerStateCrawlStill : int&;
+                           var human_anim__lowerStateRotateLeft : int&;
+                           var human_anim__lowerStateRotateRight : int&;
+                           var human_anim__lowerStateCrouchRotateLeft : int&;
+                           var human_anim__lowerStateCrouchRotateRight : int&;
+                           var human_anim__lowerStateJumpStand : int&;
+                           var human_anim__lowerStateJumpRun : int&;
+                           var human_anim__lowerStateLowerSprint : int&;
+                           var human_anim__upperStateAim : int&;
+                           var human_anim__upperStateFireReady : int&;
+                           var human_anim__upperStateChangeWeapon : int&;
+                           var human_anim__upperStateReload : int&;
+                           var human_anim__upperStateGunDown : int&;
+                           var human_anim__upperStateThrowGrenade : int&;
+                           var human_anim__upperStateFastThrow : int&;
+                           var human_anim__upperStateAimCrouch : int&;
+                           var human_anim__upperStateFireReadyCrouch : int&;
+                           var human_anim__upperStateChangeWeaponCrouch : int&;
+                           var human_anim__upperStateReloadCrouch : int&;
+                           var human_anim__upperStateHeal : int&;
+                           var human_anim__upperStateHealCrawl : int&;
+                           var human_anim__upperStateSwimEatStill : int&;
+                           var human_anim__upperStateUpperSprint : int&;
+                           var human_anim__comboStateCrawlReload : int&;
+                           var human_anim__comboStateCrawlMove : int&;
+                           var human_anim__comboStateCrawlRotateLeft : int&;
+                           var human_anim__comboStateCrawlRotateRight : int&;
+                           var human_anim__comboStateHealInjured : int&;
+                           var human_anim__comboStateInjuredCrawlStill : int&;
+                           var human_anim__comboStateInjuredCrawlMove : int&;
+                           var human_anim__comboStateCrawlAim : int&;
+                           var human_anim__comboStateCrawlFireReady : int&;
+                           var human_anim__comboStateCrawlChangeWeapons : int&;
+                           var human_anim__comboStateAttackedState : int&;
+                           var human_anim__comboStateSwimStill : int&;
+                           var human_anim__comboStateSwimStillUnderwater : int&;
+                           var human_anim__comboStateSwimOnWater : int&;
+                           var human_anim__comboStateSwimUnderWater : int&;
+                           var human_anim__comboStateClimbHigh : int&;
+                           var human_anim__comboStateClimbLadder : int&;
+                           var human_anim__comboStateUseMortar : int&;
+                           var human_anim__comboStateClimbOverObstacle : int&;
+                           var human_anim__comboStateFastClimb : int&;
+                           var human_anim__comboStateFullBodyWalk : int&;
+                           var human_anim__comboStateFullBodyRun : int&;
+                           var human_anim__comboStateDead : int&)
+  assume animGraph = *animchar.animGraph
+  human_anim__lowerStateStand = animGraph |> anim_graph_getStateIdx("lower_stand")
+  human_anim__lowerStateStandStill = animGraph |> anim_graph_getStateIdx("lower_stand_still")
+  human_anim__lowerStateRun = animGraph |> anim_graph_getStateIdx("lower_run")
+  human_anim__lowerStateWalk = animGraph |> anim_graph_getStateIdx("lower_walk")
+  human_anim__lowerStateCrawlMove = animGraph |> anim_graph_getStateIdx("lower_crawlmove")
+  human_anim__lowerStateCrawlStill = animGraph |> anim_graph_getStateIdx("lower_crawlstill")
+  human_anim__lowerStateRotateLeft = animGraph |> anim_graph_getStateIdx("lower_rotate_left")
+  human_anim__lowerStateRotateRight = animGraph |> anim_graph_getStateIdx("lower_rotate_right")
+  human_anim__lowerStateCrouchRotateLeft = animGraph |> anim_graph_getStateIdx("lower_crouch_rotate_left")
+  human_anim__lowerStateCrouchRotateRight = animGraph |> anim_graph_getStateIdx("lower_crouch_rotate_right")
+  human_anim__lowerStateJumpStand = animGraph |> anim_graph_getStateIdx("lower_jump_stand")
+  human_anim__lowerStateJumpRun = animGraph |> anim_graph_getStateIdx("lower_jump_run")
+  human_anim__lowerStateLowerSprint = animGraph |> anim_graph_getStateIdx("lower_sprint")
+
+  human_anim__upperStateAim = animGraph |> anim_graph_getStateIdx("upper_aim")
+  human_anim__upperStateFireReady = animGraph |> anim_graph_getStateIdx("upper_fireready")
+  human_anim__upperStateChangeWeapon = animGraph |> anim_graph_getStateIdx("upper_changeweapon")
+  human_anim__upperStateReload = animGraph |> anim_graph_getStateIdx("weapon_reload")
+  human_anim__upperStateGunDown = animGraph |> anim_graph_getStateIdx("upper_down")
+  human_anim__upperStateThrowGrenade = animGraph |> anim_graph_getStateIdx("point_hand_throw")
+  human_anim__upperStateFastThrow = animGraph |> anim_graph_getStateIdx("upper_fast_throw")
+  human_anim__upperStateAimCrouch = animGraph |> anim_graph_getStateIdx("upper_aim_crouch")
+  human_anim__upperStateFireReadyCrouch = animGraph |> anim_graph_getStateIdx("upper_fireready_crouch")
+  human_anim__upperStateChangeWeaponCrouch = animGraph |> anim_graph_getStateIdx("upper_changeweapon_crouch")
+  human_anim__upperStateReloadCrouch = animGraph |> anim_graph_getStateIdx("weapon_reload_crouch")
+  human_anim__upperStateHeal = animGraph |> anim_graph_getStateIdx("upper_heal")
+  human_anim__upperStateHealCrawl = animGraph |> anim_graph_getStateIdx("upper_heal_crawl")
+  human_anim__upperStateSwimEatStill = animGraph |> anim_graph_getStateIdx("swim_eat_still")
+  human_anim__upperStateUpperSprint = animGraph |> anim_graph_getStateIdx("upper_sprint")
+
+  human_anim__comboStateCrawlReload = animGraph |> anim_graph_getStateIdx("crawl_reload")
+  human_anim__comboStateCrawlMove = animGraph |> anim_graph_getStateIdx("crawl_move")
+  human_anim__comboStateCrawlRotateLeft = animGraph |> anim_graph_getStateIdx("crawl_rotate_left")
+  human_anim__comboStateCrawlRotateRight = animGraph |> anim_graph_getStateIdx("crawl_rotate_right")
+  human_anim__comboStateHealInjured = animGraph |> anim_graph_getStateIdx("heal_injured")
+  human_anim__comboStateInjuredCrawlStill = animGraph |> anim_graph_getStateIdx("injured_crawl_still")
+  human_anim__comboStateInjuredCrawlMove = animGraph |> anim_graph_getStateIdx("injured_crawl_move")
+  human_anim__comboStateCrawlAim = animGraph |> anim_graph_getStateIdx("crawl_aim")
+  human_anim__comboStateCrawlFireReady = animGraph |> anim_graph_getStateIdx("crawl_fireready")
+  human_anim__comboStateCrawlChangeWeapons = animGraph |> anim_graph_getStateIdx("crawlChangeWeapons")
+  human_anim__comboStateAttackedState = animGraph |> anim_graph_getStateIdx("sm_bitten")
+  human_anim__comboStateSwimStill = animGraph |> anim_graph_getStateIdx("swim_still")
+  human_anim__comboStateSwimStillUnderwater = animGraph |> anim_graph_getStateIdx("swim_still_underwater")
+  human_anim__comboStateSwimOnWater = animGraph |> anim_graph_getStateIdx("swim_onwater")
+  human_anim__comboStateSwimUnderWater = animGraph |> anim_graph_getStateIdx("swim_underwater")
+  human_anim__comboStateClimbHigh = animGraph |> anim_graph_getStateIdx("climb_high")
+  human_anim__comboStateClimbLadder = animGraph |> anim_graph_getStateIdx("climb_ladder")
+  human_anim__comboStateUseMortar = animGraph |> anim_graph_getStateIdx("use_device_state")
+  human_anim__comboStateClimbOverObstacle = animGraph |> anim_graph_getStateIdx("hurdle_jump_state_01")
+  human_anim__comboStateFastClimb = animGraph |> anim_graph_getStateIdx("hurdle_jump_state_02")
+  human_anim__comboStateFullBodyWalk = animGraph |> anim_graph_getStateIdx("full_body_walk")
+  human_anim__comboStateFullBodyRun = animGraph |> anim_graph_getStateIdx("full_body_run")
+  human_anim__comboStateDead = animGraph |> anim_graph_getStateIdx("dead")
+
+
+def updateState(eid : EntityId;
+                is_fpv : bool;
+                state_pos : HumanStatePos;
+                state_move : HumanStateMove;
+                state_jump : StateJump;
+                state_upper_body : HumanStateUpperBody;
+                state_flags : uint)
+  var res : HumanAnimStateResult
+
+  query(eid) <| $ [es] (human_anim__lowerStateStand : int;
+                        human_anim__lowerStateStandStill : int;
+                        human_anim__lowerStateWalk : int;
+                        human_anim__lowerStateRun : int;
+                        human_anim__lowerStateCrawlMove : int;
+                        human_anim__lowerStateCrawlStill : int;
+                        human_anim__lowerStateRotateLeft : int;
+                        human_anim__lowerStateRotateRight : int;
+                        human_anim__lowerStateCrouchRotateLeft : int;
+                        human_anim__lowerStateCrouchRotateRight : int;
+                        human_anim__lowerStateJumpStand : int;
+                        human_anim__lowerStateJumpRun : int;
+                        human_anim__lowerStateLowerSprint : int;
+                        human_anim__upperStateAim : int;
+                        human_anim__upperStateFireReady : int;
+                        human_anim__upperStateChangeWeapon : int;
+                        human_anim__upperStateReload : int;
+                        human_anim__upperStateGunDown : int;
+                        human_anim__upperStateThrowGrenade : int;
+                        human_anim__upperStateFastThrow : int;
+                        human_anim__upperStateAimCrouch : int;
+                        human_anim__upperStateFireReadyCrouch : int;
+                        human_anim__upperStateChangeWeaponCrouch : int;
+                        human_anim__upperStateReloadCrouch : int;
+                        human_anim__upperStateHeal : int;
+                        human_anim__upperStateHealCrawl : int;
+                        human_anim__upperStateSwimEatStill : int;
+                        human_anim__upperStateUpperSprint : int;
+                        human_anim__comboStateCrawlReload : int;
+                        human_anim__comboStateCrawlMove : int;
+                        human_anim__comboStateCrawlRotateLeft : int;
+                        human_anim__comboStateCrawlRotateRight : int;
+                        human_anim__comboStateHealInjured : int;
+                        human_anim__comboStateInjuredCrawlStill : int;
+                        human_anim__comboStateInjuredCrawlMove : int;
+                        human_anim__comboStateCrawlAim : int;
+                        human_anim__comboStateCrawlFireReady : int;
+                        human_anim__comboStateCrawlChangeWeapons : int;
+                        human_anim__comboStateAttackedState : int;
+                        human_anim__comboStateSwimStill : int;
+                        human_anim__comboStateSwimStillUnderwater : int;
+                        human_anim__comboStateSwimOnWater : int;
+                        human_anim__comboStateSwimUnderWater : int;
+                        human_anim__comboStateClimbHigh : int;
+                        human_anim__comboStateClimbLadder : int;
+                        human_anim__comboStateUseMortar : int;
+                        human_anim__comboStateClimbOverObstacle : int;
+                        human_anim__comboStateFastClimb : int;
+                        human_anim__comboStateFullBodyWalk : int;
+                        human_anim__comboStateFullBodyRun : int;
+                        human_anim__comboStateDead : int)
+
+    if (state_flags & uint(HumanAnimStateFlags.Dead)) != 0u
+      res.upper = human_anim__comboStateDead
+      res.lower = human_anim__comboStateDead
+      return
+    if (state_flags & uint(HumanAnimStateFlags.Attacked)) != 0u
+      res.upper = human_anim__comboStateAttackedState
+      res.lower = human_anim__comboStateAttackedState
+      return
+    if (state_flags & uint(HumanAnimStateFlags.ClimbingOverObstacle)) != 0u
+      res.upper = human_anim__comboStateClimbOverObstacle
+      res.lower = human_anim__comboStateClimbOverObstacle
+      return
+    if (state_flags & uint(HumanAnimStateFlags.FastClimbing)) != 0u
+      res.upper = human_anim__comboStateFastClimb
+      res.lower = human_anim__comboStateFastClimb
+      return
+    if (state_flags & uint(HumanAnimStateFlags.Climbing)) != 0u
+      res.upper = human_anim__comboStateClimbHigh
+      res.lower = human_anim__comboStateClimbHigh
+      return
+    if (state_flags & uint(HumanAnimStateFlags.Ladder)) != 0u
+      res.upper = human_anim__comboStateClimbLadder
+      res.lower = human_anim__comboStateClimbLadder
+      return
+
+    var upperStateIdx = -1
+    var lowerStateIdx = -1
+    var comboStateIdx = -1
+    let useFullBodyAnims = find_query() <| $ [es(REQUIRE=full_body_anim_test_tag)] () => true
+
+    if state_pos == HumanStatePos.E_STAND
+      if state_move == HumanStateMove.E_STILL
+        lowerStateIdx = human_anim__lowerStateStand
+      elif state_move == HumanStateMove.E_MOVE
+        lowerStateIdx = human_anim__lowerStateWalk
+        if !is_fpv && useFullBodyAnims
+          comboStateIdx = human_anim__comboStateFullBodyWalk
+      elif state_move == HumanStateMove.E_RUN
+        lowerStateIdx = human_anim__lowerStateRun
+        if !is_fpv && useFullBodyAnims
+          comboStateIdx = human_anim__comboStateFullBodyRun
+      elif state_move == HumanStateMove.E_ROTATE_LEFT
+        lowerStateIdx = human_anim__lowerStateRotateLeft
+      elif state_move == HumanStateMove.E_ROTATE_RIGHT
+        lowerStateIdx = human_anim__lowerStateRotateRight
+
+    elif state_pos == HumanStatePos.E_CROUCH
+      if state_move == HumanStateMove.E_STILL
+        lowerStateIdx = human_anim__lowerStateStand
+      elif state_move == HumanStateMove.E_RUN || state_move == HumanStateMove.E_MOVE
+        lowerStateIdx = human_anim__lowerStateWalk
+      elif state_move == HumanStateMove.E_ROTATE_LEFT
+        lowerStateIdx = human_anim__lowerStateCrouchRotateLeft
+      elif state_move == HumanStateMove.E_ROTATE_RIGHT
+        lowerStateIdx = human_anim__lowerStateCrouchRotateRight
+
+    elif state_pos == HumanStatePos.E_CRAWL
+      if state_move == HumanStateMove.E_STILL
+        lowerStateIdx = human_anim__lowerStateCrawlStill
+      elif state_move == HumanStateMove.E_RUN || state_move == HumanStateMove.E_MOVE
+        lowerStateIdx = human_anim__lowerStateCrawlMove
+
+
+    elif state_pos == HumanStatePos.E_DOWNED
+      if state_move == HumanStateMove.E_SPRINT || state_move == HumanStateMove.E_MOVE || state_move == HumanStateMove.E_RUN || state_move == HumanStateMove.E_ROTATE_LEFT || state_move == HumanStateMove.E_ROTATE_RIGHT
+        comboStateIdx = human_anim__comboStateInjuredCrawlMove
+      else
+        comboStateIdx = human_anim__comboStateInjuredCrawlStill
+
+    if state_upper_body == HumanStateUpperBody.E_READY
+      upperStateIdx = state_pos == HumanStatePos.E_CROUCH && human_anim__upperStateFireReadyCrouch >= 0 ? human_anim__upperStateFireReadyCrouch : human_anim__upperStateFireReady
+    elif state_upper_body == HumanStateUpperBody.E_AIM
+      upperStateIdx = state_pos == HumanStatePos.E_CROUCH && human_anim__upperStateAimCrouch >= 0 ? human_anim__upperStateAimCrouch : human_anim__upperStateAim
+    elif state_upper_body == HumanStateUpperBody.E_CHANGE
+      upperStateIdx = state_pos == HumanStatePos.E_CROUCH && human_anim__upperStateChangeWeaponCrouch >= 0 ? human_anim__upperStateChangeWeaponCrouch : human_anim__upperStateChangeWeapon
+    elif state_upper_body == HumanStateUpperBody.E_RELOAD
+      upperStateIdx = state_pos == HumanStatePos.E_CROUCH && human_anim__upperStateReloadCrouch >= 0 ? human_anim__upperStateReloadCrouch : human_anim__upperStateReload
+    elif state_upper_body == HumanStateUpperBody.E_DOWN
+      upperStateIdx = state_pos != HumanStatePos.E_CRAWL ? human_anim__upperStateGunDown : human_anim__upperStateFireReady
+    elif state_upper_body == HumanStateUpperBody.E_FAST_THROW
+      upperStateIdx = human_anim__upperStateFastThrow
+    elif state_upper_body == HumanStateUpperBody.E_THROW
+      upperStateIdx = human_anim__upperStateThrowGrenade
+    elif state_upper_body == HumanStateUpperBody.E_HEAL
+      if state_pos == HumanStatePos.E_CRAWL
+        upperStateIdx = human_anim__upperStateHealCrawl
+      elif state_pos == HumanStatePos.E_DOWNED
+        comboStateIdx = human_anim__comboStateHealInjured
+      else
+        upperStateIdx = human_anim__upperStateHeal
+    elif state_upper_body == HumanStateUpperBody.E_PUT_OUT_FIRE
+      if state_pos == HumanStatePos.E_CRAWL
+        upperStateIdx = human_anim__upperStateHealCrawl
+      else
+        upperStateIdx = human_anim__upperStateHeal
+    elif state_upper_body == HumanStateUpperBody.E_USE_RADIO
+      upperStateIdx = human_anim__upperStateFireReady
+      lowerStateIdx = human_anim__lowerStateStand
+    elif state_upper_body == HumanStateUpperBody.E_USE_MORTAR
+      comboStateIdx = human_anim__comboStateUseMortar
+
+    if state_pos == HumanStatePos.E_CRAWL
+      if state_upper_body == HumanStateUpperBody.E_RELOAD
+        comboStateIdx = human_anim__comboStateCrawlReload
+      elif state_upper_body == HumanStateUpperBody.E_AIM
+        comboStateIdx = human_anim__comboStateCrawlAim
+      elif state_upper_body == HumanStateUpperBody.E_READY
+        comboStateIdx = human_anim__comboStateCrawlFireReady
+      elif state_upper_body == HumanStateUpperBody.E_CHANGE
+        comboStateIdx = human_anim__comboStateCrawlChangeWeapons
+
+      if state_move == HumanStateMove.E_ROTATE_LEFT
+        comboStateIdx = human_anim__comboStateCrawlRotateLeft
+      elif state_move == HumanStateMove.E_ROTATE_RIGHT
+        comboStateIdx = human_anim__comboStateCrawlRotateRight
+      elif state_move == HumanStateMove.E_RUN || state_move == HumanStateMove.E_MOVE
+        comboStateIdx = human_anim__comboStateCrawlMove
+
+    if state_move == HumanStateMove.E_SPRINT
+      lowerStateIdx = human_anim__lowerStateLowerSprint
+      if state_upper_body == HumanStateUpperBody.E_CHANGE
+        upperStateIdx = human_anim__upperStateChangeWeapon
+      elif state_upper_body == HumanStateUpperBody.E_RELOAD
+        upperStateIdx = human_anim__upperStateReload
+      else
+        upperStateIdx = human_anim__upperStateUpperSprint
+
+    if state_pos == HumanStatePos.E_SWIM
+      if state_move == HumanStateMove.E_STILL
+        if state_upper_body == HumanStateUpperBody.E_HEAL
+          upperStateIdx = human_anim__upperStateSwimEatStill
+          lowerStateIdx = human_anim__comboStateSwimStill
+        else
+          comboStateIdx = human_anim__comboStateSwimStill
+      else
+        comboStateIdx = human_anim__comboStateSwimOnWater
+    elif state_pos == HumanStatePos.E_SWIM_UNDERWATER
+      if state_move == HumanStateMove.E_STILL
+        comboStateIdx = human_anim__comboStateSwimStillUnderwater
+      else
+        comboStateIdx = human_anim__comboStateSwimUnderWater
+
+    if state_jump == StateJump.E_FROM_STAND
+      lowerStateIdx = human_anim__lowerStateJumpStand
+    if state_jump == StateJump.E_FROM_RUN
+      lowerStateIdx = human_anim__lowerStateJumpRun
+
+    let isCrawlState = lowerStateIdx >= 0 && (lowerStateIdx == human_anim__lowerStateCrawlMove || lowerStateIdx == human_anim__lowerStateCrawlStill)
+    if state_pos == HumanStatePos.E_BIPOD && !isCrawlState
+      lowerStateIdx = human_anim__lowerStateStandStill
+
+    if comboStateIdx >= 0
+      res.upper = comboStateIdx
+      res.lower = comboStateIdx
+      return
+    res.upper = upperStateIdx
+    res.lower = lowerStateIdx
+    return
+
+  return res
+
+
 [es(on_appear, before=anim_phys_init_es)]
 def init_human_anim_vars(evt : Event;
                          var phys_vars : PhysVars;
@@ -332,6 +665,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   eid : EntityId;
                   isAlive : bool = true; 
                   stunTimer : float = -1.; 
+                  human_anim__isFpv : bool;
                   human_anim__gunPitchVarId : int;
                   human_anim__leanVarId : int;
                   human_anim__standHeightVarId : int;
@@ -427,7 +761,9 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   human_anim__isIdling : bool = false;
                   beh_tree__enabled : bool = false;
                   var human_anim__previousHeight : float&;
-                  var human_anim : HumanAnimCtx;
+                  human_anim__upperStateThrowGrenade : int;
+                  human_anim__upperStateFastThrow : int;
+                  human_anim__upperStateChangeWeapon : int;
                   var phys_vars : PhysVars;
                   var animchar__animSpeed : float&;
                   var human_anim__jumpTimer : float&;
@@ -548,7 +884,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   phys_vars |> setVar(human_anim__crawlContinuousRotationVarId, crawlContinuousRotationVarValue)
 
   if abs(prevLocalWalkDir - localWalkDir) > human_anim__localWalkDirDeltaThresholdAngle
-    localWalkDir = sign(prevLocalWalkDir) * human_anim__localWalkDirClampAngle
+    localWalkDir = sign(localWalkDir) * human_anim__localWalkDirClampAngle
   phys_vars |> setVar(human_anim__localWalkDirVarId, localWalkDir)
 
   let prevRootRotate = phys_vars |> getVar(human_anim__rootRotateVarId)
@@ -681,10 +1017,10 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   var state = HumanAnimStateResult(-1, -1)
   if isInVehicle
     let isHealing = stateUpperBody == HumanStateUpperBody.E_HEAL
-    let throwModeUpperState = effectiveCurSlot == HUWeaponSlots.EWS_GRENADE ? human_anim.animState.upperState.throwGrenade : human_anim.animState.upperState.fastThrow
+    let throwModeUpperState = effectiveCurSlot == HUWeaponSlots.EWS_GRENADE ? human_anim__upperStateThrowGrenade : human_anim__upperStateFastThrow
     let upperVehicleState = ((isHealing && human_vehicle_anim__healUpperId >= 0) ? human_vehicle_anim__healUpperId
       : human_vehicle__isHoldingGunPassenger && human_weap__throwMode ? throwModeUpperState
-      : human_vehicle__isHoldingGunPassenger && isChangingWeapon ? human_anim.animState.upperState.changeWeapon
+      : human_vehicle__isHoldingGunPassenger && isChangingWeapon ? human_anim__upperStateChangeWeapon
       : human_vehicle__isHoldingGunPassenger ? human_vehicle_anim__fireReadyUpperId
       : human_vehicle_anim__upperId)
     let lowerVehicleState = ((isHealing && human_vehicle_anim__healLowerId >= 0) ? human_vehicle_anim__healLowerId
@@ -696,7 +1032,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   elif !isAlive && human_death_anim__selectedDeathAnimStateId >= 0
     state = HumanAnimStateResult(human_death_anim__selectedDeathAnimStateId, human_death_anim__selectedDeathAnimStateId)
   else
-    state = human_anim.animState |> updateState(statePos, stateMove, stateJump, stateUpperBody, state_flags)
+    state = updateState(eid, human_anim__isFpv, statePos, stateMove, stateJump, stateUpperBody, state_flags)
     if (human_anim__idleUpperStateId >= 0 && beh_tree__enabled && human_anim__isIdling
         && stateUpperBody == HumanStateUpperBody.E_READY
         && stateMove == HumanStateMove.E_STILL

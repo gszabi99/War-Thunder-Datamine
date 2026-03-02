@@ -7,4 +7,9 @@ module just_in_time shared private
 
 
 
-require llvm/llvm_jit
+
+
+
+
+
+require llvm/daslib/llvm_jit

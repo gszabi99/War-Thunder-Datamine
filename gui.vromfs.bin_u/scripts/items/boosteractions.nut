@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register_ex
 from "%scripts/dagui_library.nut" import *
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInFlight } = require("gameplayBinding")
 let { get_mission_time } = require("mission")
 
@@ -17,7 +17,7 @@ function removeRefreshBoostersTask() {
 function onBoosterExpiredInFlight(_dt = 0) {
   removeRefreshBoostersTask()
   if (isInFlight())
-    ::update_gamercards()
+    broadcastEvent("RequestUpdateGamercards")
 }
 
 

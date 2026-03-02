@@ -31,6 +31,8 @@ let Promo = class {
 
   updateFunctions = null
 
+  isAutoSwitchLocked = false
+
   constructor(handler, v_guiScene, v_scene) {
     this.owner = handler
     this.guiScene = v_guiScene
@@ -297,7 +299,12 @@ let Promo = class {
 
   function switchBlock(obj) { switchPromoBlock(obj, this.scene) }
   function manualSwitchBlock(obj) { manualSwitchPromoBlock(obj, this.scene) }
-  function selectNextBlock(obj, dt) { selectNextPromoBlock(obj, dt) }
+  function selectNextBlock(obj, dt) {
+    if (!this.isAutoSwitchLocked)
+      selectNextPromoBlock(obj, dt)
+  }
+  function onPromoButtonHover(_obj) { this.isAutoSwitchLocked = true }
+  function onPromoButtonUnHover(_obj) { this.isAutoSwitchLocked = false }
 
   
 

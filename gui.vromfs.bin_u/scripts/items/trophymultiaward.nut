@@ -67,10 +67,6 @@ let class TrophyMultiAward {
   }
 
   function getDescription(useBoldAsSmaller = false) {
-    let resDesc = this.getResultDescription()
-    if (resDesc != "")
-      return resDesc
-
     local header = colorize(this.headerColor, this.getName())
     if (this.blk?.fromLastBattle) {
       local text = loc("multiAward/fromLastBattle")
@@ -224,14 +220,6 @@ let class TrophyMultiAward {
 
     text = "".concat(text, ", ".join(classes, true))
     condList.append(text)
-  }
-
-  function getResultDescription() {
-    let resList = this.getResultPrizesList()
-    if (!resList || !resList.len())
-      return ""
-
-    return ::PrizesView.getPrizesListText(resList)
   }
 
   function getResultPrizesList() {

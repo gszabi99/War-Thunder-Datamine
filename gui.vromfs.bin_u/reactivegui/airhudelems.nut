@@ -167,15 +167,16 @@ function verticalSpeedScale(width, height, style, color) {
   })
 }
 
+let distToGroundText = Computed(function() {
+  let val = DistanceToGround.get().tostring()
+  if (IsMfdEnabled.get())
+    return val
+  let measureName = isInitializedMeasureUnits.get() ? loc(measureUnitsNames.get().alt) : ""
+  return " ".concat(val, measureName)
+})
+
 function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = HudStyle.styleText) {
   let relativeHeight = Computed(@() clamp(DistanceToGround.get() * 2.0, 0, 100))
-  let distToGroundText = Computed(function() {
-    let val = DistanceToGround.get().tostring()
-    if (IsMfdEnabled.get())
-      return val
-    let measureName = isInitializedMeasureUnits.get() ? loc(measureUnitsNames.get().alt) : ""
-    return " ".concat(val, measureName)
-  })
 
   return {
     pos = [posX, posY]
@@ -194,7 +195,7 @@ function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = 
           tmpHeight = 0
           watch = [DistanceToGround, relativeHeight]
           color = color
-          opacity = DistanceToGround.get() > 50.0 ? 0 : 100
+          opacity = DistanceToGround.get() > 50.0 ? 0 : 1
           commands = [[VECTOR_RECTANGLE, 0, 100 - relativeHeight.get(), 100, relativeHeight.get()]]
         })
       }
@@ -279,20 +280,23 @@ function generateRpmTextFunction(trtMode, rpmValue) {
   return "".join(txts)
 }
 
+let formatTimeToHit = @(timeToHit) string.format("[%d]", timeToHit)
 function generateGuidedWeaponBulletsTextFunction(count, seconds, timeToHit, _timeToWarning, actualCount = 0, weaponIdx = -1) {
   local txts = []
   if (seconds >= 0) {
     txts = [string.format("%d:%02d", math.floor(seconds / 60), seconds % 60)]
     if (count > 0)
       txts.append(" (", count, ")")
+    if (timeToHit > 0)
+      txts.append(formatTimeToHit(timeToHit))
     return "".join(txts)
   }
-  else if (count >= 0)
+  if (count >= 0)
     txts = [count]
   if (actualCount >= 0)
     txts.append("/", actualCount)
   if (timeToHit > 0)
-    txts.append(string.format("[%d]", timeToHit))
+    txts.append(formatTimeToHit(timeToHit))
   if (weaponIdx >= 0) {
     let locId = weaponUtils.get_hero_weapon_slot_place_txt_key(weaponIdx)
     if (locId != "" && doesLocTextExist(locId))
@@ -454,7 +458,9 @@ function getCountermeasuresCaption(isFlare, mode) {
   let texts = isFlare ? [loc("HUD/FLARES_SHORT"), " "] : [loc("HUD/CHAFFS_SHORT"), " "]
   if (mode & CountermeasureMode.PERIODIC_COUNTERMEASURE)
     texts.append(loc("HUD/COUNTERMEASURE_PERIODIC"))
-  if (mode == (CountermeasureMode.PERIODIC_COUNTERMEASURE | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE))
+  let isPeriodicAndMlws = CountermeasureMode.PERIODIC_COUNTERMEASURE
+    | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE
+  if ((mode & isPeriodicAndMlws) == isPeriodicAndMlws)
     texts.append(loc("HUD/INDICATION_MODE_SEPARATION"))
   if (mode & CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE)
     texts.append(loc("HUD/COUNTERMEASURE_MLWS"))
@@ -1152,7 +1158,7 @@ function getAgmLaunchDistanceRangeCommands(_visible, enabled, distMin, distMax, 
 
 
 
-function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, isSeekerSight = false) {
+function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, isSeekerSight = false, style = {}) {
 
   let offset = 1.3
   let crossL = 2
@@ -1181,11 +1187,22 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     color = colorWatch.get()
-    opacity = isAtgmGuidanceRangeVisible.get() && atgmLaunchZoneBlinking.get() && !isSeekerSight ? 100 : 0
+    opacity = isAtgmGuidanceRangeVisible.get() && atgmLaunchZoneBlinking.get() && !isSeekerSight ? 1 : 0
     watch = [atgmLaunchZoneBlinking, isAtgmGuidanceRangeVisible]
     pos = [0, sh(-1.8)]
     text = loc("HUD/AGM_OUTSIDE_LAUNCH_ZONE")
   })
+
+  let makeLaunchPermittedIndicator = @() HudStyle.styleText.__merge({
+    rendObj = ROBJ_TEXT
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    color = colorWatch.get()
+    opacity = IsInsideLaunchZoneYawPitch.get() && IsInsideLaunchZoneDist.get() ? 1 : 0
+    watch = [IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist]
+    pos = [0, sh(-1.8)]
+    text = loc("HUD/AGM_LAUNCH_PERMITTED")
+  }.__update(style?.launchPermittedIndicator ?? {}))
 
   return @() HudStyle.styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -1201,6 +1218,28 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
       [VECTOR_LINE, hl, 0, 0, 0, 0, vl]
     ]
     children = [
+      style?.showAltitude ? @() HudStyle.styleText.__merge({
+        watch = [distToGroundText, colorWatch]
+        size = flex()
+        halign = ALIGN_LEFT
+        valign = ALIGN_BOTTOM
+        pos = [0, -height + hdpx(-22)]
+        rendObj = ROBJ_TEXT
+        color = colorWatch.get()
+        text = distToGroundText.get()
+      }) : null,
+      style?.showVerticalSpeed ? @() HudStyle.styleText.__merge({
+        watch = [VerticalSpeed, IsMfdEnabled, colorWatch]
+        size = flex()
+        halign = ALIGN_RIGHT
+        valign = ALIGN_BOTTOM
+        pos = [0, -height + hdpx(-22)]
+        rendObj = ROBJ_TEXT
+        color = colorWatch.get()
+        text = IsMfdEnabled.get() ?
+          math.round_by_value(VerticalSpeed.get(), 1).tostring() :
+          cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.get())
+      }) : null,
       @() HudStyle.styleLineForeground.__merge({
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = hdpx(LINE_WIDTH + 1)
@@ -1210,6 +1249,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
         color = colorWatch.get()
       }),
       outOfZoneTxt,
+      makeLaunchPermittedIndicator,
       isAtgmAngularRangeVisible.get()
         ? @() HudStyle.styleLineForeground.__merge({
             rendObj = ROBJ_VECTOR_CANVAS
@@ -1316,7 +1356,7 @@ let helicopterRocketAim = @(width, height, color, style = HudStyle.styleLineFore
     size = [width, height]
     color
     watch = [RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode]
-    opacity = RocketAimVisible.get() ? 100 : 0
+    opacity = RocketAimVisible.get() ? 1 : 0
     transform = {
       translate = [RocketAimX.get(), RocketAimY.get()]
     }
@@ -1325,11 +1365,11 @@ let helicopterRocketAim = @(width, height, color, style = HudStyle.styleLineFore
 }
 
 let turretAnglesAspect = 2.0
-let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blinkDuration = 0.5, isSeekerSight = false) {
+let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blinkDuration = 0.5, isSeekerSight = false, style = {}) {
   return {
     pos = [posX - turretAnglesAspect * width * 0.5, posY - height]
     size = SIZE_TO_CONTENT
-    children = turretAngles(colorWatch, width, height, turretAnglesAspect, blinkDuration, isSeekerSight)
+    children = turretAngles(colorWatch, width, height, turretAnglesAspect, blinkDuration, isSeekerSight, style)
   }
 }
 
@@ -1578,7 +1618,7 @@ function rangeFinderComponent(colorWatch, posX, posY) {
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
     text = cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(RangefinderDist.get())
-    opacity = IsRangefinderEnabled.get() ? 100 : 0
+    opacity = IsRangefinderEnabled.get() ? 1 : 0
     color = colorWatch.get()
     watch = [RangefinderDist, IsRangefinderEnabled, colorWatch]
   })
@@ -1689,6 +1729,7 @@ return {
   lockSight = lockSightComponent
   rocketAim = helicopterRocketAim
   detectAlly = detectAllyComponent
+  airHorizon
 }
 } 
 

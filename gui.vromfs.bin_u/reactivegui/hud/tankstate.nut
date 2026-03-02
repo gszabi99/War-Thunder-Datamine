@@ -69,6 +69,17 @@ let tankState = {
 
 
 
+
+  gear = Watched("")
+  rpm = Watched(0)
+  cruiseControlValue = Watched("")
+  speed = Watched(0)
+  hasSpeedWarning = Watched(0)
+  firstStageAmmo = Watched(0)
+  stabilizer = Watched(0)
+  lws = Watched(0)
+  ircm = Watched(0)
+  drivingDirectionMode = Watched(0)
 }
 
 interopGen({

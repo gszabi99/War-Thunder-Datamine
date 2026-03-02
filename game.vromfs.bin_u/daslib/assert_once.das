@@ -6,6 +6,12 @@ options strict_smart_pointers
 
 module assert_once shared private
 
+
+
+
+
+
+
 require ast
 require rtti
 require daslib/ast_boost
@@ -32,7 +38,7 @@ class AssertOnceMacro : AstFunctionAnnotation {
             return <- default<ExpressionPtr>
         }
         
-        var inscope qb <- qmacro_block() <| $() {
+        var inscope qb <- qmacro_block() {
             if ($i(once_name) && !$e(call.arguments[0])) {
                 $i(once_name) = false
                 assert(false, $e(call.arguments[1]))

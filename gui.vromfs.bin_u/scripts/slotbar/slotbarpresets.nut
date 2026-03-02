@@ -7,8 +7,8 @@ let { loadLocalByAccount, saveLocalByAccount
 let regexp2 = require("regexp2")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits, getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
-let { initSelectedCrews, selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
+let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
+let { selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
 let { clearBorderSymbols, split } = require("%sqstd/string.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
@@ -23,7 +23,6 @@ let logP = log_with_prefix("[SLOTBAR PRESETS] ")
 let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
@@ -32,6 +31,11 @@ let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById,
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
+let { slotbarPresetsByCountry, slotbarPresetsSeletected, slotbarPresetsVersion, isSlotbarPresetsLoading
+} = require("%scripts/slotbar/slotbarPresetsState.nut")
+let { createPresetTemplate, checkCanHaveEmptyPresets, reorderUnitsInPreset, updatePresetInfo,
+  updatePresetFromSlotbar, createPresetFromSlotbar, getCurrentSlotbarPreset
+} = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
@@ -50,10 +54,6 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
 let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p2.units)
 
-let slotbarPresetsByCountry = persist("slotbarPresetsByCountry", @() {})
-let slotbarPresetsSeletected = persist("slotbarPresetsSeletected", @() {})
-let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
-
 local slotbarPresets = null
 slotbarPresets = {
   activeTypeBonusByCountry = null
@@ -63,14 +63,7 @@ slotbarPresets = {
   eraIdForBonus = 5
   minCountryPresets = 1
 
-  isLoading = false
   validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
-
-  
-  presets = slotbarPresetsByCountry
-
-  
-  selected = slotbarPresetsSeletected
 
   function init() {
     isAlreadySendMissingPresetError = false
@@ -87,12 +80,13 @@ slotbarPresets = {
     foreach (presetDataItem in newbiePresetsData.presetDataItems) {
       
       let countryId = presetDataItem.country
-      slotbarPresetsByCountry[countryId] <- this.presets?[countryId] ?? []
-      if (!presetDataItem.hasUnits && !this.canHaveEmptyPresets(countryId))
+      if (countryId not in slotbarPresetsByCountry)
+        slotbarPresetsByCountry[countryId] <- []
+      if (!presetDataItem.hasUnits && !checkCanHaveEmptyPresets(countryId))
         continue
       let gameMode = getGameModeByUnitType(presetDataItem.unitType, -1, true)
       
-      let preset = this._createPresetTemplate(0)
+      let preset = createPresetTemplate(0)
       preset.title = $"{loc("mainmenu/preset_default")} {unitTypes.getByEsUnitType(presetDataItem.unitType).fontIcon}"
       preset.gameModeId = getTblValue("id", gameMode, "")
       foreach (taskData in presetDataItem.tasksData) {
@@ -104,7 +98,7 @@ slotbarPresets = {
         if (preset.selected == -1)
           preset.selected = taskData.crewId
       }
-      this._updateInfo(preset)
+      updatePresetInfo(preset)
       slotbarPresetsByCountry[presetDataItem.country].append(preset)
 
       let presetIndex = slotbarPresetsByCountry[presetDataItem.country].len() - 1
@@ -140,7 +134,7 @@ slotbarPresets = {
   function initCountry(countryId) {
     slotbarPresetsByCountry[countryId] <- this.getPresetsList(countryId)
     local selPresetId = loadLocalByAccount($"slotbar_presets/{countryId}/selected", null)
-    let slotbarPreset = this.createPresetFromSlotbar(countryId)
+    let slotbarPreset = createPresetFromSlotbar(countryId)
     if (selPresetId != null && (selPresetId in slotbarPresetsByCountry[countryId])
         && isEqualPreset(slotbarPresetsByCountry[countryId][selPresetId], slotbarPreset)) {
       slotbarPresetsSeletected[countryId] <- selPresetId
@@ -158,40 +152,6 @@ slotbarPresets = {
     slotbarPresetsSeletected[countryId] <- selPresetId
   }
 
-  function list(countryId = null) {
-    countryId = countryId ?? profileCountrySq.get()
-    let res = []
-    if (!(countryId in slotbarPresetsByCountry)) {
-      res.append(this.createPresetFromSlotbar(countryId))
-      return res
-    }
-
-    let currentIdx = this.getCurrent(countryId, -1)
-    foreach (idx, preset in slotbarPresetsByCountry[countryId]) {
-      if (idx == currentIdx)
-        this.updatePresetFromSlotbar(preset, countryId)
-      res.append(preset)
-    }
-
-    return res
-  }
-
-  function getCurrent(country = null, defValue = -1) {
-    country = country ?? profileCountrySq.get()
-    return (country in slotbarPresetsSeletected) ? slotbarPresetsSeletected[country] : defValue
-  }
-
-  
-
-
-
-
-  function getCurrentPreset(country = null) {
-    country = country ?? profileCountrySq.get()
-    let index = this.getCurrent(country, -1)
-    return this.list(country)?[index]
-  }
-
   function canCreate() {
     local countryId = profileCountrySq.get()
     return (countryId in slotbarPresetsByCountry) && slotbarPresetsByCountry[countryId].len() < this.getMaxPresetsCount(countryId)
@@ -201,10 +161,8 @@ slotbarPresets = {
   function canEditCountryPresets(country = null) {
     country = country ?? profileCountrySq.get()
     return isCountrySlotbarHasUnits(country)
-      || this.canHaveEmptyPresets(country)
+      || checkCanHaveEmptyPresets(country)
   }
-
-  canHaveEmptyPresets = @(country) !hasDefaultUnitsInCountry(country)
 
   function getPresetsReseveTypesText(country = null) {
     country = country ?? profileCountrySq.get()
@@ -397,11 +355,11 @@ slotbarPresets = {
     if (slotbarPresetsByCountry[countryId].len() > 0) {
       let curPreset = getTblValue(slotbarPresetsSeletected[countryId], slotbarPresetsByCountry[countryId])
       if (curPreset && countryId == profileCountrySq.get())
-        this.updatePresetFromSlotbar(curPreset, countryId)
+        updatePresetFromSlotbar(curPreset, countryId)
 
       let presetsList = []
       foreach (_idx, p in slotbarPresetsByCountry[countryId]) {
-        if (p.units.len() == 0 && !this.canHaveEmptyPresets(countryId))
+        if (p.units.len() == 0 && !checkCanHaveEmptyPresets(countryId))
           continue
         presetsList.append("|".join([
                                       p.selected,
@@ -433,7 +391,7 @@ slotbarPresets = {
   }
 
   function canLoad(verbose = false, country = null) {
-    if (this.isLoading)
+    if (isSlotbarPresetsLoading.get())
       return false
     country = country ?? profileCountrySq.get()
     if (!(country in slotbarPresetsByCountry) || !isInMenu.get() || !isCanModifyCrew())
@@ -512,7 +470,7 @@ slotbarPresets = {
 
     
     
-    if (!unitsList.len() && !this.canHaveEmptyPresets(countryId)) {
+    if (!unitsList.len() && !checkCanHaveEmptyPresets(countryId)) {
       let p = this.createEmptyPreset(countryId)
       foreach (i, unitId in p.units) {
         unitsList[unitId] <- p.crews[i]
@@ -538,7 +496,7 @@ slotbarPresets = {
       return
     }
 
-    this.isLoading = true 
+    isSlotbarPresetsLoading.set(true) 
 
     suspendSlotbarUpdates()
     this.invalidateUnitsModificators(countryIdx)
@@ -556,7 +514,7 @@ slotbarPresets = {
   function onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, _selUnitId, skipGameModeSelect, preset) {
     slotbarPresetsSeletected[countryId] = idx
 
-    this.isLoading = false
+    isSlotbarPresetsLoading.set(false)
     selectCrew(countryIdx, selCrewIdx, true)
     this.invalidateUnitsModificators(countryIdx)
     flushSlotbarUpdate()
@@ -577,7 +535,7 @@ slotbarPresets = {
       return
 
     if (!preset)
-      preset = this.getCurrentPreset(profileCountrySq.get())
+      preset = getCurrentSlotbarPreset(profileCountrySq.get())
 
     local gameModeId = preset?.gameModeId ?? ""
     if (gameModeId == "") 
@@ -616,7 +574,7 @@ slotbarPresets = {
   }
 
   function onTrainCrewTasksFail() {
-    this.isLoading = false
+    isSlotbarPresetsLoading.set(false)
   }
 
   function getPresetsList(countryId) {
@@ -629,7 +587,7 @@ slotbarPresets = {
         let data = split(strPreset, "|")
         if (data.len() < 3)
           continue
-        let preset = this._createPresetTemplate(idx)
+        let preset = createPresetTemplate(idx)
         preset.selected = to_integer_safe(data[0], -1)
         let title = this.validatePresetName(getTblValue(3, data, ""))
         if (title.len())
@@ -658,7 +616,7 @@ slotbarPresets = {
             preset.crewInSlots.resize(lastExistingCrewIdx + 1)
         }
 
-        let canHaveEmptyPresets = this.canHaveEmptyPresets(countryId)
+        let canHaveEmptyPresets = checkCanHaveEmptyPresets(countryId)
         let unitNames = data[2] != "" ? split(data[2], ",") : []
         let crewIds = data[1] != "" ? split(data[1], ",") : []
         if ((!unitNames.len() && !canHaveEmptyPresets) || unitNames.len() != crewIds.len())
@@ -681,7 +639,7 @@ slotbarPresets = {
         if (!preset.units.len() && !canHaveEmptyPresets)
           continue
 
-        this._updateInfo(preset)
+        updatePresetInfo(preset)
 
         res.append(preset)
         if (res.len() == this.getMaxPresetsCount(countryId))
@@ -689,7 +647,7 @@ slotbarPresets = {
       }
     }
     if (!res.len()) {
-      res.append(this.createPresetFromSlotbar(countryId))
+      res.append(createPresetFromSlotbar(countryId))
       if (!isAlreadySendMissingPresetError && !isNeedFirstCountryChoice()
           && hasDefaultUnitsInCountry(countryId)) {
         isAlreadySendMissingPresetError = true
@@ -700,80 +658,6 @@ slotbarPresets = {
       }
     }
     return res
-  }
-
-  function _createPresetTemplate(presetIdx) {
-    return {
-      units = []
-      crews = []
-      crewInSlots = []
-      orderedUnits = []
-      selected = -1
-      title = loc("shop/slotbarPresets/item", { number = presetIdx + 1 })
-      gameModeId = ""
-
-      unitTypesMask = 0
-      enabled = true
-    }
-  }
-
-  function _updateInfo(preset) {
-    local unitTypesMask = 0
-    foreach (unitId in preset.units) {
-      let unit = getAircraftByName(unitId)
-      let unitType = unit ? getEsUnitType(unit) : ES_UNIT_TYPE_INVALID
-      if (unitType != ES_UNIT_TYPE_INVALID)
-        unitTypesMask = unitTypesMask | (1 << unitType)
-    }
-
-    preset.unitTypesMask = unitTypesMask
-    preset.enabled = true
-    this.reorderUnitsInPreset(preset)
-
-    return preset
-  }
-
-  function updatePresetFromSlotbar(preset, countryId) {
-    if (this.isLoading)    
-      return preset   
-
-    initSelectedCrews()
-    let units = []
-    let crews = []
-    let crewInSlots = clone preset.crewInSlots
-    local selected = preset.selected
-    foreach (tbl in getCrewsList())
-      if (tbl.country == countryId) {
-        foreach (crew in tbl.crews) {
-          if (!crewInSlots.contains(crew.id))
-            crewInSlots.append(crew.id)
-          if (("aircraft" in crew)) {
-            let unitName = crew.aircraft
-            if (!getAircraftByName(unitName))
-              continue
-
-            units.append(crew.aircraft)
-            crews.append(crew.id)
-            if (selected == -1 || crew.idInCountry == getSelectedCrews(crew.idCountry))
-              selected = crew.id
-          }
-        }
-      }
-
-    if ((units.len() == 0 || crews.len() == 0) && !this.canHaveEmptyPresets(countryId))
-      return preset 
-
-    preset.units = units
-    preset.crews = crews
-    preset.selected = selected
-    preset.crewInSlots = crewInSlots
-
-    this._updateInfo(preset)
-    return preset
-  }
-
-  function createPresetFromSlotbar(countryId, presetIdx = 0) {
-    return this.updatePresetFromSlotbar(this._createPresetTemplate(presetIdx), countryId)
   }
 
   function createEmptyPreset(countryId, presetIdx = 0) {
@@ -794,13 +678,13 @@ slotbarPresets = {
         break
     }
 
-    let preset = this._createPresetTemplate(presetIdx)
+    let preset = createPresetTemplate(presetIdx)
     if (unitToSet) {
       preset.units = [ unitToSet.name ]
       preset.crews = [ crewToSet.id ]
       preset.crewInSlots = [ crewToSet.id ]
       preset.selected = crewToSet.id
-      this._updateInfo(preset)
+      updatePresetInfo(preset)
     }
     return preset
   }
@@ -810,7 +694,7 @@ slotbarPresets = {
      if (!curGameModeId)
        return
 
-     let preset = this.getCurrentPreset(country)
+     let preset = getCurrentSlotbarPreset(country)
      if (!preset || curGameModeId == preset.gameModeId)
        return
 
@@ -824,12 +708,12 @@ slotbarPresets = {
   }
 
   function swapCrewsInCurrentPreset(crewIds) {
-    let preset = this.getCurrentPreset()
+    let preset = getCurrentSlotbarPreset()
     let crewInSlots = preset?.crewInSlots
     if(crewInSlots == null)
       return
     this.swapValues(crewInSlots, crewIds)
-    this.reorderUnitsInPreset(preset)
+    reorderUnitsInPreset(preset)
     this.save()
     broadcastEvent("CrewsOrderChanged")
   }
@@ -839,27 +723,17 @@ slotbarPresets = {
   }
 
   function replaceCrewsInCurrentPreset(countryId, crewIds) {
-    let preset = this.getCurrentPreset(countryId)
+    let preset = getCurrentSlotbarPreset(countryId)
     let crewInSlots = preset?.crewInSlots
     if(crewInSlots == null)
       return
     crewInSlots.replace(crewIds)
-    this.reorderUnitsInPreset(preset)
+    reorderUnitsInPreset(preset)
     this.save()
     broadcastEvent("CrewsOrderChanged")
-  }
-
-  function reorderUnitsInPreset(preset) {
-    let unitsOrder = preset.crews.map(@(c) preset.crewInSlots.indexof(c))
-    preset.orderedUnits <- preset.units
-      .map(@(unit, index) { unit, order = unitsOrder[index] })
-      .sort(@(u1, u2) u1.order <=> u2.order)
-      .map(@(unit) unit.unit)
   }
 }
 
 subscribe_handler(slotbarPresets)
-
-::slotbarPresets <- slotbarPresets 
 
 return slotbarPresets

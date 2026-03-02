@@ -6,8 +6,9 @@ from "%scripts/dagui_natives.nut" import get_unlock_type
 let DataBlock  = require("DataBlock")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockImageConfig, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockImageConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
 
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { register_command } = require("console")

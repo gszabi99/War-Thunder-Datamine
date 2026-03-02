@@ -259,10 +259,10 @@ def draw_air_speed(state : CommonState& const; var canvas : Canvas; var pos : fl
     canvas.setTextAnchorHorz(AnchorHorz.Right)
     canvas.drawStr(pos, string(indicatedAirSpeed))
 
-    if fmw.fm.Mach >= 0.4
+    if fmw.fm.cache.Mach >= 0.4
       canvas.setFontSize(roundi(float(ft_sz) * 0.72), true)
       pos.y += canvas.getLineSpacing()
-      canvas.drawStr(pos, fmt(":4.2f", fmw.fm.Mach), 4)
+      canvas.drawStr(pos, fmt(":4.2f", fmw.fm.cache.Mach), 4)
 
 
 def draw_radar_status(state : CommonState& const; var canvas : Canvas; var pos : float2; ft_sz : int)
@@ -319,7 +319,7 @@ def draw_radar_alt(state : CommonState& const; var canvas : Canvas; pos : float2
   with state
     return if abs(fmw.roll) > 60.0 || abs(fmw.tangage) > 30.0
 
-    let alt = fmw.fm.currentAlt * (is_metric ? 1.0 : metrToFeet)
+    let alt = fmw.fm.input.currentAlt * (is_metric ? 1.0 : metrToFeet)
     let altQuant = alt < 100.0 ? floori(alt / 5.0) * 5 : floori(alt / 10.0) * 10
     let altStr = fmt(":>5d", altQuant)
     canvas.setFontSize(ft_sz)

@@ -46,7 +46,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
   let baroAlt = (hero.unitTm[3].y - get_app().currentScene.waterLevel) * metrToFeet
   draw_baro_alt(ctx, rdata.pos + float2(rdata.size.x * 0.75, rdata.size.y * 0.15),
    float2(rdata.size.x * 0.1, float(data.fontSize) * 1.4), data, baroAlt)
-  let altitude = fmw.fm.currentAlt * metrToFeet
+  let altitude = fmw.fm.input.currentAlt * metrToFeet
   draw_alt(ctx, rdata.pos + float2(rdata.size.x * 0.75, rdata.size.y * 0.75),
    float2(rdata.size.x * 0.14, float(data.fontSize)), data, altitude)
   draw_climb_speed(ctx, rdata.pos + float2(rdata.size.x * 0.72, rdata.size.y * 0.3),

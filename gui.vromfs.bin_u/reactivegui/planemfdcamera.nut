@@ -25,6 +25,11 @@ let mi35ACCEn = createScriptComponent("%rGui/planeCockpit/mfdMi35ACC.das", {
   english = true
 })
 
+let atlis2 = createScriptComponent("%rGui/planeCockpit/mfdAtlis2.das", {
+  fontId = Fonts.hud
+  isMetricUnits = true
+})
+
 let mfdCameraSetting = Watched({
   isShkval = false
   isShkvalKa52 = false
@@ -35,6 +40,7 @@ let mfdCameraSetting = Watched({
   isLitening2 = false
   isMi35 = false
   isMi35en = false
+  isAtlis2 = false
   lineWidthScale = 1.0
   fontScale = 1.0
 })
@@ -50,6 +56,7 @@ function mfdCameraSettingUpd(blk) {
     isLitening2 = blk.getBool("mfdCamLitening2", false)
     isMi35 = blk.getBool("mfdMi35", false)
     isMi35en = blk.getBool("mfdMi35en", false)
+    isAtlis2 = blk.getBool("mfdCamAtlis2", false)
 
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
@@ -60,19 +67,21 @@ function mfdCameraSettingUpd(blk) {
 }
 
 let planeMfdCamera = @(width, height) function() {
-  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isDamocles, isLitening2, isMi35, isMi35en} = mfdCameraSetting.get()
+  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isDamocles, isLitening2,
+    isMi35, isMi35en, isAtlis2} = mfdCameraSetting.get()
   return {
     watch = mfdCameraSetting
     children = [
       isShkval ? shkval(width, height, lineWidthScale, fontScale) :
-      isShkvalKa52 ? shkvalKa52(width, height) :
-      isTads ? tads(width, height, false) :
-      isTadsApache ? tads(width, height, true) :
+      isShkvalKa52 ? shkvalKa52.root(width, height) :
+      isTads ? tads.root(width, height, false) :
+      isTadsApache ? tads.root(width, height, true) :
       isPlatan ? platan(width, height) :
       isDamocles ? damocles(width, height) :
       isLitening2 ? litening2(width, height, fontScale, lineWidthScale) :
       isMi35 ? mi35ACC(width, height) :
       isMi35en ? mi35ACCEn(width, height) :
+      isAtlis2 ? atlis2(width, height) :
       hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)
     ]
   }
@@ -90,4 +99,5 @@ let planeMfdCameraSwitcher = @() {
 return {
   planeMfdCameraSwitcher
   mfdCameraSettingUpd
+  mfdCameraSetting
 }

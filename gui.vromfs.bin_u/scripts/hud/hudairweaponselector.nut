@@ -9,7 +9,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
  COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF, has_secondary_weapons, set_countermeasures_mode, set_secondary_weapons_selector,
  get_periodic_countermeasure_enabled, AAM_TRIGGER, AGM_TRIGGER, MINES_TRIGGER, BOMBS_TRIGGER, ROCKETS_TRIGGER, TORPEDOES_TRIGGER,
- get_secondary_weapons_selector_enabled = @() true
+ get_secondary_weapons_selector_enabled
 } = require("weaponSelector")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager} = require("%scripts/baseGuiHandlerManagerWT.nut")

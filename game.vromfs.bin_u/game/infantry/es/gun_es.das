@@ -40,7 +40,7 @@ def private gun_launch(ld : LaunchDesc; gun_eid : EntityId;  offender_eid : Enti
   if !ok
     get_props_ProjBallisticsProperties(ld.shellId) <| $ [unused_argument(_)] (_ : ProjBallisticsProperties)
       ok = true
-      sendEventImmediate(offender_eid, CmdLaunchProjectile(launchDesc = ld, gunEid = gun_eid))
+      sendEventImmediate(offender_eid, CmdLaunchProjectileSpawner(launchDesc = ld, gunEid = gun_eid))
   return ok
 
 def private gun_launch(var gun : Gun&;
@@ -253,6 +253,7 @@ def gun_update_es(evt : CmdGunUpdate;
                   gun__shell_prop_ids : PropsIdList const?;
                   ammo_set__shellIds : IntList const?;
                   gun__zeroingAngle : float = 0.;
+                  gun__launchVerticalAngle : float = 0.;
                   gun__projectileVelocityMult : float = 1.;
                   gun__ignoreWeaponVelocity : bool = false;
                   mounted_gun : MountedGun const?)
@@ -277,7 +278,7 @@ def gun_update_es(evt : CmdGunUpdate;
   gunIn.pointVel = !gun__ignoreWeaponVelocity ? (gloc.gunVel ?? float3()) : float3()
   gunIn.curGunPropsId = gun__propsId
   gunIn.extraDeviation = gun_deviation.extraDev
-  gunIn.zeroingAngle = gun__zeroingAngle
+  gunIn.zeroingAngle = gun__zeroingAngle + gun__launchVerticalAngle
   gunIn.projectileVelocityMult = gun__projectileVelocityMult
 
   var curShellId = -1

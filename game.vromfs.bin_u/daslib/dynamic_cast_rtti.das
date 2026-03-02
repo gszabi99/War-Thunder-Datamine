@@ -6,6 +6,11 @@ options strict_smart_pointers = true
 
 module dynamic_cast_rtti shared private
 
+
+
+
+
+
 require rtti
 require daslib/contracts
 require daslib/templates
@@ -15,6 +20,7 @@ require daslib/type_traits
 
 [expect_class(instance), template(otherclass), unused_argument(otherclass)]
 def public is_instance_of(instance : auto(TCLS)?; otherclass : auto(TT)) {
+    
     if (instance == null) {
         return false
     }
@@ -37,6 +43,7 @@ def public is_instance_of(instance : auto(TCLS)?; otherclass : auto(TT)) {
 
 [expect_class(instance), template(otherclass), unused_argument(otherclass)]
 def public dynamic_type_cast(instance; otherclass : auto(TT)) : TT -const? {
+    
     if (instance == null) {
         return null
     }
@@ -59,6 +66,7 @@ def public dynamic_type_cast(instance; otherclass : auto(TT)) : TT -const? {
 
 [expect_class(instance), template(otherclass), unused_argument(otherclass)]
 def public force_dynamic_type_cast(instance; otherclass : auto(TT)) : TT -const? {
+    
     if (instance == null) {
         panic("null pointer cast")
     }
@@ -83,6 +91,7 @@ def public force_dynamic_type_cast(instance; otherclass : auto(TT)) : TT -const?
 
 [variant_macro(name="ClassAsIs")]
 class ClassAsIs : AstVariantMacro {
+    
     def override visitExprIsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprIsVariant>) : ExpressionPtr {
         assume vtype = expr.value._type
         if (!(vtype.isPointer && vtype.firstType != null && vtype.firstType.isStructure && vtype.firstType.structType.flags.isClass)) {

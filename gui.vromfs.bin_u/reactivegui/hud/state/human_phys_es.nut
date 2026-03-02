@@ -39,6 +39,7 @@ ecs.register_es("script_hold_breath_state_es",
       ["human_hold_breath__showHintUi", ecs.TYPE_BOOL]
     ]
     comps_rq = ["watchedByPlr"]
+    comps_no=["isReplayObserved"]
   }
 )
 

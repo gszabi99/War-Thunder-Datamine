@@ -13,23 +13,23 @@ require %appGame.infantry.es.human_weap_common
 
 require %appGame.wt_events
 
+def attach_additional_mod(owner : EntityId;
+                          gun_slot : int;
+                          mod_tag : string;
+                          mod_slot_name : string;
+                          mod_template : string;
+                          human_weap__gunEids : EidList;
+                          var gun_mods__slots : Object)
+  if empty(mod_tag) || empty(mod_slot_name) || empty(mod_template) || gun_slot < 0 || length(human_weap__gunEids) <= gun_slot
+    return
 
+  var slot = gun_mods__slots[mod_slot_name] |> getRW_ecs_object()
+  if slot == null
+    return
+  *slot |> set(mod_tag, mod_template)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  var nullCustomProps : Object? = null
+  human_weap_attach_item_to_gun(owner, gun_slot, mod_tag, mod_slot_name, true, nullCustomProps)
 
 
 
@@ -180,18 +180,25 @@ def human_optics_camera_es(info : ParallelUpdateFrameDelayed;
   let interpK = get_phys_interpk_clamped(human_net_phys.phys, info.curTime)
   let aimPosition = lerp(human_net_phys.phys.previousState.aimPosition, human_net_phys.phys.currentState.aimPosition, interpK)
 
-  let zoomFactor = get_float(gunScopeEid, "gunmod__zoomFactor") ?? 0.0
   let zoomPosition = lerp(human_net_phys.phys.previousState.zoomPosition,
                           human_net_phys.phys.currentState.zoomPosition, interpK)
 
-  human_weap__opticsAttached = zoomFactor > 0.0
+  let subsEid = get_Eid(human_weap__currentGunEid, "subsidiaryGunEid") ?? INVALID_ENTITY_ID
+  if !!subsEid
+    human_weap__opticsAttached = false
+    let subMagnification = get_float(subsEid, "gun__magnification") ?? 1.0
+    camera__magnification = lerp(1.0, subMagnification, lerp(0.0, zoomPosition, aimPosition))
+    return
+
+  let scopeZoomFactor = get_float(gunScopeEid, "gunmod__zoomFactor") ?? 0.0
+  human_weap__opticsAttached = scopeZoomFactor > 0.0
 
   if !human_weap__opticsAttached
     let gunMagnification = get_float(human_weap__currentGunEid, "gun__magnification") ?? 1.5
     camera__magnification = lerp(1.0, gunMagnification, zoomPosition)
     return
 
-  camera__magnification = lerp(1.0, zoomFactor, lerp(0.0, zoomPosition, aimPosition))
+  camera__magnification = lerp(1.0, scopeZoomFactor, lerp(0.0, zoomPosition, aimPosition))
 
 [es(tag=gameClient, on_appear, REQUIRE=(deadEntity, watchedByPlr), after=camera_set_sync, before=before_camera_sync)]
 def human_reset_optics_on_die_es(evt : Event; var camera__magnification : float&)
@@ -350,18 +357,39 @@ def update_tactical_device_on_weapon_change_es(evt : Event;
       if laserActive != null
         *laserActive = false
 
+[es(tag=server, on_appear, REQUIRE=magazine_mod)]
+def magazine_mod_attach_additional_magazine_on_mod_appear(evt : Event;
+                                                          animchar_attach__attachedTo : EntityId;
+                                                          gun_attachable_mod__additionalModSlotNames : StringList;
+                                                          gun_attachable_mod__additionalModTemplates : StringList)
+  query(animchar_attach__attachedTo) <| $ [es] (gun__owner : EntityId;
+                                                gun__initialSlotId : int;
+                                                slot_attach__weaponSlotIdx : int;
+                                                var gun_mods__slots : Object)
+    query(gun__owner) <| $ [es] (human_weap__gunEids : EidList)
+      let gunSlot = slot_attach__weaponSlotIdx < 0 ? gun__initialSlotId : slot_attach__weaponSlotIdx
+      for slotName, tmpl in gun_attachable_mod__additionalModSlotNames, gun_attachable_mod__additionalModTemplates
+        let tmplString = string(tmpl)
+        let slotNameString = string(slotName)
 
+        attach_additional_mod(gun__owner, gunSlot, tmplString, slotNameString, tmplString, human_weap__gunEids, gun_mods__slots)
 
+[es(tag=server, on_appear, after=server_init_gun_es)]
+def magazine_mod_attach_additional_magazine_on_gun_appear(evt : Event;
+                                                          eid aka gun_eid : EntityId;
+                                                          gun__owner : EntityId;
+                                                          gun__initialSlotId : int;
+                                                          slot_attach__weaponSlotIdx : int;
+                                                          var gun_mods__slots : Object)
+  query() <| $ [es(REQUIRE=magazine_mod)] (animchar_attach__attachedTo : EntityId;
+                                           gun_attachable_mod__additionalModSlotNames : StringList;
+                                           gun_attachable_mod__additionalModTemplates : StringList)
+    if animchar_attach__attachedTo != gun_eid
+      return
+    query(gun__owner) <| $ [es] (human_weap__gunEids : EidList)
+      let gunSlot = slot_attach__weaponSlotIdx < 0 ? gun__initialSlotId : slot_attach__weaponSlotIdx
+      for slotName, tmpl in gun_attachable_mod__additionalModSlotNames, gun_attachable_mod__additionalModTemplates
+        let tmplString = string(tmpl)
+        let slotNameString = string(slotName)
 
-
-
-
-
-
-
-
-
-
-
-
-
+        attach_additional_mod(gun__owner, gunSlot, tmplString, slotNameString, tmplString, human_weap__gunEids, gun_mods__slots)

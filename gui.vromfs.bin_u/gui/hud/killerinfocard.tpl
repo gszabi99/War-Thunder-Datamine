@@ -146,7 +146,7 @@ hudFrame {
 
         textareaNoTab {
           valign:t='center'
-          text:t='<<?logs/ammunition>><<?ui/colon>>'
+          text:t='<<shellHeader>><<?ui/colon>>'
           font-pixht:t='12/720@shHud'
         }
 

@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
+let { eventbus_send } = require("eventbus")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { showOrder, scoresTable, statusText, statusTextBottom } = require("%rGui/orderState.nut")
 let colors = require("%rGui/style/colors.nut")
@@ -170,7 +170,7 @@ let order = {
   ]
 }
 
-let undateOrderState = @() cross_call.active_order_request_update()
+let undateOrderState = @() eventbus_send("active_order_request_update")
 
 return function() {
   local children = null
@@ -189,7 +189,7 @@ return function() {
     children
 
     onAttach = function(_) {
-      cross_call.active_order_enable()
+      eventbus_send("active_order_enable")
       gui_scene.setInterval(1, undateOrderState)
     }
     onDetach = @(_) gui_scene.clearTimer(undateOrderState)

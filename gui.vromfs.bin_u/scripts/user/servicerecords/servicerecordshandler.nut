@@ -218,11 +218,10 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     for (local idx = fromIdx; idx < toIdx; idx++) {
       let rowName = $"row_{idx}"
-      local rowData = null
       let airData = this.unitsList[idx]
       let unitTooltipId = getTooltipType("UNIT").getTooltipId(airData.name)
 
-      rowData = [
+      local rowData = [
         { text = (idx + 1).tostring(), width = posWidth, tdalign = "center"}
         { id = "country", width = countryWidth, image = getCountryIcon(airData.country),
           imageRawParams = "left:t='0.5*(pw-w)'; isCountryIcon:t='yes'; background-svg-size:t='@cIco, 0.66@cIco';",
@@ -256,7 +255,7 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
           rowData.append(cell)
         }
       }
-      data.append(buildTableRow(rowName, rowData ?? [], idx % 2 == 0))
+      data.append(buildTableRow(rowName, rowData, idx % 2 == 0))
     }
 
     let dataTxt = "".join(data)

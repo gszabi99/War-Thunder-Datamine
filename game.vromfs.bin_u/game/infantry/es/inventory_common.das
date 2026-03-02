@@ -77,6 +77,20 @@ def has_grenade(itemContainer)
       return true
   return false
 
+def get_num_items_with_tag(itemContainer : EidList; itemTagStr : string)
+  var itemsWithTagNum = 0
+  for item in itemContainer
+    if has(item, itemTagStr, ecs_hash(itemTagStr))
+      itemsWithTagNum++
+  return itemsWithTagNum
+
+def get_num_items(itemContainer : EidList; itemTemplate : string)
+  var itemsNum = 0
+  for item in itemContainer
+    if itemTemplate == get_ecs_string(item, "ammo_holder__templateName") ?? ""
+      itemsNum++
+  return itemsNum
+
 def has_grenade_for_grenade_launcher(itemContainer, grenadeTemplate)
   for item in itemContainer
     let ammo_holder__templateName = get_ecs_string(item, "ammo_holder__templateName") ?? ""
@@ -92,23 +106,31 @@ def find_grenade_of_type(itemContainer, grenade_type)
   return INVALID_ENTITY_ID
 
 
-def try_to_refill_grenades(requester, grenadeTemplate)
+def try_to_refill_grenades(requester, grenadeTemplate, requiredGrenadeCount)
   if grenadeTemplate == ""
     return false
-  var isAmmoRefilled = true
-  query(requester) <| $ [es] (itemContainer : EidList)
-    isAmmoRefilled &&= !has_grenade(itemContainer)
-    isAmmoRefilled &&= refill_ammo(requester, 1, grenadeTemplate)
-  return isAmmoRefilled
 
-def try_to_refill_grenades_launcher(requester, grenadeTemplate)
+  var grenadesAdded = false
+  query(requester) <| $ [es] (itemContainer : EidList)
+    let currentGrenadesNum = get_num_items_with_tag(itemContainer, "hand_grenade")
+    let grenadeToRefill = requiredGrenadeCount - currentGrenadesNum
+    if grenadeToRefill > 0
+      grenadesAdded = refill_ammo(requester, grenadeToRefill, grenadeTemplate)
+
+  return grenadesAdded
+
+
+def try_to_refill_grenades_launcher(requester, grenadeTemplate, requiredGrenadesCount)
   if grenadeTemplate == ""
     return false
-  var isAmmoRefilled = true
+
+  var grenadesAdded = false
   query(requester) <| $ [es] (itemContainer : EidList)
-    isAmmoRefilled &&= !has_grenade_for_grenade_launcher(itemContainer, grenadeTemplate)
-    isAmmoRefilled &&= refill_ammo(requester, 1, grenadeTemplate)
-  return isAmmoRefilled
+    let currentGrenadesNum = get_num_items(itemContainer, grenadeTemplate)
+    let grenadeToRefill = requiredGrenadesCount - currentGrenadesNum
+    if grenadeToRefill > 0
+      grenadesAdded = refill_ammo(requester, grenadeToRefill, grenadeTemplate)
+  return grenadesAdded
 
 def resupply_gun(empty_magazines_count, partial_magazines_count : int;
                  requester : EntityId;
@@ -430,8 +452,18 @@ struct ItemPickupScore
   score : float
   useful : bool
 
+def is_ammo_compatible_with_our_gun(gunEid : EntityId; item_gun__ammoHolders : Array const?)
+  var result = false
+  let pickUpAmmoTemplate = item_gun__ammoHolders?[0] ?? ""
+  if !empty(pickUpAmmoTemplate)
+    let pickUpAmmoHolderId = int(ecs_hash(pickUpAmmoTemplate))
+    query(gunEid) <| $ [es] (gun__ammoHolderIds : IntList)
+      for ammoHolderId in gun__ammoHolderIds
+        if pickUpAmmoHolderId == ammoHolderId
+          result = true
+  return result
 
-def get_item_pickup_score(eid, item_eid, gunEid : EntityId; view_convex : Point4List; view_itm : float3x4; aimDir, aimFrom, aimTo, minPickupBox : float3; was_selected : bool) : ItemPickupScore
+def get_item_pickup_score(eid, item_eid : EntityId; view_convex : Point4List; view_itm : float3x4; aimDir, aimFrom, aimTo, minPickupBox : float3; was_selected : bool) : ItemPickupScore
   var ret = ItemPickupScore(score = -1.0, useful = false)
   query(item_eid) <| $ [es] (animchar_render__enabled : bool = true;
                              item__lastOwner : EntityId;
@@ -440,8 +472,6 @@ def get_item_pickup_score(eid, item_eid, gunEid : EntityId; view_convex : Point4
                              collres : CollisionResource const?;
                              animchar : AnimcharBaseComponent;
                              animchar_render : AnimcharRendComponent;
-                             gun__ammoHolders aka item_gun__ammoHolders : Array const?;
-                             item__pickupOnlyAmmo : Tag const?;
                              item__id : int = INVALID_ITEM_ID;
                              item_pickup_priority__lookAtWeight : float = 4.f;
                              item_pickup_priority__usefulWeight : float = 2.f;
@@ -451,18 +481,6 @@ def get_item_pickup_score(eid, item_eid, gunEid : EntityId; view_convex : Point4
                              container__destroyEmpty = true)
     if !animchar_render__enabled || !item__visible
       return
-
-    if item__pickupOnlyAmmo != null
-      var result = false
-      let pickUpAmmoTemplate = item_gun__ammoHolders?[0] ?? ""
-      if !empty(pickUpAmmoTemplate)
-        let pickUpAmmoHolderId = int(ecs_hash(pickUpAmmoTemplate))
-        query(gunEid) <| $ [es] (gun__ammoHolderIds : IntList)
-          for ammoHolderId in gun__ammoHolderIds
-            if pickUpAmmoHolderId == ammoHolderId
-              result = true
-      if !result
-        return
 
     if item__id == INVALID_ITEM_ID && item__equipToSlots == null
       if !container__destroyEmpty

@@ -280,11 +280,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }
@@ -304,10 +306,7 @@
       }
     },
     "tws": {
-      "stateInit": [
-        "search",
-        "search"
-      ],
+      "stateInit": "search",
       "transitions": {
         "scan": {
           "event": "update",
@@ -317,7 +316,7 @@
             },
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 3.0
+              "timeOut": 4.0
             },
             "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
@@ -359,7 +358,15 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": {
+            "addTargetOfInterestCandidate": {},
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "matchTargets": {
+          "event": "scanFinished",
+          "actions": {
+            "matchTargetsOfInterest": {
               "limit": 1500,
               "timeMin": 2.0,
               "posGateTimeInitial": [
@@ -370,7 +377,7 @@
               "posGateMaxTime": 2.0,
               "posGateRange": [
                 0.0,
-                1000.0
+                300.0
               ],
               "dopplerSpeedGateMaxTime": 2.0,
               "dopplerSpeedGateRange": [
@@ -399,9 +406,7 @@
                 "dt": 0.0208,
                 "limTimeOut": 3.0
               }
-            },
-            "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {}
+            }
           }
         },
         "switchSelectedTarget": {

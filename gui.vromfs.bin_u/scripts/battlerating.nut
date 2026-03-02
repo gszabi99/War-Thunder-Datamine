@@ -14,6 +14,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let events = getGlobalModule("events")
 let { getCurrentGameMode, getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { hasOptionsInitialized } = require("%scripts/options/initOptionsState.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
@@ -212,7 +213,7 @@ updateBattleRating = function(gameMode = null, brData = null) {
 
 local isRequestDelayed = false
 function updateBattleRatingDelayed() {
-  if (isRequestDelayed || isInFlight() || isNeedFirstCountryChoice()) 
+  if (isRequestDelayed || isInFlight() || isNeedFirstCountryChoice() || !hasOptionsInitialized()) 
     return
   isRequestDelayed = true
   handlersManager.doDelayed(function() {
@@ -232,6 +233,7 @@ addListenersWithoutEnv({
   CurrentGameModeIdChanged   = @(_p) updateBattleRatingDelayed()
   EventsDataUpdated          = @(_p) updateBattleRatingDelayed()
   LoadingStateChange         = @(_p) updateBattleRatingDelayed()
+  InitConfigs                = @(_p) updateBattleRatingDelayed()
 
   SquadStatusChanged         = updateLeaderRatingDelayed
   SquadOnlineChanged         = updateLeaderRatingDelayed

@@ -1204,8 +1204,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1264,8 +1264,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1324,8 +1324,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1384,8 +1384,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1444,8 +1444,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1504,8 +1504,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1564,8 +1564,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1624,8 +1624,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2401,13 +2401,11 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      12.0,
-      2.9
+      8.5,
+      1.28
     ],
-    "zoomOutFov": 22.46,
-    "zoomInFov": 7.37,
-    "sightInFov": 5.66,
-    "sightOutFov": 28.62,
+    "sightInFov": 1.28,
+    "sightOutFov": 8.5,
     "sightFov": 0.001,
     "mfdTextureSize": [
       1024,
@@ -2917,34 +2915,6 @@
         "engine2",
         "engine3",
         "engine4"
-      ]
-    }
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump_small",
-    "burningFx": "fuel_dump_fire_small",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
       ]
     }
   },
@@ -3461,7 +3431,7 @@
           },
           {
             "iconType": "bombs_large_group",
-            "name": "ter_mk83",
+            "name": "mer_mk83_2_1",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
@@ -3471,7 +3441,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83.blk",
+              "blk": "gameData/Weapons/containers/mer_us_1000lb_mk_83_x3.blk",
               "emitter": "ter_001",
               "external": true,
               "separate": true,
@@ -3828,8 +3798,8 @@
             }
           },
           {
-            "iconType": "bombs_large_group_x2",
-            "name": "ter_mk83_left",
+            "iconType": "bombs_large_group",
+            "name": "mer_mk83_1_2",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
@@ -3839,7 +3809,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/mer_us_1000lb_mk_83_x3_alter.blk",
               "emitter": "ter_002",
               "external": true,
               "separate": true,
@@ -4108,7 +4078,7 @@
           },
           {
             "iconType": "bombs_large_group",
-            "name": "ter_mk83",
+            "name": "mer_mk83_2_1",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
@@ -4118,7 +4088,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83.blk",
+              "blk": "gameData/Weapons/containers/mer_us_1000lb_mk_83_x3.blk",
               "emitter": "ter_003",
               "external": true,
               "separate": true,
@@ -4413,8 +4383,8 @@
             }
           },
           {
-            "iconType": "bombs_large_group_x2",
-            "name": "ter_mk83_right",
+            "iconType": "bombs_large_group",
+            "name": "mer_mk83_1_2",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
@@ -4424,7 +4394,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83_x2_right_wing.blk",
+              "blk": "gameData/Weapons/containers/mer_us_1000lb_mk_83_x3_alter.blk",
               "emitter": "ter_004",
               "external": true,
               "separate": true,
@@ -4782,7 +4752,7 @@
           },
           {
             "iconType": "bombs_large_group",
-            "name": "ter_mk83",
+            "name": "mer_mk83_2_1",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
@@ -4792,7 +4762,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83.blk",
+              "blk": "gameData/Weapons/containers/mer_us_1000lb_mk_83_x3.blk",
               "emitter": "ter_005",
               "external": true,
               "separate": true,
@@ -5485,6 +5455,34 @@
     ],
     "fxEmitter": "blister1",
     "fxType": "catapult_expl_ejection"
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

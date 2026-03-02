@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module ast_used shared private
 
+
+
+
+
+
+
 require daslib/ast_boost
 
 struct public OnlyUsedTypes {
@@ -15,6 +21,7 @@ struct public OnlyUsedTypes {
 }
 
 class TypeVisitor : AstVisitor {
+    
     usedTypes : OnlyUsedTypes 
     def TypeVisitor {
         pass

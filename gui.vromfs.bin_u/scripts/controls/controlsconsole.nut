@@ -8,7 +8,7 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_game_mode } = require("mission")
 let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTCAMERAY,
+let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTY_HUMAN, USEROPT_INVERTCAMERAY,
   USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_GUNNER_INVERTY,
   USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X,
   USEROPT_HEADTRACK_SCALE_Y
@@ -31,6 +31,7 @@ gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
     this.options = [
       [USEROPT_INVERTY, "spinner"],
       [USEROPT_INVERTY_TANK, "spinner"],
+      [USEROPT_INVERTY_HUMAN, "spinner"],
       [USEROPT_INVERTCAMERAY, "spinner"],
       [USEROPT_MOUSE_AIM_SENSE, "slider"],
       [USEROPT_ZOOM_SENSE, "slider"],

@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import send_error_log, use_embedded_browser
+from "%scripts/dagui_natives.nut" import use_embedded_browser
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { split_by_chars } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shell_launch } = require("url")
@@ -58,8 +58,7 @@ eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
   }
   else {
     urlToOpen = notAuthUrl
-    send_error_log($"Authorize url: failed to get authenticated url with error {status}",
-      false, AUTH_ERROR_LOG_COLLECTION)
+    logerr($"[{AUTH_ERROR_LOG_COLLECTION}] Authorize url: failed to get authenticated url with error {status}")
     if (urlToOpen == "")
       return
   }

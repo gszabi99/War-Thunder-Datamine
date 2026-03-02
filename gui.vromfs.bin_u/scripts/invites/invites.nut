@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, periodic_task_unregister, get_user_logs_count, periodic_task_register
 from "%scripts/dagui_library.nut" import *
-
+from "dagor.workcycle" import deferOnce
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -25,10 +25,20 @@ function showPopupFriendsInvites(count) {
     openInviteWnd, [{ id = "gotoInvites", text = loc("mainmenu/invites"), func = openInviteWnd }])
 }
 
-let invitesList = persist("invitesList", @() [])
-
 local refreshInvitesTask = -1
 let userlogHandlers = {}
+
+let invitesList = persist("invitesList", @() [])
+deferOnce(@() invitesList.replace(invitesList.map(function(invite) { 
+  let params = invite.reloadParams
+  foreach (inviteClass in invitesClasses)
+    if (inviteClass.getUidByParams(params) == invite.uid) {
+      let newInvite = inviteClass(params)
+      newInvite.afterScriptsReload(invite)
+      return newInvite
+    }
+  return invite
+})))
 
 let registerInviteUserlogHandler = @(logType, addFn) userlogHandlers[logType] <- addFn
 
@@ -291,19 +301,6 @@ addListenersWithoutEnv({
   function ProfileUpdated(_) {
     if (isLoggedIn.get())
       fetchNewInvitesFromUserlogs()
-  }
-
-  function ScriptsReloaded(_) {
-    invitesList.replace(invitesList.map(function(invite) {
-      let params = invite.reloadParams
-      foreach (inviteClass in invitesClasses)
-        if (inviteClass.getUidByParams(params) == invite.uid) {
-          let newInvite = inviteClass(params)
-          newInvite.afterScriptsReload(invite)
-          return newInvite
-        }
-      return invite
-    }))
   }
 }, g_listener_priority.DEFAULT_HANDLER)
 

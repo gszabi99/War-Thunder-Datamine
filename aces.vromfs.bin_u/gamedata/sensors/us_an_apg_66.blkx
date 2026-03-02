@@ -1142,11 +1142,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }
@@ -1265,6 +1267,8 @@
         "trackPulse": {
           "updateActiveTargetOfInterest": {
             "dirFilter": {
+              "alpha": 0.8,
+              "betta": 0.1,
               "rateLim": [
                 0.78,
                 0.78
@@ -1273,6 +1277,8 @@
               "inertialTimeMax": 1.0
             },
             "distFilter": {
+              "alpha": 0.8,
+              "betta": 0.2,
               "accelLim": [
                 150.0,
                 150.0
@@ -1295,6 +1301,8 @@
         "trackDoppler": {
           "updateActiveTargetOfInterest": {
             "dirFilter": {
+              "alpha": 0.8,
+              "betta": 0.1,
               "rateLim": [
                 0.78,
                 0.78
@@ -1303,6 +1311,8 @@
               "inertialTimeMax": 1.0
             },
             "distFilter": {
+              "alpha": 0.8,
+              "betta": 0.2,
               "accelLim": [
                 150.0,
                 150.0
@@ -1311,6 +1321,8 @@
               "inertialTimeMax": 1.0
             },
             "dopplerSpeedFilter": {
+              "alpha": 0.2,
+              "betta": 0.02,
               "rateLim": [
                 200.0,
                 200.0

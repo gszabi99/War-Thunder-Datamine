@@ -1,10 +1,10 @@
 from "%scripts/dagui_library.nut" import *
-
+from "app" import is_dev_version
 let blkUtil = require("%scripts/utils/datablockConverter.nut")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { is_hfr_supported } = require("graphicsOptions")
 let { get_settings_blk } = require("blkGetters")
-let { platformAlias, platformId } = require("%sqstd/platform.nut")
+let { platformAlias, platformId, isSony } = require("%sqstd/platform.nut")
 let { console_save_user_config } = require("consoleUserConfig")
 
 
@@ -39,6 +39,8 @@ let lfrModes = getModes(allLfrModes)
 let hfrModes = getModes(allHfrModes)
 
 function canSetVSyncMode() {
+  if (isSony && !is_dev_version())
+    return
   let modes = is_hfr_supported() ? allHfrModes : allLfrModes
   return (platformId in modes) || (platformAlias in modes)
 }

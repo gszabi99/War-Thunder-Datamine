@@ -7,7 +7,8 @@ from "%darg/laconic.nut" import *
 let entity_editor = require_optional("entity_editor")
 let { getValFromObj, isCompReadOnly, updateComp } = require("components/attrUtil.nut")
 let { filterString, propPanelVisible, propPanelClosed, selectedCompName, extraPropPanelCtors, selectedEntity,
-  selectedEntities, de4workMode, wantOpenRISelect, sceneIdMap, getAllScenes, allScenesWatcher } = require("state.nut")
+  selectedEntities, de4workMode, wantOpenRISelect, sceneIdMap, getAllScenes, allScenesWatcher,
+  edObjectFlagsUpdateTrigger } = require("state.nut")
 let { colors, gridHeight } = require("components/style.nut")
 
 let selectedCompComp = Watched(null)
@@ -38,8 +39,9 @@ let compNameFilter = require("components/apNameFilter.nut")(filterString, select
 let { riSelectShown, riSelectWindow, openRISelectForEntity } = require("riSelect.nut")
 
 let combobox = require("%daeditor/components/combobox.nut")
-let { getEntityExtraName, getSceneLoadTypeText, sceneToComboboxEntry, canSceneBeModified } = require("%daeditor/daeditor_es.nut")
-let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
+let { getEntityExtraName, getSceneLoadTypeText, sceneToComboboxEntry, canSceneBeModified,
+  isEntityInLockedHierarchy } = require("%daeditor/daeditor_es.nut")
+let { sortScenesByLoadType } = require("components/sceneSorting.nut")
 
 let ecs = require("%sqstd/ecs.nut")
 
@@ -223,13 +225,19 @@ function mkPanelCompRow(params={}) {
   let comp_flags = params?.comp_flags ?? 0
   let {eid, comp_sq_type, rawComponentName, path, obj=null} = params
   let comp_name = params?.comp_name ?? comp_name_ext
-  let fieldEditCtor = getCompNamePropEdit(rawComponentName) ?? getCompSqTypePropEdit(comp_sq_type) ?? fieldReadOnly
   let isOdd = toggleBg()
   let stateFlags = Watched(0)
   let group = ElemGroup()
   local comp_name_text = get_tagged_comp_name(comp_flags, (comp_name_ext ? comp_name_ext : comp_name))
   if (comp_sq_type == "TMatrix")
     comp_name_text = $"{comp_name_text}[3]"
+  local fieldEditCtor = null
+  if (params.isLocked) {
+    fieldEditCtor = fieldReadOnly
+  }
+  else {
+    fieldEditCtor = getCompNamePropEdit(rawComponentName) ?? getCompSqTypePropEdit(comp_sq_type) ?? fieldReadOnly
+  }
 
   local comp_fullname = clone rawComponentName
   foreach (comp_key in (path ?? []))
@@ -432,7 +440,8 @@ function closePropPanel() {
   propPanelClosed.set(true)
 }
 
-function panelButtons() {
+function panelButtons(eid) {
+  let isLocked = isEntityInLockedHierarchy(eid)
   return {
     size = [flex(), fsh(3.3)]
     rendObj = ROBJ_BOX
@@ -448,8 +457,8 @@ function panelButtons() {
       vplace = ALIGN_CENTER
       children = [
         isModifiedComponent(selectedCompComp.get(), selectedCompPath.get()) ? textButton("R", doResetSelectedComponent) : null
-        textButton("-", openDelTemplateDialog)
-        textButton("+", openAddTemplateDialog)
+        !isLocked ? textButton("-", openDelTemplateDialog) : null
+        !isLocked ? textButton("+", openAddTemplateDialog) : null
         textButton("Close", closePropPanel)
       ]
     }
@@ -971,7 +980,7 @@ function updateAttrComponent(eid, cname) {
   gui_scene.resetTimeout(0.1, @() selectedCompName.trigger())
 }
 
-mkCompObject = function(eid, rawComponentName, rawObject, caption=null, onChange = null, path = null){
+mkCompObject = function(eid, rawComponentName, rawObject, isLocked, caption=null, onChange = null, path = null){
   local isFirst = caption==null
   caption = caption ?? rawComponentName
   isFirst = isFirst || rawComponentName==caption
@@ -986,16 +995,16 @@ mkCompObject = function(eid, rawComponentName, rawObject, caption=null, onChange
     foreach (ok in objKeys) {
       let nkeys = (clone path).append(ok)
       if (objData[ok]?.getAll() != null ) {
-        contentChildren.append(mkComp(eid, rawComponentName, rawObject, ok, onChange, nkeys))
+        contentChildren.append(mkComp(eid, rawComponentName, rawObject, isLocked, ok, onChange, nkeys))
       }
       else if (type(objData[ok])=="table") {
-        contentChildren.append(mkComp(eid, rawComponentName, rawObject, ok, onChange, nkeys))
+        contentChildren.append(mkComp(eid, rawComponentName, rawObject, isLocked, ok, onChange, nkeys))
       }
       else if (type(objData[ok])=="array") {
-        contentChildren.append(mkComp(eid, rawComponentName, rawObject, ok, onChange, nkeys))
+        contentChildren.append(mkComp(eid, rawComponentName, rawObject, isLocked, ok, onChange, nkeys))
       }
       else {
-        contentChildren.append(mkPanelCompRow({rawComponentName, comp_name_ext = ok, obj=rawObject, eid, comp_sq_type = typeof objData[ok], onChange, path=nkeys}))
+        contentChildren.append(mkPanelCompRow({rawComponentName, comp_name_ext = ok, obj=rawObject, eid, comp_sq_type = typeof objData[ok], onChange, path=nkeys, isLocked}))
       }
     }
     return contentChildren
@@ -1019,7 +1028,7 @@ let compTypeName = function(object){
   return typeName
 }
 
-mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=null, path = null){
+mkCompList = function(eid, rawComponentName, rawObject, isLocked, caption=null, onChange=null, path = null){
   let isFirst = caption == null
   caption = caption ?? rawComponentName
   onChange = @() updateAttrComponent(eid, rawComponentName)
@@ -1030,7 +1039,7 @@ mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=n
     let res = []
     foreach (num, _val in (object?.getAll() ?? object)) {
       let nkeys = (clone path).append(num)
-      res.append(mkComp(eid, rawComponentName, rawObject, $"{caption}[{num}]", onChange, nkeys))
+      res.append(mkComp(eid, rawComponentName, rawObject, isLocked, $"{caption}[{num}]", onChange, nkeys))
     }
     return res
   }
@@ -1042,7 +1051,7 @@ mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=n
 }
 
 
-mkComp = function(eid, rawComponentName, rawObject, caption=null, onChange = null, path = null){
+mkComp = function(eid, rawComponentName, rawObject, isLocked, caption=null, onChange = null, path = null){
   onChange = @() updateAttrComponent(eid, rawComponentName)
   let object = getValFromObj(eid, rawComponentName, path)
   let comp_sq_type = typeof object
@@ -1055,6 +1064,7 @@ mkComp = function(eid, rawComponentName, rawObject, caption=null, onChange = nul
     rawComponentName,
     comp_name_ext = caption
     obj = rawObject
+    isLocked
   }
   if (path == null && ecs.get_comp_type(eid, rawComponentName) != ecs.TYPE_STRING && type(object) == "string"){
     return mkPanelCompRow(params.__merge({comp_sq_type="null" comp_flags = ecs.get_comp_flags(eid, rawComponentName)}))
@@ -1063,10 +1073,10 @@ mkComp = function(eid, rawComponentName, rawObject, caption=null, onChange = nul
     return mkPanelCompRow(params)
   }
   if (type(object) == "table" || object instanceof ecs.CompObject) {
-    return mkCompObject(eid, rawComponentName, rawObject, caption, onChange, path)
+    return mkCompObject(eid, rawComponentName, rawObject, isLocked, caption, onChange, path)
   }
   if (object?.getAll()!=null || type(object)=="array") {
-    return mkCompList(eid, rawComponentName, rawObject, caption, onChange, path)
+    return mkCompList(eid, rawComponentName, rawObject, isLocked, caption, onChange, path)
   }
   return mkPanelCompRow(params)
 }
@@ -1118,12 +1128,7 @@ let filteredCurComponents = Computed(function(){
 
 function getSceneForEntity(eid) {
   if (eid != ecs.INVALID_ENTITY_ID) {
-    local loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(eid)
-    if (loadTypeVal != 0) {
-      if (entity_editor?.get_instance().getEntityRecordSceneId(eid)!=null)
-        return entity_editor?.get_instance().getSceneRecord(loadTypeVal, entity_editor?.get_instance().getEntityRecordSceneId(eid))
-      return {}
-    }
+    return entity_editor?.get_instance().getSceneRecord(entity_editor?.get_instance().getEntityRecordSceneId(eid))
   }
   return {}
 }
@@ -1227,6 +1232,7 @@ function mkSceneComboBox(eid, sceneId) {
 
 function mkEntityEditableDataRows(eid) {
   let rows = []
+  let isLocked = isEntityInLockedHierarchy(eid)
 
   rows.append(
     function() {
@@ -1234,6 +1240,7 @@ function mkEntityEditableDataRows(eid) {
       let group = ElemGroup()
       let isOdd = toggleBg()
       let sceneId = entity_editor?.get_instance().getEntityRecordSceneId(eid) ?? ecs.INVALID_SCENE_ID
+      let readOnly = (sceneId != ecs.INVALID_SCENE_ID && !canSceneBeModified(sceneIdMap.get()[sceneId])) || isLocked
 
       return {
         size = [flex(), gridHeight]
@@ -1258,13 +1265,13 @@ function mkEntityEditableDataRows(eid) {
             flow = FLOW_HORIZONTAL
             children = [
               mkEntityRowText("", "Scene", "")
-              sceneId != ecs.INVALID_SCENE_ID && !canSceneBeModified(sceneIdMap.get()[sceneId])
+              readOnly
                 ? {
                   rendObj = ROBJ_TEXT
                   halign = ALIGN_LEFT
                   valign = ALIGN_CENTER
                   size = flex()
-                  text = sceneToComboboxEntry(sceneIdMap.get()[sceneId])
+                  text = sceneId != ecs.INVALID_SCENE_ID ? sceneToComboboxEntry(sceneIdMap.get()[sceneId]) : noSceneParent
                 }
                 : mkSceneComboBox(eid, sceneId)
             ]
@@ -1274,7 +1281,7 @@ function mkEntityEditableDataRows(eid) {
     })
 
   rows.extend(filteredCurComponents.get().map(function(v) {
-    return mkComp(eid, v.compName, v.compObj)
+    return mkComp(eid, v.compName, v.compObj, isLocked)
   }))
   rows.extend((extraPropPanelCtors.get() ?? []).map(@(ctor) ctor(eid)))
 
@@ -1322,14 +1329,13 @@ let templateFilter = nameFilter(templateFilterText, {
   }
 })
 
-
 function compPanel() {
   local scenes = getAllScenes().map(function (item, ind) {
     item.index <- ind
     return item
   }) ?? [] 
 
-  scenes.sort(defaultScenesSortMode.func)
+  scenes.sort(sortScenesByLoadType)
   allModifiableScenes.set(scenes.filter(@(scene) canSceneBeModified(scene)))
 
   if (!propPanelVisible.get()) {
@@ -1405,7 +1411,7 @@ function compPanel() {
       watch = [
         selectedEntity, selectedEntities, propPanelVisible, filterString,
         windowState, isCurEntityComponents, filteredCurComponents, selectedCompName,
-        de4workMode, riSelectShown, filteredEntities
+        de4workMode, riSelectShown, filteredEntities, edObjectFlagsUpdateTrigger
       ]
       size = [sw(100), sh(100)]
 
@@ -1450,7 +1456,7 @@ function compPanel() {
                 nonSceneEntity ? warningGenerated() : null
                 showComps && isCurEntityComponents.get() ? compNameFilter : null
                 showComps ? scrolledGrid : null
-                showComps ? panelButtons : null
+                showComps ? @() panelButtons(eid) : null
                 showList  ? scrolledList : null
               ]
             }

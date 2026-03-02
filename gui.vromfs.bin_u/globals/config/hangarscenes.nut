@@ -45,7 +45,7 @@ return [
   {
     id = "hangar_lunar_ny"
     locId = "options/hangar_lunar_ny"
-    beginDate = "02-16 00:00:00" 
+    beginDate = "02-16 00:00:00"
     endDate = "02-22 00:00:00"
   }
 ]

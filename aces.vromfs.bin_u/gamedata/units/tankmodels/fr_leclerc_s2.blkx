@@ -109,6 +109,11 @@
       },
       "body_front_dm": {
         "armorThickness": 50.0
+      },
+      "gun_trunnion_dm": {
+        "armorThickness": 150.0,
+        "armorEffectiveThicknessMax": 300.0,
+        "armorClass": "CHA_tank_modern"
       }
     },
     "hull_composite_armor": {
@@ -686,9 +691,6 @@
       "drive_turret_h_dm": {
         "armorThrough": 15.0
       },
-      "driver_controls_dm": {
-        "armorThrough": 15.0
-      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -729,10 +731,6 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "turret_hydraulics_dm": {
-        "hp": 250.0,
-        "armorThrough": 15.0
-      },
       "radiator_dm": {
         "hp": 50.0,
         "armorThrough": 5.0
@@ -749,10 +747,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "electronic_equipment_dm": {
-        "hp": 60.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -764,10 +758,6 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
-      },
-      "power_system_dm": {
-        "hp": 60.0,
-        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -3932,6 +3922,16 @@
           "loader_02_dm"
         ]
       }
+    }
+  },
+  "xrayOverride": {
+    "gun_trunnion_dm": {
+      "overrideTitle": "gun_trunnion",
+      "hideDescription": true
+    },
+    "fire_control_system_dm": {
+      "overrideTitle": "fire_control_system",
+      "hideDescription": true
     }
   }
 }

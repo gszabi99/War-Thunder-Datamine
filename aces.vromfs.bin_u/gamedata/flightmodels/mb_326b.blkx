@@ -1027,8 +1027,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -1083,8 +1084,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -1139,8 +1141,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -1195,8 +1198,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -1256,8 +1260,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1316,8 +1320,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2162,6 +2166,17 @@
       0.01
     ],
     "lightRadius1": 0.32,
+    "lightPos2": [
+      3.269,
+      0.052,
+      0.004
+    ],
+    "lightColor2": [
+      0.15,
+      0.05,
+      0.01
+    ],
+    "lightRadius2": 0.35,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2376,34 +2391,6 @@
         "engine2",
         "engine3",
         "engine4"
-      ]
-    }
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump_small",
-    "burningFx": "fuel_dump_fire_small",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 280.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
       ]
     }
   },
@@ -3909,6 +3896,34 @@
     "seat": "seat_01",
     "fxEmitter": "blister1",
     "fxType": "catapult_expl_ejection"
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 280.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

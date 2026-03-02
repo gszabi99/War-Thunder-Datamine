@@ -47,16 +47,11 @@ function gui_start_startscreen(_) {
   pauseGame(false);
 
   if (disableNetwork)
-    setLoginState(LOGIN_STATE.AUTHORIZED | LOGIN_STATE.ONLINE_BINARIES_INITED)
+    setLoginState(LOGIN_STATE.AUTHORIZED)
   startLoginProcess()
 }
 
-function gui_start_after_scripts_reload(_) {
-  startLoginProcess(true)
-}
-
 eventbus_subscribe("gui_start_startscreen", gui_start_startscreen)
-eventbus_subscribe("gui_start_after_scripts_reload", gui_start_after_scripts_reload)
 
 function go_to_account_web_page(bqKey = "") {
   let urlBase = getCurCircuitOverride("accountWebPage",
@@ -88,9 +83,8 @@ function firstMainMenuLoad() {
 
   updateContentPacks()
 
-  handler.doWhenActive(@() ::checkNewNotificationUserlogs(true))
+  handler.doWhenActive(@() broadcastEvent("FirstMainMenuLoaded"))
   handler.doWhenActive(@() tribunal.checkComplaintCounts())
-  handler.doWhenActive(@() broadcastEvent("ChatCheckVoiceChatSuggestion"))
 
   if (!fetch_profile_inited_once()) {
     if (get_num_real_devices() == 0 && !is_android)

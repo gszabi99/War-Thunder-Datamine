@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let discountPostfixArray = ["_premium", ""]
 
@@ -48,7 +48,8 @@ function parseDiscountDescriptionCountryRank(blk, category) {
           discountValue = blk[cName]
           countryName = countryName
         })
-      for (local i = 1; i <= MAX_COUNTRY_RANK; ++i) {
+      let maxRank = maxCountryRank.get()
+      for (local i = 1; i <= maxRank; ++i) {
         local name = $"{countryName}_rank{i}{postfix}"
         if ((name in blk) && blk[name] != 0)
           items[$"countryRank{postfix}"].append({

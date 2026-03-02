@@ -34,7 +34,7 @@
       "name": "react.onMove",
       "orderedSelector": {
         "orderedSelector": {
-          "subTree": [
+          "callTree": [
             {
               "treeName": "cover.check"
             },
@@ -65,7 +65,7 @@
               "posParam": "regroupPosition",
               "runParam": "regroupRun"
             },
-            "subTree": {
+            "callTree": {
               "treeName": "move.updateWishPos"
             },
             "setDebugSym": {
@@ -74,7 +74,7 @@
             "recalculateTree": {}
           },
           {
-            "subTree": {
+            "callTree": {
               "treeName": "move.updateWishPos"
             },
             "setDebugSym": {
@@ -110,7 +110,7 @@
                   "to": "lastCheckedCoverTime"
                 }
               ],
-              "subTree": {
+              "callTree": {
                 "treeName": "cover.check"
               }
             },
@@ -119,12 +119,12 @@
                 "ignoreChance": {
                   "chance": 0.37
                 },
-                "subTree": {
+                "callTree": {
                   "treeName": "move.updateWishPos"
                 },
                 "continue": {}
               },
-              "subTree": {
+              "callTree": {
                 "treeName": "cover.findCoverAround"
               },
               "setDebugSym": {
@@ -138,6 +138,9 @@
     },
     {
       "name": "react.onHit",
+      "getTime": {
+        "to": "lastAttackedTime"
+      },
       "acceptActiveDanger": {
         "fromReaction": "onHit",
         "time": 10.0,
@@ -158,6 +161,9 @@
     },
     {
       "name": "react.onBulletNearby",
+      "getTime": {
+        "to": "lastAttackedTime"
+      },
       "acceptActiveDanger": {
         "fromReaction": "onBulletNearby",
         "time": 10.0,
@@ -249,6 +255,7 @@
       "setCurrentAiAction": {
         "state": "heal"
       },
+      "stopSpeed": {},
       "wait": {
         "range": [
           0.2,
@@ -260,7 +267,139 @@
         "stanceName": "crouch",
         "wait": true
       },
-      "useMedkit": {}
+      "getAgentAIPos": {
+        "outPosParam": "moveFromPos"
+      },
+      "parallel": {
+        "useMedkit": {},
+        "sequencer": {
+          "wait": [
+            {
+              "range": [
+                0.5,
+                1.0
+              ],
+              "resetable": true
+            },
+            {
+              "range": [
+                0.5,
+                1.0
+              ],
+              "resetable": true
+            }
+          ],
+          "success": [
+            {
+              "sequencer": {
+                "orderedSelector": {
+                  "traceMoveToHideFromEnemies": {
+                    "stepLocalDir": [
+                      1.0,
+                      0.0,
+                      -0.61
+                    ],
+                    "outMoveToPosParam": "safePos",
+                    "mainEnemyEidParam": "shootEnemy"
+                  },
+                  "findCoverAroundPoint": {
+                    "centerParam": "moveFromPos",
+                    "radius": 5.0,
+                    "coverPosParam": "safePos",
+                    "minDist": 0.0
+                  }
+                },
+                "moveToPos": {
+                  "posParam": "safePos",
+                  "sprintTimerRange": [
+                    20.0,
+                    20.0
+                  ],
+                  "minDistToSprint": 1000.0,
+                  "distThreshold": 0.5,
+                  "minStanceParam": "minStance",
+                  "maxStanceParam": "crouchStance",
+                  "incLadders": [
+                    false,
+                    false
+                  ],
+                  "restTimerRange": [
+                    3.0,
+                    5.0
+                  ],
+                  "avoidAiObstacles": true,
+                  "timeToStuck": 0.25,
+                  "jumpDownTraceCheck": [
+                    0.4,
+                    1.0,
+                    0.15
+                  ],
+                  "strafeNearDist": 7.0,
+                  "maxAroundCoef": 1.33,
+                  "useTeamCustomNav": true
+                }
+              }
+            },
+            {
+              "sequencer": {
+                "orderedSelector": {
+                  "traceMoveToHideFromEnemies": {
+                    "stepLocalDir": [
+                      1.0,
+                      0.0,
+                      -0.61
+                    ],
+                    "outMoveToPosParam": "safePos",
+                    "mainEnemyEidParam": "shootEnemy"
+                  },
+                  "findCoverAroundPoint": {
+                    "centerParam": "moveFromPos",
+                    "radius": 5.0,
+                    "coverPosParam": "safePos",
+                    "minDist": 0.0
+                  }
+                },
+                "moveToPos": {
+                  "posParam": "safePos",
+                  "sprintTimerRange": [
+                    20.0,
+                    20.0
+                  ],
+                  "minDistToSprint": 1000.0,
+                  "distThreshold": 0.5,
+                  "minStanceParam": "minStance",
+                  "maxStanceParam": "crouchStance",
+                  "incLadders": [
+                    false,
+                    false
+                  ],
+                  "restTimerRange": [
+                    3.0,
+                    5.0
+                  ],
+                  "avoidAiObstacles": true,
+                  "timeToStuck": 0.25,
+                  "jumpDownTraceCheck": [
+                    0.4,
+                    1.0,
+                    0.15
+                  ],
+                  "strafeNearDist": 7.0,
+                  "maxAroundCoef": 1.33,
+                  "useTeamCustomNav": true
+                }
+              }
+            }
+          ]
+        },
+        "wait": {
+          "range": [
+            3.0,
+            4.0
+          ],
+          "resetable": true
+        }
+      }
     },
     {
       "name": "react.isBurning",
@@ -417,6 +556,10 @@
             20.0
           ],
           "minDistToSprint": 10.0,
+          "restTimerRange": [
+            3.0,
+            5.0
+          ],
           "rotateDistThreshold": 0.7,
           "rotateFactors": [
             0.7,
@@ -466,28 +609,39 @@
         "lethalOutParam": "dangerLethal"
       },
       "orderedSelector": {
-        "isVarsIntEqual": {
-          "lhs": "dangerLethal",
-          "rhs_value": 1
-        },
-        "sequencer": {
-          "periodicTimer": {
-            "timeParam": "nonLethalGrenadeSpeakTimer",
-            "timePeriod": [
-              2.0,
-              3.0
-            ]
+        "sequencer": [
+          {
+            "isVarsIntEqual": {
+              "lhs": "dangerLethal",
+              "rhs_value": 1
+            },
+            "speak": {
+              "phrase": "grenadeAware",
+              "aboutParam": "dangerLookAt",
+              "timeMinMax": [
+                1.0,
+                2.0
+              ]
+            }
           },
-          "speak": {
-            "phrase": "grenadeAware",
-            "aboutParam": "dangerLookAt",
-            "timeMinMax": [
-              4.0,
-              10.0
-            ]
-          },
-          "break": {}
-        }
+          {
+            "periodicTimer": {
+              "timeParam": "nonLethalGrenadeSpeakTimer",
+              "timePeriod": [
+                2.0,
+                3.0
+              ]
+            },
+            "speak": {
+              "phrase": "grenadeAware",
+              "aboutParam": "dangerLookAt",
+              "timeMinMax": [
+                4.0,
+                10.0
+              ]
+            }
+          }
+        ]
       },
       "recalculateTree": {}
     },
@@ -502,32 +656,37 @@
     },
     {
       "name": "try.grenadeEscape",
-      "reaction": [
-        {
-          "event": "regularCheck",
-          "findObstaclesAlongsidePath": {}
-        },
-        {
-          "event": "regularCheck",
-          "repeat": {
-            "count": 1,
-            "subTree": [
-              {
-                "treeName": "prep.chooseMaxStance"
-              },
-              {
-                "treeName": "prep.deactivateWeapMod"
-              },
-              {
-                "treeName": "react.isHurt"
-              },
-              {
-                "treeName": "react.isBurning"
-              }
-            ]
+      "reaction": {
+        "event": "regularCheck",
+        "repeat": {
+          "count": 1,
+          "subTree": [
+            {
+              "treeName": "prep.chooseMaxStance"
+            },
+            {
+              "treeName": "react.isHurt"
+            },
+            {
+              "treeName": "react.isBurning"
+            }
+          ],
+          "findObstaclesAlongsidePath": {},
+          "sequencer": {
+            "findDanger": {
+              "paramName": "otherEnemy",
+              "outSeeTimeParam": "otherEnemyTime",
+              "radiusParamName": "enemyRadius",
+              "minDanger": 0.2,
+              "tag": "human"
+            },
+            "copyIntVar": {
+              "to": "escapeEnemy",
+              "from": "otherEnemy"
+            }
           }
         }
-      ],
+      },
       "findDangerGrenade": {
         "grenTargetParam": "dangerLookAt",
         "radius": 20.0,
@@ -543,11 +702,18 @@
           ]
         }
       },
-      "findSafeFromGrenadePos": {
-        "posParam": "grenadeSafePos",
-        "grenTargetParam": "dangerLookAt",
-        "radius": 25.0
-      },
+      "findSafeFromGrenadePos": [
+        {
+          "posParam": "grenadeSafePos",
+          "grenTargetParam": "dangerLookAt",
+          "radius": 25.0
+        },
+        {
+          "posParam": "grenadeSafePos",
+          "grenTargetParam": "dangerLookAt",
+          "radius": 25.0
+        }
+      ],
       "setCurrentAiAction": {
         "state": "hide"
       },
@@ -557,8 +723,8 @@
       "wait": [
         {
           "range": [
-            0.1,
-            0.3
+            0.3,
+            0.5
           ],
           "resetable": true
         },
@@ -570,55 +736,66 @@
           "resetable": true
         }
       ],
-      "orderedSelector": {
-        "checkDistance": {
-          "posParam": "grenadeSafePos",
-          "radius": 2.5,
-          "yRadius": 1.0
-        },
-        "isLookingToPos": {
-          "posParam": "grenadeSafePos",
-          "offAngle": 10.0
-        },
-        "rotateToPoint": {
-          "posParam": "grenadeSafePos",
-          "aimSpeedCoef": 0.5,
-          "maxSimAngle": [
-            60.0,
-            80.0
-          ],
-          "pitchRange": [
-            -5.0,
-            5.0
-          ],
-          "minSimAngle": 15.0,
-          "minSimSpeedCoef": 0.33
-        }
+      "changeStance": {
+        "stanceName": "stand",
+        "maxStanceParamt": "standStance",
+        "wait": false
       },
-      "moveToPos": {
+      "moveShoot": {
+        "noTargetMovement": true,
+        "doSprint": true,
         "posParam": "grenadeSafePos",
-        "sprintTimerRange": [
-          10.0,
-          20.0
+        "distThreshold": 0.4,
+        "angleThreshold": 180.0,
+        "keepCrouch": false,
+        "onlyAliveTarget": false,
+        "distOfAimingFade": 7.0,
+        "accuracyForceShot": [
+          0.75,
+          0.5
         ],
-        "minDistToSprint": 2.0,
-        "rotateDistThreshold": 0.7,
-        "rotateFactors": [
-          0.7,
-          0.5,
-          0.5,
+        "failOnNotReady": true,
+        "forceStanceLimit": true,
+        "chooseStance": true,
+        "tryToSaveCurrentStance": true,
+        "minStanceChance": 0.0,
+        "targetUnitParam": "escapeEnemy",
+        "minStanceParam": "standStance",
+        "shootCyclesRange": [
+          1,
+          2
+        ],
+        "incLadders": false,
+        "shootTime": [
+          1.5,
+          2.1
+        ],
+        "cooldownTime": [
+          0.1,
+          0.1
+        ],
+        "minAimTime": [
+          0.15,
           0.25
         ],
-        "rotateStartTime": 0.5,
-        "tryClimbing": true,
-        "maxStanceParam": "maxStance",
-        "avoidAiObstacles": false,
-        "strafeNearDist": 2.0,
-        "jumpDownTraceCheck": [
-          0.4,
+        "maxStanceParam": "standStance",
+        "alwaysAiming": false,
+        "cyclesSuccess": true,
+        "lostTargetCooldownRange": [
           1.0,
-          0.15
+          2.0
         ],
+        "closeShootRange": [
+          1.0,
+          50.0
+        ],
+        "closeShootAngles": [
+          45.0,
+          30.0
+        ],
+        "criticalShotTime": 2.0,
+        "criticalShotAngle": 60.0,
+        "checkFriendlyFireRadius": 0.05,
         "useTeamCustomNav": true
       },
       "waitTo": {
@@ -647,8 +824,8 @@
         {
           "timeParam": "onDmgZoneAlarmTimer",
           "timePeriod": [
-            5.0,
-            8.0
+            2.0,
+            3.0
           ]
         }
       ],
@@ -694,12 +871,26 @@
             "count": 1,
             "subTree": [
               {
-                "treeName": "react.needSwimUp"
+                "treeName": "prep.chooseMaxStance"
               },
               {
-                "treeName": "force.openDoorsByPath"
+                "treeName": "react.needSwimUp"
               }
-            ]
+            ],
+            "findObstaclesAlongsidePath": {},
+            "sequencer": {
+              "findDanger": {
+                "paramName": "otherEnemy",
+                "outSeeTimeParam": "otherEnemyTime",
+                "radiusParamName": "enemyRadius",
+                "minDanger": 0.2,
+                "tag": "human"
+              },
+              "copyIntVar": {
+                "to": "escapeEnemy",
+                "from": "otherEnemy"
+              }
+            }
           }
         },
         "setCurrentAiAction": {
@@ -718,56 +909,67 @@
           ],
           "resetable": true
         },
-        "orderedSelector": {
-          "checkDistance": {
-            "posParam": "dmgZoneEscapePos",
-            "radius": 2.5,
-            "yRadius": 1.0
-          },
-          "isLookingToPos": {
-            "posParam": "dmgZoneEscapePos",
-            "offAngle": 90.0
-          },
-          "rotateToPoint": {
-            "posParam": "dmgZoneEscapePos",
-            "aimSpeedCoef": 0.5,
-            "maxSimAngle": [
-              60.0,
-              80.0
-            ],
-            "pitchRange": [
-              -5.0,
-              5.0
-            ],
-            "minSimAngle": 15.0,
-            "minSimSpeedCoef": 0.33
-          }
+        "changeStance": {
+          "stanceName": "stand",
+          "maxStanceParamt": "standStance",
+          "wait": false
         },
         "join": {
-          "moveToPos": {
+          "moveShoot": {
+            "noTargetMovement": true,
+            "doSprint": true,
             "posParam": "dmgZoneEscapePos",
-            "sprintTimerRange": [
-              10.0,
-              20.0
+            "distThreshold": 0.4,
+            "angleThreshold": 180.0,
+            "keepCrouch": false,
+            "onlyAliveTarget": false,
+            "distOfAimingFade": 7.0,
+            "accuracyForceShot": [
+              0.75,
+              0.5
             ],
-            "minDistToSprint": 2.0,
-            "tryClimbing": true,
-            "distThreshold": 1.0,
-            "avoidAiObstacles": false,
-            "rotateDistThreshold": 0.7,
-            "rotateFactors": [
-              0.7,
-              0.5,
-              0.5,
+            "failOnNotReady": true,
+            "forceStanceLimit": true,
+            "chooseStance": true,
+            "tryToSaveCurrentStance": true,
+            "minStanceChance": 0.0,
+            "targetUnitParam": "escapeEnemy",
+            "minStanceParam": "standStance",
+            "shootCyclesRange": [
+              1,
+              2
+            ],
+            "incLadders": false,
+            "shootTime": [
+              1.5,
+              2.1
+            ],
+            "cooldownTime": [
+              0.1,
+              0.1
+            ],
+            "minAimTime": [
+              0.15,
               0.25
             ],
-            "rotateStartTime": 0.5,
-            "strafeNearDist": 1.0,
-            "jumpDownTraceCheck": [
-              0.4,
+            "maxStanceParam": "standStance",
+            "alwaysAiming": false,
+            "cyclesSuccess": true,
+            "lostTargetCooldownRange": [
               1.0,
-              0.15
+              2.0
             ],
+            "closeShootRange": [
+              1.0,
+              50.0
+            ],
+            "closeShootAngles": [
+              45.0,
+              30.0
+            ],
+            "criticalShotTime": 2.0,
+            "criticalShotAngle": 60.0,
+            "checkFriendlyFireRadius": 0.05,
             "useTeamCustomNav": true
           },
           "extinguish": {}
@@ -776,29 +978,24 @@
     },
     {
       "name": "try.bombEscape",
-      "reaction": [
-        {
-          "event": "regularCheck",
-          "findObstaclesAlongsidePath": {}
-        },
-        {
-          "event": "regularCheck",
-          "repeat": {
-            "count": 1,
-            "subTree": [
-              {
-                "treeName": "prep.chooseMaxStance"
-              },
-              {
-                "treeName": "react.isHurt"
-              },
-              {
-                "treeName": "react.isBurning"
-              }
-            ]
-          }
+      "reaction": {
+        "event": "regularCheck",
+        "repeat": {
+          "count": 1,
+          "findObstaclesAlongsidePath": {},
+          "subTree": [
+            {
+              "treeName": "prep.chooseMaxStance"
+            },
+            {
+              "treeName": "react.isHurt"
+            },
+            {
+              "treeName": "react.isBurning"
+            }
+          ]
         }
-      ],
+      },
       "findDangerousBomb": {
         "dangerPosParam": "bombDangerousPos"
       },
@@ -861,6 +1058,8 @@
         ],
         "minDistToSprint": 2.0,
         "tryClimbing": true,
+        "maxClimbWalkSpeed": 0.25,
+        "jumpClimbTime": 1.0,
         "rotateDistThreshold": 0.7,
         "rotateFactors": [
           0.7,
@@ -894,6 +1093,13 @@
         "allowUnderWater": false,
         "maxWaterDepth": 0.1,
         "grenExplTime": "grenExplTime"
+      },
+      "periodicTimer": {
+        "timeParam": "onRethrowGrenade",
+        "timePeriod": [
+          5.0,
+          10.0
+        ]
       },
       "setCurrentAiAction": {
         "state": "attack"
@@ -951,6 +1157,8 @@
               0.25
             ],
             "rotateStartTime": 0.5,
+            "maxClimbWalkSpeed": 0.25,
+            "jumpClimbTime": 1.0,
             "avoidAiObstacles": false,
             "jumpDownTraceCheck": [
               0.4,
@@ -975,8 +1183,8 @@
       },
       "wait": {
         "range": [
-          2.5,
-          3.5
+          0.5,
+          1.0
         ],
         "resetable": true
       }
@@ -1264,107 +1472,49 @@
                 "setDebugSym": {
                   "act": "h7"
                 },
-                "parallel": [
-                  {
-                    "success": {
-                      "moveToPos": {
-                        "posParam": "vehicleEscapePos",
-                        "sprintTimerRange": [
-                          10.0,
-                          20.0
-                        ],
-                        "minDistToSprint": 1.0,
-                        "rotateDistThreshold": 0.7,
-                        "rotateFactors": [
-                          0.7,
-                          0.5,
-                          0.5,
-                          0.25
-                        ],
-                        "rotateStartTime": 0.5,
-                        "tryClimbing": true,
-                        "maxStanceParam": "maxStance",
-                        "avoidAiObstacles": false,
-                        "strafeNearDist": 1.0,
-                        "jumpDownTraceCheck": [
-                          0.4,
-                          1.0,
-                          0.15
-                        ],
-                        "useTeamCustomNav": true
-                      }
-                    },
-                    "wait": {
-                      "range": [
-                        2.0,
-                        3.0
+                "parallel": {
+                  "success": {
+                    "moveToPos": {
+                      "posParam": "vehicleEscapePos",
+                      "sprintTimerRange": [
+                        10.0,
+                        20.0
                       ],
-                      "resetable": true
+                      "minDistToSprint": 1.0,
+                      "rotateDistThreshold": 0.7,
+                      "rotateFactors": [
+                        0.7,
+                        0.5,
+                        0.5,
+                        0.25
+                      ],
+                      "rotateStartTime": 0.5,
+                      "tryClimbing": true,
+                      "maxStanceParam": "maxStance",
+                      "avoidAiObstacles": false,
+                      "strafeNearDist": 1.0,
+                      "jumpDownTraceCheck": [
+                        0.4,
+                        1.0,
+                        0.15
+                      ],
+                      "useTeamCustomNav": true
                     }
                   },
-                  {
-                    "reaction": [
-                      {
-                        "event": "onHit",
-                        "sequencer": {
-                          "periodicTimer": {
-                            "timeParam": "onHitTimer",
-                            "timePeriod": [
-                              0.9,
-                              1.1
-                            ]
-                          },
-                          "subTree": {
-                            "treeName": "react.onHit"
-                          }
-                        }
-                      },
-                      {
-                        "event": "onBulletNearby",
-                        "sequencer": {
-                          "periodicTimer": {
-                            "timeParam": "onBulletNearbyTimer",
-                            "timePeriod": [
-                              0.9,
-                              1.1
-                            ]
-                          },
-                          "subTree": {
-                            "treeName": "react.onBulletNearby"
-                          }
-                        }
-                      },
-                      {
-                        "event": "onTraceableDanger",
-                        "sequencer": {
-                          "periodicTimer": {
-                            "timeParam": "onTraceableDangerTimer",
-                            "timePeriod": [
-                              0.3,
-                              0.5
-                            ]
-                          },
-                          "subTree": {
-                            "treeName": "react.decideToAttackEnemy"
-                          }
-                        }
-                      },
-                      {
-                        "event": "onEnemyPlayerNear",
-                        "sequencer": {
-                          "periodicTimer": {
-                            "timeParam": "onEnemyPlayerNearTimer",
-                            "timePeriod": [
-                              0.3,
-                              0.5
-                            ]
-                          },
-                          "subTree": {
-                            "treeName": "react.decideToAttackEnemyNear"
-                          }
-                        }
-                      }
+                  "wait": {
+                    "range": [
+                      2.0,
+                      3.0
                     ],
+                    "resetable": true
+                  }
+                },
+                "setIntVar": {
+                  "to": "defReact",
+                  "value": 400
+                },
+                "exitHandler": {
+                  "parallel": {
                     "sequencer": {
                       "setDebugSym": {
                         "act": "h8"
@@ -1448,8 +1598,12 @@
                       ],
                       "resetable": true
                     }
+                  },
+                  "setIntVar": {
+                    "to": "defReact",
+                    "value": 0
                   }
-                ]
+                }
               },
               {
                 "isVarsIntEqual": {
@@ -1496,112 +1650,60 @@
                     "resetable": true
                   }
                 },
-                "sequencer": {
-                  "reaction": [
-                    {
-                      "event": "onHit",
-                      "sequencer": {
-                        "periodicTimer": {
-                          "timeParam": "onHitTimer",
-                          "timePeriod": [
-                            0.9,
-                            1.1
-                          ]
-                        },
-                        "subTree": {
-                          "treeName": "react.onHit"
-                        }
-                      }
+                "exitHandler": {
+                  "sequencer": {
+                    "setIntVar": {
+                      "to": "defReact",
+                      "value": 400
                     },
-                    {
-                      "event": "onBulletNearby",
-                      "sequencer": {
-                        "periodicTimer": {
-                          "timeParam": "onBulletNearbyTimer",
-                          "timePeriod": [
-                            0.9,
-                            1.1
-                          ]
-                        },
-                        "subTree": {
-                          "treeName": "react.onBulletNearby"
-                        }
-                      }
+                    "setDebugSym": {
+                      "act": "h10"
                     },
-                    {
-                      "event": "onTraceableDanger",
-                      "sequencer": {
-                        "periodicTimer": {
-                          "timeParam": "onTraceableDangerTimer",
-                          "timePeriod": [
-                            0.3,
-                            0.5
-                          ]
-                        },
-                        "subTree": {
-                          "treeName": "react.decideToAttackEnemy"
+                    "parallel": {
+                      "success": {
+                        "moveToPos": {
+                          "posParam": "vehicleEscapePos",
+                          "sprintTimerRange": [
+                            10.0,
+                            20.0
+                          ],
+                          "minDistToSprint": 1.0,
+                          "rotateDistThreshold": 0.7,
+                          "rotateFactors": [
+                            0.7,
+                            0.5,
+                            0.5,
+                            0.25
+                          ],
+                          "rotateStartTime": 0.5,
+                          "tryClimbing": true,
+                          "maxStanceParam": "maxStance",
+                          "avoidAiObstacles": false,
+                          "strafeNearDist": 1.0,
+                          "jumpDownTraceCheck": [
+                            0.4,
+                            1.0,
+                            0.15
+                          ],
+                          "useTeamCustomNav": true
                         }
-                      }
-                    },
-                    {
-                      "event": "onEnemyPlayerNear",
-                      "sequencer": {
-                        "periodicTimer": {
-                          "timeParam": "onEnemyPlayerNearTimer",
-                          "timePeriod": [
-                            0.3,
-                            0.5
-                          ]
-                        },
-                        "subTree": {
-                          "treeName": "react.decideToAttackEnemyNear"
-                        }
-                      }
-                    }
-                  ],
-                  "setDebugSym": {
-                    "act": "h10"
-                  },
-                  "parallel": {
-                    "success": {
-                      "moveToPos": {
-                        "posParam": "vehicleEscapePos",
-                        "sprintTimerRange": [
-                          10.0,
-                          20.0
+                      },
+                      "wait": {
+                        "range": [
+                          5.0,
+                          6.0
                         ],
-                        "minDistToSprint": 1.0,
-                        "rotateDistThreshold": 0.7,
-                        "rotateFactors": [
-                          0.7,
-                          0.5,
-                          0.5,
-                          0.25
-                        ],
-                        "rotateStartTime": 0.5,
-                        "tryClimbing": true,
-                        "maxStanceParam": "maxStance",
-                        "avoidAiObstacles": false,
-                        "strafeNearDist": 1.0,
-                        "jumpDownTraceCheck": [
-                          0.4,
-                          1.0,
-                          0.15
-                        ],
-                        "useTeamCustomNav": true
+                        "resetable": true
                       }
                     },
-                    "wait": {
-                      "range": [
-                        5.0,
-                        6.0
-                      ],
-                      "resetable": true
+                    "orderedSelector": {
+                      "findDangerHostileVehicle": {},
+                      "recalculateTree": {}
                     }
                   },
-                  "orderedSelector": {
-                    "findDangerHostileVehicle": {},
-                    "recalculateTree": {}
+                  "setIntVar": {
+                    "to": "defReact",
+                    "value": 0
                   }
                 }
               }
@@ -1852,6 +1954,623 @@
               0.5
             ],
             "resetable": true
+          }
+        }
+      }
+    },
+    {
+      "name": "defReact.for.regularCheck",
+      "isVarsIntEqual": {
+        "lhs": "defReact",
+        "rhs_value": 0
+      },
+      "repeat": {
+        "count": 1,
+        "sequencer": [
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 21
+            },
+            "success": {
+              "findObstaclesAlongsidePath": {}
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 11
+            },
+            "subTree": {
+              "treeName": "react.defaultRegularCheck"
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 12
+            },
+            "subTree": {
+              "treeName": "soldier.move.regularCheck"
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 13
+            },
+            "subTree": {
+              "treeName": "soldier.stay.regularCheck"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "defReact.for.onHit",
+      "isVarsIntEqual": {
+        "lhs": "defReact",
+        "rhs_value": 0
+      },
+      "repeat": {
+        "count": 1,
+        "setIntVar": {
+          "to": "defCall",
+          "value": 0
+        },
+        "sequencer": [
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 31
+            },
+            "periodicTimer": {
+              "timeParam": "onHitTimer",
+              "timePeriod": [
+                0.2,
+                0.3
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 32
+            },
+            "periodicTimer": {
+              "timeParam": "onHitTimer",
+              "timePeriod": [
+                0.1,
+                0.1
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 33
+            },
+            "periodicTimer": {
+              "timeParam": "onHitTimer",
+              "timePeriod": [
+                1.0,
+                2.0
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 34
+            },
+            "periodicTimer": {
+              "timeParam": "onHitTimer",
+              "timePeriod": [
+                0.9,
+                1.1
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 35
+            },
+            "periodicTimer": {
+              "timeParam": "onHitTimer",
+              "timePeriod": [
+                0.9,
+                1.1
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 36
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 37
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 38
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "defCall",
+              "rhs_value": 1
+            },
+            "subTree": {
+              "treeName": "react.onHit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "defReact.for.onBulletNearby",
+      "isVarsIntEqual": {
+        "lhs": "defReact",
+        "rhs_value": 0
+      },
+      "repeat": {
+        "count": 1,
+        "setIntVar": {
+          "to": "defCall",
+          "value": 0
+        },
+        "sequencer": [
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 31
+            },
+            "periodicTimer": {
+              "timeParam": "onBulletNearbyTimer",
+              "timePeriod": [
+                0.3,
+                0.4
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 32
+            },
+            "periodicTimer": {
+              "timeParam": "onBulletNearbyTimer",
+              "timePeriod": [
+                0.2,
+                0.3
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 33
+            },
+            "periodicTimer": {
+              "timeParam": "onBulletNearbyTimer",
+              "timePeriod": [
+                1.0,
+                2.0
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 34
+            },
+            "periodicTimer": {
+              "timeParam": "onBulletNearbyTimer",
+              "timePeriod": [
+                0.9,
+                1.1
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 35
+            },
+            "periodicTimer": {
+              "timeParam": "onBulletNearbyTimer",
+              "timePeriod": [
+                0.9,
+                1.1
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 36
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 37
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 38
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "defCall",
+              "rhs_value": 1
+            },
+            "subTree": {
+              "treeName": "react.onBulletNearby"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "defReact.for.onTraceableDanger",
+      "isVarsIntEqual": {
+        "lhs": "defReact",
+        "rhs_value": 0
+      },
+      "repeat": {
+        "count": 1,
+        "setIntVar": {
+          "to": "defCall",
+          "value": 0
+        },
+        "sequencer": [
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 31
+            },
+            "periodicTimer": {
+              "timeParam": "onTraceableDangerTimer",
+              "timePeriod": [
+                0.2,
+                0.3
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 32
+            },
+            "periodicTimer": {
+              "timeParam": "onTraceableDangerTimer",
+              "timePeriod": [
+                0.1,
+                0.1
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 33
+            },
+            "periodicTimer": {
+              "timeParam": "onTraceableDangerTimer",
+              "timePeriod": [
+                1.0,
+                2.0
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 34
+            },
+            "periodicTimer": {
+              "timeParam": "onTraceableDangerTimer",
+              "timePeriod": [
+                0.3,
+                0.5
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 35
+            },
+            "periodicTimer": {
+              "timeParam": "onTraceableDangerTimer",
+              "timePeriod": [
+                0.3,
+                0.5
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 36
+            },
+            "periodicTimer": {
+              "timeParam": "onTraceableDangerTimer",
+              "timePeriod": [
+                0.3,
+                0.6
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 38
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "defCall",
+              "rhs_value": 1
+            },
+            "subTree": {
+              "treeName": "react.decideToAttackEnemy"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "defReact.for.onEnemyPlayerNear",
+      "isVarsIntEqual": {
+        "lhs": "defReact",
+        "rhs_value": 0
+      },
+      "repeat": {
+        "count": 1,
+        "setIntVar": {
+          "to": "defCall",
+          "value": 0
+        },
+        "sequencer": [
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 31
+            },
+            "periodicTimer": {
+              "timeParam": "onEnemyPlayerNearTimer",
+              "timePeriod": [
+                0.2,
+                0.3
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 32
+            },
+            "periodicTimer": {
+              "timeParam": "onEnemyPlayerNearTimer",
+              "timePeriod": [
+                0.2,
+                0.3
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 33
+            },
+            "periodicTimer": {
+              "timeParam": "onEnemyPlayerNearTimer",
+              "timePeriod": [
+                1.0,
+                2.0
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 34
+            },
+            "periodicTimer": {
+              "timeParam": "onEnemyPlayerNearTimer",
+              "timePeriod": [
+                0.3,
+                0.5
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 35
+            },
+            "periodicTimer": {
+              "timeParam": "onEnemyPlayerNearTimer",
+              "timePeriod": [
+                0.2,
+                0.3
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 36
+            },
+            "periodicTimer": {
+              "timeParam": "onEnemyPlayerNearTimer",
+              "timePeriod": [
+                0.2,
+                0.3
+              ]
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isDigitIntVar": {
+              "var": "defReact",
+              "code": 38
+            },
+            "setIntVar": {
+              "to": "defCall",
+              "value": 1
+            }
+          },
+          {
+            "isVarsIntEqual": {
+              "lhs": "defCall",
+              "rhs_value": 1
+            },
+            "subTree": {
+              "treeName": "react.decideToAttackEnemyNear"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "defReact.for.onTeamMateTrouble",
+      "repeat": {
+        "count": 1,
+        "sequencer": {
+          "isDigitIntVar": {
+            "var": "defReact",
+            "code": 41
+          },
+          "subTree": {
+            "treeName": "soldier.react.teamMateTrouble"
           }
         }
       }

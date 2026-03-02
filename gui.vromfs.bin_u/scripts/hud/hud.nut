@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit, get_mp_kick_countdown
+from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
 from "%scripts/utils_sa.nut" import is_multiplayer
@@ -11,9 +11,9 @@ let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 let { g_hud_message_stack } = require("%scripts/hud/hudMessageStack.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { serverMessageUpdateScene } = require("%scripts/hud/serverMessages.nut")
-let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert,
+  getMpKickCountdown } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isDmgIndicatorVisible } = require("gameplayBinding")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
 let { get_time_msec } = require("dagor.time")
@@ -401,7 +401,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     let objsToShow = {
       xray_render_dmg_indicator  = isDmgPanelVisible
       hud_tank_damage_indicator  = isDmgPanelVisible
-      tank_background            = isDmgIndicatorVisible() && isDmgPanelVisible
       hud_kill_log               = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
       chatPlace                  = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
       hud_enemy_damage_nest      = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
@@ -578,12 +577,8 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     return this.scene.findObject("xray_render_dmg_indicator")
   }
 
-  function getTankDebufsObj() {
-    return this.scene.findObject("tank_debuffs")
-  }
-
   function updateAFKTimeKick() {
-    this.afkTimeToKick = get_mp_kick_countdown()
+    this.afkTimeToKick = getMpKickCountdown()
   }
 
   function updateAFKTimeKickText(sec) {

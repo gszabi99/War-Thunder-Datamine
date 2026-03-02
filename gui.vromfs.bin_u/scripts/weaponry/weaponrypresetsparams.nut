@@ -449,7 +449,7 @@ function getCustomWeaponryPresetView(unit, curPreset, favoriteArr, availableWeap
   return getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons)
 }
 
-function getWeaponryPresetView(unit, preset, favoriteArr, availableWeapons) {
+function getWeaponryPresetView(unit, preset, favoriteArr, availableWeapons = null) {
   let weaponry = getUnitWeaponry(unit, { isPrimary = false, weaponPreset = preset.name })
   return getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons)
 }
@@ -476,6 +476,23 @@ function getWeaponryByPresetInfo(unit, chooseMenuList = null, needSort = true) {
   if (needSort)
     res.presets.sort(sortPresetsList)
   return res
+}
+
+function getSinglePresetView(unit, selectedPreset) {
+  updateUnitWeaponsByPreset(unit)
+  let presetsList = getPresetsList(unit, null)
+  let favoriteArr = getFavoritePresets(unit.name)
+  let fullUnitBlk = getFullUnitBlk(unit.name)
+  let presets = ("weapon_presets" in fullUnitBlk) ? fullUnitBlk.weapon_presets % "preset"
+    : []
+  foreach (preset in presetsList) {
+    if (preset.name != selectedPreset)
+      continue
+    let showInWeaponMenu = isDebugModeEnabled.status || (presets.findvalue(@(p) p.name == preset.name)?.showInWeaponMenu ?? true)
+    if (showInWeaponMenu)
+      return getWeaponryPresetView(unit, preset, favoriteArr, null)
+  }
+  return null
 }
 
 function editSlotInPresetImpl(preset, slots, cb) {
@@ -745,4 +762,5 @@ return {
   getPresetWeightRestrictionText
   getTierIcon
   findAvailableWeapon
+  getSinglePresetView
 }

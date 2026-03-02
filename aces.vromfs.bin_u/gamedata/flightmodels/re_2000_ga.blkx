@@ -419,8 +419,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1139,8 +1138,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1195,8 +1194,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1251,8 +1250,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2265,6 +2264,19 @@
         "name": "re_2000_ga_2x100kg_t",
         "blk": "gameData/FlightModels/weaponPresets/re_2000_ga_2x100kg_t.blk",
         "reqModification": "it100_mod"
+      },
+      {
+        "name": "re_2000_ga_2x100kg_m",
+        "blk": "gameData/FlightModels/weaponPresets/re_2000_ga_2x100kg_m.blk",
+        "reqModification": "it100_mod"
+      },
+      {
+        "name": "re_2000_ga_2x160kg_ap",
+        "blk": "gameData/FlightModels/weaponPresets/re_2000_ga_2x160kg_ap.blk",
+        "reqModification": "it160_mod",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
@@ -2694,6 +2706,11 @@
       "modClass": "weapon",
       "reqModification": "it50_mod",
       "tier": 3
+    },
+    "it160_mod": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "it100_mod"
     }
   },
   "cutting": {

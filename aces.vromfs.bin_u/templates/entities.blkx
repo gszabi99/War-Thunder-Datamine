@@ -28,6 +28,7 @@
     "%wtlibs/templates/node_based_shaders.blk",
     "%wtlibs/templates/lightning.blk",
     "%wtlibs/templates/replay.blk",
+    "%wtlibs/templates/envi_cover.blk",
     "rendinsts_hangars.blk",
     "explosion_fx.blk",
     "contact_fx.blk",
@@ -36,7 +37,6 @@
     "infantry_skins/*.blk",
     "%wtlibs/templates/net.blk",
     "%danetlibs/motion_matching/templates/motion_matching.template.blk",
-    "%danetlibs/anim_replay/templates/anim_replay.template.blk",
     "%danetlibs/sound/door_sounds/templates/door_sounds.template.blk",
     "%danetlibs/sound/sound_utils/templates/sound_utils.template.blk",
     "%danetlibs/sound/common_sounds/templates/common_sounds.template.blk",
@@ -133,6 +133,10 @@
       ],
       "ri_gpu_object__slope_factor": [
         1.0,
+        0.0
+      ],
+      "ri_gpu_object__random_y_ofs": [
+        0.0,
         0.0
       ],
       "ri_gpu_object__hardness": 1.0,
@@ -1949,6 +1953,7 @@
     }
   },
   "tank_ext": {
+    "_use": "ik_pilot_inertia_seats",
     "unit_dm_part_fx": {
       "_tags": "gameClient"
     },
@@ -2718,12 +2723,12 @@
     "simpleObject__resName": "ammo_stand_b_dynmodel",
     "bomb_cart__linkPoint1": [
       0.25,
-      0.47,
+      0.22,
       0.0
     ],
     "bomb_cart__linkPoint2": [
       -0.2,
-      0.47,
+      0.22,
       0.0
     ]
   },
@@ -2732,12 +2737,12 @@
     "simpleObject__resName": "ammo_stand_b_dynmodel",
     "bomb_cart__linkPoint1": [
       0.15,
-      0.47,
+      0.23,
       0.0
     ],
     "bomb_cart__linkPoint2": [
       -0.2,
-      0.47,
+      0.23,
       0.0
     ]
   },
@@ -2746,12 +2751,12 @@
     "simpleObject__resName": "ammo_stand_apdsfs_long_dynmodel",
     "bomb_cart__linkPoint1": [
       0.25,
-      0.47,
+      0.22,
       0.0
     ],
     "bomb_cart__linkPoint2": [
       -0.2,
-      0.47,
+      0.22,
       0.0
     ]
   },
@@ -2760,12 +2765,12 @@
     "simpleObject__resName": "ammo_stand_ap_dynmodel",
     "bomb_cart__linkPoint1": [
       0.05,
-      0.47,
+      0.22,
       0.0
     ],
     "bomb_cart__linkPoint2": [
       0.0,
-      0.47,
+      0.22,
       0.0
     ]
   },
@@ -2774,12 +2779,12 @@
     "simpleObject__resName": "ammo_stand_ap_dynmodel",
     "bomb_cart__linkPoint1": [
       0.25,
-      0.47,
+      0.22,
       0.0
     ],
     "bomb_cart__linkPoint2": [
       -0.2,
-      0.47,
+      0.22,
       0.0
     ]
   },
@@ -2878,11 +2883,11 @@
         {
           "cartTemplate": "shell_stand_horisontal_apdsfs",
           "calibers": [
-            0.02,
+            0.005,
             0.14
           ],
           "length": [
-            0.01,
+            0.005,
             0.5
           ],
           "isVertical": false
@@ -3014,6 +3019,10 @@
   "bullet_target_ap_90mm": {
     "_use": "bullet_target",
     "simpleObject__resName": "ap_target_90mm_dynmodel"
+  },
+  "bullet_target_ap_90mm_caliber_76mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "ap_target_90mm_caliber_76mm_dynmodel"
   },
   "bullet_target_ap_100mm": {
     "_use": "bullet_target",
@@ -3326,8 +3335,24 @@
                 24.0
               ],
               "calibers": [
-                0.045,
+                0.029,
                 0.065
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_20mm_autocannon:object": {
+              "targetTemplate": "bullet_target_ap_30mm",
+              "penetration": [
+                40.0,
+                90.0
+              ],
+              "calibers": [
+                0.019,
+                0.045
               ],
               "targetOffset": [
                 -0.5,
@@ -3432,6 +3457,22 @@
               "penetration": [
                 61.0,
                 75.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "ap_90mm_caliber_76mm:object": {
+              "targetTemplate": "bullet_target_ap_90mm_caliber_76mm",
+              "penetration": [
+                76.0,
+                99.0
+              ],
+              "calibers": [
+                0.07,
+                0.085
               ],
               "targetOffset": [
                 -0.5,
@@ -3554,7 +3595,8 @@
             "type": [
               "apds_tank",
               "apds_early_tank",
-              "apcr_tank"
+              "apcr_tank",
+              "apds_autocannon"
             ]
           },
           "targets:array": {
@@ -4028,6 +4070,12 @@
     "ecs_fx__res": "sparks_short_circuit_burst_small_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
+  "location_sparks_looped_burst_small": {
+    "_use": "ecs_looped_fx",
+    "ecs_looped_fx_spawnStep": 10.0,
+    "ecs_fx__res": "sparks_short_circuit_burst_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
   "location_camera_ground_sparks_1m": {
     "_use": "ecs_fx",
     "ecs_fx__res": "location_camera_ground_sparks_1m_cmps_fx",
@@ -4158,14 +4206,39 @@
     "ecs_fx__res": "location_fire_small_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
-  "fire_candle_effect": {
+  "fire_candle_big": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "fire_candle_cmps_fx",
+    "ecs_fx__res": "fire_candle_big_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_candle_big_no_light": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_candle_big_no_light_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_candle_mid": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_candle_mid_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_candle_mid_no_light": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_candle_mid_no_light_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_candle_small": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_candle_small_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
+  "fire_candle_small_no_light": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_candle_small_no_light_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "fire_torch_no_light_effect": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "fire_candle_cmps_fx",
+    "ecs_fx__res": "fire_candle_mid_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "fire_chimney_effect_no_light": {

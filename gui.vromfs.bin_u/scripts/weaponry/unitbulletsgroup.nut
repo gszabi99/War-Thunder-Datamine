@@ -14,7 +14,6 @@ let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
-let { get_local_unit_settings_blk = null } = require("blkGetters")
 
 class BulletGroup {
   unit = null
@@ -31,6 +30,7 @@ class BulletGroup {
   maxToRespawn = 0
   constrainedTotalCount = 0
   isBulletForRandomUnit = false
+  maxCntPerPilon = 1
 
   option = null 
   selectedBullet = null 
@@ -45,7 +45,7 @@ class BulletGroup {
     this.isForcedAvailable = params?.isForcedAvailable ?? this.isForcedAvailable
     this.maxToRespawn = params?.maxToRespawn ?? this.maxToRespawn
     this.constrainedTotalCount = params?.constrainedTotalCount ?? this.constrainedTotalCount
-    this.isBulletForRandomUnit = (params?.isBulletForRandomUnit ?? false) && get_local_unit_settings_blk != null
+    this.isBulletForRandomUnit = params?.isBulletForRandomUnit
     this.bullets = getOptionsBulletsList(this.unit, this.groupIndex, false, this.isForcedAvailable)
     local bulletIdx = null
     if (this.isBulletForRandomUnit) {
@@ -55,6 +55,7 @@ class BulletGroup {
     if (bulletIdx == null)
       bulletIdx = this.bullets.value
     this.selectedName = this.bullets.values?[bulletIdx] ?? ""
+    this.maxCntPerPilon = this.bullets?.maxCntPerPilon[this.selectedName] ?? 1
     let saveValue = this.bullets.saveValues?[this.bullets.value] ?? ""
 
     if (!this.isBulletForRandomUnit && getSavedBullets(this.unit.name, this.groupIndex) != saveValue)

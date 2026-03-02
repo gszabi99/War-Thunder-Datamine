@@ -15,7 +15,7 @@ let colors = {
 
   hpColor = 0xFFFFFFFF
   bleedingColor = 0xFFFB6A60
-  staminaColor = 0xFF276B2F
+  staminaColor = 0xFF89A9D3
 
   actionBarHotkeyColor = 0xFFBEA54B
   attackWarningColor = 0xFFD90000
@@ -73,8 +73,13 @@ colors.hud <- {
   chatTextAllColor = colors.menu.commonTextColor
   hudLogBgColor = Color(0, 0, 0, 102)
   chatTextPrivateColor = Color(222, 187, 255)
-  inactiveHudColor = 0xFFB3B3B3
-  disabledHudColor = 0x77777777
+  infantryShortcutCommonColor = 0xB399999B
+  infantryShortcutDisableColor = 0x47575759
+  infantryShortcutCommonTextColor = 0xFF27323F
+  infantryShortcutDisableTextColor = 0x990F0C19
+  infantryHudCommonColor = 0xFFD2D2D1
+  infantryHudInactiveColor = 0xB3B3B3B3
+  infantryHudDisabledColor = 0x77777777
 }
 
 let inactiveDMColor = Color(45, 55, 63, 80)

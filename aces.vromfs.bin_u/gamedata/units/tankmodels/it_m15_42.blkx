@@ -1507,29 +1507,29 @@
   },
   "tank_crew": {
     "changeTimeMult": 1.0,
-    "gunner": {
-      "dmPart": "gunner_dm",
-      "role": "tank_gunner",
-      "substitute": [
-        "commander",
-        "machine_gunner"
-      ]
+    "loader": {
+      "dmPart": "loader_dm",
+      "role": "loader",
+      "substitute": "machine_gunner"
     },
     "driver": {
       "dmPart": "driver_dm",
       "role": "driver",
       "substitute": [
-        "commander",
-        "machine_gunner"
+        "machine_gunner",
+        "loader"
       ]
     },
     "commander": {
       "dmPart": "commander_dm",
       "role": [
-        "commander",
-        "loader"
+        "tank_gunner",
+        "commander"
       ],
-      "substitute": "machine_gunner"
+      "substitute": [
+        "machine_gunner",
+        "loader"
+      ]
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",

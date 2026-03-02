@@ -3,7 +3,7 @@ import "%sqstd/math.nut" as stdMath
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
-let { warbondsShopLevelByStages } = require("%scripts/battlePass/seasonState.nut")
+
 
 enum WARBOND_SHOP_LEVEL_STATUS {
   LOCKED = "locked"
@@ -17,13 +17,9 @@ const levelItemIdPrefix = "level_"
 const maxProgressBarValue = 10000
 
 let getWarbondMedalsCount = @(wbClass) wbClass ? wbClass.getCurrentMedalsCount() : 0
-
 let showOrdinaryProgress = @(wbClass) wbClass && wbClass.haveAnyOrdinaryRequirements()
-
 let showSpecialProgress = @(wbClass) wbClass && wbClass.haveAnySpecialRequirements()
 
-let getBattlePassStageByShopLevel = @(level) warbondsShopLevelByStages.get().findindex(
-    @(l) level == l) ?? -1
 
 function getSpecialMedalView(wbClass, reqAwardMedals = 0, needShowZero = false, hasName = false) {
   let medalsCount = getWarbondMedalsCount(wbClass)
@@ -77,9 +73,9 @@ function getLevelStatus(wbClass, level) {
 }
 
 
-function getLevelItemData(wbClass, level, forcePosX = null, params = {}) {
+function getLevelItemData(wbClass, level, getBPStageCb, forcePosX = null, params = {}) {
   let status = getLevelStatus(wbClass, level)
-  let reqTasks = getBattlePassStageByShopLevel(level)
+  let reqTasks = getBPStageCb(level)
 
   local posX = forcePosX
   if (!posX) {
@@ -100,23 +96,23 @@ function getLevelItemData(wbClass, level, forcePosX = null, params = {}) {
   }.__merge(params)
 }
 
-function getLevelItemMarkUp(wbClass, level, forcePosX = null, params = {}) {
-  let levelData = getLevelItemData(wbClass, level, forcePosX, params)
+function getLevelItemMarkUp(wbClass, level, getBPStageCb, forcePosX = null, params = {}) {
+  let levelData = getLevelItemData(wbClass, level, getBPStageCb, forcePosX, params)
   return handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", { level = [levelData] })
 }
 
-function getCurrentLevelItemMarkUp(wbClass, forcePosX = "0") {
+function getCurrentLevelItemMarkUp(wbClass, getBPStageCb, forcePosX = "0") {
   let curLevel = wbClass.getCurrentShopLevel()
   if (curLevel < 0)
     return null
 
-  return getLevelItemMarkUp(wbClass, curLevel, forcePosX)
+  return getLevelItemMarkUp(wbClass, curLevel, getBPStageCb, forcePosX)
 }
 
-function getLevelItemsMarkUp(wbClass) {
+function getLevelItemsMarkUp(wbClass, getBPStageCb) {
   let view = { level = [] }
   foreach (level, _reqTasks in wbClass.levelsArray)
-    view.level.append(getLevelItemData(wbClass, level))
+    view.level.append(getLevelItemData(wbClass, level, getBPStageCb))
 
   return handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", view)
 }
@@ -207,7 +203,7 @@ function updateProgressBar(wbClass, placeObj, isForSingleStep = false) {
   }
 }
 
-function createProgressBox(wbClass, placeObj, handler, needForceHide = false) {
+function createProgressBox(wbClass, placeObj, handler, getBPStageCb, needForceHide = false) {
   if (!checkObj(placeObj))
     return
 
@@ -223,7 +219,7 @@ function createProgressBox(wbClass, placeObj, handler, needForceHide = false) {
   if (!show)
     return
 
-  let pbMarkUp = "".concat(getProgressBoxMarkUp(), getLevelItemsMarkUp(wbClass))
+  let pbMarkUp = "".concat(getProgressBoxMarkUp(), getLevelItemsMarkUp(wbClass, getBPStageCb))
   nest.getScene().replaceContentFromText(nest, pbMarkUp, pbMarkUp.len(), handler)
   updateProgressBar(wbClass, nest)
 }
@@ -237,16 +233,13 @@ return {
   getWarbondMedalsCount
   showOrdinaryProgress
   showSpecialProgress
-  getBattlePassStageByShopLevel
   getSpecialMedalView
   getSpecialMedalInProgressView
   getSpecialMedalCanBuyMarkUp
   getLevelItemTooltipKey
   getLevelStatus
-  getLevelItemData
   getLevelItemMarkUp
   getCurrentLevelItemMarkUp
-  getLevelItemsMarkUp
   getSpecialMedalsTooltip
   getSpecialMedalsMarkUp
   createSpecialMedalsProgress

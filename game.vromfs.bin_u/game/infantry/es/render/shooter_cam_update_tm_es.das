@@ -133,6 +133,7 @@ def shooter_cam_update_tm_es(info : UpdateStageInfoAct;
                                    human_cam__sprintOffset : float = 0.;
                                    human_cam__viscosity = 1f;
                                    human_cam__horizontalOffsetMult = 1f;
+                                   human_ladder__attached : bool = false;
                                    isAlive = true;
                                    isDowned = false;
                                    dead_camera__enabled : bool = false;
@@ -141,7 +142,9 @@ def shooter_cam_update_tm_es(info : UpdateStageInfoAct;
     let baseOffset = camera__offset + shooter_cam__offset + shooter_cam__additionalOffset
     var offset = baseOffset
     var vehicleOffsetMult = 1.
-    isHeroCockpitCam = length_sq(offset) == 0f && !dead_camera__enabled && !is_free_camera_mode()
+
+    
+    isHeroCockpitCam = length_sq(offset) == 0f && !dead_camera__enabled && !is_free_camera_mode() && !human_ladder__attached
     if isTpsView && !isInVehicle && !isHeroCockpitCam
       
       offset = human_cam__isIndoor ? offset + human_cam__indoorOffs : offset

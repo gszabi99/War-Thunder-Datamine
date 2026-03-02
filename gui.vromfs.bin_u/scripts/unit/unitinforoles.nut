@@ -11,6 +11,14 @@ let basicUnitRoles = {
   [ES_UNIT_TYPE_SHIP] = ["type_ship", "type_destroyer", "type_light_cruiser",
     "type_heavy_cruiser", "type_battlecruiser", "type_battleship", "type_submarine"],
   [ES_UNIT_TYPE_HELICOPTER] = ["type_attack_helicopter", "type_utility_helicopter"],
+  [ES_UNIT_TYPE_HUMAN] = [
+    "type_human_assault",
+    "type_human_support",
+    "type_human_sniper",
+    "type_human_anti_vehicle",
+    "type_human_spec_forces",
+    "type_human_gunner"
+  ]
 }
 
 let unitRoleFontIcons = {
@@ -40,6 +48,12 @@ let unitRoleFontIcons = {
   battlecruiser            = loc("icon/unitclass/battlecruiser")
   battleship               = loc("icon/unitclass/battleship")
   submarine                = loc("icon/unitclass/submarine")
+  human_assault            = loc("icon/unitclass/human_assault")
+  human_support            = loc("icon/unitclass/human_support")
+  human_sniper             = loc("icon/unitclass/human_sniper")
+  human_anti_vehicle       = loc("icon/unitclass/human_anti_vehicle")
+  human_spec_forces        = loc("icon/unitclass/human_spec_forces")
+  human_gunner             = loc("icon/unitclass/human_gunner")
 }
 
 let unitRoleByTag = {
@@ -87,6 +101,13 @@ let unitRoleByTag = {
   type_fighter          = "medium_fighter",
   type_assault          = "common_assault",
   type_bomber           = "medium_bomber"
+  
+  type_human_assault      = "human_assault"
+  type_human_support      = "human_support"
+  type_human_sniper       = "human_sniper"
+  type_human_anti_vehicle = "human_anti_vehicle"
+  type_human_spec_forces  = "human_spec_forces"
+  type_human_gunner       = "human_gunner"
 }
 
 let getRoleText = @(role) loc($"mainmenu/type_{role}")

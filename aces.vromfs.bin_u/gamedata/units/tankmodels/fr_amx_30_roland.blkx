@@ -1924,12 +1924,12 @@
       ],
       "CenterOfGravity": [
         0.2,
-        0.6,
+        0.5,
         0.0
       ],
       "CenterOfGravityClampY": [
         0.0,
-        0.6
+        0.7
       ],
       "AdvancedMass": false,
       "trackMass": 1500.0
@@ -1956,10 +1956,11 @@
     "collisionProps": {
       "cls_turret_01": "convex_hull",
       "cls_turret_02": "convex_hull",
+      "cls_turret_03": "convex_hull",
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 720.0,
+      "horsePowers": 680.0,
       "maxRPM": 2400.0,
       "minRPM": 600.0
     },
@@ -3106,6 +3107,24 @@
         "powerButtonIdx": -1
       }
     ]
+  },
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": [
+        "cls_turret_03",
+        "cls_turret_02"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        true,
+        false,
+        false,
+        true
+      ]
+    }
   },
   "antiAirComplexMenu": {
     "isVerticalViewAvailable": false,

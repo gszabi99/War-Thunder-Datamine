@@ -1052,8 +1052,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1112,8 +1112,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1172,8 +1172,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1232,8 +1232,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1292,8 +1292,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2306,33 +2306,16 @@
       ]
     }
   },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump_small",
-    "burningFx": "fuel_dump_fire_small",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
-      ]
-    }
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_aps_67.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_apr_27.blk"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -3363,17 +3346,6 @@
     "maxPower": 6.0,
     "maxSegments": 50
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_aps_67.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/us_an_apr_27.blk"
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -3995,64 +3967,6 @@
     "fxEmitter": "blister1",
     "fxType": "catapult_expl_ejection"
   },
-  "cutting": {
-    "emtr_break_wing1_l_from": [
-      0.067078,
-      -0.383105,
-      2.49086
-    ],
-    "emtr_break_wing1_l_to": [
-      0.067078,
-      -0.383105,
-      3.10618
-    ],
-    "emtr_break_wing2_l_from": [
-      0.067078,
-      -0.383105,
-      4.02916
-    ],
-    "emtr_break_wing2_l_to": [
-      0.067078,
-      -0.383105,
-      4.58748
-    ],
-    "emtr_break_wing1_r_from": [
-      0.067078,
-      -0.383105,
-      -2.49086
-    ],
-    "emtr_break_wing1_r_to": [
-      0.067078,
-      -0.383105,
-      -3.10618
-    ],
-    "emtr_break_wing2_r_from": [
-      0.067078,
-      -0.383105,
-      -4.02916
-    ],
-    "emtr_break_wing2_r_to": [
-      0.067078,
-      -0.383105,
-      -4.58748
-    ],
-    "emtr_break_wing_tail": [
-      -5.0,
-      0.0,
-      0.0
-    ],
-    "finCut": true,
-    "emtr_break_tail_from": [
-      -4.10541,
-      0.110825,
-      2.25703e-8
-    ],
-    "emtr_break_tail_to": [
-      -8.4888,
-      0.110825,
-      2.25703e-8
-    ]
-  },
   "AfterBurner0": {
     "volumetricAfterBurner": {
       "name": "_jet_f_8e_j57",
@@ -4183,5 +4097,91 @@
         }
       }
     }
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
+  },
+  "cutting": {
+    "emtr_break_wing1_l_from": [
+      0.067078,
+      -0.383105,
+      2.49086
+    ],
+    "emtr_break_wing1_l_to": [
+      0.067078,
+      -0.383105,
+      3.10618
+    ],
+    "emtr_break_wing2_l_from": [
+      0.067078,
+      -0.383105,
+      4.02916
+    ],
+    "emtr_break_wing2_l_to": [
+      0.067078,
+      -0.383105,
+      4.58748
+    ],
+    "emtr_break_wing1_r_from": [
+      0.067078,
+      -0.383105,
+      -2.49086
+    ],
+    "emtr_break_wing1_r_to": [
+      0.067078,
+      -0.383105,
+      -3.10618
+    ],
+    "emtr_break_wing2_r_from": [
+      0.067078,
+      -0.383105,
+      -4.02916
+    ],
+    "emtr_break_wing2_r_to": [
+      0.067078,
+      -0.383105,
+      -4.58748
+    ],
+    "emtr_break_wing_tail": [
+      -5.0,
+      0.0,
+      0.0
+    ],
+    "finCut": true,
+    "emtr_break_tail_from": [
+      -4.10541,
+      0.110825,
+      2.25703e-8
+    ],
+    "emtr_break_tail_to": [
+      -8.4888,
+      0.110825,
+      2.25703e-8
+    ]
   }
 }

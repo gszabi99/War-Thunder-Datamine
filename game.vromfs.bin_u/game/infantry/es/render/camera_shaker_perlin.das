@@ -9,7 +9,7 @@ require DngHuman
 require DaWeapons
 require %appGame.infantry.es.render.camera_shaker_common
 require %game.events
-
+require WTInput
 require %appGame.wt_events
 require %appGame.infantry.es.hitpoints_common
 
@@ -119,6 +119,14 @@ def camera_shaker_perlin_reset_extra_shake_on_disappear(evt : Event; bindedCamer
   query(bindedCamera) <| $ [es] (var camera_shaker__extraShakeAngles : float3&)
     camera_shaker__extraShakeAngles = float3(0.0f)
 
+
+[es(tag=gameClient, on_event=ParallelUpdateFrameDelayed)]
+def camera_shake_settings_update_ui(evt : Event;
+                                    var camera_settings__shakePowerMult : float&)
+  let joyParams = get_current_joy_param()
+  if joyParams == null
+    return
+  camera_settings__shakePowerMult = joyParams.cameraShakeToogleForHuman ? 1.0 : 0.0
 
 [es(tag=gameClient, REQUIRE=hero, REQUIRE_NOT=deadEntity, before=camera_shaker_perlin_update_es)]
 def camera_shaker_perlin_swing_on_sprint(info : UpdateStageInfoAct;

@@ -8,8 +8,9 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { findQueue } = require("%scripts/queue/queueState.nut")
 let { getQueueEvent, getQueueCountry, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
 
@@ -62,7 +63,8 @@ function createQueueViewByCountries(nestObj, queue, event) {
 
   if (needRankInfo) {
     headerColumns.insert(0, { text = "#sm_era" })
-    for (local rank = 1; rank <= MAX_COUNTRY_RANK; ++rank) {
+    let maxRank = maxCountryRank.get()
+    for (local rank = 1; rank <= maxRank; ++rank) {
       let row = {
         rowParam = "queueTableRow"
         columns = [{ text = get_roman_numeral(rank) }]
@@ -94,13 +96,14 @@ function updateQueueViewByCountries(nestObj, queue, curCluster) {
   let event = getQueueEvent(queue)
   if (events.needRankInfoInQueue(event)) {
     let countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
-    let countryOption = ::get_option(USEROPT_COUNTRY)
+    let countryOption = get_option(USEROPT_COUNTRY)
     foreach (countryName in countryOption.values) {
       if (!events.isCountryAvailable(event, countryName))
         continue
 
       let ranksQueueTable = countriesQueueTable?[countryName]
-      for (local rank = 1; rank <= MAX_COUNTRY_RANK; ++rank) {
+      let maxRank = maxCountryRank.get()
+      for (local rank = 1; rank <= maxRank; ++rank) {
         let tdTextObj = nestObj.findObject($"{countryName}_{rank}")
         if (!checkObj(tdTextObj))
           continue

@@ -365,6 +365,20 @@
     ],
     "collres__res": "as_val_collision"
   },
+  "fn_scar_l_gun_item": {
+    "_use": [
+      "item_gun",
+      "fn_scar_l"
+    ],
+    "collres__res": "fn_scar_l_collision"
+  },
+  "kord_6p67_gun_item": {
+    "_use": [
+      "item_gun",
+      "kord_6p67"
+    ],
+    "collres__res": "kord_6p67_collision"
+  },
   "kord_6p68_gun_item": {
     "_use": [
       "item_gun",
@@ -724,13 +738,13 @@
       "item_grenade",
       "hand_grenade"
     ],
-    "animchar__res": "f_1_char",
-    "collres__res": "f_1_collision",
+    "animchar__res": "f1_grenade_char",
+    "collres__res": "f1_grenade_collision",
     "item__template": "f1_grenade_item",
     "item__weapTemplate": "f1_grenade_item",
-    "item__proto": "gameData/weapons/human_weapons/grenades/f1.blk",
+    "item__proto": "gameData/weapons/human_weapons/grenades/f1_grenade.blk",
     "item__locDetails": "",
-    "item__shell": "gameData/weapons/human_weapons/grenades/f1.blk",
+    "item__shell": "gameData/weapons/human_weapons/grenades/f1_grenade.blk",
     "item__weight": 0.515,
     "item__volume": 0.5,
     "item__name": "items/f1_grenade",
@@ -930,6 +944,12 @@
     "useful_box__hintFull": "resupply/medkit_box_refill",
     "useful_box__hintItemFull": "resupply/medkit_box_item_is_full",
     "useful_box__maxUseCount": 10,
+    "useful_box__cooldown": 0.0,
+    "_replicated": [
+      "useful_box__nextUseAtTimes",
+      "useful_box__requesters",
+      "medic_box__isOpen"
+    ],
     "useful_box__useSound": "player/walker/ww2_soldier/items/healing/pick",
     "useful_box__giveItem": "medkit_item",
     "useful_box__itemExistTag": "item__medkit",
@@ -945,7 +965,6 @@
     "_tracked": "builder_info__team",
     "builder_info__team": -1,
     "medic_box__isOpen": false,
-    "_replicated": "medic_box__isOpen",
     "fortification_repair__costPercent": 0.5,
     "_group": {
       "_tags": "render",
@@ -967,6 +986,8 @@
       "_tags": "server",
       "value": "enemyBuiltUtilityDestructions"
     },
+    "useful_box__nextUseAtTimes:list<r>": {},
+    "useful_box__requesters:list<eid>": {},
     "useful_box__fillMode:tag": {
       "_tags": "server"
     },
@@ -1002,7 +1023,7 @@
     "item__weapTemplate": "medic_box_item",
     "item__weapType": "medic_box",
     "gun__switchToPriority": -3,
-    "item__weight": 36.0,
+    "item__weight": 6.0,
     "ri_extra__name": "dummy_wooden_box_a",
     "item__pickupSoundName": "walker/mc_soldier/foley_mov/items/supplies/crate_heal_pickup",
     "customAnimcharVars:array": {
@@ -1013,6 +1034,11 @@
     },
     "animchar__noUpdateOnDedicated:tag": {},
     "vehicleTriggerable:tag": {}
+  },
+  "scene_placed_medic_box_item": {
+    "_use": "placed_medic_box_item",
+    "medic_box__isOpen": true,
+    "useful_box__maxUseCount": 8
   },
   "medic_box_item": {
     "_use": [
@@ -1037,6 +1063,7 @@
     "item__weapSlots:array": {
       "slot": "secondary"
     },
+    "disableQuickThrow:tag": {},
     "disableMelee:tag": {},
     "itemInWeaponSlot:tag": {},
     "disallowUseInHoldGunMode:tag": {}
@@ -1059,8 +1086,13 @@
     "_tracked": "builder_info__team",
     "builder_info__team": -1,
     "medic_box__isOpen": false,
-    "_replicated": "medic_box__isOpen",
+    "_replicated": [
+      "medic_box__isOpen",
+      "useful_box__nextUseAtTimes",
+      "useful_box__requesters"
+    ],
     "fortification_repair__costPercent": 0.5,
+    "useful_box__cooldown": 0.0,
     "_group": {
       "_tags": "render",
       "hud_icon__image": "ammo_box",
@@ -1102,6 +1134,8 @@
     "ammunitionBox:tag": {},
     "humanAmmoBox:tag": {},
     "useful_box__anyTeam:tag": {},
+    "useful_box__nextUseAtTimes:list<r>": {},
+    "useful_box__requesters:list<eid>": {},
     "resupply__ammoSlots:list<t>": {
       "slot": [
         "primary",
@@ -1139,6 +1173,11 @@
     "animchar__noUpdateOnDedicated:tag": {},
     "vehicleTriggerable:tag": {}
   },
+  "scene_placed_portable_ammunition_box_item": {
+    "_use": "placed_portable_ammunition_box_item",
+    "medic_box__isOpen": true,
+    "useful_box__maxUseCount": 99999
+  },
   "ammo_box_item": {
     "_use": [
       "placed_portable_ammunition_box_item",
@@ -1161,6 +1200,7 @@
     "item__weapSlots:array": {
       "slot": "secondary"
     },
+    "disableQuickThrow:tag": {},
     "disableMelee:tag": {},
     "itemInWeaponSlot:tag": {},
     "disallowUseInHoldGunMode:tag": {},
@@ -1189,8 +1229,13 @@
     "_tracked": "builder_info__team",
     "builder_info__team": -1,
     "medic_box__isOpen": false,
-    "_replicated": "medic_box__isOpen",
+    "_replicated": [
+      "medic_box__isOpen",
+      "useful_box__nextUseAtTimes",
+      "useful_box__requesters"
+    ],
     "fortification_repair__costPercent": 0.5,
+    "useful_box__cooldown": 15.0,
     "_group": {
       "_tags": "render",
       "hud_icon__image": "explosives_box",
@@ -1232,6 +1277,8 @@
     "ammunitionBox:tag": {},
     "explosiveBox:tag": {},
     "useful_box__anyTeam:tag": {},
+    "useful_box__nextUseAtTimes:list<r>": {},
+    "useful_box__requesters:list<eid>": {},
     "resupply__ammoSlots:list<t>": {
       "slot": [
         "primary",
@@ -1274,6 +1321,11 @@
       "slot": "tertiary"
     }
   },
+  "scene_placed_portable_explosives_box_item": {
+    "_use": "placed_portable_explosives_box_item",
+    "medic_box__isOpen": true,
+    "useful_box__maxUseCount": 99999
+  },
   "explosives_box_item": {
     "_use": [
       "placed_portable_explosives_box_item",
@@ -1299,6 +1351,7 @@
     "item__weapSlots:array": {
       "slot": "secondary"
     },
+    "disableQuickThrow:tag": {},
     "disableMelee:tag": {},
     "itemInWeaponSlot:tag": {},
     "disallowUseInHoldGunMode:tag": {},
@@ -1322,6 +1375,12 @@
     "building_menu__image": "building_armor_box",
     "useful_box__hintFull": "resupply/armor_refill",
     "useful_box__maxUseCount": 10,
+    "useful_box__cooldown": 0.0,
+    "_replicated": [
+      "useful_box__nextUseAtTimes",
+      "useful_box__requesters",
+      "medic_box__isOpen"
+    ],
     "useful_box__useSound": "player/walker/ww2_soldier/items/healing/pick",
     "collres__res": "sanitary_box_collision",
     "object__useDist": 2.0,
@@ -1335,7 +1394,6 @@
     "_tracked": "builder_info__team",
     "builder_info__team": -1,
     "medic_box__isOpen": false,
-    "_replicated": "medic_box__isOpen",
     "fortification_repair__costPercent": 0.5,
     "_group": {
       "_tags": "render",
@@ -1357,6 +1415,8 @@
       "_tags": "server",
       "value": "enemyBuiltUtilityDestructions"
     },
+    "useful_box__nextUseAtTimes:list<r>": {},
+    "useful_box__requesters:list<eid>": {},
     "useful_box__fillMode:tag": {
       "_tags": "server"
     },
@@ -1404,6 +1464,11 @@
     "animchar__noUpdateOnDedicated:tag": {},
     "vehicleTriggerable:tag": {}
   },
+  "scene_placed_portable_armor_box_item": {
+    "_use": "placed_portable_armor_box_item",
+    "medic_box__isOpen": true,
+    "useful_box__maxUseCount": 99999
+  },
   "armor_box_item": {
     "_use": [
       "placed_portable_armor_box_item",
@@ -1426,6 +1491,7 @@
     "item__weapSlots:array": {
       "slot": "secondary"
     },
+    "disableQuickThrow:tag": {},
     "disableMelee:tag": {},
     "itemInWeaponSlot:tag": {},
     "disallowUseInHoldGunMode:tag": {}

@@ -244,6 +244,7 @@ let MfdFontScale = Watched(-1.0)
 let IlsPosSize = [0, 0, 0, 0]
 let DetectAllyProgress = Watched(-1)
 let DetectAllyState = Watched(false)
+let HasFPVCamera = Watched(false)
 
 let GunOverheatState = Watched(0)
 
@@ -522,6 +523,7 @@ let helicopterState = {
   IlsPosSize,
   DetectAllyProgress,
   DetectAllyState,
+  HasFPVCamera,
 
   GunOverheatState,
 
@@ -656,13 +658,13 @@ interop.updateGuidedBombs <- function(tb) {
     GuidedBombsState.set(tb)
 }
 
-interop.updateFlares <- function(count, mode, seconds) {
+interop.updateFlares <- function(count, mode, seconds, _, __) {
   let curVal = FlaresState.get()
   if (curVal.count != count || curVal.mode != mode || curVal.seconds != seconds)
     FlaresState.set({ count, mode, seconds })
 }
 
-interop.updateChaffs <- function(count, mode, seconds) {
+interop.updateChaffs <- function(count, mode, seconds, _, __) {
   let curVal = ChaffsState.get()
   if (curVal.count != count || curVal.mode != mode || curVal.seconds != seconds)
     ChaffsState.set({ count, mode, seconds })

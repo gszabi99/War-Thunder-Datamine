@@ -1,6 +1,7 @@
 require ecs
 require %game.unit.unit_events
 require GridCollision
+require %appGame.wt_events
 
 [es(on_appear, track=isInVehicleHidden)]
 def gridcoll_set_in_vehicle_es(evt : Event; isInVehicleHidden : bool; var grid_obj__hidden : int&)
@@ -24,7 +25,13 @@ def unit_in_grid_create_es(evt : Event;
   if !active
     grid_obj__hidden |= int(GridHideFlag.EGH_HIDDEN_POS)
 
-[es(on_appear, REQUIRE=(deadEntity, human), REQUIRE_NOT=shootingRangeDummy)]
-def collision_disabled_for_dead_human_es(evt : Event; var grid_obj__hidden : int&)
-  grid_obj__hidden |= int(GridHideFlag.EGH_GAME_EFFECT)
 
+[es(on_appear, REQUIRE=(deadEntity, human), REQUIRE_NOT=shootingRangeDummy)]
+def collision_disabled_for_dead_human_es(evt : Event; reanimation__available : bool; var grid_obj__hidden : int&)
+  if !reanimation__available
+    grid_obj__hidden |= int(GridHideFlag.EGH_GAME_EFFECT)
+
+
+[es(REQUIRE=(deadEntity, human))]
+def collision_disabled_on_real_death_es(evt : EventDiedNotReanimated; var grid_obj__hidden : int&)
+  grid_obj__hidden |= int(GridHideFlag.EGH_GAME_EFFECT)

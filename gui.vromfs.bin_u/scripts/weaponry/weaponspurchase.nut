@@ -9,12 +9,11 @@ let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
-let { repairNoMsgBox, canSpendGoldOnUnitWithPopup} = require("%scripts/unit/unitActions.nut")
+let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
+let { repairNoMsgBox} = require("%scripts/unit/unitActions.nut")
 let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getItemCost,
-        getAllModsCost,
-        getItemStatusTbl,
-        getItemUnlockCost } = require("%scripts/weaponry/itemInfo.nut")
+let { getItemCost, getAllModsCost, getItemStatusTbl, getItemUnlockCost
+} = require("%scripts/weaponry/itemInfo.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")

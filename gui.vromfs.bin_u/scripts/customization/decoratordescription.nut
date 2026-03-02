@@ -3,15 +3,20 @@ from "%scripts/dagui_library.nut" import *
 let { sqrt } = require("math")
 let { format } = require("string")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
-let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, buildUnlockDesc,
-  getUnlockMainCondDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg,
+  getUnlockMainCondDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
-let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
+let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/decoratorBaseType.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
+let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+
 
 function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null
@@ -22,7 +27,8 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
   }
 
   let iObj = obj.findObject("image")
-  let img = decoratorType.getImage(decorator)
+  let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+  let img = viewDecoratorType.getImage(decorator)
 
   let isSkin = decoratorType == decoratorTypes.SKINS
   let haveCouponsItem = isSkin ? findItemById(decorator.getCouponItemdefId()) : null
@@ -38,7 +44,7 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
     if (img != "") {
       iObj["background-image"] = img
       let imgSize = params?.imgSize ?? {}
-      let imgRatio = decoratorType.getRatio(decorator)
+      let imgRatio = viewDecoratorType.getRatio(decorator)
       let imageContainerHeight = imgSize?[1] ?? format("%.2f@decalIconHeight", sqrt(4.0 / imgRatio))
       let imageContainerWidth = imgSize?[0] ?? $"{imgRatio}*({imageContainerHeight})"
       iDivObj.height = imageContainerHeight
@@ -91,7 +97,7 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
   local descText = "\n".join(desc, true)
   let warbondId = getTblValue("wbId", params)
   if (warbondId) {
-    let warbond = ::g_warbonds.findWarbond(warbondId, getTblValue("wbListId", params))
+    let warbond = findWarbond(warbondId, getTblValue("wbListId", params))
     let award = warbond ? warbond.getAwardById(searchId) : null
     if (award)
       descText = award.addAmountTextToDesc(descText)

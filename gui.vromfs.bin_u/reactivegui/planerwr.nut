@@ -28,6 +28,7 @@ let { rwrAr830Extra, jas39ERwrScreen } = require("%rGui/planeRwrs/rwrAr830Extra.
 let rwrL150 = require("%rGui/planeRwrs/rwrL150.nut")
 let rwrL150Su30 = require("%rGui/planeRwrs/rwrL150Su30.nut")
 let rwrDass = require("%rGui/planeRwrs/rwrDass.nut")
+let rwrL150Ka52 = require("%rGui/planeRwrs/rwrL150Ka52.nut")
 
 function loadStyleBlock(styleBlock, blk, defStyleBlock) {
   styleBlock.scale = blk.getReal("scale", defStyleBlock.scale)
@@ -127,7 +128,8 @@ let rwrs = {
   ["jas39ERwrScreen"] = jas39ERwrScreen,
   ["L-150"] = rwrL150,
   ["L-150 Su-30"] = rwrL150Su30,
-  ["DASS"] = rwrDass
+  ["DASS"] = rwrDass,
+  ["L-150 Ka-52"] = rwrL150Ka52
 }
 
 let planeRwr = @(posWatched, sizeWatched, colorWatched, scaleDef, backHide, scale, fontSizeMult) function() {

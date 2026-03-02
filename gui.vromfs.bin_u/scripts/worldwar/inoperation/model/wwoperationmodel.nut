@@ -4,7 +4,7 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 let { Point2 } = require("dagor.math")
 let { WwOperationArmies } = require("wwOperationArmies.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let WwOperationModel = class {
   armies = null

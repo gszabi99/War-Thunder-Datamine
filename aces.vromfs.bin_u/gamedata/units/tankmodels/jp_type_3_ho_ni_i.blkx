@@ -861,29 +861,26 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 170.0,
+      "horsePowers": 200.0,
       "maxRPM": 2000.0,
-      "minRPM": 600.0
+      "minRPM": 800.0
     },
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 60000.0,
       "driveGearRadius": 0.287,
-      "mainGearRatio": 1.0,
-      "sideGearRatio": 5.73725,
+      "mainGearRatio": 1.45,
+      "sideGearRatio": 6.315,
       "gearRatios": {
         "ratio": [
           -2.0,
           -3.56,
           0.0,
           5.22,
-          2.97,
           2.93,
-          1.7,
           1.68,
-          1.05,
           0.96,
-          0.95
+          0.59
         ]
       }
     },
@@ -2854,6 +2851,70 @@
           ]
         }
       ]
+    },
+    {
+      "model": "japan_gunner_officer_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "4",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "dmName": "loader_dm",
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
     }
   ],
   "controlDevices": {
@@ -3077,15 +3138,23 @@
     "changeTimeMult": 1.0,
     "gunner": {
       "dmPart": "gunner_dm",
-      "role": [
-        "tank_gunner",
+      "role": "tank_gunner",
+      "substitute": [
+        "commander",
         "loader"
-      ],
-      "substitute": "commander"
+      ]
     },
     "driver": {
       "dmPart": "driver_dm",
       "role": "driver",
+      "substitute": [
+        "commander",
+        "loader"
+      ]
+    },
+    "loader": {
+      "dmPart": "loader_dm",
+      "role": "loader",
       "substitute": "commander"
     },
     "commander": {
@@ -3179,7 +3248,7 @@
     "bone_turret": ""
   },
   "default_skin": {
-    "name": "type_95_ha_go",
+    "name": "default",
     "replace_tex": {
       "from": "jp_camo_artillery_brown*",
       "to": "jp_camo_chairo_brown*"

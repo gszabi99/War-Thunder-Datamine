@@ -2,7 +2,6 @@ from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { enumsGetCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { lerp } = require("%sqstd/math.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { format } =  require("string")
@@ -150,31 +149,10 @@ enumsAddTypes(g_hud_enemy_debuffs, {
       let value = dmgParams?.buoyancy ?? camInfo?.buoyancy
       if (value == null)
         return null
-      if (value > 0.995)
-        return null
       return {
         state = getStateByValue(value, 0.995, 0.505, 0.005)
         label = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
       }
-    }
-  }
-
-  SHIP_COMPARTMENTS = {
-    unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
-    isUpdateByEnemyDamageState = true
-
-    getInfo = function(data, unitInfo) {
-      if (unitInfo.unitType == ES_UNIT_TYPE_SHIP) 
-        return data.len() > 0
-
-      
-      if (!unitInfo.unitName)
-        return null
-      let unit = getAircraftByName(unitInfo.unitName)
-      if (!unit)
-        return null
-      let isUnitFregat = unit.tags.contains("type_frigate")
-      return isUnitFregat ? data.len() > 0 : null
     }
   }
 
@@ -188,17 +166,17 @@ enumsAddTypes(g_hud_enemy_debuffs, {
         return null
       let alive = dmgParams?.crewAliveCount ?? camInfo?.crewAlive ?? 0
       let minCrewCount = dmgParams?.crewAliveMin ?? camInfo?.crewAliveMin ?? 0
-      let bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
       if (!alive && !unitInfo.isKilled)
         return null
 
-      let maxCrewLeftPercent = 1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / total
-      let minPercent = alive >= minCrewCount ? 0.01 : 0
-      let percent = clamp(lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), minPercent, 1)
+      let crewColor = alive <= minCrewCount ? "debuffLabelCritical" : "debuffLabelHealthy"
+      let label = colorize(crewColor, $"{alive}{loc("ui/slash")}{total}")
+      let maxSizeLabel = $"{total}{loc("ui/slash")}{total}"
       return {
         state = getStateByValue(alive, total, minCrewCount + 1, minCrewCount)
-        value = percent * 100
-        label = measureType.PERCENT_FLOAT.getMeasureUnitsText(percent)
+        value = alive
+        label
+        maxSizeLabel
       }
     }
   }
@@ -229,5 +207,4 @@ g_hud_enemy_debuffs.getTrackedPartNamesByUnitType <- function getTrackedPartName
 
 return {
   g_hud_enemy_debuffs
-  getStateByValue
 }

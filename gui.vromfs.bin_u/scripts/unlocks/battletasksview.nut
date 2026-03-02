@@ -9,27 +9,31 @@ let { isBitModeType, isNestedUnlockMode, getMainConditionListPrefix,
 } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { buildConditionsConfig, buildUnlockDesc, getTooltipMarkupByModeType,
- getUnlockRewardsText, getLocForBitValues, getFullUnlockDesc, getUnlocksListView,
- getUnlockNameText, getUnlockMainCondDescByCfg
+let { buildConditionsConfig, getLocForBitValues, getFullUnlockDesc, getUnlockNameText,
+  getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksState.nut")
+let { buildUnlockDesc, getTooltipMarkupByModeType, getUnlockRewardsText, getUnlocksListView
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { Cost } = require("%scripts/money.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let { isBattleTask, getBattleTaskNameById, getDifficultyTypeByTask, getProposedTasks,
+let { getDifficultyTypeByTask, getBattleTaskById, getBattleTaskNameById, isBattleTask
+} = require("%scripts/unlocks/battleTasksState.nut")
+let { getProposedTasks,
   getGenerationIdInt, isBattleTaskDone, getShowAllTasks, canPlayerInteractWithDifficulty,
-  getBattleTaskById, canGetBattleTaskReward, getTaskStatus,
-  isBattleTaskActive, getTotalActiveTasksNum
+  canGetBattleTaskReward, getTaskStatus, isBattleTaskActive, getTotalActiveTasksNum
 } = require("%scripts/unlocks/battleTasks.nut")
 let { TIME_MINUTE_IN_SECONDS } = require("%scripts/time.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getDifficultyTypeByName, EASY_TASK, MEDIUM_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
-let { activeUnlocks, getUnlockReward } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { getUnlockReward } = require("%scripts/unlocks/userstatUnlocksView.nut")
 let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
+let { findWarbond, getCurrentWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+
 
 function mkUnlockConfigByBattleTask(task) {
   local config = buildConditionsConfig(task)
@@ -116,7 +120,7 @@ function getRewardMarkUpConfig(task, config) {
   rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
 
   if (difficulty == MEDIUM_TASK) {
-    let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(warBondAwardType[EWBAT_BATTLE_TASK])
+    let specialTaskAward = getCurrentWarbond()?.getAwardByType(warBondAwardType[EWBAT_BATTLE_TASK])
     if (specialTaskAward?.awardType.hasIncreasingLimit) {
       let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
       reward = reward != "" ? $"{reward}\n{rewardText}" : rewardText
@@ -134,7 +138,7 @@ function getRewardMarkUpConfig(task, config) {
 function getBattleTaskDifficultyImage(task) {
   let difficulty = getDifficultyTypeByTask(task)
   if (difficulty.showSeasonIcon) {
-    let curWarbond = ::g_warbonds.getCurrentWarbond()
+    let curWarbond = getCurrentWarbond()
     if (curWarbond)
       return curWarbond.getMedalIcon()
   }
@@ -355,7 +359,7 @@ addTooltipTypes({
       if (!checkObj(obj))
         return false
 
-      let warbond = ::g_warbonds.findWarbond(
+      let warbond = findWarbond(
         getTblValue("wbId", params),
         getTblValue("wbListId", params)
       )

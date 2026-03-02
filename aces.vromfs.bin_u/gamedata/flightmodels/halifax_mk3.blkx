@@ -546,8 +546,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -599,8 +598,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -652,8 +650,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -705,8 +702,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1578,8 +1574,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1639,8 +1635,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1700,8 +1696,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1761,8 +1757,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1822,8 +1818,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1883,8 +1879,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1944,8 +1940,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2005,8 +2001,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -3135,466 +3131,1323 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunVikkersK_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare1",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 1000,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1",
-          "gunner": "gunner1"
-        },
-        "limits": {
-          "yaw": [
-            -20.0,
-            20.0
-          ],
-          "pitch": [
-            -50.0,
-            30.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "gunner2_dm",
-        "gunnerDm": "gunner2_dm",
-        "gunDm": "gun2_dm",
-        "partsDP": "gun2_dm",
-        "bullets": 600,
-        "traceOffset": 2,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun2",
-          "gunner": "gunner2"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -2.5,
-            74.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -24.0,
-              -37.0
-            ],
-            "pitch": [
-              -2.5,
-              12.0
-            ]
-          },
-          {
-            "yaw": [
-              24.0,
-              37.0
-            ],
-            "pitch": [
-              -2.5,
-              12.0
-            ]
-          }
-        ]
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "gunner2_dm",
-        "bullets": 600,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun2"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -2.5,
-            74.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -24.0,
-              -37.0
-            ],
-            "pitch": [
-              -2.5,
-              12.0
-            ]
-          },
-          {
-            "yaw": [
-              24.0,
-              37.0
-            ],
-            "pitch": [
-              -2.5,
-              12.0
-            ]
-          }
-        ]
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "gunner2_dm",
-        "gunnerDm": "gunner2_dm",
-        "gunDm": "gun2_dm",
-        "partsDP": "gun2_dm",
-        "bullets": 600,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun4"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -2.5,
-            74.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -24.0,
-              -37.0
-            ],
-            "pitch": [
-              -2.5,
-              12.0
-            ]
-          },
-          {
-            "yaw": [
-              24.0,
-              37.0
-            ],
-            "pitch": [
-              -2.5,
-              12.0
-            ]
-          }
-        ]
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare5",
-        "flash": "flare5",
-        "dm": "gunner2_dm",
-        "bullets": 600,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun4"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -2.5,
-            74.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -24.0,
-              -37.0
-            ],
-            "pitch": [
-              -2.5,
-              12.0
-            ]
-          },
-          {
-            "yaw": [
-              24.0,
-              37.0
-            ],
-            "pitch": [
-              -2.5,
-              12.0
-            ]
-          }
-        ]
-      },
-      {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare6",
-        "flash": "flare6",
-        "shell": "emtr_shellrejection1",
-        "dm": "gunner3_dm",
-        "gunnerDm": "gunner3_dm",
-        "gunDm": "gun3_dm",
-        "partsDP": "gun3_dm",
-        "bullets": 1700,
-        "traceOffset": 1,
-        "turret": {
-          "head": "turret3",
-          "gun": "gun3",
-          "gunner": "gunner3"
-        },
-        "limits": {
-          "yaw": [
-            -90.0,
-            90.0
-          ],
-          "pitch": [
-            -50.0,
-            60.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare7",
-        "flash": "flare7",
-        "shell": "emtr_shellrejection1",
-        "dm": "gunner3_dm",
-        "bullets": 1700,
-        "traceOffset": 2,
-        "turret": {
-          "head": "turret3",
-          "gun": "gun3"
-        },
-        "limits": {
-          "yaw": [
-            -90.0,
-            90.0
-          ],
-          "pitch": [
-            -50.0,
-            60.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare8",
-        "flash": "flare8",
-        "shell": "emtr_shellrejection2",
-        "dm": "gunner3_dm",
-        "gunnerDm": "gunner3_dm",
-        "gunDm": "gun3_dm",
-        "partsDP": "gun3_dm",
-        "bullets": 1700,
-        "traceOffset": 2,
-        "turret": {
-          "head": "turret3",
-          "gun": "gun5"
-        },
-        "limits": {
-          "yaw": [
-            -90.0,
-            90.0
-          ],
-          "pitch": [
-            -50.0,
-            60.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare9",
-        "flash": "flare9",
-        "shell": "emtr_shellrejection2",
-        "dm": "gunner3_dm",
-        "bullets": 1700,
-        "traceOffset": 2,
-        "turret": {
-          "head": "turret3",
-          "gun": "gun5"
-        },
-        "limits": {
-          "yaw": [
-            -90.0,
-            90.0
-          ],
-          "pitch": [
-            -50.0,
-            60.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
       {
-        "name": "halifax_mk3_default",
-        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_default.blk",
+        "name": "halifax_mk3_250lb_gp",
+        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_250lb_gp.blk"
+      },
+      {
+        "name": "halifax_mk3_500lb_gp",
+        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_500lb_gp.blk"
+      },
+      {
+        "name": "halifax_mk3_250lb_mc",
+        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_250lb_mc.blk"
+      },
+      {
+        "name": "halifax_mk3_500lb_mc",
+        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_500lb_mc.blk"
+      },
+      {
+        "name": "halifax_mk3_1000lb_mc",
+        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_1000lb_mc.blk"
+      },
+      {
+        "name": "halifax_mk3_500lb_sap",
+        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_500lb_sap.blk",
         "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
-            "amountPerTier": 3.0,
-            "tier": [
-              {
-                "idx": 4,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 5,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 6,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 7,
-                "iconType": "bombs_small_group"
-              },
-              {
-                "idx": 8,
-                "iconType": "bombs_small_group"
-              }
-            ]
-          }
+          "presetType": "AIR_TO_SEA"
         }
       },
       {
-        "name": "halifax_mk3_15x500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_15x500lbs.blk",
-        "reqModification": "subc_mk1",
+        "name": "halifax_mk3_2000lb_sap",
+        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_2000lb_sap.blk",
         "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
-            "amountPerTier": 3.0,
-            "tier": [
-              {
-                "idx": 4,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 5,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 6,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 7,
-                "iconType": "bombs_middle_group"
-              },
-              {
-                "idx": 8,
-                "iconType": "bombs_middle_group"
-              }
-            ]
-          }
+          "presetType": "AIR_TO_SEA"
         }
-      },
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 6000.0,
+    "maxloadMassLeftConsoles": 1800.0,
+    "maxloadMassRightConsoles": 1800.0,
+    "maxDisbalance": 900.0,
+    "WeaponSlot": [
       {
-        "name": "halifax_mk3_15x500lbs_sap",
-        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_15x500lbs_sap.blk",
-        "reqModification": "subc_mk1",
-        "weaponConfig": {
-          "presetType": "AIR_TO_SEA",
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
-            "amountPerTier": 3.0,
-            "tier": [
-              {
-                "idx": 4,
-                "iconType": "bombs_middle_high_drag_group"
-              },
-              {
-                "idx": 5,
-                "iconType": "bombs_middle_high_drag_group"
-              },
-              {
-                "idx": 6,
-                "iconType": "bombs_middle_high_drag_group"
-              },
-              {
-                "idx": 7,
-                "iconType": "bombs_middle_high_drag_group"
-              },
-              {
-                "idx": 8,
-                "iconType": "bombs_middle_high_drag_group"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "halifax_mk3_6x500lbs_9x1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_6x500lbs_9x1000lbs.blk",
-        "reqModification": [
-          "subc_mk1",
-          "subc_mk3"
-        ],
-        "weaponConfig": {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
           "Weapon": [
             {
-              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_middle_group"
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunVikkersK_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare1",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 1000,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1",
+                "gunner": "gunner1"
+              },
+              "limits": {
+                "yaw": [
+                  -20.0,
+                  20.0
+                ],
+                "pitch": [
+                  -50.0,
+                  30.0
+                ]
+              }
             },
             {
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
-              "amountPerTier": 3.0,
-              "iconType": "bombs_large_group"
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "gunner2_dm",
+              "gunnerDm": "gunner2_dm",
+              "gunDm": "gun2_dm",
+              "partsDP": "gun2_dm",
+              "bullets": 600,
+              "traceOffset": 2,
+              "turret": {
+                "head": "turret2",
+                "gun": "gun2",
+                "gunner": "gunner2"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -2.5,
+                  74.0
+                ]
+              },
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -24.0,
+                    -37.0
+                  ],
+                  "pitch": [
+                    -2.5,
+                    12.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    24.0,
+                    37.0
+                  ],
+                  "pitch": [
+                    -2.5,
+                    12.0
+                  ]
+                }
+              ]
+            },
+            {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "gunner2_dm",
+              "bullets": 600,
+              "turret": {
+                "head": "turret2",
+                "gun": "gun2"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -2.5,
+                  74.0
+                ]
+              },
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -24.0,
+                    -37.0
+                  ],
+                  "pitch": [
+                    -2.5,
+                    12.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    24.0,
+                    37.0
+                  ],
+                  "pitch": [
+                    -2.5,
+                    12.0
+                  ]
+                }
+              ]
+            },
+            {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "gunner2_dm",
+              "gunnerDm": "gunner2_dm",
+              "gunDm": "gun2_dm",
+              "partsDP": "gun2_dm",
+              "bullets": 600,
+              "turret": {
+                "head": "turret2",
+                "gun": "gun4"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -2.5,
+                  74.0
+                ]
+              },
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -24.0,
+                    -37.0
+                  ],
+                  "pitch": [
+                    -2.5,
+                    12.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    24.0,
+                    37.0
+                  ],
+                  "pitch": [
+                    -2.5,
+                    12.0
+                  ]
+                }
+              ]
+            },
+            {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "gunner2_dm",
+              "bullets": 600,
+              "turret": {
+                "head": "turret2",
+                "gun": "gun4"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -2.5,
+                  74.0
+                ]
+              },
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -24.0,
+                    -37.0
+                  ],
+                  "pitch": [
+                    -2.5,
+                    12.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    24.0,
+                    37.0
+                  ],
+                  "pitch": [
+                    -2.5,
+                    12.0
+                  ]
+                }
+              ]
+            },
+            {
+              "trigger": "gunner2",
+              "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "flare6",
+              "flash": "flare6",
+              "shell": "emtr_shellrejection1",
+              "dm": "gunner3_dm",
+              "gunnerDm": "gunner3_dm",
+              "gunDm": "gun3_dm",
+              "partsDP": "gun3_dm",
+              "bullets": 1700,
+              "traceOffset": 1,
+              "turret": {
+                "head": "turret3",
+                "gun": "gun3",
+                "gunner": "gunner3"
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -50.0,
+                  60.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "flare7",
+              "flash": "flare7",
+              "shell": "emtr_shellrejection1",
+              "dm": "gunner3_dm",
+              "bullets": 1700,
+              "traceOffset": 2,
+              "turret": {
+                "head": "turret3",
+                "gun": "gun3"
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -50.0,
+                  60.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "flare8",
+              "flash": "flare8",
+              "shell": "emtr_shellrejection2",
+              "dm": "gunner3_dm",
+              "gunnerDm": "gunner3_dm",
+              "gunDm": "gun3_dm",
+              "partsDP": "gun3_dm",
+              "bullets": 1700,
+              "traceOffset": 2,
+              "turret": {
+                "head": "turret3",
+                "gun": "gun5"
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -50.0,
+                  60.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "flare9",
+              "flash": "flare9",
+              "shell": "emtr_shellrejection2",
+              "dm": "gunner3_dm",
+              "bullets": 1700,
+              "traceOffset": 2,
+              "turret": {
+                "head": "turret3",
+                "gun": "gun5"
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -50.0,
+                  60.0
+                ]
+              }
             }
           ]
         }
       },
       {
-        "name": "halifax_mk3_4x2000lbs_sap",
-        "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_4x2000lbs_sap.blk",
-        "reqModification": "wellington_2000",
-        "weaponConfig": {
-          "presetType": "AIR_TO_SEA",
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/uk_2000lb_ap_mkI.blk",
-            "amountPerTier": 1.0,
-            "iconType": "bombs_heavy_high_drag"
+        "index": 1,
+        "tier": 8,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_gp_slot1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 5
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_gp_slot1",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 5
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_mc_slot1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 5
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_mc_slot1",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 5
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group",
+            "name": "500lb_ap_slot1",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 5
+              }
+            ]
           }
-        }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_gp_slot2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb7",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb11",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb9",
+                "bullets": 1,
+                "order": 9
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_gp_slot2",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb18",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb20",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb16",
+                "bullets": 1,
+                "order": 9
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_mc_slot2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb7",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb11",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb9",
+                "bullets": 1,
+                "order": 9
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_mc_slot2",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb18",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb20",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb16",
+                "bullets": 1,
+                "order": 9
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group",
+            "name": "1000lb_mc_slot2",
+            "reqModification": "subc_mk3",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb18",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb20",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb16",
+                "bullets": 1,
+                "order": 9
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group",
+            "name": "500lb_ap_slot2",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb18",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb20",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb16",
+                "bullets": 1,
+                "order": 9
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group",
+            "name": "2000lb_ap_slot2",
+            "reqModification": "wellington_2000",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_2000lb_ap_mkI.blk",
+                "separate": true,
+                "emitter": "bomb18",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_2000lb_ap_mkI.blk",
+                "separate": true,
+                "emitter": "bomb16",
+                "bullets": 1,
+                "order": 8
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 6,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_gp_slot3",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb13",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb15",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb14",
+                "bullets": 1,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_gp_slot3",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb22",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb24",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb23",
+                "bullets": 1,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_mc_slot3",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb13",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb15",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb14",
+                "bullets": 1,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_mc_slot3",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb22",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb24",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb23",
+                "bullets": 1,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group",
+            "name": "1000lb_mc_slot3",
+            "reqModification": "subc_mk3",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb22",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb24",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb23",
+                "bullets": 1,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group",
+            "name": "500lb_ap_slot3",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb22",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb24",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb23",
+                "bullets": 1,
+                "order": 12
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_gp_slot4",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb10",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb12",
+                "bullets": 1,
+                "order": 14
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb8",
+                "bullets": 1,
+                "order": 15
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_gp_slot4",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb17",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb21",
+                "bullets": 1,
+                "order": 14
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb19",
+                "bullets": 1,
+                "order": 15
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_mc_slot4",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb10",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb12",
+                "bullets": 1,
+                "order": 14
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb8",
+                "bullets": 1,
+                "order": 15
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_mc_slot4",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb17",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb21",
+                "bullets": 1,
+                "order": 14
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb19",
+                "bullets": 1,
+                "order": 15
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group",
+            "name": "1000lb_mc_slot4",
+            "reqModification": "subc_mk3",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb17",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb21",
+                "bullets": 1,
+                "order": 14
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "separate": true,
+                "emitter": "bomb19",
+                "bullets": 1,
+                "order": 15
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group",
+            "name": "500lb_ap_slot4",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb17",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb21",
+                "bullets": 1,
+                "order": 14
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb19",
+                "bullets": 1,
+                "order": 15
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group",
+            "name": "2000lb_ap_slot4",
+            "reqModification": "wellington_2000",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_2000lb_ap_mkI.blk",
+                "separate": true,
+                "emitter": "bomb17",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_2000lb_ap_mkI.blk",
+                "separate": true,
+                "emitter": "bomb19",
+                "bullets": 1,
+                "order": 14
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 4,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_gp_slot5",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 2
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+                "separate": true,
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 6
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_gp_slot5",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 2
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "separate": true,
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 6
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_group",
+            "name": "250lb_mc_slot5",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 2
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+                "separate": true,
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 6
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_mc_slot5",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 2
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+                "separate": true,
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 6
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group",
+            "name": "500lb_ap_slot5",
+            "reqModification": "subc_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 2
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+                "separate": true,
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 6
+              }
+            ]
+          }
+        ]
       }
     ]
   },

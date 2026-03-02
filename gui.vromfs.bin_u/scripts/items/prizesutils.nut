@@ -3,7 +3,8 @@ from "%scripts/items/itemsConsts.nut" import *
 
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { cutPostfix } = require("%sqstd/string.nut")
-let { getUnlockRewardsText, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isPrizeMultiAward} = require("%scripts/items/trophyMultiAward.nut")
 
 let unlockAddProgressView = {

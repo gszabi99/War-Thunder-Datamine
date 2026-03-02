@@ -4,9 +4,10 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { cutPrefix } = require("%sqstd/string.nut")
 let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
+let { loadNameFilterHandler } = require("%scripts/wndLib/nameFilterHandler.nut")
+
 
 let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -16,15 +17,24 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   unit = null
   ammoName = null
   optionsList = null
-  applyFilterTimer = null
   onChangeOptionCb = null
   goBackCb = null
+  nameFilterHandler = null
 
   getSceneTplView = @() this.getOptionsView(this.unit, this.ammoName)
 
   function initScreen() {
     this.guiScene.setUpdatesEnabled(false, false)
     this.optionsList.init(this, this.scene)
+
+    let nameFilterHandler = loadNameFilterHandler({
+      scene = this.scene.findObject("filter_edit_box_nest")
+      applyFilterCb = Callback(@(txt) this.applyNameFilter(txt), this)
+      goBackCb = Callback(@() this.goBack(), this)
+    })
+    this.registerSubHandler(nameFilterHandler)
+    this.nameFilterHandler = nameFilterHandler.weakref()
+
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
@@ -64,17 +74,13 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.onChangeOptionCb?()
   }
 
-  function applyFilter(obj) {
-    clearTimer(this.applyFilterTimer)
-    let filterText = utf8ToLower(obj.getValue())
-    if(filterText == "") {
-      this.showTypes(true)
-      this.optionsList.init(this, this.scene)
+  function applyNameFilter(filterText) {
+    if (filterText != "") {
+      this.applyFilterImpl(filterText)
       return
     }
-
-    let applyCallback = Callback(@() this.applyFilterImpl(filterText), this)
-    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
+    this.showTypes(true)
+    this.optionsList.init(this, this.scene)
   }
 
   function showTypes(status) {
@@ -88,13 +94,6 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.showTypes(false)
     this.optionsList.get("UNIT").filterByName(this, this.scene, filterText)
     this.onChangeOptionCb?()
-  }
-
-  function onFilterCancel(filterObj) {
-    if (filterObj.getValue() != "")
-      filterObj.setValue("")
-    else
-      this.guiScene.performDelayed(this, this.goBack)
   }
 
   function goBack() {

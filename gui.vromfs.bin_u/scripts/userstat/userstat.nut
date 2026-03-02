@@ -21,6 +21,7 @@ const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 
+
 function updateGetUnlocksValue(watchValue, response) {
   foreach (key, value in response) {
     if (key not in watchValue) {
@@ -206,6 +207,7 @@ function validateUserstatData(_dt = 0) {
   validateTaskTimer = periodic_task_register(this,
     validateUserstatData, FREQUENCY_MISSING_STATS_UPDATE_SEC)
 }
+validateUserstatData()
 
 isUserstatMissingData.subscribe(function(_v) {
   validateUserstatData()
@@ -214,7 +216,6 @@ isUserstatMissingData.subscribe(function(_v) {
 addListenersWithoutEnv({
   ProfileUpdated  = @(_p) validateUserstatData()
   BattleEnded     = @(_p) validateUserstatData()
-  ScriptsReloaded = @(_p) validateUserstatData()
 })
 
 let userstatCustomLeaderboardStats = customLeaderboardStatsUpdatable.data
@@ -228,6 +229,12 @@ mnSubscribe("userStat", function(ev) {
 
 eventbus_subscribe("userstatsDataUpdated", @(_p) userstatsDataUpdated())
 
+
+let waitingToShowRewardsArray = persist("waitingToShowRewardsArray", @() [])
+let getUserstatItemRewardData = @(itemId) waitingToShowRewardsArray.findvalue(
+  @(itemData) itemData.itemId == itemId)
+
+
 return {
   userstatUnlocks
   userstatDescList
@@ -240,4 +247,6 @@ return {
   validateUserstatData
   userstatCustomLeaderboardStats
   refreshUserstatCustomLeaderboardStats = @() customLeaderboardStatsUpdatable.refresh()
+  waitingToShowRewardsArray
+  getUserstatItemRewardData
 }

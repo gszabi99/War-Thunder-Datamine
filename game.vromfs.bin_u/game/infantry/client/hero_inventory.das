@@ -106,9 +106,15 @@ def watched_by_player_inventory(evt : Event;
 
 [es(tag=gameClient, on_disappear, REQUIRE=watchedByPlr)]
 def watched_by_player_inventory_remove_tag(evt : Event;
+                                           eid aka destroyed_eid : EntityId;
                                            itemContainer : EidList;
                                            human_weap__gunMods : Array;
                                            human_weap__gunEids : EidList)
   set_watched_by_player_components(itemContainer, false)
   set_watched_by_player_components(human_weap__gunEids, false)
   set_watched_by_player_components(human_weap__gunMods, false)
+  query() <| $ [es(REQUIRE=watchedPlayerItem)] (eid aka item_eid : EntityId;
+                                                item__ownerEid : EntityId = INVALID_ENTITY_ID;
+                                                gun__owner : EntityId = INVALID_ENTITY_ID)
+    if item__ownerEid == destroyed_eid || gun__owner == destroyed_eid
+      removeSubTemplate(item_eid, "watched_by_player_item")

@@ -6,11 +6,28 @@ options strict_smart_pointers = true
 
 module enum_trait shared private
 
+
+
+
+
+
+
 require ast
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/templates
 require daslib/contracts
+
+[expect_any_enum(tt), unused_argument(tt), nodiscard]
+def public each(tt : auto(TT)) : iterator<TT -const -&> {
+    
+    concept_assert(typeinfo is_enum(tt), "expecting 'each(any_enum_value)'")
+    var iter : iterator<TT -const -&>
+    _builtin_make_enum_iterator(iter)
+    unsafe {
+        return <- iter
+    }
+}
 
 [expect_any_enum(arg)]
 def public string(arg) {
@@ -23,7 +40,7 @@ def public string(arg) {
 def public to_enum(ent : auto(EnumT), name : string) : EnumT {
     
     
-    for (e in each_enum(type<EnumT>)) {
+    for (e in type<EnumT>) {
         if ("{e}" == name) {
             return e
         }
@@ -36,7 +53,7 @@ def public to_enum(ent : auto(EnumT), name : string) : EnumT {
 def public to_enum(ent : auto(EnumT), name : string; defaultValue : EnumT) : EnumT {
     
     
-    for (e in each_enum(type<EnumT>)) {
+    for (e in type<EnumT>) {
         if ("{e}" == name) {
             return e
         }
@@ -49,7 +66,7 @@ def public enum_to_table(ent : auto(EnumT)) : table<string, EnumT -const -&> {
     
     
     var tab : table<string, EnumT -const -&>
-    for (e in each_enum(type<EnumT>)) {
+    for (e in type<EnumT>) {
         unsafe(tab["{e}"]) = e
     }
     return <- tab
@@ -65,7 +82,7 @@ class EnumFromStringConstruction : AstEnumerationAnnotation {
         let varName = "_`enum`table`{enu.name}"
         add_global_private_let(compiling_module(), varName, enu.at, qmacro(enum_to_table(type<$t(enumT)>)))
         
-        var inscope enumFn <- qmacro_function("{enu.name}") <| $(src : string) : $t(enumT) {
+        var inscope enumFn <- qmacro_function("{enu.name}") $(src : string) : $t(enumT) {
             if (!key_exists($i(varName), src)) {
                 panic("string_to_enum: enum value '{src}' not found in enum '{typeinfo typename(type<$t(enumT)>)}'")
             }
@@ -76,7 +93,7 @@ class EnumFromStringConstruction : AstEnumerationAnnotation {
         force_generated(enumFn, true)
         compiling_module() |> add_function(enumFn)
         
-        var inscope enumFnDefault <- qmacro_function("{enu.name}") <| $(src : string; defaultValue : $t(enumT)) : $t(enumT) {
+        var inscope enumFnDefault <- qmacro_function("{enu.name}") $(src : string; defaultValue : $t(enumT)) : $t(enumT) {
             return $i(varName)?[src] ?? defaultValue
         }
         enumFnDefault.flags &= ~FunctionFlags.privateFunction

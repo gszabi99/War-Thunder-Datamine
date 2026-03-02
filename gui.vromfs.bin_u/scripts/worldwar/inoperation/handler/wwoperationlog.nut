@@ -16,6 +16,7 @@ let { getWWLogsData, applyWWLogsFilter, saveLastReadWWLogMark,
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { GuiBox } = require("%scripts/guiBox.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 const WW_LOG_MAX_DISPLAY_AMOUNT = 40
@@ -536,7 +537,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onClickBattle(obj) {
     let battleId = obj.battleId
-    let battle = g_world_war.getBattleById(battleId)
+    let battle = getBattleById(battleId)
     if (battle.isValid()) {
       wwEvent("MapSelectedBattle", { battle = battle })
       return

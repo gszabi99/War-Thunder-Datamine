@@ -7,6 +7,13 @@ options strict_smart_pointers = true
 
 module decs shared public
 
+
+
+
+
+
+
+
 require daslib/templates
 
 require daslib/rtti public
@@ -430,24 +437,15 @@ def public debug_dump {
     
     for (arch in decsState.allArchetypes) {
         to_log(LOG_DEBUG, "archtype {arch.hash} : {arch.size}\n")
-        
         for (index in range(arch.size)) {
             to_log(LOG_DEBUG, "\tentity[{index}]\n")
             for (c in arch.components) {
                 if (c.info.dumper != null) {
-                    let dump = build_string() <| $(wr) {
-                        for (x in range(arch.size)) {
-                            if (x != 0) {
-                                wr |> write(", ")
-                            }
-                            let offset = x * c.stride
-                            unsafe {
-                                let txt = invoke(c.info.dumper, addr(c.data[offset]))
-                                wr |> write(txt)
-                            }
-                        }
+                    let offset = index * c.stride
+                    unsafe {
+                        let dump = invoke(c.info.dumper, addr(c.data[offset]))
+                        to_log(LOG_DEBUG, "\t\t{c.name} : {describe(c.info)} = {dump}\n")
                     }
-                    to_log(LOG_DEBUG, "\t\t{c.name} : {describe(c.info)}\n\t\t\t{dump}\n")
                 } else {
                     to_log(LOG_DEBUG, "\t\t{c.name} : {describe(c.info)}\n")
                 }
@@ -642,7 +640,7 @@ def public for_eid_archetype(eid : EntityId implicit; hash : ComponentHash; var 
         return false
     }
     var qi = -1
-    decsState.queryLookup |> get(hash) <| $(ql) {
+    decsState.queryLookup |> get(hash) $(ql) {
         qi = ql - 1
     }
     if (qi == -1) {
@@ -666,7 +664,7 @@ def public for_each_archetype(hash : ComponentHash; var erq : function<() : EcsR
     
     
     var qi = -1
-    decsState.queryLookup |> get(hash) <| $(ql) {
+    decsState.queryLookup |> get(hash) $(ql) {
         qi = ql - 1
     }
     if (qi == -1) {
@@ -686,7 +684,7 @@ def public for_each_archetype_find(hash : ComponentHash; var erq : function<() :
     
     
     var qi = -1
-    decsState.queryLookup |> get(hash) <| $(ql) {
+    decsState.queryLookup |> get(hash) $(ql) {
         qi = ql - 1
     }
     if (qi == -1) {
@@ -706,6 +704,7 @@ def public for_each_archetype_find(hash : ComponentHash; var erq : function<() :
 }
 
 
+[unsafe_operation]
 def decs_array(atype : auto(TT); src : array<uint8>; capacity : int) {
     
     assert(length(src) > 0)
@@ -724,6 +723,7 @@ def decs_array(atype : auto(TT); src : array<uint8>; capacity : int) {
     }
 }
 
+[unsafe_outside_of_for]
 def public get(arch : Archetype; name : string; value : auto(TT)) {
     
     
@@ -759,7 +759,7 @@ def public get(arch : Archetype; name : string; value : auto(TT)) {
     }
 }
 
-[expect_dim(value)]
+[expect_dim(value), unsafe_outside_of_for]
 def public get_ro(arch : Archetype; name : string; value : auto(TT)[]) : array<TT[typeinfo sizeof(value)] -const -& -#> const {
     
     unsafe {
@@ -767,7 +767,7 @@ def public get_ro(arch : Archetype; name : string; value : auto(TT)[]) : array<T
     }
 }
 
-[!expect_dim(value)]
+[!expect_dim(value), unsafe_outside_of_for]
 def public get_ro(arch : Archetype; name : string; value : auto(TT)) : array<TT -const -& -#> const {
     
     unsafe {
@@ -862,7 +862,7 @@ def private update_entity_imm(eid : EntityId; blk : lambda<(eid : EntityId; var 
         }
     } else {
         remove_entity(decsState.allArchetypes[arch_index], eidx)
-        with_archetype(new_ahash) <| $(var narch; idx; isNew) {
+        with_archetype(new_ahash) $(var narch; idx; isNew) {
             if (isNew) {
                 narch |> create_archetype(cmp, idx)
             }
@@ -879,7 +879,7 @@ def private create_entity_imm(eid : EntityId; blk : lambda<(eid : EntityId; var 
     invoke(blk, eid, cmp)
     cmp |> set("eid", eid)       
     var ahash = cmp_archetype_hash(cmp)
-    with_archetype(ahash) <| $(var arch; idx; isNew) {
+    with_archetype(ahash) $(var arch; idx; isNew) {
         if (isNew) {
             arch |> create_archetype(cmp, idx)
         }
@@ -935,6 +935,61 @@ def public commit {
         da.action |> invoke(da)
     }
     delete actions
+}
+
+def public is_alive(eid : EntityId) : bool {
+    
+    
+    if (eid == INVALID_ENTITY_ID) {
+        return false
+    }
+    if (int(eid.id) >= length(decsState.entityLookup)) {
+        return false
+    }
+    return decsState.entityLookup[eid.id].generation == eid.generation
+}
+
+def public entity_count() : int {
+    
+    var total = 0
+    for (arch in decsState.allArchetypes) {
+        total += arch.size
+    }
+    return total
+}
+
+def public get_component(eid : EntityId; name : string; defval : auto(TT)) : TT -const -& -# {
+    
+    
+    
+    
+    if (!is_alive(eid)) {
+        return defval
+    }
+    var lookup = decsState.entityLookup[eid.id]
+    let arch_index = unsafe(decsState.archetypeLookup[lookup.archetype]) - 1
+    var arch & = unsafe(decsState.allArchetypes[arch_index])
+    let cidx = arch.components |> lower_bound(Component(name = name)) <| $(x, y) => x.name < y.name
+    if (cidx < length(arch.components)) {
+        var comp & = unsafe(arch.components[cidx])
+        if (comp.name == name) {
+            unsafe {
+                var cvinfo : TypeInfo const?
+                static_if (typeinfo is_dim(defval)) {
+                    cvinfo = addr(typeinfo rtti_typeinfo(type<TT[typeinfo dim(defval)] -const -& -#>))
+                } else {
+                    cvinfo = addr(typeinfo rtti_typeinfo(type<TT -const -& -#>))
+                }
+                if (comp.info.hash != cvinfo.hash) {
+                    panic("decs: get_component {name} type mismatch, expecting {describe(comp.info)} vs {describe(cvinfo)} MNH={get_mangled_name(cvinfo)} hash={cvinfo.hash} size={cvinfo.size}")
+                }
+                var result : TT -const -& -#
+                memcpy(addr(result), addr(comp.data[lookup.index * comp.stride]), comp.stride)
+                return result
+            }
+        }
+    }
+    return defval
 }
 
 def public get(var cmp : ComponentMap; name : string; var value : auto(TT)) {
@@ -1064,7 +1119,7 @@ def private make_callbacks(var cv : ComponentValue; value : auto(TT)) {
                 }
             } else {
                 arch |> _::serialize(stride)
-                var ssrc : array<TT -const -& -#>
+                var ssrc : array<TT[typeinfo dim(value)] -const -& -#>
                 let size = length(src) / stride
                 unsafe {
                     if (length(src) > 0) {

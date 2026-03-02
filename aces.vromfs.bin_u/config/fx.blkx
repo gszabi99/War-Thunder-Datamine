@@ -1976,6 +1976,11 @@
   "sparks_short_circuit": {
     "fx": "sparks_short_circuit_burst_small_cmps_fx"
   },
+  "sparks_short_circuit_burst_small_cmps_fx": {
+    "fx": "sparks_short_circuit_burst_small_cmps_fx",
+    "sfxPathStudio": "infantry/env_effects",
+    "sfxEvent": "electric_sparks_sign"
+  },
   "explosion_pieces": {
     "fx": "explosion_piece_tail_cmps_fx",
     "sfxPath": "sounds/effects",
@@ -2017,6 +2022,21 @@
   },
   "smokescreen_hydroplane": {
     "fx": "smoke_smokescreen_hydroplane_cmps_fx"
+  },
+  "fire_candle_small": {
+    "fx": "fire_candle_small_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "fire_candle_mid": {
+    "fx": "fire_candle_mid_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "fire_candle_big": {
+    "fx": "fire_candle_big_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
   },
   "flare_fire": {
     "fx": "fires_flare_tail_cmps_fx",
@@ -5212,11 +5232,6 @@
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "firework"
   },
-  "fire_candle": {
-    "fx": "fire_candle_cmps_fx",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
   "fire_torch": {
     "fx": "fire_torch_cmps_fx",
     "sfxPath": "sounds/effects",
@@ -5836,138 +5851,169 @@
     "sfxEvent": "church_bell_hit",
     "soundEnableDistance": 200.0
   },
-  "ad_tree_felling_leaves_green_medium": {
-    "fx": "dust_destruction_tree_green_med_cmps_fx",
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
+  "destr_bush_dead_h01": {
+    "fx": "destr_bush_dead_h01_cmps_fx"
   },
-  "ad_tree_felling_leaves_green_small": {
-    "fx": "dust_destruction_tree_green_small_cmps_fx",
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_tree_felling_small_ground": {
-    "fx": "dust_destruction_tree_ground_small_cmps_fx",
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_tree_felling_medium_ground": {
-    "fx": "dust_destruction_tree_ground_med_cmps_fx",
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
-  },
-  "ad_bush_felling_leaves_green": {
-    "fx": "dust_destruction_bush_cmps_fx",
+  "destr_bush_green_h005": {
+    "fx": "destr_bush_green_h005_cmps_fx",
     "sfxPath": "tanks/effects_tanks",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "collision_bushes",
     "soundEnableDistance": 50.0
   },
-  "ad_bush_felling_leaves_green_med": {
-    "fx": "dust_destruction_bush_med_cmps_fx",
+  "destr_bush_green_h01": {
+    "fx": "destr_bush_green_h01_cmps_fx",
     "sfxPath": "tanks/effects_tanks",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "collision_bushes",
     "soundEnableDistance": 50.0
   },
-  "ad_bush_felling_leaves_green_small": {
-    "fx": "dust_destruction_bush_small_cmps_fx",
+  "destr_bush_green_h02": {
+    "fx": "destr_bush_green_h02_cmps_fx",
     "sfxPath": "tanks/effects_tanks",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "collision_bushes",
     "soundEnableDistance": 50.0
   },
-  "ad_bush_felling_leaves_green_tiny": {
-    "fx": "dust_destruction_bush_tiny_cmps_fx",
+  "destr_bush_sakura_h02": {
+    "fx": "destr_bush_sakura_h02_cmps_fx",
     "sfxPath": "tanks/effects_tanks",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "collision_bushes",
     "soundEnableDistance": 50.0
   },
-  "ad_tree_felling_leaves_sakura_medium": {
-    "fx": "dust_destruction_tree_sakura_cmps_fx",
-    "sfxPath": "tanks/object_crash",
-    "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "tree",
-    "soundEnableDistance": 50.0
+  "destr_bush_palm_h02": {
+    "fx": "destr_bush_palm_h02_cmps_fx"
   },
-  "ad_bush_felling_leaves_sakura": {
-    "fx": "dust_destruction_bush_sakura_cmps_fx",
+  "destr_bush_snow_h02": {
+    "fx": "destr_bush_snow_h02_cmps_fx"
+  },
+  "destr_bush_fall_h02": {
+    "fx": "destr_bush_fall_h02_cmps_fx",
     "sfxPath": "tanks/effects_tanks",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "collision_bushes",
     "soundEnableDistance": 50.0
   },
-  "ad_bush_felling_leaves_fall": {
-    "fx": "dust_destruction_bush_fall_small_cmps_fx",
-    "sfxPath": "tanks/effects_tanks",
-    "sfxPathStudio": "ground/effects",
-    "sfxEvent": "collision_bushes",
-    "soundEnableDistance": 50.0
+  "destr_cactus_h01": {
+    "fx": "destr_cactus_h01_cmps_fx",
+    "sfxPathStudio": "infantry/env_effects/object_crash",
+    "sfxEvent": "cactus"
   },
-  "ad_tree_felling_snow_medium": {
-    "fx": "dust_destruction_tree_snow_med_cmps_fx",
+  "destr_tree_dead_h04": {
+    "fx": "destr_tree_dead_h04_cmps_fx"
+  },
+  "destr_tree_dead_h07": {
+    "fx": "destr_tree_dead_h07_cmps_fx"
+  },
+  "destr_tree_fall_h04": {
+    "fx": "destr_tree_fall_h04_cmps_fx"
+  },
+  "destr_tree_fall_h06": {
+    "fx": "destr_tree_fall_h06_cmps_fx",
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
     "soundEnableDistance": 50.0
   },
-  "ad_tree_felling_snow_small": {
-    "fx": "dust_destruction_tree_snow_small_cmps_fx",
+  "destr_tree_green_h04": {
+    "fx": "destr_tree_green_h04_cmps_fx",
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
     "soundEnableDistance": 50.0
   },
-  "ad_tree_felling_leaves_fall_medium": {
-    "fx": "dust_destruction_tree_fall_small_cmps_fx",
+  "destr_tree_green_h06": {
+    "fx": "destr_tree_green_h06_cmps_fx",
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
     "soundEnableDistance": 50.0
   },
-  "tree_expl": {
-    "fx": "dust_destruction_tree_ground_med_cmps_fx",
-    "sfxEvent": "tree_fall",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects",
-    "soundEnableDistance": 50.0
-  },
-  "ad_palm_falling_h03": {
-    "fx": "dust_destruction_palm_falling_h03_cmps_fx",
+  "destr_tree_green_h10": {
+    "fx": "destr_tree_green_h10_cmps_fx",
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
     "soundEnableDistance": 50.0
   },
-  "ad_palm_falling_h07": {
-    "fx": "dust_destruction_palm_falling_h07_cmps_fx",
+  "destr_tree_ground_h02": {
+    "fx": "destr_tree_ground_h02_cmps_fx",
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
     "soundEnableDistance": 50.0
   },
-  "ad_palm_falling_h15": {
-    "fx": "dust_destruction_palm_falling_h15_cmps_fx",
+  "destr_tree_ground_h03": {
+    "fx": "destr_tree_ground_h03_cmps_fx",
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
     "soundEnableDistance": 50.0
   },
-  "ad_palm_falling_h25": {
-    "fx": "dust_destruction_palm_falling_h25_cmps_fx",
+  "destr_tree_palm_h03": {
+    "fx": "destr_tree_palm_h03_cmps_fx",
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
     "soundEnableDistance": 50.0
+  },
+  "destr_tree_palm_h07": {
+    "fx": "destr_tree_palm_h07_cmps_fx",
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "destr_tree_palm_h15": {
+    "fx": "destr_tree_palm_h15_cmps_fx",
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "destr_tree_palm_h25": {
+    "fx": "destr_tree_palm_h25_cmps_fx",
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "destr_tree_sakura_h10": {
+    "fx": "destr_tree_sakura_h10_cmps_fx",
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "destr_tree_snow_h04": {
+    "fx": "destr_tree_snow_h04_cmps_fx",
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "destr_tree_snow_h06": {
+    "fx": "destr_tree_snow_h06_cmps_fx",
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "tree",
+    "soundEnableDistance": 50.0
+  },
+  "destr_collision_bush_dead": {
+    "fx": "destr_collision_bush_dead_cmps_fx"
+  },
+  "destr_collision_bush_fall": {
+    "fx": "destr_collision_bush_fall_cmps_fx"
+  },
+  "destr_collision_bush_green": {
+    "fx": "destr_collision_bush_green_cmps_fx"
+  },
+  "destr_collision_bush_palm": {
+    "fx": "destr_collision_bush_palm_cmps_fx"
+  },
+  "destr_collision_bush_snow": {
+    "fx": "destr_collision_bush_snow_cmps_fx"
   },
   "ad_wood_small": {
     "fx": "dust_destruction_wood_small_cmps_fx",
@@ -6233,11 +6279,6 @@
     "sfxPathStudio": "infantry/env_effects/object_crash",
     "sfxEvent": "plastic_door"
   },
-  "destr_cactus": {
-    "fx": "destr_cactus_cmps_fx",
-    "sfxPathStudio": "infantry/env_effects/object_crash",
-    "sfxEvent": "cactus"
-  },
   "destr_ceramic_small": {
     "fx": "destr_ceramic_small_cmps_fx",
     "sfxPathStudio": "infantry/env_effects/object_crash",
@@ -6349,39 +6390,6 @@
   "destr_water_med": {
     "fx": "hit_5_7mm_water_cmps_fx"
   },
-  "destr_tree_dead_big": {
-    "fx": "destr_tree_dead_big_cmps_fx"
-  },
-  "destr_tree_dead_med": {
-    "fx": "destr_tree_dead_med_cmps_fx"
-  },
-  "destr_tree_fall_big": {
-    "fx": "destr_tree_fall_big_cmps_fx"
-  },
-  "destr_tree_fall_med": {
-    "fx": "destr_tree_fall_med_cmps_fx"
-  },
-  "destr_tree_green_big": {
-    "fx": "destr_tree_green_big_cmps_fx"
-  },
-  "destr_tree_palm_big": {
-    "fx": "destr_tree_palm_big_cmps_fx"
-  },
-  "destr_bush_dead": {
-    "fx": "destr_bush_dead_cmps_fx"
-  },
-  "destr_bush_green": {
-    "fx": "destr_bush_green_cmps_fx"
-  },
-  "destr_colloision_bush_green": {
-    "fx": "destr_colloision_bush_green_cmps_fx"
-  },
-  "destr_colloision_bush_dead": {
-    "fx": "destr_colloision_bush_dead_cmps_fx"
-  },
-  "destr_colloision_bush_palm": {
-    "fx": "destr_colloision_bush_palm_cmps_fx"
-  },
   "misc_bees": {
     "fx": "misc_bees_cmps_fx",
     "sfxPath": "sounds/effects",
@@ -6392,6 +6400,9 @@
   },
   "misc_pulse_lamp_flare": {
     "fx": "misc_pulse_lamp_flare_yellow_cmps_fx"
+  },
+  "misc_disco_sphere": {
+    "fx": "misc_disco_sphere_cmps_fx"
   },
   "misc_pulse_lamp_flare_white": {
     "fx": "misc_pulse_lamp_flare_white_cmps_fx"
@@ -6436,11 +6447,6 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "firework"
-  },
-  "fire_candle_cake": {
-    "fx": "fire_candle_cake_cmps_fx",
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
   },
   "misc_smoke_greek_fire": {
     "fx": "misc_smoke_greek_fire_cmps_fx"

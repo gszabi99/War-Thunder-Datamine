@@ -4,14 +4,12 @@ from "%scripts/mainConsts.nut" import SEEN
 import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
 
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { FULL_ID_SEPARATOR } = require("%scripts/warbonds/warbondsState.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
+let { getBPStageByShopLevel } = require("%scripts/battlePass/seasonState.nut")
+
 
 let WarbondAward = class {
   id = ""
@@ -98,7 +96,7 @@ let WarbondAward = class {
     if (level == 0)
       return ""
 
-    return g_warbonds_view.getLevelItemMarkUp(this.warbondWeak, level, "0")
+    return g_warbonds_view.getLevelItemMarkUp(this.warbondWeak, level, getBPStageByShopLevel, "0")
   }
 
   function getWarbondMedalImage() {
@@ -119,50 +117,24 @@ let WarbondAward = class {
     return "".concat(res, (costText == "") ? "" : loc("ui/parentheses/space", { text = costText }))
   }
 
-  function buy() {
-    if (!this.isValid())
-      return
-    if (!this.canBuy()) {
-      local reason = loc("warbond/msg/alreadyBoughtMax", { purchase = colorize("userlogColoredText", this.getNameText()) })
-      if (!this.isAvailableForCurrentWarbondShop())
-        reason = this.getNotAvailableForCurrentShopText(false)
-      else if (!this.awardType.canBuy(this.warbondWeak, this.blk))
-        reason = this.getAwardTypeCannotBuyReason(false)
-      else if (!this.isAvailableByShopLevel())
-        reason = this.getRequiredShopLevelText(false)
-      else if (!this.isAvailableByMedalsCount())
-        reason = this.getRequiredMedalsLevelText(false)
-      else if (!this.isAvailableByUnitsRank())
-        reason = this.getRequiredUnitsRankLevel(false)
-      return showInfoMsgBox(reason)
+  function getCantBuyReason() {
+    if (this.canBuy()) {
+      let costWb = this.getCost()
+      let balanceWb = this.warbondWeak.getBalance()
+      return costWb <= balanceWb ? ""
+        : loc("not_enough_currency", {
+            currency = this.warbondWeak.getPriceText(costWb - balanceWb, true, false)
+          })
     }
 
-    let costWb = this.getCost()
-    let balanceWb = this.warbondWeak.getBalance()
-    if (costWb > balanceWb)
-      return showInfoMsgBox(loc("not_enough_currency",
-                                    { currency = this.warbondWeak.getPriceText(costWb - balanceWb, true, false) }))
-
-
-    let msgText = loc("onlineShop/needMoneyQuestion",
-                          { purchase = colorize("userlogColoredText", this.getNameText()),
-                            cost = colorize("activeTextColor", this.getCostText())
-                          })
-    purchaseConfirmation("purchase_ask", msgText, Callback(this._buy, this))
-  }
-
-  function _buy() {
-    if (!this.isValid())
-      return
-
-    let taskId = this.awardType.requestBuy(this.warbondWeak, this.blk)
-    let cb = Callback(this.onBought, this)
-    addTask(taskId, { showProgressBox = true }, cb)
-  }
-
-  function onBought() {
-    updateGamercards()
-    broadcastEvent("WarbondAwardBought", { award = this })
+    return !this.isAvailableForCurrentWarbondShop() ? this.getNotAvailableForCurrentShopText(false)
+      : !this.awardType.canBuy(this.warbondWeak, this.blk) ? this.getAwardTypeCannotBuyReason(false)
+      : !this.isAvailableByShopLevel() ? this.getRequiredShopLevelText(false)
+      : !this.isAvailableByMedalsCount() ? this.getRequiredMedalsLevelText(false)
+      : !this.isAvailableByUnitsRank() ? this.getRequiredUnitsRankLevel(false)
+      : loc("warbond/msg/alreadyBoughtMax", {
+          purchase = colorize("userlogColoredText", this.getNameText())
+        })
   }
 
   function isAllBought() {
@@ -252,7 +224,7 @@ let WarbondAward = class {
   }
 
   function isAvailableByUnitsRank() {
-    if (this.reqMaxUnitRank <= 1 || this.reqMaxUnitRank > MAX_COUNTRY_RANK)
+    if (this.reqMaxUnitRank <= 1 || this.reqMaxUnitRank > maxCountryRank.get())
       return true
 
     return this.reqMaxUnitRank <= get_max_unit_rank()

@@ -14,7 +14,8 @@ balanceText > img {
   background-color:@white;
 }
 
-balanceText > text {
+balanceText > text,
+balanceText > textareaNoTab {
   min-width:0.05@sf;
   pos:@blockInterval, 50%ph-50%h;
   position:relative;
@@ -25,6 +26,10 @@ balanceText > text {
 balanceText > line {
   size:1@gcSeparatorSize, 0.5ph;
   background-color:#383838;
-  pos:pw + 0.5@gcButtonsInterval - 0.5w, 50%ph-50%h;
+  pos:pw+0.5@gcButtonsInterval-0.5w, 50%ph-50%h;
   position:absolute;
+}
+
+balanceText > line[type=left] {
+  pos:-0.5@gcButtonsInterval-0.5w, 50%ph-50%h;
 }

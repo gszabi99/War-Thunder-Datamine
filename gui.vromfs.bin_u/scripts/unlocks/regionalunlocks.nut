@@ -1,12 +1,11 @@
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
 let { APP_ID } = require("app")
 let userstat = require("userstat")
 let DataBlock = require("DataBlock")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
-let { activeUnlocks, receiveRewards } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { curLangShortName } = require("%scripts/langUtils/language.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
@@ -111,21 +110,6 @@ function getRegionalUnlockProgress(unlockId) {
 let getRegionalUnlockTypeById = @(unlockId)
   get_unlock_type(acceptedUnlocksBlk.get()?[unlockId].type)
 
-function claimRegionalUnlockRewards() {
-  let unlocks = unclaimedUnlocks.get().filter(@(u) !(u?.manualOpen ?? false))
-  if (unlocks.len() == 0)
-    return
-
-  let handler = handlersManager.getActiveBaseHandler()
-  let handlerClass = handler?.getclass()
-  if (!handler?.isValid() || handlerClass != gui_handlers.MainMenu)
-    return
-
-  let unlockId = unlocks.findindex(@(_) true)
-  if (unlockId != null)
-    handler.doWhenActive(@() receiveRewards(unlockId))
-}
-
 function acceptRegionalUnlock(unlockName, callback) {
   let userstatRequestData = {
     add_token = true
@@ -142,16 +126,15 @@ function acceptRegionalUnlock(unlockName, callback) {
   })
 }
 
-unclaimedUnlocks.subscribe(@(_) claimRegionalUnlockRewards())
 
 return {
   regionalUnlocks = acceptedUnlocksBlk
   getRegionalUnlockProgress
-  claimRegionalUnlockRewards
   getRegionalUnlockTypeById
   isRegionalUnlockCompleted
   isRegionalUnlockReadyToOpen
   isRegionalUnlock
   acceptRegionalUnlock
   regionalPromos
+  unclaimedUnlocks
 }

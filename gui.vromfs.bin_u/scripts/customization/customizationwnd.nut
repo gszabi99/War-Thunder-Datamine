@@ -53,7 +53,7 @@ let { showedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/p
 let { havePremium } = require("%scripts/user/premium.nut")
 let { needSuggestSkin, saveSeenSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getSkinId, getPlaneBySkinId, getSkinNameBySkinId, approversUnitToPreviewLiveResource
 } = require("%scripts/customization/skinUtils.nut")
 let { clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin,
@@ -70,11 +70,13 @@ let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
 let { getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
+let { decoratorViewTypes, getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { tryShowPeriodicPopupDecalsOnOtherPlayers }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { saveBannedSkins, isSkinBanned, addSkinToBanned, removeSkinFromBanned } = require("%scripts/customization/bannedSkins.nut")
 let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
@@ -560,7 +562,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let currentFlag = get_ship_flag_in_slot(this.unit.name, this.getSelectedBuiltinSkinId())
     let flagName = this.isDefaultFlag(currentFlag) ?
       loc("flags/defaultFlag") :
-      decoratorTypes.FLAGS.getLocName(currentFlag)
+      decoratorViewTypes.FLAGS.getLocName(currentFlag)
 
     let flagNameObj = this.scene.findObject("flag_name")
     flagNameObj.setValue(flagName)
@@ -821,11 +823,12 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getViewButtonTable(slotIdx, decoratorType) {
+    let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
     let canEditDecals = this.isUnitOwn && this.previewSkinId == null
     let slot = this.getSlotInfo(slotIdx, false, decoratorType)
     let decalId = slot.decalId
     let decorator = getDecorator(decalId, decoratorType)
-    let slotRatio = clamp(decoratorType.getRatio(decorator), 0.5, 2)
+    let slotRatio = clamp(viewDecoratorType.getRatio(decorator), 0.5, 2)
     local buttonTooltip = slot.isEmpty ? loc(decoratorType.emptySlotLocId) : ""
     if (!this.isUnitOwn)
       buttonTooltip = "#mainmenu/decalUnitLocked"
@@ -849,7 +852,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         : "achievement"
       unlocked = slot.unlocked && (!decorator || decorator.isUnlocked())
       emptySlot = slot.isEmpty || !decorator
-      image = decoratorType.getImage(decorator)
+      image = viewDecoratorType.getImage(decorator)
       rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
       tooltipId = slot.isEmpty ? null : getTooltipType("DECORATION").getTooltipId(decalId, decoratorType.unlockedItemType,
@@ -2056,7 +2059,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function deleteDecorator(decoratorType, slotId) {
     let slotInfo = this.getSlotInfo(slotId, false, decoratorType)
-    this.msgBox("delete_decal", loc(decoratorType.removeDecoratorLocId, { name = decoratorType.getLocName(slotInfo.decalId) }),
+    let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+    this.msgBox("delete_decal", loc(decoratorType.removeDecoratorLocId, { name = viewDecoratorType.getLocName(slotInfo.decalId) }),
     [
       ["ok", function() {
           decoratorType.removeDecorator(slotInfo.id, true)

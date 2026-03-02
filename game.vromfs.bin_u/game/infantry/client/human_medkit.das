@@ -21,12 +21,13 @@ def human_medkit_update_need_display_heal_tip(info : ParallelUpdateFrameDelayed;
   human_medkit__needDisplayHealTip = needUseMedkitOrRevive && human_inventory__canUseMedkit && heal__continuousInput && (isDowned || isHpLessThanThreshold)
 
 
-[es(tag=gameClient, REQUIRE=hero, track=(human_medkit__needDisplayBleedingTip, human_medkit__needDisplayHealTip))]
+[es(tag=gameClient, REQUIRE=hero, REQUIRE_NOT=isReplayObserved, track=(human_medkit__needDisplayBleedingTip, human_medkit__needDisplayHealTip, human_ladder__attached))]
 def human_medkit_tip_show_es(evt : Event;
                              human_medkit__needDisplayBleedingTip : bool;
-                             human_medkit__needDisplayHealTip : bool)
+                             human_medkit__needDisplayHealTip : bool;
+                             human_ladder__attached : bool)
   using() <| $(var eventData : DataBlock)
-    hud_notify_script(human_medkit__needDisplayHealTip && !human_medkit__needDisplayBleedingTip ? "hint:human_medkit_hint_show" : "hint:human_medkit_hint_hide", eventData)
+    hud_notify_script(human_medkit__needDisplayHealTip && !human_medkit__needDisplayBleedingTip && !human_ladder__attached ? "hint:human_medkit_hint_show" : "hint:human_medkit_hint_hide", eventData)
 
 
 [es(tag=gameClient, REQUIRE=hero)]
@@ -44,8 +45,9 @@ def human_medkit_update_need_display_bleeding_tip(info : ParallelUpdateFrameDela
   let isDotMoreThanThreshold = hitpoints__maxHp > 0.0 && hitpoints__totalDotAmount / hitpoints__maxHp > human_inventory__dotThresholdForBleedingTip
   human_medkit__needDisplayBleedingTip = needUseMedkitOrRevive && human_inventory__canUseMedkit && heal__continuousInput && isDotMoreThanThreshold
 
-[es(tag=gameClient, REQUIRE=hero, track=human_medkit__needDisplayBleedingTip)]
+[es(tag=gameClient, REQUIRE=hero, REQUIRE_NOT=isReplayObserved, track=(human_medkit__needDisplayBleedingTip, human_ladder__attached))]
 def human_bleeding_tip_show_es(evt : Event;
-                               human_medkit__needDisplayBleedingTip : bool)
+                               human_medkit__needDisplayBleedingTip : bool;
+                               human_ladder__attached : bool)
   using() <| $(var eventData : DataBlock)
-    hud_notify_script(human_medkit__needDisplayBleedingTip ? "hint:bleeding_tip_show" : "hint:bleeding_tip_hide", eventData)
+    hud_notify_script(human_medkit__needDisplayBleedingTip && !human_ladder__attached ? "hint:bleeding_tip_show" : "hint:bleeding_tip_hide", eventData)

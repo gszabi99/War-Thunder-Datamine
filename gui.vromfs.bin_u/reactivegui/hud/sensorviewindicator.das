@@ -44,7 +44,7 @@ let guidanceStateNames = fixed_array("", "hud/search", "hud/iog", "hud/iog_dl", 
 
 [export, unused_argument(rdata, rstate)]
 def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-  if !get_app().isSensorViewMode
+  if !get_app().isSensorViewMode || !get_app().showObjectsInSensorViewMode
     return
 
   let hero = get_watched_hero()

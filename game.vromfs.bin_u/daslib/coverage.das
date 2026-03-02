@@ -10,6 +10,12 @@
 options gen2
 module coverage shared public
 
+
+
+
+
+
+
 require ast
 require rtti
 require daslib/ast_boost
@@ -19,19 +25,21 @@ require daslib/macro_boost
 
 
 struct FileCov {
+    
     lines : table<uint; uint>
 
     def insert(x : uint) {
+        
         unsafe(lines[x]) += 1u
     }
 }
 
-var coverageData = new table<string; FileCov>();
-var checkData = new table<string; table<uint>>();
+var coverageData = new table<string; FileCov>(); 
+var checkData = new table<string; table<uint>>(); 
 
 def private single_file_report(name : string) {
     var data : string;
-    (*coverageData) |> get(name) <| $(x) {
+    (*coverageData) |> get(name) $(x) {
         for (k, v in keys(x.lines), values(x.lines)) {
             data += "DA:{k |> int},{v |> int}\n"
         }
@@ -40,6 +48,7 @@ def private single_file_report(name : string) {
 }
 
 def public get_report(name : string = "") : string {
+    
     if (name |> empty) {
         var res = ""
 
@@ -53,18 +62,22 @@ def public get_report(name : string = "") : string {
 }
 
 def public add_coverage(file : string; line : uint) {
+    
     (*coverageData) |> get_with_default(file) <| $(var cov) { cov.lines |> modify(line) <| $(x : uint&) => x + 1u; }
 }
 
 class CoverageMacro : AstVisitor {
+    
     astChanged : bool = false
 
     @do_not_delete func : Function?
     def override preVisitFunction(var fun : FunctionPtr) {
+        
         func = get_ptr(fun)
     }
 
     def override visitExprBlock(var blk : smart_ptr<ExprBlock>) : ExpressionPtr {
+        
         if ((*checkData)[string(blk.at.fileInfo.name)] |> key_exists(blk.at.line)) {
             return <- blk;
         }
@@ -84,9 +97,12 @@ class CoverageMacro : AstVisitor {
     }
 }
 
+
 [infer_macro]
 class CoveragePass : AstPassMacro {
+    
     def override apply(prog : ProgramPtr; mod : Module?) : bool {
+        
         var astVisitor = new CoverageMacro()
         var inscope astVisitorAdapter <- make_visitor(*astVisitor)
         visit(prog, astVisitorAdapter)

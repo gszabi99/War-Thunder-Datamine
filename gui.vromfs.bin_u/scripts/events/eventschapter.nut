@@ -70,7 +70,7 @@ let EventChapter = class {
   }
 }
 
-::EventChaptersManager <- class {
+let EventChaptersManager = class {
   chapters = []
   chapterIndexByName = {}
 
@@ -142,4 +142,8 @@ let EventChapter = class {
     foreach (chapter in this.chapters)
       chapter.sortValid = false
   }
+}
+
+return {
+  EventChaptersManager
 }

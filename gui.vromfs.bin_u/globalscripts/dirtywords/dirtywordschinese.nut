@@ -640,7 +640,7 @@ return {
   badphrases =
   [
     "nmsl"
-    "rnm"
+    { value = "rnm", langs = LANGS_CN }
   ]
 
   forbiddennames = [

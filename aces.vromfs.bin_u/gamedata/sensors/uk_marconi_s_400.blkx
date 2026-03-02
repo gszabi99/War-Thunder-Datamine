@@ -4,7 +4,7 @@
   "transivers": {
     "search": {
       "power": 500.0,
-      "band": 9,
+      "band": 8,
       "rcs": 3.0,
       "range": 12000.0,
       "rangeMax": 12000.0,
@@ -21,7 +21,7 @@
     },
     "track": {
       "power": 500.0,
-      "band": 9,
+      "band": 8,
       "rcs": 3.0,
       "range": 10000.0,
       "rangeMax": 10000.0,
@@ -761,6 +761,8 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
+                "alpha": 0.8,
+                "betta": 0.1,
                 "rateLim": [
                   0.78,
                   0.78
@@ -769,6 +771,8 @@
                 "inertialTimeMax": 1.0
               },
               "distFilter": {
+                "alpha": 0.8,
+                "betta": 0.2,
                 "accelLim": [
                   150.0,
                   150.0

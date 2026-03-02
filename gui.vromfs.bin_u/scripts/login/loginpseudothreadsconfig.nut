@@ -5,7 +5,6 @@ from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
 let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { deferOnce } = require("dagor.workcycle")
 let { steam_is_running } = require("steam")
 let { steam_process_dlc } = require("steam_wt")
 let { getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
@@ -44,14 +43,18 @@ let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
 
-let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null, shouldRestartPseudoThread = true})
+let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null })
 
 function initLoginPseudoThreadsConfig(cb) {
   broadcastEvent("AuthorizeComplete")
   loadScriptsAfterLoginOnce()
   userIdStr.set(get_player_user_id_str())
 
-  loginWTState.initOptionsPseudoThread = [run_reactive_gui].extend(::init_options_steps)
+  
+  
+  
+  let { initOptionsSteps } = require("%scripts/options/initOptions.nut")
+  loginWTState.initOptionsPseudoThread = [run_reactive_gui].extend(initOptionsSteps)
   loginWTState.initOptionsPseudoThread.append(
     function() {
       if (!hasLoginState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED))
@@ -182,36 +185,15 @@ function initLoginPseudoThreadsConfig(cb) {
   startPseudoThread(loginWTState.initOptionsPseudoThread, startLogout)
 }
 
-function startLoginPseudoThread() {
-  handlersManager.loadHandler(gui_handlers.WaitForLoginWnd)
-  startPseudoThread(loginWTState.initOptionsPseudoThread, startLogout)
-}
-
 function clearLoginPseudoThreads() {
   if (loginWTState.initOptionsPseudoThread)
     loginWTState.initOptionsPseudoThread.clear()
 }
 
-function restartLoginPseudoThreads() {
-  if (loginWTState.initOptionsPseudoThread)
-    loginWTState.shouldRestartPseudoThread = true
-}
-
 addListenersWithoutEnv({
-  function GuiSceneCleared(_) {
-    
-    if (!loginWTState.shouldRestartPseudoThread)
-      return
-    loginWTState.shouldRestartPseudoThread = false
-    if (!loginWTState.initOptionsPseudoThread)
-      return
-
-    deferOnce(startLoginPseudoThread)
-  }
   SignOut = @(_) clearLoginPseudoThreads
 }, LOGIN_PROCESS)
 
 return {
   initLoginPseudoThreadsConfig
-  restartLoginPseudoThreads
 }

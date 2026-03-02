@@ -30,184 +30,6 @@
     "Engine": "engine07",
     "gun": "gun_default"
   },
-  "cockpit": {
-    "headPos": [
-      -1.275,
-      1.136,
-      0.0
-    ],
-    "headPosOnShooting": [
-      -1.2,
-      1.136,
-      0.0
-    ],
-    "lightPos": [
-      -0.514297,
-      0.785776,
-      0.046028
-    ],
-    "lightColor": [
-      0.0,
-      0.25,
-      0.11
-    ],
-    "lightRadius": 0.3,
-    "lightPos1": [
-      -0.52218,
-      0.666649,
-      -0.229296
-    ],
-    "lightColor1": [
-      0.0,
-      0.1,
-      0.11
-    ],
-    "lightRadius1": 0.3,
-    "devices": {
-      "speed": [
-        0.0,
-        250.0
-      ],
-      "pedals1": [
-        -1.0,
-        1.0
-      ],
-      "pedals2": [
-        -1.0,
-        1.0
-      ],
-      "stick_ailerons": [
-        -1.8,
-        1.8
-      ],
-      "stick_elevator": [
-        -1.8,
-        1.8
-      ],
-      "throttle": [
-        -1.0,
-        1.8
-      ],
-      "flaps": [
-        0.0,
-        1.0
-      ],
-      "flaps_fixed": false,
-      "gears": [
-        0.0,
-        1.0
-      ],
-      "gear_fixed": true,
-      "compass": [
-        0.0,
-        360.0
-      ],
-      "compass1": [
-        0.0,
-        360.0
-      ],
-      "vario": [
-        -30.0,
-        30.0
-      ],
-      "altitude_10k": [
-        0.0,
-        40000.0
-      ],
-      "altitude_hour": [
-        0.0,
-        10000.0
-      ],
-      "altitude_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude_koef": 3.28,
-      "bank": [
-        -8.0,
-        8.0
-      ],
-      "turn": [
-        -0.23562,
-        0.23562
-      ],
-      "clock_hour": [
-        0.0,
-        24.0
-      ],
-      "clock_min": [
-        0.0,
-        60.0
-      ],
-      "manifold_pressure": [
-        0.334,
-        2.507
-      ],
-      "rpm_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm_min": [
-        0.0,
-        1000.0
-      ],
-      "oil_temperature": [
-        -50.0,
-        150.0
-      ],
-      "oil_pressure": [
-        0.0,
-        150.0
-      ],
-      "head_temperature": [
-        0.0,
-        350.0
-      ],
-      "fuel": [
-        0.0,
-        331.0
-      ],
-      "fuel1": [
-        0.0,
-        331.0
-      ],
-      "fuel2": [
-        0.0,
-        260.0
-      ],
-      "fuel_pressure": [
-        0.0,
-        15.0
-      ],
-      "aviahorizon_pitch": [
-        -30.0,
-        30.0
-      ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "gears_lamp": [
-        0.0,
-        0.0
-      ],
-      "radiator": [
-        0.0,
-        1.0
-      ]
-    },
-    "parts_holes_dmg": {
-      "part": "fuse"
-    },
-    "parts_oil_dmg": {
-      "part": [
-        "engine1",
-        "engine2",
-        "engine3",
-        "engine4"
-      ]
-    }
-  },
   "jetwash": {
     "radius": 10.0,
     "minDist": 50.0,
@@ -1008,8 +830,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1759,8 +1580,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1815,8 +1636,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1871,8 +1692,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2508,6 +2329,209 @@
         "name": "wingcontrol_r_dm"
       }
     ]
+  },
+  "cockpit": {
+    "headPos": [
+      -1.275,
+      1.136,
+      0.0
+    ],
+    "headPosOnShooting": [
+      -1.2,
+      1.136,
+      0.0
+    ],
+    "lightPos": [
+      -0.514297,
+      0.785776,
+      0.046028
+    ],
+    "lightColor": [
+      0.0,
+      0.25,
+      0.11
+    ],
+    "lightRadius": 0.3,
+    "lightPos1": [
+      -0.52218,
+      0.666649,
+      -0.229296
+    ],
+    "lightColor1": [
+      0.0,
+      0.1,
+      0.11
+    ],
+    "lightRadius1": 0.3,
+    "devices": {
+      "speed": [
+        0.0,
+        250.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons": [
+        -1.8,
+        1.8
+      ],
+      "stick_elevator": [
+        -1.8,
+        1.8
+      ],
+      "throttle": [
+        -1.0,
+        1.8
+      ],
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_fixed": false,
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gear_fixed": true,
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "vario": [
+        -30.0,
+        30.0
+      ],
+      "altitude_10k": [
+        0.0,
+        40000.0
+      ],
+      "altitude_hour": [
+        0.0,
+        10000.0
+      ],
+      "altitude_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude_koef": 3.28,
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
+      "clock_hour": [
+        0.0,
+        24.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "manifold_pressure": [
+        0.334,
+        2.507
+      ],
+      "rpm_hour": [
+        0.0,
+        10000.0
+      ],
+      "rpm_min": [
+        0.0,
+        1000.0
+      ],
+      "oil_temperature": [
+        -50.0,
+        150.0
+      ],
+      "oil_pressure": [
+        0.0,
+        150.0
+      ],
+      "head_temperature": [
+        0.0,
+        350.0
+      ],
+      "fuel": [
+        0.0,
+        331.0
+      ],
+      "fuel1": [
+        0.0,
+        331.0
+      ],
+      "fuel2": [
+        0.0,
+        260.0
+      ],
+      "fuel_pressure": [
+        0.0,
+        15.0
+      ],
+      "aviahorizon_pitch": [
+        -30.0,
+        30.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
+      ],
+      "gears_lamp": [
+        0.0,
+        0.0
+      ],
+      "radiator": [
+        0.0,
+        1.0
+      ]
+    },
+    "multifunctionDisplays": {
+      "display": {
+        "textureArea": [
+          0.0,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "page": {
+          "type": "radar",
+          "offset": [
+            270,
+            -275
+          ],
+          "color": [
+            18,
+            146,
+            235,
+            120
+          ],
+          "scale": 2.3,
+          "hideBeam": true
+        }
+      }
+    },
+    "parts_holes_dmg": {
+      "part": "fuse"
+    },
+    "parts_oil_dmg": {
+      "part": [
+        "engine1",
+        "engine2",
+        "engine3",
+        "engine4"
+      ]
+    }
   },
   "commonWeapons": {
     "Weapon": {

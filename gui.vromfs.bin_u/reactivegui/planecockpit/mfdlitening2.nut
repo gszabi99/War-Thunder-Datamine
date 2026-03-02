@@ -24,4 +24,15 @@ let litening2 = @(width, height, font_scale, line_width_scale) function() {
   }
 }
 
-return { litening2, mfdCamLitening2SettingsUpd }
+let reticle = @(width, height, line_width_scale, color) @() {
+  rendObj = ROBJ_DAS_CANVAS
+  size = [width, height]
+  hplace = ALIGN_CENTER
+  script = getDasScriptByPath("%rGui/planeCockpit/mfdLitening2.das")
+  drawFunc = "renderReticle"
+  setupFunc = "setup"
+  lineWidthScale = line_width_scale
+  reticleOnlyColor = color
+}
+
+return { litening2, mfdCamLitening2SettingsUpd, reticle }

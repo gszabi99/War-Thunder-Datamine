@@ -118,6 +118,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   let res = {
     id                        = id
     itemWidth                 = params?.itemWidth ?? 1
+    sizeMultiplier            = params?.sizeMultiplier ?? 1
     posX                      = params?.posX ?? 0
     posY                      = params?.posY ?? 0
     hideStatus                = item?.hideStatus ?? params?.hideStatus ?? false
@@ -362,27 +363,31 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   res.hideBulletsChoiceBlock = hideBullets
   local pairModName = null
   if (!hideBullets) {
-    let guns = bulGroup.guns
-    let { cartridge } = bulGroup.gunInfo
-    let maxVal = bulGroup.maxBulletsCount
-    let curVal = bulGroup.bulletsCount
+    let { groupIndex, guns, gunInfo, maxBulletsCount, bulletsCount, maxCntPerPilon } = bulGroup
+    let { cartridge } = gunInfo
+    let maxVal = maxBulletsCount * maxCntPerPilon
+    let curVal = bulletsCount * maxCntPerPilon
     let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
     let canChangePairBulletsCount = bulGroup.canChangePairBulletsCount()
-    res.bulletsCountText = !isPairBulletsGroup ? getBulletsCountText(curVal, maxVal, unallocated, guns)
-      : canChangePairBulletsCount ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
-      : getFixedBulletsCountText(curVal, guns * cartridge)
+
+    res.bulletsCountText = !isPairBulletsGroup
+      ? getBulletsCountText(curVal, maxVal, unallocated, guns)
+      : canChangePairBulletsCount
+        ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
+        : getFixedBulletsCountText(curVal, guns * cartridge)
+
     res.needSliderButtons = res.needSliderButtons
       && (!isPairBulletsGroup || canChangePairBulletsCount)
     if (res.needSliderButtons) {
-      res.decBulletsLimit = curVal != 0 ? "no" : "yes"
-      res.incBulletsLimit = curVal == maxVal
+      res.decBulletsLimit = bulletsCount != 0 ? "no" : "yes"
+      res.incBulletsLimit = bulletsCount == maxBulletsCount
         || (!isPairBulletsGroup && unallocated == 0) ? "yes" : "no"
     }
-    res.sliderMax = maxVal.tostring()
-    res.sliderValue = curVal
-    res.sliderGroupIdx = bulGroup.groupIndex
-    res.invSliderMax = maxVal.tostring()
-    res.invSliderValue = curVal
+    res.sliderMax = maxBulletsCount.tostring()
+    res.sliderValue = bulletsCount
+    res.sliderGroupIdx = groupIndex
+    res.invSliderMax = maxBulletsCount.tostring()
+    res.invSliderValue = bulletsCount
     let linkedBulGroup = !isPairBulletsGroup || !canChangePairBulletsCount ? null
       : bulletsManager.getLinkedBulletsGroup(bulGroup)
     if (linkedBulGroup != null) {
@@ -442,6 +447,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
 
     local altBtnText = ""
     local altBtnTooltip = ""
+    local altButtonStyle = "purchase"
     if (statusTbl.goldUnlockable && !((params?.researchMode ?? false) && flushExp > 0))
       altBtnText = getItemUnlockCost(unit, item).tostring()
     if (altBtnText != "")
@@ -455,6 +461,8 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     else if (statusTbl.amount && statusTbl.maxAmount > 1 && statusTbl.amount < statusTbl.maxAmount
       && !res.isBundle) {
         altBtnText = loc("mainmenu/btnBuy")
+        if (!item?.costGold)
+          altButtonStyle = "common"
     } else if (visualItem.type == weaponsItem.modification && isOwn) {
       if (statusTbl.curUpgrade < statusTbl.maxUpgrade
           && getInventoryList(itemType.MOD_UPGRADE).len())
@@ -472,6 +480,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     res.altBtnTooltip = altBtnTooltip
     res.altBtnBuyText = altBtnText
     res.actionBtnStyle <- actionBtnStyle
+    res.altButtonStyle <- altButtonStyle
 
     res.actionHoldDummyCanShow = (btnText == "" && res.canShowGoToModTutorialBtn == "no")
       ? "yes"
@@ -633,6 +642,7 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
   } = viewParams
   let altBtn = itemObj.findObject("altActionBtn")
   altBtn.canShow = altBtnCanShow
+  altBtn.visualStyle = viewParams.altButtonStyle
   if (altBtnCanShow == "yes") {
     if (altBtnTooltip != "")
       altBtn.tooltip = altBtnTooltip
@@ -663,7 +673,9 @@ function getSkinModView(id, unit, item, pos) {
   let { decor, canDo, progress } = item
   return {
     id
-    itemImg                = decor.decoratorType.getImage(decor)
+    itemWidth              = 1
+    sizeMultiplier         = 1
+    itemImg                = decor.decoratorViewType.getImage(decor)
     nameText               = "#skins"
     isTooltipByHold        = showConsoleButtons.get()
     tooltipId              = getTooltipType("UNLOCK_SHORT").getTooltipId(decor.unlockBlk.id)
@@ -711,6 +723,7 @@ function createModBundle(id, unit, itemsList, itemsType, holderObj, handler, par
 
   let guiScene = holderObj.getScene()
   let { maxItemsInColumn = 5, createItemLayoutFunc = createModItemLayout } = params
+  let sizeMultiplier = params?.bundleItemsSizeMult ?? 1
   let bundleItem = {
       name = id
       type = weaponsItem.bundle
@@ -741,26 +754,31 @@ function createModBundle(id, unit, itemsList, itemsType, holderObj, handler, par
   let itemsObj = hoverObj.findObject("items_field")
   local itemsData = ""
   foreach (idx, item in itemsList)
-    itemsData = "\n".concat(itemsData, createItemLayoutFunc.call(handler, $"{id}_{idx}", unit, item,
-      itemsType, { posX = (idx / rows).tointeger(), posY = idx % rows, supportUnitName = params?.supportUnitName }).itemLayout)
+    itemsData = "\n".concat(itemsData, createItemLayoutFunc.call(handler, $"{id}_{idx}", unit, item, itemsType,
+      {
+        posX = ((idx / rows).tointeger())
+        posY = (idx % rows)
+        sizeMultiplier
+        supportUnitName = params?.supportUnitName
+      }).itemLayout)
   if (itemsData != "")
     this.guiScene.appendWithBlk(itemsObj, itemsData, this)
 
-  itemsObj.width =$"{cols}@modCellWidth"
-  itemsObj.height =$"{rows}@modCellHeight"
+  itemsObj.width =$"{cols*sizeMultiplier}@modCellWidth"
+  itemsObj.height =$"{rows * sizeMultiplier}@modCellHeight"
 
-  hoverObj.width =$"{cols}@modCellWidth"
+  hoverObj.width =$"{cols*sizeMultiplier}@modCellWidth"
   let rootSize = guiScene.getRoot().getSize()
   let rightSide = bundleObj.getPosRC()[0] < 0.7 * rootSize[0] 
   if (rightSide)
-    hoverObj.pos = "0.5pw-0.5@modCellWidth, ph"
+    hoverObj.pos = $"0.5pw-{0.5*sizeMultiplier}@modCellWidth, ph"
   else
-    hoverObj.pos = "0.5pw+0.5@modCellWidth-w, ph"
+    hoverObj.pos = $"0.5pw+{0.5*sizeMultiplier}@modCellWidth-w, ph"
 
   let cellObj = params?.cellSizeObj || bundleObj
   let cellSize = cellObj.getSize()
   let extraHeight = to_pixels("2@modBundlePopupBgPadH + 1@modBundlePopupAdditionalBtnsHeight")
-  hoverObj["height-end"] = (cellSize[1] * rows + extraHeight).tointeger().tostring()
+  hoverObj["height-end"] = (cellSize[1] * rows * sizeMultiplier + extraHeight).tointeger().tostring()
   return bundleItem
 }
 
@@ -770,40 +788,43 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
   if (!show || !holderObj)
     return
 
-  let guns = bulGroup.guns
-  let { cartridge = 1 } = bulGroup.gunInfo
-  let maxVal = bulGroup.maxBulletsCount
-  let curVal = bulGroup.bulletsCount
+  let { groupIndex, guns, gunInfo, maxBulletsCount, bulletsCount, maxCntPerPilon } = bulGroup
+  let { cartridge = 1 } = gunInfo
+  let maxVal = maxBulletsCount * maxCntPerPilon
+  let curVal = bulletsCount * maxCntPerPilon
   let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
   let isPairBulletsGroup = bulGroup.isPairBulletsGroup()
   let canChangePairBulletsCount = bulGroup.canChangePairBulletsCount()
 
   let textObj = holderObj.findObject("bulletsCountText")
   if (checkObj(textObj))
-    textObj.setValue(!isPairBulletsGroup ? getBulletsCountText(curVal, maxVal, unallocated, guns)
-      : canChangePairBulletsCount ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
-      : getFixedBulletsCountText(curVal, guns * cartridge))
+    textObj.setValue(!isPairBulletsGroup
+      ? getBulletsCountText(curVal, maxVal, unallocated * maxCntPerPilon, guns)
+      : canChangePairBulletsCount
+        ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
+        : getFixedBulletsCountText(curVal, guns * cartridge))
 
   let btnDec = holderObj.findObject("buttonDec")
   if (checkObj(btnDec))
-    btnDec.bulletsLimit = curVal != 0 ? "no" : "yes"
+    btnDec.bulletsLimit = bulletsCount != 0 ? "no" : "yes"
 
   let btnIncr = holderObj.findObject("buttonInc")
   if (checkObj(btnIncr))
-    btnIncr.bulletsLimit = curVal == maxVal
+    btnIncr.bulletsLimit = bulletsCount == maxBulletsCount
       || (!isPairBulletsGroup && unallocated == 0) ? "yes" : "no"
 
   let slidObj = holderObj.findObject("bulletsSlider")
   if (checkObj(slidObj)) {
-    slidObj.max = maxVal.tostring()
-    slidObj.setValue(curVal)
+    slidObj.max = maxBulletsCount.tostring()
+    slidObj.setValue(bulletsCount)
   }
+
   let invSlidObj = holderObj.findObject("invisBulletsSlider")
   if (checkObj(invSlidObj)) {
-    invSlidObj.groupIdx = bulGroup.groupIndex
-    invSlidObj.max = maxVal.tostring()
-    if (invSlidObj.getValue() != curVal)
-      invSlidObj.setValue(curVal)
+    invSlidObj.groupIdx = groupIndex
+    invSlidObj.max = maxBulletsCount.tostring()
+    if (invSlidObj.getValue() != bulletsCount)
+      invSlidObj.setValue(bulletsCount)
   }
 }
 

@@ -45,6 +45,7 @@ struct PropStorage
   fontScale : float
   lineWidthScale : float
   borderless : bool
+  reticleOnlyColor : E3DCOLOR
 
 
 class Component : Canvas
@@ -106,7 +107,7 @@ class Component : Canvas
     defaultFontSize = roundi(float(defaultFontSize) * props.fontScale)
     setFontSize(defaultFontSize)
 
-    isArmed = !(fmw.isOnGround || fm.currentAlt < fmw.minAltitudeForDropShells)
+    isArmed = !(fmw.isOnGround || fm.input.currentAlt < fmw.minAltitudeForDropShells)
     isWeaponSelectorOn = app.flightControlMode.isWeaponSelectorOn
     totalTime = float(get_total_time())
     var posSize = float4(0.0)
@@ -217,7 +218,7 @@ class Component : Canvas
   def drawRalt()
     return if abs(fmw.roll) > 45.0 || abs(fmw.tangage) > 45.0
 
-    let ralt = fmw.fm.currentAlt * metrToFeet
+    let ralt = fmw.fm.input.currentAlt * metrToFeet
     setFontSize(roundi(float(defaultFontSize) * 0.8))
     drawStrAnchored(float2(0.42, -0.4), "{floori(ralt / 10.0) * 10}", AnchorHorz.Right, AnchorVert.Top)
     setFontSize(defaultFontSize)
@@ -350,6 +351,16 @@ class Component : Canvas
     drawReticle()
     restoreViewport()
 
+  def drawReticleOnly()
+    return if !isValid
+
+    setFullCanvasViewport()
+
+    setColor(props.reticleOnlyColor)
+    drawReticle()
+
+    restoreViewport()
+
 
 [export]
 def render(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
@@ -362,3 +373,8 @@ def setup(props : Properties&; var propStorage : PropStorage&)
   propStorage.fontScale = getFloat(props, "fontScale", 1.0)
   propStorage.lineWidthScale = getFloat(props, "lineWidthScale", 1.0)
   propStorage.borderless = getBool(props, "borderless", false)
+  propStorage.reticleOnlyColor = getColor(props, "reticleOnlyColor", Colors().white)
+
+[export]
+def renderReticle(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
+  new Component(guiCtx, rdata, rstate, props).drawReticleOnly()

@@ -28,6 +28,7 @@ let kgToPound = 2.205
 let TRANSPARENT = E3DCOLOR(0x00000000)
 let BLACK = E3DCOLOR(0xFF000000)
 let WHITE = E3DCOLOR(0xFFFFFFFF)
+let YELLOW = E3DCOLOR(0xFFFFFF00)
 
 let shared
   FT_TO_M = 0.3048
@@ -42,6 +43,8 @@ let shared
   KTS_TO_MPS = KTS_TO_KPH * KPH_TO_MPS
   FPM_TO_MPS = FT_TO_M / 60.0
   MPS_TO_FPM = 1.0 / FPM_TO_MPS
+  INHG_TO_PA = 3386.389
+  PA_TO_INHG = 1.0 / 3386.389
 
 let radarModeNames = fixed_array<string>(
   "hud/standby",
@@ -153,6 +156,13 @@ let radarModeNames = fixed_array<string>(
   "hud/IRST ACM",
   "hud/IRST HMD",
   "hud/IRST track",
+
+  "hud/ESM standby",
+  "hud/ESM search",
+  "hud/ESM acquisition",
+  "hud/ESM ACM",
+  "hud/ESM HMD",
+  "hud/ESM track",
 
   "hud/air_search",
   "hud/ground_search",

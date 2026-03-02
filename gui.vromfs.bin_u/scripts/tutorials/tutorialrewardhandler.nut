@@ -7,7 +7,7 @@ let { checkTutorialsList, tutorialRewardData, clearTutorialRewardData
 } = require("%scripts/tutorials/tutorialsData.nut")
 let { reqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
+let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
 let { getMoneyFromDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")

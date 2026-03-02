@@ -1,7 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-
 let { g_chat } = require("%scripts/chat/chat.nut")
-let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -81,6 +79,10 @@ let BaseInvite = class {
 
   function afterScriptsReload(inviteBeforeReload) {
     this.receivedTime = inviteBeforeReload.receivedTime
+    this.isSeen = inviteBeforeReload.isSeen
+    this.isDelayed = inviteBeforeReload.isDelayed
+    this.isAutoAccepted = inviteBeforeReload.isAutoAccepted
+    this.isRejected = inviteBeforeReload.isRejected
   }
 
   function updateCustomParams(_params, _initial = false) {
@@ -176,7 +178,6 @@ let BaseInvite = class {
 
   function showInvitePopup() {
     if (!this.isVisible()
-        || isInReloading()
         || get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY) == false
         || !this.needShowPopup
       )

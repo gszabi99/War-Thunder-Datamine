@@ -990,9 +990,6 @@ function enableOrdersWithoutDagui() {
   subscribe_handler(eventToHandlerMap, DEFAULT_HANDLER)
 }
 
-::cross_call_api.active_order_request_update <- @() updateActiveOrder()
-::cross_call_api.active_order_enable <- @() enableOrdersWithoutDagui()
-
 
 
 function on_order_result_received(data) {
@@ -1007,7 +1004,9 @@ function on_order_result_received(data) {
   }
 }
 
-eventbus_subscribe("on_order_result_received", @(p) on_order_result_received(p))
+eventbus_subscribe("on_order_result_received", on_order_result_received)
+eventbus_subscribe("active_order_request_update", @(_) updateActiveOrder())
+eventbus_subscribe("active_order_enable", @(_) enableOrdersWithoutDagui())
 
 return {
   collectOrdersToActivate

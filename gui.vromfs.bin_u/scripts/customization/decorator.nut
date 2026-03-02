@@ -17,8 +17,10 @@ let { get_decal_tex } = require("unitCustomization")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/decoratorBaseType.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
@@ -27,6 +29,7 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
   id = ""
   blk = null
   decoratorType = null
+  decoratorViewType = null
   unlockId = ""
   unlockBlk = null
   isLive = null
@@ -54,7 +57,8 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
   isToStringForDebug = true
 
   constructor(blkOrId, decType) {
-    this.decoratorType = decType
+    this.decoratorType = getTypeByUnlockedItemType(decType.unlockedItemType)
+    this.decoratorViewType = getViewTypeByUnlockedItemType(decType.unlockedItemType)
     if (u.isString(blkOrId))
       this.id = blkOrId
     else if (u.isDataBlock(blkOrId)) {
@@ -69,7 +73,7 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
 
     this.maxSurfaceAngle = this.blk?.maxSurfaceAngle ?? 180
 
-    this.aspect_ratio = this.blk ? this.decoratorType.getRatio(this.blk) : 1
+    this.aspect_ratio = this.blk ? this.decoratorViewType.getRatio(this.blk) : 1
 
     let countriesBlk = this.blk?.countries
     if (countriesBlk != null) {
@@ -103,16 +107,16 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
   }
 
   function getLocalizedName() {
-    return this.decoratorType.getLocName(this.id)
+    return this.decoratorViewType.getLocName(this.id)
   }
 
   function getName() {
-    let name = this.decoratorType.getLocName(this.id)
+    let name = this.decoratorViewType.getLocName(this.id)
     return this.isRare() ? colorize(this.getRarityColor(), name) : name
   }
 
   function getDesc() {
-    return this.decoratorType.getLocDesc(this.id)
+    return this.decoratorViewType.getLocDesc(this.id)
   }
 
   function isUnlocked() {
@@ -163,7 +167,7 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
   }
 
   function getTypeDesc() {
-    return this.decoratorType.getTypeDesc(this)
+    return this.decoratorViewType.getTypeDesc(this)
   }
 
   function getRestrictionsDesc() {
@@ -231,7 +235,7 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
   }
 
   function getSmallIcon() {
-    return this.decoratorType.getSmallIcon(this)
+    return this.decoratorViewType.getSmallIcon(this)
   }
 
   function canBuyUnlock(unit) {
@@ -327,7 +331,7 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
   }
 
   function getLocParamsDesc() {
-    return this.decoratorType.getLocParamsDesc(this)
+    return this.decoratorViewType.getLocParamsDesc(this)
   }
 
   function getIsLive() {

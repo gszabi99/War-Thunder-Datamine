@@ -238,9 +238,11 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       m_aircraft = unitNameForWeapons.get()
       m_weapon = get_gui_option(USEROPT_WEAPONS)
     }
-    if ((m_aircraft != "") && !(this.gt & GT_VERSUS))
+    if ((m_aircraft != "") && !(this.gt & GT_VERSUS)) {
+      let unit = getAircraftByName(m_aircraft)
       res.append("".concat(loc("options/aircraft"), loc("ui/colon"), " ",
-        getUnitName(m_aircraft), "; ", getWeaponNameText(m_aircraft, null, m_weapon, ", ")))
+        getUnitName(m_aircraft), "; ", getWeaponNameText(unit, null, m_weapon, ", ")))
+    }
 
     res.append(getMissionLocaltionAndConditionText(blk))
     return "\n".join(res, true)

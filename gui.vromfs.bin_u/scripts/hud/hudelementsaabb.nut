@@ -103,7 +103,7 @@ let aabbList = {
   hitCamera = @() getHitCameraAABB()
   multiplayerScore = @() getAabbObjFromHud("getMultiplayerScoreObj")
   dmPanel = getDamagePannelAabb
-  tankDebuffs = @() getAabbObjFromHud("getTankDebufsObj")
+  tankDebuffs = @() dmPanelStatesAabb.get()
   aircraftInstruments = getAircraftInstrumentsAabb
   actionBarItem = getActionBarItemAabb
 }

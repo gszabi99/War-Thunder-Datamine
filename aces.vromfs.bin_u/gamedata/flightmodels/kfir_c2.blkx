@@ -1079,8 +1079,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1139,8 +1139,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1199,8 +1199,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1259,8 +1259,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1319,8 +1319,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1379,8 +1379,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1439,8 +1439,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1499,8 +1499,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2444,31 +2444,6 @@
       ]
     }
   },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump_small",
-    "burningFx": "fuel_dump_fire_small",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": "emtr_fuel_dump"
-    }
-  },
   "sensors": {
     "sensor": [
       {
@@ -2745,8 +2720,8 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_large_group",
-            "name": "lau_3a_ffar_mighty_mouse_x2_left_wing",
+            "iconType": "nar_ap_large_group_x3",
+            "name": "lau_3a_ffar_mighty_mouse_x3",
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "ShowNodes": {
               "node": [
@@ -2756,14 +2731,14 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
               "emitter": "pylon_ter_iaf_001",
               "external": true
             }
           },
           {
-            "iconType": "nar_ap_special_group",
-            "name": "lau_10a_zuni_wafar_mk32_x2_left_wing",
+            "iconType": "nar_ap_special_group_x3",
+            "name": "lau_10a_zuni_wafar_mk32_x3",
             "reqModification": "f4c_zuni",
             "ShowNodes": {
               "node": [
@@ -2773,7 +2748,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/ter_lau_10a_ffar_mighty_mouse.blk",
               "emitter": "pylon_ter_iaf_001",
               "external": true
             }
@@ -3064,6 +3039,40 @@
                 "machLimit": 1.01
               }
             ]
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "lau_3a_ffar_mighty_mouse_left_fuse",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "pylon_5f_001_bomb_001",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau_10a_zuni_wafar_mk32_left_fuse",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "pylon_5f_001_bomb_001",
+              "external": true
+            }
           }
         ]
       },
@@ -3252,6 +3261,40 @@
                 "machLimit": 1.01
               }
             ]
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "lau_3a_ffar_mighty_mouse_right_fuse",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "pylon_5f_002_bomb_001",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau_10a_zuni_wafar_mk32_right_fuse",
+            "reqModification": "f4c_zuni",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "pylon_5f_002_bomb_001",
+              "external": true
+            }
           }
         ]
       },
@@ -3261,8 +3304,8 @@
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_large_group",
-            "name": "lau_3a_ffar_mighty_mouse_x2_right_wing",
+            "iconType": "nar_ap_large_group_x3",
+            "name": "lau_3a_ffar_mighty_mouse_x3",
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "ShowNodes": {
               "node": [
@@ -3272,14 +3315,14 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse_x2_right_wing.blk",
+              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
               "emitter": "pylon_ter_iaf_002",
               "external": true
             }
           },
           {
-            "iconType": "nar_ap_special_group",
-            "name": "lau_10a_zuni_wafar_mk32_x2_right_wing",
+            "iconType": "nar_ap_special_group_x3",
+            "name": "lau_10a_zuni_wafar_mk32_x3",
             "reqModification": "f4c_zuni",
             "ShowNodes": {
               "node": [
@@ -3289,7 +3332,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32_x2_right_wing.blk",
+              "blk": "gameData/Weapons/containers/ter_lau_10a_ffar_mighty_mouse.blk",
               "emitter": "pylon_ter_iaf_002",
               "external": true
             }
@@ -4088,44 +4131,6 @@
     "seat": "seat_01",
     "fxEmitter": "blister",
     "fxType": "catapult_expl_ejection"
-  },
-  "cutting": {
-    "emtr_break_wing2_l_from": [
-      0.109118,
-      -0.497302,
-      2.9308
-    ],
-    "emtr_break_wing2_l_to": [
-      0.109118,
-      -0.497302,
-      3.36908
-    ],
-    "emtr_break_wing2_r_from": [
-      0.109118,
-      -0.497304,
-      -2.9308
-    ],
-    "emtr_break_wing2_r_to": [
-      0.109118,
-      -0.497304,
-      -3.36908
-    ],
-    "emtr_break_wing_tail": [
-      -2.68527,
-      0.0,
-      0.0
-    ],
-    "finCut": true,
-    "emtr_break_tail_from": [
-      -3.24806,
-      -0.000480384,
-      -2.58566e-16
-    ],
-    "emtr_break_tail_to": [
-      -4.93668,
-      -0.000480384,
-      -2.58566e-16
-    ]
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
@@ -5000,6 +5005,69 @@
         "endPositionNoiseStrength": 0.0,
         "endPositionNoiseSpeed": 1.0
       }
+    ]
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": "emtr_fuel_dump"
+    }
+  },
+  "cutting": {
+    "emtr_break_wing2_l_from": [
+      0.109118,
+      -0.497302,
+      2.9308
+    ],
+    "emtr_break_wing2_l_to": [
+      0.109118,
+      -0.497302,
+      3.36908
+    ],
+    "emtr_break_wing2_r_from": [
+      0.109118,
+      -0.497304,
+      -2.9308
+    ],
+    "emtr_break_wing2_r_to": [
+      0.109118,
+      -0.497304,
+      -3.36908
+    ],
+    "emtr_break_wing_tail": [
+      -2.68527,
+      0.0,
+      0.0
+    ],
+    "finCut": true,
+    "emtr_break_tail_from": [
+      -3.24806,
+      -0.000480384,
+      -2.58566e-16
+    ],
+    "emtr_break_tail_to": [
+      -4.93668,
+      -0.000480384,
+      -2.58566e-16
     ]
   }
 }

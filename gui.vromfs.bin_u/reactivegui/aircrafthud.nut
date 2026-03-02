@@ -6,7 +6,7 @@ let { planeHmdElem } = require("%rGui/planeHmd.nut")
 let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
 let opticAtgmSight = require("%rGui/opticAtgmSight.nut")
 let laserAtgmSight = require("%rGui/laserAtgmSight.nut")
-let targetingPodSight = require("%rGui/targetingPodSight.nut")
+let { aircraftTargetingPodSight } = require("%rGui/targetingPodSight.nut")
 let { leftPanel } = require("%rGui/airHudLeftPanel.nut")
 let { OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible } = require("%rGui/planeState/planeWeaponState.nut")
 let {
@@ -14,14 +14,14 @@ let {
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
   HudColor, AlertColorHigh, IsBomberViewHudVisible, HudParamColor,
   isBombSightActivated, isAAMSightActivated, isRocketSightActivated,
-  isCanonSightActivated, isTurretSightActivated, isParamTableActivated, IsRangefinderEnabled } = require("%rGui/airState.nut")
+  isCanonSightActivated, isTurretSightActivated, isParamTableActivated } = require("%rGui/airState.nut")
 let aamAim = require("%rGui/rocketAamAim.nut")
 let agmAim = require("%rGui/agmAim.nut")
 let gbuAim = require("%rGui/gbuAim.nut")
-let { paramsTable, compassElem, lockSight, rangeFinder, agmLaunchZoneTps }  = require("%rGui/airHudElems.nut")
+let { paramsTable, agmLaunchZoneTps, compassElem }  = require("%rGui/airHudElems.nut")
 let {
   aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight,
-  laserPointComponent, bombSightComponent, laserDesignatorStatusComponent } = require("%rGui/airSight.nut")
+  laserPointComponent, bombSightComponent } = require("%rGui/airSight.nut")
 let { radarElement, twsElement } = require("%rGui/airHudComponents.nut")
 let { IsMlwsLwsHudVisible, IsTwsDamaged } = require("%rGui/twsState.nut")
 let { crosshairColorOpt } = require("%rGui/options/options.nut")
@@ -30,9 +30,10 @@ let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
-let compassSize = [hdpx(420), hdpx(40)]
 let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
 let { isCollapsedRadarInReplay, IsRadarDamaged } = require("%rGui/radarState.nut")
+
+let compassSize = [hdpx(420), hdpx(40)]
 
 let paramsTableWidthAircraft = hdpx(600)
 let arbiterParamsTableWidthAircraft = hdpx(200)
@@ -42,16 +43,14 @@ let aircraftParamsTablePos = Computed(@() [max(bw.get(), sw(20) - hdpx(660)), ma
 
 let aircraftArbiterParamsTablePos = Computed(@() [max(bw.get(), sw(17.5)), sh(12)])
 
-let radarSize = sh(28)
+let radarSize = [sh(33), sh(66)]
 let radarPosWatched = Computed(@()
-  isPlayingReplay.get() ?
-  [
+  isPlayingReplay.get() ? [
     bw.get() + rw.get() - fsh(30) - sh(33),
     bh.get() + rh.get() - sh(33)
-  ] :
-  [
-    bw.get() + rw.get() - radarSize - 2 * maxLabelWidth,
-    bh.get() + 0.45 * rh.get() - maxLabelHeight
+  ] : [
+    bw.get() + rw.get() - radarSize[0] - 2 * maxLabelWidth,
+    bh.get() + 0.45 * rh.get() - maxLabelHeight - radarSize[1] + sh(33)
   ]
 )
 
@@ -116,19 +115,6 @@ function mkAircraftMainHud() {
   }
 }
 
-let aircraftSightHud = @() {
-  watch = [TargetingPodSightVisible, IsRangefinderEnabled]
-  children = TargetingPodSightVisible.get() ?
-    [
-      targetingPodSight(sw(100), sh(100))
-      laserDesignatorStatusComponent(HudColor, sw(50), sh(38))
-      IsRangefinderEnabled.get() ? rangeFinder(HudColor, sw(50), sh(59)) : null
-      lockSight(crosshairColorOpt, hdpx(150), hdpx(100), sw(50), sh(50))
-    ]
-    : null
-}
-
-
 function aircraftGunnerHud() {
   return {
     watch = [IsGunnerHudVisible, isParamTableActivated, isTurretSightActivated, isPlayingReplay, isSpectatorMode]
@@ -190,9 +176,12 @@ let aircraftHud = {
   valign = ALIGN_TOP
   size = const [sw(100), sh(100)]
   children = @() {
-    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, isCollapsedRadarInReplay, IsRadarDamaged, IsTwsDamaged]
+    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, isCollapsedRadarInReplay, IsRadarDamaged, IsTwsDamaged, radarPosWatched, TargetingPodSightVisible]
     size = flex()
-    children = [
+    children = TargetingPodSightVisible.get() ? [
+      aircraftTargetingPodSight(sw(100), sh(100))
+      actionBarTopPanel
+    ] : [
       mkAircraftMainHud()
       aircraftGunnerHud
       aircraftPilotHud
@@ -206,10 +195,11 @@ let aircraftHud = {
       weaponHud
       laserPointComponent(HudColor)
       LaserAtgmSightVisible.get() ? laserAtgmSight(sw(100), sh(100)) : null
-      aircraftSightHud
       !LaserAtgmSightVisible.get() ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
       planeHmdElem
-      !isCollapsedRadarInReplay.get() ? radarHud(sh(33), sh(33), radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {}, true) : null
+      !isCollapsedRadarInReplay.get() ? radarHud(radarSize[0], radarSize[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
+        magnifiedIndicator = true
+      }, true) : null
       radarIndication(HudColor)
       sensorViewIndicators
     ]

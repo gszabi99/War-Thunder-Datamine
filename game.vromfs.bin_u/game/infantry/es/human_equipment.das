@@ -16,9 +16,7 @@ struct EventOnEquipmentUnequiped
   equipmentEid : EntityId
 
 
-[es(tag=server, on_appear, REQUIRE=deadEntity)]
-def destroy_weapons_on_human_die(evt : Event;
-                                 human_weap__gunEids : EidList)
+def private destroy_weapons(human_weap__gunEids : EidList)
   for weapEid in human_weap__gunEids
     if !!weapEid
       query() <| $ [es(REQUIRE=weaponMod)] (eid : EntityId;
@@ -26,6 +24,54 @@ def destroy_weapons_on_human_die(evt : Event;
         if weapEid == animchar_attach__attachedTo
           destroyEntity(eid)
       destroyEntity(weapEid)
+
+
+[es(tag=server, on_appear, REQUIRE=deadEntity)]
+def destroy_weapons_on_human_die(evt : Event;
+                                 reanimation__available : bool;
+                                 human_weap__gunEids : EidList)
+  if !reanimation__available
+    destroy_weapons(human_weap__gunEids)
+
+
+[es(tag=server)]
+def desrtoy_weapons_on_reeal_death_es(evt : EventDiedNotReanimated;
+                                      human_weap__gunEids : EidList)
+  destroy_weapons(human_weap__gunEids)
+
+
+[es(tag=gameClient, on_appear, REQUIRE=deadEntity)]
+def hide_weapons_on_human_die_es(evt : Event;
+                                 reanimation__available : bool;
+                                 human_weap__gunEids : EidList)
+  if reanimation__available
+    for weapEid in human_weap__gunEids
+      if !!weapEid
+        query() <| $ [es(REQUIRE=weaponMod)] (animchar_attach__attachedTo : EntityId;
+                                              var gun__wasVisible : bool&;
+                                              var gun__visible : bool&)
+          if weapEid == animchar_attach__attachedTo
+            gun__wasVisible = gun__visible
+            gun__visible = false
+        query(weapEid) <| $ [es] (var gun__wasVisible : bool&;
+                                  var gun__visible : bool&)
+          gun__wasVisible = gun__visible
+          gun__visible = false
+
+
+[es(tag=gameClient, on_event=EventOnEntityReanimated)]
+def unhide_weapons_on_reanimation_es(evt : Event;
+                                     human_weap__gunEids : EidList)
+  for weapEid in human_weap__gunEids
+    if !!weapEid
+      query() <| $ [es(REQUIRE=weaponMod)] (animchar_attach__attachedTo : EntityId;
+                                            gun__wasVisible : bool;
+                                            var gun__visible : bool&)
+        if weapEid == animchar_attach__attachedTo
+          gun__visible = gun__wasVisible
+      query(weapEid) <| $ [es] (gun__wasVisible : bool;
+                                var gun__visible : bool&)
+        gun__visible = gun__wasVisible
 
 
 [es(on_appear)]

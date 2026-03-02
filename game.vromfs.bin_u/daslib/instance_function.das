@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module instance_function shared private
 
+
+
+
+
+
+
 require ast
 require rtti
 require daslib/ast_boost

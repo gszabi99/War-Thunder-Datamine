@@ -1034,43 +1034,54 @@
           }
         }
       ],
-      "selector": {
-        "selectStrategy": "ordered",
-        "name": "taxi_and_takeoff",
-        "reaction": [
-          {
-            "event": "groundAhead"
+      "selector": [
+        {
+          "selectStrategy": "ordered",
+          "name": "taxi_and_takeoff",
+          "reaction": [
+            {
+              "event": "groundAhead"
+            },
+            {
+              "event": "collisionAhead"
+            },
+            {
+              "event": "outsideBattleField"
+            }
+          ],
+          "sequencer": {
+            "isOnAirfield": {},
+            "findClosestAirfield": {},
+            "waitForAirfieldClearance": {},
+            "taxiOnAirfield": {},
+            "takeoff": {}
           },
-          {
-            "event": "collisionAhead"
+          "waitOnLand": {}
+        },
+        {
+          "selectStrategy": "ordered",
+          "sequencer": {
+            "findCaptureZone": {
+              "zoneType": "enemy",
+              "varName": "zoneToCapture"
+            },
+            "setCaptureZoneAsDestination": {
+              "varName": "zoneToCapture"
+            },
+            "flyToPos": {
+              "speed": 350.0,
+              "dist": 350.0,
+              "minAlt": 200.0
+            }
           },
-          {
-            "event": "outsideBattleField"
+          "orbitHere": {
+            "speed": 260.0,
+            "rollFactor": 0.2,
+            "alt": 1500.0,
+            "maxTime": 60.0
           }
-        ],
-        "sequencer": {
-          "isOnAirfield": {},
-          "findClosestAirfield": {},
-          "waitForAirfieldClearance": {},
-          "taxiOnAirfield": {},
-          "takeoff": {}
-        },
-        "waitOnLand": {}
-      },
-      "sequencer": {
-        "findCaptureZone": {
-          "zoneType": "enemy",
-          "varName": "zoneToCapture"
-        },
-        "setCaptureZoneAsDestination": {
-          "varName": "zoneToCapture"
-        },
-        "flyToPos": {
-          "speed": 350.0,
-          "dist": 350.0,
-          "minAlt": 200.0
         }
-      }
+      ]
     },
     {
       "name": "rearmingBot",

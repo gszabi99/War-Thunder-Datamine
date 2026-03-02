@@ -8,12 +8,12 @@ let DataBlock  = require("DataBlock")
 
 let { getLocalLanguage } = require("language")
 
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 let { saveJson } = require("%sqstd/json.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 
-let { getCachedDecoratorsListByType } = require("%scripts/customization/decorCache.nut")
+let { getCachedDecoratorsListByType } = require("%scripts/customization/decoratorGetters.nut")
 
 function genAllSkinLocksToBlkCurLang(path) {
   let fullPath = $"{path}/skins{getLocalLanguage()}.blk"

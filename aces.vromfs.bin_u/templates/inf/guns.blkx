@@ -37,6 +37,7 @@
     "gunAttachable__slotName": "grenade_launcher",
     "gunAttachable__gunSlotName": "grenade_launcher",
     "gun__shootNodeName": "bullet",
+    "gun__launchVerticalAngle": 0.0,
     "gun__magnification": 3.0,
     "gun__statName": "launcher",
     "gun__shotFreq": 0.8,
@@ -64,13 +65,13 @@
     "gun_deviation__maxDeviation": 15.0,
     "gun__length": 0.4,
     "gun__reloadTime": 3.0,
-    "gun_shell_ejection__timeMult": 0.35,
     "gun__recoilAmount": 0.2,
     "gun__recoilDirAmount": 0.9,
     "gun__recoilDir": 0.0,
     "gun__visualRecoilMult": 1.0,
     "weapon_mod__activateTime": 3.0,
     "weapon_mod__deactivateTime": 3.0,
+    "gun__numAmmoOnInit": 0,
     "gunAttachable:tag": {},
     "gun__firingModes:array": {
       "mode:object": {
@@ -115,6 +116,7 @@
     "gun_anim__singleReloadStateVarId": -1,
     "gun_anim__haveProjectileInChamberVarId": -1,
     "gun_anim__curNumAmmoVarId": -1,
+    "gun_anim__nextMagNumAmmoVarId": -1,
     "gun_anim__isSecondMagVarId": -1,
     "gun_anim__weapModStateVarId": -1,
     "gun_anim__isTriggerPulledVarId": -1,
@@ -130,6 +132,19 @@
     "gun_anim__reloadStyles:list<i>": {},
     "gun_anim__reloadStates:list<i>": {},
     "gun_anim__weapModStates:list<i>": {}
+  },
+  "gun_with_dynamic_rate_of_fire": {
+    "gun__customMinTimeBetweenShots": 0.0,
+    "gun__originalTimeBetweenShots": -1.0,
+    "gun__firingParamsTimeBetweenShotsMults:list<r>": {}
+  },
+  "gun_with_dynamic_recoil": {
+    "_tags": "gameClient",
+    "gun_dynamic_recoil__burstIndex": 0,
+    "gun_dynamic_recoil__lastShotTime": 0.0,
+    "gun_dynamic_recoil__recoilMultForCurrentShot": 1.0,
+    "gun_dynamic_recoil__timeMultToResetRecoilMult": 1.0,
+    "gun__firingParamsRecoilMults:list<r>": {}
   },
   "render_icon_settings": {
     "hud_action_bar:object": {
@@ -213,6 +228,7 @@
     "gun__salt": 9102,
     "gun__melee": true,
     "gun__visible": true,
+    "gun__wasVisible": false,
     "slot_attach__visible": false,
     "animchar_render__enabled": false,
     "weap__sprintLerpFactor": 1.5,
@@ -422,6 +438,7 @@
     "gun__sightsDistance": 0.1,
     "gun__shootNodeName": "bullet",
     "gun__visible": true,
+    "gun__wasVisible": false,
     "gun__customSkin": "",
     "gun__magnification": 1.5,
     "gun__projectileTemplate": "bullet_projectile",
@@ -576,7 +593,8 @@
       "gun_sound_with_animchar",
       "gun_with_additional_head_angles",
       "gun_anim",
-      "gun_reload"
+      "gun_reload",
+      "gun_length_spine_compensation"
     ],
     "gun_sound__prefix": "infantry/",
     "weap__sprintLerpFactor": 1.0,
@@ -700,7 +718,7 @@
     ],
     "gun__adsSpeedMult": 0.3,
     "gun__inertialMass": 9.0,
-    "gun__recoilControlMult": 0.5,
+    "gun__recoilControlMult": 0.35,
     "gun__crawlRecoilMult": 0.2,
     "weapon__aimPointRelativePos": 0.2,
     "gun_shell_ejection__templateName": "7_62x51_ejected_shell",
@@ -1636,7 +1654,7 @@
       "_tags": "render",
       "gun_smoke_fx__amount": 0.0,
       "gun_smoke_fx__incAmountPerShot": 0.04,
-      "gun_smoke_fx__halfLife": 2.0,
+      "gun_smoke_fx__halfLife": 1.0,
       "gun_smoke_fx__thresholdDistSq": 30.0,
       "gun_smoke_fx__fxEids:list<eid>": {},
       "gun_smoke_fx__nodeIds:list<i>": {},

@@ -288,10 +288,7 @@
       }
     },
     "tws": {
-      "stateInit": [
-        "search",
-        "search"
-      ],
+      "stateInit": "search",
       "transitions": {
         "scan": {
           "event": "update",
@@ -343,7 +340,15 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": {
+            "addTargetOfInterestCandidate": {},
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "matchTargets": {
+          "event": "scanFinished",
+          "actions": {
+            "matchTargetsOfInterest": {
               "limit": 1500,
               "timeMin": 2.0,
               "posGateTimeInitial": [
@@ -354,7 +359,7 @@
               "posGateMaxTime": 2.0,
               "posGateRange": [
                 0.0,
-                1000.0
+                300.0
               ],
               "dopplerSpeedGateMaxTime": 2.0,
               "dopplerSpeedGateRange": [
@@ -383,9 +388,7 @@
                 "dt": 0.0208,
                 "limTimeOut": 12.0
               }
-            },
-            "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {}
+            }
           }
         },
         "switchSelectedTarget": {

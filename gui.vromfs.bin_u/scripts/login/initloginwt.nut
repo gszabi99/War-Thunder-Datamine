@@ -1,17 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-
-foreach (fn in [
-                 "loginWnd.nut"
-                 "steamLogin.nut"
-                 "epicLogin.nut"
-                 "samsungLogin.nut"
-                 "ps4Login.nut"
-                 "xboxOneLogin.nut"
-                 "dmmLogin.nut"
-                 "waitForLoginWnd.nut"
-                 "updaterModal.nut"
-                 "loginWT.nut"
-               ])
-  loadOnce($"%scripts/login/{fn}")
+require("%scripts/login/loginWnd.nut")
+require("%scripts/login/steamLogin.nut")
+require("%scripts/login/epicLogin.nut")
+require("%scripts/login/samsungLogin.nut")
+require("%scripts/login/ps4Login.nut")
+require("%scripts/login/xboxOneLogin.nut")
+require("%scripts/login/dmmLogin.nut")
+require("%scripts/login/waitForLoginWnd.nut")
+require("%scripts/login/updaterModal.nut")
+require("%scripts/login/loginWT.nut")

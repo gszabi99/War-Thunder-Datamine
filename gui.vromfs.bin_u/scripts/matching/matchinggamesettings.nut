@@ -5,6 +5,7 @@ let { OPERATION_COMPLETE } = require("matching.errors")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let logGM = log_with_prefix("[Matching_Game_Setting] ")
 
@@ -15,7 +16,7 @@ local isFetching = false
 local failedFetches = 0
 
 function fetchMatchingGameSetting() {
-  if (isFetching || !is_online_available())
+  if (isFetching || !is_online_available() || disableNetwork)
     return
 
   isFetching = true
@@ -37,6 +38,8 @@ function fetchMatchingGameSetting() {
     { timeout = 60 })
 }
 
+fetchMatchingGameSetting()
+
 function onMatchingConnect() {
   isFetching = false
   failedFetches = 0
@@ -45,7 +48,6 @@ function onMatchingConnect() {
 
 addListenersWithoutEnv({
   MatchingConnect = @(_) onMatchingConnect()
-  ScriptsReloaded = @(_) fetchMatchingGameSetting()
   SignOut         = @(_) matchingGameSettings.set({})
 })
 

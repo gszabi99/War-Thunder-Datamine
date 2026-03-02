@@ -21,11 +21,10 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let alwaysClearOnEvents = [
   "SignOut",
   "LoginComplete",
-  "ScriptsReloaded",
 ]
 
-let NullKey = persist("NullKey", @() {})
-let NoArg = persist("NoArg", @() {})
+let NullKey = {}
+let NoArg = {}
 
 function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
   let cache = {}

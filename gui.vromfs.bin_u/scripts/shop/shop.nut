@@ -20,7 +20,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
-let { buy, research, canSpendGoldOnUnitWithPopup, buyUnit } = require("%scripts/unit/unitActions.nut")
+let { buy, research, buyUnit } = require("%scripts/unit/unitActions.nut")
 let { topMenuHandler, topMenuShopActive, unitToShowInShop } = require("%scripts/mainmenu/topMenuStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -51,7 +51,7 @@ let { getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken, isUnitResearched
 } = require("%scripts/unit/unitStatus.nut")
-let { isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { isUnitGift, isUnitBought, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { checkForResearch, updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
@@ -61,7 +61,7 @@ let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
@@ -71,10 +71,11 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
+let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
 let { haveAnyUnitDiscount, getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 let { generateDiscountInfo } = require("%scripts/discounts/discountUtils.nut")
 let { unitNews, openUnitNews, openUnitEventNews } = require("%scripts/changelog/changeLogState.nut")
+let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 const tabsWidthStyles = ["normal", "short"]
 
@@ -1187,8 +1188,9 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
   function updateBoughtVehiclesCount() {
-    let bought = array(MAX_COUNTRY_RANK + 1, 0)
-    let total = array(MAX_COUNTRY_RANK + 1, 0)
+    let maxRank = maxCountryRank.get()
+    let bought = array(maxRank + 1, 0)
+    let total = array(maxRank + 1, 0)
     let pageUnitsType = this.getCurPageEsUnitType()
 
     foreach (unit in getAllUnits())
@@ -1809,6 +1811,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }.__update(ovr)
 
   function onUnitCellDragStart(obj) {
+    destroyModalInfo()
     let unit = getAircraftByName(obj?.id)
     if (!unit)
       return
@@ -2059,7 +2062,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let unitName = unit.name
     this.selectCellByUnitName(unitName)
-    gui_modal_convertExp(unit)
+    openConvertExpModalWnd(unit)
   }
 
   function onEventUnitResearch(params) {

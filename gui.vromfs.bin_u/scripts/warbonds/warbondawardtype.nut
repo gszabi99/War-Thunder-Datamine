@@ -2,22 +2,23 @@ from "%scripts/dagui_natives.nut" import player_have_attachable, player_have_dec
 from "%scripts/dagui_library.nut" import *
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { isHardTaskIncomplete } = require("%scripts/unlocks/battleTasks.nut")
+let { isHardTaskIncomplete } = require("%scripts/unlocks/battleTasksState.nut")
 let DataBlock = require("DataBlock")
 let { Balance } = require("%scripts/money.nut")
 let { format } = require("string")
 let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getFullUnlockDescByName, getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getFullUnlockDescByName, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getUnitTypeText, image_for_air, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getFullWPIcon } = require("%scripts/items/prizesView.nut")
+let { getFullWPIcon } = require("%scripts/items/prizeUtils.nut")
+let { decoratorViewTypes } = require("%scripts/customization/decoratorViewType.nut")
 
 function requestBuyByName(warbond, blk) {
   let reqBlk = DataBlock()
@@ -220,7 +221,7 @@ enums.addTypes(warBondAwardType, {
     getLayeredImage = function(blk, _warbond) {
       let decorator = getDecorator(blk.name, decoratorTypes.DECALS)
       if (decorator)
-        return LayersIcon.getIconData(null, decoratorTypes.DECALS.getImage(decorator))
+        return LayersIcon.getIconData(null, decoratorViewTypes.DECALS.getImage(decorator))
       return LayersIcon.getIconData(decoratorTypes.DECALS.defaultStyle)
     }
     getTooltipId = @(blk, warbond) getTooltipType("DECORATION").getTooltipId(blk?.name ?? "",
@@ -252,7 +253,7 @@ enums.addTypes(warBondAwardType, {
     getLayeredImage = function(blk, _warbond) {
       let decorator = getDecorator(blk?.name ?? "", decoratorTypes.ATTACHABLES)
       if (decorator)
-        return LayersIcon.getIconData(null, decoratorTypes.ATTACHABLES.getImage(decorator))
+        return LayersIcon.getIconData(null, decoratorViewTypes.ATTACHABLES.getImage(decorator))
       return LayersIcon.getIconData(decoratorTypes.ATTACHABLES.defaultStyle)
     }
     getTooltipId = @(blk, warbond) getTooltipType("DECORATION").getTooltipId(blk?.name ?? "",

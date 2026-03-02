@@ -86,6 +86,10 @@ struct CmdPostPhysUpdate
   isForReal : bool
 
 [cpp_event(broadcast)]
+struct EventOnPlayerMatchingInfo
+  userId : uint64
+
+[cpp_event(broadcast)]
 struct EventOnPlayerConnected
   userId : uint64
 
@@ -393,6 +397,11 @@ struct CmdLaunchShell
 
 [cpp_event(unicast)]
 struct CmdLaunchProjectile
+  launchDesc : LaunchDesc
+  gunEid : EntityId
+
+[cpp_event(unicast)]
+struct CmdLaunchProjectileSpawner
   launchDesc : LaunchDesc
   gunEid : EntityId
 

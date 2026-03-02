@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import SEEN
-from "dagor.workcycle" import setTimeout, clearTimer
+from "dagor.workcycle" import setTimeout, clearTimer, deferOnce
 
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.ITEMS_SHOP)
@@ -84,7 +84,7 @@ function updateTrophyList() {
 
 addListenersWithoutEnv({
   SignOut = @(_) clearTimers()
-  ItemsShopUpdate = @(_) updateTrophyList()
+  ItemsShopUpdate = @(_) deferOnce(updateTrophyList)
   UpdateTrophiesVisibility = @(_) resetShowTimer()
   UpdateTrophyUnseenIcons = @(_) resetAlarmTimer()
 })

@@ -323,7 +323,7 @@ function agmTrackZoneComponent(colorWatch) {
       watch = [IsAgmEmpty, IsATGMOutOfTrackerSector, NoLosToATGM, AtgmTrackerRadius, colorWatch]
       rendObj = ROBJ_VECTOR_CANVAS
       size = [width, height]
-      opacity = AtgmTrackerRadius.get() > 0.0 ? 100 : 0
+      opacity = AtgmTrackerRadius.get() > 0.0 ? 1 : 0
       color = colorWatch.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = hdpx(LINE_WIDTH)
@@ -373,7 +373,7 @@ function laserDesignatorComponent(colorWatch, posX, posY) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     watch = IsLaserDesignatorEnabled
-    opacity = IsLaserDesignatorEnabled.get() ? 100 : 0
+    opacity = IsLaserDesignatorEnabled.get() ? 1 : 0
     size = SIZE_TO_CONTENT
     children = laserDesignator(width, height)
   }

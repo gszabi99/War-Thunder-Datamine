@@ -1058,7 +1058,7 @@ enumsAddTypes(g_hud_messages, {
         return
       if (!isKillerCardData(messageData))
         return
-      let killerId = get_mplayer_by_id(messageData.playerId).userId
+      let killerId = get_mplayer_by_id(messageData.playerId)?.userId ?? -1
       let killerUserInfo = getUserInfo(killerId)
       this.killerCardView = getKillerCardView(messageData, killerUserInfo)
     }

@@ -101,6 +101,6 @@ function cut(stream, maxLen) {
 }
 
 return {
-  shortValue    = @(value, maxLen = 256) cut(dumpValue(value),    maxLen).tostring()
-  shortKeyValue = @(value, maxLen = 512) cut(dumpKeyValue(value), maxLen).tostring()
+  shortValue    = @(value, maxLen = 256) cut(dumpValue(value),    maxLen).as_string()
+  shortKeyValue = @(value, maxLen = 512) cut(dumpKeyValue(value), maxLen).as_string()
 }

@@ -21,7 +21,7 @@ let { getLoadedTransport } = require("%scripts/worldWar/inOperation/wwTransportM
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { ArmyFlags } = require("worldwarConst")
 let { getIcon } = require("%scripts/worldWar/wwArmyIconOverride.nut")
-let { getArtilleryUnits, getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarStates.nut")
+let { getArtilleryUnits, getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let fullWidthColunsCount = 4
 let partialWidthColunsCount = 3

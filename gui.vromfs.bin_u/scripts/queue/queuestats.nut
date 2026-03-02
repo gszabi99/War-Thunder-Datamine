@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -144,7 +144,8 @@ class QueueStats {
   function getPlayersCountOfAllRanks(cluster = null) {
     local res = 0
     let teamQueueTable = this.getQueueTableByTeam("teamA", cluster)
-    for (local i = 1; i <= MAX_COUNTRY_RANK; i++)
+    let maxRank = maxCountryRank.get()
+    for (local i = 1; i <= maxRank; i++)
       res += teamQueueTable?[i.tostring()] ?? 0
 
     return res
@@ -278,7 +279,8 @@ class QueueStats {
 
   function gatherCountsTblByRanks(statsByCountries) {
     let res = {playersCount = 0, ownRankCount = 0}
-    for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
+    let maxRank = maxCountryRank.get()
+    for (local i = 1; i <= maxRank; i++) {
       let count = this.getCountByRank(statsByCountries, i)
       if (i == this.myRankInQueue)
         res.ownRankCount = count
@@ -294,7 +296,8 @@ class QueueStats {
         foreach (country, countryStats in stats[teamName]) {
           if (!(country in dataByCountries)) {
             dataByCountries[country] <- {}
-            for (local i = 1; i <= MAX_COUNTRY_RANK; i++)
+            let maxRank = maxCountryRank.get()
+            for (local i = 1; i <= maxRank; i++)
               dataByCountries[country][i.tostring()] <- 0
           }
           this.mergeCountryStats(dataByCountries[country], countryStats)

@@ -24,6 +24,7 @@ let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { updateClanContacts } = require("%scripts/clans/clanActions.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { canSquad } = require("%scripts/squads/squadUtils.nut")
+let { openChatPrivate } = require("%scripts/chat/openChat.nut")
 
 function guiStartSearchSquadPlayer(_ = null) {
   if (!g_squad_manager.canInviteMember()) {
@@ -123,7 +124,7 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
   function onPlayerMsg(obj) {
     this.updateCurPlayer(obj)
     if (this.curPlayer)
-      ::openChatPrivate(this.curPlayer.name, this)
+      openChatPrivate(this.curPlayer.name, this)
   }
 
   function isContactsWindowActive() {

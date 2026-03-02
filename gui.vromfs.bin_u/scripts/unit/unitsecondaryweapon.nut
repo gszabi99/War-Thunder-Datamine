@@ -1,16 +1,20 @@
 from "%scripts/dagui_library.nut" import *
-let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
+let { getSinglePresetView } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, getPresetsList } = require("%scripts/weaponry/weaponryInfo.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function getSelectedPresetMarkup(unit) {
-  let weaponryByPresetInfo = getWeaponryByPresetInfo(unit, null)
   let selectedPresetName = getLastWeapon(unit.name)
-
-  local preset = weaponryByPresetInfo.presets.findvalue(@(w) w.name == selectedPresetName)
-  if (preset == null)
-    preset = weaponryByPresetInfo.presets[0]
+  local preset = getSinglePresetView(unit, selectedPresetName)
+  if (preset == null) {
+    let defaultPresetName = getPresetsList(unit, null)?[0].name
+    if (defaultPresetName)
+      preset = getSinglePresetView(unit, defaultPresetName)
+    if (preset == null)
+      return null
+  }
 
   let weaponryItem = getWeaponItemViewParams($"item_0", unit, preset.weaponPreset, {}).__update({
     tiersView = preset.tiersView.map(@(t) {
@@ -20,7 +24,8 @@ function getSelectedPresetMarkup(unit) {
     })
   })
 
-  return handyman.renderCached("%gui/unitInfo/weaponryPreset.tpl", { weaponryItem })
+  return handyman.renderCached("%gui/unitInfo/weaponryPreset.tpl",
+    { weaponryItem, isTooltipByHold = showConsoleButtons.get() })
 }
 
 return {

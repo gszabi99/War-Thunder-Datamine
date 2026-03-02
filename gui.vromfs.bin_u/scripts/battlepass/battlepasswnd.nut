@@ -9,7 +9,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { seasonLevel, season, seasonMainPrizesData } = require("%scripts/battlePass/seasonState.nut")
 let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("%scripts/battlePass/seasonStages.nut")
-let { receiveRewards, unlockProgress, activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { unlockProgress, activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { receiveRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId
 } = require("%scripts/battlePass/challenges.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
@@ -39,8 +40,8 @@ let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nu
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { isWarbondsShopAvailable, openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -534,7 +535,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
   function onViewBattleTaskRequirements() {
     let awardsList = []
     foreach (id in this.getCurrentConfig()?.names ?? [])
-      awardsList.append(build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
+      awardsList.append(buildLogUnlockData(buildConditionsConfig(getUnlockById(id))))
 
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }

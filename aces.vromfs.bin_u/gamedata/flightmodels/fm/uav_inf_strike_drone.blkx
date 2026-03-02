@@ -79,7 +79,7 @@
   "ArcadeHelpersSensitivity": 1.0,
   "AllowModsToChangeLongidutialBalance": false,
   "ArcadeRollCorrectionMultiplier": 100.0,
-  "RollLeveling": true,
+  "RollLeveling": false,
   "ArcadeMaxRollCoeff": 1.0,
   "ArcadeYawModificators": [
     1.0,
@@ -199,30 +199,30 @@
       "Slats": 0.0
     },
     "WingPlane": {
-      "Span": 3.8,
+      "Span": 2.2,
       "SweptAngle": 28.0,
       "TaperRatio": 1.8,
       "Angle": 0.0,
-      "VAngle": 0.0,
+      "VAngle": -1.0,
       "UseSpinLoss": true,
       "SpinCdloss": 0.05,
       "SpinClloss": 0.05,
       "DownwashType": 2,
       "DownwashCoeff": 0.1,
       "Areas": {
-        "LeftIn": 0.27,
-        "LeftMid": 0.27,
-        "LeftOut": 0.27,
-        "RightIn": 0.27,
-        "RightMid": 0.27,
-        "RightOut": 0.27,
-        "Aileron": 0.27
+        "LeftIn": 0.15,
+        "LeftMid": 0.15,
+        "LeftOut": 0.15,
+        "RightIn": 0.15,
+        "RightMid": 0.15,
+        "RightOut": 0.15,
+        "Aileron": 0.05
       },
       "Arm": {
         "Arm": [
           0.1,
           0.0,
-          0.4
+          0.5
         ],
         "SineAosMultiplier": 0.2,
         "VFocusMultiplier": 0.0,
@@ -390,7 +390,7 @@
         0.0
       ],
       "Areas": {
-        "Main": 0.02
+        "Main": 0.3
       },
       "Polar": {
         "OswaldsEfficiencyNumber": 0.4,
@@ -454,7 +454,7 @@
       "Span": 1.0,
       "Angle": 0.5,
       "Arm": [
-        -2.5,
+        -1.0,
         0.0,
         0.2
       ],
@@ -526,15 +526,15 @@
       "Span": 0.5,
       "Angle": 0.0,
       "Arm": [
-        -2.5,
+        -0.5,
         0.0,
         0.0
       ],
       "FlowInertia": 0.1,
       "SlipStreamDistance": 1000.7,
       "Areas": {
-        "Main": 0.12,
-        "Rudder": 0.12
+        "Main": 0.1,
+        "Rudder": 0.1
       },
       "Polar": {
         "OswaldsEfficiencyNumber": 0.4,
@@ -591,13 +591,13 @@
         "alphaCritLow": -22.0,
         "ClCritHigh": 0.9,
         "ClCritLow": -0.9,
-        "CdMin": 0.015
+        "CdMin": 0.005
       }
     },
     "Ailerons": {
       "AnglesRoll": [
         20.0,
-        12.0
+        20.0
       ],
       "AnglesMultiplierRoll": [
         1.0,
@@ -630,8 +630,8 @@
         0.0
       ],
       "SensitivityCd": [
-        0.015,
-        0.0027
+        0.02,
+        -0.02
       ],
       "SensitivityWingAoa": 0.0
     },
@@ -704,7 +704,7 @@
         0.0,
         1.0
       ],
-      "Sensitivity": 0.3,
+      "Sensitivity": 0.7,
       "SensitivityMultiplier": 1.0,
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [
@@ -1716,6 +1716,77 @@
           600.12,
           131.78
         ]
+      ]
+    }
+  },
+  "Instructor": {
+    "critMult": [
+      -1.0,
+      -1.0
+    ],
+    "limitOverload": true,
+    "overloadMult": [
+      0.85,
+      0.92,
+      0.85,
+      0.92
+    ],
+    "overloadTimeRange": [
+      0.9,
+      1.0
+    ],
+    "overloadTimeRate": 0.45,
+    "limitLoadfactor": false,
+    "loadFactorLimit": [
+      -5.0,
+      12.0
+    ],
+    "constPitchDerrCoeffMultByClLinearRatio": [
+      0.0,
+      1.0,
+      0.01,
+      2.0
+    ],
+    "MouseAim": {
+      "forceAdvanced": true,
+      "preciseRotStopDetection": false,
+      "localDirYawPitchRotYZMax0": 0.125,
+      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.9,
+      "rollAndPullUpWishDirYMin": -0.7,
+      "rollandPullUpWishDirMin": 0.3,
+      "allowedRollRateCoeff": [
+        0.17,
+        0.7,
+        0.4,
+        1.5
+      ],
+      "rollTimeMult": 0.24,
+      "rollPidKpMult": 1.25,
+      "dirXZFactorPitch0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorPitchMin": 0.02,
+      "dirXZFactorYaw0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorYawMin": 0.02,
+      "dirXZToRollRateLim": [
+        0.0,
+        0.0
+      ],
+      "rollRateLimToDirXZFactorMin": [
+        0.7,
+        1000000.0
+      ],
+      "rollRateLimToDirXZFactorMax": [
+        0.7,
+        1000000.0
       ]
     }
   },

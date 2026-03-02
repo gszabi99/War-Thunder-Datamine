@@ -2,7 +2,6 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let datablock = require("DataBlock")
@@ -15,30 +14,27 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let psnStoreItem = require("%scripts/onlineShop/psnStoreItem.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
-let persistent = {
+let PS4ShopData = {
   categoriesData = datablock() 
   itemsList = {} 
 }
-registerPersistentData("PS4ShopData", persistent, ["categoriesData", "itemsList"])
-
-
 
 local isFinishedUpdateItems = false 
 local invalidateSeenList = false
 let visibleSeenIds = []
 
-let getShopItem = @(id) persistent.itemsList?[id]
+let getShopItem = @(id) PS4ShopData.itemsList?[id]
 
 let canUseIngameShop = @() isPlatformSony && hasFeature("PS4IngameShop")
 
 local haveItemDiscount = null
 
 
-let onFinishCollectData = function(v_categoriesData = null) {
+function onFinishCollectData(v_categoriesData = null) {
   if (!canUseIngameShop())
     return
 
-  persistent.categoriesData.setFrom(v_categoriesData)
+  PS4ShopData.categoriesData.setFrom(v_categoriesData)
   isFinishedUpdateItems = true
   haveItemDiscount = null
 
@@ -49,25 +45,25 @@ let onFinishCollectData = function(v_categoriesData = null) {
   invalidateSeenList = false
 
   local itemIndex = 0
-  foreach (_category, categoryInfo in persistent.categoriesData)
+  foreach (_category, categoryInfo in PS4ShopData.categoriesData)
     foreach (label, itemInfo in (categoryInfo?.links ?? datablock()))
-      persistent.itemsList[label] <- psnStoreItem(itemInfo, itemIndex++)
+      PS4ShopData.itemsList[label] <- psnStoreItem(itemInfo, itemIndex++)
 
   
   log("PSN: Shop Data: Finish update items info")
   broadcastEvent("Ps4ShopDataUpdated", { isLoadingInProgress = false })
 }
 
-let filterFunc = function(label) {
+function filterFunc(label) {
  
   let skipItemsList = GUI.get()?.ps4_ingame_shop.itemsHide ?? datablock()
   return label in skipItemsList
 }
 
 local isCategoriesInitedOnce = false
-let initPs4CategoriesAfterLogin = function() {
+function initPs4CategoriesAfterLogin() {
   if (!isCategoriesInitedOnce && canUseIngameShop()) {
-    persistent.categoriesData.reset()
+    PS4ShopData.categoriesData.reset()
 
     isCategoriesInitedOnce = true
     invalidateSeenList = true
@@ -77,12 +73,12 @@ let initPs4CategoriesAfterLogin = function() {
     storeData.request(onFinishCollectData, filterFunc)
   }
 }
+initPs4CategoriesAfterLogin()
 
-
-let getVisibleSeenIds = function() {
-  if (isFinishedUpdateItems && !visibleSeenIds.len() && persistent.categoriesData.blockCount() && persistent.itemsList.len()) {
-    for (local i = 0; i < persistent.categoriesData.blockCount(); i++) {
-      let productsList = persistent.categoriesData.getBlock(i)?.links
+function getVisibleSeenIds() {
+  if (isFinishedUpdateItems && !visibleSeenIds.len() && PS4ShopData.categoriesData.blockCount() && PS4ShopData.itemsList.len()) {
+    for (local i = 0; i < PS4ShopData.categoriesData.blockCount(); i++) {
+      let productsList = PS4ShopData.categoriesData.getBlock(i)?.links
       if (productsList == null)
         continue
 
@@ -101,15 +97,15 @@ let getVisibleSeenIds = function() {
 
 seenList.setListGetter(getVisibleSeenIds)
 
-let haveAnyItemWithDiscount = function() {
-  if (!persistent.itemsList.len())
+function haveAnyItemWithDiscount() {
+  if (!PS4ShopData.itemsList.len())
     return false
 
   if (haveItemDiscount != null)
     return haveItemDiscount
 
   haveItemDiscount = false
-  foreach (item in persistent.itemsList)
+  foreach (item in PS4ShopData.itemsList)
     if (item.haveDiscount()) {
       haveItemDiscount = true
       break
@@ -118,7 +114,7 @@ let haveAnyItemWithDiscount = function() {
   return haveItemDiscount
 }
 
-let haveDiscount = function() {
+function haveDiscount() {
   if (!canUseIngameShop())
     return false
 
@@ -152,17 +148,11 @@ function updateSpecificItemInfo(id) {
 subscriptions.addListenersWithoutEnv({
   PS4ItemUpdate = @(p) updateSpecificItemInfo(p.id)
   ProfileUpdated = @(_p) initPs4CategoriesAfterLogin()
-  ScriptsReloaded = function(_p) {
-    visibleSeenIds.clear()
-    persistent.itemsList.clear()
-    isCategoriesInitedOnce = false
-    initPs4CategoriesAfterLogin()
-  }
-  SignOut = function(_p) {
+  function SignOut(_p) {
     isCategoriesInitedOnce = false
     isFinishedUpdateItems = false
-    persistent.categoriesData.reset()
-    persistent.itemsList.clear()
+    PS4ShopData.categoriesData.reset()
+    PS4ShopData.itemsList.clear()
     visibleSeenIds.clear()
     haveItemDiscount = null
   }
@@ -172,8 +162,8 @@ return {
   canUseIngameShop
   haveDiscount
 
-  getShopData = @() persistent.categoriesData
-  getShopItemsTable = @() persistent.itemsList
+  getShopData = @() PS4ShopData.categoriesData
+  getShopItemsTable = @() PS4ShopData.itemsList
   getShopItem
 
   isItemsUpdated = @() isFinishedUpdateItems

@@ -54,7 +54,7 @@ def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Rend
   draw_bar_altitude(ctx, rdata, data, roundi(hero.pos.y * metrToFeet))
   draw_climb(ctx, rdata, data, roundi(fmw.fm.vertSpeed * mpsToFpm))
 
-  draw_altitude(ctx, rdata, data, roundi(fmw.fm.currentAlt * metrToFeet))
+  draw_altitude(ctx, rdata, data, roundi(fmw.fm.input.currentAlt * metrToFeet))
   draw_speed(ctx, rdata, data, roundi(hero.speed * mpsToKnots))
   draw_roll_pitch(ctx, rdata, data, fmw.roll, fmw.tangage)
   draw_aim_lock(ctx, rdata, data)

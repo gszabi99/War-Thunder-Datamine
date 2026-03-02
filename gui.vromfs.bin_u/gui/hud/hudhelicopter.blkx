@@ -93,38 +93,6 @@
           "hitCameraTitle": {
             "id": "title"
           },
-          "hitCameraCrew": {
-            "id": "crew_nest",
-            "pos": "1@blockInterval, 0.2ph",
-            "position": "absolute",
-            "img": {
-              "size": "1@cIco, 1@cIco",
-              "pos": "0, ph-h",
-              "position": "relative",
-              "margin-left": "1@blockInterval",
-              "background-image": "#ui/gameuiskin#ship_crew.svg",
-              "background-svg-size": "1@cIco, 1@cIco"
-            },
-            "tdiv": {
-              "pos": "0, ph-h",
-              "position": "relative",
-              "hitCameraLostCrew": {
-                "id": "lost_crew_count",
-                "pos": "pw-w, -h",
-                "position": "absolute",
-                "flow": "vertical"
-              },
-              "textareaNoTab": {
-                "id": "crew_count"
-              }
-            },
-            "textareaNoTab": {
-              "id": "max_crew_count",
-              "pos": "0, ph-h",
-              "position": "relative",
-              "overlayTextColor": "active"
-            }
-          },
           "enemyDamageStatusPanel": {
             "flow": "vertical",
             "tdiv": {
@@ -134,7 +102,9 @@
             }
           },
           "hitCameraInfo": {
-            "id": "info"
+            "id": "info",
+            "margin-top": "0.5@hitcamDebuffPadding",
+            "flow": "horizontal"
           }
         }
       },
@@ -426,6 +396,13 @@
               "width": "@shHud",
               "pos": "pw/2 - w/2, 0",
               "position": "relative",
+              "flow": "vertical"
+            },
+            {
+              "id": "naval_top_hints",
+              "width": "0.5@rwHud",
+              "position": "relative",
+              "pos": "pw/2-w/2, 0.08@shHud",
               "flow": "vertical"
             }
           ],

@@ -7,6 +7,7 @@ let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { hangar_current_preset_changed } = require("hangar")
+let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
@@ -19,7 +20,7 @@ function updateHangarPreset(forceUpdate = false) {
   let country = profileCountrySq.get()
   let newSlotCountryId = shopCountriesList.findindex(@(cName) cName == country) ?? -1
   let newSlotIdInCountry = getSelectedCrews(newSlotCountryId)
-  let newPresetId = ::slotbarPresets.getCurrent()
+  let newPresetId = getCurrentPresetIdx(country)
   if (!forceUpdate && newPresetId == curPresetId
     && newSlotCountryId == curSlotCountryId && newSlotIdInCountry == curSlotIdInCountry)
     return

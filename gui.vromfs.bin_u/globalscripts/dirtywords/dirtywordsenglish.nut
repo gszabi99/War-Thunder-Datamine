@@ -697,8 +697,14 @@ badphrases =
 ]
 
 forbiddennames = [
-  "hither"
   "eichmann"
+  "femboy"
+  "f[uü]hr[e3]r"
+  "g[o0]?[e3][b6][b6]?[e3][l1][s5]"
+  "g[ö0]ring"
+  "[hg][i1]mm[l1][e3]r"
+  "hither"
+  "penis"
 ]
 
 allowednames = [

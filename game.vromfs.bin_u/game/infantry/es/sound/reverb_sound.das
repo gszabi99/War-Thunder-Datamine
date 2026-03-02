@@ -117,10 +117,15 @@ def reverb_sound_update(evt : Event;
                         reverb_sound__roomSizeVar : string;
                         reverb_sound__rayLength : float;
                         reverb_sound__fadeOutPower : float;
+                        var reverb_sound__curNumTraces : int&;
                         reverb_sound__decay : float;
                         reverb_sound__numTraces : int = 2;
                         reverb_sound__rays : Point3List;
                         reverb_sound__offsets : Point3List;
+                        var reverb_sound__elongation : float&;
+                        var reverb_sound__lastPos : float3&;
+                        var reverb_sound__maxT : float&;
+                        var reverb_sound__midT : float&;
                         reverb_sound__event : SoundEvent&)
 
   if !sound_banks_is_master_preset_loaded()
@@ -145,6 +150,10 @@ def reverb_sound_update(evt : Event;
   let pos = get_reverb_3d_pos()
   set_pos(reverb_sound__event, pos)
 
+  if length_sq(pos - reverb_sound__lastPos) > 1.
+    reverb_sound__lastPos = pos
+    reverb_sound__elongation = 0.f
+
   if blend.w >= 1.
     set_var_global(reverb_sound__intensityVar, blend.x)
     set_var(reverb_sound__event, reverb_sound__roomSizeVar, blend.y)
@@ -152,6 +161,10 @@ def reverb_sound_update(evt : Event;
     reverb_sound__rayId = 0
     reverb_sound__offsetId = 0
     reverb_sound__intensity_roomSize_absorption_weight = float4(0., 0., 0., 0.)
+    reverb_sound__maxT = 0.
+    reverb_sound__midT = 0.
+    reverb_sound__curNumTraces = 0
+
   else
     var i = reverb_sound__numTraces
     while --i >= 0
@@ -162,14 +175,22 @@ def reverb_sound_update(evt : Event;
       var riDesc = RendInstDesc()
       let dir = reverb_sound__rays[reverb_sound__rayId] * reverb_sound__offsets[reverb_sound__offsetId]
       let u = cvt(dot(dir, up), upDecayDot.x, upDecayDot.y, 0., 1.)
-      if u > 0. && traceray_normalized(pos, dir, t, pmid, norm, ETF_LMESH | ETF_FRT | ETF_RI | ETF_STRUCTURES, riDesc, -1)
-        _roomSize += t * u
-        let distT = saturate(safediv(t, reverb_sound__rayLength))
-        _intensity += saturate(-dot(norm, dir)) * (1. - pow(distT, reverb_sound__fadeOutPower)) * u
-        if pmid >= 0 && pmid < length(reverb_sound__PMIDToAbsorption)
-          _absorption += reverb_sound__PMIDToAbsorption[pmid] * u
+      if u > 0.
+        if traceray_normalized(pos, dir, t, pmid, norm, ETF_LMESH | ETF_FRT | ETF_RI | ETF_STRUCTURES, riDesc, -1)
+          _roomSize += t * u
+          let distT = saturate(safediv(t, reverb_sound__rayLength))
+          _intensity += saturate(-dot(norm, dir)) * (1. - pow(distT, reverb_sound__fadeOutPower)) * u
+          if pmid >= 0 && pmid < length(reverb_sound__PMIDToAbsorption)
+            _absorption += reverb_sound__PMIDToAbsorption[pmid] * u
+          else
+            _absorption += reverb_sound__defAbsorption * u
+          reverb_sound__maxT = max(reverb_sound__maxT, t)
+          reverb_sound__midT += t
+          reverb_sound__curNumTraces++
         else
-          _absorption += reverb_sound__defAbsorption * u
+          _roomSize += reverb_sound__rayLength * u
+          reverb_sound__maxT = reverb_sound__rayLength
+          reverb_sound__midT += reverb_sound__rayLength
       else
         _roomSize += reverb_sound__rayLength * u
       _weight += u
@@ -180,9 +201,13 @@ def reverb_sound_update(evt : Event;
         let roomSize = lerp(make_param(_roomSize, _weight * reverb_sound__roomSizeMax), blend.y, blend.w)
         let absorption = lerp(make_param(_absorption, _weight, 1.), blend.z, blend.w)
 
+        reverb_sound__midT = safediv(reverb_sound__midT, float(reverb_sound__curNumTraces))
+        let elongation = (reverb_sound__maxT - reverb_sound__midT) / reverb_sound__rayLength
+        reverb_sound__elongation = max(reverb_sound__elongation, elongation)
         set_var_global(reverb_sound__intensityVar, intensity)
         set_var(reverb_sound__event, reverb_sound__roomSizeVar, roomSize)
         set_var(reverb_sound__event, reverb_sound__absorptionVar, absorption)
+        set_var_optional(reverb_sound__event, "elongation", reverb_sound__elongation)
 
         
 
@@ -190,5 +215,8 @@ def reverb_sound_update(evt : Event;
         reverb_sound__rayId = 0
         reverb_sound__offsetId = (reverb_sound__offsetId + 1) % maxOffsets
         reverb_sound__intensity_roomSize_absorption_weight *= reverb_sound__decay
+        reverb_sound__maxT = 0.
+        reverb_sound__midT = 0.
+        reverb_sound__curNumTraces = 0
 
   blend.w = 0.

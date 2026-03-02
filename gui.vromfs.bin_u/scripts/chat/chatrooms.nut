@@ -61,13 +61,6 @@ function isSquadRoomJoined() {
   return isRoomJoined(roomId)
 }
 
-function openChatRoom(roomId, ownerHandler = null) {
-  if (!::openChatScene(ownerHandler))
-    return
-
-  broadcastEvent("ChatSwitchCurRoom", { roomId })
-}
-
 function generateInviteMenu(playerName) {
   let menu = []
   if (userName.get() == playerName)
@@ -111,19 +104,6 @@ function isImRoomOwner(roomData) {
   return false
 }
 
-function openWWOperationChatRoomById(operationId) {
-  foreach (room in chatRooms) {
-    if (room.type.typeName != "WW_OPERATION")
-      continue
-    if (room.type.getOperationId(room.id) != operationId)
-      continue
-
-    openChatRoom(room.id)
-    return
-  }
-}
-
-
 return {
   joinThread
   addRoom
@@ -134,6 +114,4 @@ return {
   isRoomSquad
   isRoomClan
   isImRoomOwner
-  openChatRoom
-  openWWOperationChatRoomById
 }

@@ -5,7 +5,7 @@ row {
   width:t='pw'
   <<#even>> even:t='yes' <</even>>
   title:t='$tooltipObj'
-  padding:t='8@sf/@pf,8@sf/@pf,8@sf/@pf,5@sf/@pf'
+  padding:t='10@sf/@pf,3@sf/@pf,10@sf/@pf,2@sf/@pf'
 <</needAddRow>>
 
   tooltipObj {
@@ -23,25 +23,23 @@ row {
     topLine {
       width:t='fw'
       id:t='name_<<rowIdx>>'
+      // all activeText blocks have enormous internal padding, so need to squeeze this block to the bottom one
+      padding-bottom:t='-3@sf/@pf'
 
-      textareaNoTab {
+      activeText {
         text:t='<<name>>'
-        smallFont:t='yes'
       }
       activeText {
-        id:t='currentExpPoints';
+        id:t='currentExpPoints'
         text:t='<<currentExpPoints>>'
-        smallFont:t='yes'
       }
       activeText {
-        id:t='addExpPointsValue';
+        id:t='addExpPointsValue'
         text:t='<<addExpPointsValueStr>>'
         overlayTextColor:t='good'
-        smallFont:t='yes'
       }
-      textareaNoTab {
+      activeText {
         text:t='<<maxExpPointsStr>>'
-        smallFont:t='yes'
       }
     }
 
@@ -56,10 +54,10 @@ row {
 
         <<#btnSpec>>
         div {
-          margin-right:t='15@sf/@pf'
+          margin-right:t='22@sf/@pf'
           hoverBgButton {
             id:t='btn_spec<<id>>'
-            size:t='30@sf/@pf, 30@sf/@pf'
+            size:t='38@sf/@pf, 38@sf/@pf'
             position:t='relative'
             pos:t='0, 50%ph-50%h'
             holderId:t='<<rowIdx>>'
@@ -91,8 +89,8 @@ row {
             img {
               size:t='pw, ph'
               background-image:t='<<barsType>>'
-              background-svg-size:t='pw, ph'
-              background-repeat:t='repeat'
+              background-svg-size:t='1@crewSkillBockWidth, 1@crewSkillBlockHeight'
+              background-repeat:t='repeat-x'
               background-position:t='0'
             }
             <</barsType>>
@@ -126,7 +124,7 @@ row {
         id:t='skillSlider_<<rowIdx>>'
         size:t='<<maxSkillCrewLevel>> * 1@crewSkillBockWidth, 1@crewSkillBlockHeight'
         position:t='relative'
-        pos:t='0, 50%ph-50%h';
+        pos:t='0, 50%ph-50%h'
         min:t='0'
         max:t='<<progressMax>>'
         value:t='<<skillSliderValue>>'
@@ -137,6 +135,7 @@ row {
         margin:t='4@sf/@pf, 0'
 
         skillProgressBg {
+          class:t='modernWnd'
           width:t='pw + 2@sf/@pf'
           height:t='ph + 2@sf/@pf'
         }
@@ -146,7 +145,7 @@ row {
           id:t='availableSkillProgress'
           height:t='1@crewSkillBlockHeight'
           width:t='pw'
-          pos:t='50%pw-50%w, 50%ph-50%h';
+          pos:t='50%pw-50%w, 50%ph-50%h'
           position:t='absolute'
           type:t='available' //available now to increase
           max:t='<<progressMax>>'
@@ -157,7 +156,7 @@ row {
           id:t='glowSkillProgress'
           height:t='1@crewSkillGlowBlockHeight'
           width:t='pw'
-          pos:t='50%pw-50%w, 50%ph-50%h';
+          pos:t='50%pw-50%w, 50%ph-50%h'
           position:t='absolute'
           type:t='glow' //light above and bottom the cell
           max:t='<<progressMax>>'
@@ -169,7 +168,7 @@ row {
           id:t='newSkillProgress'
           height:t='1@crewSkillBlockHeight'
           width:t='pw'
-          pos:t='50%pw-50%w, 50%ph-50%h';
+          pos:t='50%pw-50%w, 50%ph-50%h'
           position:t='absolute'
           type:t='new' //just added right now, can be reset
           max:t='<<progressMax>>'
@@ -181,7 +180,7 @@ row {
           id:t='shadeSkillProgress'
           height:t='1@crewSkillGlowBlockHeight'
           width:t='pw'
-          pos:t='50%pw-50%w, 50%ph-50%h';
+          pos:t='50%pw-50%w, 50%ph-50%h'
           position:t='absolute'
           type:t='shade' //to hide light above and bottom the cell for old ones
           max:t='<<maxValue>>'
@@ -193,7 +192,7 @@ row {
           id:t='skillProgress'
           height:t='1@crewSkillBlockHeight'
           width:t='pw'
-          pos:t='50%pw-50%w, 50%ph-50%h';
+          pos:t='50%pw-50%w, 50%ph-50%h'
           position:t='absolute'
           type:t='old'//already got and bought
           max:t='<<maxValue>>'
@@ -212,13 +211,13 @@ row {
         position:t='relative'
         pos:t='0, 50%ph-50%h'
         Button_text {
-          id:t='buttonInc_<<rowIdx>>';
-          text:t='+';
-          square:t='yes';
+          id:t='buttonInc_<<rowIdx>>'
+          text:t='+'
+          square:t='yes'
           enable:t='<<activeButtonInc>>'
           useParentSize:t='yes'
           reduceMinimalWidth:t='yes'
-          on_click:t='onButtonInc';
+          on_click:t='onButtonInc'
           on_click_repeat:t = 'onButtonIncRepeat'
           tooltip:t='#crew/skillIncrease'
           holderId:t='<<rowIdx>>'
@@ -226,13 +225,12 @@ row {
       }
 
       textareaNoTab {
-        width:t='fw'
+        id:t='incCost'
+        width:t='68@sf/@pf'
         position:t='relative'
-        text-align:t='right'
         top:t='50%ph-50%h'
-        id:t='incCost';
         text:t='<<incCost>>'
-        smallFont:t='yes'
+        text-align:t='right'
         tooltip:t='#crew/incCost/tooltip'
       }
     }

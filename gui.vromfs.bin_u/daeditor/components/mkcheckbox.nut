@@ -9,8 +9,9 @@ function mkCheckBox(value, onClick) {
   return function () {
     local mark = null
     if (value.get()) {
-      mark = {
+      mark = @(){
         rendObj = ROBJ_SOLID
+        watch = hoverFlag
         color = (hoverFlag.get() != 0) ? colors.Hover : colors.Interactive
         group
         size = [pw(50), ph(50)]

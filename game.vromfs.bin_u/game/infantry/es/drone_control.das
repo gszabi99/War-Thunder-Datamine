@@ -1,5 +1,7 @@
 require ecs
 require %game.player_events
+require %game.events
+require app
 
 [es(tag=server)]
 def drone_handle_switch_request_server(evt : CmdRequestSwitchControlledUnit; eid : EntityId)
@@ -12,8 +14,28 @@ def drone_handle_switch_request_server(evt : CmdRequestSwitchControlledUnit; eid
 
 
 [es(tag=server, REQUIRE=isDrone)]
-def drone_switch_on_control_lost(evt : EventPlayerUnitControlLost; possessedByPlr : EntityId; var ownedByPlr : EntityId&; drone__owner : EntityId)
-  sendEventImmediate(possessedByPlr, CmdRequestSwitchControlledUnit(toEid = drone__owner))
+def drone_switch_on_control_lost(evt : EventPlayerUnitControlLost;
+                                 possessedByPlr : EntityId;
+                                 drone__owner : EntityId;
+                                 isAlive : bool;
+                                 drone__releaseControlsDelay : float;
+                                 var drone__releaseControlsAtTime : float&;
+                                 var ownedByPlr : EntityId&)
+  if drone__releaseControlsDelay > 0.0 && !isAlive
+    drone__releaseControlsAtTime = get_sync_time() + drone__releaseControlsDelay
+  else
+    sendEventImmediate(possessedByPlr, CmdRequestSwitchControlledUnit(toEid = drone__owner))
+    ownedByPlr = INVALID_ENTITY_ID
+
+[es(tag=server, REQUIRE=isDrone)]
+def drone_delayed_release_update(info : ParallelUpdateFrameDelayed;
+                                 drone__owner : EntityId;
+                                 var ownedByPlr : EntityId&;
+                                 var drone__releaseControlsAtTime : float&)
+  if drone__releaseControlsAtTime < 0.0 || info.curTime < drone__releaseControlsAtTime
+    return
+  drone__releaseControlsAtTime = -1.0
+  sendEvent(ownedByPlr, CmdRequestSwitchControlledUnit(toEid = drone__owner))
   ownedByPlr = INVALID_ENTITY_ID
 
 

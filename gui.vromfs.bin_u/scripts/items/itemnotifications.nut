@@ -9,7 +9,9 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { findItemById, getInventoryList, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { findItemById, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
+
 
 let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 

@@ -9,6 +9,7 @@ require %appGame.wt_events
 require %appGame.infantry.es.hitpoints_common
 require sound_utils.modules.sound_player_common
 require strings
+require DagorConsole
 
 
 def damage_type_to_sound_path(damage_type : int)
@@ -40,6 +41,33 @@ def play_shatter_sounds(var count : int; var delay_first_next_last : float3; pos
 
 def get_max_net_delay_threshold()
   return 3.
+
+[es(tag=sound, REQUIRE=controlledHero)]
+def human_entity_hit_sound(evt : EventOnEntityHit;
+                           eid : EntityId;
+                           sound_preset__isLoaded : bool;
+                           @shared_comp entity_intersected_with_projectile_sound__paths : Object;
+                           is_watched_sound : bool;
+                           sound_tags : Object;
+                           dm_parts__type : StringList const?;
+                           dm_parts__partsArmor : FloatList const?;
+                           human_hit_sound__prefix = "infantry/")
+
+  if eid == evt.victim && evt.damageType == int(DamageType.DM_PROJECTILE)
+    var path : string
+    var pathObj = entity_intersected_with_projectile_sound__paths.bullet ?as Object
+
+    if dm_parts__type != null && uint(evt.collNodeId) < uint(length(*dm_parts__type))
+      let part = get_desc(*pathObj, "part_{(*dm_parts__type)[evt.collNodeId]}")
+      pathObj = part != null ? part : pathObj
+
+    if sound_preset__isLoaded
+      var handle = sound_player_common::play_path(*pathObj, sound_tags, is_watched_sound, evt.hitPos, false, 0.f, human_hit_sound__prefix)
+      if is_armored(dm_parts__partsArmor, evt.collNodeId, sound_tags)
+        set_var_optional(handle, "armored", 1.)
+      abandon(handle)
+
+
 
 [es(tag=sound, REQUIRE_NOT=shootingRangeDummy)]
 def human_hit_sound(evt : CmdHumanHitNetSound;

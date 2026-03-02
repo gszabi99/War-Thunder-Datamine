@@ -936,96 +936,6 @@
   "optics": {
     "binoculars": "navy_binoculars"
   },
-  "sensors": {
-    "fireDirecting": [
-      {
-        "dmPartMain": [
-          "fire_control_room_01_dm",
-          "fire_control_room_02_dm"
-        ],
-        "dmPart": [
-          "fire_director_01_dm",
-          "fire_director_02_dm",
-          "fire_director_07_dm"
-        ],
-        "measureAccuracy": 1.0,
-        "targetLockTime": 15.0,
-        "calcTime": 8.0,
-        "rotationSpeed": 6.0,
-        "shipIndicationOn": true,
-        "triggerGroupUse": {
-          "primary": true,
-          "secondary": false,
-          "machinegun": false
-        }
-      },
-      {
-        "dmPartMain": [
-          "fire_control_room_01_dm",
-          "fire_control_room_02_dm"
-        ],
-        "dmPart": [
-          "fire_director_03_dm",
-          "fire_director_04_dm",
-          "fire_director_05_dm",
-          "fire_director_06_dm"
-        ],
-        "measureAccuracy": 1.0,
-        "targetLockTime": 15.0,
-        "calcTime": 8.0,
-        "rotationSpeed": 6.0,
-        "shipIndicationOn": true,
-        "triggerGroupUse": {
-          "primary": false,
-          "secondary": true,
-          "machinegun": false
-        }
-      },
-      {
-        "dmPartMain": [
-          "fire_control_room_01_dm",
-          "fire_control_room_02_dm"
-        ],
-        "dmPart": [
-          "rangefinder_01_dm",
-          "rangefinder_02_dm",
-          "rangefinder_03_dm"
-        ],
-        "measureAccuracy": 0.85,
-        "targetLockTime": 20.0,
-        "calcTime": 12.0,
-        "rotationSpeed": 20.0,
-        "shipIndicationOn": true,
-        "triggerGroupUse": {
-          "primary": true,
-          "secondary": false,
-          "machinegun": false
-        }
-      },
-      {
-        "dmPartMain": [
-          "fire_control_room_01_dm",
-          "fire_control_room_02_dm"
-        ],
-        "dmPart": [
-          "rangefinder_04_dm",
-          "rangefinder_05_dm",
-          "rangefinder_06_dm",
-          "rangefinder_07_dm"
-        ],
-        "measureAccuracy": 0.85,
-        "targetLockTime": 20.0,
-        "calcTime": 12.0,
-        "rotationSpeed": 20.0,
-        "shipIndicationOn": true,
-        "triggerGroupUse": {
-          "primary": false,
-          "secondary": true,
-          "machinegun": false
-        }
-      }
-    ]
-  },
   "supportPlane": {
     "supportPlaneClass": "ro_43",
     "planeStartSpeed": 150.0,
@@ -7204,7 +7114,10 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 5.0,
       "dmgState": 0.0,
-      "napalmDamageMult": 1.0
+      "napalmDamageMult": 1.0,
+      "antenna_target_location_01_dm": {
+        "hp": 350.0
+      }
     },
     "fire_control": {
       "armorClass": "ship_structural_steel",
@@ -7561,6 +7474,7 @@
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.6,
       "stopChanceOnDeadPart": 0.7,
+      "disableShatterStopChanceOnDeadPart": true,
       "restrainDamage": 0.5,
       "kineticPenetrationToArmorThreshold": 0.8,
       "armor_cit_l_01_dm": {
@@ -8010,6 +7924,7 @@
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.4,
       "stopChanceOnDeadPart": 0.7,
+      "disableShatterStopChanceOnDeadPart": true,
       "ignoreDeadWithSplash": true,
       "restrainDamage": 0.5,
       "kineticPenetrationToArmorThreshold": 0.8,
@@ -8760,6 +8675,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 30.0,
       "stopChanceOnDeadPart": 0.0,
+      "disableShatterStopChanceOnDeadPart": true,
       "ignoreDeadWithSplash": true,
       "explosionArmorQuality": 8.96,
       "fireDamageMult": 0.001,
@@ -8808,6 +8724,7 @@
       "armorClass": "ships_oil_fuel_tank",
       "armorThickness": 10.0,
       "stopChanceOnDeadPart": 0.5,
+      "disableShatterStopChanceOnDeadPart": true,
       "ignoreDeadWithSplash": true,
       "oneSided": true,
       "fuel_tank_01_dm": {
@@ -8860,6 +8777,7 @@
       "armorThickness": 3.0,
       "armorClass": "ships_coal_bunker",
       "stopChanceOnDeadPart": 0.05,
+      "disableShatterStopChanceOnDeadPart": true,
       "variableThickness": true,
       "kineticProtectionEquivalentPerMeter": 27.3
     },
@@ -9175,9 +9093,119 @@
       "crew": 94
     }
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/naval/it_ec3_ter_gufo_radar.blk",
+      "designationFromBody": true,
+      "dmPart": "antenna_target_location_01_dm"
+    },
+    "fireDirecting": [
+      {
+        "dmPartMain": [
+          "fire_control_room_01_dm",
+          "fire_control_room_02_dm"
+        ],
+        "dmPart": [
+          "fire_director_01_dm",
+          "fire_director_02_dm",
+          "fire_director_07_dm"
+        ],
+        "measureAccuracy": 1.0,
+        "targetLockTime": 15.0,
+        "calcTime": 8.0,
+        "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
+        "triggerGroupUse": {
+          "primary": true,
+          "secondary": false,
+          "machinegun": false
+        }
+      },
+      {
+        "dmPartMain": [
+          "fire_control_room_01_dm",
+          "fire_control_room_02_dm"
+        ],
+        "dmPart": [
+          "fire_director_03_dm",
+          "fire_director_04_dm",
+          "fire_director_05_dm",
+          "fire_director_06_dm"
+        ],
+        "measureAccuracy": 1.0,
+        "targetLockTime": 15.0,
+        "calcTime": 8.0,
+        "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
+        "triggerGroupUse": {
+          "primary": false,
+          "secondary": true,
+          "machinegun": false
+        }
+      },
+      {
+        "dmPartMain": [
+          "fire_control_room_01_dm",
+          "fire_control_room_02_dm"
+        ],
+        "dmPart": [
+          "rangefinder_01_dm",
+          "rangefinder_02_dm",
+          "rangefinder_03_dm"
+        ],
+        "measureAccuracy": 0.85,
+        "targetLockTime": 20.0,
+        "calcTime": 12.0,
+        "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
+        "triggerGroupUse": {
+          "primary": true,
+          "secondary": false,
+          "machinegun": false
+        }
+      },
+      {
+        "dmPartMain": [
+          "fire_control_room_01_dm",
+          "fire_control_room_02_dm"
+        ],
+        "dmPart": [
+          "rangefinder_04_dm",
+          "rangefinder_05_dm",
+          "rangefinder_06_dm",
+          "rangefinder_07_dm"
+        ],
+        "measureAccuracy": 0.85,
+        "targetLockTime": 20.0,
+        "calcTime": 12.0,
+        "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
+        "triggerGroupUse": {
+          "primary": false,
+          "secondary": true,
+          "machinegun": false
+        }
+      }
+    ]
+  },
+  "radarAnimations": {
+    "anim": [
+      {
+        "radarAnimVar": "radar_target_yaw_rotate",
+        "animatedRadarIdx": 0
+      },
+      {
+        "radarAnimVar": "target_tagging_yaw_rotate",
+        "radarAntenaSpeed": 50.0,
+        "animatedRadarIdx": 1,
+        "radarAnimPitchVar": "target_tagging_pitch_rotate"
+      }
+    ]
+  },
   "commonWeapons": {
     "animatedBones": {
       "node": [
+        "antenna_target_location_01",
         "fire_director_01",
         "fire_director_02",
         "fire_director_03",

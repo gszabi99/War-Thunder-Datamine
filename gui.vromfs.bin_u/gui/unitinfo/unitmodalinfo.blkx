@@ -279,7 +279,7 @@
             "textareaNoTab": {
               "id": "supportPlaneInfo-key",
               "tooltipId": "",
-              "tooltip": "$tooltipObj",
+              "tooltip": "",
               "tooltipObj": {
                 "id": "supportPlaneInfo-tooltip",
                 "tooltipId": "",
@@ -577,7 +577,11 @@
           },
           "value": {
             "id": "aircraft-systems",
-            "multiline": "yes"
+            "flow": "h-flow",
+            "moveX": "linear",
+            "moveY": "closest",
+            "navigatorShortcuts": "yes",
+            "move-only-hover": "yes"
           }
         },
         {
@@ -594,40 +598,6 @@
           "value": {
             "textareaNoTab": {
               "id": "ship-antiTorpedoProtection-value"
-            }
-          }
-        },
-        {
-          "id": "ship-hullMaterial-tr",
-          "display": "hide",
-          "keyHolder": {
-            "key": {
-              "textareaNoTab": {
-                "id": "ship-hullMaterial-title"
-              }
-            },
-            "dashedLine": {}
-          },
-          "value": {
-            "textareaNoTab": {
-              "id": "ship-hullMaterial-value"
-            }
-          }
-        },
-        {
-          "id": "ship-superstructureMaterial-tr",
-          "display": "hide",
-          "keyHolder": {
-            "key": {
-              "textareaNoTab": {
-                "id": "ship-superstructureMaterial-title"
-              }
-            },
-            "dashedLine": {}
-          },
-          "value": {
-            "textareaNoTab": {
-              "id": "ship-superstructureMaterial-value"
             }
           }
         },
@@ -652,7 +622,7 @@
                   "textareaNoTab": {
                     "id": "armorPiercing-tooltip",
                     "tooltipId": "",
-                    "tooltip": "$tooltipObj",
+                    "tooltip": "",
                     "tooltipObj": {
                       "id": "armorPiercing-tooltip-obj",
                       "tooltipId": "",
@@ -672,7 +642,7 @@
                 "textareaNoTab": {
                   "id": "aircraft-armorPiercing",
                   "tooltipId": "",
-                  "tooltip": "$tooltipObj",
+                  "tooltip": "",
                   "tooltipObj": {
                     "id": "armorPiercing-value-tooltip-obj",
                     "tooltipId": "",
@@ -686,7 +656,7 @@
                 "textareaNoTab": {
                   "id": "aircraft-armorPiercingDist",
                   "tooltipId": "",
-                  "tooltip": "$tooltipObj",
+                  "tooltip": "",
                   "tooltipObj": {
                     "id": "armorPiercingDist-value-tooltip-obj",
                     "tooltipId": "",
@@ -776,7 +746,7 @@
                   "id": "horsePowers-tooltip",
                   "text": "#shop/horsePowers",
                   "tooltipId": "",
-                  "tooltip": "$tooltipObj",
+                  "tooltip": "",
                   "tooltipObj": {
                     "id": "horsePowers-tooltip-obj",
                     "tooltipId": "",
@@ -805,7 +775,7 @@
                   "id": "maxSpeed-tooltip",
                   "text": "#shop/max_speed",
                   "tooltipId": "",
-                  "tooltip": "$tooltipObj",
+                  "tooltip": "",
                   "tooltipObj": {
                     "id": "maxSpeed-tooltip-obj",
                     "tooltipId": "",
@@ -856,7 +826,7 @@
                     "id": "maxSpeedBoth-tooltip",
                     "text": "#info/max_speed",
                     "tooltipId": "",
-                    "tooltip": "$tooltipObj",
+                    "tooltip": "",
                     "tooltipObj": {
                       "id": "maxSpeedBoth-tooltip-obj",
                       "tooltipId": "",
@@ -946,7 +916,7 @@
                   "id": "maxAltitude-tooltip",
                   "text": "#shop/max_altitude",
                   "tooltipId": "",
-                  "tooltip": "$tooltipObj",
+                  "tooltip": "",
                   "tooltipObj": {
                     "id": "maxAltitude-tooltip-obj",
                     "tooltipId": "",
@@ -975,7 +945,7 @@
                   "id": "turnTime-tooltip",
                   "text": "#shop/turn_time",
                   "tooltipId": "",
-                  "tooltip": "$tooltipObj",
+                  "tooltip": "",
                   "tooltipObj": {
                     "id": "turnTime-tooltip-obj",
                     "tooltipId": "",
@@ -1023,7 +993,7 @@
                 "textareaNoTab": {
                   "id": "climbSpeed-tooltip",
                   "text": "#shop/max_climbSpeed",
-                  "tooltip": "$tooltipObj",
+                  "tooltip": "",
                   "tooltipId": "",
                   "tooltipObj": {
                     "id": "climbSpeed-tooltip-obj",
@@ -1088,7 +1058,7 @@
                   "id": "wingLoading-tooltip",
                   "text": "#shop/wing_loading",
                   "tooltipId": "",
-                  "tooltip": "$tooltipObj",
+                  "tooltip": "",
                   "tooltipObj": {
                     "id": "wingLoading-tooltip-obj",
                     "tooltipId": "",

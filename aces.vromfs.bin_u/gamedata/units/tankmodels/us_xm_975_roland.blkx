@@ -1900,7 +1900,7 @@
       ],
       "CenterOfGravity": [
         0.3,
-        0.6,
+        0.5,
         0.0
       ],
       "CenterOfGravityClampY": [
@@ -1931,6 +1931,7 @@
     "collisionProps": {
       "cls_turret_01": "convex_hull",
       "cls_turret_02": "convex_hull",
+      "cls_turret_04": "convex_hull",
       "cls_body": "convex_hull"
     },
     "engine": {
@@ -2918,6 +2919,24 @@
         "powerButtonIdx": -1
       }
     ]
+  },
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": [
+        "cls_turret_04",
+        "cls_turret_02"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        true,
+        false,
+        false,
+        true
+      ]
+    }
   },
   "antiAirComplexMenu": {
     "isVerticalViewAvailable": false,

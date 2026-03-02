@@ -9,15 +9,17 @@ let seenList = require("%scripts/seen/seenList.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { toggleUnlockFav, initUnlockFavObj, toggleUnlockFavButton } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnlockTitle, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { generatePaginator, paginator_set_unseen } = require("%scripts/viewUtils/paginator.nut")
 let { getProfileAvatarFrames, getProfileAvatars } = require("%scripts/user/profileAppearance.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
@@ -220,10 +222,9 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onImageChoose(_obj) {
     let selIdx = this.getSelIconIdx()
-    this.setSelectedIndex(selIdx)
-    if (!(this.getListItems()?[selIdx].enabled ?? false))
+    if (selIdx < 0)
       return
-
+    this.setSelectedIndex(selIdx)
     this.chooseImage(selIdx)
   }
 
@@ -344,7 +345,6 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateButtons() {
     let option = this.getListItems()?[this.getSelIconIdx()]
     if (option == null) {
-      showObjById("btn_buy", false, this.scene)
       showObjById("btn_select", false, this.scene)
       showObjById("btn_fav",  false, this.scene)
       return
@@ -352,7 +352,6 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let cost = getUnlockCost(option.unlockId)
     let canBuy = !option.enabled && !cost.isZero()
-    showObjById("btn_buy", canBuy, this.scene)
 
     let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
     let btn = showObjById("btn_select", isVisible && !canBuy, this.scene)
@@ -360,10 +359,8 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     let isFavBtnVisible = !isVisible && !canBuy
     let favBtnObj = showObjById("btn_fav", isFavBtnVisible, this.scene)
 
-    if (canBuy) {
-      placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnOrder"), cost)
+    if (canBuy)
       return
-    }
 
     if (isFavBtnVisible) {
       initUnlockFavObj(option.unlockId, favBtnObj)

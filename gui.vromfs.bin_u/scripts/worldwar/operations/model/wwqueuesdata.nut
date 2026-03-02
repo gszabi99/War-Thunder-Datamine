@@ -4,7 +4,7 @@ from "%scripts/queue/queueType.nut" import g_queue_type
 let { get_time_msec } = require("dagor.time")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { updateQueueInfoByType } = require("%scripts/queue/queueInfo.nut")
 
 local refreshMinTimeSec = 2 

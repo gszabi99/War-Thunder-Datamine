@@ -9,9 +9,7 @@ let { loadLocalByAccount, saveLocalByAccount
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
-let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { setShouldCheckAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { deferOnce } = require("dagor.workcycle")
@@ -20,18 +18,20 @@ let { eventbus_subscribe } = require("eventbus")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
 let { itemsShopListVersion, inventoryListVersion,
-  inventory, itemsByItemdefId,
-  rawInventoryItemAmountsByItemdefId, shopVisibleSeenIds
+  inventory, itemsByItemdefId, setShouldCheckAutoConsume,
+  rawInventoryItemAmountsByItemdefId, shopVisibleSeenIds, itemsListInternal,
 } = require("%scripts/items/itemsManagerState.nut")
 let { genericItemsForCyberCafeLevel,
   setReqUpdateList, setReqUpdateItemDefsList, getReqUpdateItemDefsList, getNeedInventoryUpdate,
   setNeedInventoryUpdate
 } = require("%scripts/items/itemsManagerChecks.nut")
-let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")
-let { shopSmokeItems, createItem } = require("%scripts/items/itemsTypeClasses.nut")
+let { getShopList, getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
+let { createItem } = require("%scripts/items/itemsTypeClasses.nut")
+let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
-let { findItemById, findItemByUid, getInventoryList, getInventoryItemById, getInventoryListByShopMask
-} = require("%scripts/items/itemsManagerModule.nut")
+let { findItemById, findItemByUid, getInventoryListByShopMask,
+  getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
+
 
 let seenInventory = seenList.get(SEEN.INVENTORY)
 let seenItems = seenList.get(SEEN.ITEMS_SHOP)
@@ -247,7 +247,19 @@ function markItemsListUpdate() {
   broadcastEvent("ItemsShopUpdate")
   itemsShopListVersion.set(itemsShopListVersion.get() + 1)
 }
-shopSmokeItems.subscribe(@(_) markItemsListUpdate())
+
+function updateSmokeItems() {
+  for (local i = itemsListInternal.len() - 1; i >= 0; i--)
+    if (itemsListInternal[i].iType == itemType.SMOKE)
+      itemsListInternal.remove(i)
+
+  itemsListInternal.extend(shopSmokeItems.get())
+  seenItems.notifyChanged()
+  broadcastEvent("ItemsShopUpdate")
+  itemsShopListVersion.set(itemsShopListVersion.get() + 1)
+}
+
+shopSmokeItems.subscribe(@(_) updateSmokeItems())
 
 addListenersWithoutEnv({
   PriceUpdated = @(_) markItemsListUpdate()
@@ -288,12 +300,6 @@ function onItemsLoaded() {
 }
 eventbus_subscribe("on_items_loaded", @(_) deferOnce(onItemsLoaded))
 
-::ItemsManager <- {
-  
-  findItemById
-  getInventoryList
-  getInventoryItemById
-}
 
 return {
   isInventoryFullUpdated = @() isInventoryFullUpdate

@@ -445,14 +445,6 @@ function getPlayerStatsFromBlk(blk) {
   return player
 }
 
-function getExternalPlayerStatsFromBlk(blk) {
-  let player = getPlayerStatsFromBlk(blk)
-  if (blk?.aircrafts)
-    player.units <- convertBlk(blk.aircrafts)
-
-  return player
-}
-
 function getCurSessionCountry() {
   if (is_multiplayer()) {
     let sessionInfo = get_mp_session_info()
@@ -508,7 +500,6 @@ return {
   fillProfileSummary
   getCountryMedals
   getPlayerStatsFromBlk
-  getExternalPlayerStatsFromBlk
   airStatsListConfig
   getProfileInfo
   getPlayerRankByCountry

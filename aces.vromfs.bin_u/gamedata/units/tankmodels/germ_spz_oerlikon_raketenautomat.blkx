@@ -54,31 +54,40 @@
     "hp": 10000.0,
     "hull": {
       "body_top_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 5.0
       },
       "body_front_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 30.0
       },
       "body_side_dm": {
         "armorThickness": 15.0
       },
       "body_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 8.0
       },
       "body_back_dm": {
+        "armorThickness": 15.0
+      },
+      "turret_01_front_dm": {
+        "armorThickness": 8.0
+      },
+      "turret_01_back_dm": {
+        "armorThickness": 30.0
+      },
+      "turret_01_side_dm": {
         "armorThickness": 20.0
       },
       "superstructure_front_dm": {
         "armorThickness": 30.0
       },
       "superstructure_back_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 8.0
       },
       "superstructure_side_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 20.0
       },
       "superstructure_top_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 8.0
       }
     },
     "turret": {
@@ -92,9 +101,6 @@
         "armorThickness": 20.0
       },
       "turret_bottom_dm": {
-        "armorThickness": 10.0
-      },
-      "turret_01_front_dm": {
         "armorThickness": 10.0
       },
       "turret_02_side_dm": {
@@ -178,6 +184,20 @@
         "armorThrough": 10.0,
         "armorThickness": 5.0,
         "hp": 100.0
+      }
+    },
+    "inner_armor": {
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_03_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
       }
     },
     "chassis": {
@@ -655,6 +675,37 @@
         "hp": 20.0
       }
     }
+  },
+  "xray_viewer_data": {
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
+          }
+        }
+      }
+    ]
   },
   "sound": {
     "EngineName": "engine_type74",
@@ -1741,7 +1792,7 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 220.0,
+      "horsePowers": 240.0,
       "maxRPM": 3750.0,
       "minRPM": 600.0
     },
@@ -1750,7 +1801,7 @@
       "maxBrakeForce": 75000.0,
       "driveGearRadius": 0.25,
       "mainGearRatio": 6.41,
-      "sideGearRatio": 0.91,
+      "sideGearRatio": 0.81,
       "gearRatios": {
         "ratio": [
           -4.78,
@@ -3229,6 +3280,15 @@
       "replace_tex": {
         "from": "ger_camo_bronzegruen*",
         "to": "ger_camo_carc_winter*"
+      }
+    },
+    {
+      "name": "ger_camo_modern_desert_threecolor",
+      "nameLocId": "skin/ger_camo_modern_desert_threecolor",
+      "descLocId": "skin/ger_camo_modern_desert_threecolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_modern_desert_threecolor*"
       }
     }
   ]

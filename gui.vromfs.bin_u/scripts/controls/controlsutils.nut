@@ -155,7 +155,7 @@ function onJoystickConnected() {
     action,
     buttons,
     null,
-    null,
+    "control_preset_action_popup",
     time.secondsToMilliseconds(time.minutesToSeconds(10))
   )
 }
@@ -195,7 +195,7 @@ function onControllerEvent() {
     action,
     buttons,
     null,
-    null,
+    "control_preset_action_popup",
     time.secondsToMilliseconds(time.minutesToSeconds(10))
   )
 }

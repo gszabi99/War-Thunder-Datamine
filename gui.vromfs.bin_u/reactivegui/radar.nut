@@ -1,11 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
+require("%rGui/radarZoom.nut")
 let { hudFontHgt } = require("%rGui/style/airHudStyle.nut")
 let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, IsCScopeVisible, IsBScopeVisible,
   ViewMode } = require("%rGui/radarState.nut")
 let { IPoint3 } = require("dagor.math")
 let { getLangId } = require("dagor.localize")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
-let { radarButtonsAir, radarButtonsHeli, isRadarButtonsVisible } = require("%rGui/radarButtons.nut")
+let { radarButtonsAir, radarButtonsHeli, isRadarButtonsVisible, isRadarFiltersButtonsVisible, filtersButtons } = require("%rGui/radarButtons.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { ButtonExtendUpdatePress } = require("wt.behaviors")
 
@@ -24,12 +25,17 @@ let radarOffsets = Computed(function() {
   return [0, 0]
 })
 
+let planeTargetPicture = Picture($"ui/gameuiskin#tws_filter_aircraft.svg")
+let helicopterTargetPicture = Picture($"ui/gameuiskin#tws_filter_helicopter.svg")
+let rocketTargetPicture = Picture($"ui/gameuiskin#tws_filter_ammunition.svg")
 
 let radarCanvas = @(color_watched, ovr = {}, handle_clicks = false) function() {
   let radarScriptDas = getDasScriptByPath("%rGui/radar.das")
   let radarHandleClick = DasFunction(radarScriptDas, "handle_click")
   let radarHandleDoubleClick = DasFunction(radarScriptDas, "handle_double_click")
   let radarHandlePress = DasFunction(radarScriptDas, "handle_press")
+  let radarHandlePressEnd = DasFunction(radarScriptDas, "handle_press_end")
+  let radarHandleMouseWheel = DasFunction(radarScriptDas, "handle_mouse_wheel")
   return {
     watch = [color_watched, radarOffsets]
     size = flex()
@@ -43,33 +49,56 @@ let radarCanvas = @(color_watched, ovr = {}, handle_clicks = false) function() {
     fontSize = hudFontHgt
 
     screenHeight = sh(100)
+    usePictureTargets = true
+    planeTargetPicture
+    helicopterTargetPicture
+    rocketTargetPicture
 
     handleClicks = handle_clicks
-    behavior = handle_clicks ? [Behaviors.Button, ButtonExtendUpdatePress] : null
+    behavior = handle_clicks ? [ButtonExtendUpdatePress, Behaviors.Button, Behaviors.TrackMouse, Behaviors.JoystickScroll] : null
     skipDirPadNav = true
     onClick = handle_clicks ? function(evt){
       let elem = evt.target
-      radarHandleClick(elem, elem.getScreenPosX(), elem.getScreenPosY(), elem.getWidth(), elem.getHeight(), evt.screenX, evt.screenY)
+      radarHandleClick(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
     } : null
     onDoubleClick = handle_clicks ? function(evt){
       let elem = evt.target
-      radarHandleDoubleClick(elem, elem.getScreenPosX(), elem.getScreenPosY(), elem.getWidth(), elem.getHeight(), evt.screenX, evt.screenY)
+      radarHandleDoubleClick(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
     } : null
     onUpdatePress = handle_clicks ? function(evt){
       let elem = evt.target
-      radarHandlePress(elem, elem.getScreenPosX(), elem.getScreenPosY(), elem.getWidth(), elem.getHeight(), evt.screenX, evt.screenY)
+      radarHandlePress(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
     } : null
+    onPressEnd = handle_clicks ? function(evt){
+      let elem = evt.target
+      radarHandlePressEnd(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
+    } : null
+
+    function onJoystickScroll(evt) {
+      let elem = evt.target
+      let joystickSensetivity = 0.01
+      let delta = -evt.delta.y * joystickSensetivity
+      radarHandleMouseWheel(elem, evt.screenX, evt.screenY, delta)
+    }
+    function onMouseWheel(evt) {
+      let elem = evt.target
+      let delta = evt.button > 0.0 ? 1.0 : -1.0
+      radarHandleMouseWheel(elem, evt.screenX, evt.screenY, delta)
+    }
   }.__update(ovr)
 }
 
 
 let radarHud = @(width, height, x, y, color_watched, ovr = {}, handle_clicks = false) @() {
-  watch = [isRadarButtonsVisible, unitType]
+  watch = [isRadarButtonsVisible, unitType, isRadarFiltersButtonsVisible]
   size = [width, height]
   pos = [x, y]
   children = [
     radarCanvas(color_watched, ovr, handle_clicks)
     isRadarButtonsVisible.get() ? radarButtonsComps?[unitType.get()] : null
+    isRadarFiltersButtonsVisible.get()
+      ? filtersButtons(radarOffsets)
+      : null
   ]
 }
 

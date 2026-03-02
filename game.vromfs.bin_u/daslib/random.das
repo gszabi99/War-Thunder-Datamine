@@ -6,6 +6,13 @@ options strict_smart_pointers = true
 
 module random shared
 
+
+
+
+
+
+
+
 require math
 
 let LCG_RAND_MAX = 32767                                        

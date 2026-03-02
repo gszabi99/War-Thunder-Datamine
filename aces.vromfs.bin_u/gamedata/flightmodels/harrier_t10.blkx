@@ -1130,8 +1130,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1190,8 +1190,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1250,8 +1250,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1310,8 +1310,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1370,8 +1370,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1430,8 +1430,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2771,21 +2771,23 @@
               "DR-VC-1A",
               "PGZ-09 TA",
               "1RS1",
-              "1RL34",
-              "AN/VPS-2",
-              "M-247 TA",
+              "CLC-1",
+              "SMA VPS-A05",
               "ESD RA-20 S",
+              "AN/VPS-2",
+              "1RL34",
+              "M-247 TA",
               "TriAD TA",
-              "1RL33",
-              "1RL114 TT",
               "Marconi S-400",
-              "Gepard TT",
               "Antelope",
+              "Phalanx Search Radar",
+              "1RL114 TT",
+              "Phalanx Track Radar",
+              "Gepard TT",
               "PGZ-09 TT",
               "Type-87 TT",
-              "Phalanx Search Radar",
-              "Phalanx Track Radar",
-              "PGZ-625 TA"
+              "PGZ-625 TT",
+              "1RL33"
             ]
           },
           {
@@ -3455,34 +3457,6 @@
         }
       }
     ]
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump_small",
-    "burningFx": "fuel_dump_fire_small",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 370.0,
-    "maxSpeed": 1020.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
-      ]
-    }
   },
   "propellers": {
     "prop0": -1,
@@ -5617,84 +5591,6 @@
     ],
     "fxType": "catapult_expl_ejection"
   },
-  "cutting": {
-    "_emtr_break_wing0_l_from": [
-      -0.14813,
-      0.450516,
-      1.14825
-    ],
-    "_emtr_break_wing0_l_to": [
-      -0.14813,
-      0.450516,
-      1.15825
-    ],
-    "emtr_break_wing1_l_from": [
-      -0.14813,
-      0.450516,
-      1.45764
-    ],
-    "emtr_break_wing1_l_to": [
-      -0.14813,
-      0.450516,
-      1.51963
-    ],
-    "emtr_break_wing2_l_from": [
-      -0.14813,
-      0.450516,
-      3.15761
-    ],
-    "emtr_break_wing2_l_to": [
-      -0.14813,
-      0.450516,
-      3.17761
-    ],
-    "_emtr_break_wing0_r_from": [
-      -0.14813,
-      0.450516,
-      -1.14825
-    ],
-    "_emtr_break_wing0_r_to": [
-      -0.14813,
-      0.450516,
-      -1.15825
-    ],
-    "emtr_break_wing1_r_from": [
-      -0.14813,
-      0.450516,
-      -1.45764
-    ],
-    "emtr_break_wing1_r_to": [
-      -0.14813,
-      0.450516,
-      -1.51963
-    ],
-    "emtr_break_wing2_r_from": [
-      -0.14813,
-      0.450516,
-      -3.15761
-    ],
-    "emtr_break_wing2_r_to": [
-      -0.14813,
-      0.450516,
-      -3.17761
-    ],
-    "emtr_break_wing_tail": [
-      -4.14847,
-      0.0,
-      0.0
-    ],
-    "finCut": false,
-    "emtr_break_fin_from": [
-      -5.42898,
-      1.07617,
-      0.0
-    ],
-    "emtr_break_fin_to": [
-      -5.42898,
-      2.19412,
-      0.0
-    ]
-  },
   "lerxVapors": {
     "lerxVapor": [
       {
@@ -5981,6 +5877,112 @@
           8.0
         ]
       }
+    ]
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 370.0,
+    "maxSpeed": 1020.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
+  },
+  "cutting": {
+    "_emtr_break_wing0_l_from": [
+      -0.14813,
+      0.450516,
+      1.14825
+    ],
+    "_emtr_break_wing0_l_to": [
+      -0.14813,
+      0.450516,
+      1.15825
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.14813,
+      0.450516,
+      1.45764
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.14813,
+      0.450516,
+      1.51963
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.14813,
+      0.450516,
+      3.15761
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.14813,
+      0.450516,
+      3.17761
+    ],
+    "_emtr_break_wing0_r_from": [
+      -0.14813,
+      0.450516,
+      -1.14825
+    ],
+    "_emtr_break_wing0_r_to": [
+      -0.14813,
+      0.450516,
+      -1.15825
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.14813,
+      0.450516,
+      -1.45764
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.14813,
+      0.450516,
+      -1.51963
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.14813,
+      0.450516,
+      -3.15761
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.14813,
+      0.450516,
+      -3.17761
+    ],
+    "emtr_break_wing_tail": [
+      -4.14847,
+      0.0,
+      0.0
+    ],
+    "finCut": false,
+    "emtr_break_fin_from": [
+      -5.42898,
+      1.07617,
+      0.0
+    ],
+    "emtr_break_fin_to": [
+      -5.42898,
+      2.19412,
+      0.0
     ]
   }
 }

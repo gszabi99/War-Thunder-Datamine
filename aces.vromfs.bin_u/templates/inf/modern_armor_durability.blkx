@@ -56,6 +56,7 @@
   "armor_durability_ceramic": {
     "_use": "armor_durability",
     "item__armorMaterialName": "ceramic",
+    "item__armorAmountMin": 0.5,
     "item__hitFxMaterialRelDurabilities:list<r>": {
       "durability": 1.0
     },
@@ -102,6 +103,7 @@
   "armor_durability_kevlar": {
     "_use": "armor_durability",
     "item__armorMaterialName": "kevlar",
+    "item__armorAmountMin": 0.1,
     "item__hitFxMaterialRelDurabilities:list<r>": {
       "durability": 1.0
     },
@@ -148,6 +150,7 @@
   "armor_durability_steel": {
     "_use": "armor_durability",
     "item__armorMaterialName": "steel",
+    "item__armorAmountMin": 0.5,
     "item__hitFxMaterialRelDurabilities:list<r>": {
       "durability": [
         0.5,
@@ -197,37 +200,89 @@
       ]
     }
   },
-  "modern_helmet_soft_class_2": {
-    "_use": "armor_durability_kevlar",
-    "item__armorAmount": 2.57,
-    "item__armorAmountMin": 0.1,
+  "armor_thickness_class_nij_2": {
+    "item__armorAmount": 1.4
+  },
+  "armor_thickness_class_nij_3a": {
+    "item__armorAmount": 1.8
+  },
+  "armor_thickness_class_nij_3": {
+    "item__armorAmount": 7.0
+  },
+  "armor_thickness_class_nij_4": {
+    "item__armorAmount": 16.0
+  },
+  "armor_thickness_helmet_class_nij_2": {
+    "item__armorAmount": 2.0
+  },
+  "armor_thickness_helmet_class_nij_3a": {
+    "item__armorAmount": 2.57
+  },
+  "armor_thickness_helmet_class_nij_3": {
+    "item__armorAmount": 10.0
+  },
+  "armor_thickness_class_br_1": {
+    "item__armorAmount": 1.4
+  },
+  "armor_thickness_class_br_2": {
+    "item__armorAmount": 1.7
+  },
+  "armor_thickness_class_br_3": {
+    "item__armorAmount": 4.8
+  },
+  "armor_thickness_class_br_4": {
+    "item__armorAmount": 8.2
+  },
+  "armor_thickness_class_br_5": {
+    "item__armorAmount": 16.0
+  },
+  "armor_thickness_class_br_6": {
+    "item__armorAmount": 20.0
+  },
+  "armor_thickness_helmet_class_br_1": {
+    "item__armorAmount": 2.0
+  },
+  "armor_thickness_helmet_class_br_2": {
+    "item__armorAmount": 2.43
+  },
+  "armor_thickness_helmet_class_br_3": {
+    "item__armorAmount": 6.9
+  },
+  "helmet_soft_class_br_1": {
+    "_use": [
+      "armor_durability_kevlar",
+      "armor_thickness_helmet_class_br_1"
+    ],
     "item__armorDurabilityAmount": 1.0,
     "item__armorDurabilityMaxAmount": 1.0,
-    "item__weight": 1.5
+    "item__weight": 1.2
   },
-  "modern_helmet_steel_class_2": {
-    "_use": "armor_durability_steel",
-    "item__armorAmount": 2.57,
-    "item__armorAmountMin": 0.5,
+  "helmet_steel_class_br_1": {
+    "_use": [
+      "armor_durability_steel",
+      "armor_thickness_helmet_class_br_1"
+    ],
     "item__armorDurabilityAmount": 6.0,
     "item__armorDurabilityMaxAmount": 6.0,
-    "item__weight": 6.0
+    "item__weight": 1.3
   },
-  "modern_helmet_soft_class_3a": {
-    "_use": "armor_durability_kevlar",
-    "item__armorAmount": 3.57,
-    "item__armorAmountMin": 0.2,
+  "helmet_soft_class_br_2": {
+    "_use": [
+      "armor_durability_kevlar",
+      "armor_thickness_helmet_class_br_2"
+    ],
     "item__armorDurabilityAmount": 2.0,
     "item__armorDurabilityMaxAmount": 2.0,
-    "item__weight": 2.0
+    "item__weight": 1.5
   },
-  "modern_helmet_soft_class_3": {
-    "_use": "armor_durability_kevlar",
-    "item__armorAmount": 6.9,
-    "item__armorAmountMin": 0.2,
+  "helmet_soft_class_br_3": {
+    "_use": [
+      "armor_durability_kevlar",
+      "armor_thickness_helmet_class_br_3"
+    ],
     "item__armorDurabilityAmount": 6.0,
     "item__armorDurabilityMaxAmount": 6.0,
-    "item__weight": 2.0
+    "item__weight": 1.9
   },
   "segmented_armor": {
     "_use": "item_with_owner",
@@ -247,6 +302,78 @@
       "_track": true
     },
     "item__armoredPartsIds:list<i>": {}
+  },
+  "armor_kevlar_large_class_br_1_segment": {
+    "_use": [
+      "armor_durability_kevlar",
+      "armor_thickness_class_br_1"
+    ],
+    "item__armorDurabilityAmount": 9.0,
+    "item__armorDurabilityMaxAmount": 9.0
+  },
+  "armor_kevlar_small_class_br_1_segment": {
+    "_use": [
+      "armor_durability_kevlar",
+      "armor_thickness_class_br_1"
+    ],
+    "item__armorDurabilityAmount": 6.0,
+    "item__armorDurabilityMaxAmount": 6.0
+  },
+  "armor_kevlar_large_class_br_2_segment": {
+    "_use": [
+      "armor_durability_kevlar",
+      "armor_thickness_class_br_2"
+    ],
+    "item__armorDurabilityAmount": 9.0,
+    "item__armorDurabilityMaxAmount": 9.0
+  },
+  "armor_kevlar_small_class_br_2_segment": {
+    "_use": [
+      "armor_durability_kevlar",
+      "armor_thickness_helmet_class_br_2"
+    ],
+    "item__armorDurabilityAmount": 6.0,
+    "item__armorDurabilityMaxAmount": 6.0
+  },
+  "armor_plate_ceramic_class_br_3_segment": {
+    "_use": [
+      "armor_durability_ceramic",
+      "armor_thickness_class_br_3"
+    ],
+    "item__armorDurabilityAmount": 10.0,
+    "item__armorDurabilityMaxAmount": 10.0
+  },
+  "armor_plate_side_ceramic_class_br_3_segment": {
+    "_use": [
+      "armor_durability_ceramic",
+      "armor_thickness_class_br_3"
+    ],
+    "item__armorDurabilityAmount": 6.0,
+    "item__armorDurabilityMaxAmount": 6.0
+  },
+  "armor_plate_ceramic_class_br_4_segment": {
+    "_use": [
+      "armor_durability_ceramic",
+      "armor_thickness_class_br_4"
+    ],
+    "item__armorDurabilityAmount": 10.0,
+    "item__armorDurabilityMaxAmount": 10.0
+  },
+  "armor_plate_side_ceramic_class_br_4_segment": {
+    "_use": [
+      "armor_durability_ceramic",
+      "armor_thickness_class_br_4"
+    ],
+    "item__armorDurabilityAmount": 6.0,
+    "item__armorDurabilityMaxAmount": 6.0
+  },
+  "armor_plate_ceramic_class_br_5_segment": {
+    "_use": [
+      "armor_durability_ceramic",
+      "armor_thickness_class_br_5"
+    ],
+    "item__armorDurabilityAmount": 10.0,
+    "item__armorDurabilityMaxAmount": 10.0
   },
   "test_segmented_armor": {
     "_use": "segmented_armor",
@@ -308,21 +435,18 @@
   "test_armor_segment_1": {
     "_use": "armor_durability_ceramic",
     "item__armorAmount": 12.0,
-    "item__armorAmountMin": 2.5,
     "item__armorDurabilityAmount": 10.0,
     "item__armorDurabilityMaxAmount": 10.0
   },
   "test_armor_segment_2": {
     "_use": "armor_durability_kevlar",
     "item__armorAmount": 2.0,
-    "item__armorAmountMin": 0.1,
     "item__armorDurabilityAmount": 6.0,
     "item__armorDurabilityMaxAmount": 6.0
   },
   "test_armor_segment_3": {
     "_use": "armor_durability_ceramic",
     "item__armorAmount": 6.0,
-    "item__armorAmountMin": 1.5,
     "item__armorDurabilityAmount": 8.0,
     "item__armorDurabilityMaxAmount": 8.0
   }

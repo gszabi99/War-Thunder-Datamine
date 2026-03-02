@@ -1,7 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
+let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { getPrizesListViewData, getPrizesListMarkupByData } = require("%scripts/items/prizesView.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 
@@ -46,6 +47,8 @@ local CollectionsSet = class {
     local unlockedItemsCount = 0
     let itemsView = this.collectionItems.map((function(decorator) {
       let decoratorType = decorator.decoratorType
+      let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+
       decoratorType.updateDownloadableDecoratorsInfo(decorator)
       let isUnlocked = decorator.isUnlocked()
       if (isUnlocked)
@@ -54,8 +57,8 @@ local CollectionsSet = class {
         id = this.getDecoratorObjId(collectionNum, decorator.id)
         tag = "imgSelectable"
         unlocked = isUnlocked ? "yes" : null
-        image = decoratorType.getImage(decorator)
-        imgRatio = decoratorType.getRatio(decorator)
+        image = viewDecoratorType.getImage(decorator)
+        imgRatio = viewDecoratorType.getRatio(decorator)
         imgClass = "profileCollection"
         focusBorder = true
         tooltipId = getTooltipType("DECORATION").getTooltipId(decorator.id, decoratorType.unlockedItemType)
@@ -63,13 +66,14 @@ local CollectionsSet = class {
     }).bindenv(this))
 
     let decoratorType = this.prize.decoratorType
+    let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
     let isUnlocked = this.prize.isUnlocked()
     let mainPrize = {
       id = $"{collectionNum};{this.prize.id}"
       tag = "imgSelectable"
       unlocked = true
-      image = decoratorType.getImage(this.prize)
-      imgRatio = decoratorType.getRatio(this.prize)
+      image = viewDecoratorType.getImage(this.prize)
+      imgRatio = viewDecoratorType.getRatio(this.prize)
       imgClass = "collectionPrize"
       focusBorder = true
       tooltipId = getTooltipType("DECORATION").getTooltipId(this.prize.id, decoratorType.unlockedItemType, {

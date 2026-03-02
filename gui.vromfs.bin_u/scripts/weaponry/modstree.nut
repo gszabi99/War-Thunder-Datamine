@@ -332,7 +332,7 @@ let modsTree = {
     let sideBranches = [] 
                             
     let sideTiers = []
-    local tiersTable = !isRoot || isCategory ? {} : null
+    local tiersTable = {}
 
     for (local i = 1; i < branch.len(); i++) {  
       let item = branch[i]

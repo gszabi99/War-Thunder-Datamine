@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Unlock = class (ItemCouponBase) {

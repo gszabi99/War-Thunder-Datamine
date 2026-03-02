@@ -11,10 +11,35 @@
   "haveCCRPForRocket": false,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
-  "hasHelmetDesignator": true,
   "laserDesignator": true,
   "rwrIndicator": "AN/APR-39",
   "hmdAH64": true,
+  "hasHelmetDesignator": true,
+  "helmetDesignatorZone0": [
+    -40.0,
+    -50.0,
+    50.0
+  ],
+  "helmetDesignatorZone1": [
+    -20.0,
+    -30.0,
+    50.0
+  ],
+  "helmetDesignatorZone2": [
+    0.0,
+    -15.0,
+    50.0
+  ],
+  "helmetDesignatorZone3": [
+    20.0,
+    -30.0,
+    50.0
+  ],
+  "helmetDesignatorZone4": [
+    40.0,
+    -50.0,
+    50.0
+  ],
   "gearSinkRangeLR": 0.245,
   "gearSinkRangeC": 0.242,
   "tpsCameraTargetOffsetAtZoom": [
@@ -772,8 +797,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -828,8 +854,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -2081,22 +2108,6 @@
       ]
     }
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/ir_tracker.blk",
-        "node": "optic1_gun",
-        "powerButtonIdx": -1
-      },
-      {
-        "blk": "gameData/sensors/us_an_apr_39a_v1.blk"
-      },
-      {
-        "blk": "gameData/sensors/us_flir.blk",
-        "node": "optic1_gun"
-      }
-    ]
-  },
   "helicopter": {
     "rotorBladeAnglesCoeffs": [
       0.3,
@@ -2127,6 +2138,22 @@
       25.0
     ],
     "crosshairPreset": "test_crosshair"
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/ir_tracker.blk",
+        "node": "optic1_gun",
+        "powerButtonIdx": -1
+      },
+      {
+        "blk": "gameData/sensors/us_an_apr_39a_v1.blk"
+      },
+      {
+        "blk": "gameData/sensors/us_flir.blk",
+        "node": "optic1_gun"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {

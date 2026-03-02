@@ -470,8 +470,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1184,8 +1183,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1240,8 +1239,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1296,8 +1295,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2435,6 +2434,10 @@
         "blk": "gameData/FlightModels/weaponPresets/tbf_1c_bombs.blk"
       },
       {
+        "name": "tbf_1c_1000lb_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/tbf_1c_1000lb_bomb.blk"
+      },
+      {
         "name": "tbf_1c_2000lb_bomb",
         "blk": "gameData/FlightModels/weaponPresets/tbf_1c_2000lb_bomb.blk"
       },
@@ -2757,19 +2760,31 @@
             ]
           },
           {
+            "iconType": "bombs_large",
+            "name": "1000lb",
+            "reqModification": "b-17_mbc",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_heavy_middle",
             "name": "2000lb",
             "reqModification": "b-17_lbc",
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
-              "emitter": "bomb1",
+              "emitter": "bomb5",
               "bullets": 1,
               "separate": true
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group_x2",
+            "iconType": "bombs_middle_high_drag_group_x2",
             "name": "anmk33",
             "reqModification": "an_mk1",
             "Weapon": [
@@ -3189,14 +3204,18 @@
       "tier": 1
     },
     "an_mk1": {
-      "prevModification": "frc_mk5",
       "modClass": "weapon",
       "tier": 2
+    },
+    "b-17_mbc": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "an_mk1"
     },
     "b-17_lbc": {
       "modClass": "weapon",
       "tier": 4,
-      "reqModification": "an_mk1"
+      "reqModification": "b-17_mbc"
     }
   },
   "user_skin": {

@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module cpp_bind public
 
+
+
+
+
+
+
 require fio
 require rtti
 require ast

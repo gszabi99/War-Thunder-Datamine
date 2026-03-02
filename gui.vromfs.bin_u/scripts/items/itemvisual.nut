@@ -5,6 +5,8 @@ let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let {shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
 let { findItemById, findItemByUid } = require("%scripts/items/itemsManagerModule.nut")
+let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+
 
 function fillItemTable(item, holderObj) {
   let containerObj = holderObj.findObject("item_table_container")
@@ -103,7 +105,7 @@ function fillItemDescr(item, holderObj, handler = null, shopDesc = false, prefer
 
       let warbondId = params?.wbId
       if (warbondId) {
-        let warbond = ::g_warbonds.findWarbond(warbondId, params?.wbListId)
+        let warbond = findWarbond(warbondId, params?.wbListId)
         let award = warbond ? warbond.getAwardById(item.id) : null
         if (award)
           desc = award.addAmountTextToDesc(desc)

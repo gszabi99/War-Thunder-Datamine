@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { format } = require("string")
-let stdMath = require("%sqstd/math.nut")
+let { round_by_value } = require("%sqstd/math.nut")
 let { getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -332,13 +332,13 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       let addLevel   = getSkillCrewLevel(item, totalSkill, totalSkill - bonusData.add)
 
       if ((totalSkill - item.newValue).tointeger() != 0 && bonusData.add != 0)
-        curValue += stdMath.round_by_value(bonusLevel, 0.01)
+        curValue += round_by_value(bonusLevel, 0.01)
 
       if (bonusData.add > 0)
         bonusTooltip = "".concat(loc("crew/qualifyBonus"), loc("ui/colon"),
-          colorize("goodTextColor", $"+{stdMath.round_by_value(addLevel, 0.01)}"))
+          colorize("goodTextColor", $"+{round_by_value(addLevel, 0.01)}"))
 
-      let lvlDiffByGunners = stdMath.round_by_value(bonusLevel - addLevel, 0.01)
+      let lvlDiffByGunners = round_by_value(bonusLevel - addLevel, 0.01)
       if (lvlDiffByGunners < 0)
         bonusTooltip = "".concat(bonusTooltip, ((bonusTooltip != "") ? "\n" : ""),
           loc("crew/notEnoughGunners"), loc("ui/colon"), $"<color=@badTextColor>{lvlDiffByGunners}</color>")
@@ -383,10 +383,12 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
         if (bonusData.specType.code == crewSpecTypes.ACE.code)
           currentExpPoints += MAX_EXPERT_EXP_POINTS + MAX_ACE_EXP_POINTS
       }
-      let skillsExpPoints = maxValue > 0 ? (value * maxSkillCrewLevel / maxValue).tointeger() : 0
+      let skillsExpPoints = maxValue > 0
+        ? round_by_value(value * maxSkillCrewLevel.tofloat() / maxValue, 0.5)
+        : 0
       currentExpPoints += skillsExpPoints
-      let addExpPointsValue = maxValue > 0 ?
-        (item.newValue * maxSkillCrewLevel / maxValue).tointeger() - skillsExpPoints
+      let addExpPointsValue = maxValue > 0
+        ? round_by_value(item.newValue * maxSkillCrewLevel.tofloat() / maxValue, 0.5) - skillsExpPoints
         : 0
 
       res.__update({

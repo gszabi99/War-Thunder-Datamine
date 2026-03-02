@@ -146,8 +146,8 @@
     "gun_attachable_mod_params__multiplierValues:list<r>": {
       "val": [
         -0.03,
-        0.1,
-        0.05,
+        -0.1,
+        -0.05,
         0.15,
         0.15,
         0.15
@@ -248,6 +248,90 @@
     "item__locDetails": "",
     "item__weight": 2.2,
     "item__volume": 1.5
+  },
+  "magazine_mod_as_val_30_round_base": {
+    "animchar__res": "as_val_30_round_magazine_char",
+    "collres__res": "as_val_30_round_magazine_collision",
+    "item__template": "magazine_mod_as_val_30_round_item",
+    "item__proto": "magazine_mod_as_val_30_round",
+    "item__name": "items/magazine_mod_as_val_30_round",
+    "gunAttachable__slotTag": "magazine_mod_as_val_30_round",
+    "gunAttachable__slotName": "magazine",
+    "gunAttachable__gunSlotName": "magazine",
+    "gunmod__type": "mag_small",
+    "gunAttachable:tag": {}
+  },
+  "magazine_mod_as_val_30_round_additional": {
+    "_use": [
+      "weapon_mod",
+      "disable_update"
+    ],
+    "animchar__res": "as_val_30_round_magazine_char",
+    "collres__res": "as_val_30_round_magazine_collision",
+    "gunAttachable__slotTag": "magazine_mod_as_val_30_round_additional",
+    "gunAttachable__slotName": "magazine_2",
+    "gunAttachable__gunSlotName": "magazine_2",
+    "gunAttachable:tag": {}
+  },
+  "magazine_mod_as_val_30_round": {
+    "_use": [
+      "weapon_mod",
+      "magazine_mod_as_val_30_round_base",
+      "disable_update",
+      "attachable_mod_modificators"
+    ],
+    "magazine_mod__ammoHolder": "as_val_30_round_magazine",
+    "magazine_mod__defaultAmmoHoldersCount": 6,
+    "magazine_mod__gunAnimMagazineSelectedEnum": -1,
+    "magazine_mod__gunAnimMagazineSelectedString": "as_val_30_round_magazine",
+    "magazine_mod:tag": {},
+    "gun_attachable_mod__additionalModTemplates:list<t>": {
+      "name": "magazine_mod_as_val_30_round_additional"
+    },
+    "gun_attachable_mod__additionalModSlotNames:list<t>": {
+      "name": "magazine_2"
+    },
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "item__weight",
+        "gun__inertialMass"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        0.07,
+        0.5
+      ]
+    },
+    "gun_attachable_mod_params__multiplierNames:list<t>": {
+      "name": [
+        "gun__recoilAmount",
+        "gun__adsSpeedMult",
+        "weap__sprintLerpFactor",
+        "gun__reloadTime",
+        "gun__altReloadTime",
+        "gun__quickReloadTime"
+      ]
+    },
+    "gun_attachable_mod_params__multiplierValues:list<r>": {
+      "val": [
+        -0.08,
+        -0.1,
+        -0.05,
+        0.15,
+        0.15,
+        0.15
+      ]
+    }
+  },
+  "magazine_mod_as_val_30_round_item": {
+    "_use": [
+      "item",
+      "magazine_mod_as_val_30_round_base"
+    ],
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.4
   },
   "magazine_magpul_pmag_40_round_base": {
     "animchar__res": "magpul_pmag_40_ammo_char",

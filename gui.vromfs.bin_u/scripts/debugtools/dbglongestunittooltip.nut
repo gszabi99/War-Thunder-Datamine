@@ -7,6 +7,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { fillAirInfo } = require("%scripts/airInfo.nut")
+
 
 local dbgLongestUnitTooltip = class (BaseGuiHandler) {
   wndType = handlerType.MODAL
@@ -99,7 +101,7 @@ local dbgLongestUnitTooltip = class (BaseGuiHandler) {
 
     let contentObj = this.scene.findObject(isTesting ? "sample_type" : unit.unitType.typeName)
     contentObj.show(true)
-    ::showAirInfo(unit, true, contentObj.findObject("air_info_tooltip"), this, {
+    fillAirInfo(unit, true, contentObj.findObject("air_info_tooltip"), this, {
       showLocalState = false
     })
   }

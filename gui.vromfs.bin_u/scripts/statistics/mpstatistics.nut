@@ -1,9 +1,11 @@
-from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left, get_mp_kick_countdown
+from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
-from "%scripts/utils_sa.nut" import is_mode_with_teams
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
@@ -27,7 +29,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInSessionRoom, getSessionLobbyPublicParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle,
+let { get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle, getMpKickCountdown,
   setMpTable, getLocalTeamForMpStats, buildMpTable, updateTeamCssLabel, countWidthForMpTable
 } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsInfo.nut")
@@ -44,7 +46,6 @@ let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
@@ -123,7 +124,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     let timeToKickObj = this.getTimeToKickObj()
     if (!checkObj(timeToKickObj))
       return
-    let timeToKickValue = get_mp_kick_countdown()
+    let timeToKickValue = getMpKickCountdown()
     
     if (timeToKickValue <= 0 || get_time_to_kick_show_timer() < timeToKickValue)
       timeToKickObj.setValue("")
@@ -140,7 +141,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     let timeToKickAlertObj = this.scene.findObject("time_to_kick_alert_text")
     if (!checkObj(timeToKickAlertObj))
       return
-    let timeToKickValue = get_mp_kick_countdown()
+    let timeToKickValue = getMpKickCountdown()
     if (timeToKickValue <= 0 || get_time_to_kick_show_alert() < timeToKickValue || this.isSpectate)
       timeToKickAlertObj.show(false)
     else {
@@ -283,7 +284,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     this.gameType = get_game_type()
     this.isOnline = isLoggedIn.get()
 
-    this.isTeamplay = is_mode_with_teams(this.gameType)
+    this.isTeamplay = isModeWithTeams(this.gameType)
     this.isTeamsRandom = !this.isTeamplay || this.gameMode == GM_DOMINATION
     if (isInSessionRoom.get() || is_replay_playing())
       this.isTeamsWithCountryFlags = this.isTeamplay &&
@@ -1054,7 +1055,9 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     return getLogForBanhammer()
   }
 
-  getCurrentEdiff = get_mission_mode  
+  function getCurrentEdiff() {
+    return events.getCurBattleEdiff()
+  }
 
   getLocalTeam = @() getLocalTeamForMpStats()
   getOverrideCountryIconByTeam = @(team)

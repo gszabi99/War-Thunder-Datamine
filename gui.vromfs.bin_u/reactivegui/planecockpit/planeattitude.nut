@@ -8,7 +8,7 @@ function planeAttitude(pos, size) {
 
   let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
   let fmBlk = DataBlock()
-  fmBlk.tryLoad(fileName)
+  fmBlk.tryLoad(fileName) 
 
   let mfdBlk = fmBlk.getBlockByName("cockpit")?.getBlockByName("multifunctionDisplays")
   if (mfdBlk !=  null) {

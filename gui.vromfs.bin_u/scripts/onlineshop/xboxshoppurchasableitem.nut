@@ -8,7 +8,6 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
-let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 let { ProductKind, show_details, get_total_quantity, retrieve_product_info } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
@@ -141,8 +140,6 @@ local XboxShopPurchasableItem = class {
     needAllBoughtIcon = true
     headerText = this.shortName
   }.__merge(params)
-
-  getItemsView = @() getEntitlementView(this.entitlementId)
 
   isCanBuy = @() this.isPurchasable && !this.isBought
   isInactive = @() !this.isPurchasable || this.isBought

@@ -8,6 +8,12 @@ module faker shared private
 
 
 
+
+
+
+
+
+
 require daslib/regex_boost
 require daslib/random
 require daslib/static_let
@@ -15,8 +21,10 @@ require daslib/strings
 require daslib/defer
 require math
 require daslib/math_bits
+require daslib/enum_trait
 
 struct MonthNameAndDay {
+    
     name : string
     days : int
 }
@@ -55,6 +63,7 @@ struct public Faker {
 }
 
 def public Faker(var rng : iterator<uint>) {
+    
     return <-  Faker(rnd <- rng)
 }
 
@@ -309,7 +318,7 @@ def public any_uint(var faker : Faker) : string {
 def public any_enum(var faker : Faker, enum_value : auto(TT)) : TT {
     
     var inscope values : array<TT -const>
-    for (v in each_enum(enum_value)) {
+    for (v in enum_value) {
         values |> push(v)
     }
     var idx = 0u
@@ -346,7 +355,7 @@ def public week_day(year, month, day : uint) {
 
 def public week_day(year, month, day : int) {
     
-    static_let <| $() {
+    static_let() {
         let offset <- [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
     }
     var afterFeb = 1

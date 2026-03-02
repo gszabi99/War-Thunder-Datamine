@@ -362,8 +362,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1173,8 +1172,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1229,8 +1228,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1285,8 +1284,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1341,8 +1340,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2298,30 +2297,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun1_dm",
-        "bullets": 300,
-        "light": true,
-        "spread": 1.0
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection2",
-        "dm": "mgun2_dm",
-        "bullets": 300,
-        "light": true,
-        "spread": 1.0
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2330,40 +2309,244 @@
         "blk": "gameData/FlightModels/weaponPresets/b_48_firecrest_default.blk"
       },
       {
+        "name": "b_48_firecrest_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/b_48_firecrest_rockets.blk"
+      },
+      {
         "name": "b_48_firecrest_500lbs_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/b_48_firecrest_500lbs_bombs.blk",
-        "reqModification": "halker_mbc"
+        "blk": "gameData/FlightModels/weaponPresets/b_48_firecrest_500lbs_bombs.blk"
       },
       {
         "name": "b_48_firecrest_torpedo",
-        "blk": "gameData/FlightModels/weaponPresets/b_48_firecrest_torpedo.blk",
-        "reqModification": "blackburn_tc"
+        "blk": "gameData/FlightModels/weaponPresets/b_48_firecrest_torpedo.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 820.0,
+    "maxloadMassLeftConsoles": 410.0,
+    "maxloadMassRightConsoles": 410.0,
+    "maxDisbalance": 200.0,
+    "HideNodes": {
+      "node": [
+        "pylon_rocket8",
+        "pylon_rocket7",
+        "pylon_rocket6",
+        "pylon_rocket5",
+        "pylon_rocket4",
+        "pylon_rocket3",
+        "pylon_rocket2",
+        "pylon_rocket1",
+        "pylon_bomb3",
+        "pylon_bomb2",
+        "pylon_bomb1"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "bullets": 300,
+              "light": true,
+              "spread": 1.0
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun2_dm",
+              "bullets": 300,
+              "light": true,
+              "spread": 1.0
+            }
+          ]
+        }
       },
       {
-        "name": "b_48_firecrest_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/b_48_firecrest_rockets.blk",
-        "reqModification": "halker_rc",
-        "weaponConfig": {
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "rockets_he_middle_group_x4",
+          "name": "rp3_slot1",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": [
+              "pylon_rocket4",
+              "pylon_rocket3",
+              "pylon_rocket2",
+              "pylon_rocket1"
+            ]
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "emitter": "rocket1",
+              "bullets": 1,
+              "order": 1
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "emitter": "rocket2",
+              "bullets": 1,
+              "order": 3
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "emitter": "rocket3",
+              "bullets": 1,
+              "order": 5
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "emitter": "rocket4",
+              "bullets": 1,
+              "order": 7
+            }
+          ]
+        }
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "bombs_middle",
+          "name": "500lb",
+          "reqModification": "halker_mbc",
+          "ShowNodes": {
+            "node": "pylon_bomb2"
+          },
           "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
-            "amountPerTier": 1.0,
-            "iconType": "rockets_he_small"
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
+            "emitter": "bomb2",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
         }
       },
       {
-        "name": "b_48_firecrest_500lbs_bombs_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/b_48_firecrest_500lbs_bombs_rockets.blk",
-        "reqModification": [
-          "halker_rc",
-          "halker_mbc"
-        ],
-        "weaponConfig": {
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "air_torpedo",
+          "name": "torpedo",
+          "reqModification": "blackburn_tc",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
+          },
           "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
-            "amountPerTier": 1.0,
-            "iconType": "rockets_he_small"
+            "trigger": "torpedoes",
+            "blk": "gameData/Weapons/torpedoes/uk_mk15_torpedo.blk",
+            "emitter": "bomb1",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "bombs_middle",
+          "name": "500lb",
+          "reqModification": "halker_mbc",
+          "ShowNodes": {
+            "node": "pylon_bomb3"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
+            "emitter": "bomb3",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 5,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "rockets_he_middle_group_x4",
+          "name": "rp3_slot5",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": [
+              "pylon_rocket8",
+              "pylon_rocket7",
+              "pylon_rocket6",
+              "pylon_rocket5"
+            ]
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "emitter": "rocket8",
+              "bullets": 1,
+              "order": 2
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "emitter": "rocket7",
+              "bullets": 1,
+              "order": 4
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "emitter": "rocket6",
+              "bullets": 1,
+              "order": 6
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "emitter": "rocket5",
+              "bullets": 1,
+              "order": 8
+            }
+          ]
         }
       }
     ]

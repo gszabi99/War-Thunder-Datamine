@@ -1107,8 +1107,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1167,8 +1167,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1227,8 +1227,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1287,8 +1287,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1347,8 +1347,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1407,8 +1407,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1467,8 +1467,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2593,7 +2593,7 @@
             "aviahorizon_pitch": {
               "arrowTex": "uk_gauge_aviahorizon_type_f4_slider_c",
               "position": [
-                683.0,
+                0.0,
                 768.0
               ],
               "arrowTexCoord": [
@@ -2648,6 +2648,12 @@
     "wingStrainCoeff": 0.2,
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/uk_ai.blk",
+      "dmPart": "radar_dm"
+    }
   },
   "commonWeapons": {
     "Weapon": {
@@ -2720,9 +2726,9 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1530.0,
-    "maxloadMassLeftConsoles": 765.0,
-    "maxloadMassRightConsoles": 765.0,
+    "maxloadMass": 2000.0,
+    "maxloadMassLeftConsoles": 850.0,
+    "maxloadMassRightConsoles": 850.0,
     "maxDisbalance": 620.0,
     "HideNodes": {
       "node": [
@@ -3645,12 +3651,6 @@
         ]
       }
     ]
-  },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/uk_ai.blk",
-      "dmPart": "radar_dm"
-    }
   },
   "turbulence": {
     "segmentlength": 100.0,

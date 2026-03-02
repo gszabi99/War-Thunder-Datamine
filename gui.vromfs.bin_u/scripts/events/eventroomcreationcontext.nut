@@ -17,7 +17,7 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { createSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
@@ -115,7 +115,7 @@ let EventRoomCreationContext = class {
     if (brRange) {
       let ediff = events.getEDiffByEvent(this.mGameMode)
       let unitMRank = unit.getEconomicRank(ediff)
-      if (unitMRank < getTblValue(0, brRange, 0) || getTblValue(1, brRange, MAX_COUNTRY_RANK) < unitMRank)
+      if (unitMRank < (brRange?[0] ?? 0) || ((brRange?[1] ?? maxCountryRank.get()) < unitMRank))
         return false
     }
 
@@ -290,7 +290,7 @@ let EventRoomCreationContext = class {
 
   function getRoomCreateParams() {
     let res = {
-      ranks = [1, MAX_COUNTRY_RANK] 
+      ranks = [1, maxCountryRank.get()] 
     }
 
     foreach (team in g_team.getTeams())

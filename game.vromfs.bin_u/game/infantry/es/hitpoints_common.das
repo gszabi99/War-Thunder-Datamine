@@ -49,6 +49,11 @@ def add_damage_over_time_entry(damage : float;
 
   hitpoints__totalDotAmount += damage
 
+def clear_bleeding_for_eid(eid : EntityId)
+  query(eid) <| $ [es] (var hitpoints__dotDamage : FloatList&;
+                        var hitpoints__totalDotAmount : float&)
+    var amount = 1e10
+    decrease_damage_over_time_amount(amount, hitpoints__dotDamage, hitpoints__totalDotAmount)
 
 def decrease_damage_over_time_amount(var amount : float&;
                                      var hitpoints__dotDamage : FloatList&;

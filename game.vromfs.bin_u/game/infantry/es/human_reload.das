@@ -141,6 +141,17 @@ def human_weap_interrupt_single_reload_es(info : ParallelUpdateFrameDelayed;
                               human_weap__reloadFinishTime, human_weap__reloadAtTime,
                               human_weap__isReloadRequested, immediately)
 
+[es(tag=server)]
+def gun_reload_interrupt_on_shoot(info : ParallelUpdateFrameDelayed;
+                                  human_weap__isReloading : bool;
+                                  human_weap__currentGunEid : EntityId;
+                                  human_net_phys : HumanActor&)
+  let isShoot = human_net_phys.phys.appliedCT |> is_control_bit_set(HumanPhysControlType.HCT_SHOOT)
+  let isAim = human_net_phys.phys.appliedCT |> is_control_bit_set(HumanPhysControlType.HCT_AIM)
+  if human_weap__isReloading && (isShoot || isAim)
+    query(human_weap__currentGunEid) <| $ [es] (gun_reload__stateAcceptsInterruptRequest : bool; var gun_reload__shouldInterrupt : bool&)
+      if gun_reload__stateAcceptsInterruptRequest
+        gun_reload__shouldInterrupt = true
 
 struct GunReloadData
   reloadStyle : GunReloadStyle
@@ -155,6 +166,7 @@ def human_inspect_on_spawn_init(evt : Event;
 [es(tag=server, REQUIRE=inspectOnSpawn, on_event=ParallelUpdateFrameDelayed)]
 def human_inspect_on_spawn(evt : Event;
                            eid : EntityId;
+                           dynamic_respawn__spawnOnUnitEid : EntityId;
                            active : bool;
                            human_weap__currentGunEid : EntityId;
                            human_net_phys : HumanActor&)
@@ -164,7 +176,8 @@ def human_inspect_on_spawn(evt : Event;
   assume currentState = phys.currentState
   assume weapEquipState = currentState.weapEquipState
   if weapEquipState.curState == HUWeaponEquipState.EES_EQUIPED && !!human_weap__currentGunEid
-    sendEvent(eid, CmdGunRequestInspect(atTime = get_sync_time(), gunEid = human_weap__currentGunEid))
+    if !dynamic_respawn__spawnOnUnitEid
+      sendEvent(eid, CmdGunRequestInspect(atTime = get_sync_time(), gunEid = human_weap__currentGunEid))
     removeSubTemplate(eid, "inspect_on_spawn")
 
 [es(tag=server)]
@@ -362,8 +375,6 @@ def human_weap_request_reload_es(evt : CmdRequestReload;
       human_weap__reloadPrevTime = atTime
       human_weap__isReloadRequested = true
       gun__ammoToReloadCount = ammoForGun.ammoCount
-
-      sendEvent(eid, EventHumanStartedReload())
 
 
 [es(tag=server, no_order, track=gun__ammo, on_appear)]

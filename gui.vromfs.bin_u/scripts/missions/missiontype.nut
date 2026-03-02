@@ -81,7 +81,7 @@ enumsAddTypes(g_mission_type, {
   }
 
   A_DUEL = {  
-    reMisName = regexp2(@"_duel(_|$)")
+    reMisName = regexp2(@"(_duel|_bullet_hell)(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR
     filterGroup = MISSION_GROUP.DUEL

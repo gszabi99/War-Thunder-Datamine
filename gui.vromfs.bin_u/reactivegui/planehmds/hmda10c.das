@@ -87,7 +87,7 @@ def draw_ralt(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canva
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(int(float(data.fontSize) * 0.9))
 
-  let altStr = "{fmt(":d", roundi(fmw.fm.currentAlt * metrToFeet))}R"
+  let altStr = "{fmt(":d", roundi(fmw.fm.input.currentAlt * metrToFeet))}R"
   ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.62, rdata.pos.y + rdata.size.y * 0.65)
   ctx |> draw_str_scaled(1.0, altStr, altStr |> length())
 

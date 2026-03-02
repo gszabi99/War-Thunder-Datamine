@@ -374,7 +374,7 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
         if unit != null && !unit.isDelayed
           let fmw = unit |> as_fmw()
           if fmw != null
-            let spd = "{fmt(":.1f", fmw.fm.Mach)}"
+            let spd = "{fmt(":.1f", fmw.fm.cache.Mach)}"
             let spdBox = get_str_bbox(spd, spd |> length(), fctx)
             ctx |> goto_xy(p.x - markSize - spdBox.width.x, p.y + markSize * 2. + spdBox.width.y)
             ctx |> draw_str_scaled(1., spd, spd |> length())

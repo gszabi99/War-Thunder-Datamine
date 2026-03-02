@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { hasSpecialWeapon, hasManySensorScanPattern, hasTargetTrack, hasWeaponLock } = require("vehicleModel")
 let string = require("string")
 let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
-  AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin,
+  AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin, RadarParkingState,
   CueVisible, CueReferenceTurretAzimuth, CueAzimuth, CueAzimuthHalfWidthRel, CueDistWidthRel, CueDist
   TargetRadarAzimuthWidth, TargetRadarDist
 } = require("%rGui/radarState.nut")
@@ -11,7 +11,7 @@ let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
 let { PI, floor } = require("%sqstd/math.nut")
 let { norm_s_ang } = require("dagor.math")
 let { radarSwitchToTarget, isRadarTargetFullyInAzimuthLockSpan } = require("radarGuiControls")
-let { RadarTargetType, RadarTargetIconType } = require("guiRadar")
+let { RadarTargetType, RadarTargetIconType, RadarParkingStateType } = require("guiRadar")
 let { RADAR_TAGET_ICON_NONE, RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET } = RadarTargetIconType
 let { RADAR_TAGET_TYPE_OWN_WEAPON, RADAR_TAGET_TYPE_OWN_WEAPON_TARGET } = RadarTargetType
 let { safeAreaSizeHud, bh, rh } = require("%rGui/style/screenState.nut")
@@ -35,11 +35,15 @@ let { mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwi
   mkSensorScanPatternSwitchBtn, mkSensorRangeSwitchBtn, mkSensorTargetLockBtn,
   mkFireBtn, mkSpecialFireBtn, mkWeaponLockBtn, mkNightVisionBtn, zoomControlByMouseWheel
 } = require("%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut")
-let { mkFilterTargetsBtn, planeTargetPicture, helicopterTargetPicture, rocketTargetPicture
-} = require("%rGui/antiAirComplexMenu/antiAirComplexMenuTargetsList.nut")
+let { mkFilterTargetsBtn } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuTargetsList.nut")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 let { radarCanvas } = require("%rGui/radar.nut")
 local tooltipTimer = null
+
+let imageSize = hdpxi(20)
+let planeTargetPicture = Picture($"ui/gameuiskin#tws_filter_aircraft.svg:{imageSize}:P")
+let helicopterTargetPicture = Picture($"ui/gameuiskin#tws_filter_helicopter.svg:{imageSize}:P")
+let rocketTargetPicture = Picture($"ui/gameuiskin#tws_filter_ammunition.svg:{imageSize}:P")
 
 let headerToopltipLocs = {
   azimuth = "hud/AAComplexMenu/azimuth/tooltip"
@@ -79,6 +83,13 @@ let radarHeight = Computed(@()
 
 let topDamageIndicator = Computed(@() !needShowDmgIndicator.get() ? sh(100) - sizeDamageIndicatorFull
   : dmgIndicatorStates.get()?.pos[1] ?? 0)
+
+let radarStateText = Computed(@()
+  (RadarParkingState.get() == RadarParkingStateType.ST_LIFTING_DOWN ) ? $"{loc("hud/AAComplexMenu/LiftingDown")}..."
+    : RadarParkingState.get() == RadarParkingStateType.ST_WAIT_PARKING_ANGLE ? $"{loc("hud/AAComplexMenu/RadarParking")}..."
+    : RadarParkingState.get() == RadarParkingStateType.ST_LIFTING_UP ? $"{loc("hud/AAComplexMenu/LiftingUp")}..."
+    : ""
+  )
 
 let imageByTargetIconType = {
   [RADAR_TAGET_ICON_JET] = planeTargetPicture,
@@ -174,6 +185,7 @@ let circularRadar = @() radarCanvas(null, {
   annotateTargets = true
   isAAComplexMenuLayout = true
   vignetteColor = 0xFF304054
+  usePictureTargets = true
   planeTargetPicture
   helicopterTargetPicture
   rocketTargetPicture
@@ -217,6 +229,15 @@ let mkFireControl = @() {
   ]
 }
 
+let sensorStateBlock = @() {
+  watch = [radarStateText, contentScale]
+  rendObj = ROBJ_TEXT
+  color = 0xFFFFFFFF
+  font = Fonts.tiny_text_hud
+  fontSize = getFontDefHt("tiny_text_hud") * contentScale.get()
+  text = radarStateText.get()
+}
+
 let mkCentralBlock = @() @() {
   watch = contentScale
   hplace = ALIGN_CENTER
@@ -230,7 +251,7 @@ let mkCentralBlock = @() @() {
       flow = FLOW_HORIZONTAL
       gap = panelsGap
       children = [
-        mkFrame(mkRadarControl, { text = loc("hud/radar_control") })
+        mkFrame(mkRadarControl, { text = loc("hud/radar_control"), rightBlock = sensorStateBlock})
         mkFrame(mkFireControl, { text = loc("hud/fire_control") })
       ]
     }

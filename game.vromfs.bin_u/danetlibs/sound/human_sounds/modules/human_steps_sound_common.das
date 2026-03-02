@@ -177,87 +177,11 @@ def get_desc_id_from_human_state(move_state : int; stand_state : HUStandState; i
     if ((it as Object)?.name ?? "") == name
       return idx
 
-  sound_debug("desc with name {name} not in irqs")
+  for it, idx in irqs, range(length(irqs))
+    if ((it as Object)?.name ?? "") == "footstep"
+      return idx
 
-  return INVALID_IRQ_OBJ_IDX
-
-
-
-def use_generator(enable_for_visible, enable_for_invisible, updatable, visible : bool; move_state : int; stand_state : HUStandState)
-
-  if move_state == int(HUMoveState.EMS_ROTATE_LEFT) || move_state == int(HUMoveState.EMS_ROTATE_RIGHT) || stand_state == HUStandState.ESS_CRAWL
-    return false
-
-  if (!updatable || !visible) && enable_for_invisible
-    return true
-
-  return (move_state == int(HUMoveState.EMS_SPRINT) || move_state == int(HUMoveState.EMS_RUN)) && enable_for_visible
-
-
-
-def human_steps_sound_generate(irq_obj_idx : int;
-                               cur_time : float;
-                               dt : float;
-
-                               is_on_ground : bool;
-                               is_climbing : bool;
-                               move_state : int;
-                               stand_state : HUStandState;
-
-                               animchar__animSpeed : float;
-                               animchar__updatable : bool;
-                               animchar__visible : bool;
-
-                               var lastStepAt_cooldown : float2&;
-
-                               walkRunSprint_stand_intervals : float3;
-                               walkRunSprint_crouch_intervals : float3;
-
-                               enable_for_visible : bool;
-                               enable_for_invisible : bool;
-                               enable_always : bool;
-
-                               @shared_comp irqs : Array) : int
-
-  assume last_step_at = lastStepAt_cooldown.x
-  assume cooldown = lastStepAt_cooldown.y
-
-  let useGenerator = (enable_always || use_generator(enable_for_visible, enable_for_invisible, animchar__updatable, animchar__visible, move_state, stand_state)) && animchar__animSpeed > VERY_SMALL_NUMBER
-
-  if move_state == int(HUMoveState.EMS_STAND) || stand_state == HUStandState.ESS_DOWNED || !is_on_ground || is_climbing
-    cooldown = min(cooldown + dt, 1.)
-    return INVALID_IRQ_OBJ_IDX
-
-  cooldown = max(0., cooldown - dt)
-
-  if irq_obj_idx == INVALID_IRQ_OBJ_IDX && !useGenerator
-    return INVALID_IRQ_OBJ_IDX
-
-  if useGenerator
-
-    assume stand_intervals = walkRunSprint_stand_intervals
-    assume crouch_intervals = walkRunSprint_crouch_intervals
-    
-
-    let intervals = (stand_state == HUStandState.ESS_CROUCH ? crouch_intervals : stand_intervals)
-    let interval = (move_state == int(HUMoveState.EMS_SPRINT)) ? intervals.z : (move_state == int(HUMoveState.EMS_RUN)) ? intervals.y : intervals.x
-    let step = safediv(interval, animchar__animSpeed)
-    cooldown = min(cooldown, step * 0.5)
-
-    if cur_time >= last_step_at + step
-      last_step_at = cur_time
-      if cooldown != 0.
-        return INVALID_IRQ_OBJ_IDX
-      
-      return get_desc_id_from_human_state(move_state, stand_state, irqs)
-
-  elif irq_obj_idx != INVALID_IRQ_OBJ_IDX
-
-    let irqCooldown = 0.2
-    if (cur_time - last_step_at) * animchar__animSpeed >= irqCooldown
-      last_step_at = cur_time
-      
-      return irq_obj_idx
+  sound_debug("desc with name '{name}' not in irqs")
 
   return INVALID_IRQ_OBJ_IDX
 
@@ -287,6 +211,10 @@ def human_steps_sound_update_states(cur_time : float;
     elif read_state(StateFlag.ST_SWIM, raisedStates)
       if !read_state(StateFlag.ST_ON_GROUND, human_net_phys__states)
         return "land"
+    elif read_state(StateFlag.ST_CRAWL, raisedStates)
+      return "downGround"
+    elif read_state(StateFlag.ST_CRAWL, clearedStates)
+      return "upGround"
     elif read_state(StateFlag.ST_CROUCH, raisedStates)
       return "downKnee"
     elif read_state(StateFlag.ST_CROUCH, clearedStates)
@@ -295,9 +223,5 @@ def human_steps_sound_update_states(cur_time : float;
       return "downKnee"
     elif read_state(StateFlag.ST_DOWNED, clearedStates)
       return "upKnee"
-    elif read_state(StateFlag.ST_CRAWL, raisedStates)
-      return "downGround"
-    elif read_state(StateFlag.ST_CRAWL, clearedStates)
-      return "upGround"
 
   return ""

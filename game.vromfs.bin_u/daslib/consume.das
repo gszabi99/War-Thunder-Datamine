@@ -6,6 +6,11 @@ options strict_smart_pointers = true
 
 module consume shared private
 
+
+
+
+
+
 require daslib/ast_boost
 
 [macro_function]

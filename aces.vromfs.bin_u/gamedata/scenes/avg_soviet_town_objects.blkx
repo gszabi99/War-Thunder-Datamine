@@ -316,46 +316,50 @@
     },
     {
       "_template": "fast_grass_settings",
-      "fast_grass__fade_start": -1.0,
-      "fast_grass__fade_end": -1.0,
-      "fast_grass__slice_step": 0.5,
+      "fast_grass__fade_start": 6.0,
+      "fast_grass__fade_end": 11.0,
+      "fast_grass__slice_step": 0.35,
       "fast_grass__step_scale": 15.0,
       "fast_grass__num_samples": 6,
       "fast_grass__max_samples": 32,
-      "fast_grass__hmap_range": 300.0,
+      "fast_grass__hmap_range": 2000.0,
       "fast_grass__hmap_cell_size": 0.25,
-      "fast_grass__ao_max_strength": 0.0
+      "fast_grass__ao_max_strength": 0.0,
+      "fast_grass__normal_fade_start": 1000.0,
+      "fast_grass__smoothness_fade_start": 1000.0,
+      "fast_grass__smoothness_fade_end": 1250.0,
+      "fast_grass__normal_fade_end": 1100.0
     },
     {
       "_template": "fast_grass_type",
       "dagdp__name": "generic_bush_a",
       "fast_grass__impostor": "grassfast_generic_bush_a",
-      "fast_grass__height": 0.75,
+      "fast_grass__height": 0.53,
       "fast_grass__weight_to_height_mul": 1.0,
-      "fast_grass__height_variance": 0.2,
+      "fast_grass__height_variance": 0.15,
       "fast_grass__stiffness": 0.9,
       "fast_grass__color_mask_r_from": [
-        69,
-        173,
-        104,
+        80,
+        149,
+        145,
         255
       ],
       "fast_grass__color_mask_r_to": [
-        68,
-        152,
-        109,
+        55,
+        142,
+        161,
         255
       ],
       "fast_grass__color_mask_b_from": [
-        82,
-        180,
-        204,
+        100,
+        149,
+        130,
         255
       ],
       "fast_grass__color_mask_b_to": [
-        35,
-        92,
-        158,
+        65,
+        142,
+        136,
         255
       ],
       "fast_grass__color_mask_g_from": [
@@ -371,15 +375,139 @@
         255
       ],
       "dagdp__biomes:list<i>": {
-        "index": [
+        "item": [
           0,
           1,
           2,
           3,
           4,
+          6
+        ]
+      }
+    },
+    {
+      "_template": "fast_grass_type+ri_gpu_object",
+      "dagdp__name": "generic_bush_a",
+      "fast_grass__impostor": "grassfast_generic_bush_a",
+      "fast_grass__height": 0.64,
+      "fast_grass__weight_to_height_mul": 1.0,
+      "fast_grass__height_variance": 0.075,
+      "fast_grass__stiffness": 0.9,
+      "fast_grass__color_mask_r_from": [
+        50,
+        119,
+        115,
+        255
+      ],
+      "fast_grass__color_mask_r_to": [
+        15,
+        112,
+        131,
+        255
+      ],
+      "fast_grass__color_mask_b_from": [
+        60,
+        119,
+        100,
+        255
+      ],
+      "fast_grass__color_mask_b_to": [
+        25,
+        112,
+        106,
+        255
+      ],
+      "fast_grass__color_mask_g_from": [
+        54,
+        24,
+        2,
+        255
+      ],
+      "fast_grass__color_mask_g_to": [
+        108,
+        153,
+        153,
+        255
+      ],
+      "ri_gpu_object__grid_size": 3,
+      "ri_gpu_object__cell_size": 10.0,
+      "ri_gpu_object__grid_tiling": 24,
+      "ri_gpu_object__name": "grassfast_generic_bush_a",
+      "ri_gpu_object__incline_delta": 0.0,
+      "ri_gpu_object__scale_range": [
+        2.0,
+        2.5
+      ],
+      "ri_gpu_object__rotate_range": [
+        90.0,
+        180.0
+      ],
+      "ri_gpu_object__seed": 17,
+      "ri_gpu_object__is_using_normal": true,
+      "ri_gpu_object__up_vector": [
+        0.1,
+        1.0,
+        0.1
+      ],
+      "ri_gpu_object__slope_factor": [
+        10.0,
+        50.0
+      ],
+      "ri_gpu_object__hardness": 0.1,
+      "dagdp__biomes:list<i>": {
+        "item": [
           17,
+          18,
           20
         ]
+      }
+    },
+    {
+      "_template": "fast_grass_type",
+      "dagdp__name": "generic_bush_a",
+      "fast_grass__impostor": "grassfast_generic_bush_a",
+      "fast_grass__height": 0.44,
+      "fast_grass__weight_to_height_mul": 1.0,
+      "fast_grass__height_variance": 0.075,
+      "fast_grass__stiffness": 0.9,
+      "fast_grass__color_mask_r_from": [
+        100,
+        129,
+        135,
+        255
+      ],
+      "fast_grass__color_mask_r_to": [
+        75,
+        122,
+        131,
+        255
+      ],
+      "fast_grass__color_mask_b_from": [
+        120,
+        129,
+        100,
+        255
+      ],
+      "fast_grass__color_mask_b_to": [
+        75,
+        122,
+        106,
+        255
+      ],
+      "fast_grass__color_mask_g_from": [
+        54,
+        24,
+        2,
+        255
+      ],
+      "fast_grass__color_mask_g_to": [
+        108,
+        153,
+        153,
+        255
+      ],
+      "dagdp__biomes:list<i>": {
+        "item": 28
       }
     }
   ]

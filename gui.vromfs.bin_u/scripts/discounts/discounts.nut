@@ -31,6 +31,7 @@ let { discountsList, consoleEntitlementUnits, getEntitlementUnitDiscount,
 const UPDATE_DISCOUNT_DATA_TIMER_ID = "update_discount_data"
 const TOP_MENU_ONLINE_SHOP_ID = "online_shop"
 
+let prevDiscountUnitsBundles = {}
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
   ps4_scee = isPlatformPS4 && ps4_get_region() == SCE_REGION_SCEE
@@ -130,6 +131,22 @@ function updateGiftUnitsDiscountFromGuiBlk(giftUnits) {
   return minUpdateDiscountsTimeSec
 }
 
+function isShopDiscountVisible() {
+  local isVisible = false
+  foreach (airName, discount in discountsList.airList)
+    if (discount > 0 && canBeVisibleDiscountOnUnit(getAircraftByName(airName))) {
+      isVisible = true
+      break
+    }
+  if (!isVisible)
+    foreach (airName, discount in discountsList.entitlementUnits)
+      if (discount > 0 && canBeVisibleDiscountOnUnit(getAircraftByName(airName))) {
+        isVisible = true
+        break
+      }
+  return isVisible
+}
+
 function updateDiscountData(isSilentUpdate = false) {
   clearDiscountsList()
 
@@ -170,20 +187,7 @@ function updateDiscountData(isSilentUpdate = false) {
   discountsList.entitlementUnits.__update(
     consoleEntitlementUnits, discountUnitsBundles.get())
 
-  local isShopDiscountVisible = false
-  foreach (airName, discount in discountsList.airList)
-    if (discount > 0 && canBeVisibleDiscountOnUnit(getAircraftByName(airName))) {
-      isShopDiscountVisible = true
-      break
-    }
-  if (!isShopDiscountVisible)
-    foreach (airName, discount in discountsList.entitlementUnits)
-      if (discount > 0 && canBeVisibleDiscountOnUnit(getAircraftByName(airName))) {
-        isShopDiscountVisible = true
-        break
-      }
-  discountsList.topmenu_research = isShopDiscountVisible
-
+  discountsList.topmenu_research = isShopDiscountVisible()
   if (!isSilentUpdate)
     pushDiscountsUpdateEvent()
 }
@@ -213,7 +217,17 @@ function updateOnlineShopDiscounts() {
 
 clearDiscountsList()
 
-discountUnitsBundles.subscribe(@(_) updateDiscountData())
+function updateDiscountUnits(unitsBundles) {
+  foreach (airName, _ in prevDiscountUnitsBundles)
+    discountsList.entitlementUnits.rawdelete(airName)
+
+  discountsList.entitlementUnits.__update(unitsBundles)
+  discountsList.topmenu_research = isShopDiscountVisible()
+  prevDiscountUnitsBundles.replace_with(unitsBundles)
+  deferOnce(pushDiscountsUpdateEvent)
+}
+
+discountUnitsBundles.subscribe(updateDiscountUnits)
 
 addListenersWithoutEnv({
   XboxShopDataUpdated         = @(_) updateOnlineShopDiscounts()

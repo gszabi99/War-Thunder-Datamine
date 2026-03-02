@@ -447,6 +447,16 @@ return [
     id = "ID_RADAR_NEXT_IFF_FILTER_MODE_HELICOPTER"
     checkAssign = false
   }
+  {
+    id = "ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = false
+  }
+  {
+    id = "ID_TOGGLE_AIR_RADAR_NCTR_APPLY_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = false
+  }
 
   {
     id = "ID_HELICOPTER_VIEW_HEADER"

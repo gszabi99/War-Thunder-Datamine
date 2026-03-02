@@ -825,7 +825,7 @@ let pods = @(width, height, pos) function() {
                   fontFxFactor = 1
                 }
                 @(){
-                  watch = [IsLaserDesignatorEnabled, GuidanceType]
+                  watch = IsLaserDesignatorEnabled
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = SelectedTrigger.get() != weaponTriggerName.AGM_TRIGGER ? baseColor : (isNext ? Color(255, 255, 255) : Color(0, 0, 0, 255))

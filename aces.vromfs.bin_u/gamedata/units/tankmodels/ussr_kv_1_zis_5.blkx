@@ -1043,6 +1043,15 @@
         "from": "ussr_camo_green*",
         "to": "ussr_camo_winter_lines*"
       }
+    },
+    {
+      "name": "ussr_camo_forest_black",
+      "nameLocId": "skin/ussr_camo_forest_black",
+      "descLocId": "skin/ussr_camo_forest_black/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_forest_black*"
+      }
     }
   ],
   "DamageParts": {
@@ -1060,7 +1069,8 @@
         "armorThickness": 70.0
       },
       "body_side_dm": {
-        "armorThickness": 75.0
+        "armorThickness": 75.0,
+        "armorClass": "tank_structural_steel"
       },
       "body_back_dm": {
         "armorThickness": 70.0
@@ -1078,32 +1088,42 @@
         "armorThickness": 35.0
       },
       "turret_01_bottom_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0,
+        "armorClass": "tank_structural_steel"
+      }
+    },
+    "hull_structures": {
+      "hp": 5000.0,
+      "armorClass": "tank_structural_steel",
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 3.0,
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 50.0,
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
       }
     },
     "turret": {
       "turret_top_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 40.0,
+        "armorClass": "CHA_tank"
       },
       "turret_side_dm": {
         "armorThickness": 90.0
       },
-      "turret_01_front_dm": {
-        "armorThickness": 45.0
-      },
       "turret_bottom_dm": {
         "armorThickness": 40.0
       },
-      "gun_mask_dm": {
-        "armorThickness": 90.0
-      },
       "gun_mask_02_dm": {
-        "armorThickness": 45.0,
-        "armorEffectiveThicknessMax": 50.0
+        "armorThickness": 30.0,
+        "armorClass": "CHA_tank"
       },
       "turret_03_front_dm": {
-        "armorThickness": 45.0,
-        "armorEffectiveThicknessMax": 50.0
+        "armorThickness": 38.0,
+        "armorClass": "CHA_tank"
       },
       "turret_03_side_dm": {
         "armorThickness": 25.0
@@ -1118,6 +1138,9 @@
         "armorThickness": 90.0
       },
       "gun_mask_01_dm": {
+        "armorThickness": 90.0
+      },
+      "gun_mask_dm": {
         "armorThickness": 90.0
       }
     },
@@ -1169,10 +1192,15 @@
       "ex_decor_r_01_dm": {},
       "ex_decor_l_01_dm": {},
       "ex_decor_r_05_dm": {},
-      "ex_decor_l_03_dm": {},
       "turret_01_top_dm": {},
       "turret_01_side_dm": {},
-      "turret_03_back_dm": {}
+      "turret_03_back_dm": {},
+      "ex_decor_l_02_dm": {},
+      "ex_decor_l_03_dm": {},
+      "ex_decor_r_02_dm": {},
+      "ex_decor_r_03_dm": {},
+      "ex_decor_l_05_dm": {},
+      "turret_01_front_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -2454,7 +2482,7 @@
         "speedYaw": 12.0,
         "speedPitch": 4.0,
         "fireConeAngle": 1.0,
-        "bullets": 116,
+        "bullets": 106,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2481,8 +2509,8 @@
             180.0
           ],
           "pitch": [
-            -6.0,
-            20.0
+            -5.0,
+            25.0
           ]
         }
       },
@@ -2503,7 +2531,7 @@
           1.0,
           15.0
         ],
-        "bullets": 3024,
+        "bullets": 2024,
         "ChainfireTime": 3.0,
         "DelayAfterShoot": 3.0,
         "accuracyAir": 0.0,
@@ -2528,6 +2556,49 @@
           "pitch": [
             -0.0,
             0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner4",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "emitter": "bone_mg_body_h_01",
+        "flash": "emtr_mg_flame_02",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_01_dm",
+        "speedYaw": 40.0,
+        "speedPitch": 40.0,
+        "fireConeAngle": [
+          1.0,
+          15.0
+        ],
+        "bullets": 1000,
+        "ChainfireTime": 3.0,
+        "DelayAfterShoot": 3.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_mg_body_h_01",
+          "gun": "bone_mg_body_v_01",
+          "gunnerDm": "machine_gunner_dm"
+        },
+        "limits": {
+          "yaw": [
+            -15.0,
+            15.0
+          ],
+          "pitch": [
+            -5.0,
+            15.0
           ]
         }
       }
@@ -2640,25 +2711,22 @@
           "count": 3
         },
         "ammo_body_27_dm": {
-          "count": 4
+          "count": 3
         },
         "ammo_body_28_dm": {
-          "count": 4
+          "count": 3
         },
         "ammo_body_29_dm": {
-          "count": 4
+          "count": 3
         },
         "ammo_body_30_dm": {
-          "count": 4
+          "count": 3
         },
         "ammo_body_31_dm": {
-          "count": 4
+          "count": 3
         },
         "ammo_body_32_dm": {
-          "count": 4
-        },
-        "ammo_body_33_dm": {
-          "count": 4
+          "count": 3
         }
       }
     }
@@ -2845,6 +2913,28 @@
     "explodeRadius": [
       1.5,
       10.0
+    ]
+  },
+  "xray_viewer_data": {
+    "armorArrayHullSideInner": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      }
     ]
   },
   "wreckedParts": {

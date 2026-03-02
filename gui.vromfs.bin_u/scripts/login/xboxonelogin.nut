@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import xbox_complete_login
 from "%scripts/dagui_library.nut" import *
 
+let { get_disable_autorelogin_once } = require("loginState.nut")
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -11,10 +12,10 @@ let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 let { get_gamertag } = require("%gdkLib/impl/user.nut")
-let { init_with_ui } = require("%scripts/gdk/user.nut")
 let { login } = require("%scripts/gdk/loginState.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { openEulaWnd } = require("%scripts/eulaWnd.nut")
+let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
+let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
@@ -40,30 +41,28 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
+    let haveAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) > 0
+    this.needAutoLogin = !get_disable_autorelogin_once() && haveAgreedEulaVersion
+
     this.scene.findObject("user_notify_text").setValue(loc("xbox/reqInstantConnection"))
 
     let tipHint = stripTags(loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "{{INPUT_BUTTON GAMEPAD_START}}"}))
     let hintBlk = "".concat("loadingHint{pos:t='50%(pw-w), 0.5ph-0.5h' position:t='absolute' width:t='2/3sw' behaviour:t='bhvHint' value:t='", tipHint, "'}")
 
-    local buttons = [{
-      id = "authorization_button"
-      text = "#HUD_PRESS_A_CNT"
-      shortcut = "AX"
-      funcName = "onOk"
-      delayed = true
-      visualStyle = "noBgr"
-      mousePointerCenteringBelowText = true
-      actionParamsMarkup = "bigBoldFont:t='yes'; shadeStyle:t='shadowed'"
-    },
-    {
-      id = "change_profile"
-      text = "#mainmenu/btnProfileChange"
-      shortcut = "Y"
-      visualStyle = "noBgr"
-      funcName = "onChangeGamertag"
-      mousePointerCenteringBelowText = true
-      actionParamsMarkup = "shadeStyle:t='shadowed'"
-    }]
+    local buttons = []
+
+    if (!this.needAutoLogin) {
+      buttons.append({
+        id = "authorization_button"
+        text = "#HUD_PRESS_A_CNT"
+        shortcut = "AX"
+        funcName = "onOk"
+        delayed = true
+        visualStyle = "noBgr"
+        mousePointerCenteringBelowText = true
+        actionParamsMarkup = "bigBoldFont:t='yes'; shadeStyle:t='shadowed'"
+      })
+    }
 
     if (is_xbox) {
       buttons.append({
@@ -81,9 +80,13 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     let data = handyman.renderCached("%gui/commonParts/buttonsList.tpl", {buttons})
 
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
-    this.updateGamertag()
 
-    move_mouse_on_obj("authorization_button")
+    if (!this.needAutoLogin)
+      move_mouse_on_obj("authorization_button")
+
+    this.updateGamertag()
+    if (this.needAutoLogin && get_gamertag() != "")
+      this.onOk()
   }
 
   function onEulaButton() {
@@ -93,13 +96,6 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   function onOk() {
     if (this.isLoginInProcess)
       return
-
-    this.isLoginInProcess = true
-    if (get_gamertag() == "") {
-      this.needAutoLogin = true
-      this.onChangeGamertag()
-      return
-    }
 
     this.performLogin()
   }
@@ -129,10 +125,6 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     this.needAutoLogin = false
     showWaitScreen("msgbox/please_wait")
     login(Callback(@(errCode) this.loginCallback(errCode), this))
-  }
-
-  function onChangeGamertag(_obj = null) {
-    init_with_ui(null)
   }
 
   function updateGamertag() {

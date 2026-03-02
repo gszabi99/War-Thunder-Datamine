@@ -8,27 +8,37 @@ options strict_smart_pointers = true
 
 module dap shared
 
+
+
+
+
+
+
 require daslib/json
 require daslib/json_boost
 require daslib/strings_boost
 
 
 
-struct InitializeRequestArguments {}
+struct InitializeRequestArguments {
+    
+}
 
 def InitializeRequestArguments(data : JsonValue?) {
+    
     return InitializeRequestArguments()
 }
 
 
-
 struct DisconnectArguments {
-    restart : bool
-    terminateDebuggee : bool
-    suspendDebuggee : bool
+    
+    restart : bool 
+    terminateDebuggee : bool 
+    suspendDebuggee : bool 
 }
 
 def DisconnectArguments(data : JsonValue?) {
+    
     return DisconnectArguments(restart = job(data, "restart"),
                                  terminateDebuggee = job(data, "terminateDebuggee"),
                                  suspendDebuggee = job(data, "suspendDebuggee")
@@ -36,31 +46,32 @@ def DisconnectArguments(data : JsonValue?) {
 }
 
 
-
 struct Capabilities {
-    supportsConfigurationDoneRequest : bool
-    supportsRestartRequest : bool
-    supportTerminateDebuggee : bool
-    supportsTerminateRequest : bool
-    supportsExceptionOptions : bool
-    supportsExceptionFilterOptions : bool
-    supportsDelayedStackTraceLoading : bool
-    supportsDataBreakpoints : bool
+    
+    supportsConfigurationDoneRequest : bool 
+    supportsRestartRequest : bool 
+    supportTerminateDebuggee : bool 
+    supportsTerminateRequest : bool 
+    supportsExceptionOptions : bool 
+    supportsExceptionFilterOptions : bool 
+    supportsDelayedStackTraceLoading : bool 
+    supportsDataBreakpoints : bool 
 }
-
 
 
 
 struct DataBreakpoint {
-    dataId : string
-    accessType : string
-    condition : string
-    hitCondition : string
-    description : string
-    enabled : bool
+    
+    dataId : string 
+    accessType : string 
+    condition : string 
+    hitCondition : string 
+    description : string 
+    enabled : bool 
 }
 
 def DataBreakpoint(data : JsonValue?) {
+    
     return DataBreakpoint(dataId = jos(data, "dataId"),
                             accessType = jos(data, "accessType"),
                             condition = jos(data, "condition"),
@@ -70,12 +81,13 @@ def DataBreakpoint(data : JsonValue?) {
             )
 }
 
-
 struct SetDataBreakpointsArguments {
-    breakpoints : array<DataBreakpoint>
+    
+    breakpoints : array<DataBreakpoint> 
 }
 
 def SetDataBreakpointsArguments(data : JsonValue?) {
+    
     var res <- SetDataBreakpointsArguments()
     var breakpoints = joj(data, "breakpoints")
     if (breakpoints != null) {
@@ -86,54 +98,58 @@ def SetDataBreakpointsArguments(data : JsonValue?) {
     return <- res
 }
 
-
 struct DataBreakpointInfoArguments {
-    variablesReference : double
-    name : string
+    
+    variablesReference : double 
+    name : string 
 }
 
 def DataBreakpointInfoArguments(data : JsonValue?) {
+    
     return DataBreakpointInfoArguments(
                 variablesReference = jon(data, "variablesReference"),
                 name = jos(data, "name")
             )
 }
-
 struct DataBreakpointInfoResponse {
-    dataId : string
-    description : string
+    
+    dataId : string 
+    description : string 
     
 }
 
 
-
 struct SourceBreakpoint {
-    line : double
+    
+    line : double 
 }
 
 def SourceBreakpoint(data : JsonValue?) {
+    
     return SourceBreakpoint(line = jon(data, "line"))
 }
 
-
 struct Source {
-    name : string
-    path : string
+    
+    name : string 
+    path : string 
 }
 
 def Source(data : JsonValue?) {
+    
     return Source(name = jos(data, "name"), path = jos(data, "path"))
 }
 
 
-
 struct SetBreakpointsArguments {
-    source : Source
-    breakpoints : array<SourceBreakpoint>
-    sourceModified : bool
+    
+    source : Source 
+    breakpoints : array<SourceBreakpoint> 
+    sourceModified : bool 
 }
 
 def SetBreakpointsArguments(data : JsonValue?) {
+    
     var res <- SetBreakpointsArguments(source = Source(joj(data, "source")),
                                          sourceModified = job(data, "sourceModified"))
     var breakpoints = joj(data, "breakpoints")
@@ -146,90 +162,93 @@ def SetBreakpointsArguments(data : JsonValue?) {
 }
 
 
-
 struct Breakpoint {
-    id : double
-    verified : bool
-    source : Source
-    line : double
-    message : string
+    
+    id : double 
+    verified : bool 
+    source : Source 
+    line : double 
+    message : string 
 }
-
 
 struct SetBreakpointsResponse {
-    breakpoints : array<Breakpoint>
+    
+    breakpoints : array<Breakpoint> 
 }
-
 
 
 
 struct Thread {
-    id : double
-    name : string
+    
+    id : double 
+    name : string 
 }
-
 
 
 struct ThreadsResponseBody {
-    threads : array<Thread>
+    
+    threads : array<Thread> 
 }
-
 
 
 struct StackTraceArguments {
-    threadId : double
-    startFrame : double
-    levels : double
+    
+    threadId : double 
+    startFrame : double 
+    levels : double 
 }
 
 def StackTraceArguments(data : JsonValue?) {
+    
     return <- StackTraceArguments(threadId = jon(data, "threadId"), startFrame = jon(data, "startFrame"), levels = jon(data, "levels"))
 }
-
 struct StackFrame {
-    id : double
-    name : string
-    source : Source
-    line : double
-    column : double
+    
+    id : double 
+    name : string 
+    source : Source 
+    line : double 
+    column : double 
 }
-
 struct StackTraceResponseBody {
-    stackFrames : array<StackFrame>
-    totalFrames : double
+    
+    stackFrames : array<StackFrame> 
+    totalFrames : double 
 }
-
 
 
 struct ScopesArguments {
-    frameId : double
+    
+    frameId : double 
 }
 
 def ScopesArguments(data : JsonValue?) {
+    
     return <- ScopesArguments(frameId = jon(data, "frameId"))
 }
 
 
-
 struct Scope {
-    name : string
-    variablesReference : double
+    
+    name : string 
+    variablesReference : double 
 }
-
 
 struct ScopesResponseBody {
-    scopes : array<Scope>
+    
+    scopes : array<Scope> 
 }
-
 
 
 struct VariablesArguments {
-    variablesReference : double
-    start : double
-    count : double
+    
+    variablesReference : double 
+    start : double 
+    count : double 
 }
 
 def VariablesArguments(data : JsonValue?) {
+    
     return <- VariablesArguments(
         variablesReference = jon(data, "variablesReference"),
         start = jon(data, "start", -1lf),
@@ -238,21 +257,22 @@ def VariablesArguments(data : JsonValue?) {
 }
 
 
-
 struct Variable {
-    name : string
-    value : string
-    variablesReference : double
-    @rename _type : string
-    indexedVariables : double
+    
+    name : string 
+    value : string 
+    variablesReference : double 
+    @rename _type : string 
+    indexedVariables : double 
 }
-
 struct VariablesResponseBody {
-    variables : array<Variable>
+    
+    variables : array<Variable> 
 }
 
 
 def JV(data : Variable) {
+    
     let valStr = unescape(data.value)
     return JV({
         "name" => JV(data.name),
@@ -263,83 +283,91 @@ def JV(data : Variable) {
     })
 }
 
-
 struct OutputEventBody {
-    category : string
-    output : string
+    
+    category : string 
+    output : string 
 }
-
 
 
 struct ContinueArguments {
-    threadId : double
+    
+    threadId : double 
 }
 
 def ContinueArguments(data : JsonValue?) {
+    
     return <- ContinueArguments(threadId = jon(data, "threadId"))
 }
 
 
-
 struct PauseArguments {
-    threadId : double
+    
+    threadId : double 
 }
 
 def PauseArguments(data : JsonValue?) {
+    
     return <- PauseArguments(threadId = jon(data, "threadId"))
 }
 
 
-
 struct StepInArguments {
-    threadId : double
+    
+    threadId : double 
 }
 
 def StepInArguments(data : JsonValue?) {
+    
     return <- StepInArguments(threadId = jon(data, "threadId"))
 }
 
 
-
 struct NextArguments {
-    threadId : double
+    
+    threadId : double 
 }
 
 def NextArguments(data : JsonValue?) {
+    
     return <- NextArguments(threadId = jon(data, "threadId"))
 }
 
 
-
 struct StepOutArguments {
-    threadId : double
+    
+    threadId : double 
 }
 
 def StepOutArguments(data : JsonValue?) {
+    
     return <- StepOutArguments(threadId = jon(data, "threadId"))
 }
 
 
-
 struct EvaluateArguments {
-    expression : string
-    frameId : double
-    context : string
+    
+    expression : string 
+    frameId : double 
+    context : string 
 }
 
 def EvaluateArguments(data : JsonValue?) {
+    
     return <- EvaluateArguments(frameId = jon(data, "frameId"), expression = jos(data, "expression"), context = jos(data, "context"))
 }
 
-
 struct EvaluateResponse {
-    result : string
+    
+    result : string 
     @rename _type : string
-    variablesReference : double
-    indexedVariables : double
+    
+    variablesReference : double 
+    indexedVariables : double 
 }
 
 def JV(data : EvaluateResponse) {
+    
     return JV({
         "result" => JV(data.result),
         "variablesReference" => JV(data.variablesReference),
@@ -349,36 +377,38 @@ def JV(data : EvaluateResponse) {
 }
 
 
-
 struct BreakpointEvent {
+    
     reason : string 
-    breakpoint : Breakpoint
+    breakpoint : Breakpoint 
 }
 
-
 struct ThreadEvent {
+    
     reason : string 
-    threadId : double
+    threadId : double 
 }
 
 
 def joj(val : JsonValue?; id : string) : JsonValue? {
+    
     var res : JsonValue? = null
     if (val == null || !(val is _object)) {
         return res
     }
-    get(val as _object, id) <| $(v) {
+    get(val as _object, id) $(v) {
         res = unsafe(reinterpret<JsonValue?> v)
     }
     return res
 }
 
 def jon(val : JsonValue?; id : string; defVal = 0lf) : double {
+    
     var res = defVal
     if (val == null || !(val is _object)) {
         return res
     }
-    get(val.value as _object, id) <| $(v) {
+    get(val.value as _object, id) $(v) {
         if (v.value is _number) {
             res = v.value as _number
         } elif (v.value is _longint) {
@@ -389,15 +419,17 @@ def jon(val : JsonValue?; id : string; defVal = 0lf) : double {
 }
 
 def j_s(val : JsonValue?; defVal = "") : string {
+    
     return val?.value ?as _string ?? defVal
 }
 
 def jos(val : JsonValue?; id : string; defVal = "") : string {
+    
     var res = defVal
     if (val == null || !(val is _object)) {
         return res
     }
-    get(val.value as _object, id) <| $(v) {
+    get(val.value as _object, id) $(v) {
         if (v.value is _string) {
             res = v.value as _string
         }
@@ -406,11 +438,12 @@ def jos(val : JsonValue?; id : string; defVal = "") : string {
 }
 
 def job(val : JsonValue?; id : string; defVal = false) : bool {
+    
     var res = defVal
     if (val == null || !(val is _object)) {
         return res
     }
-    get(val.value as _object, id) <| $(v) {
+    get(val.value as _object, id) $(v) {
         if (v.value is _bool) {
             res = v.value as _bool
         }

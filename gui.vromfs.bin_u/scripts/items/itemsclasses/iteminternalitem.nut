@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
-let { getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 

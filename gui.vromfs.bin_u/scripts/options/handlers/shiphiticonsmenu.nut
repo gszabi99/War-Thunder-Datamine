@@ -15,13 +15,14 @@ let ShipHitIcons = {
   [ShipHitIconId.HIT]                = "ui/gameuiskin#dm_ship_armor_hit.svg",
   [ShipHitIconId.HIT_EFFECTIVE]      = "ui/gameuiskin#dm_ship_armor_breach.svg",
   [ShipHitIconId.HIT_INEFFECTIVE]    = "ui/gameuiskin#dm_ship_armor_unbroken.svg",
-  [ShipHitIconId.HIT_PIERCE_THROUGH] = "ui/gameuiskin#dm_ship_armor_breach_through.svg"
+  [ShipHitIconId.HIT_PIERCE_THROUGH] = "ui/gameuiskin#dm_ship_armor_breach_through.svg",
+  [ShipHitIconId.HIT_CREW]           = "ui/gameuiskin#dm_ship_crew.svg"
 }
 
 let optionsList = persist("shipHitIconsOptionsList", @() [])
 
 function initOptionsList() {
-  let hitIconsIds = [ ShipHitIconId.HIT, ShipHitIconId.HIT_EFFECTIVE,
+  let hitIconsIds = [ ShipHitIconId.HIT, ShipHitIconId.HIT_EFFECTIVE, ShipHitIconId.HIT_CREW,
     ShipHitIconId.HIT_INEFFECTIVE, ShipHitIconId.HIT_PIERCE_THROUGH ]
   let availableIcons = get_available_ship_hit_notifications()
 

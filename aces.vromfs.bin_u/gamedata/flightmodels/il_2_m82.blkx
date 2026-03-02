@@ -612,8 +612,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1176,8 +1175,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1237,8 +1236,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2390,16 +2389,27 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_middle_group",
+            "iconType": "rockets_he_small_group",
             "name": "ros_82_slot1",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
               "node": [
+                "pylon_rocket1",
                 "pylon_rocket2",
-                "pylon_rocket3"
+                "pylon_rocket3",
+                "pylon_rocket4"
               ]
             },
             "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/su_ros_82.blk",
+                "emitter": "rocket1",
+                "bullets": 1,
+                "order": 18
+              },
               {
                 "trigger": "rockets",
                 "external": true,
@@ -2417,20 +2427,40 @@
                 "emitter": "rocket3",
                 "bullets": 1,
                 "order": 22
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/su_ros_82.blk",
+                "emitter": "rocket4",
+                "bullets": 1,
+                "order": 24
               }
             ]
           },
           {
-            "iconType": "rockets_ap_middle_group",
+            "iconType": "rockets_ap_small_group",
             "name": "rbs_82_slot1",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
               "node": [
+                "pylon_rocket1",
                 "pylon_rocket2",
-                "pylon_rocket3"
+                "pylon_rocket3",
+                "pylon_rocket4"
               ]
             },
             "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk",
+                "emitter": "rocket1",
+                "bullets": 1,
+                "order": 18
+              },
               {
                 "trigger": "rockets",
                 "external": true,
@@ -2448,6 +2478,15 @@
                 "emitter": "rocket3",
                 "bullets": 1,
                 "order": 22
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk",
+                "emitter": "rocket4",
+                "bullets": 1,
+                "order": 24
               }
             ]
           },
@@ -2483,7 +2522,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_large_group",
+            "iconType": "rockets_large_group",
             "name": "rofs_132_slot1",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
@@ -2944,16 +2983,27 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_middle_group",
+            "iconType": "rockets_he_small_group",
             "name": "ros_82_slot6",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
               "node": [
+                "pylon_rocket8",
                 "pylon_rocket7",
-                "pylon_rocket6"
+                "pylon_rocket6",
+                "pylon_rocket5"
               ]
             },
             "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/su_ros_82.blk",
+                "emitter": "rocket8",
+                "bullets": 1,
+                "order": 19
+              },
               {
                 "trigger": "rockets",
                 "external": true,
@@ -2971,20 +3021,40 @@
                 "emitter": "rocket6",
                 "bullets": 1,
                 "order": 23
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/su_ros_82.blk",
+                "emitter": "rocket5",
+                "bullets": 1,
+                "order": 25
               }
             ]
           },
           {
-            "iconType": "rockets_ap_middle_group",
+            "iconType": "rockets_ap_small_group",
             "name": "rbs_82_slot6",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
               "node": [
+                "pylon_rocket8",
                 "pylon_rocket7",
-                "pylon_rocket6"
+                "pylon_rocket6",
+                "pylon_rocket5"
               ]
             },
             "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk",
+                "emitter": "rocket8",
+                "bullets": 1,
+                "order": 19
+              },
               {
                 "trigger": "rockets",
                 "external": true,
@@ -3002,6 +3072,15 @@
                 "emitter": "rocket6",
                 "bullets": 1,
                 "order": 23
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk",
+                "emitter": "rocket5",
+                "bullets": 1,
+                "order": 25
               }
             ]
           },
@@ -3037,7 +3116,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_large_group",
+            "iconType": "rockets_large_group",
             "name": "rofs_132_slot6",
             "reqModification": "ro_132_mod",
             "ShowNodes": {

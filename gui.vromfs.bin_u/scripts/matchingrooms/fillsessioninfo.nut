@@ -15,7 +15,8 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isInSessionRoom, isInSessionLobbyEventRoom, getSessionLobbyGameType, isUserMission, isUrlMissionByRoom
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { getCustomDifficultyTooltipText } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { getCustomDifficultyOptions } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { get_cd_preset, set_cd_preset } = require("guiOptions")
 let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit,
   getRoomRequiredCrafts, getRoomMGameMode, getRoomTeamsCountries
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
@@ -64,6 +65,24 @@ let setTextToObjByOption = function(objId, optionId, value) {
   let option = get_option(optionId)
   let displayValue = option.getValueLocText(value)
   setTextToObj(obj, "".concat(option.getTitle(), loc("ui/colon")), displayValue)
+}
+
+function getCustomDifficultyTooltipText(custDifficulty) {
+  let wasDiff = get_cd_preset(DIFFICULTY_CUSTOM)
+  set_cd_preset(custDifficulty)
+
+  local text = ""
+  let options = getCustomDifficultyOptions()
+  foreach (o in options) {
+    let opt = get_option(o[0])
+    let valueText = opt.items ?
+      loc(opt.items[opt.value]) :
+      loc(opt.value ? "options/yes" : "options/no")
+    text = "".concat(text, (text != "") ? "\n" : "", loc($"options/{opt.id}"), loc("ui/colon"), colorize("userlogColoredText", valueText))
+  }
+
+  set_cd_preset(wasDiff)
+  return text
 }
 
 return function(scene, sessionInfo) {

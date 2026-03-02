@@ -12,7 +12,7 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 let skinsCache = {}
 local waitingItemdefs = {}

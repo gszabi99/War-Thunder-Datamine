@@ -10,6 +10,7 @@ let shellHitDamageEvents = {
   critEventCount = Watched(0)
   armorBlockedEventCount = Watched(0)
   pierceThroughCount = Watched(0)
+  crewKilled = Watched(0)
 }
 
 let gunStatesFirstRow = []
@@ -129,11 +130,12 @@ interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTim
   }
 }
 
-interop.updateShellHitDamageEventCounts <- function(hit, crit, blocked, pierceThrough) {
+interop.updateShellHitDamageEventCounts <- function(hit, crit, blocked, pierceThrough, crew) {
   shellHitDamageEvents.hitEventsCount.set(hit)
   shellHitDamageEvents.critEventCount.set(crit)
   shellHitDamageEvents.armorBlockedEventCount.set(blocked)
   shellHitDamageEvents.pierceThroughCount.set(pierceThrough)
+  shellHitDamageEvents.crewKilled.set(crew)
 }
 
 

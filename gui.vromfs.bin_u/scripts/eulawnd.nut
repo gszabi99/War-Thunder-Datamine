@@ -121,8 +121,20 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
   }
 
   function onExit() {
-    this.sendEulaStatistic("decline")
-    exitGamePlatform()
+    scene_msg_box(
+      "exit_eula",
+      null,
+      loc("msgbox/exit_eula_warning"),
+      [
+        ["yes", Callback(function() {
+            this.sendEulaStatistic("decline")
+            exitGamePlatform()
+          }, this)
+        ],
+        ["no", @() null ]
+      ],
+      "no"
+    )
   }
 
   function sendEulaStatistic(action) {

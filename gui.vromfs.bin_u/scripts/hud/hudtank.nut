@@ -7,12 +7,8 @@ let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { eventbus_send } = require("eventbus")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { showHudTankMovementStates } = require("%scripts/hud/hudTankStates.nut")
-let { isDmgIndicatorVisible } = require("gameplayBinding")
 let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
-let { g_hud_tank_debuffs } = require("%scripts/hud/hudTankDebuffs.nut")
-let { g_hud_crew_state } = require("%scripts/hud/hudCrewState.nut")
 let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
@@ -44,9 +40,6 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     base.initScreen()
     hudDisplayTimersInit(this.scene, ES_UNIT_TYPE_TANK)
     initIconedHints(this.scene, ES_UNIT_TYPE_TANK)
-    g_hud_tank_debuffs.init(this.scene)
-    g_hud_crew_state.init(this.scene)
-    showHudTankMovementStates(this.scene)
     hudEnemyDamage.init(this.scene)
     let actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.actionBarWeak = actionBar.weakref()
@@ -55,9 +48,6 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     this.updateTacticalMapVisibility()
     this.updateTacticalMapSwitching()
 
-    g_hud_event_manager.subscribe("DamageIndicatorToggleVisbility",
-      @(_eventData) this.updateDamageIndicatorBackground(),
-      this)
     g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
       function(_ed) { this.updateDmgIndicatorState() },
       this)
@@ -67,17 +57,9 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     this.actionBarWeak?.reinit()
     hudEnemyDamage.reinit()
     hudDisplayTimersReInit()
-    g_hud_tank_debuffs.reinit()
-    g_hud_crew_state.reinit()
     this.updateShowHintsNest()
     this.updateTacticalMapVisibility()
     this.updateTacticalMapSwitching()
-  }
-
-  function updateDamageIndicatorBackground() {
-    let visMode = g_hud_vis_mode.getCurMode()
-    let isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
-    showObjById("tank_background", isDmgPanelVisible, this.scene)
   }
 
   function updateShowHintsNest() {

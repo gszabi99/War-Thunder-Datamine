@@ -4,7 +4,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsManagerModule.nut")
 
 let MAX_REWARDS_SHOW_IN_TROPHY = 5

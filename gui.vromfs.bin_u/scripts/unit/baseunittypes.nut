@@ -189,7 +189,7 @@ return {
     esUnitType = ES_UNIT_TYPE_HUMAN
     visualSortOrder = VISUAL_SORT_ORDER.HUMAN
     fontIcon = loc("icon/unittype/human")
-    testFlightIcon = "#ui/gameuiskin#slot_testdrive.svg"
+    testFlightIcon = "!#ui/gameuiskin#infantry_ico.svg"
     testFlightName = "TestDrive"
     bailoutName = "btnBailoutHuman"
     bailoutQuestion = "questionBailoutHuman"

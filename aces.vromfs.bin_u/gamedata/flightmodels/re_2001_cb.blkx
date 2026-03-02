@@ -439,8 +439,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1176,8 +1175,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1232,8 +1231,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1288,8 +1287,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2332,8 +2331,19 @@
         "blk": "gameData/FlightModels/weaponPresets/re_2001_cb_250kg.blk"
       },
       {
+        "name": "re_2001_cb_500kg",
+        "blk": "gameData/FlightModels/weaponPresets/re_2001_1x_500kg.blk"
+      },
+      {
         "name": "re_2001_1x_630kg_ap",
         "blk": "gameData/FlightModels/weaponPresets/re_2001_1x_630kg_ap.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "re_2001_2x_160kg_ap",
+        "blk": "gameData/FlightModels/weaponPresets/re_2001_2x_160kg_ap.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
@@ -2450,6 +2460,19 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "160kg_ap",
+            "reqModification": "it160_mod",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2476,6 +2499,18 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "500kg",
+            "reqModification": "it500_mod",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_500kg_gp.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
             }
           },
           {
@@ -2530,6 +2565,19 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "160kg_ap",
+            "reqModification": "it160_mod",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,
@@ -2984,10 +3032,19 @@
       "tier": 3,
       "reqModification": "it100_mod"
     },
-    "it630_ap_mod": {
+    "it500_mod": {
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "it250_mod"
+    },
+    "it160_mod": {
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "it630_ap_mod": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "it160_mod"
     }
   },
   "cutting": {

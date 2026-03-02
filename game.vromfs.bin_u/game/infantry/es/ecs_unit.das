@@ -32,3 +32,8 @@ def plane_save_tm(info : UpdateStageInfoAct;
                   var transform : float3x4)
   location_toTM(plane_net_phys.phys.visualLocation, transform)
 
+[es(tag=server, on_appear, REQUIRE=whitelistedDetector)]
+def whilelisted_detector_init(evt : Event;
+                              var unit__ref : UnitRef&)
+  unit__ref.unit.isWhitelistedDetector = true
+

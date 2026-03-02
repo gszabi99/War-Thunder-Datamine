@@ -79,6 +79,7 @@ def subsidiary_gun_load_on_create_es(evt : Event;
                                      gun__owner : EntityId;
                                      gun__ammo : int;
                                      gun__shell_prop_ids : PropsIdList;
+                                     var gun__numAmmoOnInit : int&;
                                      var gun__curShellId : PropsId;
                                      var gun__isAmmoLoaded : bool&;
                                      var gun__ammoToReloadCount : int&;
@@ -89,6 +90,7 @@ def subsidiary_gun_load_on_create_es(evt : Event;
       find_ammo_for_gun(eid, itemContainer, INVALID_ITEM_ID, 0) <| $(ammoForGun : AmmoItemForGunResult)
         if ammoForGun.itemIndex < 0
           return
+        gun__numAmmoOnInit = gun__totalAmmo
         gun__curShellId = gun__shell_prop_ids[0]
         gun__ammoHolderEid = itemContainer[ammoForGun.itemIndex]
         itemContainer |> erase(ammoForGun.itemIndex)

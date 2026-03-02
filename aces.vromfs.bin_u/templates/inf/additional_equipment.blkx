@@ -60,6 +60,12 @@
     },
     "hideFlags:array": {
       "hideFlag": "rear_belt_c"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": [
+        "belt",
+        "chest_armor"
+      ]
     }
   },
   "attachable_front_belt_l": {
@@ -69,6 +75,12 @@
     },
     "hideFlags:array": {
       "hideFlag": "front_belt_l"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": [
+        "belt",
+        "chest_armor"
+      ]
     }
   },
   "attachable_front_belt_r": {
@@ -78,6 +90,12 @@
     },
     "hideFlags:array": {
       "hideFlag": "front_belt_r"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": [
+        "belt",
+        "chest_armor"
+      ]
     }
   },
   "attachable_side_belt_r": {
@@ -87,6 +105,12 @@
     },
     "hideFlags:array": {
       "hideFlag": "side_belt_r"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": [
+        "belt",
+        "chest_armor"
+      ]
     }
   },
   "attachable_side_belt_l": {
@@ -96,6 +120,12 @@
     },
     "hideFlags:array": {
       "hideFlag": "side_belt_l"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": [
+        "belt",
+        "chest_armor"
+      ]
     }
   },
   "attachable_rear_belt_l": {
@@ -105,6 +135,12 @@
     },
     "hideFlags:array": {
       "hideFlag": "rear_belt_l"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": [
+        "belt",
+        "chest_armor"
+      ]
     }
   },
   "attachable_rear_belt_r": {
@@ -114,6 +150,12 @@
     },
     "hideFlags:array": {
       "hideFlag": "rear_belt_r"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": [
+        "belt",
+        "chest_armor"
+      ]
     }
   },
   "attachable_knee": {
@@ -233,7 +275,9 @@
         "backpack",
         "rear_belt_r",
         "side_belt_l",
-        "rear_belt_l"
+        "rear_belt_l",
+        "holster_on_leg",
+        "belt"
       ]
     }
   },
@@ -280,8 +324,7 @@
     "_group": {
       "_tags": "render",
       "animchar_node_collapser__nodes:object": {
-        "Bip01 Head": "",
-        "Bip01 Neck": ""
+        "Bip01 Spine1": ""
       }
     },
     "hides:array": {
@@ -291,7 +334,9 @@
         "backpack",
         "rear_belt_r",
         "side_belt_l",
-        "rear_belt_l"
+        "rear_belt_l",
+        "holster_on_leg",
+        "belt"
       ]
     }
   },
@@ -320,6 +365,140 @@
           1.0
         ]
       }
+    }
+  },
+  "attachable_wear_viper_sniper_cape_item": {
+    "_use": [
+      "attachable_cape",
+      "sleeves_collapser_in_sleeves",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_viper_sniper_cape_item",
+    "animchar__res": "viper_sniper_cape_char",
+    "collres__res": "viper_sniper_cape_collision",
+    "animchar_fast_phys__res": "viper_sniper_cape_fastphys",
+    "animchar_node_collapser__camThreshold": 0.2,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Head": "",
+        "Bip01 Neck": ""
+      }
+    },
+    "hides:array": {
+      "hides": [
+        "helmet_attachments",
+        "scarf",
+        "backpack"
+      ]
+    }
+  },
+  "attachable_wear_viper_sniper_cape_cover_item": {
+    "_use": [
+      "attachable_cape",
+      "sleeves_collapser_in_sleeves",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_viper_sniper_cape_cover_item",
+    "animchar__res": "viper_sniper_cape_cover_char",
+    "collres__res": "viper_sniper_cape_cover_collision",
+    "animchar_fast_phys__res": "viper_sniper_cape_cover_fastphys",
+    "animchar_node_collapser__camThreshold": 0.2,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Head": "",
+        "Bip01 Neck": ""
+      }
+    },
+    "hides:array": {
+      "hides": [
+        "helmet_attachments",
+        "scarf",
+        "backpack"
+      ]
+    }
+  },
+  "attachable_wear_viper_sniper_cape_cover_ucp_urban_item": {
+    "_use": "attachable_wear_viper_sniper_cape_cover_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "3col_dcp_tex_d*",
+      "viper_sniper_cover_tex_d*": "viper_sniper_cover_ucp_urb_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": [
+        {
+          "material_id": 1,
+          "camouflage_scale_and_offset": [
+            1.4,
+            1.4,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "material_id": 1,
+          "camouflage_scale_and_offset": [
+            2.0,
+            2.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.42,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.42,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_viper_sniper_cape_grass_item": {
+    "_use": [
+      "attachable_cape",
+      "sleeves_collapser_in_sleeves",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_viper_sniper_cape_grass_item",
+    "animchar__res": "viper_sniper_cape_grass_char",
+    "collres__res": "viper_sniper_cape_grass_collision",
+    "animchar_fast_phys__res": "viper_sniper_cape_grass_fastphys",
+    "animchar_node_collapser__camThreshold": 0.2,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Head": "",
+        "Bip01 Neck": ""
+      }
+    },
+    "hides:array": {
+      "hides": [
+        "helmet_attachments",
+        "scarf",
+        "backpack"
+      ]
     }
   },
   "attachable_scarf": {
@@ -693,6 +872,50 @@
       }
     }
   },
+  "attachable_wear_narrow_tactical_belt_desert_item": {
+    "_use": "attachable_wear_narrow_tactical_belt_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.839,
+          0.71,
+          0.4952,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.6,
+          0.54,
+          0.45,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.35,
+          0.35,
+          0.35,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.66,
+          0.62,
+          0.58,
+          1.0
+        ]
+      }
+    }
+  },
   "attachable_wear_rebel_leather_belt_item": {
     "_use": "attachable_belt",
     "item__uniqueName": "attachable_wear_rebel_leather_belt_item",
@@ -716,19 +939,13 @@
     "_use": "attachable_rear_belt_l",
     "item__uniqueName": "attachable_wear_rebel_leather_dbl_pouch_bl_item",
     "animchar__res": "rebel_leather_dbl_pouch_bl_char",
-    "collres__res": "rebel_leather_dbl_pouch_bl_collision",
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
-    }
+    "collres__res": "rebel_leather_dbl_pouch_bl_collision"
   },
   "attachable_wear_rebel_leather_pouch_bl_item": {
     "_use": "attachable_rear_belt_l",
     "item__uniqueName": "attachable_wear_rebel_leather_pouch_bl_item",
     "animchar__res": "rebel_leather_pouch_bl_char",
-    "collres__res": "rebel_leather_pouch_bl_collision",
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
-    }
+    "collres__res": "rebel_leather_pouch_bl_collision"
   },
   "attachable_wear_uk_p58_webbing_belt_item": {
     "_use": "attachable_belt",
@@ -776,9 +993,6 @@
     "animchar_fast_phys__res": "uk_army_80s_canteen_belt_br_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
     }
   },
   "attachable_wear_uk_army_80s_canteen_belt_bl_item": {
@@ -922,12 +1136,9 @@
     "animchar_fast_phys__res": "p44_flask_br_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
     }
   },
-  "attachable_wear_p44_flask_br_olive_belt_br_item": {
+  "attachable_wear_p44_flask_br_olive_item": {
     "_use": "attachable_wear_p44_flask_br_item",
     "camouflage_override:array": {
       "material1:object": {
@@ -951,7 +1162,7 @@
       }
     }
   },
-  "attachable_wear_p44_flask_br_nutria_brown_belt_br_item": {
+  "attachable_wear_p44_flask_br_nutria_brown_item": {
     "_use": "attachable_wear_p44_flask_br_item",
     "camouflage_override:array": {
       "material1:object": {
@@ -975,9 +1186,9 @@
       }
     }
   },
-  "attachable_wear_p44_flask_br_olive_belt_r_item": {
+  "attachable_wear_p44_flask_sbr_olive_item": {
     "_use": [
-      "attachable_wear_p44_flask_br_olive_belt_br_item",
+      "attachable_wear_p44_flask_br_olive_item",
       "attachable_side_belt_r"
     ],
     "animchar_attach__overrideNodes:object": {
@@ -985,9 +1196,9 @@
       "d_belt_back_r_B": "d_belt_side_r_B"
     }
   },
-  "attachable_wear_p44_flask_br_nutria_brown_belt_r_item": {
+  "attachable_wear_p44_flask_sbr_nutria_brown_item": {
     "_use": [
-      "attachable_wear_p44_flask_br_nutria_brown_belt_br_item",
+      "attachable_wear_p44_flask_br_nutria_brown_item",
       "attachable_side_belt_r"
     ],
     "animchar_attach__overrideNodes:object": {
@@ -995,9 +1206,9 @@
       "d_belt_back_r_B": "d_belt_side_r_B"
     }
   },
-  "attachable_wear_p44_flask_br_olive_belt_l_item": {
+  "attachable_wear_p44_flask_sbl_olive_item": {
     "_use": [
-      "attachable_wear_p44_flask_br_olive_belt_br_item",
+      "attachable_wear_p44_flask_br_olive_item",
       "attachable_side_belt_l"
     ],
     "animchar_attach__overrideNodes:object": {
@@ -1005,9 +1216,9 @@
       "d_belt_back_r_B": "d_belt_side_l_B"
     }
   },
-  "attachable_wear_p44_flask_br_nutria_brown_belt_l_item": {
+  "attachable_wear_p44_flask_sbl_nutria_brown_item": {
     "_use": [
-      "attachable_wear_p44_flask_br_nutria_brown_belt_br_item",
+      "attachable_wear_p44_flask_br_nutria_brown_item",
       "attachable_side_belt_l"
     ],
     "animchar_attach__overrideNodes:object": {
@@ -1023,9 +1234,6 @@
     "animchar_fast_phys__res": "6sh117_flask_br_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
     }
   },
   "attachable_wear_6sh117_flask_bl_item": {
@@ -1046,9 +1254,6 @@
     "animchar_fast_phys__res": "qt1_canteen_pouch_br_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
     }
   },
   "attachable_wear_qt1_canteen_pouch_br_khaki_item": {
@@ -1825,9 +2030,6 @@
     "animchar_fast_phys__res": "uk_p58_webbing_bc_pouches_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
     }
   },
   "attachable_wear_uk_p58_webbing_bc_pouches_w_roll_item": {
@@ -1838,9 +2040,6 @@
     "animchar_fast_phys__res": "uk_p58_webbing_bc_pouches_w_roll_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
     }
   },
   "attachable_wear_uk_p58_webbing_bc_pouches_nutria_brown_item": {
@@ -1937,9 +2136,6 @@
     "animchar_fast_phys__res": "uk_p58_webbing_fl_pouch_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
     }
   },
   "attachable_wear_uk_p58_webbing_fl_pouch_olive_item": {
@@ -1975,9 +2171,6 @@
     "animchar_fast_phys__res": "uk_p58_webbing_fr_pouch_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "skeleton_attach__remapParentSlots:list<t>": {
-      "slot": "belt"
     }
   },
   "attachable_wear_uk_p58_webbing_fr_pouch_olive_item": {
@@ -2004,6 +2197,191 @@
         ]
       }
     }
+  },
+  "attachable_wear_alice_webbing_fl_pouch_item": {
+    "_use": "attachable_front_belt_l",
+    "item__uniqueName": "attachable_wear_alice_webbing_fl_pouch_item",
+    "animchar__res": "alice_webbing_fl_pouch_char",
+    "collres__res": "alice_webbing_fl_pouch_collision",
+    "animchar_fast_phys__res": "alice_webbing_fl_pouch_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_alice_webbing_fl_olive_pouch_item": {
+    "_use": "attachable_wear_alice_webbing_fl_pouch_item",
+    "camouflage_override:array": {
+      "material11:object": {
+        "material_id": 11,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.2,
+          1.0
+        ],
+        "color_multiplier": 3.0
+      },
+      "material15:object": {
+        "material_id": 15,
+        "solid_fill_color": [
+          0.3,
+          0.32,
+          0.3,
+          1.0
+        ]
+      },
+      "material17:object": {
+        "material_id": 17,
+        "solid_fill_color": [
+          0.36,
+          0.32,
+          0.28,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_alice_webbing_bl_olive_pouch_item": {
+    "_use": [
+      "attachable_wear_alice_webbing_fl_olive_pouch_item",
+      "attachable_rear_belt_l"
+    ],
+    "animchar_attach__overrideNodes:object": {
+      "d_belt_front_l_A": "d_belt_back_l_A",
+      "d_belt_front_l_B": "d_belt_back_l_B"
+    }
+  },
+  "attachable_wear_alice_webbing_fr_pouch_item": {
+    "_use": "attachable_front_belt_r",
+    "item__uniqueName": "attachable_wear_alice_webbing_fr_pouch_item",
+    "animchar__res": "alice_webbing_fr_pouch_char",
+    "collres__res": "alice_webbing_fr_pouch_collision",
+    "animchar_fast_phys__res": "alice_webbing_fr_pouch_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_alice_webbing_fr_olive_pouch_item": {
+    "_use": "attachable_wear_alice_webbing_fr_pouch_item",
+    "camouflage_override:array": {
+      "material11:object": {
+        "material_id": 11,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.2,
+          1.0
+        ],
+        "color_multiplier": 3.0
+      },
+      "material15:object": {
+        "material_id": 15,
+        "solid_fill_color": [
+          0.3,
+          0.32,
+          0.3,
+          1.0
+        ]
+      },
+      "material17:object": {
+        "material_id": 17,
+        "solid_fill_color": [
+          0.36,
+          0.32,
+          0.28,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_alice_webbing_br_olive_pouch_item": {
+    "_use": [
+      "attachable_wear_alice_webbing_fr_olive_pouch_item",
+      "attachable_rear_belt_r"
+    ],
+    "animchar_attach__overrideNodes:object": {
+      "d_belt_front_r_A": "d_belt_back_r_A",
+      "d_belt_front_r_B": "d_belt_back_r_B"
+    }
+  },
+  "attachable_wear_alice_webbing_bl_uni_pouch_item": {
+    "_use": "attachable_rear_belt_l",
+    "item__uniqueName": "attachable_wear_alice_webbing_bl_pouch_item",
+    "animchar__res": "alice_webbing_bl_pouch_char",
+    "collres__res": "alice_webbing_bl_pouch_collision"
+  },
+  "attachable_wear_alice_webbing_bl_olive_uni_pouch_item": {
+    "_use": "attachable_wear_alice_webbing_bl_uni_pouch_item",
+    "camouflage_override:array": {
+      "material11:object": {
+        "material_id": 11,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.2,
+          1.0
+        ],
+        "color_multiplier": 3.0
+      },
+      "material17:object": {
+        "material_id": 17,
+        "solid_fill_color": [
+          0.36,
+          0.32,
+          0.28,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_alice_webbing_bc_olive_uni_pouch_item": {
+    "_use": [
+      "attachable_wear_alice_webbing_bl_olive_uni_pouch_item",
+      "attachable_rear_belt_c"
+    ],
+    "animchar_attach__overrideNodes:object": {
+      "d_belt_back_l_A": "d_belt_back_c_A",
+      "d_belt_back_l_B": "d_belt_back_c_B"
+    }
+  },
+  "attachable_wear_alice_webbing_br_olive_uni_pouch_item": {
+    "_use": [
+      "attachable_wear_alice_webbing_bl_olive_uni_pouch_item",
+      "attachable_rear_belt_r"
+    ],
+    "animchar_attach__overrideNodes:object": {
+      "d_belt_back_l_A": "d_belt_back_r_A",
+      "d_belt_back_l_B": "d_belt_back_r_B"
+    }
+  },
+  "attachable_wear_alice_webbing_sbl_olive_uni_pouch_item": {
+    "_use": [
+      "attachable_wear_alice_webbing_bl_olive_uni_pouch_item",
+      "attachable_side_belt_l"
+    ],
+    "animchar_attach__overrideNodes:object": {
+      "d_belt_back_l_A": "d_belt_side_l_A",
+      "d_belt_back_l_B": "d_belt_side_l_B"
+    }
+  },
+  "attachable_wear_alice_webbing_sbr_olive_uni_pouch_item": {
+    "_use": [
+      "attachable_wear_alice_webbing_bl_olive_uni_pouch_item",
+      "attachable_side_belt_r"
+    ],
+    "animchar_attach__overrideNodes:object": {
+      "d_belt_back_l_A": "d_belt_side_r_A",
+      "d_belt_back_l_B": "d_belt_side_r_B"
+    }
+  },
+  "attachable_wear_xchest_rig_item": {
+    "_use": "attachable_chest_armor",
+    "item__uniqueName": "attachable_wear_xchest_rig_item",
+    "animchar__res": "xchest_rig_char",
+    "collres__res": "xchest_rig_collision"
   },
   "attachable_wear_kp2_kneepad_item": {
     "_use": "attachable_knee",
@@ -2042,6 +2420,53 @@
           0.38,
           0.34,
           0.3,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_tactical_knee_item": {
+    "_use": "attachable_knee",
+    "item__uniqueName": "attachable_wear_tactical_knee_item",
+    "animchar__res": "tactical_knee_char",
+    "collres__res": "tactical_knee_collision",
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": "pants"
+    }
+  },
+  "attachable_wear_tactical_knee_desert_item": {
+    "_use": "attachable_wear_tactical_knee_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "dpm_iraq_type2_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.4,
+          0.3,
+          0.2,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.4,
+          0.3,
+          0.2,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.2,
           1.0
         ]
       }

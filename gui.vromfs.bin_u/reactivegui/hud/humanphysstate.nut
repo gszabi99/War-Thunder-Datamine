@@ -5,11 +5,13 @@ let { isHumanAiming, isHumanHoldBreathShowHint
 let { humanCurGunStaticInfo, humanCurGunModeInfo
 } = require("%rGui/hud/state/human_gun_info_es.nut")
 
-let { canHoldBreath, canScopeChange } = require("%appGlobals/hud/humanPhysState.nut")
+let { canHoldBreath, canScopeChange, canSightChange } = require("%appGlobals/hud/humanPhysState.nut")
 
 let isWeaponHaveAmmo = Computed(@() humanCurGunStaticInfo.get()?.haveAmmo ?? false)
 let isWeaponHasVariableScope = Computed(@()
   humanCurGunModeInfo.get()?.mods.scope?.isVariableScope ?? false)
+let isWeaponModHasSwitchableSights = Computed(@()
+  humanCurGunModeInfo.get()?.modWeapon?.hasSwitchableSights ?? false)
 
 let showHoldBrief = keepref(Computed(@() isHumanHoldBreathShowHint.get()))
 
@@ -19,5 +21,12 @@ let showScopeChange = keepref(Computed(@()
   && isWeaponHaveAmmo.get()
 ))
 
+let showSightChange = keepref(Computed(@()
+  isHumanAiming.get()
+  && (humanCurGunModeInfo.get()?.modWeapon?.isModActive ?? false)
+  && isWeaponModHasSwitchableSights.get()
+))
+
 showHoldBrief.subscribe(@(v) canHoldBreath.set(v) )
 showScopeChange.subscribe(@(v) canScopeChange.set(v) )
+showSightChange.subscribe(@(v) canSightChange.set(v) )

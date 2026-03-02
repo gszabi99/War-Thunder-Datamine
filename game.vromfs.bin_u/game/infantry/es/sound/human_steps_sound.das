@@ -12,6 +12,8 @@ require human_sounds.modules.human_steps_sound_common
 require DngHuman
 require HeroManager
 require DagorMath
+require DagorSystem
+require math.base
 require strings
 require %appGame.infantry.es.hero_common
 require %appGame.infantry.es.team_common
@@ -160,6 +162,16 @@ def play_step_sound_grains(desc : Object;
     set_var(step_sound_grains_event, "on_shot", 1.)
     ttl = is_watched_sound ? 3.f : 2.f
 
+    query(human_eid) <| $ [es(REQUIRE_NOT=watchedByPlr)] (wt_enemy_reverb_sound__value : float)
+      set_var_optional(step_sound_grains_event, "reverbindoor", wt_enemy_reverb_sound__value)
+
+def use_generator(enable_for_visible, enable_for_invisible, updatable, visible : bool; move_state : int; stand_state : HUStandState)
+  if move_state == int(HUMoveState.EMS_ROTATE_LEFT) || move_state == int(HUMoveState.EMS_ROTATE_RIGHT) || stand_state == HUStandState.ESS_CRAWL
+    return false
+  if (!updatable || !visible) && enable_for_invisible
+    return true
+  return (move_state == int(HUMoveState.EMS_SPRINT) || move_state == int(HUMoveState.EMS_RUN)) && enable_for_visible
+
 
 
 [es(tag=sound, after=( sound_begin_update_es), before=sound_end_update_es)]
@@ -223,23 +235,38 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
       moveState = int(human_net_phys.phys.currentState.moveState)
       animSpeed = animchar__animSpeed
 
-    let irqObjIdx = human_steps_sound_generate(human_steps_sound__irqObjIdx,
-                                               info.curTime,
-                                               info.dt,
-                                               read_state(StateFlag.ST_ON_GROUND, human_net_phys__states),
-                                               human_net_phys__isClimbing,
-                                               moveState,
-                                               standState,
-                                               animSpeed * human_steps_sound__animSpeedMul,
-                                               animchar__updatable,
-                                               animchar__visible,
-                                               human_steps_sound_generator__lastStepAt_cooldown,
-                                               human_steps_sound_generator__walkRunSprint_stand_intervals,
-                                               human_steps_sound_generator__walkRunSprint_crouch_intervals,
-                                               human_steps_sound_generator__enableForVisible,
-                                               human_steps_sound_generator__enableForInvisible,
-                                               human_steps_sound_generator__enableAlways,
-                                               human_steps_sound__irqs)
+    
+    var irqObjIdx = INVALID_IRQ_OBJ_IDX
+    assume last_step_at = human_steps_sound_generator__lastStepAt_cooldown.x
+    assume cooldown = human_steps_sound_generator__lastStepAt_cooldown.y
+    let animspeed = animSpeed * human_steps_sound__animSpeedMul
+    let useGenerator = (human_steps_sound_generator__enableAlways || use_generator(human_steps_sound_generator__enableForVisible, human_steps_sound_generator__enableForInvisible, animchar__updatable, animchar__visible, moveState, standState)) && animspeed > VERY_SMALL_NUMBER
+    if moveState == int(HUMoveState.EMS_STAND) || standState == HUStandState.ESS_DOWNED || !read_state(StateFlag.ST_ON_GROUND, human_net_phys__states) || human_net_phys__isClimbing
+      cooldown = min(cooldown + info.dt, 1.)
+      irqObjIdx = INVALID_IRQ_OBJ_IDX
+    else
+      cooldown = max(0., cooldown - info.dt)
+      if human_steps_sound__irqObjIdx == INVALID_IRQ_OBJ_IDX && !useGenerator
+        irqObjIdx = INVALID_IRQ_OBJ_IDX
+      elif useGenerator
+        assume stand_intervals = human_steps_sound_generator__walkRunSprint_stand_intervals
+        assume crouch_intervals = human_steps_sound_generator__walkRunSprint_crouch_intervals
+        let intervals = (standState == HUStandState.ESS_CROUCH ? crouch_intervals : stand_intervals)
+        let interval = (moveState == int(HUMoveState.EMS_SPRINT)) ? intervals.z : (moveState == int(HUMoveState.EMS_RUN)) ? intervals.y : intervals.x
+        let step = safediv(interval, animspeed)
+        cooldown = min(cooldown, step * 0.5)
+        if info.curTime >= last_step_at + step
+          last_step_at = info.curTime
+          if cooldown <= 0.
+            
+            irqObjIdx = get_desc_id_from_human_state(moveState, standState, human_steps_sound__irqs)
+      elif human_steps_sound__irqObjIdx != INVALID_IRQ_OBJ_IDX
+        let irqCooldown = 0.2
+        if (info.curTime - last_step_at) * animspeed >= irqCooldown
+          last_step_at = info.curTime
+          
+          irqObjIdx = human_steps_sound__irqObjIdx
+    
 
     human_steps_sound__irqObjIdx = INVALID_IRQ_OBJ_IDX
     human_sound_landmesh_queries_vars__speedSq = human_net_phys != null ? length_sq((*human_net_phys).phys.currentState.velocity.xz) : 0.

@@ -8,6 +8,12 @@ options multiple_contexts
 
 module live shared public
 
+
+
+
+
+
+
 require strings
 require daslib/rtti
 require daslib/decs
@@ -25,7 +31,7 @@ var private watchTime = get_clock()
 
 var private liveFunctionLookup : table<string; bool>
 
-var public decsLiveData : array<uint8>
+var public decsLiveData : array<uint8> 
 
 var private liveContext : smart_ptr<Context>
 
@@ -39,12 +45,14 @@ def public get_live_context : smart_ptr<Context> {
 
 [export]
 def saveLiveContext {
+    
     to_log(LOG_TRACE, "LIVE: saveLiveContext\n")
     decsLiveData <- mem_archive_save(decsState)
 }
 
 [export]
 def restoreLiveContext {
+    
     to_log(LOG_TRACE, "LIVE: restoreLiveContext\n")
     if (length(decsLiveData) > 0) {
         try {
@@ -62,14 +70,17 @@ def private go_offline {
 }
 
 def public is_live {
+    
     return appLive
 }
 
 def public is_app_live {
+    
     return appPtr != null
 }
 
 def public go_main {
+    
     to_log(LOG_TRACE, "LIVE: go_main\n")
     delete decsLiveData
     appLive = false
@@ -79,6 +90,7 @@ def public go_main {
 }
 
 def public go_live(appf, appd : string) {
+    
     to_log(LOG_TRACE, "LIVE: go_life appFile={appf} appDir={appd}\n")
     appLive = true
     this_context().name := "Live context"
@@ -99,6 +111,7 @@ def private live_lookup(fn) {
 }
 
 def public invoke_live(fn : string) {
+    
     if (live_lookup(fn)) {
         try {
             unsafe {
@@ -112,6 +125,7 @@ def public invoke_live(fn : string) {
 }
 
 def public invoke_live(fn : string; a1) {
+    
     if (live_lookup(fn)) {
         try {
             unsafe {
@@ -125,6 +139,7 @@ def public invoke_live(fn : string; a1) {
 }
 
 def public invoke_live(fn : string; a1; a2) {
+    
     if (live_lookup(fn)) {
         try {
             unsafe {
@@ -138,6 +153,7 @@ def public invoke_live(fn : string; a1; a2) {
 }
 
 def public invoke_live(fn : string; a1; a2; a3) {
+    
     if (live_lookup(fn)) {
         try {
             unsafe {
@@ -151,6 +167,7 @@ def public invoke_live(fn : string; a1; a2; a3) {
 }
 
 def public invoke_live(fn : string; a1; a2; a3; a4) {
+    
     if (live_lookup(fn)) {
         try {
             unsafe {
@@ -164,13 +181,14 @@ def public invoke_live(fn : string; a1; a2; a3; a4) {
 }
 
 def public watch_files {
+    
     var clk = get_clock()
     if ((clk - watchTime) <= 0.0lf) {
         return false
     }
     watchTime = clk
     var any = false
-    dir(appDir) <| $(fname) {
+    dir(appDir) $(fname) {
         if (!(ends_with(fname, ".das") || ends_with(fname, ".das_project"))) {
             return
         }
@@ -192,6 +210,7 @@ def public watch_files {
 
 [export]
 def set_new_context(var ptr : smart_ptr<Context>; full_restart : bool = false) {
+    
     to_log(LOG_TRACE, "LIVE: set new context {intptr(get_ptr(ptr))}\n")
     invoke_live("shutdown")
     if (appPtr != null) {
@@ -245,14 +264,15 @@ def set_new_context(var ptr : smart_ptr<Context>; full_restart : bool = false) {
 }
 
 def public recompile(full_restart : bool = false) {
+    
     to_log(LOG_TRACE, "LIVE: recompile full_restart={full_restart}\n")
     var inscope access <- make_file_access("")
-    using <| $(var mg : ModuleGroup) {
-        using <| $(var cop : CodeOfPolicies) {
+    using() $(var mg : ModuleGroup) {
+        using() $(var cop : CodeOfPolicies) {
             cop.threadlock_context = true
-            compile_file("{appDir}/{appFile}", access, unsafe(addr(mg)), cop) <| $(ok, program, issues) {
+            compile_file("{appDir}/{appFile}", access, unsafe(addr(mg)), cop) $(ok, program, issues) {
                 if (ok) {
-                    simulate(program) <| $(sok; context; serrors) {
+                    simulate(program) $(sok; context; serrors) {
                         if (sok) {
                             
                             to_log(LOG_TRACE, "LIVE: reloaded\n")
@@ -272,6 +292,7 @@ def public recompile(full_restart : bool = false) {
 }
 
 def public live_keypressed(keycode, scancode, action, mods : int) {
+    
     invoke_live("keypressed", keycode, scancode, action, mods)
     if (is_live()) {
         if (scancode == 19 && action == 1 && mods == 2) {
@@ -281,27 +302,33 @@ def public live_keypressed(keycode, scancode, action, mods : int) {
 }
 
 def public live_charpressed(charcode : uint) {
+    
     invoke_live("charpressed", charcode)
 }
 
 def public live_mousemoved(x, y : double) {
+    
     invoke_live("mousemoved", x, y)
 }
 
 def public live_mouseenter(yes : bool) {
+    
     invoke_live("mouseenter", yes)
 }
 
 def public live_mousebutton(button, action, mods : int) {
+    
     invoke_live("mousebutton", button, action, mods)
 }
 
 def public live_mousescroll(x, y : double) {
+    
     invoke_live("mousescroll", x, y)
 }
 
 def public live_update(appTime : double) {
-    static_let <| $() {
+    
+    static_let() {
         var t = 0.0lf
     }
     let dt = float(appTime - t)

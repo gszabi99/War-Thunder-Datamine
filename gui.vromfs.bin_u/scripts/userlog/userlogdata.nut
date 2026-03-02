@@ -21,8 +21,9 @@ let { disableSeenUserlogs, shownUserlogNotifications, checkPopupUserLog,
 let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
 let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
-  userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
+let { removeUserstatItemRewardToShow, userstatItemsListLocId
+} = require("%scripts/userstat/userstatItemsRewards.nut")
+let { getUserstatItemRewardData } = require("%scripts/userstat/userstat.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
 let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
 } = require("%scripts/clans/clanFlushExpInfoModal.nut")
@@ -35,8 +36,8 @@ let { isInMenu, getFromSettingsBlk } = require("%scripts/clientState/clientState
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
 let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
-let { findItemByUid, findItemById, getInventoryItemById
-} = require("%scripts/items/itemsManagerModule.nut")
+let { findItemByUid, findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { guiStartModTierResearched } = require("%scripts/modificationsTierResearched.nut")
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
@@ -46,8 +47,9 @@ let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { openOperationRewardPopup } = require("%scripts/globalWorldwarUtils.nut")
 let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 let { openOrUpdateRecycleCompleteWnd } = require("%scripts/items/recycleCompleteWnd.nut")
+let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
@@ -76,7 +78,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
   }
 }
 
-::checkNewNotificationUserlogs <- function checkNewNotificationUserlogs(onStartAwards = false) {
+function checkNewNotificationUserlogs(onStartAwards = false) {
   if (getFromSettingsBlk("debug/skipPopups"))
     return
   if (!isLoggedIn.get())
@@ -229,7 +231,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       foreach (name, value in blk.body)
         unlock[name] <- value
 
-      let config = build_log_unlock_data(unlock)
+      let config = buildLogUnlockData(unlock)
       config.disableLogId <- blk.id
       showUnlockWnd(config)
       shownUserlogNotifications.mutate(@(v) v.append(blk.id))
@@ -475,7 +477,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
   }
 
   if (unlocksNeedsPopupWnd)
-    handler.doWhenActive(function() { ::g_popup_msg.showPopupWndIfNeed(handler) })
+    handler.doWhenActive(function() { showPopupWndIfNeed(handler) })
 
   foreach (inventoryItemId, invData in inventoryRewards.cache)
     if (invData.rewardsCount <= 0) {
@@ -503,7 +505,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
   entitlementRewards.each(
     @(_, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
   unlockUnits.each(@(logObj) handler.doWhenActive(
-    @() showUnlockWnd(build_log_unlock_data(logObj))))
+    @() showUnlockWnd(buildLogUnlockData(logObj))))
 
   showUnlocks(unlocksRewards)
 
@@ -537,5 +539,9 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
 }
 
 addListenersWithoutEnv({
-  TrophyWndClose = @(_p) ::checkNewNotificationUserlogs()
+  TrophyWndClose = @(_p) checkNewNotificationUserlogs()
+  FirstMainMenuLoaded = @(_p) checkNewNotificationUserlogs(true)
+  UpdateGamercard = @(_p) checkNewNotificationUserlogs()
 })
+
+return { checkNewNotificationUserlogs }

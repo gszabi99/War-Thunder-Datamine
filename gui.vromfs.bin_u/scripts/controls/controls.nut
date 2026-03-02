@@ -22,14 +22,13 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 let { resetFastVoiceMessages } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformPS4, isPlatformXbox, isPlatformPC, isPlatformShieldTv
+let { isPlatformSony, isPlatformXbox, isPlatformPC, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
-let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped,
-  restoreShortcuts, isAxisMappedOnMouse, refillControlsDupes, buildHotkeyItem
+  isAxisMappedOnMouse, refillControlsDupes, buildHotkeyItem
 } = require("%scripts/controls/shortcutsUtils.nut")
 let { get_game_mode } = require("mission")
 let { utf8ToLower } = require("%sqstd/string.nut")
@@ -39,7 +38,7 @@ let { joystickSetCurSettings, setShortcutsAndSaveControls,
   joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons, switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE,
   USEROPT_MOUSE_USAGE_NO_AIM, userOptionNameByIdx
 } = require("%scripts/options/optionsExtNames.nut")
@@ -56,21 +55,19 @@ let { getAircraftHelpersOptionValue, setAircraftHelpersOptionValue, controlHelpe
   getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
-let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
-let { getControlsPresetFilename, parseControlsPresetName, getHighestVersionControlsPreset
+let { parseControlsPresetName, getHighestVersionControlsPreset
 } = require("%scripts/controls/controlsPresets.nut")
 let { getCurControlsPreset, isPresetChanged, clearControlsPresetGuiOptions
 } = require("%scripts/controls/controlsState.nut")
 let { getShortcutById, shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
-let { setHelpersModeAndOption } = require("%scripts/controls/controlsTypeUtils.nut")
 
-let { restoreHardcodedKeys, setAndCommitCurControlsPreset,
-  isLastLoadControlsSucceeded
+let { restoreHardcodedKeys, isLastLoadControlsSucceeded
 } = require("%scripts/controls/controlsManager.nut")
 
 let { set_option_mouse_joystick_square,
   set_option_mouse_joystick_square_helicopter
 } = require("controlsOptions")
+let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
 
 
 function getAxisActivationShortcutData(shortcuts, item, preset) {
@@ -108,6 +105,7 @@ function resetDefaultControlSettings() {
   set_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER,        0.43); 
   set_option_multiplier(OPTION_ZOOM_SENSE,                  0); 
   set_option_multiplier(OPTION_MOUSE_SENSE,                 0.5); 
+  set_option_multiplier(OPTION_HUMAN_MOUSE_SENSE,           0.5); 
   set_option_multiplier(OPTION_MOUSE_AIM_SENSE,             0.5); 
   set_option_multiplier(OPTION_GUNNER_VIEW_SENSE,           1); 
   set_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER,    1); 
@@ -140,45 +138,6 @@ function resetDefaultControlSettings() {
   set_option_mouse_joystick_square(false); 
   set_option_mouse_joystick_square_helicopter(false);
   set_option_gain(1); 
-}
-
-function switchHelpersModeAndOption(preset = "") {
-  let joyCurSettings = joystickGetCurSettings()
-  if (joyCurSettings.useMouseAim)
-    setHelpersModeAndOption(ControlHelpersMode.EM_MOUSE_AIM)
-  else if (isPlatformPS4 && preset == getControlsPresetFilename("thrustmaster_hotas4")) {
-    if (getCurrentHelpersMode() == ControlHelpersMode.EM_MOUSE_AIM)
-      setHelpersModeAndOption(ControlHelpersMode.EM_INSTRUCTOR)
-  }
-  else if (isPlatformSony || isPlatformXbox || isPlatformShieldTv())
-    setHelpersModeAndOption(ControlHelpersMode.EM_REALISTIC)
-  else if (getCurrentHelpersMode() == ControlHelpersMode.EM_MOUSE_AIM)
-    setHelpersModeAndOption(ControlHelpersMode.EM_INSTRUCTOR)
-}
-
-
-local shortcutsNotChangeByPreset = [
-  "ID_INTERNET_RADIO",
-  "ID_INTERNET_RADIO_PREV",
-  "ID_INTERNET_RADIO_NEXT",
-  "ID_PTT"
-]
-
-::apply_joy_preset_xchange <- function apply_joy_preset_xchange(preset, updateHelpersMode = true) {
-  if (!preset || preset == "")
-    return
-
-  let scToRestore = getShortcuts(shortcutsNotChangeByPreset)
-  setAndCommitCurControlsPreset(ControlsPreset(preset))
-  restoreShortcuts(scToRestore, shortcutsNotChangeByPreset)
-
-  if (isPC)
-    switchShowConsoleButtons(preset.indexof("xinput") != null)
-
-  if (updateHelpersMode)
-    switchHelpersModeAndOption(preset)
-
-  saveProfile()
 }
 
 gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
@@ -944,7 +903,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function applySelectedPreset(preset) {
     resetDefaultControlSettings()
-    ::apply_joy_preset_xchange(preset);
+    applyJoyPresetXchange(preset)
     broadcastEvent("ControlsPresetChanged")
   }
 

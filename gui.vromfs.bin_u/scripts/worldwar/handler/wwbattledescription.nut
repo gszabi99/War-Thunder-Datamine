@@ -30,16 +30,21 @@ let { loadLocalByAccount, saveLocalByAccount
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { isCountryAllCrewsUnlockedInHangar } = require("%scripts/slotbar/slotbarStateData.nut")
 let { get_mp_team_by_team_name } = require("%appGlobals/ranks_common_shared.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { getActiveQueueWithType, hasActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 let { getAllOperationUnitsBySide } = require("%scripts/worldWar/inOperation/wwOperations.nut")
-
+let { getBattles, getBattleById } = require("%scripts/worldWar/worldWarState.nut")
+let { getOppositeSide, getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let WwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { tryToJoin, getCantJoinReasonData, getBattleStatusWithCanJoinText, isAutoBattle,
+  isStillInOperation } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
+
 
 
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
@@ -96,12 +101,12 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   static function open(battle) {
     if (battle.isValid()) {
-      if (!battle.isStillInOperation()) {
+      if (!isStillInOperation(battle)) {
         battle = WwBattle()
         addPopup("", loc("worldwar/battle_finished"),
           null, null, null, "battle_finished")
       }
-      else if (battle.isAutoBattle()) {
+      else if (isAutoBattle(battle)) {
         battle = WwBattle()
         addPopup("", loc("worldwar/battleIsInAutoMode"),
           null, null, null, "battle_in_auto_mode")
@@ -159,12 +164,12 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (queue) {
       let battleWithQueue = this.getQueueBattle(queue)
       if (battleWithQueue && battleWithQueue.isValid() && this.curBattleInList.id != battleWithQueue.id)
-        this.curBattleInList = this.getBattleById(battleWithQueue.id)
+        this.curBattleInList = getBattleById(battleWithQueue.id)
     }
     else {
       let wwBattleName = g_squad_manager.getWwOperationBattle()
       if (wwBattleName && this.curBattleInList.id != wwBattleName)
-        this.curBattleInList = this.getBattleById(wwBattleName)
+        this.curBattleInList = getBattleById(wwBattleName)
     }
 
     if (!this.curBattleInList.isValid())
@@ -224,10 +229,6 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       g_squad_manager.cancelWwBattlePrepare()
   }
 
-  function getBattleById(battleId, _searchInCurList = true) {
-    return g_world_war.getBattleById(battleId)
-  }
-
   function isBattleValid(battleId) {
     return this.getBattleById(battleId).isValid()
   }
@@ -257,8 +258,13 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.battleDurationTimer && this.battleDurationTimer.isValid())
       this.battleDurationTimer.destroy()
 
-    this.battleDurationTimer = Timer(this.scene, 1,
-      @() this.updateBattleStatus(this.operationBattle.getView(this.getPlayerSide())), this, true)
+    let battleView = WwBattleView(this.operationBattle, {
+      side = this.getPlayerSide()
+      isStillInOperation = isStillInOperation(this.operationBattle)
+      isAutoBattle = isAutoBattle(this.operationBattle)
+    })
+    this.battleDurationTimer = Timer(this.scene, 1, @() this.updateBattleStatus(battleView),
+      this, true)
   }
 
   function isBattleAvailableToMatching(battle, country) {
@@ -342,7 +348,11 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function createBattleListItemView(battleData) {
     let playerSide = this.getPlayerSide(battleData)
-    let battleView = battleData.getView(playerSide)
+    let battleView = WwBattleView(battleData, {
+      side = playerSide
+      isStillInOperation = isStillInOperation(battleData)
+      isAutoBattle = isAutoBattle(battleData)
+    })
     let view = {
       id = battleData.id.tostring()
       itemPrefixText = this.getSelectedBattlePrefixText(battleData)
@@ -355,7 +365,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (battleData.isActive() || battleData.isFinished())
       view.itemText <- battleData.getLocName(playerSide)
     else {
-      let battleSides = g_world_war.getSidesOrder()
+      let battleSides = getSidesOrder()
       let teamsData = battleView.getTeamBlockByIconSize(
         battleSides, WW_ARMY_GROUP_ICON_SIZE.SMALL, false,
         { hasArmyInfo = false, hasVersusText = true, canAlignRight = false })
@@ -370,7 +380,10 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getSelectedBattlePrefixText(battleData) {
-    let battleView = battleData.getView()
+    let battleView = WwBattleView(battleData, {
+      isStillInOperation = isStillInOperation(battleData)
+      isAutoBattle = isAutoBattle(battleData)
+    })
     let battleName = colorize("newTextColor", battleView.getShortBattleName())
     let sectorName = battleData.getSectorName()
     return "".concat(battleName, !u.isEmpty(sectorName) ? $" {sectorName}" : "")
@@ -427,7 +440,11 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     : gui_handlers.SlotbarWidget.create(params)
 
   function getGameModeNameText() {
-    return this.operationBattle.getView(this.getPlayerSide()).getFullBattleName()
+    return WwBattleView(this.operationBattle, {
+      side = this.getPlayerSide()
+      isStillInOperation = isStillInOperation(this.operationBattle)
+      isAutoBattle = isAutoBattle(this.operationBattle)
+    }).getFullBattleName()
   }
 
   function getMap() {
@@ -457,7 +474,11 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let isOperationBattleLoaded = this.curBattleInList.id == this.operationBattle.id
     let battle = isOperationBattleLoaded ? this.operationBattle : this.curBattleInList
-    let battleView = battle.getView(this.getPlayerSide())
+    let battleView = WwBattleView(battle, {
+      side = this.getPlayerSide()
+      isStillInOperation = isStillInOperation(battle)
+      isAutoBattle = isAutoBattle(battle)
+    })
     let blk = handyman.renderCached(this.sceneTplDescriptionName, battleView)
 
     this.guiScene.replaceContentFromText(descrObj, blk, blk.len(), this)
@@ -476,7 +497,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let battleSides = g_world_war.getSidesOrder()
+    let battleSides = getSidesOrder()
     let teamsData = battleView.getTeamsDataBySides(battleSides)
     foreach (idx, teamData in teamsData) {
       let teamObjHeaderInfo = this.scene.findObject($"team_header_info_{idx}")
@@ -599,8 +620,10 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       ? loc("mainmenu/toBattle")
       : loc("mainmenu/btnCancel")
 
-    let cantJoinReasonData = this.operationBattle.getCantJoinReasonData(this.getPlayerSide(),
-      g_squad_manager.isSquadLeader())
+    let cantJoinReasonData = getCantJoinReasonData(this.operationBattle,
+      this.getPlayerSide(), g_squad_manager.isSquadLeader()
+    )
+
     let joinWarningData = this.operationBattle.getWarningReasonData(this.getPlayerSide())
     local warningText = ""
     local fullWarningText = ""
@@ -717,7 +740,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateBattleStatus(battleView) {
     let statusObj = this.scene.findObject("battle_status_text")
     if (checkObj(statusObj))
-      statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
+      statusObj.setValue(getBattleStatusWithCanJoinText(battleView))
 
     let needShowWinChance = battleView.needShowWinChance()
     let winCahnceObj = showObjById("win_chance", needShowWinChance, this.scene)
@@ -843,7 +866,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let side = obj?.isPlayerSide == "yes" ?
-      this.getPlayerSide() : g_world_war.getOppositeSide(this.getPlayerSide())
+      this.getPlayerSide() : getOppositeSide(this.getPlayerSide())
 
     loadHandler(gui_handlers.WwJoinBattleCondition, {
       battle = this.operationBattle
@@ -853,7 +876,8 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onJoinBattle() {
     let side = this.getPlayerSide()
-    let cantJoinReasonData = this.operationBattle.getCantJoinReasonData(side, false)
+
+    let cantJoinReasonData = getCantJoinReasonData(this.operationBattle, side, false)
     if (this.currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST) {
       if (!g_squad_manager.isInSquad() || g_squad_manager.getOnlineMembersCount() == 1)
         this.tryToJoin(side)
@@ -897,7 +921,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function tryToJoin(side) {
     this.queueInfoHandlerWeak.hideQueueInfoObj()
-    this.operationBattle.tryToJoin(side)
+    tryToJoin(this.operationBattle, side)
   }
 
   function tryToSetCrewsReadyFlag() {
@@ -945,7 +969,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateSelectedItem(_isForceUpdate = false) {
     this.refreshSelBattle()
-    let newOperationBattle = this.getBattleById(this.curBattleInList.id)
+    let newOperationBattle = getBattleById(this.curBattleInList.id)
     let isBattleEqual = this.operationBattle.isEqual(newOperationBattle)
     this.operationBattle = newOperationBattle
 
@@ -978,7 +1002,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(opObj))
       return
 
-    this.curBattleInList = this.getBattleById(opObj.id)
+    this.curBattleInList = getBattleById(opObj.id)
   }
 
   function getEmptyBattle() {
@@ -1010,7 +1034,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let isBattleDifferent = !this.curBattleInList || this.curBattleInList.id != wwBattleName
       if (isBattleDifferent)
-        this.curBattleInList = this.getBattleById(wwBattleName)
+        this.curBattleInList = getBattleById(wwBattleName)
 
       if (!u.isEmpty(squadCountry) && profileCountrySq.get() != squadCountry)
         this.guiScene.performDelayed(this, function() {
@@ -1077,7 +1101,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return this.getEmptyBattle()
 
     foreach (item in this.curBattleListItems) {
-      let battle = this.getBattleById(item.id)
+      let battle = getBattleById(item.id)
       if (battle.isValid())
         return battle
     }
@@ -1086,7 +1110,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createBattleListMap() {
-    let battles = g_world_war.getBattles(g_world_war.isBattleAvailableToPlay)
+    let battles = getBattles(g_world_war.isBattleAvailableToPlay)
     battles.sort(this.battlesSort)
     return battles
   }
@@ -1096,7 +1120,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!battleId)
       return null
 
-    return this.getBattleById(battleId)
+    return getBattleById(battleId)
   }
 
   static function getPlayerSide(_battle = null) {

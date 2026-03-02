@@ -4,9 +4,13 @@ require %rGui.utils.helpers_common
 require %rGui.utils.weaponslots_common
 require %rGui.utils.constants_common
 
+require %daslib/enum_trait
+require %daslib/match
 require app
+require DagorDataBlock
 require DagorMath
 require DagorStdGuiRender
+require DagorSystem
 require darg
 require FlightControl
 require FlightModelWrap
@@ -33,6 +37,7 @@ def loc_wpn(str : string) : string
 
 struct PropStorage
   fontId : int
+  stationType : StationType
 
 
 enum MasterMode
@@ -68,7 +73,7 @@ class Component : Canvas
   toi : Tracking = Tracking()
   shapes : Shapes = Shapes()
   colors : Colors = Colors()
-  stations : Stations = Stations()
+  stations : Stations? = null
 
   isArmed : bool = false
   isWeaponSelectorOn : bool = false
@@ -77,6 +82,7 @@ class Component : Canvas
   weaponDeliveryMode : WeaponDeliveryMode = WeaponDeliveryMode.GUN_CCIP
   weapons : table<string, bool>
   gunAmmo : int = 0
+  stationType : StationType = StationType.F_18C
 
 
   def Component(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
@@ -91,7 +97,6 @@ class Component : Canvas
     return if fm == null
     app = get_app()
     return if app == null
-
 
     using() <| $(var target : TargetOfInterest#)
       if hero.sensors.getSelectedTargetOfInterest(hero.detector, target)
@@ -113,7 +118,7 @@ class Component : Canvas
     setFontSize(15)
     setLineSpacing(0.85)
 
-    isArmed = !(fmw.isOnGround || fm.currentAlt < fmw.minAltitudeForDropShells)
+    isArmed = !(fmw.isOnGround || fm.input.currentAlt < fmw.minAltitudeForDropShells)
     isWeaponSelectorOn = app.flightControlMode.isWeaponSelectorOn
     var spi : float3
     if get_point_of_interest(spi)
@@ -121,6 +126,14 @@ class Component : Canvas
     gunAmmo = (wc.Weapons.countBullets(int(WeaponTriggerType.MACHINE_GUNS_TRIGGER)) +
       wc.Weapons.countBullets(int(WeaponTriggerType.CANNONS_TRIGGER)) +
       wc.Weapons.countBullets(int(WeaponTriggerType.ADDITIONAL_GUNS_TRIGGER)))
+    stationType = props.stationType
+    match stationType
+      if StationType.F_18C
+        stations = new StationsF18C()
+      if StationType.F_18E
+        stations = new StationsF18E()
+      if _
+        stations = new StationsF18C()
 
 
   def drawWeaponLabel(slot : WeaponSlot; isNts : bool; hasAdapter : bool = false)
@@ -247,6 +260,9 @@ class Component : Canvas
       continue if (hero.slotIdByWeaponId[i] <= 0)
       let slot = ws.getWeaponSlot(i)
 
+      if slot.slot >= stations.pos.length()
+        logwarn("WeaponSlot {slot.slot} out of bounds")
+        return
       if (slot.trigger == int(WeaponTriggerType.EXTERNAL_FUEL_TANKS_TRIGGER)
         || slot.trigger == int(WeaponTriggerType.TARGETING_POD_TRIGGER)
         || slot.trigger == int(WeaponTriggerType.AGM_TRIGGER))
@@ -375,14 +391,33 @@ class Component : Canvas
 
 
   def drawOutline()
+    var underWingStationCount : int
+    var stationOb, stationIb : float
+    match stationType
+      if StationType.F_18C
+        underWingStationCount = 2
+        stationOb = 0.33
+        stationIb = 0.66
+      if StationType.F_18E
+        underWingStationCount = 3
+        stationOb = 0.22
+        stationIb = 0.77
+      if _
+        underWingStationCount = 2
+        stationOb = 0.33
+        stationIb = 0.66
+
     drawPolyLine(shapes.outline.to_array())
     drawPolyLine(shapes.outline.to_array().inv_x())
-    let stationOb = lerp(shapes.outline[0], shapes.outline[1], 0.33)
-    let stationIb = lerp(shapes.outline[0], shapes.outline[1], 0.66)
-    drawLine(stationOb, stationOb + float2(0.0, 0.01))
-    drawLine(stationIb, stationIb + float2(0.0, 0.01))
-    drawLine(inv_x(stationOb), inv_x(stationOb + float2(0.0, 0.01)))
-    drawLine(inv_x(stationIb), inv_x(stationIb + float2(0.0, 0.01)))
+    let step = (stationIb - stationOb) / float(underWingStationCount - 1)
+    let size = 0.01
+
+    for i in 0..underWingStationCount
+      let val = stationOb + float(i) * step
+      let pos = lerp(shapes.outline[0], shapes.outline[1], val)
+      drawLine(pos, pos + float2(0.0, size))
+      let posInv = inv_x(pos)
+      drawLine(posInv, posInv + float2(0.0, size))
 
 
   def draw()
@@ -406,4 +441,8 @@ def render(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : Ren
 
 [export]
 def setup(props : Properties&; var propStorage : PropStorage&)
+  let blk = getBlk(props, "blk")
+  if blk == null
+    return
+  propStorage.stationType = to_enum(type<StationType>, datablock_getStr(blk, "stationType", "").to_upper(), StationType.F_18C)
   propStorage.fontId = getInt(props, "fontId", 0)

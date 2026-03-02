@@ -36,7 +36,7 @@ function onClustersChanged(params) {
 }
 
 function onGameModesChangedRndDelay(params) {
-  let maxFetchDelaySec = 60
+  let maxFetchDelaySec = 30
   let rndDelaySec = rnd() % maxFetchDelaySec
   log($"notify_game_modes_changed_rnd_delay {rndDelaySec}")
   addDelayedAction(@() notifyGameModesChanged(params), rndDelaySec * 1000)

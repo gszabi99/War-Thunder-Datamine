@@ -1352,6 +1352,7 @@ function getRadarSensorType(sensorPropsBlk) {
   local isRadar = false
   local isIrst = false
   local isTv = false
+  local isEsm = false
   let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
   for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
     let transiverBlk = transiversBlk.getBlock(t)
@@ -1360,6 +1361,8 @@ function getRadarSensorType(sensorPropsBlk) {
       isIrst = true
     else if (targetSignatureType == "optic")
       isTv = true
+    else if (targetSignatureType == "radarIntercept")
+      isEsm = true
     else
       isRadar = true
   }
@@ -1367,7 +1370,38 @@ function getRadarSensorType(sensorPropsBlk) {
     : isRadar ? "radar"
     : isIrst ? "irst"
     : isTv ? "tv"
+    : isEsm ? "esm"
     : "radar"
+}
+
+function addBandsText(bandsIndexes, bandsTxtArr) {
+  if (bandsIndexes.len() > 1) {
+    local bandStart = null
+    for (local i = 0; i < bandsIndexes.len(); ++i) {
+      let band = bandsIndexes[i]
+      if (bandStart == null)
+        bandStart = band
+      else {
+        let bandPrev = bandsIndexes[i - 1]
+        if (band > bandPrev + 1) {
+          if (bandPrev > bandStart)
+            bandsTxtArr.append(loc($"radar_freq_band_{bandStart}"), "-",
+              loc($"radar_freq_band_{bandPrev}"), comma)
+          else
+            bandsTxtArr.append(loc($"radar_freq_band_{bandStart}"), comma)
+          bandStart = band
+        }
+      }
+    }
+    let bandLast = bandsIndexes[bandsIndexes.len() - 1]
+    if (bandLast > bandStart)
+      bandsTxtArr.append(loc($"radar_freq_band_{bandStart}"), "-",
+        loc($"radar_freq_band_{bandLast}"), " ")
+    else
+      bandsTxtArr.append(loc($"radar_freq_band_{bandStart}"), " ")
+  }
+  else if (bandsIndexes.len() == 1)
+    bandsTxtArr.append(loc($"radar_freq_band_{bandsIndexes[0]}"))
 }
 
 function mkRadarTexts(commonData, sensorPropsBlk, indent) {
@@ -1376,8 +1410,9 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
   local isRadar = false
   local isIrst = false
   local isTv = false
+  local isEsm = false
   local rangeMax = 0.0
-  local radarFreqBand = 8
+  local bandsTxtArr = []
   local searchZoneAzimuthWidth = 0.0
   local searchZoneElevationWidth = 0.0
   let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
@@ -1391,8 +1426,16 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
     else if (targetSignatureType == "optic")
       isTv = true
     else {
-      isRadar = true
-      radarFreqBand = transiverBlk.getInt("band", 8)
+      if (targetSignatureType == "radarIntercept")
+        isEsm = true
+      else
+        isRadar = true
+      local bandsIndexes = []
+      for (local p = 0; p < transiverBlk.paramCount(); ++p)
+        if (transiverBlk.getParamName(p) == "band")
+          bandsIndexes.append(transiverBlk.getParamValue(p))
+      bandsTxtArr.clear()
+      addBandsText(bandsIndexes, bandsTxtArr)
     }
     if (transiverBlk?.antenna != null) {
       if (transiverBlk.antenna?.azimuth != null && transiverBlk.antenna?.elevation != null) {
@@ -1523,6 +1566,9 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
       radarType =$"{radarType}_"
     radarType =$"{radarType}tv"
   }
+  if (isEsm)
+    radarType = "esm"
+
   if (isSearchRadar && isTrackRadar)
     radarType = $"{radarType}"
   else if (isSearchRadar)
@@ -1534,8 +1580,8 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
       radarType =$"{radarType}_range_finder"
   }
   desc.append("".concat(indent, loc("plane_engine_type"), colon, loc(radarType)))
-  if (isRadar)
-    desc.append("".concat(indent, loc("radar_freq_band"), colon, loc($"radar_freq_band_{radarFreqBand}")))
+  if (isRadar || isEsm)
+    desc.append("".concat(indent, loc("radar_freq_band"), colon, "".join(bandsTxtArr)))
   desc.append("".concat(indent, loc("radar_range_max"), colon, toStr_distance(rangeMax)))
 
   let scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
@@ -1687,33 +1733,7 @@ function mkRwrTexts(commonData, sensorPropsBlk, indent) {
       bandsIndexes.append(band)
 
   let bandsTxtArr = [ indent, loc("radar_freq_band"), colon ]
-  if (bandsIndexes.len() > 1) {
-    local bandStart = null
-    for (local i = 0; i < bandsIndexes.len(); ++i) {
-      let band = bandsIndexes[i]
-      if (bandStart == null)
-        bandStart = band
-      else {
-        let bandPrev = bandsIndexes[i - 1]
-        if (band > bandPrev + 1) {
-          if (bandPrev > bandStart)
-            bandsTxtArr.append(loc($"radar_freq_band_{bandStart}"), "-",
-              loc($"radar_freq_band_{bandPrev}"), comma)
-          else
-            bandsTxtArr.append(loc($"radar_freq_band_{bandStart}"), comma)
-          bandStart = band
-        }
-      }
-    }
-    let bandLast = bandsIndexes[bandsIndexes.len() - 1]
-    if (bandLast > bandStart)
-      bandsTxtArr.append(loc($"radar_freq_band_{bandStart}"), "-",
-        loc($"radar_freq_band_{bandLast}"), " ")
-    else
-      bandsTxtArr.append(loc($"radar_freq_band_{bandStart}"), " ")
-  }
-  else
-    bandsTxtArr.append(loc($"radar_freq_band_{bandsIndexes[0]}"))
+  addBandsText(bandsIndexes, bandsTxtArr)
   desc.append("".join(bandsTxtArr))
 
   let rangeMax = sensorPropsBlk.getReal("range", 0.0)
@@ -2396,4 +2416,12 @@ return {
   mkSimpleDescByPartType
   mkSupportPlaneDesc
   getInfoBlk
+
+  getRadarSensorType
+  getPartLocNameByBlkFile
+  findBlockByNameWithParamValue
+  findParamValue
+  getUnitSensorsList
+  mkRwrTexts
+  mkMlwsTexts
 }

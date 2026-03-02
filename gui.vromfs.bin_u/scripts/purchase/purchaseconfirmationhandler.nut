@@ -4,12 +4,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
+let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 
 local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/purchase/purchaseConfirmation.blk"
   id = ""
   text = ""
+  warbond = null
   callbackYes = null
   callbackNo = null
   onExitFunc = null
@@ -21,9 +23,23 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let { wp, gold } = get_balance()
     this.scene.findObject("gc_balance").setValue(decimalFormat(wp))
     this.scene.findObject("gc_gold").setValue(decimalFormat(gold))
+    this.updateWarbonds()
     println($"GuiManager: load msgbox = {this.id}")
     this.guiScene.applyPendingChanges(false)
     this.scene.findObject("buttons_holder").select()
+  }
+
+  function updateWarbonds() {
+    let needShowWarbonds = this.warbond != null
+    let warbondsObj = this.scene.findObject("gc_warbonds")
+    warbondsObj.show(needShowWarbonds)
+    if (!needShowWarbonds)
+      return
+    let text = loc("warbonds/currentAmount", { warbonds = this.warbond.getBalanceText() })
+    let tooltip = loc("warbonds/maxAmount", { warbonds = maxAllowedWarbondsBalance.get() })
+    let textObj = warbondsObj.findObject("warbonds_text")
+    textObj.setValue(text)
+    textObj.tooltip = tooltip
   }
 
   function onButtonYes() {
@@ -65,8 +81,8 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.purchaseConfirmationHandler <- purchaseConfirmationHandler
 
-function purchaseConfirmation(id, text, callbackYes, callbackNo = null, onExitFunc = null) {
-  handlersManager.loadHandler(purchaseConfirmationHandler, { id, text, callbackYes, callbackNo, onExitFunc })
+function purchaseConfirmation(id, text, callbackYes, callbackNo = null, onExitFunc = null, warbond = null) {
+  handlersManager.loadHandler(purchaseConfirmationHandler, { id, text, callbackYes, callbackNo, onExitFunc, warbond })
 }
 
 return purchaseConfirmation

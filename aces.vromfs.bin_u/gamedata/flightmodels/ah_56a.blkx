@@ -9,10 +9,35 @@
   "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
-  "hasHelmetDesignator": true,
   "hasHmdGunControl": true,
   "hasPointOfInterestMemory": false,
   "hmdAh56": true,
+  "hasHelmetDesignator": true,
+  "helmetDesignatorZone0": [
+    -40.0,
+    -50.0,
+    50.0
+  ],
+  "helmetDesignatorZone1": [
+    -20.0,
+    -30.0,
+    50.0
+  ],
+  "helmetDesignatorZone2": [
+    0.0,
+    -15.0,
+    50.0
+  ],
+  "helmetDesignatorZone3": [
+    20.0,
+    -30.0,
+    50.0
+  ],
+  "helmetDesignatorZone4": [
+    40.0,
+    -50.0,
+    50.0
+  ],
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -688,8 +713,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -749,8 +774,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -810,8 +835,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1332,19 +1357,42 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
-      3.14,
-      0.86,
+      3.1,
+      0.95,
       0.0
     ],
     "headPosOnShooting": [
-      3.14,
-      0.86,
+      3.1,
+      0.93,
       0.0
     ],
     "hmdEnabledByDefault": true,
     "hmdScreenBlockRad": 0.06,
+    "mirror": true,
+    "mirrorPos": [
+      3.615,
+      -0.927,
+      0.0
+    ],
+    "mirrorNorm": [
+      -0.983,
+      -0.182,
+      0.0
+    ],
+    "mirrorNode": "mirror",
+    "mirror1": true,
+    "mirrorPos1": [
+      4.72,
+      -0.561,
+      0.437
+    ],
+    "mirrorNorm1": [
+      -1.0,
+      0.0,
+      1.0
+    ],
+    "mirrorNode1": "mirror1",
     "lightPos": [
       3.582,
       0.402,
@@ -1380,21 +1428,47 @@
       }
     },
     "devices": {
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle_1": [
+        0.0,
+        1.0
+      ],
+      "throttle_2": [
+        0.0,
+        1.0
+      ],
+      "prop_pitch": [
+        [
+          -1.0,
+          1.0
+        ],
+        [
+          0.0,
+          100.0
+        ]
+      ],
       "speed": [
         0.0,
-        257.222
+        128.611
       ],
-      "bank": [
-        -8.0,
-        8.0
+      "compass": [
+        0.0,
+        360.0
       ],
-      "turn": [
-        -0.23562,
-        0.23562
-      ],
-      "vario": [
-        -30.0,
-        30.0
+      "compass1": [
+        0.0,
+        360.0
       ],
       "altitude_10k": [
         0.0,
@@ -1408,130 +1482,134 @@
         0.0,
         1000.0
       ],
+      "radio_altitude": [
+        0.0,
+        10000.0
+      ],
       "altitude_koef": 3.28,
-      "aviahorizon_pitch": [
-        -60.0,
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
         60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
+      ],
+      "aviahorizon_pitch": [
+        -90.0,
+        90.0
       ],
       "aviahorizon_roll": [
         -180.0,
         180.0
       ],
-      "compass": [
-        0.0,
-        360.0
+      "aviahorizon_pitch1": [
+        -90.0,
+        90.0
       ],
-      "fuel": [
-        0.0,
-        1277.625
+      "aviahorizon_roll1": [
+        -180.0,
+        180.0
+      ],
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "bank1": [
+        -8.0,
+        8.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
+      "vario": [
+        -30.48,
+        30.48
       ],
       "rpm": [
         0.0,
-        4500.0
-      ],
-      "rpm1": [
-        0.0,
-        4500.0
-      ],
-      "rpm2": [
-        0.0,
-        4500.0
-      ],
-      "rpm3": [
-        0.0,
-        4500.0
+        8420.0
       ],
       "rpm_hour": [
         0.0,
-        10000.0
+        8420.0
       ],
-      "rpm_min": [
+      "rpm1": [
         0.0,
-        1000.0
+        7070.0
+      ],
+      "rpm1_hour": [
+        0.0,
+        7070.0
+      ],
+      "prop_rpm": [
+        0.0,
+        900.0
       ],
       "water_temperature": [
         0.0,
-        1000.0
+        820.0
       ],
-      "manifold_pressure": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure1": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure2": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure3": [
-        0.334,
-        2.507
-      ],
-      "head_temperature": [
+      "fuel": [
         0.0,
-        300.0
+        136.077
       ],
-      "head_temperature1": [
+      "fuel1": [
         0.0,
-        300.0
-      ],
-      "head_temperature2": [
-        0.0,
-        300.0
-      ],
-      "head_temperature3": [
-        0.0,
-        300.0
-      ],
-      "oil_temperature": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature1": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature2": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature3": [
-        -50.0,
-        150.0
+        136.077
       ],
       "fuel_pressure": [
         0.0,
         15.0
       ],
-      "fuel_pressure1": [
+      "fuel1_pressure": [
         0.0,
         15.0
       ],
-      "fuel_pressure2": [
+      "fuel_consume": [
         0.0,
-        15.0
+        20.0
       ],
-      "fuel_pressure3": [
+      "oil_temperature": [
         0.0,
-        15.0
+        150.0
+      ],
+      "oil_temperature_transmission": [
+        0.0,
+        150.0
       ],
       "oil_pressure": [
         0.0,
-        150.0
+        200.0
       ],
-      "oil_pressure1": [
+      "oil_pressure_transmission": [
         0.0,
-        150.0
+        200.0
       ],
-      "oil_pressure2": [
+      "engine_torque": [
         0.0,
-        150.0
+        155.0
       ],
-      "oil_pressure3": [
+      "engine_torque1": [
         0.0,
-        150.0
+        155.0
+      ],
+      "g_meter": [
+        -2.0,
+        4.0
+      ],
+      "g_meter_max": [
+        -2.0,
+        4.0
+      ],
+      "carb_temperature": [
+        -65.0,
+        35.0
       ]
     },
     "parts_holes_dmg": {

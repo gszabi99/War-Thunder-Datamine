@@ -2,6 +2,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { ceil } = require("math")
 let { addTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getMeasureUnitOptionType } = require("guiOptions")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
@@ -198,7 +200,14 @@ function getMeasureTypeByName(name, createIfNotFound = false) {
   return res
 }
 
-::g_measure_type <- measureType
+let getMeasureUnitsNames = @() optionsMeasureUnits.isInitialized()
+  ? measureType.types.reduce(@(acc, v) acc.__update({ [v.name] = v.getMeasureUnitsLocKey() }), {})
+  : null
+
+addListenersWithoutEnv({
+  MeasureUnitsInited = @(_) updateExtWatched({ measureUnitsNames = getMeasureUnitsNames() })
+  MeasureUnitsChanged = @(_) updateExtWatched({ measureUnitsNames = getMeasureUnitsNames() })
+})
 
 ::cross_call_api.measureTypes <- measureType
 

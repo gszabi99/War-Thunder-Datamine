@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
 
 enum chatUpdateState {
   OUTDATED
@@ -24,14 +23,9 @@ let globalChatRooms = [
   { name = "realistic" }
 ]
 
-let lastChatSceneShow = Watched(null)
-
-eventbus_subscribe("on_sign_out", @(_p) lastChatSceneShow.set(false))
-
 return {
   chatUpdateState
   voiceChatStats
   langsList
   globalChatRooms
-  lastChatSceneShow
 }

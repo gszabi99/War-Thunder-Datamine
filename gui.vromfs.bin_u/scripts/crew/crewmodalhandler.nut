@@ -154,9 +154,12 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       switchProfileCountry(country)
 
     this.selectedCrewUnitTypes.clear()
+
+    this.toggleXrayFilterMode(true)
+
     this.initMainParams(true, true)
 
-    this.alignWndIfSlotbarOverlapping()
+    this.checkAndSetWindowSizeAndPos()
     this.createSlotbar({
       emptyText = "#shop/aircraftNotSelected",
       beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
@@ -171,9 +174,11 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           && isAllCrewsHasBasicSpec()
           && this.canUpgradeCrewSpec(this.crew))
       this.onUpgrCrewSpec1Tutorial()
+
+    this.toggleHangarFocusModelAndCameraOffset(true)
   }
 
-  function alignWndIfSlotbarOverlapping() {
+  function checkAndSetWindowSizeAndPos() {
     let wnd = this.scene.findObject("wnd_frame")
     let size = wnd.getSize()
     let pos = wnd.getPos()
@@ -700,12 +705,26 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     createCrewBuyPointsHandler(this.crew)
   }
 
+  function baseGoBack() {
+    base.goBack()
+  }
+
+  function resetFiltersAndFocus() {
+    this.toggleHangarFocusModelAndCameraOffset(false)
+    this.toggleXrayFilterMode(false)
+  }
+
   function goBack() {
-    this.checkSkillPointsAndDo(base.goBack)
+    let cb = Callback(function() {
+      this.resetFiltersAndFocus()
+      this.baseGoBack()
+    }, this)
+    this.checkSkillPointsAndDo(cb)
   }
 
   function onEventSetInQueue(_params) {
-    base.goBack()
+    this.resetFiltersAndFocus()
+    this.baseGoBack()
   }
 
   function onApply() {
@@ -1021,6 +1040,9 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   getCurCrewUnit = @(slotCrew) getCrewUnit(slotCrew)
   getSlotCrew = @() getCrew(this.countryId, this.idInCountry)
   onRecruitCrew = @() null
+
+  toggleHangarFocusModelAndCameraOffset = @(_v) null
+  toggleXrayFilterMode = @(_v) null
 
   function updateButtons() {
     this.scene.findObject("btn_apply").show(true)

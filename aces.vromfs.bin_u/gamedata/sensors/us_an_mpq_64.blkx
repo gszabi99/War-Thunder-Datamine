@@ -6,10 +6,10 @@
   "transivers": {
     "common": {
       "power": 1200.0,
-      "band": 9,
-      "rcs": 1.0,
-      "range": 20000.0,
-      "rangeMax": 40000.0,
+      "band": 8,
+      "rcs": 5.0,
+      "range": 75000.0,
+      "rangeMax": 150000.0,
       "antenna": {
         "angleHalfSens": 4.0,
         "sideLobesSensitivity": -50.0
@@ -30,7 +30,7 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
-      "period": 4.0,
+      "period": 2.0,
       "width": 32.5,
       "barHeight": 3.0,
       "barsCount": 120,
@@ -39,8 +39,7 @@
       "barsOneWay": true,
       "isSmoothMajor": true,
       "tws": true,
-      "preciseMinor": true,
-      "phaseShift": 0.5
+      "preciseMinor": true
     }
   },
   "signals": {
@@ -76,7 +75,8 @@
     "common": {
       "range1": 10000.0,
       "range2": 20000.0,
-      "range3": 40000.0
+      "range3": 40000.0,
+      "range4": 75000.0
     }
   },
   "fsms": {
@@ -115,7 +115,7 @@
             "azimuthWidth": 5.0,
             "distanceRange": [
               0.0,
-              40000.0
+              75000.0
             ]
           }
         },
@@ -273,11 +273,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }
@@ -297,10 +299,7 @@
       }
     },
     "tws": {
-      "stateInit": [
-        "search",
-        "search"
-      ],
+      "stateInit": "search",
       "transitions": {
         "scan": {
           "event": "update",
@@ -313,7 +312,7 @@
             ],
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 3.0
+              "timeOut": 8.0
             },
             "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
@@ -353,7 +352,15 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": {
+            "addTargetOfInterestCandidate": {},
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "matchTargets": {
+          "event": "scanFinished",
+          "actions": {
+            "matchTargetsOfInterest": {
               "limit": 40,
               "timeMin": 2.0,
               "posGateTimeInitial": [
@@ -364,7 +371,7 @@
               "posGateMaxTime": 2.0,
               "posGateRange": [
                 0.0,
-                1000.0
+                300.0
               ],
               "dopplerSpeedGateMaxTime": 2.0,
               "dopplerSpeedGateRange": [
@@ -393,9 +400,7 @@
                 "dt": 0.0208,
                 "limTimeOut": 3.0
               }
-            },
-            "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {}
+            }
           }
         },
         "switchSelectedTarget": {

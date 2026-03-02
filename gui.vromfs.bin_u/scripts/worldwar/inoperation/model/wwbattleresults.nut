@@ -7,8 +7,9 @@ let { WwBattleResultsView } = require("%scripts/worldWar/inOperation/view/wwBatt
 let { WwArmy, getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getMyClanTag } = require("%scripts/user/clanName.nut")
+let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+
 
 let WwBattleResults = class {
   id = ""
@@ -227,7 +228,7 @@ let WwBattleResults = class {
     
 
     let localTeam  = getTblValue("localTeam", wwSharedPool, "")
-    let sidesOrder = g_world_war.getSidesOrder() 
+    let sidesOrder = getSidesOrder() 
     let winnerSide = getTblValue("win", userlog) ? sidesOrder[0] : sidesOrder[1]
 
     local sideInBattle = SIDE_NONE

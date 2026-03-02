@@ -70,7 +70,6 @@ function getState(data) {
     hasAI = data.hasAI
     kills = data.kills
     targetHealCount = data.targetHealCount
-    hasFlask = data.hasFlask
     targetReviveCount = data.targetReviveCount
     sKind = data.sKind
     sClassRare = data.sClassRare

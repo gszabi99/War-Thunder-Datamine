@@ -7,7 +7,9 @@ require %game.events
 
 let RAGDOLL_COLLISION_INSTANCES_TTL = 10.
 
-def start_ragdoll(var ragdoll : PhysRagdoll;
+def start_ragdoll(var ragdoll__nextUpdateCacheTime : float&;
+                  var ragdoll__riCacheLastUpdatePos : float3&;
+                  var ragdoll : PhysRagdoll;
                   var ragdoll__applyParams : bool&;
                   var animchar : AnimcharBaseComponent;
                   unitTm : float3x4;
@@ -21,7 +23,9 @@ def start_ragdoll(var ragdoll : PhysRagdoll;
   let curRiDestrTtl = dacoll_get_ttl_for_collision_instances()
   dacoll_set_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
   update_ri_cache_in_volume_to_phys_world(box)
+  ragdoll__riCacheLastUpdatePos = unitTm[3]
   dacoll_set_ttl_for_collision_instances(curRiDestrTtl)
+  ragdoll__nextUpdateCacheTime  = curTime + (RAGDOLL_COLLISION_INSTANCES_TTL - 1.f)
   
   
   
@@ -65,6 +69,47 @@ def human_anim_ragdoll_start_es(info : ParallelUpdateFrameDelayed;
                                   int(interactMask),
                                   animchar.nodeTree)
 
+[es(tag=render, REQUIRE=deadEntity)]
+def update_ri_cache_around_ragdoll(info : ParallelUpdateFrameDelayed;
+                                   animchar__updatable : bool;
+                                   var ragdoll__riCacheLastUpdatePos : float3&;
+                                   var ragdoll : PhysRagdoll&;
+                                   var ragdoll__nextUpdateCacheTime : float&)
+  if !animchar__updatable
+    return
+
+  var physSys = ragdoll_getPhysSys(ragdoll)
+  if physSys == null
+    return
+  var physBody = phys_system_instance_getBody(*physSys, 0)
+  if physBody == null
+    return
+  var tm : float3x4
+  phys_body_getTm(*physBody, tm)
+
+  if distance_sq(ragdoll__riCacheLastUpdatePos, tm[3]) > 0.25
+    let boxScale = float3(0.5f)
+    let box = BBox3(tm[3] - boxScale, tm[3] + boxScale)
+    let curRiDestrTtl = dacoll_get_ttl_for_collision_instances()
+    dacoll_set_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
+    update_ri_cache_in_volume_to_phys_world(box)
+    dacoll_set_ttl_for_collision_instances(curRiDestrTtl)
+    ragdoll__riCacheLastUpdatePos = tm[3]
+    ragdoll__nextUpdateCacheTime  = info.curTime + (RAGDOLL_COLLISION_INSTANCES_TTL - 1.f)
+
+[es(tag=render, REQUIRE=deadEntity)]
+def update_ri_cache_time_around_ragdoll(info : ParallelUpdateFrameDelayed;
+                                        transform : float3x4;
+                                        animchar__updatable : bool;
+                                        var ragdoll__nextUpdateCacheTime : float&)
+  if animchar__updatable && ragdoll__nextUpdateCacheTime < info.curTime
+    let boxScale = float3(0.5f)
+    let box = BBox3(transform[3] - boxScale, transform[3] + boxScale)
+    let curRiDestrTtl = dacoll_get_ttl_for_collision_instances()
+    dacoll_set_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
+    update_ri_cache_in_volume_to_phys_world(box)
+    dacoll_set_ttl_for_collision_instances(curRiDestrTtl)
+    ragdoll__nextUpdateCacheTime  = info.curTime + (RAGDOLL_COLLISION_INSTANCES_TTL - 1.f)
 
 [es(tag=render, before=human_anim_ragdoll_start_es, after=ragdoll_deactivation_es)]
 def human_anim_ragdoll_es(info : ParallelUpdateFrameDelayed)
@@ -75,6 +120,8 @@ def human_anim_ragdoll_es(info : ParallelUpdateFrameDelayed)
                                          eid : EntityId;
                                          ragdoll__isAllowed : bool = true;
                                          ragdoll__maxEntitiesInUpdate : int = 2;
+                                         var ragdoll__nextUpdateCacheTime : float&;
+                                         var ragdoll__riCacheLastUpdatePos : float3&;
                                          var ragdoll__applyParams : bool&;
                                          var human_anim__ragdollEnabled : bool&;
                                          var ragdoll : PhysRagdoll;
@@ -94,7 +141,7 @@ def human_anim_ragdoll_es(info : ParallelUpdateFrameDelayed)
         human_anim__ragdollEnabled = true
         let curTime = info.curTime
         
-        start_ragdoll(ragdoll, ragdoll__applyParams, animchar, transform, float3(human_net_phys__locationPos), eid, curTime)
+        start_ragdoll(ragdoll__nextUpdateCacheTime, ragdoll__riCacheLastUpdatePos, ragdoll, ragdoll__applyParams, animchar, transform, float3(human_net_phys__locationPos), eid, curTime)
         ragdollStarts--
       else
         human_anim__ragdollEnabled = false
@@ -110,6 +157,11 @@ def stop_ragdoll_es(event : Event;
     human_anim__ragdollEnabled = false
     stop_ragdoll(ragdoll, animchar)
 
+
+[es(tag=render, on_disappear, REQUIRE=(deadEntity))]
+def start_animation_after_reanimation_es(evt : Event;
+                                         var animchar__updatable : bool&)
+  animchar__updatable = true
 
 
 

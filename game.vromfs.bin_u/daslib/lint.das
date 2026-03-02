@@ -6,12 +6,19 @@ options strict_smart_pointers = true
 
 module lint shared private
 
+
+
+
+
+
+
 require daslib/strings_boost
 require daslib/ast_boost
 require daslib/strings_boost
 
 [lint_macro]
 class LintEverything : AstPassMacro {
+    
     def override apply(prog : ProgramPtr; mod : Module?) : bool {
         paranoid(prog, true)
         return true
@@ -19,6 +26,7 @@ class LintEverything : AstPassMacro {
 }
 
 class LintVisitor : AstVisitor {
+    
     astVisitorAdapter : smart_ptr<ast::VisitorAdapter>
     exprForTerminator : array<uint64>
     compile_time_errors : bool
@@ -146,6 +154,7 @@ class LintVisitor : AstVisitor {
 }
 
 def public paranoid(prog : ProgramPtr; compile_time_errors : bool) {
+    
     var astVisitor = new LintVisitor(compile_time_errors = compile_time_errors)
     unsafe {
         astVisitor.astVisitorAdapter <- make_visitor(*astVisitor)

@@ -4957,7 +4957,7 @@
       },
       {
         "name": "canberra_bimk6",
-        "weap": "canberra_5x1000lbs",
+        "weap": "canberra_1000lb_mc",
         "rankRange": [
           19,
           22
@@ -5207,7 +5207,7 @@
       },
       {
         "name": "sb2u-3",
-        "weap": "sb2u_default",
+        "weap": "sb2u_3_default",
         "rankRange": [
           0,
           6
@@ -7422,16 +7422,16 @@
     },
     "helicopter_atgm": [
       {
-        "name": "ah_64a",
-        "weap": "ah_64d_8_hellfire",
+        "name": "ah_64a_killstreak",
+        "weap": "ah_64a_killstreak_8_hellfire",
         "rankRange": [
           0,
           50
         ]
       },
       {
-        "name": "mi_35m",
-        "weap": "mi_35m_rocket_9M120_4",
+        "name": "mi_35m_killstreak",
+        "weap": "mi_35m_killstreak_rocket_9M120_4",
         "rankRange": [
           0,
           50
@@ -7440,16 +7440,16 @@
     ],
     "helicopter_rocket": [
       {
-        "name": "ah_64a",
-        "weap": "ah_64a_default",
+        "name": "ah_64a_killstreak",
+        "weap": "ah_64a_killstreak_default",
         "rankRange": [
           0,
           50
         ]
       },
       {
-        "name": "mi_35m",
-        "weap": "mi_35m_rocket_c_8_ko",
+        "name": "mi_35m_killstreak",
+        "weap": "mi_35m_killstreak_default",
         "rankRange": [
           0,
           50
@@ -7466,8 +7466,8 @@
         ]
       },
       {
-        "name": "mi_35m",
-        "weap": "mi_35m_upk_23_250",
+        "name": "mi_35m_killstreak",
+        "weap": "mi_35m_killstreak_upk_250",
         "rankRange": [
           0,
           50
@@ -8453,6 +8453,7 @@
     "prolongateBeforeTrack": true,
     "designationLagCompensationMax": 0.2,
     "interpolationForSanityCheck": true,
+    "trackResetTimeMax": 1.0,
     "useTimeOfFlightFromBallisticComputer": true,
     "DesignationType": {
       "camera": 0,
@@ -8472,6 +8473,7 @@
   "radarSeeker": {
     "targetSearchBeamWidthMult": 1.0
   },
+  "targetSignature": {},
   "radarCommon": {
     "singleTargetDetectionSensitivityMult": 0.5,
     "directionWithinMainLobe": true,
@@ -8585,6 +8587,12 @@
       "IRST ACM",
       "IRST HMD",
       "IRST track",
+      "ESM standby",
+      "ESM search",
+      "ESM acquisition",
+      "ESM ACM",
+      "ESM HMD",
+      "ESM track",
       "air_search",
       "ground_search",
       "auto acquisition",
@@ -8775,6 +8783,8 @@
     "horsePowersToInfraRedBrightness": 0.42,
     "thrustKgsToInfraRedBrightness": 1.0,
     "afterburnerThrustKgsToInfraRedBrightness": 4.5,
+    "skipUpdateOnSleep": false,
+    "sleepDelay": 1.0,
     "analytics": {
       "precisionDisplay": {
         "speedSearchStep": 0.2,
@@ -9739,8 +9749,8 @@
           },
           "halifax_mk3": {
             "addModification": "subc_mk1",
-            "addWeapon": "halifax_mk3_15x500lbs_sap",
-            "forceWeapon": "halifax_mk3_15x500lbs_sap"
+            "addWeapon": "halifax_mk3_500lb_sap",
+            "forceWeapon": "halifax_mk3_500lb_sap"
           },
           "firefly_mk5": {
             "addModification": "halker_mbc",
@@ -10532,8 +10542,8 @@
           },
           "sb2u-2": {
             "addModification": "fsbc_mk5",
-            "addWeapon": "sb2u_sb2u_500lbs_2x250lbs",
-            "forceWeapon": "sb2u_sb2u_500lbs_2x250lbs"
+            "addWeapon": "sb2u_2_default",
+            "forceWeapon": "sb2u_2_default"
           },
           "pby-5": {
             "addModification": "improved_torpedo_mod",
@@ -10547,8 +10557,8 @@
           },
           "sb2u-3": {
             "addModification": "fsbc_mk5",
-            "addWeapon": "sb2u_sb2u_500lbs_2x250lbs",
-            "forceWeapon": "sb2u_sb2u_500lbs_2x250lbs"
+            "addWeapon": "sb2u_3_default",
+            "forceWeapon": "sb2u_3_default"
           },
           "tbf-1c": {
             "addModification": "improved_torpedo_mod",
@@ -11130,8 +11140,8 @@
           },
           "halifax_mk3": {
             "addModification": "subc_mk1",
-            "addWeapon": "halifax_mk3_15x500lbs_sap",
-            "forceWeapon": "halifax_mk3_15x500lbs_sap"
+            "addWeapon": "halifax_mk3_500lb_sap",
+            "forceWeapon": "halifax_mk3_500lb_sap"
           },
           "brigand_b1": {
             "addModification": "halker_mbc",
@@ -11921,8 +11931,8 @@
           },
           "sb2u-2": {
             "addModification": "fsbc_mk5",
-            "addWeapon": "sb2u_sb2u_500lbs_2x250lbs",
-            "forceWeapon": "sb2u_sb2u_500lbs_2x250lbs"
+            "addWeapon": "sb2u_2_default",
+            "forceWeapon": "sb2u_2_default"
           },
           "pby-5": {
             "addModification": "improved_torpedo_mod",
@@ -11941,8 +11951,8 @@
           },
           "sb2u-3": {
             "addModification": "fsbc_mk5",
-            "addWeapon": "sb2u_sb2u_500lbs_2x250lbs",
-            "forceWeapon": "sb2u_sb2u_500lbs_2x250lbs"
+            "addWeapon": "sb2u_3_default",
+            "forceWeapon": "sb2u_3_default"
           },
           "pby-5a": {
             "addModification": "improved_torpedo_mod",

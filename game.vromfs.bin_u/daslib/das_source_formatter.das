@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module das_source_formatter shared private
 
+
+
+
+
+
+
 require strings
 require math
 require daslib/defer
@@ -29,6 +35,7 @@ let type_after_keyword <- fixed_array("generator", "cast", "upcast", "smart_ptr"
     )
 
 enum TokenType {
+    
     UNKNOWN
     KEYWORD_OR_IDENTIFIER
     NUMBER
@@ -38,6 +45,7 @@ enum TokenType {
 
 [safe_when_uninitialized]
 struct TokenTemplate {
+    
     firstChar : int = 0
     str : string = ""
     codes : array<uint8>
@@ -46,6 +54,7 @@ struct TokenTemplate {
 
 
 struct Token {
+    
     str : string
     spaces : int = 0
     newLines : int = 0
@@ -60,12 +69,14 @@ struct Token {
 
 
 struct FormatterToken {
+    
     tokenIndex : int
     command : string
 }
 
 [safe_when_uninitialized]
 struct FormatterCtx {
+    
     tokenTemplates : array<TokenTemplate>
     tokens : array<Token>
     formatterTokens : array<FormatterToken>
@@ -378,6 +389,7 @@ def parse_all_tokens(var ctx : FormatterCtx) {
 
 [safe_when_uninitialized]
 struct ParenCounter {
+    
     angle : int = 0
     paren : int = 0
     square : int = 0
@@ -1277,6 +1289,7 @@ def do_format(var ctx : FormatterCtx) {
 
 
 def public format_source_string(file_data : string const& implicit) : string {
+    
     var inscope ctx : FormatterCtx
     ctx.data <- [ for (c in file_data); uint8(c) ]
     ctx.data |> push(uint8(0))
@@ -1294,6 +1307,7 @@ def format_source(var ctx : FormatterCtx; file_data : array<uint8> const& implic
 
 
 def public format_source(file_data : array<uint8> const& implicit) : string {
+    
     var inscope ctx : FormatterCtx
     return ctx |> format_source(file_data)
 }

@@ -1,5 +1,7 @@
 from "%scripts/dagui_natives.nut" import ww_start_war, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+import "%sqStdLibs/helpers/enums.nut" as enums
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -9,9 +11,10 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarStates.nut")
+let { getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 enum WW_OPERATION_STATUSES {
   UNKNOWN = -1
@@ -318,5 +321,25 @@ let WwOperation = class {
   getCluster = @() this.data?.cluster ?? ""
   setFinishedStatus = @(isFinish) this.isFinished = isFinish
 }
+
+enums.enumsAddTypes(wwStatusType, {
+  ACTIVE_OPERATIONS = {
+    typeMask = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
+    charDataId = "activeOperations"
+
+    function loadList() {
+      this.cachedList = []
+      let data = this.getData()
+      if (!u.isArray(data))
+        return
+
+      foreach (opData in data) {
+        let operation = WwOperation(opData)
+        if (operation.isValid())
+          this.cachedList.append(operation)
+      }
+    }
+  }
+})
 
 return WwOperation

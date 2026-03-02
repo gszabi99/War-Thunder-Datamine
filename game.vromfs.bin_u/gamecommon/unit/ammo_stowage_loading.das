@@ -335,11 +335,11 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
 
       let visual_node_name = slot_blk |> datablock_getStr("visual", "")
       if visual_node_name != ""
-        *unit.visual |> dm_bind_visual_node(int(part_id.globalId), visual_node_name)
+        *unit.visual |> dm_bind_visual_node(int(part_id.id), visual_node_name)
 
       if unit.collNodeTree != null
         let cnode = *unit.visual |> dm_get_collision_node_by_part_id(int(part_id.globalId))
-        let geom_node_id = *unit.visual |> dm_get_geom_node_id_by_part_id(int(part_id.globalId))
+        let geom_node_id = *unit.visual |> dm_get_geom_node_id_by_part_id(int(part_id.id))
         let node_wtm = *unit.collNodeTree |> get_node_wtm_rel_ptr(geom_node_id)
         v.ammo_slots__node[slot_id] := AmmoStowageSlotCollAndGeomNodes(cnode = cnode, nodeWtm = node_wtm)
 

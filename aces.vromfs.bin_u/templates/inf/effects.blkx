@@ -91,6 +91,29 @@
       }
     }
   },
+  "global_gun_fx_info": {
+    "_singleton": true,
+    "_group": {
+      "_tags": "render",
+      "gun_environment__defaultFxTemplate": "",
+      "gun_environment_fx__materials:object": {},
+      "gun_environment_fx__matTemplates:list<t>": {},
+      "gun_ground_wave_fx__maxImpulses:list<r>": {
+        "maxImpulse": [
+          10.0,
+          100.0,
+          1000000.0
+        ]
+      },
+      "gun_ground_wave_fx__effectGroups:array": {
+        "group:object": [
+          {},
+          {},
+          {}
+        ]
+      }
+    }
+  },
   "muzzle_rifle_no_flash_effect": {
     "_use": "base_gun_flash_fx",
     "_group": {
@@ -569,6 +592,41 @@
     "_group": {
       "_tags": "render",
       "effect__name": "water_swimming_cmps_fx"
+    }
+  },
+  "destr_collision_bush_green_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "destr_collision_bush_green_cmps_fx"
+    }
+  },
+  "destr_collision_bush_fall_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "destr_collision_bush_fall_cmps_fx"
+    }
+  },
+  "destr_collision_bush_palm_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "destr_collision_bush_palm_cmps_fx"
+    }
+  },
+  "destr_collision_bush_snow_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "destr_collision_bush_snow_cmps_fx"
+    }
+  },
+  "destr_collision_bush_dead_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "destr_collision_bush_dead_cmps_fx"
     }
   }
 }

@@ -19,6 +19,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 local scene = null
 local guiScene = null
 
+local deathInProgressUpdater = null
 local repairUpdater = null
 local repairBreachesUpdater = null
 local extinguishUpdater = null
@@ -190,6 +191,20 @@ let timersList = [
     icon = "#ui/gameuiskin#time_bomb.svg"
   },
   {
+    id = "reanimation_progress"
+    color = "@white"
+    icon = "#ui/gameuiskin#medic_status_indicator.svg"
+  },
+  {
+    id = "reanimation_decline_progress"
+    color = "@white"
+    icon = "#ui/gameuiskin#lb_deaths.svg"
+  },
+  {
+    id = "death_in_progress"
+    needTimeText = true
+  },
+  {
     id = "wall_time_to_explode"
     color = "@white"
     icon = "#ui/gameuiskin#time_bomb.svg"
@@ -218,6 +233,14 @@ function getViewData() {
 }
 
 let isCapturingZoneMy = @(eventData) (get_mp_local_team() == Team.A) == (eventData.captureProgress < 0)
+
+function destroyDeathInProgressUpdater() {
+  if (deathInProgressUpdater == null)
+    return
+
+  deathInProgressUpdater.remove()
+  deathInProgressUpdater = null
+}
 
 function destoyRepairUpdater() {
   if (repairUpdater == null)
@@ -307,6 +330,7 @@ function clearAllTimers() {
   destoyRepairBreachesUpdater()
   destoyExtinguishUpdater()
   destroyInextinguishableFireUpdater()
+  destroyDeathInProgressUpdater()
 }
 
 function hudDisplayTimersReInit() {
@@ -812,6 +836,88 @@ function onMiningWallEvent(eventData) {
   g_time_bar.setCurrentTime(timebarObj, 0)
 }
 
+function onReanimationEvent(eventData) {
+  if (!scene?.isValid())
+    return
+
+  let placeObj = scene.findObject("reanimation_progress")
+  if (!placeObj?.isValid())
+    return
+
+  let showTimer = eventData.isReanimationInProgress
+  placeObj.animation = showTimer ? "show" : "hide"
+
+  let timebarObj = placeObj.findObject("timer")
+
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
+
+  g_time_bar.setPeriod(timebarObj, eventData.reanimationTimeTotal, true)
+  g_time_bar.setCurrentTime(timebarObj, 0)
+}
+
+function onReanimationDeclineEvent(eventData) {
+  if (!scene?.isValid())
+    return
+
+  let placeObj = scene.findObject("reanimation_decline_progress")
+  if (!placeObj?.isValid())
+    return
+
+  let showTimer = eventData.isDeclineInProgress
+  placeObj.animation = showTimer ? "show" : "hide"
+
+  let timebarObj = placeObj.findObject("timer")
+
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
+
+  g_time_bar.setPeriod(timebarObj, eventData.declineTimeTotal, true)
+  g_time_bar.setCurrentTime(timebarObj, 0)
+}
+
+function onDeathInProgress(eventData) {
+  destroyDeathInProgressUpdater()
+  if (!scene?.isValid())
+    return
+
+  let placeObj = scene.findObject("death_in_progress")
+  if (!placeObj?.isValid())
+    return
+
+  let showTimer = eventData.isKnockedDown
+  placeObj.animation = showTimer ? "show" : "hide"
+
+  let timebarObj = placeObj.findObject("timer")
+  let timeTextObj = placeObj.findObject("time_text")
+  timeTextObj.setValue("")
+
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
+
+  let createTime = get_time_msec()
+  deathInProgressUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
+    let timeToShowSeconds = eventData.deathTimeTotal - millisecondsToSeconds(get_time_msec() - createTime)
+    if (timeToShowSeconds < 0)
+      return true
+    obj.setValue(timeToShowSeconds.tointeger().tostring())
+    return false
+  })
+
+  g_time_bar.setDirectionBackward(timebarObj)
+  g_time_bar.setPeriod(timebarObj, eventData.deathTimeTotal, true)
+  g_time_bar.setCurrentTime(timebarObj, 0)
+}
+
 function onPlantedBombEvent(eventData) {
   if (!scene?.isValid())
     return
@@ -915,15 +1021,8 @@ function hudDisplayTimersInit(nest, v_unitType) {
   let blk = handyman.renderCached("%gui/hud/hudDisplayTimers.tpl", getViewData())
   guiScene.replaceContentFromText(scene, blk, blk.len(), {})
 
-  g_hud_event_manager.subscribe("TankDebuffs:Rearm", onRearm, scene)
-  g_hud_event_manager.subscribe("TankDebuffs:Replenish", onReplenish, scene)
   g_hud_event_manager.subscribe("TankDebuffs:Repair", onRepair, scene)
-  g_hud_event_manager.subscribe("TankDebuffs:MoveCooldown", onMoveCooldown, scene)
-  g_hud_event_manager.subscribe("TankDebuffs:Battery", onBattery, scene)
-  g_hud_event_manager.subscribe("TankDebuffs:ExtinguishAssist", onExtinguishAssist, scene)
-  g_hud_event_manager.subscribe("TankDebuffs:MineDetonation", onMineDetonation, scene)
   g_hud_event_manager.subscribe("TankDebuffs:Building", onBuilding, scene)
-  g_hud_event_manager.subscribe("TankDebuffs:CancelSmokeScreen", onCancelSmokeScreen, scene)
 
   g_hud_event_manager.subscribe("ShipDebuffs:Rearm", onRearm, scene)
   g_hud_event_manager.subscribe("ShipDebuffs:Repair", onRepair, scene)
@@ -933,15 +1032,14 @@ function hudDisplayTimersInit(nest, v_unitType) {
   g_hud_event_manager.subscribe("ShipDebuffs:CancelRepairBreaches", onCancelRepairBreaches, scene)
   g_hud_event_manager.subscribe("ShipDebuffs:CancelExtinguish", onCancelExtinguish, scene)
 
-  g_hud_event_manager.subscribe("CrewState:CrewState", onCrewState, scene)
-  g_hud_event_manager.subscribe("CrewState:DriverState", onDriverState, scene)
-  g_hud_event_manager.subscribe("CrewState:GunnerState", onGunnerState, scene)
-
   g_hud_event_manager.subscribe("LocalPlayerDead", onLocalPlayerDead, scene)
   g_hud_event_manager.subscribe("MissionResult", onMissionResult, scene)
 
   g_hud_event_manager.subscribe("zoneCapturingEvent", onZoneCapturingEvent, scene)
   g_hud_event_manager.subscribe("miningWallInProgress", onMiningWallEvent, scene)
+  g_hud_event_manager.subscribe("reanimationInProgress", onReanimationEvent, scene)
+  g_hud_event_manager.subscribe("reanimationDeclineInProgress", onReanimationDeclineEvent, scene)
+  g_hud_event_manager.subscribe("deathInProgress", onDeathInProgress, scene)
   g_hud_event_manager.subscribe("plantedBombInProgress", onPlantedBombEvent, scene)
   g_hud_event_manager.subscribe("buildingWallInProgress", onBuildingWallEvent, scene)
   g_hud_event_manager.subscribe("selfHealingInProgress", onSelfHealingEvent, scene)
@@ -951,7 +1049,18 @@ function hudDisplayTimersInit(nest, v_unitType) {
     clearAllTimers()
 }
 
-eventbus_subscribe("TankDebuffs:InextinguishableFire", @(params) onInextinguishableFire(params))
+eventbus_subscribe("TankDebuffs:Rearm", onRearm)
+eventbus_subscribe("TankDebuffs:Replenish", onReplenish)
+eventbus_subscribe("TankDebuffs:MoveCooldown", onMoveCooldown)
+eventbus_subscribe("TankDebuffs:Battery", onBattery)
+eventbus_subscribe("TankDebuffs:ExtinguishAssist", onExtinguishAssist)
+eventbus_subscribe("TankDebuffs:MineDetonation", onMineDetonation)
+eventbus_subscribe("TankDebuffs:CancelSmokeScreen", onCancelSmokeScreen)
+eventbus_subscribe("TankDebuffs:InextinguishableFire", onInextinguishableFire)
+
+eventbus_subscribe("CrewState:CrewState", onCrewState)
+eventbus_subscribe("CrewState:DriverState", onDriverState)
+eventbus_subscribe("CrewState:GunnerState", onGunnerState)
 
 return {
   hudDisplayTimersInit

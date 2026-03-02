@@ -12,10 +12,9 @@ let DataBlock = require("DataBlock")
 let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
-let { is_stereo_configured, configure_stereo } = require("vr")
 let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options,
-  get_supported_generated_frames, is_dx12_supported, is_nvidia_gpu, is_amd_gpu,
-  is_intel_gpu, getAutoGfxApi, getVideoModes, getDgsTexQuality } = require("graphicsOptions")
+  get_supported_generated_frames, is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api,
+  is_intel_gpu, getVideoModes, getDgsTexQuality } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -31,7 +30,6 @@ let { doesLocTextExist } = require("dagor.localize")
 let { is_win64, is_windows, isPC, platformId, is_gdk } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { steam_is_running } = require("steam")
 let { saveLocalAccountSettings, loadLocalAccountSettings,
 NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -102,6 +100,8 @@ local mUiStruct = [
       "resolution"
       "vsync"
       "monitor"
+      "fpsLimiter"
+      "menuFpsLimiter"
       "gfx_api"
       "backgroundScale"
       "antialiasingMode"
@@ -163,9 +163,11 @@ local mUiStruct = [
       "rtsm"
       "rtr"
       "rtrRes"
+      "rtDecals"
       "rtrWater"
       "rtrWaterRes"
       "rtrTranslucent"
+      "rayReconstruction"
     ]
   }
   {
@@ -584,14 +586,30 @@ function getFxDistortionAvailable() {
   return fxQualityStr == "high" || fxQualityStr == "ultrahigh"
 }
 
+function getMenuFpsLimiterValues(fpsLimitValue) {
+  if (fpsLimitValue == "30")
+    return [ "off" ]
+  if (fpsLimitValue == "60")
+    return [ "30", "off" ]
+  else if (fpsLimitValue == "120")
+    return [ "30", "60", "off" ]
+  else
+    return [ "30", "60", "120", "off" ]
+}
+
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
 let is_platform_macosx = platformId == "macosx"
 let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && has_ray_query() && getGuiValue("graphicsQuality", "high") != "ultralow"
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
-let hasRTAOGUI = @() getGuiValue("rayTracing", "off") != "off" && getGuiValue("ptao", "off") == "off" && hasRT()
+let isRRGUIEnabled = @() getGuiValue("rayReconstruction", false) != false && hasRTGUI()
+let hasRTAOGUI = @() getGuiValue("rayTracing", "off") != "off" && getGuiValue("ptgi", "off") == "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
+let isRRSupported = @() hasRTGUI() && is_nvidia_gpu() && getGuiValue("antialiasingMode", "off") == "dlss"
+let hasRayReconstructionGUI = @() hasRTGUI() && isRRSupported()
+let hasRTRResGUI = @() hasRTR() && !isRRGUIEnabled()
+let hasRTDecalsGUI = @() hasRTR()
 
 function isVsyncEnabledFromLowLatency() {
   if (is_nvidia_gpu()) {
@@ -776,7 +794,18 @@ mShared = {
   antialiasingModeClick = function() {
     aaUseGui = true
 
+    if (isRRSupported()) {
+      enableGuiOption("rayReconstruction", true)
+    }
+    else {
+      setGuiValue("rayReconstruction", false)
+      enableGuiOption("rayReconstruction", false)
+      enableGuiOption("rtao", hasRTAOGUI())
+      enableGuiOption("rtrRes", hasRTGUI())
+    }
+
     let canBgScale = canDoBackgroundScale()
+
     enableGuiOption("ssaa", canBgScale)
     enableGuiOption("antialiasingUpscaling", hasAntialiasingUpscaling())
 
@@ -919,6 +948,23 @@ mShared = {
 
   rtrClick = function() {
     enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing", "off") != "off")
+    enableGuiOption("rtDecals", hasRTDecalsGUI())
+    mShared.rtOptionChanged()
+  }
+
+  ptgiClick = function() {
+    enableGuiOption("rtao", hasRTAOGUI())
+    mShared.rtOptionChanged()
+  }
+
+  fpsLimiterClick = function() {
+    enableGuiOption("menuFpsLimiter", getGuiValue("fpsLimiter") != "30")
+    updateOption("menuFpsLimiter")
+  }
+
+  rayReconstructionChanged = function() {
+    enableGuiOption("rtao", hasRTAOGUI())
+    enableGuiOption("rtrRes", !isRRGUIEnabled())
     mShared.rtOptionChanged()
   }
 
@@ -930,6 +976,7 @@ mShared = {
       setGuiValue("rtao", "off")
       setGuiValue("rtr", "off")
       setGuiValue("rtrRes", "half")
+      setGuiValue("rtDecals", false)
       setGuiValue("rtsm", "off")
       setGuiValue("rtsmQuality", "low")
       setGuiValue("rtrWater", false)
@@ -942,6 +989,7 @@ mShared = {
       setGuiValue("rtao", "low")
       setGuiValue("rtr", "low")
       setGuiValue("rtrRes", "half")
+      setGuiValue("rtDecals", false)
       setGuiValue("rtsm", "sun")
       setGuiValue("rtsmQuality", "low")
       setGuiValue("rtrWater", false)
@@ -953,6 +1001,7 @@ mShared = {
       setGuiValue("rtao", "off")
       setGuiValue("rtr", "medium")
       setGuiValue("rtrRes", "half")
+      setGuiValue("rtDecals", false)
       setGuiValue("rtsm", "sun")
       setGuiValue("rtsmQuality", "low")
       setGuiValue("rtrWater", true)
@@ -964,6 +1013,7 @@ mShared = {
       setGuiValue("rtao", "off")
       setGuiValue("rtr", "high")
       setGuiValue("rtrRes", "half")
+      setGuiValue("rtDecals", true)
       setGuiValue("rtsm", "sun")
       setGuiValue("rtsmQuality", "medium")
       setGuiValue("rtrWater", true)
@@ -975,6 +1025,7 @@ mShared = {
       setGuiValue("rtao", "off")
       setGuiValue("rtr", "high")
       setGuiValue("rtrRes", "full")
+      setGuiValue("rtDecals", true)
       setGuiValue("rtsm", "sun_and_dynamic")
       setGuiValue("rtsmQuality", "high")
       setGuiValue("rtrWater", true)
@@ -985,7 +1036,7 @@ mShared = {
     enableGuiOption("bvhDistance", rtIsOn)
     enableGuiOption("rtr", rtIsOn)
     enableGuiOption("ptgi", rtIsOn)
-    enableGuiOption("rtao", rtIsOn && getGuiValue("ptgi") == "off")
+    enableGuiOption("rtao", rtIsOn && hasRTAOGUI())
     enableGuiOption("rtsm", rtIsOn)
     enableGuiOption("rtsmQuality", rtIsOn)
 
@@ -993,7 +1044,9 @@ mShared = {
     enableGuiOption("rtrWaterRes", getGuiValue("rtrWater") && rtIsOn)
 
     enableGuiOption("rtrTranslucent", rtIsOn)
-    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && rtIsOn)
+    enableGuiOption("rayReconstruction", rtIsOn && isRRSupported())
+    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && rtIsOn && !isRRGUIEnabled())
+    enableGuiOption("rtDecals", hasRTDecalsGUI())
 
     prevRtMode = rt
   }
@@ -1150,7 +1203,7 @@ mShared = {
 
 mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
-    init = function(_blk, desc) {
+    init = function(blk, desc) {
       initIsDx12SupportedOnce()
       desc.values <- [ "auto", "dx11" ]
 
@@ -1160,10 +1213,20 @@ mSettings = {
       if (is_win64 && hasFeature("optionGFXAPIVulkan"))
         desc.values.append("vulkan")
 
+      let startupValue = getBlkValueByPath(blk, desc.blk, desc.def)
       desc.items <- desc.values.map(function(value) {
         let optionLocText = loc($"options/gfx_api_{value}")
-        if (is_win64 && value == "auto")
-          return { text = "".concat(optionLocText, loc("ui/parentheses/space", {text = loc($"options/gfx_api_{getAutoGfxApi()}") })) }
+        if (is_win64 && value == "auto") {
+          let currentAutoApi = startupValue == "auto"
+            ? loc($"options/gfx_api_{get_active_gfx_api()}")
+            : ""
+          return {
+            text = "".concat(
+              optionLocText, currentAutoApi == ""
+                ? ""
+                : loc("ui/parentheses/space", {text = $"{loc("options/currently")} {currentAutoApi}"}))
+            }
+        }
         if (is_win64 && value == "vulkan")
           return { text = "".concat(optionLocText, loc("ui/parentheses/space", { text = "beta" })) }
         return { text = optionLocText }
@@ -1217,6 +1280,43 @@ mSettings = {
     enabled = @() getGuiValue("mode", "fullscreen") != "windowed"
     isVisible = @() (get_available_monitors()?.list ?? []).len() > 2
   }
+  fpsLimiter = { widgetType = "options_bar" def = "unlimited" blk = "video/fpsLimit" restart = false
+    values = [ "30", "60", "120", "240", "unlimited" ]
+    getValueFromConfig = function(blk, desc) {
+      return getBlkValueByPath(blk, desc.blk, 0) 
+    }
+    setGuiValueToConfig = function(blk, desc, val) {
+      let fps = (val == "30") ? 30 : (val == "60") ? 60 : (val == "120") ? 120 : (val == "240") ? 240 : 0
+      setBlkValueByPath(blk, desc.blk, fps)
+    }
+    configValueToGuiValue = function(val) {
+      if (val < 30)
+        return "unlimited"
+      let strVal = val.tostring()
+      return strVal
+    }
+    onChanged = "fpsLimiterClick"
+  }
+  menuFpsLimiter = { widgetType = "options_bar" def = "unlimited" blk = "video/menuFpsLimit" restart = false
+    init = function(_blk, desc) {
+      desc.values <- getMenuFpsLimiterValues(getGuiValue("fpsLimiter"))
+    }
+    getValueFromConfig = function(blk, desc) {
+      return getBlkValueByPath(blk, desc.blk, 0) 
+    }
+    setGuiValueToConfig = function(blk, desc, val) {
+      let fps = (val == "30") ? 30 : (val == "60") ? 60 : (val == "120") ? 120 : (val == "240") ? 240 : 0
+      setBlkValueByPath(blk, desc.blk, fps)
+    }
+    configValueToGuiValue = function(val) {
+      if (val < 30)
+        return "off"
+      let strVal = val.tostring()
+      return strVal
+    }
+    isVisible = @() getGuiValue("fpsLimiter") != "30" 
+  }
+
   vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = false
     getValueFromConfig = function(blk, _desc) {
       let vsync = getBlkValueByPath(blk, "video/vsync", false)
@@ -1355,7 +1455,7 @@ mSettings = {
     enabled = @() getGuiValue("frameGeneration", "zero") == "zero"
     isVisible = @() is_intel_gpu()
   }
-  frameGeneration = { widgetType = "options_bar" def = "zero" blk = "video/antialiasing_fgc" restart = steam_is_running()
+  frameGeneration = { widgetType = "options_bar" def = "zero" blk = "video/antialiasing_fgc" restart = false
     init = function(blk, desc) {
       desc.values <- supportedGeneratedFramesValues(blk)
       desc.items <- desc.values.map(@(value) { text = localize("framegen", value), tooltip = loc($"guiHints/framegen_{value}") })
@@ -1586,12 +1686,7 @@ mSettings = {
   enableVr = {
     widgetType = "checkbox"
     blk = "gameplay/enableVR"
-    def = is_stereo_configured()
-    getValueFromConfig = function(_blk, _desc) { return is_stereo_configured() }
-    setGuiValueToConfig = function(blk, desc, val) {
-      configure_stereo(val)
-      return setBlkValueByPath(blk, desc.blk, val)
-    }
+    def = false
     enabled = @() is_windows && (platformId == "win64" || is_dev_version()) && !getGuiValue("compatibilityMode")
     onChanged = "vrModeClick"
   }
@@ -1632,7 +1727,7 @@ mSettings = {
   }
   ptgi = { widgetType = "options_bar" def = "off" blk = "graphics/PTGIQuality" restart = false
     values = ["off", "medium"] enabled = hasRTGUI
-    onChanged = "rtOptionChanged"
+    onChanged = "ptgiClick"
     infoImgPattern = "#ui/images/settings/ptGIQuality/%s"
   }
   rtao = { widgetType = "options_bar" def = "off" blk = "graphics/RTAOQuality" restart = false
@@ -1660,9 +1755,14 @@ mSettings = {
   }
   rtrRes = { widgetType = "options_bar" def = "half" blk = "graphics/RTRRes" restart = false
     values = ["half", "full"]
-    enabled = hasRTR
+    enabled = hasRTRResGUI
     onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/rtResolution/%s"
+  }
+  rtDecals = { widgetType = "checkbox" def = false blk = "graphics/RTDecals" restart = false
+    enabled = hasRTDecalsGUI
+    onChanged = "rtOptionChanged"
+    infoImgPattern = "#ui/images/settings/rtDecals/%s"
   }
   rtrWater = { widgetType = "checkbox" def = false blk = "graphics/RTRWater" restart = false
     enabled = hasRTGUI
@@ -1679,6 +1779,11 @@ mSettings = {
     values = ["off", "medium", "high"]
     enabled = hasRTGUI
     onChanged = "rtOptionChanged"
+    infoImgPattern = "#ui/images/settings/rtTransQuality/%s"
+  }
+  rayReconstruction = { widgetType = "checkbox" def = false blk = "video/rayReconstruction" restart = false
+    enabled = hasRayReconstructionGUI
+    onChanged = "rayReconstructionChanged"
     infoImgPattern = "#ui/images/settings/rtTransQuality/%s"
   }
 }

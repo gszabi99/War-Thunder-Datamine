@@ -14,25 +14,8 @@
   "havePointOfInterestDesignator": true,
   "laserDesignator": true,
   "ilsElbit967": true,
-  "mfdCamTads": true,
+  "mfdCamAtlis2": true,
   "hmdF16c": true,
-  "rwrIndicator": "AN/ALR-69",
-  "tpsCameraOffset": [
-    -2.0,
-    0.0,
-    0.0
-  ],
-  "tpsCameraTargetOffsetAtZoom": [
-    -1.0,
-    2.0,
-    0.0
-  ],
-  "jetEnginePowerFullScale": true,
-  "standardExhaustFxType": "jet_exhaust",
-  "afterburnerExhaustFxType": "jet_afterburner_exhaust",
-  "startExhaustFxType": "jet_start_exhaust",
-  "disableExhaustFxIfContrailIsActive": true,
-  "viewDistKInSight": 6.0,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -59,6 +42,23 @@
     -50.0,
     50.0
   ],
+  "rwrIndicator": "AN/ALR-69",
+  "tpsCameraOffset": [
+    -2.0,
+    0.0,
+    0.0
+  ],
+  "tpsCameraTargetOffsetAtZoom": [
+    -1.0,
+    2.0,
+    0.0
+  ],
+  "jetEnginePowerFullScale": true,
+  "standardExhaustFxType": "jet_exhaust",
+  "afterburnerExhaustFxType": "jet_afterburner_exhaust",
+  "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
+  "viewDistKInSight": 6.0,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -1015,8 +1015,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1076,8 +1076,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1136,8 +1136,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1196,8 +1196,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1256,8 +1256,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1316,8 +1316,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1376,8 +1376,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1436,8 +1436,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1496,8 +1496,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1557,8 +1557,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2645,6 +2645,7 @@
             0.5,
             0.4
           ],
+          "cameraFromTargetingPod": true,
           "page": [
             {
               "type": "radar",
@@ -2690,6 +2691,10 @@
             },
             {
               "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
               "turretIdx": 0
             },
             {

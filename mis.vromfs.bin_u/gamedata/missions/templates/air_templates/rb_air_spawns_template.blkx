@@ -7222,6 +7222,9 @@
             },
             {
               "value": "spawn radars"
+            },
+            {
+              "value": "set aaa properties for top rank"
             }
           ],
           "unitSpawnOnObjectGroup": {
@@ -7245,15 +7248,22 @@
             },
             {
               "target": "t1_spawn_snowed_radar_on_airfield"
+            },
+            {
+              "target": "t1_set_aaa_properties_for_top_rank"
             }
           ]
         },
         "else_actions": {
           "comment": {
-            "value": "spawn radars"
+            "value": "spawn ec-like aaa"
+          },
+          "varSetString": {
+            "value": "ft_t1_airfield_01_01_aaa_squad",
+            "var": "t1_spawn_aaa_squad_name"
           },
           "triggerEnable": {
-            "target": "t1_spawn_radar_on_airfield"
+            "target": "t1_spawn_ec_aaa_on_airfield"
           }
         }
       },
@@ -7292,6 +7302,9 @@
             },
             {
               "value": "spawn radars"
+            },
+            {
+              "value": "set aaa properties for top rank"
             }
           ],
           "unitSpawnOnObjectGroup": {
@@ -7315,6 +7328,165 @@
             },
             {
               "target": "t2_spawn_snowed_radar_on_airfield"
+            },
+            {
+              "target": "t2_set_aaa_properties_for_top_rank"
+            }
+          ]
+        },
+        "else_actions": {
+          "comment": {
+            "value": "spawn ec-like aaa"
+          },
+          "varSetString": {
+            "value": "ft_t2_airfield_01_01_aaa_squad",
+            "var": "t2_spawn_aaa_squad_name"
+          },
+          "triggerEnable": {
+            "target": "t2_spawn_ec_aaa_on_airfield"
+          }
+        }
+      },
+      "t1_spawn_ec_aaa_on_airfield": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t1_spawn_airfield_name",
+              "type": "objectGroup"
+            },
+            {
+              "target": "@t1_spawn_aaa_squad_name",
+              "type": "squad"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "object group and  aaa exist"
+            },
+            {
+              "value": "reload_field_name"
+            },
+            {
+              "value": "spawn radars"
+            },
+            {
+              "value": "set aaa properties for top rank"
+            }
+          ],
+          "unitSpawnOnObjectGroup": {
+            "type": "air_def",
+            "object": "@t1_spawn_aaa_squad_name",
+            "target": "@t1_spawn_airfield_name"
+          },
+          "varSetString": {
+            "value": "",
+            "var": "t1_reload_field_name",
+            "input_var": "t1_spawn_airfield_name"
+          },
+          "varAddString": {
+            "value": "_reload",
+            "digits": 0,
+            "var": "t1_reload_field_name"
+          },
+          "triggerEnable": [
+            {
+              "target": "t1_spawn_radar_on_airfield"
+            },
+            {
+              "target": "t1_spawn_snowed_radar_on_airfield"
+            },
+            {
+              "target": "t1_set_aaa_properties_for_top_rank"
+            }
+          ]
+        },
+        "else_actions": {
+          "comment": {
+            "value": "spawn radars"
+          },
+          "triggerEnable": {
+            "target": "t1_spawn_radar_on_airfield"
+          }
+        }
+      },
+      "t2_spawn_ec_aaa_on_airfield": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t2_spawn_airfield_name",
+              "type": "objectGroup"
+            },
+            {
+              "target": "@t2_spawn_aaa_squad_name",
+              "type": "squad"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "object group and  aaa exist"
+            },
+            {
+              "value": "reload_field_name"
+            },
+            {
+              "value": "spawn radars"
+            },
+            {
+              "value": "set aaa properties for top rank"
+            }
+          ],
+          "unitSpawnOnObjectGroup": {
+            "type": "air_def",
+            "object": "@t2_spawn_aaa_squad_name",
+            "target": "@t2_spawn_airfield_name"
+          },
+          "varSetString": {
+            "value": "",
+            "var": "t2_reload_field_name",
+            "input_var": "t2_spawn_airfield_name"
+          },
+          "varAddString": {
+            "value": "_reload",
+            "digits": 0,
+            "var": "t2_reload_field_name"
+          },
+          "triggerEnable": [
+            {
+              "target": "t2_spawn_radar_on_airfield"
+            },
+            {
+              "target": "t2_spawn_snowed_radar_on_airfield"
+            },
+            {
+              "target": "t2_set_aaa_properties_for_top_rank"
             }
           ]
         },
@@ -7772,6 +7944,128 @@
               "unitToSpawnCount": 1
             }
           ]
+        },
+        "else_actions": {}
+      },
+      "t1_set_aaa_properties_for_top_rank": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@t1_airfield_top_name",
+            "type": "objectGroup"
+          }
+        },
+        "actions": {
+          "unitSetProperties": {
+            "object": "@t1_spawn_aaa_squad_name",
+            "useSearchRadar": true
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "set aa properties for high rank"
+          },
+          "triggerEnable": {
+            "target": "t1_set_aaa_properties_for_high_rank"
+          }
+        }
+      },
+      "t2_set_aaa_properties_for_top_rank": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@t2_airfield_top_name",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "unitSetProperties": {
+            "object": "@t2_spawn_aaa_squad_name",
+            "useSearchRadar": true
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "set aa properties for high rank"
+          },
+          "triggerEnable": {
+            "target": "t1_set_aaa_properties_for_high_rank"
+          }
+        }
+      },
+      "t1_set_aaa_properties_for_high_rank": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@t1_airfield_high_name",
+            "type": "objectGroup"
+          }
+        },
+        "actions": {
+          "unitSetProperties": {
+            "object": "@t1_spawn_aaa_squad_name",
+            "useSearchRadar": true
+          }
+        },
+        "else_actions": {}
+      },
+      "t2_set_aaa_properties_for_high_rank": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@t2_airfield_high_name",
+            "type": "objectGroup"
+          }
+        },
+        "actions": {
+          "unitSetProperties": {
+            "object": "@t2_spawn_aaa_squad_name",
+            "useSearchRadar": true
+          }
         },
         "else_actions": {}
       }

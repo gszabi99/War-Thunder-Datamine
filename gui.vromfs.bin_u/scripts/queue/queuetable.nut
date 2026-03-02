@@ -22,7 +22,7 @@ let { getClusterShortName, isClusterUnstable
 let { isEventForClan, getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { isQueueActive, isQueuesEqual, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
@@ -392,7 +392,8 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
                     tdalign = "center"
                  })
 
-    for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
+    let maxRank = maxCountryRank.get()
+    for (local i = 1; i <= maxRank; i++) {
       params.append({
         text = getTblValue(i.tostring(), queueStatData, 0).tostring()
         tdalign = "center"
@@ -404,7 +405,8 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
   
   function buildQueueStatsHeader() {
     let headerData = []
-    for (local i = 0; i <= MAX_COUNTRY_RANK; i++) {
+    let maxRank = maxCountryRank.get()
+    for (local i = 1; i <= maxRank; i++) {
       headerData.append({
         text = get_roman_numeral(i)
         tdalign = "center"

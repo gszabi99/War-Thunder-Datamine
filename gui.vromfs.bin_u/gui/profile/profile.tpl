@@ -438,9 +438,14 @@ root {
         Button_text {
           id:t = 'btn_applyEditPage'
           text:t = '#msgbox/btn_apply'
+          hideText:t='yes'
           btnName:t='LT'
           on_click:t = 'onProfileEditApplyBtn'
           ButtonImg {}
+          textarea {
+            id:t='btn_applyEditPage_text'
+            class:t='buttonText'
+          }
         }
 
         Button_text {

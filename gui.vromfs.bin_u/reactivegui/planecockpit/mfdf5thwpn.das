@@ -133,7 +133,7 @@ class Component : Canvas
     defaultFontSize = props.fontSize
     resetFontSize()
 
-    isArmed = !(fmw.isOnGround || fm.currentAlt < fmw.minAltitudeForDropShells)
+    isArmed = !(fmw.isOnGround || fm.input.currentAlt < fmw.minAltitudeForDropShells)
     var secondaryWeapon : Weapon?
     get_selected_secondary_weapon(fmw) <| $(var weapon : Weapon?#)
       secondaryWeapon := weapon

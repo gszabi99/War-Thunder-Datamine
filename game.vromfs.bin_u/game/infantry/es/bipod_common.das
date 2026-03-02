@@ -593,6 +593,7 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
                         human_net_phys__isSwimming : bool;
                         human_net_phys__isOnGround : bool;
                         human_net_phys__isUnderwater : bool;
+                        human_net_phys__isClimbing : bool;
                         isDowned, isAlive : bool;
                         human_attached_gun__attachedGunEid : EntityId;
                         var bipod__placeable : bool&;
@@ -614,6 +615,7 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
                                  !human_attached_gun__attachedGunEid &&
                                  !human_net_phys__isSwimming &&
                                  !human_net_phys__isUnderwater &&
+                                 !human_net_phys__isClimbing &&
                                   human_net_phys__isOnGround &&
                                   !(isCrawl && human_net_phys.phys.previousState.height > -1.0))
     if !isHumanPhysStateValid

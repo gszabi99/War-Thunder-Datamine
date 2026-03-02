@@ -8,6 +8,10 @@ let { wwGetPlayerSide } = require("worldwar")
 let { getWWLogsData, getWWLogArmyId, isWWPlayerWinner } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let { g_ww_log_type } = require("%scripts/worldWar/inOperation/model/wwOperationLogTypes.nut")
 let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
+let WwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
+let { isAutoBattle, isStillInOperation
+} = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
+
 
 class WwOperationLogView {
   logBlk = null
@@ -70,11 +74,15 @@ class WwOperationLogView {
 
     if ("battle" in this.logBlk) {
       let wwBattle = logsBattles[this.logBlk.battle.id].battle
+      let battleView = WwBattleView(wwBattle, {
+        isStillInOperation = isStillInOperation(wwBattle)
+        isAutoBattle = isAutoBattle(wwBattle)
+      })
       this.detailedInfoText = wwBattle.getLocName()
       this.battleData = {
         battleView = {
           addClickCb = true
-          battle = wwBattle.getView()
+          battle = battleView
         }
         armySide1View = this.getArmyViewBasicData()
         armySide2View = this.getArmyViewBasicData()

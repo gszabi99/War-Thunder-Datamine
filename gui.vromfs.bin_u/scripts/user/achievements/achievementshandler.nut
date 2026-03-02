@@ -15,11 +15,12 @@ let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/c
 let { isUnlockVisible, getUnlockCost, canOpenUnlockManually, findUnusableUnitForManualUnlock, canClaimUnlockRewardForUnit, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getUnlockTitle, getUnlockNameText, buildUnlockDesc, fillUnlockManualOpenButton, updateUnseenIcon, updateLockStatus,
+let { buildConditionsConfig, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockTitle, buildUnlockDesc, fillUnlockManualOpenButton, updateUnseenIcon, updateLockStatus,
   fillUnlockImage, fillUnlockProgressBar, fillUnlockDescription, doPreviewUnlockPrize, fillReward,
-  fillUnlockTitle, fillUnlockPurchaseButton, buildConditionsConfig, fillUnlockConditions, fillUnlockStages } = require("%scripts/unlocks/unlocksViewModule.nut")
+  fillUnlockTitle, fillUnlockPurchaseButton, fillUnlockConditions, fillUnlockStages } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById, getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
+let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")

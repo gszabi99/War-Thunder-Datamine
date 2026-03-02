@@ -19,6 +19,9 @@ def make_gun_shot_sound_path_str(shot_path : Object; path_id : int; is_watched, 
 def make_gun_shot_sound_grain_path_str(shot_path, tags : Object; is_watched : bool) : string
   return make_final_path_str(shot_path, tags, is_watched, "shot_grains")
 
+def make_gun_shot_sound_grain_path_str(shot_path : Object; path_id : int; is_watched) : string
+  return make_final_path_str(shot_path, path_id, is_watched, "shot_grains")
+
 def is_watched_gun_sound(gun__owner : EntityId) : bool
   var isWatched = false
   query(gun__owner) <| $ [es] (is_watched_sound : bool; human_anim__vehicleSelected = INVALID_ENTITY_ID)

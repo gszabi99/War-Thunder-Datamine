@@ -6,7 +6,7 @@ let { isWeaponModsPurchasedOrAvailableForFree } = require("%scripts/weaponry/mod
 let { getWeaponryByPresetInfo, findAvailableWeapon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { openFixWeaponryPresets } = require("%scripts/weaponry/fixWeaponryPreset.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
 local invalidPresetsByCountries = {}
 local curCountryInvalidPresets
@@ -70,7 +70,7 @@ function repairInvalidPresets() {
 function searchAndRepairInvalidPresets(uNames = null) {
   let countryId = getProfileCountry()
   let isForced = uNames != null
-  let unitsList = isForced ? uNames : slotbarPresets.getCurrentPreset(countryId)?.units
+  let unitsList = isForced ? uNames : getCurrentSlotbarPreset(countryId)?.units
   
   if ((!isForced && invalidPresetsByCountries?[countryId] != null) || unitsList == null)
     return

@@ -11,7 +11,7 @@
 
 @const crewSkillBlockHeight: 14@sf/@pf;
 @const crewSkillGlowBlockHeight: 30@sf/@pf;
-@const crewSkillBockWidth: 24@sf/@pf;
+@const crewSkillBockWidth: (36@sf/@pf) \ 1;
 
 skillProgress {
   behaviour:progress;
@@ -22,16 +22,18 @@ skillProgress {
   foreground-repeat:repeat-x;
   min:0;
 }
+
 skillProgress.modernWnd {
   foreground-image:#ui/gameuiskin#skill_points_can_add.svg;
 }
+
 skillProgress[type=old] {
   foreground-image:#ui/gameuiskin#skill_star_1.svg;
-  foreground-svg-size:w, h;
 }
 skillProgress.modernWnd[type=old] {
   foreground-image:#ui/gameuiskin#skill_points_old.svg;
 }
+
 skillProgress.modernWnd[type=new] {
   foreground-image:#ui/gameuiskin#skill_points_old.svg;
 }
@@ -47,7 +49,9 @@ skillProgress[type=available] {
 skillProgress.modernWnd[type=available] {
   background-image:#ui/gameuiskin#skill_points_can_add.svg;
   foreground-image:#ui/gameuiskin#skill_points_can_add.svg;
+  background-svg-size:1@crewSkillBockWidth, 1@crewSkillBlockHeight;
 }
+
 skillProgress[type=glow] {
   foreground-image:#ui/gameuiskin#skill_star_new_glow;
   foreground-color:#00FFFFFF;
@@ -55,11 +59,23 @@ skillProgress[type=glow] {
 skillProgress.modernWnd[type=glow] {
   foreground-image:#ui/gameuiskin#skill_points_glow.svg;
 }
+
 skillProgress[type=shade] {
   foreground-image:#ui/gameuiskin#skill_star_shadow;
 }
 skillProgress.modernWnd[type=shade] {
   foreground-image:#ui/gameuiskin#skill_points_glow_shadow.svg;
+}
+
+skillProgress.modernWnd[type=old],
+skillProgress.modernWnd[type=new],
+skillProgress.modernWnd[type=available] {
+  foreground-svg-size:1@crewSkillBockWidth, 1@crewSkillBlockHeight;
+}
+
+skillProgress.modernWnd[type=glow],
+skillProgress.modernWnd[type=shade] {
+  foreground-svg-size:1@crewSkillBockWidth, 1@crewSkillGlowBlockHeight;
 }
 
 skillProgressBg {
@@ -70,6 +86,11 @@ skillProgressBg {
   background-color:#454c53;
   background-position:0;
   background-repeat:expand;
+}
+
+skillProgressBg.modernWnd {
+  pos:50%pw-50%w, 50%ph-50%h;
+  background-svg-size:1@crewSkillBockWidth, 1@crewSkillBlockHeight;
 }
 
 optionProgress {

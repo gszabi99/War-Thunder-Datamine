@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { format } = require("string")
-let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { get_wpcost_blk } = require("blkGetters")

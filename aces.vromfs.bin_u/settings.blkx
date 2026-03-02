@@ -128,6 +128,7 @@
       "proximityDamage": true,
       "bvhMode": "",
       "enableBVH": false,
+      "prioritizeBVHcompactions": false,
       "RTAOQuality": "",
       "PTGIQuality": "",
       "RTSMQuality": "",
@@ -140,7 +141,8 @@
       "bvhRiGenRange": 6000,
       "motionBlurStrength": 0,
       "motionBlurCancelCamera": false,
-      "fxDistortionStrength": 1.0
+      "fxDistortionStrength": 1.0,
+      "hitCameraFilteringQuality": 1
     },
     "sound": {
       "speakerMode": "",
@@ -590,6 +592,7 @@
       "riExLod0InCascade0": true,
       "maxUpdateTexelPart": 0.1,
       "minSizeForRiextraCascade1": -1.0,
+      "useAsyncRiExtraJob": true,
       "aircraft": {
         "cascadeCount": 0
       },
@@ -874,11 +877,13 @@
         "splitsH": 2,
         "aircraft": {
           "shadowDist": 340.0,
-          "powWeight": 0.92
+          "powWeight": 0.92,
+          "cullSmallRi": 0.075
         },
         "cockpit": {
           "shadowDist": 300.0,
-          "powWeight": 0.992
+          "powWeight": 0.992,
+          "cullSmallRi": 0.075
         },
         "underwater": {
           "shadowDist": 80.0,
@@ -960,11 +965,13 @@
         "renderHeightmap": true,
         "aircraft": {
           "shadowDist": 340.0,
-          "powWeight": 0.92
+          "powWeight": 0.92,
+          "cullSmallRi": 0.075
         },
         "cockpit": {
           "shadowDist": 300.0,
-          "powWeight": 0.992
+          "powWeight": 0.992,
+          "cullSmallRi": 0.075
         },
         "underwater": {
           "shadowDist": 90.0,
@@ -1058,11 +1065,13 @@
         "renderHeightmap": true,
         "aircraft": {
           "shadowDist": 810.0,
-          "powWeight": 0.91
+          "powWeight": 0.91,
+          "cullSmallRi": 0.075
         },
         "cockpit": {
           "shadowDist": 600.0,
-          "powWeight": 0.997
+          "powWeight": 0.997,
+          "cullSmallRi": 0.075
         },
         "underwater": {
           "shadowDist": 200.0,
@@ -1089,6 +1098,14 @@
           "powWeight": 0.9
         },
         "infantry": {}
+      },
+      "contactShadows": {
+        "aircraft": {
+          "contactShadowsQuality": 2
+        },
+        "cockpit": {
+          "contactShadowsQuality": 2
+        }
       },
       "dynamicLightsShadows": {
         "shadowQuality": 2,
@@ -1158,11 +1175,13 @@
         "renderHeightmap": true,
         "aircraft": {
           "shadowDist": 1800.0,
-          "powWeight": 0.99
+          "powWeight": 0.99,
+          "cullSmallRi": 0.075
         },
         "cockpit": {
           "shadowDist": 1500.0,
-          "powWeight": 0.9991
+          "powWeight": 0.9991,
+          "cullSmallRi": 0.075
         },
         "underwater": {
           "shadowDist": 380.0,
@@ -1191,6 +1210,14 @@
         "infantry": {
           "shadowDist": 150.0,
           "powWeight": 0.9
+        }
+      },
+      "contactShadows": {
+        "aircraft": {
+          "contactShadowsQuality": 2
+        },
+        "cockpit": {
+          "contactShadowsQuality": 2
         }
       },
       "dynamicLightsShadows": {
@@ -1249,6 +1276,9 @@
     "infantry": {
       "sdf_voxel0Size": 0.15
     },
+    "underwater": {
+      "suspend_gi": true
+    },
     "low": {
       "dagiQuality": -1,
       "infantry": {
@@ -1262,8 +1292,7 @@
         "skyVisibility_clips": 3
       },
       "hangar_ship": {
-        "dagiQuality": 0,
-        "pause_update": true
+        "suspend_gi": true
       }
     },
     "medium": {
@@ -1293,8 +1322,7 @@
         "dagiQuality": 0
       },
       "hangar_ship": {
-        "dagiQuality": 0,
-        "pause_update": true
+        "suspend_gi": true
       }
     },
     "high": {
@@ -1320,8 +1348,7 @@
         "dagiQuality": 1
       },
       "hangar_ship": {
-        "dagiQuality": 1,
-        "pause_update": true
+        "suspend_gi": true
       }
     },
     "ultrahigh": {
@@ -1819,6 +1846,7 @@
     "allowDx10Fallback": true,
     "threadedWindow": true,
     "enableHdr": false,
+    "menuFpsLimit": 0,
     "hdrBlackList": {
       "blocked": "AMD Radeon Pro 560"
     }
@@ -1832,8 +1860,10 @@
     "waterCutMask": false,
     "useFoamFx": false,
     "clipmapScaleFor4K": 6,
-    "waterChopInit": false,
-    "waterChopEnable": false,
+    "clipmapScaleFor4KMax": 9,
+    "clipmapScaleFor4KMovie": 12,
+    "waterChopInit": true,
+    "waterChopEnable": true,
     "backgroundAptiveSharpen": false,
     "backgroundAptiveSharpenAdaptiveness": 16.0,
     "backgroundAptiveSharpenQuality": 12.0,
@@ -1975,7 +2005,6 @@
     "noGuiFade": false,
     "disableHangar": false,
     "disableChat": false,
-    "workThreadsStackSize": 270336,
     "enableMouseHints": true,
     "replayDofFar": [
       100.0,
@@ -2232,6 +2261,14 @@
     "ps5proRTLimits": {
       "ibLimitsKb": 72000,
       "vbLimitsKb": 196608
+    },
+    "scarlettSRTLimits": {
+      "ibLimitsKb": 72000,
+      "vbLimitsKb": 196608
+    },
+    "scarlettXRTLimits": {
+      "ibLimitsKb": 72000,
+      "vbLimitsKb": 196608
     }
   },
   "unitedVdata.rendInst": {
@@ -2321,7 +2358,6 @@
   },
   "dx12": {
     "rootSignaturesUsesCBVDescriptorRanges": true,
-    "pso_cache_sending_enabled": false,
     "pso_cache_enabled": true,
     "pso_app_key": "war_thunder",
     "debug": {

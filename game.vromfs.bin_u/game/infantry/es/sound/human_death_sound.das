@@ -13,6 +13,7 @@ def human_death_sound(evt : EventEntityDied;
                       transform : float3x4;
                       sound_tags : Object;
                       sound_preset__isLoaded : bool;
+                      human_sound__prefix : string = "";
                       is_watched_sound : bool = false)
 
   release(human_death_sound__event)
@@ -23,7 +24,8 @@ def human_death_sound(evt : EventEntityDied;
     human_death_sound__event.abandonOnReset = true
 
     if evt.offender == evt.victim
-      oneshot(human_suicide_sound__path, transform[3])
+      let playerStr = is_watched_sound ? "player/" : "enemy/"
+      oneshot("{human_sound__prefix}{playerStr}{human_suicide_sound__path}", transform[3])
 
 [es(tag=sound, on_event=ParallelUpdateFrameDelayed, REQUIRE=deadEntity, REQUIRE_NOT=shootingRangeDummy)]
 def human_death_sound_update(evt : Event;

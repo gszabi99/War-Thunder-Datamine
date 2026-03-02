@@ -446,8 +446,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -499,8 +498,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1269,8 +1267,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1329,8 +1327,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1389,8 +1387,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1449,8 +1447,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1509,8 +1507,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1569,8 +1567,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1629,8 +1627,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2517,104 +2515,374 @@
     "gun": "gun_default"
   },
   "commonWeapons": {
-    "hideNodes": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "canberra_500lb_mc",
+        "blk": "gameData/FlightModels/weaponPresets/canberra_500lb_mc.blk"
+      },
+      {
+        "name": "canberra_1000lb_mc",
+        "blk": "gameData/FlightModels/weaponPresets/canberra_1000lb_mc.blk"
+      },
+      {
+        "name": "canberra_500lb_gp",
+        "blk": "gameData/FlightModels/weaponPresets/canberra_500lb_gp.blk"
+      },
+      {
+        "name": "canberra_1000lb_gp",
+        "blk": "gameData/FlightModels/weaponPresets/canberra_1000lb_gp.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 2450.0,
+    "maxloadMassLeftConsoles": 600.0,
+    "maxloadMassRightConsoles": 600.0,
+    "maxDisbalance": 300.0,
+    "HideNodes": {
       "node": [
+        "pylon_bomb1",
+        "pylon_bomb2",
         "fuel_l",
         "fuel_r"
       ]
     },
-    "hideDmParts": {
+    "HideDmParts": {
       "node": [
         "tank4_dm",
         "tank5_dm"
       ]
     },
-    "Weapon": [
+    "WeaponSlot": [
       {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 500,
-        "spread": 1.0,
-        "counterIndex": 2,
-        "gearLimit": [
-          0.0,
-          0.1
-        ],
-        "gearName": "gear_c_dm"
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 500,
-        "spread": 1.0,
-        "counterIndex": 2,
-        "gearLimit": [
-          0.0,
-          0.1
-        ],
-        "gearName": "gear_c_dm"
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon3_dm",
-        "bullets": 500,
-        "spread": 1.0,
-        "counterIndex": 2,
-        "gearLimit": [
-          0.0,
-          0.1
-        ],
-        "gearName": "gear_c_dm"
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon4_dm",
-        "bullets": 500,
-        "spread": 1.0,
-        "counterIndex": 2,
-        "gearLimit": [
-          0.0,
-          0.1
-        ],
-        "gearName": "gear_c_dm"
-      }
-    ]
-  },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "canberra_3x1000lbs_2x500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/canberra_3x1000lbs_2x500lbs.blk",
-        "reqModification": "EEMBC_mark_1"
-      },
-      {
-        "name": "canberra_3x500lbs_2x1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/canberra_3x500lbs_2x1000lbs.blk",
-        "reqModification": "EEMBC_mark_1"
-      },
-      {
-        "name": "canberra_5x1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/canberra_5x1000lbs.blk",
-        "reqModification": "EEMBC_mark_1"
-      },
-      {
-        "name": "canberra_5x500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/canberra_5x500lbs.blk",
-        "tags": {
-          "free": true
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 500,
+              "spread": 1.0,
+              "counterIndex": 2,
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "gearName": "gear_c_dm"
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 500,
+              "spread": 1.0,
+              "counterIndex": 2,
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "gearName": "gear_c_dm"
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon3_dm",
+              "bullets": 500,
+              "spread": 1.0,
+              "counterIndex": 2,
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "gearName": "gear_c_dm"
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "bullets": 500,
+              "spread": 1.0,
+              "counterIndex": 2,
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "gearName": "gear_c_dm"
+            }
+          ]
         }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_mc_slot1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "emitter": "bomb9",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lb_mc_slot1",
+            "reqModification": "EEMBC_mark_1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_gp_slot1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "emitter": "bomb9",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lb_gp_slot1",
+            "reqModification": "EEMBC_mark_1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_mc_slot2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "bomb6",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "bomb7",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "bomb8",
+                "bullets": 1,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group",
+            "name": "1000lb_mc_slot2",
+            "reqModification": "EEMBC_mark_1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_gp_slot2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "emitter": "bomb6",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "emitter": "bomb7",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                "emitter": "bomb8",
+                "bullets": 1,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group",
+            "name": "1000lb_gp_slot2",
+            "reqModification": "EEMBC_mark_1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "separate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_mc_slot3",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "emitter": "bomb10",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lb_mc_slot3",
+            "reqModification": "EEMBC_mark_1",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_gp_slot3",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "emitter": "bomb10",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lb_gp_slot3",
+            "reqModification": "EEMBC_mark_1",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
       }
     ]
   },

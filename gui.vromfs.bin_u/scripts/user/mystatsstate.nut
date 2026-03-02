@@ -53,7 +53,7 @@ function getUnitTypeByNewbieEventId(eventId) {
   return unitTypeByNewbieEventId?[eventId] ?? ES_UNIT_TYPE_INVALID
 }
 
-function onEventInitConfigs(_) {
+function initNewbieInfo() {
   let settingsBlk = get_game_settings_blk()
   let blk = settingsBlk?.newPlayersBattles
   if (!blk)
@@ -89,10 +89,10 @@ function onEventInitConfigs(_) {
       newPlayersBattles[unitType.esUnitType] <- data
   }
 }
+initNewbieInfo()
 
 addListenersWithoutEnv({
-  InitConfigs = onEventInitConfigs
-  ScriptsReloaded = onEventInitConfigs
+  InitConfigs = @(_) initNewbieInfo()
 }, g_listener_priority.LOGIN_PROCESS)
 
 return {

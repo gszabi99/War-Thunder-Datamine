@@ -1079,8 +1079,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1140,8 +1140,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1195,8 +1195,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1251,8 +1251,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1307,8 +1307,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1363,8 +1363,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2843,15 +2843,17 @@
             "name": "A/D",
             "priority": 1,
             "type": [
-              "1RL34",
               "AN/VPS-2",
+              "1RL34",
               "M-247 TA",
-              "ESD RA-20 S",
               "TriAD TA",
+              "Marconi S-400",
               "ADATS TA",
               "ASRAD TA",
               "Giraffe 1X",
-              "Arabel"
+              "Arabel",
+              "Type 81 TA",
+              "AN/MPQ-64"
             ]
           },
           {
@@ -3482,7 +3484,8 @@
         "flare_pod",
         "flare_dop_on",
         "flare_dop_off",
-        "gps"
+        "gps",
+        "apk_9_pod"
       ]
     },
     "HideDmParts": {
@@ -5197,6 +5200,10 @@
               "separate": true,
               "order": 7,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
             }
           },
           {
@@ -5350,7 +5357,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_6_23M.blk",
+              "blk": "gameData/Weapons/cannonGSh_6_23M_gun_pod.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
@@ -5698,6 +5705,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -5738,6 +5749,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -5780,6 +5795,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -5824,6 +5843,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -5868,6 +5891,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -5916,6 +5943,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -5956,6 +5987,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -6000,6 +6035,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -6044,6 +6083,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -6069,7 +6112,7 @@
             },
             "Weapon": {
               "trigger": "gunner1",
-              "blk": "gameData/Weapons/cannonGSh_6_23M.blk",
+              "blk": "gameData/Weapons/cannonGSh_6_23M_gun_pod_turret.blk",
               "breechInCockpit": true,
               "emitter": "flare3",
               "flash": "flare3",
@@ -6138,6 +6181,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           },
@@ -6190,6 +6237,10 @@
               {
                 "slot": 5,
                 "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
               }
             ]
           }
@@ -6805,6 +6856,128 @@
               "separate": true,
               "machLimit": 1.01,
               "order": 11
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "fuse_left_containers_ofab_100_120"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_containers_ofab_100_120"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_single_fab_250"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_single_fab_250"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_containers_fab_250"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_containers_fab_250"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_single_fab_250m_62"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_single_fab_250m_62"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_containers_fab250m_62_x2"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_containers_fab250m_62_x3"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_single_fab_500"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_single_fab_500"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_in_single_fab_250sh"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_in_single_fab_250sh"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_containers_fab250sh_x2"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_containers_fab250sh_x3"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_single_fab_500sh"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_single_fab_500sh"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_single_zb500"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_single_zb500"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_kab_500kr"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_kab_500kr"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_kab_500l"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_kab_500l"
+              },
+              {
+                "slot": 3,
+                "preset": "fuse_left_kab_500s"
+              },
+              {
+                "slot": 6,
+                "preset": "fuse_right_kab_500s"
+              }
+            ]
+          },
+          {
+            "iconType": "rls",
+            "name": "apk_9",
+            "ShowNodes": {
+              "node": [
+                "pylon_8",
+                "apk_9_pod"
+              ]
+            },
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/su_apk_9.blk",
+              "emitter": "apk_9_pod",
+              "bullets": 1
             },
             "BannedWeaponPreset": [
               {
@@ -8095,6 +8268,10 @@
               "separate": true,
               "order": 8,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
             }
           },
           {
@@ -8248,7 +8425,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_6_23M.blk",
+              "blk": "gameData/Weapons/cannonGSh_6_23M_gun_pod.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "cannon4_dm",
@@ -8878,34 +9055,6 @@
     "prop1": -1,
     "engine0": 0,
     "engine1": 1
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump",
-    "burningFx": "fuel_dump_fire",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
-      ]
-    }
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -9551,64 +9700,6 @@
     ],
     "fxType": "catapult_expl_ejection"
   },
-  "cutting": {
-    "emtr_break_wing1_l_from": [
-      -0.999142,
-      -0.191786,
-      2.62057
-    ],
-    "emtr_break_wing1_l_to": [
-      -0.999142,
-      -0.191786,
-      4.57969
-    ],
-    "emtr_break_wing2_l_from": [
-      -0.999142,
-      -0.191786,
-      5.36838
-    ],
-    "emtr_break_wing2_l_to": [
-      -0.999142,
-      -0.191786,
-      5.88303
-    ],
-    "emtr_break_wing1_r_from": [
-      -0.999142,
-      -0.191786,
-      -2.62057
-    ],
-    "emtr_break_wing1_r_to": [
-      -0.999142,
-      -0.191786,
-      -4.57969
-    ],
-    "emtr_break_wing2_r_from": [
-      -0.999142,
-      -0.191786,
-      -5.36838
-    ],
-    "emtr_break_wing2_r_to": [
-      -0.999142,
-      -0.191786,
-      -5.88303
-    ],
-    "emtr_break_wing_tail": [
-      -5.21727,
-      0.0,
-      0.0
-    ],
-    "finCut": true,
-    "emtr_break_tail_from": [
-      -4.5418,
-      -0.0259136,
-      -3.66957e-8
-    ],
-    "emtr_break_tail_to": [
-      -7.19749,
-      -0.0259136,
-      -3.66957e-8
-    ]
-  },
   "AfterBurner0": {
     "volumetricAfterBurner": {
       "name": "_jet_su_24m_al_21",
@@ -9743,5 +9834,91 @@
         }
       }
     }
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump",
+    "burningFx": "fuel_dump_fire",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": [
+        "emtr_fuel_dump1",
+        "emtr_fuel_dump2"
+      ]
+    }
+  },
+  "cutting": {
+    "emtr_break_wing1_l_from": [
+      -0.999142,
+      -0.191786,
+      2.62057
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.999142,
+      -0.191786,
+      4.57969
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.999142,
+      -0.191786,
+      5.36838
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.999142,
+      -0.191786,
+      5.88303
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.999142,
+      -0.191786,
+      -2.62057
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.999142,
+      -0.191786,
+      -4.57969
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.999142,
+      -0.191786,
+      -5.36838
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.999142,
+      -0.191786,
+      -5.88303
+    ],
+    "emtr_break_wing_tail": [
+      -5.21727,
+      0.0,
+      0.0
+    ],
+    "finCut": true,
+    "emtr_break_tail_from": [
+      -4.5418,
+      -0.0259136,
+      -3.66957e-8
+    ],
+    "emtr_break_tail_to": [
+      -7.19749,
+      -0.0259136,
+      -3.66957e-8
+    ]
   }
 }

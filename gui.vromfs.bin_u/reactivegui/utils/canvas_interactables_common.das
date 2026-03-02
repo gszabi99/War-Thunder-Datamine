@@ -38,8 +38,13 @@ struct DrawVisitor : InteractableVisitor
 struct ClickVisitor : InteractableVisitor
   pos : float2 = float2(0.0)
 
-  def ClickVisitor(pos : float2)
+  deviceId : int = -1
+  buttonId : int = -1
+
+  def ClickVisitor(pos : float2; device_id, button_id : int = -1)
     self.pos = pos
+    self.deviceId = device_id
+    self.buttonId = button_id
 
   def override interactButton(var btn : InteractableButton&)
     let relPos = btn.toRelativePos(self.pos)
@@ -47,21 +52,28 @@ struct ClickVisitor : InteractableVisitor
     btn.onClick(relPos)
 
 struct DoubleClickVisitor : ClickVisitor
-  def DoubleClickVisitor(pos : float2)
-    ClickVisitor`ClickVisitor(self, pos)
+  def DoubleClickVisitor(pos : float2; device_id, button_id : int = -1)
+    ClickVisitor`ClickVisitor(self, pos, device_id, button_id)
 
   def override interactButton(var btn : InteractableButton&)
     let relPos = btn.toRelativePos(self.pos)
     return if !btn.isPointInside(relPos)
     btn.onDoubleClick(relPos)
+    btn.onDoubleClickButton(relPos, deviceId, buttonId)
 
 struct PressVisitor : InteractableVisitor
   startPos : float2 = float2(0.0)
   currPos : float2 = float2(0.0)
 
-  def PressVisitor(start_pos, curr_pos : float2)
+  deviceId : int = -1
+  buttonId : int = -1
+
+  def PressVisitor(start_pos, curr_pos : float2; device_id, button_id : int = -1)
     self.startPos = start_pos
     self.currPos = curr_pos
+
+    self.deviceId = device_id
+    self.buttonId = button_id
 
   def override interactButton(var btn : InteractableButton&)
     let relStartPos = btn.toRelativePos(self.startPos)
@@ -69,6 +81,31 @@ struct PressVisitor : InteractableVisitor
     let relCurrPos = btn.toRelativePos(currPos)
 
     btn.onPress(relStartPos, relCurrPos)
+    btn.onPressButton(relStartPos, relCurrPos, deviceId, buttonId)
+
+struct EndPressVisitor : PressVisitor
+  def EndPressVisitor(start_pos, curr_pos : float2; device_id, button_id : int = -1)
+    PressVisitor`PressVisitor(self, start_pos, curr_pos, device_id, button_id)
+
+  def override interactButton(var btn : InteractableButton&)
+    let relStartPos = btn.toRelativePos(self.startPos)
+    return if !btn.isPointInside(relStartPos)
+    let relCurrPos = btn.toRelativePos(currPos)
+
+    btn.onPressButtonEnd(relStartPos, relCurrPos, deviceId, buttonId)
+
+struct ScrollVisitor : InteractableVisitor
+  pos : float2 = float2(0.0)
+  delta : float = 0.0f
+
+  def ScrollVisitor(pos : float2; delta : float)
+    self.pos = pos
+    self.delta = delta
+
+  def override interactButton(var btn : InteractableButton&)
+    let relPos = btn.toRelativePos(self.pos)
+    return if !btn.isPointInside(relPos)
+    btn.onMouseScroll(relPos, self.delta)
 
 struct InteractableCanvasEll
   pos : float2 = float2(0.0)
@@ -114,8 +151,18 @@ struct InteractableButton : InteractableCanvasEll
 
   [unused_argument(relative_pos)] def onDoubleClick(relative_pos : float2)
     pass
+  [unused_argument(relative_pos, device_id, button_id)] def onDoubleClickButton(relative_pos : float2; device_id, button_id : int = -1)
+    pass
 
   [unused_argument(start_pos_rel, curr_pos_rel)] def onPress(start_pos_rel : float2; curr_pos_rel : float2)
+    pass
+  [unused_argument(start_pos_rel, curr_pos_rel, device_id, button_id)] def onPressButton(start_pos_rel, curr_pos_rel : float2; device_id, button_id : int = -1)
+    pass
+
+  [unused_argument(start_pos_rel, curr_pos_rel, device_id, button_id)] def onPressButtonEnd(start_pos_rel, curr_pos_rel : float2; device_id, button_id : int = -1)
+    pass
+
+  [unused_argument(relative_pos, delta)] def onMouseScroll(relative_pos : float2; delta : float)
     pass
 
   def const toRelativePos(abs_pos : float2)

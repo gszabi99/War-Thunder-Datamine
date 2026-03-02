@@ -435,8 +435,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -488,8 +487,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1350,8 +1348,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1411,8 +1409,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1472,8 +1470,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1533,8 +1531,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1594,8 +1592,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1655,8 +1653,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2757,53 +2755,7 @@
             180.0
           ],
           "pitch": [
-            -5.0,
-            90.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -21.0,
-            0.0,
-            90.0
-          ],
-          "lim2": [
-            -21.0,
-            21.0,
-            -5.0,
-            90.0
-          ],
-          "lim3": [
-            21.0,
-            180.0,
-            0.0,
-            90.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner3",
-        "blk": "gameData/Weapons/gunBredaSAFAT77_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "gunner3_dm",
-        "gunnerDm": "gunner3_dm",
-        "gunDm": "gun3_dm",
-        "partsDP": "gun3_dm",
-        "bullets": 500,
-        "turret": {
-          "head": "turret3",
-          "gun": "gun3"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
+            -15.0,
             90.0
           ]
         },
@@ -2812,7 +2764,7 @@
             [
               -180.0,
               -21.0,
-              0.0,
+              -15.0,
               90.0
             ],
             [
@@ -2838,7 +2790,69 @@
             [
               21.0,
               180.0,
-              0.0,
+              -15.0,
+              90.0
+            ]
+          ]
+        }
+      },
+      {
+        "trigger": "gunner3",
+        "blk": "gameData/Weapons/gunBredaSAFAT77_turret.blk",
+        "breechInCockpit": true,
+        "emitter": "flare4",
+        "flash": "flare4",
+        "dm": "gunner3_dm",
+        "gunnerDm": "gunner3_dm",
+        "gunDm": "gun3_dm",
+        "partsDP": "gun3_dm",
+        "bullets": 500,
+        "turret": {
+          "head": "turret3",
+          "gun": "gun3"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -15.0,
+            90.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            [
+              -180.0,
+              -21.0,
+              -15.0,
+              90.0
+            ],
+            [
+              -21.0,
+              -11.0,
+              20.0,
+              90.0
+            ]
+          ],
+          "lim2": [
+            -11.0,
+            11.0,
+            -5.0,
+            90.0
+          ],
+          "lim3": [
+            [
+              11.0,
+              21.0,
+              20.0,
+              90.0
+            ],
+            [
+              21.0,
+              180.0,
+              -15.0,
               90.0
             ]
           ]

@@ -15,7 +15,8 @@ require HumanPhys
 require AnimV20
 require GamePhys
 require PropsManager
-
+require DaWeaponProps
+require DagorRandom
 require %appGame.wt_events
 require %appGame.infantry.es.human_reload_common
 require MPlayer
@@ -130,7 +131,7 @@ def human_weap_modifications_init_es(evt : CmdInitComponent;
   let weaponMods = "weapon"
   let equipmentMods = "equipment_common"
 
-  let mods : DataBlock& = get_modifications_blk()
+  let mods : DataBlock const& = get_modifications_blk()
   let allMods = datablock_get_block_by_name(mods, "modifications")
   let modsNum = getModCount(*unit__ref.unit.unitMod)
   for i in range(0, modsNum)
@@ -178,7 +179,7 @@ def human_init_weapon_from_modification_es(evt : CmdInitComponent;
     return
 
   let checkingModClass = "equipment_common"
-  let mods : DataBlock& = get_modifications_blk()
+  let mods : DataBlock const& = get_modifications_blk()
   let allMods = datablock_get_block_by_name(mods, "modifications")
   let modsNum = getModCount(*unit__ref.unit.unitMod)
   for i in range(0, modsNum)
@@ -309,17 +310,23 @@ def human_weap_created_server_es(evt : Event;
   if human_net_phys != null
     setup_human_actor_weapon_slot(human_weap__gunEids, human_weap__currentGunSlot, *human_net_phys)
 
+def get_gun_max_ammo(ammoHolderName : string)
+  let templ = getTemplateByName(ammoHolderName)
+  return templ != null ? getTemplateComponent(*templ, "ammo_holder__ammoCount") ?? 0 : 0
 
 [es(tag=server, on_appear, before=gun_init_es)]
 def gun_init_ammo_prop_ids(evt : Event;
                            eid : EntityId;
                            gun__ammoHolders : Array;
-                           var gun__ammoHolderIds : IntList)
+                           var gun__ammoHolderIds : IntList;
+                           var gun__maxAmmo : int&)
   for ammoHolder in gun__ammoHolders
     let ammoHolderName = ammoHolder ?? ""
     if ammoHolderName == ""
       logerr("Unacceptable to have empty \"ammoHolder\" in template <{getEntityTemplateName(eid)}>")
     gun__ammoHolderIds |> push(int(ecs_hash(ammoHolderName)))
+    if gun__maxAmmo <= 0
+      gun__maxAmmo = get_gun_max_ammo(ammoHolderName)
 
 
 [es(on_appear, track=(gun__ammoHolderEid, gun__ammoHolderIds))]
@@ -329,10 +336,9 @@ def gun_track_cur_ammo_type(evt : Event;
                             var gun__curAmmoHolderIndex : int&;
                             var gun__maxAmmo : int&)
   gun__curAmmoHolderIndex = -1
-  query(gun__ammoHolderEid) <| $ [es] (ammo_holder__id : int;
-                                       ammo_holder__ammoCount : int)
+  query(gun__ammoHolderEid) <| $ [es] (ammo_holder__id : int)
     gun__curAmmoHolderIndex = find_index(gun__ammoHolderIds, ammo_holder__id)
-    gun__maxAmmo = ammo_holder__ammoCount
+    gun__maxAmmo = max(gun__maxAmmo, get_gun_max_ammo(getEntityTemplateName(gun__ammoHolderEid)))
 
 
 [es(tag=server, on_appear, REQUIRE=gun__createLoaded)]
@@ -927,6 +933,47 @@ def human_weap_on_net_shoot_es(evt : CmdNetUnitShot;
           break
     if gunFound
       return
+
+[es]
+def launch_projectile_es(evt : CmdLaunchProjectileSpawner;
+                         eid : EntityId)
+  assume launchDesc = evt.launchDesc
+  let gunEid = evt.gunEid
+  if (length_sq(launchDesc.tm[3]) < 1e10 && length_sq(launchDesc.vel) < 1e10)
+    query(gunEid) <| $ [es] (gun__chokeSpread : float = 1.0)
+      let shellProps = shell_spawn_get_props(launchDesc.shellId) <| $(spawnProps : ShellSpawnProps)
+        let localVel = float3(
+              dot(launchDesc.tm[0], launchDesc.vel),
+              dot(launchDesc.tm[1], launchDesc.vel),
+              dot(launchDesc.tm[2], launchDesc.vel))
+        var seed = phys_time_to_seed(launchDesc.atTime)
+        let count = _rnd_int(seed, spawnProps.minCount, spawnProps.maxCount)
+        let chokeSpread = deg_to_rad(gun__chokeSpread)
+        for _i in range(count)
+          var sin = 0.0
+          var cos = 0.0
+          sincos(chokeSpread * _gauss_rnd(seed, 0), sin, cos)
+          var newVel = float3(localVel.x * cos - localVel.y * sin, localVel.x * sin + localVel.y * cos, localVel.z)
+          sincos(chokeSpread * _gauss_rnd(seed, 0), sin, cos)
+          newVel = float3(newVel.x * cos + newVel.z * sin, newVel.y, -newVel.x * sin + newVel.z * cos)
+          let vel = rotate(launchDesc.tm, newVel)
+          using() <| $(var ldesc : LaunchDesc#)
+            ldesc.shellId = launchDesc.shellId
+            ldesc.gunPropsId = launchDesc.gunPropsId
+            ldesc.atTime = launchDesc.atTime
+            ldesc.initialLifeTime = launchDesc.initialLifeTime
+            ldesc.tm = launchDesc.tm
+            ldesc.vel = vel
+            ldesc.firingMode = 0u
+            ldesc.bombBayHeight = 0.0
+            sendEventImmediate(eid, CmdLaunchProjectile(launchDesc := ldesc, gunEid = gunEid))
+      if !shellProps
+        sendEventImmediate(eid, CmdLaunchProjectile(launchDesc = launchDesc, gunEid = gunEid))
+  else
+    logerr("invalid Launch projectile options for eid /*{eid}*/ /*{getEntityTemplateName(eid)}*/ /*{launchDesc}*/
+            for gun /*{gunEid}*/ /*{getEntityTemplateName(gunEid)}*/")
+    destroyEntity(eid)
+    return
 
 [es(tag=server)]
 def human_weap_set_last_shot_es(evt : CmdLaunchProjectile;

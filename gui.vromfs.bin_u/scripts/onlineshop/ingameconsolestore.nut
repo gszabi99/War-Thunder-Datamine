@@ -14,6 +14,7 @@ let { show_obj, getObjValidIndex, move_mouse_on_child_by_value, move_mouse_on_ob
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 
 gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -425,7 +426,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     obj.setValue(item?.name ?? "")
 
     obj = descObj.findObject("item_desc_div")
-    let itemsView = item?.getItemsView() ?? ""
+    let itemsView = getEntitlementView(item?.entitlementId)
     let data = $"{this.getPriceBlock(item)}{itemsView}"
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
 

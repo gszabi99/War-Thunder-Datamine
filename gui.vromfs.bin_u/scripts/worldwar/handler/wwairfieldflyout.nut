@@ -22,10 +22,12 @@ let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { getCurrentOperation, getAirArmiesNumberByGroupIdx
 } = require("%scripts/worldWar/inOperation/wwOperations.nut")
+let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
+
 
 let unitsTypesList = {
   [airfieldTypes.AT_HELIPAD] = [
@@ -87,7 +89,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   unitsGroups = null
 
   static function open(index, position, armyTargetName, cellIdx, onSuccessfullFlyoutCb = null) {
-    let airfield = g_world_war.getAirfieldByIndex(index)
+    let airfield = WwAirfield(index)
     let availableArmiesArray = airfield.getAvailableFormations()
     if (!availableArmiesArray.len())
       return
@@ -284,7 +286,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
     local armyCount = getAirArmiesNumberByGroupIdx(this.selectedGroupIdx,
       this.airfield.airfieldType.overrideUnitType)
     for (local idx = 0; idx < g_world_war.getAirfieldsCount(); idx++) {
-      let af = g_world_war.getAirfieldByIndex(idx)
+      let af = WwAirfield(idx)
       if (this.airfield.airfieldType == af.airfieldType)
         armyCount += af.getCooldownArmiesNumberByGroupIdx(this.selectedGroupIdx)
     }

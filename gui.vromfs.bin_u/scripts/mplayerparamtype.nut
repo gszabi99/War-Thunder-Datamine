@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_race_la
 from "%scripts/dagui_library.nut" import *
 import "%scripts/time.nut" as time
 import "%sqstd/math.nut" as stdMath
-from "%scripts/utils_sa.nut" import is_mode_with_teams
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
 let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -314,7 +314,7 @@ enumsAddTypes(g_mplayer_param_type, {
     fontIcon = "#icon/mpstats/assists"
     tooltip = "multiplayer/assists"
     missionObjective = MISSION_OBJECTIVE.KILLS_ANY | MISSION_OBJECTIVE.KILLS_ANY_AI
-    isVisibleByGameType = @(gt) is_mode_with_teams(gt)
+    isVisibleByGameType = isModeWithTeams
     getVal = function(player) {
       local res = 0
       foreach (rowId in [ "assists", "scoutKills" ])

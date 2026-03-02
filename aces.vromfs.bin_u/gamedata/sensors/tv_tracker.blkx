@@ -6,16 +6,16 @@
   "designationSourceType": 0,
   "transivers": {
     "track": {
-      "power": 60.0,
-      "active": false,
-      "band": -1,
-      "rcs": 3000.0,
-      "range": 10000.0,
-      "rangeMax": 15000.0,
       "visibilityType": "optic",
-      "antenna": {
-        "angleHalfSens": 0.05,
-        "sideLobesSensitivity": -120.0
+      "active": false,
+      "receiver": {
+        "signal": 3000.0,
+        "range": 10000.0,
+        "rangeMax": 15000.0,
+        "antenna": {
+          "angleHalfSens": 0.05,
+          "sideLobesSensitivity": -120.0
+        }
       }
     }
   },
@@ -500,6 +500,8 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
+                "alpha": 0.8,
+                "betta": 0.1,
                 "rateLim": [
                   0.78,
                   0.78
@@ -508,6 +510,8 @@
                 "inertialTimeMax": 1.0
               },
               "distFilter": {
+                "alpha": 0.8,
+                "betta": 0.2,
                 "accelLim": [
                   150.0,
                   150.0

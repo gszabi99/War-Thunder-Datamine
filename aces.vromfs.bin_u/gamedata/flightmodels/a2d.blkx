@@ -1197,8 +1197,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2257,6 +2257,12 @@
   "propellers": {
     "prop1Engine": 0,
     "prop2Engine": 0
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_aps_19.blk",
+      "dmPart": "radar_dm"
+    }
   },
   "commonWeapons": {
     "Weapon": {
@@ -3564,12 +3570,6 @@
         ]
       }
     ]
-  },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/us_an_aps_19.blk",
-      "dmPart": "radar_dm"
-    }
   },
   "jetwash": {
     "radius": 10.0,

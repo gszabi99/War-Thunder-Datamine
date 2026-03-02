@@ -1,60 +1,55 @@
 from "%scripts/dagui_library.nut" import *
 
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { worldWarMapControls } = require("bhvWorldWarMap.nut")
 
 replace_script_gui_behaviour("worldWarMapControls", worldWarMapControls)
 
-foreach (fn in [
-                 "services/wwService.nut"
-                 "operations/model/wwGlobalStatusType.nut"
-                 "externalServices/inviteWwOperationBattle.nut"
-                 "model/wwUnitType.nut"
-                 "inOperation/model/wwOperationArmies.nut"
-                 "inOperation/model/wwOperationModel.nut"
-                 "inOperation/model/wwAirfield.nut"
-                 "inOperation/model/wwArmy.nut"
-                 "inOperation/model/wwArmyOwner.nut"
-                 "inOperation/model/wwPathTracker.nut"
-                 "inOperation/model/wwArtilleryAmmo.nut"
-                 "inOperation/model/wwArmyGroup.nut"
-                 "inOperation/model/wwUnit.nut"
-                 "inOperation/model/wwReinforcementArmy.nut"
-                 "inOperation/model/wwOperationLog.nut"
-                 "inOperation/view/wwObjectiveView.nut"
-                 "inOperation/view/wwBattleResultsView.nut"
-                 "inOperation/handler/wwMap.nut"
-                 "inOperation/handler/wwObjective.nut"
-                 "inOperation/handler/wwOperationLog.nut"
-                 "inOperation/handler/wwAirfieldsList.nut"
-                 "inOperation/handler/wwArmiesList.nut"
-                 "inOperation/handler/wwCommanders.nut"
-                 "inOperation/handler/wwReinforcements.nut"
-                 "inOperation/handler/wwBattleResults.nut"
-                 "operations/model/wwMap.nut"
-                 "operations/model/wwOperation.nut"
-                 "operations/model/wwOperationsGroup.nut"
-                 "operations/handler/wwMapDescription.nut"
-                 "operations/handler/wwQueueDescriptionCustomHandler.nut"
-                 "operations/handler/wwOperationDescriptionCustomHandler.nut"
-                 "operations/handler/wwOperationsListModal.nut"
-                 "operations/handler/wwOperationsMapsHandler.nut"
-                 "handler/wwMapTooltip.nut"
-                 "handler/wwQueueInfo.nut"
-                 "handler/wwSquadList.nut"
-                 "handler/wwBattleDescription.nut"
-                 "handler/wwAirfieldFlyOut.nut"
-                 "handler/wwObjectivesInfo.nut"
-                 "handler/wwMyClanSquadInviteModal.nut"
-                 "handler/wwJoinBattleCondition.nut"
-                 "handler/wwLeaderboard.nut"
-                 "worldWarRender.nut"
-                 "worldWarBattleJoinProcess.nut"
-                 "externalServices/matchingNotifications/worldwar.nut"
-                 "worldWarUtils.nut"
-                 "debugTools/dbgUtils.nut"
-               ])
-  loadOnce($"%scripts/worldWar/{fn}") 
+require("%scripts/worldWar/services/wwService.nut")
+require("%scripts/worldWar/externalServices/inviteWwOperationBattle.nut")
+require("%scripts/worldWar/model/wwUnitType.nut")
+require("%scripts/worldWar/inOperation/model/wwOperationArmies.nut")
+require("%scripts/worldWar/inOperation/model/wwOperationModel.nut")
+require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
+require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
+require("%scripts/worldWar/inOperation/model/wwPathTracker.nut")
+require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
+require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
+require("%scripts/worldWar/inOperation/model/wwUnit.nut")
+require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
+require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
+require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
+require("%scripts/worldWar/inOperation/view/wwBattleResultsView.nut")
+require("%scripts/worldWar/inOperation/handler/wwMap.nut")
+require("%scripts/worldWar/inOperation/handler/wwObjective.nut")
+require("%scripts/worldWar/inOperation/handler/wwOperationLog.nut")
+require("%scripts/worldWar/inOperation/handler/wwAirfieldsList.nut")
+require("%scripts/worldWar/inOperation/handler/wwArmiesList.nut")
+require("%scripts/worldWar/inOperation/handler/wwCommanders.nut")
+require("%scripts/worldWar/inOperation/handler/wwReinforcements.nut")
+require("%scripts/worldWar/inOperation/handler/wwBattleResults.nut")
+require("%scripts/worldWar/operations/model/wwMap.nut")
+require("%scripts/worldWar/operations/model/wwOperation.nut")
+require("%scripts/worldWar/operations/model/wwOperationsGroup.nut")
+require("%scripts/worldWar/operations/handler/wwMapDescription.nut")
+require("%scripts/worldWar/operations/handler/wwQueueDescriptionCustomHandler.nut")
+require("%scripts/worldWar/operations/handler/wwOperationDescriptionCustomHandler.nut")
+require("%scripts/worldWar/operations/handler/wwOperationsListModal.nut")
+require("%scripts/worldWar/operations/handler/wwOperationsMapsHandler.nut")
+require("%scripts/worldWar/handler/wwMapTooltip.nut")
+require("%scripts/worldWar/handler/wwQueueInfo.nut")
+require("%scripts/worldWar/handler/wwSquadList.nut")
+require("%scripts/worldWar/handler/wwBattleDescription.nut")
+require("%scripts/worldWar/handler/wwAirfieldFlyOut.nut")
+require("%scripts/worldWar/handler/wwObjectivesInfo.nut")
+require("%scripts/worldWar/handler/wwMyClanSquadInviteModal.nut")
+require("%scripts/worldWar/handler/wwJoinBattleCondition.nut")
+require("%scripts/worldWar/handler/wwLeaderboard.nut")
+require("%scripts/worldWar/worldWarRender.nut")
+require("%scripts/worldWar/worldWarBattleJoinProcess.nut")
+require("%scripts/worldWar/externalServices/matchingNotifications/worldwar.nut")
+require("%scripts/worldWar/worldWarUtils.nut")
+require("%scripts/worldWar/debugTools/dbgUtils.nut")
 
 
 require("%scripts/worldWar/wwPromo.nut")

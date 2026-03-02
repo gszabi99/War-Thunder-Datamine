@@ -2,6 +2,8 @@ options no_aot
 require ecs
 require ecs.common
 require DagorConsole
+require PropsManager
+require %appGame.wt_events
 require %appGame.infantry.es.hitpoints_common
 require %appGame.infantry.es.net_console_macro
 require %appGame.infantry.es.armor_common
@@ -9,13 +11,10 @@ require %appGame.infantry.es.armor_common
 
 def private set_hp_for_eid(eid : EntityId; value : float)
   query(eid) <| $ [es] (var hitpoints__hp : float&)
-    hitpoints__hp = value
-
-def private clear_bleeding_for_eid(eid : EntityId)
-  query(eid) <| $ [es] (var hitpoints__dotDamage : FloatList&;
-                        var hitpoints__totalDotAmount : float&)
-    var amount = 1e10
-    decrease_damage_over_time_amount(amount, hitpoints__dotDamage, hitpoints__totalDotAmount)
+    if value > 0.0
+      hitpoints__hp = value
+    else
+      sendEvent(eid, CmdApplyDamage(offender = eid, damageType = int(DamageType.DM_PROJECTILE), shellId = props_pack_for_net(PropsId()), gunPropsId = props_pack_for_net(PropsId()), deltaHp = (hitpoints__hp - value), hitPos = float3(0., 0., 0.)))
 
 [net_console_cmd(name="hitpoints.set_hero_hp")]
 def set_hero_hp(value : float; @net_hero eid : EntityId)

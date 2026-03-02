@@ -32,20 +32,21 @@ let { wwGetOperationId, wwGetPlayerSide, wwGetOperationWinner,
   wwGetZoneName, wwGetSelectedAirfield, wwClearOutlinedZones, wwGetSpeedupFactor } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
-let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let { setWWMapParams, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let { register_command } = require("console")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let wwTopMenuLeftSideSections = require("%scripts/worldWar/externalServices/worldWarTopMenuSectionsConfigs.nut")
 let { isOperationPaused, isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 let { getWWLogsData, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide
+let { getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide,
+  getOperationObjectives, getSaveOperationLogId, getSidesOrder, getOperationTimeSec
 } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
@@ -56,9 +57,11 @@ let { g_ww_map_info_type } = require("%scripts/worldWar/inOperation/model/wwMapI
 let { g_ww_map_controls_buttons } = require("%scripts/worldWar/inOperation/model/wwMapControlsButtons.nut")
 let { g_ww_map_reinforcement_tab_type } = require("%scripts/worldWar/inOperation/model/wwMapReinforcementTabType.nut")
 let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
-
+let { getBattles, getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
 let { fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation
 } = require("%scripts/worldWar/inOperation/wwOperations.nut")
+let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
+
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
@@ -142,7 +145,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     forcedFullUpdateCurrentOperation()
     let wwLogsData = getWWLogsData()
-    wwLogsData.lastReadLogMark = loadLocalByAccount(g_world_war.getSaveOperationLogId(), "")
+    wwLogsData.lastReadLogMark = loadLocalByAccount(getSaveOperationLogId(), "")
     requestNewWWLogs(WW_LOG_MAX_LOAD_AMOUNT, !wwLogsData.loaded.len())
 
     this.scene.findObject("update_timer").setUserData(this)
@@ -357,7 +360,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.currentSelectedObject == mapObjectSelect.REINFORCEMENT)
       hasAccess = true
     else if (this.currentSelectedObject == mapObjectSelect.AIRFIELD) {
-      let airfield = g_world_war.getAirfieldByIndex(wwGetSelectedAirfield())
+      let airfield = WwAirfield(wwGetSelectedAirfield())
       if (airfield.getAvailableFormations().len())
         hasAccess = true
     }
@@ -446,8 +449,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function hasBattlesToPlay() {
-    return u.search(g_world_war.getBattles(),
-      g_world_war.isBattleAvailableToPlay)
+    return u.search(getBattles(), g_world_war.isBattleAvailableToPlay)
   }
 
   function onStart() {
@@ -559,7 +561,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       let sideName = ww_side_val_to_name(side)
-      let armyGroups = g_world_war.getArmyGroupsBySide(side)
+      let armyGroups = getArmyGroupsBySide(side)
       if (!armyGroups.len())
         continue
 
@@ -590,7 +592,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function markMainObjectiveZones() {
-    let objectivesBlk = g_world_war.getOperationObjectives()
+    let objectivesBlk = getOperationObjectives()
     if (!objectivesBlk)
       return
 
@@ -628,7 +630,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     let blockObj = this.scene.findObject("content_block_3")
     let armyStrengthData = this.collectArmyStrengthData()
 
-    let orderArray = g_world_war.getSidesOrder()
+    let orderArray = getSidesOrder()
 
     let side1Name = ww_side_val_to_name(orderArray.len() ? orderArray[0] : SIDE_NONE)
     let side1Data = getTblValue(side1Name, armyStrengthData, {})
@@ -762,7 +764,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
         getTblValue("formationId", params, -1) < 0)
       return
 
-    let airfield = g_world_war.getAirfieldByIndex(wwGetSelectedAirfield())
+    let airfield = WwAirfield(wwGetSelectedAirfield())
     local formation = null
 
     if (params.formationType == "formation") {
@@ -923,7 +925,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     let afkLoseTimeShowSec = (getWwSetting("afkLoseTimeShowSec", 0)
       / wwGetSpeedupFactor()).tointeger()
     let delayTime = max(time.millisecondsToSecondsInt(this.afkData.afkLoseTimeMsec)
-      - g_world_war.getOperationTimeSec() - afkLoseTimeShowSec, 0)
+      - getOperationTimeSec() - afkLoseTimeShowSec, 0)
 
     this.afkLostTimer = Timer(this.scene, delayTime,
       function() {
@@ -942,7 +944,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
             let statObj = this.scene.findObject("wwmap_operation_status")
             let textObj = statObj.findObject("wwmap_operation_status_text")
             let afkLoseTime = time.millisecondsToSecondsInt(this.afkData.afkLoseTimeMsec)
-              - g_world_war.getOperationTimeSec()
+              - getOperationTimeSec()
             if (afkLoseTime <= 0)
               this.afkCountdownTimer?.destroy()
             let txt = afkLoseTime > 0
@@ -1310,7 +1312,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local objTarget = null
-    let objectivesBlk = g_world_war.getOperationObjectives()
+    let objectivesBlk = getOperationObjectives()
     foreach (dataBlk in objectivesBlk.data) {
       if (!dataBlk?.mainObjective)
         continue

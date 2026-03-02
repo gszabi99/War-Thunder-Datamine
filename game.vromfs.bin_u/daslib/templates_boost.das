@@ -6,6 +6,14 @@ options strict_smart_pointers
 
 module templates_boost shared public
 
+
+
+
+
+
+
+
+
 require ast
 require daslib/ast_boost
 require daslib/algorithm
@@ -119,6 +127,7 @@ def renameCall(var self : Template; name : string; newName : das_string) {
 }
 
 class private TemplateVisitor : AstVisitor {
+    
     @do_not_delete rules : Template?
     def TemplateVisitor(var r : Template?) {
         
@@ -239,7 +248,9 @@ class private TemplateVisitor : AstVisitor {
         } elif (typ.baseType == Type.tStructure && typ.structType != null) {
             let st = typ.structType
             if (key_exists(rules.struct2etype, st)) {
+                let oldFlags = typ.flags
                 move_new(typ) <| clone_type(unsafe(rules.struct2etype[st]))
+                typ.flags = oldFlags
             }
         }
         if (typ.firstType != null) {
@@ -279,7 +290,7 @@ class private TemplateVisitor : AstVisitor {
             }
         }
         for (ann in blk.annotations) {
-            rules.annArg |> get("{ann.annotation.name}") <| $(cb) {
+            rules.annArg |> get("{ann.annotation.name}") $(cb) {
                 cb |> invoke(*ann)
             }
         }
@@ -523,6 +534,7 @@ def add_global_private_let(mod : Module?; vname : string; vat : LineInfo; var va
 }
 
 def make_unique_private_name(prefix : string; vat : LineInfo) {
+    
     
     
     
@@ -953,6 +965,30 @@ def private apply_qrules(var expr : smart_ptr<Expression>&) : smart_ptr<ExprBloc
 }
 
 [macro_function]
+def private apply_function_qrules(var func : smart_ptr<Function>&) : smart_ptr<ExprBlock> {
+    
+    var inscope eblk <- new ExprBlock(at = func.at,
+        returnType <- new TypeDecl(at = func.at, baseType = Type.tVoid),
+        arguments := array<VariablePtr>(
+            new Variable(at = func.at, name := "rules", _type <- typeinfo ast_typedecl(type<Template>)) |> generatedVariable()
+        ),
+        blockFlags = ExprBlockFlags.isClosure
+    )
+    var astVisitor = new QRulesVisitor(get_ptr(eblk))
+    var inscope astVisitorAdapter <- make_visitor(*astVisitor)
+    visit(func, astVisitorAdapter)
+    if (astVisitor.failed) {
+        eblk := null
+    }
+    unsafe {
+        delete astVisitor
+    }
+    let annot_rules =  ("rules", RttiValue(tBool = true))
+    eblk |> append_annotation("$", "unused_argument", [ annot_rules ])
+    return <- eblk
+}
+
+[macro_function]
 def private apply_template_qrules(prog : ProgramPtr; var template_structure : Structure?) : smart_ptr<ExprBlock> {
     
     var inscope eblk <- new ExprBlock(at = template_structure.at,
@@ -967,15 +1003,18 @@ def private apply_template_qrules(prog : ProgramPtr; var template_structure : St
 
     var mod = template_structure._module
     unsafe {
-        var vis_structure <- reinterpret<smart_ptr<Structure>>(template_structure)
+        var ts = template_structure
+        var vis_structure <- reinterpret<smart_ptr<Structure>>(ts)
         prog.visit_structure(vis_structure, astVisitorAdapter)
     }
 
     if (!astVisitor.failed) {
         for_each_function(mod, "", $(func){
             return if (astVisitor.failed)
-            if (func.flags.isClassMethod && func.classParent == template_structure) {
-                visit(func, astVisitorAdapter)
+            if (func.flags.isClassMethod) {
+                if (func.classParent == template_structure) {
+                    visit(func, astVisitorAdapter)
+                }
             }
         })
     }
@@ -1143,14 +1182,16 @@ class private AstQNamedMacro : AstCallMacro {
     apply_call = "apply_qmacro_function"
     macro_call = "qmacro_function"
     def override canVisitArgument(call : smart_ptr<ExprCallMacro>; argIndex : int) : bool {
+        
         return argIndex == 0
     }
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+        
         if (call.arguments |> length != 2) {
             macro_error(prog, call.at, "expecting 2 arguments, {macro_call}(name,expression)")
             return <- default<ExpressionPtr>
         }
-        if (!(call.arguments[0]._type.isString)) {
+        if (call.arguments[0]._type == null || !(call.arguments[0]._type.isString)) {
             macro_error(prog, call.at, "expecting function name, {macro_call}(NAME,expression)")
             return <- default<ExpressionPtr>
         }
@@ -1190,10 +1231,12 @@ class private AstQNamedClassMacro : AstCallMacro {
     apply_call = "apply_qmacro_method"
     macro_call = "qmacro_method"
     def override canVisitArgument(call : smart_ptr<ExprCallMacro>; argIndex : int) : bool {
+        
         return argIndex == 0 || argIndex == 1
     }
     
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+        
         if (call.arguments |> length != 3) {
             macro_error(prog, call.at, "expecting 3 arguments, {macro_call}(name,class,expression)")
             return <- default<ExpressionPtr>
@@ -1228,7 +1271,6 @@ class private AstQMethodMacro : AstQNamedClassMacro {
     override apply_call = "apply_qmacro_method"
 }
 
-
 def public apply_qmacro_template_class(instance_name : string; var template_type : smart_ptr<TypeDecl>; blk : block<(var rules : Template) : void>) : TypeDeclPtr {
     
     var mod = compiling_module()
@@ -1250,7 +1292,12 @@ def public apply_qmacro_template_class(instance_name : string; var template_type
             
             let func_name = string(func.name)
             var method_name_parts = split(func_name, "`")
-            method_name_parts[0] = instance_name
+            if (method_name_parts[0] == template_name) {
+                method_name_parts[0] = instance_name
+            }
+            if (length(method_name_parts) == 2 &&  method_name_parts[1] == template_name) {
+                method_name_parts[1] = instance_name
+            }
             let func_clone_name = join(method_name_parts, "`")
             method_renames.insert(func_name, func_clone_name)
         }
@@ -1261,6 +1308,8 @@ def public apply_qmacro_template_class(instance_name : string; var template_type
     
     rules |> replaceTypeWithTypeDecl(template_name) <| clone_type(instance_type)
     rules |> replaceStructWithTypeDecl(template_structure) <| clone_type(instance_type)
+    
+    rules |> renameCall("{template_name}`{template_name}") <| "{instance_name}`{instance_name}"
     
     for (t_method, i_method in keys(method_renames), values(method_renames)) {
         rules |> renameVariable(t_method, i_method)
@@ -1278,6 +1327,7 @@ def public apply_qmacro_template_class(instance_name : string; var template_type
             for (arg in func_clone.arguments) {
                 arg._type |> move_new <| apply_template(rules, arg.at, clone_type(arg._type))
             }
+            func_clone.body |> move_new <| apply_template(rules, func.at, clone_expression(func.body), false)
             mod |> add_function(func_clone)
         }
     })
@@ -1294,6 +1344,61 @@ def public apply_qmacro_template_class(instance_name : string; var template_type
     return <- instance_type
 }
 
+def public apply_qmacro_template_function(func : FunctionPtr; blk : block<(var rules : Template) : void>) : FunctionPtr {
+    
+    var inscope rules : Template
+    invoke(blk, rules)
+    var inscope func_clone <- clone_function(func)
+    func_clone.moreFlags &= ~(MoreFunctionFlags.isTemplate)
+    func_clone.result |> move_new <| apply_template(rules, func.at, clone_type(func.result))
+    for (arg in func_clone.arguments) {
+        arg._type |> move_new <| apply_template(rules, arg.at, clone_type(arg._type))
+    }
+    return <- func_clone
+}
+
+[call_macro(name="qmacro_template_function")]
+class private AstQNamedTemplateFunctionMacro : AstCallMacro {
+    
+    apply_call = "apply_qmacro_template_function"
+    macro_call = "qmacro_template_function"
+   
+    def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
+        
+        if (call.arguments |> length != 1) {
+            macro_error(prog, call.at, "expecting {macro_call}(@@TEMPLATE_FUNCTION_NAME)")
+            return <- default<ExpressionPtr>
+        }
+        if (!(call.arguments[0] is ExprAddr)) {
+            macro_error(prog, call.at, "expecting @@TEMPLATE_FUNCTION_NAME")
+            return <- default<ExpressionPtr>
+        }
+        var expr_func = call.arguments[0] as ExprAddr
+        if (expr_func.func == null) {
+            macro_error(prog, call.at, "expecting @@TEMPLATE_FUNCTION_NAME to refer to a function")
+            return <- default<ExpressionPtr>
+        }
+        var inscope qfunc := unsafe(reinterpret<smart_ptr<Function>>(expr_func.func))
+        var inscope qblk <- apply_function_qrules(qfunc)
+        var mod_name = string(expr_func.func._module.name)
+        if (mod_name.empty()) {
+            mod_name = "_"
+        }
+        return <- new ExprCall(at = call.at,
+            name := apply_call,
+            arguments := array<ExpressionPtr>(
+                new ExprCall(at = call.at,
+                    name := "find_compiling_function_by_mangled_name_hash",
+                    arguments := array<ExpressionPtr>(
+                        new ExprConstString(at = call.at, value := mod_name)
+                    ,   new ExprConstUInt64(at = call.at, value := expr_func.func.getMangledNameHash)
+                    )
+                ),
+                new ExprMakeBlock(_block <- qblk, at = call.at)
+            )
+        )
+    }
+}
 
 [call_macro(name="qmacro_template_class")]
 class private AstQNamedTemplateClassMacro : AstCallMacro {
@@ -1311,10 +1416,14 @@ class private AstQNamedTemplateClassMacro : AstCallMacro {
             macro_error(prog, call.at, "expecting function name, {macro_call}(NAME,type<TemplateClassOrStructType>)")
             return <- default<ExpressionPtr>
         }
+        if (call.arguments[1]._type == null) {
+            macro_error(prog, call.at, "expecting type")
+            return <- default<ExpressionPtr>
+        }
         if (!(call.arguments[1]._type.baseType == Type.tStructure
             && call.arguments[1]._type.structType != null
             && call.arguments[1]._type.structType.flags.isTemplate)) {
-            macro_error(prog, call.at, "expecting template structure or class type, {macro_call}(NAME,type<TemplateClassOrStructType>)")
+            macro_error(prog, call.at, "expecting template structure or class type, {macro_call}(NAME,type<TemplateClassOrStructType>), got {describe(call.arguments[1]._type)} which is {call.arguments[1]._type.baseType}")
             return <- default<ExpressionPtr>
         }
         var inscope qclone <- clone_expression(call.arguments[1])

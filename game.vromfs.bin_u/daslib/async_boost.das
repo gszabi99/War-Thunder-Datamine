@@ -6,6 +6,11 @@ options strict_smart_pointers = true
 
 module async_boost shared private
 
+
+
+
+
+
 require strings
 require daslib/ast_boost
 require daslib/templates_boost
@@ -27,6 +32,7 @@ def public await(var a : iterator<variant<res : auto(T); wait : bool>>) : T {
 
 [tag_function_macro(tag="await_tag")]
 class AwaitMacro : AstFunctionAnnotation {
+    
     def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
         macro_error(compiling_program(), call.at, "result should be assigned to a variable, use 'let res <- await <| {call.arguments[0] |> describe()}'")
         return <- default<ExpressionPtr>
@@ -51,7 +57,7 @@ class AwaitCoroutineMacro : AstFunctionAnnotation {
     
     def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
         let iname = make_unique_private_name("_await_coroutine", call.at)
-        var inscope res <- qmacro_block <| $() {
+        var inscope res <- qmacro_block() {
             for ($i(iname) in $e(call.arguments[0])) {
                 yield $i(iname)
             }
@@ -98,7 +104,7 @@ class AsyncMacro : AstFunctionAnnotation {
             delete astVisitor
         }
 
-        var inscope blk <- qmacro_expr <| $() {
+        var inscope blk <- qmacro_expr() {
             return <- generator<$t(retT)>() <| $() {
                 $e(func.body)
                 return false
@@ -151,6 +157,7 @@ def validateAwaitFn(fn : smart_ptr<ast::Function>&; subCallName : das_string; va
 }
 
 enum AssignOp {
+    
     copy
     move
     clone
@@ -173,7 +180,7 @@ def move_clone_copy(var expr; voidRoutine : bool; var retType : smart_ptr<TypeDe
                 let name = make_unique_private_name("_async_iterator", expr.at)
                 let useMove = assignOp == AssignOp.move
                 let useClone = assignOp == AssignOp.clone
-                var inscope blk <- qmacro_block <| $() {
+                var inscope blk <- qmacro_block() {
                     for ($i(name) in $e(call.arguments[0])) {
                         if ($i(name) is res) {
                             if ($v(useMove)) {
@@ -201,6 +208,7 @@ def move_clone_copy(var expr; voidRoutine : bool; var retType : smart_ptr<TypeDe
 
 [macro_interface]
 class CollectAndReplaceIteratorFields : AstVisitor {
+    
     voidRoutine : bool
     retType : smart_ptr<TypeDecl>
 
@@ -277,19 +285,29 @@ class CollectAndReplaceIteratorFields : AstVisitor {
 
                         var subCall = call.arguments[0] as ExprCall
                         var inscope fn <- compiling_module() |> find_unique_function("{subCall.name}")
-                        var error = ""
-                        if (!validateAwaitFn(fn, subCall.name, error)) {
-                            macro_error(compiling_program(), expr.at, error)
+                        if (fn == null) {
+                            macro_error(compiling_program(), expr.at, "expecting await(<async fn>), but function {subCall.name} is not found,\ndefine variable type explicitly: let res : <type> = await <| {subCall.name}()\nor make sure the function is defined before the coroutine")
                             return <- expr
-                        }
+                        } else {
+                            var error = ""
+                            if (!validateAwaitFn(fn, subCall.name, error)) {
+                                macro_error(compiling_program(), expr.at, error)
+                                return <- expr
+                            }
 
-                        v._type |> move_new() <| clone_type(fn.result.firstType.argTypes[0])
+                            v._type |> move_new() <| clone_type(fn.result.firstType.argTypes[0])
+                        }
+                    } else {
+                        var inscope rmConst = clone_type(v._type)
+                        rmConst.flags &= ~TypeDeclFlags.constant
+                        rmConst.flags &= ~TypeDeclFlags.removeConstant
+                        v._type |> move(rmConst)
                     }
 
                     let name = make_unique_private_name("_async_iterator", expr.at)
                     let useMove = v.flags.init_via_move
                     let useClone = v.flags.init_via_clone
-                    var inscope blk <- qmacro_block <| $() {
+                    var inscope blk <- qmacro_block() {
                         var $i(v.name) : $t(v._type)
                         for ($i(name) in $e(call.arguments[0])) {
                             if ($i(name) is res) {
@@ -360,4 +378,36 @@ def public async_run_all(var a : array<iterator<auto>>) {
             }
         }
     }
+}
+
+
+def public async_timeout(var a : iterator<auto>; max_frames : int) : bool {
+    
+    
+    
+    var frames = 0
+    for (t in a) {
+        frames ++
+        if (frames >= max_frames) {
+            return false
+        }
+    }
+    return true
+}
+
+
+def public async_race(var a : iterator<auto>; var b : iterator<auto>) : int {
+    
+    
+    var ta : bool
+    var tb : bool
+    while (true) {
+        if (!next(a, ta) || empty(a)) {
+            return 0
+        }
+        if (!next(b, tb) || empty(b)) {
+            return 1
+        }
+    }
+    return -1
 }

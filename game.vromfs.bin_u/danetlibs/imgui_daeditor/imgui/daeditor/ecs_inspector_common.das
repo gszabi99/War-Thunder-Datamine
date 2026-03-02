@@ -1,5 +1,6 @@
 module ecs_inspector_common shared
 options stack = 65536
+options no_global_variables = false
 require ecs
 require ecs.common
 require imgui
@@ -24,6 +25,8 @@ require danetlibs.imgui_daeditor.imgui.daEditor.ecs_inspectors_macro
 require danetlibs.imgui_daeditor.daEditor.daEditor_common
 require %danetlibs.imgui_daeditor.imgui.imgui_common
 
+var private @ignore_heap_usage basicStructAnnotations : table<string; rtti::BasicStructureAnnotation?>
+var private basicStructAnnotationsInited = false
 
 [unused_argument(eid)]
 def default_menu(eid : array<EntityId> implicit; name, typeName : string; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>)
@@ -572,14 +575,14 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     TableSetupColumn("value", ImGuiTableColumnFlags.WidthStretch)
     TableSetupColumn("menu", ImGuiTableColumnFlags.WidthFixed, TEXT_BASE_WIDTH * 2f)
 
-    
-    var basicStructAnnotations : table<string; rtti::BasicStructureAnnotation?>
-    program_for_each_registered_module() <| $(mod)
-      mod |> module_for_each_annotation <| $(ann)
-        if ann.isBasicStructureAnnotation
-          unsafe
-            let name = get_annotation_name(ann)
-            basicStructAnnotations |> insert(name) <| addr(reinterpret<BasicStructureAnnotation> ann)
+    if !basicStructAnnotationsInited
+      basicStructAnnotationsInited = true
+      program_for_each_registered_module() <| $(mod)
+        mod |> module_for_each_annotation <| $(ann)
+          if ann.isBasicStructureAnnotation
+            unsafe
+              let name = get_annotation_name(ann)
+              basicStructAnnotations |> insert(name) <| addr(reinterpret<BasicStructureAnnotation> ann)
 
     let componentsNum = mgr |> getNumComponents(eid)
     var inscope comps : array<tuple<name : string; cri : ComponentRenderInfo>>

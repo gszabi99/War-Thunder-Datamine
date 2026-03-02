@@ -11,8 +11,10 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 let { showArmiesIndex } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let WwArmyGroupHandler = require("%scripts/worldWar/inOperation/handler/wwArmyGroupHandler.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
+let { getArmyGroups, getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
+let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+
 
 gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -44,8 +46,8 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
     let view = { items = [] }
     let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
     this.groupsHandlers = []
-    foreach (side in g_world_war.getSidesOrder()) {
-      let groups = g_world_war.getArmyGroupsBySide(side)
+    foreach (side in getSidesOrder()) {
+      let groups = getArmyGroupsBySide(side)
       if (groups.len() == 0)
         continue
 
@@ -131,7 +133,7 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onHoverArmyItem(obj) {
     let clanId = obj.clanId
-    let groups = g_world_war.getArmyGroups(@(group) group.clanId == clanId)
+    let groups = getArmyGroups(@(group) group.clanId == clanId)
     let groupArmyNames = []
     foreach (group in groups)
       groupArmyNames.extend(ww_get_armies_names_of_armygroup({

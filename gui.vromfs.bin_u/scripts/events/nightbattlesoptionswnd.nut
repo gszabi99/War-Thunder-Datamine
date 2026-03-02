@@ -12,10 +12,11 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES } = require("%sc
 let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { getNightBattlesUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { getUnlockNameText, doPreviewUnlockPrize, fillUnlockProgressBar, fillUnlockDescription,
-  fillUnlockImage, fillReward, fillUnlockTitle, fillUnlockPurchaseButton, fillUnlockManualOpenButton,
-  updateLockStatus, updateUnseenIcon, buildUnlockDesc, buildConditionsConfig, fillUnlockConditions,
-  fillUnlockStages } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
+let { doPreviewUnlockPrize, fillUnlockProgressBar, fillUnlockDescription, fillUnlockImage,
+  fillReward, fillUnlockTitle, fillUnlockPurchaseButton, fillUnlockManualOpenButton,
+  updateLockStatus, updateUnseenIcon, buildUnlockDesc, fillUnlockConditions, fillUnlockStages
+} = require("%scripts/unlocks/unlocksViewModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getUnlockCost, findUnusableUnitForManualUnlock } = require("%scripts/unlocks/unlocksModule.nut")

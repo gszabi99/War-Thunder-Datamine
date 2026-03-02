@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let interopGet = require("%rGui/interopGen.nut")
+let interopGen = require("%rGui/interopGen.nut")
+let { register_command } = require("console")
 
 let crewState = {
   totalCrewCount = Watched(0)
@@ -13,11 +14,12 @@ let crewState = {
 }
 
 
-interopGet({
+interopGen({
   stateTable = crewState
   prefix = "crew"
   postfix = "Update"
 })
 
+register_command(@(val) crewState.aliveCrewMembersCount.set(crewState.aliveCrewMembersCount.get() - val), "hud.shipCrewDamage")
 
 return crewState

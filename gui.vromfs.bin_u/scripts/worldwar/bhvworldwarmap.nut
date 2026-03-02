@@ -20,6 +20,8 @@ let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getRearZonesOwnedToSide } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { getBattles } = require("%scripts/worldWar/worldWarState.nut")
+
 
 function ww_is_append_path_mode_active() {
   if (!g_world_war.haveManagementAccessForSelectedArmies())
@@ -470,7 +472,7 @@ let worldWarMapControls = class {
       let diff = battle.pos - mapPos
       return diff.lengthSq() <= battleIconRadSquare && !battle.isFinished()
     }
-    let battles = g_world_war.getBattles(filterFunc)
+    let battles = getBattles(filterFunc)
     let haveAnyBattles = battles.len() > 0
 
     if (!haveAnyBattles)

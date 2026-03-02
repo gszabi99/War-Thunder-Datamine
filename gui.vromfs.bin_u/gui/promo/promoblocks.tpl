@@ -44,7 +44,9 @@ promoButton {
   <<#isMultiblock>>
   behavior:t = 'Timer'
   timer_handler_func:t = 'selectNextBlock'
-  timer_interval_msec:t='1000'
+  timer_interval_msec:t='100'
+  on_hover:t='onPromoButtonHover'
+  on_unhover:t='onPromoButtonUnHover'
   <</isMultiblock>>
 
   <<#timerFunc>>
@@ -117,24 +119,6 @@ promoButton {
           }
         }
       }
-      <<#isMultiblock>>
-        RadioButtonList {
-          id:t='multiblock_radiobuttons_list'
-          blockId:t='<<id>>'
-          position:t='absolute'
-          pos:t='0.5pw-0.5w, ph-h'
-          on_select:t='switchBlock'
-          on_click:t='manualSwitchBlock'
-          highlightSelected:t='yes'
-          class:t='promo'
-          <<#radiobuttons>>
-            RadioButton {
-              <<#selected>>selected:t='yes'<</selected>>
-              RadioButtonImg {}
-            }
-          <</radiobuttons>>
-        }
-      <</isMultiblock>>
       <<^showTextShade>>
       <<#notifyNew>>
       newIconWidget {
@@ -155,6 +139,28 @@ promoButton {
       <</showTextShade>>
     }
     <</fillBlocks>>
+    <<#isMultiblock>>
+    RadioButtonList {
+      id:t='multiblock_radiobuttons_list'
+      blockId:t='<<id>>'
+      position:t='absolute'
+      pos:t='0.5pw-0.5w, ph-h'
+      on_select:t='switchBlock'
+      on_click:t='manualSwitchBlock'
+      highlightSelected:t='yes'
+      class:t='promo'
+      <<#radiobuttons>>
+        RadioButton {
+          <<#selected>>selected:t='yes'<</selected>>
+          RadioButtonImg {
+            RadioButtonImgProgress {
+              id:t='progress'
+            }
+          }
+        }
+      <</radiobuttons>>
+    }
+    <</isMultiblock>>
   }
 
   collapsedContainer {

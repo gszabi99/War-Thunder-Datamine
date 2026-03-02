@@ -273,7 +273,7 @@ class FA18CockpitElementBase : Canvas
     printStrLn(" {aoaStr}")
 
     if fmw.fm.appliedCT.gear == 0.0
-      let machStr = fmt(":>6.2f", fmw.fm.Mach)
+      let machStr = fmt(":>6.2f", fmw.fm.cache.Mach)
       let overloadStr = fmt(":>5.1f", fm.localAccel.length() / 9.81 + 1.0)
       let maxOverloadStr = fmt(":>6.1f", cockpit.maxG)
       printStrLn("M{machStr}")
@@ -283,7 +283,7 @@ class FA18CockpitElementBase : Canvas
   def drawAltitude()
     // TODO: Make numbers blinking on low altitudes
     let pos = float2(0.4, -0.25)
-    var altitude = roundi(fm.currentAlt * metrToFeet)
+    var altitude = roundi(fm.input.currentAlt * metrToFeet)
 
     if abs(fm.vertSpeed * metrToFeet) < 40.0
       altitude = altitude / 10 * 10

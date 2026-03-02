@@ -26,21 +26,22 @@ let { getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { getTournamentRewardData, getLogNameByType, getUserLogsList, updateRepairCost } = require("%scripts/userLog/userlogUtils.nut")
 let { getTotalRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
-let { getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { stripTags, cutPrefix, split, startsWith, endsWith } = require("%sqstd/string.nut")
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
 let { getDifficultyTypeById, EASY_TASK, HARD_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
 let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
-let { getBattleTaskById, getDifficultyByProposals, getDifficultyTypeByTask
-} = require("%scripts/unlocks/battleTasks.nut")
+let { getBattleTaskById, getDifficultyTypeByTask } = require("%scripts/unlocks/battleTasksState.nut")
+let { getDifficultyByProposals } = require("%scripts/unlocks/battleTasks.nut")
 let { getBattleTaskUserLogText, getBattleTaskUpdateDesc } = require("%scripts/unlocks/battleTasksView.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { BASE_ITEM_TYPE_ICON, getItemClass } = require("%scripts/items/itemsTypeClasses.nut")
@@ -66,7 +67,7 @@ let { getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig,
   getPrizeTypeIcon } = require("%scripts/items/prizesView.nut")
 let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
-let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -127,15 +128,16 @@ function getDecoratorUnlock(resourceId, resourceType) {
   unlock.id = resourceId
   decoratorType = getTypeByResourceType(resourceType)
   if (decoratorType != decoratorTypes.UNKNOWN) {
-    unlock.name = decoratorType.getLocName(unlock.id, true)
-    unlock.desc = decoratorType.getLocDesc(unlock.id)
+    let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+    unlock.name = viewDecoratorType.getLocName(unlock.id, true)
+    unlock.desc = viewDecoratorType.getLocDesc(unlock.id)
     unlock.image = decoratorType.userlogPurchaseIcon
 
     let decorator = getDecorator(unlock.id, decoratorType)
     if (decorator && !is_in_loading_screen()) {
-      unlock.descrImage <- decoratorType.getImage(decorator)
-      unlock.descrImageRatio <- decoratorType.getRatio(decorator)
-      unlock.descrImageSize <- decoratorType.getImageSize(decorator)
+      unlock.descrImage <- viewDecoratorType.getImage(decorator)
+      unlock.descrImageRatio <- viewDecoratorType.getRatio(decorator)
+      unlock.descrImageSize <- viewDecoratorType.getImageSize(decorator)
     }
   }
 
@@ -217,7 +219,7 @@ function getExternalInventoryTrophyContent(config) {
       let unlock = getUnlockById(config.unlock)
       if (unlock != null) {
         let unlockConditions = buildConditionsConfig(unlock)
-        let unlockData = build_log_unlock_data(unlockConditions)
+        let unlockData = buildLogUnlockData(unlockConditions)
         icon = unlockData?.descrImage ?? unlockData?.image
       }
     }
@@ -784,7 +786,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.logImg = "#ui/gameuiskin#log_online_shop"
   }
   else if (logObj.type == EULT_NEW_UNLOCK) {
-    let config = build_log_unlock_data(logObj)
+    let config = buildLogUnlockData(logObj)
 
     res.name = config.title
     if (config.name != "")
@@ -895,7 +897,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       resourceType = decoratorType.resourceType
     }
     else {
-      config = build_log_unlock_data(logObj)
+      config = buildLogUnlockData(logObj)
       resourceType = logObj?.isAerobaticSmoke ? "smoke" : get_name_by_unlock_type(config.type)
     }
 

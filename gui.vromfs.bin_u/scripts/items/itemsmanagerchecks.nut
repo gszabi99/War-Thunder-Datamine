@@ -14,18 +14,21 @@ let { fillBlock } = require("%sqstd/datablock.nut")
 let { addItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let itemTransfer = require("%scripts/items/itemsTransfer.nut")
-let { setShouldCheckAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
 let { PRICE } = require("%scripts/utils/configs.nut")
 let { get_price_blk } = require("blkGetters")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { itemsListInternal,
   itemsList, inventory, inventoryItemById, shopItemById, itemsListExternal, itemsByItemdefId,
-  rawInventoryItemAmountsByItemdefId, getInventoryItemType, setExtInventoryUpdateTime
+  rawInventoryItemAmountsByItemdefId, getInventoryItemType, setExtInventoryUpdateTime,
+  setShouldCheckAutoConsume
 } = require("%scripts/items/itemsManagerState.nut")
 let { dbgTrophiesListInternal, incDbgUpdateInternalItemsCount
 } = require("%scripts/items/itemsManagerDbgState.nut")
-let { shopSmokeItems, createItem } = require("%scripts/items/itemsTypeClasses.nut")
-let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
+let { createItem } = require("%scripts/items/itemsTypeClasses.nut")
+let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
+let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe
+} = require("%scripts/items/bonusEffectsGetters.nut")
+
 
 const FAKE_ITEM_CYBER_CAFE_BOOSTER_UID = -1
 

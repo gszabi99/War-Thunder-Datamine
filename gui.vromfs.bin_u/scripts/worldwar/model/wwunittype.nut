@@ -7,7 +7,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getInfantryUnits, getArtilleryUnits, getTransportUnits
-} = require("%scripts/worldWar/worldWarStates.nut")
+} = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let fakeInfantryUnitName = "fake_infantry"
 const ALL_WW_UNITS_CODE = -2

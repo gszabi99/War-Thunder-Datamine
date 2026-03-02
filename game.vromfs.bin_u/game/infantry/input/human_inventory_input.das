@@ -10,6 +10,7 @@ require net
 [es(tag=input, after=human_input_es, REQUIRE=controlledHero)]
 def human_inventory_input_action_triggered_es(evt : EventOnKeyDown;
                                               eid : EntityId;
+                                              human_ladder__attached : bool;
                                               
                                               human_inventory__selectedItem : EntityId;
                                               
@@ -38,7 +39,7 @@ def human_inventory_input_action_triggered_es(evt : EventOnKeyDown;
       sendEvent(eid, CmdInventoryPickup(itemEid = selectedItem, usefulOnly = usefulOnly))
     
     
-  elif action == int(ShortcutEventId.ID_HUMAN_USE_MEDKIT) && heal__continuousInput
+  elif action == int(ShortcutEventId.ID_HUMAN_USE_MEDKIT) && heal__continuousInput && !human_ladder__attached
     send_net_event(eid, CmdMedkitUseRequest())
   
   

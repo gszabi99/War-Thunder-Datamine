@@ -146,11 +146,11 @@ function createTargetsList(settings, objectStyle) {
     styleText.__merge({
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      pos = [pw(-75), ph(-80)]
+      pos = [pw(-75), ph(-78)]
       size = flex()
       halign = ALIGN_CENTER
       valign = ALIGN_TOP
-      fontSize = objectStyle.fontScale * styleText.fontSize * 2.0
+      fontSize = objectStyle.fontScale * styleText.fontSize * 1.5
       text = targetsText
     }) : @() {}
 }

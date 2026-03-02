@@ -10,6 +10,8 @@ let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { wwGetOperationId } = require("worldwar")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
+let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+
 
 enum UNIT_STATS {
   INITIAL
@@ -17,6 +19,14 @@ enum UNIT_STATS {
   INACTIVE
   REMAIN
   TOTAL 
+}
+
+function sortUnitsByTypeAndCount(a, b) {
+  let aType = a.wwUnitType.code
+  let bType = b.wwUnitType.code
+  if (aType != bType)
+    return aType - bType
+  return a.count - b.count
 }
 
 let WwBattleResultsView = class {
@@ -126,7 +136,7 @@ let WwBattleResultsView = class {
 
     let unitsGroups = wwOperationUnitsGroups.getUnitsGroups()
     let needShowUnitsByGroups = unitsGroups != null
-    teamInfo.unitsInitial.sort(::g_world_war.sortUnitsByTypeAndCount)
+    teamInfo.unitsInitial.sort(sortUnitsByTypeAndCount)
     foreach (wwUnit in teamInfo.unitsInitial) {
       let unitName = wwUnit.name
       let wwUnitType = wwUnit.getWwUnitType()
@@ -228,7 +238,7 @@ let WwBattleResultsView = class {
   function getTeamBlock() {
     let mapName = this.getOperation()?.getMapId() ?? ""
     let teams = []
-    foreach (sideIdx, side in ::g_world_war.getSidesOrder()) {
+    foreach (sideIdx, side in getSidesOrder()) {
       let team = this.getTeamBySide(side)
       if (!team)
         continue

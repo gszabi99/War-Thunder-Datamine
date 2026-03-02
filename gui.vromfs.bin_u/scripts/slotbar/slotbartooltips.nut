@@ -14,6 +14,7 @@ let { getUnitRole, getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unit
 let { format } = require("string")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { floor } = require("math")
+let { fillAirInfo } = require("%scripts/airInfo.nut")
 let fontScaleOption = require("%scripts/options/fonts.nut")
 
 
@@ -56,7 +57,7 @@ addTooltipTypes({
         : params.__merge({
             overrideMods = getSlotbarOverrideMods()?[unit.shopCountry][unit.name]
           })
-      ::showAirInfo(unit, true, contentObj, handler, airInfoParams)
+      fillAirInfo(unit, true, contentObj, handler, airInfoParams)
 
       obj.getScene().setUpdatesEnabled(true, true)
 

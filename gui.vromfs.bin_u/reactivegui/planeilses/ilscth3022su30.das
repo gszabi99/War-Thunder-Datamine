@@ -406,7 +406,7 @@ class Component : Canvas
     return if abs(fmw.roll) > 45.0 || abs(fmw.tangage) > 45.0
 
     let pos = float2(0.37, -0.355)
-    let ralt = fmw.fm.currentAlt
+    let ralt = fmw.fm.input.currentAlt
     drawStrAnchored(pos, "{quantizeAlt(ralt)}Р", AnchorHorz.Right, AnchorVert.Top)
 
 
@@ -636,10 +636,10 @@ class Component : Canvas
 
     setCaretPosition(pos)
     setFontSize(roundi(0.8 * float(defaultFontSize)))
-    printStr("{floori(fmw.fm.Mach)}.")
+    printStr("{floori(fmw.fm.cache.Mach)}.")
 
     setFontSize(roundi(0.6 * float(defaultFontSize)))
-    printStr(fmt(":02d", floori(fract(fmw.fm.Mach) * 100.0)))
+    printStr(fmt(":02d", floori(fract(fmw.fm.cache.Mach) * 100.0)))
 
     setFontSize(roundi(0.8 * float(defaultFontSize)))
     printStr("М")
@@ -1061,7 +1061,7 @@ class Component : Canvas
       var bayDoorLim = float2(0.0)
       var isBlocked = false
       *wc->getNextGunLimits(secondaryWeapon.trigger_no, isBlocked, machLimit, verAccelLimit, gearLim, bayDoorLim)
-      if isBlocked || fmw.fm.Mach > machLimit || float(fmw.fm.localAccel.y) > verAccelLimit
+      if isBlocked || fmw.fm.cache.Mach > machLimit || float(fmw.fm.localAccel.y) > verAccelLimit
         hasReleasePerm = false
 
     if isGroundGunMode
@@ -1071,7 +1071,7 @@ class Component : Canvas
     elif isAirGunRangedMode
       hasReleasePerm = !isOutsideRminRmax
 
-    hasReleasePerm = hasReleasePerm && !(fmw.isOnGround || fmw.fm.currentAlt < fmw.minAltitudeForDropShells) // Armed check
+    hasReleasePerm = hasReleasePerm && !(fmw.isOnGround || fmw.fm.input.currentAlt < fmw.minAltitudeForDropShells) // Armed check
     hasReleasePerm = hasReleasePerm && !hero.cannotShoot
 
     if hasReleasePerm
@@ -1352,7 +1352,7 @@ class Component : Canvas
       drawBombCcrp()
       drawGroundRangeScale(avoidRange * 3.0, ccipRange, spi.distance)
 
-    if ccipRange < avoidRange || fmw.fm.currentAlt < avoidRange
+    if ccipRange < avoidRange || fmw.fm.input.currentAlt < avoidRange
       isOutsideRminRmax = true
 
 

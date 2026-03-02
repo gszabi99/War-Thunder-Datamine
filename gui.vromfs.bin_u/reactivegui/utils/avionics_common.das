@@ -12,6 +12,7 @@ require GamePhys
 require GuidanceLock
 require hud
 require math
+require Plane
 require RadarHud
 require Sensors
 require strings
@@ -74,7 +75,7 @@ def get_load_factor(local_accel_y : double) : float
 // ****************************************************************************
 
 def get_armed_status(fmw : FlightModelWrap const?) : bool
-  return !(fmw.isOnGround || fmw.fm.currentAlt < fmw.minAltitudeForDropShells)
+  return !(fmw.isOnGround || fmw.fm.input.currentAlt < fmw.minAltitudeForDropShells)
 
 enum WeaponMode
   INVALID = 0
@@ -165,6 +166,12 @@ def get_gun_boresight(hero : Unit const?;
       if world_to_screen |> invoke(gunVec, boresightPos.screenPos)
         boresightPos.isScreenPosValid = true
   return <- boresightPos
+
+def is_trigger_pulled(fm : FlightModel?; wc : WeaponController?)
+  for i in 0..wc.Weapons.triggerCount
+    if *fm |> getAppliedWeaponControl(i) && wc.Weapons |> haveBullets(i)
+      return true
+  return false
 
 // ****************************************************************************
 // ***   Sensors   ************************************************************

@@ -21,14 +21,13 @@ let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
-let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
 let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { isMissionForUnitType, canPlayGamemodeBySquad, getLevelMapBackgroundColors
 } = require("%scripts/missions/missionsUtils.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-
 
 
 
@@ -248,16 +247,17 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if ((aircraft != "") && !(gt & GT_VERSUS)
         && (this.gm != GM_EVENT) && (this.gm != GM_TOURNAMENT) && (this.gm != GM_DYNAMIC) && (this.gm != GM_BUILDER) && (this.gm != GM_BENCHMARK)) {
       config.aircraftItem <- $"{loc("options/aircraft")}{loc("ui/colon")}"
+
+      let unit = getAircraftByName(aircraft)
+      let missionWeapon = blk.getStr("player_weapons", "")
       config.aircraft <- "; ".concat(getUnitName(aircraft),
-        getWeaponNameText(aircraft, null, blk.getStr("player_weapons", ""), ", "))
+        getWeaponNameText(unit, null, missionWeapon, ", "))
 
       let country = getShopCountry(aircraft)
       log($"aircraft = {aircraft} country = {country}")
-      let unit = getAircraftByName(aircraft)
       config.flag <- unit == null || this.gm == GM_TRAINING ? ""
         : getCountryIcon(unit.getOperatorCountry(), false)
     }
-
 
     config.maintext <- loc($"missions/{mission.id}/desc", "")
     if (this.gm == GM_SKIRMISH && config.maintext != "" && !("objective" in config)) {

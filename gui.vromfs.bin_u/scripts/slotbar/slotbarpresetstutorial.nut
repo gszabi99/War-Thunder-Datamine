@@ -17,7 +17,8 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
+let { slotbarPresetsByCountry, slotbarPresetsSeletected } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 let SlotbarPresetsTutorial = class {
   
@@ -68,7 +69,7 @@ let SlotbarPresetsTutorial = class {
     this.currentGameModeId = getCurrentGameModeId()
     if (this.preset == null)
       return false
-    let currentPresetIndex = getTblValue(this.currentCountry, slotbarPresets.selected, -1)
+    let currentPresetIndex = slotbarPresetsSeletected?[this.currentCountry] ?? -1
     this.validPresetIndex = this.getPresetIndex(this.preset)
     if (currentPresetIndex == this.validPresetIndex)
       if (this.isNewUnitTypeToBattleTutorial)
@@ -126,7 +127,7 @@ let SlotbarPresetsTutorial = class {
     if (this.checkCurrentTutorialCanceled())
       return
     this.chooseSlotbarPresetHandler = gui_choose_slotbar_preset(this.currentHandler)
-    this.chooseSlotbarPresetIndex = u.find_in_array(slotbarPresets.presets[this.currentCountry], this.preset)
+    this.chooseSlotbarPresetIndex = u.find_in_array(slotbarPresetsByCountry[this.currentCountry], this.preset)
     if (this.chooseSlotbarPresetIndex == -1)
       return
     let itemsListObj = this.chooseSlotbarPresetHandler.scene.findObject("items_list")
@@ -212,7 +213,7 @@ let SlotbarPresetsTutorial = class {
   }
 
   function getPresetIndex(prst) {
-    let presets = getTblValue(this.currentCountry, slotbarPresets.presets, null)
+    let presets = slotbarPresetsByCountry?[this.currentCountry]
     return u.find_in_array(presets, prst, -1)
   }
 
@@ -226,7 +227,7 @@ let SlotbarPresetsTutorial = class {
       return false
     if (isUnitAllowedForGameMode(showedUnit.get()))
       return false
-    let currentPreset = slotbarPresets.getCurrentPreset(this.currentCountry)
+    let currentPreset = getCurrentSlotbarPreset(this.currentCountry)
     if (currentPreset == null)
       return false
     let index = this.getAllowedUnitIndexByPreset(currentPreset)

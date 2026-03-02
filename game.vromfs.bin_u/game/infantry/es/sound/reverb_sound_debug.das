@@ -45,7 +45,7 @@ def sound_debug_reverb_console_cmd()
 
 
 def get_reverb_3d_pos()
-  var pos : float3
+  var pos = get_listener_pos()
   query() <| $ [es(REQUIRE=watchedByPlr)] (attach_reverb_sound_to_watchable__nodeId : int; animchar : AnimcharBaseComponent)
     if attach_reverb_sound_to_watchable__nodeId >= 0
       pos = geomtree_getNodeWpos(*animchar.nodeTree, attach_reverb_sound_to_watchable__nodeId) + float3(0., 0.1, 0.)

@@ -6,6 +6,12 @@ options indenting = 4
 
 module debug_eval shared private
 
+
+
+
+
+
+
 require daslib/strings_boost
 require daslib/match
 require daslib/math_bits
@@ -73,17 +79,19 @@ def each_token(st : string) {
 let INVALID_VALUE = LONG_MIN
 
 struct public Result {
-    tinfo : TypeInfo
-    value : float4
-    data  : void const?
-    error : string
+    
+    tinfo : TypeInfo 
+    value : float4 
+    data  : void const? 
+    error : string 
 }
 
 struct TokenStream {
-    tokens : iterator<Token>
-    stream : array<Token>
-    errors : array<string>
-    names  : table<string; Result>
+    
+    tokens : iterator<Token> 
+    stream : array<Token> 
+    errors : array<string> 
+    names  : table<string; Result> 
 }
 
 def TokenStream(st : string) {
@@ -611,6 +619,7 @@ def expr(var st : TokenStream) : Result {
 }
 
 def public debug_eval(context : table<string; Result>; expr : string) : Result {
+    
     var st <- TokenStream(expr)
     st.names := context
     var result = expr(st)

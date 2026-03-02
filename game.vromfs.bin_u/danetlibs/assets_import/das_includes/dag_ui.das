@@ -8,6 +8,7 @@ require danetlibs.assets_import.das_includes.utility
 require AssetsImport
 require DagorShaders
 require DagorTexture3D
+require DagorImgui
 
 let textureIconSize = 75
 let magnifiedTextureIconSize = 375
@@ -42,8 +43,7 @@ def get_asset_status_color(status : AssetLoadingStatus)
     return float4(1f, 1f, 1f, 1f)
 
 def dag_tex_id_to_imgui(tex_id : D3DRESID&)
-  unsafe
-    return reinterpret<void?> tex_id
+  return convert_dag_res_id_to_imgui(tex_id)
 
 def open_file(path : string)
   

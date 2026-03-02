@@ -20,7 +20,6 @@ def slot_attach_init_tms_impl(dt : float;
                               animchar__visible : bool = true;
                               slot_attach__calcAnim : bool = true;
                               slot_attach__rotTm : float3x4 const?)
-  let rotTm = slot_attach__rotTm ?? float3x4()
   if slot_attach__slotId < 0 || !animchar_attach__attachedTo
     return
   var tmpTm : mat44f
@@ -37,7 +36,7 @@ def slot_attach_init_tms_impl(dt : float;
           attachTm[0] = float3(tmpTm.col0.x, tmpTm.col0.y, tmpTm.col0.z)
           attachTm[1] = float3(tmpTm.col1.x, tmpTm.col1.y, tmpTm.col1.z)
           attachTm[2] = float3(tmpTm.col2.x, tmpTm.col2.y, tmpTm.col2.z)
-          attachTm = attachTm * rotTm
+          attachTm = attachTm * (*slot_attach__rotTm)
           let pos = tmpTm.col3
           tmpTm = mat44f(attachTm)
           tmpTm.col3 = pos

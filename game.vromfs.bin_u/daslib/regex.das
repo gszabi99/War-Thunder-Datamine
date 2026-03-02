@@ -6,7 +6,26 @@ options strict_smart_pointers = true
 
 module regex shared public
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 require daslib/strings_boost
+require strings public
 
 enum ReOp {
     
@@ -14,15 +33,23 @@ enum ReOp {
     Set
     Any
     Eos
+    Bos
     Group
     Plus
     Star
     Question
     Concat
     Union
+    Repeat
+    WordBoundary
+    NonWordBoundary
+    Lookahead
+    NegativeLookahead
 }
 
+
 typedef CharSet = uint[8]
+
 typedef ReGenRandom = iterator<uint>
 
 
@@ -42,16 +69,21 @@ struct ReNode {
     @do_not_delete@do_not_convert next : ReNode?
     cset    : CharSet
     index   : int
+    min_rep : int   
+    max_rep : int   
+    lazy    : bool  
     @do_not_convert tail : uint8 const?
 }
 
 struct Regex {
     
-    root        : ReNode?
+    root            : ReNode?
     @do_not_convert match : uint8 const?
-    groups      : array<tuple<range; string>>
-    earlyOut    : CharSet
-    canEarlyOut : bool
+    groups          : array<tuple<range; string>>
+    earlyOut        : CharSet
+    canEarlyOut     : bool
+    caseInsensitive : bool   
+    dotAll          : bool   
 }
 
 variant MaybeReNode {
@@ -73,6 +105,7 @@ var private trace_tab = 0
 var private re_gen_rep_limit = 8u
 
 def public re_gen_get_rep_limit {
+    
     return re_gen_rep_limit
 }
 
@@ -193,31 +226,44 @@ def private set_meta(var cset : CharSet; che : int) {
     } elif (che == 'W') {
         var eset : CharSet
         set_meta(eset, 'w')
+        set_negative(eset)
         set_or_set(cset, eset)
     } elif (che == 's') {
         set_or_char(cset, ' ')
         set_or_char(cset, '\t')
+        set_or_char(cset, '\n')
+        set_or_char(cset, '\r')
+        set_or_char(cset, int(0x0C))  
+        set_or_char(cset, int(0x0B))  
     } elif (che == 'S') {
         var eset : CharSet
         set_meta(eset, 's')
+        set_negative(eset)
         set_or_set(cset, eset)
     } elif (che == 'd') {
         set_or_range(cset, range('0', '9'))
     } elif (che == 'D') {
         var eset : CharSet
         set_meta(eset, 'd')
+        set_negative(eset)
         set_or_set(cset, eset)
     } elif (che == 'n') {
         set_or_char(cset, '\n')
     } elif (che == 'r') {
         set_or_char(cset, '\r')
+    } elif (che == 't') {
+        set_or_char(cset, '\t')
+    } elif (che == 'f') {
+        set_or_char(cset, int(0x0C))
+    } elif (che == 'v') {
+        set_or_char(cset, int(0x0B))
     } else {
         set_or_char(cset, che)
     }
 }
 
-let private meta = "\\+-*.()[]|^"
-let private meta_set = "wWsSdDnr"
+let private meta = "\\+*.()[]|^\{}"
+let private meta_set = "wWsSdDnrtfvbB"
 
 def private is_meta_character(ch : int) : bool {
     return find(meta, ch) != -1
@@ -225,6 +271,14 @@ def private is_meta_character(ch : int) : bool {
 
 def private is_set_character(ch : int) : bool {
     return find(meta_set, ch) != -1
+}
+
+def private is_digit(ch : int) : bool {
+    return ch >= '0' && ch <= '9'
+}
+
+def private is_word_character(ch : int) : bool {
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_'
 }
 
 def private from_hex(ch : int) {
@@ -281,13 +335,18 @@ def private re_char(expr : string; offset : int) : MaybeReNode {
                 let hex2 = at(expr, offset + 3)
                 if (is_hex(hex2)) {
                     note("hex \\{to_char(hex1)}{to_char(hex2)} {uint(from_hex(hex1,hex2))}", offset)
-                    return maybe(new ReNode(op = ReOp.Char, text = string_from_hex(hex1, hex2), textLen = 1, at = range(offset, offset + 3)))
+                    return maybe(new ReNode(op = ReOp.Char, text = string_from_hex(hex1, hex2), textLen = 1, at = range(offset, offset + 4)))
                 }
             }
             note("hex \\{to_char(hex1)} {uint(from_hex(hex1))}", offset)
-            return maybe(new ReNode(op = ReOp.Char, text = string_from_hex(hex1), textLen = 1, at = range(offset, offset + 2)))
+            return maybe(new ReNode(op = ReOp.Char, text = string_from_hex(hex1), textLen = 1, at = range(offset, offset + 3)))
         }
         if (is_set_character(ech)) {
+            if (ech == 'b') {
+                return maybe(new ReNode(op = ReOp.WordBoundary, at = range(offset, offset + 2)))
+            } elif (ech == 'B') {
+                return maybe(new ReNode(op = ReOp.NonWordBoundary, at = range(offset, offset + 2)))
+            }
             var cset : CharSet
             set_meta(cset, ech)
             return maybe(new ReNode(op = ReOp.Set, cset = cset, at = range(offset, offset + 2)))
@@ -463,6 +522,18 @@ def private re_eos(expr : string; offset : int) : MaybeReNode {
 }
 
 
+def private re_bos(expr : string; offset : int) : MaybeReNode {
+    trace("re_bos", offset)
+    if (eos(expr, offset)) {
+        return nada()
+    }
+    if (at(expr, offset) == '^') {
+        return maybe(new ReNode(op = ReOp.Bos, at = range(offset, offset + 1)))
+    }
+    return nada()
+}
+
+
 def private re_group(expr : string; offset : int) : MaybeReNode {
     trace("re_group", offset)
     if (eos(expr, offset)) {
@@ -471,7 +542,38 @@ def private re_group(expr : string; offset : int) : MaybeReNode {
     if (at(expr, offset) != '(') {
         return nada();
     }
-    var ore = re_re(expr, offset + 1);
+    var group_offset = offset + 1
+    var non_capturing = false
+    var group_name = ""
+    var lookahead_op = ReOp.Group  
+    
+    if (!eos(expr, group_offset) && at(expr, group_offset) == '?') {
+        if (!eos(expr, group_offset + 1) && at(expr, group_offset + 1) == ':') {
+            non_capturing = true
+            group_offset += 2
+        } elif (!eos(expr, group_offset + 1) && at(expr, group_offset + 1) == '=') {
+            lookahead_op = ReOp.Lookahead
+            group_offset += 2
+        } elif (!eos(expr, group_offset + 1) && at(expr, group_offset + 1) == '!') {
+            lookahead_op = ReOp.NegativeLookahead
+            group_offset += 2
+        } elif (!eos(expr, group_offset + 1) && at(expr, group_offset + 1) == 'P') {
+            if (!eos(expr, group_offset + 2) && at(expr, group_offset + 2) == '<') {
+                var name_start = group_offset + 3
+                var name_end = name_start
+                while (!eos(expr, name_end) && at(expr, name_end) != '>') {
+                    name_end++
+                }
+                if (eos(expr, name_end)) {
+                    note("syntax error, expecting >", name_end)
+                    return nada()
+                }
+                group_name = slice(expr, name_start, name_end)
+                group_offset = name_end + 1
+            }
+        }
+    }
+    var ore = re_re(expr, group_offset);
     if (ore is nothing) {
         return nada();
     }
@@ -479,7 +581,19 @@ def private re_group(expr : string; offset : int) : MaybeReNode {
         delete ore
         return nada()
     }
-    return maybe(new ReNode(op = ReOp.Group, subexpr = ore as value, at = range(offset, next(ore) + 1)))
+    if (lookahead_op != ReOp.Group) {
+        var node = new ReNode(op = lookahead_op, subexpr = ore as value, at = range(offset, next(ore) + 1))
+        node.index = -1
+        return maybe(node)
+    }
+    var node = new ReNode(op = ReOp.Group, subexpr = ore as value, at = range(offset, next(ore) + 1))
+    if (non_capturing) {
+        node.index = -1
+    }
+    if (!empty(group_name)) {
+        node.text = group_name
+    }
+    return maybe(node)
 }
 
 
@@ -499,6 +613,10 @@ def private re_elementary(expr : string; offset : int) : MaybeReNode {
     var oeos = re_eos(expr, offset)
     if (oeos is value) {
         return oeos
+    }
+    var obos = re_bos(expr, offset)
+    if (obos is value) {
+        return obos
     }
     var oset = re_set(expr, offset)
     if (oset is value) {
@@ -601,6 +719,8 @@ def private  re_re(expr : string; offset : int) : MaybeReNode {
 
 
 
+
+
 def private re_basic(expr : string; offset : int) : MaybeReNode {
     trace("re_basic", offset)
     if (eos(expr, offset)) {
@@ -611,12 +731,93 @@ def private re_basic(expr : string; offset : int) : MaybeReNode {
         return nada()
     }
     let ch = at(expr, next(oelem))
+    
+    if (ch == '*' || ch == '+' || ch == '?' || ch == '{') {
+        let eop = (oelem as value).op
+        if (eop == ReOp.Lookahead || eop == ReOp.NegativeLookahead) {
+            note("quantifier on lookahead is not allowed", next(oelem))
+            return nada()
+        }
+    }
     if (ch == '*') {
-        return maybe(new ReNode(op = ReOp.Star, subexpr = oelem as value, at = range(offset, next(oelem) + 1)))
+        var end_ofs = next(oelem) + 1
+        var is_lazy = false
+        if (!eos(expr, end_ofs) && at(expr, end_ofs) == '?') {
+            is_lazy = true
+            end_ofs++
+        }
+        return maybe(new ReNode(op = ReOp.Star, subexpr = oelem as value, lazy = is_lazy, at = range(offset, end_ofs)))
     } elif (ch == '+') {
-        return maybe(new ReNode(op = ReOp.Plus, subexpr = oelem as value, at = range(offset, next(oelem) + 1)))
+        var end_ofs = next(oelem) + 1
+        var is_lazy = false
+        if (!eos(expr, end_ofs) && at(expr, end_ofs) == '?') {
+            is_lazy = true
+            end_ofs++
+        }
+        return maybe(new ReNode(op = ReOp.Plus, subexpr = oelem as value, lazy = is_lazy, at = range(offset, end_ofs)))
     } elif (ch == '?') {
-        return maybe(new ReNode(op = ReOp.Question, subexpr = oelem as value, at = range(offset, next(oelem) + 1)))
+        var end_ofs = next(oelem) + 1
+        var is_lazy = false
+        if (!eos(expr, end_ofs) && at(expr, end_ofs) == '?') {
+            is_lazy = true
+            end_ofs++
+        }
+        return maybe(new ReNode(op = ReOp.Question, subexpr = oelem as value, lazy = is_lazy, at = range(offset, end_ofs)))
+    } elif (ch == '{') {
+        
+        var rofs = next(oelem) + 1
+        var min_val = 0
+        var max_val = 0
+        var has_comma = false
+        var has_max = false
+        
+        if (eos(expr, rofs) || !is_digit(at(expr, rofs))) {
+            note("syntax error, expecting digit after \{", rofs)
+            return nada()
+        }
+        while (!eos(expr, rofs) && is_digit(at(expr, rofs))) {
+            min_val = min_val * 10 + (at(expr, rofs) - '0')
+            rofs++
+        }
+        if (eos(expr, rofs)) {
+            note("syntax error, expecting \} or ,", rofs)
+            return nada()
+        }
+        let nch = at(expr, rofs)
+        if (nch == ',') {
+            has_comma = true
+            rofs++
+            if (eos(expr, rofs)) {
+                note("syntax error, expecting \} or digit", rofs)
+                return nada()
+            }
+            if (is_digit(at(expr, rofs))) {
+                has_max = true
+                while (!eos(expr, rofs) && is_digit(at(expr, rofs))) {
+                    max_val = max_val * 10 + (at(expr, rofs) - '0')
+                    rofs++
+                }
+            }
+        }
+        if (eos(expr, rofs) || at(expr, rofs) != '}') {
+            note("syntax error, expecting \}", rofs)
+            return nada()
+        }
+        rofs++
+        if (!has_comma) {
+            
+            max_val = min_val
+        } elif (!has_max) {
+            
+            max_val = -1
+        }
+        
+        var is_lazy = false
+        if (!eos(expr, rofs) && at(expr, rofs) == '?') {
+            is_lazy = true
+            rofs++
+        }
+        return maybe(new ReNode(op = ReOp.Repeat, subexpr = oelem as value, min_rep = min_val, max_rep = max_val, lazy = is_lazy, at = range(offset, rofs)))
     }
     return oelem
 }
@@ -635,6 +836,7 @@ def private re_parse(expr : string) : ReNode? {
 }
 
 def public visit_top_down(var node : ReNode?; blk : block<(var n : ReNode?) : void>) {
+    
     invoke(blk, node)
     for (x in node.all) {
         visit_top_down(x, blk)
@@ -652,13 +854,15 @@ def public visit_top_down(var node : ReNode?; blk : block<(var n : ReNode?) : vo
 
 def private re_assign_next(var re : Regex) {
     var id = 0
-    visit_top_down(re.root) <| $(var node) {
+    visit_top_down(re.root) $(var node) {
         node.id = id ++
         if (node.op == ReOp.Concat) {
             node.left.next = node.right
             node.right.next = node.next
         } elif (node.op == ReOp.Group) {
             node.subexpr.next = node.next
+        } elif (node.op == ReOp.Lookahead || node.op == ReOp.NegativeLookahead) {
+            node.subexpr.next = null  
         } elif (node.op == ReOp.Union) {
             for (sub in node.all) {
                 sub.next = node.next
@@ -669,11 +873,18 @@ def private re_assign_next(var re : Regex) {
 
 def private re_assign_groups(var re : Regex) {
     push(re.groups, (range(0), ""))
-    visit_top_down(re.root) <| $(var node) {
+    visit_top_down(re.root) $(var node) {
         if (node.op == ReOp.Group) {
+            if (node.index == -1) {
+                return  
+            }
             let index = length(re.groups)
             node.index = index
-            push(re.groups, (range(0), "{index}"))
+            if (!empty(node.text)) {
+                push(re.groups, (range(0), node.text))  
+            } else {
+                push(re.groups, (range(0), "{index}"))
+            }
         }
     }
 }
@@ -683,18 +894,29 @@ def private re_assign_groups(var re : Regex) {
 
 
 def private re_assign_match_functions(var re : Regex) {
-    visit_top_down(re.root) <| $(var node) {
+    visit_top_down(re.root) $(var node) {
         if (node.op == ReOp.Char) {
-            if (node.textLen == 1) {
-                node.fun2 = @@re_match2_single_char
+            if (re.caseInsensitive) {
+                if (node.textLen == 1) {
+                    node.fun2 = @@re_match2_single_char_ci
+                } else {
+                    node.fun2 = @@re_match2_char_ci
+                }
             } else {
-                node.fun2 = @@re_match2_char
+                if (node.textLen == 1) {
+                    node.fun2 = @@re_match2_single_char
+                } else {
+                    node.fun2 = @@re_match2_char
+                }
             }
             node.gen2 = @@re_gen2_char
         } elif (node.op == ReOp.Union) {
             node.fun2 = @@re_match2_union
             node.gen2 = @@re_gen2_union
         } elif (node.op == ReOp.Set) {
+            if (re.caseInsensitive) {
+                case_fold_set(node.cset)
+            }
             node.fun2 = @@re_match2_set
             node.gen2 = @@re_gen2_set
         } elif (node.op == ReOp.Any) {
@@ -707,25 +929,79 @@ def private re_assign_match_functions(var re : Regex) {
             node.fun2 = @@re_match2_concat
             node.gen2 = @@re_gen2_concat
         } elif (node.op == ReOp.Plus) {
-            if (node.subexpr.op == ReOp.Set) {
+            if (node.lazy) {
+                node.fun2 = @@re_match2_plus_lazy
+            } elif (node.subexpr.op == ReOp.Set) {
                 node.cset = node.subexpr.cset
+                if (re.caseInsensitive) {
+                    case_fold_set(node.cset)
+                }
                 node.fun2 = @@re_match2_plus_set
             } else {
                 node.fun2 = @@re_match2_plus
             }
-            node.fun2 = @@re_match2_plus
             node.gen2 = @@re_gen2_plus
         } elif (node.op == ReOp.Star) {
-            node.fun2 = @@re_match2_star
+            if (node.lazy) {
+                node.fun2 = @@re_match2_star_lazy
+            } else {
+                node.fun2 = @@re_match2_star
+            }
             node.gen2 = @@re_gen2_star
         } elif (node.op == ReOp.Question) {
-            node.fun2 = @@re_match2_question
+            if (node.lazy) {
+                node.fun2 = @@re_match2_question_lazy
+            } else {
+                node.fun2 = @@re_match2_question
+            }
             node.gen2 = @@re_gen2_question
         } elif (node.op == ReOp.Group) {
             node.fun2 = @@re_match2_group
             node.gen2 = @@re_gen2_group
+        } elif (node.op == ReOp.Bos) {
+            node.fun2 = @@re_match2_bos
+            node.gen2 = @@re_gen2_bos
+        } elif (node.op == ReOp.Repeat) {
+            if (node.lazy) {
+                node.fun2 = @@re_match2_repeat_lazy
+            } else {
+                node.fun2 = @@re_match2_repeat
+            }
+            node.gen2 = @@re_gen2_repeat
+        } elif (node.op == ReOp.WordBoundary) {
+            node.fun2 = @@re_match2_word_boundary
+            node.gen2 = @@re_gen2_word_boundary
+        } elif (node.op == ReOp.NonWordBoundary) {
+            node.fun2 = @@re_match2_non_word_boundary
+            node.gen2 = @@re_gen2_non_word_boundary
+        } elif (node.op == ReOp.Lookahead) {
+            node.fun2 = @@re_match2_lookahead
+            node.gen2 = @@re_gen2_lookahead
+        } elif (node.op == ReOp.NegativeLookahead) {
+            node.fun2 = @@re_match2_negative_lookahead
+            node.gen2 = @@re_gen2_negative_lookahead
         } else {
             panic("unsupported {node.op}")
+        }
+    }
+}
+
+def private ci_lower(ch : int) : int {
+    
+    if (ch >= 'A' && ch <= 'Z') {
+        return ch + 32
+    }
+    return ch
+}
+
+def private case_fold_set(var cset : CharSet) {
+    
+    for (ch in range(0, 256)) {
+        if (is_char_in_set(ch, cset)) {
+            let lo = ci_lower(ch)
+            let up = (lo >= 'a' && lo <= 'z') ? lo - 32 : lo
+            set_or_char(cset, lo)
+            set_or_char(cset, up)
         }
     }
 }
@@ -780,12 +1056,57 @@ def private re_match2_char(var regex : Regex; var node : ReNode?; str : uint8 co
 }
 
 [unsafe_deref]
-def private re_match2_union(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+def private re_match2_single_char_ci(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
     if (log_match_enabled) {
-        print("match union {str}\n")
+        print("match single char ci `{node.text}` {str}\n")
     }
     if (*str == 0u8) {
         return null
+    }
+    unsafe {
+        if (ci_lower(character_uat(node.text, 0)) != ci_lower(int(*str))) {
+            return null
+        }
+        var tail = str + 1
+        node.tail = tail
+        var node2 = node.next
+        if (node2 != null) {
+            return invoke(node2.fun2, regex, node2, tail)
+        } else {
+            return tail
+        }
+    }
+}
+
+[unsafe_deref]
+def private re_match2_char_ci(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match char ci `{node.text}` {str}\n")
+    }
+    if (*str == 0u8) {
+        return null
+    }
+    unsafe {
+        for (i in range(node.textLen)) {
+            if (ci_lower(character_uat(node.text, i)) != ci_lower(int(*(str + i)))) {
+                return null
+            }
+        }
+        var tail = str + node.textLen
+        node.tail = tail
+        var node2 = node.next
+        if (node2 != null) {
+            return invoke(node2.fun2, regex, node2, tail)
+        } else {
+            return tail
+        }
+    }
+}
+
+[unsafe_deref]
+def private re_match2_union(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match union {str}\n")
     }
     for (sub in node.all) {
         let osub = invoke(sub.fun2, regex, sub, str)
@@ -828,6 +1149,9 @@ def private re_match2_any(var regex : Regex; var node : ReNode?; str : uint8 con
     if (*str == 0u8) {
         return null
     }
+    if (!regex.dotAll && int(*str) == '\n') {
+        return null
+    }
     unsafe {
         var tail = str + 1
         node.tail = tail
@@ -844,9 +1168,6 @@ def private re_match2_any(var regex : Regex; var node : ReNode?; str : uint8 con
 def private re_match2_concat(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
     if (log_match_enabled) {
         print("match2 concat {str}\n")
-    }
-    if (*str == 0u8) {
-        return null
     }
     var left = node.left
     let oleft = invoke(left.fun2, regex, left, str)
@@ -951,7 +1272,7 @@ def private re_match2_plus_set(var regex : Regex; var node : ReNode?; str : uint
                 if (otail != null) {
                     return otail
                 }
-                if (!is_char_in_set(int(*osym), node.cset)) {
+                if (*osym == 0u8 || !is_char_in_set(int(*osym), node.cset)) {
                     return null
                 }
                 osym++
@@ -960,7 +1281,7 @@ def private re_match2_plus_set(var regex : Regex; var node : ReNode?; str : uint
         } else {
             while (osym != null) {
                 ofs = osym
-                if (!is_char_in_set(int(*osym), node.cset)) {
+                if (*osym == 0u8 || !is_char_in_set(int(*osym), node.cset)) {
                     break
                 }
                 osym++
@@ -1005,16 +1326,379 @@ def private re_match2_group(var regex : Regex; var node : ReNode?; str : uint8 c
     if (log_match_enabled) {
         print("match2 group {str}\n")
     }
-    if (*str == 0u8) {
+    var nsub = node.subexpr
+    let osub = invoke(nsub.fun2, regex, nsub, str)
+    if (osub == null) {
         return null
+    }
+    if (node.index >= 0) {
+        regex.groups[node.index]._0 = range(int(str - regex.match), int(node.subexpr.tail - regex.match))
+    }
+    return osub
+}
+
+[unsafe_deref]
+def private re_match2_bos(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match bos {str}\n")
+    }
+    if (str != regex.match) {
+        return null
+    }
+    node.tail = str
+    var node2 = node.next
+    if (node2 != null) {
+        return invoke(node2.fun2, regex, node2, str)
+    } else {
+        return str
+    }
+}
+
+[unsafe_deref]
+def private re_match2_word_boundary(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match word_boundary {str}\n")
+    }
+    unsafe {
+        var prev_is_word = false
+        if (str != regex.match) {
+            prev_is_word = is_word_character(int(*(str + (-1))))
+        }
+        let curr_is_word = (*str != 0u8) && is_word_character(int(*str))
+        if (prev_is_word == curr_is_word) {
+            return null
+        }
+        node.tail = str
+        var node2 = node.next
+        if (node2 != null) {
+            return invoke(node2.fun2, regex, node2, str)
+        } else {
+            return str
+        }
+    }
+}
+
+[unsafe_deref]
+def private re_match2_non_word_boundary(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match non_word_boundary {str}\n")
+    }
+    unsafe {
+        var prev_is_word = false
+        if (str != regex.match) {
+            prev_is_word = is_word_character(int(*(str + (-1))))
+        }
+        let curr_is_word = (*str != 0u8) && is_word_character(int(*str))
+        if (prev_is_word != curr_is_word) {
+            return null
+        }
+        node.tail = str
+        var node2 = node.next
+        if (node2 != null) {
+            return invoke(node2.fun2, regex, node2, str)
+        } else {
+            return str
+        }
+    }
+}
+
+[unsafe_deref]
+def private re_match2_lookahead(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match lookahead {str}\n")
     }
     var nsub = node.subexpr
     let osub = invoke(nsub.fun2, regex, nsub, str)
     if (osub == null) {
         return null
     }
-    regex.groups[node.index]._0 = range(int(str - regex.match), int(node.subexpr.tail - regex.match))
-    return osub
+    
+    node.tail = str
+    var node2 = node.next
+    if (node2 != null) {
+        return invoke(node2.fun2, regex, node2, str)
+    } else {
+        return str
+    }
+}
+
+[unsafe_deref]
+def private re_match2_negative_lookahead(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match negative_lookahead {str}\n")
+    }
+    var nsub = node.subexpr
+    let osub = invoke(nsub.fun2, regex, nsub, str)
+    if (osub != null) {
+        return null   
+    }
+    
+    node.tail = str
+    var node2 = node.next
+    if (node2 != null) {
+        return invoke(node2.fun2, regex, node2, str)
+    } else {
+        return str
+    }
+}
+
+[unsafe_deref]
+def private re_match2_repeat(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match2 repeat \{{node.min_rep},{node.max_rep}\} {str}\n")
+    }
+    var nsub = node.subexpr
+    var ofs = str
+    
+    for (i in range(node.min_rep)) {
+        if (*ofs == 0u8 && nsub.op != ReOp.Eos && nsub.op != ReOp.Bos && nsub.op != ReOp.WordBoundary && nsub.op != ReOp.NonWordBoundary) {
+            return null
+        }
+        var osym = invoke(nsub.fun2, regex, nsub, ofs)
+        if (osym == null) {
+            return null
+        }
+        ofs = osym
+    }
+    
+    var node2 = node.next
+    if (node.max_rep == -1) {
+        
+        if (node2 != null) {
+            
+            var positions : array<uint8 const?>
+            push(positions, ofs)
+            while (true) {
+                var osym = invoke(nsub.fun2, regex, nsub, ofs)
+                if (osym == null || osym == ofs) {
+                    break
+                }
+                push(positions, osym)
+                ofs = osym
+            }
+            
+            var pidx = length(positions) - 1
+            while (pidx >= 0) {
+                var pos = positions[pidx]
+                node.tail = pos
+                var otail = invoke(node2.fun2, regex, node2, pos)
+                if (otail != null) {
+                    return otail
+                }
+                pidx--
+            }
+            return null
+        } else {
+            
+            while (true) {
+                var osym = invoke(nsub.fun2, regex, nsub, ofs)
+                if (osym == null || osym == ofs) {
+                    break
+                }
+                ofs = osym
+            }
+            node.tail = ofs
+            return ofs
+        }
+    } else {
+        
+        let remaining = node.max_rep - node.min_rep
+        if (node2 != null) {
+            var positions : array<uint8 const?>
+            push(positions, ofs)
+            for (i in range(remaining)) {
+                var osym = invoke(nsub.fun2, regex, nsub, ofs)
+                if (osym == null || osym == ofs) {
+                    break
+                }
+                push(positions, osym)
+                ofs = osym
+            }
+            
+            var pidx = length(positions) - 1
+            while (pidx >= 0) {
+                var pos = positions[pidx]
+                node.tail = pos
+                var otail = invoke(node2.fun2, regex, node2, pos)
+                if (otail != null) {
+                    return otail
+                }
+                pidx--
+            }
+            return null
+        } else {
+            for (i in range(remaining)) {
+                var osym = invoke(nsub.fun2, regex, nsub, ofs)
+                if (osym == null || osym == ofs) {
+                    break
+                }
+                ofs = osym
+            }
+            node.tail = ofs
+            return ofs
+        }
+    }
+}
+
+
+
+
+
+[unsafe_deref]
+def private re_match2_question_lazy(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match question lazy {str}\n")
+    }
+    
+    var node2 = node.next
+    if (node2 != null) {
+        node.tail = str
+        var otail = invoke(node2.fun2, regex, node2, str)
+        if (otail != null) {
+            return otail
+        }
+    }
+    
+    var nsub = node.subexpr
+    var tail = invoke(nsub.fun2, regex, nsub, str)
+    if (tail == null) {
+        if (node2 == null) {
+            return str  
+        }
+        return null
+    }
+    node.tail = tail
+    if (node2 != null) {
+        return invoke(node2.fun2, regex, node2, tail)
+    } else {
+        return str  
+    }
+}
+
+[unsafe_deref]
+def private re_match2_star_lazy(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match2 star lazy {str}\n")
+    }
+    var ofs = str
+    var node2 = node.next
+    var nsub = node.subexpr
+    if (node2 != null) {
+        
+        while (ofs != null) {
+            node.tail = ofs
+            let oany = invoke(node2.fun2, regex, node2, ofs)
+            if (oany != null) {
+                return oany
+            }
+            ofs = invoke(nsub.fun2, regex, nsub, ofs)
+        }
+        return null
+    } else {
+        
+        node.tail = str
+        return str
+    }
+}
+
+[unsafe_deref]
+def private re_match2_plus_lazy(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match2 plus lazy {str}\n")
+    }
+    if (*str == 0u8) {
+        return null
+    }
+    var nsub = node.subexpr
+    var osym = invoke(nsub.fun2, regex, nsub, str)
+    if (osym == null) {
+        return null
+    }
+    var node2 = node.next
+    if (node2 != null) {
+        
+        while (osym != null) {
+            node.tail = osym
+            var otail = invoke(node2.fun2, regex, node2, osym)
+            if (otail != null) {
+                return otail
+            }
+            osym = invoke(nsub.fun2, regex, nsub, osym)
+        }
+        return null
+    } else {
+        
+        node.tail = osym
+        return osym
+    }
+}
+
+[unsafe_deref]
+def private re_match2_repeat_lazy(var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? {
+    if (log_match_enabled) {
+        print("match2 repeat lazy \{{node.min_rep},{node.max_rep}\} {str}\n")
+    }
+    var nsub = node.subexpr
+    var ofs = str
+    
+    for (i in range(node.min_rep)) {
+        if (*ofs == 0u8 && nsub.op != ReOp.Eos && nsub.op != ReOp.Bos && nsub.op != ReOp.WordBoundary && nsub.op != ReOp.NonWordBoundary) {
+            return null
+        }
+        var osym = invoke(nsub.fun2, regex, nsub, ofs)
+        if (osym == null) {
+            return null
+        }
+        ofs = osym
+    }
+    
+    var node2 = node.next
+    if (node.max_rep == -1) {
+        
+        if (node2 != null) {
+            while (true) {
+                node.tail = ofs
+                var otail = invoke(node2.fun2, regex, node2, ofs)
+                if (otail != null) {
+                    return otail
+                }
+                var osym = invoke(nsub.fun2, regex, nsub, ofs)
+                if (osym == null || osym == ofs) {
+                    break
+                }
+                ofs = osym
+            }
+            return null
+        } else {
+            
+            node.tail = ofs
+            return ofs
+        }
+    } else {
+        
+        let remaining = node.max_rep - node.min_rep
+        if (node2 != null) {
+            for (i in range(remaining + 1)) {
+                node.tail = ofs
+                var otail = invoke(node2.fun2, regex, node2, ofs)
+                if (otail != null) {
+                    return otail
+                }
+                if (i < remaining) {
+                    var osym = invoke(nsub.fun2, regex, nsub, ofs)
+                    if (osym == null || osym == ofs) {
+                        break
+                    }
+                    ofs = osym
+                }
+            }
+            return null
+        } else {
+            
+            node.tail = ofs
+            return ofs
+        }
+    }
 }
 
 
@@ -1024,6 +1708,13 @@ def private re_match2_group(var regex : Regex; var node : ReNode?; str : uint8 c
 def private re_early_out(var cset : CharSet; node : ReNode?) : bool {
     if (node.op == ReOp.Char) {
         set_or_char(cset, character_at(node.text, 0))
+        
+        let fc = character_at(node.text, 0)
+        if (fc >= 'A' && fc <= 'Z') {
+            set_or_char(cset, fc + 32)
+        } elif (fc >= 'a' && fc <= 'z') {
+            set_or_char(cset, fc - 32)
+        }
         return false
     } elif (node.op == ReOp.Set) {
         set_or_set(cset, node.cset)
@@ -1054,6 +1745,15 @@ def private re_early_out(var cset : CharSet; node : ReNode?) : bool {
             any = re_early_out(cset, sub) || any
         }
         return any
+    } elif (node.op == ReOp.Bos) {
+        return true  
+    } elif (node.op == ReOp.WordBoundary || node.op == ReOp.NonWordBoundary) {
+        return true  
+    } elif (node.op == ReOp.Lookahead || node.op == ReOp.NegativeLookahead) {
+        return true  
+    } elif (node.op == ReOp.Repeat) {
+        re_early_out(cset, node.subexpr)
+        return node.min_rep == 0
     } else {
         panic("unsupported operation")
         return false
@@ -1069,9 +1769,13 @@ def is_valid(var re : Regex) {
     return re.root != null
 }
 
-def regex_compile(var re : Regex; expr : string) : bool {
+def regex_compile(var re : Regex; expr : string; case_insensitive : bool = false; dot_all : bool = false) : bool {
     
     
+    
+    
+    re.caseInsensitive = case_insensitive
+    re.dotAll = dot_all
     re.root = re_parse(expr)
     if (re.root != null) {
         re_assign_next(re)
@@ -1083,15 +1787,19 @@ def regex_compile(var re : Regex; expr : string) : bool {
     return re.root != null
 }
 
-def regex_compile(expr : string) {
+def regex_compile(expr : string; case_insensitive : bool = false; dot_all : bool = false) {
+    
+    
+    
     var re : Regex
-    if (!regex_compile(re, expr)) {
+    if (!regex_compile(re, expr, case_insensitive, dot_all)) {
         panic("regular expression {expr} did not compile")
     }
     return <- re
 }
 
 def regex_compile(var re : Regex) {
+    
     if (re.root != null) {
         re_assign_next(re)
         re_assign_match_functions(re)
@@ -1110,7 +1818,7 @@ def regex_match(var regex : Regex; str : string; offset : int = 0) : int {
     }
     unsafe {
         regex.match = reinterpret<uint8?> str
-        let mptr = invoke(regex.root.fun2, regex, regex.root, regex.match)
+        let mptr = invoke(regex.root.fun2, regex, regex.root, regex.match + offset)
         if (mptr == null) {
             return -1
         }
@@ -1148,7 +1856,11 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
                         if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) {
                             break
                         }
-                        cstr = om
+                        if (om == cstr) {
+                            cstr++
+                        } else {
+                            cstr = om
+                        }
                     } else {
                         cstr++
                     }
@@ -1163,7 +1875,11 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
                     if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) {
                         break
                     }
-                    cstr = om
+                    if (om == cstr) {
+                        cstr++
+                    } else {
+                        cstr = om
+                    }
                 } else {
                     cstr ++
                 }
@@ -1179,7 +1895,7 @@ def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : s
         return ""
     }
     unsafe {
-        return build_string <| $(writer) {
+        return build_string() $(writer) {
             regex.match = reinterpret<uint8 const?> str
             var root = regex.root
             var pstr = reinterpret<uint8 const?> str
@@ -1196,7 +1912,12 @@ def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : s
                         if (om != null) {
                             let repl = invoke(blk, slice(str, int(cstr - pstr), int(om - pstr)))
                             writer |> write(repl)
-                            cstr = om
+                            if (om == cstr) {
+                                writer |> write_char(Ch)
+                                cstr++
+                            } else {
+                                cstr = om
+                            }
                         } else {
                             writer |> write_char(Ch)
                             cstr++
@@ -1212,7 +1933,12 @@ def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : s
                     if (om != null) {
                         let repl = invoke(blk, slice(str, int(cstr - pstr), int(om - pstr)))
                         writer |> write(repl)
-                        cstr = om
+                        if (om == cstr) {
+                            writer |> write_char(int(*cstr))
+                            cstr++
+                        } else {
+                            cstr = om
+                        }
                     } else {
                         writer |> write_char(int(*cstr))
                         cstr ++
@@ -1221,6 +1947,233 @@ def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : s
             }
         }
     }
+}
+
+def private expand_replacement(var regex : Regex; str : string; replacement : string; match_start, match_end : int) : string {
+    
+    
+    return build_string() $(writer) {
+        var i = 0
+        let rlen = length(replacement)
+        while (i < rlen) {
+            let ch = character_at(replacement, i)
+            if (ch == '$' && i + 1 < rlen) {
+                let nch = character_at(replacement, i + 1)
+                if (nch == '$') {
+                    writer |> write_char('$')
+                    i += 2
+                } elif (nch == '&' || nch == '0') {
+                    writer |> write(slice(str, match_start, match_end))
+                    i += 2
+                } elif (nch >= '1' && nch <= '9') {
+                    let group_num = nch - '0'
+                    if (group_num < length(regex.groups)) {
+                        let grng = regex.groups[group_num]._0
+                        writer |> write(slice(str, grng.x, grng.y))
+                    }
+                    i += 2
+                } elif (nch == '{') {
+                    let close = find(replacement, "}", i + 2)
+                    if (close != -1) {
+                        let name = slice(replacement, i + 2, close)
+                        
+                        var is_numeric = !empty(name)
+                        for (nc in name) {
+                            if (nc < '0' || nc > '9') {
+                                is_numeric = false
+                                break
+                            }
+                        }
+                        if (is_numeric) {
+                            var group_num = 0
+                            for (nc in name) {
+                                group_num = group_num * 10 + (nc - '0')
+                            }
+                            if (group_num == 0) {
+                                writer |> write(slice(str, match_start, match_end))
+                            } elif (group_num < length(regex.groups)) {
+                                let grng = regex.groups[group_num]._0
+                                writer |> write(slice(str, grng.x, grng.y))
+                            }
+                        } else {
+                            let grp = regex_group_by_name(regex, name, str)
+                            writer |> write(grp)
+                        }
+                        i = close + 1
+                    } else {
+                        writer |> write_char(ch)
+                        i++
+                    }
+                } else {
+                    writer |> write_char(ch)
+                    i++
+                }
+            } else {
+                writer |> write_char(ch)
+                i++
+            }
+        }
+    }
+}
+
+[unsafe_deref]
+def regex_replace(var regex : Regex; str : string; replacement : string) : string {
+    
+    
+    
+    
+    if (empty(str)) {
+        return ""
+    }
+    unsafe {
+        return build_string() $(writer) {
+            regex.match = reinterpret<uint8 const?> str
+            var root = regex.root
+            var pstr = reinterpret<uint8 const?> str
+            var cstr = pstr
+            if (regex.canEarlyOut) {
+                while (true) {
+                    let Ch = int(*cstr)
+                    if (Ch == 0) {
+                        break
+                    }
+                    if (is_char_in_set(Ch, regex.earlyOut)) {
+                        let om = invoke(root.fun2, regex, root, cstr)
+                        if (om != null) {
+                            let match_start = int(cstr - pstr)
+                            let match_end = int(om - pstr)
+                            let repl = expand_replacement(regex, str, replacement, match_start, match_end)
+                            writer |> write(repl)
+                            if (om == cstr) {
+                                writer |> write_char(Ch)
+                                cstr++
+                            } else {
+                                cstr = om
+                            }
+                        } else {
+                            writer |> write_char(Ch)
+                            cstr++
+                        }
+                    } else {
+                        writer |> write_char(Ch)
+                        cstr++
+                    }
+                }
+            } else {
+                while (int(*cstr) != 0) {
+                    let om = invoke(root.fun2, regex, root, cstr)
+                    if (om != null) {
+                        let match_start = int(cstr - pstr)
+                        let match_end = int(om - pstr)
+                        let repl = expand_replacement(regex, str, replacement, match_start, match_end)
+                        writer |> write(repl)
+                        if (om == cstr) {
+                            writer |> write_char(int(*cstr))
+                            cstr++
+                        } else {
+                            cstr = om
+                        }
+                    } else {
+                        writer |> write_char(int(*cstr))
+                        cstr++
+                    }
+                }
+            }
+        }
+    }
+}
+
+[unsafe_deref]
+def regex_search(var regex : Regex; str : string; offset : int = 0) : int2 {
+    
+    
+    
+    if (empty(str)) {
+        return int2(-1, -1)
+    }
+    unsafe {
+        regex.match = reinterpret<uint8 const?> str
+        var root = regex.root
+        var pstr = reinterpret<uint8 const?> str
+        var cstr = pstr + offset
+        if (regex.canEarlyOut) {
+            while (true) {
+                let Ch = int(*cstr)
+                if (Ch == 0) {
+                    break
+                }
+                if (is_char_in_set(Ch, regex.earlyOut)) {
+                    let om = invoke(root.fun2, regex, root, cstr)
+                    if (om != null) {
+                        return int2(int(cstr - pstr), int(om - pstr))
+                    }
+                }
+                cstr++
+            }
+        } else {
+            while (int(*cstr) != 0) {
+                let om = invoke(root.fun2, regex, root, cstr)
+                if (om != null) {
+                    return int2(int(cstr - pstr), int(om - pstr))
+                }
+                cstr++
+            }
+        }
+        return int2(-1, -1)
+    }
+}
+
+def regex_split(var regex : Regex; str : string) : array<string> {
+    
+    var result : array<string>
+    if (empty(str)) {
+        return <- result
+    }
+    var last_end = 0
+    regex_foreach(regex, str) $(at : range) {
+        push(result, slice(str, last_end, at.x))
+        last_end = at.y
+        return true
+    }
+    push(result, slice(str, last_end))
+    return <- result
+}
+
+def regex_match_all(var regex : Regex; str : string) : array<range> {
+    
+    var result : array<range>
+    regex_foreach(regex, str) $(at : range) {
+        push(result, at)
+        return true
+    }
+    return <- result
+}
+
+def regex_group_by_name(regex : Regex; name : string; str : string) : string {
+    
+    
+    for (g in regex.groups) {
+        if (g._1 == name) {
+            return slice(str, g._0.x, g._0.y)
+        }
+    }
+    return ""
+}
+
+def operator [] (regex : Regex; index : int) : range {
+    
+    return regex.groups[index]._0
+}
+
+def operator [] (regex : Regex; name : string) : range {
+    
+    
+    for (g in regex.groups) {
+        if (g._1 == name) {
+            return g._0
+        }
+    }
+    return range(0, 0)
 }
 
 
@@ -1281,19 +2234,25 @@ def private debug_re(node : ReNode?; tab : int) {
     } elif (node.op == ReOp.Eos) {
         print("Eos)")
     } elif (node.op == ReOp.Group) {
-        print("Group ")
+        if (node.index == -1) {
+            print("NonCapGroup ")
+        } elif (!empty(node.text)) {
+            print("Group<{node.text}> ")
+        } else {
+            print("Group ")
+        }
         debug_re(node.subexpr, tab + 1)
         print(")")
     } elif (node.op == ReOp.Plus) {
-        print("Plus ")
+        print(node.lazy ? "Plus? " : "Plus ")
         debug_re(node.subexpr, tab)
         print(")")
     } elif (node.op == ReOp.Star) {
-        print("Star ")
+        print(node.lazy ? "Star? " : "Star ")
         debug_re(node.subexpr, tab)
         print(")")
     } elif (node.op == ReOp.Question) {
-        print("Question ")
+        print(node.lazy ? "Question? " : "Question ")
         debug_re(node.subexpr, tab)
         print(")")
     } elif (node.op == ReOp.Concat) {
@@ -1311,6 +2270,24 @@ def private debug_re(node : ReNode?; tab : int) {
             print("\n")
         }
         print("{repeat("\t",tab-1)})")
+    } elif (node.op == ReOp.Bos) {
+        print("Bos)")
+    } elif (node.op == ReOp.Repeat) {
+        print(node.lazy ? "Repeat? \{{node.min_rep},{node.max_rep}\} " : "Repeat \{{node.min_rep},{node.max_rep}\} ")
+        debug_re(node.subexpr, tab)
+        print(")")
+    } elif (node.op == ReOp.WordBoundary) {
+        print("WordBoundary)")
+    } elif (node.op == ReOp.NonWordBoundary) {
+        print("NonWordBoundary)")
+    } elif (node.op == ReOp.Lookahead) {
+        print("Lookahead ")
+        debug_re(node.subexpr, tab + 1)
+        print(")")
+    } elif (node.op == ReOp.NegativeLookahead) {
+        print("NegLookahead ")
+        debug_re(node.subexpr, tab + 1)
+        print(")")
     } else {
         panic("unsupported op")
     }
@@ -1372,7 +2349,11 @@ def private re_gen2_any(var node : ReNode?; var rnd : ReGenRandom; var str : Str
     }
     var ch : uint
     next(rnd, ch)
-    str |> write_char(int((ch % 255u) + 1u))
+    ch = (ch % 254u) + 1u  
+    if (ch >= 10u) {
+        ch++  
+    }
+    str |> write_char(int(ch))
     var node2 = node.next
     if (node2 != null) {
         invoke(node2.gen2, node2, rnd, str)
@@ -1467,8 +2448,94 @@ def private re_gen2_group(var node : ReNode?; var rnd : ReGenRandom; var str : S
     }
 }
 
+def private re_gen2_bos(var node : ReNode?; var rnd : ReGenRandom; var str : StringBuilderWriter) : void {
+    if (log_gen_enabled) {
+        print("gen bos\n")
+    }
+    
+    var node2 = node.next
+    if (node2 != null) {
+        invoke(node2.gen2, node2, rnd, str)
+    }
+}
+
+def private re_gen2_repeat(var node : ReNode?; var rnd : ReGenRandom; var str : StringBuilderWriter) : void {
+    if (log_gen_enabled) {
+        print("gen repeat \{{node.min_rep},{node.max_rep}\}\n")
+    }
+    var cnt : uint
+    if (node.max_rep == -1) {
+        next(rnd, cnt)
+        cnt = (cnt % re_gen_rep_limit) + uint(node.min_rep)
+    } elif (node.max_rep == node.min_rep) {
+        cnt = uint(node.min_rep)
+    } else {
+        next(rnd, cnt)
+        cnt = uint(node.min_rep) + (cnt % uint(node.max_rep - node.min_rep + 1))
+    }
+    var nsub = node.subexpr
+    if (nsub != null) {
+        for (i in urange(cnt)) {
+            invoke(nsub.gen2, nsub, rnd, str)
+        }
+    }
+    var node2 = node.next
+    if (node2 != null) {
+        invoke(node2.gen2, node2, rnd, str)
+    }
+}
+
+def private re_gen2_word_boundary(var node : ReNode?; var rnd : ReGenRandom; var str : StringBuilderWriter) : void {
+    if (log_gen_enabled) {
+        print("gen word_boundary\n")
+    }
+    
+    var node2 = node.next
+    if (node2 != null) {
+        invoke(node2.gen2, node2, rnd, str)
+    }
+}
+
+def private re_gen2_non_word_boundary(var node : ReNode?; var rnd : ReGenRandom; var str : StringBuilderWriter) : void {
+    if (log_gen_enabled) {
+        print("gen non_word_boundary\n")
+    }
+    
+    var node2 = node.next
+    if (node2 != null) {
+        invoke(node2.gen2, node2, rnd, str)
+    }
+}
+
+def private re_gen2_lookahead(var node : ReNode?; var rnd : ReGenRandom; var str : StringBuilderWriter) : void {
+    if (log_gen_enabled) {
+        print("gen lookahead\n")
+    }
+    
+    var nsub = node.subexpr
+    if (nsub != null) {
+        invoke(nsub.gen2, nsub, rnd, str)
+    }
+    var node2 = node.next
+    if (node2 != null) {
+        invoke(node2.gen2, node2, rnd, str)
+    }
+}
+
+def private re_gen2_negative_lookahead(var node : ReNode?; var rnd : ReGenRandom; var str : StringBuilderWriter) : void {
+    if (log_gen_enabled) {
+        print("gen negative_lookahead\n")
+    }
+    
+    var node2 = node.next
+    if (node2 != null) {
+        invoke(node2.gen2, node2, rnd, str)
+    }
+}
+
 def public re_gen(var re : Regex; var rnd : ReGenRandom) : string {
-    return build_string <| $(writer) {
+    
+    return build_string() $(writer) {
         invoke(re.root.gen2, re.root, rnd, writer)
     }
 }

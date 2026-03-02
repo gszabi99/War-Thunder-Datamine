@@ -1279,8 +1279,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1339,8 +1339,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1399,8 +1399,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1459,8 +1459,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1519,8 +1519,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1579,8 +1579,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1639,8 +1639,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2709,6 +2709,12 @@
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/jp_awg_11.blk",
+      "dmPart": "radar_dm"
+    }
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -3486,12 +3492,6 @@
         "from": "t2_grey_n*"
       }
     ]
-  },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/jp_awg_11.blk",
-      "dmPart": "radar_dm"
-    }
   },
   "parachutes": {
     "emitterRange": [

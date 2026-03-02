@@ -17,10 +17,6 @@
   "ilsJ10c": true,
   "mfdCamTads": true,
   "hmdTargo": true,
-  "rwrIndicator": "AN/ALR-67 MFD",
-  "isBwOpticSight": true,
-  "needTpsNightVision": true,
-  "viewDistKInSight": 6.0,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -47,6 +43,10 @@
     -50.0,
     50.0
   ],
+  "rwrIndicator": "AN/ALR-67 MFD",
+  "isBwOpticSight": true,
+  "needTpsNightVision": true,
+  "viewDistKInSight": 6.0,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -1071,8 +1071,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1132,8 +1132,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1192,8 +1192,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1252,8 +1252,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1312,8 +1312,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1372,8 +1372,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1432,8 +1432,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1493,8 +1493,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1554,8 +1554,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1615,8 +1615,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -3387,6 +3387,10 @@
         "blk": "gameData/FlightModels/weaponPresets/j_10c_pl12.blk"
       },
       {
+        "name": "j_10c_pl12a",
+        "blk": "gameData/FlightModels/weaponPresets/j_10c_pl12a.blk"
+      },
+      {
         "name": "j_10c_hf7",
         "blk": "gameData/FlightModels/weaponPresets/j_10c_hf7.blk"
       },
@@ -3858,6 +3862,58 @@
             ]
           },
           {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "pl12a_slot2",
+            "reqModification": "cn_pl12a",
+            "ShowNodes": {
+              "node": [
+                "gdj_6_pylon_001",
+                "pl12_launcher_007"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
+              "emitter": "pl_12_missile_007",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 3
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange_group",
+            "name": "pl12a_x2_slot2",
+            "reqModification": "cn_pl12a",
+            "ShowNodes": {
+              "node": [
+                "twin_pylon_001",
+                "pl12_launcher_001",
+                "pl12_launcher_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
+                "emitter": "pl_12_missile_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 3
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
+                "emitter": "pl_12_missile_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 5
+              }
+            ]
+          },
+          {
             "iconType": "nar_ap_middle",
             "name": "hf7",
             "ShowNodes": {
@@ -4312,6 +4368,26 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pl_12_missile_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "pl12a_slot3",
+            "reqModification": "cn_pl12a",
+            "ShowNodes": {
+              "node": [
+                "gdj_6_pylon_003",
+                "pl12_launcher_005"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
               "emitter": "pl_12_missile_005",
               "bullets": 1,
               "external": true,
@@ -4826,6 +4902,57 @@
             ]
           },
           {
+            "iconType": "missile_type_s_air_to_air_midrange_group",
+            "name": "pl12a_x2_default_slot6",
+            "ShowNodes": {
+              "node": [
+                "ch_zl4_launcher_double_adapter_003",
+                "ch_pft15_launcher_005",
+                "ch_pft15_launcher_1_005",
+                "ch_pft15_launcher_2_005",
+                "ch_pft15_launcher_3_005",
+                "ch_pft15_launcher_4_005",
+                "ch_pft15_launcher_5_005",
+                "ch_pft15_launcher_6_005",
+                "ch_pft15_launcher_7_005",
+                "ch_pft15_launcher_8_005",
+                "ch_pft15_launcher_9_005",
+                "ch_pft15_launcher_10_005",
+                "ch_pft15_launcher_006",
+                "ch_pft15_launcher_1_006",
+                "ch_pft15_launcher_2_006",
+                "ch_pft15_launcher_3_006",
+                "ch_pft15_launcher_4_006",
+                "ch_pft15_launcher_5_006",
+                "ch_pft15_launcher_6_006",
+                "ch_pft15_launcher_7_006",
+                "ch_pft15_launcher_8_006",
+                "ch_pft15_launcher_9_006",
+                "ch_pft15_launcher_10_006"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12a_default.blk",
+                "emitter": "ch_pl15_missile_005",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 9
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12a_default.blk",
+                "emitter": "ch_pl15_missile_006",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 10
+              }
+            ]
+          },
+          {
             "iconType": "bombs_middle",
             "name": "250_3_slot6",
             "ShowNodes": {
@@ -5234,6 +5361,26 @@
             }
           },
           {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "pl12a_slot9",
+            "reqModification": "cn_pl12a",
+            "ShowNodes": {
+              "node": [
+                "gdj_6_pylon_004",
+                "pl12_launcher_006"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
+              "emitter": "pl_12_missile_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
+            }
+          },
+          {
             "iconType": "nar_ap_middle",
             "name": "hf7",
             "ShowNodes": {
@@ -5553,6 +5700,58 @@
               {
                 "trigger": "aam",
                 "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+                "emitter": "pl_12_missile_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 6
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "pl12a_slot10",
+            "reqModification": "cn_pl12a",
+            "ShowNodes": {
+              "node": [
+                "gdj_6_pylon_002",
+                "pl12_launcher_008"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
+              "emitter": "pl_12_missile_008",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 4
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange_group",
+            "name": "pl12a_x2_slot10",
+            "reqModification": "cn_pl12a",
+            "ShowNodes": {
+              "node": [
+                "twin_pylon_002",
+                "pl12_launcher_003",
+                "pl12_launcher_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
+                "emitter": "pl_12_missile_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 4
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
                 "emitter": "pl_12_missile_003",
                 "bullets": 1,
                 "external": true,
@@ -6011,31 +6210,6 @@
     "maxPower": 6.0,
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump",
-    "burningFx": "fuel_dump_fire",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": "emtr_fuel_dump1"
-    }
   },
   "damagePartsToAvionicsPartsMap": {
     "avionics": [
@@ -6514,6 +6688,11 @@
       "modClass": "weapon",
       "tier": 3
     },
+    "cn_pl12a": {
+      "reqModification": "cn_pl12",
+      "tier": 4,
+      "modClass": "weapon"
+    },
     "cn_yings_3a": {
       "modClass": "weapon",
       "tier": 1
@@ -6580,123 +6759,45 @@
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
   },
-  "cutting": {
-    "_emtr_break_wing0_l_from": [
-      -0.21633,
-      -0.342785,
-      1.13429
-    ],
-    "_emtr_break_wing0_l_to": [
-      -0.21633,
-      -0.342785,
-      1.56917
-    ],
-    "emtr_break_wing1_l_from": [
-      -0.21633,
-      -0.342785,
-      2.22149
-    ],
-    "emtr_break_wing1_l_to": [
-      -0.21633,
-      -0.342785,
-      2.58151
-    ],
-    "emtr_break_wing2_l_from": [
-      -0.21633,
-      -0.342785,
-      3.12154
-    ],
-    "emtr_break_wing2_l_to": [
-      -0.21633,
-      -0.342785,
-      3.74397
-    ],
-    "_emtr_break_wing0_r_from": [
-      -0.21633,
-      -0.342785,
-      -1.13429
-    ],
-    "_emtr_break_wing0_r_to": [
-      -0.21633,
-      -0.342785,
-      -1.56917
-    ],
-    "emtr_break_wing1_r_from": [
-      -0.21633,
-      -0.342785,
-      -2.22149
-    ],
-    "emtr_break_wing1_r_to": [
-      -0.21633,
-      -0.342785,
-      -2.58151
-    ],
-    "emtr_break_wing2_r_from": [
-      -0.21633,
-      -0.342785,
-      -3.12154
-    ],
-    "emtr_break_wing2_r_to": [
-      -0.21633,
-      -0.342785,
-      -3.74397
-    ],
-    "emtr_break_wing_tail": [
-      2.34856,
-      0.0,
-      0.0
-    ],
-    "finCut": true,
-    "emtr_break_tail_from": [
-      -2.35797,
-      0.00937267,
-      2.98023e-8
-    ],
-    "emtr_break_tail_to": [
-      -5.40989,
-      0.00937267,
-      2.98023e-8
-    ]
-  },
   "AfterBurner0": {
     "volumetricAfterBurner": {
-      "name": "_jet_j_10c_al_31fn_s3",
-      "maxHeight": 11.0,
+      "name": "_jet_j_10c_ws_10",
+      "maxHeight": 12.0,
       "minHeight": 8.0,
       "heightNoiseStrength": 0.0,
       "heightNoiseSpeed": 20.0,
-      "maxRadius": 0.42,
+      "maxRadius": 0.38,
       "minRadius": 0.38,
-      "maxBaseRadius": 0.42,
-      "minBaseRadius": 0.4,
-      "relativeCylinderHeightMax": 0.2,
-      "relativeCylinderHeightMin": 0.2,
-      "outerCylinderAbsorptionMax": 0.5,
-      "outerCylinderAbsorptionMin": 0.7,
-      "outerCylinderHeightFadeMax": 8.0,
-      "outerCylinderHeightFadeMin": 6.0,
+      "maxBaseRadius": 0.45,
+      "minBaseRadius": 0.42,
+      "relativeCylinderHeightMax": 0.43,
+      "relativeCylinderHeightMin": 0.4,
+      "outerCylinderAbsorptionMax": 0.6,
+      "outerCylinderAbsorptionMin": 0.4,
+      "outerCylinderHeightFadeMax": 7.0,
+      "outerCylinderHeightFadeMin": 5.0,
       "tailHeightFadeMax": 2.5,
       "tailHeightFadeMin": 0.2,
-      "outerCylinderHeightFadeNoiseStrength": 1.0,
+      "outerCylinderHeightFadeNoiseStrength": 2.0,
       "outerCylinderHeightFadeNoiseSpeed": 10.0,
       "headHeightFadeMax": 0.0,
       "headHeightFadeMin": 0.0,
-      "minOuterCylinderRadius": 0.44,
-      "maxOuterCylinderRadius": 0.46,
+      "minOuterCylinderRadius": 0.45,
+      "maxOuterCylinderRadius": 0.5,
       "absorption": 1.0,
       "colorIntensityMax": 5.0,
-      "colorIntensityMin": 2.0,
+      "colorIntensityMin": 1.0,
       "colorOverHeightMult": 1.0,
       "colorOverDepthMult": 2.0,
       "colorOverRadiusMult": 3.0,
-      "colorOverRadiusFadeOverHeight": 3.0,
+      "colorOverRadiusFadeOverHeight": 1.0,
       "maxRingOffset": 0.0,
-      "minRingOffset": 6.0,
+      "minRingOffset": 20.0,
       "ringAbsorption": 1.2,
-      "maxRingCount": 15,
-      "minRingCount": 14,
-      "minStartingRingHeight": 1.0,
-      "maxStartingRingHeight": 1.0,
+      "maxRingCount": 16,
+      "minRingCount": 13,
+      "minStartingRingHeight": 0.93,
+      "maxStartingRingHeight": 0.82,
       "ringIntensityMin": 0.0,
       "ringIntensityMax": 1.0,
       "ringIntensityNoiseStrength": 0.0,
@@ -6705,13 +6806,13 @@
       "ringOffsetNoiseSpeed": 20.0,
       "rampTextureOffset": 8,
       "radiusNoiseStrength": 0.1,
-      "radiusNoiseSpeed": 10.0,
-      "shakeNoiseStrength": 0.05,
-      "shakeNoiseSpeed": 20.0,
+      "radiusNoiseSpeed": 12.0,
+      "shakeNoiseStrength": 0.08,
+      "shakeNoiseSpeed": 12.0,
       "ringAngleFadeMult": 0.7,
       "colorOverHeightNoiseStrength": 0.1,
       "colorOverHeightNoiseSpeed": 10.0,
-      "colorOverRadiusNoiseStrength": 0.15,
+      "colorOverRadiusNoiseStrength": 0.05,
       "colorOverRadiusNoiseSpeed": 10.0,
       "colorOverDepthNoiseStrength": 0.03,
       "colorOverDepthNoiseSpeed": 10.0,
@@ -6738,9 +6839,9 @@
       },
       "lightProperties": {
         "color": [
-          0.97549,
-          0.616854,
-          0.775076
+          1.0,
+          0.322664,
+          0.147059
         ],
         "angle": 1.0,
         "brightness": 10.0,
@@ -6761,34 +6862,34 @@
         "intensityMult": 5.0,
         "innerCircleNoiseScale": 0.6,
         "innerCircleNoiseStrength": 0.4,
-        "maskNoiseScale": 1.869,
-        "maskNoiseStrength": 1.3,
-        "minInnerCircleParamMult": 1.8,
+        "maskNoiseScale": 0.0,
+        "maskNoiseStrength": 0.0,
+        "minInnerCircleParamMult": 1.7,
         "maxInnerCircleParamMult": 1.0,
         "lengthNoiseSpeed": 10.0,
         "lengthNoiseStrength": 0.3,
-        "uvNoiseMaskScale": 0.5,
+        "uvNoiseMaskScale": 0.58,
         "uvNoiseMaskStrength": 0.1,
         "FlameMaskTextureOffset": {
           "maskTextureOffset": [
-            0,
-            1,
-            2,
-            4,
-            4,
-            5,
-            5,
-            5
+            39,
+            39,
+            18,
+            19,
+            20,
+            21,
+            21,
+            21
           ]
         },
         "FlameRampTextureOffset": {
           "rampTextureOffset": [
             23,
             23,
-            24,
-            24,
+            23,
             26,
             26,
+            24,
             6,
             6
           ]
@@ -7236,6 +7337,109 @@
         "endPositionNoiseStrength": 0.0,
         "endPositionNoiseSpeed": 1.0
       }
+    ]
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump",
+    "burningFx": "fuel_dump_fire",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": "emtr_fuel_dump1"
+    }
+  },
+  "cutting": {
+    "_emtr_break_wing0_l_from": [
+      -0.21633,
+      -0.342785,
+      1.13429
+    ],
+    "_emtr_break_wing0_l_to": [
+      -0.21633,
+      -0.342785,
+      1.56917
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.21633,
+      -0.342785,
+      2.22149
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.21633,
+      -0.342785,
+      2.58151
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.21633,
+      -0.342785,
+      3.12154
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.21633,
+      -0.342785,
+      3.74397
+    ],
+    "_emtr_break_wing0_r_from": [
+      -0.21633,
+      -0.342785,
+      -1.13429
+    ],
+    "_emtr_break_wing0_r_to": [
+      -0.21633,
+      -0.342785,
+      -1.56917
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.21633,
+      -0.342785,
+      -2.22149
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.21633,
+      -0.342785,
+      -2.58151
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.21633,
+      -0.342785,
+      -3.12154
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.21633,
+      -0.342785,
+      -3.74397
+    ],
+    "emtr_break_wing_tail": [
+      2.34856,
+      0.0,
+      0.0
+    ],
+    "finCut": true,
+    "emtr_break_tail_from": [
+      -2.35797,
+      0.00937267,
+      2.98023e-8
+    ],
+    "emtr_break_tail_to": [
+      -5.40989,
+      0.00937267,
+      2.98023e-8
     ]
   }
 }

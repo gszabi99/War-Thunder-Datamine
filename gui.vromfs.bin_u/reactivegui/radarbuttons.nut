@@ -1,26 +1,30 @@
 from "%rGui/globals/ui_library.nut" import *
-let { toggleShortcut, setVirtualAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
+let { setVirtualAxisValue } = require("controls")
+let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let hints = require("%rGui/hints/hints.nut")
-let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget,
-  IsRadarHudVisible } = require("%rGui/radarState.nut")
+let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX,
+  IsRadarHudVisible, IsRadarHasFilters
+} = require("%rGui/radarState.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
 let { RadarTargetsIffFilterMask, AirRadarGuiControlMode, getAirRadarGuiControlMode, getNextRadarTargetsIffFilterMask } = require("radarGuiControls")
 let { AIR_RADAR_GUI_CONTROL_HIDDEN, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS } = AirRadarGuiControlMode
 let { showConsoleButtons, cursorVisible } = require("%rGui/ctrlsState.nut")
-let { isPlayingReplay, isUnitAlive } = require("%rGui/hudState.nut")
+let { isPlayingReplay, isUnitAlive, unitType } = require("%rGui/hudState.nut")
 let { HudColor } = require("%rGui/airState.nut")
 let { adjustColorBrightness } = require("%rGui/style/airHudStyle.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
 let { register_command } = require("console")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
-let { IFFFilter } = require("%rGui/radarFilters.nut")
+let { IFFFilter, typeFilter, filterPresets, switchFilter, isFiltersExpanded } = require("%rGui/radarFilters.nut")
+let { isAir } = require("%rGui/hudUnitType.nut")
 
 const HELI_AXIS_CONTROL_PREFIX = "helicopter_"
 
 const BUTTON_BG_DARK_FACTOR = 0.1
 const BUTTON_BG_ALPHA = 0x4c
+const BUTTON_DISABLED_BG_ALPHA = 0x26
 
 const TOOLTIP_DELAY = 1
 const TOOLTIP_BORDER_COLOR = 0xFF37454D
@@ -30,6 +34,7 @@ const TOOLTIP_CONTAINER_KEY = "tooltip_container"
 const TOOLTIP_ROOT_MARGIN = hdpx(25)
 const BTN_ICON_SIZE = evenPx(26)
 const BTN_SIZE = hdpx(45)
+const FILTER_BTN_SIZE = hdpxi(30)
 
 const HORIZONTAL_BUTTONS_OIFFSET_X = hdpx(20)
 
@@ -37,6 +42,7 @@ const BTN_CONTAINER_WITH_ALIGNED_HINTS_MAX_WIDTH = hdpx(80)
 
 const WITHIN_VISUAL_RANGE_MODE_NAMES = ["ACM", "BST", "VSL"]
 
+let selectedFilterBtnIndex = Watched(-1)
 let airRadarGuiControlMode = Watched(getAirRadarGuiControlMode())
 let isRadarGamepadNavEnabled = Watched(false)
 
@@ -59,6 +65,9 @@ let isRadarButtonsVisible = Computed(@() IsRadarHudVisible.get()
   && !isPlayingReplay.get()
   && (airRadarGuiControlMode.get() != AIR_RADAR_GUI_CONTROL_HIDDEN || isRadarGamepadNavEnabled.get()))
 
+let isRadarFiltersButtonsVisible = Computed(@() isRadarButtonsVisible.get()
+  && IsRadarHasFilters.get() && IsRadarVisible.get()
+  && (unitType.get() == "aircraft" || unitType.get() == "helicopter"))
 
 let modeName = Computed(@() modeNames?[RadarModeNameId.get()] ?? "")
 let isWvrMode = Computed(function() {
@@ -228,6 +237,44 @@ function tooltip() {
   }
 }
 
+let cachedFiltersBtns = []
+
+function onCollapseFiltersBtn() {
+  cachedFiltersBtns.clear()
+  tooltipCleanup()
+  isFiltersExpanded.set(!isFiltersExpanded.get())
+}
+
+function getFilterButtonsConfig() {
+  if (cachedFiltersBtns.len() > 0)
+    return cachedFiltersBtns
+  let preset = filterPresets.findvalue(@(p) p.filter == typeFilter)
+  if (preset == null)
+    return cachedFiltersBtns
+
+  let isBtnsExpanded = isFiltersExpanded.get()
+  let collapseFiltersIconSize = hdpxi(18)
+  let collapseBtn = { isSelected = isFiltersExpanded, iconSize = collapseFiltersIconSize,
+    getText = @() isBtnsExpanded ? loc("mainmenu/btnCollapse") : loc("mainmenu/btnExpand"),
+    onClick = onCollapseFiltersBtn, icon = Picture($"ui/gameuiskin#filter_icon.svg:{collapseFiltersIconSize}:P") }
+  cachedFiltersBtns.append(collapseBtn)
+
+  let iconSize = hdpxi(24)
+  let { filter, valuesList } = preset
+  foreach (valueData in valuesList) {
+    if (!isBtnsExpanded) {
+      cachedFiltersBtns.append({isVisible = false})
+      continue
+    }
+    let valueMask = valueData.valueMask
+    cachedFiltersBtns.append(
+      { icon = valueData?.getImage(iconSize), iconSize, isSelected = valueData?.isSelected,
+        onClick = @() switchFilter(filter, valueMask), text = valueData.locText
+      })
+  }
+  return cachedFiltersBtns
+}
+
 function mkButtonIconComp(srcValueOrWatched) {
   let iconSrcW = type(srcValueOrWatched) == "string" ? Watched(srcValueOrWatched)
     : srcValueOrWatched
@@ -251,7 +298,27 @@ let mkShortcutText = @(text, showConsoleBtnsV) hints(text, {
 })
 
 let buttonFillColor = Computed(@() adjustColorBrightness(HudColor.get(), BUTTON_BG_DARK_FACTOR, BUTTON_BG_ALPHA))
+let buttonDisabledFillColor = Computed(@() adjustColorBrightness(HudColor.get(), BUTTON_BG_DARK_FACTOR, BUTTON_DISABLED_BG_ALPHA))
 let buttonBorderColor = Computed(@() adjustColorBrightness(HudColor.get(), 0.4))
+
+
+function updateButtonTooltip(stateFlag, key, text) {
+  if (stateFlag.get() & S_HOVER) {
+    clearTimer(tooltipTimer)
+    tooltipTimer = setTimeout(TOOLTIP_DELAY, function scheduleTooltipDisplay() {
+      if (!(stateFlag.get() & S_HOVER))
+        return
+      let tipRootElemAabb = gui_scene.getCompAABBbyKey(key)
+      if (!tipRootElemAabb)
+        return
+      tooltipState.set({
+        tipRootElemAabb
+        text
+      })
+    })
+  } else
+    tooltipCleanup()
+}
 
 function mkButtonBase(btn, ovr = {}) {
   let { id = "", img, axisControl = null, shHintAlign = ALIGN_CENTER, tooltipOverride = null } = btn
@@ -285,33 +352,17 @@ function mkButtonBase(btn, ovr = {}) {
     onClick = !axisControl ? @() toggleShortcut(id) : null
     function onElemState(sf) {
       stateFlag.set(sf)
-      if (sf & S_HOVER) {
-        clearTimer(tooltipTimer)
-        tooltipTimer = setTimeout(TOOLTIP_DELAY, function scheduleTooltipDisplay() {
-          if (!(stateFlag.get() & S_HOVER))
-            return
-          let tipRootElemAabb = gui_scene.getCompAABBbyKey(id)
-          if (!tipRootElemAabb)
-            return
+      let text = tooltipOverride != null ? loc(tooltipOverride)
+        : isActive.get() ? loc($"hotkeys/{id}")
+        : loc("guiHints/not_available_in_current_mode")
+      updateButtonTooltip(stateFlag, id, text)
+      if (!axisControl)
+        return
 
-          tooltipState.set({
-            tipRootElemAabb
-          text = tooltipOverride != null ? loc(tooltipOverride)
-            : isActive.get() ? loc($"hotkeys/{id}")
-            : loc("guiHints/not_available_in_current_mode")
-          })
-        })
-      } else {
-        tooltipCleanup()
-      }
-
-      if (axisControl) {
-        let isBtnHold = (sf & (S_MOUSE_ACTIVE | S_JOYSTICK_ACTIVE)) != 0
-        let axisVal = isBtnHold ? axisControl.onHoldValue : 0
-        setVirtualAxisValue(axisControl.axisId, axisVal)
-      }
+      let isBtnHold = (sf & (S_MOUSE_ACTIVE | S_JOYSTICK_ACTIVE)) != 0
+      let axisVal = isBtnHold ? axisControl.onHoldValue : 0
+      setVirtualAxisValue(axisControl.axisId, axisVal)
     }
-
     flow = FLOW_VERTICAL
     valign = ALIGN_BOTTOM
     halign = ALIGN_CENTER
@@ -372,7 +423,6 @@ let mkHorizontalButtons = @(buttonsCfg, ovr = {}) @() {
 
 let mkVerticalButtons = @(buttonsCfg) @() {
   watch = IsRadarVisible
-  maxWidth = BTN_SIZE
   pos = const [hdpx(-53), hdpx(-15)]
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
@@ -383,11 +433,10 @@ let mkVerticalButtons = @(buttonsCfg) @() {
 
 let cornerButton = @() {
   watch = IsRadarVisible
-  pos = const [pw(-16), hdpx(70)]
+  pos = const [hdpx(-53), hdpx(70)]
   hplace = ALIGN_LEFT
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
-  gap = const { size = flex() }
   valign = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
   children = IsRadarVisible.get() ? mkIFFFilterButton : null
@@ -449,6 +498,97 @@ function mkExitGamepadNavBtn() {
       }
     }
 
+function mkFilterButton(btnData, idx) {
+  let stateFlag = Watched(0)
+  let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0 || idx == selectedFilterBtnIndex.get())
+  let filterValueWatch = btnData?.isSelected ?? Watched(false)
+
+  return @() {
+    key = $"filterbtn_{idx}"
+    watch = [filterValueWatch, isHovered, HudColor, buttonFillColor, buttonDisabledFillColor]
+    size = FILTER_BTN_SIZE
+    rendObj = ROBJ_BOX
+    fillColor = filterValueWatch.get() ? buttonFillColor.get() :  buttonDisabledFillColor.get()
+    borderColor = isHovered.get()
+      ? HudColor.get()
+      : 0x00000000
+    borderWidth = dp(2)
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    behavior = Behaviors.Button
+    function onElemState(sf) {
+      stateFlag.set(sf)
+      updateButtonTooltip(stateFlag, $"filterbtn_{idx}", btnData?.getText() ?? btnData.text)
+    }
+    onClick = btnData.onClick
+    children = btnData?.icon ? [
+      {
+        size = btnData.iconSize
+        vplace = ALIGN_CENTER
+        hplace = ALIGN_CENTER
+        rendObj = ROBJ_IMAGE
+        image = btnData.icon
+        color = filterValueWatch.get() ? HudColor.get() : buttonFillColor.get()
+      }
+    ] : null
+  }
+}
+
+function onFilterBtnsNavigationShortcut() {
+  let nextIndex = selectedFilterBtnIndex.get() + 1
+  if (nextIndex > 0 && !isFiltersExpanded.get())
+    return
+  let btnsConfig = getFilterButtonsConfig().filter(@(btn) (btn?.isVisible ?? true))
+  let btnsCount = btnsConfig.len()
+  selectedFilterBtnIndex.set(nextIndex < btnsCount ? nextIndex : 0)
+}
+
+function onFilterBtnsApplyShortcut() {
+  let btnsConfig = getFilterButtonsConfig().filter(@(btn) (btn?.isVisible ?? true))
+  let btnsCount = btnsConfig.len()
+  let index = selectedFilterBtnIndex.get()
+  if (index < 0 || btnsCount <= index)
+    return
+  btnsConfig[index]?.onClick()
+}
+
+let filtersButtons = @(offsets) function() {
+  let btnsConfig = getFilterButtonsConfig()
+  let children = btnsConfig.filter(@(btnData) (btnData?.isVisible ?? true)).map(@(btnData, idx) mkFilterButton(btnData, idx))
+  let navShortcut = isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION_HELICOPTER"]
+  let applyShortcut= isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY_HELICOPTER"]
+
+  let filtersBtnsPadding = Computed(function() {
+    return [0, 0, 0,
+      MfdRadarOffsetX.get() + offsets.get()[0]]
+  })
+
+  children.append(
+    { behavior = Behaviors.Button
+      onClick = onFilterBtnsNavigationShortcut
+      hotkeys = [navShortcut]
+    },
+    {
+      behavior = Behaviors.Button
+      onClick = onFilterBtnsApplyShortcut
+      hotkeys = [applyShortcut]
+    }
+  )
+
+  const gapSize = hdpx(6)
+  let totalHeight = (gapSize + FILTER_BTN_SIZE) * btnsConfig.len() - gapSize
+
+  return {
+    watch = [isFiltersExpanded, filtersBtnsPadding]
+    flow = FLOW_VERTICAL
+    padding = filtersBtnsPadding.get()
+    pos = [pw(100), 0]
+    size = [SIZE_TO_CONTENT, totalHeight + hdpx(15)]
+    vplace = ALIGN_BOTTOM
+    gap = gapSize
+    children
+  }
+}
 
 function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}) {
   let btnIdsToTryFocus = []
@@ -484,13 +624,23 @@ function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}) {
 }
 
 isInFlight.subscribe(@(v) !v ? disableGamepadNavigation() : null)
-isUnitAlive.subscribe(@(v) !v ? disableGamepadNavigation() : null)
+
+function onUnitAliveChange(v) {
+  if (v)
+    return
+  disableGamepadNavigation()
+  cachedFiltersBtns.clear()
+}
+
+isUnitAlive.subscribe(onUnitAliveChange)
 
 register_command(@() isRadarGamepadNavEnabled.set(!isRadarGamepadNavEnabled.get()), "ui.toggle_radar_nav")
 
 return {
   isRadarButtonsVisible
   radarButtonsAir = mkRadarButtons(verticalButtonsAir, horizontalButtonsAir)
-  radarButtonsHeli = mkRadarButtons(verticalButtonsHeli, horizontalButtonsHeli, { halign = ALIGN_LEFT })
+  radarButtonsHeli = mkRadarButtons(verticalButtonsHeli, horizontalButtonsHeli, { halign = ALIGN_LEFT, gap = hdpx(5) })
   isRadarGamepadNavEnabled
+  isRadarFiltersButtonsVisible
+  filtersButtons
 }

@@ -10,6 +10,8 @@ let { get_option_multiplier, set_option_multiplier,
   OPTION_AIM_TIME_NONLINEARITY_HUMAN, OPTION_AIM_ACCELERATION_DELAY_HUMAN
 } = require("gameOptions")
 
+let { USEROPT_HUMAN_MOUSE_SENSE, USEROPT_INVERTY_HUMAN} = require("%scripts/options/optionsExtNames.nut")
+
 return [
   {
     id = "ID_HUMAN_CONTROL_HEADER"
@@ -110,6 +112,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_HUMAN_SHOOT_MELEE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_HUMAN_WEAPON_MENU"
     checkAssign = false
     needShowInHelp = true
@@ -177,6 +184,11 @@ return [
     type = CONTROL_TYPE.SECTION
   }
   {
+    id = "mouse_human_sensitivity"
+    type = CONTROL_TYPE.SLIDER
+    optionType = USEROPT_HUMAN_MOUSE_SENSE
+  }
+  {
     id = "human_camx"
     type = CONTROL_TYPE.AXIS
     reqInMouseAim = false
@@ -187,6 +199,11 @@ return [
     type = CONTROL_TYPE.AXIS
     reqInMouseAim = false
     axisDirection = AxisDirection.Y
+  }
+  {
+    id = "invert_y_human"
+    type = CONTROL_TYPE.SWITCH_BOX
+    optionType = USEROPT_INVERTY_HUMAN
   }
   {
     id = "human_mouse_aim_x"
@@ -244,6 +261,18 @@ return [
     id = "ID_TARGET_CAMERA_HUMAN_DRONE"
     checkAssign = false
   }
+  {
+    id = "camera_shake_human"
+    type = CONTROL_TYPE.SWITCH_BOX
+    value = @(joyParams) joyParams.cameraShakeToogleForHuman
+    setValue = function(joyParams, objValue) {
+      let old = joyParams.cameraShakeToogleForHuman
+      joyParams.cameraShakeToogleForHuman = objValue
+      if (joyParams.cameraShakeToogleForHuman != old)
+        commitControls()
+    }
+  }
+
 
   {
     id = "ID_HUMAN_UAV"
@@ -298,6 +327,12 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
+  {
+    id = "ID_HUMAN_ARTILLERY_STRIKE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+
 
   {
     id = "ID_HUMAN_OTHER_HEADER"
@@ -311,6 +346,11 @@ return [
   {
     id = "ID_HUMAN_ORDERS_MENU"
     checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_HUMAN_CONTEXT_COMMAND"
+    needHoldToUse = true
     needShowInHelp = true
   }
   {

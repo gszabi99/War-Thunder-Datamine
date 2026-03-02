@@ -44,7 +44,7 @@ def human_fpv_cam_lookat(info : ParallelUpdateFrameDelayed; transform : float3x4
 
   human_cam__fpvActive = !human_phys_state_get_isAttached(curSt) && curSt.standState != HUStandState.ESS_DOWNED && !human_ladder__attached && !isInVehicle && !bipod__enabled
   let wishOffsetMult = human_cam__fpvActive ? 1.0 : 0.0
-  human_cam__offsetMult = move_to_scalar(human_cam__offsetMult, wishOffsetMult, info.dt, bipod__enabled ? 5.0 : 2.0)
+  human_cam__offsetMult =  !human_ladder__attached ? move_to_scalar(human_cam__offsetMult, wishOffsetMult, info.dt, bipod__enabled ? 5.0 : 2.0) : 0.f
   if human_cam__offsetMult <= 0.0
     return
 
@@ -202,3 +202,14 @@ def cockpit_camera_offseter(info : ParallelUpdateFrameDelayed; camera__active : 
     animchar_recalc_wtm(animchar)
     animchar_copy_nodes(animchar, animchar_node_wtm, animchar_render__root_pos)
 
+
+[es(tag=render, on_disappear, REQUIRE=(deadEntity))]
+def reset_dead_cam_parameters_es(evt : Event;
+                                 var dead_camera__hitHead : bool&;
+                                 var dead_camera__enabled : bool&;
+                                 var dead_camera__ending : bool&;
+                                 var camera__stabilizationVector : float3&)
+  camera__stabilizationVector = float3(0.0, 1.0, 0.0)
+  dead_camera__enabled = false
+  dead_camera__ending = false
+  dead_camera__hitHead = false

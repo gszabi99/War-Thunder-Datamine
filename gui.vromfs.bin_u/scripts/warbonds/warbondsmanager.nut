@@ -153,6 +153,7 @@ function updateLeftSpecialTasksBoughtCount() {
 
   leftSpecialTasksBoughtCount.set(specialTaskAward.getLeftBoughtCount())
 }
+updateLeftSpecialTasksBoughtCount()
 
 addListenersWithoutEnv({
   function PriceUpdated(_p) {
@@ -160,7 +161,6 @@ addListenersWithoutEnv({
     updateLeftSpecialTasksBoughtCount()
   }
   LoginComplete = @(_p) updateLeftSpecialTasksBoughtCount()
-  ScriptsReloaded = @(_p) updateLeftSpecialTasksBoughtCount()
   ProfileUpdated = @(_p) updateLeftSpecialTasksBoughtCount()
 }, g_listener_priority.CONFIG_VALIDATION)
 
@@ -181,11 +181,6 @@ seenWarbondsShop.setCompatibilityLoadData(function() {
    return res
   })
 
-::g_warbonds <- {
-  checkWarbondsOverLimit
-  findWarbond
-  getCurrentWarbond
-}
 
 return {
   getWarbondsList
@@ -196,4 +191,5 @@ return {
   isWarbondsShopAvailable
   openWarbondsShop
   isWarbondsShopButtonVisible
+  checkWarbondsOverLimit
 }

@@ -451,8 +451,7 @@ let class ActionBar {
       if (this.shouldForceUpdateItems)
         mainActionButtonObj.setIntProp(bhvHintForceUpdateValuePID, 1)
       mainActionButtonObj.setValue("".concat("{{", mainShortcutId, "}}"))
-      mainActionButtonObj.top = hasActivateAction && activeBool ? "h + 0.005@shHud"
-        : "- h - 0.005@shHud"
+      mainActionButtonObj.hasActivateAction = hasActivateAction && activeBool ? "yes" : "no"
     }
 
     let activatedActionButtonObj = showObjById("activatedActionButton", activeBool && hasActivateAction, contentObj)
@@ -808,7 +807,7 @@ let class ActionBar {
       let activatedActionButtonObj = itemObj.findObject("activatedActionButton")
       if (activatedActionButtonObj?.hasShortcut == "yes") {
         activatedActionButtonObj.show(active)
-        mainActionButtonObj.top = active ? "h + 0.005@shHud" : "- h - 0.005@shHud"
+        mainActionButtonObj.hasActivateAction = active ? "yes" : "no"
       }
 
       let backgroundImage = actionBarType.getIcon(item, null, unit, hudUnitType)
@@ -839,7 +838,10 @@ let class ActionBar {
         itemObj.findObject("unitIndex").setValue($"{item.innerIdx + 1}")
         itemObj.findObject("lockedIcon").show(item.available && !item.active)
       }
-      if (itemObj.isHovered() || nestActionObj.isHovered())
+      let isTooltipOutdated = item?.cooldownTime != prevItem?.cooldownTime
+        || item?.automatic != prevItem?.automatic
+        || item?.userHandle != prevItem?.userHandle
+      if (isTooltipOutdated && (itemObj.isHovered() || nestActionObj.isHovered()))
         this.guiScene.updateTooltip(nestActionObj.findObject("tooltipLayer"))
     }
 

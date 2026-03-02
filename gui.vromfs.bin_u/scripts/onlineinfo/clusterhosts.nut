@@ -6,6 +6,7 @@ let { OPERATION_COMPLETE } = require("matching.errors")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattleState, isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
 
@@ -22,7 +23,7 @@ local failedFetches = 0
 let reIP = regexp2(@"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$")
 
 function fetchClusterHosts() {
-  if (!canFetchHosts.get() || isFetching)
+  if (!canFetchHosts.get() || isFetching || disableNetwork)
     return
 
   isFetching = true

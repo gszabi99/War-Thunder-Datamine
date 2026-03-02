@@ -30,11 +30,11 @@
       },
       {
         "_tags": "server",
-        "turret_danger_zones__lastCheckTime": -1.0,
-        "turret_danger_zones__checkDeltaTime": 0.1,
-        "turret_danger_zones__currentVehicleIdx": 0,
-        "turret_danger_zones__lastCheckFadingTime": -1.0,
-        "turret_danger_zones__checkFadingDeltaTime": 0.2,
+        "team_danger_zones__lastCheckFadingTime": -1.0,
+        "team_danger_zones__checkFadingDeltaTime": 0.2
+      },
+      {
+        "_tags": "server",
         "turret_danger_zones__vehicleMainAreaRadius": 12.0,
         "turret_danger_zones__frustumAngles": [
           60.0,
@@ -48,6 +48,14 @@
         "turret_danger_zones__areaFadeTimeStart": 7.0,
         "turret_danger_zones__areaCloseRadius": 4.0,
         "turret_danger_zones__areaFarRadius": 10.0,
+        "turret_danger_zones__list": [
+          -1,
+          -1,
+          -1
+        ],
+        "turret_danger_zones__lastCheckTime": -1.0,
+        "turret_danger_zones__checkDeltaTime": 0.1,
+        "turret_danger_zones__currentVehicleIdx": 0,
         "turret_danger_zones__vehicleList:list<eid>": {
           "_tags": "server"
         },
@@ -60,22 +68,33 @@
         "turret_danger_zones__areasTime:list<r>": {
           "_tags": "server"
         },
-        "turret_danger_zones__areasPosition:list<p3>": {
+        "turret_danger_zones__prevNext:list<ip2>": {
           "_tags": "server"
         }
+      },
+      {
+        "_tags": "server",
+        "death_danger_zones__areaBaseDuration": 300.0,
+        "death_danger_zones__areaMaxDuration": 1200.0,
+        "death_danger_zones__areaBaseRadius": 7.0,
+        "death_danger_zones__areaMaxRadius": 17.0,
+        "death_danger_zones__areaBaseWeight": 1.0,
+        "death_danger_zones__areaMaxWeight": 5.0,
+        "death_danger_zones__areaMergeCoef": 1.5,
+        "death_danger_zones__list": [
+          -1,
+          -1,
+          -1
+        ],
+        "death_danger_zones__areasData:list<i>": {},
+        "death_danger_zones__areasTime:list<r>": {},
+        "death_danger_zones__prevNext:list<ip2>": {}
       }
     ]
   },
-  "team_danger_zones_debug": {
-    "_group": {
-      "_tags": "dev,server",
-      "turret_danger_zones__areasDebugData:list<p4>": {
-        "_tags": "server"
-      },
-      "turret_danger_zones__areasDebugTimes:list<p2>": {
-        "_tags": "server"
-      }
-    }
+  "nav_zones_debug": {
+    "_tags": "dev,server",
+    "nav_zones_debug__modeFlags": 0
   },
   "team_aware_of_dangers": {
     "_group": {

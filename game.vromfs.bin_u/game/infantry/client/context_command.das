@@ -104,8 +104,11 @@ def human_context_command_point_order(act : ParallelUpdateFrameDelayed;
 
     var new_orderPosition : float3
     let activeTracing = false
-    query() <| $ [es(REQUIRE=human_context_point_order_common)] (var trace_mesh_faces : TraceMeshFaces?)
-      if !trace_human_context_command_order_pos(new_orderPosition, human_eid, tracePos, traceDir, activeTracing, trace_mesh_faces)
+    query() <| $ [es(REQUIRE=human_context_point_order_common)] (human_context_command__traceHandleResetDist : float;
+                                                                 var human_context_command__traceHandlePosCached : float3&;
+                                                                 var trace_mesh_faces : TraceMeshFaces?)
+      if !trace_human_context_command_order_pos(new_orderPosition, human_eid, tracePos, traceDir, activeTracing, human_context_command__traceHandleResetDist,
+                                                human_context_command__traceHandlePosCached, trace_mesh_faces)
         return
 
     if human_context_command__pointOrder <= int(HumanPointOrderType.NOT_POINT_ORDER)

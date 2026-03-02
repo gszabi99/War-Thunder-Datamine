@@ -35,6 +35,9 @@ let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { loadNameFilterHandler } = require("%scripts/wndLib/nameFilterHandler.nut")
+let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
+
 
 function isUnitInCustomList(unit, params) {
   if (!unit)
@@ -63,6 +66,7 @@ let getOptionsMaskForUnit = {
 }
 
 const MIN_NON_EMPTY_SLOTS_IN_COUNTRY = 1
+const MAX_UNITTYPE_WITH_NAMES = 4
 
 function getParamsFromSlotbarConfig(crew, slotbar) {
   if (!canChangeCrewUnits())
@@ -130,6 +134,8 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   wasReinited = false
 
   filterOptionsList = null
+  nameFilterHandler = null
+  nameFilterTxt = ""
 
   curOptionsMasks = null 
   optionsMaskByUnits = null 
@@ -185,6 +191,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.updateUnitsGroupText()
     this.initChooseUnitsOptions()
     this.fillChooseUnitsOptions()
+    this.fillNameFilter()
     this.fillLegendData()
     this.fillLegend()
     this.fillUnitsList()
@@ -399,6 +406,17 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function fillNameFilter() {
+    this.nameFilterTxt = ""
+    let nameFilterHandler = loadNameFilterHandler({
+      scene = this.scene.findObject("filter_edit_box_nest")
+      applyFilterCb = Callback(@(txt) this.applyNameFilter(txt), this)
+      goBackCb = Callback(@() this.goBack(), this)
+    })
+    this.registerSubHandler(nameFilterHandler)
+    this.nameFilterHandler = nameFilterHandler.weakref()
+  }
+
   function fillChooseUnitsOptions() {
     let locParams = {
       gameModeName = colorize("hotkeyColor", this.getGameModeNameFromParams(this.config))
@@ -413,30 +431,34 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     let view = { rows = [] }
     foreach (idx, userOpt in this.filterOptionsList) {
       let maskOption = get_option(userOpt)
+      let { id, hint, items, icons = [], cb = null } = maskOption
+      local { value } = maskOption
+
       let singleOption = getTblValue("singleOption", maskOption, false)
       if (singleOption) {
         
-        maskOption.value = maskOption.value | ~1
-        set_option(userOpt, maskOption.value)
+        value = value | ~1
+        set_option(userOpt, value)
       }
       let maskStorage = getTblValue(idx, this.curOptionsMasks, 0)
-      if ((maskOption.value & maskStorage) == 0) {
-        maskOption.value = maskStorage
-        set_option(userOpt, maskOption.value)
+      if ((value & maskStorage) == 0) {
+        value = maskStorage
+        set_option(userOpt, value)
       }
       let hideTitle = getTblValue("hideTitle", maskOption, false)
       let row = {
-        option_title = hideTitle ? "" : loc(maskOption.hint)
-        option_id = maskOption.id
+        option_title = hideTitle ? "" : loc(hint)
+        option_id = id
         option_idx = idx
         option_uid = userOpt
-        option_value = maskOption.value
+        option_value = value
         nums = []
+        cb
       }
-      row.cb <- maskOption?.cb
 
       local countVisibleOptions = 0
-      foreach (idxItem, text in maskOption.items) {
+      foreach (idxItem, text in items) {
+        let icon = icons?[idxItem]
         let optionVisible = ((1 << idxItem) & maskStorage) != 0
         if (optionVisible)
           countVisibleOptions++
@@ -445,10 +467,16 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
           name = name.slice(1)
         name = loc(name, locParams)
         row.nums.append({
-          option_name = name,
+          option_name = name
+          option_icon = icon
           visible = optionVisible && (!singleOption || idxItem == 0)
+          isEnabled = this.nameFilterTxt == ""
         })
       }
+
+      row.isTextHidden <- (id == "chooseUnitsType")
+        && countVisibleOptions > MAX_UNITTYPE_WITH_NAMES
+
       if (countVisibleOptions > 1 || singleOption)
         view.rows.append(row)
       if (countVisibleOptions > 1)
@@ -577,6 +605,14 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     fillUnitSlotTimers(objSlot.findObject(id), unit)
   }
 
+  function applyNameFilter(filterText) {
+    let needRefillOptions = (this.nameFilterTxt == "") != (filterText == "")
+    this.nameFilterTxt = filterText
+    if (needRefillOptions)
+      this.fillChooseUnitsOptions()
+    this.updateUnitsList()
+  }
+
   function updateUnitsList() {
     if (!checkObj(this.scene))
       return
@@ -607,12 +643,16 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       if (!u.isUnit(unit))
         continue
 
-      let masksUnit = this.optionsMaskByUnits?[unit.name]
       local isVisible = true
-      if (masksUnit)
-        for (local j = 0; j < lengthOptions; j++)
-          if ((masksUnit[j] & optionMasks[j]) == 0)
-            isVisible = false
+      if (this.nameFilterTxt != "")
+        isVisible = isUnitLocNameMatchSearchStr(unit, this.nameFilterTxt)
+      else {
+        let masksUnit = this.optionsMaskByUnits?[unit.name]
+        if (masksUnit)
+          for (local j = 0; j < lengthOptions; j++)
+            if ((masksUnit[j] & optionMasks[j]) == 0)
+              isVisible = false
+      }
 
       if (isVisible) {
         isVisible = ++visibleAmount <= this.curVisibleSlots

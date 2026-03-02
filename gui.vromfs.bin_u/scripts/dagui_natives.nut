@@ -2,6 +2,8 @@
 
 
 
+from "dagor.debug" import logerr
+
 let r = getroottable()
 
 return freeze({
@@ -112,7 +114,7 @@ return freeze({
   set_option_xchg_sticks = r["set_option_xchg_sticks"]
   set_option_camera_invertY = r["set_option_camera_invertY"]
   ps4_headtrack_set_xscale = r["ps4_headtrack_set_xscale"]
-  send_error_log = r["send_error_log"]
+  send_error_log = r?["send_error_log"] ?? logerr 
 
   set_language = r["set_language"]
 

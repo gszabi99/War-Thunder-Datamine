@@ -4,10 +4,16 @@ options strict_smart_pointers = true
 
 module utf8_utils shared
 
+
+
+
+
+
 require daslib/strings_boost
 require math
 
 def public utf16_to_utf32(high, low : uint) {
+    
     if (high >= 0xD800 && high <= 0xDBFF) {
         return ((high - 0xD800) << 10u) + (low - 0xDC00) + 0x10000
     } else {
@@ -102,18 +108,21 @@ def public utf8_length(utf8_string : string const) : int {
 
 
 def public is_first_byte_of_utf8_char(ch : uint8) : bool {
+    
     let x = uint(ch)
     return (x > 0u) && (x < 128u || (x & 0xC0) == 0xC0)
 }
 
 
 def public contains_utf8_bom(utf8_string : array<uint8> const implicit) : bool {
+    
     return (length(utf8_string) >= 3 &&
           uint(utf8_string[0]) == 0xEF && uint(utf8_string[1]) == 0xBB && uint(utf8_string[2]) == 0xBF)
 }
 
 
 def public contains_utf8_bom(utf8_string : string const) : bool {
+    
     unsafe {
         return (!empty(utf8_string) &&
               uint(utf8_string |> character_uat(0)) == 0xEF &&
@@ -127,7 +136,7 @@ def public contains_utf8_bom(utf8_string : string const) : bool {
 
 
 
-let shared s_utf8d <-  fixed_array(
+let shared s_utf8d <-  fixed_array( 
     
     
    0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
@@ -148,10 +157,10 @@ let shared s_utf8d <-  fixed_array(
   12u, 36u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u
 );
 
-
-let UTF8_ACCEPT = 0u
+let UTF8_ACCEPT = 0u 
 
 def public is_utf8_string_valid(utf8_string : array<uint8> const implicit) : bool {
+    
     var codepoint = 0u
     var state = 0u
     for (ch in utf8_string) {
@@ -165,6 +174,7 @@ def public is_utf8_string_valid(utf8_string : array<uint8> const implicit) : boo
 
 
 def public is_utf8_string_valid(utf8_string : string const) : bool {
+    
     var codepoint = 0u
     var state = 0u
     for (ch in utf8_string) {
@@ -207,7 +217,7 @@ def public utf8_decode(source_utf8_string : array<uint8> const implicit) : array
 def public utf8_decode(source_utf8_string : string const) : array<uint> {
     
     var dest_utf32_string : array<uint>
-    peek_data(source_utf8_string) <| $(arr) {
+    peek_data(source_utf8_string) $(arr) {
         dest_utf32_string |> utf8_decode(arr)
     }
     return <- dest_utf32_string
@@ -216,14 +226,15 @@ def public utf8_decode(source_utf8_string : string const) : array<uint> {
 
 def public utf8_decode(var dest_utf32_string : array<uint>; source_utf8_string : string const) {
     
-    peek_data(source_utf8_string) <| $(arr) {
+    peek_data(source_utf8_string) $(arr) {
         dest_utf32_string |> utf8_decode(arr)
     }
 }
 
 def decode_unicode_escape(str : string) {
-    return build_string <| $(writer) {
-        peek_data(str) <| $(p) {
+    
+    return build_string() $(writer) {
+        peek_data(str) $(p) {
             var i = 0
             let llen = p |> length
             var bang : array<uint8>

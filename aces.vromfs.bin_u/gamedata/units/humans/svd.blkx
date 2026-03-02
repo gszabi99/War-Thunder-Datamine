@@ -22,6 +22,8 @@
   "maxAngAccel": 40.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
+  "detectDistance": 600.0,
+  "instantDetectDistance": 60.0,
   "expClass": "exp_human",
   "sprintStaminaDrain": 1.5,
   "jumpStaminaDrain": 4.5,
@@ -140,7 +142,7 @@
     0.0
   ],
   "aimingMoveSpeed": [
-    1.0,
+    1.3,
     1.0
   ],
   "aimSpeed": 10.0,
@@ -192,9 +194,9 @@
     }
   },
   "standState": {
-    "walkSpeed": 1.8,
-    "runSpeed": 3.5,
-    "sprintSpeed": 5.6,
+    "walkSpeed": 2.6,
+    "runSpeed": 3.65,
+    "sprintSpeed": 6.75,
     "rotateAngles": [
       -60.0,
       60.0
@@ -239,6 +241,7 @@
   "crouchState": {
     "walkSpeed": 1.0,
     "runSpeed": 1.7,
+    "sprintSpeed": 1.7,
     "rotateAngles": [
       -60.0,
       60.0
@@ -283,6 +286,7 @@
   "crawlState": {
     "walkSpeed": 0.5,
     "runSpeed": 1.15,
+    "sprintSpeed": 1.15,
     "rotateAngles": [
       -60.0,
       60.0
@@ -374,6 +378,7 @@
   "downedState": {
     "walkSpeed": 1.0,
     "runSpeed": 1.0,
+    "sprintSpeed": 1.0,
     "rotateAngles": [
       -80.0,
       80.0
@@ -475,9 +480,9 @@
     }
   },
   "climbLadderState": {
-    "walkSpeed": 1.5,
-    "runSpeed": 3.5,
-    "sprintSpeed": 5.6,
+    "walkSpeed": 2.6,
+    "runSpeed": 3.65,
+    "sprintSpeed": 6.75,
     "rotateAngles": [
       -60.0,
       60.0
@@ -798,20 +803,20 @@
             "name": "rpg_7_default",
             "ecsTemplate": "rpg_7_default_gun",
             "inventoryItemEcsTemplate": "rpg_7_rocket_item",
-            "inventoryItemNum": 5
+            "inventoryItemNum": 4
           },
           {
             "name": "rpg_7",
             "ecsTemplate": "rpg_7_gun",
             "inventoryItemEcsTemplate": "rpg_7_rocket_item",
-            "inventoryItemNum": 3,
+            "inventoryItemNum": 4,
             "reqModification": "at_laucher_rpg_7"
           },
           {
             "name": "mpads_igla",
             "ecsTemplate": "mpads_igla_gun",
             "inventoryItemEcsTemplate": "9m39_missile_item",
-            "inventoryItemNum": 3,
+            "inventoryItemNum": 2,
             "reqModification": "mpads_igla"
           },
           {
@@ -834,12 +839,28 @@
           {
             "name": "frag_grenade",
             "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "frag_grenade_medium",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
             "inventoryItemNum": 2
+          },
+          {
+            "name": "frag_grenade_light",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 1
           },
           {
             "name": "smoke_grenade",
             "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
             "inventoryItemNum": 2,
+            "reqModification": "smoke_grenade"
+          },
+          {
+            "name": "smoke_grenade_light",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 1,
             "reqModification": "smoke_grenade"
           }
         ]

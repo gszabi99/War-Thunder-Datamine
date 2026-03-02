@@ -14,8 +14,8 @@ let time = require("%scripts/time.nut")
 let { getCustomLocalizationPresets, getRandomEffect,
   getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
 let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
-let { getUserstatItemRewardData, userstatItemsListLocId
-} = require("%scripts/userstat/userstatItemsRewards.nut")
+let { userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
+let { getUserstatItemRewardData } = require("%scripts/userstat/userstat.nut")
 let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")

@@ -8,6 +8,7 @@ let shipStateModule = require("%rGui/shipStateModule.nut")
 let hudLogs = require("%rGui/hudLogs.nut")
 let fireControl = require("%rGui/submarineFireControl.nut")
 let { sonarComponent } = require("%rGui/shipHudComponents.nut")
+let { missionProgressHeight } = require("%rGui/hudState.nut")
 let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
   IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible } = require("%rGui/shellState.nut")
@@ -131,10 +132,10 @@ function ShipShellAimState() {
 }
 
 let shipHud = @() {
-  watch = safeAreaSizeHud
+  watch = [safeAreaSizeHud, missionProgressHeight]
   size = FLEX_V
   margin = safeAreaSizeHud.get().borders
-  padding = [0, 0, hdpx(32) + fpx(6), 0]
+  padding = [0, 0, missionProgressHeight.get(), 0]
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT

@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { getLocalLanguage } = require("language")
-let { reload } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock  = require("DataBlock")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { getVideoResolution } = require("%scripts/options/systemOptions.nut")
@@ -22,10 +21,9 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 function reload_dagui() {
   get_cur_gui_scene()?.resetGamepadMouseTarget()
-  let res = reload(reload_main_script_module)
+  reload_main_script_module()
   update_objects_under_windows_state(get_cur_gui_scene())
   dlog("Dagui reloaded")
-  return res
 }
 
 function debug_change_language(isNext = true) {
@@ -159,5 +157,4 @@ register_command(function() {
 return {
   debug_get_skyquake_path
   debug_open_url
-  reload_dagui
 }

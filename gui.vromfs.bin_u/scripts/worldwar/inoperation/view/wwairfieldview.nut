@@ -6,6 +6,8 @@ let { wwGetZoneName, wwGetPlayerSide } = require("worldwar")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { ceil } = require("math")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
+
 
 let WwAirfieldView = class {
   redrawData = null
@@ -18,7 +20,7 @@ let WwAirfieldView = class {
   }
 
   function getCountryIcon() {
-    let groups = ::g_world_war.getArmyGroupsBySide(this.airfield.side)
+    let groups = getArmyGroupsBySide(this.airfield.side)
     return groups.len() > 0 ? groups[0].getCountryIcon() : ""
   }
 

@@ -5,8 +5,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let { getUnlockTypeText, getUnlockTypeFromConfig, buildConditionsConfig
-  } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockTypeText, getUnlockTypeFromConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { register_command } = require("console")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -15,7 +15,7 @@ let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { MAX_REWARDS_SHOW_IN_TROPHY } = require("%scripts/items/trophyReward.nut")
 let { getPrizeTooltipConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 
 let delayedUnlocksQueue = {}
 
@@ -90,7 +90,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!config)
         continue
       let unlockConditions = buildConditionsConfig(config)
-      let unlock = build_log_unlock_data(unlockConditions)
+      let unlock = buildLogUnlockData(unlockConditions)
       this.unlocks.append(unlock)
 
       let shrinkedUnlock = {}

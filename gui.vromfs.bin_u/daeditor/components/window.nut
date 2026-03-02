@@ -54,6 +54,38 @@ function toggleWindow(window){
     showWindow(window)
 }
 
+function mkHeader(id, headerText, onClose) {
+  return {
+    size = [flex(), SIZE_TO_CONTENT]
+    rendObj = ROBJ_BOX
+    flow = FLOW_HORIZONTAL
+    fillColor = Color(0,10,20,210)
+    borderColor = Color(30,30,30,20)
+    borderWidth = hdpx(1)
+    padding = [0,hdpx(5)]
+
+    children = [
+      {
+        size = [flex(), SIZE_TO_CONTENT]
+        halign = ALIGN_LEFT
+        valign = ALIGN_CENTER
+        rendObj = ROBJ_TEXT
+        text = headerText
+        margin = [hdpx(5), 0]
+      }
+      {
+        key = id
+        halign = ALIGN_RIGHT
+        valign = ALIGN_CENTER
+        children = closeButton(function() {
+          hideWindow(id)
+          onClose()
+        })
+      }
+    ]
+  }
+}
+
 let isWindowVisible = @(window) windowsOrder.contains(window?.key ?? window)
 let unused = @(...) null
 
@@ -66,7 +98,7 @@ let windowsStates = persist("windowStates", @() {})
 
 let mkWindow = kwarg(function(id, content=null, mkContent=null,
       onAttach=null, initialSize = const [sw(40), sh(65)], minSize = const [sw(14), sh(25)], maxSize = const [sw(80), sh(90)],
-      windowStyle = null, saveState=false, onClose = @() null
+      windowStyle = null, saveState=false, onClose = @() null, headerText = ""
   ) {
   assert(content!=null || type(mkContent)=="function", "registerWindow should be called with 'content' or 'mkContent'")
   let initialState = {
@@ -111,18 +143,10 @@ let mkWindow = kwarg(function(id, content=null, mkContent=null,
     stopMouse = true
     watch = [windowsGeneration]
     zOrder = windowsOrder.findindex(@(v) v == id) ?? 0
+    flow = FLOW_VERTICAL
     children = [
+      mkHeader(id, headerText, onClose)
       contentItem
-      {
-        hplace = ALIGN_RIGHT
-        pos = [fsh(1), -fsh(1)]
-        transform={}
-        key = id
-        children = closeButton(function() {
-          hideWindow(id)
-          onClose()
-        })
-      }
     ]
   }.__update(windowStyle ?? {})
 
@@ -140,6 +164,11 @@ function registerWindow(params) {
   registeredWindows[params.id] <-window
   return window
 }
+
+function getNumberOfRegisteredWindows() {
+  return registeredWindows.len()
+}
+
 return {
   registerWindow
   showWindow
@@ -150,4 +179,5 @@ return {
   isWindowVisible
   mkIsWindowVisible
   mkWindow
+  getNumberOfRegisteredWindows
 }

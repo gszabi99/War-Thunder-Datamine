@@ -618,7 +618,7 @@ class Component : Canvas
 
     drawBarometricAltitude(isMetric ? float(fm.pos.y) : float(fm.pos.y) * metrToFeet)
 
-    drawRadioAltitude(isMetric ? float(fm.currentAlt) : float(fm.currentAlt) * metrToFeet)
+    drawRadioAltitude(isMetric ? float(fm.input.currentAlt) : float(fm.input.currentAlt) * metrToFeet)
 
     drawSpeed(isMetric ? float(fm.speed) * mpsToKmh : float(fm.speed) * mpsToMh)
 

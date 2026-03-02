@@ -22,7 +22,7 @@ let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasC
   getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasAiGunners, hasGunStabilizer,
   hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview, hasOpticsFps, hasTvOpticalGuidance,
   hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask,
-  hasSpecialWeaponAdditionalSight, hasSensorsControl, isGearsExtended, isMouseAimRollOverride
+  hasSpecialWeaponAdditionalSight, hasSensorsControl, isGearsExtended, isMouseAimRollOverride, hasMfdZoomLevels
 } = require("vehicleModel")
 let { deferOnce } = require("dagor.workcycle")
 let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
@@ -37,6 +37,10 @@ let { canMateThrowFragGrenade, canMateThrowSmokeGrenade, canMateThrowFlashGrenad
 let { canSwitchFireMods, switchFireModOn, canSwithchOnUnbarrelLauncher, unbarrelSwitchStatus,
   hasLaserMod, laserModActive, hasFlashlightMod, flashlightModActive, needShowWeaponMenu
 } = require("%scripts/hud/humanWeaponUtils.nut")
+let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
+let { EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT } = require("hudActionBarConst")
+let { get_mission_time } = require("mission")
+
 
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
 
@@ -377,6 +381,34 @@ let hasRadar = memoizeByMission(function hasRadar(unitId, secondaryWeaponId) {
 })
 
 
+let getActionBarItem = @(itemType, killStreakTag = null)
+  actionBarItems.get().findvalue(@(item) item.type == itemType
+    && item?.killStreakTag == killStreakTag)
+
+let hasActionBarItem = @(itemType, killStreakTag = null)
+  getActionBarItem(itemType, killStreakTag) != null
+
+function hasArtilleryStrike() {
+  let { count = 0, cooldownEndTime = 0 } = getActionBarItem(EII_ARTILLERY_TARGET)
+  return count != 0 && get_mission_time() > cooldownEndTime
+}
+
+function hasSpecialUnit(unitType) {
+  let {
+    count = 0, countEx = 0, blockedCooldownEndTime = 0, cooldownEndTime = 0
+  } = getActionBarItem(EII_SPECIAL_UNIT, unitType)
+  return count >= countEx
+    && get_mission_time() > cooldownEndTime
+    && get_mission_time() > blockedCooldownEndTime
+}
+
+let weaponMenuAvailable = Computed(@() needShowWeaponMenu.get()
+  || hasActionBarItem(EII_ARTILLERY_TARGET)
+  || hasActionBarItem(EII_SPECIAL_UNIT, "fighter")
+  || hasActionBarItem(EII_SPECIAL_UNIT, "attacker")
+  || hasActionBarItem(EII_SPECIAL_UNIT, "bomber"))
+
+
 
 let cfg = {
 
@@ -474,6 +506,7 @@ let cfg = {
       { shortcut = [ "ID_AIR_BRAKE" ], enable = hasAirbrake }
       { shortcut = [ "ID_CHUTE" ], enable = hasChute }
       { shortcut = [ "ID_MANEUVERABILITY_MODE", "ID_MANEUVERABILITY_MODE_HELICOPTER" ] }
+      { shortcut = [ "ID_THRUST_VECTORING_MODE" ] }
       null
     ]
   },
@@ -760,7 +793,7 @@ let cfg = {
       { shortcut = [ "ID_MFD_3_PAGE_PLANE", "ID_MFD_3_PAGE" ],
         enable = @(_unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(), 2) }
       { shortcut = [ "ID_MFD_ZOOM_PLANE", "ID_MFD_ZOOM" ],
-        enable = @(_unitId) getDisplaysWithTogglablePagesBitMask() != 0 }
+        enable = @(_unitId) hasMfdZoomLevels() }
       { shortcut = [ "ID_HELI_GUNNER_NIGHT_VISION", "ID_PLANE_NIGHT_VISION" ],  enable = @(_unitId) hasNightVision() }
       { shortcut = [ "ID_THERMAL_WHITE_IS_HOT_HELI" ], enable = @(_unitId) hasNightVision() }
       { shortcut = [ "ID_MFD_4_PAGE" ],
@@ -945,7 +978,7 @@ let cfg = {
   },
   ["human_weapon_menu"] = {
     title = "weapon_menu/human/header"
-    enable = @(_) needShowWeaponMenu.get()
+    enable = @(_) weaponMenuAvailable.get()
     items = [
       {
         shortcut = [ "ID_HUMAN_FIRING_MOD_NEXT" ]
@@ -990,6 +1023,38 @@ let cfg = {
         onDestroy = unsubscribeMenuItem,
         onUpdate = onFlashlightModChanged,
         itemName = "flashlightMod"
+      }
+      {
+        shortcut = [ "ID_HUMAN_ARTILLERY_STRIKE" ]
+        getText = @() loc("hotkeys/ID_ACTION_BAR_ITEM_5")
+        enable = @(_) hasArtilleryStrike()
+        needShow = @(_) hasActionBarItem(EII_ARTILLERY_TARGET)
+        itemName = "artilleryStrike"
+        closeOnAction = true
+      }
+      {
+        shortcut = [ "ID_ACTION_BAR_ITEM_7" ]
+        getText = @() loc("actionBarItem/special_unit_helicopter_mguns")
+        enable = @(_) hasSpecialUnit("fighter")
+        needShow = @(_) hasActionBarItem(EII_SPECIAL_UNIT, "fighter")
+        itemName = "fighterFlight",
+        closeOnAction = true
+      }
+      {
+        shortcut = [ "ID_ACTION_BAR_ITEM_8" ]
+        getText = @() loc("actionBarItem/special_unit_helicopter_rocket")
+        enable = @(_) hasSpecialUnit("attacker")
+        needShow = @(_) hasActionBarItem(EII_SPECIAL_UNIT, "attacker")
+        itemName = "attackerFlight",
+        closeOnAction = true
+      }
+      {
+        shortcut = [ "ID_ACTION_BAR_ITEM_9" ]
+        getText = @() loc("actionBarItem/special_unit_helicopter_atgm")
+        enable = @(_) hasSpecialUnit("bomber")
+        needShow = @(_) hasActionBarItem(EII_SPECIAL_UNIT, "bomber")
+        itemName = "bomberFlight",
+        closeOnAction = true
       }
     ]
   }

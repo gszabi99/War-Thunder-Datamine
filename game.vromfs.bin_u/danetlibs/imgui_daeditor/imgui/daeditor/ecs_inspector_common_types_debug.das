@@ -13,6 +13,8 @@ require daslib.strings_boost
 require daslib/safe_addr
 require daslib/instance_function
 require daslib/defer
+require daslib/static_let
+require math.base
 require danetlibs.imgui_daeditor.imgui.daEditor.ecs_inspector_common
 require danetlibs.imgui_daeditor.imgui.daEditor.ecs_inspectors_macro
 require danetlibs.imgui_daeditor.daEditor.daEditor_common
@@ -258,17 +260,76 @@ def draw_vec4f(eid : array<EntityId> implicit; flags : uint; name : string; refs
   default_menu(eid, name, "vec4f", $() => to_string(*val), $(str) { update_value(vec4f(to_float4(str)), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
+def draw_edit_position_rotation_scale_tm(var val : float3x4&; name : string; var changed : bool?) : void
+  let rotMin = -180.0
+  let rotMax = 180.0
+  let rotStep = 1.0
+
+  let posMin = -1.5
+  let posMax = 1.5
+  let posStep = 0.01
+
+  var scale = float3(length(val[0]), length(val[1]), length(val[2]))
+  var euler = float3(0.0)
+  matrix_to_euler(val, euler.x, euler.y, euler.z)
+
+  euler = rad_to_deg(euler)
+  var newChanged = false
+
+  imgui::Text("Scale: ")
+  imgui::SameLine()
+  SetNextItemWidth(-FLT_MIN)
+  newChanged = InputFloat3("##{name}_0", unsafe(addr(scale.x)), "%.4f", ImGuiInputTextFlags.None) || newChanged
+
+  imgui::Text("Rot: ")
+  imgui::SameLine()
+  SetNextItemWidth(-FLT_MIN)
+  newChanged = imgui::DragScalarN("##{name}_1", ImGuiDataType.Float, unsafe(addr(euler.x)), 3,
+    rotStep, safe_addr(rotMin), safe_addr(rotMax), "%.4f", ImGuiSliderFlags.None) || newChanged
+
+  imgui::Text("Pos: ")
+  imgui::SameLine()
+  SetNextItemWidth(-FLT_MIN)
+  newChanged = imgui::DragScalarN("##{name}_2", ImGuiDataType.Float, unsafe(addr(val[3].x)), 3,
+    posStep, safe_addr(posMin), safe_addr(posMax), "%.4f", ImGuiSliderFlags.None) || newChanged
+
+  if newChanged
+    *changed = newChanged
+    euler = deg_to_rad(euler)
+
+    var q : quat
+    euler_to_quat(euler.x, euler.y, euler.z, q)
+    var rotTm : float3x4
+    make_tm(q, float3(0.0f, 0.0f, 0.0f), rotTm)
+
+    rotTm[0] *= scale.x
+    rotTm[1] *= scale.y
+    rotTm[2] *= scale.z
+
+    rotTm[3] = val[3]
+
+    val = rotTm
+
+
 [ecs_inspector(type_name="TMatrix", is_multi_line=true)]
 def draw_TMatrix(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<float3x4?> refs[0].rawData)
-  SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}_0", unsafe(addr((*val)[0].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
-  SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}_1", unsafe(addr((*val)[1].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
-  SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}_2", unsafe(addr((*val)[2].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
-  SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}_3", unsafe(addr((*val)[3].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
+
+  static_let <|
+    var showScaleRotationPosition = false
+
+  if showScaleRotationPosition
+    draw_edit_position_rotation_scale_tm(*val, name, changed)
+  else
+    SetNextItemWidth(-FLT_MIN)
+    *changed = InputFloat3("##{name}_0", unsafe(addr((*val)[0].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
+    SetNextItemWidth(-FLT_MIN)
+    *changed = InputFloat3("##{name}_1", unsafe(addr((*val)[1].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
+    SetNextItemWidth(-FLT_MIN)
+    *changed = InputFloat3("##{name}_2", unsafe(addr((*val)[2].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
+    SetNextItemWidth(-FLT_MIN)
+    *changed = InputFloat3("##{name}_3", unsafe(addr((*val)[3].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
+
   default_menu(eid, name, "TMatrix", $() => to_string(*val), $(str) { update_value(to_TMatrix(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed) <| $(var sub_changed)
     let res = sub_menu |> invoke(sub_changed)
     if !res
@@ -294,6 +355,9 @@ def draw_TMatrix(eid : array<EntityId> implicit; flags : uint; name : string; re
     if imgui::Button("Orthonormalize")
       imgui::CloseCurrentPopup()
       orthonormalize(*val)
+      *sub_changed = true
+
+    if imgui::Checkbox("Scale Rotation Position format", unsafe(addr(showScaleRotationPosition)))
       *sub_changed = true
 
     imgui::Separator()

@@ -3,7 +3,7 @@
   "fmFile": "fm/fa_18c_late.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
-  "gearSinkRangeLR": 0.56,
+  "gearSinkRangeLR": 0.48,
   "gearSinkRangeC": 0.38,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
@@ -19,18 +19,6 @@
   "rwrIndicator": "AN/ALR-67",
   "mfdCamLitening2": true,
   "hmdFA18": true,
-  "isBwOpticSight": true,
-  "needTpsNightVision": true,
-  "tpsCameraOffset": [
-    -2.0,
-    0.0,
-    0.0
-  ],
-  "tpsCameraTargetOffsetAtZoom": [
-    -1.0,
-    2.0,
-    0.0
-  ],
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -56,6 +44,18 @@
     40.0,
     -50.0,
     50.0
+  ],
+  "isBwOpticSight": true,
+  "needTpsNightVision": true,
+  "tpsCameraOffset": [
+    -2.0,
+    0.0,
+    0.0
+  ],
+  "tpsCameraTargetOffsetAtZoom": [
+    -1.0,
+    2.0,
+    0.0
   ],
   "type": "typeFighter",
   "advancedInstructor": true,
@@ -1533,8 +1533,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1593,8 +1593,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1653,8 +1653,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1713,8 +1713,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1768,8 +1768,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -1824,8 +1825,9 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.1,
+            "fire": 0.6,
+            "leak": 0.2,
             "canCut": true
           },
           {
@@ -1880,8 +1882,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1936,8 +1938,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1992,8 +1994,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -3257,21 +3259,23 @@
               "DR-VC-1A",
               "PGZ-09 TA",
               "1RS1",
-              "1RL34",
-              "AN/VPS-2",
-              "M-247 TA",
+              "CLC-1",
+              "SMA VPS-A05",
               "ESD RA-20 S",
+              "AN/VPS-2",
+              "1RL34",
+              "M-247 TA",
               "TriAD TA",
-              "1RL33",
-              "1RL114 TT",
               "Marconi S-400",
-              "Gepard TT",
               "Antelope",
+              "Phalanx Search Radar",
+              "1RL114 TT",
+              "Phalanx Track Radar",
+              "Gepard TT",
               "PGZ-09 TT",
               "Type-87 TT",
-              "Phalanx Search Radar",
-              "Phalanx Track Radar",
-              "PGZ-625 TA"
+              "PGZ-625 TT",
+              "1RL33"
             ]
           },
           {
@@ -6185,6 +6189,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "ptb_wing_right"
             }
           }
         ]
@@ -7135,6 +7143,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_wing_left"
             }
           }
         ]

@@ -3,12 +3,14 @@ let { exit_ship_flags_mode } = require("unitCustomization")
 let { charSendBlk } = require("chard")
 let DataBlock = require("DataBlock")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { buyUnlockImpl } = require("%scripts/unlocks/unlocksAction.nut")
-let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
+
 
 
 

@@ -7,6 +7,12 @@ options strict_smart_pointers = true
 
 module macro_boost shared private
 
+
+
+
+
+
+
 require daslib/ast_boost
 require daslib/templates_boost
 
@@ -24,7 +30,7 @@ class MacroVerifyMacro : AstFunctionAnnotation {
     
     def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
         
-        var inscope res <- qmacro_block() <| $() {
+        var inscope res <- qmacro_block() {
             if (!$e(call.arguments[0])) {
                 macro_error($e(call.arguments[1]), $e(call.arguments[2]), $e(call.arguments[3]))
                 return <- default<ExpressionPtr>
@@ -37,6 +43,7 @@ class MacroVerifyMacro : AstFunctionAnnotation {
 
 [macro]
 class CaptureBlock : AstVisitor {
+    
     @do_not_delete scope : table<Variable?>
     @do_not_delete captured : table<Variable?; ExprVar?>
     def override preVisitExprVar(expr : smart_ptr<ExprVar>) : void {
@@ -81,6 +88,7 @@ def public capture_block(expr : ExpressionPtr) : array<CapturedVariable> {
 
 [macro]
 class ColletFinally : AstVisitor {
+    
     @do_not_delete blocks : table<ExprBlock?>
     alwaysFor : bool
     def override preVisitExprBlock(blk : smart_ptr<ExprBlock>) : void {
@@ -112,6 +120,7 @@ def public collect_finally(expr : ExpressionPtr; alwaysFor : bool = false) {
 
 [macro]
 class ColletLabels : AstVisitor {
+    
     labels : table<int>
     def override preVisitExprLabel(expr : smart_ptr<ExprLabel>) : void {
         labels |> insert(expr.labelName)

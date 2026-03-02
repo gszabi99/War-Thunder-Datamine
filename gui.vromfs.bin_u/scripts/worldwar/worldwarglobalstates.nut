@@ -4,7 +4,7 @@ let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 let isWorldWarEnabled = @() hasFeature("WorldWar")

@@ -7,7 +7,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { get_shop_blk } = require("blkGetters")
 
 function getReqAirPosInArray(reqName, arr) {
@@ -224,15 +224,16 @@ function getBranchesTbl(rangeData) {
 
 function calculateRanksAndSectionsPos(page) {
   let hasRankPosXY = page?.hasRankPosXY ?? false
-  let res = array(MAX_COUNTRY_RANK + 1, 0)
-  let fakeRes = array(MAX_COUNTRY_RANK + 1, 0)
+  let maxRank = maxCountryRank.get()
+  let res = array(maxRank + 1, 0)
+  let fakeRes = array(maxRank + 1, 0)
 
   let sectionsPos = page.airList.len() ? [0, page.airList.len()] : [ 0 ]
   local foundPremium = false
   local maxColumns = 0
 
   for (local range = 0; range < page.airList.len(); range++) {
-    let rangeRanks = array(MAX_COUNTRY_RANK + 1, 0)
+    let rangeRanks = array(maxRank + 1, 0)
     let branches = getBranchesTbl(page.airList[range])
 
     foreach (branch in branches) {

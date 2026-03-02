@@ -18,8 +18,10 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwObjectiveView } =  require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
 let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
-
+let { getOperationObjectives } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
+
 
 gui_handlers.wwObjective <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -92,7 +94,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
   }
 
   function updateObjectivesData() {
-    let objectivesBlk = g_world_war.getOperationObjectives()
+    let objectivesBlk = getOperationObjectives()
     if (!objectivesBlk)
       return
 
@@ -224,7 +226,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
     let objectivesList = this.getObjectivesList(availableObjectiveSlots)
 
     local countryIcon = ""
-    let groups = g_world_war.getArmyGroupsBySide(this.side)
+    let groups = getArmyGroupsBySide(this.side)
     if (groups.len() > 0)
       countryIcon = groups[0].getCountryIcon()
 
@@ -311,7 +313,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
   }
 
   function onEventWWLoadOperation(_params) {
-    let objectivesBlk = g_world_war.getOperationObjectives()
+    let objectivesBlk = getOperationObjectives()
     if (!objectivesBlk)
       return
 

@@ -5,7 +5,7 @@
   "transivers": {
     "search": {
       "power": 1500.0,
-      "band": 9,
+      "band": 6,
       "rcs": 3.0,
       "range": 40000.0,
       "rangeMax": 50000.0,
@@ -277,11 +277,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }

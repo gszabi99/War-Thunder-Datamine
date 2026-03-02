@@ -31,7 +31,7 @@ def human_bipod_input_reset_es(evt : EventOnKeyDown;
     return
 
   let action = int(evt.eventId)
-  if action ==  int(ShortcutEventId.ID_HUMAN_JUMP) || action ==  int(ShortcutEventId.ID_HUMAN_MELEE) || action ==  int(ShortcutEventId.ID_HUMAN_CRAWL)
+  if action ==  int(ShortcutEventId.ID_HUMAN_JUMP) || action ==  int(ShortcutEventId.ID_HUMAN_MELEE) || action ==  int(ShortcutEventId.ID_HUMAN_CRAWL) || action ==  int(ShortcutEventId.ID_HUMAN_CROUCH)
     bipod__enabled = false
     bipod__placeable = false
 
@@ -315,7 +315,7 @@ def human_request_placing_es(evt : Event;
                                             recoilMult     = bipod__recoilMult))
 
 
-[es(tag=input, REQUIRE=controlledHero)]
+[es(tag=input, REQUIRE=controlledHero, REQUIRE_NOT=isReplayObserved)]
 def gun_bipod_mandatory_show_hint(evt : EventOnKeyDown;
                                   input__enabled : bool = true;
                                   human_weap__canOperate : bool)

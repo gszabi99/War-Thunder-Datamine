@@ -221,6 +221,11 @@ struct RequestRendinstEntityDamage
 struct CmdWeapSwitchSight
   toNext : bool
 
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdSetGunLaunchVerticalAngle
+  gunEid : EntityId
+  angle : float
+
 [event(unicast)]
 struct CmdWeapModActivate
   slotId : int
@@ -395,7 +400,8 @@ struct CmdRequestDestroyDrone
   droneEid : EntityId
 
 [cpp_event(unicast, with_scheme)]
-struct CmdDestroyDrone {}
+struct CmdDestroyDrone
+  target : ecs::EntityId
 
 [event(unicast)]
 struct CmdDroneAcquireControls {}
@@ -720,7 +726,8 @@ struct ReplayPostProdSaveEntity
   time : float
 
 [event(unicast)]
-struct ReplayPostProdSaveFile {}
+struct ReplayPostProdSaveFile
+  saveWithZeroTime : bool
 
 [event(unicast)]
 struct ReplayPostProdLoadFile {}
@@ -748,3 +755,52 @@ struct EventOnPlayerHit
 struct EventPlayEffect
   name : string
   pos : float3
+
+[cpp_event(unicast)]
+struct EventCalcAndVerifySpawnTm
+  spawnOnEid : EntityId
+  spawnTm : float3x4
+  verified : bool
+  requestPos : float3
+
+[event(unicast)]
+struct EventResetSpawnOnUnitEid {}
+
+[event(broadcast)]
+struct EventTreeCollisionSound
+  pos : float3
+
+[event(unicast, routing=ROUTING_CLIENT_TO_SERVER)]
+struct CmdRequestReanimation
+  pos : float3
+  reanimatedEid : EntityId
+
+[event(unicast)]
+struct EventDoReanimation
+  reanimatorEid : EntityId
+  pos : float3
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventOnEntityReanimated {}
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventDiedNotReanimated {}
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdStartReanimation
+  reanimatedEid : EntityId
+  reanimatedPos : float3
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdStopReanimation {}
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdDeclineReanimation {}
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdAskForHelpSpeech {}
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct CmdRequestHelp
+  soundPath : string
+  requesterEid : EntityId

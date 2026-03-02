@@ -11,7 +11,7 @@ let DataBlock  = require("DataBlock")
 let { ceil } = require("math")
 let { format, split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { getItemGenerator, findItemGeneratorByReceptUid } = require("%scripts/items/itemGeneratorsManager.nut")
+let { findItemGeneratorByReceptUid } = require("%scripts/items/itemGeneratorsManager.nut")
 let { hasFakeRecipesInList, getRequirementsMarkup, tryUseRecipes, tryUseRecipeSeveralTime
 } = require("%scripts/items/exchangeRecipes.nut")
 let guidParser = require("%scripts/guidParser.nut")
@@ -25,10 +25,10 @@ let { getMarkingPresetsById, getCustomLocalizationPresets,
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
 let { getDecorator, buildLiveDecoratorFromResource
-} = require("%scripts/customization/decorCache.nut")
+} = require("%scripts/customization/decoratorGetters.nut")
+let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
-let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -40,8 +40,9 @@ let { getMissionName } = require("%scripts/missions/missionsText.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let { refreshExtInventory, markInventoryUpdateDelayed
 } = require("%scripts/items/itemsManager.nut")
-let { findItemById, findItemByUid, getInventoryItemById, getInventoryItemByCraftedFrom
+let { findItemById, findItemByUid, getInventoryItemByCraftedFrom, getItemGenerator
 } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { getPrizesListView } = require("%scripts/items/prizesView.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 

@@ -27,15 +27,19 @@ weaponryPreset {
             background-svg-size:t='@modalInfoTierIconSize, @modalInfoTierIconSize'
           }
           <<#tierTooltipId>>
-          title:t='$tooltipObj'
           tooltip-float:t='horizontal'
+          <<#isTooltipByHold>>
           tooltipId:t='<<tierTooltipId>>'
+          <</isTooltipByHold>>
+          <<^isTooltipByHold>>
+          tooltip:t='$tooltipObj'
           tooltipObj {
             tooltipId:t='<<tierTooltipId>>'
             on_tooltip_open:t='onGenericTooltipOpen'
             on_tooltip_close:t='onTooltipObjClose'
             display:t='hide'
           }
+          <</isTooltipByHold>>
           <</tierTooltipId>>
           focus_border {}
         }

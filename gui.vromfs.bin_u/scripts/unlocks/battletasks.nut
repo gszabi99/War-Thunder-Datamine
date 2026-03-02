@@ -6,7 +6,7 @@ let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { isDataBlock, isString, isEmpty, isTable, search } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock, isString, isEmpty, search } = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
@@ -15,14 +15,19 @@ let statsd = require("statsd")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { loadConditionsFromBlk } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { updateTimeParamsFromBlk, getDifficultyTypeByName,
-  EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK
+let { updateTimeParamsFromBlk, EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { get_personal_unlocks_blk, get_proposed_personal_unlocks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { isBattleTask, getBattleTaskById, currentTasksArray, activeTasksArray,
+  proposedTasksArray, getDifficultyTypeByTask, isMediumTaskComplete,
+  isEasyTaskComplete, isHardTaskIncomplete
+} = require("%scripts/unlocks/battleTasksState.nut")
+let { checkWarbondsOverLimit } = require("%scripts/warbonds/warbondsManager.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 const TASKS_OUT_OF_DATE_DAYS = 15
 const SEEN_SAVE_ID = "seen/battletasks"
@@ -35,15 +40,8 @@ let difficultyTypes = [
   HARD_TASK
 ]
 
-let currentTasksArray = []
-let activeTasksArray = []
-let proposedTasksArray = []
 
 let getProposedTasks = @() proposedTasksArray
-
-let isMediumTaskComplete = Watched(false)
-let isEasyTaskComplete = Watched(false)
-let isHardTaskIncomplete = Watched(false)
 
 let seenTasks = {}
 let newIconWidgetByTaskId = {}
@@ -85,34 +83,6 @@ function isBattleTaskActual(task) {
     || taskGenId == specTasksLastGenerationId
 }
 
-function getBattleTaskById(id) {
-  if (isTable(id) || isDataBlock(id))
-    id = getTblValue("id", id)
-  if (!id)
-    return null
-
-  foreach (task in activeTasksArray)
-    if (task.id == id)
-      return task
-  foreach (task in proposedTasksArray)
-    if (task.id == id)
-      return task
-  return null
-}
-
-let getDifficultyFromTask = @(task)
-  getTblValue("_puType", task, "").toupper()
-
-let getDifficultyTypeByTask = @(task)
-  getDifficultyTypeByName(getDifficultyFromTask(task))
-
-function isBattleTask(task) {
-  if (isString(task))
-    task = getBattleTaskById(task)
-
-  let diff = getDifficultyTypeByTask(task)
-  return diff != UNKNOWN_TASK
-}
 
 function isBattleTaskDone(config) {
   if (isEmpty(config))
@@ -481,6 +451,7 @@ function updateTasksData() {
   updateCompleteTaskWatched()
   broadcastEvent("BattleTasksFinishedUpdate")
 }
+updateTasksData() 
 
 function getBattleTaskDiffGroups() {
   let result = []
@@ -512,7 +483,7 @@ function sendReceiveRewardRequest(battleTask) {
 
   let taskId = char_send_blk("cln_reward_specific_battle_task", blk)
   addTask(taskId, { showProgressBox = true }, function() {
-    ::update_gamercards()
+    updateGamercards()
     broadcastEvent("BattleTasksIncomeUpdate")
     broadcastEvent("BattleTasksRewardReceived")
   })
@@ -523,7 +494,7 @@ function requestBattleTaskReward(battleTaskId) {
     return
 
   let battleTask = getBattleTaskById(battleTaskId)
-  if (!::g_warbonds.checkWarbondsOverLimit(battleTask?.amounts_warbond ?? 0,
+  if (!checkWarbondsOverLimit(battleTask?.amounts_warbond ?? 0,
       sendReceiveRewardRequest, battleTask))
     return
 
@@ -562,33 +533,15 @@ function rerollSpecialTask(task) {
     })
 }
 
-function getBattleTaskNameById(param) {
-  local task = null
-  local id = null
-  if (isDataBlock(param)) {
-    task = param
-    id = getTblValue("id", param)
-  }
-  else if (isString(param)) {
-    task = getBattleTaskById(param)
-    id = param
-  }
-  else
-    return ""
-
-  return loc(getTblValue("locId", task, $"battletask/{id}"))
-}
 
 addListenersWithoutEnv({
   function LoginComplete(_) {
     resetBattleTasks()
     updateTasksData()
   }
-
   ProfileUpdated = @(_) checkCurSpecialTask()
   BattleTasksIncomeUpdate = @(_) updateTasksData()
   BattleEnded = @(_) updateTasksData()
-  ScriptsReloaded = @(_) updateTasksData() 
 
   
   function BattleTasksShowAll(params) {
@@ -600,13 +553,9 @@ addListenersWithoutEnv({
 updateTasksData()
 
 return {
-  isMediumTaskComplete
-  isEasyTaskComplete
-  isHardTaskIncomplete
   isBattleTasksAvailable
   resetBattleTasks
   checkNewSpecialTasks
-  isBattleTask
   isBattleTaskActual
   isSpecialBattleTask
   isBattleTaskActive
@@ -628,7 +577,6 @@ return {
   getBattleTasksByDiff
   getBattleTasksOrderedByDiff
   getBattleTaskWithAvailableAward
-  getBattleTaskById
   getCurrentBattleTasks
   getActiveBattleTasks
   getWidgetsTable
@@ -639,7 +587,6 @@ return {
   markBattleTaskSeen
   markAllBattleTasksSeen
   saveSeenBattleTasksData
-  getBattleTaskNameById
   getShowAllTasks 
   getProposedTasks
   getTaskStatus

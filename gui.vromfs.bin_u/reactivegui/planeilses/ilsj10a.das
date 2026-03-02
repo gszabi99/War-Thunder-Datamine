@@ -404,7 +404,7 @@ class Component : Canvas
 
   def drawMach()
     let pos = float2(-0.42, 0.05)
-    drawStrAnchored(pos, "M{fmt(":>5.2f", fmw.fm.Mach)}", AnchorHorz.Left, AnchorVert.Bottom)
+    drawStrAnchored(pos, "M{fmt(":>5.2f", fmw.fm.cache.Mach)}", AnchorHorz.Left, AnchorVert.Bottom)
 
   def drawVsi()
     let pos = float2(0.35, -0.26)
@@ -565,6 +565,22 @@ class Component : Canvas
       drawStrAnchored(pos, str, AnchorHorz.Center, AnchorVert.Center)
     setFontSize(defaultFontSize)
 
+  def drawSpi()
+    if !spi.isSet || !spi.isScreenPosValid
+      return
+    var pos : float2
+    let markSize = 0.015
+    let isTargetOnScreen = avionics_common::clamp_pos(spi.screenPos, pos, limits)
+    let isBlink = fract(BLINKS_PER_S_OUT_OF_BOUNDS * totalTime) < 0.5
+    if !isTargetOnScreen && !isBlink
+      return
+    let diamond <- array<float2>(
+      float2(pos.x + markSize, pos.y),
+      float2(pos.x, pos.y + markSize),
+      float2(pos.x - markSize, pos.y),
+      float2(pos.x, pos.y - markSize))
+    drawClosedPolyLine(diamond)
+
   def draw()
     return if !isValid
 
@@ -574,6 +590,7 @@ class Component : Canvas
       drawPitchLadder()
       drawHeadingTape()
       drawRollIndicator()
+      drawSpi()
     if masterMode == MasterMode.AG
       drawCcip()
     drawMasterCaution()

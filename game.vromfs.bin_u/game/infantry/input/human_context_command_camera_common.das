@@ -177,7 +177,7 @@ def private check_human_context_command_soldier_at_pos(pos : float3; var trace_h
   var tmp = 0
   let CHECK_RADIUS = 0.35
   let CHECK_LOW_DH = 0.15
-  let CHECK_HEIGHT1 = CHECK_RADIUS + 1.50
+  let CHECK_HEIGHT1 = CHECK_RADIUS + 1.40
   let CHECK_HEIGHT2 = CHECK_RADIUS + CHECK_LOW_DH
 
   
@@ -207,13 +207,14 @@ def private check_human_context_command_soldier_at_pos(pos : float3; var trace_h
   let traceDownPos2 = traceDownPos1 + float3(STAND_RADIUS, 0.0, -STAND_RADIUS * 0.5)
   let traceDownPos3 = traceDownPos1 + float3(STAND_RADIUS * 0.5, 0.0, STAND_RADIUS)
   var traceDownHt = CHECK_DOWN_HT
-  if !tracedown_normalized(traceDownPos1, traceDownHt, ETF_ALL)
+  var norm : float3
+  if !tracedown_normalized_with_mat_id(traceDownPos1, traceDownHt, norm, ETF_ALL, -1, trace_handle)
     return false
   traceDownHt = CHECK_DOWN_HT
-  if !tracedown_normalized(traceDownPos2, traceDownHt, ETF_ALL)
+  if !tracedown_normalized_with_mat_id(traceDownPos2, traceDownHt, norm, ETF_ALL, -1, trace_handle)
     return false
   traceDownHt = CHECK_DOWN_HT
-  if !tracedown_normalized(traceDownPos3, traceDownHt, ETF_ALL)
+  if !tracedown_normalized_with_mat_id(traceDownPos3, traceDownHt, norm, ETF_ALL, -1, trace_handle)
     return false
 
   
@@ -371,7 +372,8 @@ def private find_closest_outside_bbox_pos(ri_desc : RendInstDesc; pos : float3; 
   return false
 
 def trace_human_context_command_order_pos(var out_pos : float3&; human_eid : EntityId;
-                                          trace_pos : float3; trace_dir : float3; active_tracing : bool; var trace_handle : TraceMeshFaces?)
+                                          trace_pos : float3; trace_dir : float3; active_tracing : bool;
+                                          cache_reset_dist : float; var cache_pos : float3&; var trace_handle : TraceMeshFaces?)
   var maxLen : float; var rayMat : int
   if !get_human_context_order_trace_params(human_eid, maxLen, rayMat)
     return false
@@ -397,9 +399,7 @@ def trace_human_context_command_order_pos(var out_pos : float3&; human_eid : Ent
 
     var correctedPos = float3()
     var hasCorrectedDeniedRiPos = false
-    query() <| $ [es] (human_context_command__traceHandleResetDist : float;
-                       var human_context_command__traceHandlePosCached : float3&;
-                       var human_context_command__pointOrderDeniedRIPools : IntList&)
+    query() <| $ [es] (var human_context_command__pointOrderDeniedRIPools : IntList&)
       assume deniedPools = human_context_command__pointOrderDeniedRIPools
       if !riDesc.isValid || !riDesc.isRiExtra
         return
@@ -412,10 +412,11 @@ def trace_human_context_command_order_pos(var out_pos : float3&; human_eid : Ent
           deniedPools[riPool] = calculate_ri_denied_for_context_command_point_order(riPool, deniedPools, needInit)
         if deniedPools[riPool] == 1
           hasCorrectedDeniedRiPos = find_closest_outside_bbox_pos(riDesc, pos, trace_pos, SOLDIER_RADIUS, correctedPos)
-      if distance_sq(pos, human_context_command__traceHandlePosCached) > square(human_context_command__traceHandleResetDist)
-        let traceCachePos = pos + float3(0.0, 0.5, 0.0)
-        update_human_context_trace_cache(traceCachePos, 4.5, 2.0, *trace_handle)
-        human_context_command__traceHandlePosCached = pos
+
+    if distance_sq(pos, cache_pos) > square(cache_reset_dist)
+      let traceCachePos = pos + float3(0.0, 0.5, 0.0)
+      update_human_context_trace_cache(traceCachePos, 4.5, 2.0, *trace_handle)
+      cache_pos = pos
 
     let MAX_STEPS = active_tracing ? 15 : 1
     let STEP_DIST = 0.2
@@ -545,9 +546,8 @@ def trace_human_context_corner_peek(target_pos : float3; target_dir : float3; va
   out_peek_dir = lookDir
   return true
 
-def draw_human_context_command_sight_distance(target_pos : float3; target_dir : float3; traced_dist : float; crouched : bool)
-  let TRACE_HEIGHT = crouched ? 0.75 : 1.3
-  let TRACE_RADIUS = 0.2
+def draw_human_context_command_sight_distance(target_pos : float3; target_dir : float3; traced_dist : float; height_of_sight : HumanPointOrderHeightOfSight; trace_radius = 0.2)
+  let TRACE_HEIGHT = match_height_of_sight(height_of_sight)
   let tracePos = target_pos + float3(0.0, TRACE_HEIGHT, 0.0)
   let showDist = traced_dist < 0.0 ? 100.0 : traced_dist
 
@@ -556,7 +556,7 @@ def draw_human_context_command_sight_distance(target_pos : float3; target_dir : 
     var dist = float(i + 1) * STEP
     if dist >= showDist
       dist = showDist
-    draw_debug_sphere_buffered(tracePos + target_dir * dist, TRACE_RADIUS, E3DCOLOR(0x330000FF), 12, 10)
+    draw_debug_sphere_buffered(tracePos + target_dir * dist, trace_radius, E3DCOLOR(0x330000FF), 12, 10)
     if dist >= showDist
       break
 

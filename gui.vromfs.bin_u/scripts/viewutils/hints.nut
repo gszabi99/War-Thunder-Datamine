@@ -6,7 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { split_by_chars } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { startsWith, cutPrefix } = require("%sqstd/string.nut")
+let { startsWith, cutPrefix, trim } = require("%sqstd/string.nut")
 let { get_num_attempts_left } = require("guiMission")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
@@ -174,9 +174,20 @@ enum HINT_PIECE_TYPE {
   LINK
 }
 
-function getTextSlice(textsArray) {
-  return { text = textsArray.map(
-    @(text, idx) { textValue = textsArray?[idx + 1] != null ? $"{text} " : text }) }
+const symbolsToCheckSpace = [")", ".", ",", ":"]
+let noSpaceBeforeText = @(textValue) textValue == "" || symbolsToCheckSpace.contains(textValue.slice(0, 1))
+let isStringEndOfLine = @(textValue) textValue.endswith(".")
+
+let getTextSlice = @(textsArray) {
+  text = textsArray.map(function(text, idx) {
+    let nextTextValue = textsArray?[idx + 1]
+    let currTextValue = trim(text)
+    return {
+      textValue = isStringEndOfLine(currTextValue) ? $"{currTextValue} "
+        : nextTextValue != null && noSpaceBeforeText(trim(nextTextValue)) ? currTextValue
+        : $"{currTextValue} "
+    }
+  })
 }
 
 
@@ -209,6 +220,7 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {}) {
     flowAlign = getTblValue("flowAlign", params, "center")
     animation = getTblValue("animation", params)
     isVerticalAlignText = params?.isVerticalAlignText ?? false
+    topImages = params?.topImages
     rows = []
   }
 
@@ -285,7 +297,7 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {}) {
           else {
             let lastPiece = piece.slice(lastIdxOfSlicedPiece, piece.len())
             if (lastPiece != "")
-              textsArray.extend(lastPiece.split(" "))
+              textsArray.extend(lastPiece.split(" ").filter(@(p) p != ""))
           }
 
           slices.append(getTextSlice(textsArray))

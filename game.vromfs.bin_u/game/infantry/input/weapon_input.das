@@ -91,15 +91,7 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
       for i in range(int(HUWeaponSlots.EWS_SECONDARY), int(HUWeaponSlots.EWS_NUM))
         let slot = get_weapon_slot_at(cur_weap, forward, i)
         let weapon = human_weap__gunEids[int(slot)]
-        if !!weapon
-          if slot == (HUWeaponSlots.EWS_GRENADE)
-            if slot != HUWeaponSlots(cur_weap)
-              if can_switch_to_multiple_guns_slot(weapon, int(slot), multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__lastVisibleGunIndex)
-                if weapon == human_weap__grenadeThrower
-                  grenade_thrower_select_current_grenade(human__eid, human_weap__grenadeThrower)
-                  return
-                set_weapon_slot(time, weapon, slot, ct, last_change_time)
-              continue
+        if !!weapon && slot != (HUWeaponSlots EWS_GRENADE)
           if has(weapon, "drone_launcher")
             sendEvent(weapon, EventTakeDroneLauncherOrDroneTacticalPhone(atTime = time, weaponSlot = int(slot)))
             return

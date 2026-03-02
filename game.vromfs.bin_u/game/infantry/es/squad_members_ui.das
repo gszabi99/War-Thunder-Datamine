@@ -25,7 +25,6 @@ def private write_member_data(var states : Object&; member_eid : EntityId)
                                human_weap__gunEids : EidList;
                                human_weap__weapTemplates : Object;
                                squad_member__kills : int;
-                               hasFlask : bool = false;
                                total_kits__targetHeal : int = 0;
                                total_kits__targetRevive : int = 0;
                                soldier__sKind : string;
@@ -57,7 +56,6 @@ def private write_member_data(var states : Object&; member_eid : EntityId)
     *state |> set("hasAI", beh_tree__enabled)
     *state |> set("kills", squad_member__kills)
     *state |> set("targetHealCount", total_kits__targetHeal)
-    *state |> set("hasFlask", hasFlask)
     *state |> set("targetReviveCount", total_kits__targetRevive)
     *state |> set("sKind", soldier__sKind)
     *state |> set("sClassRare", soldier__sClassRare)

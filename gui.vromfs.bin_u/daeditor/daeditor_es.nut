@@ -5,6 +5,7 @@ let entity_editor = require_optional("entity_editor")
 let { selectedEntity, selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey,
       selectedCompName, markedScenes, sceneIdMap } = require("state.nut")
 let { fileName } = require("%sqstd/path.nut")
+let ecs = require("%sqstd/ecs.nut")
 
 
 
@@ -58,27 +59,6 @@ function getSceneLoadTypeText(v) {
   return loadType
 }
 
-const loadTypeConst = 4
-let sceneGenerated = {
-  id = -1
-  asText = "[GENERATED]"
-  
-  loadType = loadTypeConst
-  index = -2
-  entityCount = -2
-  path = "\0"
-}
-
-let sceneSaved = {
-  id = -2
-  asText = "[ALL FILES]"
-  
-  loadType = loadTypeConst
-  index = -1
-  entityCount = -1
-  path = "\0\0"
-}
-
 function getNumMarkedScenes() {
   local nSel = 0
   foreach (_sceneId, marked in markedScenes.get()) {
@@ -88,24 +68,15 @@ function getNumMarkedScenes() {
   return nSel
 }
 
-function matchSceneEntity(eid, saved, generated) {
-  local isSaved = entity_editor?.get_instance().isSceneEntity(eid)
-  return (saved && isSaved) || (generated && !isSaved)
-}
-
-function matchEntityByScene(eid, saved, generated) {
+function matchEntityByScene(eid) {
   local id = entity_editor?.get_instance().getEntityRecordSceneId(eid)
   if (markedScenes.get()?[id])
     return true
-  return matchSceneEntity(eid, saved, generated)
+  return entity_editor?.get_instance().isSceneEntity(eid)
 }
 
-function getScenePrettyName(loadType, index) {
-  if (loadType == 3) {
-    return entity_editor?.get_instance().getScenePrettyName(index) ?? ""
-  }
-
-  return ""
+function getScenePrettyName(index) {
+  return entity_editor?.get_instance().getScenePrettyName(index) ?? ""
 }
 
 function sceneToComboboxEntry(scene) {
@@ -113,7 +84,7 @@ function sceneToComboboxEntry(scene) {
     return "MAIN"
   }
 
-  local prettyName = getScenePrettyName(scene.loadType, scene.id)
+  local prettyName = getScenePrettyName(scene.id)
   local strippedPath = fileName(scene.path)
   local loadType = getSceneLoadTypeText(scene)
   return $"{loadType}:{scene.id}:{prettyName.len() == 0 ? strippedPath : $"{prettyName} ({strippedPath})"}"
@@ -125,7 +96,11 @@ function canSceneBeModified(scene) {
   }
 
   while (scene?.loadType != null) {
-    if (scene.loadType != 3 || (scene.importDepth != 0 && !entity_editor?.get_instance().isChildScene(3, scene.id))) {
+    if (scene.loadType != 3 || (scene.importDepth != 0 && !entity_editor?.get_instance().isChildScene(scene.id))) {
+      return false
+    }
+
+    if (entity_editor?.get_instance()?.isSceneInLockedHierarchy(scene.id)) {
       return false
     }
 
@@ -135,20 +110,29 @@ function canSceneBeModified(scene) {
   return true
 }
 
+function isEntityInLockedHierarchy(eid) {
+  if (entity_editor?.get_instance()?.isEntityLocked(eid) ?? false) {
+    return true
+  }
+
+  let sceneId = entity_editor?.get_instance()?.getEntityRecordSceneId(eid) ?? ecs.INVALID_SCENE_ID
+  if (sceneId == ecs.INVALID_SCENE_ID) {
+    return false
+  }
+
+  return entity_editor?.get_instance()?.isSceneInLockedHierarchy(sceneId) ?? false
+}
+
 return {
   getEntityExtraName
 
   getSceneLoadTypeText
 
-  loadTypeConst
-  sceneGenerated
-  sceneSaved
-
   getNumMarkedScenes
-  matchSceneEntity
   matchEntityByScene
 
   getScenePrettyName
   sceneToComboboxEntry
   canSceneBeModified
+  isEntityInLockedHierarchy
 }

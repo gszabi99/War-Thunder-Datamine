@@ -113,7 +113,7 @@ def draw_speed(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size :
   ctx |> goto_xy(pos.x + size.x * 0.38, pos.y + size.y * 0.5 - strBox.width.y)
   ctx |> draw_str_scaled(1.0, iasStr, iasStr |> length())
 
-  let mach = "M: {fmt(":.2f", fmw.fm.Mach)}"
+  let mach = "M: {fmt(":.2f", fmw.fm.cache.Mach)}"
   ctx |> goto_xy(pos.x + size.x * 0.38, pos.y + size.y * 0.5 + 2.)
   ctx |> draw_str_scaled(1.0, mach, mach |> length())
 
@@ -124,7 +124,7 @@ def draw_altitude(var ctx : GuiContext&; data : CanvasParams&; pos : float2; siz
   ctx |> draw_line(markPos.x, markPos.y, markPos.x - size.x * 0.01, markPos.y + size.y * 0.005, ctx |> hdpx(data.lineWidth))
 
   let step = size.y * 0.04 / 250.
-  let alt = fmw.fm.currentAlt * (data.isMetricUnits ? 1. : metrToFeet)
+  let alt = fmw.fm.input.currentAlt * (data.isMetricUnits ? 1. : metrToFeet)
 
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)

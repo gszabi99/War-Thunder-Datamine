@@ -46,6 +46,7 @@ let { getEventEconomicName, isEventWithLobby } = require("%scripts/events/eventI
 let { clearMpChatLog } = require("%scripts/chat/mpChatModel.nut")
 let { setUserPresence } = require("%scripts/userPresence.nut")
 let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 local delayedJoinRoomFunc = null
 let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
@@ -172,7 +173,7 @@ function isMeBanned() {
 }
 
 function checkReconnect() {
-  if (isReconnectChecking.get() || !isLoggedIn.get() || isInBattleState.get() || isMeBanned())
+  if (disableNetwork || isReconnectChecking.get() || !isLoggedIn.get() || isInBattleState.get() || isMeBanned())
     return
 
   isReconnectChecking.set(true)

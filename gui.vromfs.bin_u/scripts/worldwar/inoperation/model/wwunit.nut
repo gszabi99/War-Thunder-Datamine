@@ -9,7 +9,7 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsInfo
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let getUnitCustomParams = memoize(function(unitId) {
   return getWwSetting("unitCustomParams", null)?[unitId]

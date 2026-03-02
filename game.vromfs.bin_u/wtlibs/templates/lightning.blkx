@@ -1,6 +1,17 @@
 {
+  "lightning_sound": {
+    "_group": {
+      "_tags": "sound",
+      "lightning_sound__maxDelay": 3.0,
+      "lightning_sound__path": "ground/ambient/lightning",
+      "lightning_sound__event:SoundEvent": {}
+    }
+  },
   "lightning_animchar": {
-    "_use": "animchar",
+    "_use": [
+      "animchar",
+      "lightning_sound"
+    ],
     "animchar__res": "lightning_short_aa_char",
     "animchar_render__enabled": false,
     "transform": [

@@ -132,6 +132,7 @@ function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false)
     return false
   }
 
+  tooltipObj["class"] = (hasFeature("UnitModalInfo") && tooltipType.isEmptyTooltipObjClass) ? "empty" : ""
   let isSuccess = fillTooltip(tooltipObj, null, tooltipType, params.id, params)
   if (isSuccess)
     tooltipData = addEventListenersTooltip(tooltipObj, null, tooltipType, params.id, params)

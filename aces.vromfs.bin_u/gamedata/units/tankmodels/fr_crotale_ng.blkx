@@ -2167,9 +2167,9 @@
       "Fuel": 500.0,
       "TakeOff": 23500.0,
       "momentOfInertia": [
-        2.0,
-        2.0,
-        4.0
+        1.69,
+        4.2,
+        4.5
       ],
       "CenterOfGravity": [
         -0.1,
@@ -2192,33 +2192,39 @@
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
+      "cls_turret_01": "convex_hull",
+      "cls_turret_02": "convex_hull",
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 240.0,
-      "maxRPM": 2500.0,
+      "horsePowers": 251.0,
+      "maxRPM": 2100.0,
       "minRPM": 600.0,
       "rpmTau": 1.9
     },
     "mechanics": {
       "maxBrakeForce": 108000.0,
       "driveGearRadius": 0.6,
-      "mainGearRatio": 6.88,
+      "mainGearRatio": 8.91,
       "sideGearRatio": 1.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -5.67,
-          -11.34,
+          -5.0,
+          -10.0,
           0.0,
-          7.16,
-          3.58,
-          2.835,
-          2.09,
-          1.74,
-          1.39,
-          1.195,
-          1.0
+          9.18,
+          4.59,
+          3.42,
+          2.25,
+          1.895,
+          1.54,
+          1.27,
+          1.0,
+          0.875,
+          0.75,
+          0.7,
+          0.65
         ]
       }
     },
@@ -3797,6 +3803,24 @@
         "powerButtonIdx": -1
       }
     ]
+  },
+  "physObjClsNodeActivation": {
+    "onRadarParking": {
+      "clsNode": [
+        "cls_turret_02",
+        "cls_turret_01"
+      ],
+      "key": [
+        0.0,
+        0.5
+      ],
+      "visible": [
+        true,
+        false,
+        false,
+        true
+      ]
+    }
   },
   "antiAirComplexMenu": {
     "isVerticalViewAvailable": false,

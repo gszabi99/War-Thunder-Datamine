@@ -4,7 +4,7 @@ from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 let { bitMaskToSstring } = require("%scripts/debugTools/dbgEnum.nut")
 let { loginState } = require("%appGlobals/login/loginState.nut")
 
-let curLoginProcess = persist("curLoginProcess", @() { value = null})
+local curLoginProcess = null
 
 function hasLoginState(state) {
   return (loginState.get() & state) == state
@@ -16,15 +16,15 @@ function getStateDebugStr(state = null) {
 }
 
 function destroyLoginProgress() {
-  if (curLoginProcess.value)
-    curLoginProcess.value.destroy()
-  curLoginProcess.value = null
+  if (curLoginProcess)
+    curLoginProcess.destroy()
+  curLoginProcess = null
 }
 
 return {
   hasLoginState
   getStateDebugStr
-  getCurLoginProcess = @() curLoginProcess.value
-  setCurLoginProcess = @(newLoginProcess) curLoginProcess.value = newLoginProcess
+  getCurLoginProcess = @() curLoginProcess
+  setCurLoginProcess = @(newLoginProcess) curLoginProcess = newLoginProcess
   destroyLoginProgress
 }

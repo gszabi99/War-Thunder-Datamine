@@ -12,12 +12,13 @@ let { Cost } = require("%scripts/money.nut")
 let { findUnitNoCase, getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { hangar_get_loaded_unit_name, hangar_is_high_quality } = require("hangar")
-let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let reUnitLocNameSeparators = regexp2("".concat(@"[ \-_/.()", nbsp, "]"))
 let icon3dByGameTemplate = require("%globalScripts/iconRender/icon3dByGameTemplate.nut")
 let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
 let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
+
+let { havePackage } = require("%scripts/clientState/contentPacks.nut")
 
 local slotSize = []
 function getSlotSize() {
@@ -44,9 +45,13 @@ enum bit_unit_status {
 
 let getUnitTypeText = @(esUnitType) unitTypes.getByEsUnitType(esUnitType).name
 let getUnitTypeByText = @(typeName, caseSensitive = false) unitTypes.getByName(typeName, caseSensitive).esUnitType
+let isPkgMainExist = havePackage("pkg_main")
 
 function get_unit_icon_by_unit(unit, iconName) {
   if (unit.isHuman()) {
+    if (!isPkgMainExist)
+      return ""
+
     let slSize = getSlotSize()
     let { primaryWeaponTemplateName } = getUnitTemplateNames(unit)
     let templateIcon = icon3dByGameTemplate(primaryWeaponTemplateName, {
@@ -201,7 +206,7 @@ function getUnitTypesInCountries() {
     let esUnitType = unit.unitType.esUnitType
     let countryData = __types_for_coutries?[getUnitCountry(unit)]
     if (countryData != null && !countryData?[esUnitType])
-      countryData[esUnitType] <- isUnitBought(unit)
+      countryData[esUnitType] <- unit?.isBought() ?? false
   }
 
   return __types_for_coutries

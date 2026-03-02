@@ -39,8 +39,8 @@ struct ShellParam
 let maxCnt = 14
 let maxBulletCnt = 8
 
-let minimalCaliber = 0.03
-let maxShotFreq = 3.
+let minimalCaliber = 0.019
+let maxShotFreq = 20.
 
 let targetsRotation = 0. * DEG_TO_RAD
 let tankBulletRotation = -90. * DEG_TO_RAD
@@ -461,7 +461,9 @@ def read_bullet_prop(bullet_blk : DataBlock&; var bullets : array<ShellParam>&)
     return
   var mesh = ""
   let bulletType = bullet_blk |> datablock_getStr("bulletType", "")
-  if bullet_blk |> datablock_param_exists("gbufferModelName", -1)
+  if bullet_blk |> datablock_param_exists("cartridgeCaseModelName", -1)
+    mesh = bullet_blk |> datablock_getStr("cartridgeCaseModelName", "")
+  elif bullet_blk |> datablock_param_exists("gbufferModelName", -1)
     mesh = bullet_blk |> datablock_getStr("gbufferModelName", "")
   else
     if bulletType == ""

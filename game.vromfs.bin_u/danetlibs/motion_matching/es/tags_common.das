@@ -5,26 +5,33 @@ require daslib/strings_boost
 require MotionMatching
 require DagorSystem
 
-let INVALID_TAG_IDX = uint(-1)
-
-def get_tag_index(controller : MotionMatchingController; tag_name : string) : uint
+def get_tag_index(controller : MotionMatchingController; tag_name : string) : int
   assert(controller.dataBase != null)
-  let tagIdx = *controller.dataBase |> getTagIdx(tag_name)
+  return get_tag_index(*controller.dataBase, tag_name)
+
+def get_tag_index(data_base : AnimationDataBase; tag_name : string) : int
+  let tagIdx = data_base |> getTagIdx(tag_name)
   if tagIdx < 0
     logerr("MM: unknown tag '{tag_name}'")
-  return uint(tagIdx)
+  return tagIdx
 
 def set_tag(var controller : MotionMatchingController; tag_name : string; value : bool)
   let tagIdx = get_tag_index(controller, tag_name)
-  if tagIdx == INVALID_TAG_IDX
+  set_tag(controller, tagIdx, value)
+
+def set_tag(var controller : MotionMatchingController; tag_idx : int; value : bool)
+  if tag_idx < 0
     return
   if value
-    controller.currentTags |> requireTag(tagIdx)
+    controller.currentTags |> requireTag(uint(tag_idx))
   else
-    controller.currentTags |> excludeTag(tagIdx)
+    controller.currentTags |> excludeTag(uint(tag_idx))
 
 def remove_tag(var controller : MotionMatchingController; tag_name : string)
   let tagIdx = get_tag_index(controller, tag_name)
-  if tagIdx == INVALID_TAG_IDX
+  remove_tag(controller, tagIdx)
+
+def remove_tag(var controller : MotionMatchingController; tag_idx : int)
+  if tag_idx < 0
     return
-  controller.currentTags |> removeTag(tagIdx)
+  controller.currentTags |> removeTag(uint(tag_idx))

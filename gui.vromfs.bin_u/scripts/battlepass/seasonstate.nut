@@ -121,6 +121,9 @@ function getExpRangeTextOfLoginStreak() {
 }
 
 let warbondsShopLevelByStages = Computed(@() basicUnlock.get()?.meta.wbShopLevel ?? {})
+let getBPStageByShopLevel = @(level) warbondsShopLevelByStages.get()
+  .findindex(@(l) level == l) ?? -1
+
 
 let seasonMainPrizesData = Computed(@() [].extend(premiumUnlock.get()?.meta.promo ?? [],
   basicUnlock.get()?.meta.promo ?? []))
@@ -156,6 +159,7 @@ return {
   getExpRangeTextOfLoginStreak
   levelExp
   warbondsShopLevelByStages
+  getBPStageByShopLevel
   getLevelByExp
   hasBattlePassReward
   seasonEndsTime

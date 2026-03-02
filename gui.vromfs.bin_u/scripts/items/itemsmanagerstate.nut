@@ -29,8 +29,10 @@ let rawInventoryItemAmountsByItemdefId = {}
 let itemsListInternal = []
 
 let shopVisibleSeenIds = Watched(null)
+let generatorsCollection = {}
 
 local extInventoryUpdateTime = 0
+local shouldCheckAutoConsume = false
 
 function getInventoryItemType(blkType) {
   if (type(blkType) == "string") {
@@ -45,6 +47,9 @@ function getInventoryItemType(blkType) {
 function getExtInventoryUpdateTime() {
   return extInventoryUpdateTime
 }
+
+let setShouldCheckAutoConsume = @(value) shouldCheckAutoConsume = value
+let getShouldCheckAutoConsume = @() shouldCheckAutoConsume
 
 return {
   itemsListInternal
@@ -61,4 +66,7 @@ return {
   setExtInventoryUpdateTime = @(val) extInventoryUpdateTime = val
   getInventoryItemType
   getExtInventoryUpdateTime
+  getShouldCheckAutoConsume
+  setShouldCheckAutoConsume
+  generatorsCollection
 }

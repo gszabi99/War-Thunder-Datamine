@@ -13,8 +13,9 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
 let { isClanSeasonsEnabled, getClanCurrentSeasonName, getClanSeasonRegaliaPrizes,
   getClanSeasonUniquePrizesCounts, getClanSeasonRewardsList
@@ -114,12 +115,14 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
         }
         else if (prizeType == "decal") {
           let decorType = decoratorTypes.DECALS
+          let viewDecoratorType = getViewTypeByUnlockedItemType(decorType.unlockedItemType)
+
           foreach (decalId in prize.list) {
             let decal = getDecorator(decalId, decorType)
             collection.append({
               id = decalId
-              image = decorType.getImage(decal)
-              ratio = clamp(decorType.getRatio(decal), 1, 2)
+              image = viewDecoratorType.getImage(decal)
+              ratio = clamp(viewDecoratorType.getRatio(decal), 1, 2)
               tooltipId = getTooltipType("DECORATION").getTooltipId(decalId, decorType.unlockedItemType)
             })
           }

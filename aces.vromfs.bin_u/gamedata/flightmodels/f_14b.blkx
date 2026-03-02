@@ -1150,8 +1150,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1211,8 +1211,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1266,8 +1266,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1322,8 +1322,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1378,8 +1378,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1434,8 +1434,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1490,8 +1490,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2760,21 +2760,23 @@
               "DR-VC-1A",
               "PGZ-09 TA",
               "1RS1",
-              "1RL34",
-              "AN/VPS-2",
-              "M-247 TA",
+              "CLC-1",
+              "SMA VPS-A05",
               "ESD RA-20 S",
+              "AN/VPS-2",
+              "1RL34",
+              "M-247 TA",
               "TriAD TA",
-              "1RL33",
-              "1RL114 TT",
               "Marconi S-400",
-              "Gepard TT",
               "Antelope",
+              "Phalanx Search Radar",
+              "1RL114 TT",
+              "Phalanx Track Radar",
+              "Gepard TT",
               "PGZ-09 TT",
               "Type-87 TT",
-              "Phalanx Search Radar",
-              "Phalanx Track Radar",
-              "PGZ-625 TA"
+              "PGZ-625 TT",
+              "1RL33"
             ]
           },
           {
@@ -3748,31 +3750,6 @@
       "opticType": "targeting",
       "turretNo": 0,
       "nvIndex": 2
-    }
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump",
-    "burningFx": "fuel_dump_fire",
-    "allowed": true,
-    "minWepSpeed": 300.0,
-    "minSpeed": 200.0,
-    "maxSpeed": 836.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": "emtr_fuel_dump"
     }
   },
   "sensors": {
@@ -4870,7 +4847,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_heavy_middle_laser",
+            "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_24",
             "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
@@ -4881,7 +4858,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_egbu_24_paveway_3.blk",
               "emitter": "2000lb_mk_84_004",
               "bullets": 1,
               "external": true,
@@ -5477,7 +5454,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_heavy_middle_laser",
+            "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_24",
             "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
@@ -5488,7 +5465,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_egbu_24_paveway_3.blk",
               "emitter": "2000lb_mk_84_001",
               "bullets": 1,
               "external": true,
@@ -6527,74 +6504,6 @@
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.6
   },
-  "cutting": {
-    "_emtr_break_wing0_l_from": [
-      -0.340058,
-      0.611186,
-      3.488
-    ],
-    "_emtr_break_wing0_l_to": [
-      -0.340058,
-      0.611186,
-      4.00433
-    ],
-    "emtr_break_wing1_l_from": [
-      -0.340058,
-      0.611186,
-      4.77882
-    ],
-    "emtr_break_wing1_l_to": [
-      -0.340058,
-      0.611186,
-      5.77048
-    ],
-    "emtr_break_wing2_l_from": [
-      -0.340058,
-      0.611186,
-      7.25798
-    ],
-    "emtr_break_wing2_l_to": [
-      -0.340058,
-      0.611186,
-      8.25363
-    ],
-    "_emtr_break_wing0_r_from": [
-      -0.340058,
-      0.611186,
-      -3.488
-    ],
-    "_emtr_break_wing0_r_to": [
-      -0.340058,
-      0.611186,
-      -4.00433
-    ],
-    "emtr_break_wing1_r_from": [
-      -0.340058,
-      0.611186,
-      -4.77882
-    ],
-    "emtr_break_wing1_r_to": [
-      -0.340058,
-      0.611186,
-      -5.77048
-    ],
-    "emtr_break_wing2_r_from": [
-      -0.340058,
-      0.611186,
-      -7.25798
-    ],
-    "emtr_break_wing2_r_to": [
-      -0.340058,
-      0.611186,
-      -8.25363
-    ],
-    "emtr_break_wing_tail": [
-      -3.07549,
-      0.0,
-      0.0
-    ],
-    "finCut": false
-  },
   "AfterBurner0": {
     "volumetricAfterBurner": {
       "name": "_jet_f_14_ge_400",
@@ -6725,5 +6634,98 @@
         }
       }
     }
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump",
+    "burningFx": "fuel_dump_fire",
+    "allowed": true,
+    "minWepSpeed": 300.0,
+    "minSpeed": 200.0,
+    "maxSpeed": 836.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": "emtr_fuel_dump"
+    }
+  },
+  "cutting": {
+    "_emtr_break_wing0_l_from": [
+      -0.340058,
+      0.611186,
+      3.488
+    ],
+    "_emtr_break_wing0_l_to": [
+      -0.340058,
+      0.611186,
+      4.00433
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.340058,
+      0.611186,
+      4.77882
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.340058,
+      0.611186,
+      5.77048
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.340058,
+      0.611186,
+      7.25798
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.340058,
+      0.611186,
+      8.25363
+    ],
+    "_emtr_break_wing0_r_from": [
+      -0.340058,
+      0.611186,
+      -3.488
+    ],
+    "_emtr_break_wing0_r_to": [
+      -0.340058,
+      0.611186,
+      -4.00433
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.340058,
+      0.611186,
+      -4.77882
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.340058,
+      0.611186,
+      -5.77048
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.340058,
+      0.611186,
+      -7.25798
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.340058,
+      0.611186,
+      -8.25363
+    ],
+    "emtr_break_wing_tail": [
+      -3.07549,
+      0.0,
+      0.0
+    ],
+    "finCut": false
   }
 }

@@ -145,12 +145,20 @@ def get_danger_points(var points : array<float3>&; agent_eid, agent_team, agent_
 
   let minNoiseLevel = 0.5
   let enoughDangers = 5
+  let minMaxAround = float2(1.0, 10.0)
   query(agent_eid) <| $ [es] (agent_dangers : AgentDangers)
     for danger in agent_dangers.dangers
       if minNoiseLevel <= 0.0 || danger.traceable || danger.noiseMeter >= minNoiseLevel
         query(danger.eid) <| $ [es] (ai_target : Target; isAlive : bool)
           if isAlive
-            push(points, ai_target.targetPos)
+            if danger.traceable
+              push(points, ai_target.targetPos)
+            else
+              let dirFw = normalize(x0z(agent_pos - ai_target.targetPos))
+              let dirRt = float3(dirFw.z, 0.0, -dirFw.x)
+              let leftOrRightCoef = rnd_int(0, 100) > 50 ? -1.0 : 1.0
+              let posAround = ai_target.targetPos + dirRt * rnd_float(minMaxAround.x, minMaxAround.y) * leftOrRightCoef
+              push(points, posAround)
       if length(points) > enoughDangers
         break
   if !empty(points)
@@ -165,15 +173,19 @@ def get_danger_points(var points : array<float3>&; agent_eid, agent_team, agent_
   if !empty(points)
     return
 
+  let min_mean_pos_distance = 50.0
   query() <| $ [es] (mean_pos__pos : float3; mean_pos__team : int)
     if mean_pos__pos != float3() && !is_teams_friendly(mean_pos__team, agent_team)
-      push(points, mean_pos__pos)
+      if distance_sq(mean_pos__pos, agent_pos) >= square(min_mean_pos_distance)
+        push(points, mean_pos__pos)
   if !empty(points)
     return
 
+  let min_respawn_distance = 50.0
   get_respawn_points() <| $ [unused_argument(respType)] (active, respType, team, respPos)
     if active && !is_teams_friendly(team, agent_team)
-      push(points, respPos)
+      if distance_sq(respPos, agent_pos) >= square(min_respawn_distance)
+        push(points, respPos)
 
 def check_cover_pos_vs_points(pos, dir, points)
   if empty(points)

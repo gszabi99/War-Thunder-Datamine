@@ -1,28 +1,26 @@
 {
   "sequencer": [
     {
-      "name": "move.updateDestination",
+      "name": "move.updateLeaderDestination",
+      "isLeader": {},
       "orderedSelector": {
-        "sequencer": [
-          {
-            "isLeader": {},
-            "orderedSelector": {
-              "isAgentPlayerBot": {},
-              "isPossessedAgent": {}
-            },
-            "success": {
-              "subTree": {
-                "treeName": "move.leaderRouting"
-              }
-            }
-          },
-          {
-            "getRegroupPos": {
-              "posParam": "regroupPosition",
-              "runParam": "regroupRun"
-            }
-          }
-        ]
+        "isAgentPlayerBot": {},
+        "isPossessedAgent": {}
+      },
+      "success": {
+        "subTree": {
+          "treeName": "move.leaderRouting"
+        }
+      }
+    },
+    {
+      "name": "move.updateDestination",
+      "not": {
+        "isLeader": {}
+      },
+      "getRegroupPos": {
+        "posParam": "regroupPosition",
+        "runParam": "regroupRun"
       }
     },
     {
@@ -53,6 +51,14 @@
           "value": 0
         },
         {
+          "to": "leader_full_wait",
+          "value": 0
+        },
+        {
+          "to": "leader_full_stay",
+          "value": 0
+        },
+        {
           "to": "leader_reject",
           "value": 0
         },
@@ -61,89 +67,116 @@
           "value": 1
         }
       ],
-      "orderedSelector": {
-        "sequencer": [
-          {
-            "checkActualTacticalTargets": {}
-          },
-          {
-            "findDanger": {
-              "paramName": "testEnemy",
-              "radiusParamName": "enemyMoveFindRadius",
-              "minDanger": -1.0,
-              "tag": "human"
+      "orderedSelector": [
+        {
+          "sequencer": [
+            {
+              "checkActualTacticalTargets": {}
             },
-            "success": {
-              "sequencer": {
-                "periodicTimer": {
-                  "timeParam": "onChangeLeaderFollowPos",
-                  "timePeriod": [
-                    0.0,
-                    1.0
-                  ]
-                },
-                "setIntVar": [
-                  {
-                    "to": "leader_routing",
-                    "value": 1
+            {
+              "findDanger": {
+                "paramName": "testEnemy",
+                "radiusParamName": "enemyMoveFindRadius",
+                "minDanger": -1.0,
+                "tag": "human"
+              },
+              "setDebugSym": {
+                "act": "L1001"
+              },
+              "success": {
+                "sequencer": {
+                  "periodicTimer": {
+                    "timeParam": "onChangeLeaderFollowPos",
+                    "timePeriod": [
+                      0.0,
+                      1.0
+                    ]
                   },
-                  {
-                    "to": "leader_routing_enemy_around",
-                    "value": 1
-                  }
-                ]
+                  "setIntVar": [
+                    {
+                      "to": "leader_routing",
+                      "value": 1
+                    },
+                    {
+                      "to": "leader_routing_enemy_around",
+                      "value": 1
+                    }
+                  ]
+                }
               }
+            },
+            {
+              "shouldFocusOnCapZones": {},
+              "setDebugSym": {
+                "act": "L1002"
+              },
+              "success": {
+                "sequencer": {
+                  "periodicTimer": {
+                    "timeParam": "onChangeLeaderFollowPos",
+                    "timePeriod": [
+                      1.0,
+                      2.0
+                    ]
+                  },
+                  "setIntVar": [
+                    {
+                      "to": "leader_routing",
+                      "value": 1
+                    },
+                    {
+                      "to": "leader_routing_enemy_around",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "setDebugSym": {
+                "act": "L1003"
+              },
+              "success": {
+                "sequencer": {
+                  "periodicTimer": {
+                    "timeParam": "onChangeLeaderFollowPos",
+                    "timePeriod": [
+                      1.0,
+                      3.0
+                    ]
+                  },
+                  "setIntVar": [
+                    {
+                      "to": "leader_routing",
+                      "value": 1
+                    },
+                    {
+                      "to": "leader_routing_enemy_around",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "sequencer": {
+            "isTestPerfAI": {},
+            "copyPoint3Var": {
+              "to": "regroupPosition",
+              "from": "leaderTargetPos"
+            },
+            "setIntVar": {
+              "to": "regroupRun",
+              "value": 1
             }
           },
-          {
-            "shouldFocusOnCapZones": {},
-            "success": {
-              "sequencer": {
-                "periodicTimer": {
-                  "timeParam": "onChangeLeaderFollowPos",
-                  "timePeriod": [
-                    1.0,
-                    2.0
-                  ]
-                },
-                "setIntVar": [
-                  {
-                    "to": "leader_routing",
-                    "value": 1
-                  },
-                  {
-                    "to": "leader_routing_enemy_around",
-                    "value": 0
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "success": {
-              "sequencer": {
-                "periodicTimer": {
-                  "timeParam": "onChangeLeaderFollowPos",
-                  "timePeriod": [
-                    1.0,
-                    3.0
-                  ]
-                },
-                "setIntVar": [
-                  {
-                    "to": "leader_routing",
-                    "value": 1
-                  },
-                  {
-                    "to": "leader_routing_enemy_around",
-                    "value": 0
-                  }
-                ]
-              }
-            }
+          "subTree": {
+            "treeName": "move.leaderRoutingUpdate"
           }
-        ]
-      },
+        }
+      ],
       "isVarsIntEqual": [
         {
           "lhs": "leader_routing",
@@ -163,9 +196,6 @@
         },
         {
           "treeName": "move.leaderRoutingFindCapZone"
-        },
-        {
-          "treeName": "move.leaderRoutingUpdate"
         }
       ]
     },
@@ -268,10 +298,6 @@
                     "to": "leaderTargetEid",
                     "from": "squadGoalEid"
                   },
-                  "displayDebugMarker": {
-                    "showTime": 1.0,
-                    "thinkMark": "STAY..."
-                  },
                   "break": {}
                 },
                 {
@@ -322,12 +348,15 @@
                       ]
                     },
                     {
-                      "findDanger": {
-                        "paramName": "testEnemy",
-                        "radiusParamName": "enemyRadius",
-                        "minDanger": -1.0,
-                        "tag": "human"
+                      "ignoreChance": {
+                        "chance": 0.05
                       },
+                      "setIntVar": {
+                        "to": "leader_reject",
+                        "value": 1
+                      }
+                    },
+                    {
                       "isVarsIntEqual": {
                         "lhs": "leader_inside",
                         "rhs_value": 0
@@ -336,19 +365,20 @@
                         "setDebugSym": {
                           "act": "L203"
                         },
-                        "wait": {
-                          "range": [
-                            2.0,
-                            3.0
-                          ],
-                          "resetable": true
-                        },
-                        "sequencer": {
-                          "name": "stay",
-                          "subTree": {
-                            "treeName": "soldier.stay_no_order"
+                        "setIntVar": [
+                          {
+                            "to": "leader_full_wait",
+                            "value": 1
+                          },
+                          {
+                            "to": "leader_full_stay",
+                            "value": 1
+                          },
+                          {
+                            "to": "leader_reject",
+                            "value": 1
                           }
-                        },
+                        ],
                         "initPeriodicTimer": {
                           "timeParam": "onChangeLeaderFollowPos",
                           "timePeriod": [
@@ -368,14 +398,6 @@
                       0.3
                     ],
                     "resetable": true
-                  },
-                  "setIntVar": {
-                    "to": "leader_reject",
-                    "value": 1
-                  },
-                  "displayDebugMarker": {
-                    "showTime": 1.0,
-                    "thinkMark": "NO ENEMY!"
                   }
                 }
               ],
@@ -395,7 +417,8 @@
                 "outPosParam": "regroupPosition",
                 "zoneEidParam": "leaderTargetEid",
                 "insideCapzone": true,
-                "minDist": 3.5
+                "minDist": 3.5,
+                "notClosestChance": 0.07
               },
               "copyPoint3Var": {
                 "to": "leaderTargetPos",
@@ -412,7 +435,8 @@
                 "zoneEidParam": "leaderTargetEid",
                 "insideCapzone": false,
                 "minDist": 3.5,
-                "minDistChance": 0.1
+                "minDistChance": 0.1,
+                "notClosestChance": 0.2
               },
               "copyPoint3Var": {
                 "to": "leaderTargetPos",
@@ -478,46 +502,6 @@
     },
     {
       "name": "move.leaderRoutingUpdate",
-      "reaction": [
-        {
-          "event": "regularCheck",
-          "subTree": {
-            "treeName": "react.defaultRegularCheck"
-          }
-        },
-        {
-          "event": "onHit",
-          "sequencer": {
-            "subTree": {
-              "treeName": "react.onHit"
-            }
-          }
-        },
-        {
-          "event": "onBulletNearby",
-          "sequencer": {
-            "subTree": {
-              "treeName": "react.onBulletNearby"
-            }
-          }
-        },
-        {
-          "event": "onTraceableDanger",
-          "sequencer": {
-            "subTree": {
-              "treeName": "react.decideToAttackEnemy"
-            }
-          }
-        },
-        {
-          "event": "onEnemyPlayerNear",
-          "sequencer": {
-            "subTree": {
-              "treeName": "react.decideToAttackEnemyNear"
-            }
-          }
-        }
-      ],
       "setDebugSym": [
         {
           "act": "L3"
@@ -526,102 +510,66 @@
           "act": "L19"
         }
       ],
-      "orderedSelector": {
-        "sequencer": [
-          {
-            "getSquadGoal": {
-              "outGoalTypeParam": "squadGoalType",
-              "outGoalEidParam": "squadGoalEid"
-            },
-            "isVarsIntEqual": [
-              {
-                "lhs": "squadGoalType",
-                "rhs": "leaderTargetType"
+      "setIntVar": {
+        "to": "defReact",
+        "value": 1
+      },
+      "exitHandler": {
+        "orderedSelector": {
+          "sequencer": [
+            {
+              "getSquadGoal": {
+                "outGoalTypeParam": "squadGoalType",
+                "outGoalEidParam": "squadGoalEid"
               },
-              {
-                "lhs": "squadGoalEid",
-                "rhs": "leaderTargetEid"
-              }
-            ],
-            "orderedSelector": {
-              "sequencer": [
+              "isVarsIntEqual": [
                 {
-                  "getValidatedSquadPathAction": {
-                    "outActionPosFromParam": "regroupPosition"
-                  },
-                  "initPeriodicTimer": {
-                    "timeParam": "onChangeLeaderFollowPos",
-                    "timePeriod": [
-                      0.0,
-                      1.0
-                    ]
-                  },
-                  "setDebugSym": {
-                    "act": "L5"
-                  }
+                  "lhs": "squadGoalType",
+                  "rhs": "leaderTargetType"
                 },
                 {
-                  "buildSquadPathNextAdvanceAction": {
-                    "outActionPosFromParam": "regroupPosition",
-                    "useReconsParam": "leader_recons"
-                  },
-                  "initPeriodicTimer": {
-                    "timeParam": "onChangeLeaderFollowPos",
-                    "timePeriod": [
-                      1.0,
-                      2.0
-                    ]
-                  },
-                  "displayDebugMarker": {
-                    "showTime": 1.0,
-                    "thinkMark": "CONTINUE WAY...",
-                    "posParam": "regroupPosition",
-                    "sphereRadius": 10.0,
-                    "sphereColorIdx": 10
-                  },
-                  "setDebugSym": {
-                    "act": "L6"
-                  }
+                  "lhs": "squadGoalEid",
+                  "rhs": "leaderTargetEid"
                 }
               ],
-              "not": {
-                "wait": {
-                  "range": [
-                    0.1,
-                    0.2
-                  ],
-                  "resetable": true
-                }
-              }
-            }
-          },
-          {
-            "checkDistance": {
-              "posParam": "leaderTargetPos",
-              "radius": 5.0,
-              "yRadius": 5.0
-            },
-            "success": {
-              "setSquadGoal": {
-                "resetAction": true
-              }
-            },
-            "copyPoint3Var": {
-              "to": "regroupPosition",
-              "from": "leaderTargetPos"
-            },
-            "setDebugSym": {
-              "act": "L7"
-            }
-          },
-          {
-            "setIntVar": {
-              "to": "leader_tooback",
-              "value": -1
-            },
-            "orderedSelector": {
-              "not": [
-                {
+              "setDebugSym": {
+                "act": "L301"
+              },
+              "orderedSelector": {
+                "sequencer": [
+                  {
+                    "getValidatedSquadPathAction": {
+                      "outActionPosFromParam": "regroupPosition"
+                    },
+                    "initPeriodicTimer": {
+                      "timeParam": "onChangeLeaderFollowPos",
+                      "timePeriod": [
+                        0.0,
+                        1.0
+                      ]
+                    },
+                    "setDebugSym": {
+                      "act": "L5"
+                    }
+                  },
+                  {
+                    "buildSquadPathNextAdvanceAction": {
+                      "outActionPosFromParam": "regroupPosition",
+                      "useReconsParam": "leader_recons"
+                    },
+                    "initPeriodicTimer": {
+                      "timeParam": "onChangeLeaderFollowPos",
+                      "timePeriod": [
+                        1.0,
+                        2.0
+                      ]
+                    },
+                    "setDebugSym": {
+                      "act": "L6"
+                    }
+                  }
+                ],
+                "not": {
                   "wait": {
                     "range": [
                       0.1,
@@ -629,143 +577,172 @@
                     ],
                     "resetable": true
                   }
-                },
-                {
-                  "wait": {
-                    "range": [
-                      0.2,
-                      0.3
-                    ],
-                    "resetable": true
-                  }
-                },
-                {
-                  "wait": {
-                    "range": [
-                      0.5,
-                      1.0
-                    ],
-                    "resetable": true
-                  }
                 }
-              ],
-              "sequencer": [
-                {
-                  "ignoreChance": {
-                    "chance": 0.1
-                  },
-                  "tryFindSquadPathToGoalPoint": {
-                    "pointParam": "leaderTargetPos",
-                    "findThruBlocked": false,
-                    "allowPartialAsLastChance": true,
-                    "notTooBack": true,
-                    "maxBackDist": 5.0,
-                    "outWasTooBackParam": "leader_tooback"
-                  },
-                  "isVarsIntEqual": {
-                    "lhs": "leader_tooback",
-                    "rhs_value": 0
-                  },
-                  "setDebugSym": {
-                    "act": "L8"
-                  }
-                },
-                {
-                  "tryFindSquadPathToGoalPoint": {
-                    "pointParam": "leaderTargetPos",
-                    "findThruBlocked": true,
-                    "allowPartialAsLastChance": false
-                  },
-                  "setDebugSym": {
-                    "act": "L9"
-                  }
-                },
-                {
-                  "not": {
-                    "isVarsIntEqual": {
-                      "lhs": "leader_tooback",
-                      "rhs_value": -1
-                    }
-                  },
-                  "setDebugSym": {
-                    "act": "L10"
-                  }
-                },
-                {
-                  "changeStance": {
-                    "stanceName": "crouch",
-                    "maxStanceParam": "maxStance",
-                    "wait": true
-                  },
-                  "tryFindSquadPathToGoalPoint": {
-                    "pointParam": "leaderTargetPos",
-                    "findThruBlocked": false,
-                    "allowPartialAsLastChance": true
-                  },
-                  "setDebugSym": {
-                    "act": "L11"
-                  }
-                },
-                {
-                  "displayDebugMarker": {
-                    "showTime": 1.0,
-                    "thinkMark": "FAIL PATH!"
-                  },
-                  "setDebugSym": {
-                    "act": "L12"
-                  },
-                  "break": {}
-                }
-              ]
-            },
-            "initPeriodicTimer": {
-              "timeParam": "onChangeLeaderFollowPos",
-              "timePeriod": [
-                2.0,
-                3.0
-              ]
-            },
-            "setSquadGoal": {
-              "goalTypeParam": "leaderTargetType",
-              "goalEidParam": "leaderTargetEid"
-            },
-            "buildSquadPathNextAdvanceAction": {
-              "outActionPosFromParam": "regroupPosition",
-              "useReconsParam": "leader_recons"
-            },
-            "displayDebugMarker": {
-              "showTime": 1.0,
-              "thinkMark": "NEW WAY...",
-              "posParam": "regroupPosition",
-              "sphereRadius": 10.0,
-              "sphereColorIdx": 11
-            }
-          },
-          {
-            "setDebugSym": {
-              "act": "L15"
-            },
-            "displayDebugMarker": {
-              "showTime": 1.0,
-              "thinkMark": "NO WAY!"
-            },
-            "success": {
-              "setSquadGoal": {
-                "resetAction": true
               }
             },
-            "copyPoint3Var": {
-              "to": "regroupPosition",
-              "from": "leaderTargetPos"
+            {
+              "checkDistance": {
+                "posParam": "leaderTargetPos",
+                "radius": 5.0,
+                "yRadius": 5.0
+              },
+              "success": {
+                "setSquadGoal": {
+                  "resetAction": true
+                }
+              },
+              "copyPoint3Var": {
+                "to": "regroupPosition",
+                "from": "leaderTargetPos"
+              },
+              "setDebugSym": {
+                "act": "L7"
+              }
             },
-            "moveByDir": {
-              "lookLocked": true,
-              "endPos": "leaderTargetPos",
-              "duration": 0.5,
-              "distThreshold": 1.0
+            {
+              "setIntVar": {
+                "to": "leader_tooback",
+                "value": -1
+              },
+              "orderedSelector": {
+                "not": [
+                  {
+                    "wait": {
+                      "range": [
+                        0.1,
+                        0.2
+                      ],
+                      "resetable": true
+                    }
+                  },
+                  {
+                    "wait": {
+                      "range": [
+                        0.2,
+                        0.3
+                      ],
+                      "resetable": true
+                    }
+                  },
+                  {
+                    "wait": {
+                      "range": [
+                        0.5,
+                        1.0
+                      ],
+                      "resetable": true
+                    }
+                  }
+                ],
+                "sequencer": [
+                  {
+                    "ignoreChance": {
+                      "chance": 0.1
+                    },
+                    "tryFindSquadPathToGoalPoint": {
+                      "pointParam": "leaderTargetPos",
+                      "findThruBlocked": false,
+                      "allowPartialAsLastChance": true,
+                      "notTooBack": true,
+                      "maxBackDist": 5.0,
+                      "outWasTooBackParam": "leader_tooback"
+                    },
+                    "isVarsIntEqual": {
+                      "lhs": "leader_tooback",
+                      "rhs_value": 0
+                    },
+                    "setDebugSym": {
+                      "act": "L8"
+                    }
+                  },
+                  {
+                    "tryFindSquadPathToGoalPoint": {
+                      "pointParam": "leaderTargetPos",
+                      "findThruBlocked": true,
+                      "allowPartialAsLastChance": false
+                    },
+                    "setDebugSym": {
+                      "act": "L9"
+                    }
+                  },
+                  {
+                    "not": {
+                      "isVarsIntEqual": {
+                        "lhs": "leader_tooback",
+                        "rhs_value": -1
+                      }
+                    },
+                    "setDebugSym": {
+                      "act": "L10"
+                    }
+                  },
+                  {
+                    "changeStance": {
+                      "stanceName": "crouch",
+                      "maxStanceParam": "maxStance",
+                      "wait": true
+                    },
+                    "tryFindSquadPathToGoalPoint": {
+                      "pointParam": "leaderTargetPos",
+                      "findThruBlocked": false,
+                      "allowPartialAsLastChance": true
+                    },
+                    "setDebugSym": {
+                      "act": "L11"
+                    }
+                  },
+                  {
+                    "setDebugSym": {
+                      "act": "L12"
+                    },
+                    "break": {}
+                  }
+                ]
+              },
+              "initPeriodicTimer": {
+                "timeParam": "onChangeLeaderFollowPos",
+                "timePeriod": [
+                  2.0,
+                  3.0
+                ]
+              },
+              "setSquadGoal": {
+                "goalTypeParam": "leaderTargetType",
+                "goalEidParam": "leaderTargetEid"
+              },
+              "buildSquadPathNextAdvanceAction": {
+                "outActionPosFromParam": "regroupPosition",
+                "useReconsParam": "leader_recons"
+              }
+            },
+            {
+              "setDebugSym": {
+                "act": "L15"
+              },
+              "success": {
+                "setSquadGoal": {
+                  "resetAction": true
+                }
+              },
+              "copyPoint3Var": {
+                "to": "regroupPosition",
+                "from": "leaderTargetPos"
+              },
+              "setIntVar": {
+                "to": "leader_full_stay",
+                "value": 2
+              },
+              "stopSpeed": {}
             }
-          }
-        ]
+          ]
+        },
+        "sequencer": {
+          "setIntVar": {
+            "to": "defReact",
+            "value": 0
+          },
+          "stopSpeed": {}
+        }
       },
       "success": {
         "sequencer": {
@@ -788,6 +765,101 @@
             "makeReaction": "leader_redirect"
           }
         }
+      }
+    },
+    {
+      "name": "move.leaderMove",
+      "success": {
+        "sequencer": {
+          "setIntVar": {
+            "to": "defReact",
+            "value": 112
+          },
+          "setDebugSym": {
+            "act": "L16"
+          },
+          "orderedSelector": {
+            "callTree": {
+              "treeName": "soldier.move_look_remember"
+            },
+            "sequencer": {
+              "orderedSelector": {
+                "checkDistance": {
+                  "posParam": "regroupPosition",
+                  "radius": 2.5,
+                  "yRadius": 1.0
+                },
+                "isLookingToPos": {
+                  "posParam": "regroupPosition",
+                  "offAngle": 10.0
+                },
+                "rotateToPoint": {
+                  "posParam": "regroupPosition",
+                  "aimSpeedCoef": 0.25,
+                  "maxSimAngle": [
+                    30.0,
+                    80.0
+                  ],
+                  "pitchRange": [
+                    -5.0,
+                    5.0
+                  ],
+                  "minSimAngle": 20.0,
+                  "minSimSpeedCoef": 0.25
+                },
+                "continue": {}
+              },
+              "moveToPos": {
+                "startRestTimerRange": [
+                  0.465,
+                  0.47
+                ],
+                "noSprintTurnDeg": 75.0,
+                "tryClimbing": true,
+                "maxClimbWalkSpeed": 0.25,
+                "jumpClimbTime": 1.0,
+                "posParam": "regroupPosition",
+                "sprintTimerRange": [
+                  10.0,
+                  20.0
+                ],
+                "minDistToSprint": 7.0,
+                "lookVisc": 0.1,
+                "restTimerRange": [
+                  3.0,
+                  5.0
+                ],
+                "minStanceParam": "minStance",
+                "maxStanceParam": "maxStance",
+                "stuckDirParam": "stuckDir",
+                "incLadders": true,
+                "strafeNearDist": 2.5,
+                "rotateDistThreshold": 0.7,
+                "rotateFactors": [
+                  0.7,
+                  0.5,
+                  0.5,
+                  0.25
+                ],
+                "rotateStartTime": 0.5,
+                "useTeamCustomNav": true,
+                "timeToStuck": 0.9,
+                "incObstacles": true,
+                "avoidAiObstacles": false,
+                "distThreshold": 0.5,
+                "jumpDownTraceCheck": [
+                  0.4,
+                  1.0,
+                  0.15
+                ]
+              }
+            }
+          }
+        }
+      },
+      "setIntVar": {
+        "to": "defReact",
+        "value": 0
       }
     },
     {
@@ -1296,7 +1368,7 @@
       "getCoverPosition": {
         "coverPosParam": "wishPosition"
       },
-      "subTree": {
+      "callTree": {
         "treeName": "move.runToWishPos"
       }
     },
@@ -1312,17 +1384,15 @@
         "outPosParam": "moveFromPos"
       },
       "orderedSelector": {
-        "isZeroPoint3": {
-          "var": "wishPosition"
-        },
-        "checkDistance": {
-          "posParam": "moveFromPos",
-          "otherPosParam": "wishPosition",
-          "radius": 0.1,
-          "yRadius": 0.25
-        },
         "sequencer": [
           {
+            "isZeroPoint3": {
+              "var": "wishPosition"
+            },
+            "stopSpeed": {}
+          },
+          {
+            "isAgentPlayerBot": {},
             "ignoreChance": {
               "chance": 0.1
             },
@@ -1488,6 +1558,12 @@
             }
           }
         ],
+        "checkDistance": {
+          "posParam": "moveFromPos",
+          "otherPosParam": "wishPosition",
+          "radius": 0.125,
+          "yRadius": 0.45
+        },
         "isUnderwater": {},
         "orderedSelector": {
           "not": {
@@ -2145,6 +2221,10 @@
             ],
             "noSprintTurnDeg": 60.0,
             "forceNavDirTimeAfterClimb": 1.5,
+            "restTimerRange": [
+              3.0,
+              5.0
+            ],
             "posParam": "movePos",
             "sprintTimerRange": [
               10.0,
@@ -2153,6 +2233,8 @@
             "minDistToSprintParam": "minDistToSprint",
             "lookVisc": 0.1,
             "tryClimbing": true,
+            "maxClimbWalkSpeed": 0.25,
+            "jumpClimbTime": 1.0,
             "minStanceParam": "minStance",
             "maxStanceParam": "maxStance",
             "stuckDirParam": "stuckDir",
@@ -2212,6 +2294,10 @@
             ],
             "noSprintTurnDeg": 60.0,
             "forceNavDirTimeAfterClimb": 1.5,
+            "restTimerRange": [
+              3.0,
+              5.0
+            ],
             "posParam": "movePos",
             "sprintTimerRange": [
               10.0,
@@ -2220,6 +2306,8 @@
             "minDistToSprintParam": "minDistToSprint",
             "lookVisc": 0.1,
             "tryClimbing": true,
+            "maxClimbWalkSpeed": 0.25,
+            "jumpClimbTime": 1.0,
             "minStanceParam": "minStance",
             "maxStanceParam": "maxStance",
             "stuckDirParam": "stuckDir",
@@ -2407,6 +2495,10 @@
             ],
             "noSprintTurnDeg": 60.0,
             "forceNavDirTimeAfterClimb": 1.5,
+            "restTimerRange": [
+              3.0,
+              5.0
+            ],
             "posParam": "movePos",
             "sprintTimerRange": [
               10.0,
@@ -2415,6 +2507,7 @@
             "minDistToSprintParam": "minDistToSprint",
             "lookVisc": 0.1,
             "tryClimbing": true,
+            "maxClimbWalkSpeed": 0.25,
             "minStanceParam": "minStance",
             "maxStanceParam": "maxStance",
             "stuckDirParam": "stuckDir",
@@ -2452,6 +2545,10 @@
             ],
             "noSprintTurnDeg": 60.0,
             "forceNavDirTimeAfterClimb": 1.5,
+            "restTimerRange": [
+              3.0,
+              5.0
+            ],
             "posParam": "movePos",
             "sprintTimerRange": [
               10.0,
@@ -2460,6 +2557,8 @@
             "minDistToSprintParam": "minDistToSprint",
             "lookVisc": 0.1,
             "tryClimbing": true,
+            "maxClimbWalkSpeed": 0.25,
+            "jumpClimbTime": 1.0,
             "minStanceParam": "minStance",
             "maxStanceParam": "maxStance",
             "stuckDirParam": "stuckDir",

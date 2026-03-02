@@ -1,13 +1,22 @@
 from "%scripts/dagui_library.nut" import *
 
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-loadOnce("%appGlobals/ranks_common_shared.nut")
+require("%appGlobals/ranks_common_shared.nut")
 let { get_time_msec } = require("dagor.time")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 
-const MAX_COUNTRY_RANK = 8
+let maxCountryRank = Watched(0)
+
+function calculateMaxRank() {
+  if (maxCountryRank.get() > 0)
+    return
+  local maxRank = 0
+  foreach (unit in getAllUnits())
+    if (unit.rank > maxRank)
+      maxRank = unit.rank
+  maxCountryRank.set(maxRank)
+}
 
 let ranksPersist = persist("ranksPersist", @() { max_player_rank = 100 })
 let expPerRank = persist("expPerRank", @() [])
@@ -108,9 +117,10 @@ return {
   updateAircraftWarpoints
   ranksPersist
   expPerRank
-  MAX_COUNTRY_RANK
+  maxCountryRank
   loadPlayerExpTable
   initPrestigeByRank
   getRankByExp
   getPrestigeByRank
+  calculateMaxRank
 }

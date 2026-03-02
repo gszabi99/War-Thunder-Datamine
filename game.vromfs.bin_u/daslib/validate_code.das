@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module validate_code shared private
 
+
+
+
+
+
+
 require daslib/ast_boost
 require daslib/rtti
 require daslib/strings
@@ -17,7 +23,7 @@ def check_recursive(at : LineInfo; var fun : Function?; var call_graph : array<F
         return
     }
     if (call_graph |> find_index(fun) >= 0) {
-        var sb = build_string <| $(writer) {
+        var sb = build_string() $(writer) {
             writer |> write("recursive calls are not allowed")
             for (v in call_graph) {
                 writer |> write(" -> ")
@@ -31,7 +37,7 @@ def check_recursive(at : LineInfo; var fun : Function?; var call_graph : array<F
     }
     visited |> insert(fun)
     call_graph |> push(fun)
-    unsafe(reinterpret<FunctionPtr> fun) |> get_use_functions <| $(f) {
+    unsafe(reinterpret<FunctionPtr> fun) |> get_use_functions() $(f) {
         check_recursive(at, get_ptr(f), call_graph, visited)
     }
     call_graph |> pop()
@@ -53,13 +59,14 @@ def collect_call_tree(fun : Function?; var visited : table<Function?>) {
         return
     }
     visited |> insert(fun)
-    unsafe(reinterpret<FunctionPtr> fun) |> get_use_functions <| $(f) {
+    unsafe(reinterpret<FunctionPtr> fun) |> get_use_functions() $(f) {
         collect_call_tree(get_ptr(f), visited)
     }
 }
 
 [macro]
 class ValidateCompletionVisitor : AstVisitor {
+    
     @do_not_delete thisFunc : Function?
     def override preVisitFunction(var fun : FunctionPtr) : void {
         thisFunc = get_ptr(fun)
@@ -104,6 +111,10 @@ class ValidateCompletionVisitor : AstVisitor {
 
 [function_macro(name="verify_completion")]
 class VerifyCompletion : AstFunctionAnnotation {
+    
+    
+    
+    
     def override lint(var func : FunctionPtr; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         var visited : table<Function?>
         var astVisitor = new ValidateCompletionVisitor()
@@ -121,6 +132,7 @@ class VerifyCompletion : AstFunctionAnnotation {
 
 [macro]
 class ValidateShaderVisitor : AstVisitor {
+    
     def override preVisitTypeDecl(typ : TypeDeclPtr) : void {
         if (!typ.isNoHeapType) {
             macro_error(compiling_program(), typ.at, "not shader-like, type requires heap {describe(typ)}")
@@ -136,16 +148,17 @@ class ValidateShaderVisitor : AstVisitor {
 
 [simulate_macro(name="shader_like")]
 class JIT_LLVM : AstSimulateMacro {
+    
     def lint_module(prog : Program?; var ctx : Context?) {
         var astVisitor = new ValidateShaderVisitor()
         var inscope adapter <- make_visitor(*astVisitor)
-        prog |> for_each_module <| $(mod) {
-            mod |> for_each_function("") <| $(f) {
+        prog |> for_each_module() $(mod) {
+            mod |> for_each_function("") $(f) {
                 if (f.flags.used) {
                     visit(f, adapter)
                 }
             }
-            mod |> for_each_global() <| $(g) {
+            mod |> for_each_global() $(g) {
                 if (g.flags.used) {
                     if (!g._type.isNoHeapType) {
                         macro_error(compiling_program(), g.at, "global variable {g.name} requires heap")

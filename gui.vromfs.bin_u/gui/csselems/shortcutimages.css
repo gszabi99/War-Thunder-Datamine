@@ -2,11 +2,17 @@
 
 holdButtonSign {
   position:relative;
-  size: 1@cIco, 1@cIco;
+  size: 1@sIco, 1@sIco;
   pos: 0, ph/2 - h/2;
   background-color:@white;
   background-image:#ui/gameuiskin#hold_sign.svg;
+  background-svg-size: 1@sIco, 1@sIco;
+}
+
+holdButtonSign[isCombination=yes] {
+  size: 1@cIco, 1@cIco;
   background-svg-size: 1@cIco, 1@cIco;
+  margin-right: 5*@sf/@pf;
 }
 
 keyboardButton {

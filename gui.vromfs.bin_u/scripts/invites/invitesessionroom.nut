@@ -5,7 +5,6 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
@@ -70,8 +69,7 @@ let SessionRoom = class (BaseInvite) {
         this)
     }
 
-    
-    this.setDelayed(!isInReloading() && !getMroomInfo(this.roomId).getFullRoomData())
+    this.setDelayed(!getMroomInfo(this.roomId).getFullRoomData())
   }
 
   function isValid() {

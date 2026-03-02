@@ -6,7 +6,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 gui_handlers.WwJoinBattleCondition <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

@@ -12,6 +12,13 @@ options stack = 4_194_304
 
 module debug shared
 
+
+
+
+
+
+
+
 require math
 require strings
 require rtti
@@ -59,6 +66,7 @@ def private ctx_at(var ctx : Context) : DAContextAt {
 }
 
 def describe(ti : rtti::TypeInfo) {
+    
     unsafe {
         return describe(addr(ti))
     }
@@ -105,7 +113,7 @@ def private join_path(a, path_b : string) : string {
     if (length(b) == 0) {
         return fix_path(a)
     }
-    let res = build_string() <| $(builder) {
+    let res = build_string() $(builder) {
         builder |> write(a)
         let ends = ends_with_separator(a)
         let starts = starts_with_separator(b)
@@ -170,16 +178,18 @@ def private bytes_hr(value : uint64) {
     return "{int(value)} b"
 }
 
-
 class DAWalker : DapiDataWalker {
+
+
 
     maxChildrenCount : uint = 1000u
 
     varsStack : array<DAVariable?>
-    @do_not_delete frame : DAStackFrame?
+    @do_not_delete frame : DAStackFrame ?
     inlinePreviewLimit : int = 100
 
     def startWalk(var f : DAStackFrame; var v : DAVariable; cb : block<() : void>) {
+        
         unsafe {
             frame = addr(f)
             varsStack |> push(addr(v))
@@ -190,6 +200,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def popStack() {
+        
         let n = length(varsStack)
         if (n > 1) {
             varsStack |> erase(n - 1)
@@ -197,6 +208,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def startCont() {
+        
         let n = length(varsStack)
         if (varsStack[n - 1].children == null) {
             varsStack[n - 1].children = new array<DAVariable>()
@@ -204,6 +216,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def closeCont() {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -214,6 +227,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override beforeStructureField(ps : void?; si : StructInfo; pv : void?; vi : VarInfo; last : bool) : void {
+        
         self->startCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -227,6 +241,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterStructureField(ps : void?; si : StructInfo; pv : void?; vi : VarInfo; last : bool) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -242,6 +257,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterStructure(ps : void?; si : StructInfo) : void {
+        
         self->closeCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -256,6 +272,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterStructureCancel(ps : void?; si : StructInfo) : void {
+        
         self->closeCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -270,15 +287,18 @@ class DAWalker : DapiDataWalker {
     }
 
     def override canVisitArray(ps : void?; ti : TypeInfo) : bool {
+        
         let arr = unsafe(reinterpret<DapiArray?> ps)
         return maxChildrenCount < 0u || arr.size <= maxChildrenCount
     }
 
     def override canVisitArrayData(ti : TypeInfo; count : uint) : bool {
+        
         return maxChildrenCount < 0u || count <= maxChildrenCount
     }
 
     def override beforeArrayData(ps : void?; stride : uint; count : uint; ti : TypeInfo) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -287,6 +307,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override beforeArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint; last : bool) : void {
+        
         self->startCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -299,6 +320,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint; last : bool) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -315,6 +337,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterArrayData(ps : void?; stride : uint; count : uint; ti : TypeInfo) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -331,6 +354,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override beforeTable(pa : DapiTable; ti : TypeInfo) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -339,11 +363,13 @@ class DAWalker : DapiDataWalker {
     }
 
     def override canVisitTable(ps : void?; ti : TypeInfo) : bool {
+        
         let pa = unsafe(reinterpret<DapiTable?> ps)
         return maxChildrenCount < 0u || pa.size <= maxChildrenCount
     }
 
     def override beforeTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint; last : bool) : void {
+        
         self->startCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -356,6 +382,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override beforeTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint; last : bool) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -364,6 +391,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint; last : bool) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -380,6 +408,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterTable(pa : DapiTable; ti : TypeInfo) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -397,11 +426,13 @@ class DAWalker : DapiDataWalker {
 
     tupleIndex : int = 0
     def override beforeTuple(ps : void?; ti : TypeInfo) : void {
+        
         self->startCont()
         tupleIndex = 0
     }
 
     def override beforeTupleEntry(ps : void?; ti : TypeInfo; pv : void?; idx : int; last : bool) : void {
+        
         self->startCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -415,6 +446,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterTupleEntry(ps : void?; ti : TypeInfo; pv : void?; idx : int; last : bool) : void {
+        
         let n = length(varsStack)
         if (n > 0) {
             var v & = unsafe(varsStack[n - 1])
@@ -431,6 +463,7 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterTuple(ps : void?; ti : TypeInfo) : void {
+        
         self->closeCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -446,6 +479,7 @@ class DAWalker : DapiDataWalker {
 }
 
 struct private DAVariable {
+    
     uid : uint64
     name : string
     value : string
@@ -459,7 +493,8 @@ struct private DAVariable {
 }
 
 def join_with_names(a : array<DAVariable>; limit : int) : string {
-    return build_string() <| $(str) {
+    
+    return build_string() $(str) {
         var first = true
         var len = limit
         let n = length(a)
@@ -483,7 +518,8 @@ def join_with_names(a : array<DAVariable>; limit : int) : string {
 
 
 def join(a : array<DAVariable>; limit : int) : string {
-    return build_string <| $(str) {
+    
+    return build_string() $(str) {
         var first = true
         let n = length(a)
         var len = limit
@@ -505,6 +541,7 @@ def join(a : array<DAVariable>; limit : int) : string {
 
 
 def find_child_var(val : DAVariable; id : uint64; cb : block<(res : DAVariable) : void>) {
+    
     if (val.uid == id) {
         cb |> invoke(val)
         return true
@@ -520,6 +557,7 @@ def find_child_var(val : DAVariable; id : uint64; cb : block<(res : DAVariable) 
 }
 
 def find_child_var(val : array<DAVariable>; cb : block<(res : DAVariable) : bool>) {
+    
     for (v in val) {
         if (v |> find_child_var(cb)) {
             return true
@@ -530,6 +568,7 @@ def find_child_var(val : array<DAVariable>; cb : block<(res : DAVariable) : bool
 
 
 def find_child_var(val : DAVariable; cb : block<(res : DAVariable) : bool>) {
+    
     if (cb |> invoke(val)) {
         return true
     }
@@ -546,6 +585,7 @@ def find_child_var(val : DAVariable; cb : block<(res : DAVariable) : bool>) {
 
 
 struct private DAStackFrame {
+    
     name : string
     path : string
     @do_not_delete func : FuncInfo?
@@ -562,6 +602,7 @@ struct private DAStackFrame {
 
 
 def find_child_var(stack : DAStackFrame; id : uint64; cb : block<(res : DAVariable) : void>) {
+    
     for (c in stack.variables) {
         if (c |> find_child_var(id, cb)) {
             return
@@ -588,6 +629,7 @@ def find_child_var(stack : DAStackFrame; id : uint64; cb : block<(res : DAVariab
 
 
 def find_child_var(stack : DAStackFrame; cb : block<(res : DAVariable; idx : uint64) : bool>) : bool {
+    
     for (c in stack.variables) {
         if (cb |> invoke(c, LOCAL_VARS)) {
             return true
@@ -615,6 +657,7 @@ def find_child_var(stack : DAStackFrame; cb : block<(res : DAVariable; idx : uin
 
 
 def iter_top_child_var(stack : DAStackFrame; cb : block<(res : DAVariable) : void>) {
+    
     for (c in stack.variables) {
         cb |> invoke(c)
     }
@@ -630,6 +673,7 @@ def iter_top_child_var(stack : DAStackFrame; cb : block<(res : DAVariable) : voi
 
 
 class private DAStackWalker : DapiStackWalker {
+    
     dataWalkerAdapter : smart_ptr<DataWalker>
     dataWalker : DAWalker?
 
@@ -643,6 +687,7 @@ class private DAStackWalker : DapiStackWalker {
     @do_not_delete pathsCache : table<string; string>?
 
     def DAStackWalker() {
+        
         dataWalker = new DAWalker()
         unsafe {
             dataWalkerAdapter <- make_data_walker(dataWalker)
@@ -650,6 +695,7 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def operator delete {
+        
         unsafe {
             delete dataWalkerAdapter
             delete dataWalker
@@ -657,6 +703,7 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def collectGlobalAt(vinfo : VarInfo; var frame : DAStackFrame&) {
+        
 
         var value : void?
         unsafe {
@@ -683,6 +730,7 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def collectGlobals() {
+        
         if (wasGlobalsCollected) {
             return
         }
@@ -720,6 +768,7 @@ class private DAStackWalker : DapiStackWalker {
 
     def override onCallAOT(pp : Prologue; fileName : string#) : void {
         
+        
         let n = length(ctx.stack)
         if (n > 0) {
             ctx.stack[n - 1].name = pp.info != null ? "def {pp.info.name} [AOT]" : "def [AOT]"
@@ -729,7 +778,19 @@ class private DAStackWalker : DapiStackWalker {
         }
     }
 
+    def override onCallJIT(pp : Prologue; fileName : string#) : void {
+        
+        let n = length(ctx.stack)
+        if (n > 0) {
+            ctx.stack[n - 1].name = pp.info != null ? "def {pp.info.name} [JIT]" : "def [JIT]"
+            ctx.stack[n - 1].path = "{fileName}"
+
+            self->collectGlobals()
+        }
+    }
+
     def override onCallAt(pp : Prologue; info : FuncInfo; at : LineInfo) : void {
+        
         
         let n = length(ctx.stack)
         if (n > 0) {
@@ -742,6 +803,7 @@ class private DAStackWalker : DapiStackWalker {
 
     def override onCall(pp : Prologue; info : FuncInfo) : void {
         
+        
         let n = length(ctx.stack)
         if (n > 0) {
             ctx.stack[n - 1].name = "def {info.name}"
@@ -750,6 +812,7 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def override onBeforeCall(pp : Prologue; sp : void?) : void {
+        
         let iblock = intptr(pp._block)
         let isBlock = (iblock & 1ul) != 0ul
         let funcInfo = isBlock ? default<FuncInfo?> : pp.info
@@ -759,6 +822,7 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def override onVariable(inf : FuncInfo; vinfo : LocalVariableInfo; arg : void?; inScope : bool) : void {
+        
         if (!inScope) {
             return
         }
@@ -785,6 +849,7 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def override onArgument(inf : FuncInfo; index : int; vinfo : VarInfo; arg : float4) {
+        
         let stackLen = length(ctx.stack)
         if (stackLen > 0) {
             var frame & = unsafe(ctx.stack[stackLen - 1])
@@ -807,17 +872,19 @@ class private DAStackWalker : DapiStackWalker {
         }
     }
 }
-
 enum DABreakpointState {
+    
     Uninitialized = 0
     Initialized
     Instrumented
 }
 
+
 typedef DAContextAt = uint64
 
 
 struct private DABreakpoint {
+    
     id : uint64
     line : uint
 
@@ -826,10 +893,12 @@ struct private DABreakpoint {
     ctxAt : DAContextAt
 }
 
+
 typedef DABreakpoints = table<string; array<DABreakpoint>>
 
 
 struct private DAContext {
+    
     id : uint64
     at : DAContextAt
     @do_not_delete ctx : Context?
@@ -850,7 +919,7 @@ def private reset_debug_flags(var ctx : DAContext) {
 
 
 def private to_string(ctx : DAContext) {
-    return build_string() <| $(str) {
+    return build_string() $(str) {
         if (ctx.ctx.category.debugger_attached) {
             str |> write("*")
         }
@@ -883,6 +952,7 @@ def private compare_path(p1, p2 : string) {
 }
 
 class private DAgent : DapiDebugAgent {
+    
 
     walkerAdapter : smart_ptr<StackWalker>
     walker : DAStackWalker?
@@ -914,6 +984,7 @@ class private DAgent : DapiDebugAgent {
     hwBreakpoints : array<int>
 
     def initAgent(var ctx : Context) {
+        
         waitConnection = wait_debugger()
         withInstruments = use_instruments()
 
@@ -930,6 +1001,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def startServer() {
+        
         let args <- get_command_line_arguments()
         let port = args |> get_int_arg("--das-debug-port", 10000)
         server = new DAServer()
@@ -947,12 +1019,14 @@ class private DAgent : DapiDebugAgent {
     }
 
     def addPath(path : string) {
+        
         if (workingPaths |> find_index(path) < 0) {
             workingPaths |> push(path)
         }
     }
 
     def setPaths(paths : array<string>; aliases : table<string; string>) {
+        
         workingPaths |> clear()
         pathsCache |> clear()
         for (path in paths) {
@@ -972,12 +1046,14 @@ class private DAgent : DapiDebugAgent {
     }
 
     def override onUninstall(agent : DebugAgent?) {
+        
         if (agent == thisAgent) {
             delete self
         }
     }
 
     def operator delete {
+        
         unsafe {
             delete walkerAdapter
             delete walker
@@ -986,6 +1062,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def log(msg : string) {
+        
         if (server != null) {
             server->log(msg)
         } else {
@@ -994,6 +1071,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def reqPause(var ctx : DAContext) {
+        
         ctx |> reset_debug_flags()
         ctx.pauseRequested = true
 
@@ -1007,6 +1085,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def reqResume(var exclude : DAContext) {
+        
         if (withInstruments) {
             for (ctx in contexts) {
                 if (ctx.id != exclude.id && !ctx.ctx.category.debug_context && !ctx.ctx.category.dead) {
@@ -1017,6 +1096,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def onBreakpointsChanged(ini : SetBreakpointsArguments) : SetBreakpointsResponse {
+        
         let path = ini.source.path
         var res : SetBreakpointsResponse
         if (key_exists(breakpoints, path)) {
@@ -1053,7 +1133,7 @@ class private DAgent : DapiDebugAgent {
                 continue
             }
             *ctx.ctx |> clear_instruments()
-            *ctx.ctx |> instrument_node(true) <| $(ati) {
+            *ctx.ctx |> instrument_node(true) $(ati) {
                 if (ati.fileInfo == null) {
                     return false
                 }
@@ -1097,10 +1177,12 @@ class private DAgent : DapiDebugAgent {
     }
 
     def override onInstrument(var ctx : Context; at : LineInfo) : void {
+        
         self->onPause(ctx, at, "breakpoint", "")
     }
 
     def override onBreakpoint(var ctx : Context; at : LineInfo; reason, text : string) : void {
+        
         if (reason == "exception") {
             self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
                 ctxData |> reset_debug_flags()
@@ -1110,6 +1192,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def beforePause(var ctxData : DAContext; at : LineInfo) {
+        
         pauseCtx = ctxData.ctx
         pauseAt = unsafe(addr(at))
         evalFrame.varId = 1000ul 
@@ -1119,11 +1202,13 @@ class private DAgent : DapiDebugAgent {
     }
 
     def afterPause() {
+        
         pauseCtx = null
         pauseAt = null
     }
 
     def onPause(var ctx : Context; at : LineInfo; reason, text : string) : void {
+        
         if (at.fileInfo == null) {
             return
         }
@@ -1150,6 +1235,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def override onSingleStep(var ctx : Context; at : LineInfo) : void {
+        
         if (at.fileInfo == null) {
             return
         }
@@ -1228,7 +1314,7 @@ class private DAgent : DapiDebugAgent {
                 if (!compare_path(fileBr, file)) {
                     continue
                 }
-                breakpoints |> get(file) <| $(brs) {
+                breakpoints |> get(file) $(brs) {
                     var brIdx = 0
                     while (brIdx < length(brs)) {
                         let br & = unsafe((brs)[brIdx++])
@@ -1252,6 +1338,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def nextStep(var ctx : Context; var ctxData : DAContext; path : string; at : LineInfo) {
+        
         unsafe {
             delete ctxData.stack
         }
@@ -1279,6 +1366,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def override onVariable(var ctx : Context; category, name : string; info : TypeInfo; data : void?) : void {
+        
         self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
             let stackLen = length(ctxData.stack)
             if (stackLen > 0) {
@@ -1308,6 +1396,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def sendStopped(var ctx : Context; var ctxData : DAContext; path : string; at : LineInfo; reason, text : string; brId : uint64) {
+        
         self->log("<< stopped `{reason}` at {path}:{int(at.line)}")
 
         self->beforePause(ctxData, at)
@@ -1316,6 +1405,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def override onTick() {
+        
         if (server != null) {
             if (!server.disconnected) {
                 server->tick()
@@ -1357,6 +1447,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def invalidateBreakpoints(var ctx : Context) : void {
+        
         if (!withInstruments) {
             return
         }
@@ -1375,7 +1466,7 @@ class private DAgent : DapiDebugAgent {
 
         let found = self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
             *ctxData.ctx |> clear_instruments()
-            *ctxData.ctx |> instrument_node(true) <| $(ati) {
+            *ctxData.ctx |> instrument_node(true) $(ati) {
                 if (ati.fileInfo == null) {
                     return false
                 }
@@ -1437,6 +1528,7 @@ class private DAgent : DapiDebugAgent {
     def override onCreateContext(var ctx : Context) : void {
         
         
+        
         self->addContext(ctx)
         invalidateBreakpoints(ctx)
     }
@@ -1444,11 +1536,13 @@ class private DAgent : DapiDebugAgent {
     def override onDestroyContext(var ctx : Context) : void {
         
         
+        
         self->removeContext(ctx)
         invalidateBreakpoints(ctx)
     }
 
     def getContextDataFor(var ctx : Context; cb : block<(var ctx : DAContext) : void>) : bool {
+        
         let at = ctx_at(ctx)
         for (i in iter_range(contexts)) {
             if (contexts[i].at == at) {
@@ -1460,6 +1554,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def getContextData(id : DAContextAt; cb : block<(var ctx : DAContext) : void>) : bool {
+        
         for (i in iter_range(contexts)) {
             if (contexts[i].id == id) {
                 cb |> invoke(contexts[i])
@@ -1470,6 +1565,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def getContextIdx(var ctx : Context) : int {
+        
         let ctxAt = ctx_at(ctx)
         for (idx in iter_range(contexts)) {
             if (contexts[idx].at == ctxAt) {
@@ -1482,6 +1578,7 @@ class private DAgent : DapiDebugAgent {
     def addContext(var ctx : Context) : bool {
         
         
+        
         let idx = self->getContextIdx(ctx)
         if (idx >= 0) {
             return false
@@ -1490,7 +1587,7 @@ class private DAgent : DapiDebugAgent {
             contexts |> emplace(DAContext(at = ctx_at(ctx), id = contextId, ctx = addr(ctx)), 0)
         }
         contextId += 1ul
-        contexts |> sort <| $(a, b : DAContext) {
+        contexts |> sort() $(a, b : DAContext) {
             let aid = uint(a.ctx.category)
             let bid = uint(b.ctx.category)
             return aid > bid
@@ -1507,6 +1604,7 @@ class private DAgent : DapiDebugAgent {
     }
 
     def removeContext(var ctx : Context) : void {
+        
         let idx = self->getContextIdx(ctx)
         if (idx >= 0) {
             if (server != null && server.threadsDone) {
@@ -1524,6 +1622,7 @@ class private DAgent : DapiDebugAgent {
 }
 
 class private DAServer : Server {
+    
     port : int
     @do_not_delete agent : DAgent?
 
@@ -1538,18 +1637,22 @@ class private DAServer : Server {
     threadsDone : bool = false
 
     def DAServer {
+        
         Server`Server(cast<Server> self)
     }
 
     def override onError(msg : string; code : int) {
+        
         to_log(LOG_ERROR, "dap: server error:{code} - {msg}\n")
     }
 
     def override onConnect() {
+        
         to_log(LOG_INFO, "dap: connected ::{port}\n")
     }
 
     def override onDisconnect() {
+        
         if (length(current_string) > 0) {
             print(string(current_string))
             current_string |> clear()
@@ -1558,6 +1661,7 @@ class private DAServer : Server {
         
 
     def restart() {
+        
         if (_server != null) {
             unsafe {
                 var session : smart_ptr<NetworkServer>
@@ -1568,6 +1672,7 @@ class private DAServer : Server {
     }
 
     def override tick() {
+        
         Server`tick(self)
         if (initialized > 0) {
             initialized -= 1
@@ -1578,6 +1683,7 @@ class private DAServer : Server {
     }
 
     def override onData(message : uint8?; size : int) {
+        
         for (i in range(size)) {
             var uch : uint8
             unsafe {
@@ -1675,6 +1781,7 @@ class private DAServer : Server {
 
     def reqInitialize(seq : double; command : string; arguments : JsonValue?) {
         
+        
         var inscope res = Capabilities(
                                 supportsConfigurationDoneRequest = true,
                                 supportsRestartRequest = false,
@@ -1691,11 +1798,13 @@ class private DAServer : Server {
         
 
     def reqConfigurationDone(seq : double; command : string; data : JsonValue?) {
+        
         configurationDone = true
         self->sendSuccessResponse(seq, command, null)
     }
 
     def setPaths(data : JsonValue?) {
+        
         var inscope resPaths : array<string>
         var inscope pathAliases : table<string; string>
         if (data != null && data is _object) {
@@ -1726,6 +1835,7 @@ class private DAServer : Server {
     }
 
     def setDebuggerSettings(data : JsonValue?) {
+        
         let limit = data |> jon("inlinePreviewLimit", double(agent.walker.dataWalker.inlinePreviewLimit))
         agent.walker.dataWalker.inlinePreviewLimit = int(limit)
 
@@ -1737,18 +1847,21 @@ class private DAServer : Server {
     }
 
     def reqLaunch(seq : double; command : string; data : JsonValue?) {
+        
         self->setPaths(data)
         self->setDebuggerSettings(data)
         self->sendSuccessResponse(seq, command, null)
     }
 
     def reqAttach(seq : double; command : string; data : JsonValue?) {
+        
         self->setPaths(data)
         self->setDebuggerSettings(data)
         self->sendSuccessResponse(seq, command, null)
     }
 
     def reqDisconnect(seq : double; command : string; data : JsonValue?) {
+        
         
         self->sendSuccessResponse(seq, command, null)
         for (ctx in agent.contexts) {
@@ -1764,6 +1877,7 @@ class private DAServer : Server {
     }
 
     def reqTerminate(seq : double; command : string; data : JsonValue?) {
+        
         self->sendSuccessResponse(seq, command, null)
         unsafe {
             fio::exit(0)
@@ -1771,12 +1885,14 @@ class private DAServer : Server {
     }
 
     def reqSetBreakpoints(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- SetBreakpointsArguments(data)
         var inscope res <- agent->onBreakpointsChanged(ini)
         self->sendSuccessResponse(seq, command, JV(res))
     }
 
     def reqDataBreakpointInfo(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- DataBreakpointInfoArguments(data)
         let ctxAndFrame = uint64(ini.variablesReference) / MAX_VARIABLES
         let ctxId = uint64(ctxAndFrame) / MAX_STACK
@@ -1789,7 +1905,7 @@ class private DAServer : Server {
                 let line & = unsafe(ctxData.stack[frameId])
                 if (kind == LOCAL_VARS || kind == ARGUMENT_VARS || kind == GLOBAL_VARS) {
                     let vars & = unsafe(kind == LOCAL_VARS ? line.variables : kind == ARGUMENT_VARS ? line.arguments : line.globals)
-                    vars |> find_child_var() <| $(v) {
+                    vars |> find_child_var() $(v) {
                         if (v.name == ini.name) {
                             found = true
                             valid = v.address != 0ul
@@ -1815,8 +1931,8 @@ class private DAServer : Server {
                         }
                     }
                 } else {
-                    line |> find_child_var(kind) <| $(v) {
-                        v |> find_child_var() <| $(vr) {
+                    line |> find_child_var(kind) $(v) {
+                        v |> find_child_var() $(vr) {
                             if (vr.name == ini.name) {
                                 found = true
                                 valid = vr.address != 0ul
@@ -1837,6 +1953,7 @@ class private DAServer : Server {
     }
 
     def reqSetDataBreakpoints(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- SetDataBreakpointsArguments(data)
         var inscope res : SetBreakpointsResponse
 
@@ -1872,6 +1989,7 @@ class private DAServer : Server {
     }
 
     def reqThreads(seq : double; command : string; data : JsonValue?) {
+        
         var inscope res : ThreadsResponseBody
         threadsDone = true
         for (ctx in agent.contexts) {
@@ -1881,6 +1999,7 @@ class private DAServer : Server {
     }
 
     def reqStackTrace(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- StackTraceArguments(data)
         var inscope res : StackTraceResponseBody
         agent->getContextData(uint64(ini.threadId)) <| $(var ctxData : DAContext) {
@@ -1899,6 +2018,7 @@ class private DAServer : Server {
     }
 
     def reqScopes(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- ScopesArguments(data)
         var inscope res : ScopesResponseBody
         let ctxId = uint64(ini.frameId / double(MAX_STACK))
@@ -1949,12 +2069,13 @@ class private DAServer : Server {
     }
 
     def reqVariables(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- VariablesArguments(data)
         var inscope res : VariablesResponseBody
         let ctxAndFrame = uint64(ini.variablesReference) / MAX_VARIABLES
         let ctxId = uint64(ctxAndFrame) / MAX_STACK
         if (ctxId == 0ul) {
-            agent.evalFrame |> find_child_var(uint64(ini.variablesReference)) <| $(child) {
+            agent.evalFrame |> find_child_var(uint64(ini.variablesReference)) $(child) {
                 if (child.children != null) {
                     let varsNum = length(*child.children)
                     for (idx in range(ini.start < 0lf ? 0 : min(varsNum, int(ini.start)), ini.count < 0lf ? varsNum : min(varsNum, int(ini.start + ini.count)))) {
@@ -2006,7 +2127,7 @@ class private DAServer : Server {
                             }
                         }
                     } else {
-                        line |> find_child_var(uint64(kind)) <| $(child) {
+                        line |> find_child_var(uint64(kind)) $(child) {
                             if (child.children != null) {
                                 let varsNum = length(*child.children)
                                 for (idx in range(ini.start < 0lf ? 0 : min(varsNum, int(ini.start)), ini.count < 0lf ? varsNum : min(varsNum, int(ini.start + ini.count)))) {
@@ -2030,6 +2151,7 @@ class private DAServer : Server {
     }
 
     def reqContinue(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- ContinueArguments(data)
         agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
             ctx |> reset_debug_flags()
@@ -2039,6 +2161,7 @@ class private DAServer : Server {
     }
 
     def reqPause(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- PauseArguments(data)
         agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
             agent->reqPause(ctx)
@@ -2047,6 +2170,7 @@ class private DAServer : Server {
     }
 
     def reqStepIn(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- StepInArguments(data)
         agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
             ctx |> reset_debug_flags()
@@ -2056,6 +2180,7 @@ class private DAServer : Server {
     }
 
     def reqNext(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- NextArguments(data)
         agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
             ctx |> reset_debug_flags()
@@ -2066,6 +2191,7 @@ class private DAServer : Server {
     }
 
     def reqStepOut(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- NextArguments(data)
         agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
             ctx |> reset_debug_flags()
@@ -2076,6 +2202,7 @@ class private DAServer : Server {
     }
 
     def reqEvaluate(seq : double; command : string; data : JsonValue?) {
+        
         var inscope ini <- EvaluateArguments(data)
 
         var found = false
@@ -2141,7 +2268,7 @@ class private DAServer : Server {
                         frame = stackLen - 1
                     }
                     while (frame >= frameId) {
-                        ctxData.stack[frame] |> iter_top_child_var() <| $(child) {
+                        ctxData.stack[frame] |> iter_top_child_var() $(child) {
                             if (child.typeInfo != null) {
                                 let tInfo & = unsafe(*child.typeInfo)
                                 vars |> emplace(child.name, Result(tinfo = tInfo, value = child.rawValue, data = unsafe(reinterpret<void?> child.address)))
@@ -2175,21 +2302,25 @@ class private DAServer : Server {
 
     def log(msg : string) {
         
+        
         if (self->is_connected()) {
             self->sendOutput("console", "{msg}\n")
         }
     }
 
     def sendOutput(category : string; output : string) {
+        
         var inscope res = OutputEventBody(category = category, output = output)
         self->sendRawData(JV({"type" => JV("event"), "event" => JV("output"), "body" => JV(res)}), false)
     }
 
     def sendEvent(event : string; body : JsonValue?) {
+        
         self->sendRawData(JV({"type" => JV("event"), "event" => JV(event), "body" => body}), true)
     }
 
     def sendSuccessResponse(id : double; command : string; body : JsonValue?) {
+        
         self->sendRawData(JV({"request_seq" => JV(id), "type" => JV("response"),
                                 "body" => body, "command" => JV(command), "success" => JV(true)}), true)
     }
@@ -2197,11 +2328,13 @@ class private DAServer : Server {
     def sendSuccessResponseStr(id : double; command : string; body : string) {
         
         
+        
         self->sendRawDataStr("\{\"request_seq\":{id}, \"type\":\"response\", \"body\":{body}, \"command\":\"{command}\", \"success\":true\}", true)
     }
 
     
     def sendRawData(var data : JsonValue?; logData : bool) {
+        
         let msg = write_json(data)
         var packStr = "Content-Length: {length(msg)}\r\n\r\n{msg}"
         if (logData) {
@@ -2216,6 +2349,7 @@ class private DAServer : Server {
     }
 
     def sendRawDataStr(msg : string; logData : bool) {
+        
         var packStr = "Content-Length: {length(msg)}\r\n\r\n{msg}"
         if (logData) {
             self->log("<------\n{packStr}")
@@ -2228,6 +2362,7 @@ class private DAServer : Server {
     }
 
     def sendStopped(ctx : DAContext; reason, text : string; brId : uint64) {
+        
         self->sendEvent("stopped", JV({
             "reason" => JV(reason),
             "text" => empty(text) ? JVNull() : JV(text),
@@ -2241,13 +2376,16 @@ class private DAServer : Server {
 
 
 class private EvalWalker : DapiStackWalker {
+    
     W : StringBuilderWriter?
 
     def EvalWalker(var wr : StringBuilderWriter) {
+        
         W = unsafe(addr(wr))
     }
 
     def override onArgument(info : FuncInfo; index : int; vinfo : VarInfo; arg : float4) : void {
+        
         if (vinfo.flags.refType) {
             let parg = unsafe(reinterpret<void?> arg)
             *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} & = * reinterpret<{describe(type_info(vinfo))}?> {parg}ul // ref argument\n")
@@ -2268,6 +2406,7 @@ class private EvalWalker : DapiStackWalker {
     }
 
     def override onVariable(inf : FuncInfo; vinfo : LocalVariableInfo; arg : void?; inScope : bool) : void {
+        
         if (inScope) {
             if (arg != null) {
                 if (vinfo.flags.ref) {
@@ -2297,6 +2436,7 @@ var private g```dAgent : DAgent?
 
 [apply_in_context(name="~debug")]
 def wait_for_debugger() : bool {
+    
     while (g```dAgent == null || g```dAgent.server == null
        || (g```dAgent.waitConnection && (!g```dAgent.server.configurationDone || !g```dAgent.server.threadsDone))) {
         sleep(10u)
@@ -2323,6 +2463,7 @@ def private start_agent(force : bool = false) {
 
 [init]
 def init_stepping_debugger() {
+    
     if (use_instruments() || !wait_debugger() || (is_in_aot() && loads_itself()) ||
         is_in_debug_agent_creation() || !is_compiling_macros_in_module("debug") || is_in_completion()) {
         return
@@ -2339,7 +2480,7 @@ def private auto_start_debug() {
     set_single_step(this_context(), !use_instruments() || wait_debugger())
     if (!has_debug_agent_context("~debug")) {
         if (start_agent()) {
-            new_debugger_thread <| $() {
+            new_debugger_thread() {
                 this_context().category &= ~context_category_flags.debugger_attached
                 this_context().category |= context_category_flags.debugger_tick
                 set_single_step(this_context(), false)

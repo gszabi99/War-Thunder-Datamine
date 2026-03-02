@@ -6,24 +6,21 @@ let { isPC } = require("%sqstd/platform.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { hasXInputDevice, isXInputDevice } = require("controls")
 let { startsWith } = require("%sqstd/string.nut")
-let { set_option, registerOption } = require("%scripts/options/optionsExt.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let optionsExtNames = require("%scripts/options/optionsExtNames.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_CONTROLS_PRESET } = optionsExtNames
+let { OPTIONS_MODE_GAMEPLAY } = optionsExtNames
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset, setCurControlsPreset, clearControlsPresetGuiOptions
 } = require("%scripts/controls/controlsState.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { registerRespondent } = require("scriptRespondent")
-
-let { getNullControlsPresetInfo, getControlsPresetsList, getControlsPresetFilename, parseControlsPresetName
-} = require("%scripts/controls/controlsPresets.nut")
 
 local isControlsCommitPerformed = false
 let isLastLoadControlsSucceeded = Watched(false)
@@ -196,51 +193,6 @@ function controlsFixDeviceMapping() {
   fixDeviceMapping()
   commitControls()
 }
-
-function fillUseroptControlsPresetDescr(_optionId, descr, _context) {
-  descr.id = "controls_preset"
-  descr.items = []
-  descr.values = getControlsPresetsList()
-  descr.trParams <- "optionWidthInc:t='double';"
-
-  if (!isPlatformSony && !isPlatformXbox)
-    descr.values.insert(0, "") 
-  let p = getCurControlsPreset()?.getBasePresetInfo()
-    ?? getNullControlsPresetInfo()
-  for (local k = 0; k < descr.values.len(); k++) {
-    local name = descr.values[k]
-    local suffix = isPlatformSony ? "ps4/" : ""
-    let vPresetData = parseControlsPresetName(name)
-    if (p.name == vPresetData.name && p.version == vPresetData.version)
-      descr.value = k
-    local imageName = "preset_joystick.svg"
-    if (name.indexof("keyboard") != null)
-      imageName = "preset_mouse_keyboard.svg"
-    else if (name.indexof("xinput") != null || name.indexof("xboxone") != null)
-      imageName = "preset_gamepad.svg"
-    else if (name.indexof("default") != null || name.indexof("dualshock4") != null)
-      imageName = "preset_ps4.svg"
-    else if (name == "") {
-      name = "custom"
-      imageName = "preset_custom"
-      suffix = ""
-    }
-
-    descr.items.append({
-      text = $"#presets/{suffix}{name}"
-      image = $"#ui/gameuiskin#{imageName}"
-    })
-  }
-  descr.optionCb = "onSelectPreset"
-  descr.skipOptContainerStyles <- true
-}
-
-function setUseroptControlsPreset(value, descr, _optionId) {
-  if (descr.values[value] != "")
-    ::apply_joy_preset_xchange(getControlsPresetFilename(descr.values[value]))
-}
-
-registerOption(USEROPT_CONTROLS_PRESET, fillUseroptControlsPresetDescr, setUseroptControlsPreset)
 
 let sendEventControlsChangedToDarg = @() eventbus_send("controlsChanged")
 

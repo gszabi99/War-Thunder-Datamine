@@ -7,7 +7,7 @@ let events = getGlobalModule("events")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { getQueueTeam, getQueueClusters } = require("%scripts/queue/queueInfo.nut")
 let { getCustomViewCountryData, isTeamSizeBalancedEvent } = require("%scripts/events/eventInfo.nut")
@@ -159,8 +159,8 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
                     tdalign = "center"
                     width = "0.4pw"
                  })
-
-    for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
+    let maxRank = maxCountryRank.get()
+    for (local i = 1; i <= maxRank; i++) {
       params.append({
         text = getTblValue(i.tostring(), queueStatData, 0).tostring()
         tdalign = "center"
@@ -171,7 +171,8 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
 
   function buildQueueStatsHeader() {
     let headerData = []
-    for (local i = 0; i <= MAX_COUNTRY_RANK; i++) {
+    let maxRank = maxCountryRank.get()
+    for (local i = 0; i <= maxRank; i++) {
       headerData.append({
         text = get_roman_numeral(i)
         tdalign = "center"

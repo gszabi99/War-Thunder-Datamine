@@ -7,6 +7,13 @@ options strict_smart_pointers = true
 
 module profiler shared private
 
+
+
+
+
+
+
+
 require debugapi
 require fio
 require strings
@@ -15,6 +22,7 @@ require ast
 
 [skip_field_lock_check]
 struct PerfNode {
+    
     fun : SimFunction?
     count : uint64
     total_time : int64
@@ -27,6 +35,7 @@ struct PerfNode {
 }
 
 struct PerfEvent {
+    
     fun : SimFunction?
     ts : int64
     entering : bool
@@ -36,6 +45,7 @@ struct PerfEvent {
 
 [skip_field_lock_check]
 struct PerfContext {
+    
     events : array<PerfEvent>
     enabled : bool
 }
@@ -43,12 +53,14 @@ struct PerfContext {
 var @do_not_delete g_d_agent : ProfilerDebugAgent?
 
 def public set_enable_profiler(var ctxId : uint64; enabled : bool) {
+    
     if (g_d_agent != null) {
         g_d_agent->enable_profiler(ctxId, enabled)
     }
 }
 
 class ProfilerDebugAgent : DapiDebugAgent {
+    
     us0 : int64 = 0l
     events : table<uint64; PerfContext>
     out : FILE const?

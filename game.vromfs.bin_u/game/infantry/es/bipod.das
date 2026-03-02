@@ -243,7 +243,13 @@ def animchar_visibility_in_bipod_state(evt : Event;
                                        bipod__animcharCutSphereRadius : float;
                                        bipod__cutSphereOffset : float3;
                                        var bipod__animcharWasHidden : bool&)
-  let shouldHide = (bipod__enabled && isAlive && !isTpsView  && possessedByPlr == get_local_player_eid())
+  var isTpsCam = true
+  find_query() <| $ [es] (camera__active : bool; isTpsView : bool = true)
+    if camera__active
+      isTpsCam = isTpsView
+    return camera__active
+
+  let shouldHide = (bipod__enabled && isAlive && !isTpsView && !isTpsCam && possessedByPlr == get_local_player_eid())
   if bipod__animcharWasHidden == shouldHide
     return
 

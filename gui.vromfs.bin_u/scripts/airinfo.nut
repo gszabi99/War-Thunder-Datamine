@@ -57,7 +57,7 @@ let { measureType } = require("%scripts/measureType.nut")
 let { getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength
 } = require("%scripts/airLimits.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
@@ -84,6 +84,7 @@ let { calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
 let { getAppliedArmorForUnit } = require("%scripts/weaponry/infantryArmor.nut")
 let { INFANTRY_WEAPON, INFANTRY_ARMOR } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { fillTooltipsIds } = require("%scripts/unit/unitInfoTooltips.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let usageRatingAmount = [0.0003, 0.0005, 0.001, 0.002]
 
@@ -119,8 +120,8 @@ function getHighestRankDiffNoPenalty(inverse = false) {
   let paramPrefix = inverse
     ? "expPenaltyPercentForLowerRank"
     : "expPenaltyPercentForHigherRank"
-
-  for (local rankDif = 0; rankDif < MAX_COUNTRY_RANK; rankDif++)
+  let maxRank = maxCountryRank.get()
+  for (local rankDif = 0; rankDif < maxRank; rankDif++)
     if (ranksBlk[$"{paramPrefix}{rankDif}"] > 20)
       return rankDif - 1
   return 0
@@ -142,17 +143,18 @@ function getMaxBestLevelingRank(unit) {
     return -1
 
   let unitRank = unit?.rank ?? -1
-  if (unitRank == MAX_COUNTRY_RANK)
-    return MAX_COUNTRY_RANK
+  let maxRank = maxCountryRank.get()
+  if (unitRank == maxRank)
+    return maxRank
   let result = unitRank + getHighestRankDiffNoPenalty()
-  return result <= MAX_COUNTRY_RANK ? result : MAX_COUNTRY_RANK
+  return min(result, maxRank)
 }
 
-function getTopCharacteristicValue(unit, item, diff) {
+function getTopCharacteristicValue(unit, item, diff, maxValues = null) {
   let { crewMemberTopSkill, prepareTextFunc } = item
   let { crewMember, skill, parameter } = crewMemberTopSkill
-  let params = skillParametersRequestType.MAX_VALUES.getParameters(-1, unit)
-  let topValue = params?[diff][crewMember][skill][parameter]
+  maxValues = maxValues ?? skillParametersRequestType.MAX_VALUES.getParameters(-1, unit)
+  let topValue = maxValues?[diff][crewMember][skill][parameter]
   return topValue != null ? prepareTextFunc(topValue) : topValue
 }
 
@@ -230,7 +232,7 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
 
   let shotFreq = getTemplateCompValue(primaryWeaponTemplateNameCutted, "gun__shotFreq", 0.0)
   holderObj.findObject("unit-weapon_shotFreq")
-    .setValue(" ".concat(round_by_value(shotFreq, 0.1), loc("measureUnits/shotsPerSec")))
+    .setValue(" ".concat(round_by_value(shotFreq * 60, 1), loc("measureUnits/shotsPerMin")))
 
   let firingModeNames = (getTemplateCompValue(primaryWeaponTemplateNameCutted, "gun__firingModeNames", []))
     .map(@(v) loc($"weapon_menu/fire_mods/{v}"))
@@ -716,13 +718,15 @@ function showAirInfoOld(air, show, holderObj = null, handler = null, params = nu
   }
 
   local showReferenceText = false
+  local maxCharacteristics = null
   foreach (item in (modCharacteristics?[unitType] ?? {})) {
     let characteristicArr = getCharacteristicActualValue(air, [item.id, item.id2],
       item.prepareTextFunc, difficulty.crewSkillName, showLocalState || needCrewModificators)
     holderObj.findObject($"aircraft-{item.id}").setValue(characteristicArr[0])
 
     if(item?.crewMemberTopSkill != null) {
-      let topValue = getTopCharacteristicValue(air, item, difficulty.crewSkillName)
+      maxCharacteristics = maxCharacteristics ?? skillParametersRequestType.MAX_VALUES.getParameters(-1, air)
+      let topValue = getTopCharacteristicValue(air, item, difficulty.crewSkillName, maxCharacteristics)
       let hasTopValue = topValue != null && topValue != characteristicArr[0]
       holderObj.findObject($"aircraft-{item.id}-topValueDiv").show(hasTopValue)
       if(hasTopValue) {
@@ -959,7 +963,8 @@ function showAirInfoOld(air, show, holderObj = null, handler = null, params = nu
         parameter = "tankLoderReloadingTime"
       }
 
-      let topValue = getTopCharacteristicValue(air, { crewMemberTopSkill, prepareTextFunc }, difficulty.crewSkillName)
+      maxCharacteristics = maxCharacteristics ?? skillParametersRequestType.MAX_VALUES.getParameters(-1, air)
+      let topValue = getTopCharacteristicValue(air, { crewMemberTopSkill, prepareTextFunc }, difficulty.crewSkillName, maxCharacteristics)
       let hasTopValue = topValue != null && topValue != reloadTimeTxt
       holderObj.findObject("aircraft-reloadTime-topValueDiv").show(hasTopValue)
       if(hasTopValue) {
@@ -1039,22 +1044,24 @@ function showAirInfoOld(air, show, holderObj = null, handler = null, params = nu
     let shipMaterials = getShipMaterialTexts(air.name)
 
     
-    {
+    obj = holderObj.findObject("ship-hullMaterial-tr")
+    if (obj?.isValid()) {
       let valueText = shipMaterials?.hullValue ?? ""
       let isShow = valueText != ""
-      holderObj.findObject("ship-hullMaterial-tr").show(isShow)
+      obj.show(isShow)
       if (isShow) {
         let labelText = "".concat((shipMaterials?.hullLabel ?? ""), loc("ui/colon"))
-        holderObj.findObject("ship-hullMaterial-title").setValue(labelText)
-        holderObj.findObject("ship-hullMaterial-value").setValue(valueText)
+        obj.findObject("ship-hullMaterial-title").setValue(labelText)
+        obj.findObject("ship-hullMaterial-value").setValue(valueText)
       }
     }
 
     
-    {
+    obj = holderObj.findObject("ship-superstructureMaterial-tr")
+    if (obj?.isValid()) {
       let valueText = shipMaterials?.superstructureValue ?? ""
       let isShow = valueText != ""
-      holderObj.findObject("ship-superstructureMaterial-tr").show(isShow)
+      obj.show(isShow)
       if (isShow) {
         let labelText = "".concat((shipMaterials?.superstructureLabel ?? ""), loc("ui/colon"))
         holderObj.findObject("ship-superstructureMaterial-title").setValue(labelText)
@@ -1067,8 +1074,8 @@ function showAirInfoOld(air, show, holderObj = null, handler = null, params = nu
     holderObj.findObject("ship-citadelArmor-tr")?.show(false)
     holderObj.findObject("ship-mainFireTower-tr")?.show(false)
     holderObj.findObject("ship-antiTorpedoProtection-tr").show(false)
-    holderObj.findObject("ship-hullMaterial-tr").show(false)
-    holderObj.findObject("ship-superstructureMaterial-tr").show(false)
+    holderObj.findObject("ship-hullMaterial-tr")?.show(false)
+    holderObj.findObject("ship-superstructureMaterial-tr")?.show(false)
   }
 
   if (needShopInfo && holderObj.findObject("aircraft-train_cost-tr"))
@@ -1811,6 +1818,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   }
 
   local showReferenceText = false
+  local maxCharacteristics = null
   foreach (item in (modCharacteristics?[unitType] ?? {})) {
     let characteristicArr = getCharacteristicActualValue(unit, [item.id, item.id2],
       item.prepareTextFunc, difficulty.crewSkillName, showLocalState || needCrewModificators)
@@ -1821,7 +1829,8 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     itemObj.setValue(characteristicArr[0])
 
     if(item?.crewMemberTopSkill != null) {
-      let topValue = getTopCharacteristicValue(unit, item, difficulty.crewSkillName)
+      maxCharacteristics = maxCharacteristics ?? skillParametersRequestType.MAX_VALUES.getParameters(-1, unit)
+      let topValue = getTopCharacteristicValue(unit, item, difficulty.crewSkillName, maxCharacteristics)
       let hasTopValue = topValue != null && topValue != characteristicArr[0]
       holderObj.findObject($"aircraft-{item.id}-topValueDiv").show(hasTopValue)
       if(hasTopValue) {
@@ -1954,16 +1963,20 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   if (notAirVehicle.contains(unitType)) {
     let protectionTrObj = holderObj.findObject("aircraft-protection-tr")
     if (protectionTrObj?.isValid()) {
-      let protectionObj = protectionTrObj.findObject("aircraft-protection")
       let content = getUnitProtectionMarkup(unit.name)
-      holderObj.getScene().replaceContentFromText(protectionObj, content, content.len(), handler)
+      if (content != null) {
+        let protectionObj = protectionTrObj.findObject("aircraft-protection")
+        holderObj.getScene().replaceContentFromText(protectionObj, content, content.len(), handler)
 
-      if (isInFlight())
-        showObjById("button-div", false, protectionTrObj)
-      else {
-        let btn = protectionTrObj.findObject("aircraft-protection-btn")
-        btn["unit"] = unit.name
+        if (isInFlight())
+          showObjById("button-div", false, protectionTrObj)
+        else {
+          let btn = protectionTrObj.findObject("aircraft-protection-btn")
+          btn["unit"] = unit.name
+        }
       }
+      else
+        protectionTrObj.show(false)
     }
   }
 
@@ -2079,7 +2092,8 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
         parameter = "tankLoderReloadingTime"
       }
 
-      let topValue = getTopCharacteristicValue(unit, { crewMemberTopSkill, prepareTextFunc }, difficulty.crewSkillName)
+      maxCharacteristics = maxCharacteristics ?? skillParametersRequestType.MAX_VALUES.getParameters(-1, unit)
+      let topValue = getTopCharacteristicValue(unit, { crewMemberTopSkill, prepareTextFunc }, difficulty.crewSkillName, maxCharacteristics)
       let hasTopValue = topValue != null && topValue != reloadTimeTxt
       holderObj.findObject("aircraft-reloadTime-topValueDiv").show(hasTopValue)
       if(hasTopValue) {
@@ -2145,38 +2159,10 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
       holderObj.findObject("ship-antiTorpedoProtection-value").setValue(
         format("%d %s", atProtection, loc("measureUnits/kg")))
     }
-
-    let shipMaterials = getShipMaterialTexts(unit.name)
-
-    
-    {
-      let valueText = shipMaterials?.hullValue ?? ""
-      let isShow = valueText != ""
-      holderObj.findObject("ship-hullMaterial-tr").show(isShow)
-      if (isShow) {
-        let labelText = "".concat((shipMaterials?.hullLabel ?? ""), loc("ui/colon"))
-        holderObj.findObject("ship-hullMaterial-title").setValue(labelText)
-        holderObj.findObject("ship-hullMaterial-value").setValue(valueText)
-      }
-    }
-
-    
-    {
-      let valueText = shipMaterials?.superstructureValue ?? ""
-      let isShow = valueText != ""
-      holderObj.findObject("ship-superstructureMaterial-tr").show(isShow)
-      if (isShow) {
-        let labelText = "".concat((shipMaterials?.superstructureLabel ?? ""), loc("ui/colon"))
-        holderObj.findObject("ship-superstructureMaterial-title").setValue(labelText)
-        holderObj.findObject("ship-superstructureMaterial-value").setValue(valueText)
-      }
-    }
   }
   else {
     holderObj.findObject("ship-displacement-tr").show(false)
     holderObj.findObject("ship-antiTorpedoProtection-tr").show(false)
-    holderObj.findObject("ship-hullMaterial-tr").show(false)
-    holderObj.findObject("ship-superstructureMaterial-tr").show(false)
   }
 
   if (needShopInfo && holderObj.findObject("aircraft-train_cost-tr"))
@@ -2617,13 +2603,17 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     let { itemName, tooltipId, planesCount, isNotLink } = getUnitSupportPlaneData(unit.name)
     let supportPlaneInfoKeyObj = supportPlaneObj.findObject("supportPlaneInfo-key")
     supportPlaneInfoKeyObj.setValue(itemName)
-    supportPlaneInfoKeyObj["tooltipId"] = tooltipId
 
     let tooltipLinkObj = supportPlaneObj.findObject("tooltipLink")
     tooltipLinkObj["isNotLink"] = isNotLink ? "yes" : "no"
 
-    let supportPlaneInfoTooltipObj = supportPlaneObj.findObject("supportPlaneInfo-tooltip")
-    supportPlaneInfoTooltipObj["tooltipId"] = tooltipId
+    if (showConsoleButtons.get())
+      supportPlaneInfoKeyObj.tooltipId = tooltipId
+    else {
+      supportPlaneInfoKeyObj.tooltip = "$tooltipObj"
+      let supportPlaneInfoTooltipObj = supportPlaneObj.findObject("supportPlaneInfo-tooltip")
+      supportPlaneInfoTooltipObj.tooltipId = tooltipId
+    }
     let supportPlaneInfoValueObj = supportPlaneObj.findObject("supportPlaneInfo-value")
     supportPlaneInfoValueObj.setValue($"{planesCount}{loc("measureUnits/pcs")}")
   }
@@ -2715,16 +2705,15 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
 }
 
 
-function showAirInfo(unit, show, holderObj = null, handler = null, params = null) {
+function fillAirInfo(unit, show, holderObj = null, handler = null, params = null) {
   if (hasFeature("UnitModalInfo"))
     fillUnitInfo(unit, show, holderObj, handler, params)
   else
     showAirInfoOld(unit, show, holderObj, handler, params)
 }
 
-::showAirInfo <- showAirInfo
 
 return {
-  showAirInfo
+  fillAirInfo
   usageRatingAmount
 }

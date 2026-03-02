@@ -13,7 +13,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 let { get_skills_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { getUnitTypesInCountries } = require("%scripts/unit/unitInfo.nut")
 let { getUnitCrewDataById } = require("%scripts/crew/unitCrewCache.nut")
@@ -248,7 +248,8 @@ function loadCrewSkills() {
       costBlk = typeBlk?[$"train{tIdx}"]
       if (costBlk) {
         trainReq.append([])
-        for (local idx = 0; idx <= MAX_COUNTRY_RANK; idx++)
+        let maxRank = maxCountryRank.get()
+        for (local idx = 0; idx <= maxRank; idx++)
           trainReq[tIdx - 1].append(costBlk?[$"rank{idx}"] ?? 0)
       }
     }

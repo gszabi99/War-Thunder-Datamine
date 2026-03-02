@@ -5,6 +5,7 @@ let { getFontName } = require("fonts")
 let colors = require("%rGui/style/colors.nut")
 
 let antiAirMenuShortcutHeight = evenPx(30)
+let infantryShortcutHeight = evenPx(24)
 
 let actionItemParams = { shortcutAxis = [shHud(3), shHud(3)]
   gamepadButtonSize = [shHud(3), shHud(3)]
@@ -50,14 +51,16 @@ let shortcutsParamsByPlace = @(scale = 1) {
     gamepadButtonSize = [shHud(2), shHud(2)]
   })
   actionItemInfantry = {
-    shortcutAxis = [antiAirMenuShortcutHeight, antiAirMenuShortcutHeight]
-    gamepadButtonSize = [antiAirMenuShortcutHeight, antiAirMenuShortcutHeight]
-    keyboardButtonSize = SIZE_TO_CONTENT
-    keyboardButtonMinWidth = evenPx(22)
-    keyboardButtonPad = [0, hdpx(5)]
+    shortcutAxis = [infantryShortcutHeight, infantryShortcutHeight]
+    gamepadButtonSize = [infantryShortcutHeight, infantryShortcutHeight]
+    keyboardButtonSize = [SIZE_TO_CONTENT, infantryShortcutHeight]
+    keyboardButtonMinWidth = infantryShortcutHeight
+    keyboardButtonPad = [0, 0]
     keyboardButtonTextFont = Fonts.tiny_text_hud
     combinationGap = hdpx(5)
-    bgImage = $"ui/gameuiskin#shortcut_flat.svg:{antiAirMenuShortcutHeight}:P"
+    bgImage = $"ui/gameuiskin#shortcut_flat.svg:{infantryShortcutHeight}:P"
+    texOffs = [0, 0]
+    screenOffs = [0, 0]
   }
 }
 

@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
+let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
 let { getBulletSetNameByBulletName, getBulletsSearchName, getBulletsSetData,
   getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { format } = require("string")
@@ -10,6 +10,7 @@ let { getUnitWeaponry } = require("%scripts/weaponry/weaponryInfo.nut")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let unitBulletsCache = {}
 
@@ -19,7 +20,7 @@ function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false, isShip = fa
 
   let { bulletName = "", bulletType, caliber } = bullet
 
-  if (unitBulletsCache[unit.name].findindex(@(v) v.bulletType == bulletType) != null)
+  if (unitBulletsCache[unit.name].findindex(@(v) v.bulletName == bulletName && v.bulletType == bulletType) != null)
     return
 
   let ammoType = bulletName != "" ? bulletName : bulletType
@@ -80,7 +81,7 @@ function cacheTankBullets(unit) {
     let weaponBlocks = cannons[i].weaponBlocks.values()
     for (local j = 0; j < weaponBlocks.len(); j++) {
       let weaponBlock = weaponBlocks[j]
-      let weaponBlk = blkOptFromPath(weaponBlock.blk)
+      let weaponBlk = blkOptFromPathCachedByUnit(weaponBlock.blk, unit.name)
       let notUseDefaultBulletInGui = weaponBlk?.notUseDefaultBulletInGui ?? false
       if (!notUseDefaultBulletInGui) {
         let bullets = weaponBlk % "bullet"
@@ -116,7 +117,7 @@ function cacheShipBullets(unit) {
     }, [])
 
   for (local i = 0; i < neededWeaponsBlk.len(); i++) {
-    let weaponBlk = blkOptFromPath(neededWeaponsBlk[i])
+    let weaponBlk = blkOptFromPathCachedByUnit(neededWeaponsBlk[i], unit.name)
     let notUseDefaultBulletInGui = weaponBlk?.notUseDefaultBulletInGui ?? false
     if (!notUseDefaultBulletInGui) {
       let bullets = weaponBlk % "bullet"
@@ -158,7 +159,7 @@ function getUnitBulletsMarkup(unitName, unitType) {
     }
     bulletsByCaliber.bullets.append(bullets[i].__merge({ isLastItem = i == bullets.len() - 1 }))
   }
-  return handyman.renderCached("%gui/unitInfo/unitBullets.tpl", { items })
+  return handyman.renderCached("%gui/unitInfo/unitBullets.tpl", { items, isTooltipByHold = showConsoleButtons.get() })
 }
 
 return {

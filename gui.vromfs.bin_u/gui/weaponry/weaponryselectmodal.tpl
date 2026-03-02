@@ -11,8 +11,8 @@ popup_menu {
 
   div {
     id:t='anim_block'
-    width:t='<<columns>>@modCellWidth'
-    height:t='<<rows>>@modCellHeight'
+    width:t='(<<columns>>*<<sizeMultiplier>>)@modCellWidth'
+    height:t='(<<rows>>*<<sizeMultiplier>>)@modCellHeight'
     overflow:t='hidden'
 
     behaviour:t='basicSize'
@@ -22,7 +22,7 @@ popup_menu {
 
     div {
       id:t='weapons_list'
-      size:t='<<columns>>@modCellWidth, <<rows>>@modCellHeight'
+      size:t='(<<columns>>*<<sizeMultiplier>>)@modCellWidth, (<<rows>>*<<sizeMultiplier>>)@modCellHeight'
       pos:t='pw-w, ph-h'
       position:t='absolute'
 

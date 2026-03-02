@@ -28,6 +28,8 @@ function updateBundlesShopInfo() {
     bundlesShopInfo.set({})
 }
 
+updateBundlesShopInfo()
+
 eventbus_subscribe("requestMultipleItemsCb", function(result) {
   if (!isLoggedIn.get())
     return
@@ -49,7 +51,6 @@ function resetCache() {
 }
 
 addListenersWithoutEnv({
-  ScriptsReloaded = @(_p) resetCache()
   SignOut = @(_p) resetCache()
   LoginComplete = @(_p) resetCache()
 }, g_listener_priority.CONFIG_VALIDATION)

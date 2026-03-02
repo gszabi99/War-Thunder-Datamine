@@ -433,8 +433,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1174,8 +1173,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1230,8 +1229,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2010,9 +2009,13 @@
     ],
     "lightRadius3": 0.32,
     "devices": {
-      "speed": [
-        0.0,
-        215.0
+      "stick_ailerons": [
+        -1.8,
+        1.8
+      ],
+      "stick_elevator": [
+        -1.5,
+        2.4
       ],
       "pedals1": [
         -2.0,
@@ -2021,14 +2024,6 @@
       "pedals2": [
         -2.0,
         2.0
-      ],
-      "stick_ailerons": [
-        -1.8,
-        1.8
-      ],
-      "stick_elevator": [
-        -1.5,
-        2.4
       ],
       "throttle": [
         -0.7,
@@ -2041,6 +2036,15 @@
       "gears": [
         0.0,
         1.0
+      ],
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_fixed": true,
+      "speed": [
+        0.0,
+        215.0
       ],
       "compass": [
         0.0,

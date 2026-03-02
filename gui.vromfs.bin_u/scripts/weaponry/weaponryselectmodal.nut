@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import shop_get_spawn_score
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -14,6 +15,7 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let { getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
+let { INF_VIEW_SIZE_MULTIPLIER } = require("%scripts/weaponry/weaponryPresets.nut")
 let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
 
 local CHOOSE_WEAPON_PARAMS = {
@@ -103,13 +105,14 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let cols = ceil(sqrt(this.list.len().tofloat() / this.rowsToClumnsProportion)).tointeger()
     let rows = cols ? ceil(this.list.len().tofloat() / cols).tointeger() : 0
-
+    let hasWeapon = this.list.reduce(@(res, el) res || el?.weaponryItem.type == weaponsItem.weapon ? true : false, false)
+    let sizeMultiplier = this.unit.isHuman() && hasWeapon ? INF_VIEW_SIZE_MULTIPLIER : 1
     this.wasSelIdx = -1
-    let params = { posX = 0, posY = 0, canModifyCustomPrests = false }
+    let params = { posX = 0, posY = 0, canModifyCustomPrests = false, sizeMultiplier }
     let weaponryListMarkup = []
     let uniqueSpawnScores = {}
     foreach (idx, config in this.list) {
-      let weaponryItem = getTblValue("weaponryItem", config)
+      let weaponryItem = config?.weaponryItem
       if (!weaponryItem) {
         script_net_assert_once("cant load weaponry",
           $"Error: empty weaponryItem for WeaponrySelectModal. unit = {this.unit?.name}")
@@ -117,7 +120,7 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
         return null
       }
 
-      if (getTblValue("selected", config))
+      if (config?.selected)
         this.wasSelIdx = idx
 
       params.posX = rows ? (idx / rows) : 0
@@ -139,6 +142,7 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
       columns = cols
       rows = rows
       value = this.selIdx
+      sizeMultiplier
     }
     return res
   }

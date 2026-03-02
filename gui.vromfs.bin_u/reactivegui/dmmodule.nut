@@ -11,15 +11,15 @@ let images = {
 
 
 let moduleIconConstructor = function (params) {
-  let icon = type(params.icon) == "function"
-               ? @() params.icon(params.iconWatch.get())
-               : @() params.icon
+  let iconPath = type(params.icon) == "function"
+    ? @() params.icon(params.iconWatch.get())
+    : @() params.icon
   return @(color) @() {
     rendObj = ROBJ_IMAGE
     color =  color
-    watch = params?.iconWatch
-    image = icon()
-    size = [hdpx(params.iconSize[0]), hdpx(params.iconSize[1])]
+    watch = [params.iconSizeWatch, params?.iconWatch]
+    image = Picture($"{iconPath()}:{params.iconSizeWatch.get()}:{params.iconSizeWatch.get()}")
+    size = params.iconSizeWatch.get()
 
     transform = {}
     animations = [

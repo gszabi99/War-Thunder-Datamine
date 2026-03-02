@@ -1,6 +1,5 @@
 @const promoRadiobuttonH: 4@sf/@pf;
 @const promoRadiobuttonBgColor: #3D3D3D3D;
-@const promoRadiobuttonBgColorHover: #99999999;
 
 RadioButtonList {
   behaviour:select;
@@ -67,20 +66,33 @@ RadioButtonList.promo {
 }
 
 .promo > RadioButton > RadioButtonImg {
-  size:pw - 8@sf/@pf, @promoRadiobuttonH;
-  top:@promoRadiobuttonH;
+  size: pw - 8@sf/@pf, @promoRadiobuttonH;
+  top: @promoRadiobuttonH;
   left:(pw-w)/2;
-  background-color:@promoRadiobuttonBgColor;
-  background-image:"";
-  position:absolute;
+  background-color: @promoRadiobuttonBgColor;
+  background-image: "";
+  position: absolute;
+  css-hier-invalidate: yes;
 }
 
 .promo > RadioButton:hover > RadioButtonImg {
-  background-color:@promoRadiobuttonBgColorHover;
+  size: pw - 8@sf/@pf, 2@promoRadiobuttonH;
+  top: 0.5@promoRadiobuttonH;
 }
 
-.promo > RadioButton:current > RadioButtonImg {
-  background-color:@white;
+RadioButtonList.promo > RadioButton[type=prev] > RadioButtonImg {
+  background-color: @white;
+  height: ph;
+}
+
+RadioButtonList.promo > RadioButton > RadioButtonImg > RadioButtonImgProgress {
+  background-color: @white;
+  height: ph;
+  display: hide;
+}
+
+RadioButtonList.promo > RadioButton[type=current] > RadioButtonImg > RadioButtonImgProgress {
+  display: show;
 }
 
 RadioButton > RadioButtonDescImg {

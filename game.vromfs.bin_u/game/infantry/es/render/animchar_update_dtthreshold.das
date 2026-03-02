@@ -39,6 +39,8 @@ def update_animchar_visibility_es(info : UpdateStageInfoAct;
       animchar__visible = false
       return
 
-  animchar__visible = (int(animchar_visbits) & int(AnimcharVisbits.VISFLG_MAIN_CAMERA_RENDERED)) != 0
+  animchar__visible = (int(animchar_visbits) &
+                      (int(AnimcharVisbits.VISFLG_MAIN_CAMERA_RENDERED) |
+                       int(AnimcharVisbits.VISFLG_COCKPIT_VISIBLE))) != 0
   if animchar__mainVisible != null
     *animchar__mainVisible = ((int(animchar_visbits) & 8 ) != 0)

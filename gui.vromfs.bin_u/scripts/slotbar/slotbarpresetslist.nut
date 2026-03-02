@@ -10,6 +10,8 @@ let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
+let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
 ::SlotbarPresetsList <- class {
   scene = null
@@ -58,7 +60,7 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 
   function getPresetsData() {
     let curPresetIdx = this.getCurPresetIdx()
-    let res = u.mapAdvanced(slotbarPresets.list(this.getCurCountry()),
+    let res = u.mapAdvanced(getPresetsListFromSlotbar(this.getCurCountry()),
       @(l, idx, ...) {
         title = l.title
         isEnabled = l.enabled || idx == curPresetIdx 
@@ -144,7 +146,7 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
   }
 
   function getCurPresetIdx() { 
-    return slotbarPresets.getCurrent(this.getCurCountry(), 0)
+    return getCurrentPresetIdx(this.getCurCountry(), 0)
   }
 
   function getSelPresetIdx() { 

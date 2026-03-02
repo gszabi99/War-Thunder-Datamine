@@ -2,10 +2,11 @@ from "%scripts/dagui_library.nut" import *
 from "%sqDagui/daguiNativeApi.nut" import DaGuiObject
 from "%scripts/dagui_natives.nut" import run_reactive_gui
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "frp" import warn_on_deprecated_methods
+from "frp" import warn_on_deprecated_methods, set_slow_subscriber_threshold_usec
 from "dagor.system" import DBGLEVEL
 
 warn_on_deprecated_methods(DBGLEVEL > 0)
+set_slow_subscriber_threshold_usec(1000000) 
 
 let { isPC, is_gdk } = require("%sqstd/platform.nut")
 let { registerGlobalModule } = require("%scripts/global_modules.nut")
@@ -19,8 +20,6 @@ clear_vm_entity_systems()
 start_es_loading()
 
 let u = require("%sqStdLibs/helpers/u.nut")
-let { loadOnce, registerPersistentData, isInReloading
-} = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 require("%scripts/worldWar/worldWarConst.nut")
 require("%globalScripts/ui_globals.nut")
@@ -41,11 +40,6 @@ let { set_rnd_seed } = require("dagor.random")
 ::cross_call_api <- {
   hasFeature = require("%scripts/user/features.nut").hasFeature
 }
-
-registerPersistentData("MainGlobals", getroottable(),
-  [
-    "showConsoleButtons.value"
-  ])
 
 set_rnd_seed(ref_time_ticks())
 
@@ -120,7 +114,7 @@ foreach (fn in [
   
   "%scripts/onlineShop/browserWnd.nut"
 ]) {
-  loadOnce(fn)
+  require(fn)
 }
 
 u.registerClass(
@@ -167,10 +161,13 @@ if (isPC && getSystemConfigOption("debug/netLogerr") == null)
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
+let isLoadedOnce = keepref(mkWatched(persist, "isLoadedOnce", false))
 if (isAuthorized.get() || shouldDisableMenu) { 
   loadScriptsAfterLoginOnce()
-  if (!isInReloading())
+  if (!isLoadedOnce.get()) {
+    isLoadedOnce.set(true)
     run_reactive_gui()
+  }
 }
 
 

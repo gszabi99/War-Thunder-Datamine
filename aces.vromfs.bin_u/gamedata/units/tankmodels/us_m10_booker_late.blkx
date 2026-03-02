@@ -236,6 +236,9 @@
       "ex_armor_turret_r_03_dm": {
         "armorThickness": 25.4
       },
+      "turret_13_top_dm": {
+        "armorThickness": 25.4
+      },
       "turret_06_top_dm": {
         "armorThickness": 25.4
       },
@@ -284,12 +287,22 @@
       "ex_armor_turret_l_01_dm": {},
       "ex_armor_turret_r_01_dm": {},
       "turret_03_side_dm": {},
-      "turret_06_bottom_dm": {}
+      "turret_06_bottom_dm": {},
+      "ex_armor_turret_l_03_dm": {},
+      "ex_armor_turret_r_06_dm": {},
+      "ex_armor_turret_l_04_dm": {},
+      "ex_armor_turret_r_07_dm": {},
+      "ex_decor_01_dm": {},
+      "ex_decor_l_12_dm": {},
+      "ex_decor_r_12_dm": {}
     },
     "hull_rhahh_screens": {
       "armorClass": "RHAHH_tank_modern",
       "hidableInViewer": true,
       "turret_11_top_dm": {
+        "armorThickness": 44.45
+      },
+      "turret_02_top_dm": {
         "armorThickness": 44.45
       }
     },
@@ -349,6 +362,15 @@
         "armorThickness": 3.0,
         "hp": 20.0
       }
+    },
+    "rubber_side_screens": {
+      "armorClass": "t_90_rubber_fabric_screens",
+      "hp": 100.0,
+      "hidableInViewer": true,
+      "armorThickness": 5.0,
+      "createSecondaryShatters": false,
+      "ex_decor_l_13_dm": {},
+      "ex_decor_r_13_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -1455,6 +1477,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 40.0,
         "speedPitch": 10.0,
         "fireConeAngle": 1.0,
@@ -1784,7 +1810,7 @@
       "maxBrakeForce": 160000.0,
       "driveGearRadius": 0.27,
       "mainGearRatio": 3.248,
-      "sideGearRatio": 1.12,
+      "sideGearRatio": 1.074,
       "neutralGearRatio": 12.0,
       "manufacturer": "allison",
       "model": "3040_mx",
@@ -3272,6 +3298,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 40.0,
               "speedPitch": 10.0,
               "fireConeAngle": 1.0,
@@ -3608,26 +3638,17 @@
             ],
             "noiseFactor": 0.04
           },
-          "commanderViewThermal": [
-            {
-              "resolution": [
-                800,
-                600
-              ],
-              "noiseFactor": 0.04
-            },
-            {
-              "resolution": [
-                1200,
-                800
-              ],
-              "noiseFactor": 0.04
-            }
-          ],
           "driverThermal": {
             "resolution": [
               800,
               600
+            ],
+            "noiseFactor": 0.04
+          },
+          "commanderViewThermal": {
+            "resolution": [
+              1200,
+              800
             ],
             "noiseFactor": 0.04
           }

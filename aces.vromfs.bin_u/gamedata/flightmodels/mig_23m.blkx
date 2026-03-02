@@ -960,8 +960,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1020,8 +1020,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1080,8 +1080,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1140,8 +1140,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1200,8 +1200,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1260,8 +1260,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1320,8 +1320,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2502,6 +2502,10 @@
         "blk": "gameData/FlightModels/weaponPresets/mig_23m_rocket_ub32.blk"
       },
       {
+        "name": "mig_23m_rocket_b8m",
+        "blk": "gameData/FlightModels/weaponPresets/mig_23m_rocket_b8m.blk"
+      },
+      {
         "name": "mig_23m_rocket_s24",
         "blk": "gameData/FlightModels/weaponPresets/mig_23m_rocket_s24.blk"
       },
@@ -2718,7 +2722,7 @@
           {
             "iconType": "nar_ap_middle",
             "name": "ub_16_57_s5k",
-            "reqModification": "mig_21_ub16",
+            "reqModification": "mig_21_ub32",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -2734,7 +2738,7 @@
             }
           },
           {
-            "iconType": "nar_ap_large",
+            "iconType": "nar_large",
             "name": "ub_32a_24_s5k",
             "reqModification": "mig_21_ub32",
             "ShowNodes": {
@@ -2747,6 +2751,24 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_1",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "b8m1_s_8ko",
+            "reqModification": "yak_38_b8m1",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
+              "emitter": "fab_500_m54_001",
               "external": true,
               "machLimit": 1.01
             }
@@ -2913,7 +2935,7 @@
           {
             "iconType": "nar_ap_middle",
             "name": "ub_16_57_s5k",
-            "reqModification": "mig_21_ub16",
+            "reqModification": "mig_21_ub32",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -3126,7 +3148,7 @@
           {
             "iconType": "nar_ap_middle",
             "name": "ub_16_57_s5k",
-            "reqModification": "mig_21_ub16",
+            "reqModification": "mig_21_ub32",
             "ShowNodes": {
               "node": [
                 "pylon_2",
@@ -3347,7 +3369,7 @@
           {
             "iconType": "nar_ap_middle",
             "name": "ub_16_57_s5k",
-            "reqModification": "mig_21_ub16",
+            "reqModification": "mig_21_ub32",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -3363,7 +3385,7 @@
             }
           },
           {
-            "iconType": "nar_ap_large",
+            "iconType": "nar_large",
             "name": "ub_32a_24_s5k",
             "reqModification": "mig_21_ub32",
             "ShowNodes": {
@@ -3376,6 +3398,24 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_2",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "b8m1_s_8ko",
+            "reqModification": "yak_38_b8m1",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
+              "emitter": "fab_500_m54_002",
               "external": true,
               "machLimit": 1.01
             }
@@ -3952,12 +3992,12 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
-    "mig_21_ub16": {
+    "mig_21_ub32": {
       "modClass": "weapon",
       "tier": 1
     },
-    "mig_21_ub32": {
-      "reqModification": "mig_21_ub16",
+    "yak_38_b8m1": {
+      "reqModification": "mig_21_ub32",
       "modClass": "weapon",
       "tier": 2
     },

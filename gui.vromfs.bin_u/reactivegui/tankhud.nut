@@ -29,6 +29,8 @@ let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 let activeOrder = require("%rGui/activeOrder.nut")
 let voiceChat = require("%rGui/chat/voiceChat.nut")
 let hudLogs = require("%rGui/hudLogs.nut")
+let { mkScreenHitMark } = require("%rGui/hud/hitMarks.nut")
+let { tankDebuffs } = require("%rGui/hud/tankHudDebuffs.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 let redColor = Color(255, 35, 30, 255)
@@ -66,6 +68,7 @@ function tankDmgIndicator() {
     
 
 
+    tankDebuffs
   ]
   if (IsMlwsLwsHudVisible.get())
     children.append(tws({
@@ -126,6 +129,13 @@ let leftPanel = @() {
       ]
 }
 
+let hitPanel = {
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  size = flex()
+  children = mkScreenHitMark
+}
+
 let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let isBScope = Computed(@() AzimuthRange.get() > PI)
 let needRadarCollapsedIcon = Computed(@() IsRadarHudVisible.get() && ((!IsRadarVisible.get() && !IsRadar2Visible.get()) || isCollapsedRadarInReplay.get()) &&
@@ -141,12 +151,14 @@ function Root() {
     size = const [sw(100), sh(100)]
     children = isAAComplexMenuActive.get() ?
     [
+      hitPanel
       aaComplexMenu
       tankDmgIndicator
       actionBarTopPanel
       leftPanel
     ]
     :[
+      hitPanel
       mkRadar()
       @(){
         watch = needRadarCollapsedIcon
@@ -176,7 +188,7 @@ function Root() {
           ? [
               radarHud(isBScope.get() ? sh(40) : sh(32), isBScope.get() ? sh(40) : sh(32), radarPosComputed.get()[0], radarPosComputed.get()[1], radarColor, {
                 hasTxtBlock = true
-              })
+              }, true)
               isPlayingReplay.get() ? mkCollapseButton([radarPosComputed.get()[0] + (isBScope.get() ? sh(40) : sh(32)), radarPosComputed.get()[1]], isCollapsedRadarInReplay) : null
             ]
           : null

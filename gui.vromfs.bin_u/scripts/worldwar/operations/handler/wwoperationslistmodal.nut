@@ -4,8 +4,9 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getOperationById, getOperationGroupByMapId
+let { getOperationById
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getOperationGroupByMapId } = require("%scripts/worldWar/operations/model/wwOperationsGroup.nut")
 let { actionWithGlobalStatusRequest,
   setDeveloperMode } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")

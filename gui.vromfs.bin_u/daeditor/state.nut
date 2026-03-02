@@ -116,6 +116,7 @@ let showPointAction = mkWatched(persist, "showPointAction", false)
 let typePointAction = mkWatched(persist, "typePointAction", "")
 let namePointAction = mkWatched(persist, "namePointAction", "")
 let sceneListUpdateTrigger = mkWatched(persist, "sceneListUpdateTrigger", 0)
+let edObjectFlagsUpdateTrigger = mkWatched(persist, "edObjectFlagsUpdateTrigger", 0)
 
 local funcPointAction = null
 function setPointActionMode(actionType, actionName, cb) {
@@ -192,7 +193,7 @@ sceneListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) update
 
 return {
   EntitySelectWndId = "entity_select"
-  LoadedScenesWndId = "loaded_scenes"
+  SceneOutlinerWndId = "scene_outliner"
   LogsWindowId = "log_window"
 
   showUIinEditor = mkWatched(persist, "showUIinEditor", false)
@@ -213,6 +214,7 @@ return {
   showHelp = mkWatched(persist, "showHelp", false)
   entitiesListUpdateTrigger = mkWatched(persist, "entitiesListUpdateTrigger", 0)
   sceneListUpdateTrigger
+  edObjectFlagsUpdateTrigger
   de4editMode = Watched(getEditMode?())
   extraPropPanelCtors = Watched([])
   de4workMode

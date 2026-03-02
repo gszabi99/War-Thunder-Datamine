@@ -600,11 +600,11 @@ def handle(self : VirtualBufferRequest) : VirtualBufferHandle
   return <- VirtualBufferHandle(provider = self.registry |> getProvider(), resUid = self.resUid)
 
 
-def view(self : VirtualTextureHandle) : ManagedTexView
+def view(self : VirtualTextureHandle) : TextureView
   return self.provider |> getTexView(self.resUid.nameId, self.resUid.history)
 
 
-def view(self : VirtualBufferHandle) : ManagedBufView
+def view(self : VirtualBufferHandle) : BufferView
   return self.provider |> getBufView(self.resUid.nameId, self.resUid.history)
 
 

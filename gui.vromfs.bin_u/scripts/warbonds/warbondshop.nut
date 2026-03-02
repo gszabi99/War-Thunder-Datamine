@@ -28,6 +28,12 @@ let { getWarbondsList, getCurrentWarbond, getWarbondAwardByFullId
 } = require("%scripts/warbonds/warbondsManager.nut")
 let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { getBPStageByShopLevel } = require("%scripts/battlePass/seasonState.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+
 
 gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -80,7 +86,9 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (i, wb in this.wbList)
       view.tabs.append({
         id = this.getTabId(i)
-        object = wb.haveAnyOrdinaryRequirements() ? g_warbonds_view.getCurrentLevelItemMarkUp(wb) : null
+        object = wb.haveAnyOrdinaryRequirements()
+          ? g_warbonds_view.getCurrentLevelItemMarkUp(wb, getBPStageByShopLevel)
+          : null
         navImagesText = getNavigationImagesText(i, this.wbList.len())
         unseenIcon = bhvUnseen.makeConfigStr(SEEN.WARBONDS_SHOP, wb.getSeenId())
       })
@@ -348,9 +356,9 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
       let oldShopObj = progressPlaceObj.findObject("old_shop_progress_place")
       oldShopObj.show(isShopInactive)
 
-      g_warbonds_view.createProgressBox(this.curWb, progressPlaceObj, this, isShopInactive)
+      g_warbonds_view.createProgressBox(this.curWb, progressPlaceObj, this, getBPStageByShopLevel, isShopInactive)
       if (isShopInactive) {
-        let data = g_warbonds_view.getCurrentLevelItemMarkUp(this.curWb)
+        let data = g_warbonds_view.getCurrentLevelItemMarkUp(this.curWb, getBPStageByShopLevel)
         this.guiScene.replaceContentFromText(oldShopObj.findObject("level_icon"), data, data.len(), this)
       }
     }
@@ -375,11 +383,34 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     this.buyAward()
   }
 
+  function onBought(wbAward) {
+    updateGamercards()
+    broadcastEvent("WarbondAwardBought", { award = wbAward })
+  }
+
+  function buyAction(wbAward) {
+    if (!wbAward.isValid())
+      return
+
+    let taskId = wbAward.awardType.requestBuy(wbAward.warbondWeak, wbAward.blk)
+    addTask(taskId, { showProgressBox = true }, Callback(@() this.onBought(wbAward), this))
+  }
+
   function buyAward(wbAward = null) {
-    if (!wbAward)
-      wbAward = this.getCurAward()
-    if (wbAward)
-      wbAward.buy()
+    wbAward = wbAward ?? this.getCurAward()
+    if (!(wbAward?.isValid() ?? false))
+      return
+
+    let cantBuyReason = wbAward.getCantBuyReason()
+    if (cantBuyReason != "")
+      return showInfoMsgBox(cantBuyReason)
+
+    let text = loc("onlineShop/needMoneyQuestion", {
+      purchase = colorize("userlogColoredText", wbAward.getNameText())
+      cost = colorize("activeTextColor", wbAward.getCostText())
+    })
+    let callbackYes = Callback(@() this.buyAction(wbAward), this)
+    purchaseConfirmation("purchase_ask", text, callbackYes, null, null, this.curWb)
   }
 
   function markAwardSeen(award) {

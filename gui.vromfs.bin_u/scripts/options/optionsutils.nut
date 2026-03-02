@@ -29,6 +29,7 @@ let createDefaultOption = function() {
     context = null
     optionCb = null
     items = null
+    icons = null
     values = null
     needShowValueText = false
     needCommonCallback = true

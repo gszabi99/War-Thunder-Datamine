@@ -42,6 +42,7 @@ struct ApplyDamageData
   armorSegmentEid : EntityId
   damageType : DamageType
   collNodeId : int
+  offenderGunEid : EntityId
   dir : float3
   isExplosionHaveProps : bool
   armorEfficiency : float
@@ -113,13 +114,34 @@ def init_hit_fx_material_item(evt : Event;
     push(item__hitFxMaterialIds, get_material_id(string(name)))
 
 
+def fill_offender_armor_info(var offender_data : OffenderData&; dm_parts__armorItemEids : EidList)
+  for armorItemEid in dm_parts__armorItemEids
+    query(armorItemEid) <| $ [es] (item__armorDurabilityAmount : float const?;
+                                   item__armorDurabilityMaxAmount : float const?;
+                                   item__armorHudDmPart : string = "";
+                                   segmented_armor__segmentsEids : EidList const?)
+      if segmented_armor__segmentsEids == null
+        if item__armorDurabilityAmount != null && item__armorDurabilityMaxAmount != null && !empty(item__armorHudDmPart)
+          let value = safediv(*item__armorDurabilityAmount, *item__armorDurabilityMaxAmount)
+          offender_data.addArmorSegmentInfo(item__armorHudDmPart, value)
+      else
+        for segmentEid in *segmented_armor__segmentsEids
+          query(segmentEid) <| $ [es] (item__armorDurabilityAmount : float;
+                                       item__armorDurabilityMaxAmount : float;
+                                       item__armorHudDmPart : string)
+            if !empty(item__armorHudDmPart)
+              let value = safediv(item__armorDurabilityAmount, item__armorDurabilityMaxAmount)
+              offender_data.addArmorSegmentInfo(item__armorHudDmPart, value)
+
+
 def apply_damage(data : ApplyDamageData)
-  apply_damage(data.victim, data.offender, data.pos, data.projPropsId, data.damageToHp,
-    data.damageToArmor, data.armorSegmentEid, data.damageType, data.collNodeId, data.outputDebug,
-    data.dir, data.isExplosionHaveProps, data.armorEfficiency, data.damageToArmorPercent)
+  apply_damage(data.victim, OffenderData(), data.offender, data.pos, data.projPropsId, data.damageToHp,
+    data.damageToArmor, data.armorSegmentEid, data.damageType, data.collNodeId, data.offenderGunEid,
+    data.outputDebug, data.dir, data.isExplosionHaveProps, data.armorEfficiency, data.damageToArmorPercent)
 
 
 def apply_damage(victim : EntityId;
+                 offender_data_ex : OffenderData;
                  offender : EntityId;
                  hit_pos : float3;
                  proj_props_id : PropsId;
@@ -128,6 +150,7 @@ def apply_damage(victim : EntityId;
                  armor_item_eid : EntityId;
                  damage_type : DamageType;
                  coll_node_id : int;
+                 offender_gun_eid : EntityId = INVALID_ENTITY_ID;
                  output_debug = false;
                  hit_dir = float3(0., 0., 0.);
                  is_explosion_have_props : bool = true;
@@ -140,6 +163,7 @@ def apply_damage(victim : EntityId;
                            var hitpoints__lastOffender : OffenderData&;
                            var mainOffender : OffenderData&;
                            var isAlive : bool&;
+                           var hitpoints__lastHitAtTime : float?;
                            dm_parts__type : StringList const?;
                            hitpoints__dmgMult : float = 1.f;
                            hitpoints__deathHpThreshold : float = -10.f)
@@ -186,7 +210,7 @@ def apply_damage(victim : EntityId;
     else
       hitr = HitResult.HIT_RES_KILLED
 
-    var offender_data = OffenderData(offender, proj_props_id)
+    var offender_data = offender_data_ex.isEmpty ? OffenderData(offender, proj_props_id) : offender_data_ex
     if damage_type == DamageType.DM_COLLISION && offender != INVALID_ENTITY_ID && offender != victim
       offender_data.dmgTypeForUnlock = UnlockDmgType.UNL_DMG_TYPE_GENERIC
       offender_data.setDmgInitiatorWeaponName("ran_over")
@@ -199,6 +223,15 @@ def apply_damage(victim : EntityId;
         let isPartIndexValid = dm_parts__type != null && uint(coll_node_id) < uint(length(*dm_parts__type))
         let nodeType = isPartIndexValid ? string((*dm_parts__type)[coll_node_id]) : "null"
         let isHeadshot = nodeType == "head"
+        if offender_gun_eid != INVALID_ENTITY_ID
+          let weaponTemplate = split_template(getEntityTemplateName(offender_gun_eid))[0]
+          offender_data.setWeaponEcsTemplateName(weaponTemplate)
+          query(offender) <| $ [es] (human_weap__currentGunModEids : EidList)
+            let gunTempl = getEntityTemplateName(offender_gun_eid)
+            for modEid in human_weap__currentGunModEids
+              let modTempl = getEntityTemplateName(modEid)
+              if !empty(modTempl)
+                offender_data.addWeaponModEcsTemplateName(modTempl)
         if isHeadshot
           deathReasonByDamageType = UnitDeathReasonInner.DR_HEADSHOT_HIT
         else
@@ -218,6 +251,11 @@ def apply_damage(victim : EntityId;
       elif damage_type == DamageType.DM_HOLD_BREATH
         deathReasonByDamageType = UnitDeathReasonInner.DR_HUMAN_DROWN
       
+      if offender != victim
+        query(offender) <| $ [es] (hitpoints__hp : float;
+                                   dm_parts__armorItemEids : EidList)
+          offender_data.setOffenderHp(hitpoints__hp)
+          fill_offender_armor_info(offender_data, dm_parts__armorItemEids)
       if deathReasonByDamageType != UnitDeathReasonInner.DR_UNKNOWN
         *victim_unit |> trySetDeathInfoByKiller(deathReasonByDamageType, offender)
     if hitr != HitResult.HIT_RES_NONE && victim_unit != null
@@ -279,6 +317,12 @@ def apply_damage(victim : EntityId;
       if hitpoints__lastOffender.eid != offender || proj_props_id.valid
         hitpoints__lastOffender = offender_data
 
+    let curTime = get_sync_time()
+    if hitpoints__lastHitAtTime != null
+      *hitpoints__lastHitAtTime = curTime
+    query(offender) <| $ [es] (var dynamic_respawn__lastHitEnemyAtTime : float&)
+      dynamic_respawn__lastHitEnemyAtTime = curTime
+
     reduce_armor_durability(damage_to_armor, armor_item_eid, output_debug)
 
 
@@ -332,7 +376,7 @@ def on_entity_collision_damage(evt : EventUnitToUnitCollision;
       let friendly = check_friendly_fire(victim_team, offender_team, unitType)
       let impulseToDamage = friendly ? human__friendlyImpulseToDamageMul : human__enemyImpulseToDamageMul
       let damage = abs(evt.fullImpulse) * impulseToDamage
-      apply_damage(eid, evt.toUnit, evt.lPos, PropsId(), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_COLLISION, 0)
+      apply_damage(eid, OffenderData(), evt.toUnit, evt.lPos, PropsId(), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_COLLISION, 0)
 
 
 [es(tag=server)]
@@ -371,7 +415,7 @@ def on_entity_apply_damage(evt : CmdApplyDamage;
                            isAlive : bool)
   if isAlive
     let damageType = DamageType(evt.damageType)
-    apply_damage(eid, evt.offender, evt.hitPos, props_unpack_from_net(evt.gunPropsId), evt.deltaHp, 0.0, INVALID_ENTITY_ID, damageType, -1)
+    apply_damage(eid, OffenderData(), evt.offender, evt.hitPos, props_unpack_from_net(evt.gunPropsId), evt.deltaHp, 0.0, INVALID_ENTITY_ID, damageType, -1)
 
 
 def update_armor_ui_info(var armor_ui__info : Object&;
@@ -733,6 +777,9 @@ def precheck_entity_hit(victim : EntityId;
   if !is_self_damage_allowed && isSelfDamage
     return false
 
+  if !(get_bool(offender, "isAlive") ?? true)
+    return false
+
   var isSuccessful = false
   query(victim) <| $ [es] (dm_parts__bulletTransparent : BoolList;
                            allow_friendly_damage : Tag const?;
@@ -809,6 +856,7 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
     let waterArmor = 0.0
     let kineticDamageMult = get_float(gunEid, "gun__kineticDamageMult") ?? 1.f
     let partDmgMult = kineticDamageMult * dmgMult * damageTypeMult
+    let partDotMult = kineticDamageMult * dotMult * damageTypeMult
 
     
     var armorSegmentEid = INVALID_ENTITY_ID
@@ -832,10 +880,10 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
       damage_debug_msg("base damage: {changesHp.damage}, damage: {damageToHp}")
 
     
-    dot_damage_to_hp = damageToHp * dotMult
+    dot_damage_to_hp = changesHp.damage * partDotMult
     if dot_damage_to_hp > 0.0 && outputDebug
       damage_debug_msg("---HP DAMAGE OVER TIME---")
-      damage_debug_msg("damage: {dot_damage_to_hp}")
+      damage_debug_msg("bodypart DOT mult: {dotMult}, result mult {partDotMult}, damage: {dot_damage_to_hp}")
 
     
     var damageToArmor = 0.f
@@ -875,6 +923,7 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
     apply_damage_data.armorSegmentEid = armorSegmentEid
     apply_damage_data.damageType = DamageType.DM_PROJECTILE
     apply_damage_data.collNodeId = collNodeId
+    apply_damage_data.offenderGunEid = gunEid
     apply_damage_data.outputDebug = outputDebug
     apply_damage_data.dir = dir
     apply_damage_data.isExplosionHaveProps = true
@@ -923,6 +972,7 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
     
     let waterArmor = 0.0
     let partDmgMult = dmgMult * damageTypeMult
+    let partDotMult = dotMult * damageTypeMult
 
     
     var armorSegmentEid = INVALID_ENTITY_ID
@@ -945,12 +995,12 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
       damage_debug_msg("base damage: {baseDamageToHp}, damage: {damageToHp}")
 
     
-    let dotDamageToHp = damageToHp * dotMult
+    let dotDamageToHp = baseDamageToHp * partDotMult
     if dotDamageToHp > 0.0
       apply_dot_damage(eid, dotDamageToHp)
       if outputDebug
         damage_debug_msg("---HP DAMAGE OVER TIME---")
-        damage_debug_msg("damage: {dotDamageToHp}")
+        damage_debug_msg("bodypart DOT mult: {dotMult}, result mult {partDotMult}, damage: {dotDamageToHp}")
 
     
     var damageToArmor = 0.f
@@ -964,7 +1014,7 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
         damage_debug_msg("base armor: {partArmorMin}, total armor: {partArmorMinTotal}")
         damage_debug_msg("damage: {damageToArmor}")
 
-    apply_damage(eid, offenderEid, pos, projPropsId, damageToHp, damageToArmor, armorSegmentEid, DamageType.DM_EXPLOSION, collNodeId, outputDebug, dir)
+    apply_damage(eid, OffenderData(), offenderEid, pos, projPropsId, damageToHp, damageToArmor, armorSegmentEid, DamageType.DM_EXPLOSION, collNodeId,  INVALID_ENTITY_ID, outputDebug, dir)
 
     
     
@@ -988,6 +1038,44 @@ def get_hit_armor_mat_id(eid : EntityId;
     if armorMatId < 0
       armorMatId = entity__hitFxMaterialId
   return armorMatId
+
+[es(tag=gameClient, REQUIRE=hero)]
+def update_offender_hits_es(evt : CmdShowHitMark;
+                            offender_hits__armorEfficiencyThreshold : float;
+                            offender_hits__timeToLive : float;
+                            var offender_hits__info : Object&;
+                            var offender_hits__lastUpdate : Object&)
+  let victim = evt.victim
+  let collNodeId = evt.collNodeId
+  let armorEfficiency = evt.armorEfficiency
+  let curTime = get_sync_time()
+  let victimKey = "{victim}"
+
+  let lastUpdate = get_float(offender_hits__lastUpdate, victimKey) ?? 0.0
+  if curTime > lastUpdate + offender_hits__timeToLive
+    erase(offender_hits__info, victimKey)
+  set(offender_hits__lastUpdate, victimKey, curTime)
+
+  var partKey = "armor"
+  if armorEfficiency < offender_hits__armorEfficiencyThreshold
+    query(victim) <| $ [es] (dm_parts__type : StringList;
+                             dm_parts__typeGroups : Object)
+      if uint(collNodeId) >= uint(length(dm_parts__type))
+        return
+      let partType = string(dm_parts__type[collNodeId])
+      let typeGroup = dm_parts__typeGroups[partType] ?as string
+      if typeGroup != null && !empty(*typeGroup)
+        partKey = string(*typeGroup)
+      else
+        partKey = partType
+
+  var victimInfo = getRW_ecs_object(offender_hits__info, victimKey)
+  if victimInfo != null
+    let nodeHitsCount = get_int(*victimInfo, partKey) ?? 0
+    set(*victimInfo, partKey, nodeHitsCount + 1)
+  else
+    offender_hits__info |> push_to_object(victimKey) <| $(var newVictimInfo : Object)
+      set(newVictimInfo, partKey, 1)
 
 
 [es]
@@ -1100,7 +1188,7 @@ def on_splash_entity_hit(var evt : EventSplashHitEntity&;
     friendly = evt.offender != eid && check_friendly_fire(victim_team, offender_team, unitType)
 
   if authority && !friendly
-    apply_damage(eid, evt.offender, evt.pos, PropsId(evt.packedProjPropsId), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_EXPLOSION, 0,  false, evt.dir, evt.isExplosionHaveProps)
+    apply_damage(eid, OffenderData(), evt.offender, evt.pos, PropsId(evt.packedProjPropsId), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_EXPLOSION, 0,  INVALID_ENTITY_ID,  false, evt.dir, evt.isExplosionHaveProps)
 
 [es(tag=server)]
 def on_melee_entity_hit(evt : EventMeleeHitEntity;
@@ -1122,7 +1210,7 @@ def on_melee_entity_hit(evt : EventMeleeHitEntity;
     if friendly
       return
 
-    apply_damage(eid, evt.offender, evt.pos, PropsId(evt.packedProjPropsId), evt.damage, 0.0, INVALID_ENTITY_ID, evt.isBackstab ? DamageType.DM_BACKSTAB : DamageType.DM_MELEE, evt.collNodeId)
+    apply_damage(eid, OffenderData(), evt.offender, evt.pos, PropsId(evt.packedProjPropsId), evt.damage, 0.0, INVALID_ENTITY_ID, evt.isBackstab ? DamageType.DM_BACKSTAB : DamageType.DM_MELEE, evt.collNodeId)
 
 [es(tag=server)]
 def on_shatter_entity_hit(var evt : EventShatterHitEntity&;
@@ -1182,7 +1270,7 @@ def hitpoints_damage_over_time_es(info : ParallelUpdateFrameDelayed;
 
   var damage = min(hitpoints__dotSpeedThreshold, float(length(hitpoints__dotDamage)) * hitpoints__dotBaseSpeed * hitpoints__dotInterval)
   decrease_damage_over_time_amount(damage, hitpoints__dotDamage, hitpoints__totalDotAmount)
-  apply_damage(eid, hitpoints__lastOffender.eid, hitpoints__lastHitPos, hitpoints__lastOffender.projPropsId, damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_BLEEDING, -1)
+  apply_damage(eid, hitpoints__lastOffender, hitpoints__lastOffender.eid, hitpoints__lastHitPos, PropsId(), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_BLEEDING, -1)
 
 
 [es(tag=gameClient, track=hitpoints__totalDotAmount, REQUIRE=watchedByPlr)]
@@ -1217,7 +1305,7 @@ def hitpoints_kill_es(evt : CmdKill;
   let damageType = DamageType(int(evt.damageType))
   if hitpoints__dmgMult != null
     *hitpoints__dmgMult = 1.f
-  apply_damage(eid, evt.offender, transform[3], PropsId(evt.packedGunPropsId), damage, 0.0, INVALID_ENTITY_ID, damageType, -1)
+  apply_damage(eid, OffenderData(), evt.offender, transform[3], PropsId(evt.packedGunPropsId), damage, 0.0, INVALID_ENTITY_ID, damageType, -1)
 
 def calc_collision_damage(delta_vel : float;
                           vel_thres : float;
@@ -1235,7 +1323,7 @@ def collision_damage(evt : CmdCollisionDamage;
     return
   let pos = evt.pos
   let offender = evt.offender
-  apply_damage(eid, offender, pos, PropsId(), dmg, 0.0, INVALID_ENTITY_ID, DamageType.DM_COLLISION, -1)
+  apply_damage(eid, OffenderData(), offender, pos, PropsId(), dmg, 0.0, INVALID_ENTITY_ID, DamageType.DM_COLLISION, -1)
 
 
 [es(tag=server, no_order)]
@@ -1258,7 +1346,7 @@ def barbwire_mat_damage(info : ParallelUpdateFrameDelayed;
     let isChangingLean = abs(currentState.leanPosition - previousState.leanPosition) > 0.1
     if isRotating || isChangingPos || isMoving || isChangingWeapon || isChangingLean
       let damage = info.dt * barbwire_damage__damagePerSecond
-      apply_damage(eid, INVALID_ENTITY_ID, transform[3], PropsId(), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_BARBWIRE, -1)
+      apply_damage(eid, OffenderData(), INVALID_ENTITY_ID, transform[3], PropsId(), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_BARBWIRE, -1)
 
 
 [es(tag=server, track=isAlive)]

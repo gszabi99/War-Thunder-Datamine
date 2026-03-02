@@ -55,15 +55,16 @@ function closeLastModalInfo(removeHolder = true) {
     return
 
   let { fakeInitiator, infoWndHolder, infoWnd } = watchedObjects.pop()
-  let guiScene = infoWndHolder.getScene()
+  let guiScene = infoWnd.getScene()
   move_mouse_on_obj(fakeInitiator)
   broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })
   guiScene.destroyElement(infoWnd)
-  if (removeHolder)
-    guiScene.destroyElement(infoWndHolder)
-  else
-    lastHolder = infoWndHolder
-
+  if (infoWndHolder?.isValid()) {
+    if (removeHolder)
+      guiScene.destroyElement(infoWndHolder)
+    else
+     lastHolder = infoWndHolder
+  }
   updateCloseAllWindowsInfo()
 }
 
@@ -182,15 +183,15 @@ function destroy() {
       guiScene.destroyElement(infoWnd)
     }
   })
-  if (isUseGamePad()) {
-    let holders = watchedObjects.map(@(t) t.infoWndHolder)
-    holders.each(function(infoWndHolder) {
-      if (infoWndHolder?.isValid()) {
-        let guiScene = infoWndHolder.getScene()
-        guiScene.destroyElement(infoWndHolder)
-      }
-    })
-  }
+
+  let holders = watchedObjects.map(@(t) t.infoWndHolder)
+  holders.each(function(infoWndHolder) {
+    if (infoWndHolder?.isValid()) {
+      let guiScene = infoWndHolder.getScene()
+      guiScene.destroyElement(infoWndHolder)
+    }
+  })
+
   watchedObjects.clear()
   updateTimer()
 }
@@ -238,7 +239,7 @@ onTimerTick = function() {
       guiScene.destroyElement(infoWnd)
     }
 
-    if (isUseGamePad() && infoWndHolder?.isValid()) {
+    if (infoWndHolder?.isValid()) {
       let guiScene = infoWndHolder.getScene()
       guiScene.destroyElement(infoWndHolder)
     }

@@ -22,8 +22,9 @@ let { refreshGlobalStatusData,
   actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getUnlockLocName, getUnlockMainCondDesc, getUnlockImageConfig,
-  getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockLocName, getUnlockMainCondDesc, getUnlockNameText, buildConditionsConfig
+} = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockImageConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let wwAnimBgLoad = require("%scripts/worldWar/wwAnimBg.nut")
 let { addPopupOptList } = require("%scripts/worldWar/operations/handler/wwClustersList.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
@@ -43,7 +44,7 @@ let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getWwSetting, getWWConfigurableValue, getLastPlayedOperationId, getLastPlayedOperationCountry
-} = require("%scripts/worldWar/worldWarStates.nut")
+} = require("%scripts/worldWar/worldWarCfgState.nut")
 let wwTopMenuOperationMap = require("%scripts/worldWar/externalServices/wwTopMenuOperationMapConfig.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
@@ -51,6 +52,7 @@ let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -150,7 +152,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function collectMaps() {
-    foreach (mapId, map in ::g_ww_global_status_type.MAPS.getList())
+    foreach (mapId, map in wwStatusType.MAPS.getList())
       if (map.isVisible())
         this.mapsTbl[mapId] <- map
   }

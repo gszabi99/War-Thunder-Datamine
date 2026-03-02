@@ -9,7 +9,7 @@ let DataBlock  = require("DataBlock")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
@@ -32,7 +32,7 @@ let UniversalSpare = class (BaseItemModClass) {
   function initConditions(conditionsBlk) {
     base.initConditions(conditionsBlk)
     this.numSpares = conditionsBlk?.numSpares ?? 1
-    this.isCoveringAllRanks = this.rankRange.x == 1 && this.rankRange.y == MAX_COUNTRY_RANK
+    this.isCoveringAllRanks = this.rankRange.x == 1 && this.rankRange.y == maxCountryRank.get()
   }
 
   function getDescriptionIntroArray() {

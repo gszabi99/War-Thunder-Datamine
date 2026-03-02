@@ -1,10 +1,18 @@
 from "%scripts/dagui_library.nut" import *
 
+let { defer } = require("dagor.workcycle")
+let { hangar_focus_model, hangar_set_camera_screen_offset, hangar_set_dm_viewer_mode,
+  hangar_set_xray_filter_by_parts, hangar_reset_xray_filter, hangar_toggle_xray_filter,
+  DM_VIEWER_CREW
+} = require("hangar")
+let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
+let { Point2 } = require("dagor.math")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { round_by_value } = require("%sqstd/math.nut")
+let { round_by_value, abs } = require("%sqstd/math.nut")
 let { getPageStatus } = require("%scripts/crew/skillsPageStatus.nut")
+let { getPartsListToHighlight } = require("%scripts/crew/crewWndRoleToXrayParts.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let crewSkillsPageHandler = require("%scripts/crew/crewSkillsPageHandler.nut")
@@ -12,11 +20,17 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCrewLevel, getCrewSkillCost, isCrewMaxLevel, getCrewSkillValue,
   crewSkillPages, getMaxCrewLevel } = require("%scripts/crew/crew.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { Cost } = require("%scripts/money.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 
 const CREW_MAX_PROGRESS_BAR_VALUE = 1000
+
+
+
+const SKILLS_TABLE_CONTAINER_BASE_HEIGHT = "350@sf/@pf"
+const QUAL_REQ_DESCR_BASE_HEIGHT = "92@sf/@pf"
+const UPGRADE_BUTTON_AND_PROGRESS_BASE_HEIGHT = "83@sf/@pf"
 
 let crewHelpPageLinks = [
   { obj = "btn_apply"
@@ -48,10 +62,88 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
   slotbarNestId = "nav-slotbar"
   visibleSkillsIdx = 0
 
+  needRecalcWndHeight = true
+  needReduceWndHeight = false
+  needHideQualReqBlock = null
+  needHideUpgradeButton = null
+
+  isMaxLevel = false
+  crewMemberSkillsMaxAmount = null
+
+  function getWndSizes() {
+    let wnd = this.scene.findObject("wnd_frame")
+    let wndHeight = to_pixels("1@crewWndBaseHeight")
+    let wndPosY = wnd.getPos()[1]
+    let slotBarPosY = to_pixels("sh-1@slotbarOffset-1@slotbarTop-1@slotbarHeight")
+    let heightReservePadding = to_pixels("0.5@frameMediumPadding")
+    let freeHeightToSlotbar = slotBarPosY - (wndPosY + wndHeight + heightReservePadding)
+
+    return {
+      wnd
+      wndPosY
+      wndHeight
+      slotBarPosY
+      freeHeightToSlotbar
+    }
+  }
+
+  function updateUnitType() {
+    this.countSkills()
+    this.updateCrewInfo()
+    this.needReduceWndHeight = false
+    this.needHideQualReqBlock = null
+    this.needHideUpgradeButton = null
+    this.needRecalcWndHeight = true
+    this.initPages()
+    this.checkAndSetWindowSizeAndPos()
+  }
+
+  function checkAndSetWindowSizeAndPos() {
+    if (!this.needRecalcWndHeight)
+      return
+    this.needRecalcWndHeight = false
+
+    let { wnd, freeHeightToSlotbar } = this.getWndSizes()
+
+    
+    let qualReqContainer = this.scene.findObject("upgrade_qualification_block")
+    local qualReqContainerHeight = to_pixels("1@upgradeQualContainerBaseHeight")
+    if (this.needHideQualReqBlock)
+      qualReqContainerHeight -= to_pixels(QUAL_REQ_DESCR_BASE_HEIGHT)
+    if (this.needHideUpgradeButton)
+      qualReqContainerHeight -= to_pixels(UPGRADE_BUTTON_AND_PROGRESS_BASE_HEIGHT)
+    qualReqContainer.height = qualReqContainerHeight
+
+    local resultWndHeight = to_pixels("1@crewWndBaseHeight")
+    if (this.needReduceWndHeight) {
+      wnd.height = resultWndHeight - abs(freeHeightToSlotbar)
+      return
+    }
+
+    
+    local increasedFreeHeight = 0
+    if (this.needHideUpgradeButton) {
+      let reducedValue = (to_pixels(QUAL_REQ_DESCR_BASE_HEIGHT) + to_pixels(UPGRADE_BUTTON_AND_PROGRESS_BASE_HEIGHT))
+      resultWndHeight -= reducedValue
+      increasedFreeHeight += reducedValue
+    }
+
+    let skillsTable = this.scene.findObject("skills_table")
+    let containerSkillsTableHeight = to_pixels(SKILLS_TABLE_CONTAINER_BASE_HEIGHT)
+    let fullSkillsTableHeight = skillsTable.childrenCount() > 0
+      ? skillsTable.getChild(0).getSize()[1] * this.crewMemberSkillsMaxAmount
+      : containerSkillsTableHeight
+    
+    if (containerSkillsTableHeight >= fullSkillsTableHeight)
+      return
+
+    wnd.height = resultWndHeight + min(freeHeightToSlotbar + increasedFreeHeight, fullSkillsTableHeight - containerSkillsTableHeight)
+  }
+
   function updateCrewInfo() {
     local text = ""
     if (this.curUnit != null && this.curUnit.getCrewUnitType() == this.curCrewUnitType) {
-      text = "".concat(loc("crew/currentAircraft"), loc("ui/colon"), getUnitName(this.curUnit))
+      text = getUnitName(this.curUnit)
     }
     this.scene.findObject("crew-info-text").setValue(text)
   }
@@ -59,24 +151,30 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
   updateUnitTypeRadioButtons = @() null
 
   function countSkills() {
+    this.crewMemberSkillsMaxAmount = 0
     this.curPoints = ("skillPoints" in this.crew) ? this.crew.skillPoints : 0
     this.crewCurLevel = getCrewLevel(this.crew, this.curUnit, this.curCrewUnitType)
     this.crewLevelInc = getCrewLevel(this.crew, this.curUnit, this.curCrewUnitType, true) - this.crewCurLevel
-    foreach (page in crewSkillPages)
+    foreach (page in crewSkillPages) {
+      this.crewMemberSkillsMaxAmount = max(this.crewMemberSkillsMaxAmount, page.items.len())
       foreach (item in page.items) {
         let value = getCrewSkillValue(this.crew.id, this.curUnit, page.id, item.name)
         let newValue = item?.newValue ?? value
         if (newValue > value)
           this.curPoints -= getCrewSkillCost(item, newValue, value) 
       }
+
+    }
     this.updateSkillsHandlerPoints()
 
-    let isMaxLevel = isCrewMaxLevel(this.crew, this.curUnit, this.getCurCountryName(), this.curCrewUnitType)
+    this.isMaxLevel = isCrewMaxLevel(this.crew, this.curUnit, this.getCurCountryName(), this.curCrewUnitType)
     this.scene.findObject("crew_cur_skills").setValue(
-      isMaxLevel ? "" : round_by_value(this.crewCurLevel, 0.01).tostring())
-    this.scene.findObject("crew_max_skills").setValue(
-      $"{isMaxLevel ? "" : loc("ui/slash")}{getMaxCrewLevel(this.curCrewUnitType)}")
-
+      this.isMaxLevel ? "" : round_by_value(this.crewCurLevel, 0.5).tostring())
+    this.scene.findObject("crew_max_skills").setValue("".concat(
+      this.isMaxLevel ? "" : loc("ui/slash")
+      getMaxCrewLevel(this.curCrewUnitType)
+      this.isMaxLevel ? loc("ui/parentheses/space", { text = loc("options/quality_max") }) : ""
+    ))
     
     this.scene.findObject("progressOld").setValue(this.getCrewLevelToProgressValue(this.crewCurLevel))
     this.updatePointsText()
@@ -104,8 +202,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
         id = page.id
         tabName = loc($"crew/{page.id}")
         navImagesText = getNavigationImagesText(index, this.pages.len())
-        tabImage = page?.image
-        tabImageParam = "size:t='ph,ph';background-svg-size:t='ph,ph'"
+        tabImage = page?.image != "" ? page.image : null
         noPaddingMargin = true
       }
 
@@ -119,30 +216,36 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     let data = handyman.renderCached("%gui/crewSkillTab.tpl", view)
     this.guiScene.replaceContentFromText(pagesObj, data, data.len(), this)
 
-    pagesObj.setValue(this.curPage)
+    let oldValue = pagesObj.getValue()
+    if (oldValue != this.curPage)
+      pagesObj.setValue(this.curPage)
+    else
+      this.onCrewPage(pagesObj)
+
     this.updateAvailableSkillsIcons()
     this.updateUpgradeBlock()
   }
 
+  function updateButtons() {
+    this.scene.findObject("btn_apply").show(!this.isMaxLevel)
+  }
+
   function updatePointsText() {
-    let isMaxLevel = isCrewMaxLevel(this.crew, this.curUnit, this.getCurCountryName(), this.curCrewUnitType)
     let curPointsText = getCrewSpText(this.curPoints)
-    this.scene.findObject("crew_cur_points").setValue(isMaxLevel ? "" : curPointsText)
+    this.scene.findObject("crew_cur_points").setValue(curPointsText)
 
     local levelIncText = ""
     local levelIncTooltip = loc("crew/usedSkills/tooltip")
-    if (isMaxLevel) {
-      levelIncText = loc("ui/parentheses/space", { text = loc("options/quality_max") })
+    if (this.isMaxLevel)
       levelIncTooltip = "".concat(levelIncTooltip, $"\n{loc("crew/availablePoints")}{curPointsText}")
-    }
-    else if (this.crewLevelInc > 0.005)
-      levelIncText = $"+{round_by_value(this.crewLevelInc, 0.01)}"
+    if (this.crewLevelInc > 0.005 && !this.isMaxLevel)
+      levelIncText = $"+{round_by_value(this.crewLevelInc, 0.5)}"
 
     this.scene.findObject("crew_new_skills").setValue(levelIncText)
     this.scene.findObject("crew_level_block").tooltip = levelIncTooltip
-    this.scene.findObject("btn_apply").enable(this.crewLevelInc > 0)
-    showObjById("crew_cur_points_block", !isMaxLevel, this.scene)
-    showObjById("btn_buy", hasFeature("SpendGold") && !isMaxLevel && this.crew.id != -1, this.scene)
+    if (!this.isMaxLevel)
+      this.scene.findObject("btn_apply").enable(this.crewLevelInc > 0)
+    showObjById("btn_buy", hasFeature("SpendGold") && !this.isMaxLevel && this.crew.id != -1, this.scene)
 
     this.scene.findObject("progressNew").setValue(
       this.getCrewLevelToProgressValue(this.crewCurLevel + this.crewLevelInc)
@@ -151,7 +254,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
   function getCrewLevelToProgressValue(level) {
     let progressValue =
-      round_by_value(level * CREW_MAX_PROGRESS_BAR_VALUE / getMaxCrewLevel(this.curCrewUnitType), 0.01)
+      round_by_value(level * CREW_MAX_PROGRESS_BAR_VALUE / getMaxCrewLevel(this.curCrewUnitType), 0.5)
     return progressValue
   }
 
@@ -162,6 +265,19 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
       ? getPageStatus(this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints).needShowAdvice
       : false
     this.scene.findObject("crew_points_advice_block").show(needShowAdvice)
+  }
+
+  function setVisibilityForQualElements(isMaxQualification) {
+    if (this.needHideQualReqBlock != null)
+      return
+    if (isMaxQualification) {
+      this.needHideQualReqBlock = true
+      this.needHideUpgradeButton = true
+      return
+    }
+    let { wndPosY, wndHeight, slotBarPosY } = this.getWndSizes()
+    this.needReduceWndHeight = wndPosY + wndHeight >= slotBarPosY
+    this.needHideQualReqBlock = this.needReduceWndHeight
   }
 
   function updateUpgradeBlock() {
@@ -184,42 +300,53 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     let isMaxQualification = nextSpecType == crewSpecTypes.UNKNOWN
 
     let progressBarDiv = showObjById("expProgressBar", isShowExpUpgrade && !isMaxQualification, upgradeBlock)
-    let qualificationReqObj = showObjById("qualification_requirement", !isMaxQualification, upgradeBlock)
+
+    this.setVisibilityForQualElements(isMaxQualification)
+    let qualificationReqObj = showObjById("qualification_requirement", !this.needHideQualReqBlock, upgradeBlock)
 
     let upgradeBtnObj = upgradeBlock.findObject("upgrade_button")
-    upgradeBtnObj.show(!isMaxQualification)
+    upgradeBtnObj.show(!this.needHideUpgradeButton)
 
-    if (isMaxQualification)
+    if (isMaxQualification) {
+      qualificationReqObj.setValue("")
       return
+    }
 
     upgradeBtnObj.visualStyle = nextSpecType.code == crewSpecTypes.EXPERT.code ? "" : "purchase"
-    local crewReqLevelText = nextSpecType.getReqLevelText(this.crew, this.curUnit)
 
-    let nextSpecTypeImg = "".concat("{{img=", nextSpecType.trainedIcon, "}}")
-    if (crewReqLevelText.len() == 0) {
-      let trainCostInstance = crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code)
-      crewReqLevelText = loc("crew/qualification/specAvailableToPurchase", {
-        specName = $"{nextSpecTypeImg}{colorize("activeTextColor", nextSpecType.getName())}"
-        trainCost = colorize("activeTextColor", trainCostInstance.tostring())
-      })
-      placePriceTextToButton(this.scene, "upgrade_button", loc("crew/qualifyIncrease"), trainCostInstance)
-    }
+    let trainCostInstance = crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code)
+
+    local crewReqLevelText = nextSpecType.getReqLevelText(this.crew, this.curUnit)
+    let canUpgradeNow = crewReqLevelText == ""
+    upgradeBtnObj.inactiveColor = !canUpgradeNow ? "yes" : "no"
+
+    let upgradeButtonTextFormat = "".concat(loc("crew/qualifyIncrease"), loc("ui/parentheses/space", { text = "{0}" }))
+    let costTextUncolored = trainCostInstance.getUncoloredText()
+    let upgradeButtonTextUncolored = upgradeButtonTextFormat.subst(costTextUncolored)
+    let upgradeButtonTextColored = upgradeButtonTextFormat.subst(!canUpgradeNow
+      ? costTextUncolored
+      : trainCostInstance.getTextAccordingToBalance())
+    setDoubleTextToButton(this.scene, "upgrade_button", upgradeButtonTextUncolored, upgradeButtonTextColored)
+
     let bonusValueText = crewSpecType.getSkillBonusValueForNextLevel()
     if (bonusValueText.len())
-      crewReqLevelText = "\n".concat(crewReqLevelText, bonusValueText)
+      crewReqLevelText = "\n".concat(bonusValueText, crewReqLevelText)
 
     if (isShowExpUpgrade) {
+      let nextSpecTypeImg = "".concat("{{img=", nextSpecType.trainedIcon, "}}")
       let earnRPtext = loc("crew/qualification/earnResearchPoints", {
         specName = $"{nextSpecTypeImg}{colorize("activeTextColor", nextSpecType.getName())}"
         rpIcon = colorize("@currencyRpColor", loc("experience/short"))
       })
       crewReqLevelText = "\n".concat(crewReqLevelText, earnRPtext)
     }
+    if (!this.needHideQualReqBlock)
+      qualificationReqObj.setValue(crewReqLevelText)
 
-    qualificationReqObj.setValue(crewReqLevelText)
-
-    if (!isShowExpUpgrade)
+    if (!isShowExpUpgrade) {
+      this.guiScene.replaceContentFromText(progressBarDiv, "", 0, this)
       return
+    }
 
     
     let unitExpLeft = crewSpecType.getExpLeftByCrewAndUnit(this.crew, this.curUnit)
@@ -312,6 +439,18 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     showObjById("upgrade_qualification_block", this.needShowUpgradeBlock(), this.scene)
   }
 
+  function onCrewPage(obj) {
+    if (!obj)
+      return
+    let value = obj.getValue()
+    if (value in this.pages) {
+      this.curPage = value
+      this.curPageId = obj.getChild(value).id
+      this.fillPage()
+    }
+    this.setXrayFilterShownParts()
+  }
+
   function getHelpPageLinks() {
     return deep_clone(crewHelpPageLinks)
   }
@@ -369,8 +508,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     let lastSkillProgressVisibleObjId = $"crewSpecs_{this.visibleSkillsIdx}"
     res.links.append({ obj = [lastSkillProgressVisibleObjId], msgId = "hint_trained" })
 
-    let isMaxLevel = isCrewMaxLevel(this.crew, this.curUnit, this.getCurCountryName(), this.curCrewUnitType)
-    if (isMaxLevel)
+    if (this.isMaxLevel)
       return res
 
     res.links.append({ obj = "table_row_price", msgId = "hint_table_row_price" })
@@ -378,4 +516,43 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
   }
 
   prepareHelpPage = @(_handler) null
+
+  function setHangarCameraOffset(isFocused) {
+    local cameraOffset = 0
+    if (isFocused) {
+      let wnd = this.scene.findObject("wnd_frame")
+      let wndWidth = wnd.getSize()[0]
+      let totalWidth = to_pixels("sw - 1@frameThickPadding")
+      let addOffset = this.curUnit.isShipOrBoat() ? -0.2 : 0
+      cameraOffset = round_by_value(wndWidth / totalWidth.tofloat(), 0.05) + addOffset
+    }
+    hangar_set_camera_screen_offset(Point2(cameraOffset, 0))
+  }
+
+  function toggleHangarFocusModelAndCameraOffset(isFocused) {
+    hangar_focus_model(isFocused)
+    this.setHangarCameraOffset(isFocused)
+  }
+
+  function toggleXrayFilterMode(isEnabled) {
+    hangar_toggle_xray_filter(isEnabled)
+    hangar_reset_xray_filter()
+    defer(@() hangar_set_dm_viewer_mode(isEnabled ? DM_VIEWER_CREW : dmViewer.getCurrentViewMode()))
+  }
+
+  function setXrayFilterShownParts() {
+    if (this.curUnit == null || this.curPageId == null)
+      return
+    let parts = getPartsListToHighlight(this.curUnit, this.curPageId)
+    hangar_set_xray_filter_by_parts(parts)
+  }
+
+  function onEventHangarModelLoaded(_p) {
+    this.setHangarCameraOffset(true)
+    this.setXrayFilterShownParts()
+  }
+
+  function onEventBeforeStartShowroom(_p) {
+    this.resetFiltersAndFocus()
+  }
 }

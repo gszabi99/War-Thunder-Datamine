@@ -55,8 +55,8 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
   draw_vario(ctx, rdata, rdata.pos + float2(rdata.size.x * 0.78, rdata.size.y * 0.2), rdata.size * 0.35, data, fmw.fm.vertSpeed)
   draw_altitude(ctx, rdata.pos + float2(rdata.size.x * 0.62, rdata.size.y * 0.58), rdata.size * 0.35, data, hero.pos.y)
   draw_speed_device(ctx, rdata.pos + float2(rdata.size.x * 0.02, rdata.size.y * 0.58), rdata.size * 0.35, data, fmw.ias)
-  draw_heights(ctx, rdata.pos, rdata.size, data, fmw.fm.currentAlt, hero.pos.y)
-  draw_speeds(ctx, rdata.pos, rdata.size, data, fmw.ias, hero.speed, fmw.fm.Mach)
+  draw_heights(ctx, rdata.pos, rdata.size, data, fmw.fm.input.currentAlt, hero.pos.y)
+  draw_speeds(ctx, rdata.pos, rdata.size, data, fmw.ias, hero.speed, fmw.fm.cache.Mach)
   //logerr("{fmw.fm.EI.numEngines > 0}")
   if fmw.fm.EI.numEngines > 0
     assume propulsion = *(fmw.fm.EI)

@@ -12,7 +12,7 @@ let { get_last_skin, set_last_skin } = require("unitCustomization")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let { isGuid } = require("%scripts/guidParser.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
@@ -20,12 +20,13 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_current_mission_info_cached, get_user_skins_blk } = require("blkGetters")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId, approversUnitToPreviewLiveResource
 } = require("%scripts/customization/skinUtils.nut")
 let { isInFlight } = require("gameplayBinding")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 let { USEROPT_USER_SKIN } = require("%scripts/options/optionsExtNames.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 let { TANK_CAMO_ROTATION_SLIDER_FACTOR } = require("%scripts/customization/customizationConsts.nut")
 let { floor, round, abs } = require("%sqstd/math.nut")
 let { unitNameForWeapons  } = require("%scripts/weaponry/unitForWeapons.nut")
@@ -300,7 +301,7 @@ function getCurUserSkin() {
   let userSkins = getCurUnitUserSkins()
   if (userSkins == null)
     return null
-  let opt = ::get_option(USEROPT_USER_SKIN)
+  let opt = get_option(USEROPT_USER_SKIN)
   let curVal = opt.value
   let curUserSkinName = opt.values?[curVal] ?? ""
   return (userSkins % "skin").findvalue(@(s) s.name == curUserSkinName)

@@ -11,6 +11,7 @@ let { getControlsPresetFilename, parseControlsPresetFileName
 
 const PRESET_ACTUAL_VERSION  = 5
 const PRESET_DEFAULT_VERSION = 4
+const FALLBACKS_ACTUAL_VERSION = 1
 
 const BACKUP_OLD_CONTROLS_DEFAULT = 0 
 
@@ -49,6 +50,7 @@ let dataArranging = {
     "isExchangeSticksAvailable"
     "holdThrottleForWEP"
     "holdFastSprintForHuman"
+    "cameraShakeToogleForHuman"
     "holdThrottleForFlankSpeed"
     "useMouseAim"
     "useJoystickMouseForVoiceMessage"
@@ -74,6 +76,7 @@ function getDefaultParams() {
     isExchangeSticksAvailable         = false
     holdThrottleForWEP                = true
     holdFastSprintForHuman            = true
+    cameraShakeToogleForHuman         = true
     holdThrottleForFlankSpeed         = false
     useMouseAim                       = false
     useJoystickMouseForVoiceMessage   = false
@@ -107,6 +110,21 @@ function isSameMapping(lhs, rhs) {
   return true
 }
 
+let axisFallbackMap = {
+  human_uav_pitch    = "elevator"
+  human_uav_roll     = "ailerons"
+  human_uav_throttle = "throttle"
+  human_uav_yaw      = "rudder"
+  human_uav_climb    = "helicopter_climb"
+}
+
+let hotkeyFallbackMap = axisFallbackMap.reduce(function(res, fallbackName, axisName) {
+  foreach (suffix in ["_rangeMin", "_rangeMax", "_rangeSet", ""])
+    res[$"{axisName}{suffix}"] <- $"{fallbackName}{suffix}"
+  return res
+}, { ID_CONTROL_MODE_HUMAN_UAV = "ID_CONTROL_MODE_HELICOPTER" })
+
+
 local ControlsPreset = null
 ControlsPreset = class {
   basePresetPaths = null
@@ -116,6 +134,7 @@ ControlsPreset = class {
   deviceMapping   = null
   controlsV4Blk   = null
   isLoaded        = false
+  appliedFallbacksVer = 0
 
   getDefaultParams = getDefaultParams 
 
@@ -124,7 +143,10 @@ ControlsPreset = class {
   
   
 
-  constructor(data = null, presetChain = []) {
+  constructor(data = null, presetChain = null) {
+    let isTopLevel = presetChain == null
+    presetChain = presetChain ?? []
+
     this.basePresetPaths = {}
     this.hotkeys         = {}
     this.axes            = {}
@@ -142,7 +164,13 @@ ControlsPreset = class {
       this.params          = u.copy(data.params)
       this.deviceMapping   = u.copy(data.deviceMapping)
       this.controlsV4Blk   = u.copy(data.controlsV4Blk)
+      this.appliedFallbacksVer = data.appliedFallbacksVer
       this.isLoaded        = true
+    }
+
+    if (this.isLoaded && isTopLevel && this.appliedFallbacksVer < FALLBACKS_ACTUAL_VERSION) {
+      this.applyFallbacks()
+      this.appliedFallbacksVer = FALLBACKS_ACTUAL_VERSION
     }
   }
 
@@ -174,6 +202,28 @@ ControlsPreset = class {
     if (!(name in this.axes))
       this.resetAxis(name)
     return this.axes[name]
+  }
+
+  function applyFallbacks() {
+    foreach (name, fallbackName in hotkeyFallbackMap) {
+      if ((!(name in this.hotkeys) || this.hotkeys[name].len() == 0)
+          && fallbackName in this.hotkeys && this.hotkeys[fallbackName].len() > 0)
+        this.hotkeys[name] <- u.copy(this.hotkeys[fallbackName])
+    }
+
+    foreach (name, fallbackName in axisFallbackMap) {
+      let axis = this.axes?[name]
+      if ((axis == null || (axis.axisId == -1 && axis.mouseAxisId == -1))
+          && fallbackName in this.axes) {
+        let fallbackAxis = this.axes[fallbackName]
+        if (fallbackAxis.axisId != -1 || fallbackAxis.mouseAxisId != -1) {
+          if (axis == null)
+            this.axes[name] <- u.copy(fallbackAxis)
+          else
+            u.extend(axis, fallbackAxis)
+        }
+      }
+    }
   }
 
   function setHotkey(name, data) {
@@ -389,6 +439,7 @@ ControlsPreset = class {
     this.loadAxesFromBlk       (controlsBlk, version)
     this.loadParamsFromBlk     (controlsBlk, version)
     this.loadJoyMappingFromBlk (controlsBlk, version)
+    this.appliedFallbacksVer = controlsBlk?.appliedFallbacksVer ?? 0
     this.isLoaded = true
 
     if (shouldForgetBasePresets)
@@ -401,6 +452,7 @@ ControlsPreset = class {
   function saveToBlk(blk) {
     let controlsBlk = DataBlock()
     controlsBlk["version"] = PRESET_ACTUAL_VERSION
+    controlsBlk["appliedFallbacksVer"] = this.appliedFallbacksVer
 
     this.saveBasePresetPathsToBlk(controlsBlk)
     let controlsDiff = ControlsPreset(this)
@@ -510,12 +562,12 @@ ControlsPreset = class {
       if (presetGroup != "default")
         return
 
-      let subPreset = ControlsPreset(presetPath)
+      let subPreset = ControlsPreset(presetPath, []) 
       this.diffControls(subPreset)
     }
 
     if (this.basePresetPaths.len() == 0)
-      this.diffControls(ControlsPreset())
+      this.diffControls(ControlsPreset(null, []))
 
     this.basePresetPaths = {}
   }

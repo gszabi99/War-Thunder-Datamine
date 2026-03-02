@@ -17,7 +17,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getFullUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getFullUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -33,10 +33,7 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
   USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
   USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT,
   USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET, USEROPT_DISPLAY_MY_REAL_CLAN,
-  USEROPT_HANGAR_SCENE
-
-
-
+  USEROPT_HANGAR_SCENE, USEROPT_VSYNC_MODE
 } = require("%scripts/options/optionsExtNames.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
@@ -335,6 +332,12 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateOptionValueTextByObj(obj)
   }
 
+  function onHeadphonesPresetChanged(obj) {
+    let option = this.get_option_by_id(obj?.id)
+    if (option)
+      activate_headphohes_wide_snapshot(option.values[obj.getValue()])
+  }
+
   function onFilterEditBoxActivate() {}
 
   function onFilterEditBoxChangeValue() {}
@@ -535,10 +538,8 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.performDelayed(this, function() {
       set_option_console_preset(curValue)
       setVSyncMode(getVSyncMode(true)) 
-
-
-
-
+      if (this.isValid())
+        this.updateOption(USEROPT_VSYNC_MODE)
     })
   }
 

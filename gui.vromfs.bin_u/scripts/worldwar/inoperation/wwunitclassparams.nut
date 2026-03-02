@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { getWeaponByName } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let sortIdxByExpClass = {
   fighter = 0

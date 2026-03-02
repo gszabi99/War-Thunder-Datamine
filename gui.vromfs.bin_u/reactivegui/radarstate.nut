@@ -116,6 +116,13 @@ let modeNames = [
   "hud/IRST HMD",
   "hud/IRST track",
 
+  "hud/ESM standby",
+  "hud/ESM search",
+  "hud/ESM acquisition",
+  "hud/ESM ACM",
+  "hud/ESM HMD",
+  "hud/ESM track",
+
   "hud/air_search",
   "hud/ground_search",
 
@@ -159,6 +166,8 @@ let MfdRadarColor = Watched(Color(10, 202, 10, 250))
 let MfdRadarHideBkg = Watched(false)
 let MfdRadarFontScale = Watched(-1)
 let TimeToMissileHitRel = Watched(-1.0)
+let MfdRadarOffsetX = Watched(0)
+let MfdRadarOffsetY = Watched(0)
 
 let Speed = Watched(0.0)
 
@@ -223,6 +232,7 @@ let VelocitySearch = Watched(false)
 let AzimuthMarkersTrigger = Watched(0)
 let Irst = Watched(false)
 let RadarScale = Watched(1.0)
+let RadarParkingState = Watched(0)
 
 let MfdIlsHeight = Watched(0)
 
@@ -253,6 +263,7 @@ let AamLaunchZoneDistDgftMax = Watched(0.0)
 let HasHelmetTarget = Watched(false)
 let HmdSensorVisible = Watched(false)
 let HmdSensorDesignation = Watched(false)
+let IsRadarHasFilters = Watched(false)
 
 let AzimuthRange = Computed(@() max(0.0, AzimuthMax.get() - AzimuthMin.get()))
 let AzimuthRangeInv = Computed(@() AzimuthRange.get() != 0 ? 1.0 / AzimuthRange.get() : 1.0)
@@ -264,20 +275,20 @@ let isCollapsedRadarInReplay = Watched(false)
 radarState.__update({
     modeNames, IsRadarHudVisible, IsNoiseSignaVisible, MfdRadarEnabled, MfdIlsEnabled, MfdRadarColor, MfdRadarHideBkg,
 
-    Speed,
+    Speed, IsRadarHasFilters,
 
     
     IsRadarVisible, IsRadarEmitting, IsRadarDamaged, RadarModeNameId, Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
 
     
-    IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2,
+    IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2, RadarParkingState,
 
     AimAzimuth, TurretAzimuth, CueReferenceTurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax,
 
     IsBScopeVisible, IsCScopeVisible, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax, CueVisible, CueAzimuth, CueDist,
 
     targets, TargetsTrigger, screenTargets, ScreenTargetsTrigger, ViewMode, MfdViewMode, HasAzimuthScale, HasDistanceScale, ScanPatternsMax,
-    DistanceMax, DistanceMin, DistanceScalesMax, azimuthMarkers, AzimuthMarkersTrigger, Irst, RadarScale, MfdIlsHeight,
+    DistanceMax, DistanceMin, DistanceScalesMax, azimuthMarkers, AzimuthMarkersTrigger, Irst, RadarScale, MfdIlsHeight, MfdRadarOffsetX, MfdRadarOffsetY,
 
     IsForestallVisible, forestall, selectedTarget,
 

@@ -1,16 +1,17 @@
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import resetTimeout, clearTimer, deferOnce
-from "hangar" import activate_downloadable_hangar, get_current_downloadable_hangar
+from "hangar" import activate_downloadable_hangar, get_current_downloadable_hangar, reload_hangar_scene
 from "auth_wt" import setLoginHangarDelayed
 from "console" import register_command
 from "%sqstd/globalState.nut" import hardPersistWatched
-let { reload_hangar_scene = @() null } = require("hangar")
 let { isAuthorized, isProfileReceived, isLoginRequired, isOnlineBinariesInited
 } = require("%appGlobals/login/loginState.nut")
 let { WatchedImmediate } = require("%sqstd/frp.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isInHangar, isInFlight } = require("gameplayBinding")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { set_gui_fps_limit_mode_active } = require("graphicsOptions")
+
 
 const MAX_HANGAR_DELAY_TIME = 60
 
@@ -42,12 +43,18 @@ function activateHangar(h) {
   if (h == get_current_downloadable_hangar())
     return
   log($"[HANGAR] activate_downloadable_hangar '{h}'")
-  activate_downloadable_hangar(h, "")
+  activate_downloadable_hangar(h, "", "")
 }
 activateHangar(curHangar.get())
 curHangar.subscribe(activateHangar)
 
-isInBattleState.subscribe(@(v) v ? lastAppliedHangar.set(curHangar.get()): null)
+isInBattleState.subscribe(function(isInBattle) {
+  if (isInBattle)
+    lastAppliedHangar.set(curHangar.get())
+
+  set_gui_fps_limit_mode_active(!isInBattle)
+})
+set_gui_fps_limit_mode_active(!isInBattleState.get())
 
 let needReloadHangarScene = @() lastAppliedHangar.get() != curHangar.get()
 

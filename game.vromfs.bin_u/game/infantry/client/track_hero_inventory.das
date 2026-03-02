@@ -1,4 +1,5 @@
 require ecs
+require %appGame.wt_events
 
 
 def add_controllable_hero_item(itemEid)
@@ -33,10 +34,21 @@ def track_hero_items_disappear_es(evt : Event; itemContainer : EidList; human_eq
     remove_controllable_hero_item(eid)
 
 [es(tag=gameClient, track=isAlive, REQUIRE=hero)]
-def track_died_hero_items_es(evt : Event; isAlive : bool; itemContainer : EidList; human_equipment__slots : Object)
-  if !isAlive
+def track_died_hero_items_es(evt : Event;
+                             isAlive : bool;
+                             reanimation__available : bool;
+                             itemContainer : EidList;
+                             human_equipment__slots : Object)
+  if !isAlive && !reanimation__available
     for_each_item(itemContainer, human_equipment__slots) <| $(eid : EntityId)
       remove_controllable_hero_item(eid)
+
+[es(tag=gameClient)]
+def track_real_death_of_hero_es(evt : EventDiedNotReanimated;
+                                itemContainer : EidList;
+                                human_equipment__slots : Object)
+  for_each_item(itemContainer, human_equipment__slots) <| $(eid : EntityId)
+    remove_controllable_hero_item(eid)
 
 [es(on_appear, track=item__ownerEid, tag=gameClient)]
 def controlable_hero_items_es(evt : Event; eid : EntityId; item__ownerEid : EntityId)

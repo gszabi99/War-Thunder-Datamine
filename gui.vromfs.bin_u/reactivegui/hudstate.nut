@@ -1,5 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
+let { isEqual } = require("%sqstd/underscore.nut")
 let cross_call = require("%rGui/globals/cross_call.nut")
 let interopGet = require("%rGui/interopGen.nut")
 let { isDmgIndicatorVisible } = require("gameplayBinding")
@@ -23,14 +24,21 @@ let hudState = {
   isUnitDelayed = false
   isInKillerCamera = isInKillerCam()
   playerUnitName = ""
+  isThermalSightActive = false
 }.map(@(val, key) mkWatched(persist, key, val))
 
 let { isInKillerCamera, isVisibleDmgIndicator } = hudState
 let needShowDmgIndicator = Computed(@() isVisibleDmgIndicator.get() && !isInKillerCamera.get())
 hudState.needShowDmgIndicator <- needShowDmgIndicator
 
-eventbus_subscribe("updateDmgIndicatorStates", @(v) hudState.dmgIndicatorStates.set(v))
-eventbus_subscribe("updateTacticalMapStates", @(v) hudState.tacticalMapStates.set(v))
+eventbus_subscribe("updateDmgIndicatorStates", function(v) {
+  if (!isEqual(hudState.dmgIndicatorStates.get(), v))
+    hudState.dmgIndicatorStates.set(v)
+})
+eventbus_subscribe("updateTacticalMapStates", function(v) {
+  if (!isEqual(hudState.tacticalMapStates.get(), v))
+    hudState.tacticalMapStates.set(v)
+})
 eventbus_subscribe("updateMissionProgressHeight", @(v) hudState.missionProgressHeight.set(v))
 eventbus_subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode.set(v))
 eventbus_subscribe("hud_gui_state_changed",

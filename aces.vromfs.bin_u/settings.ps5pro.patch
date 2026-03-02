@@ -4,6 +4,10 @@
   "@delete-all:useHfr":b=""
 }
 
+"@override:video" {
+  minResolutionBeforeUpscale:i=1440
+}
+
 console_presets {
   ps5_pro {
     performance {
@@ -137,6 +141,7 @@ console_presets {
         contactShadowsQuality:i=0
         bvhMode:t="custom"
         enableBVH:b=yes
+	prioritizeBVHcompactions:b=yes
         RTAOQuality:t="low"
         RTRQuality:t="low"
         RTSMQuality:t="low"
@@ -193,6 +198,7 @@ console_presets {
         contactShadowsQuality:i=1
         bvhMode:t="custom"
         enableBVH:b=yes
+	prioritizeBVHcompactions:b=yes
         RTAOQuality:t="low"
         RTRQuality:t="low"
         RTSMQuality:t="low"

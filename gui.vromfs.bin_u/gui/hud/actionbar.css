@@ -112,18 +112,22 @@ action_bar_item[selected=yes][active=yes] action_item_content {
 actionBarItemInfantryDiv action_bar_item[selected=yes][active=yes] action_item_content {
   border-offset: 1; }
 
+actionBarItemInfantryDiv > action_bar_item > action_item_content
+  > tdiv > tdiv > img {
+  background-color:#FFD2D2D2;
+}
+
 actionBarItemInfantryDiv > action_bar_item[visualEnable=no] > action_item_content
   > tdiv > tdiv > img {
-  background-color:#AA808080;
-  background-saturate : 0;
+  background-color:@infantryShortcutDisabledColor;
 }
 
 actionBarItemInfantryDiv > action_bar_item[visualEnable=no] actionBarItemInfantryTextShortcut {
-  background-color:@actionBarItemDisabledColor;
+  background-color:@infantryShortcutDisabledColor;
 }
 
 action_bar_item > action_item_content > textarea,
-action_bar_item > action_item_content > tdiv > tdiv > textarea {
+action_bar_item > action_item_content > * > textarea {
   color: @white;
 }
 
@@ -131,9 +135,8 @@ actionBarItemDiv action_bar_item[visualEnable=no] > action_item_content > textar
   color: @disabledTextColor;
 }
 
-actionBarItemInfantryDiv action_bar_item[visualEnable=no] > action_item_content >
-  tdiv > tdiv > textarea {
-    color: @actionBarItemDisabledColor;
+actionBarItemInfantryDiv action_bar_item[visualEnable=no] > action_item_content textarea {
+  color: @infantryShortcutDisabledColor;
 }
 
 action_bar_item textarea[shortcut=yes] {
@@ -141,11 +144,11 @@ action_bar_item textarea[shortcut=yes] {
 }
 
 action_bar_item actionBarItemInfantryTextShortcut > textarea[shortcut=yes] {
-  color: @commonTextColor;
+  color: @infantryShortcutTextColor;
 }
 
 action_bar_item[visualEnable=no] actionBarItemInfantryTextShortcut > textarea[shortcut=yes] {
-  color: @actionBarItemDisabledTextColor;
+  color: @infantryShortcutDisabledTextColor;
 }
 
 action_bar_item textarea[samIndex=yes] {
@@ -174,7 +177,7 @@ changeAmount {
   text-shade:"blur:24";
   text-shade-x:1;
   text-shade-y:1;
-  text-shade-color:#A0000000;
+  text-shade-color:@textShadeColor;
 }
 
 changeAmount[increase_amount=yes] {
@@ -215,4 +218,32 @@ actionBarItemAirDiv > action_bar_item > action_item_content > actionBarItemTextS
 
 actionBarItemAirDiv > action_bar_item > action_item_content > actionBarItemTextShortcut > blurBg {
   display: show;
+}
+
+mainGamepadShortcut {
+  id: mainActionButton;
+  behaviour: BhvHint;
+  position: absolute;
+  left: pw/2-w/2;
+  top: -h-0.005@shHud;
+}
+
+mainGamepadShortcut[hasActivateAction=yes] {
+  top: h+0.005@shHud;
+}
+
+actionBarItemInfantryDiv > action_bar_item > action_item_content > mainGamepadShortcut {
+  position: relative;
+  top: 0;
+}
+
+activatedGamepadShortcut {
+  id: activatedActionButton;
+  behaviour: BhvHint;
+  position: absolute;
+  pos: pw/2-w/2, -h-0.005@shHud;
+}
+
+actionBarItemInfantryDiv > action_bar_item > action_item_content > activatedGamepadShortcut {
+  pos: pw/2-w/2, ph/2-h;
 }

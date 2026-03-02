@@ -1,64 +1,141 @@
 {
-  "hitCamDebuff": {
-    "id": "ship_crew",
-    "state": "healthy",
-    "position": "relative",
-    "pos": "0, 0",
-    "hitCamDebuffIcon": {
-      "size": "1@cIco, 1@cIco",
+  "hitCamDebuff": [
+    {
+      "id": "ship_crew",
       "position": "relative",
-      "pos": "0.15@cIco, ph/2-h/2",
-      "background-image": "#ui/gameuiskin#ship_crew.svg",
-      "background-svg-size": "1@cIco, 1@cIco"
-    },
-    "hitCamDebuffLabel": {
-      "id": "label",
-      "position": "relative",
-      "pos": "0.15@cIco, 0",
-      "text": "100%"
-    },
-    "hitCameraCrew": {
-      "id": "crew_relative_nest",
-      "position": "relative",
-      "pos": "0.25@cIco, 0",
-      "hitCamLostCrewRelative": {
-        "id": "crew_relative_lost",
-        "flow": "horizontal"
-      }
-    }
-  },
-  "tdiv": {
-    "position": "relative",
-    "right": "0",
-    "hitCamDebuff": {
-      "id": "ship_buoyancy",
+      "width": "fw",
+      "padding": "1@hitcamDebuffPaddingBig, 0",
+      "flow": "horizontal",
       "state": "healthy",
-      "marging-right": "0.15@cIco",
+      "background-color": "@hudTextBgShade",
+      "height": "1@hitcamDebuffIconSize + 1@hitcamDebuffPadding",
       "hitCamDebuffIcon": {
-        "size": "1.7@cIco, 0.37@cIco",
+        "top": "1@sf/@pf",
+        "position": "relative",
+        "size": "1@hitcamDebuffIconSize, 1@hitcamDebuffIconSize",
+        "background-image": "#ui/gameuiskin#ship_crew.svg",
+        "background-svg-size": "1@hitcamDebuffIconSize, 1@hitcamDebuffIconSize"
+      },
+      "hitCamDebuffLabel": {
+        "id": "label_nest",
+        "position": "relative",
+        "top": "(ph-h)/2",
+        "margin": "1@hitcamDebuffPaddingBig, 0",
+        "text": "1000/1000",
+        "isHidden": "yes",
+        "hitCamDebuffLabel": {
+          "id": "label",
+          "position": "absolute",
+          "top": "(ph-h)/2",
+          "text": "100%",
+          "text-align": "left"
+        }
+      },
+      "tdiv": {
+        "position": "relative",
+        "id": "crew_lifebar_nest",
+        "size": "fw, 0.008@shHud",
+        "top": "(ph-h)/2",
+        "background-color": "#46555b",
+        "padding": "1@sf/@pf",
+        "overflow": "visible",
+        "tdiv": {
+          "position": "relative",
+          "size": "pw, ph",
+          "background-color": "#1c1c1c",
+          "tdiv": [
+            {
+              "id": "crew_lifebar_lost",
+              "position": "absolute",
+              "height": "ph",
+              "background-color": "@debuffLabelCritical",
+              "behaviour": "basicSize",
+              "width-base": "100",
+              "width-end": "100",
+              "size-func": "linear",
+              "size-scale": "parent",
+              "size-time": "750",
+              "_size_delay": "0",
+              "size-delay": "0",
+              "_size-timer": "1",
+              "_blink": ""
+            },
+            {
+              "id": "crew_lifebar_flash",
+              "position": "absolute",
+              "width": "pw",
+              "height": "ph",
+              "background-color": "#AA0000",
+              "behaviour": "basicTransparency",
+              "transp-base": "255",
+              "transp-func": "cubic",
+              "transp-end": "0",
+              "transp-time": "500",
+              "_transp-timer": "1",
+              "color-factor": "255"
+            },
+            {
+              "id": "crew_lifebar",
+              "position": "absolute",
+              "width": "pw",
+              "height": "ph",
+              "background-color": "#ffc0c0c0"
+            },
+            {
+              "id": "min_crew_bar",
+              "position": "absolute",
+              "width": "pw/3",
+              "height": "ph",
+              "background-color": "#FF7c7f84"
+            },
+            {
+              "id": "lost_text_nest",
+              "position": "absolute",
+              "size": "pw, ph",
+              "tdiv": {
+                "top": "ph/2",
+                "position": "absolute",
+                "hitCamLostCrewText": {
+                  "pos": "(pw-w)/2, (ph-h)/2",
+                  "font-ht": "1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ship_buoyancy",
+      "position": "relative",
+      "height": "1@hitcamDebuffIconSize + 1@hitcamDebuffPadding",
+      "margin-left": "0.5@hitcamDebuffPadding",
+      "padding": "1@hitcamDebuffPaddingBig, 0",
+      "background-color": "@hudTextBgShade",
+      "flow-align": "center",
+      "state": "healthy",
+      "hitCamDebuffIcon": {
+        "size": "0.03@shHud \\ 1, 0.0075@shHud \\ 1",
         "position": "relative",
         "top": "ph/2-h/2",
         "background-image": "#ui/gameuiskin#buoyancy_icon.svg",
-        "background-svg-size": "1.7@cIco, 0.37@cIco"
+        "background-svg-size": "0.03@shHud \\ 1, 0.0075@shHud \\ 1"
       },
-      "hitCamDebuffLabel": {
-        "id": "label",
-        "text": "100%"
-      }
-    },
-    "tdiv": {
-      "id": "ship_compartments",
-      "display": "hide",
-      "hitCamDebuffIcon": {
-        "size": "1@cIco, 1@cIco",
-        "marging-right": "0.15@cIco",
-        "background-image": "#ui/gameuiskin#ship_hull.svg",
-        "background-svg-size": "1@cIco, 1@cIco"
-      },
-      "tdiv": {
-        "id": "ship_compartments_blocks",
-        "height": "1@cIco"
-      }
+      "hitCamDebuffLabel": [
+        {
+          "id": "label",
+          "position": "absolute",
+          "top": "(ph-h)/2",
+          "right": "1@hitcamDebuffPaddingBig",
+          "text": "100%"
+        },
+        {
+          "position": "relative",
+          "margin-left": "1@1@hitcamDebuffPaddingBig",
+          "text": "100%",
+          "isHidden": "yes"
+        }
+      ]
     }
-  }
+  ]
 }

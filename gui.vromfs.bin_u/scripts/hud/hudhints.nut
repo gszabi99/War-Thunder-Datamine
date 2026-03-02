@@ -36,6 +36,7 @@ let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
 const HINT_UID_LIMIT = 16384
+const DEFAULT_HINT_TOP_IMAGE_SIZE = "0.06@shHud"
 
 let animTimerPid = dagui_propid_add_name_id("_transp-timer")
 local cachedHintsSeenData = null
@@ -61,6 +62,24 @@ g_hud_hints._buildMarkup <- function _buildMarkup(eventData, hintObjId) {
   return g_hints.buildHintMarkup(this.buildText(eventData), this.getHintMarkupParams(eventData, hintObjId))
 }
 
+function getHinToptImagesView(imagesCfg) {
+  if (!imagesCfg)
+    return null
+  let images = []
+  local maxSize = 0
+  foreach (image in imagesCfg) {
+    let size = image?.size ?? DEFAULT_HINT_TOP_IMAGE_SIZE
+    let sizePx = to_pixels(size)
+    maxSize = max(sizePx, maxSize)
+    images.append({
+      image = image.src
+      caption = image?.caption != null ? loc(image.caption) : null
+      size
+    })
+  }
+  return { images, maxSize }
+}
+
 g_hud_hints._getHintMarkupParams <- function _getHintMarkupParams(eventData, hintObjId) {
   return {
     id = hintObjId || this.name
@@ -71,6 +90,7 @@ g_hud_hints._getHintMarkupParams <- function _getHintMarkupParams(eventData, hin
     showKeyBoardShortcutsForMouseAim = eventData?.showKeyBoardShortcutsForMouseAim ?? false
     isVerticalAlignText = this.isVerticalAlignText
     isWrapInRowAllowed = this.isWrapInRowAllowed
+    topImages = getHinToptImagesView(this.hintTopImages)
   }
 }
 
@@ -105,18 +125,26 @@ function getUniqueShortcuts(shortcuts) {
   return uniqShortcuts
 }
 
-function getAxisShortCutLoc(schId) {
-  let shortcutId = $"{schId}_rangeMax"
+function getShortcutTag(shcId) {
+  let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shcId)
+  let hasShortcut = shortcutType.getFirstInput(shcId, getPreviewControlsPreset())?.getMarkup() != null
+  return hasShortcut
+    ? "".concat("{{", shcId, "}}")
+    : loc("hotkeys/shortcut_not_assigned")
+}
+
+function getAxisShortCutLoc(shcId) {
+  let shortcutId = $"{shcId}_rangeMax"
   local shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
   let hasShortcut = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset())?.getMarkup() != null
   if (hasShortcut)
-    return "".concat("{{", schId, "_rangeMin}} - {{", schId,"_rangeMax}}")
+    return "".concat("{{", shcId, "_rangeMin}} - {{", shcId,"_rangeMax}}")
 
-  shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(schId)
-  let isAxisAssigned = shortcutType.isAssigned(schId)
+  shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shcId)
+  let isAxisAssigned = shortcutType.isAssigned(shcId)
   if (isAxisAssigned)
-    return "".concat("{{", schId, "}}")
-  return "".concat("\"", loc($"controls/{schId}"), "\"")
+    return "".concat("{{", shcId, "}}")
+  return "".concat("\"", loc($"controls/{shcId}"), "\"")
 }
 
 g_hud_hints._buildText <- function _buildText(data) {
@@ -449,6 +477,7 @@ g_hud_hints.template <- {
   locId = ""
   noKeyLocId = ""
   image = null 
+  hintTopImages = null
   hintType = g_hud_hint_types.COMMON
   uid = -1
   priority = 0
@@ -1310,6 +1339,13 @@ enums.addTypes(g_hud_hints, {
     lifeTime = 3.0
   }
 
+  SHIP_BOMB_DEPTH_SET = {
+    hintType = g_hud_hint_types.COMMON
+    showEvent = "hint:ship_bomb_depth_set"
+    buildText = @(eventData) format(loc("hints/ship_bomb_depth_set"), eventData.depth)
+    lifeTime = 3.0
+  }
+
   EXCEED_MAX_DEPTH_TO_LAUNCH = {
     hintType = g_hud_hint_types.COMMON
     showEvent = "hint:exceed_max_depth_to_launch"
@@ -1376,6 +1412,11 @@ enums.addTypes(g_hud_hints, {
     }
     showEvent = "hint:use_binocular_scouting"
     lifeTime = 3.0
+    getShortcuts = function(_data) { 
+      return getHudUnitType() == HUD_UNIT_TYPE.TANK
+        ? ["ID_CAMERA_BINOCULARS", "ID_TOGGLE_VIEW_GM"]
+        : "ID_CAMERA_OPTICS"
+    }
   }
 
   FOOTBALL_LOCK_TARGET = {
@@ -2535,14 +2576,67 @@ NEED_STOP_FOR_RADAR = {
     totalCount=3
     secondsOfForgetting=90*(3600*24)
   }
-
-  AUTO_EMERGENCY_SURFACING = {
-    hintType = g_hud_hint_types.REPAIR
-    locId     = "hints/auto_emergency_surfacing"
-    showEvent = "hint:auto_emergency_surfacing"
-    lifeTime = 5.0
+  SM_HOW_TO_CHANGE_DEPTH = {
+    hintType = g_hud_hint_types.NAVAL_TOP
     isHideOnWatchedHeroChanged = true
-    shouldBlink = true
+    showEvent = "hint:sm_how_to_change_depth"
+    lifeTime = 5.0
+    buildText = @(_data) "\n".join([
+      " ".concat(loc("hints/sm_how_to_change_depth_dive"), getShortcutTag("submarine_depth_rangeMax"))
+      " ".concat(loc("hints/sm_how_to_change_depth_surface"), getShortcutTag("submarine_depth_rangeMin"))
+    ])
+    isVerticalAlignText = true
+    uid = 11248
+    totalCount=2
+    secondsOfForgetting=7*(3600*24)
+  }
+  SM_NOISE_ON_MINIMAP = {
+    hintType = g_hud_hint_types.NAVAL_TOP
+    isHideOnWatchedHeroChanged = true
+    locId     = "hints/sm_noise_on_minimap"
+    showEvent = "hint:sm_noise_on_minimap"
+    lifeTime = 7.0
+    hintTopImages = [
+      {
+        src = "!#ui/gameuiskin#small_forward_icon.svg"
+        caption = "hints/sm_slow_ahead"
+        size = "0.03@shHud"
+      }
+      {
+        src = "!#ui/gameuiskin#full_forward_icon.svg"
+        caption = "missions/tutorial_ship_action/full_forward"
+        size = "0.06@shHud"
+      }
+    ]
+    isVerticalAlignText = true
+  }
+  SM_HOW_TO_USE_PERISCOPE = {
+    hintType = g_hud_hint_types.NAVAL_TOP
+    isHideOnWatchedHeroChanged = true
+    locId     = "hints/sm_how_to_use_periscope"
+    showEvent = "hint:sm_how_to_use_periscope"
+    shortcuts = "ID_SUBMARINE_TOGGLE_PERISCOPE"
+    lifeTime = 5.0
+    hintTopImages = [
+      { src = "!#ui/gameuiskin#periscope_icon.svg", size = "0.086@shHud" }
+    ]
+    isVerticalAlignText = true
+  }
+  SM_HOW_TO_CHANGE_TORPEDO_SIGHT = {
+    hintType = g_hud_hint_types.NAVAL_TOP
+    isHideOnWatchedHeroChanged = true
+    shortcuts = "ID_SUBMARINE_TORPEDO_COURSE_TOGGLE"
+    showEvent = "hint:sm_how_to_change_torpedo_sight"
+    locId = "hints/sm_how_to_change_torpedo_sight"
+    lifeTime = 7.0
+    uid = 11249
+    totalCount=2
+    secondsOfForgetting=7*(3600*24)
+    hintTopImages = [
+      { src = "!#ui/gameuiskin#torpedo_sight_solution.avif", caption = "hints/sm_automatic" }
+      { src = "!#ui/gameuiskin#torpedo_sight.avif", caption = "hints/sm_manual" }
+    ]
+    isVerticalAlignText = true
   }
 
   SHIP_DEPTH_CHARGE_SALVO = {
@@ -2597,14 +2691,6 @@ NEED_STOP_FOR_RADAR = {
     lifeTime = 5.0
     isHideOnWatchedHeroChanged = true
     shouldBlink = true
-  }
-
-  SUBMARINE_EMERGENCY_SURFACING = {
-    hintType = g_hud_hint_types.COMMON
-    locId     = "hints/submarine_emergency_sufracing"
-    showEvent = "hint:submarine_emergency_sufracing"
-    lifeTime = 5.0
-    totalCount = 2
   }
 
   SUBMARINE_CANT_SUBMERGE_TANKS_DESTROYED = {
@@ -2870,6 +2956,30 @@ NEED_STOP_FOR_RADAR = {
     shortcuts = "ID_HUMAN_USE"
   }
 
+  REANIMATION_AVAILABLE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/reanimationAvailable"
+    showEvent = "hint:reanimation_available_show"
+    hideEvent = "hint:reanimation_available_hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  DECLINE_REANIMATION = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/declineReanimation"
+    showEvent = "hint:decline_reanimation_tip_show"
+    hideEvent = "hint:decline_reanimation_tip_hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ASK_FOR_REANIMATION = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/askForReanimation"
+    showEvent = "hint:ask_for_reanimation_show"
+    hideEvent = "hint:ask_for_reanimation_hide"
+    shortcuts = "ID_HUMAN_ASK_FOR_REANIMAION"
+  }
+
   HUMAN_HOLD_BREATH = {
     hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
     locId    = "hint/hold_breath_to_aim"
@@ -2885,6 +2995,16 @@ NEED_STOP_FOR_RADAR = {
     showEvent = "hint:human_change_scope_show"
     hideEvent = "hint:human_change_scope_hide"
     shortcuts = "ID_HUMAN_NEXT_ZOOM"
+    isVerticalAlignText = true
+  }
+
+  HUMAN_CHANGE_GRENADE_SIGHT = {
+    hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
+    locId    = "hint/change_grenade_launcher_sight"
+    showEvent = "hint:human_change_grenade_sight_show"
+    hideEvent = "hint:human_change_grenade_sight_hide"
+    shortcuts = ["ID_HUMAN_SIGHT_NEXT", "ID_HUMAN_SIGHT_PREV"]
+    isVerticalAlignText = true
   }
 
   SOLDIER_SWITCH_ALREADY_UNDER_CONTROL = {
@@ -2960,6 +3080,13 @@ NEED_STOP_FOR_RADAR = {
     lifeTime  = 3.0
   }
 
+  DRONE_NO_LAUNCHES_AVAILABLE = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone/no_launches_remaining"
+    showEvent = "hint:drone/no_launches_remaining"
+    lifeTime  = 3.0
+  }
+
   DRONE_NOT_AVAILABLE_IN_MISSION = {
     hintType  = g_hud_hint_types.COMMON
     locId     = "hints/drone/not_availble_in_mission"
@@ -2993,6 +3120,23 @@ NEED_STOP_FOR_RADAR = {
     locId     = "hints/drone/weak_signal"
     showEvent = "hint:drone/weak_signal:show"
     hideEvent = "hint:drone/weak_signal:hide"
+  }
+
+  HANDS_FULL = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/humanHandsFull"
+    showEvent = "hint:human_hands_full:show"
+    lifeTime  = 3.0
+  }
+
+  USEFUL_BOX_COOLDOWN_FOR_USE = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/resupply/cooldown_for_use"
+    showEvent = "hint:resupply/cooldown_for_use"
+    lifeTime  = 3.0
+    getLocParams = @(hintData) {
+      seconds = hintData.seconds
+    }
   }
 
   USEFUL_BOX_EMPTY = {

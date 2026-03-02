@@ -36,3 +36,14 @@ def spawn_immunity_init_es(evt : Event;
   spawn_immunity__initialPos = transform[3]
   spawn_immunity__posInited = true
 
+
+[es(on_event=EventOnEntityReanimated)]
+def set_immunity_on_reanimation(evt : Event;
+                                transform : float3x4;
+                                reanimation__immunityDuration : float;
+                                var spawn_immunity__timer : float&;
+                                var spawn_immunity__initialPos : float3&;
+                                var spawn_immunity__posInited : bool&)
+  spawn_immunity__posInited = true
+  spawn_immunity__initialPos = transform[3]
+  spawn_immunity__timer = reanimation__immunityDuration

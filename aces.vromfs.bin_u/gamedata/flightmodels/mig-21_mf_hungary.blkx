@@ -14,7 +14,6 @@
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -29,6 +28,7 @@
   "fireParamsPreset": "2300kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1024,8 +1024,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1085,8 +1085,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1146,8 +1146,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1202,8 +1202,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1258,8 +1258,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1314,8 +1314,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1370,8 +1370,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1426,8 +1426,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1482,8 +1482,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1538,8 +1538,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1594,8 +1594,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1655,8 +1655,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2744,6 +2744,17 @@
       ]
     }
   },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/su_sapphire_21.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/su_spo-10.blk"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -3437,17 +3448,6 @@
       }
     ]
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/su_sapphire_21.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/su_spo-10.blk"
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -4065,6 +4065,29 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

@@ -10,8 +10,8 @@ let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { move_mouse_on_child, findChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getCachedDataByType, getDecorator, getCachedOrderByType
-} = require("%scripts/customization/decorCache.nut")
+let { getDecorator, getCachedDataByType, getCachedOrderByType
+} = require("%scripts/customization/decoratorGetters.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -20,6 +20,7 @@ let { needMarkSeenResource, disableMarkSeenResource } = require("%scripts/seen/m
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 
 let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -31,6 +32,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
 
   curUnit = null
   curDecorType = null
+  curDecorViewType = null
   curSlotDecorId = null
   preSelectDecorId = null
   applyFilterTimer = null
@@ -45,6 +47,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function updateHandlerData(decorType, unit, slotDecorId, preSelectDecoratorId, hideUnlockInfoIds = []) {
     this.curDecorType = decorType
+    this.curDecorViewType = getViewTypeByUnlockedItemType(decorType.unlockedItemType)
     this.curUnit = unit
     this.curSlotDecorId = slotDecorId
     this.preSelectDecorId = preSelectDecoratorId
@@ -86,7 +89,6 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
     let headerObj = this.scene.findObject("decals_wnd_header")
     headerObj.setValue(loc(this.curDecorType.listHeaderLocId))
 
-    let decorType = this.curDecorType
     let decorCache = this.getDecorCache()
     this.prepareDecoratorsCache(decorCache)
 
@@ -100,7 +102,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
       this.currentSeenList.setSubListGetter(subListId, Callback(@() this.decoratorsCache.filter(@(_val, key) key == subListId).values()?[0] ?? [], this))
       categories.append({
         id = $"category_{categoryId}"
-        headerText = $"#{decorType.categoryPathPrefix}{categoryId}"
+        headerText = $"#{this.curDecorViewType.categoryPathPrefix}{categoryId}"
         categoryId
         groupId
         hasGroups
@@ -207,14 +209,13 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function generateGroupsCategoryContent(categoryId) {
     let groups = this.getDecorCache().catToGroupNames[categoryId]
-    let decorType = this.curDecorType
     let categories = []
     foreach(groupId in groups) {
       let subListId = $"{categoryId}.{groupId}"
       this.currentSeenList.setSubListGetter(subListId, Callback(@() this.decoratorsCache.filter(@(_val, key) key == subListId).values()[0], this))
       categories.append({
         id = $"group_{groupId}"
-        headerText = $"#{decorType.groupPathPrefix}{groupId}"
+        headerText = $"#{this.curDecorViewType.groupPathPrefix}{groupId}"
         categoryId
         groupId
         hasGroups = false

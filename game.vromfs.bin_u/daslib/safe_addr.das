@@ -6,6 +6,13 @@ options strict_smart_pointers = true
 
 module safe_addr shared private
 
+
+
+
+
+
+
+
 require ast
 require rtti
 require daslib/ast_boost
@@ -107,6 +114,7 @@ class TempValueMacro : AstFunctionAnnotation {
         return false
     }
 }
+
 
 
 

@@ -1185,6 +1185,7 @@
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.6,
       "stopChanceOnDeadPart": 0.7,
+      "disableShatterStopChanceOnDeadPart": true,
       "restrainDamage": 0.5,
       "kineticPenetrationToArmorThreshold": 0.8,
       "armor_cit_l_01_dm": {
@@ -1314,6 +1315,7 @@
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.4,
       "stopChanceOnDeadPart": 0.7,
+      "disableShatterStopChanceOnDeadPart": true,
       "ignoreDeadWithSplash": true,
       "restrainDamage": 0.5,
       "kineticPenetrationToArmorThreshold": 0.8,
@@ -1815,6 +1817,7 @@
       "armorClass": "ships_oil_fuel_tank",
       "armorThickness": 10.0,
       "stopChanceOnDeadPart": 0.5,
+      "disableShatterStopChanceOnDeadPart": true,
       "ignoreDeadWithSplash": true,
       "oneSided": true,
       "fuel_tank_01_dm": {
@@ -1825,6 +1828,7 @@
       "armorThickness": 3.0,
       "armorClass": "ships_coal_bunker",
       "stopChanceOnDeadPart": 0.05,
+      "disableShatterStopChanceOnDeadPart": true,
       "variableThickness": true,
       "kineticProtectionEquivalentPerMeter": 27.3,
       "coal_bunker_01_dm": {
@@ -2435,7 +2439,7 @@
         "part": "cover_01_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2444,7 +2448,7 @@
         "part": "cover_02_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2453,7 +2457,7 @@
         "part": "cover_03_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2462,7 +2466,7 @@
         "part": "cover_04_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2471,7 +2475,7 @@
         "part": "cover_05_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2480,7 +2484,7 @@
         "part": "cover_06_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2489,7 +2493,7 @@
         "part": "cover_07_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2498,7 +2502,7 @@
         "part": "cover_08_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2507,34 +2511,7 @@
         "part": "cover_09_dm",
         "effect": {
           "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
-          "kill": true,
-          "killEffect": "destruction"
-        }
-      },
-      {
-        "part": "cover_10_dm",
-        "effect": {
-          "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
-          "kill": true,
-          "killEffect": "destruction"
-        }
-      },
-      {
-        "part": "cover_11_dm",
-        "effect": {
-          "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
-          "kill": true,
-          "killEffect": "destruction"
-        }
-      },
-      {
-        "part": "cover_12_dm",
-        "effect": {
-          "conditionDamageType": "explosion",
-          "conditionDamage": 100000.0,
+          "conditionDamage": 60000.0,
           "kill": true,
           "killEffect": "destruction"
         }
@@ -2559,36 +2536,6 @@
     },
     "open_mounts": {
       "part": [
-        "auxiliary_caliber_turret_01_dm",
-        "auxiliary_caliber_turret_02_dm",
-        "auxiliary_caliber_turret_03_dm",
-        "auxiliary_caliber_turret_04_dm",
-        "auxiliary_caliber_turret_05_dm",
-        "auxiliary_caliber_turret_06_dm",
-        "auxiliary_caliber_turret_07_dm",
-        "auxiliary_caliber_turret_08_dm",
-        "auxiliary_caliber_turret_09_dm",
-        "auxiliary_caliber_turret_10_dm",
-        "auxiliary_caliber_turret_11_dm",
-        "auxiliary_caliber_turret_12_dm",
-        "auxiliary_caliber_turret_13_dm",
-        "auxiliary_caliber_turret_14_dm",
-        "auxiliary_caliber_turret_15_dm",
-        "auxiliary_caliber_turret_16_dm",
-        "auxiliary_caliber_turret_17_dm",
-        "auxiliary_caliber_turret_18_dm",
-        "auxiliary_caliber_turret_19_dm",
-        "auxiliary_caliber_turret_20_dm",
-        "auxiliary_caliber_turret_21_dm",
-        "auxiliary_caliber_turret_22_dm",
-        "auxiliary_caliber_turret_23_dm",
-        "auxiliary_caliber_turret_24_dm",
-        "auxiliary_caliber_turret_25_dm",
-        "auxiliary_caliber_turret_26_dm",
-        "auxiliary_caliber_turret_27_dm",
-        "auxiliary_caliber_turret_28_dm",
-        "auxiliary_caliber_turret_29_dm",
-        "auxiliary_caliber_turret_30_dm",
         "aa_turret_01_dm",
         "aa_turret_02_dm",
         "aa_turret_03_dm",
@@ -2613,7 +2560,6 @@
         "aa_turret_22_dm",
         "aa_turret_23_dm",
         "aa_turret_24_dm",
-        "aa_turret_25_dm",
         "aa_turret_25_dm",
         "aa_turret_26_dm",
         "aa_turret_27_dm",

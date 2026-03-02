@@ -11,7 +11,7 @@ ecs.register_es("total_medkits_ui",{
   onDestroy = @(...) selfHealMedkitsSetValue(selfHealMedkitsDefValue)
 }, {
   comps_track=[["total_kits__selfHeal", ecs.TYPE_INT]],
-  comps_rq=["watchedByPlr"]
+  comps_rq=["controlledHero"]
 })
 
 return { selfHealMedkits }

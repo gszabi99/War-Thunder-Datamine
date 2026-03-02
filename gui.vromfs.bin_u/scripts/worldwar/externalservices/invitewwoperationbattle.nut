@@ -2,7 +2,6 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
@@ -10,6 +9,7 @@ let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
+let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
@@ -29,9 +29,7 @@ let WwOperationBattle = class (BaseInvite) {
   function updateCustomParams(params, initial = false) {
     this.operationId = params?.operationId ?? this.operationId
     this.battleId = params?.battleId ?? this.battleId
-
-    
-    this.setDelayed(!isInReloading() && !this.getOperation())
+    this.setDelayed(!this.getOperation())
 
     if (!initial)
       return
@@ -90,8 +88,7 @@ let WwOperationBattle = class (BaseInvite) {
       Callback(function() {
         g_world_war.joinOperationById(this.operationId, null, false,
           Callback(function() {
-            let wwBattle = g_world_war.getBattleById(this.battleId)
-            gui_handlers.WwBattleDescription.open(wwBattle)
+            gui_handlers.WwBattleDescription.open(getBattleById(this.battleId))
           }, this))
       }, this),
       null, "isCanNewflight")

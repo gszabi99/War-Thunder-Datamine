@@ -43,7 +43,7 @@ function getBulletInfo(unit, hit) {
   }
 
   let weaponBlk = DataBlock()
-  weaponBlk.tryLoad(hit.weapon)
+  weaponBlk.tryLoad(hit.weapon) 
 
   if (weaponBlk?.rocketGun == true || weaponBlk?.bombGun == true || weaponBlk?.torpedoGun == true) {
     let bulletName = getWeaponNameByBlkPath(hit.weapon)

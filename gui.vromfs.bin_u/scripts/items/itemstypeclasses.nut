@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 let { number_of_set_bits } = require("%sqstd/math.nut")
-let { buyableSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { itemType } = require("%scripts/items/itemsConsts.nut")
 
 const BASE_ITEM_TYPE_ICON = "#ui/gameuiskin#item_type_placeholder.svg"
@@ -39,15 +38,12 @@ function createItem(item_type, blk, inventoryBlk = null, slotData = null) {
   return iClass(blk, inventoryBlk, slotData)
 }
 
-let shopSmokeItems = Computed(@() !isAddeditemTypeSmoke.get() ? []
-  : buyableSmokesList.get().map(@(blk) createItem(itemType.SMOKE, blk)))
 
 return {
   BASE_ITEM_TYPE_ICON
   registerBaseItemClass
   registerItemClass
   getItemClass
-
-  shopSmokeItems
+  isAddeditemTypeSmoke
   createItem
 }

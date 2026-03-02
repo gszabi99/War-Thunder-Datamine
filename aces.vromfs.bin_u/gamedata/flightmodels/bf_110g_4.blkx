@@ -546,8 +546,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -603,8 +602,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1361,8 +1359,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1422,8 +1420,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1483,8 +1481,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1544,8 +1542,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2617,12 +2615,6 @@
       ]
     }
   },
-  "commonWeapons": {
-    "Weapon": {
-      "slot": 0,
-      "preset": "default_common"
-    }
-  },
   "gunnerFps": {
     "pos": [
       -0.5,
@@ -2630,6 +2622,18 @@
       0.0
     ],
     "head": "turret1"
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/de_fug_220.blk",
+      "dmPart": "radar_dm"
+    }
+  },
+  "commonWeapons": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -3354,12 +3358,6 @@
         ]
       }
     ]
-  },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/de_fug_220.blk",
-      "dmPart": "radar_dm"
-    }
   },
   "default_skin_tomoe": {
     "replace_tex": {

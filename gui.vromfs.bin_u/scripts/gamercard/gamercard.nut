@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import gchat_is_enabled
 from "%scripts/dagui_library.nut" import *
 
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { lastGamercardScenes } = require("%scripts/gamercard/gamercardState.nut")
@@ -24,10 +24,8 @@ function updateGamercards() {
   if (!needUpdateGamerCard)
     return
 
-  ::checkNewNotificationUserlogs()
   broadcastEvent("UpdateGamercard")
 }
-::update_gamercards <- updateGamercards 
 
 function updateGamercardChatButton() {
   let canChat = gchat_is_enabled() && hasMenuChat.get()
@@ -42,6 +40,9 @@ globalCallbacks.addTypes({
   }
 })
 
+addListenersWithoutEnv({
+  RequestUpdateGamercards = @(_) updateGamercards()
+})
 
 return {
   updateGamercards

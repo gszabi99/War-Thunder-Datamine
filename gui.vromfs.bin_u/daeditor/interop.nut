@@ -5,7 +5,7 @@ let entity_editor = require_optional("entity_editor")
 let { editorIsActive, editorFreeCam, entitiesListUpdateTrigger, sceneListUpdateTrigger, showTemplateSelect, showPointAction,
   callPointActionCallback, resetPointActionMode, handleEntityCreated, handleEntityRemoved,
   handleEntityMoved, de4editMode, de4workMode, gizmoBasisType, gizmoBasisTypeEditingDisabled,
-  canChangeGizmoBasisType, gizmoCenterType } = require("state.nut")
+  canChangeGizmoBasisType, gizmoCenterType, edObjectFlagsUpdateTrigger } = require("state.nut")
 let {DE4_MODE_POINT_ACTION, isFreeCamMode=null} = daEditor
 let {DE4_MODE_CREATE_ENTITY, get_point_action_op} = entity_editor
 
@@ -83,4 +83,8 @@ eventbus_subscribe("entity_editor.onEntityMoved", function onEntityMoved(eid) {
 
 eventbus_subscribe("entity_editor.onEcsScenesStateChanged", function onEcsScenesStateChanged(_) {
   sceneListUpdateTrigger.modify(@(v) v+1)
+})
+
+eventbus_subscribe("entity_editor.edObjectFlagsUpdateTrigger", function onEdObjectFlagsUpdateTrigger(_) {
+  edObjectFlagsUpdateTrigger.modify(@(v) v+1)
 })

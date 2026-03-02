@@ -18,8 +18,6 @@
   "ilsJ10a": true,
   "mfdCamTads": true,
   "hmdShelZoom": true,
-  "isBwOpticSight": true,
-  "needTpsNightVision": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -46,6 +44,8 @@
     -50.0,
     50.0
   ],
+  "isBwOpticSight": true,
+  "needTpsNightVision": true,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -1092,8 +1092,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1153,8 +1153,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1213,8 +1213,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1273,8 +1273,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1333,8 +1333,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1393,8 +1393,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1453,8 +1453,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1514,8 +1514,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1575,8 +1575,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1636,8 +1636,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -5154,31 +5154,6 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump",
-    "burningFx": "fuel_dump_fire",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": "emtr_fuel_dump1"
-    }
-  },
   "damagePartsToAvionicsPartsMap": {
     "avionics": [
       {
@@ -5740,84 +5715,6 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
-  },
-  "cutting": {
-    "_emtr_break_wing0_l_from": [
-      -0.21633,
-      -0.342785,
-      1.13429
-    ],
-    "_emtr_break_wing0_l_to": [
-      -0.21633,
-      -0.342785,
-      1.56917
-    ],
-    "emtr_break_wing1_l_from": [
-      -0.21633,
-      -0.342785,
-      2.22149
-    ],
-    "emtr_break_wing1_l_to": [
-      -0.21633,
-      -0.342785,
-      2.58151
-    ],
-    "emtr_break_wing2_l_from": [
-      -0.21633,
-      -0.342785,
-      3.12154
-    ],
-    "emtr_break_wing2_l_to": [
-      -0.21633,
-      -0.342785,
-      3.74397
-    ],
-    "_emtr_break_wing0_r_from": [
-      -0.21633,
-      -0.342785,
-      -1.13429
-    ],
-    "_emtr_break_wing0_r_to": [
-      -0.21633,
-      -0.342785,
-      -1.56917
-    ],
-    "emtr_break_wing1_r_from": [
-      -0.21633,
-      -0.342785,
-      -2.22149
-    ],
-    "emtr_break_wing1_r_to": [
-      -0.21633,
-      -0.342785,
-      -2.58151
-    ],
-    "emtr_break_wing2_r_from": [
-      -0.21633,
-      -0.342785,
-      -3.12154
-    ],
-    "emtr_break_wing2_r_to": [
-      -0.21633,
-      -0.342785,
-      -3.74397
-    ],
-    "emtr_break_wing_tail": [
-      2.34856,
-      0.0,
-      0.0
-    ],
-    "finCut": true,
-    "emtr_break_tail_from": [
-      -2.35797,
-      0.00937267,
-      2.98023e-8
-    ],
-    "emtr_break_tail_to": [
-      -5.40989,
-      0.00937267,
-      2.98023e-8
-    ]
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
@@ -6394,6 +6291,109 @@
         "endPositionNoiseStrength": 0.0,
         "endPositionNoiseSpeed": 1.0
       }
+    ]
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump",
+    "burningFx": "fuel_dump_fire",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": "emtr_fuel_dump1"
+    }
+  },
+  "cutting": {
+    "_emtr_break_wing0_l_from": [
+      -0.21633,
+      -0.342785,
+      1.13429
+    ],
+    "_emtr_break_wing0_l_to": [
+      -0.21633,
+      -0.342785,
+      1.56917
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.21633,
+      -0.342785,
+      2.22149
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.21633,
+      -0.342785,
+      2.58151
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.21633,
+      -0.342785,
+      3.12154
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.21633,
+      -0.342785,
+      3.74397
+    ],
+    "_emtr_break_wing0_r_from": [
+      -0.21633,
+      -0.342785,
+      -1.13429
+    ],
+    "_emtr_break_wing0_r_to": [
+      -0.21633,
+      -0.342785,
+      -1.56917
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.21633,
+      -0.342785,
+      -2.22149
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.21633,
+      -0.342785,
+      -2.58151
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.21633,
+      -0.342785,
+      -3.12154
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.21633,
+      -0.342785,
+      -3.74397
+    ],
+    "emtr_break_wing_tail": [
+      2.34856,
+      0.0,
+      0.0
+    ],
+    "finCut": true,
+    "emtr_break_tail_from": [
+      -2.35797,
+      0.00937267,
+      2.98023e-8
+    ],
+    "emtr_break_tail_to": [
+      -5.40989,
+      0.00937267,
+      2.98023e-8
     ]
   }
 }

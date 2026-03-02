@@ -1,8 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 let fontsState = require("%rGui/style/fontsState.nut")
+let { withTooltip, tooltipDetach } = require("%rGui/components/tooltip.nut")
 
 const MARK_COUNT_Y = 9
 const MARK_COUNT_X = 35
+const MAX_POINTS_COUNT_WITH_TOOLTIP = 25
 
 const graphGridColor = 0xFF576C83
 const graphGridOpacityColor = 0x4C1A2027
@@ -19,31 +21,38 @@ let graphPointFullSize = fpx(11)
 let graphPointCenterRelativeRadius = 27.3
 let leftGraphPadding = graphGridTextMaxWidth + graphGridTextPadding
 
-function mkGraphPoint(pointPosX, pointPosY, graphColor) {
-  let children = {
-    size = flex()
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = graphLineThickness
-    color = graphPointBackgroundColor
-    fillColor = graphPointBackgroundColor
-    commands = [
-      [VECTOR_ELLIPSE, 50, 50, 50, 50],
-      [VECTOR_COLOR, graphColor],
-      [VECTOR_FILL_COLOR, graphColor],
-      [VECTOR_ELLIPSE, 50, 50, graphPointCenterRelativeRadius, graphPointCenterRelativeRadius],
-    ]
-  }
+let mkPointCanvas = @(graphColor, radius) {
+  size = flex()
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = graphLineThickness
+  color = graphColor
+  fillColor = graphColor
+  commands = [[VECTOR_ELLIPSE, 50, 50, radius, radius]]
+}
+
+function mkGraphPoint(pointPosX, pointPosY, graphColor, tooltipContent) {
   let pos = [pointPosX - 0.5*graphPointFullSize, pointPosY - 0.5*graphPointFullSize]
   let stateFlag = Watched(0)
-  let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0)
+  let key = {}
+  let hoverPoint = mkPointCanvas(graphPointBackgroundColor, 50)
+  let constPoint = mkPointCanvas(graphColor, graphPointCenterRelativeRadius)
   return @() {
-    watch = isHovered
+    key
+    watch = stateFlag
     pos
     size = [graphPointFullSize, graphPointFullSize]
     skipDirPadNav = true
     behavior = Behaviors.Button
-    onElemState = @(sf) stateFlag.set(sf)
-    children = isHovered.get() ? children : null
+    onElemState = withTooltip(stateFlag, key, @() {
+      content = tooltipContent
+      key
+      bgOvr = { borderColor = graphColor }
+    })
+    onDetach = tooltipDetach(stateFlag, key)
+    children = [
+      (stateFlag.get() & S_HOVER) != 0 ? hoverPoint : null,
+      constPoint
+    ]
   }
 }
 
@@ -56,12 +65,11 @@ let mkGraphLine = @(commands, graphColor, lineWidth = graphLineThickness) {
   commands
 }
 
-function mkGraph(graph, graphWidth, graphHeight) {
-  let { graphColor, graphPoint, lineCommand } = graph
+function mkGraph(graphWidth, graphHeight, children) {
   return {
     size = [graphWidth, graphHeight]
     margin = [0, 0, 0, leftGraphPadding]
-    children = [mkGraphLine([lineCommand], graphColor)].extend(graphPoint)
+    children
   }
 }
 
@@ -155,10 +163,9 @@ function roundingValueDivisionByMarksCount(value, marksCount) {
   return marksCount * step
 }
 
-function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getValueX, getValueY, getPointsCount) {
+function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getValueX, getValueY, getPointsCount, mkTooltipText) {
   local maxValueX = 0
   local maxValueY = 0
-  let bulletsGraphComp = []
   foreach (bullet in bulletsConfig) {
     let pointsCount = getPointsCount(bullet)
     for (local i = 0; i < pointsCount; i++) {
@@ -170,10 +177,16 @@ function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getValueX, ge
   maxValueX = roundingValueDivisionByMarksCount(maxValueX, MARK_COUNT_X)
   maxValueY = roundingValueDivisionByMarksCount(maxValueY, MARK_COUNT_Y)
 
+  let graphPoints = []
+  let graphLines = []
   foreach (bullet in bulletsConfig) {
     let { graphColor } = bullet
     let pointsCount = getPointsCount(bullet)
-    let graph = { graphColor, graphPoint = [], lineCommand = pointsCount > 0 ? [VECTOR_LINE] : null }
+    if (pointsCount <= 1) 
+      continue
+
+    let haveTooManyPoints = pointsCount > MAX_POINTS_COUNT_WITH_TOOLTIP
+    let lineCommand = [VECTOR_LINE]
     for (local i = 0; i < pointsCount; i++) {
       let valueX = getValueX(bullet, i)
       let valueY = getValueY(bullet, i)
@@ -182,53 +195,74 @@ function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getValueX, ge
         : valueY == 0 ? 1
         : clamp(1 - valueY / maxValueY, 0, 1) 
                                                 
-      graph.graphPoint.append(mkGraphPoint(pointPosX * graphWidth, pointPosY * graphHeight, graphColor))
-      graph.lineCommand.append(pointPosX * 100, pointPosY * 100)
+      if (!haveTooManyPoints || (i % 2) == 0 || i == (pointsCount - 1))
+        graphPoints.append(mkGraphPoint(pointPosX * graphWidth, pointPosY * graphHeight,
+          graphColor, mkTooltipText(bullet, i)))
+      lineCommand.append(pointPosX * 100, pointPosY * 100)
     }
-    bulletsGraphComp.append(mkGraph(graph, graphWidth, graphHeight))
+    graphLines.append(mkGraphLine([lineCommand], graphColor))
   }
   return {
     maxValueX
     maxValueY
-    bulletsGraphComp
+    bulletsGraphComp = mkGraph(graphWidth, graphHeight, graphLines.extend(graphPoints))
   }
 }
+
+let mkTextValue = @(titleLocId, value, measureLocId) loc("ui/space").concat(
+  $"{loc(titleLocId)}{loc("ui/colon")}", (value + 0.5).tointeger(), loc(measureLocId))
 
 let roundingSizeDivisionByMarksCount = @(size, marksCount) size - (size % marksCount)
 
 let getBulletPenetrationValueX = @(bullet, idx) bullet.armorPiercingDist[idx]
 let getBulletPenetrationValueY = @(bullet, idx) bullet.armorPiercing[idx]
 let getBulletPenetrationPointsCount = @(bullet) bullet.armorPiercingDist.len()
+let getBulletPenetrationTooltip = @(bullet, idx) "\n".concat(
+  mkTextValue("bullet_properties/armorPiercing", bullet.armorPiercing[idx], "measureUnits/mm"),
+  mkTextValue("options/measure_units_dist", bullet.armorPiercingDist[idx], "measureUnits/meters_alt")
+)
 
 function mkBulletsArmorPiercingGraph(bulletsConfig, size) {
   let graphHeight = roundingSizeDivisionByMarksCount(size[1] - graphGridBottomIndent, MARK_COUNT_Y)
   let graphWidth = roundingSizeDivisionByMarksCount(size[0] - leftGraphPadding, MARK_COUNT_X)
   let { maxValueX, maxValueY, bulletsGraphComp
   } = calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getBulletPenetrationValueX,
-    getBulletPenetrationValueY, getBulletPenetrationPointsCount)
+    getBulletPenetrationValueY, getBulletPenetrationPointsCount, getBulletPenetrationTooltip)
   return {
     size = flex()
     children = [
       mkGraphGrid(graphWidth, graphHeight, maxValueX, maxValueY, loc("measureUnits/mm"))
-    ].extend(bulletsGraphComp)
+      bulletsGraphComp
+    ]
   }
 }
 
 let getBulletBallisticValueX = @(bullet, idx) bullet.ballisticsData[idx].distance
 let getBulletBallisticValueY = @(bullet, idx) bullet.ballisticsData[idx].altitude
 let getBulletBallisticPointsCount = @(bullet) bullet.ballisticsData.len()
+function getBulletBallisticTooltip(bullet, idx) {
+  let { distance, altitude, speed, flightDistance, flightTime } = bullet.ballisticsData[idx]
+  return "\n".concat(
+    mkTextValue("options/measure_units_dist", distance, "measureUnits/meters_alt"),
+    mkTextValue("options/measure_units_alt", altitude, "measureUnits/meters_alt"),
+    mkTextValue("options/measure_units_speed", speed, "measureUnits/metersPerSecond_climbSpeed"),
+    mkTextValue("flightDistance", flightDistance, "measureUnits/meters_alt"),
+    mkTextValue("flightTime", flightTime, "measureUnits/seconds")
+  )
+}
 
 function mkBulletsBallisticTrajectoryGraph(bulletsConfig, size) {
   let graphHeight = roundingSizeDivisionByMarksCount(size[1] - graphGridBottomIndent, MARK_COUNT_Y)
   let graphWidth = roundingSizeDivisionByMarksCount(size[0] - leftGraphPadding, MARK_COUNT_X)
   let { maxValueX, maxValueY, bulletsGraphComp
   } = calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getBulletBallisticValueX,
-    getBulletBallisticValueY, getBulletBallisticPointsCount)
+    getBulletBallisticValueY, getBulletBallisticPointsCount, getBulletBallisticTooltip)
   return {
     size = flex()
     children = [
       mkGraphGrid(graphWidth, graphHeight, maxValueX, maxValueY, loc("measureUnits/meters_alt"))
-    ].extend(bulletsGraphComp)
+      bulletsGraphComp
+    ]
   }
 }
 

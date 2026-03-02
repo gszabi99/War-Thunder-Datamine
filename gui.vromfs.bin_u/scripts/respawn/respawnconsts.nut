@@ -4,6 +4,7 @@ enum RespawnOptUpdBit {
   UNIT_WEAPONS  = 0x02
   RESPAWN_BASES = 0x04
   SMOKE_TYPE    = 0x08
+  SQUAD_RESPAWN = 0x10
 }
 
 return { RespawnOptUpdBit }

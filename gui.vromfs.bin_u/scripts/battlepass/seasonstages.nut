@@ -1,7 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
 
-let { warbondsShopLevelByStages, seasonLevel } = require("%scripts/battlePass/seasonState.nut")
+let { warbondsShopLevelByStages, seasonLevel, getBPStageByShopLevel
+} = require("%scripts/battlePass/seasonState.nut")
 let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId, hasBattlePass
 } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let { curSeasonChallengesByStage } = require("%scripts/battlePass/challenges.nut")
@@ -109,8 +110,8 @@ function getStageViewData(stageData, idxOnPage) {
     isFree = isFree
     isFirst = idxOnPage == 0
     warbondShopLevelImage = currentWarbond != null && (warbondsShopLevel ?? 0) > 0
-      ? g_warbonds_view.getLevelItemMarkUp(currentWarbond, warbondsShopLevel, "0", {
-        hasOverlayIcon = false })
+      ? g_warbonds_view.getLevelItemMarkUp(currentWarbond, warbondsShopLevel,
+          getBPStageByShopLevel, "0", { hasOverlayIcon = false })
       : ""
     items = overrideStageIcon == null && itemId != null ? [item?.getViewData({
         enableBackground = false

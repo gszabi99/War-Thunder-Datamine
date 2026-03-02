@@ -12,6 +12,7 @@ require %appGame.wt_events
 require %appGame.infantry.es.riextra_damage_common
 require Grid
 require CollRes
+require ecs.safe
 
 def is_conflict_with_objects_in_grid(tm, box; exclude_eid : EntityId = INVALID_ENTITY_ID; base_collres : CollisionResource const? = null)
   var objectFound = false
@@ -130,7 +131,7 @@ def mining_wall_stop_planting_on_timer_client(info : UpdateStageInfoAct;
   stop_mining_wall_planting(human_mining_wall__plantingStartTime, human_mining_wall__plantingEndTime)
 
 
-[es(tag=server, no_order)]
+[es(tag=server, no_order, REQUIRE=itemContainer)]
 def mining_wall_planting_on_update(info : UpdateStageInfoAct;
                                    eid : EntityId;
                                    human__aimTm : float3x4;
@@ -141,8 +142,7 @@ def mining_wall_planting_on_update(info : UpdateStageInfoAct;
                                    human_mining_wall__plantingStartTime : float;
                                    human_mining_wall__plantingEndTime : float;
                                    human_mining_wall__reqPlantingPos : float3;
-                                   human_mining_wall__reqPlantingNorm : float3;
-                                   var itemContainer : EidList)
+                                   human_mining_wall__reqPlantingNorm : float3)
   if human_mining_wall__plantingStartTime < 0.0 || !human_mining_wall__bombEid
     return
 
@@ -154,10 +154,11 @@ def mining_wall_planting_on_update(info : UpdateStageInfoAct;
   if distance_sq(human__aimTm[3], human_mining_wall__reqPlantingPos) >= square(human_mining_wall__plantingMaxDist + human_mining_wall__bufferDistance)
     return
 
+  var itemContainer = getRW_ecs_EidList(eid, "itemContainer")
   query(human_mining_wall__bombEid) <| $ [es] (wall_bomb__placeableTemplate : string; wall_bomb__explosionDelay : float)
-    let bombIdx = find_index(itemContainer, human_mining_wall__bombEid)
+    let bombIdx = find_index(*itemContainer, human_mining_wall__bombEid)
     if bombIdx >= 0
-      erase(itemContainer, bombIdx)
+      erase(*itemContainer, bombIdx)
     destroyEntity(human_mining_wall__bombEid)
 
     createEntity(wall_bomb__placeableTemplate) <| $(init)

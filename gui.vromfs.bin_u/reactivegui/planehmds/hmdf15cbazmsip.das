@@ -88,7 +88,7 @@ class Component : Canvas
       currentLaunchDist = get_radar_hud_aam_launch_zone_dist()
       launchDistLim = float2(get_radar_hud_aam_launch_zone_dist_min(), get_radar_hud_aam_launch_zone_dist_max())
 
-    isArmed = !(fmw.isOnGround || fmw.fm.currentAlt < fmw.minAltitudeForDropShells)
+    isArmed = !(fmw.isOnGround || fmw.fm.input.currentAlt < fmw.minAltitudeForDropShells)
 
     let isAcmMode = find(get_radar_hud_mode_name(), "ACM") >= 0
     let isTrkMode = find(get_radar_hud_mode_name(), "track") >= 0

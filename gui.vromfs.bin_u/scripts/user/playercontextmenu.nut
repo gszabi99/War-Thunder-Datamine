@@ -35,7 +35,8 @@ let { is_console, is_gdk } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
 let { isSquadRoomJoined, generateInviteMenu, getRoomById,
-  openChatRoom, isRoomSquad, isImRoomOwner } = require("%scripts/chat/chatRooms.nut")
+  isRoomSquad, isImRoomOwner } = require("%scripts/chat/chatRooms.nut")
+let { openChatRoom, openChatPrivate } = require("%scripts/chat/openChat.nut")
 let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
 let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
@@ -198,7 +199,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         if (!canChat)
           return notifyPlayerAboutRestriction(contact)
 
-        ::openChatPrivate(name)
+        openChatPrivate(name)
       }
     }
     {

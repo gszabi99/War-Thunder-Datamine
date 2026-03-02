@@ -188,7 +188,7 @@ class Component : Canvas
     setFont(props.fontId)
     setFontSize(18)
 
-    isArmed = !(fmw.isOnGround || fm.currentAlt < fmw.minAltitudeForDropShells)
+    isArmed = !(fmw.isOnGround || fm.input.currentAlt < fmw.minAltitudeForDropShells)
     isWeaponSelectorOn = app.flightControlMode.isWeaponSelectorOn
 
     for p in stations.pos

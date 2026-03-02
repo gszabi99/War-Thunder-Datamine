@@ -8,9 +8,33 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { isAddeditemTypeSmoke, createItem } = require("%scripts/items/itemsTypeClasses.nut")
+let { itemType } = require("%scripts/items/itemsConsts.nut")
+
 
 let aeroSmokesList    = mkWatched(persist, "aeroSmokesList", [])
 let buyableSmokesList = mkWatched(persist, "buyableSmokesList", [])
+
+let shopSmokeItems = Computed(@() !isAddeditemTypeSmoke.get() ? []
+  : buyableSmokesList.get().map(@(blk) createItem(itemType.SMOKE, blk)))
+
+
+function updateBuyableSmokesList(list = null) {
+  if (!isLoggedIn.get())
+    return
+  let res = []
+  let smokesList = list ?? aeroSmokesList.get()
+  foreach (inst in smokesList) {
+    if (!inst?.unlockId)
+      continue
+    if ((inst.unlockId == "" || getUnlockById(inst.unlockId))
+      && wp_get_unlock_cost_gold(inst.unlockId) > 0)
+        res.append(inst)
+  }
+
+  if (!u.isEqual(res, buyableSmokesList.get()))
+    buyableSmokesList.set(res)
+}
 
 function updateAeroSmokeList() {
   let blk = DataBlock()
@@ -34,26 +58,10 @@ function updateAeroSmokeList() {
       (rarityTypes?[a?.rarity] ?? -1) <=> (rarityTypes?[b?.rarity] ?? -1)
         || a.locOrd <=> b.locOrd)
 
+  updateBuyableSmokesList(smokeList)
   aeroSmokesList.set(smokeList)
 }
 
-function updateBuyableSmokesList() {
-  if (!isLoggedIn.get())
-    return
-  let res = []
-  foreach (inst in aeroSmokesList.get()) {
-    if (!inst?.unlockId)
-      continue
-    if ((inst.unlockId == "" || getUnlockById(inst.unlockId))
-      && wp_get_unlock_cost_gold(inst.unlockId) > 0)
-        res.append(inst)
-  }
-
-  if (!u.isEqual(res, buyableSmokesList.get()))
-    buyableSmokesList.set(res)
-}
-
-aeroSmokesList.subscribe(@(_p) updateBuyableSmokesList())
 addListenersWithoutEnv({
   LoginComplete = @(_p) updateAeroSmokeList()
   UnlocksCacheInvalidate = @(_p) updateBuyableSmokesList()
@@ -63,4 +71,5 @@ addListenersWithoutEnv({
 return {
   aeroSmokesList
   buyableSmokesList
+  shopSmokeItems
 }

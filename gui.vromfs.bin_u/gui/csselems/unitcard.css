@@ -372,6 +372,9 @@ slotbarTable[highlightSelected=yes] unitCell[selected=no] {
 [isPkgDev=yes][shopStat=owned] > shopAirImg {
   background-color:@white;
 }
+shopAirImg[foreground-image=""] {
+  foreground-color:@transparent;
+}
 
 itemWinkBlock {
   behaviour:basicTransparency;
@@ -999,6 +1002,12 @@ classIcon[shopItemType=heavy_cruiser]       { color:@cruiserColor; }
 classIcon[shopItemType=battlecruiser]       { color:@battlecruiserColor; }
 classIcon[shopItemType=battleship]          { color:@battleshipColor; }
 classIcon[shopItemType=submarine]           { color:@submarineColor; }
+classIcon[shopItemType=human_assault]       { color:@humanAssaultColor; }
+classIcon[shopItemType=human_support]       { color:@humanSupportColor; }
+classIcon[shopItemType=human_sniper]        { color:@humanSniperColor; }
+classIcon[shopItemType=human_anti_vehicle]  { color:@humanAntiVehicleColor; }
+classIcon[shopItemType=human_spec_forces]   { color:@humanSpecForcesColor; }
+classIcon[shopItemType=human_gunner]        { color:@humanGunnerColor; }
 
 classIcon[shopItemType=infantry]            { color:@infantryColor; }
 classIcon[shopItemType=artillery]           { color:@artilleryColor; }
@@ -1040,6 +1049,12 @@ img[shopItemType=heavy_cruiser]     { background-color:@cruiserColor; }
 img[shopItemType=battlecruiser]     { background-color:@battlecruiserColor; }
 img[shopItemType=battleship]        { background-color:@battleshipColor; }
 img[shopItemType=submarine]         { background-color:@submarineColor; }
+img[shopItemType=human_assault]      { background-color:@humanAssaultColor; }
+img[shopItemType=human_support]      { background-color:@humanSupportColor; }
+img[shopItemType=human_sniper]       { background-color:@humanSniperColor; }
+img[shopItemType=human_anti_vehicle] { background-color:@humanAntiVehicleColor; }
+img[shopItemType=human_spec_forces]  { background-color:@humanSpecForcesColor; }
+img[shopItemType=human_gunner]       { background-color:@humanGunnerColor; }
 
 img[shopItemType=infantry]          { background-color:@infantryColor; }
 img[shopItemType=artillery]         { background-color:@artilleryColor; }
@@ -1746,7 +1761,7 @@ shopCollapsedDiscountIcon {
   text-shade:"smooth:24";
   text-shade-x:0;
   text-shade-y:0;
-  text-shade-color:#A0000000;
+  text-shade-color:@textShadeColor;
   background-image:#ui/gameuiskin#simplified_discount_box.svg;
   background-svg-size:w, 1@discountBoxHeight ;
   background-position:2@sf/@pf, 2@sf/@pf, 2@sf/@pf, 2@sf/@pf;

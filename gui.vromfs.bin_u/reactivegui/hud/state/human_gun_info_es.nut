@@ -5,7 +5,7 @@ let { controlledHeroEid } = require("%appGlobals/controlledHeroEid.nut")
 
 let humanCurGunSlotIdx = Watched(-1)
 
-enum WeaponSlots {
+enum WEAPON_SLOTS {
   EWS_PRIMARY
   EWS_SECONDARY
   EWS_TERTIARY
@@ -15,16 +15,22 @@ enum WeaponSlots {
   EWS_NUM
 }
 
-let weaponSlotsRaw = array(WeaponSlots.EWS_NUM)
-let weaponSlots = array(WeaponSlots.EWS_NUM)
+let weaponSlotsRaw = array(WEAPON_SLOTS.EWS_NUM)
+let weaponSlots = array(WEAPON_SLOTS.EWS_NUM)
 foreach (idx, _v in weaponSlotsRaw) {
   weaponSlotsRaw[idx] = mkFrameIncrementObservable(null)
   weaponSlots[idx] = weaponSlotsRaw[idx].state
 }
 
-let weaponSlotsStatic = array(WeaponSlots.EWS_NUM, null)
+let weaponSlotsStaticRaw = array(WEAPON_SLOTS.EWS_NUM, null)
+let weaponSlotsStatic = array(WEAPON_SLOTS.EWS_NUM, null)
+foreach (idx, _v in weaponSlotsStatic) {
+  weaponSlotsStaticRaw[idx] = mkFrameIncrementObservable(null)
+  weaponSlotsStatic[idx] = weaponSlotsStaticRaw[idx].state
+}
+
 let { weaponSlotsGen, weaponSlotsGenSetValue } = mkFrameIncrementObservable(0, "weaponSlotsGen")
-let { heroModsByWeaponSlotRaw, heroModsByWeaponSlotRawModify } = mkFrameIncrementObservable(array(WeaponSlots.EWS_NUM), "heroModsByWeaponSlotRaw")
+let { heroModsByWeaponSlotRaw, heroModsByWeaponSlotRawModify } = mkFrameIncrementObservable(array(WEAPON_SLOTS.EWS_NUM), "heroModsByWeaponSlotRaw")
 
 
 let anyItemComps = {
@@ -55,8 +61,9 @@ ecs.register_es("human_curgunslot_ui_es",
     [["onInit", ecs.EventComponentChanged]] = function(_, eid, comp) {
       if (controlledHeroEid.get() != eid)
         return
-
-      humanCurGunSlotIdx.set(comp.human_weap__currentGunSlot)
+      humanCurGunSlotIdx.set(comp.human_weap__currentGunSlot < 0
+        ? comp.human_weap__previousGunSlot
+        : comp.human_weap__currentGunSlot)
     }
     onDestroy = function(eid, _) {
       if (controlledHeroEid.get() != eid)
@@ -66,6 +73,9 @@ ecs.register_es("human_curgunslot_ui_es",
   },
   {
     comps_rq = ["watchedByPlr"]
+    comps_ro = [
+      ["human_weap__previousGunSlot", ecs.TYPE_INT, -1],
+    ]
     comps_track = [
       ["human_weap__currentGunSlot", ecs.TYPE_INT, -1],
     ]
@@ -89,10 +99,10 @@ ecs.register_es("hero_ui_weapons_es",
   {
     [["onInit", ecs.EventComponentChanged]] = function(_, eid, comp){
       let idx = comp["slot_attach__weaponSlotIdx"]
-      if (idx != WeaponSlots.EWS_SPECIAL && comp["multiple_guns_slot_gun_hidden"] != null)
+      if (idx != WEAPON_SLOTS.EWS_SPECIAL && comp["multiple_guns_slot_gun_hidden"] != null)
         return
 
-      if (idx < 0 || idx >= WeaponSlots.EWS_NUM)
+      if (idx < 0 || idx >= WEAPON_SLOTS.EWS_NUM)
         return
 
       let weaponMod = comp["weaponMod"] != null
@@ -112,6 +122,7 @@ ecs.register_es("hero_ui_weapons_es",
             isModActive
             attachedItemModSlotName
             isVariableScope = comp["gunmod__variableScope"]
+            hasSwitchableSights = (comp["sightPresets"]?.len() ?? 0) > 1
           }.__update(modsDesc)
           return v
         })
@@ -139,16 +150,13 @@ ecs.register_es("hero_ui_weapons_es",
         isModActive = comp["weapon_mod__active"]
         launcherEid = comp["tactical_phone__droneLauncher"]
       }
-      weaponSlotsStatic[idx] = staticDesc
+      weaponSlotsStaticRaw[idx].setValue(staticDesc)
       weaponSlotsRaw[idx].setValue(desc)
       weaponSlotsGenSetValue(weaponSlotsGen.get()+1)
     }
     onDestroy = function(eid, comp) {
-      if (comp["multiple_guns_slot_gun_hidden"] != null)
-        return
-
       let idx = comp["slot_attach__weaponSlotIdx"]
-      if (idx < 0 || idx > WeaponSlots.EWS_NUM)
+      if (idx < 0 || idx >= WEAPON_SLOTS.EWS_NUM)
         return
 
       let weaponMod = comp["weaponMod"] != null
@@ -163,10 +171,11 @@ ecs.register_es("hero_ui_weapons_es",
       }
 
       if (comp.gun__owner != controlledHeroEid.get()
-        && comp.item__ownerEid != controlledHeroEid.get())
+        && comp.item__ownerEid != controlledHeroEid.get()
+        && comp.item__ownerEid != ecs.INVALID_ENTITY_ID)
         return
 
-      weaponSlotsStatic[idx] = null
+      weaponSlotsStaticRaw[idx].setValue(null)
       weaponSlotsRaw[idx].setValue(null)
       weaponSlotsGenSetValue(weaponSlotsGen.get() + 1)
     }
@@ -179,7 +188,8 @@ ecs.register_es("hero_ui_weapons_es",
       ["slot_attach__weaponSlotIdx", ecs.TYPE_INT, null],
       ["multiple_guns_slot_gun_hidden", ecs.TYPE_TAG, null],
       ["gunAttachable__gunSlotName", ecs.TYPE_STRING, ""],
-      ["gunmod__variableScope", ecs.TYPE_BOOL, false]
+      ["gunmod__variableScope", ecs.TYPE_BOOL, false],
+      ["sightPresets", ecs.TYPE_ARRAY, null]
     ].extend(anyItemComps.comps_ro)
     comps_track = [
       ["slot_attach__weaponSlotIdx", ecs.TYPE_INT],
@@ -202,7 +212,7 @@ ecs.register_es("hero_ui_weapons_es",
 )
 
 let heroModsByWeaponSlot = Computed(function(){
-  let res = array(WeaponSlots.EWS_NUM)
+  let res = array(WEAPON_SLOTS.EWS_NUM)
   foreach (slotNum, modsByEids in heroModsByWeaponSlotRaw.get()) {
     let mods = {}
     let iconAttachments = []
@@ -239,12 +249,20 @@ let humanCurGunModeInfo = Computed(function() {
 
 let humanCurGunStaticInfo = Computed(function() {
   weaponSlotsGen.get()  
-  return weaponSlotsStatic?[humanCurGunSlotIdx.get()]
+  return weaponSlotsStatic?[humanCurGunSlotIdx.get()].get()
 })
+
+let isWeaponsListVisible = Watched(false)
 
 return {
   humanCurGunStaticInfo
   humanCurGunInfo
   humanCurGunModeInfo
   getLauncherNextUseAtTime
+  humanCurGunSlotIdx
+  weaponSlotsStatic
+  heroModsByWeaponSlot
+  weaponSlots
+  WEAPON_SLOTS
+  isWeaponsListVisible
 }

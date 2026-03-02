@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module stringify shared public
 
+
+
+
+
+
+
 require strings
 require daslib/ast_boost
 
@@ -17,7 +23,9 @@ class private LongStringReader : AstReaderMacro {
     
     
     
+    
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
+        
         if (ch != '\r') {
             append(expr.sequence, ch)
         }
@@ -30,6 +38,7 @@ class private LongStringReader : AstReaderMacro {
         }
     }
     def override visit(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprReader>) : ExpressionPtr {
+        
         return <- new ExprConstString(at = expr.at, value := expr.sequence)
     }
 }

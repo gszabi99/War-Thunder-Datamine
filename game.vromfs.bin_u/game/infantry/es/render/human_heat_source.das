@@ -9,6 +9,8 @@ require GeomNodeTree
 require strings
 require CollRes
 require %game.events
+require WTCamera
+require Unit
 
 [export]
 enum partType
@@ -117,7 +119,6 @@ def human_gun_heat_source_init_es(evt : Event;
       set(init, "heat_source__temperature", partTemperature)
       set(init, "heat_source__type", int(partType.HUMAN_GUN))
   heat_source__humanGunEid = heatEid
-
 
 [es(tag=render, on_disappear, REQUIRE=attachedToParent)]
 def human_gun_heat_source_on_destroy_es(evt : Event;
@@ -228,7 +229,7 @@ def human_heat_source_init_es(evt : Event;
       push(heat_source__bodyEid, heatEid)
 
 
-[es(tag=render, REQUIRE=human, after=human_heat_source_init_es, before=update_heat_sources_pos_es)]
+[es(tag=render, REQUIRE=human, parallel_for=10, after=human_heat_source_init_es, before=update_heat_sources_pos_es)]
 def human_heat_source_update_es(info : ParallelUpdateFrameDelayed;
                                 transform : float3x4;
                                 collres : CollisionResource;

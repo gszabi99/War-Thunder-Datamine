@@ -14,6 +14,8 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { startswith }=require("string")
 let { clearTimer, resetTimeout } = require("dagor.workcycle")
 let { parse_json } = require("json")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+
 
 
 
@@ -53,7 +55,7 @@ function onGameModesUpdated(modes_list_str) {
   let modes_list = parse_json(modes_list_str)
   foreach (modeInfo in modes_list) {
     let gameModeId = modeInfo.gameModeId
-    log($"matching game mode fetched '{modeInfo.name}' [{gameModeId}]")
+    log($"matching game mode fetched '{modeInfo.name}.{modeInfo.tag}' [{gameModeId}] chapter {modeInfo?.chapter}")
     gameModes[gameModeId] <- modeInfo
   }
 }
@@ -139,7 +141,7 @@ function fetchGameModes() {
 }
 
 function forceUpdateGameModes() {
-  if (!is_online_available()) {
+  if (!is_online_available() || disableNetwork) {
     needForceUpdateOnReconnect = true
     return
   }
@@ -148,6 +150,8 @@ function forceUpdateGameModes() {
   fetch_counter = 0
   fetchGameModes()
 }
+
+forceUpdateGameModes()
 
 function removeGameMode(game_mode_id) {
   gameModes?.$rawdelete(game_mode_id)
@@ -181,11 +185,12 @@ function onGameModesChangedNotify(added_list, removed_list, changed_list) {
         continue
 
       let name     = modeInfo?.name ?? ""
+      let tag      = modeInfo?.tag ?? ""
       let disabled = modeInfo?.disabled
       let visible  = modeInfo?.visible
       let active   = modeInfo?.active
 
-      log($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
+      log($"matching game mode {disabled ? "disabled" : "enabled"} '{name}.{tag}' [{gameModeId}]")
 
       if (disabled && visible == false && active == false) {
         needNotify = true
@@ -262,7 +267,6 @@ addListenersWithoutEnv({
     fetchingInfo = false
     fetch_counter = 0
   }
-  ScriptsReloaded = @(_) forceUpdateGameModes()
   
   LoginComplete   = @(_) forceUpdateGameModes()
   NotifyGameModesChanged = @(p) onGameModesChangedNotify(p?.added, p?.removed, p?.changed)

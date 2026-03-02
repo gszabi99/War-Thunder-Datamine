@@ -1812,6 +1812,9 @@
       },
       "ammunition_storage_05_dm": {
         "hp": 1000.0
+      },
+      "ammunition_storage_06_dm": {
+        "hp": 1300.0
       }
     },
     "ammo_storages_shells": {
@@ -6392,12 +6395,20 @@
       "explosionEvent": "ammo_explosion_3",
       "splashDamageConstraint": 2000.0,
       "shatterRadiusConstraint": 0.1,
-      "shells": {
-        "damageEffect": "ammunition_storage_fixed",
-        "ammunition_storage_04_dm": {
-          "count": 13400
+      "shells": [
+        {
+          "damageEffect": "ammunition_storage_fixed",
+          "ammunition_storage_04_dm": {
+            "count": 7000
+          }
+        },
+        {
+          "damageEffect": "ammunition_storage_fixed",
+          "ammunition_storage_06_dm": {
+            "count": 6400
+          }
         }
-      }
+      ]
     },
     "ammo7": {
       "weaponTrigger": "gunner14",

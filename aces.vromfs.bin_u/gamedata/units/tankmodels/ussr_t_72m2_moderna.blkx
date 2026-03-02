@@ -68,7 +68,8 @@
       "ex_armor_05_dm": {
         "armorThickness": 16.0,
         "createSecondaryShatters": false,
-        "hidableInViewer": true
+        "hidableInViewer": true,
+        "armorClass": "RHAHH_tank_modern"
       },
       "superstructure_front_dm": {
         "armorThickness": 60.0,
@@ -117,41 +118,47 @@
         "armorThickness": 80.0
       },
       "turret_04_back_dm": {
-        "armorThickness": 80.0
+        "armorThickness": 80.0,
+        "variableThickness": true
       },
       "turret_08_top_dm": {
         "armorThickness": 80.0
       },
       "turret_07_back_dm": {
-        "armorThickness": 70.0
+        "armorThickness": 45.0,
+        "variableThickness": true
       },
       "body_bottom_dm": {
         "armorThickness": 20.0
       },
       "body_back_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 45.0
       },
       "superstructure_back_dm": {
         "armorThickness": 40.0
       },
       "turret_06_back_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "variableThickness": true
       },
       "turret_05_back_dm": {
         "armorThickness": 20.0
       },
       "superstructure_top_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 30.0,
+        "variableThickness": true
       },
       "turret_01_front_dm": {
         "armorClass": "CHA_tank_modern",
-        "armorThickness": 30.0
+        "armorThickness": 40.0,
+        "variableThickness": true
       },
       "turret_03_bottom_dm": {
         "armorThickness": 5.0
       },
       "turret_01_side_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 10.0,
+        "ignoreSolidDimension": true
       },
       "ex_armor_01_dm": {
         "armorThickness": 20.0,
@@ -214,10 +221,11 @@
         "armorThickness": 45.0
       },
       "turret_08_side_dm": {
-        "armorThickness": 35.0
+        "armorThickness": 45.0,
+        "armorClass": "CHA_tank_modern"
       },
       "turret_02_top_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 40.0
       },
       "turret_06_top_dm": {
         "armorClass": "CHA_tank_modern",
@@ -225,7 +233,7 @@
       },
       "turret_04_top_dm": {
         "armorClass": "CHA_tank_modern",
-        "armorThickness": 30.0
+        "armorThickness": 45.0
       },
       "turret_06_side_dm": {
         "armorThickness": 30.0
@@ -2358,12 +2366,12 @@
       "Fuel": 500.0,
       "TakeOff": 44500.0,
       "momentOfInertia": [
-        2.5,
-        2.5,
-        6.0
+        1.225,
+        3.975,
+        3.175
       ],
       "CenterOfGravity": [
-        0.05,
+        0.3,
         0.5,
         0.0
       ],
@@ -2371,7 +2379,7 @@
         0.0,
         0.7
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 2500.0
     },
     "tracks": {
@@ -3712,6 +3720,10 @@
     }
   },
   "dmgAngles": {
+    "hatch_01": [
+      95.0,
+      95.0
+    ],
     "hatch_05": [
       10.0,
       40.0
@@ -3719,6 +3731,13 @@
     "hatch_06": [
       45.0,
       90.0
+    ]
+  },
+  "dmgPosOffset": {
+    "hatch_01": [
+      -0.08,
+      0.0,
+      0.0
     ]
   },
   "ammoStowages": {
@@ -4151,6 +4170,33 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_modern_desert_deform*"
+      }
+    },
+    {
+      "name": "ussr_camo_arctic",
+      "nameLocId": "skin/ussr_camo_arctic",
+      "descLocId": "skin/ussr_camo_arctic/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_arctic*"
+      }
+    },
+    {
+      "name": "ussr_modern_def_gray",
+      "nameLocId": "skin/ussr_modern_def_gray",
+      "descLocId": "skin/ussr_modern_def_gray/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_def_gray*"
+      }
+    },
+    {
+      "name": "ussr_modern_def_sand",
+      "nameLocId": "skin/ussr_modern_def_sand",
+      "descLocId": "skin/ussr_modern_def_sand/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_def_sand*"
       }
     }
   ]

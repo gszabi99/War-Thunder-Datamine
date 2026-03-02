@@ -8,6 +8,7 @@ let DataBlock = require("DataBlock")
 let { shipHitIconsVisibilityStateFlags } = require("%rGui/options/options.nut")
 let { ShipHitIconId, ShipHitIconVisibilityMask,
   IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
+let { format } = require("string")
 
 
 const SHOW_RESET_DEFAULT_DURATION = 10
@@ -55,8 +56,8 @@ function mkIconHint(hintText) {
 
 
 function mkIcon(baseCfg, iconCfg, watched) {
-  let text = Computed(@() $"x{watched.get()}")
-  let size = [baseCfg.iconSize, baseCfg.iconSize]
+  let text = Computed(@() format(iconCfg.text.template, watched.get()))
+  let size = baseCfg.iconSize
   let animTrigger = {}
   let stateFlags = Watched(0)
   return {
@@ -116,6 +117,7 @@ function readIconConfig(baseCfg, iconBlk, ico, watched, params) {
     text = {
       enabled = iconBlk?.text.enabled ?? true
       color = iconBlk?.text.color ?? 0xACACACAC
+      template = iconBlk?.text?.template ?? "x%d"
     }
     pic = ico
   }
@@ -140,16 +142,17 @@ function getConfig() {
   let hudBlk = DataBlock()
   let gameplayBlk = DataBlock()
 
-  hudBlk.tryLoad("config/hud.blk")
+  hudBlk.tryLoad("config/hud.blk") 
   let iconsParams = hudBlk?.shipHitNotification
 
   let size = iconsParams?.size ?? DEFAULT_ICON_SIZE
-  res.iconSize = hdpx(size)
+  res.iconSize = hdpxi(size)
 
   let hitPic = Picture($"ui/gameuiskin#dm_ship_armor_hit.svg:{res.iconSize}:{res.iconSize}:P")
   let effectiveHitPic = Picture($"ui/gameuiskin#dm_ship_armor_breach.svg:{res.iconSize}:{res.iconSize}:P");
   let ineffectiveHitPic = Picture($"ui/gameuiskin#dm_ship_armor_unbroken.svg:{res.iconSize}:{res.iconSize}:P");
   let pierceThroughHitPic = Picture($"ui/gameuiskin#dm_ship_armor_breach_through.svg:{res.iconSize}:{res.iconSize}:P");
+  let crewKilledPic = Picture($"ui/gameuiskin#dm_ship_crew.svg:{res.iconSize}:{res.iconSize}:P");
 
   let font = iconsParams?.font ?? DEFAULT_ICON_FONT
   res.iconFont = Fonts[font]
@@ -160,13 +163,15 @@ function getConfig() {
       res, iconsParams?.simpleHit, hitPic, shellHitDamageEvents.hitEventsCount, {id = ShipHitIconId.HIT, hintLoc = "shipHitHint/simpleHit"}),
     [ShipHitIconId.HIT_EFFECTIVE] = readIconConfig(
       res, iconsParams?.effectiveHit, effectiveHitPic, shellHitDamageEvents.critEventCount, {hintLoc = "shipHitHint/effectiveHit"}),
+    [ShipHitIconId.HIT_CREW] = readIconConfig(
+      res, iconsParams?.crewKilled, crewKilledPic, shellHitDamageEvents.crewKilled, {hintLoc = "shipHitHint/crewKilled"}),
     [ShipHitIconId.HIT_INEFFECTIVE] = readIconConfig(
       res, iconsParams?.ineffectiveHit, ineffectiveHitPic, shellHitDamageEvents.armorBlockedEventCount, {hintLoc = "shipHitHint/ineffectiveHit"}),
     [ShipHitIconId.HIT_PIERCE_THROUGH] = readIconConfig(
       res, iconsParams?.pierceThroughHit, pierceThroughHitPic, shellHitDamageEvents.pierceThroughCount, {hintLoc = "shipHitHint/pierceThroughHit"}),
   }
 
-  gameplayBlk.tryLoad("config/gameplay.blk")
+  gameplayBlk.tryLoad("config/gameplay.blk") 
   res.resetDuration = gameplayBlk?.hudShowHitInfoTime ?? SHOW_RESET_DEFAULT_DURATION
 
   scriptConfig = res
@@ -181,6 +186,7 @@ local showBitmask = 0
 let hitBoxShowAnimTrigger = {}
 let hitBoxHideAnimTrigger = {}
 let specialHitAnimShowTrigger = {}
+let torpedoHitAnimShowTrigger = {}
 let hitNotificationVisible = Watched(false)
 let hudHitCameraState = mkWatched(persist, "hudHitCameraState", null)
 let hits = Watched([])
@@ -238,18 +244,28 @@ function appendHitIndicator(v, id) {
 }
 
 function onSpecialHitEvent(v) {
-  if (v.type != "citadelHit" || ignoreAllHits)
+  if (ignoreAllHits)
     return
-  anim_start(hitBoxHideAnimTrigger)
-  anim_start(specialHitAnimShowTrigger)
-  ignoreAllHits = true
-  setTimeout(2 * HITBOX_FADE_OUT_TIME + SPECIAL_HIT_NOTIFICATION_SHOW_TIME, @() ignoreAllHits = false)
+  if (v.type == "citadelHit") {
+    anim_start(hitBoxHideAnimTrigger)
+    anim_start(specialHitAnimShowTrigger)
+    ignoreAllHits = true
+    setTimeout(2 * HITBOX_FADE_OUT_TIME + SPECIAL_HIT_NOTIFICATION_SHOW_TIME, @() ignoreAllHits = false)
+  }
+
+  if (v.type == "torpedoHit") {
+    anim_start(hitBoxHideAnimTrigger)
+    anim_start(torpedoHitAnimShowTrigger)
+    ignoreAllHits = true
+    setTimeout(2 * HITBOX_FADE_OUT_TIME + SPECIAL_HIT_NOTIFICATION_SHOW_TIME, @() ignoreAllHits = false)
+  }
 }
 
 shellHitDamageEvents.hitEventsCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT))
 shellHitDamageEvents.critEventCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_EFFECTIVE))
 shellHitDamageEvents.armorBlockedEventCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_INEFFECTIVE))
 shellHitDamageEvents.pierceThroughCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_PIERCE_THROUGH))
+shellHitDamageEvents.crewKilled.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_CREW))
 
 eventbus_subscribe("specialHitEvent", onSpecialHitEvent)
 
@@ -268,7 +284,7 @@ let hitboxX = Computed(@() isHitcamSet.get()
   ? hudHitCameraState.get().pos[0]
   : 0)
 
-let cidadelHitNotification = @() {
+let citadelHitNotification = {
   pos = [0, ph(12)]
   hplace = ALIGN_CENTER
   opacity = 0
@@ -299,16 +315,82 @@ let cidadelHitNotification = @() {
   ]
   children = [
     {
-      size = [hdpx(266), hdpx(66)]
+      size = const [hdpx(266), hdpx(66)]
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon_backgroud.avif:{hdpx(266)}:{hdpx(66)}:P")
+      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon_backgroud.avif:{hdpxi(266)}:{hdpxi(66)}:P")
     }
     {
-      size = [hdpx(156), hdpx(33)]
+      size = const [hdpx(156), hdpx(33)]
       hplace = ALIGN_CENTER
       vplace = ALIGN_BOTTOM
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon.svg:{hdpx(156)}:{hdpx(33)}:P")
+      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon.svg:{hdpxi(156)}:{hdpxi(33)}:P")
+    }
+  ]
+}
+
+let torpedoHintImage = {
+  children = [
+    {
+      size = const [hdpx(266), hdpx(50)]
+      rendObj = ROBJ_IMAGE
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      image = Picture($"ui/gameuiskin#ship_hit_citadel_icon_backgroud.avif:{hdpxi(266)}:{hdpxi(50)}:P")
+    }
+    {
+      size = const [hdpx(156), hdpx(50)]
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#dm_ship_torpedo_hit_icon.svg:{hdpxi(156)}:{hdpxi(50)}:P")
+    }
+  ]
+}
+
+let torpedoHitNotification = {
+  pos = [0, ph(15)]
+  hplace = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  opacity = 0
+  animations = [
+    {
+      prop = AnimProp.opacity
+      from = 0
+      to = 1
+      duration = HITBOX_FADE_OUT_TIME
+      trigger = torpedoHitAnimShowTrigger
+    }
+    {
+      prop = AnimProp.opacity
+      from = 1
+      to = 1
+      delay = HITBOX_FADE_OUT_TIME
+      duration = SPECIAL_HIT_NOTIFICATION_SHOW_TIME
+      trigger = torpedoHitAnimShowTrigger
+    }
+    {
+      prop = AnimProp.opacity
+      from = 1
+      to = 0
+      delay = SPECIAL_HIT_NOTIFICATION_SHOW_TIME + HITBOX_FADE_OUT_TIME
+      duration = HITBOX_FADE_OUT_TIME
+      trigger = torpedoHitAnimShowTrigger
+    }
+  ]
+  children = [
+    torpedoHintImage
+    {
+      rendObj = ROBJ_TEXT
+      text = loc("special_hit_event/torpedo_hit")
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_BOTTOM
+      color = 0xFFFFFFFF
+      font = Fonts.medium_text_hud
+      fontFx = FFT_BLUR
+      fontFxColor = 0xAAE02500
+      fontFxFactor = 48
+      fontFxOffsX = hdpx(1)
     }
   ]
 }
@@ -379,11 +461,12 @@ let simpleHitNotifications = function() {
   return res
 }
 
-let hitNotifications = @() {
+let hitNotifications = {
   size = flex()
   children = [
-    cidadelHitNotification
+    citadelHitNotification
     simpleHitNotifications
+    torpedoHitNotification
   ]
 }
 

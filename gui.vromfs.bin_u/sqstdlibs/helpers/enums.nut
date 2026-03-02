@@ -1,4 +1,4 @@
-let u = require("u.nut")
+let { toString } = require("%sqStdLibs/helpers/toString.nut")
 
 function isTable(v) {return type(v)=="table"}
 function isArray(v) {return type(v)=="array"}
@@ -80,17 +80,11 @@ function addType(enumTable, typeTemplate, typeName, typeDefinition, enumTablePer
 
   typeTbl.clear()
   typeTbl.__update(typeTemplate ?? {}, typeDefinition)
+  if (enumTable?[typeName] == typeTbl) 
+    return typeTbl
 
   enumTable[typeName] <- typeTbl
-
-  local types = enumTable?.types
-  if (isArray(types))
-    u.appendOnce(typeTbl, types)
-  else {
-    assertOnce(
-      "Not found types array",
-      $"Unable to find 'types' array in enum table (type: {typeName})." )
-  }
+  enumTable.types.append(typeTbl)
   return typeTbl
 }
 
@@ -107,9 +101,16 @@ function addType(enumTable, typeTemplate, typeName, typeDefinition, enumTablePer
 
 
 function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey = null, enumTablePersistId = null) {
-  let typeTemplate = enumTable?.template
+  let { template = null, types = null } = enumTable
+  if (type(types) !="array") {
+    assertOnce(
+      "Not found types array",
+      $"Unable to find 'types' array in enum table /*typesToAdd = {toString(typesToAdd, 2)}*/")
+    return
+  }
+
   foreach (typeName, typeDefinition in typesToAdd) {
-    local typeTbl = addType(enumTable, typeTemplate, typeName, typeDefinition, enumTablePersistId)
+    local typeTbl = addType(enumTable, template, typeName, typeDefinition, enumTablePersistId)
     if (addTypeNameKey)
       typeTbl[addTypeNameKey] <- typeName
     if (typeConstructor != null)

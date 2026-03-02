@@ -36,7 +36,8 @@ def try_shot_loop(var sound_event : SoundEvent&; turret_owner : EntityId; pos : 
 
 
 def is_oneshot(gun : Gun; firing_mode : uint)
-  return gun_getFiringMode(gun, int(firing_mode)).modeType != EFiringModeType.EFM_AUTOMATIC
+  assume firingMode = gun_getFiringMode(gun, int(firing_mode))
+  return firingMode.modeType == EFiringModeType.EFM_MANUAL || firingMode.modeType == EFiringModeType.EFM_BURST && firingMode.burstSize == 1
 
 
 def abandon_shot_loop(var sound_event : SoundEvent&; turret__owner : EntityId)
@@ -117,13 +118,15 @@ def gun_sound_on_appear(evt : Event;
 
 
 def on_shot_grain(launch_pos : float3;
-                  is_oneshot : bool;
+                  gun : Gun;
+                  firing_mode : uint;
                   is_watched : bool;
                   var sound_event : SoundEvent&;
                   var grain_TTL : float&;
                   gun__owner : EntityId;
                   turret__owner : EntityId;
                   time_between_shots : float;
+                  var num_shots : int&;
                   time_between_shots_mad : float2;
                   var shot_loop_timeout : float&;
                   shot_path : Object;
@@ -138,17 +141,34 @@ def on_shot_grain(launch_pos : float3;
     let path = "{gun_sound__prefix}{make_gun_shot_sound_grain_path_str(shot_path, tags, is_watched)}"
     sound_event |> play(path, launch_pos)
     sound_event.abandonOnReset = true
+    num_shots = 0
+
+  var fwd = float3(1, 0, 0)
+  var up = float3(0, 1, 0)
+  query(gun__owner) <| $ [es(REQUIRE_NOT=watchedByPlr)] (wt_enemy_reverb_sound__value : float; transform : float3x4)
+    set_var_optional(sound_event, "reverbindoor", wt_enemy_reverb_sound__value)
+    fwd = -transform[0]
+    up = transform[1]
 
   if is_valid_handle_value(sound_event)
-    set_pos(sound_event, launch_pos)
+    let vel = float3(0, 0, 0)
+    set_pos_and_ori(sound_event, launch_pos, vel, fwd, up)
     if is_watched
       set_var_optional(sound_event, "mat", float(get_smid_from_gun_owner(gun__owner)))
 
   set_var_optional(sound_event, "on_shot", 1.)
-  shot_loop_timeout = (time_between_shots * time_between_shots_mad.x + time_between_shots_mad.y)
+  num_shots++
+  shot_loop_timeout = max(0.15, (time_between_shots * time_between_shots_mad.x + time_between_shots_mad.y))
 
-  if !is_watched || is_oneshot
+  assume firingMode = gun_getFiringMode(gun, int(firing_mode))
+  let isOneshot = firingMode.modeType == EFiringModeType.EFM_MANUAL || firingMode.modeType == EFiringModeType.EFM_BURST && firingMode.burstSize == 1
+  let burstSize = firingMode.modeType == EFiringModeType.EFM_BURST ? firingMode.burstSize : INT_MAX
+
+  if !is_watched || isOneshot || num_shots % burstSize == 0
     shot_loop_timeout = time_between_shots / 3.
+
+
+  reset_wt_shooting_ambient_timer()
 
 [es(tag=sound, on_event=EventStopShoot, REQUIRE=gunSound)]
 def gun_sound_on_stop_shot(evt : Event;
@@ -168,6 +188,7 @@ def gun_sound_on_shot(pos : float3;
                       gun_sound__forceOneshotEnemy : bool;
                       gun_sound__startLoopWithNOneshots : int;
                       var gun_sound__numShotsInLoop : int&;
+                      var gun_sound__numShots : int&;
                       var gun_sound__event : SoundEvent&;
                       gun_sound__playerTimeBetweenShotsMad : float2;
                       var gun_sound__shotLoopTimeout : float&;
@@ -180,13 +201,15 @@ def gun_sound_on_shot(pos : float3;
   if sound_banks_is_master_preset_loaded()
     if gun_sound__hasGrain
       on_shot_grain(pos,
-                    is_oneshot(gun, firing_mode),
+                    gun,
+                    firing_mode,
                     is_watched,
                     gun_sound__event,
                     gun_sound__grainTTL,
                     gun__owner,
                     turret__owner,
                     gun__timeBetweenShots,
+                    gun_sound__numShots,
                     gun_sound__playerTimeBetweenShotsMad,
                     gun_sound__shotLoopTimeout,
                     gun_sound__shotPath,
@@ -227,6 +250,7 @@ def gun_sound_on_net_shot(evt : CmdNetShot;
                           gun_sound__playerTimeBetweenShotsMad : float2;
                           var gun_sound__shotLoopTimeout : float&;
                           var gun_sound__grainTTL : float&;
+                          var gun_sound__numShots : int&;
                           gun__owner : EntityId;
                           turret__owner = INVALID_ENTITY_ID;
                           @shared_comp gun_sound__shotPath : Object;
@@ -251,6 +275,7 @@ def gun_sound_on_net_shot(evt : CmdNetShot;
                     gun_sound__forceOneshotEnemy,
                     gun_sound__startLoopWithNOneshots,
                     gun_sound__numShotsInLoop,
+                    gun_sound__numShots,
                     gun_sound__event,
                     gun_sound__playerTimeBetweenShotsMad,
                     gun_sound__shotLoopTimeout,
@@ -277,6 +302,7 @@ def gun_sound_on_shot_evt(evt : EventShot;
                           gun_sound__playerTimeBetweenShotsMad : float2;
                           var gun_sound__shotLoopTimeout : float&;
                           var gun_sound__grainTTL : float&;
+                          var gun_sound__numShots : int&;
                           gun__owner : EntityId;
                           turret__owner = INVALID_ENTITY_ID;
                           @shared_comp gun_sound__shotPath : Object;
@@ -300,6 +326,7 @@ def gun_sound_on_shot_evt(evt : EventShot;
                     gun_sound__forceOneshotEnemy,
                     gun_sound__startLoopWithNOneshots,
                     gun_sound__numShotsInLoop,
+                    gun_sound__numShots,
                     gun_sound__event,
                     gun_sound__playerTimeBetweenShotsMad,
                     gun_sound__shotLoopTimeout,
@@ -332,6 +359,7 @@ def gun_sound_update(info : ParallelUpdateFrameDelayed;
                      gun_sound__lastFiringMode : int;
                      var gun_sound__numShotsInLoop : int&;
                      gun_sound__hasGrain : bool;
+                     var gun_sound__numShots : int&;
                      var gun_sound__event : SoundEvent&;
                      var gun_sound__grainTTL : float&;
                      gun__overheat : float = 0.;
@@ -354,6 +382,7 @@ def gun_sound_update(info : ParallelUpdateFrameDelayed;
                         gun_sound__forceOneshotEnemy,
                         gun_sound__startLoopWithNOneshots,
                         gun_sound__numShotsInLoop,
+                        gun_sound__numShots,
                         gun_sound__event,
                         gun_sound__playerTimeBetweenShotsMad,
                         gun_sound__shotLoopTimeout,
@@ -371,6 +400,7 @@ def gun_sound_update(info : ParallelUpdateFrameDelayed;
     if !is_shooting(gun_sound__shotLoopTimeout)
       if gun_sound__hasGrain
         set_var_optional(gun_sound__event, "on_shot", 0.)
+        gun_sound__numShots = 0
       else
         abandon_shot_loop(gun_sound__event, turret__owner)
 

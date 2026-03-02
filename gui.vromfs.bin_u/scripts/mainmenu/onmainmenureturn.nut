@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { DM_VIEWER_ARMOR, DM_VIEWER_XRAY } = require("hangar")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
-let { claimRegionalUnlockRewards } = require("%scripts/unlocks/regionalUnlocks.nut")
+let { claimRegionalUnlockRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
@@ -41,6 +41,8 @@ let { eventbus_subscribe } = require("eventbus")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { showUserSightMigrationPopupIfNeeded } = require("%scripts/options/tankSightMigrate.nut")
 let { checkLogoutScheduled } = require("%scripts/login/logout.nut")
+let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
+let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
 
 let delayed_gblk_error_popups = []
 function showGblkErrorPopup(errCode, path) {
@@ -96,7 +98,7 @@ function onMainMenuReturn(handler, isAfterLogin) {
   if (isAllowPopups)
     handler.doWhenActive(@() checkShowGpuBenchmarkWnd())
 
-  handler.doWhenActive(@() ::checkNewNotificationUserlogs())
+  handler.doWhenActive(@() checkNewNotificationUserlogs())
   handler.doWhenActive(@() checkNonApprovedResearches(true))
 
   if (isAllowPopups) {
@@ -129,7 +131,7 @@ function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("initPromoBlock")
 
     local hasModalObjectVal = guiScene.hasModalObject()
-    handler.doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal))
+    handler.doWhenActive(@() showPopupWndIfNeed(hasModalObjectVal))
     handler.doWhenActive(@() itemNotifications.checkOfferToBuyAtExpiration())
     handler.doWhenActive(@() checkGaijinPassReminder())
 

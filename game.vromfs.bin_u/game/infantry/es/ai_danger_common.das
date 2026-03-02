@@ -1,5 +1,7 @@
 module ai_danger_common shared
 
+require ecs
+require app
 require math
 require DagorMath
 require %appGame.infantry.es.walker_common
@@ -58,3 +60,43 @@ def calc_danger(cur_time, agent_dangers__maxDangerDist : float; danger : Danger 
 def calc_traceable_ratio(cur_time : float; dangerMeter : float; danger : Danger | #) : float
   let timeMult = min(5f, cur_time - danger.lastTraceTime)
   return dangerMeter * timeMult
+
+def add_agent_dangers_forced_target(agent_eid : EntityId; target_eid : EntityId)
+  query(agent_eid) <| $ [es] (transform aka agent_transform : float3x4;
+                              agent_dangers__forceTraceTargetWaitTime : float;
+                              var agent_dangers__forceTraceTargetToTime : float&;
+                              var agent_dangers__forceTraceTargetEid1 : EntityId&;
+                              var agent_dangers__forceTraceTargetEid2 : EntityId&)
+    var distSq0 = -1.0
+    query(target_eid) <| $ [es] (transform aka target_transform : float3x4)
+      distSq0 = distance_sq(target_transform[3], agent_transform[3])
+    if distSq0 < 0.0
+      return
+
+    let curTime = get_sync_time()
+    if curTime > agent_dangers__forceTraceTargetToTime
+      if agent_dangers__forceTraceTargetEid2 != INVALID_ENTITY_ID
+        agent_dangers__forceTraceTargetToTime = curTime + agent_dangers__forceTraceTargetWaitTime
+      else
+        agent_dangers__forceTraceTargetToTime = 0.0
+      agent_dangers__forceTraceTargetEid1 = agent_dangers__forceTraceTargetEid2
+      agent_dangers__forceTraceTargetEid2 = INVALID_ENTITY_ID
+
+    var distSq1 = -1.0
+    var distSq2 = -1.0
+    query(agent_dangers__forceTraceTargetEid1) <| $ [es] (transform aka target_transform : float3x4)
+      distSq1 = distance_sq(target_transform[3], agent_transform[3])
+    query(agent_dangers__forceTraceTargetEid2) <| $ [es] (transform aka target_transform : float3x4)
+      distSq2 = distance_sq(target_transform[3], agent_transform[3])
+
+    if distSq1 < 0.0
+      agent_dangers__forceTraceTargetEid1 = target_eid
+      agent_dangers__forceTraceTargetToTime = curTime + agent_dangers__forceTraceTargetWaitTime
+    elif distSq0 < distSq1
+      agent_dangers__forceTraceTargetEid2 = agent_dangers__forceTraceTargetEid1
+      agent_dangers__forceTraceTargetEid1 = target_eid
+      agent_dangers__forceTraceTargetToTime = curTime + agent_dangers__forceTraceTargetWaitTime
+    elif distSq2 < 0.0
+      agent_dangers__forceTraceTargetEid2 = target_eid
+    elif distSq0 < distSq2
+      agent_dangers__forceTraceTargetEid2 = target_eid

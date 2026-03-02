@@ -10,6 +10,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_unittags_blk } = require("blkGetters")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { isInFlight } = require("gameplayBinding")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let anyAirVehicle = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ]
 let anyWaterVehicle = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ]
@@ -102,25 +103,21 @@ function fillTooltipsIds(holderObj, unit, params = {}) {
     if (!isInArray(unitType, data.showForTypes))
       continue
 
-    let tooltipObjs = []
-
-    local tooltipObj = holderObj.findObject($"{objId}-tooltip")
-    if (tooltipObj?.isValid()) {
-      tooltipObjs.append(tooltipObj)
-      tooltipObj = tooltipObj.findObject($"{objId}-tooltip-obj")
-      if (tooltipObj?.isValid())
-        tooltipObjs.append(tooltipObj)
-    }
-
-    let objectsWithSomeTooltip = data?.objectsWithSomeTooltip ?? []
-    if (objectsWithSomeTooltip.len() > 0)
-      objectsWithSomeTooltip.each(function(o) {
-        let tObj = holderObj.findObject(o)
-        if (tObj?.isValid())
-          tooltipObjs.append(tObj)
-      })
     params.__update({ unitType })
-    tooltipObjs.each(@(t) t.tooltipId = objectsWithTooltip[objId].getTooltipId(unit.name, params))
+    let tooltipId = objectsWithTooltip[objId].getTooltipId(unit.name, params)
+    let tooltipNest = holderObj.findObject($"{objId}-tooltip")
+    if (!tooltipNest?.isValid())
+      continue
+
+    if (showConsoleButtons.get())
+      tooltipNest.tooltipId = tooltipId
+    else {
+      let tooltipObj = tooltipNest.findObject($"{objId}-tooltip-obj")
+      if (tooltipObj?.isValid()) {
+        tooltipNest.tooltip = "$tooltipObj"
+        tooltipObj.tooltipId = tooltipId
+      }
+    }
   }
 }
 

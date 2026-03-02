@@ -31,7 +31,7 @@ let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 
 local options = {
   types = []
@@ -258,7 +258,8 @@ options.addTypes({
       let unitType = options.UNITTYPE.value
       let country = options.COUNTRY.value
       this.values = []
-      for (local rank = 1; rank <= MAX_COUNTRY_RANK; rank++)
+      let maxRank = maxCountryRank.get()
+      for (local rank = 1; rank <= maxRank; rank++)
         if (hasUnitAtRank(rank, unitType, country, true, false))
           this.values.append(rank)
       this.items = this.values.map(@(r) {
@@ -384,7 +385,8 @@ options.addTypes({
 
       
       for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
-        let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, unit, false)
+        let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity,
+          unit, null, false)
         if (gunIdx == curGunIdx)
           continue
 

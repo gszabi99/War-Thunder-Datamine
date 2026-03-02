@@ -113,6 +113,7 @@ let widgets = @() {
     isPlayingReplay
     widgetsState
   ]
+  size = flex()
   children = widgetsState.get().map(@(widget) {
     size = widget?.transform.size ?? [sw(100), sh(100)]
     pos = widget?.transform.pos ?? [0, 0]

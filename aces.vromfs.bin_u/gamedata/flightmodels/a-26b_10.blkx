@@ -574,8 +574,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -627,8 +626,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1307,8 +1305,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1368,8 +1366,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1429,8 +1427,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1490,8 +1488,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1551,8 +1549,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2451,14 +2449,72 @@
     }
   },
   "commonWeapons": {
-    "hideNodes": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "a_26b_default",
+        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_100lbs.blk"
+      },
+      {
+        "name": "a_26b_10_250lbs",
+        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_250lbs.blk"
+      },
+      {
+        "name": "a_26b_10_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_500lbs.blk"
+      },
+      {
+        "name": "a_26b_10_1000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_1000lbs.blk"
+      },
+      {
+        "name": "a_26b_10_1000lbs_ap",
+        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_1000lbs_ap.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "a_26b_10_2x_torp",
+        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_torpedo.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "a_26b_10_5in_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_5in_rockets.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 2500.0,
+    "maxloadMassLeftConsoles": 500.0,
+    "maxloadMassRightConsoles": 500.0,
+    "maxDisbalance": 400.0,
+    "HideNodes": {
       "node": [
         "rocket_pylon_l",
         "rocket_pylon_r",
-        "rocket_pylon_r2",
+        "bomb_pylon_1",
+        "bomb_pylon_2",
+        "bomb_pylon_3",
+        "bomb_pylon_4",
         "nose_37_2_50",
         "nose_37_4_50",
         "nose_37_37",
+        "nose_6_50",
+        "flare1",
+        "flare2",
+        "flare3",
+        "flare4",
+        "flare5",
+        "flare6",
         "flare7",
         "flare8",
         "flare9",
@@ -2469,282 +2525,14 @@
         "flare14"
       ]
     },
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun1_dm",
-        "spread": 1.0,
-        "bullets": 400
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun2_dm",
-        "spread": 1.0,
-        "bullets": 400
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection2",
-        "dm": "mgun3_dm",
-        "spread": 1.0,
-        "bullets": 400
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection2",
-        "dm": "mgun4_dm",
-        "spread": 1.0,
-        "bullets": 400
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare5",
-        "flash": "flare5",
-        "shell": "emtr_shellrejection3",
-        "dm": "mgun5_dm",
-        "spread": 1.0,
-        "bullets": 400
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare6",
-        "flash": "flare6",
-        "shell": "emtr_shellrejection3",
-        "dm": "mgun6_dm",
-        "spread": 1.0,
-        "bullets": 400
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunBrowning50_turret_late.blk",
-        "breechInCockpit": true,
-        "emitter": "flare15",
-        "flash": "flare15",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 500,
-        "traceOffset": 1,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
-            90.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -1.0,
-            1.0
-          ],
-          "pitch": [
-            -5.0,
-            25.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunBrowning50_turret_late.blk",
-        "breechInCockpit": true,
-        "emitter": "flare16",
-        "flash": "flare16",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun2_dm",
-        "partsDP": "gun2_dm",
-        "bullets": 500,
-        "traceOffset": 2,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
-            90.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -1.0,
-            1.0
-          ],
-          "pitch": [
-            -5.0,
-            25.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning50_turret_late.blk",
-        "breechInCockpit": true,
-        "emitter": "flare17",
-        "flash": "flare17",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun3_dm",
-        "partsDP": "gun3_dm",
-        "bullets": 500,
-        "traceOffset": 1,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun2"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -90.0,
-            5.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -180.0,
-              -150.0
-            ],
-            "pitch": [
-              -45.0,
-              90.0
-            ]
-          },
-          {
-            "yaw": [
-              150.0,
-              180.0
-            ],
-            "pitch": [
-              -45.0,
-              90.0
-            ]
-          }
-        ],
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -160.0,
-            -90.0,
-            -30.0
-          ],
-          "lim2": [
-            -160.0,
-            160.0,
-            -90.0,
-            5.0
-          ],
-          "lim3": [
-            160.0,
-            180.0,
-            -90.0,
-            -30.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning50_turret_late.blk",
-        "breechInCockpit": true,
-        "emitter": "flare18",
-        "flash": "flare18",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun4_dm",
-        "partsDP": "gun4_dm",
-        "bullets": 500,
-        "traceOffset": 2,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun2"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -90.0,
-            5.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -180.0,
-              -150.0
-            ],
-            "pitch": [
-              -45.0,
-              90.0
-            ]
-          },
-          {
-            "yaw": [
-              150.0,
-              180.0
-            ],
-            "pitch": [
-              -45.0,
-              90.0
-            ]
-          }
-        ],
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -160.0,
-            -90.0,
-            -30.0
-          ],
-          "lim2": [
-            -160.0,
-            160.0,
-            -90.0,
-            5.0
-          ],
-          "lim3": [
-            160.0,
-            180.0,
-            -90.0,
-            -30.0
-          ]
-        }
-      }
-    ],
-    "hideDmParts": {
+    "HideDmParts": {
       "node": [
+        "mgun1_dm",
+        "mgun2_dm",
+        "mgun3_dm",
+        "mgun4_dm",
+        "mgun5_dm",
+        "mgun6_dm",
         "mgun7_dm",
         "mgun8_dm",
         "mgun9_dm",
@@ -2754,60 +2542,2171 @@
         "cannon1_dm",
         "cannon2_dm"
       ]
-    }
-  },
-  "weapon_presets": {
-    "preset": [
+    },
+    "WeaponSlot": [
       {
-        "name": "a_26b_default",
-        "blk": "gameData/FlightModels/weaponPresets/a_26b_default.blk"
-      },
-      {
-        "name": "a_26b_10_100lbs",
-        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_100lbs.blk",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
-            "iconType": "bombs_small_group_x4",
-            "amountPerTier": 4.0,
-            "tier": [
+        "index": 0,
+        "WeaponPreset": [
+          {
+            "name": "default_common",
+            "ShowNodes": {
+              "node": [
+                "nose_6_50",
+                "flare1",
+                "flare2",
+                "flare3",
+                "flare4",
+                "flare5",
+                "flare6"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "mgun1_dm",
+                "mgun2_dm",
+                "mgun3_dm",
+                "mgun4_dm",
+                "mgun5_dm",
+                "mgun6_dm",
+                "mgun7_dm",
+                "mgun8_dm"
+              ]
+            },
+            "Weapon": [
               {
-                "idx": 4
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "shell": "emtr_shellrejection1",
+                "dm": "mgun1_dm",
+                "spread": 1.0,
+                "bullets": 400
               },
               {
-                "idx": 5
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "shell": "emtr_shellrejection1",
+                "dm": "mgun2_dm",
+                "spread": 1.0,
+                "bullets": 400
               },
               {
-                "idx": 7
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+                "emitter": "flare3",
+                "flash": "flare3",
+                "shell": "emtr_shellrejection2",
+                "dm": "mgun3_dm",
+                "spread": 1.0,
+                "bullets": 400
               },
               {
-                "idx": 8
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+                "emitter": "flare4",
+                "flash": "flare4",
+                "shell": "emtr_shellrejection2",
+                "dm": "mgun4_dm",
+                "spread": 1.0,
+                "bullets": 400
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+                "emitter": "flare5",
+                "flash": "flare5",
+                "shell": "emtr_shellrejection3",
+                "dm": "mgun5_dm",
+                "spread": 1.0,
+                "bullets": 400
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+                "emitter": "flare6",
+                "flash": "flare6",
+                "shell": "emtr_shellrejection3",
+                "dm": "mgun6_dm",
+                "spread": 1.0,
+                "bullets": 400
+              },
+              {
+                "trigger": "gunner1",
+                "blk": "gameData/Weapons/gunBrowning50_turret_late.blk",
+                "breechInCockpit": true,
+                "emitter": "flare15",
+                "flash": "flare15",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun1_dm",
+                "partsDP": "gun1_dm",
+                "bullets": 500,
+                "traceOffset": 1,
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    90.0
+                  ]
+                },
+                "limitsDeadzone": {
+                  "yaw": [
+                    -1.0,
+                    1.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner1",
+                "blk": "gameData/Weapons/gunBrowning50_turret_late.blk",
+                "breechInCockpit": true,
+                "emitter": "flare16",
+                "flash": "flare16",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun2_dm",
+                "partsDP": "gun2_dm",
+                "bullets": 500,
+                "traceOffset": 2,
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    90.0
+                  ]
+                },
+                "limitsDeadzone": {
+                  "yaw": [
+                    -1.0,
+                    1.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner2",
+                "blk": "gameData/Weapons/gunBrowning50_turret_late.blk",
+                "breechInCockpit": true,
+                "emitter": "flare17",
+                "flash": "flare17",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun3_dm",
+                "partsDP": "gun3_dm",
+                "bullets": 500,
+                "traceOffset": 1,
+                "turret": {
+                  "head": "turret2",
+                  "gun": "gun2"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    5.0
+                  ]
+                },
+                "limitsDeadzone": [
+                  {
+                    "yaw": [
+                      -180.0,
+                      -150.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "yaw": [
+                      150.0,
+                      180.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  }
+                ],
+                "limitsTable": {
+                  "lim1": [
+                    -180.0,
+                    -160.0,
+                    -90.0,
+                    -30.0
+                  ],
+                  "lim2": [
+                    -160.0,
+                    160.0,
+                    -90.0,
+                    5.0
+                  ],
+                  "lim3": [
+                    160.0,
+                    180.0,
+                    -90.0,
+                    -30.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner2",
+                "blk": "gameData/Weapons/gunBrowning50_turret_late.blk",
+                "breechInCockpit": true,
+                "emitter": "flare18",
+                "flash": "flare18",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun4_dm",
+                "partsDP": "gun4_dm",
+                "bullets": 500,
+                "traceOffset": 2,
+                "turret": {
+                  "head": "turret2",
+                  "gun": "gun2"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    5.0
+                  ]
+                },
+                "limitsDeadzone": [
+                  {
+                    "yaw": [
+                      -180.0,
+                      -150.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "yaw": [
+                      150.0,
+                      180.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  }
+                ],
+                "limitsTable": {
+                  "lim1": [
+                    -180.0,
+                    -160.0,
+                    -90.0,
+                    -30.0
+                  ],
+                  "lim2": [
+                    -160.0,
+                    160.0,
+                    -90.0,
+                    5.0
+                  ],
+                  "lim3": [
+                    160.0,
+                    180.0,
+                    -90.0,
+                    -30.0
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "1x37_4_50",
+            "reqModification": "a_26b_10_1x37_4_50_mod",
+            "ShowNodes": {
+              "node": [
+                "nose_37_4_50",
+                "flare10",
+                "flare11",
+                "flare12",
+                "flare13",
+                "flare14"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "mgun9_dm",
+                "mgun10_dm",
+                "mgun11_dm",
+                "mgun12_dm",
+                "cannon2_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonM9.blk",
+                "emitter": "flare10",
+                "flash": "flare10",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon2_dm",
+                "spread": 1.0,
+                "bullets": 75
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+                "emitter": "flare11",
+                "flash": "flare11",
+                "shell": "emtr_shellrejection2",
+                "dm": "mgun9_dm",
+                "spread": 1.0,
+                "bullets": 400
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+                "emitter": "flare12",
+                "flash": "flare12",
+                "shell": "emtr_shellrejection2",
+                "dm": "mgun10_dm",
+                "spread": 1.0,
+                "bullets": 400
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+                "emitter": "flare13",
+                "flash": "flare13",
+                "shell": "emtr_shellrejection3",
+                "dm": "mgun11_dm",
+                "spread": 1.0,
+                "bullets": 400
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+                "emitter": "flare14",
+                "flash": "flare14",
+                "shell": "emtr_shellrejection3",
+                "dm": "mgun12_dm",
+                "spread": 1.0,
+                "bullets": 400
+              },
+              {
+                "trigger": "gunner1",
+                "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+                "breechInCockpit": true,
+                "emitter": "flare15",
+                "flash": "flare15",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun1_dm",
+                "partsDP": "gun1_dm",
+                "bullets": 500,
+                "traceOffset": 1,
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    90.0
+                  ]
+                },
+                "limitsDeadzone": {
+                  "yaw": [
+                    -1.0,
+                    1.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner1",
+                "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+                "breechInCockpit": true,
+                "emitter": "flare16",
+                "flash": "flare16",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun2_dm",
+                "partsDP": "gun2_dm",
+                "bullets": 500,
+                "traceOffset": 2,
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    90.0
+                  ]
+                },
+                "limitsDeadzone": {
+                  "yaw": [
+                    -1.0,
+                    1.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner2",
+                "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+                "breechInCockpit": true,
+                "emitter": "flare17",
+                "flash": "flare17",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun3_dm",
+                "partsDP": "gun3_dm",
+                "bullets": 500,
+                "traceOffset": 1,
+                "turret": {
+                  "head": "turret2",
+                  "gun": "gun2"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    5.0
+                  ]
+                },
+                "limitsDeadzone": [
+                  {
+                    "yaw": [
+                      -180.0,
+                      -150.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "yaw": [
+                      150.0,
+                      180.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  }
+                ],
+                "limitsTable": {
+                  "lim1": [
+                    -180.0,
+                    -160.0,
+                    -90.0,
+                    -30.0
+                  ],
+                  "lim2": [
+                    -160.0,
+                    160.0,
+                    -90.0,
+                    5.0
+                  ],
+                  "lim3": [
+                    160.0,
+                    180.0,
+                    -90.0,
+                    -30.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner2",
+                "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+                "breechInCockpit": true,
+                "emitter": "flare18",
+                "flash": "flare18",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun4_dm",
+                "partsDP": "gun4_dm",
+                "bullets": 500,
+                "traceOffset": 2,
+                "turret": {
+                  "head": "turret2",
+                  "gun": "gun2"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    5.0
+                  ]
+                },
+                "limitsDeadzone": [
+                  {
+                    "yaw": [
+                      -180.0,
+                      -150.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "yaw": [
+                      150.0,
+                      180.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  }
+                ],
+                "limitsTable": {
+                  "lim1": [
+                    -180.0,
+                    -160.0,
+                    -90.0,
+                    -30.0
+                  ],
+                  "lim2": [
+                    -160.0,
+                    160.0,
+                    -90.0,
+                    5.0
+                  ],
+                  "lim3": [
+                    160.0,
+                    180.0,
+                    -90.0,
+                    -30.0
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "2x37",
+            "reqModification": "a_26b_10_2x37_mod",
+            "ShowNodes": {
+              "node": [
+                "nose_37_37",
+                "flare7",
+                "flare10"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cannon1_dm",
+                "cannon2_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonM9.blk",
+                "emitter": "flare7",
+                "flash": "flare7",
+                "shell": "emtr_shellrejection3",
+                "dm": "cannon1_dm",
+                "spread": 1.0,
+                "bullets": 75
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonM9.blk",
+                "emitter": "flare10",
+                "flash": "flare10",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon2_dm",
+                "spread": 1.0,
+                "bullets": 75
+              },
+              {
+                "trigger": "gunner1",
+                "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+                "breechInCockpit": true,
+                "emitter": "flare15",
+                "flash": "flare15",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun1_dm",
+                "partsDP": "gun1_dm",
+                "bullets": 500,
+                "traceOffset": 1,
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    90.0
+                  ]
+                },
+                "limitsDeadzone": {
+                  "yaw": [
+                    -1.0,
+                    1.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner1",
+                "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+                "breechInCockpit": true,
+                "emitter": "flare16",
+                "flash": "flare16",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun2_dm",
+                "partsDP": "gun2_dm",
+                "bullets": 500,
+                "traceOffset": 2,
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    90.0
+                  ]
+                },
+                "limitsDeadzone": {
+                  "yaw": [
+                    -1.0,
+                    1.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner2",
+                "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+                "breechInCockpit": true,
+                "emitter": "flare17",
+                "flash": "flare17",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun3_dm",
+                "partsDP": "gun3_dm",
+                "bullets": 500,
+                "traceOffset": 1,
+                "turret": {
+                  "head": "turret2",
+                  "gun": "gun2"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    5.0
+                  ]
+                },
+                "limitsDeadzone": [
+                  {
+                    "yaw": [
+                      -180.0,
+                      -150.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "yaw": [
+                      150.0,
+                      180.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  }
+                ],
+                "limitsTable": {
+                  "lim1": [
+                    -180.0,
+                    -160.0,
+                    -90.0,
+                    -30.0
+                  ],
+                  "lim2": [
+                    -160.0,
+                    160.0,
+                    -90.0,
+                    5.0
+                  ],
+                  "lim3": [
+                    160.0,
+                    180.0,
+                    -90.0,
+                    -30.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner2",
+                "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+                "breechInCockpit": true,
+                "emitter": "flare18",
+                "flash": "flare18",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun4_dm",
+                "partsDP": "gun4_dm",
+                "bullets": 500,
+                "traceOffset": 2,
+                "turret": {
+                  "head": "turret2",
+                  "gun": "gun2"
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    5.0
+                  ]
+                },
+                "limitsDeadzone": [
+                  {
+                    "yaw": [
+                      -180.0,
+                      -150.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  },
+                  {
+                    "yaw": [
+                      150.0,
+                      180.0
+                    ],
+                    "pitch": [
+                      -45.0,
+                      90.0
+                    ]
+                  }
+                ],
+                "limitsTable": {
+                  "lim1": [
+                    -180.0,
+                    -160.0,
+                    -90.0,
+                    -30.0
+                  ],
+                  "lim2": [
+                    -160.0,
+                    160.0,
+                    -90.0,
+                    5.0
+                  ],
+                  "lim3": [
+                    160.0,
+                    180.0,
+                    -90.0,
+                    -30.0
+                  ]
+                }
               }
             ]
           }
+        ]
+      },
+      {
+        "index": 1,
+        "tier": 9,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small_group_x7",
+          "name": "hvar_x7_left",
+          "reqModification": "frc_mk5",
+          "ShowNodes": {
+            "node": "rocket_pylon_l"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_1",
+              "bullets": 1,
+              "order": 1
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_3",
+              "bullets": 1,
+              "order": 3
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_5",
+              "bullets": 1,
+              "order": 5
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_7",
+              "bullets": 1,
+              "order": 7
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_9",
+              "bullets": 1,
+              "order": 9
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_11",
+              "bullets": 1,
+              "order": 11
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_13",
+              "bullets": 1,
+              "order": 13
+            }
+          ],
+          "BannedWeaponPreset": [
+            {
+              "slot": 2,
+              "preset": "100lbs_wing_left_out"
+            },
+            {
+              "slot": 2,
+              "preset": "250lbs_wing_left_out"
+            },
+            {
+              "slot": 2,
+              "preset": "500lbs_wing_left_out"
+            },
+            {
+              "slot": 3,
+              "preset": "100lbs_wing_left_in"
+            },
+            {
+              "slot": 3,
+              "preset": "250lbs_wing_left_in"
+            },
+            {
+              "slot": 3,
+              "preset": "500lbs_wing_left_in"
+            }
+          ]
         }
       },
       {
-        "name": "a_26b_10_250lbs",
-        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_250lbs.blk",
-        "reqModification": "b-25_sbc"
+        "index": 2,
+        "tier": 8,
+        "order": 15,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "100lbs_wing_left_out",
+            "ShowNodes": {
+              "node": "bomb_pylon_1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "emitter": "bomb250lb10",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lbs_wing_left_out",
+            "reqModification": "b-25_sbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb250lb10",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lbs_wing_left_out",
+            "reqModification": "btd_sbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb500lb8",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
       },
       {
-        "name": "a_26b_10_500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_500lbs.blk",
-        "reqModification": "btd_sbc"
+        "index": 3,
+        "tier": 7,
+        "order": 17,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "100lbs_wing_left_in",
+            "ShowNodes": {
+              "node": "bomb_pylon_2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "emitter": "bomb250lb11",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lbs_wing_left_in",
+            "reqModification": "b-25_sbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb250lb11",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lbs_wing_left_in",
+            "reqModification": "btd_sbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb500lb9",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
       },
       {
-        "name": "a_26b_10_1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_1000lbs.blk",
-        "reqModification": "btd_mbc"
+        "index": 4,
+        "tier": 6,
+        "order": 19,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group_x8",
+            "name": "100lbs_int",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb1",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb2",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb3",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb4",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb5",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb6",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb7",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb8",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb9",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb10",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb11",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb12",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb13",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb14",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb15",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb100lb16",
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x8",
+            "name": "250lbs_int",
+            "reqModification": "b-25_sbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250lb1",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250lb2",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250lb3",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250lb4",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250lb5",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250lb6",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250lb7",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250lb8",
+                "bullets": 1,
+                "machLimit": 1.01
+              }
+            ],
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x6",
+            "name": "500lbs_int",
+            "reqModification": "btd_sbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb500lb1",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb500lb2",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb500lb3",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb500lb4",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb500lb5",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb500lb6",
+                "bullets": 1,
+                "machLimit": 1.01
+              }
+            ],
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_special_group_x4",
+            "name": "1000lbs_int",
+            "reqModification": "btd_mbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb1000lb1",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb1000lb2",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb1000lb3",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb1000lb4",
+                "bullets": 1,
+                "machLimit": 1.01
+              }
+            ],
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x4",
+            "name": "1000lbs_ap_int",
+            "reqModification": "btd_mbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anmk33_box_ap.blk",
+                "emitter": "bomb1000lb1",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anmk33_box_ap.blk",
+                "emitter": "bomb1000lb2",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anmk33_box_ap.blk",
+                "emitter": "bomb1000lb3",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anmk33_box_ap.blk",
+                "emitter": "bomb1000lb4",
+                "bullets": 1,
+                "machLimit": 1.01
+              }
+            ],
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "air_torpedo_x2",
+            "name": "torp_x2_int",
+            "reqModification": "tbf_itc",
+            "Weapon": [
+              {
+                "trigger": "torpedoes",
+                "blk": "gameData/Weapons/torpedoes/us_mk13_torpedo_no_case.blk",
+                "emitter": "torp1",
+                "bullets": 1,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "torpedoes",
+                "blk": "gameData/Weapons/torpedoes/us_mk13_torpedo_no_case.blk",
+                "emitter": "torp2",
+                "bullets": 1,
+                "machLimit": 1.01
+              }
+            ],
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          }
+        ]
       },
       {
-        "name": "a_26b_10_1000lbs_ap",
-        "blk": "gameData/FlightModels/weaponPresets/a_26b_10_1000lbs_ap.blk",
-        "reqModification": "btd_mbc",
-        "weaponConfig": {
-          "presetType": "AIR_TO_SEA"
+        "index": 5,
+        "tier": 5,
+        "order": 18,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "100lbs_wing_right_in",
+            "ShowNodes": {
+              "node": "bomb_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "emitter": "bomb250lb12",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lbs_wing_right_in",
+            "reqModification": "b-25_sbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb250lb12",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lbs_wing_right_in",
+            "reqModification": "btd_sbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb500lb10",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 4,
+        "order": 16,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "100lbs_wing_right_out",
+            "ShowNodes": {
+              "node": "bomb_pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "emitter": "bomb250lb9",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lbs_wing_right_out",
+            "reqModification": "b-25_sbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb250lb9",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lbs_wing_right_out",
+            "reqModification": "btd_sbc",
+            "ShowNodes": {
+              "node": "bomb_pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb500lb7",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small_group_x7",
+          "name": "hvar_x7_right",
+          "reqModification": "frc_mk5",
+          "ShowNodes": {
+            "node": "rocket_pylon_r"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_2",
+              "bullets": 1,
+              "order": 2
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_4",
+              "bullets": 1,
+              "order": 4
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_6",
+              "bullets": 1,
+              "order": 6
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_8",
+              "bullets": 1,
+              "order": 8
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_10",
+              "bullets": 1,
+              "order": 10
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_12",
+              "bullets": 1,
+              "order": 12
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_14",
+              "bullets": 1,
+              "order": 14
+            }
+          ],
+          "BannedWeaponPreset": [
+            {
+              "slot": 5,
+              "preset": "100lbs_wing_right_in"
+            },
+            {
+              "slot": 5,
+              "preset": "250lbs_wing_right_in"
+            },
+            {
+              "slot": 5,
+              "preset": "500lbs_wing_right_in"
+            },
+            {
+              "slot": 6,
+              "preset": "100lbs_wing_right_out"
+            },
+            {
+              "slot": 6,
+              "preset": "250lbs_wing_right_out"
+            },
+            {
+              "slot": 6,
+              "preset": "500lbs_wing_right_out"
+            }
+          ]
         }
       }
     ]
@@ -3099,588 +4998,30 @@
       "reqModification": "m9_belt_pack"
     },
     "a_26b_10_1x37_4_50_mod": {
+      "modClass": "weapon",
       "tier": 1,
       "invertEnableLogic": false,
       "turn_it_off": false,
       "effects": {
         "commonWeapons": {
-          "hideNodes": {
-            "node": [
-              "rocket_pylon_l",
-              "rocket_pylon_r",
-              "rocket_pylon_r2",
-              "nose_37_2_50",
-              "nose_37_37",
-              "nose_6_50",
-              "flare1",
-              "flare2",
-              "flare3",
-              "flare4",
-              "flare5",
-              "flare6",
-              "flare7",
-              "flare8",
-              "flare9"
-            ]
-          },
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonM9.blk",
-              "emitter": "flare10",
-              "flash": "flare10",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon2_dm",
-              "spread": 1.0,
-              "bullets": 75
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-              "emitter": "flare11",
-              "flash": "flare11",
-              "shell": "emtr_shellrejection2",
-              "dm": "mgun9_dm",
-              "spread": 1.0,
-              "bullets": 400
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-              "emitter": "flare12",
-              "flash": "flare12",
-              "shell": "emtr_shellrejection2",
-              "dm": "mgun10_dm",
-              "spread": 1.0,
-              "bullets": 400
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-              "emitter": "flare13",
-              "flash": "flare13",
-              "shell": "emtr_shellrejection3",
-              "dm": "mgun11_dm",
-              "spread": 1.0,
-              "bullets": 400
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-              "emitter": "flare14",
-              "flash": "flare14",
-              "shell": "emtr_shellrejection3",
-              "dm": "mgun12_dm",
-              "spread": 1.0,
-              "bullets": 400
-            },
-            {
-              "trigger": "gunner1",
-              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "flare15",
-              "flash": "flare15",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun1_dm",
-              "partsDP": "gun1_dm",
-              "bullets": 500,
-              "traceOffset": 1,
-              "turret": {
-                "head": "turret1",
-                "gun": "gun1"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -5.0,
-                  90.0
-                ]
-              },
-              "limitsDeadzone": {
-                "yaw": [
-                  -1.0,
-                  1.0
-                ],
-                "pitch": [
-                  -5.0,
-                  25.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner1",
-              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "flare16",
-              "flash": "flare16",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun2_dm",
-              "partsDP": "gun2_dm",
-              "bullets": 500,
-              "traceOffset": 2,
-              "turret": {
-                "head": "turret1",
-                "gun": "gun1"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -5.0,
-                  90.0
-                ]
-              },
-              "limitsDeadzone": {
-                "yaw": [
-                  -1.0,
-                  1.0
-                ],
-                "pitch": [
-                  -5.0,
-                  25.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner2",
-              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "flare17",
-              "flash": "flare17",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun3_dm",
-              "partsDP": "gun3_dm",
-              "bullets": 500,
-              "traceOffset": 1,
-              "turret": {
-                "head": "turret2",
-                "gun": "gun2"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -90.0,
-                  5.0
-                ]
-              },
-              "limitsDeadzone": [
-                {
-                  "yaw": [
-                    -180.0,
-                    -150.0
-                  ],
-                  "pitch": [
-                    -45.0,
-                    90.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    150.0,
-                    180.0
-                  ],
-                  "pitch": [
-                    -45.0,
-                    90.0
-                  ]
-                }
-              ],
-              "limitsTable": {
-                "lim1": [
-                  -180.0,
-                  -160.0,
-                  -90.0,
-                  -30.0
-                ],
-                "lim2": [
-                  -160.0,
-                  160.0,
-                  -90.0,
-                  5.0
-                ],
-                "lim3": [
-                  160.0,
-                  180.0,
-                  -90.0,
-                  -30.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner2",
-              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "flare18",
-              "flash": "flare18",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun4_dm",
-              "partsDP": "gun4_dm",
-              "bullets": 500,
-              "traceOffset": 2,
-              "turret": {
-                "head": "turret2",
-                "gun": "gun2"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -90.0,
-                  5.0
-                ]
-              },
-              "limitsDeadzone": [
-                {
-                  "yaw": [
-                    -180.0,
-                    -150.0
-                  ],
-                  "pitch": [
-                    -45.0,
-                    90.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    150.0,
-                    180.0
-                  ],
-                  "pitch": [
-                    -45.0,
-                    90.0
-                  ]
-                }
-              ],
-              "limitsTable": {
-                "lim1": [
-                  -180.0,
-                  -160.0,
-                  -90.0,
-                  -30.0
-                ],
-                "lim2": [
-                  -160.0,
-                  160.0,
-                  -90.0,
-                  5.0
-                ],
-                "lim3": [
-                  160.0,
-                  180.0,
-                  -90.0,
-                  -30.0
-                ]
-              }
-            }
-          ],
-          "hideDmParts": {
-            "node": [
-              "mgun1_dm",
-              "mgun2_dm",
-              "mgun3_dm",
-              "mgun4_dm",
-              "mgun5_dm",
-              "mgun6_dm",
-              "mgun7_dm",
-              "mgun8_dm",
-              "cannon1_dm"
-            ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "1x37_4_50"
           }
         }
       }
     },
     "a_26b_10_2x37_mod": {
+      "modClass": "weapon",
       "tier": 2,
       "invertEnableLogic": false,
       "turn_it_off": false,
       "reqModification": "a_26b_10_1x37_4_50_mod",
       "effects": {
         "commonWeapons": {
-          "hideNodes": {
-            "node": [
-              "rocket_pylon_l",
-              "rocket_pylon_r",
-              "rocket_pylon_r2",
-              "nose_37_2_50",
-              "nose_37_4_50",
-              "nose_6_50",
-              "flare1",
-              "flare2",
-              "flare3",
-              "flare4",
-              "flare5",
-              "flare6",
-              "flare8",
-              "flare9",
-              "flare11",
-              "flare12",
-              "flare13",
-              "flare14"
-            ]
-          },
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonM9.blk",
-              "emitter": "flare7",
-              "flash": "flare7",
-              "shell": "emtr_shellrejection3",
-              "dm": "cannon1_dm",
-              "spread": 1.0,
-              "bullets": 75
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonM9.blk",
-              "emitter": "flare10",
-              "flash": "flare10",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon2_dm",
-              "spread": 1.0,
-              "bullets": 75
-            },
-            {
-              "trigger": "gunner1",
-              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "flare15",
-              "flash": "flare15",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun1_dm",
-              "partsDP": "gun1_dm",
-              "bullets": 500,
-              "traceOffset": 1,
-              "turret": {
-                "head": "turret1",
-                "gun": "gun1"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -5.0,
-                  90.0
-                ]
-              },
-              "limitsDeadzone": {
-                "yaw": [
-                  -1.0,
-                  1.0
-                ],
-                "pitch": [
-                  -5.0,
-                  25.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner1",
-              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "flare16",
-              "flash": "flare16",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun2_dm",
-              "partsDP": "gun2_dm",
-              "bullets": 500,
-              "traceOffset": 2,
-              "turret": {
-                "head": "turret1",
-                "gun": "gun1"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -5.0,
-                  90.0
-                ]
-              },
-              "limitsDeadzone": {
-                "yaw": [
-                  -1.0,
-                  1.0
-                ],
-                "pitch": [
-                  -5.0,
-                  25.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner2",
-              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "flare17",
-              "flash": "flare17",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun3_dm",
-              "partsDP": "gun3_dm",
-              "bullets": 500,
-              "traceOffset": 1,
-              "turret": {
-                "head": "turret2",
-                "gun": "gun2"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -90.0,
-                  5.0
-                ]
-              },
-              "limitsDeadzone": [
-                {
-                  "yaw": [
-                    -180.0,
-                    -150.0
-                  ],
-                  "pitch": [
-                    -45.0,
-                    90.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    150.0,
-                    180.0
-                  ],
-                  "pitch": [
-                    -45.0,
-                    90.0
-                  ]
-                }
-              ],
-              "limitsTable": {
-                "lim1": [
-                  -180.0,
-                  -160.0,
-                  -90.0,
-                  -30.0
-                ],
-                "lim2": [
-                  -160.0,
-                  160.0,
-                  -90.0,
-                  5.0
-                ],
-                "lim3": [
-                  160.0,
-                  180.0,
-                  -90.0,
-                  -30.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner2",
-              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "flare18",
-              "flash": "flare18",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun4_dm",
-              "partsDP": "gun4_dm",
-              "bullets": 500,
-              "traceOffset": 2,
-              "turret": {
-                "head": "turret2",
-                "gun": "gun2"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -90.0,
-                  5.0
-                ]
-              },
-              "limitsDeadzone": [
-                {
-                  "yaw": [
-                    -180.0,
-                    -150.0
-                  ],
-                  "pitch": [
-                    -45.0,
-                    90.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    150.0,
-                    180.0
-                  ],
-                  "pitch": [
-                    -45.0,
-                    90.0
-                  ]
-                }
-              ],
-              "limitsTable": {
-                "lim1": [
-                  -180.0,
-                  -160.0,
-                  -90.0,
-                  -30.0
-                ],
-                "lim2": [
-                  -160.0,
-                  160.0,
-                  -90.0,
-                  5.0
-                ],
-                "lim3": [
-                  160.0,
-                  180.0,
-                  -90.0,
-                  -30.0
-                ]
-              }
-            }
-          ],
-          "hideDmParts": {
-            "node": [
-              "mgun1_dm",
-              "mgun2_dm",
-              "mgun3_dm",
-              "mgun4_dm",
-              "mgun5_dm",
-              "mgun6_dm",
-              "mgun7_dm",
-              "mgun8_dm",
-              "mgun9_dm",
-              "mgun10_dm",
-              "mgun11_dm",
-              "mgun12_dm"
-            ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "2x37"
           }
         }
       }
@@ -3698,6 +5039,14 @@
       "modClass": "weapon",
       "tier": 3,
       "reqModification": "btd_sbc"
+    },
+    "frc_mk5": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "tbf_itc": {
+      "tier": 2,
+      "modClass": "weapon"
     }
   },
   "user_skin": {

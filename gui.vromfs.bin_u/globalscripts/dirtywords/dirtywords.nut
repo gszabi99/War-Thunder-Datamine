@@ -2,8 +2,6 @@ from "%globalScripts/logs.nut" import *
 import "regexp2"
 import "utf8"
 from "string" import format
-from "auth_wt" import getCountryCode
-from "language" import getLocalLanguage
 from "%sqstd/string.nut" import utf8ToLower, utf8CharToInt
 from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, clearExcessiveWhitespace, getUnicodeCharsArray
 
@@ -22,11 +20,13 @@ from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, clea
 
 
 local debugLogFunc = null
+local needDebugLogJustPatterns = false
 
 let dict = {
   excludesdata    = null
   excludescore    = null
   foulcore        = null
+  foulcore_names  = null
   fouldata        = null
   badphrases      = null
   forbiddennames  = null
@@ -58,9 +58,9 @@ function updateAsianDict(lookupTbl, upd) {
 }
 
 
-function init(langSources) {
-  let myLocation = getCountryCode()
-  let myLanguage = getLocalLanguage()
+
+
+function init(myLocation, myLanguage, langSources) {
   let isMyLocationKnown = myLocation != "" 
   pendingDict = null
   pendingDictAsian = null
@@ -85,6 +85,8 @@ function init(langSources) {
           v = clone vSrc
           if ("value" in v)
             v.value = mkRegexp(v.value)
+          if ("except" in v)
+            v.except = mkRegexp(v.except)
           if ("arr" in v)
             v.arr = v.arr.map(@(av) mkRegexp(av))
          }
@@ -135,8 +137,8 @@ function init(langSources) {
   }
 }
 
-function continueInitAfterLogin() {
-  let myLocation = getCountryCode()
+
+function continueInitAfterLogin(myLocation) {
   if (myLocation == "")
     return
   if (pendingDict != null) {
@@ -276,24 +278,26 @@ function prepareWord(word) {
   return word
 }
 
-function checkRegexps(word, regexps, accuse) {
+function checkRegexps(word, regexps, accuse, isSimilarChars = false) {
   foreach (reg in regexps)
-    if ((reg?.value ?? reg).match(word)) {
-      debugLogFunc?($"DirtyWordsFilter: Word \"{word}\" matched pattern \"{(reg?.value ?? reg).pattern()}\"")
+    if (!(isSimilarChars && reg?.skipSC) && (reg?.value ?? reg).match(word) && !reg?.except.match(word)) {
+      let patternStr = (reg?.value ?? reg).pattern()
+      debugLogFunc?(needDebugLogJustPatterns ? patternStr
+        : $"DirtyWordsFilter: Word \"{word}\" matched pattern \"{patternStr}\"")
       return !accuse
     }
   return accuse
 }
 
 
-function checkWordInternal(word, isName) {
+function checkWordInternal(word, isName, isSimilarChars) {
   word = prepareWord(word)
 
   local status = true
   let fl = utf8(word).slice(0, 1)
 
   if (status)
-    status = checkRegexps(word, dict.foulcore, true)
+    status = checkRegexps(word, isName ? dict.foulcore_names : dict.foulcore, true, isSimilarChars)
 
   if (status)
     foreach (section in dict.fouldata)
@@ -321,7 +325,7 @@ function checkWordInternal(word, isName) {
 }
 
 function checkWord(word, isName) {
-  let isPassed = checkWordInternal(word, isName)
+  let isPassed = checkWordInternal(word, isName, false)
   if (!isPassed || !isName)
     return isPassed
 
@@ -334,7 +338,7 @@ function checkWord(word, isName) {
     let tryName = "".join(nameChars.map(@(ch) alphabet?[ch] ?? ch))
     if (checkedNames.contains(tryName))
       continue
-    if (!checkWordInternal(tryName, isName))
+    if (!checkWordInternal(tryName, isName, true))
       return false
     checkedNames.append(tryName)
   }
@@ -364,7 +368,8 @@ function checkPhraseInternal(text, isName) {
       foreach (segment in segmentsList) {
         if (!phrase.contains(segment))
           continue
-        debugLogFunc?($"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
+        debugLogFunc?(needDebugLogJustPatterns ? segment
+          : $"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
 
         let utfPhrase = utf8(phrase)
         maskChars = maskChars ?? array(utfPhrase.charCount(), false)
@@ -388,7 +393,9 @@ function checkPhraseInternal(text, isName) {
   
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
-      debugLogFunc?($"DirtyWordsFilter: Phrase matched pattern \"{pattern.pattern()}\"")
+      let patternStr = pattern.pattern()
+      debugLogFunc?(needDebugLogJustPatterns ? patternStr
+        : $"DirtyWordsFilter: Phrase matched pattern \"{patternStr}\"")
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
       lowerPhrase = utf8ToLower(phrase)
@@ -412,7 +419,8 @@ let isPhrasePassing = @(text) checkPhrase(text) == text
 
 let checkName = function(name) {
   if (!isNameNormallyVisible(name)) {
-    debugLogFunc?($"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
+    debugLogFunc?(needDebugLogJustPatterns ? "Tricks"
+      : $"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
     return getMaskedWord(name)
   }
   let noWhitespaceName = clearAllWhitespace(name)
@@ -429,8 +437,9 @@ let checkName = function(name) {
 let isNamePassing = @(name) name != "" && checkName(name) == name
 
 
-function setDebugLogFunc(funcOrNull) {
+function setDebugLogFunc(funcOrNull, needJustPatterns = false) {
   debugLogFunc = funcOrNull
+  needDebugLogJustPatterns = needJustPatterns
 }
 
 

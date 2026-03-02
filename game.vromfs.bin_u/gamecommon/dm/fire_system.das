@@ -111,7 +111,7 @@ def fire_damage_process_start_burn_event(eid : EntityId;
   if unit.visual == null
     return -1
   assume dm = *unit.visual
-  let geom_node_id = part_id.valid ? dm_get_geom_node_id_by_part_id(dm, int(part_id.globalId)) : INVALID_GEOM_NODE_ID
+  let geom_node_id = part_id.valid ? dm_get_geom_node_id_by_part_id(dm, int(part_id.id)) : INVALID_GEOM_NODE_ID
   let coll_node = dm_get_collision_node_by_part_id(dm, int(part_id.globalId))
   if coll_node == null
     return -1

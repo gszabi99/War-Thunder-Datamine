@@ -38,12 +38,14 @@ def low_ammo_human_net_speech(evt : Event;
 
                               human_weap__reloadAtTime : float;
                               human_weap__isReloading : bool;
+                              isGunManualLoadMode : bool;
 
                               var low_ammo_human_net_speech__shouldSpeak : bool&;
                               var low_ammo_human_net_speech__holders : int&;
                               var low_ammo_human_net_speech__shells : int&;
 
                               low_ammo_human_net_speech__oneMagazineLeftPhrase : string;
+                              low_ammo_human_net_speech__oneShellLeftPhrase : string;
                               low_ammo_human_net_speech__noShellsLeftPhrase : string;
 
                               human_weap__currentGunEid : EntityId;
@@ -62,11 +64,14 @@ def low_ammo_human_net_speech(evt : Event;
 
     get_ammo_holders_shells(human_weap__currentGunEid, itemContainer, holders, shells)
 
-    if holders == 1 && low_ammo_human_net_speech__holders > 1 && !empty(low_ammo_human_net_speech__oneMagazineLeftPhrase)
+    if holders == 1 && low_ammo_human_net_speech__holders > 1 && !empty(low_ammo_human_net_speech__oneMagazineLeftPhrase) && !isGunManualLoadMode
       request_net_speech(eid, low_ammo_human_net_speech__oneMagazineLeftPhrase)
-
     elif shells == 0 && low_ammo_human_net_speech__shells > 0 && !empty(low_ammo_human_net_speech__noShellsLeftPhrase)
       request_net_speech(eid, low_ammo_human_net_speech__noShellsLeftPhrase)
+    elif (holders == 0 && low_ammo_human_net_speech__holders > 0 && isGunManualLoadMode) || \
+         (shells == 0 && low_ammo_human_net_speech__shells > 0)
+      if !empty(low_ammo_human_net_speech__oneShellLeftPhrase)
+        request_net_speech(eid, low_ammo_human_net_speech__oneShellLeftPhrase)
 
     low_ammo_human_net_speech__holders = holders
     low_ammo_human_net_speech__shells = shells

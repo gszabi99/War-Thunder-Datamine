@@ -1,0 +1,66 @@
+{
+  "tdiv": {
+    "position": "relative",
+    "size": "pw, ph",
+    "background-color": "#1c1c1c",
+    "tdiv": [
+      {
+        "id": "crew_lifebar_lost",
+        "position": "absolute",
+        "height": "ph",
+        "background-color": "@debuffLabelCritical",
+        "behaviour": "basicSize",
+        "width-base": "100",
+        "width-end": "100",
+        "size-func": "linear",
+        "size-scale": "parent",
+        "size-time": "750",
+        "_size_delay": "0",
+        "size-delay": "0",
+        "_size-timer": "1",
+        "_blink": ""
+      },
+      {
+        "id": "crew_lifebar_flash",
+        "position": "absolute",
+        "width": "pw",
+        "height": "ph",
+        "background-color": "#AA0000",
+        "behaviour": "basicTransparency",
+        "transp-base": "255",
+        "transp-func": "cubic",
+        "transp-end": "0",
+        "transp-time": "500",
+        "_transp-timer": "1",
+        "color-factor": "255"
+      },
+      {
+        "id": "crew_lifebar",
+        "position": "absolute",
+        "width": "pw",
+        "height": "ph",
+        "background-color": "#ffc0c0c0"
+      },
+      {
+        "id": "min_crew_bar",
+        "position": "absolute",
+        "width": "pw/3",
+        "height": "ph",
+        "background-color": "#FF7c7f84"
+      },
+      {
+        "id": "lost_text_nest",
+        "position": "absolute",
+        "size": "pw, ph",
+        "tdiv": {
+          "top": "ph/2",
+          "position": "absolute",
+          "hitCamLostCrewText": {
+            "pos": "(pw-w)/2, (ph-h)/2",
+            "font-ht": "1"
+          }
+        }
+      }
+    ]
+  }
+}

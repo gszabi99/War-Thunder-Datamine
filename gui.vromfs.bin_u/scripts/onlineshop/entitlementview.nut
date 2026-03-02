@@ -7,15 +7,16 @@ let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
-let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getWPIcon } = require("%scripts/items/prizesView.nut")
+let { getWPIcon } = require("%scripts/items/prizeUtils.nut")
 
 let template = "%gui/items/trophyDesc.tpl"
 let singleItemIconLayer = "item_place_single"
@@ -69,7 +70,7 @@ let getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(
 
   return {
     title = name
-    icon = getTypeByUnlockedItemType(unlockType).prizeTypeIcon
+    icon = getViewTypeByUnlockedItemType(unlockType).prizeTypeIcon
   }
 })
 
@@ -90,7 +91,8 @@ function getDecoratorActionButtonsView(decorator, decoratorType) {
 }
 
 let getDecoratorGiftView = @(giftArray, decoratorType, params) (giftArray ?? []).map(function(giftId) {
-  let locName = decoratorType.getLocName(giftId, true)
+  let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+  let locName = viewDecoratorType.getLocName(giftId, true)
   let decorator = getDecorator(giftId, decoratorType)
   let nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
   let isHave = params?.ignoreAvailability ? false : decoratorType.isPlayerHaveDecorator(giftId)
@@ -98,7 +100,7 @@ let getDecoratorGiftView = @(giftArray, decoratorType, params) (giftArray ?? [])
 
   return {
     title = colorize(nameColor, locName)
-    icon = decoratorType.prizeTypeIcon
+    icon = viewDecoratorType.prizeTypeIcon
     tooltipId = getTooltipType("DECORATION").getTooltipId(giftId, decoratorType.unlockedItemType)
     commentText = isHave ? colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")) : null
     buttons = buttons
@@ -185,8 +187,10 @@ let generateLayers = function(layersArray) {
 
 let getDecoratorLayeredIcon = @(giftArray, decoratorType) (giftArray ?? []).map(function(giftId) {
   let decorator = getDecorator(giftId, decoratorType)
+  let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+
   let cfg = clone LayersIcon.findLayerCfg("item_decal")
-  cfg.img <- decoratorType.getImage(decorator)
+  cfg.img <- viewDecoratorType.getImage(decorator)
 
   local image = ""
   if (cfg.img != "")

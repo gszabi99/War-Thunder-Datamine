@@ -180,34 +180,20 @@
   "attachable_wear_ger_m17_helmet_item": {
     "_use": [
       "attachable_skined_helmet",
-      "modern_helmet_soft_class_3a"
+      "rank2_helmet_class_2_protection"
     ],
     "animchar__res": "ger_m17_helmet_char",
     "collres__res": "ger_m17_helmet_collision",
-    "item__uniqueName": "ger_m17_helmet_item",
-    "item__armoredParts:array": {
-      "part": [
-        "dm_head",
-        "dm_hindhead",
-        "dm_ears"
-      ]
-    }
+    "item__uniqueName": "ger_m17_helmet_item"
   },
   "attachable_wear_uk_mk1_brodie_helmet_item": {
     "_use": [
       "attachable_skined_helmet",
-      "modern_helmet_soft_class_3a"
+      "rank2_helmet_class_2_protection"
     ],
     "animchar__res": "uk_mk1_brodie_helmet_char",
     "collres__res": "uk_mk1_brodie_helmet_collision",
-    "item__uniqueName": "uk_mk1_brodie_helmet_item",
-    "item__armoredParts:array": {
-      "part": [
-        "dm_head",
-        "dm_hindhead",
-        "dm_ears"
-      ]
-    }
+    "item__uniqueName": "uk_mk1_brodie_helmet_item"
   },
   "attachable_wear_ihps_helmet_item": {
     "_use": "attachable_skined_helmet",
@@ -384,7 +370,54 @@
     "_use": "attachable_skined_helmet",
     "animchar__res": "pasgt_helmet_char",
     "collres__res": "pasgt_helmet_collision",
-    "item__uniqueName": "pasgt_helmet_item",
+    "item__uniqueName": "pasgt_helmet_item"
+  },
+  "attachable_wear_pasgt_helmet_desert_item": {
+    "_use": "attachable_wear_pasgt_helmet_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "solid_fill_color": [
+          0.8,
+          0.71,
+          0.584,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.2,
+          0.2,
+          0.2,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.9,
+          0.76,
+          0.565,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_pasgt_helmet_fastener_item": {
+    "_use": "attachable_skined_helmet",
+    "animchar__res": "pasgt_helmet_fastener_char",
+    "collres__res": "pasgt_helmet_fastener_collision",
+    "item__uniqueName": "pasgt_helmet_fastener_item",
     "_tracked": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
@@ -397,8 +430,8 @@
       ]
     }
   },
-  "attachable_wear_pasgt_helmet_green_item": {
-    "_use": "attachable_wear_pasgt_helmet_item",
+  "attachable_wear_pasgt_helmet_fastener_green_item": {
+    "_use": "attachable_wear_pasgt_helmet_fastener_item",
     "camouflage_override:array": {
       "material1:object": {
         "material_id": 1,
@@ -436,6 +469,59 @@
           1.0
         ]
       }
+    }
+  },
+  "attachable_wear_pasgt_helmet_fastener_desert_item": {
+    "_use": "attachable_wear_pasgt_helmet_fastener_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "solid_fill_color": [
+          0.8,
+          0.71,
+          0.584,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.9,
+          0.76,
+          0.565,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.3,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_pasgt_helmet_cover_item": {
+    "_use": "attachable_helmet_cover_attachment",
+    "animchar__res": "pasgt_helmet_cover_char",
+    "collres__res": "pasgt_helmet_cover_collision",
+    "item__uniqueName": "pasgt_helmet_cover_item"
+  },
+  "attachable_wear_pasgt_helmet_cover_usc_urban_item": {
+    "_use": "attachable_wear_pasgt_helmet_cover_item",
+    "animchar__objTexReplace:object": {
+      "3col_dcp_tex_d*": "ucp_urban_tex_d*"
     }
   },
   "attachable_wear_sc_panama_item": {
@@ -1015,6 +1101,66 @@
       "slot": "helmet"
     }
   },
+  "mk6_helmet_item": {
+    "_use": "attachable_skined_helmet",
+    "animchar__res": "mk6_helmet_char",
+    "collres__res": "mk6_helmet_collision",
+    "item__uniqueName": "mk6_helmet_item"
+  },
+  "mk6_helmet_green_item": {
+    "_use": "mk6_helmet_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.55,
+          0.5,
+          0.3,
+          1.0
+        ],
+        "color_multiplier": 5.0
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.55,
+          0.5,
+          0.3,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      }
+    }
+  },
+  "mk6_helmet_desert_item": {
+    "_use": "mk6_helmet_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.9,
+          0.7,
+          0.5,
+          1.0
+        ],
+        "color_multiplier": 5.0
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.55,
+          0.55,
+          0.55,
+          1.0
+        ],
+        "color_multiplier": 2.0
+      }
+    }
+  },
   "helmet_flashlight_item": {
     "_use": "attachable_helmet_left_attachment",
     "animchar__res": "helmet_flashlight_char",
@@ -1177,11 +1323,20 @@
       "slot": "helmet"
     }
   },
-  "oakley_ballistic_glasses_item": {
+  "ballistic_glasses_red_item": {
     "_use": "attachable_face_goggles",
-    "animchar__res": "oakley_ballistic_glasses_char",
-    "collres__res": "oakley_ballistic_glasses_collision",
-    "item__uniqueName": "oakley_ballistic_glasses_item",
+    "animchar__res": "ballistic_glasses_red_char",
+    "collres__res": "ballistic_glasses_red_collision",
+    "item__uniqueName": "ballistic_glasses_red_item",
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": "face"
+    }
+  },
+  "ballistic_glasses_transp_item": {
+    "_use": "attachable_face_goggles",
+    "animchar__res": "ballistic_glasses_transp_char",
+    "collres__res": "ballistic_glasses_transp_collision",
+    "item__uniqueName": "ballistic_glasses_transp_item",
     "skeleton_attach__remapParentSlots:list<t>": {
       "slot": "face"
     }

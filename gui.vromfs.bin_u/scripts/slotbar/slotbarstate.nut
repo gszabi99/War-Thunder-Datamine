@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+
 let { get_game_mode } = require("mission")
 let { isInFlight } = require("gameplayBinding")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -9,15 +10,14 @@ let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { canChangeCrewUnits, getSessionLobbyMaxRespawns } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getMyCrewUnitsState, getBrokenUnits } = require("%scripts/slotbar/crewsListInfo.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { getAvailableCrewId, saveSelectedCrews, selectedCrews, getReserveAircraftName, isCountrySlotbarHasUnits, ignoreTransactions } = require("%scripts/slotbar/slotbarStateData.nut")
+let { getAvailableCrewId, saveSelectedCrews, selectedCrews, getReserveAircraftName, isCountrySlotbarHasUnits
+ } = require("%scripts/slotbar/slotbarStateData.nut")
 let { getCrewsList, invalidateCrewsList, isCrewListOverrided } = require("%scripts/slotbar/crewsList.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 local isInFlightCrewsList = isInFlight()
 local isSlotbarUpdateSuspended = false
@@ -156,26 +156,6 @@ function suspendSlotbarUpdates() {
 }
 
 addListenersWithoutEnv({
-  function ProfileUpdated(p) {
-    if (p.transactionType == EATT_UPDATE_ENTITLEMENTS)
-      updateShopCountriesList()
-
-    let brokenUnitsCached = getMyCrewUnitsState().brokenAirs
-    let brokenUnitsUpdated = getBrokenUnits()
-
-    local hasRepairedUnits = false
-    foreach (unit in brokenUnitsCached) {
-      if (unit not in brokenUnitsUpdated) {
-        hasRepairedUnits = true
-        break
-      }
-    }
-
-    if (isProfileReceived.get() && !isInArray(p.transactionType, ignoreTransactions)
-        && invalidateCrewsList(hasRepairedUnits) && !disableNetwork)
-      reinitSlotbars()
-  }
-
   function UnlockedCountriesUpdate(_p) {
     updateShopCountriesList()
     if (isProfileReceived.get() && invalidateCrewsList())

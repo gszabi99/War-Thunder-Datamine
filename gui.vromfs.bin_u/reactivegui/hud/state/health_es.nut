@@ -82,6 +82,7 @@ ecs.register_es("track_is_need_heal_bleeding_ui_es", {
     ["human_medkit__needDisplayBleedingTip", ecs.TYPE_BOOL, true],
   ]
   comps_rq=["watchedByPlr"]
+  comps_no=["isReplayObserved"]
 })
 
 

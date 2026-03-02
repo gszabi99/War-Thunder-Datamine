@@ -112,9 +112,13 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
     isInReload = gun_anim__reloadProgress > 0.0 && gun_anim__reloadProgress < 1.0
     animchar |> animchar_get_tm(gunTm)
     if !!subsidiaryGunEid
-      query(subsidiaryGunEid) <| $ [es] (sightPresets : Array const?)
+      query(subsidiaryGunEid) <| $ [es] (sightPresets : Array const?;
+                                         weap__current_sight_preset : int = 0)
         if sightPresets != null && length(*sightPresets) > 0
-          gunScopeEid = subsidiaryGunEid
+          let preset = get_ecs_object((*sightPresets)[weap__current_sight_preset])
+          let useWeaponSight = preset != null ? preset |> get_bool("useWeaponSight") : null
+          if useWeaponSight == null || !*useWeaponSight
+            gunScopeEid = subsidiaryGunEid
 
 
   query(gunScopeEid) <| $ [es] (gunmod__camNodeId : int;

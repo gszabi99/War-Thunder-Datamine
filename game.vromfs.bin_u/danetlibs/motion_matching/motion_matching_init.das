@@ -10,7 +10,7 @@ def load_motion_matching(base_path : string) : bool
   if ecs_has_tag("render") || is_in_aot()
     ok = load_sub_folder(base_path, "es") && ok
 
-    if ecs_has_tag("dev") || is_in_aot()
+    if (ecs_has_tag("dev") && typeinfo builtin_module_exists(DngHuman)) || is_in_aot()
       ok = load_sub_folder(base_path, "debug/es") && ok
 
     if (ecs_has_tag("dev") && typeinfo builtin_module_exists(DagorImgui)) || is_in_aot()

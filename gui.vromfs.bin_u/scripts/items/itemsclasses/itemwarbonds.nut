@@ -4,13 +4,15 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+
 
 let Warbonds = class (ItemCouponBase) {
   static iType = itemType.WARBONDS
   static name = "Warbonds"
   static typeIcon = "#ui/gameuiskin#item_type_warbonds.svg"
 
-  getWarbond           = @() ::g_warbonds.findWarbond(this.metaBlk?.warbonds)
+  getWarbond           = @() findWarbond(this.metaBlk?.warbonds)
   getWarbondsAmount    = @() this.metaBlk?.count ?? 0
 
   function canConsume() {

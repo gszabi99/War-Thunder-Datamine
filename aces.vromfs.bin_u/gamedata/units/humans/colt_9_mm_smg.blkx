@@ -22,6 +22,8 @@
   "maxAngAccel": 40.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
+  "detectDistance": 600.0,
+  "instantDetectDistance": 60.0,
   "expClass": "exp_human",
   "sprintStaminaDrain": 1.5,
   "jumpStaminaDrain": 4.5,
@@ -140,7 +142,7 @@
     0.0
   ],
   "aimingMoveSpeed": [
-    1.0,
+    1.3,
     1.0
   ],
   "aimSpeed": 10.0,
@@ -192,9 +194,9 @@
     }
   },
   "standState": {
-    "walkSpeed": 1.8,
-    "runSpeed": 3.5,
-    "sprintSpeed": 5.6,
+    "walkSpeed": 2.6,
+    "runSpeed": 3.65,
+    "sprintSpeed": 6.75,
     "rotateAngles": [
       -60.0,
       60.0
@@ -239,6 +241,7 @@
   "crouchState": {
     "walkSpeed": 1.0,
     "runSpeed": 1.7,
+    "sprintSpeed": 1.7,
     "rotateAngles": [
       -60.0,
       60.0
@@ -283,6 +286,7 @@
   "crawlState": {
     "walkSpeed": 0.5,
     "runSpeed": 1.15,
+    "sprintSpeed": 1.15,
     "rotateAngles": [
       -60.0,
       60.0
@@ -374,6 +378,7 @@
   "downedState": {
     "walkSpeed": 1.0,
     "runSpeed": 1.0,
+    "sprintSpeed": 1.0,
     "rotateAngles": [
       -80.0,
       80.0
@@ -475,9 +480,9 @@
     }
   },
   "climbLadderState": {
-    "walkSpeed": 1.5,
-    "runSpeed": 3.5,
-    "sprintSpeed": 5.6,
+    "walkSpeed": 2.6,
+    "runSpeed": 3.65,
+    "sprintSpeed": 6.75,
     "rotateAngles": [
       -60.0,
       60.0
@@ -755,6 +760,11 @@
     }
   },
   "modifications": {
+    "tactical_flashlight": {},
+    "scope_m68_cco": {
+      "tier": 1
+    },
+    "grip_vertical_utg_qd": {},
     "shotgun_mossberg_590": {},
     "machinegun_reapr": {},
     "at_laucher_at_4": {},
@@ -806,20 +816,20 @@
             "name": "pslr_1_default",
             "ecsTemplate": "pslr_1_default_gun",
             "inventoryItemEcsTemplate": "rpg_7_rocket_item",
-            "inventoryItemNum": 5
+            "inventoryItemNum": 4
           },
           {
             "name": "m136_at4",
             "ecsTemplate": "m136_at4_gun",
             "inventoryItemEcsTemplate": "m136_at4_rocket_item",
-            "inventoryItemNum": 5,
+            "inventoryItemNum": 4,
             "reqModification": "at_laucher_at_4"
           },
           {
             "name": "mpads_stinger",
             "ecsTemplate": "mpads_fim_92e_stinger_gun",
             "inventoryItemEcsTemplate": "fim_92e_stinger_missile_item",
-            "inventoryItemNum": 3,
+            "inventoryItemNum": 2,
             "reqModification": "mpads_stinger"
           },
           {
@@ -842,18 +852,34 @@
           {
             "name": "frag_grenade",
             "inventoryItemEcsTemplate": "m67_grenade_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "frag_grenade_medium",
+            "inventoryItemEcsTemplate": "m67_grenade_item",
             "inventoryItemNum": 2
+          },
+          {
+            "name": "frag_grenade_light",
+            "inventoryItemEcsTemplate": "m67_grenade_item",
+            "inventoryItemNum": 1
           },
           {
             "name": "smoke_grenade",
             "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
-            "inventoryItemNum": 3,
+            "inventoryItemNum": 2,
+            "reqModification": "smoke_grenade"
+          },
+          {
+            "name": "smoke_grenade_light",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 1,
             "reqModification": "smoke_grenade"
           },
           {
             "name": "stun_grenade",
             "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
-            "inventoryItemNum": 4,
+            "inventoryItemNum": 6,
             "reqModification": "stun_grenade"
           }
         ]
@@ -861,9 +887,23 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "colt_9_mm_smg_default",
-      "blk": "gameData/units/humans/weaponPresets/colt_9_mm_smg_default.blk"
-    }
+    "preset": [
+      {
+        "name": "colt_9_mm_smg_default",
+        "blk": "gameData/units/humans/weaponPresets/colt_9_mm_smg_default.blk"
+      },
+      {
+        "name": "colt_9_mm_smg_preset_1",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_antivehicle_preset_1.blk"
+      },
+      {
+        "name": "colt_9_mm_smg_preset_2",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_antivehicle_preset_2.blk"
+      },
+      {
+        "name": "colt_9_mm_smg_preset_3",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_antivehicle_preset_3.blk"
+      }
+    ]
   }
 }

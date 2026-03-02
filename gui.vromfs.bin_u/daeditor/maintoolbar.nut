@@ -3,13 +3,12 @@ from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
 
 let { DE4_MODE_CREATE_ENTITY = null, get_instance = @() null } = require_optional("entity_editor")
-let { LogsWindowId, EntitySelectWndId, LoadedScenesWndId, propPanelVisible, propPanelClosed,
+let { LogsWindowId, EntitySelectWndId, SceneOutlinerWndId, propPanelVisible, propPanelClosed,
   showHelp, markedScenes, de4editMode, de4workMode, de4workModes, showUIinEditor, editorTimeStop,
   gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled, gizmoCenterType,
   gizmoCenterTypeNames, sceneIdMap, updateAllScenes } = require("state.nut")
 
-let { sceneGenerated, sceneSaved } = require("%daeditor/daeditor_es.nut")
-let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
+let { sortScenesByLoadType } = require("components/sceneSorting.nut")
 
 let pictureButton = require("components/pictureButton.nut")
 let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
@@ -51,7 +50,7 @@ function modeButton(image, mode, tooltip_text, next_mode=null, next_action=null)
     onHover = @(on) cursors.setTooltip(on ? tooltip_text : null)
     action = function() {
       hideWindow(EntitySelectWndId)
-      hideWindow(LoadedScenesWndId)
+      hideWindow(SceneOutlinerWndId)
       if (next_mode && mode==getEditMode())
         mode = next_mode
       daEditor.setEditMode(mode)
@@ -77,17 +76,17 @@ function toggleEntitySelect() {
     setEditMode(DE4_MODE_SELECT)
   toggleWindow(EntitySelectWndId)
 }
-function toggleLoadedScenes() {
+function toggleSceneOutliner() {
   if (getEditMode() == DE4_MODE_CREATE_ENTITY || getEditMode() == DE4_MODE_POINT_ACTION)
     setEditMode(DE4_MODE_SELECT)
-  toggleWindow(LoadedScenesWndId)
+  toggleWindow(SceneOutlinerWndId)
 }
 function toggleLogsWindows() {
   toggleWindow(LogsWindowId)
 }
 function toggleCreateEntityMode() {
   hideWindow(EntitySelectWndId)
-  hideWindow(LoadedScenesWndId)
+  hideWindow(SceneOutlinerWndId)
   local mode = DE4_MODE_CREATE_ENTITY
   if (DE4_MODE_CREATE_ENTITY==getEditMode())
     mode = DE4_MODE_SELECT
@@ -98,7 +97,7 @@ let togglePropPanel = function() {
   propPanelVisible.modify(invert)
 }
 let isVisibleEntitiesSelect = mkIsWindowVisible(EntitySelectWndId)
-let isVisibleLoadedScenesWnd = mkIsWindowVisible(LoadedScenesWndId)
+let isVisibleSceneOutlinerWnd = mkIsWindowVisible(SceneOutlinerWndId)
 let isVisibleLogsWnd = mkIsWindowVisible(LogsWindowId)
 
 const saveScenesWindowUID = "save_scenes_modal_window"
@@ -217,7 +216,7 @@ let markedSceneText = Computed(function() {
       item.index <- ind
       return item
       }) ?? []
-  scenes.sort(defaultScenesSortMode.func)
+  scenes.sort(sortScenesByLoadType)
   foreach (scene in scenes) {
     local isMarked = markedScenes.get()?[scene?.id] ?? false
     if (isMarked) {
@@ -227,13 +226,10 @@ let markedSceneText = Computed(function() {
       nMrk++
     }
   }
-  local isMarkedSaved = markedScenes.get()?[sceneSaved.id] ?? false
-  local isMarkedGenerated = markedScenes.get()?[sceneGenerated.id] ?? false
-  local textSav = isMarkedSaved ? $"{sceneSaved.asText} " : ""
-  local textGen = isMarkedGenerated ? $"{sceneGenerated.asText} " : ""
-  if (nMrk > 0 || isMarkedSaved || isMarkedGenerated) {
+
+  if (nMrk > 0) {
     local andMore = nMrk > 1 ? $", and {nMrk - 1} more" : ""
-    return $"Editing: {textGen}{textSav}{path}{andMore}"
+    return $"Editing: {path}{andMore}"
   }
   return ""
 })
@@ -289,7 +285,7 @@ function mainToolbar() {
           
           toolbarButton(svg("select_by_name"), toggleEntitySelect, "Find entity (Tab)", isVisibleEntitiesSelect)
           separator
-          toolbarButton(svg("scenes"), toggleLoadedScenes, "Loaded scenes (I)", isVisibleLoadedScenesWnd)
+          toolbarButton(svg("scenes"), toggleSceneOutliner, "Scene Outliner (I)", isVisibleSceneOutlinerWnd)
           separator
           modeButton(svg("select"), DE4_MODE_SELECT, "Select (Q)")
           modeButton(svg("move"),   DE4_MODE_MOVE,   "Move (W)")
@@ -340,7 +336,7 @@ function mainToolbar() {
         ]
 
         hotkeys = [
-          ["L.Ctrl !L.Alt I", toggleLoadedScenes],
+          ["L.Ctrl !L.Alt I", toggleSceneOutliner],
           ["L.Alt H", toggleEntitySelect],
           ["Tab", toggleEntitySelect],
           ["!L.Ctrl !L.Alt T", toggleCreateEntityMode],

@@ -44,6 +44,8 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { openSelectUnitWnd } = require("%scripts/unit/selectUnitModal.nut")
 let { loadFirearm } = require("%scripts/hangarModelLoadManager.nut")
+let { fillAirInfo } = require("%scripts/airInfo.nut")
+
 
 function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -291,7 +293,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     this.updateTestDriveButtonText(unit)
     this.updateWeaponryDiscounts(unit)
     this.updateWeaponryNewIcon(unit)
-    ::showAirInfo(unit, true, contentObj, this, { showRewardsInfoOnlyForPremium = true, inHangar = true })
+    fillAirInfo(unit, true, contentObj, this, { showRewardsInfoOnlyForPremium = true, inHangar = true })
     showObjById("aircraft-name", false, this.scene)
     showObjById("btnAirInfoWeaponry", !(unit?.isSlave() ?? false), this.scene)
     this.updateHeader(getUnitName(unit), isUnitSpecial(unit))
@@ -588,6 +590,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   function onEventChangeDMVieverMode(params) {
     let pages = { protection = 1, xray = 2 }
 
+    dmViewer.saveViewModeForRestore()
     let index = pages[params.page]
     let listboxObj = this.scene.findObject("air_info_dmviewer_listbox")
     listboxObj.setValue(index)

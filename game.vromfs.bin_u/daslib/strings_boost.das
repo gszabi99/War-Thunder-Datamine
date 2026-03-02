@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module strings_boost shared public
 
+
+
+
+
+
+
 require math
 require strings public
 
@@ -26,7 +32,7 @@ def join(it; separator : string implicit) {
         concept_assert(false, "can't join non-iterable type")
         return ""
     } else {
-        let st = build_string() <| $(var writer) {
+        let st = build_string() $(var writer) {
             var skip_first = true
             for (elem in it) {
                 if (skip_first) {
@@ -47,7 +53,7 @@ def join(it; separator : string implicit) {
 
 def join(var it : iterator<auto(TT)>; separator : string implicit) {
     
-    let st = build_string() <| $(var writer) {
+    let st = build_string() $(var writer) {
         var skip_first = true
         for (elem in it) {
             if (skip_first) {
@@ -67,7 +73,7 @@ def join(var it : iterator<auto(TT)>; separator : string implicit) {
 
 def private join_implement(iterable; separator : string; blk) : string {
     
-    let st = build_string() <| $(var writer) {
+    let st = build_string() $(var writer) {
         var skip_first = true
         for (elem in iterable) {
             if (skip_first) {
@@ -105,7 +111,7 @@ def split(text, delim : string implicit; blk : block< (arg : array<string>#) >) 
 def split(text, delim : string implicit) : array<string> {
     
     var res : array<string>
-    builtin_string_split(text, delim) <| $(arr : array<string>#) : void {
+    builtin_string_split(text, delim) $(arr : array<string>#) : void {
         res := arr
     }
     return <- res
@@ -120,7 +126,7 @@ def split_by_chars(text, delim : string implicit; blk : block< (arg : array<stri
 def split_by_chars(text, delim : string implicit) : array<string> {
     
     var res : array<string>
-    builtin_string_split_by_char(text, delim) <| $(arr : array<string>#) : void {
+    builtin_string_split_by_char(text, delim) $(arr : array<string>#) : void {
         res := arr
     }
     return <- res
@@ -207,7 +213,7 @@ def replace_multiple(source : string; replaces : array<tuple<text : string; repl
         return source
     }
     
-    return build_string <| $(writer) {
+    return build_string() $(writer) {
         var index = 0
         let len = source |> length
         while (index < len) {
@@ -226,4 +232,128 @@ def replace_multiple(source : string; replaces : array<tuple<text : string; repl
             }
         }
     }
+}
+
+def public contains(str, sub : string) : bool {
+    
+    return find(str, sub) >= 0
+}
+
+def public count(str, sub : string) : int {
+    
+    
+    if (sub |> empty()) {
+        return 0
+    }
+    var n = 0
+    var pos = find(str, sub)
+    let subLen = sub |> length()
+    while (pos >= 0) {
+        n ++
+        pos = find(str, sub, pos + subLen)
+    }
+    return n
+}
+
+def public last_index_of(str, sub : string) : int {
+    
+    if (sub |> empty() || str |> empty()) {
+        return -1
+    }
+    var lastPos = -1
+    var pos = find(str, sub)
+    while (pos >= 0) {
+        lastPos = pos
+        pos = find(str, sub, pos + 1)
+    }
+    return lastPos
+}
+
+def public last_index_of(str, sub : string; start : int) : int {
+    
+    if (sub |> empty() || str |> empty()) {
+        return -1
+    }
+    var lastPos = -1
+    var pos = find(str, sub)
+    while (pos >= 0 && pos < start) {
+        lastPos = pos
+        pos = find(str, sub, pos + 1)
+    }
+    return lastPos
+}
+
+def public pad_right(str : string; width : int; ch : int = ' ') : string {
+    
+    
+    let l = str |> length()
+    if (l >= width) {
+        return str
+    }
+    return build_string() $(writer) {
+        writer |> write(str)
+        writer |> write_chars(ch, width - l)
+    }
+}
+
+def public pad_left(str : string; width : int; ch : int = ' ') : string {
+    
+    
+    let l = str |> length()
+    if (l >= width) {
+        return str
+    }
+    return build_string() $(writer) {
+        writer |> write_chars(ch, width - l)
+        writer |> write(str)
+    }
+}
+
+def public trim_prefix(str, prefix : string) : string {
+    
+    
+    if (str |> starts_with(prefix)) {
+        return str |> slice(prefix |> length())
+    }
+    return str
+}
+
+def public trim_suffix(str, suffix : string) : string {
+    
+    
+    if (str |> ends_with(suffix)) {
+        return str |> slice(0, (str |> length()) - (suffix |> length()))
+    }
+    return str
+}
+
+def public capitalize(str : string) : string {
+    
+    
+    if (str |> empty()) {
+        return str
+    }
+    let first = character_at(str, 0)
+    if (first >= 'a' && first <= 'z') {
+        return build_string() $(writer) {
+            writer |> write_char(first - 'a' + 'A')
+            if (str |> length() > 1) {
+                writer |> write(str |> slice(1))
+            }
+        }
+    }
+    return str
+}
+
+def public is_null_or_whitespace(str : string) : bool {
+    
+    if (str |> empty()) {
+        return true
+    }
+    for (i in range(str |> length())) {
+        if (!is_white_space(character_at(str, i))) {
+            return false
+        }
+    }
+    return true
 }

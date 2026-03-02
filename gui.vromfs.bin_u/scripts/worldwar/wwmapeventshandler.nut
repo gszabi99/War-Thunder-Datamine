@@ -2,33 +2,16 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { mapObjectSelect } = require("%scripts/worldWar/worldWarConst.nut")
-let { wwGetBattlesInfo, wwFindLastFlewOutArmyNameByAirfield, wwIsCellGenerallyPassable } = require("worldwar")
-let DataBlock = require("DataBlock")
-let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let { wwFindLastFlewOutArmyNameByAirfield, wwIsCellGenerallyPassable } = require("worldwar")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { eventbus_send } = require("eventbus")
 let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
+let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
+
 let sendMapEvent = @(eventName, params = {}) wwEvent($"Map{eventName}", params)
-
-function getBattleById(battleId) {
-  let blk = DataBlock()
-  wwGetBattlesInfo(blk)
-
-  if (!("battles" in blk))
-    return null
-
-  let itemCount = blk.battles.blockCount()
-
-  for (local i = 0; i < itemCount; i++) {
-    let battle = WwBattle(blk.battles.getBlock(i))
-    if (battle.id == battleId && battle.isValid())
-      return battle
-  }
-  return null
-}
 
 
 function selectAirfield(params) {
@@ -53,7 +36,7 @@ function selectRearZone(params) {
 
 function selectBattle(params) {
   let battle = getBattleById(params?.battleName)
-  if(battle != null)
+  if(battle.isValid())
     gui_handlers.WwBattleDescription.open(battle)
 }
 

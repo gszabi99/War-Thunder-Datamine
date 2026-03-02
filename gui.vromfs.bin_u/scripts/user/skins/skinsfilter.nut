@@ -2,13 +2,14 @@ from "%scripts/dagui_library.nut" import *
 
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let filterTypes = {}
 
 function fillRanks() {
   let res = {}
-  for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
+  let maxRank = maxCountryRank.get()
+  for (local i = 1; i <= maxRank; i++) {
     res[i] <- {
       id = $"rank_{i}"
       idx = i

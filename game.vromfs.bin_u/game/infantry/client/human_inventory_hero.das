@@ -7,6 +7,32 @@ require %game.events
 require %appGame.infantry.es.inventory_common
 
 
+[es(tag=gameClient, on_appear, REQUIRE=watchedByPlr)]
+def show_compatible_gun_on_human_appear(evt : Event;
+                                        human_weap__gunEids : EidList)
+  let slot = HUWeaponSlots.EWS_PRIMARY
+  let weaponEid = length(human_weap__gunEids) > 0 ? human_weap__gunEids[int(slot)] : INVALID_ENTITY_ID
+  query() <| $ [es(REQUIRE=(item__pickupOnlyAmmo, transform))] (item__isOnGround : bool;
+                                                                gun__ammoHolders : Array const?;
+                                                                var animchar_render__enabled : bool&)
+    if !item__isOnGround
+      return
+    animchar_render__enabled = is_ammo_compatible_with_our_gun(weaponEid, gun__ammoHolders)
+
+
+[es(tag=gameClient, on_appear, REQUIRE=(item__pickupOnlyAmmo, transform))]
+def show_compatible_gun_on_gun_appear(evt : Event;
+                                      item__isOnGround : bool;
+                                      gun__ammoHolders : Array const?;
+                                      var animchar_render__enabled : bool&)
+  if !item__isOnGround
+    return
+  query() <| $ [es(REQUIRE=watchedByPlr)] (human_weap__gunEids : EidList)
+    let slot = HUWeaponSlots.EWS_PRIMARY
+    let weaponEid = length(human_weap__gunEids) > 0 ? human_weap__gunEids[int(slot)] : INVALID_ENTITY_ID
+    animchar_render__enabled = is_ammo_compatible_with_our_gun(weaponEid, gun__ammoHolders)
+
+
 [es(tag=gameClient, after=before_human_inventory_use_update, REQUIRE=hero, REQUIRE_NOT=deadEntity)]
 def human_inventory_hero_es(info : ParallelUpdateFrameDelayed;
                             eid : EntityId;
@@ -28,9 +54,12 @@ def human_inventory_hero_es(info : ParallelUpdateFrameDelayed;
   let slot = HUWeaponSlots.EWS_PRIMARY
   let weaponEid = length(human_weap__gunEids) > 0 ? human_weap__gunEids[int(slot)] : INVALID_ENTITY_ID
   var result = false
-  query(weaponEid) <| $ [es] (gun__maxAmmo : int;
+  query(weaponEid) <| $ [es] (animchar_render__enabled : bool;
+                              gun__maxAmmo : int;
                               gun__totalAmmo : int;
                               gun__numReserveAmmo  : int)
+    if !animchar_render__enabled
+      return
     if gun__totalAmmo >= (gun__numReserveAmmo - 1) * gun__maxAmmo
       human_inventory__selectedItem = INVALID_ENTITY_ID
       result = true
@@ -75,7 +104,7 @@ def human_inventory_hero_es(info : ParallelUpdateFrameDelayed;
 
 
     if pickupScore.score < 0.
-      pickupScore = get_item_pickup_score(eid, itemEid, weaponEid, tps ? human_inventory__selectTpsConvex : human_inventory__selectConvex,
+      pickupScore = get_item_pickup_score(eid, itemEid, tps ? human_inventory__selectTpsConvex : human_inventory__selectConvex,
                                           viewItm, aimDir, aimFrom, aimTo, human_inventory__pickupItemMinBox, human_inventory__selectedItem == itemEid)
     if pickupScore.score > bestScore
       isBestUseful = pickupScore.useful

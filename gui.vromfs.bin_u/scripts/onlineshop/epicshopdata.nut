@@ -7,6 +7,7 @@ let statsd = require("statsd")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { eventbus_subscribe } = require("eventbus")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
 let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")
@@ -127,6 +128,9 @@ let haveAnyItemWithDiscount = Computed(@()
 
 let initItemsListAfterLogin = @() isInitedOnce.set(true)
 
+if (isLoggedIn.get())
+  initItemsListAfterLogin()
+
 function haveDiscount() {
   if (!canUseIngameShop())
     return false
@@ -142,10 +146,6 @@ function haveDiscount() {
 subscriptions.addListenersWithoutEnv({
   LoginComplete = @(_p) initItemsListAfterLogin()
   SignOut = @(_p) invaldateCache()
-  ScriptsReloaded = function(_p) {
-    invaldateCache()
-    initItemsListAfterLogin()
-  }
 }, g_listener_priority.CONFIG_VALIDATION)
 
 eventbus_subscribe("epicShopItemPurchasedCallback", @(res) updateSpecificItemInfo(res.itemId))

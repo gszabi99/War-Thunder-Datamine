@@ -9,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 let { isAnyQueuesActive, getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 let { updateQueueInfoByType } = require("%scripts/queue/queueInfo.nut")
 
@@ -54,7 +54,7 @@ gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (battleInfo in queueInfo) {
       if (!("battleId" in battleInfo))
         continue
-      let wwBattle = g_world_war.getBattleById(battleInfo?.battleId)
+      let wwBattle = getBattleById(battleInfo?.battleId)
       foreach (idx, sideInfo in this.getSidesInfo(wwBattle)) {
         let sideObj = this.scene.findObject(this.getSidesObjName(idx))
         if (!checkObj(sideObj))

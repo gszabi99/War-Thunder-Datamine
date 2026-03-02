@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module temp_strings shared private
 
+
+
+
+
+
+
 require daslib/ast_boost
 require strings public
 
@@ -35,12 +41,13 @@ def public temp_string(str : string; cb : block<(res : string#) : void>) {
 
 [tag_function_macro(tag="temp_string_tag")]
 class TempStringMacro : AstFunctionAnnotation {
+    
     def override verifyCall(var call : smart_ptr<ExprCallFunc>; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         if (call.arguments[0] is ExprStringBuilder) {
             return true
         }
 
-        errors := "temp_string argument must be a string with subtitutions (string builder)"
+        errors := "temp_string argument must be a string with substitutions (string builder)"
         return false
     }
 }

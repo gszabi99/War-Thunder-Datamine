@@ -8,8 +8,10 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { fillConfigurableValues } = require("%scripts/worldWar/worldWarStates.nut")
+let { getBattles, getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
+let { fillConfigurableValues } = require("%scripts/worldWar/worldWarCfgState.nut")
 let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
+
 
 gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDescription) {
   sceneTplTeamStrenght = "%gui/worldWar/wwOperationDescriptionSideStrenght.tpl"
@@ -123,13 +125,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
 
     let activeBattlesCountObj = this.scene.findObject("operation_short_info_text")
     if (checkObj(activeBattlesCountObj)) {
-      let battlesCount = g_world_war.getBattles(
-        function(wwBattle) {
-          return wwBattle.isActive()
-        },
-        true
-      ).len()
-
+      let battlesCount = getBattles(@(wwBattle) wwBattle.isActive(), true).len()
       activeBattlesCountObj.setValue(
         battlesCount > 0
           ? loc("worldwar/operation/activeBattlesCount", { count = battlesCount })
@@ -201,7 +197,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     if (!this.descItem)
       return viewData
 
-    let armyGroups = g_world_war.getArmyGroupsBySide(side)
+    let armyGroups = getArmyGroupsBySide(side)
     let clansPerColumn = countSizeInItems(parentObj, 1, "@leaderboardTrHeight",
       0, 0, 0, "2@wwWindowListBackgroundPadding").itemsCountY
 

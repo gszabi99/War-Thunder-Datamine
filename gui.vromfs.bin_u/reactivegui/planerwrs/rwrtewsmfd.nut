@@ -290,7 +290,7 @@ function scope(scale, style) {
       },
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(30), ph(-85)]
+        pos = [pw(35), ph(-85)]
         size = flex()
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
@@ -301,7 +301,7 @@ function scope(scale, style) {
         styleText.__merge({
           watch = ChaffsCount
           rendObj = ROBJ_TEXT
-          pos = [pw(45), ph(-85)]
+          pos = [pw(55), ph(-85)]
           size = flex()
           halign = ALIGN_RIGHT
           valign = ALIGN_CENTER
@@ -310,7 +310,7 @@ function scope(scale, style) {
         }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(30), ph(-75)]
+        pos = [pw(35), ph(-75)]
         size = flex()
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
@@ -321,7 +321,7 @@ function scope(scale, style) {
         styleText.__merge({
           watch = FlaresCount
           rendObj = ROBJ_TEXT
-          pos = [pw(45), ph(-75)]
+          pos = [pw(55), ph(-75)]
           size = flex()
           halign = ALIGN_RIGHT
           valign = ALIGN_CENTER

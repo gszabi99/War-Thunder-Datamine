@@ -196,7 +196,7 @@ function selPatchnote() {
 
 function onCloseAction() {
   closePatchnote()
-  cross_call.startMainmenu()
+  eventbus_send("guiStartMainmenuDelayed")
 }
 
 function onGotoAchievement() {

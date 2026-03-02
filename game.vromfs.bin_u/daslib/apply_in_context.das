@@ -6,6 +6,13 @@ options strict_smart_pointers
 
 module apply_in_context shared private
 
+
+
+
+
+
+
+
 require ast
 require daslib/ast_boost
 require daslib/templates_boost
@@ -17,6 +24,7 @@ require debugapi public
 
 [function_macro(name="apply_in_context")]
 class AppendCondAnnotation : AstFunctionAnnotation {
+  
   
   
   
@@ -87,7 +95,7 @@ class AppendCondAnnotation : AstFunctionAnnotation {
     } else {
       ctxFnBlockList |> emplace_new <| qmacro($c(ctxCloneFnName)($a(callInCtxArguments)))
     }
-    var inscope ctxFn <- qmacro_function(ctxFnName) <| $($a(ctxFnArguments)) : void {
+    var inscope ctxFn <- qmacro_function(ctxFnName) $($a(ctxFnArguments)) : void {
       unsafe {
         verify(has_debug_agent_context($v(contextName)), "debug agent is not installed")
         verify(addr(get_debug_agent_context($v(contextName))) == addr(this_context()), "agent context mismatch")
@@ -121,7 +129,7 @@ class AppendCondAnnotation : AstFunctionAnnotation {
       funcBlocklist |> emplace_new() <| qmacro_expr(${return $i(resName); })
     }
     unsafe {
-      func.body <- qmacro_block() <| $() {
+      func.body <- qmacro_block() {
         unsafe {
           verify(has_debug_agent_context($v(contextName)), "debug agent is not installed")
           verify(addr(get_debug_agent_context($v(contextName))) != addr(this_context()), "agent context mismatch")

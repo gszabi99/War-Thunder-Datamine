@@ -13,7 +13,7 @@ let { WwCustomFormation } = require("wwCustomFormation.nut")
 let { WwAirfieldCooldownFormation } = require("wwAirfieldCooldownFormation.nut")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let WwAirfieldView = require("%scripts/worldWar/inOperation/view/wwAirfieldView.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { getCurrentOperation } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 

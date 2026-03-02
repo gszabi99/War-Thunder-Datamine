@@ -16,6 +16,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { move_mouse_on_child_by_value, enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
+let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
 let { getCurrentGameMode, getGameModeById, getCurrentGameModeEdiff
 } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -46,8 +48,8 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!slotbarPresets.canLoad(verbose))
       return this.goBack()
 
-    this.presets = slotbarPresets.list()
-    this.activePreset = slotbarPresets.getCurrent()
+    this.presets = getPresetsListFromSlotbar()
+    this.activePreset = getCurrentPresetIdx()
     this.chosenValue = showPreset != null ? showPreset : this.activePreset != null ? this.activePreset : -1
     this.hoveredValue = -1
 

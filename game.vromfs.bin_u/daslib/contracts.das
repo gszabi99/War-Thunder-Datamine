@@ -6,6 +6,21 @@ options strict_smart_pointers = true
 
 module contracts shared private
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 require ast
 require daslib/ast_boost
 
@@ -15,6 +30,8 @@ def public isYetAnotherVectorTemplate(td : TypeDeclPtr) {
 }
 
 class IsAnyType : AstFunctionAnnotation {
+    
+    
     def override appendToMangledName(func : FunctionPtr; decl : AnnotationDeclaration; var mangledName : das_string) : void {
         mangledName := "{class_info(self).name}:{describe(decl)}"
     }

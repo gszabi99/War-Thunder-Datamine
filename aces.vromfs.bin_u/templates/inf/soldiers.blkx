@@ -8,6 +8,55 @@
     "unit_crew__enableBehTree": true,
     "unit_crew__squadSpawner:tag": {}
   },
+  "squad_spawner_mode": {
+    "_use": "replicating",
+    "squad_dynamic_respawn:tag": {}
+  },
+  "squad_dynamic_respawn": {
+    "dynamic_respawn__playerId": -1,
+    "dynamic_respawn__active": false,
+    "_tracked": [
+      "dynamic_respawn__active",
+      "dynamic_respawn__selected",
+      "dynamic_respawn__blocked",
+      "dynamic_respawn__highlight"
+    ],
+    "dynamic_respawn__selected": false,
+    "dynamic_respawn__selectedSpawnChecked": false,
+    "dynamic_respawn__selectedSpawnPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "dynamic_respawn__blocked": false,
+    "dynamic_respawn__highlight": false,
+    "dynamic_respawn__minimapScaleInited": false,
+    "dynamic_respawn__minimapScale": 1.35,
+    "dynamic_respawn__minimapSelectedScale": 1.35,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "dynamic_respawn__unitEid:eid": {}
+  },
   "human_weap_bipod": {
     "_tracked": [
       "bipod__enabled",
@@ -361,8 +410,8 @@
   },
   "double_sprint": {
     "double_sprint__isActive": false,
-    "double_sprint__speedMultBase": 1.5,
-    "double_sprint__speedMult": 1.5,
+    "double_sprint__speedMultBase": 1.42,
+    "double_sprint__speedMult": 1.42,
     "double_sprint__accelerationMult": 2.0,
     "double_sprint__staminaDrainMult": 8.0,
     "double_sprint__staminaRegenMult": 0.16,
@@ -408,7 +457,7 @@
     },
     "human_input__gunToAimAngleLimit:p2": {
       "value": [
-        180.0,
+        60.0,
         180.0
       ],
       "_hide": true
@@ -677,16 +726,22 @@
   "human_weight_system": {
     "human_weight_influence__minWeight": 15.0,
     "human_weight_influence__maxWeightJumpMult": 0.75,
-    "human_weight_influence__maxWeightSpeedMult": 0.66,
-    "human_weight_influence__maxWeight": 80.0,
+    "human_weight_influence__maxWeightSpeedMult": 1.0,
+    "human_weight_influence__maxWeight": 50.0,
     "human_weight_influence__staminaDrainMult": 2.5,
     "human_weight_influence__maxWeightRestoreStaminaMult": 0.7,
     "human_weight_influence__maxWeightCrawlCrouchSpeedMult": 0.8,
     "human_weight_influence__maxWeightClimbingSpeedMult": 0.75,
-    "human_weight_influence__maxWeightSprintMult": 1.1,
+    "human_weight_influence__maxWeightSprintMult": 1.0,
     "human_weight_influence__maxWeightPunchStability": 0.4,
     "human_weight_influence__maxWeightShakeStability": 0.4,
     "human_weight_influence__maxWeightDoubleSprintMult": 0.9,
+    "human_weight_influence__weightWalkSpeedMult": 1.0,
+    "human_weight_influence__weightWalkSpeedMultCrawlCrouch": 1.0,
+    "human_weight_influence__weightAccelerationMult": 1.0,
+    "human_weight_influence__weightRunSpeedMult": 1.0,
+    "human_weight_influence__weightSprintSpeedMult": 1.0,
+    "human_weight_influence__weightAimingMoveSpeedMult": 1.0,
     "human_weight_influence__maxWeightAccelerationMult": 1.0,
     "human_weight_influence__maxWeight_changePoseSpeed": 1.0,
     "human_weight_influence__maxWeight_changePoseSpeedCrawl": 1.0,
@@ -694,7 +749,179 @@
     "human_weight_influence__maxWeight_afterJumpDampingPoseUp": 1.0,
     "human_weight_influence__maxWeight_fasterChangeSpeed": 1.0,
     "human_weight_influence__maxWeight_leapDampingFallDown": 1.0,
-    "human_weight_influence__maxWeight_leapDampingStandUp": 1.0
+    "human_weight_influence__maxWeight_leapDampingStandUp": 1.0,
+    "human_weight_influence__weightWalkSpeedMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          0.9
+        ],
+        [
+          25.0,
+          0.7
+        ],
+        [
+          50.0,
+          0.65
+        ]
+      ]
+    },
+    "human_weight_influence__weightWalkSpeedMultTableCrawlCrouch:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          0.9
+        ],
+        [
+          25.0,
+          0.7
+        ],
+        [
+          50.0,
+          0.65
+        ]
+      ]
+    },
+    "human_weight_influence__weightAccelerationMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          3.0
+        ],
+        [
+          20.0,
+          2.0
+        ],
+        [
+          25.0,
+          1.5
+        ],
+        [
+          30.0,
+          1.2
+        ],
+        [
+          50.0,
+          1.0
+        ]
+      ]
+    },
+    "human_weight_influence__weightRunSpeedMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          0.95
+        ],
+        [
+          25.0,
+          0.9
+        ],
+        [
+          30.0,
+          0.85
+        ],
+        [
+          35.0,
+          0.825
+        ],
+        [
+          40.0,
+          0.8
+        ],
+        [
+          45.0,
+          0.775
+        ],
+        [
+          50.0,
+          0.75
+        ]
+      ]
+    },
+    "human_weight_influence__weightSprintSpeedMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          0.98
+        ],
+        [
+          25.0,
+          0.95
+        ],
+        [
+          30.0,
+          0.91
+        ],
+        [
+          35.0,
+          0.88
+        ],
+        [
+          40.0,
+          0.84
+        ],
+        [
+          45.0,
+          0.81
+        ],
+        [
+          50.0,
+          0.79
+        ]
+      ]
+    },
+    "human_weight_influence__weightAimingMoveSpeedMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          1.0
+        ],
+        [
+          25.0,
+          1.0
+        ],
+        [
+          30.0,
+          1.0
+        ],
+        [
+          35.0,
+          1.0
+        ],
+        [
+          40.0,
+          1.0
+        ],
+        [
+          45.0,
+          1.0
+        ],
+        [
+          50.0,
+          1.0
+        ]
+      ]
+    }
   },
   "human_recoil_mults": {
     "human_net_phys__recoilControlMult": 0.5,
@@ -1285,6 +1512,7 @@
         0.0
       ]
     ],
+    "animchar__physSymDependence:tag": {},
     "unit__skipUpdatePhysInWorld:tag": {},
     "_group": {
       "_replicate": true,
@@ -1466,8 +1694,59 @@
       "lod3": false
     }
   },
+  "human_reanimator": {
+    "_tracked": [
+      "human_reanimator__reanimationStartTime",
+      "human_reanimator__reanimationAvailable"
+    ],
+    "_replicated": "human_reanimator__reanimationStartTime",
+    "human_reanimator__position": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "human_reanimator__reanimationDistance": 2.0,
+    "human_reanimator__reanimationStartTime": -1.0,
+    "human_reanimator__reanimationEndTime": -1.0,
+    "human_reanimator__reanimationDuration": 3.0,
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "human_reanimator__reanimationAvailable": false,
+        "human_reanimator__reanimationCheckInterval": 0.2,
+        "human_reanimator__reanimationNextCheckTime": -1.0,
+        "human_reanimator__reanimationAnimTemplate": "bomb_site_plant_animation",
+        "human_reanimator__reanimationAnimAffectEid:eid": {}
+      },
+      {
+        "_tags": "sound",
+        "human_reanimator__soundName": "walker/ww2_soldier/items/healing/activate",
+        "human_reanimator__soundEvent:SoundEvent": {}
+      }
+    ],
+    "human_reanimator__reanimatedHumanEid:eid": {}
+  },
+  "human_white_noise_effect": {
+    "_group": {
+      "_tags": "render",
+      "human_white_noise_effect__maxIntensity": 1.0,
+      "human_white_noise_effect__duration": 0.3
+    }
+  },
+  "human_bleeding_effect": {
+    "_group": {
+      "_tags": "render",
+      "human_bleeding_effect__minIntensity": 0.5,
+      "human_bleeding_effect__maxIntensity": 1.0,
+      "human_bleeding_effect__current": 0.0,
+      "human_bleeding_effect__activate": false
+    }
+  },
   "base_equipped_soldier_common": {
     "_use": [
+      "human_bleeding_effect",
+      "human_white_noise_effect",
+      "human_reanimator",
       "player_visibility_tracer",
       "base_soldier",
       "base_burning",
@@ -1499,6 +1778,7 @@
       "human_voice_sound_paths",
       "human_voice_effect_burning",
       "human_voice_effect_fallcry",
+      "human_voice_effect_hold_breath",
       "human_melee_sound_paths",
       "possessable_human_sound",
       "human_loot_sound",
@@ -1519,9 +1799,34 @@
     ],
     "_tracked": [
       "human_attached_gun__attachedGunEid",
+      "dynamic_respawn__onUnitAllowed",
+      "dynamic_respawn__spawnOnUnitEid",
       "unit__deathControlLostAtTime",
       "hitpoints__deathHpThreshold",
+      "human__controlledDrone",
       "human__canPickupItems"
+    ],
+    "dynamic_respawn__updatePeriod": 1.0,
+    "dynamic_respawn_nextUpdateAtTime": -1.0,
+    "dynamic_respawn__minDistToEnemy": 10.0,
+    "dynamic_respawn__lastEnemyHitTimeDelta": 1.0,
+    "dynamic_respawn__lastHitTimeDelta": 1.0,
+    "dynamic_respawn__lastHitEnemyAtTime": -1.0,
+    "dynamic_respawn__onUnitAllowed": true,
+    "dynamic_respawn__onUnitCanBlockSpawn": false,
+    "_replicated": [
+      "dynamic_respawn__onUnitAllowed",
+      "dynamic_respawn__spawnOnUnitEid",
+      "human_coll_damage__minDmgSpd",
+      "human__controlledDrone",
+      "isTpsView"
+    ],
+    "dynamic_respawn__vehicleDistTraces": 4.0,
+    "dynamic_respawn__humanDist": 1.2,
+    "dynamic_respawn__vehicleFallbackOffset": [
+      0.0,
+      1.5,
+      0.0
     ],
     "human_aim_punch__stability": 0.0,
     "human_shake__stability": 0.0,
@@ -1534,11 +1839,6 @@
     "human_coll_damage__hpCoeff": 1.5,
     "human_coll_damage__dmgPow": 1.0,
     "human_coll_damage__minDmgSpd": 10.0,
-    "_replicated": [
-      "human_coll_damage__minDmgSpd",
-      "human__controlledDrone",
-      "isTpsView"
-    ],
     "collision_damage__threshold": 5.0,
     "collision_damage__velDeltaMult": 2.0,
     "collision_damage__velDeltaPower": 2.0,
@@ -1566,51 +1866,18 @@
     "hit_mark__armorUnbreakableDamageToArmorThreshold": 0.1,
     "human__canPickupItems": true,
     "human_attached_gun__attachedGunEid:eid": {},
+    "physObjAdditionalCollisionChecks:tag": {},
     "animchar__onlyServerUpdate:tag": {},
-    "human__controlledDrone:eid": {},
-    "bindedCamera:eid": {
-      "_hide": true
-    },
-    "dmgzoneVulnerable:tag": {},
-    "human_equipment__initialEquip:object": {
-      "attachable_wear_head_russian_02_item": "face",
-      "attachable_wear_ihps_helmet_item": "helmet",
-      "ihps_helmet_cover_item": "helmet_cover_attachment",
-      "helmet_flashlight_black_item": "helmet_left_attachment",
-      "m3_tactical_headsets_u_helmet_item": "helmet_headset_attachment",
-      "attachable_wear_shemagh_black_item": "scarf",
-      "attachable_wear_modular_assault_pack_w_gloves_item": "backpack",
-      "attachable_wear_hands_long_mech_tattoo_w_watches_item": "hands",
-      "attachable_wear_gloves_fingerless_item": "gloves",
-      "attachable_wear_g3_jacket_rolled_sleeves_item": "tunic",
-      "attachable_wear_lbx_armatus2_w_pouches_item": "chest_armor",
-      "attachable_wear_g3_pants_item": "pants",
-      "attachable_wear_holster_on_leg_item": "holster_on_leg",
-      "attachable_wear_zephyr_gtx_hi_tf_item": "boots"
-    },
-    "human_weap__weapTemplates:object": {
-      "primary": "m4a1_gun",
-      "secondary": "beretta_m9_gun",
-      "tertiary": "",
-      "melee": "knife_weapon",
-      "grenade": "grenade_thrower"
-    },
-    "inventory__itemCreateTemplates:object": {
-      "m4_magazine": 10,
-      "beretta_m9_magazine": 6,
-      "m67_grenade_item": 2,
-      "medkit_item": 2
-    },
-    "inventory__itemsWaitingCreate:list<eid>": {},
-    "itemsAround:list<eid>": {},
-    "human_inventory__selectConvex:list<p4>": {},
-    "human_inventory__selectTpsConvex:list<p4>": {},
-    "human_gun_skin_list:array": {},
-    "allowOnlyPrimaryWeaponDrop:tag": {},
-    "human_inventory__grenadesOnInit:list<t>": {
-      "_tags": "server"
-    },
+    "dynamic_respawn__spawnOnUnitEid:eid": {},
     "_group": [
+      {
+        "_hide": true,
+        "dynamic_respawn__posDiffCacheSaveSq": 36.0,
+        "dynamic_respawn__prevPosCount": 10,
+        "dynamic_respawn__curIterIdx": 0,
+        "dynamic_respawn__traceNodeId": 0,
+        "dynamic_respawn__prevPositions:list<p3>": {}
+      },
       {
         "_tags": "server",
         "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
@@ -1700,6 +1967,20 @@
       },
       {
         "_tags": "server",
+        "squad_member__wasBotLeaderPosThreshold": 3.5,
+        "squad_member__wasBotLeaderPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "squad_member__wasBotRegroupPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "_tags": "server",
         "squad_member__nextOrderType": 0,
         "squad_member__nextOrderPosition": [
           0.0,
@@ -1732,10 +2013,10 @@
       },
       {
         "_replicate": true,
-        "entity_mods__speedMult": 1.1,
+        "entity_mods__speedMult": 1.0,
         "entity_mods__staminaDrain": 1.0,
-        "entity_mods__sprintStaminaDrain": 0.9,
-        "entity_mods__sprintSpeedMult": 1.1,
+        "entity_mods__sprintStaminaDrain": 1.0,
+        "entity_mods__sprintSpeedMult": 1.0,
         "entity_mods__playerSquadBotsSprintSpeedMult": 1.15,
         "entity_mods__reloadMult": 1.0,
         "entity_mods__recoilMult": 1.0,
@@ -1841,7 +2122,50 @@
         "human_inventory__hpThresholdForHealTip": 0.85,
         "human_inventory__dotThresholdForBleedingTip": 0.15
       }
-    ]
+    ],
+    "human__controlledDrone:eid": {},
+    "bindedCamera:eid": {
+      "_hide": true
+    },
+    "dmgzoneVulnerable:tag": {},
+    "human_equipment__initialEquip:object": {
+      "attachable_wear_head_russian_02_item": "face",
+      "attachable_wear_ihps_helmet_item": "helmet",
+      "ihps_helmet_cover_item": "helmet_cover_attachment",
+      "helmet_flashlight_black_item": "helmet_left_attachment",
+      "m3_tactical_headsets_u_helmet_item": "helmet_headset_attachment",
+      "attachable_wear_shemagh_black_item": "scarf",
+      "attachable_wear_modular_assault_pack_w_gloves_item": "backpack",
+      "attachable_wear_hands_long_mech_tattoo_w_watches_item": "hands",
+      "attachable_wear_gloves_fingerless_item": "gloves",
+      "attachable_wear_g3_jacket_rolled_sleeves_item": "tunic",
+      "attachable_wear_lbx_armatus2_w_pouches_item": "chest_armor",
+      "attachable_wear_g3_pants_item": "pants",
+      "attachable_wear_holster_on_leg_item": "holster_on_leg",
+      "attachable_wear_zephyr_gtx_hi_tf_item": "boots"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "m4a1_gun",
+      "secondary": "beretta_m9_gun",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "m4_magazine": 10,
+      "beretta_m9_magazine": 6,
+      "m67_grenade_item": 2,
+      "medkit_item": 2
+    },
+    "inventory__itemsWaitingCreate:list<eid>": {},
+    "itemsAround:list<eid>": {},
+    "human_inventory__selectConvex:list<p4>": {},
+    "human_inventory__selectTpsConvex:list<p4>": {},
+    "human_gun_skin_list:array": {},
+    "allowOnlyPrimaryWeaponDrop:tag": {},
+    "human_inventory__grenadesOnInit:list<t>": {
+      "_tags": "server"
+    }
   },
   "human_melee_charge": {
     "human_melee_charge__canStart": false,

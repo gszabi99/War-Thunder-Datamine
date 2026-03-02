@@ -14,6 +14,7 @@ let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
 let { requestMembership } = require("%scripts/clans/clanRequests.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
+let { openChatPrivate } = require("%scripts/chat/openChat.nut")
 
 let getClanActions = function(clanId) {
   if (!hasFeature("Clans"))
@@ -73,7 +74,7 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
           if (!canChat)
             return playerContextMenu.notifyPlayerAboutRestriction(contact)
 
-          ::openChatPrivate(name, handler)
+          openChatPrivate(name, handler)
         }
       }
       {

@@ -98,7 +98,7 @@
     0.5,
     0.005
   ],
-  "MaxSpeedNearGround": 429.984,
+  "MaxSpeedNearGround": 382.0,
   "MaxSpeedAtAltitude": 386.0,
   "CriticalSpeed": 30.0,
   "ArcadeHelpersSensitivity": 1.0,
@@ -120,12 +120,13 @@
   "ElevatorMaxDv": 3.49462,
   "RudderMaxDv": 5.45455,
   "VneControl": 600.0,
-  "CockpitOpenedDoorBreakSpeed": -1.0,
+  "ExtThrustBaseMult": 1.0,
   "MomentOfInertia": [
     26007.0,
     58135.0,
     32128.0
   ],
+  "CockpitOpenedDoorBreakSpeed": -1.0,
   "DisableRendinstCollision": false,
   "SpawnSpeed": 290.352,
   "AvailableControls": {
@@ -155,6 +156,7 @@
     "hasBuoyancyControl": false,
     "hasLightsControl": false,
     "hasManeuverabilityMode": false,
+    "hasThrustVectoringMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -214,7 +216,7 @@
       "SweptAngle": 8.0,
       "TaperRatio": 2.5,
       "Angle": 0.0,
-      "VAngle": 4.93,
+      "VAngle": 7.0,
       "UseSpinLoss": true,
       "SpinCdloss": 0.08,
       "SpinClloss": 0.11,
@@ -231,8 +233,8 @@
       },
       "Arm": {
         "Arm": [
-          -0.04,
-          0.4,
+          0.24,
+          0.3,
           2.28
         ],
         "SineAosMultiplier": 1.0,
@@ -312,7 +314,7 @@
         "alphaCritLow": -16.0,
         "ClCritHigh": 1.05,
         "ClCritLow": -0.8,
-        "CdMin": 0.01
+        "CdMin": 0.011
       },
       "FlapsPolar1": {
         "Flaps": 1.0,
@@ -456,11 +458,11 @@
       "Span": 4.4,
       "Angle": 0.0,
       "Arm": [
-        -6.4,
+        -6.8,
         0.1,
         1.1
       ],
-      "FlowInertia": 0.0500013,
+      "FlowInertia": 0.0500017,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 4.25,
@@ -528,11 +530,11 @@
       "Span": 1.95,
       "Angle": 0.0,
       "Arm": [
-        -6.3,
+        -6.7,
         1.033,
         0.0
       ],
-      "FlowInertia": 0.0500013,
+      "FlowInertia": 0.0500017,
       "SlipStreamDistance": 9.54,
       "Areas": {
         "Main": 2.42,
@@ -726,6 +728,7 @@
     "Main": {
       "Type": "Radial",
       "Cylinders": 14,
+      "AllowDamageAfterPropeller": true,
       "Mass": 545.0,
       "Thrust": 0.0,
       "ThrottleBoost": 1.0001,
@@ -1031,7 +1034,7 @@
       }
     },
     "FireExtinguisher": {
-      "Num": 1,
+      "Num": 0,
       "UseTime": 5.0,
       "Power": 2500.0,
       "Automatic": false
@@ -1059,6 +1062,7 @@
       "ThrustRatio": 1.0,
       "ThrustMax": 2147440000.0,
       "TipPosition": false,
+      "HasThrustVecMainControlsMode": false,
       "AileronsToThrustDeflection": [
         0.0,
         0.0,
@@ -1324,12 +1328,12 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      90.0,
       90.0
     ],
     "Pos": [
-      3.1,
-      -0.1,
+      2.27,
+      0.0,
       0.0
     ],
     "Geometry": {
@@ -1349,7 +1353,8 @@
     ],
     "UseAutoPropInertia": true,
     "EngineAcceleration": 4.0,
-    "CorrectPropellerToTransmissionLink": false
+    "CorrectPropellerToTransmissionLink": false,
+    "AllowDamageAfterLinksDamage": true
   },
   "Mass": {
     "EmptyMass": 2421.0,
@@ -1368,7 +1373,7 @@
     "SeparateFuelTanks": true,
     "Takeoff": 3650.0,
     "CenterOfGravity": [
-      -0.05,
+      -0.55,
       0.0,
       0.0
     ],
@@ -1398,34 +1403,34 @@
       "tank4_external": false,
       "tank4_priority": 0,
       "tailcontrol_dm": 5.31579,
-      "wingcontrol_r_dm": 2.69471,
       "wingcontrol_l_dm": 2.69471,
-      "wing1_l_dm": 153.509,
-      "wing1_r_dm": 153.509,
-      "fuse1_dm": 154.095,
-      "tail_dm": 50.8118,
+      "wingcontrol_r_dm": 2.69471,
       "wing_l_dm": 111.725,
       "wing_r_dm": 111.725,
-      "fin_dm": 38.7876,
+      "wing1_l_dm": 153.509,
+      "wing1_r_dm": 153.509,
+      "tail_dm": 50.8118,
+      "fuse1_dm": 154.095,
       "wing2_l_dm": 100.038,
       "wing2_r_dm": 100.038,
+      "fin_dm": 38.7876,
+      "aileron_r_dm": 32.6915,
+      "aileron_l_dm": 32.6916,
       "spar1_l_dm": 15.8579,
       "spar1_r_dm": 15.8579,
-      "aileron_l_dm": 32.6916,
-      "aileron_r_dm": 32.6915,
       "flap_l_dm": 33.4301,
       "flap_r_dm": 33.4238,
       "cover2_dm": 49.6615,
+      "fuse_dm": 51.174,
       "cover1_dm": 62.9631,
       "spar2_l_dm": 14.4637,
       "spar2_r_dm": 14.4637,
-      "fuse_dm": 51.174,
-      "gear_l_dm": 30.4594,
-      "gear_r_dm": 30.4594,
       "spar_l_dm": 14.3767,
       "spar_r_dm": 14.3767,
-      "rudder_dm": 21.7812,
+      "gear_l_dm": 30.4594,
+      "gear_r_dm": 30.4594,
       "engine1_dm": 545.0,
+      "rudder_dm": 21.7812,
       "pilot_dm": 13.0002,
       "gunner1_dm": 17.1276,
       "mgun1_dm": 3.05998,
@@ -1442,8 +1447,8 @@
       "airbrake_l_dm": 29.8283,
       "airbrake_r_dm": 29.8283,
       "wingcontrol_dm": 7.19625,
-      "cover3_dm": 14.5406,
       "gun1_dm": 6.96985,
+      "cover3_dm": 14.5406,
       "gear_c_dm": 6.58795
     }
   },
@@ -1467,7 +1472,7 @@
   },
   "Gear": {
     "SinkFactor": 1000.0,
-    "SinkRateMult": 1.03058,
+    "SinkRateMult": 1.04602,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.3,
@@ -2180,6 +2185,7 @@
         0.0,
         -2147440000.0
       ],
+      "UseClimbMinLimByRAltitude": false,
       "ClimbPID": {
         "Kp": 0.0,
         "Ki": 0.0,
@@ -2211,7 +2217,8 @@
           0.0,
           0.0
         ]
-      }
+      },
+      "CruiseAssist": {}
     },
     "Buoyancy": {},
     "Aim": {

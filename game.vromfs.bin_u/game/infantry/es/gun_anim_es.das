@@ -35,6 +35,7 @@ def gun_anim_init_es(evt : Event;
                      var gun_anim__reloadStyleVarId : int&;
                      var gun_anim__singleReloadStateVarId : int&;
                      var gun_anim__curNumAmmoVarId : int&;
+                     var gun_anim__nextMagNumAmmoVarId : int&;
                      var gun_anim__isSecondMagVarId : int&;
                      var gun_anim__weapModStateVarId : int&;
                      var gun_anim__isTriggerPulledVarId : int&;
@@ -56,6 +57,7 @@ def gun_anim_init_es(evt : Event;
   gun_anim__reloadStateId = registerVar(phys_vars, "reload_state", 0.f)
   gun_anim__singleReloadStateVarId = registerVar(phys_vars, "single_reload_state", 0.f)
   gun_anim__curNumAmmoVarId = registerVar(phys_vars, "cur_num_ammo", 0.f)
+  gun_anim__nextMagNumAmmoVarId = registerVar(phys_vars, "next_mag_num_ammo", 0.f)
   gun_anim__isSecondMagVarId = registerVar(phys_vars, "is_second_mag", 0.f)
   gun_anim__weapModStateVarId = registerVar(phys_vars, "weapon_mod_state", 0.f)
   gun_anim__isTriggerPulledVarId = registerVar(phys_vars, "trigger_pulled", 0.f)
@@ -168,6 +170,7 @@ def  gun_anim_updater_es(info : ParallelUpdateFrameDelayed&;
                          gun_anim__reloadStyleVarId : int;
                          gun_anim__singleReloadStateVarId : int;
                          gun_anim__curNumAmmoVarId : int;
+                         gun_anim__nextMagNumAmmoVarId : int;
                          gun_anim__isSecondMagVarId : int;
                          gun_anim__weapModStateVarId : int;
                          gun_anim__singleReloadStates : IntList;
@@ -177,6 +180,7 @@ def  gun_anim_updater_es(info : ParallelUpdateFrameDelayed&;
                          gun__owner : EntityId = INVALID_ENTITY_ID;
                          gun_reload__state : int = 0;
                          gun__ammo : int = 0;
+                         gun__ammoToReloadCount : int = 0;
                          visual_magazine_fullness__ammoCount : int = -1;
                          gun_anim__reloadProgress : float = -1.0f;
                          gun_anim__inspectProgress : float = 0.0f;
@@ -204,7 +208,7 @@ def  gun_anim_updater_es(info : ParallelUpdateFrameDelayed&;
   setVar(phys_vars, gun_anim__reloadStateId, float(reloadStateEnum))
 
   setVar(phys_vars, gun_anim__curNumAmmoVarId, visual_magazine_fullness__ammoCount >= 0 ? float(visual_magazine_fullness__ammoCount) : float(gun__ammo))
-
+  setVar(phys_vars, gun_anim__nextMagNumAmmoVarId, float(gun__ammoToReloadCount))
   query(gun__owner) <| $ [es] (bipod__enabled : bool = false)
     setVar(phys_vars, gun_anim__bipodEnabledId, bipod__enabled ? 1.f : 0.f)
 

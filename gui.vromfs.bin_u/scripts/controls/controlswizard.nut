@@ -32,6 +32,7 @@ let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset, setPreviewControlsPreset, isPresetChanged } = require("%scripts/controls/controlsState.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
 let { setBindMode } = require("controls")
+let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
 
 let aircraft_controls_wizard_config = [
   { id = "helpers_mode"
@@ -1504,7 +1505,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function applyPreset(preset) {
-    ::apply_joy_preset_xchange(preset)
+    applyJoyPresetXchange(preset)
     this.isPresetAlreadyApplied = true
     this.goBack()
   }

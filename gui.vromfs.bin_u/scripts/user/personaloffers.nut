@@ -25,7 +25,6 @@ let { performPromoAction, togglePromoItem } = require("%scripts/promo/promo.nut"
 let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { convertBlk, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -38,7 +37,8 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { hasInWishlist } = require("%scripts/wishlist/wishlistManager.nut")
 let { getPrizeActionButtonsView, getPrizeImageByConfig, getTrophyRewardText
 } = require("%scripts/items/prizesView.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
 
 function getEntitlementTimeForDesc(config) {

@@ -166,7 +166,7 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let infoNestObj = showObjById("decorator_info", true, this.scene)
-    let imgRatio = 1.0 / decorator.decoratorType.getRatio(decorator)
+    let imgRatio = 1.0 / decorator.decoratorViewType.getRatio(decorator)
     local additionalDescriptionMarkup = null
     if (decoratorConfig.isPrize)
       additionalDescriptionMarkup = this.collectionsList?[decoratorConfig?.collectionIdx ?? -1]?.getCollectionViewMarkup(

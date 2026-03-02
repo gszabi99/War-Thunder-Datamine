@@ -2,7 +2,8 @@ from "%scripts/dagui_natives.nut" import  get_player_army_for_hud, get_local_pla
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 from "%scripts/teams.nut" import g_team
-from "%scripts/utils_sa.nut" import is_multiplayer, is_mode_with_teams
+from "%scripts/utils_sa.nut" import is_multiplayer
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { get_pve_trophy_name, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
@@ -1307,7 +1308,7 @@ function gatherDebriefingResult() {
 
   debriefingResult.isSucceed <- (get_mission_status() == MISSION_STATUS_SUCCESS)
   debriefingResult.restoreType <- get_mission_restore_type()
-  debriefingResult.isTeamplay <- is_mode_with_teams(gameType)
+  debriefingResult.isTeamplay <- isModeWithTeams(gameType)
 
   debriefingResult.isInRoom <- isInSessionRoom.get()
   let roomEvent = isInSessionRoom.get() ? getRoomEvent() : null

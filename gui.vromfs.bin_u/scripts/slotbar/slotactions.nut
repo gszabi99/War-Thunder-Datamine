@@ -6,16 +6,15 @@ let {canBuyNotResearched, isUnitMaxExp, canResearchUnit,
   isUnitInResearch, isUnitGroup, isUnitBroken, isUnitUsable, isUnitResearched
 } = require("%scripts/unit/unitStatus.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { repairWithMsgBox, buy, flushSquadronExp, research, canSpendGoldOnUnitWithPopup
-} = require("%scripts/unit/unitActions.nut")
+let { repairWithMsgBox, buy, flushSquadronExp, research } = require("%scripts/unit/unitActions.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
+let { canBuyUnit, isUnitGift, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
+let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { hasUnitEvent, getUnitEventId } = require("%scripts/unit/unitEvents.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
@@ -103,7 +102,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
     return params.onSpendExcessExp()
   if (isInResearch && hasFeature("SpendGold")
       && !isSquadronVehicle && canSpendGoldOnUnitWithPopup(unit))
-    return gui_modal_convertExp(unit)
+    return openConvertExpModalWnd(unit)
 
   if (canFlushSquadronExp && isInResearch)
     return flushSquadronExp(unit)

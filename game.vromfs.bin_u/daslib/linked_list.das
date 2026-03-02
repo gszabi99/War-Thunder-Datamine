@@ -5,22 +5,31 @@ options no_unused_function_arguments = false
 
 module linked_list shared private
 
+
+
+
+
+
+
 require daslib/spoof public
 
-let public TLinkedList = %spoof_template~(ListClass,Foo)
+let public TLinkedList = %spoof_template~(ListClass,Foo) 
 struct LLNode_%ListClass {
-    data : %Foo?
-    prev, next : LLNode_%ListClass?
+    
+    data : %Foo?                        
+    prev, next : LLNode_%ListClass?     
 }
 
 class %ListClass {
-    head, tail : LLNode_%ListClass?
+    
+    head, tail : LLNode_%ListClass?     
     def %ListClass {
         head = null
         tail = null
     }
 
     def add ( var data : %Foo? ) {
+        
         var node = new LLNode_%ListClass(data=data)
         if (head == null) {
             head = node
@@ -33,6 +42,7 @@ class %ListClass {
     }
 
     def remove ( data : %Foo? ) {
+        
         var node = head
         while (node != null) {
             if (node.data == data) {
@@ -52,6 +62,7 @@ class %ListClass {
         }
     }
     def each : iterator<%Foo?> {
+        
         return <- generator <%Foo?> () <| $() {
             var node = head
             while (node != null) {

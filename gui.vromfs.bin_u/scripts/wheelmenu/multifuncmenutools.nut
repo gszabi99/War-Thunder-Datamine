@@ -93,7 +93,7 @@ function makeMfmSection(cfg, id, unitId, hudUnitType) {
     local needShow = isShowedByUnit(cfg, c, unitId)
 
     if (isShortcut) {
-      shortcutId = c.shortcut.findvalue(@(i) allowedShortcutIds.indexof(i) != null)
+      shortcutId = c.shortcut.findvalue(@(i) allowedShortcutIds.indexof(i) != null) ?? c.shortcut?[0]
       label = item?.getText ? item.getText() : (loc("hotkeys/{0}".subst(shortcutId ?? c.shortcut?[0] ?? "")))
       isEnabled = shortcutId != null && isEnabledByUnit(cfg, c, unitId)
     }

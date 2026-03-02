@@ -26,12 +26,17 @@ var private @ignore_heap_usage context : EditorContext?
 struct AnimGraphViewerSetAnimState
   state_idx : int
 
+[event(broadcast)]
+struct AnimGraphViewerSelectAssetResource
+  res_name : string
+
 [finalize]
 def shutdown()
   DestroyEditor(context)
 
 struct AnimgraphContext
   links : array<tuple<outIdx : int; inIdx : int>>
+  animchar : AnimcharBaseComponent?
 
 typedef
   BlendNodeRenderer = function<(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float) : void>
@@ -224,18 +229,36 @@ def render_AnimBlendNodeNull(var nod : IAnimBlendNode?; var graph : AnimationGra
     draw_param_info(graph, state, timeScaleParam, "Time scale")
 
 
+def get_leaf_anim_res_ids(var nodePtr : IAnimBlendNode?) : tuple< id : int; sourceId : int>
+  if !*nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID)
+    return -1, -1
+
+  assume node = unsafe(reinterpret<AnimBlendNodeLeaf?> nodePtr)
+  let anim = *node |> AnimBlendNodeLeaf_get_anim()
+
+  let resId = anim.resId
+  var sourceResId = -1
+
+  if anim.resId == -1
+    let sourceAnim = *anim |> AnimData_get_source_anim_data()
+    if sourceAnim != null
+      sourceResId = sourceAnim.resId
+
+  return resId, sourceResId
+
+
 [unused_argument(nod, graph, state, context)]
 def render_AnimBlendNodeStillLeaf(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
   unsafe
     assume node = reinterpret<AnimBlendNodeStillLeaf?> nod
-    let anim = *node |> AnimBlendNodeStillLeaf_get_anim()
-    let res = get_game_resource_name(anim.resId)
-    Text("a2d: {res}")
-    if anim.resId == -1
-      let sourceAnim = *anim |> AnimData_get_source_anim_data()
-      if sourceAnim != null
-        let sourceRes = get_game_resource_name(sourceAnim.resId)
-        imgui::Text("  source a2d: {sourceRes}")
+
+    let ids = get_leaf_anim_res_ids(nod)
+    let resName = get_game_resource_name(ids.id)
+    Text("a2d: {resName}")
+    if ids.id == -1
+      let sourceResName = get_game_resource_name(ids.sourceId)
+      imgui::Text("  source a2d: {sourceResName}")
+
     imgui::Text("isAdditive: {node.isAdditive}")
     imgui::Text("weight: {fmt(":.2f", weight)}")
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
@@ -252,14 +275,14 @@ def render_AnimBlendNodeStillLeaf(var nod : IAnimBlendNode?; var graph : Animati
 def render_AnimBlendNodeContinuousLeaf(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
   unsafe
     assume node = reinterpret<AnimBlendNodeContinuousLeaf?> nod
-    let anim = *node |> AnimBlendNodeContinuousLeaf_get_anim()
-    let res = get_game_resource_name(anim.resId)
-    Text("a2d: {res}")
-    if anim.resId == -1
-      let sourceAnim = *anim |> AnimData_get_source_anim_data()
-      if sourceAnim != null
-        let sourceRes = get_game_resource_name(sourceAnim.resId)
-        imgui::Text("  source a2d: {sourceRes}")
+
+    let ids = get_leaf_anim_res_ids(nod)
+    let resName = get_game_resource_name(ids.id)
+    Text("a2d: {resName}")
+    if ids.id == -1
+      let sourceResName = get_game_resource_name(ids.sourceId)
+      imgui::Text("  source a2d: {sourceResName}")
+
     imgui::Text("isAdditive: {node.isAdditive}")
     imgui::Text("weight: {fmt(":.2f", weight)}")
     imgui::Text("time: {float(node.dt)/TIME_TicksPerSec}")
@@ -276,14 +299,14 @@ def render_AnimBlendNodeContinuousLeaf(var nod : IAnimBlendNode?; var graph : An
 def render_AnimBlendNodeParametricLeaf(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
   unsafe
     assume node = reinterpret<AnimBlendNodeParametricLeaf?> nod
-    let anim = *node |> AnimBlendNodeParametricLeaf_get_anim()
-    let res = get_game_resource_name(anim.resId)
-    Text("a2d: {res}")
-    if anim.resId == -1
-      let sourceAnim = *anim |> AnimData_get_source_anim_data()
-      if sourceAnim != null
-        let sourceRes = get_game_resource_name(sourceAnim.resId)
-        imgui::Text("  source a2d: {sourceRes}")
+
+    let ids = get_leaf_anim_res_ids(nod)
+    let resName = get_game_resource_name(ids.id)
+    Text("a2d: {resName}")
+    if ids.id == -1
+      let sourceResName = get_game_resource_name(ids.sourceId)
+      imgui::Text("  source a2d: {sourceResName}")
+
     imgui::Text("isAdditive: {node.isAdditive}")
     imgui::Text("weight: {fmt(":.2f", weight)}")
     imgui::Text("time: {float(node.dt)/TIME_TicksPerSec}")
@@ -300,14 +323,14 @@ def render_AnimBlendNodeParametricLeaf(var nod : IAnimBlendNode?; var graph : An
 def render_AnimBlendNodeSingleLeaf(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
   unsafe
     assume node = reinterpret<AnimBlendNodeSingleLeaf?> nod
-    let anim = *node |> AnimBlendNodeSingleLeaf_get_anim()
-    let res = get_game_resource_name(anim.resId)
-    Text("a2d: {res}")
-    if anim.resId == -1
-      let sourceAnim = *anim |> AnimData_get_source_anim_data()
-      if sourceAnim != null
-        let sourceRes = get_game_resource_name(sourceAnim.resId)
-        imgui::Text("  source a2d: {sourceRes}")
+
+    let ids = get_leaf_anim_res_ids(nod)
+    let resName = get_game_resource_name(ids.id)
+    Text("a2d: {resName}")
+    if ids.id == -1
+      let sourceResName = get_game_resource_name(ids.sourceId)
+      imgui::Text("  source a2d: {sourceResName}")
+
     imgui::Text("isAdditive: {node.isAdditive}")
     imgui::Text("isAnimationIgnored: {node.isAnimationIgnored}")
     imgui::Text("weight: {fmt(":.2f", weight)}")
@@ -601,10 +624,17 @@ def render_AnimBlendCtrl_ParametricSwitcher(var nod : IAnimBlendNode?; var graph
 
 
 
-[unused_argument(nod, graph, state, context)]
-def render_AnimPostBlendCtrl(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
+[unused_argument(context)]
+def render_general_post_blend_controller(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
   unsafe
     assume node = reinterpret<AnimPostBlendCtrl?> nod
+    var debugContext = context.animchar.animcharDebugContext
+    var hasWtOverride = animchar_debug_getPbcOverrideEnabled(*debugContext, node.pbcId)
+    if imgui::Checkbox("Force disable##pbcWtOverride_{node.pbcId}", safe_addr(hasWtOverride))
+      if hasWtOverride
+        animchar_debug_setPbcOverride(*debugContext, node.pbcId, 0.0)
+      else
+        animchar_debug_disablePbcOverride(*debugContext, node.pbcId)
     imgui::Text("weight: {fmt(":.2f", weight)}")
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
@@ -613,9 +643,17 @@ def render_AnimPostBlendCtrl(var nod : IAnimBlendNode?; var graph : AnimationGra
     draw_param_info(graph, state, timeScaleParam, "Time scale")
 
 
+[unused_argument(nod, graph, state, context)]
+def render_AnimPostBlendCtrl(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
+  render_general_post_blend_controller(nod, graph, state, context, weight)
+  imgui::Spacing()
+  imgui::Spacing()
+  imgui::Text("--- Missing node specific render ---\nThis node has more parameters than displayed")
+
+
 def render_AnimPostBlendParamFromNode(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
   unsafe
-    render_AnimPostBlendCtrl(nod, graph, state, context, weight)
+    render_general_post_blend_controller(nod, graph, state, context, weight)
     assume node = reinterpret<AnimPostBlendParamFromNode?> nod
     imgui::Spacing()
     
@@ -631,7 +669,7 @@ def render_AnimPostBlendParamFromNode(var nod : IAnimBlendNode?; var graph : Ani
 
 def render_AttachGeomNodeCtrl(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
   unsafe
-    render_AnimPostBlendCtrl(nod, graph, state, context, weight)
+    render_general_post_blend_controller(nod, graph, state, context, weight)
     assume node = reinterpret<AttachGeomNodeCtrl?> nod
     imgui::Spacing()
     imgui::Text("minNodeScale: {node.minNodeScale}")
@@ -680,8 +718,155 @@ def param_type_to_text(typ : uint)
     return "Unknown type id: {typ}"
   return text[typ]
 
+
+def class_name_to_anim_tree_class_name(class_name : string)
+  
+  if class_name == "AnimBlendNodeContinuousLeaf"
+    return "continuous"
+
+  if class_name == "AnimBlendNodeSingleLeaf"
+    return "single"
+
+  if class_name == "AnimBlendNodeStillLeaf"
+    return "still"
+
+  if class_name == "AnimBlendNodeParametricLeaf"
+    return "parametric"
+
+  
+  if class_name == "AnimBlendCtrl_Fifo3"
+    return "fifo3"
+
+  if class_name == "AnimBlendCtrl_1axis"
+    return "linear"
+
+  if class_name == "AnimBlendCtrl_LinearPoly"
+    return "linearPoly"
+
+  if class_name == "AnimBlendCtrl_RandomSwitcher"
+    return "randomSwitch"
+
+  if class_name == "AnimBlendCtrl_ParametricSwitcher"
+    return "paramSwitch"
+
+  if class_name == "AnimBlendCtrl_ParametricSwitcher"
+    return "paramSwitchS"
+
+  if class_name == "AnimBlendCtrl_SetMotionMatchingTag"
+    return "setMotionMatchingTag"
+
+  if class_name == "AnimHubCtrl"
+    return "hub"
+
+  if class_name == "AnimBlendNodeNull"
+    return "null"
+
+  if class_name == "AnimBlendNodeNull"
+    return "stub"
+
+  if class_name == "AnimBlendCtrl_Blender"
+    return "blender"
+
+  if class_name == "AnimBISCtrl"
+    return "BIS"
+
+  if class_name == "DeltaAnglesCtrl"
+    return "deltaAnglesCalc"
+
+  if class_name == "AnimPostBlendAlignCtrl"
+    return "alignNode"
+
+  if class_name == "AnimPostBlendAlignExCtrl"
+    return "alignEx"
+
+  if class_name == "AnimPostBlendRotateCtrl"
+    return "rotateNode"
+
+  if class_name == "AnimPostBlendRotateAroundCtrl"
+    return "rotateAroundNode"
+
+  if class_name == "AnimPostBlendScaleCtrl"
+    return "scaleNode"
+
+  if class_name == "AnimPostBlendMoveCtrl"
+    return "moveNode"
+
+  if class_name == "ApbParamCtrl"
+    return "paramsCtrl"
+
+  if class_name == "DefClampParamCtrl"
+    return "defClampCtrl"
+
+  if class_name == "AnimPostBlendCondHideCtrl"
+    return "condHide"
+
+  if class_name == "ApbAnimateCtrl"
+    return "animateNode"
+
+  if class_name == "LegsIKCtrl"
+    return "legsIK"
+
+  if class_name == "AnimPostBlendTwoBonesIK"
+    return "twoBonesIK"
+
+  if class_name == "MultiChainFABRIKCtrl"
+    return "multiChainFABRIK"
+
+  if class_name == "AttachGeomNodeCtrl"
+    return "attachNode"
+
+  if class_name == "AnimPostBlendAimCtrl"
+    return "aim"
+
+  if class_name == "AnimPostBlendNodeLookatCtrl"
+    return "lookat"
+
+  if class_name == "AnimPostBlendNodeLookatNodeCtrl"
+    return "lookatNode"
+
+  if class_name == "AnimPostBlendEffFromAttachement"
+    return "effFromAttachment"
+
+  if class_name == "AnimPostBlendNodeEffectorFromChildIK"
+    return "nodesFromAttachement"
+
+  if class_name == "AnimPostBlendParamFromNode"
+    return "paramFromNode"
+
+  if class_name == "AnimPostBlendMatVarFromNode"
+    return "matFromNode"
+
+  if class_name == "AnimPostBlendCompoundRotateShift"
+    return "compoundRotateShift"
+
+  if class_name == "AnimPostBlendSetParam"
+    return "setParam"
+
+  if class_name == "AnimPostBlendTwistCtrl"
+    return "twistCtrl"
+
+  if class_name == "AnimPostBlendEyeCtrl"
+    return "eyeCtrl"
+
+  if class_name == "AnimPostBlendNodeEffectorFromChildIK"
+    return "effectorFromChildIK"
+
+  if class_name == "DeltaRotateShiftCtrl"
+    return "deltaRotateShiftCalc"
+
+  if class_name == "FootLockerIKCtrl"
+    return "footLockerIK"
+
+  if class_name == "AnimPostBlendHasAttachment"
+    return "hasAttachment"
+
+  if class_name == "AnimPostBlendHumanAimCtrl"
+    return "humanAim"
+
+  return "??? (Missing information about this class name)"
+
 [unused_argument(state)]
-def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGraph; var state : IAnimStateHolder; var reset_state : bool&; var params_filter : ImGuiTextFilter&; var states_filter : ImGuiTextFilter&)
+def render_anim_graph2(var animchar : AnimcharBaseComponent; var graph : AnimationGraph; var state : IAnimStateHolder; var reset_state : bool&; var params_filter : ImGuiTextFilter&; var states_filter : ImGuiTextFilter&)
 
   var renderers : array<tuple<uint; BlendNodeRenderer>>
   push(renderers, tuple(AnimBlendNodeNullCID, @@render_AnimBlendNodeNull))
@@ -704,17 +889,14 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
   push(renderers, tuple(AnimPostBlendCtrlCID, @@render_AnimPostBlendCtrl)) 
 
   var ctx : AnimgraphContext
+  ctx.animchar = unsafe(addr(animchar))
 
-  ImGuiEx_BeginColumn()
+  let paramsWidth = 280f
+  imgui::Columns(2, "__params__")
 
-  let paramsWidth = 250f
-  imgui::BeginChild("__params__", float2(paramsWidth, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.None)
-
-  var autoAlign = imgui::Button("Align")
-  imgui::SameLine()
-  var focusContent = imgui::Button("Focus")
-  imgui::SameLine()
-  let focusRoot = imgui::Button("Focus root")
+  var autoAlign = false
+  var focusContent = false
+  var focusRoot = false
 
   static_let <|
     var lastGraphPtr : uint64
@@ -728,8 +910,10 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     var bookmarksLoaded = false
     var bookmarkedStates : array<string>
     var bookmarkedParams : array<string>
+    var pbcListShowNodeClass = false
     var pbcListShowActiveOnly = true
     var bnlListShowActiveOnly = true
+    var disableAutoAlign = false
 
   static_let_finalize <|
     var skeletonFilter = new ImGuiTextFilter
@@ -749,6 +933,11 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
     invoke(load, "animgraph_viewer_bookmarked_states", bookmarkedStates)
     invoke(load, "animgraph_viewer_bookmarked_params", bookmarkedParams)
+
+    
+    
+    
+    imgui::SetColumnWidth(0, paramsWidth)
 
   let graphPtr = intptr(unsafe(addr(graph)))
   if lastGraphPtr != graphPtr
@@ -777,6 +966,15 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     context = CreateEditor(safe_addr(config))
 
   SetCurrentEditor(context)
+
+  imgui::BeginChild("__params__", float2(-FLT_MIN, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.None)
+
+  autoAlign ||= imgui::Button("Align")
+  imgui::SameLine()
+  focusContent ||= imgui::Button("Focus")
+  imgui::SameLine()
+  focusRoot ||= imgui::Button("Focus root")
+  imgui::Checkbox("Disable auto align", safe_addr(disableAutoAlign))
 
   graph |> anim_graph_getAnimNodeNames <| $(nodes)
     graph |> animchar_getAnimBlendNodeWeights(state) <| $(abn_wt; bnl_wt; pbc_wt)
@@ -1006,17 +1204,25 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           enumName = animV20_get_enum_name_by_id(enumId)
 
       if imgui::CollapsingHeader("Post Blend Controllers ({length(graph.blender.pbCtrl)})")
+        imgui::Checkbox("Show node types##pbc", safe_addr(pbcListShowNodeClass))
         imgui::Checkbox("Show active only##pbc", safe_addr(pbcListShowActiveOnly))
+        var debugContext = animchar.animcharDebugContext
+
         for i, pbcPtr in range(length(graph.blender.pbCtrl)), graph.blender.pbCtrl
-          if pbcListShowActiveOnly && pbc_wt[i] == 0.0
+          let hasWtOverride = animchar_debug_getPbcOverrideEnabled(*debugContext, i)
+          if pbcListShowActiveOnly && pbc_wt[i] == 0.0 && !hasWtOverride
             continue
           let pbc = get(pbcPtr)
-          imgui::Text("{graph |> anim_graph_getBlendNodeName(pbc)}")
+          let name = graph |> anim_graph_getBlendNodeName(pbc)
+          let className = pbcListShowNodeClass ? " ({*pbc |> anim_blend_node_class_name()})" : ""
+          imgui::Text("{name}{className}{hasWtOverride ? " (weight override)" : ""}")
           let nodeId = anim_blend_node_getAnimNodeId(*pbc)
           if imgui::BeginPopupContextItem("PostBlendControllersContext##PostBlendControllersContext_{i}")
             if imgui::Selectable("Focus")
               imgui_node_editor::SelectNode(get_node_idx(nodeId))
               NavigateToSelection(false, -1f)
+            if imgui::Selectable("Copy name ({name})")
+              imgui::SetClipboardText(name)
             imgui::EndPopup()
 
       if imgui::CollapsingHeader("Blend Node Leafs ({length(graph.blender.bnl)})")
@@ -1025,16 +1231,19 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           if bnlListShowActiveOnly && bnl_wt[i] == 0.0
             continue
           let bnl = get(bnlPtr)
-          imgui::Text("{graph |> anim_graph_getBlendNodeName(bnl)}")
+          let name = graph |> anim_graph_getBlendNodeName(bnl)
+          imgui::Text("{name}")
           let nodeId = anim_blend_node_getAnimNodeId(*bnl)
           if imgui::BeginPopupContextItem("BlendNodeLeafsContext##BlendNodeLeafsContext_{i}")
             if imgui::Selectable("Focus")
               imgui_node_editor::SelectNode(get_node_idx(nodeId))
               NavigateToSelection(false, -1f)
+            if imgui::Selectable("Copy name ({name})")
+              imgui::SetClipboardText(name)
             imgui::EndPopup()
 
       imgui::EndChild()
-      ImGuiEx_NextColumn()
+      imgui::NextColumn()
 
       imgui::BeginTabBar("Tabs")
 
@@ -1063,6 +1272,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
         style.PinRounding = 0f
         style.NodePadding = float4(12, 4, 12, 8)
         imgui::PushStyleColor(ImGuiCol.Text, float4(1))
+        imgui::PushStyleColor(ImGuiCol.PopupBg, float4(0.12, 0.12, 0.12, 1.0))
         
         
         
@@ -1210,6 +1420,36 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
               if !foundRender
                 imgui::Text("Error: no renderer")
 
+            imgui_node_editor::Suspend()
+
+            var nodeId = -1
+            if imgui_node_editor::ShowNodeContextMenu(safe_addr(nodeId))
+              if node.id == get_link_node(nodeId)
+                imgui::OpenPopup("node_context_menu##node_context_menu_{idx}")
+
+            if imgui::BeginPopup("node_context_menu##node_context_menu_{idx}")
+              if imgui::Selectable("Copy name ({node.name})")
+                imgui::SetClipboardText(node.name)
+              if nodePtr != null
+                let className = *nodePtr |> anim_blend_node_class_name()
+                let blkClassName = class_name_to_anim_tree_class_name(className)
+                if imgui::Selectable("Copy class ({className})")
+                  imgui::SetClipboardText(className)
+                if imgui::Selectable("Copy blk class ({blkClassName})")
+                  imgui::SetClipboardText(blkClassName)
+                let resIds = get_leaf_anim_res_ids(nodePtr)
+                let resId = resIds._0 == -1 ? resIds._1 : resIds._0
+                if resId != -1
+                  imgui::Separator()
+                  let resName = get_game_resource_name(resId)
+                  if imgui::Selectable("Open A2D Resource ({resName})")
+                    broadcastEvent(AnimGraphViewerSelectAssetResource(res_name = resName))
+                  if imgui::Selectable("Copy A2D Resource Name ({resName})")
+                    imgui::SetClipboardText(resName)
+              imgui::EndPopup()
+
+            imgui_node_editor::Resume()
+
             if activeNodeBorder
               imgui_node_editor::PopStyleColor()
 
@@ -1232,7 +1472,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
           assume rootNode = *graph.root
           let rootNodeId = rootNode |> anim_blend_node_getAnimNodeId()
-          if autoAlign
+          if autoAlign && !disableAutoAlign
             var children : array<int>
             children |> push(rootNodeId)
             var allNodes : table<int; bool>
@@ -1363,6 +1603,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
         
 
         imgui::PopStyleColor()
+        imgui::PopStyleColor()
 
         SetCurrentEditor(null)
 
@@ -1419,7 +1660,6 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
         draw_skeleton_node_in_tree_recursive(graph, *animchar.nodeTree, skeletonNodesToShow, 0, expandAll, filterChanged)
 
       imgui::EndTabBar()
-      ImGuiEx_EndColumn()
 
         
         

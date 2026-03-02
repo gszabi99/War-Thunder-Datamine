@@ -1,10 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
 let { get_unittags_blk } = require("blkGetters")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { getStatCardInfo } = require("%scripts/unit/statCardInfo.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let protectionTypesByUnitClass = {
   type_light_tank = "bullet_proof_lite"
@@ -44,14 +46,8 @@ function getUnitArmor(unitName) {
   unitArmorCache[unitName] <- []
 
   let statCardInfo = getStatCardInfo()?[unitName]
-  if (statCardInfo == null) {
-    let data = {
-      itemName = loc($"info/material/noArmor")
-      tooltipId = getTooltipType("UNIT_INFO_ARMOR").getTooltipId("armor", { armor = "noArmor", unitId = unitName })
-    }
-    unitArmorCache[unitName].append(data)
+  if (statCardInfo == null)
     return unitArmorCache[unitName]
-  }
 
   let unitArmor = armorTypes.filter(@(t) statCardInfo?[t] != null)
   let eraTypes = statCardInfo % "eraType"
@@ -86,7 +82,6 @@ function getUnitProtectionType(unitName) {
     itemName = loc($"info/material/{protectionType}")
     tooltipId = getTooltipType("UNIT_INFO_PROTECTION_TYPE").getTooltipId("protectionType", { protectionType, unitId = unitName })
   } : null
-
   return unitProtectionTypeCache[unitName]
 }
 
@@ -118,15 +113,28 @@ function getUnitAPS(unitName) {
   return unitAPSCache[unitName]
 }
 
-function getUnitProtectionMarkup(unitName) {
+function combineUnitProtectionInfo(unitName) {
   let armorData = getUnitArmor(unitName)
   let protectionTypeData = getUnitProtectionType(unitName)
   let apsData = getUnitAPS(unitName)
-
   let data = [].extend(armorData, [protectionTypeData, apsData])
-  let items = data.filter(@(v) v != null)
-  return handyman.renderCached("%gui/unitInfo/unitSystems.tpl", { items })
+  return data.filter(@(v) v != null)
 }
+
+function getUnitProtectionMarkup(unitName) {
+  let items = combineUnitProtectionInfo(unitName)
+  return items.len() > 0 ? handyman.renderCached("%gui/unitInfo/unitSystems.tpl", { items, isTooltipByHold = showConsoleButtons.get() }) : null
+}
+
+function clearCaches() {
+  unitArmorCache.clear()
+  unitProtectionTypeCache.clear()
+  unitAPSCache.clear()
+}
+
+addListenersWithoutEnv({
+  GameLocalizationChanged = @(_) clearCaches()
+})
 
 return {
   getUnitProtectionMarkup

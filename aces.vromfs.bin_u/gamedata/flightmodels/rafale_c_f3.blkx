@@ -17,21 +17,6 @@
   "ilsRafale": true,
   "ilsNeedAllRadarScreenTarget": true,
   "hmdRafale": true,
-  "rwrIndicator": "Spectra",
-  "mfdCamDamocles": true,
-  "isBwOpticSight": true,
-  "needTpsNightVision": true,
-  "tpsCameraOffset": [
-    -2.0,
-    0.0,
-    0.0
-  ],
-  "tpsCameraTargetOffsetAtZoom": [
-    -1.0,
-    2.0,
-    0.0
-  ],
-  "viewDistKInSight": 6.0,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -58,6 +43,21 @@
     -50.0,
     50.0
   ],
+  "rwrIndicator": "Spectra",
+  "mfdCamDamocles": true,
+  "isBwOpticSight": true,
+  "needTpsNightVision": true,
+  "tpsCameraOffset": [
+    -2.0,
+    0.0,
+    0.0
+  ],
+  "tpsCameraTargetOffsetAtZoom": [
+    -1.0,
+    2.0,
+    0.0
+  ],
+  "viewDistKInSight": 6.0,
   "type": "typeFighter",
   "advancedInstructor": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -1168,8 +1168,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1228,8 +1228,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1288,8 +1288,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1348,8 +1348,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1408,8 +1408,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1468,8 +1468,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1529,8 +1529,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1590,8 +1590,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2668,65 +2668,8 @@
             0.75
           ],
           "page": {
-            "type": "devices",
-            "aviahorizon_pitch": {
-              "texture": "su_mfd_ahorizon",
-              "arrowTex": "su_mfd_ahorizon_scale",
-              "position": [
-                250.0,
-                250.0
-              ],
-              "backgroundTexCoord": [
-                0.11,
-                0.0,
-                0.89,
-                0.89
-              ],
-              "arrowTexCoord": [
-                0.0,
-                0.4,
-                1.0,
-                0.6
-              ],
-              "size": [
-                420.0,
-                420.0
-              ],
-              "ranges": {
-                "limits": [
-                  -90.0,
-                  90.0,
-                  0.35,
-                  -0.35
-                ]
-              }
-            },
-            "aviahorizon_roll": {
-              "texture": "su_mfd_ahorizon",
-              "position": [
-                250.0,
-                250.0
-              ],
-              "arrowTexCoord": [
-                0.2,
-                0.9,
-                0.8,
-                1.0
-              ],
-              "size": [
-                420.0,
-                420.0
-              ],
-              "notDrawBackground": true,
-              "ranges": {
-                "limits": [
-                  -180.0,
-                  180.0,
-                  -1.0,
-                  1.0
-                ]
-              }
-            }
+            "type": "custom",
+            "pageName": "europeanAviaHorizont"
           }
         },
         {
@@ -2766,31 +2709,6 @@
         "engine3",
         "engine4"
       ]
-    }
-  },
-  "fuelDumpingSettings": {
-    "fx": "fuel_dump_small",
-    "burningFx": "fuel_dump_fire_small",
-    "allowed": true,
-    "minWepSpeed": 3000.0,
-    "minSpeed": 360.0,
-    "maxSpeed": 800.0,
-    "burnTriggerJetLength": 100.0,
-    "burnTriggerMaxDistance": 10.0,
-    "maxEmission": 1.0,
-    "signal": 75.0,
-    "offset": [
-      50.0,
-      0.0,
-      0.0
-    ],
-    "losWidthIncrease": [
-      10.0,
-      20.0,
-      20.0
-    ],
-    "emitters": {
-      "emitter": "emtr_fuel_dump"
     }
   },
   "flexWing": {
@@ -5590,6 +5508,31 @@
         "fmPart": "spar1_r_dm"
       }
     ]
+  },
+  "fuelDumpingSettings": {
+    "fx": "fuel_dump_small",
+    "burningFx": "fuel_dump_fire_small",
+    "allowed": true,
+    "minWepSpeed": 3000.0,
+    "minSpeed": 360.0,
+    "maxSpeed": 800.0,
+    "burnTriggerJetLength": 100.0,
+    "burnTriggerMaxDistance": 10.0,
+    "maxEmission": 1.0,
+    "signal": 75.0,
+    "offset": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "losWidthIncrease": [
+      10.0,
+      20.0,
+      20.0
+    ],
+    "emitters": {
+      "emitter": "emtr_fuel_dump"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

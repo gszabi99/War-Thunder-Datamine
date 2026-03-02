@@ -25,7 +25,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION, EII_SIGHT_STABILIZATION_OFF, EII_RAGE_SCANNER_ACTION, EII_MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_HUMAN_WEAPON, EII_HUMAN_MEDKIT, EII_HUMAN_NEXT_SQUADMATE, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
-  EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89,
+  EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_THRUST_VECTORING_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89,
   EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_HOVER_MODE, EII_FBW_MODE,
   EII_MOUSE_AIM_OVERRIDE_ROLL, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS, EII_AIR_RADAR_GUI_CONTROL_MODE, EII_RADAR_SWITCH_TARGET, EII_SENSORS_GROUP_MODE,
   EII_RADAR_GUI_NAVIGATION, EII_SHIP_SONAR, EII_HUMAN_ORDERS_MENU, EII_SUB_HYDROPHONE
@@ -159,7 +159,7 @@ function getHudKillStreakShortcutId() {
   if (hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE_HELI)
     return "ID_HELICOPTER_KILLSTREAK_WHEEL_MENU"
   if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
-    return "ID_HUMAN_KILLSTREAK_WHEEL_MENU"
+    return "ID_HUMAN_WEAPON_MENU"
 
   return "ID_KILLSTREAK_WHEEL_MENU"
 }
@@ -288,7 +288,9 @@ enumsAddTypes(g_hud_action_bar_type, {
       let isSightSolution = (actionItem?.userHandle ?? 0) == 1
       return isSightSolution ? "#ui/gameuiskin#torpedo_sight_solution" : this._icon
     }
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_TORPEDO_SIGHT"
+    getShortcut = @(_actionItem, hudUnitType = null) hudUnitType == HUD_UNIT_TYPE.SHIP_EX
+      ? "ID_SUBMARINE_TORPEDO_COURSE_TOGGLE"
+      : "ID_SHIP_TORPEDO_SIGHT"
   }
 
   HULL_AIMING = {
@@ -428,6 +430,12 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "scout_active"
     _icon = "#ui/gameuiskin#scouting"
     _title = loc("hotkeys/ID_SCOUT")
+    function getIcon(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
+      hudUnitType = hudUnitType ?? getHudUnitType()
+      let isAircraft =  hudUnitType == HUD_UNIT_TYPE.AIRCRAFT
+        || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE
+      return isAircraft ? "#ui/gameuiskin#scouting_with_uav" : this._icon
+    }
     getShortcut = @(_actionItem, hudUnitType = null)
       hudUnitType == HUD_UNIT_TYPE.AIRCRAFT
       || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE
@@ -486,11 +494,15 @@ enumsAddTypes(g_hud_action_bar_type, {
       hudUnitType == HUD_UNIT_TYPE.HUMAN
         ? "ID_HUMAN_ARTILLERY_STRIKE"
         : this.getShortcutImpl(actionItem, hudUnitType)
-    getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+    getIcon = function (_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
       let mis = get_current_mission_info_cached()
       if ((mis?.customArtilleryImage ?? "") != "")
         return mis.customArtilleryImage
-      return mis?.useCustomSuperArtillery ? "#ui/gameuiskin#artillery_fire_on_target" : this._icon
+      if (mis?.useCustomSuperArtillery)
+        return "#ui/gameuiskin#artillery_fire_on_target"
+
+      hudUnitType = hudUnitType ?? getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.HUMAN ? "#ui/gameuiskin#artillery_fire_infantry.svg" : this._icon
     }
     getCooldownIcon = function (_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
       hudUnitType = hudUnitType ?? getHudUnitType()
@@ -500,7 +512,7 @@ enumsAddTypes(g_hud_action_bar_type, {
       let mis = get_current_mission_info_cached()
       if ((mis?.customArtilleryImageCooldown ?? "") != "")
         return mis.customArtilleryImageCooldown
-      return mis?.useCustomSuperArtillery ? "" : "#ui/gameuiskin#artillery_fire"
+      return mis?.useCustomSuperArtillery ? "" : "#ui/gameuiskin#artillery_fire_infantry.svg"
     }
   }
 
@@ -575,10 +587,13 @@ enumsAddTypes(g_hud_action_bar_type, {
       return ""
     }
 
-    getIcon = function (_actionItem, killStreakTag = null, _unit = null, _hudUnitType = null) {
+    getIcon = function (_actionItem, killStreakTag = null, _unit = null, hudUnitType = null) {
       
-      if (u.isString(killStreakTag))
-        return $"#ui/gameuiskin#{killStreakTag}_streak"
+      if (u.isString(killStreakTag)) {
+        hudUnitType = hudUnitType ?? getHudUnitType()
+        let postfix = hudUnitType == HUD_UNIT_TYPE.HUMAN ? "_infantry.svg" : ""
+        return $"#ui/gameuiskin#{killStreakTag}_streak{postfix}"
+      }
       return ""
     }
 
@@ -586,7 +601,7 @@ enumsAddTypes(g_hud_action_bar_type, {
       
       hudUnitType = hudUnitType ?? getHudUnitType()
       if (hudUnitType == HUD_UNIT_TYPE.HUMAN && u.isString(killStreakTag))
-        return $"#ui/gameuiskin#{killStreakTag}_streak"
+        return $"#ui/gameuiskin#{killStreakTag}_streak_infantry.svg"
       return ""
     }
 
@@ -760,7 +775,7 @@ enumsAddTypes(g_hud_action_bar_type, {
         : hudUnitType == HUD_UNIT_TYPE.HUMAN && unit == ownerUnit ? "#ui/gameuiskin#quadrotor_streak"
         : !isAircraft && unit == ownerUnit ?  "#ui/gameuiskin#shipSupportPlane"
         : ownerUnit?.isShipOrBoat() ? "#ui/gameuiskin#supportPlane_to_ship_controls"
-        : ownerUnit?.isHuman() ? (isHeroHumanDrone() ? "#ui/gameuiskin#supportPlane_to_tank_controls" : "#ui/gameuiskin#supportplane_to_exoskelet")
+        : ownerUnit?.isHuman() ? (isHeroHumanDrone() ? "#ui/gameuiskin#supportPlane_to_human_controls" : "#ui/gameuiskin#supportplane_to_exoskelet")
         : "#ui/gameuiskin#supportPlane_to_tank_controls"
     }
     getTitle = function(_actionItem, _killStreakTag = null) {
@@ -1248,6 +1263,17 @@ enumsAddTypes(g_hud_action_bar_type, {
       : "#ui/gameuiskin#maneuverability"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_MANEUVERABILITY_MODE"
     getTooltipText = @(_actionItem = null) loc("hotkeys/ID_MANEUVERABILITY_MODE")
+  }
+
+  THRUST_VECTORING_MODE = {
+    code = EII_THRUST_VECTORING_MODE
+    _name = "thrust_vectoring"
+    _title = loc("hotkeys/ID_THRUST_VECTORING_MODE")
+    getIcon = @(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) actionItem?.active
+      ? "#ui/gameuiskin#thrust_vectoring_active"
+      : "#ui/gameuiskin#thrust_vectoring"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_THRUST_VECTORING_MODE"
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_THRUST_VECTORING_MODE")
   }
 
   BOMBER_VIEW = {

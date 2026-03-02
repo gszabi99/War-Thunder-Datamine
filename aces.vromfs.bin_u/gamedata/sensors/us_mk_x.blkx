@@ -85,6 +85,7 @@
       "aircraftAsTarget": true,
       "shipsAsTarget": true,
       "showCScope": true,
+      "friendFoeId": true,
       "distance": {
         "presents": true,
         "minValue": 100.0,
@@ -253,11 +254,13 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 200000.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0
+              "width": 0.0,
+              "widthRange": 1000.0
             },
             "detectTarget": {}
           }

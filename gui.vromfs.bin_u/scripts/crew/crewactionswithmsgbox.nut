@@ -10,7 +10,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCrewTrainCost, getCrewLevel } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
+let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
 

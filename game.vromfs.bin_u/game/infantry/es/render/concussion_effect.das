@@ -1,6 +1,7 @@
 require ecs
 require app
 require DagorShaders
+require hud
 
 let
   concsussion_effect_time_startVarId = get_shader_variable_id("concussion_effect_time_start", true)
@@ -35,5 +36,5 @@ def enable_concussion_on_death_head_hit(evt : Event;
                                         dead_camera__hitHead : bool;
                                         dead_camera__hitHeadConcussionLength : float = 1.0;
                                         dead_camera__hitHeadConcussionIntensity : float = 0.03)
-  if dead_camera__hitHead
+  if dead_camera__hitHead && !is_spectating() && !is_playing_replay()
     enable_concussion_screen_effect(dead_camera__hitHeadConcussionLength, dead_camera__hitHeadConcussionIntensity)

@@ -38,7 +38,7 @@ let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nu
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isCompatibilityMode } = require("%scripts/options/systemOptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank, isUnitSpecial
+let { getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank, get_mission_mode, isUnitSpecial
 } = require("%appGlobals/ranks_common_shared.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -80,11 +80,11 @@ let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { maxCountryRank } = require("%scripts/ranks.nut")
 let { checkLbRowVisibility } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
 let { getSessionLobbyClusterName } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getRoomSpecialRules, getRoomTeamData, getRoomMGameMode, getMembersCountByTeams
+let { getRoomSpecialRules, getRoomTeamData, getRoomMGameMode, getMembersCountByTeams, getRoomEvent
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { getItemsList, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
@@ -92,12 +92,13 @@ let { getBrokenAirsInfo } = require("%scripts/instantAction.nut")
 let { getMemberStatusLocTag, getMemberStatusLocId, getSquadMembersFlyoutData
 } = require("%scripts/squads/squadUtils.nut")
 let { checkPackageFull, getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
+let { EventChaptersManager } = require("%scripts/events/eventsChapter.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
 
 const SQUAD_NOT_READY_LOC_TAG = "#snr"
-
+const SQUAD_PROCEED_ANYWAY = "#spraw"
 const ES_UNIT_TYPE_TOTAL_RELEASED = 3
 
 let diffTable = {
@@ -127,7 +128,10 @@ local events
 
 let allUnitTypesMask = (ES_UNIT_TYPE_AIRCRAFT | ES_UNIT_TYPE_TANK | ES_UNIT_TYPE_SHIP | ES_UNIT_TYPE_BOAT)
 
-systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event" })
+systemMsg.registerLocTags({
+  [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event",
+  [SQUAD_PROCEED_ANYWAY] = "ask/proceedAnyway"
+})
 
 local g_event_ticket_buy_offer
 
@@ -597,7 +601,7 @@ let _leaderboards = {
 
 let Events = class {
   constructor() {
-    chapters = ::EventChaptersManager()
+    chapters = EventChaptersManager()
     this.initBrToTierConformity()
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
@@ -1015,6 +1019,12 @@ let Events = class {
     return event.ediff
   }
 
+  function getCurBattleEdiff() {
+    let event = getRoomEvent()
+    let ediff = event ? events.getEDiffByEvent(event) : -1
+    return ediff != -1 ? ediff : get_mission_mode()
+  }
+
   function getUnitEconomicRankByEvent(event, unit) {
     let ediff = this.getEDiffByEvent(event)
     return unit.getEconomicRank(ediff)
@@ -1381,7 +1391,7 @@ let Events = class {
       }
 
       if (("ranks" in rule)
-          && (unit.rank < (rule.ranks?.min ?? 0) || (rule.ranks?.max ?? MAX_COUNTRY_RANK) < unit.rank))
+          && (unit.rank < (rule.ranks?.min ?? 0) || (rule.ranks?.max ?? maxCountryRank.get()) < unit.rank))
         continue
 
       let unitType = this.getBaseUnitTypefromRule(rule, false)
@@ -1691,6 +1701,7 @@ let Events = class {
 
     let buttons = [ ["ok", cancelFunc ] ]
     if (teamData.haveRestrictions && teamData.canFlyout) {
+      langConfig.append(SQUAD_PROCEED_ANYWAY)
       buttons[0][0] = "no"
       buttons.insert(0, ["yes", continueQueueFunc ])
     }
@@ -2231,7 +2242,7 @@ let Events = class {
     }
     if ("ranks" in rule) {
       let minRank = max(1, rule.ranks?.min ?? 1)
-      let maxRank = rule.ranks?.max ?? MAX_COUNTRY_RANK
+      let maxRank = rule.ranks?.max ?? maxCountryRank.get()
       local rankText = "".concat(get_roman_numeral(minRank),
         minRank != maxRank ? $" - {get_roman_numeral(maxRank)}" : "")
       rankText = format(loc("events/rank"), rankText)

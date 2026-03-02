@@ -1007,8 +1007,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1068,8 +1068,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1129,8 +1129,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1190,8 +1190,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1251,8 +1251,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1312,8 +1312,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1373,8 +1373,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1434,8 +1434,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1708,16 +1708,15 @@
     "turretTurnSfxName": "turret_turn_servo"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
-      2.6,
+      2.67,
       -0.1,
-      0.557
+      0.69
     ],
     "headPosOnShooting": [
-      2.6,
+      2.67,
       -0.1,
-      0.557
+      0.69
     ],
     "mirror": true,
     "mirrorPos": [
@@ -1732,42 +1731,106 @@
     ],
     "mirrorNode": "mirror",
     "lightPos": [
-      [
-        3.218644,
-        -0.594647,
-        0.578619
-      ],
-      [
-        3.214933,
-        -0.616382,
-        0.214875
-      ]
+      3.253,
+      -0.65,
+      0.605
     ],
     "lightColor": [
-      [
-        0.01,
-        0.6,
-        0.1
-      ],
-      [
-        0.01,
-        0.6,
-        0.1
-      ]
+      0.24,
+      0.29,
+      0.01
     ],
-    "lightRadius": [
-      0.45,
-      0.45
+    "lightRadius": 0.43,
+    "lightPos1": [
+      3.244,
+      -0.694,
+      0.075
     ],
+    "lightColor1": [
+      0.24,
+      0.29,
+      0.01
+    ],
+    "lightRadius1": 0.43,
+    "lightPos2": [
+      3.054,
+      -0.592,
+      0.643
+    ],
+    "lightColor2": [
+      0.61,
+      0.01,
+      0.01
+    ],
+    "lightRadius2": 0.43,
+    "lightPos3": [
+      3.172,
+      -0.546,
+      0.084
+    ],
+    "lightColor3": [
+      0.61,
+      0.01,
+      0.01
+    ],
+    "lightRadius3": 0.43,
     "zoomOutFov": 22.46,
     "zoomInFov": 7.37,
     "sightInFov": 4.91,
     "sightOutFov": -1.0,
     "sightFov": 0.5,
     "devices": {
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "pedals3": [
+        -1.0,
+        1.0
+      ],
+      "pedals4": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "weapon2": [
+        0.0,
+        1.0
+      ],
+      "weapon3": [
+        0.0,
+        1.0
+      ],
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gears_lamp": [
+        0.0,
+        0.0
+      ],
       "speed": [
         0.0,
-        257.222
+        97.222
       ],
       "bank": [
         -8.0,
@@ -1781,6 +1844,7 @@
         -30.0,
         30.0
       ],
+      "altitude_koef": 1.0,
       "altitude_10k": [
         0.0,
         100000.0
@@ -1793,7 +1857,10 @@
         0.0,
         1000.0
       ],
-      "altitude_koef": 3.28,
+      "radio_altitude": [
+        0.0,
+        300.0
+      ],
       "aviahorizon_pitch": [
         -60.0,
         60.0
@@ -1806,25 +1873,49 @@
         0.0,
         360.0
       ],
-      "fuel": [
+      "compass1": [
         0.0,
-        1277.625
+        360.0
+      ],
+      "compass2": [
+        0.0,
+        360.0
+      ],
+      "compass3": [
+        0.0,
+        360.0
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
+      ],
+      "clock_sec1": [
+        0.0,
+        60.0
       ],
       "rpm": [
         0.0,
-        4500.0
+        16400.0
       ],
       "rpm1": [
         0.0,
-        4500.0
+        16400.0
       ],
-      "rpm2": [
+      "prop_rpm": [
         0.0,
-        4500.0
+        300.0
       ],
-      "rpm3": [
+      "prop_rpm1": [
         0.0,
-        4500.0
+        300.0
       ],
       "manifold_pressure": [
         0.334,
@@ -1842,22 +1933,6 @@
         0.334,
         2.507
       ],
-      "head_temperature": [
-        0.0,
-        300.0
-      ],
-      "head_temperature1": [
-        0.0,
-        300.0
-      ],
-      "head_temperature2": [
-        0.0,
-        300.0
-      ],
-      "head_temperature3": [
-        0.0,
-        300.0
-      ],
       "oil_temperature": [
         -50.0,
         150.0
@@ -1866,45 +1941,33 @@
         -50.0,
         150.0
       ],
-      "oil_temperature2": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature3": [
-        -50.0,
-        150.0
-      ],
-      "fuel_pressure": [
+      "fuel": [
         0.0,
-        15.0
+        2000.0
       ],
-      "fuel_pressure1": [
+      "prop_pitch": [
         0.0,
-        15.0
+        24.0
       ],
-      "fuel_pressure2": [
-        0.0,
-        15.0
+      "carb_temperature": [
+        -65.0,
+        135.0
       ],
-      "fuel_pressure3": [
+      "water_temperature_hour": [
         0.0,
-        15.0
+        1200.0
       ],
-      "oil_pressure": [
+      "water_temperature1_hour": [
         0.0,
-        150.0
+        1200.0
       ],
-      "oil_pressure1": [
+      "water_temperature_min": [
         0.0,
-        150.0
+        1200.0
       ],
-      "oil_pressure2": [
+      "water_temperature1_min": [
         0.0,
-        150.0
-      ],
-      "oil_pressure3": [
-        0.0,
-        150.0
+        1200.0
       ]
     },
     "multifunctionDisplays": {
@@ -1953,6 +2016,7 @@
     "propellerStrainCoeff": -0.01
   },
   "gunnerFps": {
+    "drawDetailedCockpit": true,
     "pos": [
       -0.6,
       0.7,

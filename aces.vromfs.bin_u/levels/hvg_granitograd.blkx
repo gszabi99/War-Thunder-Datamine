@@ -1,12 +1,13 @@
 {
   "rendinst::tmInst12x32bit": true,
+  "groundProximityInfantryMode": true,
+  "occlusionFromCollision": true,
+  "useInfantryCharacterMicrodetails": true,
+  "disableConsoleRT": true,
+  "targetUpscaleForBigResolution": true,
   "mandatoryLandquality": 1,
   "z_far": 50000.0,
   "hmapLodCount": 5,
-  "occlusionFromCollision": true,
-  "groundProximityInfantryMode": true,
-  "disableConsoleRT": true,
-  "targetUpscaleForBigResolution": true,
   "mapCoord0": [
     -32768.0,
     -32768.0
@@ -76,11 +77,7 @@
   "numBorderCellsXNeg": 8,
   "numBorderCellsZPos": 8,
   "numBorderCellsZNeg": 8,
-  "mirrorShrinkXPos": 256.0,
-  "mirrorShrinkXNeg": 256.0,
-  "mirrorShrinkZPos": 256.0,
-  "mirrorShrinkZNeg": 256.0,
-  "forceMusic": "menu_infantry",
+  "forceMusic": "infantry_action",
   "customLevelMap": "hvg_granitograd_airmap*",
   "customLevelTankMap": "hvg_granitograd_tankmap*",
   "customLevelInfantryMap": "hvg_granitograd_tankmap*",
@@ -157,7 +154,6 @@
   "foamfx__gradient_tex": "foam_generator_a_gradient_tex_n",
   "trackDirt": false,
   "forcedRiDepthPrepass": true,
-  "useInfantryCharacterMicrodetails": true,
   "puddlesPowerScale": 1.0,
   "puddlesSpread": 1.0,
   "puddlesSeed": 1.0,
@@ -165,6 +161,16 @@
   "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
   "textures_size": 2500.0,
   "textures_count": 2200,
+  "riExtraTiledScenes": {
+    "dynamicTileSize": 64.0,
+    "scnCount": 3,
+    "scn1.tileSize": 32.0,
+    "scn1.maxDist": 1024.0,
+    "scn1.maxSize": 10.0,
+    "scn2.tileSize": 64.0,
+    "scn2.maxSize": 32.0,
+    "scn3.tileSize": 128.0
+  },
   "stars": {
     "year": 2005,
     "month": 7,
@@ -304,9 +310,9 @@
       0.0
     ],
     "gtao_cutoff_radius_mul": 2.8,
-    "gtao_cutoff_smoothness": 0.1,
-    "gtao_world_radius": 1.0,
-    "gtao_screen_radius": 0.1,
+    "gtao_cutoff_smoothness": 0.4,
+    "gtao_world_radius": 0.4,
+    "gtao_screen_radius": 0.08,
     "ssao_radius_factor": 165.0,
     "ssao_ambient_cutoff": 1.0,
     "ssao_depth_limits": [
@@ -1991,9 +1997,5 @@
     "VB5": 65536,
     "VB6": 65536,
     "VB7": 0
-  },
-  "riExtraTiledScenes": {
-    "dynamicTileSize": 64.0,
-    "scn1.tileSize": 64.0
   }
 }

@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war,
   ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name,
-  ww_select_player_side_for_regular_user, ww_get_operation_objectives, ww_send_operation_request,
+  ww_select_player_side_for_regular_user, ww_send_operation_request,
   ww_select_player_side_for_army_group_member, clan_get_my_clan_id, ww_get_sides_info
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -18,7 +18,6 @@ let { loadLocalByAccount, saveLocalByAccount
 let DataBlock  = require("DataBlock")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
@@ -34,21 +33,19 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
-  wwGetOperationTimeMillisec, wwGetAirfieldsCount, wwGetSelectedAirfield,
-  wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo,
-  wwGetReinforcementsInfo, wwGetBattlesInfo, wwGetMapCellByCoords } = require("worldwar")
+  wwGetAirfieldsCount, wwGetSelectedAirfield,
+  wwFindAirfieldByCoordinates, wwGetReinforcementsInfo, wwGetMapCellByCoords
+} = require("worldwar")
 
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 let { getArmyByName, getSelectedArmies, hasEntrenchedInList
 } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
-let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
 let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let wwArmyGroupManager = require("%scripts/worldWar/inOperation/wwArmyGroupManager.nut")
+let { sortUnitsBySortCodeAndCount, loadUnitsFromBlk
+} = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { getNearestMapToBattle, getOperationById, updateCurOperationStatusInGlobalStatus
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
@@ -58,16 +55,21 @@ let { isWorldWarEnabled, getPlayWorldwarConditionText, canPlayWorldwar, canJoinW
 } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 let { getWWLogsData, clearWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nut")
-let { updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry, saveLastPlayed
-} = require("%scripts/worldWar/worldWarStates.nut")
-let { curOperationCountry, invalidateRearZones } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
-let { openWWOperationChatRoomById } = require("%scripts/chat/chatRooms.nut")
+let {
+  updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry,
+  saveLastPlayed } = require("%scripts/worldWar/worldWarCfgState.nut")
+let { baseWWState, isLastFlightWasWwBattle, getArmyGroups, getBattles
+} = require("%scripts/worldWar/worldWarState.nut")
+let { curOperationCountry, invalidateRearZones
+} = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { openWWOperationChatRoomById } = require("%scripts/chat/openChat.nut")
 let { findQueueByName } = require("%scripts/queue/queueState.nut")
 let { leaveQueue, leaveQueueByType } = require("%scripts/queue/queueManager.nut")
 let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
 let { hiddenUserlogs } = require("%scripts/userLog/userlogConsts.nut")
+let { isAutoBattle } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
-const WW_LAST_OPERATION_LOG_SAVE_ID = "worldWar/lastReadLog/operation"
+
 const WW_UNIT_WEAPON_PRESET_PATH = "worldWar/weaponPreset/"
 const WW_OBJECTIVE_OUT_OF_DATE_DAYS = 1
 
@@ -151,33 +153,9 @@ function openMainWnd(forceOpenMainMenu = false) {
   openOperationsOrQueues()
 }
 
-function getLastPlayedOperation() {
-  let lastPlayedOperationId = getLastPlayedOperationId()
-  if (lastPlayedOperationId)
-    return getOperationById(lastPlayedOperationId)
-  return null
-}
-
-function getPlayedOperationText(needMapName = true) {
-  let operation = getLastPlayedOperation()
-  if (operation != null)
-    return operation.getMapText()
-
-
-  let nearestAvailableMapToBattle = getNearestMapToBattle()
-  if (!nearestAvailableMapToBattle)
-    return ""
-
-  let name = needMapName ? nearestAvailableMapToBattle.getNameText() : loc("mainmenu/btnWorldwar")
-  if (nearestAvailableMapToBattle.isActive())
-    return loc("worldwar/operation/isNow", { name = name })
-
-  return loc("worldwar/operation/willBegin", { name = name
-    time = nearestAvailableMapToBattle.getChangeStateTimeText() })
-}
 
 function getNewNearestAvailableMapToBattle() {
-  if (getLastPlayedOperation() != null)
+  if (getOperationById(getLastPlayedOperationId()) != null)
     return null
 
   let nearestAvailableMapToBattle = getNearestMapToBattle()
@@ -239,14 +217,6 @@ function openWarMap() {
 }
 
 let g_world_war = {
-  armyGroups = []
-  isArmyGroupsValid = false
-  battles = []
-  isBattlesValid = false
-  isLastFlightWasWwBattle = Watched(false)
-
-  isDebugMode = false
-
   myClanParticipateIcon = "#ui/gameuiskin#lb_victories_battles.svg"
   lastPlayedIcon = "#ui/gameuiskin#last_played_operation_marker"
 
@@ -257,8 +227,6 @@ let g_world_war = {
   openOperationsOrQueues
   joinOperationById
   openMainWnd
-  getLastPlayedOperation
-  getPlayedOperationText
   hasNewNearestAvailableMapToBattle
   inviteToWwOperation
 
@@ -297,7 +265,7 @@ let g_world_war = {
 
     g_squad_manager.cancelWwBattlePrepare()
     let missionRules = getCurMissionRules()
-    this.isLastFlightWasWwBattle.set(missionRules.isWorldWar)
+    isLastFlightWasWwBattle.set(missionRules.isWorldWar)
     let operationId = missionRules.getCustomRulesBlk()?.operationId.tointeger()
     if (operationId == null)
       return
@@ -339,44 +307,18 @@ let g_world_war = {
   }
 
   function isDebugModeEnabled() {
-    return this.isDebugMode
+    return baseWWState.isDebugMode
   }
 
   function setDebugMode(value) {
     if (!hasFeature("worldWarMaster"))
       value = false
 
-    if (value == this.isDebugMode)
+    if (value == baseWWState.isDebugMode)
       return
 
-    this.isDebugMode = value
+    baseWWState.isDebugMode = value
     wwEvent("ChangedDebugMode")
-  }
-
-  function updateArmyGroups() {
-    if (this.isArmyGroupsValid)
-      return
-
-    this.isArmyGroupsValid = true
-
-    this.armyGroups.clear()
-
-    let blk = DataBlock()
-    wwGetArmyGroupsInfo(blk)
-
-    if (!("armyGroups" in blk))
-      return
-
-    let itemCount = blk.armyGroups.blockCount()
-
-    for (local i = 0; i < itemCount; i++) {
-      let itemBlk = blk.armyGroups.getBlock(i)
-      let group   = WwArmyGroup(itemBlk)
-
-      if (group.isValid())
-        this.armyGroups.append(group)
-    }
-    wwArmyGroupManager.updateManagers()
   }
 
   function getSidesStrenghtInfo() {
@@ -399,11 +341,11 @@ let g_world_war = {
       for (local j = 0; j < unitsBlk.blockCount(); ++j) {
         let unitsTypeBlk = unitsBlk.getBlock(j)
         let unitTypeBlk = unitsTypeBlk?["units"]
-        wwUnitsList.extend(wwActionsWithUnitsList.loadUnitsFromBlk(unitTypeBlk))
+        wwUnitsList.extend(loadUnitsFromBlk(unitTypeBlk))
       }
 
       let collectedWwUnits = u.values(this.collectUnitsData(wwUnitsList))
-      collectedWwUnits.sort(this.sortUnitsBySortCodeAndCount)
+      collectedWwUnits.sort(sortUnitsBySortCodeAndCount)
       unitsStrenghtBySide[sideBlk.getBlockName().tointeger()] = collectedWwUnits
     }
 
@@ -424,7 +366,7 @@ let g_world_war = {
     if (!ww_is_player_on_war())
       return list
 
-    foreach (group in this.getArmyGroups()) {
+    foreach (group in getArmyGroups()) {
       list[group.owner.armyGroupIdx] <- group.getAccessLevel()
     }
 
@@ -458,29 +400,8 @@ let g_world_war = {
   }
 
   
-  function getArmyGroups(filterFunc = null) {
-    this.updateArmyGroups()
-
-    return filterFunc ? this.armyGroups.filter(filterFunc) : this.armyGroups
-  }
-
-
-  
-  function getArmyGroupsBySide(side, filterFunc = null) {
-    return this.getArmyGroups(
-       function (group) {
-        if (group.owner.side != side)
-          return false
-
-        return filterFunc ? filterFunc(group) : true
-      }
-    )
-  }
-
-
-  
   function getArmyGroupByArmy(army) {
-    return u.search(this.getArmyGroups(),
+    return u.search(getArmyGroups(),
        function (group) {
         return group.isMyArmy(army)
       }
@@ -488,28 +409,12 @@ let g_world_war = {
   }
 
   function getMyArmyGroup() {
-    return u.search(this.getArmyGroups(),
+    return u.search(getArmyGroups(),
         function(group) {
           return isInArray(userIdInt64.get(), group.observerUids)
         }
       )
   }
-
-  function getBattleById(battleId) {
-    let battles = this.getBattles(
-         function(checkedBattle) {
-          return checkedBattle.id == battleId
-        }
-      )
-
-    return battles.len() > 0 ? battles[0] : WwBattle()
-  }
-
-
-  function getAirfieldByIndex(index) {
-    return WwAirfield(index)
-  }
-
 
   function getAirfieldsCount() {
     return wwGetAirfieldsCount();
@@ -518,7 +423,7 @@ let g_world_war = {
   function getAirfieldsArrayBySide(side, filterType = "ANY") {
     let res = []
     for (local index = 0; index < this.getAirfieldsCount(); index++) {
-      let field = this.getAirfieldByIndex(index)
+      let field = WwAirfield(index)
       let airfieldType = field.airfieldType.name
       if (field.isMySide(side) && (filterType == "ANY" || filterType == airfieldType))
         res.append(field)
@@ -527,63 +432,22 @@ let g_world_war = {
     return res
   }
 
-  function getBattles(filterFunc = null, forced = false) {
-    this.updateBattles(forced)
-    return filterFunc ? this.battles.filter(filterFunc) : this.battles
-  }
-
   function getBattleForArmy(army, _playerSide = SIDE_NONE) {
     if (!army)
       return null
 
-    return u.search(this.getBattles(),
-       function (battle) {
-        return !battle.isFinished() && battle.isArmyJoined(army.name)
-      }
-    )
+    return u.search(getBattles(), @(battle)
+      !battle.isFinished() && battle.isArmyJoined(army.name))
   }
 
   function isBattleAvailableToPlay(wwBattle) {
-    return wwBattle && wwBattle.isValid() && !wwBattle.isAutoBattle() && !wwBattle.isFinished()
+    return wwBattle && wwBattle.isValid() && !isAutoBattle(wwBattle) && !wwBattle.isFinished()
   }
-
-
-  function updateBattles(forced = false) {
-    if (this.isBattlesValid && !forced)
-      return
-
-    this.isBattlesValid = true
-
-    this.battles.clear()
-
-    let blk = DataBlock()
-    wwGetBattlesInfo(blk)
-
-    if (!("battles" in blk))
-      return
-
-    let itemCount = blk.battles.blockCount()
-
-    for (local i = 0; i < itemCount; i++) {
-      let itemBlk = blk.battles.getBlock(i)
-      let battle   = WwBattle(itemBlk)
-
-      if (battle.isValid())
-        this.battles.append(battle)
-    }
-  }
-
 
   function onEventWWLoadOperation(_params = {}) {
-    this.isArmyGroupsValid = false
-    this.isBattlesValid = false
+    baseWWState.isArmyGroupsValid = false
+    baseWWState.isBattlesValid = false
     openWWOperationChatRoomById(wwGetOperationId())
-  }
-
-  function getOperationObjectives() {
-    let blk = DataBlock()
-    ww_get_operation_objectives(blk)
-    return blk
   }
 
   function getReinforcementsInfo() {
@@ -670,7 +534,7 @@ let g_world_war = {
 
     let blk = DataBlock()
     if (targetAirfieldIdx >= 0) {
-      let airfield = this.getAirfieldByIndex(targetAirfieldIdx)
+      let airfield = WwAirfield(targetAirfieldIdx)
       if (g_ww_unit_type.isAir(army.unitType) && army.isMySide(airfield.side)) {
         moveType = "EMT_BACK_TO_AIRFIELD"
         blk.setInt("targetAirfieldIdx", targetAirfieldIdx)
@@ -841,33 +705,10 @@ let g_world_war = {
     if (target)
       params.addStr("targetName", target)
 
-    let airfield = this.getAirfieldByIndex(airfieldIdx)
+    let airfield = WwAirfield(airfieldIdx)
     get_cur_gui_scene()?.playSound(airfield.airfieldType.flyoutSound)
 
     return ww_send_operation_request("cln_ww_move_army_to", params)
-  }
-
-  function sortUnitsByTypeAndCount(a, b) {
-    let aType = a.wwUnitType.code
-    let bType = b.wwUnitType.code
-    if (aType != bType)
-      return aType - bType
-    return a.count - b.count
-  }
-
-  function sortUnitsBySortCodeAndCount(a, b) {
-    let aSortCode = a.wwUnitType.sortCode
-    let bSortCode = b.wwUnitType.sortCode
-    if (aSortCode != bSortCode)
-      return aSortCode - bSortCode
-
-    let aCount = a.count
-    let bCount = b.count
-    return aCount.tointeger() - bCount.tointeger()
-  }
-
-  function getOperationTimeSec() {
-    return time.millisecondsToSecondsInt(wwGetOperationTimeMillisec())
   }
 
   function requestLogs(loadAmount, useLogMark, cb, errorCb) {
@@ -883,21 +724,8 @@ let g_world_war = {
       addTask(taskId, null, cb, errorCb)
   }
 
-  function getSidesOrder() {
-    local playerSide = wwGetPlayerSide()
-    if (playerSide == SIDE_NONE)
-      playerSide = SIDE_1
-
-    let enemySide  = this.getOppositeSide(playerSide)
-    return [ playerSide, enemySide ]
-  }
-
   function getCommonSidesOrder() {
     return [SIDE_1, SIDE_2]
-  }
-
-  function getOppositeSide(side) {
-    return side == SIDE_2 ? SIDE_1 : SIDE_2
   }
 
   function get_last_weapon_preset(unitName) {
@@ -931,10 +759,6 @@ let g_world_war = {
     return collectedUnits
   }
 
-  function getSaveOperationLogId() {
-    return $"{WW_LAST_OPERATION_LOG_SAVE_ID}{wwGetOperationId()}"
-  }
-
   function updateUserlogsAccess() {
     if (!isWorldWarEnabled())
       return
@@ -952,8 +776,8 @@ let g_world_war = {
   }
 
   function onEventWWOperationPreviewLoaded(_params = {}) {
-    this.isArmyGroupsValid = false
-    this.isBattlesValid = false
+    baseWWState.isArmyGroupsValid = false
+    baseWWState.isBattlesValid = false
 
   }
 
@@ -969,18 +793,6 @@ let g_world_war = {
       loc("worldwar/charError/defaultError", ""))
     if (popupText.len() || titleText.len())
       addPopup(titleText, popupText, null, null, null, groupName)
-  }
-
-  function getCurMissionWWBattleName() {
-    let misBlk = DataBlock()
-    get_current_mission_desc(misBlk)
-
-    let battleId = misBlk?.customRules.battleId
-    if (!battleId)
-      return ""
-
-    let battle = this.getBattleById(battleId)
-    return battle ? battle.getView().getBattleName() : ""
   }
 
   function getCurMissionWWOperationName() {
@@ -999,6 +811,8 @@ let g_world_war = {
     if (getGlobalStatusData())
       openWwOperationRewardPopup(logObj)
   }
+
+  getBattles
 }
 ::g_world_war <- g_world_war
 

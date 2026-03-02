@@ -1,0 +1,839 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/hurtgen.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear",
+      "locName": "missions/hurtgen_BfD_norespawn",
+      "locDesc": "missions/_BfD_norespawn/desc",
+      "scoreLimit": 2900,
+      "timeLimit": 60,
+      "deathPenaltyMul": 0.0,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "airfileds_high_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {},
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "t1_airfield_high",
+        "tm": [
+          [
+            0.840178,
+            0.0,
+            0.542311
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.542311,
+            0.0,
+            0.840178
+          ],
+          [
+            18069.8,
+            153.298,
+            19011.2
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_high",
+        "tm": [
+          [
+            -0.763461,
+            0.0,
+            -0.645854
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.645854,
+            0.0,
+            -0.763461
+          ],
+          [
+            -23081.3,
+            299.798,
+            -18090.0
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield_high_reload",
+        "tm": [
+          [
+            0.999983,
+            0.0,
+            0.00595318
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.00595318,
+            0.0,
+            0.999983
+          ],
+          [
+            13629.1,
+            128.671,
+            6793.02
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_airfield_high_reload",
+        "tm": [
+          [
+            -0.763461,
+            0.0,
+            -0.645854
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.645854,
+            0.0,
+            -0.763461
+          ],
+          [
+            -21199.6,
+            80.5737,
+            175.17
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    ]
+  },
+  "areas": {
+    "t1_interceptor_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          2962.89,
+          0.0,
+          -5217.4
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          5217.4,
+          0.0,
+          2962.89
+        ],
+        [
+          18045.3,
+          2000.01,
+          19064.1
+        ]
+      ],
+      "props": {}
+    },
+    "t1_assault_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -267.084,
+          0.0,
+          -136.624
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          136.624,
+          0.0,
+          -267.084
+        ],
+        [
+          13698.2,
+          1000.01,
+          16594.7
+        ]
+      ],
+      "props": {}
+    },
+    "t1_aaa_fighter_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1975.26,
+          0.0,
+          -3478.28
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          3478.28,
+          0.0,
+          1975.26
+        ],
+        [
+          18045.3,
+          3000.01,
+          19064.1
+        ]
+      ],
+      "props": {}
+    },
+    "t1_assault_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          4938.16,
+          0.0,
+          -8695.67
+        ],
+        [
+          0.0,
+          10000.0,
+          0.0
+        ],
+        [
+          8695.67,
+          0.0,
+          4938.16
+        ],
+        [
+          18045.3,
+          1000.01,
+          19064.1
+        ]
+      ],
+      "props": {}
+    },
+    "t1_interceptor_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -267.084,
+          0.0,
+          -136.624
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          136.624,
+          0.0,
+          -267.084
+        ],
+        [
+          20637.4,
+          1000.01,
+          20536.3
+        ]
+      ],
+      "props": {}
+    },
+    "t1_aaa_fighter_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -267.084,
+          0.0,
+          -136.624
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          136.624,
+          0.0,
+          -267.084
+        ],
+        [
+          19778.5,
+          2000.01,
+          20048.6
+        ]
+      ],
+      "props": {}
+    },
+    "t1_far_bomber_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -267.084,
+          0.0,
+          -136.624
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          136.624,
+          0.0,
+          -267.084
+        ],
+        [
+          16306.8,
+          4500.01,
+          18077.2
+        ]
+      ],
+      "props": {}
+    },
+    "t1_main_bomber_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -267.084,
+          0.0,
+          -136.624
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          136.624,
+          0.0,
+          -267.084
+        ],
+        [
+          15871.5,
+          3500.01,
+          17829.9
+        ]
+      ],
+      "props": {}
+    },
+    "t1_far_bomber_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1975.26,
+          0.0,
+          -3478.28
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          3478.28,
+          0.0,
+          1975.26
+        ],
+        [
+          18045.3,
+          4500.01,
+          19064.1
+        ]
+      ],
+      "props": {}
+    },
+    "t1_main_bomber_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          2469.07,
+          0.0,
+          -4347.84
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          4347.84,
+          0.0,
+          2469.07
+        ],
+        [
+          18045.3,
+          3500.01,
+          19064.1
+        ]
+      ],
+      "props": {}
+    },
+    "t2_interceptor_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -4030.47,
+          0.0,
+          4444.71
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          -4444.71,
+          0.0,
+          -4030.47
+        ],
+        [
+          -23090.2,
+          2000.01,
+          -18182.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_assault_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          230.814,
+          0.0,
+          191.637
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -191.637,
+          0.0,
+          230.814
+        ],
+        [
+          -19385.9,
+          1000.01,
+          -14823.5
+        ]
+      ],
+      "props": {}
+    },
+    "t2_aaa_fighter_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2686.97,
+          0.0,
+          2963.13
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          -2963.13,
+          0.0,
+          -2686.97
+        ],
+        [
+          -23090.2,
+          3000.01,
+          -18182.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_assault_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -6717.44,
+          0.0,
+          7407.83
+        ],
+        [
+          0.0,
+          10000.0,
+          0.0
+        ],
+        [
+          -7407.83,
+          0.0,
+          -6717.44
+        ],
+        [
+          -23090.2,
+          1000.01,
+          -18182.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_interceptor_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          230.814,
+          0.0,
+          191.637
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -191.637,
+          0.0,
+          230.814
+        ],
+        [
+          -25298.4,
+          1000.01,
+          -20185.4
+        ]
+      ],
+      "props": {}
+    },
+    "t2_aaa_fighter_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          230.814,
+          0.0,
+          191.637
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -191.637,
+          0.0,
+          230.814
+        ],
+        [
+          -24566.7,
+          2000.01,
+          -19521.8
+        ]
+      ],
+      "props": {}
+    },
+    "t2_far_bomber_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          230.814,
+          0.0,
+          191.637
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -191.637,
+          0.0,
+          230.814
+        ],
+        [
+          -21609.2,
+          4500.01,
+          -16840.0
+        ]
+      ],
+      "props": {}
+    },
+    "t2_main_bomber_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          230.814,
+          0.0,
+          191.637
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -191.637,
+          0.0,
+          230.814
+        ],
+        [
+          -21238.4,
+          3500.01,
+          -16503.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_far_bomber_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2686.97,
+          0.0,
+          2963.13
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          -2963.13,
+          0.0,
+          -2686.97
+        ],
+        [
+          -23090.2,
+          4500.01,
+          -18182.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_main_bomber_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -3358.71,
+          0.0,
+          3703.91
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          -3703.91,
+          0.0,
+          -3358.71
+        ],
+        [
+          -23090.2,
+          3500.01,
+          -18182.7
+        ]
+      ],
+      "props": {}
+    },
+    "airfields_area_26km": {
+      "type": "Sphere",
+      "tm": [
+        [
+          36769.6,
+          0.0,
+          -36769.6
+        ],
+        [
+          0.0,
+          52000.1,
+          0.0
+        ],
+        [
+          36769.6,
+          0.0,
+          36769.6
+        ],
+        [
+          -3899.76,
+          339.24,
+          1512.56
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_common_fighters_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          230.814,
+          0.0,
+          191.637
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -191.637,
+          0.0,
+          230.814
+        ],
+        [
+          -25298.4,
+          500.011,
+          -20185.4
+        ]
+      ],
+      "props": {}
+    },
+    "t1_common_fighters_high_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -267.084,
+          0.0,
+          -136.624
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          136.624,
+          0.0,
+          -267.084
+        ],
+        [
+          20637.4,
+          500.009,
+          20536.3
+        ]
+      ],
+      "props": {}
+    },
+    "airfields_reload_area_16km": {
+      "type": "Sphere",
+      "tm": [
+        [
+          22627.5,
+          0.0,
+          -22627.5
+        ],
+        [
+          0.0,
+          32000.1,
+          0.0
+        ],
+        [
+          22627.5,
+          0.0,
+          22627.5
+        ],
+        [
+          -3899.76,
+          339.24,
+          1512.56
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

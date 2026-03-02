@@ -4,7 +4,7 @@ from "%globalScripts/loc_helpers.nut" import loc_checked
 let { Roll, ClimbSpeed, Speed, Altitude, Tangage, CompassValue, Overload } = require("%rGui/planeState/planeFlyState.nut")
 let { mpsToKmh, weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
 let string = require("string")
-let { TargetRadius } = require("%rGui/hud/targetTrackerState.nut")
+let { TargetRadius, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let { AimLockDist, AimLockValid, RocketMode, BombCCIPMode, MfdCameraZoom } = require("%rGui/planeState/planeToolsState.nut")
 let { IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist, TurretYaw, TurretPitch,
  RocketsSalvo, BombsSalvo } = require("%rGui/airState.nut")
@@ -130,8 +130,9 @@ let horizontMarks = {
 }
 
 let TargetRadiusVal = Computed(@() AimLockValid.get() ? TargetRadius.get().tointeger() : 10)
-let targetMark = @(){
+let targetMark = @(use_target_screen_pos = false) @() {
   watch = TargetRadiusVal
+  behavior = use_target_screen_pos ? Behaviors.RtPropUpdate : null
   size = [TargetRadiusVal.get(), TargetRadiusVal.get()]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -150,6 +151,11 @@ let targetMark = @(){
     [VECTOR_LINE_DASHED, -100, -100, -100, 100, 15, 15],
     [VECTOR_LINE_DASHED, 0, 0, 0, 100, 15, 15]
   ]
+  update = @() {
+    transform = {
+      translate = [TargetX.get() - sw(50), TargetY.get() - sh(50)]
+    }
+  }
 }
 
 let atgmLaunchPermitted = @() {
@@ -1029,15 +1035,22 @@ let zoom = {
   ]
 }
 
-function Skval(width, height) {
+let reticle = {
+  size = flex()
+  children = [
+    horizontMarks
+    airSymbolWrap
+  ]
+}
+
+function root(width, height) {
   return {
     size = [width, height]
     children = [
+      reticle
       frame
       climbSpeed
-      horizontMarks
-      airSymbolWrap
-      targetMark
+      targetMark()
       atgmLaunchPermitted
       distToTarget
       speed
@@ -1061,4 +1074,8 @@ function Skval(width, height) {
   }
 }
 
-return Skval
+return {
+  root
+  reticle
+  targetSize = targetMark
+}

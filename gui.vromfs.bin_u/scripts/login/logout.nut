@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { signOut } = require("auth_wt")
-let { is_gdk } = require("%sqstd/platform.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { set_disable_autorelogin_once } = require("loginState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -22,18 +21,12 @@ let { add_msg_box, remove_scene_box } = require("%sqDagui/framework/msgBox.nut")
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
 
-local platformLogout = null
-if (is_gdk) {
-  platformLogout = require("%scripts/gdk/loginState.nut").logout
-}
-
-
 function canLogout() {
   return !disableNetwork
 }
 
 
-function doLogout() {
+function startLogout() {
   if (!canLogout())
     return exitGame()
 
@@ -57,16 +50,6 @@ function doLogout() {
   eventbus_send("on_sign_out")
   signOut()
   handlersManager.startSceneFullReload({ eventbusName = "gui_start_startscreen" })
-}
-
-
-function startLogout() {
-  if (platformLogout != null)
-    platformLogout(function() {
-      doLogout()
-    })
-  else
-    doLogout()
 }
 
 local guiStartLogoutScheduled = false

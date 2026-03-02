@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module constant_expression shared private
 
+
+
+
+
+
+
 require ast
 require daslib/ast_boost
 require daslib/strings_boost
@@ -109,7 +115,7 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
             }
         }
 
-        apply_template(func_copy.body) <| $(rules) {
+        apply_template(func_copy.body) $(rules) {
             for (i in argi) {
                 rules |> replaceVariable(string(expr.func.arguments[i].name)) <| clone_expression(expr.arguments[i])
             }

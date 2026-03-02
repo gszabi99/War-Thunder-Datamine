@@ -354,6 +354,26 @@ options.addTypes({
     isNeedUpdContentByTrigger = @(trigger, p) _isNeedUpdContentByTrigger(trigger, p) && p.isRespawnBasesChanged
 
   }
+  squad_respawn_base = {
+    sortIdx = idx++
+    userOption = -1
+    triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.SQUAD_RESPAWN
+    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.SQUAD_RESPAWN
+    cb = "onSquadRespawnbaseOptionUpdate"
+    needCallCbOnContentUpdate = true
+    isShowForUnit = @(p) p.haveRespawnBases && p.hasSquadRespawnBasesList && p.unit.isHuman()
+    getUseropt = function(p) {
+      local value = p.squadRespawnBasesList.indexof(p.curSquadRespawnBase) ?? 0
+      return {
+        items = p.squadRespawnBasesList.map(function(player) {
+          let res = { text = player.name }
+          return res
+        })
+        value
+      }
+    }
+    isNeedUpdContentByTrigger = @(trigger, p) _isNeedUpdContentByTrigger(trigger, p)
+  }
   save_aircraft_spawn = {
     sortIdx = idx++
     userOption = USEROPT_SAVE_AIRCRAFT_SPAWN

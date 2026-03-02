@@ -29,13 +29,13 @@ def check_for_drone_info_message_cooldown(time : float;
   return false
 
 
-def send_log_missing_respawn_for_launching_drone(human_eid : EntityId;
-                                                 time : float;
-                                                 drone_launcher__nextInfoMessageCooldown : float;
-                                                 var drone_launcher__nextInfoMessageAtTime : float&)
+def send_drone_launcher_log(human_eid : EntityId;
+                            text : string;
+                            time : float;
+                            drone_launcher__nextInfoMessageCooldown : float;
+                            var drone_launcher__nextInfoMessageAtTime : float&)
   if !check_for_drone_info_message_cooldown(time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
     return
-  let text = "drone/respawn_is_missing"
   send_net_event(human_eid, CmdHeroLogEvent(event = "drone_launcher_log", text = text))
 
 
@@ -52,16 +52,6 @@ def send_log_cooldown_for_launching_drone(time : float;
     set(eventData, "seconds", cooldown)
     hud_notify_script(text, eventData)
 
-
-def send_log_bleeding_for_launching_drone(human_eid : EntityId;
-                                          time : float;
-                                          drone_launcher__nextInfoMessageCooldown : float;
-                                          var drone_launcher__nextInfoMessageAtTime : float&)
-  if !check_for_drone_info_message_cooldown(time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
-    return
-
-  let text = "drone/bleeding_warning"
-  send_net_event(human_eid, CmdHeroLogEvent(event = "drone_launcher_log", text = text))
 
 def private check_if_owner_has_bleeding(owner_eid : EntityId)
   var hasBleeding = false
@@ -89,6 +79,7 @@ def take_drone_launcher_or_drone_tactical_phone(human_eid : EntityId;
                                                 drone_launcher__drone : EntityId;
                                                 drone_launcher__tacticalPhone : EntityId;
                                                 time : float;
+                                                drone_launcher__nextUseAtTime : float;
                                                 drone_launcher__instantLaunchFromPhone : bool;
                                                 drone_launcher__droneControlsAcquired : bool;
                                                 drone_launcher__nextInfoMessageCooldown : float;
@@ -99,7 +90,7 @@ def take_drone_launcher_or_drone_tactical_phone(human_eid : EntityId;
     return
 
   if check_if_owner_has_bleeding(human_eid)
-    send_log_bleeding_for_launching_drone(human_eid, time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
+    send_drone_launcher_log(human_eid, "drone/bleeding_warning", time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
     return
 
   let droneExists = drone_launcher__drone != INVALID_ENTITY_ID
@@ -108,7 +99,7 @@ def take_drone_launcher_or_drone_tactical_phone(human_eid : EntityId;
     sendEvent(drone_launcher__tacticalPhone, EventRequestTakeTactialPhone(ownerEid = human_eid, mode = int(TacticalPhoneMode.TPM_DRONE)))
     return
 
-  if droneExists
+  if droneExists || drone_launcher__nextUseAtTime > time
     sendEvent(drone_launcher__tacticalPhone, EventRequestTakeTactialPhone(ownerEid = human_eid, mode = int(TacticalPhoneMode.TPM_DRONE)))
   else
     take_drone_launcher(human_eid, drone_launcher__eid, time, weapon_slot)
@@ -136,28 +127,34 @@ def drone_launch_or_acquire_controls_from_phone(evt : CmdDroneLaunchOrAcquireCon
                                                 drone_launcher__drone : EntityId;
                                                 drone_launcher__instantLaunchFromPhone : bool;
                                                 drone_launcher__nextUseAtTime : float;
+                                                drone_launcher__launchesRemaining : int;
                                                 drone_launcher__nextInfoMessageCooldown : float;
                                                 var drone_launcher__nextInfoMessageAtTime : float&;
                                                 var drone_launcher__state : int&)
   let time = get_sync_time()
   if check_if_owner_has_bleeding(gun__owner)
-    send_log_bleeding_for_launching_drone(gun__owner, time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
+    send_drone_launcher_log(gun__owner, "drone/bleeding_warning", time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
     return
 
   if drone_launcher__drone != INVALID_ENTITY_ID
     sendEvent(drone_launcher__drone, CmdDroneAcquireControls())
     return
 
+  if drone_launcher__launchesRemaining == 0
+    send_drone_launcher_log(gun__owner, "drone/no_launches_remaining", time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
+    return
+
   if time < drone_launcher__nextUseAtTime
     send_log_cooldown_for_launching_drone(time, drone_launcher__nextUseAtTime, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
     return
+
 
   if !drone_launcher__instantLaunchFromPhone
     take_drone_launcher(gun__owner, drone_launcher__eid, time)
     return
 
   if !check_respawn_base_for_launching_drone(gun__owner)
-    send_log_missing_respawn_for_launching_drone(gun__owner, time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
+    send_drone_launcher_log(gun__owner, "drone/respawn_is_missing", time, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
     return
 
   drone_launcher__state = int(DroneLauncherState.DLS_LAUNCHED)
@@ -169,6 +166,7 @@ def drone_launcher_on_fail_launch_response(evt : ResponseDroneLauncherFailLaunch
                                            eid : EntityId;
                                            gun__owner : EntityId;
                                            drone_launcher__drone : EntityId;
+                                           drone_launcher__nextUseAtTime : float;
                                            drone_launcher__tacticalPhone : EntityId;
                                            drone_launcher__instantLaunchFromPhone : bool;
                                            drone_launcher__droneControlsAcquired : bool;
@@ -180,13 +178,14 @@ def drone_launcher_on_fail_launch_response(evt : ResponseDroneLauncherFailLaunch
   drone_launcher__state = int(DroneLauncherState.DLS_READY)
   animchar_render__enabled = true
   drone_launcher_anim__launchInProgress = false
-  take_drone_launcher_or_drone_tactical_phone(gun__owner, eid, drone_launcher__drone, drone_launcher__tacticalPhone, get_sync_time(), drone_launcher__instantLaunchFromPhone, drone_launcher__droneControlsAcquired, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
+  take_drone_launcher_or_drone_tactical_phone(gun__owner, eid, drone_launcher__drone, drone_launcher__tacticalPhone, get_sync_time(), drone_launcher__nextUseAtTime, drone_launcher__instantLaunchFromPhone, drone_launcher__droneControlsAcquired, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
 
 
 [es(tag=gameClient)]
 def drone_launcher_phys_es(evt : CmdWeapPhysUpdate;
                            eid : EntityId;
                            drone_launcher_anim__launchTime : float;
+                           drone_launcher__launchesRemaining : int;
                            drone_launcher__nextInfoMessageCooldown : float;
                            var drone_launcher__nextInfoMessageAtTime : float&;
                            var drone_launcher__state : int&;
@@ -196,7 +195,7 @@ def drone_launcher_phys_es(evt : CmdWeapPhysUpdate;
                            var drone_launcher_anim__launchInProgress : bool&;
                            var drone_launcher_anim__replaceAnimationWithEntity : bool&)
   let isForReal = evt.isForReal
-  if !isForReal
+  if !isForReal || drone_launcher__launchesRemaining == 0
     return
   let ownerEid = evt.owner
   let atTime = evt.atTime
@@ -207,7 +206,7 @@ def drone_launcher_phys_es(evt : CmdWeapPhysUpdate;
         return
 
       if check_if_owner_has_bleeding(ownerEid)
-        send_log_bleeding_for_launching_drone(ownerEid, get_sync_time(), drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
+        send_drone_launcher_log(ownerEid, "drone/bleeding_warning", get_sync_time(), drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
         return
 
       drone_launcher__state = int(DroneLauncherState.DLS_LAUNCH)
@@ -239,12 +238,13 @@ def take_drone_launcher_or_drone_tactical_phone_es(evt : EventTakeDroneLauncherO
                                                    eid : EntityId;
                                                    gun__owner : EntityId;
                                                    drone_launcher__drone : EntityId;
+                                                   drone_launcher__nextUseAtTime : float;
                                                    drone_launcher__tacticalPhone : EntityId;
                                                    drone_launcher__instantLaunchFromPhone : bool;
                                                    drone_launcher__droneControlsAcquired : bool;
                                                    drone_launcher__nextInfoMessageCooldown : float;
                                                    var drone_launcher__nextInfoMessageAtTime : float&)
-  take_drone_launcher_or_drone_tactical_phone(gun__owner, eid, drone_launcher__drone, drone_launcher__tacticalPhone, evt.atTime, drone_launcher__instantLaunchFromPhone, drone_launcher__droneControlsAcquired, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime, evt.weaponSlot)
+  take_drone_launcher_or_drone_tactical_phone(gun__owner, eid, drone_launcher__drone, drone_launcher__tacticalPhone, evt.atTime, drone_launcher__nextUseAtTime, drone_launcher__instantLaunchFromPhone, drone_launcher__droneControlsAcquired, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime, evt.weaponSlot)
 
 [es(tag=gameClient, on_appear, REQUIRE=isQuadrocopterHints)]
 def hud_appear_controls_on_drone_creation_es(evt : Event;

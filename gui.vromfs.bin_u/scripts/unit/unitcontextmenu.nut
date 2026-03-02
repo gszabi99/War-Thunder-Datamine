@@ -61,7 +61,7 @@ let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
-let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
+let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { hasUnitEvent, getUnitEventId } = require("%scripts/unit/unitEvents.nut")
@@ -306,7 +306,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
           : !setResearchManually
             ? function () { onCloseShop?() }
             : isInResearch && !isSquadronVehicle
-              ? function () { gui_modal_convertExp(unit) }
+              ? function () { openConvertExpModalWnd(unit) }
               : function () {
                   if (!checkForResearch(unit))
                     return

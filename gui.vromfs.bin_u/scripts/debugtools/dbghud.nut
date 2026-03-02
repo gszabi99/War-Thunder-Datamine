@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud, get_mp_kick_countdown
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
@@ -6,8 +6,6 @@ let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { frnd, rnd } = require("dagor.random")
 let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_DEATH_REASON } = require("hudMessages")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { get_game_settings_blk } = require("blkGetters")
-let { set_in_battle_time_to_kick_show_timer, set_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { register_command } = require("console")
 let { add_streak_message, getLocForStreak } = require("%scripts/streaks.nut")
@@ -117,24 +115,6 @@ function hud_mission_result_debug(result = GO_WIN, checkResending = false, noLiv
                                                      noLives = noLives })
 }
 
-function hud_show_in_battle_time_to_kick_timer() {
-  let time = get_mp_kick_countdown() + 5000
-  ::get_mp_kick_countdown = @() time
-  set_in_battle_time_to_kick_show_timer(time)
-}
-
-function hud_show_in_battle_time_to_kick_alert() {
-  let getrndtime = @() rnd() % 5000
-  ::get_mp_kick_countdown = getrndtime
-  set_in_battle_time_to_kick_show_alert(getrndtime())
-}
-
-function hud_reset_in_battle_time_to_kick() {
-  let gmSettingsBlk = get_game_settings_blk()
-  set_in_battle_time_to_kick_show_timer(gmSettingsBlk?.time_to_kick.in_battle_show_timer_threshold ?? 150)
-  set_in_battle_time_to_kick_show_alert(gmSettingsBlk?.time_to_kick.in_battle_show_alert_threshold ?? 50)
-}
-
 function hud_show_tutorial_obj(id, show) {
   g_hud_tutorial_elements.onElementToggle({ element = id, show = show })
 }
@@ -193,6 +173,9 @@ function hud_killer_card_debug() {
       action = "kill"
       victimPlayerId = get_local_mplayer().id
       unitName = "Name"
+      name = "Name"
+      aircraftName = "ussr_destroyer_7y"
+      aircraft = "ussr_destroyer_7y_shop"
       unitType = "ship"
       unitNameLoc = "Killer unit"
       victimUnitName = "name"
@@ -200,6 +183,38 @@ function hud_killer_card_debug() {
       victimUnitNameLoc = "Victim Unit"
       killerProjectileName = "85mm_br_372"
       playerId = 0
+      isDebugData = true
+    })
+
+  g_hud_event_manager.onHudEvent("HudMessage",
+    {
+      type = HUD_MSG_DEATH_REASON
+      id = -1
+      text = ""
+    })
+}
+
+function hud_human_killer_card_debug() {
+  g_hud_event_manager.onHudEvent("HudMessage",
+    {
+      type = HUD_MSG_MULTIPLAYER_DMG
+      isKill = true
+      action = "kill"
+      victimPlayerId = get_local_mplayer().id
+      unitName = "m16a4"
+      name = "Name"
+      unitType = 14
+      aircraftName = "m16a4"
+      aircraft = "m16a4_shop"
+      unitNameLoc = "Killer unit"
+      victimUnitName = "ak_74m"
+      victimUnitType = 14
+      victimUnitNameLoc = "Victim Unit"
+      killerProjectileName = "5_56mm_m193_ball"
+      weaponEcsTemplateName = "rpg_7_gun"
+      weaponModEcsTemplateNames = "grip_vertical_tangodown,scope_acog_ta31"
+      playerId = 0
+      isDebugData = true
     })
 
   g_hud_event_manager.onHudEvent("HudMessage",
@@ -239,6 +254,9 @@ let show_human_hold_breath_hint = @(needShow) g_hud_event_manager.onHudEvent(
 let show_human_change_scope_hint = @(needShow) g_hud_event_manager.onHudEvent(
   needShow ? "hint:human_change_scope_show" : "hint:human_change_scope_hide")
 
+let show_human_change_grenade_sight_hint = @(needShow) g_hud_event_manager.onHudEvent(
+  needShow ? "hint:human_change_grenade_sight_show" : "hint:human_change_grenade_sight_hide")
+
 register_command(hud_message_objective_debug, "debug.hud.message_objective_debug")
 register_command(hud_message_player_damage_debug, "debug.hud.message_player_damage_debug")
 register_command(hud_message_kill_log_debug, "debug.hud.message_kill_log_debug")
@@ -249,9 +267,6 @@ register_command(hud_reward_message_debug, "debug.hud.reward_message_debug")
 register_command(hud_debug_streak, "debug.hud.debug_streak")
 register_command(@() hud_debug_streak(), "debug.hud.debug_random_streak")
 register_command(hud_mission_result_debug, "debug.hud.mission_result_debug")
-register_command(hud_show_in_battle_time_to_kick_timer, "debug.hud.show_in_battle_time_to_kick_timer")
-register_command(hud_show_in_battle_time_to_kick_alert, "debug.hud.show_in_battle_time_to_kick_alert")
-register_command(hud_reset_in_battle_time_to_kick, "debug.hud.reset_in_battle_time_to_kick")
 register_command(hud_show_tutorial_obj, "debug.hud.show_tutorial_obj")
 register_command(test_hint_start_bailout, "debug.hud.test_hint_start_bailout")
 register_command(test_hint_offer_bailout, "debug.hud.test_hint_offer_bailout")
@@ -261,6 +276,7 @@ register_command(text_hint_mission_hint_zoom, "debug.hud.text_hint_mission_hint_
 register_command(text_tutorial_hint_with_shortcuts_engine_add, "debug.hud.text_tutorial_hint_with_shortcuts_engine_add")
 register_command(mission_hint_remove, "debug.hud.mission_hint_remove")
 register_command(hud_killer_card_debug, "debug.hud.killer_card")
+register_command(hud_human_killer_card_debug, "debug.hud.human_killer_card")
 register_command(show_mine_the_wall_hint, "debug.hud.mine_the_wall_hint")
 register_command(test_mining_the_wall_progress, "debug.hud.mine_the_wall_progress")
 register_command(show_build_the_wall_hint, "debug.hud.build_the_wall_hint")
@@ -268,6 +284,7 @@ register_command(test_building_the_wall_progress, "debug.hud.build_the_wall_prog
 register_command(test_planted_bomb_progress, "debug.hud.planted_bomb_progress")
 register_command(show_human_hold_breath_hint, "debug.hud.show_human_hold_breath_hint")
 register_command(show_human_change_scope_hint, "debug.hud.show_human_change_scope_hint")
+register_command(show_human_change_grenade_sight_hint, "debug.hud.show_human_change_grenade_sight_hint")
 
 return {
   hud_message_objective_debug

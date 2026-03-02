@@ -120,6 +120,7 @@
   "ElevatorMaxDv": 7.7381,
   "RudderMaxDv": 6.0,
   "VneControl": 820.0,
+  "ExtThrustBaseMult": 1.0,
   "CockpitOpenedDoorBreakSpeed": 450.0,
   "MomentOfInertia": [
     8449.0,
@@ -155,6 +156,7 @@
     "hasBuoyancyControl": false,
     "hasLightsControl": false,
     "hasManeuverabilityMode": false,
+    "hasThrustVectoringMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -460,7 +462,7 @@
         0.2,
         0.968
       ],
-      "FlowInertia": 0.0600243,
+      "FlowInertia": 0.0600475,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 2.64,
@@ -532,7 +534,7 @@
         1.2,
         0.0
       ],
-      "FlowInertia": 0.0500204,
+      "FlowInertia": 0.0500398,
       "SlipStreamDistance": 9.01,
       "Areas": {
         "Main": 1.6,
@@ -726,6 +728,7 @@
     "Main": {
       "Type": "Radial",
       "Cylinders": 14,
+      "AllowDamageAfterPropeller": true,
       "Mass": 860.0,
       "Thrust": 10.7,
       "ThrottleBoost": 1.001,
@@ -1053,7 +1056,7 @@
       }
     },
     "FireExtinguisher": {
-      "Num": 1,
+      "Num": 0,
       "UseTime": 5.0,
       "Power": 2500.0,
       "Automatic": false
@@ -1081,6 +1084,7 @@
       "ThrustRatio": 1.0,
       "ThrustMax": 2147440000.0,
       "TipPosition": false,
+      "HasThrustVecMainControlsMode": false,
       "AileronsToThrustDeflection": [
         0.0,
         0.0,
@@ -1346,7 +1350,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      90.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -1371,7 +1375,8 @@
     ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 4.0,
-    "CorrectPropellerToTransmissionLink": false
+    "CorrectPropellerToTransmissionLink": false,
+    "AllowDamageAfterLinksDamage": true
   },
   "Mass": {
     "EmptyMass": 2475.0,
@@ -1480,7 +1485,7 @@
   },
   "Gear": {
     "SinkFactor": 800.0,
-    "SinkRateMult": 1.05821,
+    "SinkRateMult": 1.07331,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.0,
@@ -2317,6 +2322,7 @@
         0.0,
         -2147440000.0
       ],
+      "UseClimbMinLimByRAltitude": false,
       "ClimbPID": {
         "Kp": 0.0,
         "Ki": 0.0,
@@ -2348,7 +2354,8 @@
           0.0,
           0.0
         ]
-      }
+      },
+      "CruiseAssist": {}
     },
     "Buoyancy": {},
     "Aim": {

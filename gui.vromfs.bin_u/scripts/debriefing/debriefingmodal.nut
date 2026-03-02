@@ -54,7 +54,7 @@ let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nu
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { setNeedShowRate } = require("%scripts/user/suggestionRateGame.nut")
 let { sourcesConfig } = require("%scripts/debriefing/rewardSources.nut")
-let { minValuesToShowRewardPremium, MAX_COUNTRY_RANK
+let { minValuesToShowRewardPremium, maxCountryRank
 } = require("%scripts/ranks.nut")
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
   gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById,
@@ -89,10 +89,11 @@ let { reqUnlockByClient, getFakeUnlockData, combineSimilarAwards
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { sendFinishTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
-let { isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
+let { isBattleTask, getBattleTaskById, getBattleTaskNameById
+} = require("%scripts/unlocks/battleTasksState.nut")
+let { isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
   getBattleTaskRerollCost, canGetBattleTaskReward, canGetAnyBattleTaskReward,
-  getBattleTaskById, getCurBattleTasksByGm, requestBattleTaskReward,
-  rerollBattleTask, rerollSpecialTask, getBattleTaskNameById
+  getCurBattleTasksByGm, requestBattleTaskReward, rerollBattleTask, rerollSpecialTask
 } = require("%scripts/unlocks/battleTasks.nut")
 let { setBattleTasksUpdateTimer, getBattleTaskView, mkUnlockConfigByBattleTask
 } = require("%scripts/unlocks/battleTasksView.nut")
@@ -125,8 +126,10 @@ let { get_last_called_gui_testflight } = require("%scripts/missionBuilder/testFl
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isNewbieInited, getMissionsComplete, isMeNewbie, markStatsReset
 } = require("%scripts/myStats.nut")
-let { findItemByUid, getInventoryItemById, findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getUnlockIconConfig, buildConditionsConfig, fillUnlockBlock, buildUnlockTooltipByConfig
+let { findItemByUid, findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockIconConfig, fillUnlockBlock, buildUnlockTooltipByConfig
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { gui_start_mainmenu, gui_start_mainmenu_reload
 } = require("%scripts/mainmenu/guiStartMainmenu.nut")
@@ -143,10 +146,11 @@ let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
 } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { saveLastPlayed } = require("%scripts/globalWorldWarScripts.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { updateOperationPreviewAndDo, openOperationsOrQueues, isLastFlightWasWwBattle,
-  openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
-let { currentCampaignId, currentCampaignMission, get_mission_settings, get_mutable_mission_settings, set_mission_settings,
-  is_user_mission, isCustomMissionFlight
+let { updateOperationPreviewAndDo, openOperationsOrQueues, openWWMainWnd
+} = require("%scripts/globalWorldwarUtils.nut")
+let { isLastFlightWasWwBattle } = require("%scripts/worldWar/worldWarState.nut")
+let { currentCampaignId, currentCampaignMission, get_mission_settings,
+  get_mutable_mission_settings, set_mission_settings, is_user_mission, isCustomMissionFlight
 } = require("%scripts/missions/missionsStates.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
@@ -154,10 +158,12 @@ let { haveLobby } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isUsedPlayersOwnUnit } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { getCurMpTitle, getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { getWPIcon, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
-let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { getWPIcon } = require("%scripts/items/prizeUtils.nut")
+let { getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
+let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 let { guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing
@@ -689,7 +695,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     local logsList = getDebriefingUserLogsList(filter)
     logsList = combineSimilarAwards(logsList)
     for (local i = logsList.len() - 1; i >= 0; i--)
-      res.append(build_log_unlock_data(logsList[i]))
+      res.append(buildLogUnlockData(logsList[i]))
 
     
     if (!is_dev_version() || this.debugUnlocks <= res.len())
@@ -703,7 +709,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let addAmount = this.debugUnlocks - res.len()
     for (local i = 0; i < addAmount; i++)
-      res.append(build_log_unlock_data(logsList[i % logsList.len()]))
+      res.append(buildLogUnlockData(logsList[i % logsList.len()]))
 
     return res
   }
@@ -1516,7 +1522,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     if (this.isInited) {
       let country = this.getDebriefingCountry()
-      if (country in playerRankByCountries && playerRankByCountries[country] >= MAX_COUNTRY_RANK) {
+      if (country in playerRankByCountries && playerRankByCountries[country] >= maxCountryRank.get()) {
         this.totalTarValues.exp = this.getStatValue(this.totalRow, "exp", "prem")
         dt = 1000 
       }
@@ -1730,7 +1736,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function getCurrentEdiff() {
-    return get_mission_mode()
+    let ediff = this.roomEvent ? events.getEDiffByEvent(this.roomEvent) : -1
+    return ediff != -1 ? ediff : get_mission_mode()
   }
 
   function onEventModBought(p) {
@@ -2595,7 +2602,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (cfgNames.len() == 0)
       return
 
-    let awards = cfgNames.map(@(id) build_log_unlock_data(
+    let awards = cfgNames.map(@(id) buildLogUnlockData(
       buildConditionsConfig(
         getUnlockById(id)
     )))
@@ -3146,7 +3153,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       filters = { popupInDebriefing = [true] }
     })
     foreach (logObj in wnd_unlock_gained)
-      showUnlockWnd(build_log_unlock_data(logObj))
+      showUnlockWnd(buildLogUnlockData(logObj))
 
     
     let new_rank = getPlayerRankByCountry(country)
@@ -3172,7 +3179,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       unlocks = [UNLOCKABLE_COUNTRY]
     })
     foreach (logObj in country_unlock_gained) {
-      showUnlockWnd(build_log_unlock_data(logObj))
+      showUnlockWnd(buildLogUnlockData(logObj))
       if (("unlockId" in logObj) && logObj.unlockId != country && isInArray(logObj.unlockId, shopCountriesList))
         unlockCountry(logObj.unlockId)
     }
@@ -3237,6 +3244,20 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         }
         else if (this.isMp && this.debriefingResult.exp.result == STATS_RESULT_IN_PROGRESS && !(this.gameType & GT_RACE))
           infoText = loc("debriefing/exp_and_reward_will_be_later")
+      }
+
+      if (infoText == "" && this.isMp) {
+        let endSessionLog = getDebriefingUserLogsList({
+          show = [
+            EULT_SESSION_RESULT
+            EULT_EARLY_SESSION_LEAVE
+          ]
+        })
+        let containsEndSessionLog = (endSessionLog.len() != 0)
+
+        
+        if (!containsEndSessionLog)
+          infoText = loc("debriefing/servers_are_busy_so_reward_is_delayed")
       }
     }
 
@@ -3320,7 +3341,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function onEventModalWndDestroy(p) {
     base.onEventModalWndDestroy(p)
     if (this.state == debrState.done && this.isSceneActiveNoModals())
-      ::checkNewNotificationUserlogs()
+      checkNewNotificationUserlogs()
   }
 
   function onEventProfileUpdated(_p) {

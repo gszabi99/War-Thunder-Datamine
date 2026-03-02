@@ -10,6 +10,7 @@ require %appGame.infantry.es.action_common
 require %appGame.infantry.es.inventory_common
 require %appGame.infantry.es.human_weap_common
 require PropsManager
+require ecs.safe
 
 [es(tag=server, on_appear)]
 def inventory_item_push_es(evt : Event; eid : EntityId; item__ownerEid : EntityId)
@@ -39,13 +40,12 @@ def human_inventory_on_death(evt : Event; eid, human_inventory__entityToUse : En
     sendEventImmediate(eid, EventInterruptItemUse())
 
 
-[es(tag=server, after=before_human_inventory_use_update)]
+[es(tag=server, after=before_human_inventory_use_update, REQUIRE=itemContainer)]
 def human_inventory_server_es(info : UpdateStageInfoAct;
                               eid : EntityId;
                               human_inventory__entityUseEnd : float;
                               var human_inventory__entityToUse : EntityId&;
-                              human_inventory__targetToUse : EntityId;
-                              var itemContainer : EidList&)
+                              human_inventory__targetToUse : EntityId)
   if !human_inventory__entityToUse
     return
 
@@ -55,11 +55,12 @@ def human_inventory_server_es(info : UpdateStageInfoAct;
   var needRemove = true
   query(human_inventory__entityToUse) <| $ [es] (var item__useCount : int&) { needRemove = --item__useCount <= 0; }
 
+  var itemContainer = getRW_ecs_EidList(eid, "itemContainer")
   if !needRemove
     sendEventImmediate(human_inventory__entityToUse, EventOnLootItemUsed(target = human_inventory__targetToUse))
     sendEventImmediate(eid, EventOnLootUse(itemEid = human_inventory__entityToUse))
     human_inventory__entityToUse = INVALID_ENTITY_ID
-  elif remove_item_from_cont(human_inventory__entityToUse, itemContainer)
+  elif remove_item_from_cont(human_inventory__entityToUse, *itemContainer)
     sendEventImmediate(human_inventory__entityToUse, EventOnLootItemUsed(target = human_inventory__targetToUse))
     sendEventImmediate(eid, EventOnLootUse(itemEid = human_inventory__entityToUse))
     destroyEntity(human_inventory__entityToUse)

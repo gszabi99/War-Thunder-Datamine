@@ -120,12 +120,13 @@
   "ElevatorMaxDv": 2.16667,
   "RudderMaxDv": 3.33333,
   "VneControl": 760.0,
-  "CockpitOpenedDoorBreakSpeed": -1.0,
+  "ExtThrustBaseMult": 1.0,
   "MomentOfInertia": [
     49360.0,
     73378.0,
     28605.0
   ],
+  "CockpitOpenedDoorBreakSpeed": -1.0,
   "DisableRendinstCollision": false,
   "SpawnSpeed": 381.711,
   "AvailableControls": {
@@ -155,6 +156,7 @@
     "hasBuoyancyControl": false,
     "hasLightsControl": false,
     "hasManeuverabilityMode": false,
+    "hasThrustVectoringMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -446,7 +448,7 @@
         0.2,
         1.2
       ],
-      "FlowInertia": 0.0299997,
+      "FlowInertia": 0.0299998,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 3.6,
@@ -518,7 +520,7 @@
         0.6,
         0.0
       ],
-      "FlowInertia": 0.0499995,
+      "FlowInertia": 0.0499997,
       "SlipStreamDistance": 9.7,
       "Areas": {
         "Main": 2.04,
@@ -712,6 +714,7 @@
     "Main": {
       "Type": "Inline",
       "Cylinders": 12,
+      "AllowDamageAfterPropeller": true,
       "Mass": 612.0,
       "Thrust": 10.7,
       "ThrottleBoost": 1.0001,
@@ -1028,6 +1031,7 @@
     "Main": {
       "Type": "Inline",
       "Cylinders": 12,
+      "AllowDamageAfterPropeller": true,
       "Mass": 612.0,
       "Thrust": 10.7,
       "ThrottleBoost": 1.0001,
@@ -1360,6 +1364,7 @@
       "ThrustRatio": 1.0,
       "ThrustMax": 2147440000.0,
       "TipPosition": false,
+      "HasThrustVecMainControlsMode": false,
       "AileronsToThrustDeflection": [
         0.0,
         0.0,
@@ -1466,6 +1471,7 @@
       "ThrustRatio": 1.0,
       "ThrustMax": 2147440000.0,
       "TipPosition": false,
+      "HasThrustVecMainControlsMode": false,
       "AileronsToThrustDeflection": [
         0.0,
         0.0,
@@ -1905,7 +1911,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      0.0,
+      -180.0,
       90.0
     ],
     "Pos": [
@@ -1924,7 +1930,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      0.0,
+      -180.0,
       90.0
     ],
     "Pos": [
@@ -1949,7 +1955,8 @@
     ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 4.0,
-    "CorrectPropellerToTransmissionLink": false
+    "CorrectPropellerToTransmissionLink": false,
+    "AllowDamageAfterLinksDamage": true
   },
   "Transmission1": {
     "Engine0": 1,
@@ -1964,7 +1971,8 @@
     ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 4.0,
-    "CorrectPropellerToTransmissionLink": false
+    "CorrectPropellerToTransmissionLink": false,
+    "AllowDamageAfterLinksDamage": true
   },
   "Mass": {
     "EmptyMass": 6002.0,
@@ -2080,7 +2088,7 @@
   },
   "Gear": {
     "SinkFactor": 2000.0,
-    "SinkRateMult": 1.01012,
+    "SinkRateMult": 1.02077,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.1,
@@ -2459,6 +2467,12 @@
         0.0,
         0.0
       ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ],
       "AngleLim": 190.0,
       "RollTimeMult": 1.0,
       "AutoAngleMax": [
@@ -2530,6 +2544,12 @@
       "VelMax": [
         0.0,
         0.0
+      ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
       ],
       "AngleLim": 190.0,
       "BalanceLoadFactor": true,
@@ -2716,6 +2736,7 @@
         50.0,
         -15.0
       ],
+      "UseClimbMinLimByRAltitude": false,
       "ClimbPID": {
         "Kp": 0.0,
         "Ki": 0.0,
@@ -2747,7 +2768,8 @@
           0.0,
           0.0
         ]
-      }
+      },
+      "CruiseAssist": {}
     },
     "Buoyancy": {},
     "Aim": {

@@ -33,6 +33,18 @@
   ],
   "CockpitDoorBlockSpeed": 450.0,
   "AirBrakeSpeed": 0.5,
+  "AirbrakeLimMinByMach": [
+    0.0,
+    1.0,
+    0.0,
+    0.0
+  ],
+  "AirbrakeLimMaxByMach": [
+    0.0,
+    1.0,
+    1.0,
+    1.0
+  ],
   "BayDoorSpeed": 1.0,
   "BombLauncherSpeed": 2.0,
   "SweepWingActuatorSpeed": 0.2,
@@ -108,12 +120,13 @@
   "ElevatorMaxDv": 1.74825,
   "RudderMaxDv": 2.73473,
   "VneControl": 656.0,
-  "CockpitOpenedDoorBreakSpeed": -1.0,
+  "ExtThrustBaseMult": 1.0,
   "MomentOfInertia": [
     20252.1,
     43914.0,
     25728.4
   ],
+  "CockpitOpenedDoorBreakSpeed": -1.0,
   "DisableRendinstCollision": false,
   "SpawnSpeed": 307.39,
   "AvailableControls": {
@@ -143,6 +156,7 @@
     "hasBuoyancyControl": false,
     "hasLightsControl": false,
     "hasManeuverabilityMode": false,
+    "hasThrustVectoringMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -486,7 +500,7 @@
         0.9,
         1.5
       ],
-      "FlowInertia": 0.00999992,
+      "FlowInertia": 0.00999959,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 6.26,
@@ -558,7 +572,7 @@
         1.65,
         0.0
       ],
-      "FlowInertia": 0.0499996,
+      "FlowInertia": 0.049998,
       "SlipStreamDistance": 7.2,
       "Areas": {
         "Main": 2.052,
@@ -752,10 +766,11 @@
     "Main": {
       "Type": "Radial",
       "Cylinders": 14,
+      "AllowDamageAfterPropeller": true,
       "Mass": 930.0,
       "Thrust": 0.0,
       "ThrottleBoost": 1.00001,
-      "AfterburnerBoost": 1.11,
+      "AfterburnerBoost": 1.13,
       "RPMMin": 800.0,
       "RPMMax": 2600.0,
       "RPMAfterburner": 2600.0,
@@ -768,7 +783,7 @@
       "CarbueretorType": 1,
       "CarbureutorCapacity": 0.326667,
       "IsAutonomous": true,
-      "MinThrMult": 0.1,
+      "MinThrMult": 0.2276,
       "MaxThrMult": 1.0,
       "IsWaterCooled": false,
       "EngineInertiaMoment": 1.0,
@@ -782,7 +797,7 @@
       ],
       "ThrottleRPMAuto0": [
         0.0,
-        1600.0
+        800.0
       ],
       "ThrottleRPMAuto1": [
         0.5,
@@ -796,10 +811,10 @@
         1.1,
         2600.0
       ],
-      "ShaftRPMMin": 1600.0,
-      "ShaftRPMMax": 2400.0,
+      "ShaftRPMMin": 800.0,
+      "ShaftRPMMax": 2600.0,
       "ShaftRpmController": true,
-      "Power": 1415.69,
+      "Power": 1500.0,
       "ConsumptionOmegaMax": 1.05,
       "TorqueZeroOmegaMult": 3.0,
       "TurbineTimeConstant": 3.4,
@@ -829,6 +844,7 @@
       "hasOilRadiatorControl": false,
       "hasCommonRadiator": true,
       "hasVtolControl": false,
+      "hasBoosterSwitcher": false,
       "hasThrustReverseControl": false,
       "dvVtol": 0.2,
       "dvThrustRev": 0.2,
@@ -996,21 +1012,21 @@
       "ATA1": 1.19664,
       "ExactAltitudes": true,
       "CompressorOmegaFactorSq": 1.0,
-      "CompressorPressureAtRPM0": 0.4,
+      "CompressorPressureAtRPM0": 0.35,
       "Altitude0": 1829.0,
       "AfterburnerBoostMul0": 1.0,
-      "Power0": 1415.69,
+      "Power0": 1500.0,
       "AltitudeConstRPM0": 18300.0,
-      "PowerConstRPM0": 1415.69,
+      "PowerConstRPM0": 1500.0,
       "PowerConstRPMCurvature0": 1.0,
       "Ceiling0": 4000.0,
       "PowerAtCeiling0": 924.916,
       "AfterburnerPressureBoost0": 1.0,
       "Altitude1": 3962.0,
-      "AfterburnerBoostMul1": 1.0,
-      "Power1": 1274.12,
-      "AltitudeConstRPM1": 18300.0,
-      "PowerConstRPM1": 1415.69,
+      "AfterburnerBoostMul1": 0.93,
+      "Power1": 1350.0,
+      "AltitudeConstRPM1": 1.0,
+      "PowerConstRPM1": 1350.0,
       "PowerConstRPMCurvature1": 1.0,
       "Ceiling1": 9000.0,
       "PowerAtCeiling1": 471.896,
@@ -1099,6 +1115,7 @@
       "ThrustRatio": 1.0,
       "ThrustMax": 2147440000.0,
       "TipPosition": false,
+      "HasThrustVecMainControlsMode": false,
       "AileronsToThrustDeflection": [
         0.0,
         0.0,
@@ -1319,7 +1336,7 @@
     },
     "Governor": {
       "PitchMin": 22.0,
-      "PitchMax": 47.0,
+      "PitchMax": 49.0,
       "Aoa0": 11.0,
       "PitchCyclicPitchAngles": [
         0.0,
@@ -1337,10 +1354,10 @@
         0.0
       ],
       "GovernorType": 2,
-      "GovernorSpeed": 0.06,
+      "GovernorSpeed": 0.08,
       "GovernorFast": false,
-      "GovernorMinParam": 1600.0,
-      "GovernorMaxParam": 2400.0,
+      "GovernorMinParam": 800.0,
+      "GovernorMaxParam": 2600.0,
       "GovernorAfterburnerParam": 2600.0,
       "AlwaysEnableTorqueAndGyro": false,
       "AlwaysEnableForce": true
@@ -1364,7 +1381,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      90.0,
       90.0
     ],
     "Pos": [
@@ -1389,7 +1406,8 @@
     ],
     "UseAutoPropInertia": false,
     "EngineAcceleration": 10.0,
-    "CorrectPropellerToTransmissionLink": false
+    "CorrectPropellerToTransmissionLink": false,
+    "AllowDamageAfterLinksDamage": true
   },
   "Mass": {
     "EmptyMass": 5343.04,
@@ -1501,7 +1519,7 @@
   },
   "Gear": {
     "SinkFactor": 1500.0,
-    "SinkRateMult": 1.02413,
+    "SinkRateMult": 1.0353,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.0,
@@ -1810,6 +1828,12 @@
       -5.0,
       12.0
     ],
+    "constPitchDerrCoeffMultByClLinearRatio": [
+      0.0,
+      1.0,
+      0.01,
+      2.0
+    ],
     "MouseAim": {
       "forceAdvanced": false,
       "preciseRotStopDetection": false,
@@ -1866,6 +1890,12 @@
       "VelMax": [
         0.0,
         0.0
+      ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
       ],
       "AngleLim": 180.0,
       "RollTimeMult": 1.0,
@@ -1942,6 +1972,12 @@
       "VelMax": [
         0.0,
         0.0
+      ],
+      "VelMaxMinMult": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
       ],
       "AngleLim": 180.0,
       "BalanceLoadFactor": true,
@@ -2132,6 +2168,7 @@
         0.0,
         -2147440000.0
       ],
+      "UseClimbMinLimByRAltitude": false,
       "ClimbPID": {
         "Kp": 0.0,
         "Ki": 0.0,
@@ -2163,7 +2200,8 @@
           0.0,
           0.0
         ]
-      }
+      },
+      "CruiseAssist": {}
     },
     "Buoyancy": {},
     "Aim": {

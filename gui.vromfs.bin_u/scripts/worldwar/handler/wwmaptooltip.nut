@@ -7,8 +7,13 @@ let { setObjPosition } = require("%sqDagui/daguiUtil.nut")
 let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
+let wwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
+let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
+let { getBattleStatusWithCanJoinText
+} = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
+
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
@@ -128,7 +133,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
 
         battleDescObj.width = $"{(2.4 * maxTeamContentWidth)}+4@framePadding"
 
-        let hoveredBattle = g_world_war.getBattleById(this.specs.currentId)
+        let hoveredBattle = getBattleById(this.specs.currentId)
         this.destroyDescriptionTimer()
 
         this.descriptionTimer = Timer(
@@ -140,7 +145,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.AIRFIELD) {
 
-      let hoveredAirfield = g_world_war.getAirfieldByIndex(this.specs.currentId)
+      let hoveredAirfield = WwAirfield(this.specs.currentId)
       this.destroyDescriptionTimer()
 
       this.descriptionTimer = Timer(
@@ -197,7 +202,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(battleTimerValueObj))
       return
 
-    let battleView = hoveredBattle.getView()
+    let battleView = wwBattleView(hoveredBattle)
     let hasDurationTime = battleView.hasBattleDurationTime()
     let hasActivateLeftTime = battleView.hasBattleActivateLeftTime()
     let timeStartAutoBattle = battleView.getTimeStartAutoBattle()
@@ -216,7 +221,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let statusObj = this.scene.findObject("battle_status_text")
     if (checkObj(statusObj))
-      statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
+      statusObj.setValue(getBattleStatusWithCanJoinText(battleView))
 
     let needShowWinChance = battleView.needShowWinChance()
     let winCahnceObj = showObjById("win_chance", needShowWinChance, this.scene)

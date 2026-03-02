@@ -6,6 +6,12 @@ options strict_smart_pointers = true
 
 module ast_debug shared private
 
+
+
+
+
+
+
 require debugapi
 require daslib/ast_boost
 require daslib/strings
@@ -101,6 +107,7 @@ def describe_arg(var ctxid : Context; vinfo; arg : void?) : void {
 }
 
 class SampleStackWalker : DapiStackWalker {
+    
     ctxid : Context?
     def override onArgument(info : FuncInfo; index : int; vinfo : VarInfo; arg : float4) : void {
         if (vinfo.flags.ref || vinfo.flags.refType) {
@@ -125,6 +132,7 @@ class SampleStackWalker : DapiStackWalker {
 }
 
 class ContextStateAgent : DapiDebugAgent {
+    
     walker_adapter : smart_ptr<StackWalker>
     walker : SampleStackWalker?
     def ContextStateAgent {

@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import is_mode_with_teams
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 from "hudState" import is_hud_visible
 from "gameplayBinding" import getIsInFlightMenu, isInFlight
 
@@ -101,7 +101,7 @@ function getSenderColor(message) {
     return senderMeColor
   if (isPlayerDedicatedSpectator(message.sender))
     return senderSpectatorColor
-  if (message.team != get_player_army_for_hud() || !is_mode_with_teams())
+  if (message.team != get_player_army_for_hud() || !isModeWithTeams())
     return senderEnemyColor
   if (isSenderInMySquad(message))
     return senderMySquadColor

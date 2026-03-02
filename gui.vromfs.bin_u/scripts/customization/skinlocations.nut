@@ -6,7 +6,7 @@ let DataBlock = require("DataBlock")
 let string = require("%sqstd/string.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let stdMath = require("%sqstd/math.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 

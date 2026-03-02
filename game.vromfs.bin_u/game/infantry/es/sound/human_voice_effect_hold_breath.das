@@ -4,7 +4,7 @@ require human_sounds.modules.human_sounds_events
 require DngHuman
 
 
-[es(tag=sound, on_appear, track=human_net_phys__isHoldBreath)]
+[es(tag=sound, on_appear, track=human_net_phys__isHoldBreath, REQUIRE=humanVoiceEffectHoldBreath)]
 def human_voice_effect_hold_breath(evt : Event;
                                    eid : EntityId;
                                    human_net_phys : HumanActor&;

@@ -54,7 +54,7 @@ function showModalWndCantComplainReason(reasonId) {
 function checkCanComplainAndProceed(uid, isOkFunction) {
   let canComplain = getCanComplainOnUser(uid)
   if(canComplain == canComplainCheckResults.CAN_COMPLAIN)
-    isOkFunction()
+    isOkFunction() 
   else
     showModalWndCantComplainReason(canComplain)
 }

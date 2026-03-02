@@ -1,6 +1,7 @@
 options no_aot
 require ecs
 require ecs.safe
+require ecs.ecs_template
 require %appGame.infantry.es.net_console_macro
 require %game.events
 
@@ -36,3 +37,40 @@ def soldier_unarm_cmd(@net_hero hero_eid : EntityId)
             itemContainer |> erase(index)
         index--
     sendEventImmediate(human_weap__currentGunEid, CmdUnloadAmmo(unloadManually = true))
+
+[net_console_cmd(name="humanphys.forceSimplifiedPhysAll", hint="0 - default, 1 for enable, 2 force disable")]
+def human_phys_simplified_phys_debug(mode = 0)
+  let forceSimplifiedPhys = find_query() <| $ [es] (eid : EntityId; var human_phys__forceSimplifiedPhys : bool&)
+    if mode == 0
+      destroyEntity(eid)
+    else
+      human_phys__forceSimplifiedPhys = (mode == 1)
+    return true
+  if !forceSimplifiedPhys && mode != 0
+    createEntity("force_simplified_phys") <| $(init)
+      init |> set("human_phys__forceSimplifiedPhys", (mode == 1))
+
+[net_console_cmd(name="humanphys.forceSimplifiedWalkQueryAll", hint="0 - default, 1 for enable, 2 force disable")]
+def human_phys_simplified_walk_query_debug(mode = 0)
+  let forceSimplifiedWalkQuery = find_query() <| $ [es] (eid : EntityId; var human_phys__forceSimplifiedWalkQuery : bool&)
+    if mode == 0
+      destroyEntity(eid)
+    else
+      human_phys__forceSimplifiedWalkQuery = (mode == 1)
+    return true
+  if !forceSimplifiedWalkQuery && mode != 0
+    createEntity("force_simplified_walk_query") <| $(init)
+      init |> set("human_phys__forceSimplifiedWalkQuery", (mode == 1))
+
+
+[ecs_template]
+struct full_body_anim_test
+  full_body_anim_test_tag : Tag
+
+[console_cmd(name="anim.full_body_test")]
+def full_body_anim_test_cmd()
+  let found = find_query() <| $ [es(REQUIRE=full_body_anim_test_tag)] (eid : EntityId)
+    destroyEntity(eid)
+    return true
+  if !found
+    createEntity("full_body_anim_test")

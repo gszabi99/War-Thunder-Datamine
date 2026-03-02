@@ -27,6 +27,7 @@ let mi35accEn = createScriptComponentWithPos("%rGui/planeCockpit/mfdMi35ACC.das"
 let f5ThWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdF5ThWpn.das", { fontId = Fonts.hud})
 let f5ThWpnDclt = createScriptComponentWithPos("%rGui/planeCockpit/mfdF5ThWpn.das", { fontId = Fonts.hud, declutter = true })
 let fa18Engine = createScriptComponentWithPos("%rGui/planeCockpit/mfdFA18Engine.das", { fontId = Fonts.hud })
+let europeanAviaHorizont = createScriptComponentWithPos("%rGui/planeCockpit/mfdEuropeanHorizont.das", { fontId = Fonts.hud, isMetricUnits = false })
 
 function f5ThAviaHorizont(pos, size) {
   return {
@@ -170,6 +171,7 @@ let pageByName = {
   f5ThEngine,
   BaeHawkFlt,
   fa18Engine,
+  europeanAviaHorizont,
 }
 
 function customPageSettingsUpd(page_blk) {

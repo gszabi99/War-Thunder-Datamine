@@ -6,6 +6,7 @@ require DagorSystem
 require ecs
 require math.base
 require pathfinder
+require IGroundModel
 require %appGame.infantry.es.team_common
 require %appGame.infantry.es.vehicle_turrets_common
 require %game.utils.utils_common
@@ -62,6 +63,15 @@ def private is_point_in_sector(pos : auto(TT);
     return true
   let deviationAngle = acos(safediv(dot(diff, radius_dir), sqrt(distSq * radiusSq)))
   return deviationAngle <= angle
+
+
+def is_vehicle_combat_inactive(unit : Unit const?)
+  if unit == null
+    return false
+  var gm = unit |> as_gm()
+  if gm == null
+    return false
+  return gm.fireType == GroundModelFireType.FT_DONT_AIM || gm.fireType == GroundModelFireType.FT_DONT_FIRE
 
 
 def calc_vehicle_driving_zone_params(vehicle_pos : float2;
@@ -130,7 +140,7 @@ def gather_danger_vehicle_and_turret_data(agent_pos : float3;
       if unit == null || !unit.isAlive
         return
 
-      if get_crewman_alive_count(unit) <= 0
+      if get_crewman_alive_count(unit) <= 0 || is_vehicle_combat_inactive(unit)
         return
 
       let unitBbox = unit.boundingBox.width
@@ -244,6 +254,34 @@ def total_danger_zone_gradient(pos : float3; vehicle_datas : array<VehicleDanger
   return res
 
 
+def calc_vehicle_threat_level(vehicle_pos : float2;
+                              danger_pos : float2;
+                              radius_dir : float2;
+                              max_deviation_angle : float)
+  let diff = danger_pos - vehicle_pos
+  let distSq = length_sq(diff)
+  let radiusSq = length_sq(radius_dir)
+  if distSq > radiusSq
+    return 0.0
+
+  let dist = sqrt(distSq)
+  let radius = sqrt(radiusSq)
+  if dist < 0.001
+    return 1.0
+
+  let radiusDirNorm = normalize(radius_dir)
+  let diffNorm = normalize(diff)
+  let cosDiff = dot(diffNorm, radiusDirNorm)
+  let cosMax = cos(max_deviation_angle)
+  if cosDiff < cosMax
+    return 0.0
+
+  let directionThreat = safediv((cosDiff - cosMax), (1.0f - cosMax))
+  let distanceThreat = 1.0 - safediv(dist, radius)
+
+  return directionThreat * distanceThreat
+
+
 def find_safe_point_from_vehicles(agent_pos : float3;
                                   danger_pos : float3;
                                   wish_pos : float3;
@@ -257,18 +295,29 @@ def find_safe_point_from_vehicles(agent_pos : float3;
   let isPredictedDanger = length_sq(danger_pos - agent_pos) > predictedDangerThreshold
   let preferWishDir = wish_pos != float3() && length_sq(wishDir) > square(predictedDangerThreshold)
 
+  let VEHICLE_THREAT_MULT = 2.0
+  let TURRET_THREAT_MULT = 1.0
   var isMaxThreatTurret = false
   var maxThreatVehicleData : VehicleDangerZoneData
+  var maxThreatLevel = -1.0
   for data in vehicle_datas
     if is_point_in_sector(danger_pos.xz, data.center, data.radiusDir, data.maxDeviationAngle)
-      maxThreatVehicleData = data
+      let threatLevel = calc_vehicle_threat_level(data.center, danger_pos.xz, data.radiusDir, data.maxDeviationAngle) * VEHICLE_THREAT_MULT
+      if threatLevel > maxThreatLevel
+        maxThreatLevel = threatLevel
+        maxThreatVehicleData = data
   for data in turret_datas
     if is_point_in_sector(danger_pos, data.center, data.radiusDir, data.maxDeviationAngle)
       let turretFlatData = VehicleDangerZoneData(center = data.center.xz,
-                                                 radiusDir = normalize(data.radiusDir.xz) * length(data.radiusDir),
+                                                 radiusDir = normalize(data.radiusDir.xz) * length(data.radiusDir.xz),
                                                  maxDeviationAngle = data.maxDeviationAngle)
-      maxThreatVehicleData = turretFlatData
-      isMaxThreatTurret = true
+      let threatLevel = calc_vehicle_threat_level(turretFlatData.center, danger_pos.xz, turretFlatData.radiusDir, turretFlatData.maxDeviationAngle) * TURRET_THREAT_MULT
+      if threatLevel > maxThreatLevel
+        maxThreatLevel = threatLevel
+        maxThreatVehicleData = turretFlatData
+        isMaxThreatTurret = true
+  if maxThreatLevel < 0.0
+    return float3()
 
   let vehicleDir = normalize(maxThreatVehicleData.radiusDir)
   let vehiclePerpLeftDir = float2(-vehicleDir.y, vehicleDir.x)

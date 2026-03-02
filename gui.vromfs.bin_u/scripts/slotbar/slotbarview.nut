@@ -63,6 +63,7 @@ let { getRoomEvent, isUnitAllowedForRoom } = require("%scripts/matchingRooms/ses
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { getEntitlementUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 
 const DEFAULT_STATUS = "none"
@@ -533,7 +534,7 @@ function buildGroupSlot(id, unit, params) {
       researchingUnit = a
       isGroupInResearch = isInResearch
     }
-    else if (!isUsable && !firstUnboughtUnit && (canBuyUnit(a) || ::canBuyUnitOnline(a)))
+    else if (!isUsable && !firstUnboughtUnit && (canBuyUnit(a) || canBuyUnitOnline(a)))
       firstUnboughtUnit = a
 
     if (showInService && isUsable) {

@@ -14,7 +14,7 @@ let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 let { mkTemplateTooltip } = require("components/templateHelp.nut")
 
 let { sceneToComboboxEntry, canSceneBeModified } = require("%daeditor/daeditor_es.nut")
-let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
+let { sortScenesByLoadType } = require("components/sceneSorting.nut")
 let {DE4_MODE_SELECT} = daEditor
 
 const noSceneSelected = "UNKNOWN:0"
@@ -209,7 +209,7 @@ function dialogRoot() {
       item.index <- ind
       return item
       }) ?? [] 
-  scenes.sort(defaultScenesSortMode.func)
+  scenes.sort(sortScenesByLoadType)
   allModifiableScenes.set(scenes.filter(@(scene) canSceneBeModified(scene)))
   let selectedSceneIndex = selectedScene.get() != noSceneSelected ? allSceneTexts.get().indexof(selectedScene.get()) : null
   let sceneInfo = selectedSceneIndex != null ? scenes[selectedSceneIndex] : null
@@ -318,23 +318,21 @@ function dialogRoot() {
               closeButton(doClose)
             ]
           }
-
           {
             size = [flex(),fontH(100)]
             children = combobox({
               value = selectedScene
               update = function(v) {
-                local loadType = 0
                 local id = -1
                 if (v != noSceneSelected) {
                   local selectedBoxItem = allSceneTexts.get().indexof(v)
                   if (selectedBoxItem != null) {
                     local scene = allModifiableScenes.get()[selectedBoxItem]
-                    loadType = scene.loadType
                     id = scene.id
                   }
                 }
-                entity_editor?.get_instance().setTargetScene(loadType, id)
+                entity_editor?.get_instance().setTargetScene(id)
+                selectedScene.set(v)
               }
             }, allSceneTexts, sceneTooltip)
           }

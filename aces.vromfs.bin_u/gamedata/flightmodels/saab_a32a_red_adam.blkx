@@ -467,8 +467,7 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "fire": 1.0,
             "canCut": true
           },
           {
@@ -1024,8 +1023,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1084,8 +1083,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1144,8 +1143,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1204,8 +1203,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1264,8 +1263,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1324,8 +1323,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1384,8 +1383,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1444,8 +1443,8 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -2499,10 +2498,10 @@
     }
   },
   "WeaponSlots": {
-    "maxloadMass": 1855.0,
-    "maxloadMassLeftConsoles": 1500.0,
-    "maxloadMassRightConsoles": 1500.0,
-    "maxDisbalance": 1400.0,
+    "maxloadMass": 2050.0,
+    "maxloadMassLeftConsoles": 800.0,
+    "maxloadMassRightConsoles": 800.0,
+    "maxDisbalance": 700.0,
     "HideNodes": {
       "node": [
         "aero_3b_001",
@@ -2920,31 +2919,6 @@
               "bullets": 1,
               "external": true,
               "separate": true
-            }
-          },
-          {
-            "iconType": "ltc",
-            "name": "chaff",
-            "reqModification": "chaff_pods",
-            "ShowNodes": {
-              "node": [
-                "b_balk2_l",
-                "box_3_container2"
-              ]
-            },
-            "RocketCap": {
-              "name": "box_3_cap2",
-              "part": "box_3_container_cap2"
-            },
-            "Weapon": {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 464,
-              "external": true,
-              "separate": false,
-              "capName": "box_3_cap1",
-              "mass": 180.0
             }
           }
         ]
@@ -4484,7 +4458,7 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large_a32a.blk",
               "emitter": "emtr_flare1",
               "bullets": 464,
               "external": true,

@@ -1,7 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { is_gdk } = require("%sqstd/platform.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { xboxApprovedUids, xboxBlockedUids, contactsPlayers, findContactByXboxId } = require("%scripts/contacts/contactsListState.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
@@ -15,10 +14,8 @@ let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
-let persistent = { isInitedXboxContacts = false }
+let XboxContactsManagerGlobals = persist("XboxContactsManagerGlobals", @() { isInitedXboxContacts = false })
 let pendingXboxContactsToUpdate = {}
-
-registerPersistentData("XboxContactsManagerGlobals", persistent, ["isInitedXboxContacts"])
 
 let console2uid = {}
 
@@ -68,15 +65,15 @@ function fetchContactsList() {
 
 function updateContacts(needIgnoreInitedFlag = false) {
   if (!is_gdk || !isInMenu.get()) {
-    if (needIgnoreInitedFlag && persistent.isInitedXboxContacts)
-      persistent.isInitedXboxContacts = false
+    if (needIgnoreInitedFlag && XboxContactsManagerGlobals.isInitedXboxContacts)
+      XboxContactsManagerGlobals.isInitedXboxContacts = false
     return
   }
 
-  if (!needIgnoreInitedFlag && persistent.isInitedXboxContacts)
+  if (!needIgnoreInitedFlag && XboxContactsManagerGlobals.isInitedXboxContacts)
     return
 
-  persistent.isInitedXboxContacts = true
+  XboxContactsManagerGlobals.isInitedXboxContacts = true
   fetchContactsList()
 }
 
@@ -194,7 +191,7 @@ subscribe_to_presence_update_events(on_presences_update)
 addListenersWithoutEnv({
   function SignOut(_) {
     pendingXboxContactsToUpdate.clear()
-    persistent.isInitedXboxContacts = false
+    XboxContactsManagerGlobals.isInitedXboxContacts = false
     xboxApprovedUids.set({})
     xboxBlockedUids.set({})
   }

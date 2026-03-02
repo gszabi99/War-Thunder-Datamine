@@ -72,6 +72,15 @@ enums.addTypes(g_hud_hint_types, {
     hintStyle = "hudMinor"
   }
 
+  NAVAL_TOP = {
+    nestId = "naval_top_hints"
+    hintStyle = "hudNavalTop"
+    isReplaceableByPriority = true
+    isSameReplaceGroup = function (hint1, hint2) {
+      return hint1.hintType == hint2.hintType
+    }
+  }
+
   INFANTRY_CROSSHAIR = {
     nestId = "infantry_crosshair_hints"
     hintStyle = "hudCrosshair"

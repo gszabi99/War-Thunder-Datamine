@@ -58,8 +58,8 @@ let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { floor } = require("math")
 let { getSkinId } = require("%scripts/customization/skinUtils.nut")
-let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { canDoUnlock, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { defer } = require("dagor.workcycle")
 let { get_balance } = require("%scripts/user/balance.nut")
@@ -87,7 +87,7 @@ let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { enable_modifications } = require("%scripts/weaponry/weaponryActions.nut")
 let { RESEARCHED_MODE_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
 let { getWeaponsForInfantryUnit, infantryWeaponsSlotIdx, createEmptyWeaponSlot,
@@ -97,7 +97,8 @@ let { getWeaponsForInfantryUnit, infantryWeaponsSlotIdx, createEmptyWeaponSlot,
 } = require("%scripts/weaponry/infantryWeapons.nut")
 let { getUnitArmorData, getAppliedArmorForUnit } = require("%scripts/weaponry/infantryArmor.nut")
 let { addCustomPreset, deleteCustomPreset } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { isCustomPreset, EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
+let { isCustomPreset, EMPTY_PRESET_NAME, INF_VIEW_SIZE_MULTIPLIER
+} = require("%scripts/weaponry/weaponryPresets.nut")
 let { checkSecondaryWeaponModsRecount, updateUnitAfterSwitchMod
   } = require("%scripts/unit/unitChecks.nut")
 
@@ -908,6 +909,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         cellSizeObj = this.scene.findObject("cell_size")
         curEdiff = this.getCurrentEdiff()
         supportUnitName
+        bundleItemsSizeMult = this.air.isHuman() && itemsType == weaponsItem.weapon ? INF_VIEW_SIZE_MULTIPLIER : 1
       })
   }
 

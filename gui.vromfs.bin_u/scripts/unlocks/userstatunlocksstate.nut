@@ -1,12 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
-
-let { userstatUnlocks, userstatDescList, userstatStats, receiveUnlockRewards
+let { userstatUnlocks, userstatDescList, userstatStats
 } = require("%scripts/userstat/userstat.nut")
-let { showRewardWnd, canGetRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
-let rewardsInProgress = Watched({})
 
 let emptyProgress = {
   stage = 0
@@ -80,8 +77,6 @@ let unlockProgress = Computed(function() {
   return allKeys.map(@(_, name) calcUnlockProgress(progressList?[name], unlockDataList?[name]))
 })
 
-let servUnlockProgress = Computed(@() userstatUnlocks.get()?.unlocks ?? {})
-
 function clampStage(unlockDesc, stage) {
   let lastStage = unlockDesc?.stages.len() ?? 0
   if (lastStage <= 0 || !(unlockDesc?.periodic ?? false) || stage < lastStage)
@@ -95,44 +90,6 @@ function clampStage(unlockDesc, stage) {
 
 let getStageByIndex = @(unlockDesc, stage) unlockDesc?.stages[clampStage(unlockDesc, stage)]
 
-let RECEIVE_REWARD_DEFAULT_OPTIONS = {
-  showProgressBox = true
-}
-
-function sendReceiveRewardRequest(params) {
-  let { stage, unlockName, taskOptions, needShowRewardWnd } = params
-  let receiveRewardsCallback = function(res) {
-    log($"Userstat: receive reward {unlockName}, stage: {stage}, results: {res}")
-    rewardsInProgress.mutate(@(val) val.$rawdelete(unlockName))
-  }
-  rewardsInProgress.mutate(@(val) val[unlockName] <- stage)
-  receiveUnlockRewards(unlockName, stage, function(_res) {
-    receiveRewardsCallback("success")
-    if (needShowRewardWnd)
-      showRewardWnd(params)
-  }, receiveRewardsCallback, taskOptions)
-}
-
-function receiveRewards(unlockName, params = {}) {
-  if (!unlockName || unlockName in rewardsInProgress.get())
-    return
-  let { needShowRewardWnd = true, rewardTitleLocId = "rewardReceived" } = params
-  let taskOptions = RECEIVE_REWARD_DEFAULT_OPTIONS.__merge(params?.taskOptions ?? {})
-  let progressData = servUnlockProgress.get()?[unlockName]
-  let stage = progressData?.stage ?? 0
-  let lastReward = progressData?.lastRewardedStage ?? 0
-  params = {
-    stage
-    rewards = getStageByIndex(activeUnlocks.get()?[unlockName], stage - 1)?.rewards
-    unlockName
-    taskOptions
-    needShowRewardWnd
-    rewardTitleLocId
-  }
-  if (lastReward < stage && canGetRewards(sendReceiveRewardRequest,
-      params.__merge({ needShowRewardWnd = false })))
-    sendReceiveRewardRequest(params)
-}
 
 function getRewards(unlockDesc) {
   let res = {}
@@ -165,44 +122,10 @@ function requestRewardItems(unlocksByRewardValue) {
 unlocksByReward.subscribe(requestRewardItems)
 requestRewardItems(unlocksByReward.get())
 
-function getUnlockReward(userstatUnlock) {
-  let rewardMarkUp = { rewardText = "", itemMarkUp = "" }
-  let { lastRewardedStage = 0 } = userstatUnlock
-  let stage = getStageByIndex(userstatUnlock, lastRewardedStage)
-  if (stage == null)
-    return rewardMarkUp
-
-  let itemId = stage?.rewards.keys()[0]
-  if (itemId != null) {
-    let item = ::ItemsManager.findItemById(to_integer_safe(itemId, itemId, false))
-    rewardMarkUp.itemMarkUp = item?.getNameMarkup(stage.rewards[itemId]) ?? ""
-  }
-
-  rewardMarkUp.rewardText = "\n".join((stage?.updStats ?? [])
-    .map(@(stat) loc($"updStats/{stat.name}", { amount = to_integer_safe(stat.value, 0) }, ""))
-    .filter(@(rewardText) rewardText != ""))
-
-  return rewardMarkUp
-}
-
-function getUnlockRewardMarkUp(userstatUnlock) {
-  let rewardMarkUp = getUnlockReward(userstatUnlock)
-  if (rewardMarkUp.rewardText == "" && rewardMarkUp.itemMarkUp == "")
-    return {}
-
-  let rewardLoc = (userstatUnlock?.isCompleted ?? false) ? loc("rewardReceived") : loc("reward")
-  rewardMarkUp.rewardText <- $"{rewardLoc}{loc("ui/colon")}{rewardMarkUp.rewardText}"
-  return rewardMarkUp
-}
 
 return {
   activeUnlocks
   unlockProgress
   emptyProgress = clone emptyProgress
-  servUnlockProgress
-  receiveRewards
   getStageByIndex
-  getUnlockRewardMarkUp
-  getUnlockReward
-  rewardsInProgress
 }

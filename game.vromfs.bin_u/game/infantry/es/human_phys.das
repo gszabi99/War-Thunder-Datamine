@@ -11,13 +11,24 @@ require WTPhysActor
 require Unit
 require net
 
+[event(broadcast)]
+struct UpdateSimplifiedPhysState {}
+
 def is_in_air(human_phys__inAirTime : float)
   return human_phys__inAirTime != 0.
 
 def was_in_air(human_phys__previousInAirTime : float; human_phys__inAirTimeThreshold : float)
   return human_phys__previousInAirTime > human_phys__inAirTimeThreshold
 
-[es(track=beh_tree__enabled, on_appear)]
+[es(REQUIRE=human_phys__forceSimplifiedPhys, track=human_phys__forceSimplifiedPhys, on_appear, on_disappear)]
+def human_phys_force_simpified_phys(evt : Event)
+  broadcastEvent(UpdateSimplifiedPhysState())
+
+[es(REQUIRE=human_phys__forceSimplifiedWalkQuery, track=human_phys__forceSimplifiedWalkQuery, on_appear, on_disappear)]
+def human_phys_force_disable_simpified_qeury_walk(evt : Event)
+  broadcastEvent(UpdateSimplifiedPhysState())
+
+[es(track=beh_tree__enabled, on_event=UpdateSimplifiedPhysState, on_appear)]
 def human_phys_set_simpified(evt : Event;
                              beh_tree__enabled : bool;
                              var human_net_phys__isSimplifiedQueryWalkPosition : bool&;
@@ -29,6 +40,11 @@ def human_phys_set_simpified(evt : Event;
   human_net_phys__isSimplifiedQueryWalkPosition = isAi
   if human_weap__infiniteAmmoHolders != null
     *human_weap__infiniteAmmoHolders = isAi
+
+  query() <| $ [es] (human_phys__forceSimplifiedPhys : bool)
+    human_net_phys__isSimplifiedPhys = human_phys__forceSimplifiedPhys
+  query() <| $ [es] (human_phys__forceSimplifiedWalkQuery : bool)
+    human_net_phys__isSimplifiedQueryWalkPosition = human_phys__forceSimplifiedWalkQuery
 
 [es(on_appear, track=(human_phys__botFrictionGroundCoeffWalk, human_phys__botFrictionGroundCoeffRun, human_phys__botFrictionGroundCoeffSprint,
   human_phys__botAccelerationWalk, human_phys__botAccelerationRun, human_phys__botAccelerationSprint))]

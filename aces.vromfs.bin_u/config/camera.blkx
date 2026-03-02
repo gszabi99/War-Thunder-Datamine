@@ -327,7 +327,10 @@
       "and": {
         "isTPSViewsAllowed": {},
         "isFlightModel": {},
-        "isHumanDrone": {}
+        "isHumanDrone": {},
+        "not": {
+          "hasFPVCamera": {}
+        }
       }
     },
     "up": {
@@ -443,6 +446,84 @@
       }
     }
   },
+  "fps_fpv": {
+    "type": "FpsFlightCamera",
+    "fov": 90.0,
+    "zoomFov": 30.0,
+    "targetOffset": [
+      500.0,
+      0.0,
+      0.0
+    ],
+    "cameraFpXSmoothing": 0.05,
+    "cameraFpYSmoothing": 0.05,
+    "angleFpHorizontal": 0.0,
+    "angleFpVerticalUp": 0.0,
+    "angleFpVerticalDown": 0.0,
+    "angleFpRoll": 0.0,
+    "headAccelScale": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "headMoveLimits": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "headFovLimits": [
+      8.0,
+      30.0
+    ],
+    "headPosLookingDown": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "headPosLookingBack": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "headAccelRotScale": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "headAccelRotGravScale": [
+      0.0,
+      0.0
+    ],
+    "headAccelRotLimits": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "immediateToRotVisc": 0.0,
+    "cameraShakePosInfluence": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "cameraShakeDirInfluence": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shootingFov": 40.0,
+    "cameraShakeMultiplier": 0.0,
+    "cameraShakeMultiplierOnShooting": 0.0,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.2,
+    "viscosity": 0.0001,
+    "cameraControlSmooth": 0.15,
+    "accelAdaptationVisc": 0.94,
+    "schraegeMusikCameraScreenPart": 0.25,
+    "forceStatic": true,
+    "condition": {
+      "hasFPVCamera": {}
+    }
+  },
   "rocket": {
     "fov": 70.0,
     "zoomFov": 30.0,
@@ -475,9 +556,40 @@
             "isInVr": {}
           },
           {
+            "isHumanDrone": {}
+          },
+          {
             "hasEjectionSeats": {}
           }
         ],
+        "isFlightModel": {}
+      }
+    }
+  },
+  "human_drone_loose": {
+    "type": "LooseFlightCamera",
+    "fov": 60.0,
+    "viewDistanceAir": 25.0,
+    "viewDistanceGround": 18.0,
+    "minHeight": 5.0,
+    "velocity": 2.0,
+    "maxTimeToStop": 4.0,
+    "minRotationSpeedK": 0.5,
+    "cameraShakeMultiplier": 0.3,
+    "transitionFadeInTime": 0.3,
+    "transitionFadeOutTime": 0.3,
+    "viscosity": 0.03,
+    "condition": {
+      "and": {
+        "not": [
+          {
+            "isInVr": {}
+          },
+          {
+            "hasEjectionSeats": {}
+          }
+        ],
+        "isHumanDrone": {},
         "isFlightModel": {}
       }
     }
@@ -659,9 +771,14 @@
     "viscosity": 0.00011,
     "condition": {
       "and": {
-        "not": {
-          "isHuman": {}
-        },
+        "not": [
+          {
+            "isHuman": {}
+          },
+          {
+            "hasFPVCamera": {}
+          }
+        ],
         "isFPSViewsAllowed": {},
         "or": {
           "isVirtualViewsAllowed": {},
@@ -883,9 +1000,39 @@
         "or": {
           "hasOpticTurret": {},
           "hasOpticATGM": {}
+        },
+        "not": {
+          "hasFPVCamera": {}
         }
       }
     }
+  },
+  "replay_spectator": {
+    "type": "SpectatorCamera",
+    "fov": 80.0,
+    "cameraControlSmoothX": 0.0,
+    "cameraControlSmoothY": 0.0,
+    "cameraControlViewRadius": 32.0,
+    "verticalLimit": 10.0,
+    "verticalSpeed": 1.5,
+    "horizontalSpeed": 1.5,
+    "velocitySmooth": 0.1,
+    "cameraUpOffset": 4.0,
+    "cameraShakeMultiplier": 0.1,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.2,
+    "viscosity": 0.2,
+    "offsetForAircraft": 23.0,
+    "offsetForGround": 5.6,
+    "vertOffsetForAircraft": 4.2,
+    "vertOffsetForGround": 2.2,
+    "znearSafeDist": 3.5,
+    "groundSpeedMin": 20.0,
+    "groundSpeedMax": 20.0,
+    "groundSpeedAccelTime": 0.1,
+    "hoverOffsetFromGround": 6.0,
+    "minHoverDist": 10.0,
+    "maxHoverDist": 250.0
   },
   "spectator": {
     "type": "SpectatorCamera",
@@ -3418,6 +3565,34 @@
           ]
         }
       },
+      "torpedo_shot1": {
+        "points": {
+          "p1": {
+            "angles": [
+              5.0,
+              20.0
+            ],
+            "dist": 10.0,
+            "fov": 90.0,
+            "rt": 0.0,
+            "tleft": 0.5,
+            "tright": 0.5,
+            "bulletSpeed": 1.0
+          },
+          "p2": {
+            "angles": [
+              -20.0,
+              10.0
+            ],
+            "dist": 10.0,
+            "fov": 90.0,
+            "rt": 2.0,
+            "tleft": 0.0,
+            "tright": 0.0,
+            "bulletSpeed": 1.0
+          }
+        }
+      },
       "fly1": {
         "points": {
           "p1": {
@@ -3673,6 +3848,68 @@
           "fov": 0.0
         }
       },
+      "torpedo_fly1": {
+        "points": {
+          "p1": {
+            "angles": [
+              -90.0,
+              10.0
+            ],
+            "dist": 4.0,
+            "fov": 90.0,
+            "rt": 0.0,
+            "tleft": 1.0,
+            "tright": 1.0,
+            "bulletSpeed": 2.0
+          },
+          "p2": {
+            "angles": [
+              -90.0,
+              10.0
+            ],
+            "dist": 2.0,
+            "fov": 90.0,
+            "rt": 1.0,
+            "tleft": 0.0,
+            "tright": 0.0,
+            "bulletSpeed": 2.0
+          },
+          "p3": [
+            {
+              "angles": [
+                5.0,
+                10.0
+              ],
+              "dist": 2.0,
+              "fov": 90.0,
+              "rt": 2.0,
+              "tleft": 0.0,
+              "tright": 0.0,
+              "bulletSpeed": 2.0
+            },
+            {
+              "angles": [
+                5.0,
+                10.0
+              ],
+              "dist": 3.0,
+              "fov": 90.0,
+              "rt": 2.5,
+              "tleft": 0.0,
+              "tright": 0.0,
+              "bulletSpeed": 2.0
+            }
+          ]
+        },
+        "fly": {
+          "angles": [
+            0.0,
+            0.0
+          ],
+          "dist": 0.0,
+          "fov": 0.0
+        }
+      },
       "hit1": {
         "points": {
           "p1": {
@@ -3904,6 +4141,42 @@
           "fov": 0.0
         }
       },
+      "torpedo_hit1": {
+        "points": {
+          "p1": {
+            "angles": [
+              5.0,
+              10.0
+            ],
+            "dist": 10.0,
+            "fov": 90.0,
+            "rt": 0.0,
+            "tleft": 0.5,
+            "tright": 0.5,
+            "bulletSpeed": 1.0
+          },
+          "p2": {
+            "angles": [
+              45.0,
+              30.0
+            ],
+            "dist": 10.0,
+            "fov": 90.0,
+            "rt": 1.5,
+            "tleft": 0.5,
+            "tright": 0.5,
+            "bulletSpeed": 2.0
+          }
+        },
+        "fly": {
+          "angles": [
+            15.0,
+            0.0
+          ],
+          "dist": 0.0,
+          "fov": 0.0
+        }
+      },
       "fly_near": {
         "points": {
           "p1": {
@@ -3924,6 +4197,42 @@
               -30.0
             ],
             "dist": 5.0,
+            "fov": 90.0,
+            "rt": 2.0,
+            "tleft": 0.5,
+            "tright": 0.5,
+            "bulletSpeed": 1.0
+          }
+        },
+        "fly": {
+          "angles": [
+            17.5,
+            0.0
+          ],
+          "dist": 0.0,
+          "fov": 0.0
+        }
+      },
+      "torpedo_fly_near": {
+        "points": {
+          "p1": {
+            "angles": [
+              10.0,
+              10.0
+            ],
+            "dist": 10.0,
+            "fov": 90.0,
+            "rt": 0.0,
+            "tleft": 0.5,
+            "tright": 0.5,
+            "bulletSpeed": 1.0
+          },
+          "p2": {
+            "angles": [
+              45.0,
+              30.0
+            ],
+            "dist": 10.0,
             "fov": 90.0,
             "rt": 2.0,
             "tleft": 0.5,
@@ -3965,6 +4274,42 @@
             "tleft": 0.0,
             "tright": 0.0,
             "bulletSpeed": 2.0
+          }
+        },
+        "fly": {
+          "angles": [
+            15.0,
+            0.0
+          ],
+          "dist": 0.0,
+          "fov": 0.0
+        }
+      },
+      "torpedo_fly_short": {
+        "points": {
+          "p1": {
+            "angles": [
+              45.0,
+              30.0
+            ],
+            "dist": 10.0,
+            "fov": 90.0,
+            "rt": 0.0,
+            "tleft": 0.0,
+            "tright": 0.0,
+            "bulletSpeed": 1.0
+          },
+          "p2": {
+            "angles": [
+              45.0,
+              30.0
+            ],
+            "dist": 10.0,
+            "fov": 90.0,
+            "rt": 1.0,
+            "tleft": 0.0,
+            "tright": 0.0,
+            "bulletSpeed": 1.0
           }
         },
         "fly": {
@@ -4022,6 +4367,15 @@
           "fly_short": "fly_short"
         }
       ]
+    },
+    "torpedoPathes": {
+      "p": {
+        "shot": "torpedo_shot1",
+        "fly": "torpedo_fly1",
+        "hit": "torpedo_hit1",
+        "fly_near": "torpedo_fly_near",
+        "fly_short": "torpedo_fly_short"
+      }
     },
     "up": {
       "angle": [
@@ -4349,7 +4703,12 @@
     "type": "TpsTargetFlightCameraReplay",
     "freeCamOrientInert": 0.5,
     "freeCamPosInert": 1.2,
-    "freeCamOrientMaxSpeed": 0.5
+    "freeCamOrientMaxSpeed": 0.5,
+    "condition": {
+      "not": {
+        "isHuman": {}
+      }
+    }
   },
   "spectator_target_fps_shake": {
     "type": "TpsTargetFlightCameraReplay",
@@ -4531,6 +4890,7 @@
         "target_turret",
         "bomber_view",
         "fps",
+        "fps_fpv",
         "flight_camera_target_view",
         "virtual_fps",
         "weapon_aim_camera"
@@ -4538,10 +4898,11 @@
     },
     "replay": {
       "camName": [
-        "spectator",
+        "replay_spectator",
         "replay_target_fps_shake",
         "tps",
         "fps",
+        "fps_fpv",
         "tps_ground",
         "virtual_fps",
         "replay_gun_camera"
@@ -4560,6 +4921,7 @@
       "camName": [
         "worm_eaten",
         "loose",
+        "human_drone_loose",
         "ejected",
         "human",
         "camera_ship_death",

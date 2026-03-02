@@ -3,18 +3,30 @@ from "%rGui/globals/ui_library.nut" import *
 let { hp, maxHp, totalDotAmount, showHpUi
 } = require("%rGui/hud/state/health_es.nut")
 let { hpColor, bleedingColor, transparent } = require("%rGui/style/colors.nut")
-let { heroStateWidth } = require("%rGui/hud/humanSquad/humanConst.nut")
+let { heroStateWidth, hpBarHeight } = require("%rGui/hud/humanSquad/humanConst.nut")
 let { armorState } = require("%rGui/hud/state/armor_es.nut")
 let { ticketHudBlurPanel, hudBlurPanel } = require("%rGui/components/blurPanel.nut")
-
+let { isWeaponsListVisible } = require("%rGui/hud/state/human_gun_info_es.nut")
 
 const bleedImgSize = shHud(2)
-
-let hpBarHeight = hdpxi(6)
 let xrayGap = hdpxi(7)
 let xrayOpacity = 0.75
-
 let xrayImageSize = [hdpxi(81), hdpxi(152)]
+
+let isXrayBlockAttached = Watched(false)
+
+let XRAY_ANIM_START_DISAPPEAR = "xray_anim_start_disappear"
+let changeOpacityAnimTime = 0.2
+
+let mkAnimations = [
+  { prop=AnimProp.opacity, to=0.0, playFadeOut=true,
+    duration=changeOpacityAnimTime, trigger = XRAY_ANIM_START_DISAPPEAR },
+  { prop=AnimProp.opacity, to=1.0, duration=changeOpacityAnimTime }
+]
+
+isWeaponsListVisible.subscribe(@(v) v ? anim_start(XRAY_ANIM_START_DISAPPEAR) : null)
+isXrayBlockAttached.subscribe(@(v) (v && isWeaponsListVisible.get())
+  ? anim_start(XRAY_ANIM_START_DISAPPEAR) : null)
 
 let bleedingImage = {
   size = const [bleedImgSize, bleedImgSize]
@@ -433,35 +445,41 @@ return function() {
   let hpRatio = Computed(@() maxHp.get() == 0
     ? 0
     : clamp(hp.get().tofloat() / maxHp.get().tofloat(), 0.0, 1.0))
-  let dotRatio = Computed(@() maxHp.get() == 0
+  let dotRatio = Computed(@() maxHp.get() == 0 || hpRatio.get() == 0
     ? 0
-    : clamp(totalDotAmount.get().tofloat() / maxHp.get().tofloat(), 0.0, hpRatio.get()))
+    : clamp(totalDotAmount.get().tofloat() / maxHp.get().tofloat() / hpRatio.get().tofloat(), 0.0, 1.0))
 
   return needHideBlock.get() ? { watch = needHideBlock } : {
     watch = needHideBlock
     size = [ heroStateWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = xrayGap
+    vplace = ALIGN_BOTTOM
     children = [
       {
         size = FLEX_H
         valign = ALIGN_BOTTOM
         halign = ALIGN_RIGHT
         children = [
-          {
+          @() {
+            watch = isWeaponsListVisible
             size = xrayImageSize
             margin = [0, bleedImgSize/2, 0,0]
-            children = [
-              @() {
-                watch = hpRatio
-                size = xrayImageSize
-                children = getXrayDollImageByHP(hpRatio.get())
-              }
-              {
-                size = xrayImageSize
-                children = mkHeavyArmor()
-              }
-            ]
+            animations = isWeaponsListVisible.get() ? [] : mkAnimations
+            children = isWeaponsListVisible.get() ? null
+              : [
+                @() {
+                  watch = hpRatio
+                  size = xrayImageSize
+                  children = getXrayDollImageByHP(hpRatio.get())
+                }
+                {
+                  size = xrayImageSize
+                  children = mkHeavyArmor()
+                }
+              ]
+            onAttach = @() isXrayBlockAttached.set(true)
+            onDetach = @() isXrayBlockAttached.set(false)
           }
           @() {
             watch = dotRatio

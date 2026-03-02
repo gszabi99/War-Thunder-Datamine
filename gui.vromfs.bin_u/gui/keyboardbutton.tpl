@@ -1,6 +1,9 @@
 <<#hasHoldButtonSign>>
-holdButtonSign { margin-right:t='0.01@shHud' }
+hasHoldButtonSign:t='yes'
+holdButtonSign {}
+padding-left:t='-1@sIco'
 <</hasHoldButtonSign>>
+
 keyboardButton {
   keyboardButtonText {
     position:t='relative'

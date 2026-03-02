@@ -6,6 +6,15 @@
     "weightsPath": "gameData/motion_matching/soldier_mm_weights.blk",
     "rootMotionPath": "gameData/motion_matching/soldier_mm_root_motion.blk",
     "main_database__nodeMasksPath": "gameData/motion_matching/soldier_mm_node_masks.blk",
+    "mm_tag_id__sprint": -1,
+    "mm_tag_id__walk": -1,
+    "mm_tag_id__stand": -1,
+    "mm_tag_id__crouch": -1,
+    "mm_tag_id__turnOnSpot": -1,
+    "mm_tag_id__turnInMove": -1,
+    "mm_tag_id__1stPersonView": -1,
+    "mm_tag_id__3rdPersonView": -1,
+    "mm_tag_id__fullBodyMovement": -1,
     "main_database__footLockerCtrlName": "mm_foot_locker",
     "main_database__validateNextClipRotThreshold": 0.02,
     "main_database__animGraphRes": "soldier_animbnl",
@@ -19,11 +28,11 @@
         "gameData/motion_matching/soldier_crouch_anim_list.blk",
         "gameData/motion_matching/soldier_stand_anim_list.blk",
         "gameData/motion_matching/soldier_transitions_anim_list.blk",
-        "gameData/motion_matching/soldier_walk_directions_anim_list.blk"
+        "gameData/motion_matching/soldier_walk_directions_anim_list.blk",
+        "gameData/motion_matching/soldier_full_body_movement_animlist.blk"
       ]
     },
     "main_database__pbcWeightOverrides:object": {
-      "#rotate_spine_after_alignment": 1.0,
       "~root_rotate": 0.0
     },
     "main_database__availableTags:list<t>": {
@@ -36,7 +45,8 @@
         "turn_on_spot",
         "turn_in_move",
         "1st_person_view",
-        "3rd_person_view"
+        "3rd_person_view",
+        "full_body_movement"
       ]
     }
   },

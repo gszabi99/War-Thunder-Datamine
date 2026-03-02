@@ -46,7 +46,7 @@ def human_weap_phys_es(
   human_phys_state_set_can_aim(ct,
     (!reloading || human_attached_gun__isAttached || canAimReloading) &&
     (ct.weapEquipState.curState == HUWeaponEquipState.EES_EQUIPED) &&
-    !isBoltActionInProgress &&
+    (!isBoltActionInProgress || canZoomInBoltAction) &&
     human_weap__staminaCanAim &&
     !isDowned && !human_weap__blockAiming && !human__lockZoom && !isCrawling && isShootingStandState)
 

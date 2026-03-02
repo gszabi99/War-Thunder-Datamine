@@ -147,11 +147,12 @@ function fieldOfRegard(width, height) {
   }
 }
 
-let losReticle = {
-  size = flex()
+let losReticle = @(size = flex(), color = baseColor, line_width = baseLineWidth) {
+  size
+  hplace = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
-  color = baseColor
-  lineWidth = baseLineWidth
+  color
+  line_width
   commands = [
     [VECTOR_LINE, 39, 50, 48, 50],
     [VECTOR_LINE, 52, 50, 61, 50],
@@ -163,8 +164,8 @@ let losReticle = {
       watch = AimLockValid
       size = flex()
       rendObj = ROBJ_VECTOR_CANVAS
-      color = baseColor
-      lineWidth = baseLineWidth
+      color
+      line_width
       commands = AimLockValid.get() ? [
         [VECTOR_LINE, 44, 44, 47, 47],
         [VECTOR_LINE, 56, 44, 53, 47],
@@ -342,14 +343,14 @@ function constraintBox(width, height) {
   }
 }
 
-function tads(width, height, is_apache) {
+function root(width, height, is_apache) {
   return {
     size = [width, height]
     children = [
       compassWrap(width, height, generateCompassMark),
       compassVal,
       fieldOfRegard(width, height),
-      losReticle,
+      losReticle(),
       (is_apache ? flir : null),
       speed,
       altitude,
@@ -364,4 +365,7 @@ function tads(width, height, is_apache) {
   }
 }
 
-return tads
+return {
+  root
+  losReticle
+}

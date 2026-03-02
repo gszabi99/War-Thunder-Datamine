@@ -32,6 +32,7 @@ let { totalRooms, totalPlayers } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -184,9 +185,10 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
     if (!isVisible)
       return
 
+    let viewDecoratorType = getViewTypeByUnlockedItemType(skin.decoratorType.unlockedItemType)
     containerObj.findObject("info_text").setValue(
       loc("suggested_skin/available", {
-        skinName = skin.decoratorType.getLocName(skin.id) }))
+        skinName = viewDecoratorType.getLocName(skin.id) }))
   }
 
   function onSkinPreview() {

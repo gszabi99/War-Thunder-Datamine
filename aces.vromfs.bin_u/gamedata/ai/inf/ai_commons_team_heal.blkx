@@ -71,7 +71,7 @@
         },
         {
           "event": "regularCheck",
-          "subTree": {
+          "callTree": {
             "treeName": "react.defaultRegularCheck"
           }
         }
@@ -101,6 +101,10 @@
               "startRestTimerRange": [
                 0.465,
                 0.47
+              ],
+              "restTimerRange": [
+                3.0,
+                5.0
               ],
               "posParam": "tempPos",
               "sprintTimerRange": [
@@ -132,6 +136,10 @@
                 0.465,
                 0.47
               ],
+              "restTimerRange": [
+                3.0,
+                5.0
+              ],
               "posParam": "tempPos",
               "sprintTimerRange": [
                 10.0,
@@ -142,6 +150,8 @@
               "avoidAiObstacles": true,
               "incObstacles": false,
               "tryClimbing": true,
+              "maxClimbWalkSpeed": 0.25,
+              "jumpClimbTime": 1.0,
               "timeToStuck": 7.0,
               "jumpDownTraceCheck": [
                 0.4,
@@ -165,7 +175,7 @@
           "event": "regularCheck",
           "repeat": {
             "count": 1,
-            "subTree": {
+            "callTree": {
               "treeName": "react.defaultRegularCheck"
             },
             "sequencer": {

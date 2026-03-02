@@ -14,7 +14,8 @@ let { squadFormation, SquadFormationSpreadEnum } = require("%rGui/hud/humanSquad
 let { squadBehaviour, SquadBehaviourEnum } = require("%rGui/hud/humanSquad/humanSquadBehaviour.nut")
 let { mkGrenadeIcon } = require("%rGui/hud/humanSquad/grenadeIcon.nut")
 let { white, hudSquadBgColor, attackWarningColor, transparent,
-  attackWarningColor2, attackWarningColor3 } = require("%rGui/style/colors.nut")
+  attackWarningColor2, attackWarningColor3, hud } = require("%rGui/style/colors.nut")
+let { infantryShortcutCommonColor, infantryShortcutCommonTextColor } = hud
 let { register_command } = require("console")
 let { ATTACK_RES } = require("%rGui/hud/humanSquad/humanEnums.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -366,6 +367,8 @@ function getShortcutText(text, addChildren = []) {
       font = Fonts.tiny_text_hud
       fontSize = getFontDefHt("tiny_text_hud")
       place = "actionItemInfantry"
+      bgImageColor = infantryShortcutCommonColor
+      shColor = infantryShortcutCommonTextColor
     }.__update(shadow),
     addChildren)
   return config
@@ -401,7 +404,7 @@ let collapseButton = @() {
   behavior = Behaviors.Button
   onClick = onCollapseHumanSquadBtnPressed
   children = [
-    getShortcutText("{{ID_CHANGE_HUMAN_SQUAD_VISIBILITY}}")
+    getShortcutText("{{ID_CHANGE_HUMAN_SQUAD_VISIBILITY}} ")
     collapseIconComp
   ]
 }
@@ -410,13 +413,12 @@ let unitControlHelp = @() getShortcutText(
   "{{ID_HELP}} {0}".subst(loc("hotkeys/ID_HELP"))
 )
 
-let members = @() {
-  watch = doNotShowMembers
+let members = {
   size = const [ SIZE_TO_CONTENT, shHud(3) + memberBlockHeight]
   flow = FLOW_VERTICAL
   halign = ALIGN_LEFT
   gap = smallPadding
-  children = doNotShowMembers.get() ? null : [
+  children = [
     squadStatus
     squadMembersList
     @() {
@@ -432,7 +434,8 @@ let members = @() {
   ]
 }
 
-let squadBlock = @() {
+let squadBlock = @() doNotShowMembers.get() ? { watch = doNotShowMembers} : {
+  watch = doNotShowMembers
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   halign = ALIGN_LEFT

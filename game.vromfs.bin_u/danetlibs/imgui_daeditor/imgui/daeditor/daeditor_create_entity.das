@@ -73,26 +73,37 @@ def create_entity_daeditor()
   imgui::BeginChild("sub", float2(0, 0))
 
   if imgui::BeginTable("list", 1, ImGuiTableFlags.BordersOuter | ImGuiTableFlags.RowBg)
-    getTemplateDB() |> find_templateDB() <| $(name; tmpl)
+    var names : array<string>
+    getTemplateDB() |> find_templateDB() <| $ [unused_argument(tmpl)] (name; tmpl)
       if !(*filter |> PassFilter(name))
         return false
-      imgui::TableNextRow()
-      TableNextColumn()
-      let text = "{tmpl.isSingleton ? "[S] " : ""}{name}"
-      var selected = selectedItem == name
-      if imgui::Selectable(text, safe_addr(selected), ImGuiSelectableFlags.AllowDoubleClick)
-        if imgui::IsMouseDoubleClicked(ImGuiMouseButton.Left)
-          if !GetIO().KeyCtrl || *templateName |> to_string |> empty()
-            *templateName |> clear()
-            *templateName |> make_input_buffer(clone_string(name), TEMPLATE_MAX_LEN)
-          else
-            let prevTempl = to_string(*templateName)
-            let newTempl = empty(prevTempl) ? clone_string(name) : "{prevTempl}+{name}"
-            *templateName |> clear()
-            *templateName |> make_input_buffer(newTempl, TEMPLATE_MAX_LEN)
-      if selected && selectedItem != name
-        selectedItem = clone_string(name)
+      names |> push(clone_string(name)) 
       return false
+
+    using() <| $(var clipper : ImGuiListClipper)
+      Begin(clipper, length(names), imgui::GetTextLineHeightWithSpacing())
+      while Step(clipper)
+        for idx in range(clipper.DisplayStart, clipper.DisplayEnd)
+          imgui::TableNextRow()
+          TableNextColumn()
+          let name = names[idx]
+          let tmpl = getTemplateByName(name)
+          var text = name
+          if tmpl != null && tmpl.isSingleton
+            text = "[S] {name}"
+          var selected = selectedItem == name
+          if imgui::Selectable(text, safe_addr(selected), ImGuiSelectableFlags.AllowDoubleClick)
+            if imgui::IsMouseDoubleClicked(ImGuiMouseButton.Left)
+              if !GetIO().KeyCtrl || *templateName |> to_string |> empty()
+                *templateName |> clear()
+                *templateName |> make_input_buffer(clone_string(name), TEMPLATE_MAX_LEN)
+              else
+                let prevTempl = to_string(*templateName)
+                let newTempl = empty(prevTempl) ? clone_string(name) : "{prevTempl}+{name}"
+                *templateName |> clear()
+                *templateName |> make_input_buffer(newTempl, TEMPLATE_MAX_LEN)
+          if selected && selectedItem != name
+            selectedItem = clone_string(name)
 
     imgui::EndTable()
 

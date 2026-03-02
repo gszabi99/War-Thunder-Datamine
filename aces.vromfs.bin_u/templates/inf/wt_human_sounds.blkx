@@ -17,8 +17,79 @@
       "_tags": "sound"
     }
   },
+  "base_human_steps_sound_generator": {
+    "_group": {
+      "_tags": "sound",
+      "human_steps_sound_generator__lastStepAt_cooldown": [
+        -1.0,
+        0.0
+      ],
+      "human_steps_sound_generator__walkRunSprint_stand_intervals": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "human_steps_sound_generator__walkRunSprint_crouch_intervals": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "human_steps_sound_generator__enableForVisible": false,
+      "human_steps_sound_generator__enableForInvisible": false,
+      "human_steps_sound_generator__enableAlways": false
+    }
+  },
+  "base_human_steps_sound": {
+    "_use": [
+      "human_sound_landmesh_queries",
+      "base_human_steps_sound_generator"
+    ],
+    "_group": {
+      "_tags": "sound",
+      "human_steps_sound__lastTimeOnGround": 0.0,
+      "human_steps_sound__smid": -1,
+      "human_steps_sound__waterDepth": 0.0,
+      "human_steps_sound__physStates": -1,
+      "human_steps_sound__irqObjIdx": -1,
+      "human_steps_sound__moveState": 0,
+      "human_steps_sound__animSpeed": 0.0,
+      "human_steps_sound__ministepsIsMoving": false,
+      "human_steps_sound__animSpeedMul": 1.0,
+      "human_steps_sound__traceStepOffsetLen": [
+        1.0,
+        2.0
+      ],
+      "human_steps_sound__distanceToVolumeFriendly": [
+        0.0,
+        0.0,
+        0.1,
+        0.1
+      ],
+      "human_steps_sound__distanceToVolumeEnemy": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "human_steps_sound__farawayThresholdSq": 2500.0,
+      "human_steps_sound__fallSpeedCollThreshold": 10.0,
+      "human_steps_sound__ministepsWalkIrq": "right_crouchWalk",
+      "human_steps_sound__ministepsCrawlIrq": "right_crawl",
+      "human_steps_sound__ministepsCooldown": 1.0,
+      "human_steps_sound__tag": "",
+      "human_steps_sound__stepIdx:u32": {
+        "value": 0
+      },
+      "human_steps_sound__path:shared:object": {},
+      "human_steps_sound__descs:shared:object": {},
+      "human_steps_sound__irqs:shared:array": {},
+      "human_steps_sound__jumpFx:shared:object": {},
+      "human_steps_sound__stepFx:shared:object": {}
+    }
+  },
   "base_human_sound": {
     "_use": [
+      "human_sound_geomtree_nodes",
       "common_human_sound_components",
       "base_human_steps_sound",
       "base_human_voice_sound",
@@ -28,7 +99,9 @@
       "human_death_sound",
       "human_hit_cry_sound",
       "sound_preset",
-      "human_step_sound_grains"
+      "human_step_sound_grains",
+      "human_bleeding_sound",
+      "wt_enemy_reverb_sound"
     ],
     "human_voice_effect__allOrderedEffects:shared:list<t>": {
       "_tags": "sound",
@@ -42,34 +115,40 @@
         "cough"
       ]
     },
-    "_group": {
-      "_tags": "sound",
-      "human_steps_sound_generator__walkRunSprint_stand_intervals": [
-        1.15,
-        1.15,
-        1.9
-      ],
-      "human_steps_sound_generator__walkRunSprint_crouch_intervals": [
-        0.4,
-        0.9,
-        1.3
-      ],
-      "human_steps_sound_generator__enableForVisible": true,
-      "human_steps_sound_generator__enableForInvisible": true
-    }
+    "_group": [
+      {
+        "_tags": "sound",
+        "human_steps_sound_generator__walkRunSprint_stand_intervals": [
+          1.15,
+          1.15,
+          1.9
+        ],
+        "human_steps_sound_generator__walkRunSprint_crouch_intervals": [
+          0.4,
+          0.9,
+          1.3
+        ],
+        "human_steps_sound_generator__enableForVisible": true,
+        "human_steps_sound_generator__enableForInvisible": true
+      },
+      {
+        "_tags": "sound",
+        "human_gun_sounds_preload:SoundEventsPreload": {}
+      }
+    ]
   },
   "human_death_sound": {
     "_group": {
       "_tags": "sound",
-      "human_suicide_sound__path": "infantry/player/walker/ww2_soldier/hit/bullet_body",
+      "human_suicide_sound__path": "walker/ww2_soldier/hit/bullet_body",
       "human_death_sound__event:SoundEvent": {}
     }
   },
   "human_melee_sound": {
     "_group": {
       "_tags": "sound",
-      "human_melee_sound__repeatThreshold": 0.1,
-      "human_melee_sound__repeatTime": 0.0,
+      "human_melee_sound__cooldown": 0.1,
+      "human_melee_sound__nextTime": 0.0,
       "human_melee_sound__irqs:shared:object": {}
     }
   },
@@ -96,6 +175,11 @@
   },
   "human_voice_effect_burning": {
     "humanVoiceEffectBurning:tag": {
+      "_tags": "sound"
+    }
+  },
+  "human_voice_effect_hold_breath": {
+    "humanVoiceEffectHoldBreath:tag": {
       "_tags": "sound"
     }
   },
@@ -145,7 +229,7 @@
       "human_breath_sound__goodBreathDelay": 0.5,
       "human_breath_sound__jumpDelay": 1.5,
       "human_breath_sound__loHealthRel": 0.2,
-      "human_breath_sound__breathShortnessStart": 0.2,
+      "human_breath_sound__breathShortnessStart": 0.75,
       "human_breath_sound__breathoutThreshold": 0.7,
       "human_breath_sound__inhaleThreshold": 0.4,
       "human_breath_sound__baseBreathShortness": 0.0
@@ -206,6 +290,12 @@
       },
       "burning:object": {
         "path": "env_effects/fire/fire_character"
+      },
+      "help_teammates:object": {
+        "path": "vo/enemy/mc/soldier03/en/help"
+      },
+      "help_self:object": {
+        "path": "vo/player/mc/player/en/help"
       }
     },
     "sound_irqs:shared:object": {
@@ -491,6 +581,7 @@
       "low_ammo_human_net_speech__holders": 0,
       "low_ammo_human_net_speech__shells": 0,
       "low_ammo_human_net_speech__oneMagazineLeftPhrase": "oneMagazineLeft",
+      "low_ammo_human_net_speech__oneShellLeftPhrase": "oneShellLeft",
       "low_ammo_human_net_speech__noShellsLeftPhrase": ""
     }
   },
@@ -770,6 +861,17 @@
           ]
         },
         {
+          "id": "oneShellLeft",
+          "hero": "last_shot",
+          "teamRange": 0.0,
+          "rcptFilter": "player",
+          "chance": 100,
+          "minMaxCooldown": [
+            3.0,
+            3.0
+          ]
+        },
+        {
           "id": "startCapture",
           "hero": "capturing_ally",
           "teamRange": 15.0,
@@ -1016,6 +1118,13 @@
       "_tags": "sound",
       "state_mannequin_sound__downPath": "infantry/env_effects/object_crash/mannequin_down",
       "state_mannequin_sound__upPath": "infantry/env_effects/object_crash/mannequin_up"
+    }
+  },
+  "human_bleeding_sound": {
+    "_group": {
+      "_tags": "sound",
+      "human_bleeding_sound__name": "infantry/player/walker/mc_soldier/voice_fx/bleed_out",
+      "human_bleeding_sound__event:SoundEvent": {}
     }
   }
 }
