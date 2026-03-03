@@ -7,8 +7,7 @@ require PropsManager
 require DaWeapons
 
 
-def try_reload_empty_gun(gun : Gun;
-                         gun_eid : EntityId;
+def try_reload_empty_gun(gun_eid : EntityId;
                          gun__autoReload : bool;
                          gun__manuallyUnloaded : bool;
                          shoot : bool;
@@ -25,7 +24,7 @@ def try_reload_empty_gun(gun : Gun;
     var shouldReload = false
 
     if reloadOnShoot
-      shouldReload ||= !gun.appliedControls.shoot && shoot
+      shouldReload ||= shoot
 
     if reloadOnEmptyMag && gun__autoReload && !gun__manuallyUnloaded
       shouldReload ||= !shoot

@@ -383,7 +383,8 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__vertSpeedVarId : int&;
                          var human_anim__horizontalSpeedVarId : int&;
                          var human_anim__selectedWeaponVarId : int&;
-                         var human_anim__crawlContinuousRotationVarId : int&)
+                         var human_anim__crawlContinuousRotationVarId : int&;
+                         var human_anim__leanSpineRotateVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
   human_anim__changeWeaponVarId = phys_vars |> registerVar("changeweapon_progress", 0.f)
@@ -410,6 +411,7 @@ def init_human_anim_vars(evt : Event;
   human_anim__selectedWeaponVarId = phys_vars |> registerVar("weapon_selected", 0.0)
   human_anim__horizontalSpeedVarId = phys_vars |> registerVar("horizontal_speed", 0.0)
   human_anim__crawlContinuousRotationVarId = phys_vars |> registerVar("is_continuous_crawl_rotating", 0.0)
+  human_anim__leanSpineRotateVarId = phys_vars |> registerVar("torso_lean_rotate", 0.0)
 
 
 def private calc_head_pitch_yaw(state : HumanPhysState)
@@ -1264,3 +1266,16 @@ def human_death_anim_update_ragdoll_power(info : ParallelUpdateFrameDelayed;
   let currentPower = lerp(human_death_anim__ragdollPowerNotes[idx0], human_death_anim__ragdollPowerNotes[idx1], currentKeysPower)
 
   *physSys |> phys_system_instance_setJointsMotorSettings(currentPower.x, currentPower.y, currentPower.z, currentPower.w)
+
+
+[es(tag=gameClient, after=human_anim_es)]
+def human_spine_rotate_on_lean_update(info : ParallelUpdateFrameDelayed;
+                                      human_anim__leanSpineRotateVarId : int;
+                                      human_anim__leanSpineRotateAngles : float3;
+                                      human_net_phys : HumanActor;
+                                      var phys_vars : PhysVars)
+  assume phys = human_net_phys.phys
+  let interpK = get_phys_interpk_clamped(phys, info.curTime)
+  let lean = lerp(phys.previousState.leanPosition, phys.currentState.leanPosition, interpK)
+  let leanRotate = cvt(lean, -45.0, 0.0, human_anim__leanSpineRotateAngles.x, human_anim__leanSpineRotateAngles.y)
+  phys_vars |> setVar(human_anim__leanSpineRotateVarId, leanRotate)

@@ -155,13 +155,13 @@ let SharedPool = class (RuleBase) {
     if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
         res.unitLimits.append(UnitLimitByUnitName(blk.getParamName(i), blk.getParamValue(i),
-          { nameLocId = unitsGroups?[blk.getParamName(i)] }))
+          { nameLocId = unitsGroups?[blk.getParamName(i)]?.name }))
 
     blk = getTblValue("unlimitedUnits", myTeamDataBlk)
     if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
         res.unitLimits.append(UnitLimitByUnitName(blk.getParamName(i), RESPAWNS_UNLIMITED,
-          { nameLocId = unitsGroups?[blk.getParamName(i)] }))
+          { nameLocId = unitsGroups?[blk.getParamName(i)]?.name }))
 
     let activeLimitsBlk = getTblValue("limitedActiveClasses", myTeamDataBlk)
     if (u.isDataBlock(activeLimitsBlk)) {

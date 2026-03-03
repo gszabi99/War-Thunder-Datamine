@@ -752,6 +752,62 @@
           "horizontal": false,
           "underwater": false
         },
+        "grass_burnt_a": {
+          "diffuse": "grass_generic_grass_small_a_tex_d",
+          "normal": "grass_generic_grass_small_a_tex_n",
+          "height": 0.3,
+          "size_lod_mul": 1.3,
+          "size_lod_wide_mul": 1.0,
+          "ht_rnd_add": 0.1,
+          "hor_size": 0.4,
+          "hor_size_rnd_add": 0.1,
+          "height_from_weight_mul": 0.7,
+          "height_from_weight_add": 0.3,
+          "density_from_weight_mul": 0.2,
+          "density_from_weight_add": 0.4,
+          "vertical_angle_add": 0.1,
+          "vertical_angle_mul": 0.5,
+          "color_mask_r_from": [
+            8,
+            9,
+            10,
+            90
+          ],
+          "color_mask_r_to": [
+            7,
+            8,
+            9,
+            90
+          ],
+          "color_mask_g_from": [
+            5,
+            5,
+            5,
+            90
+          ],
+          "color_mask_g_to": [
+            228,
+            228,
+            228,
+            90
+          ],
+          "color_mask_b_from": [
+            9,
+            11,
+            17,
+            90
+          ],
+          "color_mask_b_to": [
+            61,
+            65,
+            70,
+            90
+          ],
+          "tile_tc_x": 1.0,
+          "stiffness": 0.3,
+          "horizontal": false,
+          "underwater": false
+        },
         "nograss": {
           "density_from_weight_mul": 0.0,
           "density_from_weight_add": 0.0
@@ -760,82 +816,106 @@
       "decals": {
         "base": {
           "id": 0,
-          "generic_grass_low_a": 2.0,
-          "generic_grass_low_c": 2.0,
-          "field_grass_a": 0.2
+          "generic_grass_low_a": 1.0,
+          "generic_grass_low_c": 1.0,
+          "field_grass_a": 0.2,
+          "grass_burnt_a": 1.0
         },
         "fields_grass_01_a": {
           "id": 1,
-          "generic_grass_tall_c": 1.0
+          "generic_grass_tall_c": 1.0,
+          "grass_burnt_a": 1.0
         },
         "fields_grass_02_a": {
           "id": 4,
-          "generic_grass_tall_c": 1.0
+          "generic_grass_tall_c": 1.0,
+          "grass_burnt_a": 1.0
         },
         "fields_grass_02_b": {
           "id": 5,
-          "generic_grass_low_a": 0.2
+          "generic_grass_low_a": 0.2,
+          "grass_burnt_a": 1.0
         },
         "fields_grass_02_gpu_obj": {
           "id": 6,
-          "generic_grass_tall_b": 1.0
+          "generic_grass_tall_b": 1.0,
+          "grass_burnt_a": 1.0
         },
         "fields_grass_03_a": {
           "id": 7,
-          "generic_grass_tall_c": 1.0
+          "generic_grass_tall_c": 1.0,
+          "grass_burnt_a": 1.0
         },
         "fields_grass_03_b": {
           "id": 8,
-          "generic_grass_tall_c": 1.0
+          "generic_grass_tall_c": 1.0,
+          "grass_burnt_a": 1.0
         },
         "forest_a": {
           "id": 10,
-          "generic_grass_low_a_small_grey": 0.3,
+          "generic_grass_low_a_small": 0.3,
           "generic_grass_tall_b": 0.2
         },
         "forest_b": {
           "id": 11,
-          "generic_grass_low_a_small_grey": 0.3,
+          "generic_grass_low_a_small": 0.3,
           "generic_grass_tall_b": 0.2
         },
         "forest_contour": {
           "id": 12,
           "generic_grass_low_c": 0.5,
-          "field_grass_a": 0.2
+          "field_grass_a": 0.2,
+          "grass_burnt_a": 1.0
         },
         "forest_gpu_obj": {
           "id": 13,
-          "generic_grass_low_a_small_grey": 0.3,
+          "generic_grass_low_a_small": 0.3,
           "generic_grass_tall_b": 0.2
         },
         "picea_forest_a": {
           "id": 14,
-          "generic_grass_low_a_small_grey": 0.3,
+          "generic_grass_low_a_small": 0.3,
           "generic_grass_tall_b": 0.2
         },
         "picea_forest_b": {
           "id": 15,
-          "generic_grass_low_a_small_grey": 0.3,
+          "generic_grass_low_a_small": 0.3,
           "generic_grass_tall_b": 0.2
         },
         "picea_forest_contour": {
           "id": 16,
-          "generic_grass_low_a_small_grey": 0.3,
-          "generic_grass_tall_b": 0.2
+          "generic_grass_low_a_small": 0.3,
+          "generic_grass_tall_b": 0.2,
+          "grass_burnt_a": 1.0
         },
         "picea_forest_gpu_obj": {
           "id": 17,
-          "generic_grass_low_a_small_grey": 0.3,
+          "generic_grass_low_a_small": 0.3,
           "generic_grass_tall_b": 0.2
         },
-        "roads_contour": {
+        "courtyard_b": {
+          "id": 20,
+          "generic_grass_low_a": 2.0,
+          "generic_grass_low_c": 2.0,
+          "generic_grass_low_a_small": 2.0,
+          "field_grass_a": 0.2
+        },
+        "courtyard__contour": {
           "id": 21,
+          "generic_grass_low_a": 1.0,
+          "generic_grass_low_c": 1.0,
+          "generic_grass_tall_c": 1.0,
+          "field_grass_a": 0.5,
+          "grass_burnt_a": 1.0
+        },
+        "roads_contour": {
+          "id": 29,
           "generic_grass_low_a": 2.0,
           "generic_grass_low_c": 2.0,
           "field_grass_a": 0.2
         },
         "burned_forest_gpu_obj": {
-          "id": 30,
+          "id": 38,
           "generic_grass_low_a_small_grey": 0.3,
           "generic_grass_tall_b": 0.2
         }
@@ -851,8 +931,17 @@
           6,
           7,
           8,
+          10,
+          11,
           12,
-          16
+          13,
+          14,
+          15,
+          16,
+          17,
+          20,
+          21,
+          29
         ],
         "res": "grass_fill_a",
         "density": 15.0,
@@ -915,7 +1004,9 @@
           15,
           16,
           17,
-          21
+          20,
+          21,
+          29
         ],
         "res": "grass_fill_a",
         "density": 5.0,
@@ -1087,7 +1178,10 @@
           14,
           15,
           16,
-          17
+          17,
+          20,
+          21,
+          29
         ],
         "res": "grass_scatter_b_2",
         "density": 1.0,

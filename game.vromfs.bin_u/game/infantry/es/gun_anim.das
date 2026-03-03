@@ -47,6 +47,7 @@ def gun_lean_anim_update(info : ParallelUpdateFrameDelayed;
                          human_gun_attached : bool;
                          gun_anim__reloadProgress : float;
                          gun_tilt__reloadProgressLimit : float;
+                         gun_tilt__weaponRootRotateVarId : int;
                          gun_tilt__weaponRoot2RotateVarId : int;
                          gun_tilt__defaultAngle : float;
                          gun_tilt__tpsAngle : float;
@@ -54,10 +55,14 @@ def gun_lean_anim_update(info : ParallelUpdateFrameDelayed;
                          gun_tilt__fpsAngle : float;
                          gun_tilt__fpsAngleOptional : float const?;
                          gun_tilt__leanFpsAngle : float2 const?;
+                         gun_tilt__leanTpsElbows : float3 const?;
                          gun_tilt__viscocity : float;
                          var phys_vars : PhysVars;
+                         animchar__visible : bool = true;
                          grenade_thrower__projectileEntity : EntityId const?;
                          subsidiaryGunEid : EntityId const?)
+  if !animchar__visible
+    return
   assume phys = human_net_phys.phys
   assume curSt = phys.currentState
   assume prevSt = phys.previousState
@@ -87,6 +92,10 @@ def gun_lean_anim_update(info : ParallelUpdateFrameDelayed;
 
     let isTpsViewOnSoldier = !human_anim__isFpv || isTpsView
     var targetTilt = 0.0
+    var elbowTilt = 0.0
+
+    let interpK = get_phys_interpk_clamped(phys, info.curTime)
+    let lean = lerp(prevSt.leanPosition, curSt.leanPosition, interpK)
 
     
     if ((isReloading && !isEndOfReloading) || isAim || isCrawl || bipod__enabled || isWearingWeaponMod || isInSprint) && !isWearingOffWeaponMod
@@ -102,16 +111,21 @@ def gun_lean_anim_update(info : ParallelUpdateFrameDelayed;
       if useNeoclassicalTilt && gun_tilt__fpsAngleOptional != null && !isTpsViewOnSoldier
         tilt += *gun_tilt__fpsAngleOptional
       if leanTilt != null
-        let interpK = get_phys_interpk_clamped(phys, info.curTime)
-        let lean = lerp(prevSt.leanPosition, curSt.leanPosition, interpK)
         targetTilt = (lean < 0.0
           ? cvt(lean, -phys.leanDegrees, 0.0, (*leanTilt).x, tilt)
           : cvt(lean, 0.0, phys.leanDegrees, tilt, (*leanTilt).y))
       else
         targetTilt = tilt
 
+    if gun_tilt__leanTpsElbows != null
+      elbowTilt = (lean < 0.0
+        ? cvt(lean, -phys.leanDegrees, 0.0, (*gun_tilt__leanTpsElbows).x, (*gun_tilt__leanTpsElbows).y)
+        : cvt(lean, 0.0, phys.leanDegrees, (*gun_tilt__leanTpsElbows).y, (*gun_tilt__leanTpsElbows).z))
+
     if grenade_thrower__projectileEntity != null
       query(*grenade_thrower__projectileEntity) <| $ [es] (gun_tilt__weaponRoot2RotateVarId : int; var phys_vars aka grenade_phys_vars : PhysVars)
-        grenade_phys_vars |> approach_var(gun_tilt__weaponRoot2RotateVarId, targetTilt, info.dt, gun_tilt__viscocity)
+        grenade_phys_vars |> approach_var(gun_tilt__weaponRootRotateVarId, elbowTilt, info.dt, gun_tilt__viscocity)
+        grenade_phys_vars |> approach_var(gun_tilt__weaponRoot2RotateVarId, targetTilt - elbowTilt, info.dt, gun_tilt__viscocity)
     else
-      phys_vars |> approach_var(gun_tilt__weaponRoot2RotateVarId, targetTilt, info.dt, gun_tilt__viscocity)
+      phys_vars |> approach_var(gun_tilt__weaponRootRotateVarId, elbowTilt, info.dt, gun_tilt__viscocity)
+      phys_vars |> approach_var(gun_tilt__weaponRoot2RotateVarId, targetTilt - elbowTilt, info.dt, gun_tilt__viscocity)

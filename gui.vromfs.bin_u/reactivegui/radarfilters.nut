@@ -44,10 +44,12 @@ let filterPresets = [
     valuesList = [
       {
         locText = loc("hud/AAComplexMenu/IFF/ally")
+        getImage = @(_imageSize) null
         valueMask = RadarTargetsIffFilterMask.ALLY
       },
       {
         locText = loc("hud/AAComplexMenu/IFF/enemy")
+        getImage = @(_imageSize) null
         valueMask = RadarTargetsIffFilterMask.ENEMY
       }
     ]

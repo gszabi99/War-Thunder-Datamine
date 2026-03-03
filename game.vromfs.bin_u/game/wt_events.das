@@ -804,3 +804,7 @@ struct CmdAskForHelpSpeech {}
 struct CmdRequestHelp
   soundPath : string
   requesterEid : EntityId
+
+[event(broadcast)]
+struct EventOnInfantryPresetLoaded
+  loaded : bool

@@ -1,7 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { defer } = require("dagor.workcycle")
-let { hangar_focus_model, hangar_set_camera_screen_offset, hangar_set_dm_viewer_mode,
+let { hangar_focus_model, hangar_set_camera_screen_offset,
   hangar_set_xray_filter_by_parts, hangar_reset_xray_filter, hangar_toggle_xray_filter,
   DM_VIEWER_CREW
 } = require("hangar")
@@ -537,7 +536,14 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
   function toggleXrayFilterMode(isEnabled) {
     hangar_toggle_xray_filter(isEnabled)
     hangar_reset_xray_filter()
-    defer(@() hangar_set_dm_viewer_mode(isEnabled ? DM_VIEWER_CREW : dmViewer.getCurrentViewMode()))
+
+    if (isEnabled) {
+      dmViewer.saveViewModeForRestore()
+      dmViewer.init(this)
+      dmViewer.toggle(DM_VIEWER_CREW)
+    }
+    else
+      dmViewer.restoreSavedViewMode()
   }
 
   function setXrayFilterShownParts() {
@@ -545,6 +551,12 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
       return
     let parts = getPartsListToHighlight(this.curUnit, this.curPageId)
     hangar_set_xray_filter_by_parts(parts)
+  }
+
+  canShowDmViewer = @() true
+
+  function onDMViewerHintTimer(obj, _dt) {
+    dmViewer.placeHint(obj)
   }
 
   function onEventHangarModelLoaded(_p) {

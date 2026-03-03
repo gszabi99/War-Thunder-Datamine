@@ -432,7 +432,7 @@
       "FlowInertia": 0.0,
       "ClockWiseAOA": false,
       "Areas": {
-        "Main": 20.34
+        "Main": 24.8
       },
       "Polar": {
         "OswaldsEfficiencyNumber": 0.1,
@@ -770,10 +770,10 @@
       "Mass": 705.48,
       "Thrust": 10.7,
       "ThrottleBoost": 1.0001,
-      "AfterburnerBoost": 1.09,
-      "RPMMin": 400.0,
-      "RPMMax": 2300.05,
-      "RPMAfterburner": 2300.05,
+      "AfterburnerBoost": 1.25,
+      "RPMMin": 450.0,
+      "RPMMax": 2500.0,
+      "RPMAfterburner": 2500.0,
       "RPMMaxAllowed": 2800.0,
       "StandbyFriction": 0.055,
       "FuelConsumptionOnIdle": 0.33,
@@ -797,7 +797,7 @@
       ],
       "ThrottleRPMAuto0": [
         0.0,
-        400.0
+        1000.0
       ],
       "ThrottleRPMAuto1": [
         0.9,
@@ -805,14 +805,14 @@
       ],
       "ThrottleRPMAuto2": [
         1.0,
-        2300.0
+        2400.0
       ],
       "ThrottleRPMAuto3": [
         1.1,
-        2300.05
+        2500.0
       ],
-      "ShaftRPMMin": 400.0,
-      "ShaftRPMMax": 2300.0,
+      "ShaftRPMMin": 1000.0,
+      "ShaftRPMMax": 2400.0,
       "ShaftRpmController": false,
       "Power": 880.0,
       "ConsumptionOmegaMax": 1.05,
@@ -1029,14 +1029,14 @@
       },
       "Mode2": {
         "Altitude": 1000.0,
-        "RPM": 2300.0,
+        "RPM": 2400.0,
         "ManifoldPressure": 1.119,
         "WaterTemperature": 210.0,
         "OilTemperature": 85.0
       },
       "Mode3": {
         "Altitude": 1000.0,
-        "RPM": 2300.0,
+        "RPM": 2500.0,
         "ManifoldPressure": 1.23,
         "WaterTemperature": 280.0,
         "OilTemperature": 100.0
@@ -1091,27 +1091,27 @@
       "RPM0": 400.0,
       "ATA0": 0.6,
       "RPM1": 2000.0,
-      "ATA1": 1.0,
+      "ATA1": 0.8,
       "RPM2": 2100.0,
-      "ATA2": 1.08,
+      "ATA2": 0.9,
       "RPM3": 2200.0,
-      "ATA3": 1.1,
-      "RPM4": 2300.0,
-      "ATA4": 1.119,
+      "ATA3": 1.0,
+      "RPM4": 2400.0,
+      "ATA4": 1.072,
       "ExactAltitudes": true,
       "CompressorOmegaFactorSq": 1.0,
       "CompressorPressureAtRPM0": 1.0,
-      "Altitude0": 3900.0,
+      "Altitude0": 4000.0,
       "AfterburnerBoostMul0": 1.0,
-      "Power0": 1000.0,
-      "AltitudeConstRPM0": 3900.0,
-      "PowerConstRPM0": 1000.0,
+      "Power0": 1030.0,
+      "AltitudeConstRPM0": 4000.0,
+      "PowerConstRPM0": 1030.0,
       "PowerConstRPMCurvature0": 1.0,
-      "Ceiling0": 3900.05,
-      "PowerAtCeiling0": 999.994,
+      "Ceiling0": 7300.0,
+      "PowerAtCeiling0": 690.0,
       "AfterburnerPressureBoost0": 1.0,
-      "AfterburnerManifoldPressure": 1.22,
-      "SpeedManifoldMultiplier": 1.0,
+      "AfterburnerManifoldPressure": 1.23,
+      "SpeedManifoldMultiplier": 0.6,
       "AllowAutoTurboCharger": false,
       "TurboChargerRPMMin": 0.0,
       "TurboChargerRPMMaxAllowed": 18250.0,
@@ -1166,7 +1166,7 @@
       }
     },
     "FireExtinguisher": {
-      "Num": 1,
+      "Num": 0,
       "UseTime": 5.0,
       "Power": 2500.0,
       "Automatic": true
@@ -1435,9 +1435,9 @@
       "GovernorType": 6,
       "GovernorSpeed": 0.12,
       "GovernorFast": false,
-      "GovernorMinParam": 400.0,
-      "GovernorMaxParam": 2300.0,
-      "GovernorAfterburnerParam": 2300.05,
+      "GovernorMinParam": 1000.0,
+      "GovernorMaxParam": 2400.0,
+      "GovernorAfterburnerParam": 2500.0,
       "AlwaysEnableTorqueAndGyro": false,
       "AlwaysEnableForce": true
     },

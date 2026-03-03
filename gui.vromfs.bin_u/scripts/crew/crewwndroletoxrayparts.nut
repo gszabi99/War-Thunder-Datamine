@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
+let { eachBlock } = require("%sqstd/datablock.nut")
 let regexp2 = require("regexp2")
 
 let tankRolesToParts = {
@@ -119,23 +119,7 @@ function getPartsForTanksForOtherRole(unit, role) {
   if (partsRegexpForRole.len() == 0)
     return res
 
-  let uBlk = getFullUnitBlk(unit.name)
-  let metaBlk = uBlk?.MetaParts
-  if (metaBlk == null)
-    return res
-  eachBlock(metaBlk, function(mBlk) {
-    eachParam(mBlk, function(partName, _k) {
-      foreach (regExpRole in partsRegexpForRole) {
-        if (regExpRole.match(partName)) {
-          res.append(partName)
-          break
-        }
-      }
-    })
-  })
-
-  if (role == "driver" && res.len() == 0)
-    res.extend(tankRolesToParts[role])
+  res.extend(getPartsForUnitsFromBlk(unit, partsRegexpForRole))
   return res
 }
 

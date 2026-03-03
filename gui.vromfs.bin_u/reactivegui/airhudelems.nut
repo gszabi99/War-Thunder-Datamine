@@ -530,6 +530,7 @@ function getStaminaValue(stamina) {
   return string.format("%d %%", stamina)
 }
 
+let formatFuelText = @(fuel) string.format("%d:%02d", math.floor(fuel / 60), fuel % 60)
 function getFuelState(fuel, hasExternalFuel, externalFuel, fuelState) {
   if (fuelState == TemperatureState.FUEL_LEAK)
     return loc("HUD_FUEL_LEAK")
@@ -539,9 +540,9 @@ function getFuelState(fuel, hasExternalFuel, externalFuel, fuelState) {
     return loc("HUD_TANK_IS_SEALING")
   if (fuelState == TemperatureState.EMPTY_TANK)
     return loc("HUD_TANK_IS_EMPTY")
-  local val = string.format("%d:%02d", math.floor(fuel / 60), fuel % 60)
+  local val = formatFuelText(fuel)
   if (hasExternalFuel)
-    val = " ".concat(val, string.format(" / %d:%02d", math.floor(externalFuel / 60), externalFuel % 60))
+    val = loc("ui/slash").concat(val, formatFuelText(externalFuel))
   return val
 }
 

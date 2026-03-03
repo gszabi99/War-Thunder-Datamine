@@ -31,3 +31,9 @@ def bipod_change_placeable_tm(info : ParallelUpdateFrameDelayed;
         bipod_marker__reachPos = bipod__placePos
       bipod_marker__placePos = approach(bipod_marker__placePos, bipod_marker__reachPos, info.dt, bipod_marker__viscosity)
 
+[es(tag=render, on_disappear, REQUIRE=hero)]
+def placeable_marker_destroy_on_hero_disappear(evt : Event;
+                                               var bipod__placeableMarker : EntityId&)
+  if !!bipod__placeableMarker
+    destroyEntity(bipod__placeableMarker)
+    bipod__placeableMarker = INVALID_ENTITY_ID

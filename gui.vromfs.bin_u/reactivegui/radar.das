@@ -315,8 +315,37 @@ struct MagnifiedSquareIndicator : RadarInteractableEll
       return
     InteractableCanvasEll`walkLayout(self, visitor)
 
-    var indicatorEl = BScopeSquareIndicator(self.pos, self.size, *self.data)
+    var topOffset = 0.0f
+    var bottomOffset = 0.0
+    if get_radar_hud_has_distance_scale() && !data.hideScale
+      var style := TextButtonStyle()
+      style.color = data.scaleColor
+      style.fontId = data.fontId
+      style.fontSize = data.fontSize
+      style.glowColor = get_font_fx_color(data.scaleColor)
+      style.glowFxFactor = get_font_fx_factor(data.scaleColor, *data)
+      style.anchorVert = AnchorVert.Bottom
+      style.anchorHorz = AnchorHorz.Right
+
+      let minPos = float2(pos.x + size.x, pos.y + size.y)
+      var minRangeEl = DistanceRangeTextButton(minPos, style, *data, false)
+      minRangeEl.walkLayout(visitor)
+
+      let strBoxMin = minRangeEl.textBox
+      bottomOffset = strBoxMin.width.y
+
+      let maxTextPos = float2(pos.x + size.x, pos.y)
+      style.anchorVert = AnchorVert.Top
+
+      var maxRangeEl = DistanceRangeTextButton(maxTextPos, style, *data, true)
+      maxRangeEl.walkLayout(visitor)
+      topOffset = maxRangeEl.textBox.width.y
+
+    let centerPos = self.pos + float2(0.0, topOffset)
+    let centerSize = self.size - float2(0.0, topOffset + bottomOffset)
+    var indicatorEl = BScopeSquareIndicator(centerPos, centerSize, *self.data)
     indicatorEl.walkLayout(visitor)
+
 
 struct BScopeHalfMain : RadarInteractableEll
   def BScopeHalfMain(pos, size : float2; in_params : CanvasParams&)
@@ -1648,6 +1677,24 @@ struct BScopeSquareElevationCurret : InteractableButton
       float2(rx - markLen * self.size.x, pos.y + elevationScanMax * self.size.y), float2(rx, pos.y + elevationScanMax * self.size.y)))
       ctx |> render_line_aa(scanCoord, false, *data |> hdpx(4.), float2(0, 0), e3dColor)
 
+struct DistanceRangeTextButton : TextButton
+  def DistanceRangeTextButton(pos : float2; style : TextButtonStyle; data : CanvasParams&; use_max_dist : bool)
+    var distMin = get_radar_hud_distance_min()
+    var distMax = get_radar_hud_distance_max()
+    let hud = get_cur_hud()
+    if data.canZoom && hud != null
+      distMin = lerp(distMin, distMax, hud.radarZoom.zoomCenter.y - 0.5 * hud.radarZoom.zoomFactorInv)
+      distMax = lerp(distMin, distMax, hud.radarZoom.zoomCenter.y + 0.5 * hud.radarZoom.zoomFactorInv)
+
+    let selectedDist = use_max_dist ? distMax : distMin
+
+    let txt = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, selectedDist, true, 1.) :
+      get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, selectedDist * 1000., true, 1.))
+
+    TextButton`TextButton(self, pos, txt, style)
+    self.onClickCallback <- @ <| ()
+      Radar`changeRange()
+
 def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var visitor : InteractableVisitor&)
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
@@ -1744,28 +1791,12 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
     style.anchorVert = AnchorVert.Bottom
     style.anchorHorz = AnchorHorz.Right
 
-    var distMin = get_radar_hud_distance_min()
-    var distMax = get_radar_hud_distance_max()
-    let hud = get_cur_hud()
-    if data.canZoom && hud != null
-      distMin = lerp(distMin, distMax, hud.radarZoom.zoomCenter.y - 0.5 * hud.radarZoom.zoomFactorInv)
-      distMax = lerp(distMin, distMax, hud.radarZoom.zoomCenter.y + 0.5 * hud.radarZoom.zoomFactorInv)
-
-    let textMin = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, distMin, true, 1.) :
-      get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, distMin * 1000., true, 1.))
-
     let minPos = float2(pos.x + size.x, pos.y + size.y)
-    var rangeScaleEl = TextButton(minPos, textMin, style)
-    rangeScaleEl.onClickCallback <- @ <| ()
-      Radar`changeRange()
-    rangeScaleEl.walkLayout(visitor)
+    var minRangeEl = DistanceRangeTextButton(minPos, style, data, false)
+    minRangeEl.walkLayout(visitor)
 
-    let strBoxMin = rangeScaleEl.textBox
+    let strBoxMin = minRangeEl.textBox
     bottomOffset = strBoxMin.width.y
-
-    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, distMax, true, 1.) :
-      get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, distMax * 1000., true, 1.))
-    let text = textMax + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
 
     var maxTextPos = float2(0.0)
     if data.centerRadar
@@ -1776,9 +1807,7 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
       maxTextPos = float2(pos.x + size.x, pos.y + vertOffset)
       style.anchorVert = AnchorVert.Top
 
-    var maxRangeEl = TextButton(maxTextPos, text, style)
-    maxRangeEl.onClickCallback <- @ <| ()
-      Radar`changeRange()
+    var maxRangeEl = DistanceRangeTextButton(maxTextPos, style, data, true)
     maxRangeEl.walkLayout(visitor)
 
     let strBox = maxRangeEl.textBox

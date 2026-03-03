@@ -601,11 +601,11 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
             }
             if (itemBlk.guidance?.inertialNavigation) {
               item.guidanceType = "".concat(item.guidanceType, "+IOG")
-              if (itemBlk.guidance?.inertialNavigationDriftSpeed == 0)
+              if (itemBlk.guidance?.inertialNavigationDriftSpeed == 0 || itemBlk.guidance?.inertialGuidance.inertialNavigationDriftSpeed == 0)
                 item.guidanceType = "".concat(item.guidanceType, "+GNSS")
+              if (itemBlk.guidance?.datalink != null || itemBlk.guidance?.inertialGuidance.datalink != null)
+                item.guidanceType = "".concat(item.guidanceType, "+DL")
             }
-            if (itemBlk.guidance?.inertialGuidance.datalink != null)
-              item.guidanceType = "".concat(item.guidanceType, "+DL")
           }
         }
         if (currentTypeName == WEAPON_TYPE.AAM) {

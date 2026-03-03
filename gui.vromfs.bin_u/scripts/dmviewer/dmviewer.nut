@@ -13,7 +13,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { round } = require("math")
 let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY,
-  hangar_get_dm_viewer_parts_count, set_xray_parts_filter } = require("hangar")
+  DM_VIEWER_CREW, hangar_get_dm_viewer_parts_count, set_xray_parts_filter } = require("hangar")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { hasLoadedModel } = require("%scripts/hangarModelLoadManager.nut")
@@ -191,8 +191,10 @@ dmViewer = {
     [DM_VIEWER_NONE]  = "none",
     [DM_VIEWER_ARMOR] = "armor",
     [DM_VIEWER_XRAY]  = "xray",
+    [DM_VIEWER_CREW]  = "xray"
   }
 
+  modesValidForXray = [DM_VIEWER_XRAY, DM_VIEWER_CREW]
   prevHintParams = {}
 
   screen = [ 0, 0 ]
@@ -290,6 +292,11 @@ dmViewer = {
 
     this.updateUnitInfo()
     this.update()
+  }
+
+  function isDmModeValidForXrayView(viewMode = null) {
+    let vMode = viewMode ?? this.getCurrentViewMode()
+    return this.modesValidForXray.contains(vMode)
   }
 
   function updateUnitInfo(forcedUnitId = null) {
@@ -483,7 +490,7 @@ dmViewer = {
     obj = handler.scene.findObject("filter_nest")
     if (obj?.isValid()) {
       let xrayFilterOption = getXrayFilterOption()
-      let isShowOption = dmViewerStorage.view_mode == DM_VIEWER_XRAY && isTankOrShip
+      let isShowOption = this.isDmModeValidForXrayView() && isTankOrShip
         && (xrayFilterOption?.values.len() ?? 0) > 0
       obj.show(isShowOption)
       if (isShowOption) {
@@ -501,13 +508,13 @@ dmViewer = {
         else
           broadcastEvent("UpdateFiltersCount") 
         set_xray_parts_filter(xrayFilterOption.value)
-      } else if (dmViewerStorage.view_mode == DM_VIEWER_XRAY && hasLoadedModel())
+      } else if (this.isDmModeValidForXrayView() && hasLoadedModel())
         set_xray_parts_filter(0)
     }
 
     obj = handler.scene.findObject("dmviewer_show_extended_hints")
     if (obj?.isValid()) {
-      let isShowOption = dmViewerStorage.view_mode == DM_VIEWER_XRAY && !!this.unit?.isShipOrBoat()
+      let isShowOption = this.isDmModeValidForXrayView() && !!this.unit?.isShipOrBoat()
       obj.show(isShowOption)
       if (isShowOption)
         obj.setValue(this.needShowExtHints())
@@ -588,7 +595,7 @@ dmViewer = {
     local needUpdatePos = false
     local needUpdateContent = false
 
-    if (dmViewerStorage.view_mode == DM_VIEWER_XRAY || (params?.weapon_item_desc ?? false))
+    if (this.isDmModeValidForXrayView() || (params?.weapon_item_desc ?? false))
       
       needUpdateContent = (getTblValue("name", params, true) != getTblValue("name", this.prevHintParams, false))
     else
@@ -611,7 +618,7 @@ dmViewer = {
       return this.placeHint(obj)
 
     let partName = params?.name ?? ""
-    let partType = dmViewerStorage.view_mode == DM_VIEWER_XRAY ? getPartType(partName, this.xrayRemap) : partName
+    let partType = this.isDmModeValidForXrayView() ? getPartType(partName, this.xrayRemap) : partName
 
     let isVisible = partType != ""
     obj.show(isVisible)
@@ -620,7 +627,7 @@ dmViewer = {
 
     let handler = handlersManager.getActiveBaseHandler()
     local info = { title = "", desc = [] }
-    let isUseCache = dmViewerStorage.view_mode == DM_VIEWER_XRAY && !dmViewerStorage.isDebugMode
+    let isUseCache = this.isDmModeValidForXrayView() && !dmViewerStorage.isDebugMode
 
     if (isUseCache && (partName in this.xrayDescriptionCache))
       info = this.xrayDescriptionCache[partName]
@@ -696,7 +703,7 @@ dmViewer = {
 
     if (partType == null) {
       let partName = params?.name ?? ""
-      partType = viewMode == DM_VIEWER_XRAY ? getPartType(partName, this.xrayRemap) : partName
+      partType = this.isDmModeValidForXrayView(viewMode) ? getPartType(partName, this.xrayRemap) : partName
     }
 
     if (partType == "")
@@ -709,7 +716,7 @@ dmViewer = {
       return this.getDescriptionWeaponItem(params)
     else if (viewMode == DM_VIEWER_ARMOR)
       res.desc = this.getDescriptionInArmorMode(params)
-    else if (viewMode == DM_VIEWER_XRAY) {
+    else if (this.isDmModeValidForXrayView(viewMode)) {
       let supportPlaneName = this.unitBlk?.supportPlane.supportPlaneClass
       let supportPlane = supportPlaneName ? getAircraftByName(supportPlaneName) : null
       let descData = getDescriptionInXrayMode(partType, params, {

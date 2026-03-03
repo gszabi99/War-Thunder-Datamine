@@ -49,9 +49,6 @@
   "drowningCheckHeightMultiplier": 0.55,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -93,7 +90,9 @@
       "createSecondaryShatters": false,
       "ex_armor_r_01_dm": {},
       "ex_armor_l_01_dm": {},
-      "turret_01_back_dm": {},
+      "turret_01_back_dm": {
+        "armorThickness": 10.0
+      },
       "turret_01_side_dm": {},
       "turret_02_front_dm": {},
       "turret_02_back_dm": {},
@@ -247,13 +246,16 @@
     "tracks": {
       "armorClass": "tank_traks",
       "allowRicochet": true,
-      "armorThickness": 15.0,
-      "hp": 250.0,
-      "genericEffectiveThicknessMax": 15.0,
-      "genericDamageMult": 1.5,
-      "cumulativeDamageMult": 1.5,
+      "armorThickness": 20.0,
+      "armorEffectiveThicknessMax": 20.0,
+      "hp": 300.0,
+      "genericEffectiveThicknessMax": 20.0,
+      "genericDamageMult": 1.8,
+      "cumulativeDamageMult": 1.8,
       "track_r_dm": {},
-      "track_l_dm": {}
+      "track_l_dm": {},
+      "track_r_01_dm": {},
+      "track_l_01_dm": {}
     },
     "crew": {
       "armorClass": "steel_tankman",

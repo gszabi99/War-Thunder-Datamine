@@ -12,6 +12,7 @@ require GeomNodeTree
 require DagorSystem
 require strings
 require PhysMat
+require %appGame.wt_events
 
 
 [es(tag=sound, on_appear)]
@@ -64,7 +65,7 @@ def human_reverb_sound_init_node_id(evt : Event;
       logerr("Reverb node '{attach_reverb_sound_to_watchable__nodeName}' not found")
 
 
-[es(tag=sound, on_appear, on_event=EventOnMasterSoundPresetLoaded)]
+[es(tag=sound, on_event=EventOnInfantryPresetLoaded)]
 def reverb_sound_appear(evt : Event;
                         reverb_sound__intensityVar : string;
                         reverb_sound__path : string;

@@ -86,7 +86,22 @@ def inventory_create_weap_slot_item_debug_cmd(item_template : string;
                                               ammo_index : int = 0;
                                               ammo_count : int = 5;
                                               @net_hero hero_eid : EntityId)
-  query(hero_eid) <| $ [es] (var human_weap__gunEids : EidList)
+  query(hero_eid) <| $ [es] (human_weap__currentGunSlot : int;
+                             var human_weap__gunEids : EidList&;
+                             var human_weap__gunMods : Array&;
+                             var human_weap__gunModsBySlot : Array&;
+                             var human_weap__currentGunModEids : EidList&)
+    var gunMods = human_weap__gunMods[gun_slot_id] |> getRW_ecs_EidList()
+    if gunMods != null
+      for gunModEid in *gunMods
+        destroyEntity(gunModEid)
+      *gunMods |> clear()
+    var weapSlot = human_weap__gunModsBySlot[gun_slot_id] |> getRW_ecs_object()
+    if weapSlot != null
+      for slot in *weapSlot
+        *weapSlot |> set(slot.key, "")
+    if human_weap__currentGunSlot == gun_slot_id
+      human_weap__currentGunModEids |> clear()
     destroyEntity(human_weap__gunEids[gun_slot_id])
     human_weap__gunEids[gun_slot_id] = createEntity(item_template) <| $(var init : ComponentsInitializer)
       set(init, "item__lastOwner", hero_eid)

@@ -12,7 +12,8 @@ def find_key_in_initial_equip_by_slot(slot : string; equipList : Object)
   for equipKV in equipList
     let equipSlot = equipKV.value ?? ""
     if equipSlot == slot
-      return equipKV.key
+      let out = clone_string(equipKV.key)
+      return out
   return ""
 
 def apply_armor_preset_skin(skinInfo : Object;

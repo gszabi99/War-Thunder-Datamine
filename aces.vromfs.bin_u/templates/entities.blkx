@@ -2802,6 +2802,20 @@
       0.0
     ]
   },
+  "shell_stand_vertical_atgm": {
+    "_use": "bomb_cart",
+    "simpleObject__resName": "ammo_stand_a_short_dynmodel",
+    "bomb_cart__linkPoint1": [
+      0.0,
+      0.1,
+      0.0
+    ],
+    "bomb_cart__linkPoint2": [
+      -0.2,
+      0.1,
+      0.0
+    ]
+  },
   "shell_stand_vertical_sam": {
     "_use": "bomb_cart",
     "simpleObject__resName": "ammo_stand_large_sam_dynmodel",
@@ -2821,25 +2835,25 @@
     "shell_carts_params:array": {
       "shell_cart_info:object": [
         {
-          "cartTemplate": "shell_stand_vertical",
+          "cartTemplate": "shell_stand_vertical_atgm",
           "calibers": [
             0.0,
-            0.25
+            0.18
           ],
           "length": [
             0.0,
-            2.7
+            4.0
           ],
           "isVertical": true
         },
         {
           "cartTemplate": "shell_stand_vertical_sam",
           "calibers": [
-            0.09,
+            0.181,
             0.7
           ],
           "length": [
-            1.5,
+            0.0,
             7.5
           ],
           "isVertical": true
@@ -3071,6 +3085,26 @@
   "bullet_target_apds_350mm": {
     "_use": "bullet_target",
     "simpleObject__resName": "ap_target_350mm_dynmodel"
+  },
+  "bullet_target_apcr_30mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "apcr_target_30mm_dynmodel"
+  },
+  "bullet_target_apcr_75mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "apcr_target_75mm_dynmodel"
+  },
+  "bullet_target_apcr_150mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "apcr_target_150mm_dynmodel"
+  },
+  "bullet_target_apcr_200mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "apcr_target_200mm_dynmodel"
+  },
+  "bullet_target_apcr_350mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "apcr_target_350mm_dynmodel"
   },
   "bullet_target_heat_50mm": {
     "_use": "bullet_target",

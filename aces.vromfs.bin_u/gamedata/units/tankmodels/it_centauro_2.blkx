@@ -44,6 +44,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarCanLockTargetFromTPV": false,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "controlDevices": {
@@ -213,7 +214,7 @@
       "body_top_dm": {
         "armorThickness": 15.0
       },
-      "ex_decor_05_dm": {
+      "turret_06_bottom_dm": {
         "armorThickness": 15.0
       },
       "superstructure_top_dm": {
@@ -289,6 +290,12 @@
       "composite_armor_hull_04_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
+      },
+      "turret_06_front_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_06_side_dm": {
+        "armorThickness": 10.0
       }
     },
     "hull_spall_liner": {
@@ -304,7 +311,13 @@
       "spall_liner_06_dm": {},
       "spall_liner_07_dm": {},
       "spall_liner_08_dm": {},
-      "spall_liner_09_dm": {}
+      "spall_liner_09_dm": {},
+      "spall_liner_10_dm": {},
+      "spall_liner_11_dm": {},
+      "spall_liner_12_dm": {},
+      "spall_liner_13_dm": {},
+      "spall_liner_14_dm": {},
+      "spall_liner_15_dm": {}
     },
     "aluminum_armor_7020": {
       "armorClass": "aluminum_armor_7020",
@@ -574,9 +587,9 @@
       "ex_decor_09_dm": {}
     },
     "chassis": {
-      "armorClass": "tank_steel_wheels",
       "hp": 250.0,
-      "armorThickness": 20.0,
+      "armorThickness": 10.0,
+      "armorClass": "car_wheels",
       "wheel_l_03_dm": {},
       "wheel_l_04_dm": {},
       "wheel_l_02_dm": {},
@@ -1947,7 +1960,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ]
     }
   },
   "xrayOverride": {
@@ -2215,7 +2231,7 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
-        "speedYaw": 28.65,
+        "speedYaw": 22.9,
         "speedPitch": 28.65,
         "fireConeAngle": 1.0,
         "bullets": 32,
@@ -2485,6 +2501,14 @@
     "preset": {
       "name": "it_centauro_2_default",
       "blk": "gameData/units/tankModels/weaponPresets/it_centauro_2_default.blk"
+    }
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": "optic_gun_dm"
     }
   },
   "VehiclePhys": {
@@ -3868,7 +3892,66 @@
     "art_support": {},
     "tank_new_gun": {},
     "laser_rangefinder_lws": {
-      "tier": 4
+      "tier": 4,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "rangefinderDmPart": "fire_control_system_dm",
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/fr_leclerc_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
+              "blk": "gameData/sensors/it_ralm-101.blk"
+            }
+          ]
+        }
+      }
     },
     "tank_medical_kit": {
       "image": "!#ui/gameuiskin#tank_reinforcement_it.avif"
@@ -3938,7 +4021,7 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
-              "speedYaw": 28.65,
+              "speedYaw": 22.9,
               "speedPitch": 28.65,
               "fireConeAngle": 1.0,
               "bullets": 32,

@@ -415,14 +415,15 @@ def draw_speeds(var ctx : GuiContext&; pos : float2; size : float2; data : Canva
   var fctxSmall : StdGuiFontContext
   get_font_context(fctxSmall, data.fontId, 0, 0, data.fontSize)
 
-  let machText = "{int(mach)}"
+  let machString = "{format("%.2f", mach)}"
+  let machText = slice(machString, 0, 1)
   let machBox = get_str_bbox(machText, machText |> length(), fctx)
   var machPos = float2(pos.x + size.x * 0.15, pos.y + machBox.width.y + 5.)
   ctx |> goto_xy(machPos.x, machPos.y)
   ctx |> draw_str_scaled(1.f, machText, machText |> length())
 
   ctx |> set_font_ht(data.fontSize)
-  let machSmText = ".{roundi((mach * 100.) % 100.)}"
+  let machSmText =  slice(machString, 1)
   let machSmBox = get_str_bbox(machSmText, machSmText |> length(), fctxSmall)
   machPos.x += machBox.width.x
   ctx |> goto_xy(machPos.x, machPos.y)
