@@ -109,7 +109,9 @@ let getUnitWeaponSlots = @(blk)(blk?.WeaponSlots == null ? [] : blk.WeaponSlots 
 
 
 
-function getWeaponsByTypes(unitName, unitBlk, weaponsBlk, isCommon = true) {
+function getWeaponsByTypes(
+  unitName, unitBlk, weaponsBlk, vPilonsBlk = null, isCommon = true
+) {
   let res = []
   local slots = getUnitWeaponSlots(unitBlk)             
   if (!isCommon)
@@ -133,15 +135,22 @@ function getWeaponsByTypes(unitName, unitBlk, weaponsBlk, isCommon = true) {
     }
   }
   
-  else 
+  else { 
     foreach (weapon in (weaponsBlk % "Weapon"))
       u.appendOnce((u.copy(weapon)), res)
+    if (vPilonsBlk != null)
+      foreach (wSlot in (vPilonsBlk % "WeaponSlot")) {
+        let weapon = wSlot?.WeaponPreset.Weapon
+        if (weapon != null)
+          u.appendOnce((u.copy(weapon)), res)
+      }
+  }
 
   return res
 }
 
 let getPresetWeaponsByPath = @(unitName, unitBlk, blkPath) (blkPath == "" || blkPath == null) ? []
-  : getWeaponsByTypes(unitName, unitBlk, blkOptFromPath(blkPath), false)
+  : getWeaponsByTypes(unitName, unitBlk, blkOptFromPath(blkPath), null, false)
 
 let getUnitPresets = @(unitBlk)  (unitBlk?.weapon_presets != null)
   ? (unitBlk.weapon_presets % "preset") : []

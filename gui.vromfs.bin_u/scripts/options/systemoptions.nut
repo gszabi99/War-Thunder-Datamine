@@ -962,6 +962,14 @@ mShared = {
     updateOption("menuFpsLimiter")
   }
 
+  hideFpsLimiter = function() {
+    enableGuiOption("menuFpsLimiter", getGuiValue("vsync") == "vsync_off")
+    enableGuiOption("fpsLimiter", getGuiValue("vsync") == "vsync_off")
+
+    updateOption("menuFpsLimiter")
+    updateOption("fpsLimiter")
+  }
+
   rayReconstructionChanged = function() {
     enableGuiOption("rtao", hasRTAOGUI())
     enableGuiOption("rtrRes", !isRRGUIEnabled())
@@ -1281,7 +1289,9 @@ mSettings = {
     isVisible = @() (get_available_monitors()?.list ?? []).len() > 2
   }
   fpsLimiter = { widgetType = "options_bar" def = "unlimited" blk = "video/fpsLimit" restart = false
-    values = [ "30", "60", "120", "240", "unlimited" ]
+    init = function(_blk, desc) {
+        desc.values <- ["30", "60", "120", "240", "unlimited"]
+    }
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 0) 
     }
@@ -1296,6 +1306,7 @@ mSettings = {
       return strVal
     }
     onChanged = "fpsLimiterClick"
+    enabled = @() getGuiValue("vsync") == "vsync_off"
   }
   menuFpsLimiter = { widgetType = "options_bar" def = "unlimited" blk = "video/menuFpsLimit" restart = false
     init = function(_blk, desc) {
@@ -1314,7 +1325,7 @@ mSettings = {
       let strVal = val.tostring()
       return strVal
     }
-    isVisible = @() getGuiValue("fpsLimiter") != "30" 
+    enabled = @() getGuiValue("vsync") == "vsync_off"
   }
 
   vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = false
@@ -1329,6 +1340,7 @@ mSettings = {
       desc.values <- [ "vsync_off", "vsync_on" ]
     }
     enabled = @() isVsyncEnabledFromLowLatency() && getGuiValue("frameGeneration", "zero") == "zero"
+    onChanged = "hideFpsLimiter"
   }
   graphicsQuality = { widgetType = "list" def = "high" blk = "graphicsQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]

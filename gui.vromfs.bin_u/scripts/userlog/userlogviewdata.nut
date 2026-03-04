@@ -904,8 +904,10 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.name = "".concat(format(loc($"userlog/{logName}/{resourceType}"), config.name), priceText)
 
     local desc = config?.desc ?? ""
-    if (decoratorType)
-      desc = decoratorType.getLocDesc(config.id)
+    if (decoratorType) {
+      let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
+      desc = viewDecoratorType.getLocDesc(config.id)
+    }
 
     if (!u.isEmpty(desc))
       res.description <- desc

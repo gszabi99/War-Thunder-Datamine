@@ -65,7 +65,6 @@ dagui_propid_add_name_id("fontSize")
 
 let UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
 let getUnmappedControlsWarningTime = @() get_game_mode() == GM_TRAINING ? 180000.0 : 30.0
-local defaultFontSize = "small"
 
 let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProgressHeight") : 0
 
@@ -130,20 +129,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   objectsTable = {
     [USEROPT_DAMAGE_INDICATOR_SIZE] = {
       objectsToScale = {
-        hud_tank_damage_indicator = "@sizeDamageIndicatorFull"
         xray_render_dmg_indicator = "@sizeDamageIndicator"
-      }
-      objectsToCheckOversize = {
-        hud_tank_damage_indicator = true
-      }
-      fontSizeByScale = {
-        hud_tank_damage_indicator = {
-          [-2] = "extraTiny",
-          [-1] = "tiny",
-          [0] = "small",
-          [1] = "small",
-          [2] = "normal"
-        }
       }
       onChangedFunc = @(_obj) g_hud_event_manager.onHudEvent("DamageIndicatorSizeChanged")
     },
@@ -268,8 +254,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     g_hud_event_manager.subscribe("LiveStatsVisibilityToggled",
         @(_ed) this.warnLowQualityModelCheck(),
         this)
-    g_hud_event_manager.subscribe("hudProgress:visibilityChanged",
-      @(_eventData) this.updateMissionProgressPlace(), this)
+
     g_hud_event_manager.subscribe("LocalPlayerAlive", function tryShowMfmHint(_eventData) {
       if (getHudUnitType() in unitTypesWithMfmHint)
         g_hud_event_manager.onHudEvent("hint:suggest_mfm:show")
@@ -539,9 +524,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       let canApplyOptionValue = !table?.objectsToCheckOversize?[id] ||
                                   !this.sideBlockMaxWidth ||
                                   objWidthValue <= this.sideBlockMaxWidth
-      let fontSize = table?.fontSizeByScale[id][value]
-      if (fontSize != null)
-        obj.fontSize = canApplyOptionValue ? fontSize : defaultFontSize
       obj.size = canApplyOptionValue
         ? format("%.3f*%s, %.3f*%s", size, cssConst, size, cssConst)
         : format("%d, %d", this.sideBlockMaxWidth, this.sideBlockMaxWidth)
@@ -643,6 +625,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     obj.show(isVisible)
     this.guiScene.applyPendingChanges(false)
     this.currentHud?.updateDmgIndicatorState()
+    eventbus_send("updateMissionProgressHeight", getMissionProgressHeight())
   }
 }
 
@@ -655,3 +638,10 @@ function updateHudVisModeForce() {
 
 isInKillerCamera.subscribe(@(_) updateHudVisModeForce())
 isAAComplexMenuActive.subscribe(@(_) updateHudVisModeForce())
+
+eventbus_subscribe("hudProgress:visibilityChanged", function(_) {
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  if (handler == null)
+    return
+  handler.doWhenActiveOnce("updateMissionProgressPlace")
+})

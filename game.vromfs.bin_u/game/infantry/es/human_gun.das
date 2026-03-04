@@ -66,7 +66,8 @@ def human_gun_es(evt : CmdWeapPhysUpdate;
                  gun__manuallyUnloaded : bool;
                  human_gun_attached : bool;
                  gun__isOverheat : bool = false;
-                 gun__isReady : bool = true)
+                 gun__isReady : bool = true;
+                 gun : Gun)
   if !human_gun_attached
     return
 
@@ -79,7 +80,7 @@ def human_gun_es(evt : CmdWeapPhysUpdate;
   let shoot = gctrl.shoot && !gun__isOverheat && gun__isReady
 
   
-  try_reload_empty_gun(eid, gun__autoReload, gun__manuallyUnloaded, gctrl.shoot, isForReal, gun__ammo, ownerEid, (atTime - dt))
+  try_reload_empty_gun(gun, eid, gun__autoReload, gun__manuallyUnloaded, gctrl.shoot, isForReal, gun__ammo, ownerEid, (atTime - dt))
 
   let rndSeed = phys_time_to_seed(atTime)
   using() <| $(var gctr : GunControls#)

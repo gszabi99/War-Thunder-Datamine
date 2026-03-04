@@ -10,7 +10,7 @@ let { secondsToString } = require("%scripts/time.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon,
   getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeapons, getLastPrimaryWeapon,
-  getWeaponExtendedInfo
+  getWeaponExtendedInfo, getUnitAdditionWeaponry
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getBulletsSetData, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
@@ -136,7 +136,9 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
   if (!unit)
     return res
 
-  let weapons = updatedParams?.weapons ?? getUnitWeaponry(unit, updatedParams)
+  let weapons = updatedParams?.weapons ??
+    (updatedParams?.onlyAdditionWeaponry ? getUnitAdditionWeaponry(unit) : getUnitWeaponry(unit, updatedParams))
+
   if (weapons == null)
     return res
 
@@ -470,7 +472,7 @@ function getFullItemCostText(unit, item, params = null) {
   return ", ".join(res)
 }
 
-function getWeaponInfoMarkup(unit, weaponInfoData) {
+function getWeaponInfoMarkup(unit, weaponInfoData, addTooltip = true) {
   let data = []
 
   if (!unit)
@@ -557,7 +559,7 @@ function getWeaponInfoMarkup(unit, weaponInfoData) {
       }
 
       let dmPart = weapon?.dmPart ?? ""
-      if (dmPart != "") {
+      if (dmPart != "" && addTooltip) {
         weaponData.isNotLink = false
         weaponData.tooltipId = getTooltipType("UNIT_DM_TOOLTIP").getTooltipId(unit.name, { unitId = unit.name, dmPart })
       }

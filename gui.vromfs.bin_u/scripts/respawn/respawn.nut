@@ -130,6 +130,7 @@ let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
+let { speedGrades } = require("%appGlobals/config/infantryCfg.nut")
 
 
 let currentSquadSpawnsDataQuery = ecs.SqQuery("currentSquadSpawnsDataQuery", {
@@ -142,20 +143,12 @@ let currentSquadSpawnModeQuery = ecs.SqQuery("currentSquadSpawnModeQuery", {
   comps_rq=[["squad_dynamic_respawn"]]
 })
 
-let humanSpeedGrades = [
-  { weight = 20, speed = "very_fast" }
-  { weight = 30, speed = "fast" }
-  { weight = 40, speed = "normal" }
-  { weight = 50, speed = "slow" }
-  { weight = 60, speed = "very_slow" }
-]
-
 function getHumanSpeed(weight) {
-  foreach (data in humanSpeedGrades)
+  foreach (data in speedGrades)
     if (weight < data.weight)
-      return data.speed
+      return loc($"infantry/speed/{data.speed}")
 
-  return humanSpeedGrades[humanSpeedGrades.len() - 1].speed
+  return loc($"infantry/speed/{speedGrades[speedGrades.len() - 1].speed}")
 }
 
 function getZoomIconByUnitType(uType) {

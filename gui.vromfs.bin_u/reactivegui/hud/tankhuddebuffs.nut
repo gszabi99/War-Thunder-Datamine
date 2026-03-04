@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { PI, cos, sin, roundToDigits } = require("%sqstd/math.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
-let { dmgIndicatorStates } = require("%rGui/hudState.nut")
+let { dmgIndicatorWidth } = require("%rGui/hud/tankDmgIndicatorState.nut")
 let { userOptDamageIndicatorSize } = require("%rGui/options/options.nut")
 let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/components/tooltip.nut")
@@ -37,8 +37,8 @@ let fontParams = {
 }
 
 let fontParamsByScale = Computed(@() fontParams?[userOptDamageIndicatorSize.get()] ?? fontParams.small)
-let compSize = Computed(@() even(dmgIndicatorStates.get().size[0] / 7))
-let indicatorSize = Computed(@() dmgIndicatorStates.get().size[0])
+let compSize = Computed(@() even(dmgIndicatorWidth.get() / 7))
+let indicatorSize = Computed(@() dmgIndicatorWidth.get())
 
 let frameBorderColor = 0xFF3A434E
 let frameBackgroundColor = 0xFF2D343C
@@ -538,8 +538,8 @@ function distanceComp() {
 }
 
 let tankDebuffs = @() {
-  watch = dmgIndicatorStates
-  size = dmgIndicatorStates.get().size
+  watch = dmgIndicatorWidth
+  size = dmgIndicatorWidth.get()
   onAttach = function(_) {
     reInitTankDebuffsStates()
     reInitHudCrewStates()

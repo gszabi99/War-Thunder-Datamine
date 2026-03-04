@@ -202,7 +202,8 @@ function hud_human_killer_card_debug() {
       action = "kill"
       victimPlayerId = get_local_mplayer().id
       unitName = "m16a4"
-      name = "Name"
+      name = "WWWWWWWWWWWWWWWW"
+      clanTag = "^WWWWW^"
       unitType = 14
       aircraftName = "m16a4"
       aircraft = "m16a4_shop"
@@ -213,7 +214,16 @@ function hud_human_killer_card_debug() {
       killerProjectileName = "5_56mm_m193_ball"
       weaponEcsTemplateName = "rpg_7_gun"
       weaponModEcsTemplateNames = "grip_vertical_tangodown,scope_acog_ta31"
+      pilotIcon = $"#ui/images/avatars/cardicon_01.avif"
+      title = loc("title/title_cavalier_order_cloud_banner")
       playerId = 0
+      offenderHits = {
+        torso = 1
+        armor = 1
+        leg = 1
+        head = 1
+        hand = 1
+      }
       isDebugData = true
     })
 

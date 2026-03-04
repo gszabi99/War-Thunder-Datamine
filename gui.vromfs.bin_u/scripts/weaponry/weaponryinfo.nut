@@ -915,20 +915,23 @@ function getLastPrimaryWeapon(unit) {
 }
 
 function getCommonWeapons(unitBlk, primaryMod, unitName = "") {
-  let res = []
-  if (primaryMod == "" && unitBlk?.commonWeapons)
-    return getWeaponsByTypes(unitName, unitBlk, unitBlk.commonWeapons)
+  let { modifications = null, commonWeapons = null, WeaponPilons = null } = unitBlk
 
-  if (unitBlk?.modifications == null)
+  let res = []
+  if (primaryMod == "" && commonWeapons != null)
+    return getWeaponsByTypes(unitName, unitBlk, commonWeapons, WeaponPilons)
+
+  if (modifications == null)
     return res
 
-  let modificationsCount = unitBlk.modifications.blockCount()
+  let modificationsCount = modifications.blockCount()
   for (local i = 0; i < modificationsCount; i++) {
-    let modification = unitBlk.modifications.getBlock(i)
+    let modification = modifications.getBlock(i)
     if (modification.getBlockName() == primaryMod) {
       if (modification?.effects.commonWeapons)
-        return getWeaponsByTypes(unitName, unitBlk, modification.effects.commonWeapons)
-
+        return getWeaponsByTypes(
+          unitName, unitBlk, modification.effects.commonWeapons, WeaponPilons
+        )
       break
     }
   }
@@ -998,6 +1001,32 @@ function getUnitWeaponry(unit, params = WEAPON_TEXT_PARAMS) {
     weapons = addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, presetOrWeapon, unitName),
       unit, params.weaponsFilterFunc, curPreset?.weaponConfig)
   }
+  return weapons
+}
+
+let unitAdditionWeaponryCache = {}
+
+function getUnitAdditionWeaponry(unit) {
+  let unitName = unit.name
+  if (unitAdditionWeaponryCache?[unitName] != null)
+    return unitAdditionWeaponryCache[unitName]
+
+  if (!unit)
+    return null
+
+  let unitBlk = getFullUnitBlk(unitName)
+  if (!unitBlk)
+    return null
+
+  let presets = getUnitPresets(unitBlk)
+  if (presets.len() == 0)
+    return null
+
+  let weapons = {}
+
+  presets.each(@(preset) addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, preset, unitName),
+    unit, null, preset?.weaponConfig))
+  unitAdditionWeaponryCache[unitName] <- weapons
   return weapons
 }
 
@@ -1160,6 +1189,7 @@ return {
   getWeaponExtendedInfo
   isWeaponAux
   getUnitWeaponry
+  getUnitAdditionWeaponry
   getWeaponsStatusName
   getWeaponNameByBlkPath
   isCaliberCannon

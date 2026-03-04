@@ -591,7 +591,7 @@ function getPromoCollapsedIcon(view, promoButtonId) {
 
 function getPromoCollapsedText(view, promoButtonId) {
   let text = getPromoButtonConfig(promoButtonId)?.collapsedText
-  let res = (text != null) ? (view?.text ?? "") 
+  let res = (text != null) ? (view?[text] ?? "") 
     : getLocTextFromConfig(view, "collapsedText", "")
   return loc(res)
 }

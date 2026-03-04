@@ -156,6 +156,27 @@
         "width": 30.0
       }
     },
+    "mprfTwsTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "targetId": true,
+      "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 4.0,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 74000.0,
+        "width": 150.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
+        "signalWidthMin": 2.0,
+        "width": 20.0
+      }
+    },
     "mprfTrack": {
       "groundClutter": false,
       "aircraftAsTarget": true,
@@ -1217,6 +1238,16 @@
           "setRadarBvrLockMode": {},
           "setModeName": {
             "name": "PD HDN acquisition"
+          }
+        },
+        "setMprfTwsSearchSignal": {
+          "setSignal": {
+            "signal": "mprfSearch"
+          }
+        },
+        "setMprfTwsTrackSignal": {
+          "setSignal": {
+            "signal": "mprfTwsTrack"
           }
         },
         "setIrstBvrLockMode": {
@@ -2598,6 +2629,16 @@
             },
             {
               "fsm": "main",
+              "name": "setTwsSearchSignal",
+              "actionTemplateName": "setMprfTwsSearchSignal"
+            },
+            {
+              "fsm": "main",
+              "name": "setTwsTrackSignal",
+              "actionTemplateName": "setMprfTwsTrackSignal"
+            },
+            {
+              "fsm": "main",
               "name": "resetSearchMode",
               "actionTemplateName": "resetTwsMode"
             }
@@ -2919,6 +2960,10 @@
           "stateFrom": "track",
           "stateTo": "search",
           "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setTwsSearchSignal"
+            },
             "scan": {},
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
@@ -3024,6 +3069,10 @@
           "event": "update",
           "stateTo": "track",
           "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setTwsTrackSignal"
+            },
             "scan": {
               "scanPattern": "fastTws"
             },

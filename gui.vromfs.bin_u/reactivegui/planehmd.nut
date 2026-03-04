@@ -34,6 +34,7 @@ let hmdFA18 = createScriptComponent("%rGui/planeHmds/hmdFA18.das", {
 
 let hmdSetting = Watched({
   isShelZoom = false,
+  isSuraZoom = false,
   isVtas = false,
   isF16c = false,
   isF15cBaz = false

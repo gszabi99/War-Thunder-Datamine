@@ -85,6 +85,9 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
       move_mouse_on_obj("authorization_button")
 
     this.updateGamertag()
+
+    log($"Prelogin checks: EULA: {haveAgreedEulaVersion}, DisableAutoLoginOnce: {get_disable_autorelogin_once()}, gamertag: {get_gamertag()}")
+
     if (this.needAutoLogin && get_gamertag() != "")
       this.onOk()
   }

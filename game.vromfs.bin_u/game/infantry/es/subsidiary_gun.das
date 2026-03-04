@@ -16,9 +16,9 @@ def subsidiary_gun_phys_es(evt : CmdWeapPhysUpdate; eid, subsidiaryGunEid : Enti
     return
 
   var subsidaryActive = false
-  query(subsidiaryGunEid) <| $ [es] (gun__autoReload : bool; gun__manuallyUnloaded : bool; gun__ammo : int; weapon_mod__active : bool; weapon_mod__wantActiveState : bool)
+  query(subsidiaryGunEid) <| $ [es] (gun : Gun; gun__autoReload : bool; gun__manuallyUnloaded : bool; gun__ammo : int; weapon_mod__active : bool; weapon_mod__wantActiveState : bool)
     if weapon_mod__wantActiveState
-      try_reload_empty_gun(subsidiaryGunEid, gun__autoReload, gun__manuallyUnloaded, evt.gctrl.shoot, evt.isForReal, gun__ammo, evt.owner, (evt.atTime - evt.dt))
+      try_reload_empty_gun(gun, subsidiaryGunEid, gun__autoReload, gun__manuallyUnloaded, evt.gctrl.shoot, evt.isForReal, gun__ammo, evt.owner, (evt.atTime - evt.dt))
     subsidaryActive = weapon_mod__active
 
   let gctrl = GunControls(shoot = false, wishShoot = false, boltActionMult = evt.gctrl.boltActionMult, timeStep = evt.gctrl.timeStep)

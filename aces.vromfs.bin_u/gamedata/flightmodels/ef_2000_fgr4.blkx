@@ -3204,6 +3204,10 @@
         "blk": "gameData/FlightModels/weaponPresets/typhoon_fgr4_mk18.blk"
       },
       {
+        "name": "typhoon_fgr4_epv2_mk13",
+        "blk": "gameData/FlightModels/weaponPresets/typhoon_fgr4_epv2_mk13.blk"
+      },
+      {
         "name": "typhoon_fgr4_gbu_54b",
         "blk": "gameData/FlightModels/weaponPresets/typhoon_fgr4_gbu_54b.blk"
       },
@@ -3695,7 +3699,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot2",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -3718,7 +3721,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "paveway_iv_slot2",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -3744,7 +3747,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "mk18_slot2",
-            "reqModification": "uk_mk_13_18",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -3757,6 +3760,33 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/fr_mk18.blk",
+              "emitter": "1000lb_mk_83_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_mk13_slot2",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_holder"
+              ]
+            },
+            "HideNodes": {
+              "node": "pylon_4_off"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
               "emitter": "1000lb_mk_83_001",
               "bullets": 1,
               "external": true,
@@ -3855,7 +3885,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot3",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": [
                 "pylon_6",
@@ -3875,7 +3904,6 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "mk84_slot3",
-            "reqModification": "us_2000lb_mk84",
             "ShowNodes": {
               "node": [
                 "pylon_6",
@@ -3895,7 +3923,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "paveway_iv_slot3",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_6",
@@ -3918,7 +3946,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "paveway_iv_slot3_x2",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_6",
@@ -3940,7 +3968,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "mk18_slot3",
-            "reqModification": "uk_mk_13_18",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_6",
@@ -3950,6 +3978,30 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/fr_mk18.blk",
+              "emitter": "1000lb_mk_83_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_mk13_slot3",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": [
+                "pylon_6",
+                "pylon_6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
               "emitter": "1000lb_mk_83_002",
               "bullets": 1,
               "external": true,
@@ -4067,7 +4119,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot4",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": [
                 "pylon_8",
@@ -4087,7 +4138,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "paveway_iv_slot4",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_8",
@@ -4110,7 +4161,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "paveway_iv_slot4_x2",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_8",
@@ -4132,7 +4183,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "mk18_slot4",
-            "reqModification": "uk_mk_13_18",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_8",
@@ -4142,6 +4193,30 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/fr_mk18.blk",
+              "emitter": "1000lb_mk_83_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_mk13_slot4",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": [
+                "pylon_8",
+                "pylon_8_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
               "emitter": "1000lb_mk_83_003",
               "bullets": 1,
               "external": true,
@@ -4419,7 +4494,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot10",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -4439,7 +4513,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "paveway_iv_slot10",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -4462,7 +4536,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "paveway_iv_slot10_x2",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -4484,7 +4558,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "mk18_slot10",
-            "reqModification": "uk_mk_13_18",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -4494,6 +4568,30 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/fr_mk18.blk",
+              "emitter": "1000lb_mk_83_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_mk13_slot10",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": [
+                "pylon_7",
+                "pylon_7_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
               "emitter": "1000lb_mk_83_004",
               "bullets": 1,
               "external": true,
@@ -4586,7 +4684,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot11",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": [
                 "pylon_5",
@@ -4606,7 +4703,6 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "mk84_slot11",
-            "reqModification": "us_2000lb_mk84",
             "ShowNodes": {
               "node": [
                 "pylon_5",
@@ -4626,7 +4722,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "paveway_iv_slot11",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_5",
@@ -4649,7 +4745,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "paveway_iv_slot11_x2",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_5",
@@ -4671,7 +4767,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "mk18_slot11",
-            "reqModification": "uk_mk_13_18",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_5",
@@ -4681,6 +4777,30 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/fr_mk18.blk",
+              "emitter": "1000lb_mk_83_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_mk13_slot11",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": [
+                "pylon_5",
+                "pylon_5_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
               "emitter": "1000lb_mk_83_005",
               "bullets": 1,
               "external": true,
@@ -4948,7 +5068,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot12",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4971,7 +5090,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "paveway_iv_slot12",
-            "reqModification": "uk_paveway_iv",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4997,7 +5116,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "mk18_slot12",
-            "reqModification": "uk_mk_13_18",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -5010,6 +5129,33 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/fr_mk18.blk",
+              "emitter": "1000lb_mk_83_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_mk13_slot12",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_holder"
+              ]
+            },
+            "HideNodes": {
+              "node": "pylon_3_off"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
               "emitter": "1000lb_mk_83_006",
               "bullets": 1,
               "external": true,
@@ -5846,6 +5992,25 @@
       "reqModification": "bk_27_belt_pack",
       "tier": 3
     },
+    "gr_litening_iii_pod": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_gbu_laser": {
+      "reqModification": "gr_litening_iii_pod",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "us_gbu54b": {
+      "reqModification": "us_gbu_laser",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "uk_brimstone_dm": {
+      "reqModification": "us_gbu54b",
+      "tier": 4,
+      "modClass": "weapon"
+    },
     "us_aim_9m": {
       "tier": 2,
       "modClass": "weapon"
@@ -5857,39 +6022,6 @@
     },
     "us_aim_120c": {
       "reqModification": "us_aim_120b",
-      "tier": 4,
-      "modClass": "weapon"
-    },
-    "sea_hawk_2x1000lb": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "us_gbu54b": {
-      "prevModification": "sea_hawk_2x1000lb",
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "us_2000lb_mk84": {
-      "modClass": "weapon",
-      "tier": 3,
-      "prevModification": "us_gbu54b"
-    },
-    "gr_litening_iii_pod": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "uk_paveway_iv": {
-      "reqModification": "gr_litening_iii_pod",
-      "tier": 2,
-      "modClass": "weapon"
-    },
-    "uk_mk_13_18": {
-      "reqModification": "uk_paveway_iv",
-      "tier": 3,
-      "modClass": "weapon"
-    },
-    "uk_brimstone_dm": {
-      "reqModification": "uk_mk_13_18",
       "tier": 4,
       "modClass": "weapon"
     }

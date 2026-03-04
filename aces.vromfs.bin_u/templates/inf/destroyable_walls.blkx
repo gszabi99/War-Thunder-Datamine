@@ -407,7 +407,8 @@
   "base_wall_bomb": {
     "_use": [
       "replicating",
-      "animchar"
+      "animchar",
+      "base_wall_bomb_common"
     ],
     "transform": [
       [
@@ -433,13 +434,11 @@
     ],
     "animchar__res": "tnt_charge_usa_char",
     "animchar_render__enabled": true,
-    "wall_bomb__explosionDelay": 5.0,
     "wall_bomb__explosionImpulseMult": 100.0,
     "wall_bomb__shellActivator": "wall_bomb_shell_activator",
     "animchar": {},
     "wall_bomb__wallEid:eid": {},
-    "animchar__actOnDemand:tag": {},
-    "wallBomb:tag": {}
+    "animchar__actOnDemand:tag": {}
   },
   "wall_bomb_planted": {
     "wall_bomb_planted__explosionAtTime": 0.0,
@@ -450,10 +449,14 @@
       "wall_bomb_planted__tickSoundEvent:SoundEvent": {}
     }
   },
+  "base_wall_bomb_common": {
+    "wall_bomb__explosionDelay": 5.0,
+    "wallBomb:tag": {}
+  },
   "base_wall_bomb_item": {
     "_use": [
       "item",
-      "base_wall_bomb"
+      "base_wall_bomb_common"
     ],
     "item__template": "base_wall_bomb_item",
     "item__proto": "base_wall_bomb_item",

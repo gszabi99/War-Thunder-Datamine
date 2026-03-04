@@ -1,5 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
+let { round } = require("math")
 let { eventbus_send } = require("eventbus")
 let { mkRadar } = require("%rGui/radarComponent.nut")
 let aamAim = require("%rGui/rocketAamAim.nut")
@@ -9,11 +10,11 @@ let { tws } = require("%rGui/tws.nut")
 let { IsMlwsLwsHudVisible, CollapsedIcon } = require("%rGui/twsState.nut")
 let sightIndicators = require("%rGui/hud/tankSightIndicators.nut")
 let activeProtectionSystem = require("%rGui/hud/activeProtectionSystem.nut")
-let { needShowDmgIndicator, dmgIndicatorStates, isPlayingReplay, isSpectatorMode
-} = require("%rGui/hudState.nut")
+let { needShowDmgIndicator, isPlayingReplay, isSpectatorMode,
+  isMissionProgressVisible } = require("%rGui/hudState.nut")
 let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
-let { bw, bh, safeAreaSizeHud } = require("%rGui/style/screenState.nut")
+let { bw, bh } = require("%rGui/style/screenState.nut")
 let { AzimuthRange, IsRadarVisible, IsRadar2Visible, IsRadarHudVisible, IsCScopeVisible, IsBScopeVisible, isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
 let { PI } = require("%sqstd/math.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
@@ -31,6 +32,7 @@ let voiceChat = require("%rGui/chat/voiceChat.nut")
 let hudLogs = require("%rGui/hudLogs.nut")
 let { mkScreenHitMark } = require("%rGui/hud/hitMarks.nut")
 let { tankDebuffs } = require("%rGui/hud/tankHudDebuffs.nut")
+let { dmgIndicatorWidth } = require("%rGui/hud/tankDmgIndicatorState.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 let redColor = Color(255, 35, 30, 255)
@@ -42,6 +44,8 @@ let styleAamAim = {
 }
 
 let radarPosComputed = Computed(@() isPlayingReplay.get() ? [bw.get() + sw(12), bh.get() + sh(5)] : [bw.get(), bh.get()])
+
+let missionProgressHeight = round(32 * max(sh(100) / 1080, 1) + hdpx(6))
 
 let tankXrayIndicator = @() {
   rendObj = ROBJ_XRAYDOLL
@@ -74,7 +78,7 @@ function tankDmgIndicator() {
     children.append(tws({
       colorWatched = colorWacthed,
       posWatched = Watched([0, 0]),
-      sizeWatched = Computed(@() dmgIndicatorStates.get().size.map(@(v) 0.8*v)),
+      sizeWatched = Computed(@() [dmgIndicatorWidth.get() * 0.8, dmgIndicatorWidth.get() * 0.8]),
       relativCircleSize = 49,
       needDrawCentralIcon = false,
       needDrawBackground =  true,
@@ -82,12 +86,11 @@ function tankDmgIndicator() {
     }))
   return {
     rendObj = ROBJ_IMAGE
-    watch = [ IsMlwsLwsHudVisible, needShowDmgIndicator, dmgIndicatorStates ]
-    pos = dmgIndicatorStates.get()?.pos ?? [0, 0]
-    size = dmgIndicatorStates.get().size
+    watch = [ IsMlwsLwsHudVisible, needShowDmgIndicator, dmgIndicatorWidth ]
+    size = dmgIndicatorWidth.get()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    image = Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorStates.get().size[0]}:{dmgIndicatorStates.get().size[1]}")
+    image = Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorWidth.get()}:{dmgIndicatorWidth.get()}")
     children
     behavior = Behaviors.RecalcHandler
     function onRecalcLayout(_initial, elem) {
@@ -104,28 +107,36 @@ function tankDmgIndicator() {
   }
 }
 
-let leftPanelGap = hdpx(10)
+function missionProgressPanel() {
+  if (!isMissionProgressVisible.get())
+    return {watch = isMissionProgressVisible}
+  return {
+    watch = isMissionProgressVisible
+    size = [pw(100), missionProgressHeight]
+  }
+}
 
 let leftPanel = @() {
   size = FLEX_V
-  watch = [safeAreaSizeHud, isSpectatorMode, isAAComplexMenuActive,
-    needShowDmgIndicator, dmgIndicatorStates]
-  margin = [safeAreaSizeHud.get().borders[0], 0,
-    needShowDmgIndicator.get()
-      ? sh(100) - (dmgIndicatorStates.get()?.pos[1] ?? 0) + leftPanelGap
-      : safeAreaSizeHud.get().borders[0],
-    safeAreaSizeHud.get().borders[1]]
+  watch = [bw, bh, isSpectatorMode, isAAComplexMenuActive]
+  margin = [bh.get(), 0, bh.get(), bw.get()]
   flow = FLOW_VERTICAL
   vplace = ALIGN_TOP
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
-  gap = leftPanelGap
+  gap = hdpx(10)
   children = isSpectatorMode.get() ? null
-    : isAAComplexMenuActive.get() ? voiceChat
+    : isAAComplexMenuActive.get() ? [
+        voiceChat
+        tankDmgIndicator
+        missionProgressPanel
+      ]
     : [
         voiceChat
         activeOrder
         hudLogs
+        tankDmgIndicator
+        missionProgressPanel
       ]
 }
 
@@ -153,7 +164,6 @@ function Root() {
     [
       hitPanel
       aaComplexMenu
-      tankDmgIndicator
       actionBarTopPanel
       leftPanel
     ]
@@ -174,7 +184,6 @@ function Root() {
       }
       aamAim(colorWacthed, colorAlertWatched)
       agmAim(colorWacthed, colorAlertWatched)
-      tankDmgIndicator
       actionBarTopPanel
       sensorViewIndicators
       mkTankSight()

@@ -454,6 +454,48 @@
         "width": 20.0
       }
     },
+    "mprfTwsTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "targetId": true,
+      "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.0,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 74000.0,
+        "width": 150.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
+        "signalWidthMin": 2.0,
+        "width": 20.0
+      }
+    },
+    "hprfTwsTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "targetId": true,
+      "absDopplerSpeed": false,
+      "mainBeamDopplerSpeed": false,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 100000.0,
+        "width": 500.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
+        "signalWidthMin": 2.0,
+        "width": 20.0
+      }
+    },
     "mprfTrack": {
       "groundClutter": false,
       "aircraftAsTarget": true,
@@ -523,6 +565,28 @@
       "dopplerSpeed": {
         "presents": true,
         "minValue": 2.5,
+        "maxValue": 1000.0,
+        "signalWidthMin": 2.5,
+        "width": 0.0
+      }
+    },
+    "GTMTwsTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 150000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 1.5,
         "maxValue": 1000.0,
         "signalWidthMin": 2.5,
         "width": 0.0
@@ -967,6 +1031,26 @@
             "name": "PD HDN standby"
           }
         },
+        "setMprfTwsSearchSignal": {
+          "setSignal": {
+            "signal": "mprfSearch"
+          }
+        },
+        "setMprfTwsTrackSignal": {
+          "setSignal": {
+            "signal": "mprfTwsTrack"
+          }
+        },
+        "setHprfTwsSearchSignal": {
+          "setSignal": {
+            "signal": "hprfSearch"
+          }
+        },
+        "setHprfTwsTrackSignal": {
+          "setSignal": {
+            "signal": "hprfTwsTrack"
+          }
+        },
         "setGtmStandbyMode": {
           "setSearchStandbyModeCommon": {},
           "setTransiver": {
@@ -995,6 +1079,16 @@
           },
           "setDesignationSourceType": {
             "sourceType": "radarSs"
+          }
+        },
+        "setGtmTwsSearchSignal": {
+          "setSignal": {
+            "signal": "GTMSearch"
+          }
+        },
+        "setGtmTwsTrackSignal": {
+          "setSignal": {
+            "signal": "GTMTwsTrack"
           }
         },
         "setMprfTwsStandbyMode": {
@@ -1937,6 +2031,16 @@
               },
               {
                 "fsm": "main",
+                "name": "setTwsSearchSignal",
+                "actionTemplateName": "setMprfTwsSearchSignal"
+              },
+              {
+                "fsm": "main",
+                "name": "setTwsTrackSignal",
+                "actionTemplateName": "setMprfTwsTrackSignal"
+              },
+              {
+                "fsm": "main",
                 "name": "setBvrLockMode",
                 "actionTemplateName": "setTwsBvrLockMode"
               },
@@ -2030,6 +2134,16 @@
                 "fsm": "main",
                 "name": "setSearchMode",
                 "actionTemplateName": "setHprfTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setTwsSearchSignal",
+                "actionTemplateName": "setHprfTwsSearchSignal"
+              },
+              {
+                "fsm": "main",
+                "name": "setTwsTrackSignal",
+                "actionTemplateName": "setHprfTwsTrackSignal"
               },
               {
                 "fsm": "main",
@@ -2186,6 +2300,16 @@
                 "fsm": "main",
                 "name": "setSearchMode",
                 "actionTemplateName": "setGtmTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setTwsSearchSignal",
+                "actionTemplateName": "setGtmTwsSearchSignal"
+              },
+              {
+                "fsm": "main",
+                "name": "setTwsTrackSignal",
+                "actionTemplateName": "setGtmTwsTrackSignal"
               },
               {
                 "fsm": "main",
@@ -2406,6 +2530,10 @@
           "stateFrom": "track",
           "stateTo": "search",
           "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setTwsSearchSignal"
+            },
             "scan": {},
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
@@ -2511,6 +2639,10 @@
           "event": "update",
           "stateTo": "track",
           "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setTwsTrackSignal"
+            },
             "scan": {
               "scanPattern": "fastTws"
             },

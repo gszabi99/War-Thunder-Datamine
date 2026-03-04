@@ -3,9 +3,7 @@ from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
 let { getUAVCameraEnabled, getShowUAVCameraToggle } = require("hudTankStates")
 let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
-let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { eventbus_send } = require("eventbus")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
@@ -47,10 +45,6 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
     this.updateTacticalMapSwitching()
-
-    g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
-      function(_ed) { this.updateDmgIndicatorState() },
-      this)
   }
 
   function reinitScreen(_params = {}) {
@@ -64,15 +58,6 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
 
   function updateShowHintsNest() {
     showObjById("actionbar_hints_nest", true, this.scene)
-  }
-
-  function updateDmgIndicatorState() {
-    let obj = this.scene.findObject("hud_tank_damage_indicator")
-    if (obj?.isValid())
-      eventbus_send("updateDmgIndicatorStates", {
-        size = obj.getSize()
-        pos = obj.getPos()
-      })
   }
 
   function updateTacticalMapVisibility() {

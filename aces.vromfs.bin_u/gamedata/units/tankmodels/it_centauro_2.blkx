@@ -275,6 +275,13 @@
         "hidableInXrayViewer": true,
         "armorClass": "RHA_tank_modern"
       },
+      "firewall_armor_02_dm": {
+        "armorThickness": 25.0,
+        "hp": 150.0,
+        "ignoreDeadWithSplash": true,
+        "hidableInXrayViewer": true,
+        "armorClass": "RHA_tank_modern"
+      },
       "composite_armor_hull_01_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
@@ -314,10 +321,7 @@
       "spall_liner_09_dm": {},
       "spall_liner_10_dm": {},
       "spall_liner_11_dm": {},
-      "spall_liner_12_dm": {},
-      "spall_liner_13_dm": {},
-      "spall_liner_14_dm": {},
-      "spall_liner_15_dm": {}
+      "spall_liner_12_dm": {}
     },
     "aluminum_armor_7020": {
       "armorClass": "aluminum_armor_7020",
@@ -2002,15 +2006,26 @@
         }
       }
     ],
-    "armorArrayturretFront": {
-      "xrayDmPart": "firewall_armor_01_dm",
-      "titleLoc": "RHA_tank_modern",
-      "armorArrayText": {
-        "layer": {
-          "dmPart": "firewall_armor_01_dm"
+    "armorArrayturretFront": [
+      {
+        "xrayDmPart": "firewall_armor_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "firewall_armor_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "firewall_armor_02_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "firewall_armor_02_dm"
+          }
         }
       }
-    }
+    ]
   },
   "gunConvergence": {
     "updateFromRangefinder": true,
@@ -2414,8 +2429,8 @@
             180.0
           ],
           "pitch": [
-            -5.0,
-            50.0
+            -20.0,
+            70.0
           ]
         },
         "limitsTable": {
@@ -2423,20 +2438,20 @@
             -180.0,
             -167.0,
             -5.0,
-            50.0
+            70.0
           ],
           "lim2": [
             [
               -167.0,
               -135.0,
-              10.0,
-              50.0
+              20.0,
+              70.0
             ],
             [
               -135.0,
               180.0,
               -5.0,
-              50.0
+              70.0
             ]
           ]
         }
@@ -2558,7 +2573,7 @@
       "maxBrakeForce": 108000.0,
       "driveGearRadius": 0.6,
       "mainGearRatio": 6.26,
-      "sideGearRatio": 1.4,
+      "sideGearRatio": 1.34,
       "tracked": false,
       "manufacturer": "iveco",
       "model": "zf_7hp_902",
@@ -2566,14 +2581,23 @@
       "gearRatios": {
         "ratio": [
           -4.84,
+          -5.0,
           -5.6,
+          -8.69,
           0.0,
+          8.6,
           5.6,
+          4.2,
           3.43,
+          2.63,
           2.01,
+          1.66,
           1.42,
+          1.18,
           1.0,
+          0.87,
           0.83,
+          0.66,
           0.59
         ]
       }
@@ -3872,9 +3896,9 @@
       -8.8
     ],
     "headPosOnShooting": [
-      -1.2,
-      3.8,
-      -0.5
+      -0.3,
+      3.3,
+      0.0
     ],
     "detectionHeight": 3.65
   },
@@ -4204,8 +4228,8 @@
                   180.0
                 ],
                 "pitch": [
-                  -5.0,
-                  50.0
+                  -20.0,
+                  70.0
                 ]
               },
               "limitsTable": {
@@ -4213,20 +4237,20 @@
                   -180.0,
                   -167.0,
                   -5.0,
-                  50.0
+                  70.0
                 ],
                 "lim2": [
                   [
                     -167.0,
                     -135.0,
-                    10.0,
-                    50.0
+                    20.0,
+                    70.0
                   ],
                   [
                     -135.0,
                     180.0,
                     -5.0,
-                    50.0
+                    70.0
                   ]
                 ]
               }
@@ -4376,8 +4400,8 @@
     "ammo1": {
       "weaponTrigger": "gunner0",
       "removeLoadedAmmo": true,
-      "fatalFire": false,
-      "fatalExplosion": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
       "replenishmentDelay": 4.0,
       "replenishmentTime": 10.0,
       "fireSplashRadiusConstraint": 5.0,

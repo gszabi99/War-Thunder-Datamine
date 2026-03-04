@@ -2055,21 +2055,39 @@
         "index": 1,
         "tier": 8,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air_group_heli",
-          "name": "atas",
-          "reqModification": "stinger_aam",
-          "ShowNodes": {
-            "node": "pylon_l"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air_group_heli",
+            "name": "atas",
+            "reqModification": "stinger_aam",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atas_2x_stinger_atas_tiger.blk",
+              "emitter": "aim92_stinger_pod_001"
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/containers/atas_2x_stinger_atas_tiger.blk",
-            "emitter": "aim92_stinger_pod_001"
+          {
+            "iconType": "atgm_type_pars3_x2",
+            "name": "atgw3_x2",
+            "reqModification": "tiger_atgw3",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/trigat_lr_atwg_3lr_x2.blk",
+              "emitter": "aim92_stinger_pod_001",
+              "dragCx": 0.01
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
@@ -2086,8 +2104,7 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/fz225_ffar_x19.blk",
               "emitter": "fz225_001",
-              "external": true,
-              "machLimit": 1.01
+              "external": true
             }
           },
           {
@@ -2291,8 +2308,7 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/fz225_ffar_x19.blk",
               "emitter": "fz225_002",
-              "external": true,
-              "machLimit": 1.01
+              "external": true
             }
           },
           {
@@ -2485,21 +2501,39 @@
         "index": 4,
         "tier": 4,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air_group_heli",
-          "name": "atas",
-          "reqModification": "stinger_aam",
-          "ShowNodes": {
-            "node": "pylon_r"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air_group_heli",
+            "name": "atas",
+            "reqModification": "stinger_aam",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atas_2x_stinger_atas_tiger.blk",
+              "emitter": "aim92_stinger_pod_002"
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/containers/atas_2x_stinger_atas_tiger.blk",
-            "emitter": "aim92_stinger_pod_002"
+          {
+            "iconType": "atgm_type_pars3_x2",
+            "name": "atgw3_x2",
+            "reqModification": "tiger_atgw3",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/trigat_lr_atwg_3lr_x2.blk",
+              "emitter": "aim92_stinger_pod_002",
+              "dragCx": 0.01
+            }
           }
-        }
+        ]
       }
     ]
   },

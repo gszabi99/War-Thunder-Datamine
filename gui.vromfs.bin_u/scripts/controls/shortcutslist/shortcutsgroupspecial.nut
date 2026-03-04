@@ -147,6 +147,16 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_HUMAN_SIGHT_NEXT"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_HUMAN_SIGHT_PREV"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_WEAPON_LOCK_HUMAN"
     checkAssign = false
     needShowInHelp = true

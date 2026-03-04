@@ -1864,6 +1864,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "updateAnimBonesAlways": true,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1872,6 +1873,16 @@
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "openHatchTime": 0.0,
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
+          4.0,
+          -4.0,
+          -4.0
+        ],
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilOffset": 0.05,
         "maxAdditionalPitch": 0.0,
@@ -1918,7 +1929,18 @@
             "drive_turret_h_dm",
             "fire_control_system_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": "fire_control_system_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_gunner_sight_v",
+            "verLimits": [
+              -10.0,
+              45.0
+            ],
+            "verOriginLimits": [
+              -10.0,
+              45.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -2235,6 +2257,9 @@
         "spike_er2_rocket_01",
         "spike_er2_rocket_02"
       ]
+    },
+    "animatedBones": {
+      "node": "bone_gunner_sight_v"
     }
   },
   "weapon_presets": {
@@ -3263,6 +3288,7 @@
       "tier": 2,
       "effects": {
         "commonWeapons": {
+          "updateAnimBonesAlways": true,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -3271,6 +3297,16 @@
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "openHatchTime": 0.0,
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
+                4.0,
+                -4.0,
+                -4.0
+              ],
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "recoilOffset": 0.05,
               "maxAdditionalPitch": 0.0,
@@ -3317,7 +3353,18 @@
                   "drive_turret_h_dm",
                   "fire_control_system_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": "fire_control_system_dm",
+                "linkedAnimPart": {
+                  "verNode": "bone_gunner_sight_v",
+                  "verLimits": [
+                    -10.0,
+                    45.0
+                  ],
+                  "verOriginLimits": [
+                    -10.0,
+                    45.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -3687,6 +3734,9 @@
               "spike_er2_rocket_01",
               "spike_er2_rocket_02"
             ]
+          },
+          "animatedBones": {
+            "node": "bone_gunner_sight_v"
           }
         }
       }

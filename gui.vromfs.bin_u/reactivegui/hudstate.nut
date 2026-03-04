@@ -25,6 +25,7 @@ let hudState = {
   isInKillerCamera = isInKillerCam()
   playerUnitName = ""
   isThermalSightActive = false
+  isMissionProgressVisible = false
 }.map(@(val, key) mkWatched(persist, key, val))
 
 let { isInKillerCamera, isVisibleDmgIndicator } = hudState
@@ -44,11 +45,12 @@ eventbus_subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode.set(v)
 eventbus_subscribe("hud_gui_state_changed",
   @(_) isInKillerCamera.set(isInKillerCam()))
 
+eventbus_subscribe("hudProgress:visibilityChanged", @(v) hudState.isMissionProgressVisible.set(v.isVisible))
+
 interopGet({
   stateTable = hudState
   prefix = "hud"
   postfix = "Update"
 })
-
 
 return hudState

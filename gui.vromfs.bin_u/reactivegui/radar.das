@@ -256,12 +256,15 @@ struct RadarMain : RadarInteractableEll
       if data.isAAComplexMenuLayout
         mode = int(RadarViewMode.B_SCOPE_ROUND)
 
-      let mainIndicatorSize = float2(min(self.size.x, self.size.y))
+      var mainIndicatorSize = float2(min(self.size.x, self.size.y))
       let mainIndicatorPos = self.pos + float2(0.0, self.size.y - mainIndicatorSize.y)
 
       var elemPos = get_radar_hud_is_c_scope_visible() ? mainIndicatorPos - float2(0., self.size.y * 0.42) : mainIndicatorPos
       if data.enableByMfd
         elemPos += get_radar_hud_mfd_radar_offset()
+
+      let zoomedIndicatorSize = float2(min(self.size.x, self.size.y)) * float2(0.6, 0.6)
+      var zoomedIndicatorYOffset = 0.0
 
       if mode == int(RadarViewMode.B_SCOPE_ROUND)
         let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
@@ -269,18 +272,20 @@ struct RadarMain : RadarInteractableEll
         if circleOverride
           var bScope = BScopeMain(elemPos, mainIndicatorSize, *self.data)
           bScope.walkLayout(visitor)
+          zoomedIndicatorYOffset = (mainIndicatorSize.y - zoomedIndicatorSize.y) * 0.5
         else
           var bScopeHalfEl = BScopeHalfMain(elemPos, mainIndicatorSize, *self.data)
           bScopeHalfEl.walkLayout(visitor)
+          mainIndicatorSize = bScopeHalfEl.size
+          zoomedIndicatorYOffset = self.size.y - zoomedIndicatorSize.y - *self.data |> hdpx(10.0)
 
         if self.data.canZoom && self.data.magnifiedIndicator
-          let zoomedIndicatorSize = mainIndicatorSize * float2(0.6, 0.3)
           var zoomedIndicatorPosX = (self.size.x - zoomedIndicatorSize.x) * 0.5
-          var zoomedIndicatorPosY =  mainIndicatorSize.y * 0.1 - zoomedIndicatorSize.y
+          var zoomedIndicatorPosY = self.size.y - mainIndicatorSize.y - zoomedIndicatorSize.y - *self.data |> hdpx(10.0)
           if self.data.moveMagnifiedIndicatorRight
             zoomedIndicatorPosX = mainIndicatorSize.x + *self.data |> hdpx(20.0)
-            zoomedIndicatorPosY = (mainIndicatorSize.y - zoomedIndicatorSize.y) * 0.5
-          let zoomedIndicatorPos = elemPos + float2(zoomedIndicatorPosX, zoomedIndicatorPosY)
+            zoomedIndicatorPosY = zoomedIndicatorYOffset
+          let zoomedIndicatorPos = self.pos + float2(zoomedIndicatorPosX, zoomedIndicatorPosY)
           var zoomedIndicator = MagnifiedSquareIndicator(zoomedIndicatorPos, zoomedIndicatorSize, *self.data)
           zoomedIndicator.walkLayout(visitor)
 
@@ -352,8 +357,6 @@ struct BScopeHalfMain : RadarInteractableEll
     RadarInteractableEll`RadarInteractableEll(self, pos, size, in_params)
 
   def override walkLayout(var visitor : InteractableVisitor&)
-    InteractableCanvasEll`walkLayout(self, visitor)
-
     var bottomOffset = b_scope_half_circle_markers(visitor, *self.data, self.pos, self.size)
     if get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min() > 80.0 * degToRad
       bottomOffset += *self.data |> hdpx(15.0)
@@ -362,8 +365,14 @@ struct BScopeHalfMain : RadarInteractableEll
     var centerEl = BScopeHalfCenter(gridPos, size, *self.data)
     centerEl.walkLayout(visitor)
 
+    let height = bottomOffset + centerEl.size.y
+    self.pos = self.pos + float2(0.0, self.size.y - height)
+    self.size = float2(size.x, height)
+    InteractableCanvasEll`walkLayout(self, visitor)
+
 struct BScopeHalfCenter : RadarInteractableEll
   origin : float2 = float2(0.0)
+  radius : float2 = float2(0.0)
 
   def BScopeHalfCenter(grid_pos, size : float2; in_params : CanvasParams&)
     RadarInteractableEll`RadarInteractableEll(self, grid_pos, size, in_params)
@@ -372,14 +381,22 @@ struct BScopeHalfCenter : RadarInteractableEll
     var targets = PolarTargetsElement(pos, size, data, false)
     self.origin = targets.origin
 
+    let markersOffset = *self.data |> hdpx(5.0)
+    let topMarkersPos = self.origin + float2(0.0, -targets.radius.y - markersOffset)
+    let markersHeight = b_scope_half_top_markers(visitor, *data, topMarkersPos, size) + markersOffset
+
+    let lb = self.pos + float2(0.0, self.size.y)
+    let sz = float2(size.x, targets.size.y + markersHeight)
+    let lt = lb - float2(0.0, sz.y)
+    self.pos = lt
+    self.size = sz
+    self.radius = targets.radius
+
     InteractableCanvasEll`walkLayout(self, visitor)
     targets.walkLayout(visitor)
 
-    let topMarkersPos = self.origin + float2(0.0, -targets.radius.y - *self.data |> hdpx(5.0))
-    b_scope_half_top_markers(visitor, *data, topMarkersPos, size)
-
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
-    b_scope_half(ctx, *self.data, self.pos, self.origin, self.size)
+    b_scope_half(ctx, *self.data, self.pos, self.origin, self.radius * 2.0)
 
 struct PolarTargetsElement : InteractableButton
   data : CanvasParams const? = null
@@ -392,25 +409,31 @@ struct PolarTargetsElement : InteractableButton
   fullCircle : bool = false
 
   def PolarTargetsElement(pos, size : float2; params : CanvasParams const?; inFullCircle : bool)
-    InteractableButton`InteractableButton(self, pos, size)
     self.data = params
-    radius = size * 0.5
+    hud = get_cur_hud()
+
+    radius = float2(min(size.x, size.y) * 0.5)
     fullCircle = inFullCircle
 
+    let lb = pos + float2(0.0, size.y)
+    var sz = float2(radius.x * 2.0, radius.y)
     if fullCircle
-      self.origin = pos + size * 0.5
+      self.origin = pos + radius
+      sz.y += radius.y
     else
       let bottomAngle = max(0.0, azimuthRange * 0.5 - PI_2)
       let bottomOffset = sin(bottomAngle) * radius.y
-      self.origin = pos + float2(size.x * 0.5, size.y - bottomOffset)
+      self.origin = pos + float2(radius.x, size.y - bottomOffset)
+      sz.y += bottomOffset
 
-    hud = get_cur_hud()
+    let lt = lb + float2(0.0, -radius.y)
+    InteractableButton`InteractableButton(self, lt, sz)
 
   def override walkLayout(var visitor : InteractableVisitor&)
     InteractableButton`walkLayout(self, visitor)
 
     if !fullCircle
-      var elevationCurret = BScopeHalfElevationCurret(pos, self.origin, size, self.data)
+      var elevationCurret = BScopeHalfElevationCurret(self.origin, radius, self.data)
       if azimuthRange >= PI
         elevationCurret.topTextMarkHorAlign = AnchorHorz.Left
       if azimuthRange > PI - 0.035
@@ -713,11 +736,11 @@ struct BScopeHalfElevationCurret : InteractableButton
 
   flipMinMax : bool = false
 
-  def BScopeHalfElevationCurret(pos, origin, size : float2; params : CanvasParams const?)
-    InteractableButton`InteractableButton(self, pos, size)
+  def BScopeHalfElevationCurret(origin, radius : float2; params : CanvasParams const?)
+    InteractableButton`InteractableButton(self, origin, radius)
     self.origin = origin
     self.data = params
-    sz = size * 0.5
+    sz = radius
 
     sincos(get_radar_hud_azimuth_min(), sina, cosa)
 
@@ -793,8 +816,8 @@ struct BScopeHalfElevationCurret : InteractableButton
       let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
       let azimuthMin = get_radar_hud_azimuth_min()
       let elevationScanMin = elevationToT(get_radar_hud_elevation_min())
-      var posX = origin.x + elevationScanMin * sin(azimuthMin) * size.x * 0.5 - strBoxMin.width.x
-      let posY = origin.y - (elevationScanMin * cos(azimuthMin) - 0.06) * size.y * 0.5 + strBoxMin.width.y
+      var posX = origin.x + elevationScanMin * sin(azimuthMin) * sz.x - strBoxMin.width.x
+      let posY = origin.y - (elevationScanMin * cos(azimuthMin) - 0.06) * sz.y + strBoxMin.width.y
       if flipMinMax
         posX += strBoxMin.width.x
 
@@ -806,8 +829,8 @@ struct BScopeHalfElevationCurret : InteractableButton
       let textMax = fmt(":.0f", rad_to_deg(get_radar_hud_elevation_max())) + loc("measureUnits/deg")
       let strBoxMax = get_str_bbox(textMax, textMax |> length(), fctx)
       let elevationScanMax = elevationToT(get_radar_hud_elevation_max())
-      var posX2 = origin.x + elevationScanMax * sin(azimuthMin) * size.x * 0.5 - strBoxMax.width.x
-      let posY2 = origin.y - (elevationScanMax * cos(azimuthMin) - 0.06) * size.y * 0.5 + strBoxMax.width.y
+      var posX2 = origin.x + elevationScanMax * sin(azimuthMin) * sz.x - strBoxMax.width.x
+      let posY2 = origin.y - (elevationScanMax * cos(azimuthMin) - 0.06) * sz.y + strBoxMax.width.y
       if flipMinMax
         posX2 += strBoxMax.width.x
 
@@ -891,20 +914,20 @@ def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; origin 
     var dist = 12.5
     while dist < 37.5 + 1.0
       if dist > distanceMinR
-        ctx |> render_sector_aa(origin, dist * 0.01 * size, anglesInternalGrid, data.lineWidth, color, E3DCOLOR(0u))
+        ctx |> render_sector_aa(origin, dist * 0.02 * radius, anglesInternalGrid, data.lineWidth, color, E3DCOLOR(0u))
       dist += 12.5
-    ctx |> render_sector_aa(origin, size * distMinRel * 0.5, anglesInternalGrid, data.lineWidth, color, E3DCOLOR(0u))
+    ctx |> render_sector_aa(origin, radius * distMinRel, anglesInternalGrid, data.lineWidth, color, E3DCOLOR(0u))
 
   let angleStep = PI * 15.0 / 180.0
   for i in range(int(anglesInternalGrid.x / angleStep), int(anglesInternalGrid.y / angleStep))
     let angle = float(i) * angleStep
-    let coord <- to_array_move(fixed_array<float2>(origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5 * distMinRel,
-     origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5))
+    let coord <- to_array_move(fixed_array<float2>(origin + float2(cos(angle) * radius.x, sin(angle) * radius.y) * distMinRel,
+     origin + float2(cos(angle) * radius.x, sin(angle) * radius.y)))
     ctx |> render_line_aa(coord, false, 1.2 * data.lineWidth, float2(0, 0), color)
 
-  let rscoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesInternal.y) * size.x, sin(anglesInternal.y) * size.y) * 0.5))
+  let rscoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesInternal.y) * radius.x, sin(anglesInternal.y) * radius.y)))
   ctx |> render_line_aa(rscoord, false, 2.4 * data.lineWidth, float2(0, 0), color)
-  let lscoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesInternal.x) * size.x, sin(anglesInternal.x) * size.y) * 0.5))
+  let lscoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesInternal.x) * radius.x, sin(anglesInternal.x) * radius.y)))
   ctx |> render_line_aa(lscoord, false, 2.4 * data.lineWidth, float2(0, 0), color)
 
 def b_scope_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; half_width : float; value : float)
@@ -936,8 +959,9 @@ def b_scope_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
       ctx |> render_line_aa(coord, false, data |> hdpx(line_width), float2(0, 0), color)
 
 def b_scope_half_top_markers(var visitor : InteractableVisitor&; data : CanvasParams&; center : float2; size : float2)
+  var height = 0.0
   if !get_radar_hud_is_visible() && !get_radar_hud_is_visible2()
-    return
+    return height
 
   let modeName = Radar`getModeNameLoc(data.radarModeNameLangId)
 
@@ -957,6 +981,7 @@ def b_scope_half_top_markers(var visitor : InteractableVisitor&; data : CanvasPa
   modeEl.walkLayout(visitor)
 
   let strBox = modeEl.textBox
+  height = max(height, strBox.width.y)
 
   style.anchorHorz = AnchorHorz.Left
   let name2Id = get_radar_hud_mode_name2_id()
@@ -965,17 +990,22 @@ def b_scope_half_top_markers(var visitor : InteractableVisitor&; data : CanvasPa
   let mode2Pos = float2(center.x + 5., center.y - 5.)
   var mode2El = TextButton(mode2Pos, modeName2, style)
   mode2El.walkLayout(visitor)
+  height = max(height, mode2El.textBox.width.y)
 
   if get_radar_hud_noise_signal_visible() && get_radar_hud_is_visible() && get_radar_hud_noise_signal() > 0.5
     let noisePos = center - float2(strBox.width.x + size.x * 0.06, size.y * 0.07)
     let noiseSize = float2(size.x * 0.06, size.y * 0.07)
     var noiseEl = NoiseSignalElement(noisePos, noiseSize, data, get_radar_hud_noise_signal())
     noiseEl.walkLayout(visitor)
+    height = max(height, noiseSize.y)
   if get_radar_hud_noise_signal_visible() && get_radar_hud_is_visible2() && get_radar_hud_noise_signal2() > 0.5
     let noisePos = center
     let noiseSize = float2(size.x * 0.06, size.y * 0.07)
     var noiseEl = NoiseSignalElement(noisePos, noiseSize, data, get_radar_hud_noise_signal2())
     noiseEl.walkLayout(visitor)
+    height = max(height, noiseSize.y)
+
+  return height
 
 def for_own_weapon_with_target(own_weapon_index : int; own_weapon_target_index : int; blk : block<(ownWeapon : RadarTarget const const#; ownWeaponTarget : RadarTarget const const#) : void>)
   get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)

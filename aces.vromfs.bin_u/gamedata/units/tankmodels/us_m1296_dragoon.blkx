@@ -1914,6 +1914,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "updateAnimBonesAlways": true,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1962,7 +1963,18 @@
             "drive_turret_h_dm",
             "fire_control_system_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": "fire_control_system_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_roll_02",
+            "verLimits": [
+              -10.0,
+              45.0
+            ],
+            "verOriginLimits": [
+              -10.0,
+              45.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -2089,7 +2101,10 @@
           ]
         }
       }
-    ]
+    ],
+    "animatedBones": {
+      "node": "bone_roll_02"
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -3673,6 +3688,7 @@
       "modClass": "protection",
       "effects": {
         "commonWeapons": {
+          "updateAnimBonesAlways": true,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -3721,7 +3737,18 @@
                   "drive_turret_h_dm",
                   "fire_control_system_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": "fire_control_system_dm",
+                "linkedAnimPart": {
+                  "verNode": "bone_roll_02",
+                  "verLimits": [
+                    -10.0,
+                    45.0
+                  ],
+                  "verOriginLimits": [
+                    -10.0,
+                    45.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -3901,7 +3928,10 @@
                 ]
               }
             }
-          ]
+          ],
+          "animatedBones": {
+            "node": "bone_roll_02"
+          }
         }
       }
     },

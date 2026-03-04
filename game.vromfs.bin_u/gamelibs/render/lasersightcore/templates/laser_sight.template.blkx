@@ -1,0 +1,77 @@
+{
+  "laser_decals_manager": {
+    "_use": "replicating",
+    "_singleton": true,
+    "_tags": "render",
+    "laser_decals_initial_count": 128,
+    "laser_decals_generator_shader": "projective_decal_decals_generator",
+    "laser_decals_render_shader": "laser_point_decal",
+    "laser_point_decal_culler_shader": "laser_decal_cull",
+    "laser_decal_init_shader": "projective_decal_create_indirect",
+    "laser_screen_spot_count": 0,
+    "laser_decal_manger__is_compatible": true,
+    "laser_decals_manager:ResizableDecalManager": {},
+    "laser_screen_spot_buffer:UniqueBufHolder": {}
+  },
+  "laser_sight": {
+    "laserBeamStartOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "laserBeamColor": [
+      0.35,
+      0.0,
+      0.0
+    ],
+    "laserBeamMaxLength": 75.0,
+    "laserStartSize": 0.02,
+    "laserMaxSize": 0.2,
+    "laserCrownAngle": 5.0,
+    "laserAlpha": 0.2,
+    "laserStartIntensity": 1.0,
+    "laserMaxIntensity": 1.0,
+    "laserActive": false,
+    "laserScrollingSpeed": 5.0,
+    "laser__fxNodeName": "laser_fx",
+    "laser__fxNodeIdx": -1,
+    "_replicated": [
+      "laserActive",
+      "laserAvailable"
+    ],
+    "_tracked": [
+      "laserActive",
+      "laserAvailable"
+    ],
+    "laserAvailable": true,
+    "laser_data__rayHit": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "laser_data__fxPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "laser_data__fxDir": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "laser_data__laserLen": 1.0,
+    "laser_data__intesity": 1.0,
+    "laser_data__crownSize": 0.5,
+    "laser_sight__is_compatible": true,
+    "laserBeamTracerId:i": {
+      "_tags": "render",
+      "value": -1
+    },
+    "laserDecalId:i": {
+      "_tags": "render",
+      "value": -1
+    },
+    "laser_data__gunOwner:eid": {},
+    "laser_data__playerId:eid": {}
+  }
+}

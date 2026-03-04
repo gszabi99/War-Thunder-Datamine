@@ -65,7 +65,7 @@ def human_reverb_sound_init_node_id(evt : Event;
       logerr("Reverb node '{attach_reverb_sound_to_watchable__nodeName}' not found")
 
 
-[es(tag=sound, on_event=EventOnInfantryPresetLoaded)]
+[es(tag=sound, on_appear, on_event=EventOnInfantryPresetLoaded)]
 def reverb_sound_appear(evt : Event;
                         reverb_sound__intensityVar : string;
                         reverb_sound__path : string;
@@ -75,7 +75,7 @@ def reverb_sound_appear(evt : Event;
                         var reverb_sound__intensity_roomSize_absorption_blend : float4&;
                         var reverb_sound__event : SoundEvent&)
   reverb_sound__event |> release_immediate()
-  if sound_banks_is_master_preset_loaded()
+  if sound_banks_is_master_preset_loaded() && sound_banks_is_preset_loaded("infantry")
     reverb_sound__event |> play(reverb_sound__path, get_reverb_3d_pos())
     set_var_global(reverb_sound__intensityVar, 0.)
   reverb_sound__intensity_roomSize_absorption_blend = float4(0., 0., 0., 0.)

@@ -482,6 +482,12 @@
     "thicknessMapMinObstacleSize": 0.02,
     "pushOutCenter": true,
     "minRealSplashWaveRadius": 100.0,
+    "underwaterPenetrationScale": 1.25,
+    "underwaterDamageScale": 1.5,
+    "underwaterRadiusScale": [
+      1.0,
+      1.2
+    ],
     "squashArmorAnglesScale": {
       "p0": [
         0.0,
@@ -543,7 +549,11 @@
     "minObstacleSize": 0.02
   },
   "shatter": {
-    "maxDistForMaxPenetrationTest": 0.01
+    "maxDistForMaxPenetrationTest": 0.01,
+    "underwaterDamageScale": 1.0,
+    "underwaterPenetrationScale": 1.0,
+    "underwaterCountScale": 1.0,
+    "underwaterRadiusScale": 0.5
   },
   "kineticDamage": {
     "damageType": "generic"

@@ -2577,6 +2577,20 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     holderObj.getScene().replaceContentFromText(obj, weaponsInfoMarkup, weaponsInfoMarkup.len(), handler)
   }
 
+  local needAdditionalWeaponInfo = !showShortestUnitInfo && unit.isShipOrBoat()
+  if (needAdditionalWeaponInfo) {
+    weaponInfoParams.onlyAdditionWeaponry <- true
+    let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
+    needAdditionalWeaponInfo = needAdditionalWeaponInfo && weaponInfoData.resultWeaponBlocks.len() > 0
+    obj = showObjById("additionalWeaponsInfo", needAdditionalWeaponInfo, holderObj)
+    if (needAdditionalWeaponInfo) {
+      let weaponsInfoMarkup = getWeaponInfoMarkup(unit, weaponInfoData, false)
+      holderObj.getScene().replaceContentFromText(obj, weaponsInfoMarkup, weaponsInfoMarkup.len(), handler)
+    }
+  }
+  else
+    showObjById("additionalWeaponsInfo", false, holderObj)
+
   if (anyAirVehicle.contains(unitType)) {
     let hasSecondaryWeaponInfo = !inHangar && isUnitHaveSecondaryWeapons(unit)
     let secondaryWeaponDivObj = showObjById("secondaryWeapon-div", hasSecondaryWeaponInfo, holderObj)

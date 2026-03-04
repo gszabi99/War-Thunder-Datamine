@@ -7,7 +7,8 @@ require PropsManager
 require DaWeapons
 
 
-def try_reload_empty_gun(gun_eid : EntityId;
+def try_reload_empty_gun(gun : Gun;
+                         gun_eid : EntityId;
                          gun__autoReload : bool;
                          gun__manuallyUnloaded : bool;
                          shoot : bool;
@@ -24,7 +25,13 @@ def try_reload_empty_gun(gun_eid : EntityId;
     var shouldReload = false
 
     if reloadOnShoot
-      shouldReload ||= shoot
+      let isAiming = get_bool(gun_owner, "human_net_phys__isAiming") ?? false
+      let firingModeType = gun_getFiringMode(gun, int(gun.firingModeIndex)).modeType
+      let isHoldToFireMode = firingModeType == EFiringModeType.EFM_AUTOMATIC
+      if !isAiming || isHoldToFireMode
+        shouldReload ||= shoot
+      else
+        shouldReload ||= !gun.appliedControls.shoot && shoot
 
     if reloadOnEmptyMag && gun__autoReload && !gun__manuallyUnloaded
       shouldReload ||= !shoot

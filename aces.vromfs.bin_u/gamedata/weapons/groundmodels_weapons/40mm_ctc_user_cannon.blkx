@@ -89,6 +89,7 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
+    "cartridgeCaseModelName": "ct_apdsfs_with_cartridge_case",
     "bulletName": "40mm_gpr_ke_t_apfsds",
     "relativeVelHitShift": [
       300.0,
@@ -98,6 +99,11 @@
     "relativeVelArmorShift": [
       200.0,
       1000.0
+    ],
+    "offsetForDemonstration": [
+      -0.025,
+      0.015,
+      0.0
     ],
     "selfDestructionFx": "explosion_air_selfexplosion_small",
     "groundCollisionEffect": "hit_39_58mm_dirt_ap",
@@ -501,12 +507,13 @@
       ],
       "explodeOnRendinst": true,
       "offsetForDemonstration": [
-        0.05,
-        0.0,
+        -0.02,
+        0.005,
         0.0
       ],
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
+      "cartridgeCaseModelName": "ct_he_with_cartridge_case",
       "bulletName": "40mm_gpr_pd_t_he",
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
@@ -1032,7 +1039,13 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_df.ivf",
+      "cartridgeCaseModelName": "ct_he_vt_with_cartridge_case",
       "bulletName": "40mm_gpr_ab_t_he",
+      "offsetForDemonstration": [
+        -0.02,
+        0.005,
+        0.0
+      ],
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
@@ -1557,6 +1570,12 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/ahead.ivf",
+      "cartridgeCaseModelName": "ct_ahead_with_cartridge_case",
+      "offsetForDemonstration": [
+        -0.02,
+        0.005,
+        0.0
+      ],
       "bulletName": "40mm_ke_ab_ahead",
       "hitPowerMult": 35.0,
       "timeFuseDistanceError": 1.5,

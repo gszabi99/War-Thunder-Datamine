@@ -5082,6 +5082,11 @@
         "reqModification": "ship_bomb_mortar"
       },
       {
+        "name": "torpedoes_bomb_mortar",
+        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_kagero_bomb_mortars_torpedoes.blk",
+        "reqModification": "ship_bomb_mortar"
+      },
+      {
         "name": "jp_destroyer_kagero_default",
         "blk": "gameData/units/ships/weaponPresets/jp_destroyer_kagero_default.blk"
       }
@@ -5324,7 +5329,8 @@
     "ammo4": {
       "weaponTrigger": [
         "gunner3",
-        "gunner4"
+        "gunner4",
+        "gunner5"
       ],
       "entityMunition": "aux",
       "fatalFire": false,
@@ -5338,7 +5344,7 @@
           "fireEvent": "ammo_aux_fire_1",
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_01_dm": {
-            "count": 3000
+            "count": 6000
           }
         },
         {
@@ -5346,7 +5352,7 @@
           "fireEvent": "ammo_aux_fire_2",
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_02_dm": {
-            "count": 3000
+            "count": 6000
           }
         }
       ]

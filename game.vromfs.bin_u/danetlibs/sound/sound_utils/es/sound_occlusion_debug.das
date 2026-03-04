@@ -12,6 +12,7 @@ require soundSystem
 require math.color
 require math.base
 require DagorDebug3D
+require DagorDataBlock
 require DagorSystem
 
 def get_cur_cam_entity()
@@ -98,11 +99,11 @@ def copy_to_clipboard(sound_occlusion__ri_name_to_occluder_type : Object&)
     nameType.name = string(it.key)
     nameType.typ = it.value as string ?? ""
   namesTypes |> sort() <| $(a, b)
-    return a.typ != b.typ ? a.typ < b.typ : a.name < b.name
+    return a.name < b.name
   for it in namesTypes
     if !empty(text)
       text += "\n"
-    text += "    {it.name}:t=\"{it.typ}\""
+    text += "  {it.name}:t=\"{it.typ}\""
   if !empty(text)
     set_clipboard_ansi_text(text)
     sound_debug("copied to clipboard")
@@ -133,10 +134,49 @@ def copy_occluders_to_clipboard__console_cmd()
     copy_to_clipboard(sound_occlusion__ri_name_to_occluder_type)
 
 
+def load_occluders_impl(filepath : string;
+                        var sound_occluders_debug : Object&;
+                        var sound_occluders_types : Object&)
+  var success = false
+  clear(sound_occluders_debug)
+  using() <| $(var blk : DataBlock)
+    if datablock_load(blk, filepath)
+      datablock_get_block(blk, "soundOccluders") <| $(soundOccluders)
+        for i in range(soundOccluders.paramCount)
+          let name = soundOccluders |> datablock_getParamName(uint(i))
+          let typ = soundOccluders |> datablock_getStr(i)
+          sound_occluders_debug |> set(name, typ)
+      sound_debug("loaded {length(sound_occluders_debug)} objects from '{filepath}_sound_occluders.blk'")
+      success = true
+  if success
+    success = false
+    clear(sound_occluders_types)
+    using() <| $(var blk : DataBlock)
+      if datablock_load(blk, filepath)
+        datablock_get_block(blk, "soundOccluderTypes") <| $(soundOccluders)
+          for i in range(soundOccluders.paramCount)
+            let name = soundOccluders |> datablock_getParamName(uint(i))
+            let value = soundOccluders |> datablock_getReal(i)
+            sound_occluders_types |> set(name, value)
+        sound_debug("loaded {length(sound_occluders_types)} types from '{filepath}_sound_occluder_types.blk'")
+        success = true
+  if !success
+    logerr("something is wrong (load_occluders from \"{filepath}\")")
+    clear(sound_occluders_debug)
+    clear(sound_occluders_types)
+
+
+
 [console_cmd(name="snd.debug_occluders")]
 def snd_debug_occluders__console_cmd()
-  query() <| $ [es] (var sound_occlusion__debug : bool&)
+  query() <| $ [es] (var sound_occlusion__debug : bool&;
+                     var sound_occlusion__ri_name_to_occluder_type : Object&;
+                     var sound_occlusion__occluderTypes : Object&;
+                     sound_load_occluders_debug__filepath : string)
     sound_occlusion__debug = !sound_occlusion__debug
+    if sound_occlusion__debug
+      load_occluders_impl(sound_load_occluders_debug__filepath, sound_occlusion__ri_name_to_occluder_type, sound_occlusion__occluderTypes)
+
 
 
 [console_cmd(name="snd.set_occluders_dist")]

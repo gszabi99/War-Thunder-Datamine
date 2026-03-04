@@ -38,47 +38,53 @@ hudFrame {
       background-image:t='!ui/images/profile_headers/<<headerBackground>>'
     }
 
-    avatar {
-      size:t='56/720@shHud,56/720@shHud'
+    killerInfoBlock {
+      width:t='2*(87/720@shHud)'
       valign:t='center'
-      margin-left:t='7/720@shHud'
 
-      img {
-        position:t='relative'
-        pos:t='pw/2-w/2,ph/2-h/2'
-        size:t='pw,ph'
-        background-svg-size:t='pw,ph'
-        background-image:t='<<pilotIcon>>'
+      avatar {
+        size:t='56/720@shHud,56/720@shHud'
+        valign:t='center'
+        margin-left:t='7/720@shHud'
 
-        <<#hasAvatarFrame>>
-        avatarFrame { background-image:t='!ui/images/avatar_frames/<<frame>>.avif' }
-        <</hasAvatarFrame>>
-      }
-    }
+        img {
+          position:t='relative'
+          pos:t='pw/2-w/2,ph/2-h/2'
+          size:t='pw,ph'
+          background-svg-size:t='pw,ph'
+          background-image:t='<<pilotIcon>>'
 
-    killerProfile {
-      margin-left:t='12/720@shHud'
-      valign:t='center'
-      flow:t='vertical'
-
-      tdiv {
-        textareaNoTab {
-          text:t='<<clanTag>>'
-          font-pixht:t='16/720@shHud'
+          <<#hasAvatarFrame>>
+          avatarFrame { background-image:t='!ui/images/avatar_frames/<<frame>>.avif' }
+          <</hasAvatarFrame>>
         }
+      }
+
+      killerProfile {
+        margin-left:t='12/720@shHud'
+        valign:t='center'
+        flow:t='vertical'
+
+        tdiv {
+          textareaNoTab {
+            text:t='<<clanTag>>'
+            font-pixht:t='16/720@shHud'
+            margin-right:t='5/720@shHud'
+            hideEmptyText:t='yes'
+          }
+          textareaNoTab {
+            text:t='<<name>>'
+            normalBoldFont:t='yes'
+            overlayTextColor:t='active'
+            font-pixht:t='16/720@shHud'
+          }
+        }
+
         textareaNoTab {
-          margin-left:t='5/720@shHud'
-          text:t='<<name>>'
-          normalBoldFont:t='yes'
+          text:t='<<title>>'
           overlayTextColor:t='active'
-          font-pixht:t='16/720@shHud'
+          font-pixht:t='9/720@shHud'
         }
-      }
-
-      textareaNoTab {
-        text:t='<<title>>'
-        overlayTextColor:t='active'
-        font-pixht:t='9/720@shHud'
       }
     }
   }
@@ -110,71 +116,101 @@ hudFrame {
       }
     }
 
-    unitInfo {
-      id:t='unit_info'
+    div {
       position:t='relative'
       valign:t='center'
-      margin-left:t='15/720@shHud'
-      padding-right:t='15/720@shHud'
-      flow:t='vertical'
-
-      textareaNoTab {
-        text:t='<<unitName>>'
-        overlayTextColor:t='active'
-        font-pixht:t='12/720@shHud'
-      }
-
-      textareaNoTab {
-        text:t='<<unitTypeText>>'
-        font-pixht:t='12/720@shHud'
-      }
-
-      textareaNoTab {
-        text:t='<<rankAndbattleRatingText>>'
-        font-pixht:t='12/720@shHud'
-      }
-
-      <<#hasShellInfo>>
-      separator {
-        size:t='pw,1@dp'
-        margin-y:t='4.5/720@shHud'
-        bgcolor:t='#666666'
-      }
-
-      shellInfo {
-        flow:t='horizontal'
+      unitInfo {
+        id:t='unit_info'
+        position:t='relative'
+        margin-left:t='15/720@shHud'
+        padding-right:t='15/720@shHud'
+        flow:t='vertical'
 
         textareaNoTab {
-          valign:t='center'
-          text:t='<<shellHeader>><<?ui/colon>>'
+          text:t='<<unitName>>'
+          overlayTextColor:t='active'
           font-pixht:t='12/720@shHud'
         }
 
-        <<#hasShellIcon>>
-        shellLayeredIcon {
-          size:t='20/720@shHud,20/720@shHud'
-          margin-right:t='2/720@shHud'
-          <<#shellIconLayers>>
-          img {
-            size:t='pw,ph'
-            position:t='absolute'
-            pos:t='0.5pw-0.5w, 0.5ph-0.5h'
-            background-image:t='!<<layeredIconSrc>>'
-            background-svg-size:t='pw, ph'
-            background-repeat:t='aspect-ratio'
+        textareaNoTab {
+          text:t='<<unitTypeText>>'
+          font-pixht:t='12/720@shHud'
+        }
+
+        textareaNoTab {
+          text:t='<<rankAndbattleRatingText>>'
+          font-pixht:t='12/720@shHud'
+        }
+
+        <<#hasShellInfo>>
+        separator {
+          size:t='pw,1@dp'
+          margin-y:t='4.5/720@shHud'
+          bgcolor:t='#666666'
+        }
+
+        shellInfo {
+          flow:t='horizontal'
+
+          textareaNoTab {
+            valign:t='center'
+            text:t='<<shellHeader>><<?ui/colon>>'
+            font-pixht:t='12/720@shHud'
           }
-          <</shellIconLayers>>
+
+          <<#hasShellIcon>>
+          shellLayeredIcon {
+            size:t='20/720@shHud,20/720@shHud'
+            margin-right:t='2/720@shHud'
+            <<#shellIconLayers>>
+            img {
+              size:t='pw,ph'
+              position:t='absolute'
+              pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+              background-image:t='!<<layeredIconSrc>>'
+              background-svg-size:t='pw, ph'
+              background-repeat:t='aspect-ratio'
+            }
+            <</shellIconLayers>>
+          }
+          <</hasShellIcon>>
+
+          textareaNoTab {
+            valign:t='center'
+            font-pixht:t='12/720@shHud'
+            text:t='<<shellNameLoc>>'
+            overlayTextColor:t='active'
+          }
         }
-        <</hasShellIcon>>
+        <</hasShellInfo>>
+      }
+
+      <<#hasKillerHitsInfo>>
+      killerDamageBlock {
+        position:t='relative'
+        padding-right:t='15/720@shHud'
+        flow:t='vertical'
 
         textareaNoTab {
-          valign:t='center'
+          text:t='<<?hits/area/header>><<?ui/colon>>'
           font-pixht:t='12/720@shHud'
-          text:t='<<shellNameLoc>>'
           overlayTextColor:t='active'
         }
+        <<#offenderHits>>
+        div {
+          textareaNoTab {
+            text:t='<<areaLocId>><<?ui/colon>>'
+            font-pixht:t='9/720@shHud'
+          }
+          textareaNoTab {
+            text:t=' <<hitsNum>>'
+            font-pixht:t='9/720@shHud'
+            overlayTextColor:t='active'
+          }
+        }
+        <</offenderHits>>
       }
-      <</hasShellInfo>>
+      <</hasKillerHitsInfo>>
     }
   }
 }

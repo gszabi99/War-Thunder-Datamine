@@ -525,6 +525,9 @@ function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBulletMask
 }
 
 function findIdenticalWeaponIdx(weapon, weaponList, modsList, unitName) {
+  if (weapon?.disableStackGuns ?? false)
+    return null
+
   let bulletSetAvailiable = weapon % "bulletSetAvailiable"
   let sameIdx = findWeaponIdxInListByBulletSet(weapon, weaponList, bulletSetAvailiable)
   if (sameIdx != null)

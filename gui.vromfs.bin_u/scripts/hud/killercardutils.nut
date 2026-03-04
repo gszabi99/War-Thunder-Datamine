@@ -12,6 +12,8 @@ let { getProjectileNameLoc, getProjectileIconLayers } = require("%scripts/weapon
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
+let offenderHitsOrder = ["armor", "head", "torso", "hand", "leg"]
+
 function isKillerCardData(messageData) {
   let { isKill = false, playerId = -1, victimPlayerId = null, isDebugData = false } = messageData
 
@@ -31,7 +33,7 @@ function getKillerCardView(messageData, userInfo) {
   if (!isKillerCardData(messageData))
     return null
   let { playerId = -1, killerProjectileName = "", isDebugData = false,
-    weaponEcsTemplateName = "" } = messageData
+    weaponEcsTemplateName = "", offenderHits = {} } = messageData
   let { aircraftName, name, clanTag = "", title = "", aircraft } = isDebugData ? messageData
     : get_mplayer_by_id(playerId)
   let unit = getAircraftByName(aircraftName)
@@ -57,11 +59,13 @@ function getKillerCardView(messageData, userInfo) {
 
   let shellIconLayers = getProjectileIconLayers(killerProjectileName)
 
+  let offenderHitsArray = offenderHitsOrder
+    .filter(@(area) offenderHits?[area] != null )
+    .map(@(area) {areaLocId = loc($"hits/area/{area}"), hitsNum = offenderHits[area]})
+
   return {
     cardCaption = "".concat(utf8Capitalize(loc("NET_UNIT_KILLED_BY_PLAYER")), loc("ui/colon"))
-    pilotIcon = userInfo?.pilotIcon
-      ? $"#ui/images/avatars/{getAvatarIconIdByUserInfo(userInfo)}.avif"
-      : null
+    pilotIcon = $"#ui/images/avatars/{getAvatarIconIdByUserInfo(userInfo)}.avif"
     hasAvatarFrame = (userInfo?.frame ?? "") != ""
     frame = userInfo?.frame
     headerBackground = (userInfo?.background ?? "") != ""
@@ -70,7 +74,7 @@ function getKillerCardView(messageData, userInfo) {
 
     name = utf8(getPlayerName(name))
     clanTag
-    title = (userInfo?.title ?? "") != "" ? loc($"title/{title}") : ""
+    title = (userInfo?.title ?? "") != "" ? loc($"title/{title}") : messageData?.title ?? ""
 
     unitImg
     countryFlagImg = getCountryFlagForUnitTooltip(unit.getOperatorCountry())
@@ -82,6 +86,9 @@ function getKillerCardView(messageData, userInfo) {
     hasShellIcon = shellIconLayers.len() > 0
     shellIconLayers
     shellHeader = showCustomItem ? loc("hotkeys/ID_HUMAN_FIRE_HEADER") : loc("logs/ammunition")
+
+    hasKillerHitsInfo = offenderHits.len()
+    offenderHits = offenderHitsArray
   }
 }
 

@@ -340,11 +340,6 @@
         "armorClass": "RHAHH_tank",
         "hidableInViewer": true
       },
-      "turret_09_side_dm": {
-        "armorThickness": 8.0,
-        "armorClass": "RHAHH_tank",
-        "hidableInViewer": true
-      },
       "turret_11_top_dm": {
         "armorThickness": 8.0,
         "armorClass": "RHAHH_tank",
@@ -354,6 +349,12 @@
         "armorThickness": 8.0,
         "armorClass": "RHAHH_tank",
         "hidableInViewer": true
+      },
+      "firewall_armor_01_dm": {
+        "armorThickness": 35.0,
+        "hp": 150.0,
+        "ignoreDeadWithSplash": true,
+        "armorEffectiveThicknessMax": 50.0
       }
     },
     "turret_screens": {
@@ -422,7 +423,8 @@
         "armorThickness": 15.0
       },
       "turret_09_bottom_dm": {},
-      "turret_07_bottom_dm": {}
+      "turret_07_bottom_dm": {},
+      "turret_09_side_dm": {}
     },
     "mask": {
       "armorClass": "RHA_tank",
@@ -1875,17 +1877,17 @@
             "dmPart": "composite_armor_hull_04_dm"
           }
         }
-      },
-      {
-        "xrayDmPart": "composite_armor_turret_01_dm",
-        "titleLoc": "RHA_tank",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_turret_01_dm"
-          }
+      }
+    ],
+    "armorArrayTurret": {
+      "xrayDmPart": "firewall_armor_01_dm",
+      "titleLoc": "RHA_tank_modern",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "firewall_armor_01_dm"
         }
       }
-    ]
+    }
   },
   "MetaParts": {
     "closed_fightning_compartment": {
@@ -1946,6 +1948,15 @@
         "blk": "gameData/Weapons/groundModels_weapons/30mm_Rheinmetall_MK_30_2_ABM_KF41_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
+          1.0,
+          0.5,
+          -12.0
+        ],
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilOffset": 0.05,
         "maxAdditionalPitch": 0.0,
@@ -1992,7 +2003,33 @@
             "drive_turret_h_dm",
             "fire_control_system_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": "fire_control_system_dm",
+          "linkedAnimPart": [
+            {
+              "verNode": "bone_camera_roll",
+              "xrayVerNode": "commander_panoramic_sight_xray",
+              "verLimits": [
+                -10.0,
+                45.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                45.0
+              ]
+            },
+            {
+              "verNode": "bone_turret_03",
+              "xrayVerNode": "optic_gun_xray",
+              "verLimits": [
+                -10.0,
+                45.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                45.0
+              ]
+            }
+          ]
         },
         "limits": {
           "yaw": [
@@ -2250,7 +2287,16 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "bone_camera_gunner_01",
+        "commander_panoramic_sight_01_dm",
+        "mg_aa_mount_h",
+        "optic_commander_01",
+        "turret_02_back_dm"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2292,7 +2338,7 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 720.0,
+      "horsePowers": 815.0,
       "maxRPM": 2300.0,
       "minRPM": 900.0,
       "rpmTau": 1.9,
@@ -3661,18 +3707,18 @@
   "commanderView": {
     "aimModeAvailable": true,
     "optics": "commander_optics_square",
-    "zoomOutFov": 24.7,
-    "zoomInFov": 7.37,
+    "zoomOutFov": 16.7,
+    "zoomInFov": 4.4,
     "sightSize": [
-      0.45,
-      0.32
+      0.35,
+      0.35
     ]
   },
   "cockpit": {
-    "zoomOutFov": 24.7,
-    "zoomInFov": 7.37,
-    "sightFov": 12.0,
-    "sightName": "abrams_sight",
+    "zoomOutFov": 16.7,
+    "zoomInFov": 4.4,
+    "sightFov": 7.2,
+    "sightName": "seoss_2_sight",
     "openedCockpit": false,
     "headPos": [
       0.0,
@@ -3839,6 +3885,15 @@
               "blk": "gameData/Weapons/groundModels_weapons/30mm_Rheinmetall_MK_30_2_ABM_KF41_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
+                1.0,
+                0.5,
+                -12.0
+              ],
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "recoilOffset": 0.05,
               "maxAdditionalPitch": 0.0,
@@ -3885,7 +3940,33 @@
                   "drive_turret_h_dm",
                   "fire_control_system_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": "fire_control_system_dm",
+                "linkedAnimPart": [
+                  {
+                    "verNode": "bone_camera_roll",
+                    "xrayVerNode": "commander_panoramic_sight_xray",
+                    "verLimits": [
+                      -10.0,
+                      45.0
+                    ],
+                    "verOriginLimits": [
+                      -10.0,
+                      45.0
+                    ]
+                  },
+                  {
+                    "verNode": "bone_turret_03",
+                    "xrayVerNode": "optic_gun_xray",
+                    "verLimits": [
+                      -10.0,
+                      45.0
+                    ],
+                    "verOriginLimits": [
+                      -10.0,
+                      45.0
+                    ]
+                  }
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4196,7 +4277,16 @@
                 ]
               }
             }
-          ]
+          ],
+          "hideNodes": {
+            "node": [
+              "bone_camera_gunner_01",
+              "commander_panoramic_sight_01_dm",
+              "mg_aa_mount_h",
+              "optic_commander_01",
+              "turret_02_back_dm"
+            ]
+          }
         }
       }
     },

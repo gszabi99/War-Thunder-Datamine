@@ -3259,6 +3259,7 @@
               "DR-VC-1A",
               "PGZ-09 TA",
               "1RS1",
+              "1RS1-4",
               "CLC-1",
               "SMA VPS-A05",
               "ESD RA-20 S",
@@ -3556,7 +3557,10 @@
           },
           {
             "name": "S1",
-            "type": "1RS1"
+            "type": [
+              "1RS1",
+              "1RS1-4"
+            ]
           },
           {
             "name": "625",
@@ -6156,22 +6160,6 @@
             }
           },
           {
-            "iconType": "guided_bomb_large_jdam_group_x2",
-            "name": "us_gbu_32_x2_slot7",
-            "reqModification": "us_gbu_32_31",
-            "ShowNodes": {
-              "node": "pylon_3"
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_32_navy_x2.blk",
-              "emitter": "pylon_ver_4",
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
-          },
-          {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot7",
             "reqModification": "us_gbu_32_31",
@@ -6700,6 +6688,22 @@
               "blk": "gameData/Weapons/BombGuns/us_1000lb_gbu32_navy.blk",
               "emitter": "bomb5_mk_84",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam_group_x2",
+            "name": "us_gbu_32_x2_slot8",
+            "reqModification": "us_gbu_32_31",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_32_navy_x2.blk",
+              "emitter": "pylon_ver_5",
               "external": true,
               "separate": true,
               "machLimit": 1.01

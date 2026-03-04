@@ -40,7 +40,7 @@ let hfrModes = getModes(allHfrModes)
 
 function canSetVSyncMode() {
   if (isSony && !is_dev_version())
-    return
+    return false
   let modes = is_hfr_supported() ? allHfrModes : allLfrModes
   return (platformId in modes) || (platformAlias in modes)
 }
