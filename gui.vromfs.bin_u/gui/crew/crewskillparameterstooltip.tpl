@@ -1,56 +1,30 @@
 skillParametersTooltip {
+  id:t='skill_params_tooltip'
+  bgcolor:t='@weaponCardBackgroundColor'
   flow:t='vertical'
+  padding:t='@frameMediumPadding'
 
   <<#skillName>>
   textareaNoTab {
-    padding-top:t='12*@sf/@pf_outdated'
-    padding-left:t='12*@sf/@pf_outdated'
     text:t='<<skillName>>'
-    max-width:t='pw'
+    overlayTextColor:t='active'
   }
   <</skillName>>
 
-  tdiv {
-    pos:t='13*@sf/@pf_outdated, @referenceProgressOffset'
-    position:t='relative'
-
-    <<#progressBarSelectedValue>>
-    crewSpecProgressBar {
-      height:t='@referenceProgressHeight'
-      position:t='absolute'
-      type:t='new'
-      min:t='0'
-      max:t='1000'
-      value:t='<<progressBarSelectedValue>>'
-    }
-
-    crewSpecProgressBar {
-      height:t='@referenceProgressHeight'
-      position:t='absolute'
-      type:t='old'
-      min:t='0'
-      max:t='1000'
-      value:t='<<progressBarValue>>'
-    }
-    <</progressBarSelectedValue>>
+  <<#skillDescription>>
+  textarea {
+    width:t='pw'
+    padding-bottom:t='24@sf/@pf'
+    text:t='<<skillDescription>>'
+    overlayTextColor:t='disabled'
   }
-
-  textareaNoTab {
-    padding-top:t='12*@sf/@pf_outdated'
-    padding-left:t='12*@sf/@pf_outdated'
-    text:t='<<tooltipText>>'
-    min-width:t='0.3@sf'
-    max-width:t='0.7@sf'
-  }
+  <</skillDescription>>
 
   <<#hasSkillRows>>
   table {
-    padding:t='12*@sf/@pf_outdated, 12*@sf/@pf_outdated'
-    width:t='pw'
-
     <<#skillRows>>
     tr {
-      height:t='0.038@scrn_tgt'
+      height:t='41@sf/@pf'
 
       td {
         textarea {
@@ -105,89 +79,89 @@ skillParametersTooltip {
   <</hasSkillRows>>
 
   table {
-    padding:t='12*@sf/@pf_outdated, 12*@sf/@pf_outdated'
+    id:t='skill_params_tbl'
 
     <<#parameterRows>>
     tr {
-
+      <<^isHeader>>
+      height:t='46@sf/@pf'
+      <</isHeader>>
+      <<#isHeader>>
+      height:t='34@sf/@pf'
+      <</isHeader>>
+      <<#isEven>>
+      bgcolor:t='#330c0e10'
+      <</isEven>>
       // Parameter description
       td {
-        padding-top:t='15*@sf/@pf_outdated'
+        width:t='270@sf/@pf'
+        padding-right:t='20@sf/@pf'
         textarea {
-          pos:t='0, 0.5(ph-h)'
           position:t='relative'
+          pos:t='0, 0.5(ph-h)'
+          max-width:t='pw'
           text:t='<<descriptionLabel>>'
-          max-width:t='0.3@sf'
         }
       }
 
       <<#valueItems>>
       td {
-        padding-top:t='15*@sf/@pf_outdated'
         flow:t='horizontal'
+        padding-x:t='22@sf/@pf'
 
-        <<#itemDummy>>
-        tdiv {
-          size:t='30*@sf/@pf_outdated, 1*@sf/@pf_outdated'
-        }
-        <</itemDummy>>
+        <<#hasSeparatorBefore>>
+        verticalLine  { height:t='ph'; position:t='absolute'; }
+        <</hasSeparatorBefore>>
 
         <<#itemImage>>
         img {
           pos:t='0.5(pw-w), 0.5(ph-h)'
           position:t='relative'
           background-image:t='<<itemImage>>'
-          size:t='<<imageSize>>*@sf/@pf_outdated, <<imageSize>>*@sf/@pf_outdated'
+          size:t='<<imageSize>>*@sf/@pf, <<imageSize>>*@sf/@pf'
+          background-svg-size:t='<<imageSize>>*@sf/@pf, <<imageSize>>*@sf/@pf'
           background-repeat:t='aspect-ratio'
           bgcolor:t='#FFFFFF'
+          <<#imageLegendText>>
+          tooltip:t='<<imageLegendText>>'
+          <</imageLegendText>>
         }
         <</itemImage>>
 
         <<#itemText>>
         textarea {
-          pos:t='0.5(pw-w), 0.5(ph-h)'
           position:t='relative'
+          pos:t='0.5(pw-w), 0.5(ph-h)'
           text:t='<<itemText>>'
+          overlayTextColor:t='<<overlayTextColor>>'
         }
         <</itemText>>
+
+        <<#hasSeparatorAfter>>
+        verticalLine  { height:t='ph'; position:t='absolute'; right:t='0' }
+        <</hasSeparatorAfter>>
       }
       <</valueItems>>
     }
     <</parameterRows>>
   }
 
-  tdiv {
-    pos:t='12*@sf/@pf_outdated, 15*@sf/@pf_outdated'
-    position:t='relative'
-    flow:t='vertical'
+  horizontalLine { width:t='pw' }
 
-    <<#headerItems>>
-    <<#itemImage>>
-    tdiv {
-      img {
-        pos:t='0, 0.5(ph-h)'
-        position:t='relative'
-        background-image:t='<<itemImage>>'
-        size:t='<<imageSize>>*@sf/@pf_outdated, <<imageSize>>*@sf/@pf_outdated'
-        background-repeat:t='aspect-ratio'
-        bgcolor:t='#FFFFFF'
-      }
-      textarea{
-        pos:t='1@helpInterval, 0.5(ph-h)'
-        position:t='relative'
-        smallFont:t="yes"
-        text:t='<<imageLegendText>>'
-      }
-    }
-    <</itemImage>>
-    <</headerItems>>
+  <<#descriptionNotes>>
+  textareaNoTab {
+    width:t='pw'
+    padding-top:t='@frameMediumPadding'
+    overlayTextColor:t='faded'
+    smallFont:t='yes'
+    text:t='<<descriptionNotes>>'
   }
+  <</descriptionNotes>>
 
   <<#footnoteText>>
   textareaNoTab {
-    pos:t='pw/2-w/2, 8@sf/@pf_outdated'
-    position:t='relative'
-    text-align:t='center'
+    padding-top:t='@frameMediumPadding'
+    halign:t='center'
     overlayTextColor:t='faded'
     smallFont:t='yes'
     text:t='<<footnoteText>>'

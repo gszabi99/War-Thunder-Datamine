@@ -38,7 +38,7 @@ class Component : Canvas
   def draw()
     return if !isValid
 
-    let size          = 0.12         // 10 mrad
+    let size          = 0.05         // 10 mrad
     let sizeInner     = 0.25 * size  // 2.5 mrad
     let sizeInnermost = 0.05 * size  // 0.5 mrad
 

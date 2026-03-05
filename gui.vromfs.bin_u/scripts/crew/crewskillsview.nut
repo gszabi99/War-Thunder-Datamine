@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { getSkillCategoryByName } = require("%scripts/crew/crewSkills.nut")
-let { getSkillListParameterRowsView } = require("%scripts/crew/crewSkillParameters.nut")
+let { getSkillListParameterRowsView, getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -26,14 +26,13 @@ function getCategoryParameterRows(skillCategory, crewUnitType, crew, unit) {
   return getSkillListParameterRowsView(crew, difficulty, skillCategory.skillItems, crewUnitType, unit)
 }
 
-function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, unit) {
+function getSkillCategoryTooltipView(skillCategory, crewUnitType, crewData, unit) {
   let headerLocId = $"crewSkillCategoryTooltip/{skillCategory.categoryName}"
   let view = {
-    tooltipText = loc(headerLocId, "".concat(getSkillCategoryName(skillCategory), ":"))
+    skillName = loc(headerLocId, getSkillCategoryName(skillCategory))
     skillRows = []
     hasSkillRows = true
     parameterRows = getCategoryParameterRows(skillCategory, crewUnitType, crewData, unit)
-    headerItems = null
   }
 
   let crewSkillPoints = getCrewSkillPoints(crewData)
@@ -59,29 +58,54 @@ function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, u
     })
   }
 
-  
-  if (view.parameterRows.len())
-    view.headerItems <- view.parameterRows[0].valueItems
+  return view
+}
 
-  return handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
+function getUnitWithCrewType(unitName) {
+  let unit = getAircraftByName(unitName)
+  let crewUnitType = (unit?.unitType ?? unitTypes.INVALID).crewUnitType
+  return crewUnitType != CUT_INVALID ? { unit, crewUnitType } : null
+}
+
+function getSelectedCrewData() {
+  let country = profileCountrySq.get()
+  let crewCountryId = shopCountriesList.findindex(@(v) v == country) ?? -1
+  let crewIdInCountry = getSelectedCrews(crewCountryId)
+  return getCrew(crewCountryId, crewIdInCountry)
+}
+
+function fitSkillParamsTooltipWidth(infoWnd) {
+  let tblObj = infoWnd.findObject("skill_params_tbl")
+  let width = tblObj.getSize()[0]
+  if (width != 0) {
+    let tooltipPaddingX = to_pixels("@frameMediumPadding")
+    infoWnd.findObject("skill_params_tooltip").width = width + 2 * tooltipPaddingX
+  }
 }
 
 addTooltipTypes({
   SKILL_CATEGORY = { 
+    isModalTooltip = true
+    isCustomTooltipFill = true
     getTooltipId = function(categoryName, unitName = "", _p2 = null, _p3 = null) {
       return this._buildId(categoryName, { unitName = unitName })
     }
-    getTooltipContent = function(categoryName, params) {
-      let unit = getAircraftByName(params?.unitName ?? "")
-      let crewUnitType = (unit?.unitType ?? unitTypes.INVALID).crewUnitType
+    fillTooltip = function(infoWnd, handler, categoryName, params) {
+      let unitInfo = getUnitWithCrewType(params?.unitName ?? "")
+      if (unitInfo == null)
+        return false
       let skillCategory = getSkillCategoryByName(categoryName)
-      let country = profileCountrySq.get()
-      let crewCountryId = shopCountriesList.findindex(@(v) v==country) ?? -1
-      let crewIdInCountry = getSelectedCrews(crewCountryId)
-      let crewData = getCrew(crewCountryId, crewIdInCountry)
-      if (skillCategory != null && crewUnitType != CUT_INVALID && crewData != null)
-        return getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, unit)
-      return ""
+      if (skillCategory == null)
+        return false
+      let crew = getSelectedCrewData()
+      if (crew == null)
+        return false
+
+      let view = getSkillCategoryTooltipView(skillCategory, unitInfo.crewUnitType, crew, unitInfo.unit)
+      let data = handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
+      infoWnd.getScene().replaceContentFromText(infoWnd, data, data.len(), handler)
+      fitSkillParamsTooltipWidth(infoWnd)
+      return true
     }
   }
 
@@ -122,6 +146,31 @@ addTooltipTypes({
         return ""
 
       return specType.getBtnBuyTooltipContent(crew, unit)
+    }
+  }
+
+  CREW_SKILL_MODAL = { 
+    isModalTooltip = true
+    isCustomTooltipFill = true
+    getTooltipId = function(memberName, skillName = "", unitName = "", _p3 = null) {
+      return this._buildId(memberName, { skillName, unitName })
+    }
+    fillTooltip = function(infoWnd, handler, memberName, params) {
+      let { skillName = "", unitName = "" } = params
+      let unitInfo = getUnitWithCrewType(unitName)
+      if (unitInfo == null)
+        return false
+      let crew = getSelectedCrewData()
+      if (crew == null)
+        return false
+
+      let difficulty = getCurrentShopDifficulty()
+      let view = getSkillDescriptionView(
+        crew, difficulty, memberName, skillName, unitInfo.crewUnitType, unitInfo.unit)
+      let data = handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
+      infoWnd.getScene().replaceContentFromText(infoWnd, data, data.len(), handler)
+      fitSkillParamsTooltipWidth(infoWnd)
+      return true
     }
   }
 })

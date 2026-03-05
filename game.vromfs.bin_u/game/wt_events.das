@@ -705,6 +705,18 @@ struct CmdHangarRaiseWeapon {}
 struct RequestQuickThrowGrenade
   grenade_ammo_id : int
 
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdThrowGrenadeFromClient
+  gunEid : EntityId
+  shellId : uint
+  gunPropsId : uint
+  atTime : float
+  initialLifeTime : float
+  tm : float3x4
+  vel : float3
+  firingMode : uint
+  bombBayHeight : float
+
 [event(broadcast)]
 struct EventArmorInfoChanged {}
 

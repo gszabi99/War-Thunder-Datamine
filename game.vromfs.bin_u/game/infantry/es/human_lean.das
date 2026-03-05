@@ -2,6 +2,7 @@ require ecs
 require math.base
 require DagorMath
 require DngHuman
+require HumanPhys
 require %game.events
 require AnimV20
 require Dacoll
@@ -32,9 +33,11 @@ def rotate(rotQ : quat; var tm : float3x4&) : float3x4
   return tm
 
 
+let LEAN_SPHERE_CAST_MASK = int(PhysLayer.EPL_ALL) & ~(int(PhysLayer.EPL_CHARACTER) | int(PhysLayer.EPL_KINEMATIC) | int(PhysLayer.EPL_DEBRIS))
+
 def calc_max_lean(eid : EntityId; direction : float) 
   var res = direction
-  query(eid) <| $ [es] (human_net_phys : HumanActor;
+  query(eid) <| $ [es] (var human_net_phys : HumanActor;
                         animchar : AnimcharBaseComponent;
                         human_lean__headOffset : float3;
                         human_lean__traceRad : float;
@@ -56,8 +59,9 @@ def calc_max_lean(eid : EntityId; direction : float)
     rotate(leanQ, rootTm)
     let leanPos = rootTm * human_lean__headOffset 
 
+    let traceHandle = human_net_phys.phys |> human_phys_getTraceHandle()
     var out = ShapeQueryOutput()
-    sphere_cast(headPos, leanPos, human_lean__traceRad, out, human_lean__leanMatId) 
+    sphere_cast_ex(headPos, leanPos, human_lean__traceRad, out, human_lean__leanMatId, traceHandle, LEAN_SPHERE_CAST_MASK)
     res = out.t * direction
   return res
 

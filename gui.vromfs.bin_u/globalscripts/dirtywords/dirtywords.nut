@@ -20,7 +20,7 @@ from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, clea
 
 
 local debugLogFunc = null
-local needDebugLogJustPatterns = false
+local verboseLogging = true
 
 let dict = {
   excludesdata    = null
@@ -282,7 +282,7 @@ function checkRegexps(word, regexps, accuse, isSimilarChars = false) {
   foreach (reg in regexps)
     if (!(isSimilarChars && reg?.skipSC) && (reg?.value ?? reg).match(word) && !reg?.except.match(word)) {
       let patternStr = (reg?.value ?? reg).pattern()
-      debugLogFunc?(needDebugLogJustPatterns ? patternStr
+      debugLogFunc?(!verboseLogging ? $"p {patternStr}"
         : $"DirtyWordsFilter: Word \"{word}\" matched pattern \"{patternStr}\"")
       return !accuse
     }
@@ -368,7 +368,7 @@ function checkPhraseInternal(text, isName) {
       foreach (segment in segmentsList) {
         if (!phrase.contains(segment))
           continue
-        debugLogFunc?(needDebugLogJustPatterns ? segment
+        debugLogFunc?(!verboseLogging ? $"s {segment}"
           : $"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
 
         let utfPhrase = utf8(phrase)
@@ -394,7 +394,7 @@ function checkPhraseInternal(text, isName) {
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
       let patternStr = pattern.pattern()
-      debugLogFunc?(needDebugLogJustPatterns ? patternStr
+      debugLogFunc?(!verboseLogging ? $"p {patternStr}"
         : $"DirtyWordsFilter: Phrase matched pattern \"{patternStr}\"")
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
@@ -419,7 +419,7 @@ let isPhrasePassing = @(text) checkPhrase(text) == text
 
 let checkName = function(name) {
   if (!isNameNormallyVisible(name)) {
-    debugLogFunc?(needDebugLogJustPatterns ? "Tricks"
+    debugLogFunc?(!verboseLogging ? "t Tricks"
       : $"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
     return getMaskedWord(name)
   }
@@ -437,9 +437,9 @@ let checkName = function(name) {
 let isNamePassing = @(name) name != "" && checkName(name) == name
 
 
-function setDebugLogFunc(funcOrNull, needJustPatterns = false) {
+function setDebugLogFunc(funcOrNull, needVerboseLogging = true) {
   debugLogFunc = funcOrNull
-  needDebugLogJustPatterns = needJustPatterns
+  verboseLogging = needVerboseLogging
 }
 
 

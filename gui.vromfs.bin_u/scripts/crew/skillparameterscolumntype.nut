@@ -10,15 +10,16 @@ let { getCachedCrewId, getCachedCrewUnit } = require("%scripts/crew/crewShortCac
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 
+const HEADER_DEFAULT_IMAGE_SIZE = 32
+const HEADER_SKILLS_IMAGE_SIZE = 24
+
 enum skillColumnOrder {
   TOTAL
-  EQUALS_SIGN
   BASE
   SKILLS
   SPECIALIZATION
   LEADERSHIP
   GUNNERS
-  EMPTY
   MAX
   GUNNERS_COUNT
 
@@ -43,9 +44,11 @@ let skillParametersColumnType = {
     textColor = ""
     imageName = ""
     imageSize = 0
-    addDummyBlock = false
     addSignChar = true
     addMeasureUnits = false
+    hasSeparatorBefore = false
+    hasSeparatorAfter = false
+    overlayTextColor = "common"
     sortOrder = skillColumnOrder.UNKNOWN
 
     
@@ -63,6 +66,12 @@ let skillParametersColumnType = {
       : this.imageName
     getHeaderImageSize = @() this.imageSize
     getHeaderImageLegendText = @() loc($"crewSkillParameter/legend/{this.id.tolower()}")
+    getValueItemViewParams = @(itemText) {
+      itemText
+      hasSeparatorBefore = this.hasSeparatorBefore
+      hasSeparatorAfter = this.hasSeparatorAfter
+      overlayTextColor = this.overlayTextColor
+    }
 
     function createValueItem(
       prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign) {
@@ -73,10 +82,8 @@ let skillParametersColumnType = {
 
       if (this.addMeasureUnits)
         itemText = "".concat(itemText, format(" %s", colorize(this.textColor, measureType.getMeasureUnitsName())))
-      let valueItem = {
-        itemText = itemText
-      }
-      return valueItem
+
+      return this.getValueItemViewParams(itemText)
     }
 
     function getDiffText(prevValue, curValue, sign, measureType, colorName, isAdditionalText = false) {
@@ -129,9 +136,7 @@ enumsAddTypes(skillParametersColumnType, {
     textColor = "goodTextColor"
     getHeaderImage = @(_params) hasFeature("FullScreenCrewWindow") ? "#ui/gameuiskin#skill_points_old.svg"
       : "#ui/gameuiskin#skill_star_1.svg"
-    
-    
-    getHeaderImageSize = @() hasFeature("FullScreenCrewWindow") ? 25 : 27
+    imageSize = HEADER_SKILLS_IMAGE_SIZE
 
     checkSkill = isSkillNotOnlyForTotalAndTop
   }
@@ -144,7 +149,7 @@ enumsAddTypes(skillParametersColumnType, {
     previousParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
     currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_LEADERSHIP
     textColor = "goodTextColor"
-    imageSize = 27
+    imageSize = HEADER_DEFAULT_IMAGE_SIZE
 
     checkSkill = function (memberName, skillName) {
       return isAffectedBySpecialization(memberName, skillName)
@@ -165,7 +170,7 @@ enumsAddTypes(skillParametersColumnType, {
     currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES
     textColor = "goodTextColor"
     imageName = "#ui/gameuiskin#leaderBonus.svg"
-    imageSize = 27
+    imageSize = HEADER_DEFAULT_IMAGE_SIZE
 
     checkSkill = function (memberName, skillName) {
       return isAffectedByLeadership(memberName, skillName)
@@ -201,9 +206,8 @@ enumsAddTypes(skillParametersColumnType, {
         let color = crewExpGunners < unitTotalGunners ? "badTextColor" : "goodTextColor"
         text = colorize(color, text)
       }
-      return {
-        itemText = text
-      }
+
+      return this.getValueItemViewParams(text)
     }
   }
 
@@ -217,7 +221,7 @@ enumsAddTypes(skillParametersColumnType, {
     currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES
     textColor = "badTextColor"
     imageName = "#ui/gameuiskin#gunnerBonus.svg"
-    imageSize = 27
+    imageSize = HEADER_DEFAULT_IMAGE_SIZE
 
     checkSkill = function (memberName, skillName) {
       return memberName == "gunner" && skillName != "members"
@@ -238,38 +242,7 @@ enumsAddTypes(skillParametersColumnType, {
     currentParametersRequestType = skillParametersRequestType.MAX_VALUES
     addSignChar = false
     addMeasureUnits = true
-  }
-
-  
-
-
-  EMPTY = {
-    sortOrder = skillColumnOrder.EMPTY
-    addDummyBlock = true
-
-    createValueItem = function (_prevValue, _curValue, _prevSelectedValue, _curSelectedValue, _measureType, _sign) {
-      return {
-        itemDummy = true
-      }
-    }
-  }
-
-  
-
-
-  EQUALS_SIGN = {
-    sortOrder = skillColumnOrder.EQUALS_SIGN
-    createValueItem = function (_prevValue, _curValue, _prevSelectedValue, _curSelectedValue, _measureType, _sign) {
-      return {
-        itemText = "="
-      }
-    }
-
-    getHeaderText = function () {
-      return ""
-    }
-
-    checkSkill = isSkillNotOnlyForTotalAndTop
+    hasSeparatorBefore = true
   }
 
   
@@ -282,6 +255,8 @@ enumsAddTypes(skillParametersColumnType, {
     previousParametersRequestType = null
     currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES
     addSignChar = false
+    hasSeparatorAfter = true
+    overlayTextColor = "active"
   }
 }, null, "id")
 

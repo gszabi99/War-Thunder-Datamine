@@ -1,4 +1,6 @@
 require ecs
+require app
+require net
 require DngWeapon
 require DagorSystem
 require DagorRandom
@@ -36,12 +38,41 @@ def private gun_launch(ld : LaunchDesc; gun_eid : EntityId;  offender_eid : Enti
     let physTemplName = entProps.physTemplName
     if !empty(physTemplName)
       ok = true
-      sendEventImmediate(offender_eid, CmdLaunchShell(launchDesc = ld, gunEid = gun_eid))
+      
+      let isGrenadeThrower = has(gun_eid, "grenade_thrower")
+      if !is_dedicated() || !isGrenadeThrower
+        sendEventImmediate(offender_eid, CmdLaunchShell(launchDesc = ld, gunEid = gun_eid))
+      if !is_server() && isGrenadeThrower
+        send_net_event(offender_eid, CmdThrowGrenadeFromClient(gunEid = gun_eid,
+                                                               shellId = props_pack_for_net(ld.shellId),
+                                                               gunPropsId = props_pack_for_net(ld.gunPropsId),
+                                                               atTime = ld.atTime,
+                                                               initialLifeTime = ld.initialLifeTime,
+                                                               tm = ld.tm,
+                                                               vel = ld.vel,
+                                                               firingMode = ld.firingMode,
+                                                               bombBayHeight = ld.bombBayHeight))
   if !ok
     get_props_ProjBallisticsProperties(ld.shellId) <| $ [unused_argument(_)] (_ : ProjBallisticsProperties)
       ok = true
       sendEventImmediate(offender_eid, CmdLaunchProjectileSpawner(launchDesc = ld, gunEid = gun_eid))
   return ok
+
+
+[es(tag=server)]
+def grenade_thrower_launch_shell_on_server(evt : CmdThrowGrenadeFromClient;
+                                           eid : EntityId)
+  sendEventImmediate(eid, CmdLaunchShell(launchDesc = LaunchDesc(
+    shellId = props_unpack_from_net(evt.shellId),
+    gunPropsId = props_unpack_from_net(evt.gunPropsId),
+    atTime = evt.atTime,
+    initialLifeTime = evt.initialLifeTime,
+    tm = evt.tm,
+    vel = evt.vel,
+    firingMode = evt.firingMode,
+    bombBayHeight = evt.bombBayHeight,
+  ), gunEid = evt.gunEid))
+
 
 def private gun_launch(var gun : Gun&;
                        input : GunUpdateInput;

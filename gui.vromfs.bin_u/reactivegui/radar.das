@@ -166,7 +166,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.helicopterTargetPicture = props |> getPicture("helicopterTargetPicture")
   storage.rocketTargetPicture = props |> getPicture("rocketTargetPicture")
   storage.handleClicks = props |> getBool("handleClicks", false)
-  storage.canZoom = props |> getBool("canZoom", storage.handleClicks)
+  storage.canZoom = props |> getBool("canZoom", false)
   storage.magnifiedIndicator = props |> getBool("magnifiedIndicator", false)
   storage.moveMagnifiedIndicatorRight = props |> getBool("moveMagnifiedIndicatorRight", false)
   storage.targetSizeMaxZoomFactor = props |> getFloat("targetSizeMaxZoomFactor", 1.5)
@@ -339,7 +339,8 @@ struct MagnifiedSquareIndicator : RadarInteractableEll
       let strBoxMin = minRangeEl.textBox
       bottomOffset = strBoxMin.width.y
 
-      let maxTextPos = float2(pos.x + size.x, pos.y)
+      let offset = -*self.data |> hdpx(3.0)
+      let maxTextPos = float2(pos.x + size.x, pos.y + offset)
       style.anchorVert = AnchorVert.Top
 
       var maxRangeEl = DistanceRangeTextButton(maxTextPos, style, *data, true)
@@ -1287,15 +1288,16 @@ struct ZoomIndicatorButton : InteractableButton
     let lb = float2(pos.x, pos.y + size.y)
     let rt = float2(pos.x + size.x, pos.y)
 
+    let frame <- to_array_move(fixed_array<float2>(lb, float2(lb.x, rt.y), rt, float2(rt.x, lb.y)))
+    ctx |> render_line_aa(frame, true, *data |> hdpx(data.lineWidth), float2(0, 0), data.lineColor)
+
     ctx |> set_viewport(lb.x, lb.y, rt.x, rt.y)
 
-    let frame <- to_array_move(fixed_array<float2>(lb, float2(lb.x, rt.y), rt, float2(rt.x, lb.y)))
-    ctx |> render_line_aa(frame, true, *data |> hdpx(2.0 * data.lineWidth), float2(0, 0), data.lineColor)
 
     ctx |> draw_line(lb.x, lb.y, rt.x, rt.y, *data |> hdpx(data.lineWidth))
 
     // no constexpressions in language, unfortunately
-    // let d = 0.25 * 0.5
+    // let d = 0.45 * 0.5
     // let h = 0.4
     // let l = sqrt(d*d + h*h)
     // let alpha = atan2(d, h)
@@ -1303,7 +1305,7 @@ struct ZoomIndicatorButton : InteractableButton
     // let a = l * float2(sin(ang), -cos(ang))
     // logerr("{a}")
 
-    let a = float2(0.3712, -0.1944)
+    let a = float2(0.4419, -0.1237)
     let a2 = float2(-a.y, -a.x)
     let arrow <- to_array_move(fixed_array<float2>(
       lb,
@@ -1730,6 +1732,7 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   var vertOffset = 0.
   var horOffset = 0.
+  var vertOffset1 = 0.
   var vertOffset2 = 0.
   var bottomOffset = 0.
 
@@ -1757,7 +1760,8 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
   modeNameEl.walkLayout(visitor)
 
   let strBoxMode = modeNameEl.textBox
-  vertOffset += strBoxMode.width.y + data |> hdpx(4.)
+  vertOffset1 += strBoxMode.width.y + data |> hdpx(4.)
+  vertOffset += vertOffset1
 
   if get_radar_hud_noise_signal_visible() && get_radar_hud_is_visible() && get_radar_hud_noise_signal() > 0.5 && !data.enableByMfd
     let noisePos = float2(pos.x + size.x * 0.44 - strBoxMode.width.x * 0.5, pos.y - data |> hdpx(2.))
@@ -1782,36 +1786,6 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
       let noiseSize = size * 0.06
       var noiseEl = NoiseSignalElement(noisePos, noiseSize, data, get_radar_hud_noise_signal2())
       noiseEl.walkLayout(visitor)
-
-  var zoomIndicatorOffsetX = horOffset
-  if get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
-    var azimuthScaleStyle := textButtonStyle
-    azimuthScaleStyle.color = data.horAngleColor
-    azimuthScaleStyle.glowColor = get_font_fx_color(data.horAngleColor)
-    azimuthScaleStyle.glowFxFactor = get_font_fx_factor(data.horAngleColor, data)
-    if data.centerRadar
-      azimuthScaleStyle.anchorVert = AnchorVert.Center
-    else
-      azimuthScaleStyle.anchorVert = AnchorVert.Top
-
-    let azText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
-    let elText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
-    let deg = loc("measureUnits/deg")
-    let text = "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : " ")
-
-    let azimuthScalePos = float2(pos.x + horOffset, pos.y + vertOffset)
-    var azScaleEl = TextButton(azimuthScalePos, text, azimuthScaleStyle)
-    azScaleEl.onClickCallback <- @ <| ()
-      Radar`changeScanPattern()
-    azScaleEl.walkLayout(visitor)
-    let strBoxScan = azScaleEl.textBox
-    vertOffset2 += strBoxScan.width.y
-    zoomIndicatorOffsetX += strBoxScan.width.x
-
-  let zoomIndicatorPos = float2(pos.x + zoomIndicatorOffsetX, pos.y + vertOffset)
-  let zoomIndicatorSize = float2(size.x * 0.045)
-  var zoomIndicator = ZoomIndicatorButton(zoomIndicatorPos, zoomIndicatorSize, data)
-  zoomIndicator.walkLayout(visitor)
 
   if get_radar_hud_has_distance_scale() && !data.hideScale
     var style := textButtonStyle
@@ -1841,8 +1815,17 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
     maxRangeEl.walkLayout(visitor)
 
     let strBox = maxRangeEl.textBox
-    if vertOffset2 == 0.
-      vertOffset2 += strBox.width.y
+    vertOffset2 = max(strBox.width.y, vertOffset2)
+
+  let showScanRangeText = get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
+
+  let azScanRangeText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
+  let elScanRangeText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
+  let deg = loc("measureUnits/deg")
+  let scanRangeText = "{azScanRangeText}{deg}x{elScanRangeText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : " ")
+  if showScanRangeText
+    let strBoxScanRange = get_str_bbox(scanRangeText, scanRangeText |> length(), fctx)
+    vertOffset2 = max(strBoxScanRange.width.y, vertOffset2)
 
   vertOffset += vertOffset2 + data |> hdpx(4.)
   let sz = float2(size.x - horOffset, size.y - vertOffset - bottomOffset)
@@ -1885,6 +1868,31 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
       let strBoxElMin = elvMinEl.textBox
 
       horOffset = max(horOffset, max(strBoxElMax.width.x, strBoxElMin.width.x))
+
+  var zoomIndicatorOffsetX = horOffset
+  if showScanRangeText
+    var azimuthScaleStyle := textButtonStyle
+    azimuthScaleStyle.color = data.horAngleColor
+    azimuthScaleStyle.glowColor = get_font_fx_color(data.horAngleColor)
+    azimuthScaleStyle.glowFxFactor = get_font_fx_factor(data.horAngleColor, data)
+    if data.centerRadar
+      azimuthScaleStyle.anchorVert = AnchorVert.Center
+    else
+      azimuthScaleStyle.anchorVert = AnchorVert.Top
+
+    let azimuthScalePos = float2(pos.x + horOffset, pos.y + vertOffset1)
+    var azScaleEl = TextButton(azimuthScalePos, scanRangeText, azimuthScaleStyle)
+    azScaleEl.onClickCallback <- @ <| ()
+      Radar`changeScanPattern()
+    azScaleEl.walkLayout(visitor)
+    let strBoxScan = azScaleEl.textBox
+    zoomIndicatorOffsetX += strBoxScan.width.x
+
+  let zoomIndicatorPos = float2(pos.x + zoomIndicatorOffsetX, pos.y + vertOffset1)
+  let zoomIndicatorSize = float2(size.x * 0.045)
+  var zoomIndicator = ZoomIndicatorButton(zoomIndicatorPos, zoomIndicatorSize, data)
+  zoomIndicator.walkLayout(visitor)
+
   return float3(horOffset, vertOffset, bottomOffset)
 
 def b_scope_square_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; font_size : int)

@@ -607,9 +607,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
       let needShowPageIcon = statusType.avalibleSkills.len() > 0
       obj.show(needShowPageIcon)
-      let pageObj = pagesObj.findObject(page.id)
-      if (pageObj)
-        pageObj.tooltip = needShowPageIcon ? this.createPageTooltipFromSkills(statusType.avalibleSkills) : ""
+      this.fillPageUpgradeTooltip(pagesObj.findObject(page.id), statusType.avalibleSkills)
       if (needShowPageIcon) {
         obj["background-image"] = statusType.icon
         obj["background-color"] = this.guiScene.getConstantValue(statusType.iconColor) ?? ""
@@ -1165,10 +1163,20 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   }
 
-  function createPageTooltipFromSkills(skills) {
-    if (skills.len() == 0)
-      return ""
-    return "".concat(loc("crew/skillUpgradesAvalible"), ":\n", "\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
-  }
+  function fillPageUpgradeTooltip(pageObj, skills) {
+    if (!pageObj)
+      return
 
+    if (skills.len() == 0) {
+      pageObj.tooltip = ""
+      return
+    }
+
+    let tooltipObj = pageObj.findObject("upgrade_tooltip")
+    tooltipObj.findObject("upgrade_tooltip_header")
+      .setValue("".concat(loc("crew/skillUpgradesAvalible"), loc("ui/colon")))
+    tooltipObj.findObject("upgrade_tooltip_skills_list")
+      .setValue("\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
+    pageObj.tooltip = "$tooltipObj"
+  }
 }

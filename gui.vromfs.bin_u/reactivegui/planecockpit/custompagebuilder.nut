@@ -2,6 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { createScriptComponentWithPos } = require("%rGui/utils/builders.nut")
 let { CustomPages, CustomPagesBlk } = require("%rGui/planeState/planeToolsState.nut")
+let { E3DCOLOR } = require("dagor.math")
 let ah64Flt = require("%rGui/planeCockpit/ah64FltPage.nut")
 let ah64Wpn = require("%rGui/planeCockpit/ah64WpnPage.nut")
 let {f15cWpn, f15jWpn} = require("%rGui/planeCockpit/f15cWpnPage.nut")
@@ -143,6 +144,21 @@ function blue(pos, size) {
   }
 }
 
+function hsiPage(pos, size) {
+  return {
+    pos
+    size
+    rendObj   = ROBJ_DAS_CANVAS
+    script    = getDasScriptByPath("%rGui/planeCockpit/hsi.das")
+    drawFunc  = "render"
+    setupFunc = "setup"
+    lineColor = E3DCOLOR(0xFFFFFFFF)
+    fontId    = Fonts.hud
+    fontSize  = 14
+    lineWidth = 1.5
+  }
+}
+
 let pageByName = {
   yellow,
   red,
@@ -172,6 +188,7 @@ let pageByName = {
   BaeHawkFlt,
   fa18Engine,
   europeanAviaHorizont,
+  hsiPage,
 }
 
 function customPageSettingsUpd(page_blk) {

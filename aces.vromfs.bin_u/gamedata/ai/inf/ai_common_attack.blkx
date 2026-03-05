@@ -1369,8 +1369,8 @@
                                           "alwaysAiming": true,
                                           "cyclesSuccess": true,
                                           "lostTargetCooldownRange": [
-                                            3.0,
-                                            4.0
+                                            2.0,
+                                            3.0
                                           ],
                                           "checkFriendlyFireRadius": 0.1,
                                           "ignoreLostTargetParam": "enemiesWatching50"
@@ -1418,8 +1418,8 @@
                                           "alwaysAiming": true,
                                           "cyclesSuccess": true,
                                           "lostTargetCooldownRange": [
-                                            3.0,
-                                            4.0
+                                            2.0,
+                                            3.0
                                           ],
                                           "checkFriendlyFireRadius": 0.1,
                                           "ignoreLostTargetParam": "enemiesWatching50"
@@ -1562,9 +1562,20 @@
                                         }
                                       },
                                       {
-                                        "checkReloadWeapon": {
-                                          "checkOnly": true,
-                                          "enoughAmmoRatio": 0.05
+                                        "or": {
+                                          "checkReloadWeapon": {
+                                            "checkOnly": true,
+                                            "enoughAmmoRatio": 0.05
+                                          },
+                                          "not": {
+                                            "checkAtTime": {
+                                              "timeParam": "beginAttackEnemyTime",
+                                              "range": [
+                                                0.0,
+                                                3.0
+                                              ]
+                                            }
+                                          }
                                         },
                                         "orderedSelector": {
                                           "sequencer": [
@@ -2562,8 +2573,8 @@
                                                   "alwaysAiming": true,
                                                   "cyclesSuccess": true,
                                                   "lostTargetCooldownRange": [
-                                                    1.0,
-                                                    2.0
+                                                    0.5,
+                                                    1.0
                                                   ],
                                                   "closeShootRange": [
                                                     1.0,
@@ -2739,8 +2750,8 @@
                                                   "alwaysAiming": true,
                                                   "cyclesSuccess": true,
                                                   "lostTargetCooldownRange": [
-                                                    1.0,
-                                                    2.0
+                                                    0.5,
+                                                    1.0
                                                   ],
                                                   "closeShootRange": [
                                                     1.0,
@@ -2913,8 +2924,8 @@
                                                 "alwaysAiming": true,
                                                 "cyclesSuccess": true,
                                                 "lostTargetCooldownRange": [
-                                                  2.0,
-                                                  3.0
+                                                  0.7,
+                                                  1.2
                                                 ],
                                                 "closeShootRange": [
                                                   1.0,

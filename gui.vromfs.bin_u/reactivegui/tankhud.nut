@@ -32,7 +32,7 @@ let voiceChat = require("%rGui/chat/voiceChat.nut")
 let hudLogs = require("%rGui/hudLogs.nut")
 let { mkScreenHitMark } = require("%rGui/hud/hitMarks.nut")
 let { tankDebuffs } = require("%rGui/hud/tankHudDebuffs.nut")
-let { dmgIndicatorWidth } = require("%rGui/hud/tankDmgIndicatorState.nut")
+let { dmgIndicatorWidth, updateDmgIndicatorPos } = require("%rGui/hud/tankDmgIndicatorState.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 let redColor = Color(255, 35, 30, 255)
@@ -100,6 +100,7 @@ function tankDmgIndicator() {
           size = [elem.getWidth(), elem.getHeight()]
           visible = needShowDmgIndicator.get()
         })
+        updateDmgIndicatorPos([elem.getScreenPosX(), elem.getScreenPosY()])
       }
       else
         eventbus_send("update_damage_panel_state", {})

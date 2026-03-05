@@ -137,6 +137,17 @@ def human_weap_grenade_throw_via_rethrow_grenade_appeared(evt : Event; grenade_t
     human_weap__grenadeThrowViaRethrow = true
 
 
+[es(on_event=EventEntityDied, REQUIRE=grenadeThrowViaRethrowEnabled)]
+def human_weap_cleanup_grenade_on_death(evt : Event;
+                                        human_weap__grenadeThrower : EntityId)
+  query(human_weap__grenadeThrower) <| $ [es] (var grenade_thrower__projectileEntity : EntityId&;
+                                               clientSide : Tag const?)
+    if grenade_thrower__projectileEntity != INVALID_ENTITY_ID
+      if is_server() || clientSide != null
+        destroyEntity(grenade_thrower__projectileEntity)
+        grenade_thrower__projectileEntity = INVALID_ENTITY_ID
+
+
 [es(REQUIRE_NOT=grenadeThrowViaRethrowEnabled)]
 def human_weap_grenade_quick_throw(evt : RequestQuickThrowGrenade;
                                    eid aka owner_eid : EntityId;

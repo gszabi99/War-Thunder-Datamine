@@ -157,12 +157,14 @@ let radarModeNames = fixed_array<string>(
   "hud/IRST HMD",
   "hud/IRST track",
 
+  //#if_def(PKG_DEV)
   "hud/ESM standby",
   "hud/ESM search",
   "hud/ESM acquisition",
   "hud/ESM ACM",
   "hud/ESM HMD",
   "hud/ESM track",
+  //#endif
 
   "hud/air_search",
   "hud/ground_search",

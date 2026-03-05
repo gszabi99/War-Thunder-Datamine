@@ -2,10 +2,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { format } = require("string")
 let { round_by_value } = require("%sqstd/math.nut")
-let { getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -17,6 +15,7 @@ let { getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep,
   getCrewLevel, getCrewTotalSteps, getCrewSkillValue
 } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 
 const MIN_EXP_POINTS = 5
 const MAX_EXPERT_EXP_POINTS = 3
@@ -304,16 +303,6 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     this.onSpecIncrease(crewSpecTypes.ACE)
   }
 
-  function onSkillRowTooltipOpen(obj) {
-    let memberName = obj?.memberName ?? ""
-    let skillName = obj?.skillName ?? ""
-    let difficulty = getCurrentShopDifficulty()
-    let view = getSkillDescriptionView(
-      this.crew, difficulty, memberName, skillName, this.curCrewUnitType, this.unit)
-    let data = handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
-    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
-  }
-
   function getSkillRowConfig(idx) {
     let item = this.curPage.items?[idx]
     if (!item)
@@ -354,6 +343,8 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       even = idx % 2 == 0
       skillName = item.name
       memberName = this.curPage.id
+      skillTooltipId = getTooltipType("CREW_SKILL_MODAL")
+        .getTooltipId(this.curPage.id, item.name, this.unit?.name ?? "")
       progressMax = getCrewTotalSteps(item)
       maxSkillCrewLevel
       maxValue

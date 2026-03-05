@@ -10,11 +10,11 @@ row {
 
   tooltipObj {
     id:t='tooltip'
-    on_tooltip_open:t='onSkillRowTooltipOpen'
+    tooltipId:t='<<skillTooltipId>>'
+    on_tooltip_open:t='onGenericTooltipOpen'
     on_tooltip_close:t='onTooltipObjClose'
     display:t='hide'
-    skillName:t='<<skillName>>'
-    memberName:t='<<memberName>>'
+    noPadding:t='yes'
   }
   div {
     flow:t='vertical'

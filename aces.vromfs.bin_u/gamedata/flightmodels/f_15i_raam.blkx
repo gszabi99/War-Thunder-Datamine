@@ -4504,6 +4504,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_gbu_62.blk"
       },
       {
+        "name": "f_15i_raam_gbu_62_ljdam",
+        "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_gbu_62_ljdam.blk"
+      },
+      {
         "name": "f_15i_raam_gbu_64",
         "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_gbu_64.blk"
       },
@@ -5114,6 +5118,27 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam",
+            "name": "us_gbu_62_ljdam_slot2",
+            "reqModification": "us_ljdam",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn"
             }
           },
           {
@@ -7024,7 +7049,7 @@
             ]
           },
           {
-            "iconType": "bombs_ptb_fuse_guided_bomb_middle_jdam_group_x3",
+            "iconType": "bombs_ptb_fuse_guided_bomb_middle_ljdam_group_x3",
             "name": "us_gbu_54_slot5_fuel_tank",
             "reqModification": "us_ljdam",
             "ShowNodes": {
@@ -7272,6 +7297,111 @@
                 "machLimit": 1.01
               }
             ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_bombs_ptb_fuse_guided_bomb_middle_ljdam_group_x2",
+            "name": "us_gbu_62_ljdam_slot5_fuel_tank",
+            "reqModification": "us_ljdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_holder",
+                "pylon_5",
+                "pylon_5_holder",
+                "pylon_6",
+                "pylon_6_holder",
+                "pylon_10",
+                "pylon_10_holder",
+                "pylon_10_bomb_locks",
+                "fuel_tank1"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank10_dm"
+            },
+            "Weapon": [
+              {
+                "trigger": "fuel tanks",
+                "blk": "gameData/Weapons/drop_tank/us_750_gal_fastpack_f_15c_left.blk",
+                "emitter": "fuel_tank1",
+                "bullets": 1,
+                "external": true,
+                "jettisonable": false,
+                "dragCx": 0.028
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+                "emitter": "250lb_mk_81_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+                "emitter": "250lb_mk_81_007",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn"
+            },
             "BannedWeaponPreset": [
               {
                 "slot": 4,
@@ -7997,7 +8127,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_middle_jdam_group_x3",
+            "iconType": "guided_bomb_middle_ljdam_group_x3",
             "name": "us_gbu_54_slot5",
             "reqModification": "us_ljdam",
             "ShowNodes": {
@@ -8209,6 +8339,99 @@
                 "machLimit": 1.01
               }
             ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam_group_x2",
+            "name": "us_gbu_62_ljdam_slot5",
+            "reqModification": "us_ljdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_holder",
+                "pylon_5",
+                "pylon_5_holder",
+                "pylon_6",
+                "pylon_6_holder",
+                "pylon_10",
+                "pylon_10_holder",
+                "pylon_10_bomb_locks",
+                "fuel_tank1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+                "emitter": "250lb_mk_81_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+                "emitter": "250lb_mk_81_007",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn"
+            },
             "BannedWeaponPreset": [
               {
                 "slot": 4,
@@ -8695,6 +8918,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam",
+            "name": "us_gbu_62_ljdam_slot7",
+            "reqModification": "us_ljdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+              "emitter": "us_2000lb_gbu_8_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn"
             }
           },
           {
@@ -10233,7 +10480,7 @@
             ]
           },
           {
-            "iconType": "bombs_ptb_fuse_guided_bomb_middle_jdam_group_x3",
+            "iconType": "bombs_ptb_fuse_guided_bomb_middle_ljdam_group_x3",
             "name": "us_gbu_54_slot9_fuel_tank",
             "reqModification": "us_ljdam",
             "ShowNodes": {
@@ -10477,6 +10724,107 @@
                 "machLimit": 1.01
               }
             ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_bombs_ptb_fuse_guided_bomb_middle_ljdam_group_x2",
+            "name": "us_gbu_62_ljdam_slot9_fuel_tank",
+            "reqModification": "us_ljdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_7",
+                "pylon_7_holder",
+                "pylon_8",
+                "pylon_8_holder",
+                "pylon_9",
+                "pylon_9_holder",
+                "pylon_11",
+                "pylon_11_holder",
+                "pylon_11_bomb_locks",
+                "fuel_tank2"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank11_dm"
+            },
+            "Weapon": [
+              {
+                "trigger": "fuel tanks",
+                "blk": "gameData/Weapons/drop_tank/us_750_gal_fastpack_f_15c_right.blk",
+                "emitter": "fuel_tank2",
+                "bullets": 1,
+                "external": true,
+                "jettisonable": false,
+                "dragCx": 0.028
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+                "emitter": "250lb_mk_81_008",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+                "emitter": "250lb_mk_81_011",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn"
+            },
             "BannedWeaponPreset": [
               {
                 "slot": 4,
@@ -11171,7 +11519,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_middle_jdam_group_x3",
+            "iconType": "guided_bomb_middle_ljdam_group_x3",
             "name": "us_gbu_54_slot9",
             "reqModification": "us_ljdam",
             "ShowNodes": {
@@ -11379,6 +11727,95 @@
                 "machLimit": 1.01
               }
             ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam_group_x2",
+            "name": "us_gbu_62_ljdam_slot9",
+            "reqModification": "us_ljdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_7",
+                "pylon_7_holder",
+                "pylon_8",
+                "pylon_8_holder",
+                "pylon_9",
+                "pylon_9_holder",
+                "pylon_11",
+                "pylon_11_holder",
+                "pylon_11_bomb_locks",
+                "fuel_tank2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+                "emitter": "250lb_mk_81_008",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+                "emitter": "250lb_mk_81_011",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn"
+            },
             "BannedWeaponPreset": [
               {
                 "slot": 4,
@@ -12187,7 +12624,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_middle_jdam",
+            "iconType": "guided_bomb_middle_ljdam",
             "name": "us_gbu_54_slot12",
             "reqModification": "us_ljdam",
             "ShowNodes": {
@@ -12235,6 +12672,27 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_ljdam",
+            "name": "us_gbu_62_ljdam_slot12",
+            "reqModification": "us_ljdam",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_ljdam_er.blk",
+              "emitter": "bomb_2000lb_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn"
             }
           },
           {
@@ -13003,11 +13461,6 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "il_spice_2000": {
-      "prevModification": "us_agm_65d",
-      "modClass": "weapon",
-      "tier": 4
-    },
     "us_aim_9l": {
       "tier": 1,
       "modClass": "weapon"
@@ -13027,26 +13480,6 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "us_jdam": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "us_ljdam": {
-      "reqModification": "us_jdam",
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "us_gbu_15v1": {
-      "reqModification": "us_ljdam",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "us_aim_120c": {
-      "prevModification": "us_gbu_15v1",
-      "reqModification": "us_aim_120b",
-      "tier": 4,
-      "modClass": "weapon"
-    },
     "us_lantirn_pod": {
       "modClass": "weapon",
       "tier": 1
@@ -13055,6 +13488,31 @@
       "reqModification": "us_lantirn_pod",
       "modClass": "weapon",
       "tier": 2
+    },
+    "us_aim_120c": {
+      "prevModification": "us_gbu_laser",
+      "reqModification": "us_aim_120b",
+      "tier": 4,
+      "modClass": "weapon"
+    },
+    "us_jdam": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_ljdam": {
+      "reqModification": "us_gbu_laser",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "us_gbu_15v1": {
+      "prevModification": "us_ljdam",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "il_spice_2000": {
+      "reqModification": "us_gbu_15v1",
+      "modClass": "weapon",
+      "tier": 4
     }
   },
   "user_skin": {

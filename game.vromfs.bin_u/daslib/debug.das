@@ -714,7 +714,7 @@ class private DAStackWalker : DapiStackWalker {
         var global = DAVariable(uid = frame.varId++, name = vinfo.name, _type = describe(ti), address = intptr(value), size = ti.size, typeInfo = ti)
 
         if (ti != null) {
-            dataWalker->startWalk(frame, global) <| $ {
+            dataWalker->startWalk(frame, global) $ {
                 dataWalkerAdapter |> walk_data(value, *ti)
             }
         }
@@ -832,7 +832,7 @@ class private DAStackWalker : DapiStackWalker {
             var ti = type_info(vinfo)
             var variable = DAVariable(uid = frame.varId++, name = vinfo.name, _type = describe(ti), address = intptr(arg), size = ti.size, typeInfo = ti)
             if (ti != null) {
-                dataWalker->startWalk(frame, variable) <| $ {
+                dataWalker->startWalk(frame, variable) $ {
                     dataWalkerAdapter |> walk_data(arg, *ti)
                 }
             }
@@ -856,7 +856,7 @@ class private DAStackWalker : DapiStackWalker {
             let ti = type_info(vinfo)
             var variable = DAVariable(uid = frame.varId++, name = vinfo.name, _type = describe(ti), address = ti.isRef ? intptr(unsafe(reinterpret<void?> arg)) : 0ul, size = ti.size, typeInfo = ti, rawValue = arg)
             if (ti != null) {
-                dataWalker->startWalk(frame, variable) <| $ {
+                dataWalker->startWalk(frame, variable) $ {
                     dataWalkerAdapter |> walk_data(arg, *ti)
                 }
             }
@@ -1184,9 +1184,9 @@ class private DAgent : DapiDebugAgent {
     def override onBreakpoint(var ctx : Context; at : LineInfo; reason, text : string) : void {
         
         if (reason == "exception") {
-            self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
+            self->getContextDataFor(ctx, $(var ctxData : DAContext) {
                 ctxData |> reset_debug_flags()
-            }
+            })
         }
         self->onPause(ctx, at, reason, text)
     }
@@ -1222,7 +1222,7 @@ class private DAgent : DapiDebugAgent {
         self->log("{ctx} `{reason}` breakpoint at {path}:{int(at.line)}\n")
 
         self->addContext(ctx)
-        self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
+        self->getContextDataFor(ctx, $(var ctxData : DAContext) {
             ctx |> set_single_step(true)
             self->sendStopped(ctx, ctxData, path, at, reason, text, -1ul)
             while (!ctxData.continueRequested && !ctxData.stepInRequested && ctxData.stepRequestedStack == 0) {
@@ -1231,7 +1231,7 @@ class private DAgent : DapiDebugAgent {
             ctxData.continueRequested = false
             self->afterPause()
             ctx |> set_single_step(!withInstruments || ctxData.stepInRequested || ctxData.stepRequestedStack > 0)
-        }
+        })
     }
 
     def override onSingleStep(var ctx : Context; at : LineInfo) : void {
@@ -1262,7 +1262,7 @@ class private DAgent : DapiDebugAgent {
             ctx |> set_single_step(!withInstruments)
         }
 
-        self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
+        self->getContextDataFor(ctx, $(var ctxData : DAContext) {
             let file = string(at.fileInfo.name) |> resolve_path_cache(workingPaths, pathAliases, pathsCache)
             if (ctxData.pauseRequested) {
                 self->sendStopped(ctx, ctxData, file, at, "pause", "", -1ul)
@@ -1334,7 +1334,7 @@ class private DAgent : DapiDebugAgent {
                     }
                 }
             }
-        }
+        })
     }
 
     def nextStep(var ctx : Context; var ctxData : DAContext; path : string; at : LineInfo) {
@@ -1367,12 +1367,12 @@ class private DAgent : DapiDebugAgent {
 
     def override onVariable(var ctx : Context; category, name : string; info : TypeInfo; data : void?) : void {
         
-        self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
+        self->getContextDataFor(ctx, $(var ctxData : DAContext) {
             let stackLen = length(ctxData.stack)
             if (stackLen > 0) {
                 var frame & = unsafe(ctxData.stack[0])
                 var variable = DAVariable(uid = frame.varId++, name = name, _type = describe(info), address = intptr(data), size = info.size)
-                walker.dataWalker->startWalk(frame, variable) <| $ {
+                walker.dataWalker->startWalk(frame, variable) $ {
                     walker.dataWalkerAdapter |> walk_data(data, info)
                 }
                 if (variable.children == null) {
@@ -1392,7 +1392,7 @@ class private DAgent : DapiDebugAgent {
                 }
                 frame.state |> emplace <| (STATE_VARS + uint64(length(frame.state)), category, [ variable])
             }
-        }
+        })
     }
 
     def sendStopped(var ctx : Context; var ctxData : DAContext; path : string; at : LineInfo; reason, text : string; brId : uint64) {
@@ -1464,7 +1464,7 @@ class private DAgent : DapiDebugAgent {
             }
         }
 
-        let found = self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
+        let found = self->getContextDataFor(ctx, $(var ctxData : DAContext) {
             *ctxData.ctx |> clear_instruments()
             *ctxData.ctx |> instrument_node(true) $(ati) {
                 if (ati.fileInfo == null) {
@@ -1491,7 +1491,7 @@ class private DAgent : DapiDebugAgent {
                 }
                 return false
             }
-        }
+        })
 
         if (!found) {
             
@@ -1898,7 +1898,7 @@ class private DAServer : Server {
         let ctxId = uint64(ctxAndFrame) / MAX_STACK
         var found = false
         var valid = false
-        agent->getContextData(ctxId) <| $(var ctxData : DAContext) {
+        agent->getContextData(ctxId, $(var ctxData : DAContext) {
             let frameId = int(ctxAndFrame % MAX_STACK)
             if (frameId >= 0 && frameId < length(ctxData.stack)) {
                 let kind = uint64(ini.variablesReference) % MAX_VARIABLES
@@ -1946,7 +1946,7 @@ class private DAServer : Server {
                     }
                 }
             }
-        }
+        })
         if (!found || !valid) {
             self->sendSuccessResponse(seq, command, JVNull())
         }
@@ -2002,7 +2002,7 @@ class private DAServer : Server {
         
         var inscope ini <- StackTraceArguments(data)
         var inscope res : StackTraceResponseBody
-        agent->getContextData(uint64(ini.threadId)) <| $(var ctxData : DAContext) {
+        agent->getContextData(uint64(ini.threadId), $(var ctxData : DAContext) {
             for (idx, line in range(ini.levels), ctxData.stack) {
                 res.stackFrames |> emplace(StackFrame(
                     id = double(ctxData.id * MAX_STACK + uint64(idx)),
@@ -2013,7 +2013,7 @@ class private DAServer : Server {
                 ))
             }
             res.totalFrames = double(length(ctxData.stack))
-        }
+        })
         self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
     }
 
@@ -2022,7 +2022,7 @@ class private DAServer : Server {
         var inscope ini <- ScopesArguments(data)
         var inscope res : ScopesResponseBody
         let ctxId = uint64(ini.frameId / double(MAX_STACK))
-        agent->getContextData(ctxId) <| $(var ctxData : DAContext) {
+        agent->getContextData(ctxId, $(var ctxData : DAContext) {
             let frameId = int(ini.frameId % double(MAX_STACK))
             if (frameId >= 0 && frameId < length(ctxData.stack)) {
                 let spAddr = ctxData.stack[frameId].spAddr
@@ -2064,7 +2064,7 @@ class private DAServer : Server {
                     ))
                 }
             }
-        }
+        })
         self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
     }
 
@@ -2091,7 +2091,7 @@ class private DAServer : Server {
                 }
             }
         } else {
-            agent->getContextData(ctxId) <| $(var ctxData : DAContext) {
+            agent->getContextData(ctxId, $(var ctxData : DAContext) {
                 let frameId = int(ctxAndFrame % MAX_STACK)
                 if (frameId >= 0 && frameId < length(ctxData.stack)) {
                     let kind = uint64(ini.variablesReference) % MAX_VARIABLES
@@ -2145,7 +2145,7 @@ class private DAServer : Server {
                         }
                     }
                 }
-            }
+            })
         }
         self->sendSuccessResponseStr(seq, command, sprint_json(res, false)) 
     }
@@ -2153,51 +2153,51 @@ class private DAServer : Server {
     def reqContinue(seq : double; command : string; data : JsonValue?) {
         
         var inscope ini <- ContinueArguments(data)
-        agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
+        agent->getContextData(uint64(ini.threadId), $(var ctx : DAContext) {
             ctx |> reset_debug_flags()
             ctx.continueRequested = true
-        }
+        })
         self->sendSuccessResponse(seq, command, null)
     }
 
     def reqPause(seq : double; command : string; data : JsonValue?) {
         
         var inscope ini <- PauseArguments(data)
-        agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
+        agent->getContextData(uint64(ini.threadId), $(var ctx : DAContext) {
             agent->reqPause(ctx)
-        }
+        })
         self->sendSuccessResponse(seq, command, null)
     }
 
     def reqStepIn(seq : double; command : string; data : JsonValue?) {
         
         var inscope ini <- StepInArguments(data)
-        agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
+        agent->getContextData(uint64(ini.threadId), $(var ctx : DAContext) {
             ctx |> reset_debug_flags()
             ctx.stepInRequested = true
-        }
+        })
         self->sendSuccessResponse(seq, command, null)
     }
 
     def reqNext(seq : double; command : string; data : JsonValue?) {
         
         var inscope ini <- NextArguments(data)
-        agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
+        agent->getContextData(uint64(ini.threadId), $(var ctx : DAContext) {
             ctx |> reset_debug_flags()
             ctx.stepRequestedStack = stack_depth(*ctx.ctx)
             ctx.stepInRequested = ctx.stepRequestedStack == 0
-        }
+        })
         self->sendSuccessResponse(seq, command, null)
     }
 
     def reqStepOut(seq : double; command : string; data : JsonValue?) {
         
         var inscope ini <- NextArguments(data)
-        agent->getContextData(uint64(ini.threadId)) <| $(var ctx : DAContext) {
+        agent->getContextData(uint64(ini.threadId), $(var ctx : DAContext) {
             ctx |> reset_debug_flags()
             ctx.stepRequestedStack = max(stack_depth(*ctx.ctx) - 1, 0)
             ctx.stepInRequested = ctx.stepRequestedStack == 0
-        }
+        })
         self->sendSuccessResponse(seq, command, null)
     }
 
@@ -2207,7 +2207,7 @@ class private DAServer : Server {
 
         var found = false
         let ctxId = uint64(ini.frameId / double(MAX_STACK))
-        agent->getContextData(ctxId) <| $(var ctxData : DAContext) {
+        agent->getContextData(ctxId, $(var ctxData : DAContext) {
             let frameId = int(ini.frameId % double(MAX_STACK))
             if (frameId >= 0 && frameId < length(ctxData.stack)) {
                 let spAddr = ctxData.stack[frameId].spAddr
@@ -2216,7 +2216,7 @@ class private DAServer : Server {
                 while (!found && idx < length(ctxData.stack)) {
                     let line & = unsafe(ctxData.stack[idx])
                     if (first || line.spAddr == spAddr) {
-                        found = line |> find_child_var() <| $[unused_argument(varIdx)] (child, varIdx) {
+                        found = line |> find_child_var() $[unused_argument(varIdx)] (child, varIdx) {
                             if (child.name == ini.expression) {
                                 var inscope res = EvaluateResponse(
                                     result = child.value,
@@ -2240,7 +2240,7 @@ class private DAServer : Server {
                                 agent.walker.ctx = addr(ctxData)
                             }
                             agent.walker->collectGlobalAt(vinfo, ctxData.stack[frameId])
-                            found = ctxData.stack[frameId] |> find_child_var() <| $[unused_argument(varIdx)] (child, varIdx) {
+                            found = ctxData.stack[frameId] |> find_child_var() $[unused_argument(varIdx)] (child, varIdx) {
                                 if (child.name == ini.expression) {
                                     var inscope res = EvaluateResponse(
                                         result = child.value,
@@ -2294,7 +2294,7 @@ class private DAServer : Server {
                     self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
                 }
             }
-        }
+        })
         if (!found) {
             self->sendSuccessResponse(seq, command, null)
         }

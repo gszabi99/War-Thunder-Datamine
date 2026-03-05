@@ -76,6 +76,30 @@
       },
       "body_back_dm": {
         "armorThickness": 37.0
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 37.0
+      },
+      "turret_03_front_dm": {
+        "armorThickness": 20.0
+      },
+      "body_top_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_03_back_dm": {
+        "armorThickness": 30.0
+      },
+      "body_shield_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_01_front_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_04_back_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_03_top_dm": {
+        "armorThickness": 10.0
       }
     },
     "turret": {
@@ -93,6 +117,21 @@
       },
       "turret_bottom_dm": {
         "armorThickness": 10.0
+      },
+      "turret_02_back_dm": {
+        "armorThickness": 15.0
+      },
+      "turret_01_top_dm": {
+        "armorThickness": 37.0
+      },
+      "turret_01_back_dm": {
+        "armorThickness": 37.0
+      },
+      "turret_02_front_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_01_bottom_dm": {
+        "armorThickness": 5.0
       }
     },
     "CHA_armor": {
@@ -128,7 +167,18 @@
       "armorThickness": 4.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
-      "turret_01_top_dm": {}
+      "ex_armor_r_04_dm": {},
+      "ex_armor_l_04_dm": {},
+      "ex_armor_r_01_dm": {},
+      "ex_armor_l_01_dm": {},
+      "ex_armor_l_02_dm": {},
+      "ex_armor_r_02_dm": {},
+      "ex_armor_l_03_dm": {},
+      "ex_armor_body_01_dm": {},
+      "turret_03_bottom_dm": {},
+      "turret_04_front_dm": {},
+      "turret_01_side_dm": {},
+      "ex_armor_r_03_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -161,8 +211,8 @@
         "armorClass": "tank_traks",
         "armorThickness": 15.0,
         "hp": 150.0,
-        "ex_armor_01_dm": {},
-        "ex_armor_02_dm": {}
+        "ex_armor_l_05_dm": {},
+        "ex_armor_r_05_dm": {}
       }
     },
     "gun": {
@@ -1800,20 +1850,20 @@
       "Fuel": 300.0,
       "TakeOff": 14000.0,
       "momentOfInertia": [
-        2.5,
-        2.5,
-        6.0
+        0.665,
+        2.02,
+        1.786
       ],
       "CenterOfGravity": [
-        0.6,
-        0.5,
+        0.0,
+        0.7,
         0.0
       ],
       "CenterOfGravityClampY": [
         0.0,
         0.7
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 500.0
     },
     "tracks": {
@@ -1822,9 +1872,9 @@
       "width": 0.36
     },
     "collisionProps": {
+      "cls_turret": "convex_hull",
       "cls_turret_01": "convex_hull",
-      "cls_body_01": "convex_hull",
-      "cls_body_02": "convex_hull"
+      "cls_body": "convex_hull"
     },
     "engine": {
       "horsePowers": 300.0,
@@ -1955,7 +2005,7 @@
       "cutDamage": 200.0,
       "deviation": 0.5,
       "rotation": 0.5,
-      "collisionNode": "cls_turret_01"
+      "collisionNode": "cls_turret"
     }
   },
   "unitFx": {

@@ -350,17 +350,16 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
+    let hasConditions = getUnlockConditions(getUnlockById(option.unlockId)?.mode).len() > 0
+
     let cost = getUnlockCost(option.unlockId)
     let canBuy = !option.enabled && !cost.isZero()
 
     let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
     let btn = showObjById("btn_select", isVisible && !canBuy, this.scene)
 
-    let isFavBtnVisible = !isVisible && !canBuy
+    let isFavBtnVisible = !isVisible && hasConditions
     let favBtnObj = showObjById("btn_fav", isFavBtnVisible, this.scene)
-
-    if (canBuy)
-      return
 
     if (isFavBtnVisible) {
       initUnlockFavObj(option.unlockId, favBtnObj)

@@ -198,6 +198,7 @@ let aircraftHud = {
       !LaserAtgmSightVisible.get() ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
       planeHmdElem
       !isCollapsedRadarInReplay.get() ? radarHud(radarSize[0], radarSize[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
+        canZoom = true
         magnifiedIndicator = true
       }, true) : null
       radarIndication(HudColor)

@@ -136,6 +136,7 @@ function mkHelicopterIndicators() {
       compassElem(MfdColor, compassSize, compassPos)
       !isCollapsedRadarInReplay.get()
         ? radarHud(radarSize[0], radarSize[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
+          canZoom = true
           magnifiedIndicator = true
           moveMagnifiedIndicatorRight = !IsSightHudVisible.get()
         }, true) : null

@@ -81,6 +81,12 @@
       "composite_armor_hull_01_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
+      },
+      "firewall_armor_01_dm": {
+        "armorThickness": 35.0,
+        "hp": 150.0,
+        "ignoreDeadWithSplash": true,
+        "armorEffectiveThicknessMax": 50.0
       }
     },
     "body_screens": {
@@ -812,11 +818,11 @@
       }
     ],
     "armorArrayTurret": {
-      "xrayDmPart": "composite_armor_turret_01_dm",
+      "xrayDmPart": "firewall_armor_01_dm",
       "titleLoc": "RHA_tank_modern",
       "armorArrayText": {
         "layer": {
-          "dmPart": "composite_armor_turret_01_dm"
+          "dmPart": "firewall_armor_01_dm"
         }
       }
     }
@@ -1931,7 +1937,8 @@
           ],
           "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": {
-            "verNode": "bone_gunner_sight_v",
+            "verNode": "bone_camera_roll",
+            "xrayVerNode": "commander_panoramic_sight_xray",
             "verLimits": [
               -10.0,
               45.0
@@ -3355,7 +3362,8 @@
                 ],
                 "shootingDmPart": "fire_control_system_dm",
                 "linkedAnimPart": {
-                  "verNode": "bone_gunner_sight_v",
+                  "verNode": "bone_camera_roll",
+                  "xrayVerNode": "commander_panoramic_sight_xray",
                   "verLimits": [
                     -10.0,
                     45.0

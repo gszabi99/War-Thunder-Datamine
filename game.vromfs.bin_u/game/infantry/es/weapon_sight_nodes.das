@@ -142,8 +142,8 @@ def weapon_switch_sight_es(evt : CmdWeapSwitchSight;
 [es(on_appear)]
 def init_sight_preset_index_id(evt : Event;
                                var phys_vars : PhysVars&;
-                               var weapon__gunAnimSightPresetIndexId : int&)
-  weapon__gunAnimSightPresetIndexId = registerVar(phys_vars, "sight_preset_index", float(0))
+                               var weapon__aimSightPresetIndex : int&)
+  weapon__aimSightPresetIndex = registerVar(phys_vars, "sight_preset_index", float(0))
 
 [es(on_appear)]
 def init_gun_launch_vertical_angle_es(evt : Event;

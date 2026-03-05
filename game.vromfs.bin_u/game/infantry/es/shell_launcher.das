@@ -102,17 +102,8 @@ def launch_shell_es(evt : CmdLaunchShell;
     var launchTm = launchDesc.tm
 
     if human_weap__throwMode && human_net_phys != null
-      var baseThrowPoint : float3
-      if grenadeAttachSlotId != -1
-        assume ct = human_net_phys.phys.appliedCT
-        if ct |> human_control_state_get_shootPos_packed() > 0u
-          let physTransform = human_net_phys.phys.currentState.location |> location_makeTM()
-          baseThrowPoint = physTransform * ct |> human_control_state_unpack_shootPos()
-        else
-          let wofs = geomtree_getWtmOfs(*animchar.nodeTree)
-          let slotNodeWtm = animchar_getSlotNodeWtm(animchar, grenadeAttachSlotId)
-          baseThrowPoint = float3x4(*slotNodeWtm)[3] + wofs
-      else
+      var baseThrowPoint = launchTm[3]
+      if grenadeAttachSlotId == -1
         assume curState = human_net_phys.phys.currentState
         baseThrowPoint = human_net_phys.phys |> human_phys_calcGunPos(PrecomputedPresetMode.FPV,
                                                                       curState.location |> location_makeTM(),

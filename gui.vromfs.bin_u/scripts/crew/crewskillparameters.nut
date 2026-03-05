@@ -1,7 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("%scripts/crew/crewSkills.nut")
@@ -66,27 +65,30 @@ function onEventSignOut(_params) {
 }
 
 function getBaseDescriptionText(memberName, skillName, skillParamsList) {
-  local locId = format("crew/%s/%s/tooltip", memberName, skillName)
-  local locParams = null
-
-  if (skillName == "eyesight"
-    && isInArray(memberName, ["driver", "tank_gunner", "commander", "loader", "radio_gunner"])) {
-    locId = "crew/eyesight/tank/tooltip"
-
-    let blk = get_game_params_blk()
-    let detectDefaults = blk?.detectDefaults
-    let defaultHearingDistance = blk?.tankAlwaysDetectedDistance ?? 0
-    let hearingDistance =
-      skillParamsList?.currentParametersByRequestType[skillParametersRequestType.CURRENT_VALUES].hearingDistance[0].value ?? defaultHearingDistance
-
-    locParams = {
-      targetingMul = getTblValue("distanceMultForTargetingView", detectDefaults, 1.0)
-      binocularMul = getTblValue("distanceMultForBinocularView", detectDefaults, 1.0)
-      distance = hearingDistance
+  let hasDescNotes = skillName == "eyesight" && skillGroups.eyesight.contains(memberName)
+  if (!hasDescNotes)
+    return {
+      text = loc($"crew/{memberName}/{skillName}/tooltip")
+      descriptionNotes = null
     }
+
+  let blk = get_game_params_blk()
+  let detectDefaults = blk?.detectDefaults
+  let defaultHearingDistance = blk?.tankAlwaysDetectedDistance ?? 0
+  let hearingDistance =
+    skillParamsList?.currentParametersByRequestType[skillParametersRequestType.CURRENT_VALUES].hearingDistance[0].value
+      ?? defaultHearingDistance
+
+  let descNotesLocParams = {
+    targetingMul = detectDefaults?.distanceMultForTargetingView ?? 1.0
+    binocularMul = detectDefaults?.distanceMultForBinocularView ?? 1.0
+    distance = hearingDistance
   }
 
-  return loc(locId, locParams)
+  return {
+    text = loc("crew/eyesight/tank/tooltip")
+    descriptionNotes = loc("crew/eyesight/tank/tooltip/descNotes", descNotesLocParams)
+  }
 }
 
 
@@ -109,6 +111,7 @@ function getSkillListHeaderRow(crew, columnTypes, unit) {
   let res = {
     descriptionLabel = loc("crewSkillParameterTable/descriptionLabel")
     valueItems = []
+    isHeader = true
   }
 
   let headerImageParams = {
@@ -121,10 +124,9 @@ function getSkillListHeaderRow(crew, columnTypes, unit) {
       itemImage = columnType.getHeaderImage(headerImageParams)
       imageSize = columnType.getHeaderImageSize().tostring()
       imageLegendText = columnType.getHeaderImageLegendText()
+      hasSeparatorBefore = columnType.hasSeparatorBefore
+      hasSeparatorAfter = columnType.hasSeparatorAfter
     })
-  res.valueItems.append({
-    itemDummy = true
-  })
 
   return res
 }
@@ -155,7 +157,8 @@ function getParametersByRequestType(crewId, skillsList, difficulty, requestType,
 }
 
 function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit, skillParamsList) {
-  let resArray = [getBaseDescriptionText(memberName, skillName, skillParamsList)]
+  let desc = getBaseDescriptionText(memberName, skillName, skillParamsList)
+  let resArray = [desc.text]
   if (unit && unit.unitType.crewUnitType != crewUnitType) {
     let text = loc("crew/skillsWorkWithUnitsSameType")
     resArray.append(colorize("warningTextColor", text))
@@ -180,7 +183,10 @@ function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, u
     }
   }
 
-  return "\n".join(resArray, true)
+  return {
+    text = "\n".join(resArray, true)
+    descriptionNotes = desc.descriptionNotes
+  }
 }
 
 function getSortedArrayByParamsTable(parameters, crewUnitType) {
@@ -265,8 +271,11 @@ function getSkillRowsViewInternal(skillParamsList, crew, crewUnitType, unit) {
   let res = parseParameters(skillParamsList.columnTypes,
     skillParamsList.currentParametersByRequestType, skillParamsList.selectedParametersByRequestType, crewUnitType)
   
-  if (res.len()) 
+  if (res.len()) {
+    
+    res.each(@(row, idx) row.__update({ isEven = idx % 2 == 0 }))
     res.insert(0, getSkillListHeaderRow(crew, skillParamsList.columnTypes, unit))
+  }
 
   return res
 }
@@ -284,9 +293,11 @@ function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUn
     isVisible = @(_) true
   }]
   let skillParamsList = getSkillParamsList(crew, difficulty, skillsList, crewUnitType, unit)
+  let tooltip = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit, skillParamsList)
   let view = {
     skillName = loc($"crew/{skillName}")
-    tooltipText = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit, skillParamsList)
+    skillDescription = tooltip.text
+    descriptionNotes = tooltip.descriptionNotes
 
     
     parameterRows = getSkillRowsViewInternal(skillParamsList, crew, crewUnitType, unit)
@@ -294,16 +305,6 @@ function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUn
       loc("ui/colon"), difficulty.getLocName())
   }
 
-  if (!view.parameterRows.len())
-    return view
-
-  
-  view.headerItems <- view.parameterRows[0].valueItems
-
-  
-  let firstRow = getTblValue(1, view.parameterRows)
-  view.progressBarValue <- getTblValue("progressBarValue", firstRow)
-  view.progressBarSelectedValue <- getTblValue("progressBarSelectedValue", firstRow)
   return view
 }
 
@@ -314,7 +315,7 @@ subscriptions.addListenersWithoutEnv({
 })
 
 return {
-  getParametersByCrewId = getParametersByCrewId
-  getSkillListParameterRowsView = getSkillListParameterRowsView
-  getSkillDescriptionView = getSkillDescriptionView
+  getParametersByCrewId
+  getSkillListParameterRowsView
+  getSkillDescriptionView
 }

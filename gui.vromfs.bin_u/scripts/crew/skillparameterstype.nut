@@ -2,11 +2,9 @@ from "%scripts/dagui_library.nut" import *
 import "%sqStdLibs/helpers/enums.nut" as enums
 
 let { format } = require("string")
-let { fabs } = require("math")
 let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
-let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 let skillParametersColumnType = require("%scripts/crew/skillParametersColumnType.nut")
 
 let g_skill_parameters_type = {
@@ -55,8 +53,6 @@ g_skill_parameters_type.template <- {
       this.parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
         measure, sign, parameterView, params)
 
-      parameterView.progressBarValue <- this.getProgressBarValue(parametersByRequestType, params)
-      parameterView.progressBarSelectedValue <- this.getProgressBarValue(selectedParametersByRequestType, params)
       resArray.append(parameterView)
       parsedMembers.append(value.memberName)
     }
@@ -92,20 +88,6 @@ g_skill_parameters_type.template <- {
       skillParametersColumnType.MAX.currentParametersRequestType, parametersByRequestType, params)
     return maxValue >= baseValue
   }
-
-  getProgressBarValue = function(parametersByRequestType, params = null) {
-    let currentParameterValue = this.getValue(
-      skillParametersRequestType.CURRENT_VALUES, parametersByRequestType, params)
-    let maxParameterValue = this.getValue(
-      skillParametersRequestType.MAX_VALUES, parametersByRequestType, params)
-    let baseParameterValue = this.getValue(
-      skillParametersRequestType.BASE_VALUES, parametersByRequestType, params)
-    let curDiff = fabs(currentParameterValue - baseParameterValue)
-    let maxDiff = fabs(maxParameterValue - baseParameterValue)
-    if (maxDiff > 0.0)
-      return (1000 * (curDiff / maxDiff)).tointeger()
-    return 0
-  }
 }
 
 enums.enumsAddTypes(g_skill_parameters_type, {
@@ -139,7 +121,6 @@ enums.enumsAddTypes(g_skill_parameters_type, {
         }
         this.parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
           measureType.DISTANCE, sign, parameterView, params)
-        parameterView.progressBarValue <- this.getProgressBarValue(parametersByRequestType, params)
         resArray.append(parameterView)
       }
     }

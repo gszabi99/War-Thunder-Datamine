@@ -1,10 +1,36 @@
 <<#tabs>>
 crewTab {
   <<#id>>id:t='<<id>>'<</id>>
-  tooltip:t='<<tooltip>>'
   width:t='pw'
   height:t='1@crewSkillTabHeight'
   css-hier-invalidate:t='yes'
+  tooltip:t=''
+
+  tooltipObj {
+    id:t='upgrade_tooltip'
+    display:t='hide'
+    noPadding:t='yes'
+
+    tdiv {
+      padding:t='@frameMediumPadding'
+      bgcolor:t='@weaponCardBackgroundColor'
+      flow:t='vertical'
+
+      textareaNoTab {
+        id:t='upgrade_tooltip_header'
+        text:t=''
+        smallFont:t='yes'
+        overlayTextColor:t='active'
+      }
+
+      textareaNoTab {
+        id:t='upgrade_tooltip_skills_list'
+        padding-top:t='@blockInterval'
+        text:t=''
+        smallFont:t='yes'
+      }
+    }
+  }
 
   <<#tabImage>>
   crewTabImage {

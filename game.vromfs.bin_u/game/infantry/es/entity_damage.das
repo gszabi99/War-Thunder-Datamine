@@ -253,8 +253,9 @@ def apply_damage(victim : EntityId;
       
       if offender != victim
         query(offender) <| $ [es] (hitpoints__hp : float;
+                                   hitpoints__maxHp : float;
                                    dm_parts__armorItemEids : EidList)
-          offender_data.setOffenderHp(hitpoints__hp)
+          offender_data.setOffenderHp(safediv(hitpoints__hp, hitpoints__maxHp))
           fill_offender_armor_info(offender_data, dm_parts__armorItemEids)
       if deathReasonByDamageType != UnitDeathReasonInner.DR_UNKNOWN
         *victim_unit |> trySetDeathInfoByKiller(deathReasonByDamageType, offender)

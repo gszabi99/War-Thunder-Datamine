@@ -14,7 +14,7 @@
   "laserDesignator": true,
   "isBwOpticSight": true,
   "gyroSight": true,
-  "ils31": true,
+  "ilsJ10c": true,
   "ilsHasRadarHud": true,
   "rwrIndicator": "L-150",
   "hmdShelZoom": true,
@@ -87,9 +87,6 @@
     0.09
   ],
   "paratrooper": "su_k_36_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2428,28 +2425,35 @@
     }
   },
   "cockpit": {
+    "targetingPodFov": [
+      18.0,
+      1.5
+    ],
+    "sightInFov": 1.5,
+    "sightOutFov": 18.0,
+    "sightFov": 1.0,
     "headPos": [
-      8.015,
-      1.08,
-      -0.012
+      7.8,
+      1.054,
+      0.0
     ],
     "headPosOnShooting": [
-      8.115,
-      1.08,
-      -0.012
+      7.9,
+      1.054,
+      0.0
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
-    "hmdScreenBlockRad": 0.06,
     "mfdTextureSize": [
       1024,
       1024
     ],
+    "hmdScreenBlockRad": 0.04,
     "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
-      8.315,
-      1.08,
+      8.36,
+      1.132,
       0.0
     ],
     "mirrorNorm": [
@@ -2465,65 +2469,54 @@
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
     "lightPos": [
-      8.5,
-      0.617,
-      0.156
+      8.43,
+      0.75,
+      0.0
     ],
     "lightColor": [
-      0.95,
-      0.11,
+      0.9,
+      0.2,
       0.0
     ],
-    "lightRadius": 0.3,
+    "lightRadius": 0.4,
     "lightPos1": [
-      8.5,
-      0.617,
-      -0.156
+      8.05,
+      0.435,
+      0.4
     ],
     "lightColor1": [
-      0.95,
-      0.11,
+      0.9,
+      0.2,
       0.0
     ],
-    "lightRadius1": 0.3,
+    "lightRadius1": 0.4,
     "lightPos2": [
-      8.197,
-      0.531,
-      0.366
+      8.05,
+      0.435,
+      -0.4
     ],
     "lightColor2": [
-      0.95,
-      0.11,
+      0.9,
+      0.2,
       0.0
     ],
-    "lightRadius2": 0.3,
-    "lightPos3": [
-      8.197,
-      0.531,
-      -0.366
-    ],
-    "lightColor3": [
-      0.95,
-      0.11,
-      0.0
-    ],
-    "lightRadius3": 0.3,
+    "lightRadius2": 0.4,
     "hmdBlock": {
       "ils": {
         "pos": [
           8.8,
           1.08,
-          -0.012
+          0.0
         ],
-        "rad": 0.12
+        "rad": 0.17
       },
       "full_devices": {
         "pos": [
-          8.567,
-          0.56,
-          -0.01
+          8.431,
+          0.55,
+          0.0
         ],
-        "rad": 0.39
+        "rad": 0.42
       }
     },
     "devices": {
@@ -2607,23 +2600,11 @@
       "flaps_fixed": false,
       "speed": [
         0.0,
-        444.444
-      ],
-      "speed_01": [
-        0.0,
-        444.444
+        514.444
       ],
       "mach": [
         0.5,
-        3.0
-      ],
-      "mach1": [
-        0.5,
-        3.0
-      ],
-      "mach2": [
-        0.5,
-        3.0
+        2.4
       ],
       "compass": [
         0.0,
@@ -2647,7 +2628,7 @@
       ],
       "altitude_10k": [
         0.0,
-        100000.0
+        30000.0
       ],
       "altitude_hour": [
         0.0,
@@ -2657,24 +2638,12 @@
         0.0,
         1000.0
       ],
-      "altitude1_10k": [
-        0.0,
-        100000.0
-      ],
-      "altitude1_hour": [
-        0.0,
-        10000.0
-      ],
       "radio_altitude": [
         0.0,
         2000.0
       ],
       "altitude_koef": 1.0,
       "bank": [
-        -8.0,
-        8.0
-      ],
-      "bank1": [
         -8.0,
         8.0
       ],
@@ -2695,16 +2664,16 @@
         40.0
       ],
       "aoa_indexer1": [
-        9.0,
-        11.5
+        30.0,
+        15.0
       ],
       "aoa_indexer2": [
-        11.0,
-        13.0
+        12.0,
+        15.0
       ],
       "aoa_indexer3": [
-        12.5,
-        30.0
+        7.0,
+        12.0
       ],
       "clock_hour": [
         0.0,
@@ -2720,11 +2689,11 @@
       ],
       "rpm": [
         0.0,
-        14630.0
+        15400.0
       ],
       "rpm1": [
         0.0,
-        14630.0
+        15400.0
       ],
       "oil_pressure": [
         0.0,
@@ -2770,113 +2739,79 @@
             0.5,
             0.5
           ],
-          "fontScale": 0.7,
           "page": [
             {
-              "type": "hsd",
-              "scale": 1.0,
-              "color": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "font": "hud",
-              "fontSize": 18,
-              "lineWidth": 1.0,
+              "type": "radar",
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
               "lineColor": [
-                211,
-                211,
-                211,
-                120
-              ],
-              "orient": "hdgUp",
-              "centerMarkType": "plane",
-              "centerMarkFillColor": [
                 0,
                 255,
-                0,
-                255
+                7
               ],
-              "centerMarkLineColor": [
+              "modeColor": [
                 0,
                 255,
-                0,
-                255
+                7
               ],
-              "centerMarkScale": 0.1,
-              "centerMarkSpeed": false,
-              "spi": true,
-              "spiColor": [
+              "verAngleColor": [
                 0,
                 255,
-                0,
-                255
+                7
               ],
-              "spiInfo": true,
-              "spiInfoOffset": -0.03,
-              "distScale": true,
-              "distScaleBeyondAzScale": true,
-              "distScaleStepSize": 10000.0,
-              "distScaleColor": [
-                211,
-                211,
-                211,
-                120
-              ],
-              "distScaleNumbers": true,
-              "distScaleNumbersAngle": 45.0,
-              "distScaleNumbersFillColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "azScaleType": "lines",
-              "azScaleSize": 20000.0,
-              "azScaleColor": [
+              "horAngleColor": [
                 0,
                 255,
-                0,
-                255
+                7
               ],
-              "headingIndFillColor": [
+              "scaleColor": [
                 0,
-                0,
-                0,
-                255
+                255,
+                7
               ],
-              "centerCross": false,
-              "time": false,
-              "mapBackground": false,
-              "extent": 55000.0,
-              "markers": true,
-              "metricUnits": true
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
             },
             {
               "type": "rwr",
-              "scale": 0.75
+              "grid": {
+                "scale": 1.0,
+                "lineWidthScale": 0.8,
+                "fontScale": 0.5
+              },
+              "object": {
+                "scale": 1.2,
+                "lineWidthScale": 0.5,
+                "fontScale": 0.5
+              }
             },
             {
-              "type": "radar",
-              "scale": 0.8,
-              "hideBackground": true,
-              "customRadar": "su27tactic",
-              "font": "ils31"
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
             }
           ]
-        },
-        {
-          "textureArea": [
-            0.5,
-            0.5,
-            1.0,
-            1.0
-          ],
-          "page": {
-            "type": "rwr",
-            "scale": 1.0
-          }
         },
         {
           "textureArea": [
@@ -2885,35 +2820,181 @@
             1.0,
             0.5
           ],
-          "isNotDisplay": true,
-          "page": {
-            "type": "devices",
-            "aviahorizon_pitch": {
-              "arrowTex": "su_gauge_artificial_horizon_type_agr_81m_15_slider_c",
-              "position": [
-                341.0,
-                256.0
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
               ],
-              "arrowTexCoord": [
-                0.0,
-                0.4,
-                1.0,
-                0.6
+              "modeColor": [
+                0,
+                255,
+                7
               ],
-              "size": [
-                683.0,
-                512.0
+              "verAngleColor": [
+                0,
+                255,
+                7
               ],
-              "notDrawBackground": true,
-              "ranges": {
-                "limits": [
-                  -90.0,
-                  90.0,
-                  0.4,
-                  -0.4
-                ]
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
+            },
+            {
+              "type": "rwr",
+              "grid": {
+                "scale": 1.0,
+                "lineWidthScale": 0.8,
+                "fontScale": 0.5
+              },
+              "object": {
+                "scale": 1.2,
+                "lineWidthScale": 0.5,
+                "fontScale": 0.5
               }
             }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "rwr",
+              "grid": {
+                "scale": 1.0,
+                "lineWidthScale": 0.8,
+                "fontScale": 0.5
+              },
+              "object": {
+                "scale": 1.2,
+                "lineWidthScale": 0.5,
+                "fontScale": 0.5
+              }
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.5,
+            1.0,
+            0.75
+          ],
+          "page": {
+            "type": "map"
+          }
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.75,
+            1.0,
+            1.0
+          ],
+          "page": {
+            "type": "ils_duplicate"
           }
         },
         {
@@ -2926,8 +3007,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.35,
-              0.35
+              0.3,
+              0.3
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -2968,6 +3049,14 @@
       ],
       "noiseFactor": 0.04,
       "index": 1
+    },
+    "sightThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04,
+      "index": 2
     }
   },
   "gunnerOpticFps": {

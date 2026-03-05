@@ -1210,20 +1210,13 @@ def document_struct_method(doc_file : file; mod : Module?; value; var func) {
     
     let fname = string(func.name)
     let is_static = func.moreFlags.isStaticClassMethod
-    var method_name : string
-    if (is_static) {
-        let structPrefix = "{value.name}`"
-        method_name = fname |> slice(length(structPrefix))
-    } else {
-        method_name = fname
-    }
 
     fwrite(doc_file, make_label(function_label_name(func)))
 
     let argNames <- [for (arg in func.arguments); string(arg.name)]
     let argTypes <- [for (arg in func.arguments); get_ptr(arg._type)]
     let argInits <- [for (arg in func.arguments); get_ptr(arg.init)]
-    (document_function_declaration(doc_file, "das:function", "{value.name}.{method_name}",
+    (document_function_declaration(doc_file, "das:function", "{value.name}.{fname}",
         argNames, argTypes, argInits, func.result, 1))
 
     if (func.flags.unsafeOperation) {
@@ -1240,7 +1233,7 @@ def document_struct_method(doc_file : file; mod : Module?; value; var func) {
     
     
     let hash_drop = is_static ? 0 : 1
-    var mn = method_name
+    var mn = fname
     var drop = hash_drop
     for (arg in func.arguments) {
         if (drop-- > 0) {
@@ -1249,8 +1242,8 @@ def document_struct_method(doc_file : file; mod : Module?; value; var func) {
         let prefix = arg._type.flags.removeConstant ? "var " : ""
         mn += "{prefix}{describe_type_short(arg._type)}"
     }
-    let file_label = "{safe_function_name(method_name)}-{hash(mn)}"
-    document_function_topic(doc_file, func.result, topic("function", mod, "{value.name}-{file_label}"), "def {value.name}.{method_name}", args)
+    let file_label = "{safe_function_name(fname)}-{hash(mn)}"
+    document_function_topic(doc_file, func.result, topic("function", mod, "{value.name}-{file_label}"), "def {value.name}.{fname}", args)
 }
 
 def make_requirements_list(value : smart_ptr<ast::Structure>) {
@@ -1368,6 +1361,7 @@ def document_classes(doc_file : file; mods : array<Module?>) {
             var inscope annT <- new TypeDecl(baseType = Type.tStructure, structType = get_ptr(value))
             for_each_function(mod, "") $(func) {
                 if (func.flags.isClassMethod && func.classParent == value && func.name == value.name && !is_trivial_ctor(func)) {
+                    
                     document_function(doc_file, mod, func, 0, "{value.name}-", "das:function")
                     return
                 }
@@ -1513,6 +1507,9 @@ def document_structure(doc_file : file; mod : Module?; var value : StructurePtr)
         }
         
         if (string(func.name) |> starts_with(".`")) {
+            return
+        }
+        if (string(func.name) |> starts_with("{value.name}`")) {
             return
         }
         document_struct_method(doc_file, mod, value, func)

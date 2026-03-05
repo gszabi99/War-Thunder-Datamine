@@ -116,12 +116,14 @@ let modeNames = [
   "hud/IRST HMD",
   "hud/IRST track",
 
-  "hud/ESM standby",
-  "hud/ESM search",
-  "hud/ESM acquisition",
-  "hud/ESM ACM",
-  "hud/ESM HMD",
-  "hud/ESM track",
+  
+
+
+
+
+
+
+
 
   "hud/air_search",
   "hud/ground_search",
