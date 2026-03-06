@@ -11,6 +11,8 @@ let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut
 let { getProjectileNameLoc, getProjectileIconLayers } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { parse_json } = require("json")
+let mkKillerCardXray = require("scripts/hud/mkKillerCardXray.nut")
 
 let offenderHitsOrder = ["armor", "head", "torso", "hand", "leg"]
 
@@ -33,7 +35,8 @@ function getKillerCardView(messageData, userInfo) {
   if (!isKillerCardData(messageData))
     return null
   let { playerId = -1, killerProjectileName = "", isDebugData = false,
-    weaponEcsTemplateName = "", offenderHits = {} } = messageData
+    weaponEcsTemplateName = "", offenderHits = "", offenderHp = -1, offenderArmorSegmentsInfo = ""
+  } = messageData
   let { aircraftName, name, clanTag = "", title = "", aircraft } = isDebugData ? messageData
     : get_mplayer_by_id(playerId)
   let unit = getAircraftByName(aircraftName)
@@ -59,9 +62,12 @@ function getKillerCardView(messageData, userInfo) {
 
   let shellIconLayers = getProjectileIconLayers(killerProjectileName)
 
-  let offenderHitsArray = offenderHitsOrder
-    .filter(@(area) offenderHits?[area] != null )
-    .map(@(area) {areaLocId = loc($"hits/area/{area}"), hitsNum = offenderHits[area]})
+  let offenderHitsTable = offenderHits.len() ? parse_json(offenderHits) : {}
+  let offenderHitsArray = !offenderHitsTable.len() ? [] : offenderHitsOrder
+      .filter(@(area) offenderHitsTable?[area] != null )
+      .map(@(area) {areaLocId = loc($"hits/area/{area}"), hitsNum = offenderHitsTable[area]})
+
+  let needShowXrayDoll = offenderHp >= 0 && offenderArmorSegmentsInfo != ""
 
   return {
     cardCaption = "".concat(utf8Capitalize(loc("NET_UNIT_KILLED_BY_PLAYER")), loc("ui/colon"))
@@ -87,8 +93,13 @@ function getKillerCardView(messageData, userInfo) {
     shellIconLayers
     shellHeader = showCustomItem ? loc("hotkeys/ID_HUMAN_FIRE_HEADER") : loc("logs/ammunition")
 
-    hasKillerHitsInfo = offenderHits.len()
+    hasKillerHitsInfo = offenderHitsArray.len() > 0
     offenderHits = offenderHitsArray
+
+    needShowXrayDoll
+    xrayBodyArmor = needShowXrayDoll
+      ? mkKillerCardXray(offenderHp, parse_json(offenderArmorSegmentsInfo))
+      : null
   }
 }
 

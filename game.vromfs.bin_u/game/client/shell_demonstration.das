@@ -410,7 +410,7 @@ def on_weaponry_wnd_toggle(evt : EventToggleWeaponryWnd;
   simpleObject__visible = !evt.isOpen
 
 [es(tag=hangar)]
-def on_demonstarted_shell_option_toggle(evt : EventToggleDemonstratedShellOpt;
+def on_demonstrated_shell_option_toggle(evt : EventToggleDemonstratedShellOpt;
                                         unit__ref : UnitRef;
                                         unit__playerId : int)
   if unit__playerId < 0
@@ -492,13 +492,8 @@ def get_modification_list(unit_blk : DataBlock&; var mods : array<string>&)
     if blkName != ""
       mods.push(blkName)
 
-def create_list_of_demonstrated_bullets(unit_or_mod_blk : DataBlock&; unit_blk : DataBlock&; var bullets : array<ShellParam>&)
-  let presetBlk = unit_or_mod_blk |> datablock_get_block_by_name("commonWeapons")
-  if presetBlk == null
-    return
-  var modList : array<string>
-  get_modification_list(unit_blk, modList)
-  datablock_for_each_block(*presetBlk, "Weapon") <| $(weaponBlk)
+def create_bullet_list_from_preset(preset_blk : DataBlock&; var bullets : array<ShellParam>&; modList : array<string>)
+  datablock_for_each_block(preset_blk, "Weapon") <| $(weaponBlk)
     var blkName = weaponBlk |> datablock_getStr("blk", "")
     if blkName == ""
       return
@@ -530,6 +525,20 @@ def create_list_of_demonstrated_bullets(unit_or_mod_blk : DataBlock&; unit_blk :
               if modList |> find_index(modName) >= 0
                 datablock_for_each_block(bulletBlk, "bullet") <| $(modBulletBlk)
                   read_bullet_prop(modBulletBlk, bullets)
+
+def create_list_of_demonstrated_bullets(unit_or_mod_blk : DataBlock&; unit_blk : DataBlock&; var bullets : array<ShellParam>&)
+  let presetBlk = unit_or_mod_blk |> datablock_get_block_by_name("commonWeapons")
+  if presetBlk == null
+    return
+  var modList : array<string>
+  get_modification_list(unit_blk, modList)
+  create_bullet_list_from_preset(*presetBlk, bullets, modList)
+  let pilonsBlk = unit_blk |> datablock_get_block_by_name("WeaponPilons")
+  if pilonsBlk == null
+    return
+  datablock_for_each_block(*pilonsBlk, "WeaponSlot") <| $(slotBlk)
+    datablock_for_each_block(slotBlk, "WeaponPreset") <| $(slotPresetBlk)
+      create_bullet_list_from_preset(slotPresetBlk, bullets, modList)
 
 def sort_bullets(var bullets : array<ShellParam>&)
   sort(bullets) <| $(a, b)

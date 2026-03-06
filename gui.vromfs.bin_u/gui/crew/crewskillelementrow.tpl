@@ -4,18 +4,9 @@ row {
   id:t='<<id>>'
   width:t='pw'
   <<#even>> even:t='yes' <</even>>
-  title:t='$tooltipObj'
   padding:t='10@sf/@pf,3@sf/@pf,10@sf/@pf,2@sf/@pf'
 <</needAddRow>>
 
-  tooltipObj {
-    id:t='tooltip'
-    tooltipId:t='<<skillTooltipId>>'
-    on_tooltip_open:t='onGenericTooltipOpen'
-    on_tooltip_close:t='onTooltipObjClose'
-    display:t='hide'
-    noPadding:t='yes'
-  }
   div {
     flow:t='vertical'
     width:t='fw'
@@ -28,6 +19,16 @@ row {
 
       activeText {
         text:t='<<name>>'
+
+        title:t='$tooltipObj'
+        tooltipObj {
+          id:t='tooltip'
+          tooltipId:t='<<skillTooltipId>>'
+          on_tooltip_open:t='onGenericTooltipOpen'
+          on_tooltip_close:t='onTooltipObjClose'
+          display:t='hide'
+          noPadding:t='yes'
+        }
       }
       activeText {
         id:t='currentExpPoints'

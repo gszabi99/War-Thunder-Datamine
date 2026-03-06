@@ -1,6 +1,6 @@
 {
   "model": "mig_29m_9_15",
-  "fmFile": "fm/mig_29smt_9_19.blk",
+  "fmFile": "fm/mig_29m_9_15.blk",
   "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.245,
@@ -97,21 +97,21 @@
     "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 47.8
+        "hp": 50.5
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 47.8
+        "hp": 50.5
       }
     },
     "c_dural3": {
       "aileron_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 17.1
+        "hp": 21.3
       },
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 17.1
+        "hp": 21.3
       },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
@@ -155,19 +155,19 @@
       },
       "wing1_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 56.7
+        "hp": 50.5
       },
       "wing1_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 56.7
+        "hp": 50.5
       },
       "wing2_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 43.6
+        "hp": 40.5
       },
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 43.6
+        "hp": 40.5
       },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
@@ -179,16 +179,28 @@
       }
     },
     "dural": {
-      "airbrake_l_dm": {
+      "apu1_dm": {
         "hp": 19.5
       },
-      "airbrake_r_dm": {
+      "cockpit_control1_dm": {
         "hp": 19.5
       },
       "cover1_dm": {
         "hp": 19.5
       },
       "cover2_dm": {
+        "hp": 19.5
+      },
+      "electronic_block1_dm": {
+        "hp": 19.5
+      },
+      "electronic_block2_dm": {
+        "hp": 19.5
+      },
+      "electronic_block3_dm": {
+        "hp": 19.5
+      },
+      "electronic_block4_dm": {
         "hp": 19.5
       }
     },
@@ -244,10 +256,10 @@
     },
     "steel_cooling_sys": {
       "oil1_dm": {
-        "hp": 11.5
+        "hp": 17.5
       },
       "oil2_dm": {
-        "hp": 11.5
+        "hp": 17.5
       }
     },
     "steel_pilot": {
@@ -258,12 +270,12 @@
     },
     "steel_tank_armor": {
       "tank2_dm": {
-        "hp": 81.8
+        "hp": 81.7
       }
     },
     "steel_tank_m": {
       "tank1_dm": {
-        "hp": 75.5
+        "hp": 74.2
       },
       "tank3_dm": {
         "hp": 75.5
@@ -278,12 +290,6 @@
         "hp": 63.5
       },
       "tank7_dm": {
-        "hp": 75.5
-      },
-      "tank8_dm": {
-        "hp": 75.5
-      },
-      "tank9_dm": {
         "hp": 75.5
       }
     }
@@ -373,19 +379,31 @@
         ]
       },
       {
-        "name": "airbrake_l_dm"
-      },
-      {
-        "name": "airbrake_r_dm"
+        "name": "apu1_dm"
       },
       {
         "name": "cannon1_dm"
+      },
+      {
+        "name": "cockpit_control1_dm"
       },
       {
         "name": "cover1_dm"
       },
       {
         "name": "cover2_dm"
+      },
+      {
+        "name": "electronic_block1_dm"
+      },
+      {
+        "name": "electronic_block2_dm"
+      },
+      {
+        "name": "electronic_block3_dm"
+      },
+      {
+        "name": "electronic_block4_dm"
       },
       {
         "name": "elevator0_dm",
@@ -1035,29 +1053,7 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
+        "name": "radar_dm"
       },
       {
         "name": "rudder0_dm",
@@ -1568,118 +1564,6 @@
       },
       {
         "name": "tank7_dm",
-        "onHit": [
-          {
-            "fire": 0.01,
-            "leak": 0.7
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.6,
-            "leak": 0.8
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
-          },
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "expl": 0.5,
-            "fire": 0.5,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 0.5,
-            "spar1_r_dm": 0.5,
-            "expl": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
-          },
-          {
-            "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 10.0
-          },
-          {
-            "damage": 200.0,
-            "expl": 1.0
-          }
-        ]
-      },
-      {
-        "name": "tank8_dm",
-        "onHit": [
-          {
-            "fire": 0.01,
-            "leak": 0.7
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.6,
-            "leak": 0.8
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
-          },
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "expl": 0.5,
-            "fire": 0.5,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 0.5,
-            "spar1_r_dm": 0.5,
-            "expl": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
-          },
-          {
-            "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 10.0
-          },
-          {
-            "damage": 200.0,
-            "expl": 1.0
-          }
-        ]
-      },
-      {
-        "name": "tank9_dm",
         "onHit": [
           {
             "fire": 0.01,
@@ -3525,6 +3409,230 @@
     "maxloadMassLeftConsoles": 2500.0,
     "maxloadMassRightConsoles": 2500.0,
     "maxDisbalance": 1500.0,
+    "HideNodes": {
+      "node": [
+        "su_1500l_extra_tank",
+        "su_2000l_extra_tank",
+        "apu_27_001",
+        "apu_27_002",
+        "apu_27_003",
+        "apu_27_004",
+        "apu_60_001",
+        "apu_60_002",
+        "apu_60_003",
+        "apu_60_004",
+        "apu_60_005",
+        "apu_60_006",
+        "apu_60_007",
+        "apu_60_008",
+        "apu_68_b001",
+        "apu_68_b002",
+        "apu_68_b003",
+        "apu_68_b004",
+        "apu_73_001",
+        "apu_73_002",
+        "apu_73_003",
+        "apu_73_004",
+        "apu_73_005",
+        "apu_73_006",
+        "apu_73_007",
+        "apu_73_008",
+        "mbd2_67u_001",
+        "mbd2_67u_002",
+        "mbd2_67u_003",
+        "mbd2_67u_004",
+        "bdz_umk2a_001",
+        "bdz_umk2a_001_holder",
+        "bdz_umk2a_002",
+        "bdz_umk2a_002_holder",
+        "bdz_umk2a_003",
+        "bdz_umk2a_003_holder",
+        "bdz_umk2a_004",
+        "bdz_umk2a_004_holder",
+        "mbd3_u2t_1_001",
+        "mbd3_u2t_1_pylon_001",
+        "mbd3_u2t_1_002",
+        "mbd3_u2t_1_pylon_002",
+        "mbd3_u2t_1_003",
+        "mbd3_u2t_1_pylon_003",
+        "mbd3_u2t_1_004",
+        "mbd3_u2t_1_pylon_004",
+        "fab_500m_62_001",
+        "fab_500m_62_002",
+        "fab_500m_62_003",
+        "fab_500m_62_004",
+        "b8m_001",
+        "b8m_002",
+        "b8m_003",
+        "b8m_004",
+        "b13_001",
+        "b13_002",
+        "b13_003",
+        "b13_004",
+        "aku_58_adapter_001",
+        "aku_58_b001",
+        "aku_58_fin1_b001",
+        "aku_58_fin2_b001",
+        "aku_58_fin3_b001",
+        "aku_58_fin4_b001",
+        "aku_58_fin5_b001",
+        "aku_58_fin6_b001",
+        "aku_58_adapter_002",
+        "aku_58_b002",
+        "aku_58_fin1_b002",
+        "aku_58_fin2_b002",
+        "aku_58_fin3_b002",
+        "aku_58_fin4_b002",
+        "aku_58_fin5_b002",
+        "aku_58_fin6_b002",
+        "aku_58_adapter_003",
+        "aku_58_b003",
+        "aku_58_fin1_b003",
+        "aku_58_fin2_b003",
+        "aku_58_fin3_b003",
+        "aku_58_fin4_b003",
+        "aku_58_fin5_b003",
+        "aku_58_fin6_b003",
+        "aku_58_adapter_004",
+        "aku_58_b004",
+        "aku_58_fin1_b004",
+        "aku_58_fin2_b004",
+        "aku_58_fin3_b004",
+        "aku_58_fin4_b004",
+        "aku_58_fin5_b004",
+        "aku_58_fin6_b004",
+        "aku_170_pylon_001",
+        "aku_170_launcher_001",
+        "aku_170_launcher_connector_001",
+        "aku_170_launcher_gear_1_001",
+        "aku_170_launcher_gear_2_001",
+        "aku_170_launcher_gear_3_001",
+        "aku_170_launcher_gear_4_001",
+        "aku_170_launcher_gear_5_001",
+        "aku_170_launcher_gear_6_001",
+        "aku_170_launcher_gear_7_001",
+        "aku_170_launcher_gear_8_001",
+        "aku_170_launcher_gear_9_001",
+        "aku_170_launcher_gear_10_001",
+        "aku_170_launcher_gear_11_001",
+        "aku_170_launcher_gear_12_001",
+        "aku_170_launcher_spring_1_001",
+        "aku_170_launcher_spring_2_001",
+        "aku_170_pylon_002",
+        "aku_170_launcher_002",
+        "aku_170_launcher_connector_002",
+        "aku_170_launcher_gear_1_002",
+        "aku_170_launcher_gear_2_002",
+        "aku_170_launcher_gear_3_002",
+        "aku_170_launcher_gear_4_002",
+        "aku_170_launcher_gear_5_002",
+        "aku_170_launcher_gear_6_002",
+        "aku_170_launcher_gear_7_002",
+        "aku_170_launcher_gear_8_002",
+        "aku_170_launcher_gear_9_002",
+        "aku_170_launcher_gear_10_002",
+        "aku_170_launcher_gear_11_002",
+        "aku_170_launcher_gear_12_002",
+        "aku_170_launcher_spring_1_002",
+        "aku_170_launcher_spring_2_002",
+        "su_s_25l_pod_001",
+        "su_s_25l_rocket_001",
+        "su_s_25l_pod_002",
+        "su_s_25l_rocket_002",
+        "su_s_25l_pod_003",
+        "su_s_25l_rocket_003",
+        "su_s_25l_pod_004",
+        "su_s_25l_rocket_004",
+        "su_s_25l_pod_005",
+        "su_s_25l_rocket_005",
+        "su_s_25l_pod_006",
+        "su_s_25l_rocket_006",
+        "su_s_25l_pod_007",
+        "su_s_25l_rocket_007",
+        "su_s_25l_pod_008",
+        "su_s_25l_rocket_008",
+        "su_s_25o_pod_001",
+        "su_s_25o_rocket_001",
+        "su_s_25o_pod_002",
+        "su_s_25o_rocket_002",
+        "su_s_25o_pod_003",
+        "su_s_25o_rocket_003",
+        "su_s_25o_pod_004",
+        "su_s_25o_rocket_004",
+        "su_s_25o_pod_005",
+        "su_s_25o_rocket_005",
+        "su_s_25o_pod_006",
+        "su_s_25o_rocket_006",
+        "su_s_25o_pod_007",
+        "su_s_25o_rocket_007",
+        "su_s_25o_pod_008",
+        "su_s_25o_rocket_008",
+        "su_s_25of_pod_001",
+        "su_s_25of_rocket_001",
+        "su_s_25of_pod_002",
+        "su_s_25of_rocket_002",
+        "su_s_25of_pod_003",
+        "su_s_25of_rocket_003",
+        "su_s_25of_pod_004",
+        "su_s_25of_rocket_004",
+        "su_s_25of_pod_005",
+        "su_s_25of_rocket_005",
+        "su_s_25of_pod_006",
+        "su_s_25of_rocket_006",
+        "su_s_25of_pod_007",
+        "su_s_25of_rocket_007",
+        "su_s_25of_pod_008",
+        "su_s_25of_rocket_008",
+        "su_s_25ofm_pod_001",
+        "su_s_25ofm_rocket_001",
+        "su_s_25ofm_pod_002",
+        "su_s_25ofm_rocket_002",
+        "su_s_25ofm_pod_003",
+        "su_s_25ofm_rocket_003",
+        "su_s_25ofm_pod_004",
+        "su_s_25ofm_rocket_004",
+        "su_s_25ofm_pod_005",
+        "su_s_25ofm_rocket_005",
+        "su_s_25ofm_pod_006",
+        "su_s_25ofm_rocket_006",
+        "su_s_25ofm_pod_007",
+        "su_s_25ofm_rocket_007",
+        "su_s_25ofm_pod_008",
+        "su_s_25ofm_rocket_008"
+      ],
+      "hide": [
+        "pylon_1",
+        "pylon_1_holder",
+        "pylon_a_1_holder",
+        "pylon_2",
+        "pylon_2_holder",
+        "pylon_a_2_holder",
+        "pylon_3",
+        "pylon_3_holder",
+        "pylon_a_3_holder",
+        "pylon_4",
+        "pylon_4_holder",
+        "pylon_a_4_holder",
+        "pylon_5",
+        "pylon_5_holder",
+        "pylon_a_5_holder",
+        "pylon_6",
+        "pylon_6_holder",
+        "pylon_a_6_holder",
+        "pylon_7",
+        "pylon_7_holder",
+        "pylon_a_7_holder",
+        "pylon_8",
+        "pylon_8_holder",
+        "pylon_a_8_holder"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank7_dm",
+        "apu1_dm"
+      ]
+    },
     "WeaponSlot": {
       "index": 0,
       "notUseforDisbalanceCalculation": true,
@@ -4212,7 +4320,6 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_large": {},
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
@@ -4224,19 +4331,6 @@
     "f_4c_g_suit": {
       "tier": 2,
       "modClass": "armor"
-    },
-    "mig_29_uv_5_08": {
-      "prevModification": "f_4c_g_suit",
-      "tier": 3,
-      "modClass": "armor",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "additional_ltc_common"
-          }
-        }
-      }
     },
     "air_extinguisher": {
       "prevModification": "f_4c_g_suit",
@@ -4275,6 +4369,22 @@
       "reqModification": "GSh_301_belt_pack",
       "tier": 2,
       "modClass": "weapon"
+    },
+    "mig_29_r_27et": {
+      "reqModification": "mig_29_r_73",
+      "prevModification": "GSh_301_new_gun",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "yak_141_r_77": {
+      "reqModification": "mig_29_r_27er",
+      "prevModification": "mig_29_r_27et",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "mig_27_x29t": {
+      "modClass": "weapon",
+      "tier": 4
     }
   },
   "user_skin": {

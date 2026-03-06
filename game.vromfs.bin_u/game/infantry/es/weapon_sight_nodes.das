@@ -80,13 +80,7 @@ def weapon_change_eid_for_sights_es(evt : Event;
   else
     weap__sightEid = eid
 
-[es]
-def weapon_switch_sight_es(evt : CmdWeapSwitchSight;
-                           eid : EntityId;
-                           gun_anim__weapModEid : EntityId;
-                           weap__sightEid : EntityId)
-  let parentGunEid = eid
-  let presetsEid = !!gun_anim__weapModEid ? gun_anim__weapModEid : weap__sightEid
+def apply_sight_preset(parentGunEid : EntityId; presetsEid : EntityId; curSightEid : EntityId; presetIdx : int; relative : bool)
   query(presetsEid) <| $ [es] (animchar : AnimcharBaseComponent;
                                sightPresets : Array;
                                gun__owner : EntityId;
@@ -98,9 +92,13 @@ def weapon_switch_sight_es(evt : CmdWeapSwitchSight;
                                var weapon_frontsight_node__nodeIdx : int&;
                                var weapon_rearsight_node__nodeIdx : int&)
     let sightPresetsCount = sightPresets |> length()
-    assert(sightPresetsCount > 0)
-    let inc = evt.toNext ? +1 : -1
-    weap__current_sight_preset = (weap__current_sight_preset + inc + sightPresetsCount) % sightPresetsCount
+    if sightPresetsCount <= 0
+      logerr("no sight presets in {presetsEid} ({getEntityTemplateName(presetsEid)}) gun")
+      return
+    let newPreset = relative ? (weap__current_sight_preset + presetIdx + sightPresetsCount) % sightPresetsCount : clamp(presetIdx, 0, sightPresetsCount - 1)
+    if newPreset == weap__current_sight_preset
+      return
+    weap__current_sight_preset = newPreset
 
     let preset = get_ecs_object(sightPresets[weap__current_sight_preset])
 
@@ -116,7 +114,7 @@ def weapon_switch_sight_es(evt : CmdWeapSwitchSight;
       set(parentGunEid, "weap__sightEid", parentGunEid)
       return
 
-    if weap__sightEid != presetsEid
+    if curSightEid != presetsEid
       set(parentGunEid, "weap__sightEid", presetsEid)
 
     let aimOffset = preset |> get_float("aimNodeOffset")
@@ -137,6 +135,24 @@ def weapon_switch_sight_es(evt : CmdWeapSwitchSight;
     if rearsightNodeName != ""
       let nodeIdx = find_weapon_sight_node_idx(presetsEid, animchar, rearsightNodeName)
       weapon_rearsight_node__nodeIdx = nodeIdx
+
+
+[es]
+def weapon_switch_sight_es(evt : CmdWeapSwitchSight;
+                           eid : EntityId;
+                           gun_anim__weapModEid : EntityId;
+                           weap__sightEid : EntityId)
+  let presetsEid = !!gun_anim__weapModEid ? gun_anim__weapModEid : weap__sightEid
+  apply_sight_preset(eid, presetsEid, weap__sightEid, evt.toNext ? +1 : -1, true)
+
+
+[es]
+def weapon_set_sight_preset_es(evt : CmdWeapSetSightPreset;
+                               eid : EntityId;
+                               gun_anim__weapModEid : EntityId;
+                               weap__sightEid : EntityId)
+  let presetsEid = !!gun_anim__weapModEid ? gun_anim__weapModEid : weap__sightEid
+  apply_sight_preset(eid, presetsEid, weap__sightEid, evt.presetIdx, false)
 
 
 [es(on_appear)]

@@ -10,13 +10,11 @@ let
   AI_SQUAD_TACTICAL_ACQUIRE_TARGET_TIMEOUT = 10.0
 
 
-def ai_squad_tactical_add_update_target(squad_eid : EntityId; target_eid : EntityId; update_only : bool)
-  query(target_eid) <| $ [es] (transform : float3x4;
-                               unit_tag__tank : Tag const?;
+def ai_squad_tactical_add_update_target(squad_eid : EntityId; target_eid : EntityId; target_pos : float3; update_only : bool)
+  query(target_eid) <| $ [es] (unit_tag__tank : Tag const?;
                                unit_tag__human : Tag const?)
     if unit_tag__human == null && unit_tag__tank == null
       return
-    let targetPos = transform[3]
     query(squad_eid) <| $ [es] (squadAI_tactical__maxTargets : int;
                                 squadAI_tactical__maxVehicleTargets : int;
                                 var squadAI_tactical__targetsPosTime : Point4List&;
@@ -34,13 +32,13 @@ def ai_squad_tactical_add_update_target(squad_eid : EntityId; target_eid : Entit
 
       for i in iter_range(targetsEids)
         if targetsEids[i] == target_eid
-          targetsPosTime[i] = float4(targetPos.x, targetPos.y, targetPos.z, atTime)
+          targetsPosTime[i] = float4(target_pos.x, target_pos.y, target_pos.z, atTime)
           return
       if update_only
         return
 
       if length(targetsPosTime) < maxTargets
-        targetsPosTime |> push(float4(targetPos.x, targetPos.y, targetPos.z, atTime))
+        targetsPosTime |> push(float4(target_pos.x, target_pos.y, target_pos.z, atTime))
         targetsEids |> push(target_eid)
         targetsAcqTime |> push(0.0)
         return
@@ -56,9 +54,34 @@ def ai_squad_tactical_add_update_target(squad_eid : EntityId; target_eid : Entit
       if atTime < oldestTime + AI_SQUAD_TACTICAL_REPLACE_TARGET_TIMEOUT
         return
 
-      targetsPosTime[oldestIdx] = float4(targetPos.x, targetPos.y, targetPos.z, atTime)
+      targetsPosTime[oldestIdx] = float4(target_pos.x, target_pos.y, target_pos.z, atTime)
       targetsEids[oldestIdx] = target_eid
       targetsAcqTime[oldestIdx] = 0.0
+
+def ai_squad_tactical_add_update_target(squad_eid : EntityId; target_eid : EntityId; update_only : bool)
+  query(target_eid) <| $ [es] (transform : float3x4)
+    ai_squad_tactical_add_update_target(squad_eid, target_eid, transform[3], update_only)
+
+
+def ai_squad_tactical_has_recent_target(squad_eid : EntityId; target_eid : EntityId; timeout : float)
+  var result = false
+  query(target_eid) <| $ [es] (unit_tag__tank : Tag const?;
+                               unit_tag__human : Tag const?)
+    if unit_tag__human == null && unit_tag__tank == null
+      return
+    query(squad_eid) <| $ [es] (squadAI_tactical__targetsEids : EidList;
+                                squadAI_tactical__targetsPosTime : Point4List;
+                                squadAI_tactical__vehicleTargetsEids : EidList;
+                                squadAI_tactical__vehicleTargetsPosTime : Point4List)
+      let atTime = get_sync_time()
+      assume targetsEids = unit_tag__human != null ? squadAI_tactical__targetsEids : squadAI_tactical__vehicleTargetsEids
+      assume targetsPosTime = unit_tag__human != null ? squadAI_tactical__targetsPosTime : squadAI_tactical__vehicleTargetsPosTime
+      for i in iter_range(targetsEids)
+        if targetsEids[i] == target_eid && atTime < targetsPosTime[i].w + timeout
+          
+          result = true
+          break
+  return result
 
 
 def ai_check_has_tactical_targets_to_acquire(squad_eid : EntityId; max_actual_time : float; allow_already_acquired : bool)

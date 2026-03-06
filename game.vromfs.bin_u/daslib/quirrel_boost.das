@@ -13,6 +13,8 @@ require strings public
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/strings_boost
+require daslib/apply
+require daslib/contracts
 require quirrel public
 
 
@@ -175,6 +177,16 @@ def public pushValue(var vm : SQVM?; val : uint64) { sq_pushinteger(vm, int64(va
 def public pushValue(var vm : SQVM?; val : float) { sq_pushfloat(vm, val); }
 def public pushValue(var vm : SQVM?; val : bool) { sq_pushbool(vm, val ? 1ul : 0ul); }
 def public pushValue(var vm : SQVM?; val : string) { sq_pushstring(vm, val, int64(length(val))); }
+
+[expect_any_struct(val)]
+def public pushValue(var vm : SQVM?; val : auto) {
+    sq_newtable(vm)
+    apply(val) <| $(name : string; field) {
+        _::pushValue(vm, name)
+        _::pushValue(vm, field)
+        sq_rawset(vm, -3l)
+    }
+}
 
 def public pushValue(var vm : SQVM?; val : array<auto(T)>) {
     sq_newarray(vm, int64(length(val)))

@@ -39,6 +39,7 @@ let { mkFilterTargetsBtn } = require("%rGui/antiAirComplexMenu/antiAirComplexMen
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 let { radarCanvas } = require("%rGui/radar.nut")
 let { dmgIndicatorPos } = require("%rGui/hud/tankDmgIndicatorState.nut")
+let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 local tooltipTimer = null
 
@@ -581,11 +582,13 @@ function fakeActionBar() {
   })
 }
 
+let closeAAComplexMenu = @() deferOnce(@() isAAComplexMenuActive.set(false))
+
 let aaComplexMenu = {
   size = flex()
   rendObj = ROBJ_SOLID
   color = 0xDD101010
-
+  hotkeys = [["^Esc | J:Start", closeAAComplexMenu]]
   children = [
     @() {
       watch = [safeAreaSizeHud, aaMenuCfg, contentScale]

@@ -21,6 +21,7 @@ let hmdTyphoon = require("%rGui/planeHmds/hmdTyphoon.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { IPoint2, Point2, Point3 } = require("dagor.math")
 let hmdTargo = require("%rGui/planeHmds/hmdTargo.nut")
+let hmdZ10 = require("%rGui/planeHmds/hmdZ10.nut")
 let hmdF15cBaz = createScriptComponent("%rGui/planeHmds/hmdF15cBazMsip.das", {
   fontId = Fonts.hud
 })
@@ -51,6 +52,7 @@ let hmdSetting = Watched({
   isAh1w = false,
   isTargo = false,
   isFA18 = false,
+  isZ10 = false,
 })
 
 function hmdSettingsUpd(blk) {
@@ -73,13 +75,14 @@ function hmdSettingsUpd(blk) {
     isAh1w = blk.getBool("hmdAh1w", false),
     isTargo = blk.getBool("hmdTargo", false),
     isFA18 = blk.getBool("hmdFA18", false),
+    isZ10 = blk.getBool("hmdZ10", false),
   })
 }
 
 let isVisible = Computed(@() (HmdVisibleAAM.get() || HmdSensorVisible.get() || HmdVisible.get()) && !HmdBlockIls.get())
 let planeHmd = @(width, height) function() {
   let { isShelZoom, isSuraZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon,
-    isRafale, isF106, isAh56, isAh1w, isTargo, isFA18 } = hmdSetting.get()
+    isRafale, isF106, isAh56, isAh1w, isTargo, isFA18, isZ10} = hmdSetting.get()
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.get() ? [
@@ -100,6 +103,7 @@ let planeHmd = @(width, height) function() {
       (isAh1w ? hmdAh1w(width, height) : null),
       (isTargo ? hmdTargo(width, height) : null),
       (isFA18 ? hmdFA18(width, height) : null),
+      (isZ10 ? hmdZ10(width, height) : null),
     ] : null
   }
 }

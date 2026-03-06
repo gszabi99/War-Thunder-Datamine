@@ -501,6 +501,42 @@
     "agent_dangers__forceTraceTargetEid2:eid": {},
     "agent_dangers__debugTraceds:ip4": {}
   },
+  "modern_soldier_ai_listening": {
+    "_tags": "server",
+    "agent__listening": true,
+    "agent__listeningNextTime": 0.0,
+    "agent__listeningTimeDelta": 0.0,
+    "agent__listeningDelay": [
+      0.1,
+      0.3
+    ],
+    "agent__listeningKind1": 0,
+    "agent__listeningKind2": 0,
+    "agent__listeningNoise1": 0.0,
+    "agent__listeningNoise2": 0.0,
+    "agent__listeningNoiseFadeTau": 0.5,
+    "agent__listeningNoiseGrowInvTimeCoef": 5.0,
+    "agent__listeningNoiseDistCoefs": [
+      0.5,
+      35.0
+    ],
+    "agent__listeningWhat": [
+      0,
+      0,
+      2
+    ],
+    "agent__listeningPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "agent__listeningMinDistToCount": 1.0,
+    "agent__listeningMinNoiseValue": 0.01,
+    "agent__listeningNoiseExact": 0.95,
+    "agent__listeningEid1:eid": {},
+    "agent__listeningEid2:eid": {},
+    "agent__listeningEid:eid": {}
+  },
   "modern_soldier_ai_recons": {
     "_tags": "server",
     "recon__team": 0,
@@ -709,6 +745,7 @@
       "modern_soldier_ai_walker_agent",
       "modern_soldier_ai_grenades",
       "modern_soldier_ai_dangers",
+      "modern_soldier_ai_listening",
       "modern_soldier_ai_recons"
     ]
   },

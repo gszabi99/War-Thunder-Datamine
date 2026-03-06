@@ -6,6 +6,7 @@ let { currentGunEid } = require("%appGlobals/currentGunEid.nut")
 let { eventbus_send } = require("eventbus")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { watchedHeroSquadMembersAliveCount } = require("%appGlobals/hudSquadMembers.nut")
+let { CmdWeapSetSightPreset } = require("dasevents")
 
 let canSwitchFireMods = Watched(false)
 let switchFireModOn = Watched("")
@@ -15,8 +16,9 @@ let hasLaserMod = Watched(false)
 let laserModActive = Watched(false)
 let hasFlashlightMod = Watched(false)
 let flashlightModActive = Watched(false)
+let sightPresetsInfo = Watched([])
 let nextSoldierSpawnTime = Watched(-1.0)
-let needShowWeaponMenu = Computed(@() canSwitchFireMods.get() || canSwithchOnUnbarrelLauncher.get() || hasLaserMod.get() || hasFlashlightMod.get())
+let needShowWeaponMenu = Computed(@() canSwitchFireMods.get() || canSwithchOnUnbarrelLauncher.get() || hasLaserMod.get() || hasFlashlightMod.get() || sightPresetsInfo.get().len() > 1)
 
 let NO_FIRE_MODS = "no_fire_mods"
 
@@ -39,6 +41,10 @@ let laserModQuery = ecs.SqQuery("laserModQuery", {
 
 let flashlightModQuery = ecs.SqQuery("flashlightModQuery", {
   comps_ro=[["flashlight__on", ecs.TYPE_BOOL]]
+})
+
+let sightPresetsQuery = ecs.SqQuery("sightPresetsQuery", {
+  comps_ro=[["sightPresets", ecs.TYPE_ARRAY]]
 })
 
 let currentHeroQuery = ecs.SqQuery("currentHeroQuery", {
@@ -98,10 +104,19 @@ function updateFlashlight(hasFlashlight, flashlightActive) {
   eventbus_send("onFlashlightModChanged")
 }
 
+function updateSightPresets(presets) {
+  if (presets.len() > 1)
+    sightPresetsInfo.set(presets.map(@(p) p?.loc ?? ""))
+  else
+    sightPresetsInfo.mutate(@(v) v.clear())
+  eventbus_send("onSightPresetsChanged")
+}
+
 function onHeroUpdated(human_weap__currentGunModEids) {
   local unbarrelModFound = false
   local laserModFound = false
   local flashlightModFound = false
+  local sightPresetsFound = false
   foreach (mod in human_weap__currentGunModEids) {
     if (!unbarrelModFound)
       unbarrelModQuery(mod, function(_, comp) {
@@ -118,6 +133,14 @@ function onHeroUpdated(human_weap__currentGunModEids) {
         updateFlashlight(true, comp.flashlight__on)
         flashlightModFound = true
       })
+    if (!sightPresetsFound)
+      sightPresetsQuery(mod, function(_, comp) {
+        let presets = comp.sightPresets?.getAll() ?? []
+        if (presets.len() > 1) {
+          updateSightPresets(presets)
+          sightPresetsFound = true
+        }
+      })
   }
   if (!unbarrelModFound)
     updateUnbarrel(false, false)
@@ -125,6 +148,8 @@ function onHeroUpdated(human_weap__currentGunModEids) {
     updateLaser(false, false)
   if (!flashlightModFound)
     updateFlashlight(false, false)
+  if (!sightPresetsFound)
+    updateSightPresets([])
 }
 
 controlledHeroEid.subscribe(@(v) currentHeroQuery(v, function(_, comp) {
@@ -175,6 +200,19 @@ ecs.register_es("on_flashlight_mode_changed_es", {
   comps_rq=["watchedPlayerItem"]
 })
 
+ecs.register_es("on_sight_presets_created_es", {
+  [["onInit"]] = function(_eid, comp){
+    if (comp.gun__owner == controlledHeroEid.get())
+      updateSightPresets(comp.sightPresets?.getAll() ?? [])
+  },
+  [["onDestroy"]] = function(_, _) {
+    updateSightPresets([])
+  }
+},
+{
+  comps_ro=[["sightPresets", ecs.TYPE_ARRAY], ["gun__owner", ecs.TYPE_EID]],
+})
+
 ecs.register_es("current_mod_eid_init_es", {
   [["onInit", "onChange"]] = function(_eid, comp){
     onHeroUpdated(comp.human_weap__currentGunModEids)
@@ -187,6 +225,15 @@ ecs.register_es("current_mod_eid_init_es", {
   comps_track=[["human_weap__currentGunModEids", ecs.TYPE_EID_LIST]],
   comps_rq=["controlledHero"]
 })
+
+function selectSightPreset(targetIdx) {
+  if (targetIdx < 0 || targetIdx >= sightPresetsInfo.get().len())
+    return
+  let gunEid = currentGunEid.get()
+  if (gunEid == ecs.INVALID_ENTITY_ID)
+    return
+  ecs.g_entity_mgr.sendEvent(gunEid, CmdWeapSetSightPreset({ presetIdx = targetIdx }))
+}
 
 ecs.register_es("next_soldier_spawn_time_es", {
   [["onInit", "onChange"]] = function(_eid, comp){
@@ -222,5 +269,7 @@ return {
   laserModActive
   hasFlashlightMod
   flashlightModActive
+  sightPresetsInfo
+  selectSightPreset
   needShowWeaponMenu
 }

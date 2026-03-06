@@ -13,6 +13,8 @@ require DagorDebug3D
 require DagorSystem
 require DngWalkerai
 require pathfinder
+require Dacoll
+require app
 
 
 enum NavZonesDebugFlags
@@ -80,6 +82,74 @@ def ai_nav_zones_debug_remove(option : string)
       while cur != -1
         walker_custom_nav_areaRemove(walker_custom_nav, death_danger_zones__areasData[cur])
         cur = danger_zones_list_remove(cur, death_danger_zones__list, death_danger_zones__prevNext)
+
+
+[console_cmd(name="ai.create_nav_zone", hint="<turret|death> <team> <radius=10.0> <height=3.0> <weight=30.0> <duration=15.0>")]
+def ai_nav_zones_debug_create(option : string;
+                              team : int;
+                              radius = 10.0;
+                              height = 3.0;
+                              weight = 30.0;
+                              duration = 15.0)
+  let isTurretZone = option == "turret"
+  let isDeathZone  = option == "death"
+  if !isTurretZone && !isDeathZone
+    console_print("Unknown option '{option}'. Valid options are: turret, death.")
+    return
+
+  var areaPos : float3
+  let isOk = find_query() <| $ [es] (camera__active : bool; transform : float3x4)
+    if !camera__active
+      return false
+    var len = 100.0
+    var norm = float3()
+    let dir = transform[2]
+    let pos = transform[3]
+    if !traceray_normalized(pos, dir, len, norm)
+      return false
+    areaPos = pos + dir * len
+    return true
+
+  if !isOk
+    console_print("Trace failed")
+    return
+
+  let curTime = get_sync_time()
+  let sideWeight = weight * 0.8
+  let areaRadius = float2(radius, height)
+
+  query() <| $ [es] (team__id : int;
+                     var walker_custom_nav : CustomNav&;
+                     var turret_danger_zones__list : int3&;
+                     var turret_danger_zones__prevNext : IPoint2List&;
+                     var turret_danger_zones__areasData : IntList&;
+                     var turret_danger_zones__areasTime : FloatList&;
+                     var death_danger_zones__list : int3&;
+                     var death_danger_zones__prevNext : IPoint2List&;
+                     var death_danger_zones__areasData : IntList&;
+                     var death_danger_zones__areasTime : FloatList&)
+    if team__id != team
+      return
+
+    let areaId = walker_agent_nav_allocAreaId()
+    if isTurretZone
+      let areaIdx = danger_zones_list_insertSorted(areaId, curTime + duration,
+                                                   turret_danger_zones__list,
+                                                   turret_danger_zones__prevNext,
+                                                   turret_danger_zones__areasData,
+                                                   turret_danger_zones__areasTime)
+      walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, areaPos, areaRadius,
+                                                 weight, sideWeight, curTime, curTime + duration, true)
+      walker_custom_nav_setAreaUserTagData(walker_custom_nav, areaId, CUSTOMNAV_TAG_TURRETDANGER, areaIdx)
+    elif isDeathZone
+      let areaIdx = danger_zones_list_insertSorted(areaId, curTime + duration,
+                                                   death_danger_zones__list,
+                                                   death_danger_zones__prevNext,
+                                                   death_danger_zones__areasData,
+                                                   death_danger_zones__areasTime)
+      walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, areaPos, areaRadius,
+                                                 weight, sideWeight, curTime, curTime + duration, true)
+      walker_custom_nav_setAreaUserTagData(walker_custom_nav, areaId, CUSTOMNAV_TAG_DEATH, areaIdx)
 
 
 [console_cmd(name="ai.check_point_safe")]

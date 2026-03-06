@@ -1172,11 +1172,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let tooltipObj = pageObj.findObject("upgrade_tooltip")
-    tooltipObj.findObject("upgrade_tooltip_header")
-      .setValue("".concat(loc("crew/skillUpgradesAvalible"), loc("ui/colon")))
-    tooltipObj.findObject("upgrade_tooltip_skills_list")
-      .setValue("\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
-    pageObj.tooltip = "$tooltipObj"
+    pageObj.tooltip =  "".concat(colorize("activeTextColor", loc("crew/skillUpgradesAvalible")),
+      ":\n", "\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
   }
 }

@@ -450,6 +450,23 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     this.setXrayFilterShownParts()
   }
 
+  function fillPageUpgradeTooltip(pageObj, skills) {
+    if (!pageObj)
+      return
+
+    if (skills.len() == 0) {
+      pageObj.tooltip = ""
+      return
+    }
+
+    let tooltipObj = pageObj.findObject("upgrade_tooltip")
+    tooltipObj.findObject("upgrade_tooltip_header")
+      .setValue("".concat(loc("crew/skillUpgradesAvalible"), loc("ui/colon")))
+    tooltipObj.findObject("upgrade_tooltip_skills_list")
+      .setValue("\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
+    pageObj.tooltip = "$tooltipObj"
+  }
+
   function getHelpPageLinks() {
     return deep_clone(crewHelpPageLinks)
   }

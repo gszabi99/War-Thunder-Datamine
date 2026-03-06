@@ -21,6 +21,8 @@ register_command(function() {
   console_print($"MFM DBG is: {isDebugMode ? "on" : "off"}")
 }, "debug.switch_mfm_debug")
 
+let getSectionItems = @(sect) sect?.mkItems() ?? sect.items
+
 function isEnabledByUnit(config, c, unitId) {
   if (c == null)
     return false
@@ -78,7 +80,7 @@ function makeMfmSection(cfg, id, unitId, hudUnitType) {
   let sectionConfig = cfg[id]
 
   let menu = []
-  foreach (idx, item in sectionConfig.items) {
+  foreach (idx, item in getSectionItems(sectionConfig)) {
     let c = u.isFunction(item) ? item() : item
 
     let isShortcut = "shortcut" in c

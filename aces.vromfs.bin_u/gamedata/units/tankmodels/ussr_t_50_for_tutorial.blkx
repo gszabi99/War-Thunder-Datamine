@@ -100,6 +100,9 @@
       },
       "turret_03_top_dm": {
         "armorThickness": 10.0
+      },
+      "turret_04_top_dm": {
+        "armorThickness": 10.0
       }
     },
     "turret": {
@@ -410,6 +413,11 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
+      },
+      "autoloader_01_dm": {
         "armorThickness": 2.0,
         "armorThrough": 1.0,
         "ignoreSolidDimension": true
@@ -1704,7 +1712,18 @@
     "tracks": {
       "animationMultiplier": 0.44,
       "height": 0.0265,
-      "width": 0.36
+      "width": 0.36,
+      "tracksTensionK": [
+        3.0,
+        7.0,
+        1.0
+      ],
+      "trackMesh": "ussr_t_50_phys_track_line",
+      "trackLen": 0.09,
+      "trackCount": 100,
+      "trackFadeTime": 0.5,
+      "trackMaxSinking": 0.1,
+      "trackStartOffset": 0.01
     },
     "collisionProps": {
       "cls_turret": "convex_hull",

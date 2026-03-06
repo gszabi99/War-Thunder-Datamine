@@ -163,7 +163,7 @@ function riSortUserGroups() {
   riGroupsData.sort(function(a,b) {
     if (a?.index != null) {
       if (b?.index != null)
-        return a.index < b.index ? -1 : 1
+        return a.index <=> b.index
       return -1
     }
     if (b?.index != null)

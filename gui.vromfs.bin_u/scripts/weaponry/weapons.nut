@@ -809,8 +809,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateAllItems()
   }
 
-  function onEventUnitBulletsChanged(_params) {
-    this.updateAllItems()
+  function onEventUnitBulletsChanged(params) {
+    this.updateBulletsItems(params?.groupIdx ?? -1)
   }
 
   function isItemTypeUnit(iType) {
@@ -982,6 +982,23 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_buyAll", isVisibleBuyAll, this.scene)
     if (isVisibleBuyAll)
       placePriceTextToButton(this.scene, "btn_buyAll", loc("mainmenu/btnBuyAll"), costAll)
+  }
+
+  function updateBulletsItems(bulletGroupIndex = -1) {
+    if (!this.isValid())
+      return
+
+    for (local i = 0; i < this.items.len(); i++) {
+      let item = this.items[i]
+      if (item?.itemsType != weaponsItem.bullets)
+        continue
+      let itemBulletGroupIdx = item.itemsList?[0].bulletGroupIndex ?? -1
+      if (itemBulletGroupIdx < 0 || (bulletGroupIndex >= 0 && (itemBulletGroupIdx != bulletGroupIndex)))
+        continue
+      this.updateItem(i)
+      foreach (bulletItem in item.itemsList)
+        this.updateItem(bulletItem.guiPosIdx)
+    }
   }
 
   function updateAllItems() {

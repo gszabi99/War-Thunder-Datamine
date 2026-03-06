@@ -1661,7 +1661,12 @@ let optionsMap = {
     descr.values = ["clear", "good", "hazy", "mist", "thin_clouds", "cloudy_windy", "cloudy",
       "overcast", "poor", "blind",
       
-      "rain", "thunder"]
+      "rain"]
+    let isThunderAvailable = getGuiOptionsMode() != OPTIONS_MODE_TRAINING
+      || !getAircraftByName(unitNameForWeapons.get() ?? "")?.isBoat()
+    if (isThunderAvailable)
+      descr.values.append("thunder")
+
     descr.items = descr.values.map(getWeatherLocName)
     descr.defaultValue = "cloudy"
     if (isInSessionRoom.get())

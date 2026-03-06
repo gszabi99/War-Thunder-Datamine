@@ -35,7 +35,8 @@ let { canMateThrowFragGrenade, canMateThrowSmokeGrenade, canMateThrowFlashGrenad
 } = require("%scripts/hud/humanCommandsUtils.nut")
 
 let { canSwitchFireMods, switchFireModOn, canSwithchOnUnbarrelLauncher, unbarrelSwitchStatus,
-  hasLaserMod, laserModActive, hasFlashlightMod, flashlightModActive, needShowWeaponMenu
+  hasLaserMod, laserModActive, hasFlashlightMod, flashlightModActive,
+  sightPresetsInfo, selectSightPreset, needShowWeaponMenu
 } = require("%scripts/hud/humanWeaponUtils.nut")
 let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
 let { EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT } = require("hudActionBarConst")
@@ -188,6 +189,22 @@ function updateFlashlightMod() {
 
 function onFlashlightModChanged(_params) {
   deferOnce(updateFlashlightMod)
+}
+
+let getSightPresetsSectionText = @() "".concat(loc("hint/change_grenade_launcher_sight"), loc("ui/ellipsis"))
+
+function updateSightPresetsSection() {
+  let isAvailable = sightPresetsInfo.get().len() > 1
+  updateButtonEnableState(
+    currentMenuItemsAndHandlers["sightPresetsSection"],
+    isAvailable,
+    getSightPresetsSectionText,
+    isAvailable
+  )
+}
+
+function onSightPresetsChanged(_params) {
+  deferOnce(updateSightPresetsSection)
 }
 
 function getSwitchUnbarrelModText() {
@@ -1025,6 +1042,15 @@ let cfg = {
         itemName = "flashlightMod"
       }
       {
+        section = "sight_presets_human"
+        needShow = @(_) sightPresetsInfo.get().len() > 1
+        eventName = "onSightPresetsChanged"
+        onCreate = subscribeMenuItem,
+        onDestroy = unsubscribeMenuItem,
+        onUpdate = onSightPresetsChanged,
+        itemName = "sightPresetsSection"
+      }
+      {
         shortcut = [ "ID_HUMAN_ARTILLERY_STRIKE" ]
         getText = @() loc("hotkeys/ID_ACTION_BAR_ITEM_5")
         enable = @(_) hasArtilleryStrike()
@@ -1032,6 +1058,25 @@ let cfg = {
         itemName = "artilleryStrike"
         closeOnAction = true
       }
+      { section = "special_units_human" }
+    ]
+  },
+  ["sight_presets_human"] = {
+    title = "hint/change_grenade_launcher_sight"
+    enable = @(_unitId) sightPresetsInfo.get().len() > 1
+    needShow = @(_unitId) sightPresetsInfo.get().len() > 1
+    mkItems = @() sightPresetsInfo.get().map(@(l, idx) {
+      action = @() selectSightPreset(idx)
+      label  = loc(l)
+      closeOnAction = true
+    })
+  },
+  ["special_units_human"] = {
+    title = "hotkeys/ID_SPECIAL_UNITS_HEADER"
+    enable = @(_unitId) hasActionBarItem(EII_SPECIAL_UNIT, "fighter")
+      || hasActionBarItem(EII_SPECIAL_UNIT, "attacker")
+      || hasActionBarItem(EII_SPECIAL_UNIT, "bomber")
+    items = [
       {
         shortcut = [ "ID_ACTION_BAR_ITEM_7" ]
         getText = @() loc("actionBarItem/special_unit_helicopter_mguns")

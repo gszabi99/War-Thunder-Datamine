@@ -116,7 +116,7 @@ function mkCtor(fields, args){
 
 let defParams = {name=null, verbose=false}
 function Dataclass(fields, params = defParams){
-  local name = defParams?.name
+  local name = params?.name
   name = (type(name)=="string")
     ? $"static __name__ = \"{name}\"\n"
     : ""

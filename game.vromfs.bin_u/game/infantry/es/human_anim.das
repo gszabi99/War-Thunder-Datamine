@@ -1,6 +1,7 @@
 require ecs
 require app
 require AnimV20
+require GeomNodeTree
 require math.base
 require DngHumanAnim
 require DngHuman
@@ -384,7 +385,8 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__horizontalSpeedVarId : int&;
                          var human_anim__selectedWeaponVarId : int&;
                          var human_anim__crawlContinuousRotationVarId : int&;
-                         var human_anim__leanSpineRotateVarId : int&)
+                         var human_anim__leanSpineRotateVarId : int&;
+                         var human_anim__gunLengthCompensationVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
   human_anim__changeWeaponVarId = phys_vars |> registerVar("changeweapon_progress", 0.f)
@@ -412,6 +414,7 @@ def init_human_anim_vars(evt : Event;
   human_anim__horizontalSpeedVarId = phys_vars |> registerVar("horizontal_speed", 0.0)
   human_anim__crawlContinuousRotationVarId = phys_vars |> registerVar("is_continuous_crawl_rotating", 0.0)
   human_anim__leanSpineRotateVarId = phys_vars |> registerVar("torso_lean_rotate", 0.0)
+  human_anim__gunLengthCompensationVarId = phys_vars |> registerVar("gun_length_compensation", 0.0)
 
 
 def private calc_head_pitch_yaw(state : HumanPhysState)
@@ -662,6 +665,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   dm_parts__hitPartsAnimationId : Array const?;
                   human_net_phys__climbToPos : float3 = float3();
                   transform : float3x4;
+                  human_weap__currentGunEid : EntityId;
                   human_net_phys : HumanActor;
                   human_phys__jumpEndTime : float;
                   eid : EntityId;
@@ -732,6 +736,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   human_anim__idleUpperStateId : int = -1;
                   human_anim__localWalkDirVarId : int;
                   human_anim__rootRotateVarId : int;
+                  human_anim__gunLengthCompensationVarId : int;
                   human_anim__horizontalSpeedVarId : int;
                   human_anim__horizontalVelocityViscosity : float = 0.2;
                   human_death_anim__selectedDeathAnimStateId : int;
@@ -795,6 +800,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   let prevRootDir = get_some_normal(phys.previousState.vertDirection)
   let prevSideDir = normalize(cross(prevRootDir, phys.previousState.vertDirection))
 
+  let lean = lerp(phys.previousState.leanPosition, phys.currentState.leanPosition, interpK)
 
   
   var bodyDir3d = relative_2d_dir_to_absolute_3d_dir(phys.currentState.bodyOrientDir, rootDir, sideDir)
@@ -821,7 +827,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   phys_vars |> setVar(human_anim__gunPitchVarId, rad_to_deg(pitch))
 
   phys_vars |> setVar(human_anim__bipodVarId, bipod__enabled ? 1. : 0.)
-  phys_vars |> setVar(human_anim__leanVarId, lerp(phys.previousState.leanPosition, phys.currentState.leanPosition, interpK))
+  phys_vars |> setVar(human_anim__leanVarId, lean)
   phys_vars |> setVar(human_anim__standHeightVarId, clamp(animHeight, 0., 1.))
   phys_vars |> setVar(human_anim__hitPartsSelectedVarId, float(animHitPartId))
 
@@ -897,6 +903,24 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
     let rootRotateVisc = standingInPlace ? human_anim__rootRotateToSideViscosity : human_anim__rootRotateBackViscosity
     let rootRotate = approach(prevRootRotate, standingInPlace ? localWalkDirFrom : 0.0, dt, rootRotateVisc)
     phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
+
+  if human_anim__gunLengthCompensationVarId != -1
+    query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
+                                                gun_anim_length_compensation__lHandNodeId : int;
+                                                gun_anim_length_compensation__rHandNodeId : int;
+                                                gun_anim_length_compensation__handDistanceMin : float;
+                                                gun_anim_length_compensation__handDistanceMax : float;
+                                                gun_anim_length_compensation__spineRotationMin : float;
+                                                gun_anim_length_compensation__spineRotationMax : float)
+      if gun_anim_length_compensation__lHandNodeId != -1 && gun_anim_length_compensation__rHandNodeId != -1
+        let lean01 = cvt(lean, -45.0, 0.0, 1.0, 0.0)
+
+        let leftP = *animchar.nodeTree |> geomtree_getNodeWpos(gun_anim_length_compensation__lHandNodeId)
+        let rightP = *animchar.nodeTree |> geomtree_getNodeWpos(gun_anim_length_compensation__rHandNodeId)
+        let projectedLength = dot(phys.currentState.gunDir, leftP - rightP) 
+        let compensation = cvt(projectedLength, gun_anim_length_compensation__handDistanceMin, gun_anim_length_compensation__handDistanceMax, gun_anim_length_compensation__spineRotationMin, gun_anim_length_compensation__spineRotationMax)
+        let bodyAngleCoeff = cvt(bodyAngles.x, 0.0, -deg_to_rad(60.0), 0.0, 1.0)
+        phys_vars |> setVar(human_anim__gunLengthCompensationVarId, compensation * (1.0 - lean01) * (1.0 - bodyAngleCoeff))
 
   var stateUpperBody = HumanStateUpperBody.E_READY
   let effectiveCurSlot = phys.currentState.weapEquipState.effectiveCurSlot

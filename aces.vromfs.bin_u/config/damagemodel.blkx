@@ -481,7 +481,6 @@
     ],
     "thicknessMapMinObstacleSize": 0.02,
     "pushOutCenter": true,
-    "minRealSplashWaveRadius": 100.0,
     "underwaterPenetrationScale": 1.25,
     "underwaterDamageScale": 1.5,
     "underwaterRadiusScale": [
@@ -530,16 +529,6 @@
         0.0,
         0.0,
         0.0
-      ]
-    },
-    "airSpeed": {
-      "p0": [
-        0.0,
-        700.0
-      ],
-      "p1": [
-        1000.0,
-        300.0
       ]
     }
   },
@@ -4681,6 +4670,13 @@
       "partRepairHp": 1.0,
       "hpForRepair": 0.7
     },
+    "autoloader_01_dm": {
+      "speed": 1.2,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
+    },
     "power_system_dm": {
       "speed": 1.2,
       "completely": true,
@@ -4969,6 +4965,11 @@
     },
     "transmission_04_dm": {
       "speed": 55.0,
+      "partRepairHp": 1.0,
+      "completely": true
+    },
+    "pump_dm": {
+      "speed": 25.0,
       "partRepairHp": 1.0,
       "completely": true
     },
@@ -9406,11 +9407,11 @@
     },
     "he_vt": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_he_vt"
     },
     "he_tf": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_he_tf"
     },
     "he_frag_i": {
       "modelName": "tank_bullet_he"
@@ -9549,22 +9550,22 @@
     },
     "sap_hei_tank": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_sap"
     },
     "sap_tank": {
       "modelName": "tank_bullet_aphe",
-      "gbufferModelName": "tank_shell_apbc",
-      "afterHitModelName": "tank_shell_apbc_destr",
+      "gbufferModelName": "tank_shell_sap",
+      "afterHitModelName": "tank_shell_sap",
       "explodedModelName": "tank_bullet_apbc_shard"
     },
     "sapbc_tank": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_sap"
     },
     "sapcbc_tank": {
       "modelName": "tank_bullet_apcbc",
-      "gbufferModelName": "tank_shell_apbc",
-      "afterHitModelName": "tank_shell_apbc_destr"
+      "gbufferModelName": "tank_shell_sap",
+      "afterHitModelName": "tank_shell_sap"
     },
     "sapbc_flat_nose_tank": {
       "modelName": "tank_bullet_aphebc",
@@ -9574,11 +9575,11 @@
     },
     "common_tank": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_sap"
     },
     "special_common_tank": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_sap"
     },
     "heat_grenade_tank": {
       "modelName": "tank_shell_pg9",
@@ -9624,7 +9625,7 @@
     },
     "he_frag_tank": {
       "modelName": "tank_shell_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_he_ww2"
     },
     "he_frag_vog": {
       "modelName": "tank_bullet_he",
@@ -9636,15 +9637,15 @@
     },
     "he_frag_radio_fuse": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_he_vt"
     },
     "he_frag_dist_fuse": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_he_tf"
     },
     "he_frag_base_fuse_tank": {
       "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "gbufferModelName": "tank_shell_sap"
     },
     "he_grenade_tank": {
       "modelName": "tank_shell_og9",

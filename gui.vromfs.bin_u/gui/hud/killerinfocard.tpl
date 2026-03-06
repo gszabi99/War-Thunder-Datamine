@@ -39,7 +39,7 @@ hudFrame {
     }
 
     killerInfoBlock {
-      width:t='2*(87/720@shHud)'
+      min-width:t='2*(87/720@shHud)'
       valign:t='center'
 
       avatar {
@@ -87,6 +87,27 @@ hudFrame {
         }
       }
     }
+
+    <<#needShowXrayDoll>>
+    xrayDollBlock {
+      width:t='90/720@shHud'
+      pos:t='pw-w - 3/720@shHud, 0.5ph-0.5h'
+      position:t='absolute'
+      xrayDollItem {
+        size:t='36/720@shHud, 68/720@shHud'
+        halign:t='center'
+        <<#xrayBodyArmor>>
+        xrayBodyArmor {
+          position:t='absolute'
+          background-image:t='<<xrayImage>>'
+          size:t='pw, ph'
+          background-svg-size:t='pw, ph'
+          background-color:t='<<xrayColor>>'
+        }
+        <</xrayBodyArmor>>
+      }
+    }
+    <</needShowXrayDoll>>
   }
 
   killerUnitBlock {
@@ -187,8 +208,9 @@ hudFrame {
 
       <<#hasKillerHitsInfo>>
       killerDamageBlock {
+        min-width:t='90/720@shHud'
         position:t='relative'
-        padding-right:t='15/720@shHud'
+        padding-right:t='3/720@shHud'
         flow:t='vertical'
 
         textareaNoTab {
@@ -199,11 +221,11 @@ hudFrame {
         <<#offenderHits>>
         div {
           textareaNoTab {
-            text:t='<<areaLocId>><<?ui/colon>>'
+            text:t='<<areaLocId>> <<?ui/ndash>> '
             font-pixht:t='9/720@shHud'
           }
           textareaNoTab {
-            text:t=' <<hitsNum>>'
+            text:t='<<hitsNum>>'
             font-pixht:t='9/720@shHud'
             overlayTextColor:t='active'
           }

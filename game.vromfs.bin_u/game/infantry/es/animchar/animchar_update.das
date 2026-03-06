@@ -69,7 +69,7 @@ def menu_item_animchar_act(info : ParallelUpdateFrameDelayed;
                      slot_attach__slotId : int;
                      animchar_attach__attachedTo : EntityId)
     if slot_attach__slotId >= 0 && animchar_attach__attachedTo == gun_eid
-      attachmentIds.push(gun_animchar |> animchar_setAttachedChar(slot_attach__slotId, uint(mod_eid), unsafe(addr(mod_animchar)), false))
+      attachmentIds.push(gun_animchar |> animchar_setAttachedChar(slot_attach__slotId, uint(mod_eid), mod_animchar, false))
 
   animchar_set_tm(gun_animchar, resultTm, true)
   gun_animchar |> animchar_act(0.f, true)

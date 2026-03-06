@@ -699,7 +699,7 @@ function showAirInfoOld(air, show, holderObj = null, handler = null, params = nu
     ],
     [ES_UNIT_TYPE_TANK] = [
       { id = "mass", id2 = "mass", prepareTextFunc = function(value) { return format("%.1f %s", (value / 1000.0), loc("measureUnits/ton")) } },
-      { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value) },
+      { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value, " - ", true, true) },
       { id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value) { return format("%.1f%s", value.tofloat(), loc("measureUnits/deg_per_sec")) },
         crewMemberTopSkill = { crewMember = "tank_gunner" , skill = "tracking", parameter = "turnTurretSpeed" } }
     ],
@@ -1796,8 +1796,8 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     ],
     [ES_UNIT_TYPE_TANK] = [
       { id = "mass", id2 = "mass", prepareTextFunc = function(value) { return format("%.1f %s", (value / 1000.0), loc("measureUnits/ton")) } },
-      { id = "maxSpeedForward", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value, "", false) },
-      { id = "maxSpeedReverse", id2 = "maxNegativeSpeed", prepareTextFunc = @(value) countMeasure(0, abs(value)) },
+      { id = "maxSpeedForward", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value, "", false, true) },
+      { id = "maxSpeedReverse", id2 = "maxNegativeSpeed", prepareTextFunc = @(value) countMeasure(0, abs(value), " - ", true, true) },
       { id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value) { return format("%.1f%s", value.tofloat(), loc("measureUnits/deg_per_sec")) },
         crewMemberTopSkill = { crewMember = "tank_gunner" , skill = "tracking", parameter = "turnTurretSpeed" } },
       { id = "turnTurretTimePitch", id2 = "turnTurretSpeedPitch", prepareTextFunc = function(value) { return format("%.1f%s", value.tofloat(), loc("measureUnits/deg_per_sec")) },

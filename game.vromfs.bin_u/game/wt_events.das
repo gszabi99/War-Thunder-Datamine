@@ -221,6 +221,10 @@ struct RequestRendinstEntityDamage
 struct CmdWeapSwitchSight
   toNext : bool
 
+[event(unicast)]
+struct CmdWeapSetSightPreset
+  presetIdx : int
+
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct CmdSetGunLaunchVerticalAngle
   gunEid : EntityId

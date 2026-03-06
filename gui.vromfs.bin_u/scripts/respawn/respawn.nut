@@ -1794,7 +1794,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return { text = loc("multiplayer/noRespawnBasesLeft"), id = "no_respawn_bases" }
 
     if (!(this.curSquadRespawnBase?.available ?? true))
-      return { text = loc("multiplayer/squadRespawnUnavaliable"), id = "squad_respawn_unavaliable" }
+      return { text = loc("multiplayer/squadRespawnUnavailable"), id = "squad_respawn_unavaliable" }
 
     if (this.missionRules.isWarpointsRespawnEnabled && this.isRespawn) {
       let respawnPrice = this.getRespawnWpTotalCost()

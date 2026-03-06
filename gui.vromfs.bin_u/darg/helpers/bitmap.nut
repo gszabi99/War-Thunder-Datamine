@@ -36,14 +36,14 @@ function mkBitmapPicture(w, h, fillcb, prefix="") {
   }
 
   function bufSetAt(idx, byte) {
-    if (idx<0 || idx>BITMAP_SIZE)
+    if (idx<0 || idx>=BITMAP_SIZE)
       throw $"Invalid index {idx} for bitmap of size {w}x{h}"
     b.seek(HEADER_SIZE+idx)
     b.writen(byte, 'b')
   }
 
   function bufGetAt(idx) {
-    if (idx<0 || idx>BITMAP_SIZE)
+    if (idx<0 || idx>=BITMAP_SIZE)
       throw $"Invalid index {idx} for bitmap of size {w}x{h}"
     b.seek(HEADER_SIZE+idx)
     return b.readn('b')

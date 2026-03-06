@@ -10,6 +10,7 @@ let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { register_command } = require("console")
 let { add_streak_message, getLocForStreak } = require("%scripts/streaks.nut")
 let { get_local_mplayer } = require("mission")
+let { object_to_json_string } = require("json")
 
 local dbg_msg_obj_counter = 0
 function hud_message_objective_debug(show = true, alwaysShow = false) {
@@ -217,13 +218,27 @@ function hud_human_killer_card_debug() {
       pilotIcon = $"#ui/images/avatars/cardicon_01.avif"
       title = loc("title/title_cavalier_order_cloud_banner")
       playerId = 0
-      offenderHits = {
+      offenderHits = object_to_json_string({
         torso = 1
         armor = 1
         leg = 1
         head = 1
         hand = 1
-      }
+      })
+      offenderHp = 0.46
+      offenderArmorSegmentsInfo = object_to_json_string({
+        helmet = 0.6,
+        vest = 1.0,
+        front_plate = 1.0,
+        rear_plate = 1.0,
+        side_plate_R = 1.0,
+        side_plate_L = 1.0,
+        neck = 1.0,
+        groin = 1.0,
+        groin_plate = 1.0,
+        shoulder_L = 0.0,
+        shoulder_R = 0.3
+      })
       isDebugData = true
     })
 

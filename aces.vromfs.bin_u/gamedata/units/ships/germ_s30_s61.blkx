@@ -2620,7 +2620,12 @@
         "part": "compartment_01_dm",
         "weight": 0.7,
         "maxWaterAlive": 1.0,
-        "innerParts": {}
+        "innerParts": {
+          "part": {
+            "partNo": "radio_station_dm",
+            "critWaterLevel": 0.85
+          }
+        }
       },
       {
         "part": "compartment_02_dm",
@@ -2700,18 +2705,26 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
-      "shells": {
-        "fatalFire": true,
-        "fatalExplosion": true,
-        "fireEvent": "ammo_fire_1",
-        "explosionEvent": "ammo_explosion_1",
-        "ammunition_storage_02_dm": {
-          "count": 500
+      "shells": [
+        {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire_1",
+          "explosionEvent": "ammo_explosion_1",
+          "ammunition_storage_02_dm": {
+            "count": 500
+          }
         },
-        "ammunition_storage_03_dm": {
-          "count": 1500
+        {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire_1",
+          "explosionEvent": "ammo_explosion_1",
+          "ammunition_storage_03_dm": {
+            "count": 1500
+          }
         }
-      }
+      ]
     },
     "ammo2": {
       "weaponTrigger": "gunner1",

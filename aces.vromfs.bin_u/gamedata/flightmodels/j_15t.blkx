@@ -3076,9 +3076,28 @@
       ],
       "opticType": "tv",
       "turretNo": 0,
-      "name": "KD-88"
+      "name": "KD-88 TV"
     },
     "TV1": {
+      "pos": [
+        4.2,
+        -0.9,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2,
+      "name": "KD-88 IR"
+    },
+    "TV2": {
       "pos": [
         4.2,
         -0.9,
@@ -3155,6 +3174,10 @@
         "blk": "gameData/FlightModels/weaponPresets/j_15t_pl12.blk"
       },
       {
+        "name": "j_15t_pl12a",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_pl12a.blk"
+      },
+      {
         "name": "j_15t_90_1",
         "blk": "gameData/FlightModels/weaponPresets/j_15t_90_1.blk"
       },
@@ -3165,6 +3188,10 @@
       {
         "name": "j_15t_kd_88_tv",
         "blk": "gameData/FlightModels/weaponPresets/j_15t_kd_88_tv.blk"
+      },
+      {
+        "name": "j_15t_kd_88_ir",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_kd_88_ir.blk"
       },
       {
         "name": "j_15t_yj_83k",
@@ -3202,6 +3229,14 @@
         "blk": "gameData/FlightModels/weaponPresets/j_15t_ls6_250_ir.blk"
       },
       {
+        "name": "j_15t_ls6_500",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_ls6_500.blk"
+      },
+      {
+        "name": "j_15t_ls6_500_ir",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_ls6_500_ir.blk"
+      },
+      {
         "name": "j_15t_gb3",
         "blk": "gameData/FlightModels/weaponPresets/j_15t_gb3.blk"
       }
@@ -3218,6 +3253,7 @@
         "pylon_5_gdj_1a",
         "pylon_5_bomb",
         "pylon_5_pfx10",
+        "pylon_5_pl12_launcher",
         "pylon_3",
         "pylon_3_bomb",
         "pylon_3_pfx10x",
@@ -3230,22 +3266,27 @@
         "pylon_3_twin_pylon",
         "pylon_3_bomb_adapter_long",
         "bomb_adapter_long",
+        "pylon_3_pl12_launcher",
         "pylon_11",
         "pylon_11_bomb",
         "pylon_11_pfx10x",
         "pylon_11_bomb_adapter_long",
+        "pylon_11_pl12_launcher",
         "pylon_10",
         "pylon_10_bomb",
         "pylon_10_pfx10",
         "pylon_10_gdj_ii36",
         "pylon_10_bomb_adapter_long",
+        "pylon_10_pl12_launcher",
         "pylon_1_pf10x",
         "pylon_1_bomb",
         "pylon_1_bomb_holder",
+        "pylon_1_pl12_launcher",
         "rocket_pylon_7",
         "pylon_2_pf10x",
         "pylon_2_bomb",
         "pylon_2_bomb_holder",
+        "pylon_2_pl12_launcher",
         "pylon_9",
         "pylon_9_bomb",
         "pylon_9_pfx10",
@@ -3254,10 +3295,12 @@
         "optic2_turret",
         "ch_jdc03a",
         "pylon_9_bomb_adapter_long",
+        "pylon_9_pl12_launcher",
         "pylon_12",
         "pylon_12_bomb",
         "pylon_12_pfx10x",
         "pylon_12_bomb_adapter_long",
+        "pylon_12_pl12_launcher",
         "pylon_4",
         "pylon_4_bomb",
         "pylon_4_pfx10x",
@@ -3269,9 +3312,11 @@
         "pylon_4_ch_triple_bomb_adapter",
         "pylon_4_twin_pylon",
         "pylon_4_bomb_adapter_long",
+        "pylon_4_pl12_launcher",
         "pylon_6_bomb",
         "pylon_6_gdj_1a",
         "pylon_6_pfx10",
+        "pylon_6_pl12_launcher",
         "pylon_8"
       ]
     },
@@ -3442,7 +3487,7 @@
           {
             "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot2",
-            "reqModification": "cn_ls_6_250_ir",
+            "reqModification": "cn_glide_bomb_ir",
             "ShowNodes": {
               "node": "pylon_5_bomb"
             },
@@ -3501,13 +3546,33 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
+            "iconType": "missile_type_b_air_to_air_midrange",
             "name": "pl12_slot3",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pylon_3_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "pl12a_slot3",
             "reqModification": "cn_pl12a",
             "ShowNodes": {
               "node": [
                 "pylon_3",
-                "pylon_3_pfx10x"
+                "pylon_3_pl12_launcher"
               ]
             },
             "Weapon": {
@@ -3521,8 +3586,40 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "iconType": "missile_type_b_air_to_air_midrange_group",
             "name": "pl12_x2_slot3",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_3_twin_pylon",
+                "pylon_3_pl12_launcher_001",
+                "pylon_3_pl12_launcher_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+                "emitter": "pylon_3_pl_12_missile_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 7
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+                "emitter": "pylon_3_pl_12_missile_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 9
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "name": "pl12a_x2_slot3",
             "reqModification": "cn_pl12a",
             "ShowNodes": {
               "node": [
@@ -3619,6 +3716,27 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_tv.blk",
+              "emitter": "pylon_3_ch_yj_83k_missile_na",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_smal_x59",
+            "name": "kd_88_ir_slot3",
+            "reqModification": "ch_kd_88",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_bomb_adapter_long"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_ir.blk",
               "emitter": "pylon_3_ch_yj_83k_missile_na",
               "bullets": 1,
               "external": true,
@@ -3814,7 +3932,7 @@
           {
             "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot3",
-            "reqModification": "cn_ls_6_250_ir",
+            "reqModification": "cn_glide_bomb_ir",
             "ShowNodes": {
               "node": "pylon_3_bomb"
             },
@@ -3826,6 +3944,42 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_bombs_large",
+            "name": "ls6_500_slot3",
+            "reqModification": "cn_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_3_bomb"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
+              "emitter": "pylon_3_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "ls6_500_ir_slot3",
+            "reqModification": "cn_glide_bomb_ir",
+            "ShowNodes": {
+              "node": "pylon_3_bomb"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500_ir.blk",
+              "emitter": "pylon_3_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 7
             }
           },
           {
@@ -3893,12 +4047,32 @@
         "tier": 9,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "pl12_default_slot4",
+            "iconType": "missile_type_b_air_to_air_midrange",
+            "name": "pl12_slot4",
+            "reqModification": "cn_pl12",
             "ShowNodes": {
               "node": [
                 "pylon_11",
-                "pylon_11_pfx10x"
+                "pylon_11_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pylon_11_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "pl12a_default_slot4",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_pl12_launcher"
               ]
             },
             "Weapon": {
@@ -3924,6 +4098,27 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_tv.blk",
+              "emitter": "pylon_11_ch_yj_83k_missile_na",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_smal_x59",
+            "name": "kd_88_ir_slot4",
+            "reqModification": "ch_kd_88",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_bomb_adapter_long"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_ir.blk",
               "emitter": "pylon_11_ch_yj_83k_missile_na",
               "bullets": 1,
               "external": true,
@@ -3982,13 +4177,33 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
+            "iconType": "missile_type_b_air_to_air_midrange",
             "name": "pl12_slot5",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "pylon_10_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pylon_10_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "pl12a_slot5",
             "reqModification": "cn_pl12a",
             "ShowNodes": {
               "node": [
                 "pylon_10",
-                "pylon_10_pfx10"
+                "pylon_10_pl12_launcher"
               ]
             },
             "Weapon": {
@@ -4089,7 +4304,7 @@
           {
             "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot5",
-            "reqModification": "cn_ls_6_250_ir",
+            "reqModification": "cn_glide_bomb_ir",
             "ShowNodes": {
               "node": "pylon_10_bomb"
             },
@@ -4102,6 +4317,42 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "glide_bombs_large",
+            "name": "ls6_500_slot5",
+            "reqModification": "cn_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_10_bomb"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
+              "emitter": "pylon_10_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 15
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "ls6_500_ir_slot5",
+            "reqModification": "cn_glide_bomb_ir",
+            "ShowNodes": {
+              "node": "pylon_10_bomb"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500_ir.blk",
+              "emitter": "pylon_10_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 15
+            }
           }
         ]
       },
@@ -4111,13 +4362,35 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
+            "iconType": "missile_type_b_air_to_air_midrange",
             "name": "pl12_slot6",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_7",
+                "pylon_2_bomb",
+                "pylon_2_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pylon_8_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "pl12a_slot6",
             "reqModification": "cn_pl12a",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_7",
-                "pylon_2_pf10x"
+                "pylon_2_bomb",
+                "pylon_2_pl12_launcher"
               ]
             },
             "Weapon": {
@@ -4233,7 +4506,7 @@
           {
             "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot6",
-            "reqModification": "cn_ls_6_250_ir",
+            "reqModification": "cn_glide_bomb_ir",
             "ShowNodes": {
               "node": [
                 "pylon_2_bomb",
@@ -4248,6 +4521,48 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_bombs_large",
+            "name": "ls6_500_slot6",
+            "reqModification": "cn_glide_bomb",
+            "ShowNodes": {
+              "node": [
+                "pylon_2_bomb",
+                "pylon_2_bomb_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
+              "emitter": "pylon_8_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 1
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "ls6_500_ir_slot6",
+            "reqModification": "cn_glide_bomb_ir",
+            "ShowNodes": {
+              "node": [
+                "pylon_2_bomb",
+                "pylon_2_bomb_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500_ir.blk",
+              "emitter": "pylon_8_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 1
             }
           },
           {
@@ -4279,13 +4594,35 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
+            "iconType": "missile_type_b_air_to_air_midrange",
             "name": "pl12_slot7",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_7",
+                "pylon_1_bomb",
+                "pylon_1_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pylon_1_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "pl12a_slot7",
             "reqModification": "cn_pl12a",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_7",
-                "pylon_1_pf10x"
+                "pylon_1_bomb",
+                "pylon_1_pl12_launcher"
               ]
             },
             "Weapon": {
@@ -4401,7 +4738,7 @@
           {
             "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot7",
-            "reqModification": "cn_ls_6_250_ir",
+            "reqModification": "cn_glide_bomb_ir",
             "ShowNodes": {
               "node": [
                 "pylon_1_bomb",
@@ -4419,13 +4756,55 @@
             }
           },
           {
+            "iconType": "glide_bombs_large",
+            "name": "ls6_500_slot7",
+            "reqModification": "cn_glide_bomb",
+            "ShowNodes": {
+              "node": [
+                "pylon_1_bomb",
+                "pylon_1_bomb_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
+              "emitter": "pylon_1_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "ls6_500_ir_slot7",
+            "reqModification": "cn_glide_bomb_ir",
+            "ShowNodes": {
+              "node": [
+                "pylon_1_bomb",
+                "pylon_1_bomb_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500_ir.blk",
+              "emitter": "pylon_1_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
+          },
+          {
             "iconType": "guided_bomb_middle_jdam",
             "name": "gb3_slot7",
             "reqModification": "cn_sns_bomb",
             "ShowNodes": {
               "node": [
-                "pylon_1_bomb",
-                "pylon_1_bomb_holder"
+                "pylon_2_bomb",
+                "pylon_2_bomb_holder"
               ]
             },
             "Weapon": {
@@ -4474,13 +4853,33 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
+            "iconType": "missile_type_b_air_to_air_midrange",
             "name": "pl12_slot8",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "pylon_9_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pylon_9_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 16
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "pl12a_slot8",
             "reqModification": "cn_pl12a",
             "ShowNodes": {
               "node": [
                 "pylon_9",
-                "pylon_9_pfx10"
+                "pylon_9_pl12_launcher"
               ]
             },
             "Weapon": {
@@ -4581,7 +4980,7 @@
           {
             "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot8",
-            "reqModification": "cn_ls_6_250_ir",
+            "reqModification": "cn_glide_bomb_ir",
             "ShowNodes": {
               "node": "pylon_9_bomb"
             },
@@ -4594,6 +4993,42 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "glide_bombs_large",
+            "name": "ls6_500_slot8",
+            "reqModification": "cn_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_9_bomb"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
+              "emitter": "pylon_9_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "ls6_500_ir_slot8",
+            "reqModification": "cn_glide_bomb_ir",
+            "ShowNodes": {
+              "node": "pylon_9_bomb"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500_ir.blk",
+              "emitter": "pylon_9_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
           }
         ]
       },
@@ -4602,12 +5037,32 @@
         "tier": 3,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "pl12_default_slot9",
+            "iconType": "missile_type_b_air_to_air_midrange",
+            "name": "pl12_slot9",
+            "reqModification": "cn_pl12",
             "ShowNodes": {
               "node": [
                 "pylon_12",
-                "pylon_12_pfx10x"
+                "pylon_12_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pylon_12_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 6
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "pl12a_default_slot9",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_pl12_launcher"
               ]
             },
             "Weapon": {
@@ -4633,6 +5088,27 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_tv.blk",
+              "emitter": "pylon_12_ch_yj_83k_missile_na",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 6,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_smal_x59",
+            "name": "kd_88_ir_slot9",
+            "reqModification": "ch_kd_88",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_bomb_adapter_long"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_ir.blk",
               "emitter": "pylon_12_ch_yj_83k_missile_na",
               "bullets": 1,
               "external": true,
@@ -4710,13 +5186,33 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
+            "iconType": "missile_type_b_air_to_air_midrange",
             "name": "pl12_slot10",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+              "emitter": "pylon_4_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "pl12a_slot10",
             "reqModification": "cn_pl12a",
             "ShowNodes": {
               "node": [
                 "pylon_4",
-                "pylon_4_pfx10x"
+                "pylon_4_pl12_launcher"
               ]
             },
             "Weapon": {
@@ -4730,8 +5226,40 @@
             }
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "iconType": "missile_type_b_air_to_air_midrange_group",
             "name": "pl12_x2_slot10",
+            "reqModification": "cn_pl12",
+            "ShowNodes": {
+              "node": [
+                "pylon_4_twin_pylon",
+                "pylon_4_pl12_launcher_001",
+                "pylon_4_pl12_launcher_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+                "emitter": "pylon_4_pl_12_missile_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 8
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/cn_pl12.blk",
+                "emitter": "pylon_4_pl_12_missile_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 10
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "name": "pl12a_x2_slot10",
             "reqModification": "cn_pl12a",
             "ShowNodes": {
               "node": [
@@ -4828,6 +5356,27 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_tv.blk",
+              "emitter": "pylon_4_ch_yj_83k_missile_na",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_smal_x59",
+            "name": "kd_88_ir_slot10",
+            "reqModification": "ch_kd_88",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_bomb_adapter_long"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_ir.blk",
               "emitter": "pylon_4_ch_yj_83k_missile_na",
               "bullets": 1,
               "external": true,
@@ -5023,7 +5572,7 @@
           {
             "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot10",
-            "reqModification": "cn_ls_6_250_ir",
+            "reqModification": "cn_glide_bomb_ir",
             "ShowNodes": {
               "node": "pylon_4_bomb"
             },
@@ -5035,6 +5584,42 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_bombs_large",
+            "name": "ls6_500_slot10",
+            "reqModification": "cn_glide_bomb",
+            "ShowNodes": {
+              "node": "pylon_4_bomb"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
+              "emitter": "pylon_4_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 8
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "ls6_500_ir_slot10",
+            "reqModification": "cn_glide_bomb_ir",
+            "ShowNodes": {
+              "node": "pylon_4_bomb"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500_ir.blk",
+              "emitter": "pylon_4_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 8
             }
           },
           {
@@ -5175,7 +5760,7 @@
           {
             "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot11",
-            "reqModification": "cn_ls_6_250_ir",
+            "reqModification": "cn_glide_bomb_ir",
             "ShowNodes": {
               "node": "pylon_6_bomb"
             },
@@ -6502,19 +7087,24 @@
       "modClass": "weapon",
       "tier": 4
     },
+    "cn_glide_bomb_ir": {
+      "prevModification": "cn_sns_bomb",
+      "modClass": "weapon",
+      "tier": 4
+    },
     "cn_pl8b": {
       "tier": 1,
       "modClass": "weapon"
     },
-    "cn_pl12a": {
+    "cn_pl12": {
       "reqModification": "cn_pl8b",
       "tier": 3,
       "modClass": "weapon"
     },
-    "cn_ls_6_250_ir": {
-      "prevModification": "cn_pl12a",
-      "modClass": "weapon",
-      "tier": 4
+    "cn_pl12a": {
+      "reqModification": "cn_pl12",
+      "tier": 4,
+      "modClass": "weapon"
     }
   },
   "user_skin": {
@@ -7212,8 +7802,8 @@
       },
       "NozzleFlames": {
         "amountOfFlames": 8,
-        "radiusMult": 1.3,
-        "startOffset": 0.7,
+        "radiusMult": 1.45,
+        "startOffset": 0.65,
         "endOffsetAddition": 1.5,
         "intensityMult": 5.0,
         "innerCircleNoiseScale": 0.6,
@@ -7228,9 +7818,9 @@
         "uvNoiseMaskStrength": 0.1,
         "FlameMaskTextureOffset": {
           "maskTextureOffset": [
-            61,
-            61,
-            20,
+            40,
+            40,
+            41,
             20,
             20,
             21,

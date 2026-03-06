@@ -101,7 +101,7 @@ function on_privilege_state_change(data) {
   else if (privilege == Privilege.Communications)
     update_or_trigger(communicationsPrivilege, allowed, communicationsPrivilegeSet)
   else if (privilege == Privilege.CrossPlay)
-    update_or_trigger(crossnetworkPrivilege, allowed, crossnetworkPrivilege)
+    update_or_trigger(crossnetworkPrivilege, allowed, crossnetworkPrivilegeSet)
   dump_whole_state()
 }
 
