@@ -42,6 +42,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 require("%scripts/statistics/mpStatisticsPlayerTooltip.nut")
 let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { getCurMissionWWBattleName } = require("%scripts/worldWar/worldWarState.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 
 const ICON_SKIP_BG_COLORING = "image_in_progress_ico.svg"
@@ -181,11 +182,28 @@ function createExpSkillBonusIcon(tooltipFunction) {
   )
 }
 
-function createCellCustomTooltip(tooltipId) {
-  return format(@"tooltip:t='$tooltipObj'; tooltipObj { id:t='%s';
-    on_tooltip_open:t='onGenericTooltipOpen'; on_tooltip_close:t='onTooltipObjClose';
-    display:t='hide' }", tooltipId)
-}
+let createBaseTooltip = @(tooltipId) format(
+  @"tooltip:t='$tooltipObj';
+  tooltipObj {
+    id:t='%s';
+    on_tooltip_open:t='onGenericTooltipOpen';
+    on_tooltip_close:t='onTooltipObjClose';
+    display:t='hide'
+  }",
+  tooltipId
+)
+
+const DELAYED_TOOLTIP_MARKUP =
+  @"behavior:t='button'
+  on_pushed:t='::gcb.delayedTooltipPush'
+  on_hold_start:t='::gcb.delayedTooltipHoldStart'
+  on_hold_stop:t='::gcb.delayedTooltipHoldStop'
+  on_hover:t='::gcb.delayedTooltipHover'
+  on_unhover:t='::gcb.delayedTooltipHover'
+  tooltipId:t=''
+  focusBtnName:t='A'"
+
+let createCellCustomTooltip = @(tooltipId) showConsoleButtons.get() ? DELAYED_TOOLTIP_MARKUP : createBaseTooltip(tooltipId)
 
 function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
   if (numRows <= 0)
@@ -565,10 +583,14 @@ function setMpTable(obj_tbl, table, params = {}) {
 
         let userIdInt = player.userId.tointeger()
         if (!player.isBot || (isReplay && userIdInt > 0)) {
-          let tooltipId = getTooltipType("MP_STAT_PLAYER").getTooltipId(
-            player.userId, { isAlly, isDebriefing })
-          objTd.findObject("name_tooltip").tooltipId = tooltipId
-          objTd.tooltip = "$tooltipObj"
+          let tooltipId = getTooltipType("MP_STAT_PLAYER").getTooltipId(player.userId, { isAlly, isDebriefing })
+          let baseTooltipObj = objTd.findObject("name_tooltip")
+          if (baseTooltipObj?.isValid()) {
+            baseTooltipObj.tooltipId = tooltipId
+            objTd.tooltip = "$tooltipObj"
+          }
+          else
+            objTd.tooltipId = tooltipId
         } else {
           objTd.tooltip = nameText
         }
@@ -618,28 +640,45 @@ function setMpTable(obj_tbl, table, params = {}) {
             obj["background-svg-size"] = iconSize
           }
         }
-        objTd.tooltip = unitCardTooltipId ? "$tooltipObj" : ""
-        if (unitCardTooltipId)
-          objTd.findObject("unitIcon_tooltip").tooltipId = unitCardTooltipId
+        if (unitCardTooltipId) {
+          let baseTooltipObj = objTd.findObject("unitIcon_tooltip")
+          if (baseTooltipObj?.isValid()) {
+            objTd.tooltip = "$tooltipObj"
+            baseTooltipObj.tooltipId = unitCardTooltipId
+          }
+          else
+            objTd.tooltipId = unitCardTooltipId
+        }
+        else
+          objTd.tooltip = ""
       }
       else if (hdr == "aircraft") {
         let objText = objTd.findObject("txt_aircraft")
-        if (checkObj(objText)) {
+        if (objText?.isValid()) {
           local text = ""
           local tooltip = ""
-          if (getTblValue("spectator", table[i], false)) {
+          if (table[i]?.spectator ?? false) {
             text = loc("mainmenu/btnReferee")
             tooltip = loc("multiplayer/state/player_referee")
           }
           else {
-            let unitId = getTblValue("aircraftName", table[i], "")
+            let unitId = table[i]?.aircraftName ?? ""
             text = (unitId != "") ? loc(getUnitName(unitId, true)) : "..."
             tooltip = (unitId != "") ? loc(getUnitName(unitId, false)) : ""
           }
           objText.setValue(text)
-          objTd.tooltip = unitCardTooltipId ? "$tooltipObj" : tooltip
-          if (unitCardTooltipId)
-            objTd.findObject("aircraft_tooltip").tooltipId = unitCardTooltipId
+
+          if (unitCardTooltipId) {
+            let baseTooltipObj = objTd.findObject("aircraft_tooltip")
+            if (baseTooltipObj?.isValid()) {
+              baseTooltipObj.tooltipId = unitCardTooltipId
+              objTd.tooltip = "$tooltipObj"
+            }
+            else
+              objTd.tooltipId = unitCardTooltipId
+          }
+          else
+            objTd.tooltip = tooltip
         }
       }
       else if (hdr == "rowNo") {
@@ -666,9 +705,18 @@ function setMpTable(obj_tbl, table, params = {}) {
 
         let tooltipId = paramType?.getTooltipId(player.userId, { isDebriefing, paramId = hdr, val = item }) ?? ""
         let hasGenericTooltip = tooltipId != ""
-        objTd.tooltip = hasGenericTooltip ? "$tooltipObj" : (paramType?.getTooltip(item, table[i], txt) ?? "")
-        if (hasGenericTooltip)
-          objTd.findObject($"{hdr}_tooltip").tooltipId = tooltipId
+
+        if (hasGenericTooltip) {
+          let baseTooltipObj = objTd.findObject($"{hdr}_tooltip")
+          if (baseTooltipObj?.isValid()) {
+            baseTooltipObj.tooltipId = tooltipId
+            objTd.tooltip = "$tooltipObj"
+          }
+          else
+            objTd.tooltipId = tooltipId
+        }
+        else
+          objTd.tooltip = paramType?.getTooltip(item, table[i], txt) ?? ""
       }
       else if (hdr == "numPlayers") {
         local txt = item.tostring()

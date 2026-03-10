@@ -75,7 +75,7 @@ let class Monad {
     local next = this
     foreach (f in vargv){
       let fn = f
-      next = this.flatMap(@(x) this.of(fn(x)))
+      next = next.flatMap(@(x) this.of(fn(x)))
       assert(next?.isMonad(), ASSERT_MSG)
     }
     return next
@@ -255,6 +255,7 @@ Either = class (Monad) {
     if (this.isLeft()) {
       let next = fn(this._value)
       assert(next instanceof Either || next?.isEither(), ASSERT_MSG)
+      return next
     }
     return this
   }
@@ -263,6 +264,7 @@ Either = class (Monad) {
       if (this.isLeft()) {
         let next = fn(this._value)
         assert(next instanceof Either || next?.isEither(), ASSERT_MSG)
+        return next
       }
       return this
     }
@@ -283,7 +285,8 @@ Either = class (Monad) {
   function effect(onLeft, onRight){
     if (this.isLeft())
       onLeft(this._value)
-    onRight(this._value)
+    else
+      onRight(this._value)
   }
   function cata(onLeft, onRight) {
     let next = this.isLeft() ? onLeft(this._value) : onRight(this._value)
@@ -325,7 +328,7 @@ Right = class (Either) {
     this._value = v
   }
   function flatMap(f) {
-    let next = f(this.value)
+    let next = f(this._value)
     assert(next instanceof Either || next?.isEither(), ASSERT_MSG)
     return next
   }

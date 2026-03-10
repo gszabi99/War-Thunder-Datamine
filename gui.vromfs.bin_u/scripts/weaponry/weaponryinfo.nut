@@ -299,10 +299,11 @@ function validateLastWeapon(unitName) {
   return ""
 }
 
-function setLastWeapon(unitName, weaponName, isRandomUnit = false) {
+function setLastWeapon(unitName, weaponName, isRandomUnit = null) {
   if (weaponName == getLastWeapon(unitName))
     return
 
+  isRandomUnit = isRandomUnit ?? isUnitRandomUnit(unitName)
   if (isRandomUnit)
     saveLocalUnitSettings(getRandUnitOptPath(unitName, "USEROPT_WEAPONS"), weaponName)
   else {

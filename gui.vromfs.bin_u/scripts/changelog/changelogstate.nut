@@ -197,7 +197,7 @@ let unseenPatchnote = Computed(function() {
 let curPatchnote = Computed(@()
   chosenPatchnote.get() ?? unseenPatchnote.get() ?? versions.get()?[0])
 let curPatchnoteIdx = Computed(
-  @() versions.get().findindex(@(inst) inst.id == curPatchnote.get().id) ?? 0)
+  @() versions.get().findindex(@(inst) inst.id == curPatchnote.get()?.id) ?? 0)
 let haveUnseenVersions = Computed(@() unseenPatchnote.get() != null)
 let needShowChangelog = @() !isEvent.get() && !isNews.get() && !isInBattleState.get() && hasFeature("Changelog")
   && haveNewVersions.get() && isNewbieInited() && !isMeNewbie() && !getFromSettingsBlk("debug/skipPopups")

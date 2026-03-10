@@ -3,6 +3,7 @@ options no_aot
 require ecs
 require DagorConsole
 require %appGame.infantry.es.concussion_common
+require %appGame.infantry.es.net_console_macro
 
 require %appGame.wt_events
 require DagorDebug3D
@@ -72,3 +73,15 @@ def on_explosion_concussion_launch_desc_debug(evt : EventShellExplodedServer;
   let damageRadius = get_shell_max_radius(shellId)
   let concussionRadius = clamp(damageRadius, shell__concussionMinRadius, shell__concussionMaxRadius >= 0. ? shell__concussionMaxRadius : damageRadius)
   draw_debug_sphere_buffered(evt.pos, concussionRadius, E3DCOLOR(0xFFFF0000), concussion_debug__frames)
+
+[net_console_cmd(name="affect.disable_screen_effects", hint="Toggle concussion and blood screen effects")]
+def console_disable_screen_effects(@net_hero eid : EntityId)
+  query(eid) <| $ [es] (var human__disableScreenEffects : bool&)
+    human__disableScreenEffects = !human__disableScreenEffects
+    console_print("screen effects disabled = {human__disableScreenEffects}")
+
+[net_console_cmd(name="affect.disable_camera_shake_on_hit", hint="Toggle camera shake on hit")]
+def console_disable_camera_shake_on_hit(@net_hero eid : EntityId)
+  query(eid) <| $ [es] (var human__disableCameraShakeOnHit : bool&)
+    human__disableCameraShakeOnHit = !human__disableCameraShakeOnHit
+    console_print("camera shake on hit disabled = {human__disableCameraShakeOnHit}")

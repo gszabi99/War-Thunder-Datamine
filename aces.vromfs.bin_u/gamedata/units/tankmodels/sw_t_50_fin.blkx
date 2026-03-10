@@ -87,10 +87,7 @@
         "armorThickness": 20.0
       },
       "body_top_dm": {
-        "armorThickness": 10.0
-      },
-      "turret_03_back_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 15.0
       },
       "body_shield_dm": {
         "armorThickness": 10.0
@@ -99,7 +96,7 @@
         "armorThickness": 10.0
       },
       "turret_04_back_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 15.0
       },
       "turret_03_top_dm": {
         "armorThickness": 10.0
@@ -107,8 +104,11 @@
       "turret_04_top_dm": {
         "armorThickness": 10.0
       },
+      "turret_04_side_dm": {
+        "armorThickness": 10.0
+      },
       "turret_04_bottom_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 12.0
       }
     },
     "turret": {
@@ -130,9 +130,6 @@
       "turret_02_back_dm": {
         "armorThickness": 15.0
       },
-      "turret_01_top_dm": {
-        "armorThickness": 37.0
-      },
       "turret_01_back_dm": {
         "armorThickness": 37.0
       },
@@ -143,7 +140,7 @@
         "armorThickness": 5.0
       },
       "turret_05_front_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 15.0
       }
     },
     "CHA_armor": {
@@ -189,8 +186,9 @@
       "ex_armor_body_01_dm": {},
       "turret_03_bottom_dm": {},
       "turret_04_front_dm": {},
-      "turret_01_side_dm": {},
-      "ex_armor_r_03_dm": {}
+      "ex_armor_r_03_dm": {},
+      "ex_armor_l_12_dm": {},
+      "ex_armor_r_12_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -224,7 +222,11 @@
         "armorThickness": 15.0,
         "hp": 150.0,
         "ex_armor_l_05_dm": {},
-        "ex_armor_r_05_dm": {}
+        "ex_armor_l_06_dm": {},
+        "ex_armor_l_07_dm": {},
+        "ex_armor_r_05_dm": {},
+        "ex_armor_r_06_dm": {},
+        "ex_armor_r_07_dm": {}
       }
     },
     "gun": {
@@ -2723,74 +2725,38 @@
     "45mm_ussr_AP_1942": {},
     "45mm_ussr_APCR": {}
   },
-  "user_skin": {
-    "name": "t_50",
+  "default_skin": {
     "replace_tex": {
-      "from": "ussr_camo_green*"
+      "from": "ussr_camo_green*",
+      "to": "ger_camo_captured_kv_e*"
     }
   },
   "skin": [
     {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
+      "name": "se_camo_black_green_braun_waves",
+      "nameLocId": "skin/se_camo_black_green_braun_waves",
+      "descLocId": "skin/se_camo_black_green_braun_waves/desc",
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
+        "to": "se_camo_black_green_braun_waves*"
       }
     },
     {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
+      "name": "se_camo_winter_bicolor",
+      "nameLocId": "skin/se_camo_winter_bicolor",
+      "descLocId": "skin/se_camo_winter_bicolor/desc",
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
+        "to": "se_camo_winter_bicolor*"
       }
     },
     {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
+      "name": "fr_camo_winter_green_white",
+      "nameLocId": "skin/fr_camo_winter_green_white",
+      "descLocId": "skin/fr_camo_winter_green_white/desc",
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
-      }
-    },
-    {
-      "name": "ussr_camo_forest_black",
-      "nameLocId": "skin/ussr_camo_forest_black",
-      "descLocId": "skin/ussr_camo_forest_black/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_black*"
+        "to": "fr_camo_winter_green_white*"
       }
     }
   ]

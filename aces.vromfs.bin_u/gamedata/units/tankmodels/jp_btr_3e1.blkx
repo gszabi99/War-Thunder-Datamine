@@ -42,7 +42,6 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
-  "radarCanLockTargetFromTPV": false,
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
@@ -2071,21 +2070,10 @@
     }
   },
   "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
-        "turretIndex": 0,
-        "designationTurretIndex": 0,
-        "dmPart": [
-          "optic_gun_dm",
-          "fire_control_system_dm"
-        ]
-      },
-      {
-        "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
-        "dmPart": "fire_control_system_dm"
-      }
-    ]
+    "sensor": {
+      "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+      "dmPart": "fire_control_system_dm"
+    }
   },
   "VehiclePhys": {
     "Mass": {
@@ -4183,24 +4171,6 @@
       ],
       "lightMult": 8.0,
       "ghosting": 0.75,
-      "noiseFactor": 0.2
-    },
-    "commanderViewIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
-    },
-    "driverIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 5.0,
-      "ghosting": 0.7,
       "noiseFactor": 0.2
     }
   },

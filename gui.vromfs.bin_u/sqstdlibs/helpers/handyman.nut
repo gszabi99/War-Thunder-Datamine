@@ -130,7 +130,7 @@ Context = class {
           local names = g_string.split(name, ".")
           local i = 0
           while (value != null && i < names.len()) {
-            value = value[names[i++]]
+            value = value?[names[i++]]
           }
         }
         else {

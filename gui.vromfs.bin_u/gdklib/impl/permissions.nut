@@ -6,7 +6,7 @@ function check_for_user(permission, xuid, callback) {
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let res_xuid = result?.xuid
-    let reasons = result?.xuid
+    let reasons = result?.reasons
     let allowed = result?.allowed
     callback?(success, res_xuid, allowed, reasons)
   })

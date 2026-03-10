@@ -42,7 +42,7 @@ function updateLoadedTransport() {
   let lt = DataBlock()
   wwGetLoadedTransport(lt)
   let loadedTransportCount = lt?.loadedTransport.blockCount() ?? 0
-  let storedLoadedTransportCount = loadedTransport?.get().loadedTransport.blockCount() ?? 0
+  let storedLoadedTransportCount = loadedTransport.get()?.loadedTransport.blockCount() ?? 0
   if (loadedTransportCount != storedLoadedTransportCount)
     loadedTransport.set(lt)
 }

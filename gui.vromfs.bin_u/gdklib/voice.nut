@@ -60,6 +60,8 @@ function remove_voice_chat_member(uid) {
 
 function update_voice_chat_member_friendship(uid, is_friend) {
   let uidstr = uid.tostring()
+  if (uidstr not in voiceChatMembers)
+    return
   let updated = voiceChatMembers[uidstr].is_friend != is_friend
   if (updated) {
     voiceChatMembers[uidstr].is_friend = is_friend

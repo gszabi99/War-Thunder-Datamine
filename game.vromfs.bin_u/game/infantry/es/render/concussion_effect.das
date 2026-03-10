@@ -22,11 +22,12 @@ def disable_concussion_vision_on_destroy(evt : Event)
 
 [es(tag=render, REQUIRE=hero, REQUIRE_NOT=deadEntity, track=(hasConcussedVision, concussion__intensityMult, concussion__endTime), on_appear)]
 def track_concussion_vision(evt : Event;
+                            human__disableScreenEffects : bool = false;
                             hasConcussedVision : bool;
                             concussion__intensityMult : float;
                             concussion__endTime : float;
                             concussion__visionIntensity : float)
-  if !hasConcussedVision
+  if !hasConcussedVision || human__disableScreenEffects
     disable_concussion_screen_effect()
   else
     enable_concussion_screen_effect(concussion__endTime - get_sync_time(), concussion__visionIntensity * concussion__intensityMult)
@@ -38,3 +39,9 @@ def enable_concussion_on_death_head_hit(evt : Event;
                                         dead_camera__hitHeadConcussionIntensity : float = 0.03)
   if dead_camera__hitHead && !is_spectating() && !is_playing_replay()
     enable_concussion_screen_effect(dead_camera__hitHeadConcussionLength, dead_camera__hitHeadConcussionIntensity)
+
+[es(tag=render, REQUIRE=hero, track=human__disableScreenEffects)]
+def track_disable_concussion_screen_effect(evt : Event;
+                                           human__disableScreenEffects : bool)
+  if human__disableScreenEffects
+    disable_concussion_screen_effect()

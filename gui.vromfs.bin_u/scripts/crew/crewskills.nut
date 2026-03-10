@@ -159,6 +159,22 @@ function isAffectedByLeadership(memberName, skillName) {
   return skillItem?.useLeadership ?? false
 }
 
+function getSkillsNotAffectedByLeadership(crewUnitType) {
+  let affectedBySkillName = {}
+  foreach (category in getSkillCategories())
+    foreach (skill in category.skillItems) {
+      if (skill.skillName in affectedBySkillName)
+        continue
+      if (skill.skillName == "leadership" || !skill.isVisible(crewUnitType))
+        continue
+      affectedBySkillName[skill.skillName] <- isAffectedByLeadership(skill.memberName, skill.skillName)
+    }
+
+  return affectedBySkillName
+    .reduce(@(acc, isAffected, skillName) isAffected ? acc : acc.append(skillName), [])
+    .sort(@(a, b) a <=> b)
+}
+
 function getMinSkillsUnitRepairRank(unitRank) {
   let repairRanksBlk = get_skills_blk()?.repair_ranks
   if (!repairRanksBlk)
@@ -186,4 +202,5 @@ return {
   isAffectedBySpecialization = isAffectedBySpecialization
   isAffectedByLeadership = isAffectedByLeadership
   getMinSkillsUnitRepairRank = getMinSkillsUnitRepairRank
+  getSkillsNotAffectedByLeadership
 }

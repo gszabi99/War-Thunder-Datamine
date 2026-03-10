@@ -59,8 +59,10 @@ let fillLinkFullInfo = @(category = "") gatherAllItemsForCategory(
 
 requestLinksFullInfo = function(category) {
   let categoryBlock = categoriesData.getBlockByName(category)
-  if (!categoryBlock)
+  if (!categoryBlock) {
     log($"requestLinksFullInfo: no block found for category ", category)
+    return
+  }
 
   let linksList = []
   for (local i = categoryBlock.links.blockCount() - 1; i >= 0; i--) {

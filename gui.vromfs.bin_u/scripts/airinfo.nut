@@ -195,9 +195,10 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
   let gunShells = getTemplateCompValue(primaryWeaponTemplateNameCutted, "gun__shells", [])
 
   let crewSkillsPercent = crew?.crewSkillsPercent
+  let isLoneFightersMode = isInFlight() && (getCurMissionRules()?.missionParams?.enableLoneFightersMode ?? false)
   let { minCount, maxCount, addCurrCount } = getSoldiersCount(unit, ediff, crewSkillsPercent)
-  let currentMaxCount = minCount + addCurrCount
-  let showOnlyMaxCountOfSoldiers = crew != null || minCount == maxCount
+  let currentMaxCount = isLoneFightersMode ? 1 : minCount + addCurrCount
+  let showOnlyMaxCountOfSoldiers = isLoneFightersMode || crew != null || minCount == maxCount
   let squadMembersString = showOnlyMaxCountOfSoldiers ? $"{currentMaxCount}"
     : " ".concat(minCount, loc("ui/mdash"), maxCount)
 

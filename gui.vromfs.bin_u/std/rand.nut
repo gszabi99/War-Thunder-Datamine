@@ -67,7 +67,7 @@ class Rand{
   static gauss_rnd = random.gauss_rnd
   static uint_noise1D = random.uint_noise1D
   static set_rnd_seed = random.set_rnd_seed 
-  static get_rnd_seed = random.set_rnd_seed 
+  static get_rnd_seed = random.get_rnd_seed 
 
   static function chooseRandom(arr, seed = null) { 
     if (arr.len()==0)

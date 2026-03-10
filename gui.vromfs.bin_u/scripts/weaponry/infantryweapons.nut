@@ -20,7 +20,7 @@ let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut"
 let isEqualWeapon = @(a, b) a.name == b.name
 
 const INF_SOLDIERS_BASE_COUNT_PARAM = "unit_crew__count"
-
+const INF_SOLDIER_EMPTY = "infantry_empty"
 let soldiersMinMaxValues = {
   min = {}
   addMax = {}
@@ -35,7 +35,7 @@ let infantryWeaponsSlotIdx = {
 function createEmptyWeaponSlot(slot) {
   return {
     slot
-    name = "infantry_empty"
+    name = INF_SOLDIER_EMPTY
     type = weaponsItem.infantryWeapon
   }
 }
@@ -108,7 +108,8 @@ function convertInfantryBlkPresetToData(presetBlk, name) {
   foreach (soldier in presetBlk % "soldier"){
     let weapons = []
     foreach (w in soldier % "weapon") {
-      weapons.append({ name = w.preset, slot = w.slot })
+      let weaponName = w.preset !="" ? w.preset : INF_SOLDIER_EMPTY
+      weapons.append({ name = weaponName, slot = w.slot })
     }
     presetItem.soldiers.append({
       index = soldier.index
@@ -128,7 +129,7 @@ function getPresetSpecialWeapons(preset, maxSoldiersCount) {
     if (soldier.index >= maxSoldiersCount)
       return res
     foreach (w in soldier.weapons) {
-      if (w.slot == infantryWeaponsSlotIdx.special && w.name != "infantry_empty")
+      if (w.slot == infantryWeaponsSlotIdx.special && w.name != INF_SOLDIER_EMPTY)
         res[w.name] <- soldier.index
     }
   }
@@ -313,7 +314,7 @@ function isEmptyPresetAlreadyExist(unit) {
       continue
 
     let presetHasWeapons = preset.soldiers.findvalue(function(s) {
-      let soldierHasWeapon = s.weapons.findvalue(@(w) w.name != "infantry_empty") != null
+      let soldierHasWeapon = s.weapons.findvalue(@(w) w.name != INF_SOLDIER_EMPTY) != null
       return soldierHasWeapon
     }) != null
     if (!presetHasWeapons)

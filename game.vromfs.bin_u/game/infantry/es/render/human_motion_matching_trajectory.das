@@ -105,7 +105,7 @@ def motion_matching_update_trajectory(act : ParallelUpdateFrameDelayed;
     
     motion_matching__controller.rootClampingMaxAngle = 0f
   else
-    motion_matching__controller.rootClampingMaxAngle = PI * 0.6f
+    motion_matching__controller.rootClampingMaxAngle = PI * 0.4f
 
 [es(tag=gameClient, on_appear, track=human_anim__isFpv)]
 def motion_matching_init_root_parameters(evt : Event;

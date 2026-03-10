@@ -1740,21 +1740,21 @@
         "statType": "hydra",
         "caliber": 0.16,
         "length": 3.62,
-        "CxK": 1.9,
+        "CxK": 1.55,
         "wingAreaMult": 1.4,
         "finsAoaHor": 0.330668,
         "finsAoaVer": 0.330668,
         "finsLatAccel": 46.7469,
         "distFromCmToStab": 0.11,
         "mass": 118.0,
-        "massEnd": 92.94,
-        "massEnd1": 74.75,
+        "massEnd": 95.0,
+        "massEnd1": 80.0,
         "timeFire": 2.74,
         "timeFire1": 3.79,
-        "force": 21500.0,
-        "force1": 11280.0,
+        "force": 20145.0,
+        "force1": 9500.0,
         "fireDelay": 0.0,
-        "timeLife": 90.0,
+        "timeLife": 70.0,
         "useStartSpeed": true,
         "startSpeed": 0.0,
         "machMax": 4.0,
@@ -1914,10 +1914,10 @@
           },
           "guidanceAutopilot": {
             "loftEnabled": true,
-            "loftElevation": 27.5,
-            "loftTargetElevation": -3.5,
-            "loftAngleToAccelMult": 20.0,
-            "loftTargetOmegaMax": 0.5,
+            "loftElevation": 35.0,
+            "loftTargetElevation": 2.0,
+            "loftAngleToAccelMult": 5.0,
+            "loftTargetOmegaMax": 2.0,
             "timeToHitToGain0": [
               10.0,
               1.0
@@ -1939,7 +1939,7 @@
               1.0
             ],
             "baseIndSpeed": 1800.0,
-            "propNavMult": 4.0,
+            "propNavMult": 6.0,
             "reqAccelMax": 40.0,
             "accelControlProp": 0.0101,
             "accelControlIntg": 0.0065,
@@ -1948,8 +1948,8 @@
           },
           "orientationAutopilot": {
             "timeOut": 0.15,
-            "controlTime": 4.0,
-            "elevationAdd": 20.0,
+            "controlTime": 2.0,
+            "elevationAdd": 40.0,
             "elevationToHeadingMult": [
               20.0,
               20.0,
@@ -2619,7 +2619,7 @@
         "statType": "hydra",
         "caliber": 0.16,
         "length": 3.62,
-        "CxK": 1.9,
+        "CxK": 1.55,
         "wingAreaMult": 1.4,
         "finsAoaHor": 0.330668,
         "finsAoaVer": 0.330668,
@@ -2627,11 +2627,11 @@
         "distFromCmToStab": 0.11,
         "mass": 122.0,
         "fireDelay": 0.0,
-        "timeLife": 90.0,
+        "timeLife": 120.0,
         "useStartSpeed": true,
         "startSpeed": 0.0,
         "machMax": 4.0,
-        "endSpeed": 1000.0,
+        "endSpeed": 1025.0,
         "maxDistance": 40000.0,
         "minDistance": 30.0,
         "rangeMax": 40000.0,
@@ -2639,7 +2639,7 @@
         "guidanceType": "radar",
         "guidanceSfx": "",
         "explosiveType": "hbx",
-        "explosiveMass": 5.0,
+        "explosiveMass": 1.85,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he_ground",
@@ -2688,16 +2688,16 @@
         ],
         "propulsion0": {
           "impulse0": {
-            "time": 4.0,
-            "force": 18800.0,
-            "massLost": 32.0
+            "time": 4.5,
+            "force": 19200.0,
+            "massLost": 36.0
           }
         },
         "propulsion1": {
           "impulse0": {
-            "time": 2.0,
-            "force": 17625.0,
-            "massLost": 15.0
+            "time": 3.5,
+            "force": 12350.0,
+            "massLost": 18.0
           }
         },
         "arcadeProp": {
@@ -2782,7 +2782,7 @@
           },
           "guidanceAutopilot": {
             "loftEnabled": true,
-            "loftElevation": 27.5,
+            "loftElevation": 35.0,
             "loftTargetElevation": -3.5,
             "loftAngleToAccelMult": 20.0,
             "loftTargetOmegaMax": 0.5,
@@ -2798,16 +2798,8 @@
               50.0,
               0.5
             ],
-            "timeToGain0": [
-              0.3,
-              0.0
-            ],
-            "timeToGain1": [
-              0.31,
-              1.0
-            ],
             "baseIndSpeed": 1800.0,
-            "propNavMult": 4.0,
+            "propNavMult": 6.0,
             "reqAccelMax": 40.0,
             "accelControlProp": 0.0101,
             "accelControlIntg": 0.0065,
@@ -2815,12 +2807,12 @@
             "accelControlIntgLim": 1.0
           },
           "orientationAutopilot": {
-            "timeOut": 0.15,
-            "controlTime": 4.0,
-            "elevationAdd": 20.0,
+            "timeOut": 0.1,
+            "controlTime": 2.0,
+            "elevationAdd": 40.0,
             "elevationToHeadingMult": [
-              20.0,
-              20.0,
+              10.0,
+              10.0,
               -1.0,
               -1.0
             ],
@@ -2834,9 +2826,10 @@
           "propulsionAutopilot": {
             "propulsionActivation0": {},
             "propulsionActivation1": {
-              "startTimeMin": 4.0,
-              "timeToHitMin": 5.0,
-              "velocityMin": 350.0
+              "startTimeMin": 6.0,
+              "timeToHitMin": 25.0,
+              "velocityMin": 240.0,
+              "targetClosureRateMin": 175.0
             }
           }
         },

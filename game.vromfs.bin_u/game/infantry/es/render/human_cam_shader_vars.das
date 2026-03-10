@@ -24,10 +24,13 @@ def human_camera_shader_vars_update(info : UpdateStageInfoAct;
 
 [es(tag=gameClient, REQUIRE=hero)]
 def camara_visual_shader_punch_on_hit(evt : EventOnEntityHit;
+                                      human__disableScreenEffects : bool;
                                       var visual_hit__edgeColorVal : float&;
                                       visual_hit__edgeColorValAddOnHit : float;
                                       visual_hit__edgeColorValMax : float;
                                       isAlive : bool)
+  if human__disableScreenEffects
+    return
   let acceptDamageType = (evt.damageType == int(DamageType.DM_MELEE) ||
                           evt.damageType == int(DamageType.DM_BACKSTAB) ||
                           evt.damageType == int(DamageType.DM_PROJECTILE) ||

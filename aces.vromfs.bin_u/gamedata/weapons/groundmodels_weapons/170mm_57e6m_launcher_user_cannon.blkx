@@ -1688,21 +1688,21 @@
       },
       "rocket": {
         "statType": "hydra",
-        "caliber": 0.063,
+        "caliber": 0.06,
         "length": 1.75,
-        "CxK": 0.9125,
+        "CxK": 1.15,
         "wingAreaMult": 1.35,
         "finsAoaHor": 0.15,
         "finsAoaVer": 0.15,
         "distFromCmToStab": 0.105,
-        "mass": 90.0,
-        "massEnd": 41.5,
+        "mass": 92.0,
+        "massEnd": 42.75,
         "massEnd1": 32.5,
-        "timeFire": 2.0,
+        "timeFire": 1.75,
         "timeFire1": 0.0,
-        "force": 54250.0,
+        "force": 63400.0,
         "force1": 0.0,
-        "timeLife": 40.0,
+        "timeLife": 35.0,
         "thrustDeviation": 0.0,
         "useStartSpeed": true,
         "startSpeed": 10.0,
@@ -1710,7 +1710,7 @@
         "maxDistance": 40000.0,
         "minDistance": 1200.0,
         "rangeMax": 40000.0,
-        "loadFactorMax": 75.0,
+        "loadFactorMax": 50.0,
         "guidanceType": "saclos",
         "maxDeltaAngle": 0.03,
         "explosiveType": "a_ix_2",
@@ -1804,26 +1804,18 @@
           "lineOfSightAutopilot": {
             "timeOut": 0.0,
             "timeToGain0": [
-              0.0,
-              0.0
-            ],
-            "timeToGain1": [
-              2.0,
+              0.5,
               0.5
             ],
-            "timeToGain2": [
-              2.5,
-              0.7
-            ],
-            "timeToGain3": [
-              3.0,
+            "timeToGain1": [
+              0.8,
               1.0
             ],
             "crossDistToReqCrossVelMult": 2.25,
             "reqCrossVelRationMax": 0.75,
             "velDiffToReqAccelMult": 8.75,
             "accelControl": {
-              "reqAccelMax": 75.0,
+              "reqAccelMax": 50.0,
               "baseIndSpeed": 1800.0,
               "accelControlProp": 0.0076,
               "accelControlIntg": 0.0,
@@ -2044,16 +2036,38 @@
           "shatter": {
             "useRealShatters": true,
             "countPortion": 1.0,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                15.0
-              ],
-              "countPortion": 1.0
-            }
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  8.0
+                ],
+                "countPortion": 0.35
+              },
+              {
+                "radiusScale": 0.75,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  8.0,
+                  15.0
+                ],
+                "countPortion": 0.55
+              },
+              {
+                "radiusScale": 0.5,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  15.0,
+                  20.0
+                ],
+                "countPortion": 0.1
+              }
+            ]
           }
         },
         "collisions": {

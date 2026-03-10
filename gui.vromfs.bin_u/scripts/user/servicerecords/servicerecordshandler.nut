@@ -22,6 +22,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { airStatsListConfig } = require("%scripts/user/userInfoStats.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const SELECTED_RECORD_SAVE_ID = "wnd/selectedRecord"
 
@@ -232,12 +233,21 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
           width = rcWidth,
           image = getUnitClassIco(airData.name),
           tooltipId = unitTooltipId,
+          isDelayedTooltip = showConsoleButtons.get(),
           cellType = "splitRight",
           imageRawParams = "left:t='pw-w-2@sf/@pf';interactive:t='yes';",
           needText = false,
           tdalign = "right"
         }
-        { id = "name", text = getUnitName(airData.name, true), tdalign = "left", active = this.statsSortBy == "name", cellType = "splitLeft", tooltipId = unitTooltipId }
+        {
+          id = "name",
+          text = getUnitName(airData.name, true),
+          tdalign = "left",
+          active = this.statsSortBy == "name",
+          cellType = "splitLeft",
+          tooltipId = unitTooltipId,
+          isDelayedTooltip = showConsoleButtons.get()
+       }
       ]
       foreach (item in airStatsListConfig) {
         if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))

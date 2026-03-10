@@ -21,7 +21,7 @@ tr {
         <</autoScrollText>>
       <</width>>
       <<#tdalign>> tdalign:t='<<tdalign>>' <</tdalign>>
-      <<#tooltipId>>tooltip:t='$tooltipObj'<</tooltipId>>
+      <<#tooltipId>><<^isDelayedTooltip>>tooltip:t='$tooltipObj'<</isDelayedTooltip>><</tooltipId>>
       <<^tooltipId>>
         <<#tooltip>> tooltip:t='<<tooltip>>' <</tooltip>>
       <</tooltipId>>
@@ -75,12 +75,25 @@ tr {
     <</params>>
 
     <<#tooltipId>>
-    tooltipObj {
+    <<#isDelayedTooltip>>
+      behavior:t='button'
+      on_pushed:t='::gcb.delayedTooltipPush'
+      on_hold_start:t='::gcb.delayedTooltipHoldStart'
+      on_hold_stop:t='::gcb.delayedTooltipHoldStop'
+      on_hover:t='::gcb.delayedTooltipHover'
+      on_unhover:t='::gcb.delayedTooltipHover'
       tooltipId:t='<<tooltipId>>'
-      display:t='hide'
-      on_tooltip_open:t='onGenericTooltipOpen'
-      on_tooltip_close:t='onTooltipObjClose'
-    }
+      focusBtnName:t='A'
+    <</isDelayedTooltip>>
+
+    <<^isDelayedTooltip>>
+      tooltipObj {
+        tooltipId:t='<<tooltipId>>'
+        display:t='hide'
+        on_tooltip_open:t='onGenericTooltipOpen'
+        on_tooltip_close:t='onTooltipObjClose'
+      }
+    <</isDelayedTooltip>>
     <</tooltipId>>
   }
   <</cell>>

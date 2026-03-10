@@ -1725,14 +1725,16 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     local bulletInd = 0;
     let bulletGroups = this.weaponsSelectorWeak?.getBulletsGroups() ?? []
     foreach (_groupIndex, bulGroup in bulletGroups) {
-      if (!bulGroup.active)
+      let { active, bulletsCount, selectedName, maxCntPerPilon = 1 } = bulGroup
+      if (!active)
         continue
-      let modName = bulGroup.selectedName
+
+      let modName = selectedName
       if (!modName)
         continue
 
-      let count = bulGroup.bulletsCount
-      if (bulGroup.canChangeBulletsCount() && bulGroup.bulletsCount <= 0)
+      let count = bulletsCount * maxCntPerPilon
+      if (bulGroup.canChangeBulletsCount() && count <= 0)
         continue
 
       if (getModificationByName(air, modName)) 

@@ -59,7 +59,7 @@ function getTabColorCtor(sf, style, isCurrent) {
 
 function patchnote(v) {
   let stateFlags = Watched(0)
-  let isCurrent = Computed(@() curPatchnote.get().id == v.id)
+  let isCurrent = Computed(@() curPatchnote.get()?.id == v.id)
   return @() {
     watch = [stateFlags, isCurrent]
     rendObj = ROBJ_BOX

@@ -3475,6 +3475,10 @@
         "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_fr_mk13.blk"
       },
       {
+        "name": "tornado_gr4_uk_1000lb_enhanced_paveway2_mk13",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_uk_1000lb_enhanced_paveway2_mk13.blk"
+      },
+      {
         "name": "tornado_gr4_gbu_24",
         "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_gbu_24.blk"
       },
@@ -3946,6 +3950,27 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/fr_mk13.blk",
+              "emitter": "bomb1_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_wing",
+            "reqModification": "uk_mk_13_18",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
               "emitter": "bomb1_ld",
               "bullets": 1,
               "external": true,
@@ -4478,6 +4503,28 @@
             }
           },
           {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_fuse5",
+            "reqModification": "uk_mk_13_18",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
+              "emitter": "bomb5_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 9
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "litening"
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_middle_x3",
             "name": "brimstone_dm_fuse2",
             "reqModification": "uk_brimstone_dm",
@@ -4516,6 +4563,10 @@
               {
                 "slot": 6,
                 "preset": "fr_mk13_fuse_centr"
+              },
+              {
+                "slot": 6,
+                "preset": "epv2_fuse_centr"
               }
             ]
           }
@@ -4880,6 +4931,97 @@
             ]
           },
           {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_fuse_centr",
+            "reqModification": "uk_mk_13_18",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
+              "emitter": "1000lb_gbu_16_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "litening"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "1000lbs_x2_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_x2_n117_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_mk83_x2_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_2000_fuse1"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_n117_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2_fuse2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_n117_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2_fuse3"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_n117_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_x2_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "us_2000lb_gbu_24_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_500_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              }
+            ]
+          },
+          {
             "iconType": "guided_bomb_middle_laser",
             "name": "paveway_iv_fuse",
             "reqModification": "uk_paveway_iv",
@@ -5152,6 +5294,10 @@
               },
               {
                 "slot": 8,
+                "preset": "epv2_fuse4"
+              },
+              {
+                "slot": 8,
                 "preset": "pgm_500_fuse2"
               },
               {
@@ -5203,6 +5349,10 @@
               {
                 "slot": 6,
                 "preset": "fr_mk13_fuse_centr"
+              },
+              {
+                "slot": 6,
+                "preset": "epv2_fuse_centr"
               },
               {
                 "slot": 8,
@@ -5370,6 +5520,28 @@
             }
           },
           {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_fuse4",
+            "reqModification": "uk_mk_13_18",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
+              "emitter": "bomb4_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 8
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "litening"
+            }
+          },
+          {
             "iconType": "guided_bomb_yellow",
             "name": "pgm_500_fuse2",
             "reqModification": "fr_pgm_500",
@@ -5476,7 +5648,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_special_laser",
+            "iconType": "guided_bomb_heavy_laser",
             "name": "us_2000lb_gbu_24_fuse4",
             "reqModification": "us_egbu_24",
             "ShowNodes": {
@@ -5586,6 +5758,10 @@
               {
                 "slot": 6,
                 "preset": "fr_mk13_fuse_centr"
+              },
+              {
+                "slot": 6,
+                "preset": "epv2_fuse_centr"
               }
             ]
           }
@@ -5705,6 +5881,27 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/fr_mk13.blk",
+              "emitter": "bomb2_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_special_laser",
+            "name": "epv2_wing",
+            "reqModification": "uk_mk_13_18",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lb_enhanced_paveway2_mk13.blk",
               "emitter": "bomb2_ld",
               "bullets": 1,
               "external": true,

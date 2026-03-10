@@ -14,7 +14,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { g_url_type } = require("%scripts/onlineShop/urlType.nut")
-let { steam_is_running } = require("steam")
+let { steam_is_running, steam_is_overlay_enabled } = require("steam")
 let { get_authenticated_url_sso } = require("auth_wt")
 let { object_to_json_string, parse_json } = require("json")
 let { defer } = require("dagor.workcycle")
@@ -111,7 +111,8 @@ eventbus_subscribe("openUrlImpl", function(urlConfig) {
   log($"[URL] Base Url = {baseUrl}")
   let hasFeat = urlType.isOnlineShop ? hasFeature("EmbeddedBrowserOnlineShop")
     : hasFeature("EmbeddedBrowser")
-  if (!useExternalBrowser && use_embedded_browser() && !steam_is_running() && hasFeat) {
+  let canUseSteamBrowser = steam_is_running() && steam_is_overlay_enabled()
+  if (!useExternalBrowser && use_embedded_browser() && !canUseSteamBrowser && hasFeat) {
     
     open_browser_modal(urlToOpen, urlTags, baseUrl)
     broadcastEvent("BrowserOpened", { url = urlToOpen, external = false })

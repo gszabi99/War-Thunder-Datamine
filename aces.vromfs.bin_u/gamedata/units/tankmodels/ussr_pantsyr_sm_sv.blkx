@@ -1735,7 +1735,7 @@
         "shellCasingLifeTime": 2.0,
         "shellCasingImpulse": [
           5.0,
-          0.0,
+          1.0,
           0.0
         ],
         "linkShellCasingToGun": true,
@@ -1866,7 +1866,7 @@
         "shellCasingLifeTime": 2.0,
         "shellCasingImpulse": [
           5.0,
-          0.0,
+          1.0,
           0.0
         ],
         "linkShellCasingToGun": true,
@@ -1997,8 +1997,8 @@
         "openHatchTime": 0.0,
         "shellCasingLifeTime": 2.0,
         "shellCasingImpulse": [
-          5.5,
-          0.0,
+          5.0,
+          1.0,
           0.0
         ],
         "linkShellCasingToGun": true,
@@ -2129,8 +2129,8 @@
         "openHatchTime": 0.0,
         "shellCasingLifeTime": 2.0,
         "shellCasingImpulse": [
-          5.5,
-          0.0,
+          5.0,
+          1.0,
           0.0
         ],
         "linkShellCasingToGun": true,
@@ -2322,6 +2322,7 @@
             "disableStackGuns": true,
             "bullets": 12,
             "recoilMultiplier": 0.0,
+            "barrelDP": "gun_barrel_05_dm",
             "defaultYaw": 0.0,
             "defaultPitch": 0.0,
             "speedYaw": 67.0,
@@ -2352,8 +2353,15 @@
               "gun": "bone_gun_02",
               "gunnerDm": "gunner_dm",
               "secondGunnerDm": "commander_dm",
-              "verDriveDm": "fire_control_system_dm",
-              "horDriveDm": "fire_control_system_dm",
+              "verDriveDm": [
+                "drive_turret_v_dm",
+                "fire_control_system_dm"
+              ],
+              "horDriveDm": [
+                "drive_turret_h_dm",
+                "turret_hydraulics_dm",
+                "fire_control_system_dm"
+              ],
               "shootingDmPart": "fire_control_system_dm"
             },
             "limits": {
@@ -2419,6 +2427,7 @@
             "disableStackGuns": true,
             "bullets": 12,
             "recoilMultiplier": 0.0,
+            "barrelDP": "gun_barrel_05_dm",
             "defaultYaw": 0.0,
             "defaultPitch": 0.0,
             "speedYaw": 67.0,
@@ -2449,8 +2458,15 @@
               "gun": "bone_gun_02",
               "gunnerDm": "gunner_dm",
               "secondGunnerDm": "commander_dm",
-              "verDriveDm": "fire_control_system_dm",
-              "horDriveDm": "fire_control_system_dm",
+              "verDriveDm": [
+                "drive_turret_v_dm",
+                "fire_control_system_dm"
+              ],
+              "horDriveDm": [
+                "drive_turret_h_dm",
+                "turret_hydraulics_dm",
+                "fire_control_system_dm"
+              ],
               "shootingDmPart": "fire_control_system_dm"
             },
             "limits": {
@@ -2517,6 +2533,7 @@
             "disableStackGuns": true,
             "bullets": 12,
             "recoilMultiplier": 0.0,
+            "barrelDP": "gun_barrel_05_dm",
             "defaultYaw": 0.0,
             "defaultPitch": 0.0,
             "speedYaw": 67.0,
@@ -2547,8 +2564,15 @@
               "gun": "bone_gun_02",
               "gunnerDm": "gunner_dm",
               "secondGunnerDm": "commander_dm",
-              "verDriveDm": "fire_control_system_dm",
-              "horDriveDm": "fire_control_system_dm",
+              "verDriveDm": [
+                "drive_turret_v_dm",
+                "fire_control_system_dm"
+              ],
+              "horDriveDm": [
+                "drive_turret_h_dm",
+                "turret_hydraulics_dm",
+                "fire_control_system_dm"
+              ],
               "shootingDmPart": "fire_control_system_dm"
             },
             "limits": {
@@ -3546,7 +3570,7 @@
               "shellCasingLifeTime": 2.0,
               "shellCasingImpulse": [
                 5.0,
-                0.0,
+                1.0,
                 0.0
               ],
               "linkShellCasingToGun": true,
@@ -3677,7 +3701,7 @@
               "shellCasingLifeTime": 2.0,
               "shellCasingImpulse": [
                 5.0,
-                0.0,
+                1.0,
                 0.0
               ],
               "linkShellCasingToGun": true,
@@ -3808,8 +3832,8 @@
               "openHatchTime": 0.0,
               "shellCasingLifeTime": 2.0,
               "shellCasingImpulse": [
-                5.5,
-                0.0,
+                5.0,
+                1.0,
                 0.0
               ],
               "linkShellCasingToGun": true,
@@ -3940,8 +3964,8 @@
               "openHatchTime": 0.0,
               "shellCasingLifeTime": 2.0,
               "shellCasingImpulse": [
-                5.5,
-                0.0,
+                5.0,
+                1.0,
                 0.0
               ],
               "linkShellCasingToGun": true,

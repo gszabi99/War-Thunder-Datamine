@@ -247,12 +247,14 @@ def draw_occluders(name : string; value : float;
                    var verts : array<float3>&;
                    is_sel : bool;
                    debug_dist : float)
+  var maxFaces = 1024
   let resIdx = get_rigen_extra_res_idx(name)
   if resIdx != -1
     get_ri_gen_extra_instances(resIdx) <| $(handles : array<riex_handle_t>#)
       for handle in handles
         let desc = RendInstDesc(handle)
         let collres = getRiGenCollisionResource(desc)
+
         if collres != null
           let tm = getRIGenMatrix(desc)
           let box = getRIGenBBox(desc)
@@ -262,7 +264,6 @@ def draw_occluders(name : string; value : float;
             continue
 
           let numNodes = collres_get_nodesCount(*collres)
-          var maxFaces = 2048
           for i in range(numNodes)
             let node = collres_get_node(*collres, i)
             if (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
@@ -276,13 +277,11 @@ def draw_occluders(name : string; value : float;
                 draw_cached_debug_box(nodeBox, make_color_temp(value, 200u))
                 end_draw_cached_debug_lines()
 
-              if distance_sq(listener, nodeTm[3]) > square(SOLID_BOX_DIST + maxBound)
-
+              if !is_sel
                 begin_draw_cached_debug_lines(false, false, false)
                 set_cached_debug_lines_wtm(nodeTm)
                 draw_cached_debug_box(nodeBox, make_color_temp(value, 100u))
                 end_draw_cached_debug_lines()
-
               else
                 let color = value >= 0. ? make_color_temp(value, is_sel ? 200u : 100u) : E3DCOLOR(0x40FFFFFF)
 
@@ -303,7 +302,6 @@ def draw_occluders(name : string; value : float;
                     maxFaces -= drawFaces
                     clear(verts)
                     reserve(verts, drawFaces)
-                    let inc = max(1, numFaces / drawFaces)
                     var idx = 0
 
                     begin_draw_cached_debug_lines(is_sel ? false : true, false, false)
@@ -323,7 +321,7 @@ def draw_occluders(name : string; value : float;
                       push(verts, v0 + norm)
                       push(verts, v1 + norm)
                       push(verts, v2 + norm)
-                      idx += inc
+                      ++idx
 
                     if !inside
                       draw_cached_debug_trilist(verts, color)

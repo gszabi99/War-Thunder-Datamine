@@ -35,7 +35,7 @@ function isValueTextValid(comp_type, text) {
     let fields = text.split(",")
     if (fields.len()!=nFields[0])
       return false
-    return fields.reduce(@(a,b) a && nFields[1](b))
+    return fields.reduce(@(a,b) (type(a) == "string" ? nFields[1](a) : a) && nFields[1](b))
   }
   return false
 }
@@ -225,7 +225,7 @@ function setValToObj(eid, comp_name, path, val){
     return
   foreach (idx, key in path) {
     if (idx < path.len()-1) {
-      if (!(res?[key] != null || key in object || object?.indexof(key)!=null))
+      if (!(res?[key] != null || key in res || res?.indexof(key)!=null))
         return
       res = res[key]
     }

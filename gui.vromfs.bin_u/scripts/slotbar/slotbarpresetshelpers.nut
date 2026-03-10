@@ -168,7 +168,7 @@ function getMyCrewUnitsState(country = null) {
 
     let preset = getCurrentSlotbarPreset(c.country)
     if(preset != null)
-      crewAirs.replace(preset.orderedUnits.filter(@(unit) crewAirs.indexof(unit) != -1))
+      crewAirs.replace(preset.orderedUnits.filter(@(unit) crewAirs.indexof(unit) != null))
 
     unitsStateCached.crewAirs[c.country] <- crewAirs
   }

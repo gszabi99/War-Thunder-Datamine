@@ -367,7 +367,10 @@ def camera_shake_on_shot(info : ParallelUpdateFrameDelayed;
 
 
 [es(tag=gameClient, REQUIRE=hero)]
-def camara_shake_perlin_punch_on_hit(evt : EventOnEntityHit; isAlive : bool; transform : float3x4)
+def camara_shake_perlin_punch_on_hit(evt : EventOnEntityHit; isAlive : bool; transform : float3x4;
+                                     human__disableCameraShakeOnHit : bool = false)
+  if human__disableCameraShakeOnHit
+    return
   let acceptDamageType = (evt.damageType == int(DamageType.DM_MELEE) ||
                           evt.damageType == int(DamageType.DM_BACKSTAB) ||
                           evt.damageType == int(DamageType.DM_PROJECTILE) ||

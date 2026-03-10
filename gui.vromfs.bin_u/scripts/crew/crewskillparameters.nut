@@ -3,7 +3,8 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
-let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("%scripts/crew/crewSkills.nut")
+let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank, getSkillsNotAffectedByLeadership
+} = require("%scripts/crew/crewSkills.nut")
 let { get_game_params_blk, get_wpcost_blk } = require("blkGetters")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 let { g_skill_parameters_type } = require("skillParametersType.nut")
@@ -286,6 +287,25 @@ function getSkillListParameterRowsView(crew, difficulty, skillsList, crewUnitTyp
   return getSkillRowsViewInternal(skillParamsList, crew, crewUnitType, unit)
 }
 
+let collapseLeadershipParameterRows = @(parameterRows, hasNotes) [
+  parameterRows[0]  
+  {
+    descriptionLabel = "".concat(loc("crewSkillParameter/allCrewSkills"), hasNotes ? "*" : "")
+    valueItems = parameterRows[1].valueItems 
+    isEven = true
+  }
+]
+
+function getLeadershipNotes(crewUnitType) {
+  let excludedSkills = getSkillsNotAffectedByLeadership(crewUnitType)
+  if (excludedSkills.len() == 0)
+    return ""
+
+  let skillsList = excludedSkills.reduce(@(acc, skillName)
+    "".concat(acc, "\n", colorize("commonTextColor", loc($"crew/{skillName}"))), "")
+  return "".concat("*", loc("crewSkillParameter/except"), loc("ui/colon"), skillsList)
+}
+
 function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUnitType, unit) {
   let skillsList = [{
     memberName = memberName
@@ -294,13 +314,22 @@ function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUn
   }]
   let skillParamsList = getSkillParamsList(crew, difficulty, skillsList, crewUnitType, unit)
   let tooltip = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit, skillParamsList)
+  local parameterRows = getSkillRowsViewInternal(skillParamsList, crew, crewUnitType, unit)
+  local { descriptionNotes } = tooltip
+
+  if (skillName == "leadership" && parameterRows.len() >= 2) {
+    let leadershipNotes = getLeadershipNotes(crewUnitType)
+    descriptionNotes = "\n".join([leadershipNotes, descriptionNotes], true)
+    parameterRows = collapseLeadershipParameterRows(parameterRows, leadershipNotes != "")
+  }
+
   let view = {
     skillName = loc($"crew/{skillName}")
     skillDescription = tooltip.text
-    descriptionNotes = tooltip.descriptionNotes
+    descriptionNotes
 
     
-    parameterRows = getSkillRowsViewInternal(skillParamsList, crew, crewUnitType, unit)
+    parameterRows
     footnoteText = "".concat(loc("shop/all_info_relevant_to_current_game_mode"),
       loc("ui/colon"), difficulty.getLocName())
   }

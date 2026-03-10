@@ -34,7 +34,7 @@ function unsubscribe(pushContextId) {
   unsubscribeFromContext(pushContextId)
   activeSubscriptions.mutate(@(v) v.$rawdelete(pushContextId))
 
-  if (activeSubscriptions.len() == 0) {
+  if (activeSubscriptions.get().len() == 0) {
     eventbus_unsubscribe(GENERIC_PUSH_EVENT_NAME, dispatchPushNotification)
     wasDispatcherSet = false
   }

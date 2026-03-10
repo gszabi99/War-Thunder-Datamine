@@ -32,6 +32,6 @@ return freeze({
   get_activation_data = @() activationData.get()?.data
   hasActivationData = @() activationData.get() != null
   resetActivationData = @() activationData.set(null)
-  get_is_from_invitation = @() activationData.get().isFromInvitation
+  get_is_from_invitation = @() activationData.get()?.isFromInvitation
   register_activation_callback
 })

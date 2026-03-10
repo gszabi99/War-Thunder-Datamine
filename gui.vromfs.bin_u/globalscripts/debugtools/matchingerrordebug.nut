@@ -23,7 +23,7 @@ register_command(function(value) {
 
   intValue = intValue | 0xFFFFFFFF00000000
   foreach(k, v in mErrors)
-    if (type(v) == intValue)
+    if (v == intValue)
       return console_print(k)
   return console_print("not found")
 }, "matching.getErrorNameByValue")
