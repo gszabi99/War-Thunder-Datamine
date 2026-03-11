@@ -97,11 +97,11 @@
     "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 47.8
+        "hp": 50.5
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 47.8
+        "hp": 50.5
       }
     },
     "c_dural3": {
@@ -185,6 +185,12 @@
       "airbrake_r_dm": {
         "hp": 19.5
       },
+      "apu1_dm": {
+        "hp": 19.5
+      },
+      "cockpit_control1_dm": {
+        "hp": 19.5
+      },
       "cover1_dm": {
         "hp": 19.5
       },
@@ -225,7 +231,7 @@
       }
     },
     "dural5": {
-      "radar_dm": {
+      "radar1_dm": {
         "hp": 35.0
       }
     },
@@ -256,10 +262,10 @@
     },
     "steel_cooling_sys": {
       "oil1_dm": {
-        "hp": 11.5
+        "hp": 17.5
       },
       "oil2_dm": {
-        "hp": 11.5
+        "hp": 17.5
       }
     },
     "steel_pilot": {
@@ -275,7 +281,7 @@
     },
     "steel_tank_m": {
       "tank1_dm": {
-        "hp": 75.5
+        "hp": 74.2
       },
       "tank3_dm": {
         "hp": 75.5
@@ -290,7 +296,7 @@
         "hp": 63.5
       },
       "tank7_dm": {
-        "hp": 75.5
+        "hp": 58.9
       },
       "tank8_dm": {
         "hp": 75.5
@@ -391,7 +397,13 @@
         "name": "airbrake_r_dm"
       },
       {
+        "name": "apu1_dm"
+      },
+      {
         "name": "cannon1_dm"
+      },
+      {
+        "name": "cockpit_control1_dm"
       },
       {
         "name": "cover1_dm"
@@ -410,9 +422,6 @@
       },
       {
         "name": "electronic_block4_dm"
-      },
-      {
-        "name": "apu1_dm"
       },
       {
         "name": "elevator0_dm",
@@ -1062,29 +1071,7 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
+        "name": "radar1_dm"
       },
       {
         "name": "rudder0_dm",
@@ -3048,7 +3035,13 @@
               "Giraffe 1X",
               "Arabel",
               "Type 81 TA",
-              "AN/MPQ-64"
+              "AN/MPQ-64",
+              "PGZ-625 TA",
+              "TRML-4D",
+              "Giraffe AMB",
+              "9K330 TA",
+              "viking",
+              "9K33 TA"
             ]
           },
           {
@@ -3516,7 +3509,7 @@
     "sensor": [
       {
         "blk": "gameData/sensors/su_n_010m.blk",
-        "dmPart": "radar_dm"
+        "dmPart": "radar1_dm"
       },
       {
         "blk": "gameData/sensors/su_spo-150.blk"

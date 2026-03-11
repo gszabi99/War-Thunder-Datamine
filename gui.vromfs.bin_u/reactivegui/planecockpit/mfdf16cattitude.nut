@@ -480,18 +480,21 @@ function pitchHorizon(width, height){
   let groundColor = Color(143, 62, 0)
   let skyColor = Color(0, 13, 201)
 
-  let horizonX = Watched(floor(TvvMark[0] / width * 100.0) / 100.0)
-  let horizonY = Computed(@() floor((TvvMark[1] / height + Tangage.get() * verticalPitchScale) * 100.0) / 100.0)
+  let minVisibleFraction = 0.01
+
+  let horizonX = Watched(clamp(floor(TvvMark[0] / width * 100.0) / 100.0 - 0.5, minVisibleFraction, 1.0 - minVisibleFraction))
+  let horizonY = Computed(@() clamp(floor((TvvMark[1] / height + Tangage.get() * verticalPitchScale) * 100.0) / 100.0 - 0.5,
+    minVisibleFraction, 1.0 - minVisibleFraction))
   return @() {
     size = [width, height]
     pos = [0, 0]
     behavior = Behaviors.RtPropUpdate
     update = function() {
-      horizonX.set(floor(TvvMark[0] / width * 100.0) / 100.0)
+      horizonX.set(clamp(floor(TvvMark[0] / width * 100.0) / 100.0 - 0.5, minVisibleFraction, 1.0 - minVisibleFraction))
       return {
         transform = {
           rotate = -Roll.get()
-          pivot = [TvvMark[0]/width - 0.5, TvvMark[1]/height - 0.5]
+          pivot = [horizonX.get(), horizonY.get()]
         }
       }
     }
@@ -502,7 +505,7 @@ function pitchHorizon(width, height){
         rendObj = ROBJ_VECTOR_CANVAS
         color = Color(255, 255, 255)
         fillColor = skyColor
-        commands = [[VECTOR_SECTOR, horizonX.get() + 50.0, horizonY.get() * 100.0 - 50.0, 1000, 1000, -180, 0]]
+        commands = [[VECTOR_SECTOR, horizonX.get() * 100.0, horizonY.get() * 100.0, 150, 150, -180, 0]]
       }
       @() {
         watch = [horizonX, horizonY]
@@ -510,7 +513,7 @@ function pitchHorizon(width, height){
         rendObj = ROBJ_VECTOR_CANVAS
         color = Color(255, 255, 255)
         fillColor = groundColor
-        commands = [[VECTOR_SECTOR, horizonX.get() + 50.0, horizonY.get() * 100.0 - 50.0, 1000, 1000, 0, 180]]
+        commands = [[VECTOR_SECTOR, horizonX.get() * 100.0, horizonY.get() * 100.0, 150, 150, 0, 180]]
       }
       @() {
         watch = [horizonY]

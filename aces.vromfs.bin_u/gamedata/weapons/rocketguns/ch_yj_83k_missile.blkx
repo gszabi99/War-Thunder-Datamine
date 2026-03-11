@@ -19,32 +19,32 @@
     "bulletName": "ch_yj_83k_missile",
     "statType": "hydra",
     "caliber": 0.36,
-    "length": 5.14,
+    "length": 5.145,
     "WdK": [
       0.1,
       0.1,
       0.1
     ],
-    "CxK": 1.5,
-    "wingAreaMult": 5.75,
+    "CxK": 1.65,
+    "wingAreaMult": 4.75,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.15,
-    "mass": 600.0,
-    "massEnd": 500.0,
+    "distFromCmToStab": 0.2,
+    "mass": 670.0,
+    "massEnd": 630.0,
     "timeFire": 600.0,
     "fireDelay": 0.5,
-    "force": 2550.5,
+    "force": 3300.0,
     "timeLife": 600.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
-    "machMax": 0.95,
+    "machMax": 0.9,
     "endSpeed": 1000.0,
-    "maxDistance": 170000.0,
-    "minDistance": 2000.0,
-    "rangeMax": 170000.0,
+    "maxDistance": 180000.0,
+    "minDistance": 15000.0,
+    "rangeMax": 180000.0,
     "loadFactorMax": 2.5,
-    "guidanceType": "optical",
+    "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
@@ -67,6 +67,7 @@
     "useEffectiveArmorThicknessForShatter": true,
     "explosiveType": "pbxn_3",
     "explosiveMass": 70.5,
+    "warheadMass": 190.0,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.02,
     "shellCollision": true,
@@ -100,43 +101,68 @@
       "finsAoaVer": 0.15
     },
     "guidance": {
-      "warmUpTime": 0.5,
-      "workTime": 20.0,
-      "uncageBeforeLaunch": true,
-      "inertialNavigation": true,
-      "inertialNavigationMandatory": true,
       "indicateOnHud": false,
-      "inertialNavigationDriftSpeed": 0.05,
-      "useTargetVel": true,
-      "lockDistance": 8500.0,
-      "afterLaunchSpeedUp": 170.0,
+      "inertialNavigation": true,
+      "warmUpTime": 0.5,
+      "workTime": 100.0,
+      "uncageBeforeLaunch": true,
       "lockAfterLaunch": true,
-      "reacquireTarget": true,
-      "lockMode": "LOAL",
-      "breakLockMaxTime": 600.0,
-      "opticalSeeker": {
-        "targetSignatureType": "infraRed",
-        "rangeBand0": 5000.0,
-        "rangeBand1": 5000.0,
-        "rangeMax": 50000.0,
-        "fov": 15.0,
-        "gateWidth": 0.5,
-        "minAngleToSun": 0.0,
-        "lockAngleMax": 45.0,
-        "angleMax": 45.0,
-        "rateMax": 10.0,
-        "prolongationTimeMax": 1.0,
+      "lockDistance": 15000.0,
+      "breakLockMaxTime": 650.0,
+      "inertialGuidance": {
+        "inertialNavigationDriftSpeed": 0.05
+      },
+      "radarSeeker": {
+        "band": 8,
+        "active": true,
         "groundVehiclesAsTarget": true,
         "aircraftAsTarget": false,
-        "surfaceAsTarget": false,
-        "boundaryTrack": true,
-        "filterAlpha": 0.85,
-        "filterBetta": 0.2,
-        "targetRadiusMin": 10.0,
+        "targetRadiusMin": 15.0,
+        "groundClutter": false,
+        "sideLobesAttenuation": -80.0,
+        "multipathEffect": [
+          0.0,
+          1.0,
+          60.0,
+          0.0
+        ],
+        "lockAngleMax": 15.0,
+        "angleMax": 45.0,
+        "rateMax": 20.0,
+        "angleGateRate": 30.0,
+        "prolongationTimeMax": 1.0,
         "designationSourceType": [
           "radarSs",
           "ins"
-        ]
+        ],
+        "transmitter": {
+          "power": 2000.0,
+          "antenna": {
+            "angleHalfSens": 5.0,
+            "sideLobesSensitivity": -60.0
+          }
+        },
+        "receiver": {
+          "rcs": 2.0,
+          "range": 15000.0,
+          "rangeMax": 18000.0,
+          "antenna": {
+            "angleHalfSens": 5.0,
+            "sideLobesSensitivity": -60.0
+          }
+        },
+        "distance": {
+          "presents": true,
+          "minValue": 150.0,
+          "maxValue": 15000.0,
+          "width": 150.0,
+          "signalWidthMin": 75.0,
+          "refWidth": 750.0
+        },
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05
+        }
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,

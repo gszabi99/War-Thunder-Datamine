@@ -72,6 +72,8 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/ap_belt.ivf",
+      "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+      "gbufferModelName": "ac_ap",
       "bulletName": "30mm_UBR6",
       "relativeVelHitShift": [
         300.0,
@@ -455,6 +457,8 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_belt.ivf",
+      "gbufferModelName": "ac_he",
+      "cartridgeCaseModelName": "ac_he_with_cartridge_case",
       "bulletName": "30mm_UOF8",
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
@@ -873,6 +877,8 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
+      "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+      "gbufferModelName": "ac_ap",
       "bulletName": "30mm_UBR6",
       "relativeVelHitShift": [
         300.0,
@@ -1256,6 +1262,8 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
+      "gbufferModelName": "ac_he",
+      "cartridgeCaseModelName": "ac_he_with_cartridge_case",
       "bulletName": "30mm_UOF8",
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
@@ -1682,6 +1690,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOF8",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
@@ -2104,6 +2114,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOF8",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
@@ -2526,6 +2538,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOF8",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
@@ -2944,6 +2958,8 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+        "gbufferModelName": "ac_ap",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -3328,6 +3344,8 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+        "gbufferModelName": "ac_ap",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -3707,6 +3725,8 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+        "gbufferModelName": "ac_ap",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -4086,6 +4106,8 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+        "gbufferModelName": "ac_ap",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -4469,6 +4491,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOR6",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
@@ -4897,476 +4921,12 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/apds_belt.ivf",
-        "bulletName": "30mm_3UBR8",
-        "breakingArmorThicknessEffective": true,
-        "breakingArmorThickness": [
-          5.0,
-          50.0
-        ],
-        "breakingCriticalSpeed": 1000.0,
-        "breakingDistance": 0.05,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
-        "selfDestructionFx": "hit_5_7mm_metal_he",
-        "groundCollisionEffect": "hit_28_38mm_dirt_ap",
-        "ricochetEffect": "hit_19_27mm_metal_ap",
-        "waterCollisionEffect": "hit_28_38mm_water",
-        "waterRicochetEffect": "hit_19_27mm_water",
-        "groundRicochetEffect": "hit_19_27mm_dirt_ap",
-        "explosionPatchRadius": 0.4,
-        "rendinstDamageRadius": 0.0,
-        "stabilityRicochetModifier": {
-          "mod1": [
-            0.0,
-            0.2
-          ],
-          "mod2": [
-            20.0,
-            0.45
-          ]
-        },
-        "tracePattern": {
-          "caliber": 10.0,
-          "circleCount": 2,
-          "pointCount": 4
-        },
-        "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
-          ],
-          "HitPower1000m": [
-            0.9,
-            0.0
-          ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
-          ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.65,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
-        },
-        "ballistics": {
-          "slopeEffect": {
-            "table": {
-              "t1": {
-                "caliberToArmor": 1.0,
-                "slopeEffect0deg": [
-                  0.0,
-                  20.0
-                ],
-                "slopeEffect5deg": [
-                  5.0,
-                  17.0
-                ],
-                "slopeEffect10deg": [
-                  10.0,
-                  15.0
-                ],
-                "slopeEffect15deg": [
-                  15.0,
-                  10.24
-                ],
-                "slopeEffect20deg": [
-                  20.0,
-                  7.2
-                ],
-                "slopeEffect25deg": [
-                  25.0,
-                  3.72
-                ],
-                "slopeEffect30deg": [
-                  30.0,
-                  2.46
-                ],
-                "slopeEffect35deg": [
-                  35.0,
-                  2.24
-                ],
-                "slopeEffect40deg": [
-                  40.0,
-                  2.064
-                ],
-                "slopeEffect45deg": [
-                  45.0,
-                  1.8
-                ],
-                "slopeEffect50deg": [
-                  50.0,
-                  1.4
-                ],
-                "slopeEffect55deg": [
-                  55.0,
-                  1.2
-                ],
-                "slopeEffect60deg": [
-                  60.0,
-                  1.024
-                ],
-                "slopeEffect65deg": [
-                  65.0,
-                  1.0
-                ],
-                "slopeEffect70deg": [
-                  70.0,
-                  1.0
-                ],
-                "slopeEffect75deg": [
-                  75.0,
-                  1.0
-                ],
-                "slopeEffect80deg": [
-                  80.0,
-                  1.0
-                ],
-                "slopeEffect85deg": [
-                  85.0,
-                  1.0
-                ],
-                "slopeEffect90deg": [
-                  90.0,
-                  1.0
-                ]
-              }
-            }
-          }
-        },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "30mmDarkRed",
-          "trail": "noTrail"
-        },
-        "collisions": {
-          "default": {
-            "fx": "hit_28_38mm_dirt_ap",
-            "ricochetFx": "hit_19_27mm_dirt_ap",
-            "pierceFx": "hit_19_27mm_dirt_ap"
-          },
-          "horLandMesh": {
-            "fx": "hit_28_38mm_dirt_ap",
-            "ricochetFx": "hit_19_27mm_dirt_ap",
-            "pierceFx": "hit_19_27mm_dirt_ap"
-          },
-          "soil": {
-            "fx": "hit_28_38mm_dirt_ap",
-            "ricochetFx": "hit_19_27mm_dirt_ap",
-            "pierceFx": "hit_19_27mm_dirt_ap"
-          },
-          "dirt": {
-            "fx": "hit_28_38mm_dirt_ap",
-            "ricochetFx": "hit_19_27mm_dirt_ap",
-            "pierceFx": "hit_19_27mm_dirt_ap"
-          },
-          "road": {
-            "fx": "hit_28_38mm_dirt_ap",
-            "ricochetFx": "hit_19_27mm_dirt_ap",
-            "pierceFx": "hit_19_27mm_dirt_ap"
-          },
-          "bricks_red": {
-            "fx": "hit_28_38mm_red_brick_ap",
-            "ricochetFx": "hit_19_27mm_red_brick_ap",
-            "pierceFx": "hit_19_27mm_red_brick_ap"
-          },
-          "roadSoil": {
-            "fx": "hit_28_38mm_dirt_ap",
-            "ricochetFx": "hit_19_27mm_dirt_ap",
-            "pierceFx": "hit_19_27mm_dirt_ap"
-          },
-          "steppe": {
-            "fx": "hit_28_38mm_sand_ap",
-            "ricochetFx": "hit_19_27mm_sand_ap",
-            "pierceFx": "hit_19_27mm_sand_ap"
-          },
-          "sand": {
-            "fx": "hit_28_38mm_sand_ap",
-            "ricochetFx": "hit_19_27mm_sand_ap",
-            "pierceFx": "hit_19_27mm_sand_ap"
-          },
-          "duneSand": {
-            "fx": "hit_28_38mm_sand_ap",
-            "ricochetFx": "hit_19_27mm_sand_ap",
-            "pierceFx": "hit_19_27mm_sand_ap"
-          },
-          "roadSand": {
-            "fx": "hit_28_38mm_sand_ap",
-            "ricochetFx": "hit_19_27mm_sand_ap",
-            "pierceFx": "hit_19_27mm_sand_ap"
-          },
-          "quickSand": {
-            "fx": "hit_28_38mm_sand_ap",
-            "ricochetFx": "hit_19_27mm_sand_ap",
-            "pierceFx": "hit_19_27mm_sand_ap"
-          },
-          "snow": {
-            "fx": "hit_28_38mm_snow_ap",
-            "ricochetFx": "hit_19_27mm_snow_ap",
-            "pierceFx": "hit_19_27mm_snow_ap"
-          },
-          "ice": {
-            "fx": "hit_28_38mm_snow_ap",
-            "ricochetFx": "hit_19_27mm_snow_ap",
-            "pierceFx": "hit_19_27mm_snow_ap"
-          },
-          "roadSnow": {
-            "fx": "hit_28_38mm_snow_ap",
-            "ricochetFx": "hit_19_27mm_snow_ap",
-            "pierceFx": "hit_19_27mm_snow_ap"
-          },
-          "snowLower": {
-            "fx": "hit_28_38mm_snow_ap",
-            "ricochetFx": "hit_19_27mm_snow_ap",
-            "pierceFx": "hit_19_27mm_snow_ap"
-          },
-          "glass": {
-            "fx": "armoured_glass",
-            "ricochetFx": "armoured_glass",
-            "pierceFx": "armoured_glass"
-          },
-          "wood": {
-            "fx": "hit_28_38mm_wood_ap",
-            "ricochetFx": "hit_19_27mm_wood_ap",
-            "pierceFx": "hit_19_27mm_wood_ap"
-          },
-          "steel": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "metal": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "ships": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "ship_metal": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "ship_armor": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "tank_structural_steel": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "aluminum_armor": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "tank_rubber_screens": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "buildings": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "verLandMesh": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "concrete": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "rocks": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "rocksSlippery": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "fabric": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "stone_snow": {
-            "fx": "hit_28_38mm_snow_ap",
-            "ricochetFx": "hit_19_27mm_snow_ap",
-            "pierceFx": "hit_19_27mm_snow_ap"
-          },
-          "wood_solid": {
-            "fx": "hit_28_38mm_wood_ap",
-            "ricochetFx": "hit_19_27mm_wood_ap",
-            "pierceFx": "hit_19_27mm_wood_ap"
-          },
-          "softWoodDoor": {
-            "fx": "hit_28_38mm_wood_ap",
-            "ricochetFx": "hit_19_27mm_wood_ap",
-            "pierceFx": "hit_19_27mm_wood_ap"
-          },
-          "wood_aim_transparent": {
-            "fx": "hit_28_38mm_wood_ap",
-            "ricochetFx": "hit_19_27mm_wood_ap",
-            "pierceFx": "hit_19_27mm_wood_ap"
-          },
-          "window_wood": {
-            "fx": "hit_28_38mm_wood_ap",
-            "ricochetFx": "hit_19_27mm_wood_ap",
-            "pierceFx": "hit_19_27mm_wood_ap"
-          },
-          "softSteelDoor": {
-            "fx": "hit_28_38mm_metal_ap",
-            "ricochetFx": "hit_19_27mm_metal_ap",
-            "pierceFx": "hit_19_27mm_metal_ap"
-          },
-          "paper": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "plastic": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "rubber": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "ceramic": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "stone": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "glass_car": {
-            "fx": "armoured_glass",
-            "ricochetFx": "armoured_glass",
-            "pierceFx": "armoured_glass"
-          },
-          "steel_thin": {
-            "fx": "hit_28_38mm_wood_ap",
-            "ricochetFx": "hit_19_27mm_wood_ap",
-            "pierceFx": "hit_19_27mm_wood_ap"
-          },
-          "soil_brown": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "soil_sand": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "sandbag_grey": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "sandbag_biege": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "stone_biege": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "stone_white": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "airfield": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "concrete_snow": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "football_ramp": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "rocksSlipperyHigh": {
-            "fx": "hit_28_38mm_stone_ap",
-            "ricochetFx": "hit_19_27mm_stone_ap",
-            "pierceFx": "hit_19_27mm_stone_ap"
-          },
-          "glass_small": {
-            "fx": "armoured_glass",
-            "ricochetFx": "armoured_glass",
-            "pierceFx": "armoured_glass"
-          },
-          "ship_wood": {
-            "fx": "hit_28_38mm_wood_ap",
-            "ricochetFx": "hit_19_27mm_wood_ap",
-            "pierceFx": "hit_19_27mm_wood_ap"
-          }
-        }
-      },
-      {
-        "mass": 0.304,
-        "caliber": 0.03,
-        "ballisticCaliber": 0.018,
-        "damageCaliber": 0.018,
-        "damageMass": 0.304,
-        "Cx": 0.12,
-        "speed": 1120.0,
-        "maxDistance": 7000.0,
-        "normalizationPreset": "apcr",
-        "ricochetPreset": "apds",
-        "groundRicochetPreset": "apds_ground",
-        "secondaryShattersPreset": "apds",
-        "stabilityThreshold": 0.05,
-        "stabilityCaliberToArmorThreshold": 5.0,
-        "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.0,
-        "stucking": 0.7,
-        "stuckingAngle": 45.0,
-        "bulletType": "apds_autocannon",
-        "slopeEffectPreset": "apds",
-        "fresnel": [
-          0.23,
-          0.1,
-          2.0
+        "gbufferModelName": "ac_apds",
+        "cartridgeCaseModelName": "ac_apds_with_cartridge_case",
+        "offsetForDemonstration": [
+          0.0,
+          0.01,
+          0.0
         ],
         "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
@@ -5839,6 +5399,13 @@
           0.1,
           2.0
         ],
+        "gbufferModelName": "ac_apds",
+        "cartridgeCaseModelName": "ac_apds_with_cartridge_case",
+        "offsetForDemonstration": [
+          0.0,
+          0.01,
+          0.0
+        ],
         "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
         "breakingArmorThicknessEffective": true,
@@ -6309,6 +5876,491 @@
           0.23,
           0.1,
           2.0
+        ],
+        "gbufferModelName": "ac_apds",
+        "cartridgeCaseModelName": "ac_apds_with_cartridge_case",
+        "offsetForDemonstration": [
+          0.0,
+          0.01,
+          0.0
+        ],
+        "shellAnimation": "video/shells_animations/apds_belt.ivf",
+        "bulletName": "30mm_3UBR8",
+        "breakingArmorThicknessEffective": true,
+        "breakingArmorThickness": [
+          5.0,
+          50.0
+        ],
+        "breakingCriticalSpeed": 1000.0,
+        "breakingDistance": 0.05,
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "selfDestructionFx": "hit_5_7mm_metal_he",
+        "groundCollisionEffect": "hit_28_38mm_dirt_ap",
+        "ricochetEffect": "hit_19_27mm_metal_ap",
+        "waterCollisionEffect": "hit_28_38mm_water",
+        "waterRicochetEffect": "hit_19_27mm_water",
+        "groundRicochetEffect": "hit_19_27mm_dirt_ap",
+        "explosionPatchRadius": 0.4,
+        "rendinstDamageRadius": 0.0,
+        "stabilityRicochetModifier": {
+          "mod1": [
+            0.0,
+            0.2
+          ],
+          "mod2": [
+            20.0,
+            0.45
+          ]
+        },
+        "tracePattern": {
+          "caliber": 10.0,
+          "circleCount": 2,
+          "pointCount": 4
+        },
+        "hitpower": {
+          "HitPower0m": [
+            1.0,
+            0.0
+          ],
+          "HitPower1000m": [
+            0.9,
+            0.0
+          ],
+          "HitPower10000m": [
+            0.8,
+            10000.0
+          ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.65,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
+        "ballistics": {
+          "slopeEffect": {
+            "table": {
+              "t1": {
+                "caliberToArmor": 1.0,
+                "slopeEffect0deg": [
+                  0.0,
+                  20.0
+                ],
+                "slopeEffect5deg": [
+                  5.0,
+                  17.0
+                ],
+                "slopeEffect10deg": [
+                  10.0,
+                  15.0
+                ],
+                "slopeEffect15deg": [
+                  15.0,
+                  10.24
+                ],
+                "slopeEffect20deg": [
+                  20.0,
+                  7.2
+                ],
+                "slopeEffect25deg": [
+                  25.0,
+                  3.72
+                ],
+                "slopeEffect30deg": [
+                  30.0,
+                  2.46
+                ],
+                "slopeEffect35deg": [
+                  35.0,
+                  2.24
+                ],
+                "slopeEffect40deg": [
+                  40.0,
+                  2.064
+                ],
+                "slopeEffect45deg": [
+                  45.0,
+                  1.8
+                ],
+                "slopeEffect50deg": [
+                  50.0,
+                  1.4
+                ],
+                "slopeEffect55deg": [
+                  55.0,
+                  1.2
+                ],
+                "slopeEffect60deg": [
+                  60.0,
+                  1.024
+                ],
+                "slopeEffect65deg": [
+                  65.0,
+                  1.0
+                ],
+                "slopeEffect70deg": [
+                  70.0,
+                  1.0
+                ],
+                "slopeEffect75deg": [
+                  75.0,
+                  1.0
+                ],
+                "slopeEffect80deg": [
+                  80.0,
+                  1.0
+                ],
+                "slopeEffect85deg": [
+                  85.0,
+                  1.0
+                ],
+                "slopeEffect90deg": [
+                  90.0,
+                  1.0
+                ]
+              }
+            }
+          }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "30mmDarkRed",
+          "trail": "noTrail"
+        },
+        "collisions": {
+          "default": {
+            "fx": "hit_28_38mm_dirt_ap",
+            "ricochetFx": "hit_19_27mm_dirt_ap",
+            "pierceFx": "hit_19_27mm_dirt_ap"
+          },
+          "horLandMesh": {
+            "fx": "hit_28_38mm_dirt_ap",
+            "ricochetFx": "hit_19_27mm_dirt_ap",
+            "pierceFx": "hit_19_27mm_dirt_ap"
+          },
+          "soil": {
+            "fx": "hit_28_38mm_dirt_ap",
+            "ricochetFx": "hit_19_27mm_dirt_ap",
+            "pierceFx": "hit_19_27mm_dirt_ap"
+          },
+          "dirt": {
+            "fx": "hit_28_38mm_dirt_ap",
+            "ricochetFx": "hit_19_27mm_dirt_ap",
+            "pierceFx": "hit_19_27mm_dirt_ap"
+          },
+          "road": {
+            "fx": "hit_28_38mm_dirt_ap",
+            "ricochetFx": "hit_19_27mm_dirt_ap",
+            "pierceFx": "hit_19_27mm_dirt_ap"
+          },
+          "bricks_red": {
+            "fx": "hit_28_38mm_red_brick_ap",
+            "ricochetFx": "hit_19_27mm_red_brick_ap",
+            "pierceFx": "hit_19_27mm_red_brick_ap"
+          },
+          "roadSoil": {
+            "fx": "hit_28_38mm_dirt_ap",
+            "ricochetFx": "hit_19_27mm_dirt_ap",
+            "pierceFx": "hit_19_27mm_dirt_ap"
+          },
+          "steppe": {
+            "fx": "hit_28_38mm_sand_ap",
+            "ricochetFx": "hit_19_27mm_sand_ap",
+            "pierceFx": "hit_19_27mm_sand_ap"
+          },
+          "sand": {
+            "fx": "hit_28_38mm_sand_ap",
+            "ricochetFx": "hit_19_27mm_sand_ap",
+            "pierceFx": "hit_19_27mm_sand_ap"
+          },
+          "duneSand": {
+            "fx": "hit_28_38mm_sand_ap",
+            "ricochetFx": "hit_19_27mm_sand_ap",
+            "pierceFx": "hit_19_27mm_sand_ap"
+          },
+          "roadSand": {
+            "fx": "hit_28_38mm_sand_ap",
+            "ricochetFx": "hit_19_27mm_sand_ap",
+            "pierceFx": "hit_19_27mm_sand_ap"
+          },
+          "quickSand": {
+            "fx": "hit_28_38mm_sand_ap",
+            "ricochetFx": "hit_19_27mm_sand_ap",
+            "pierceFx": "hit_19_27mm_sand_ap"
+          },
+          "snow": {
+            "fx": "hit_28_38mm_snow_ap",
+            "ricochetFx": "hit_19_27mm_snow_ap",
+            "pierceFx": "hit_19_27mm_snow_ap"
+          },
+          "ice": {
+            "fx": "hit_28_38mm_snow_ap",
+            "ricochetFx": "hit_19_27mm_snow_ap",
+            "pierceFx": "hit_19_27mm_snow_ap"
+          },
+          "roadSnow": {
+            "fx": "hit_28_38mm_snow_ap",
+            "ricochetFx": "hit_19_27mm_snow_ap",
+            "pierceFx": "hit_19_27mm_snow_ap"
+          },
+          "snowLower": {
+            "fx": "hit_28_38mm_snow_ap",
+            "ricochetFx": "hit_19_27mm_snow_ap",
+            "pierceFx": "hit_19_27mm_snow_ap"
+          },
+          "glass": {
+            "fx": "armoured_glass",
+            "ricochetFx": "armoured_glass",
+            "pierceFx": "armoured_glass"
+          },
+          "wood": {
+            "fx": "hit_28_38mm_wood_ap",
+            "ricochetFx": "hit_19_27mm_wood_ap",
+            "pierceFx": "hit_19_27mm_wood_ap"
+          },
+          "steel": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "metal": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "ships": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "ship_metal": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "ship_armor": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "tank_structural_steel": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "aluminum_armor": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "tank_rubber_screens": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "buildings": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "verLandMesh": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "concrete": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "rocks": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "rocksSlippery": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "fabric": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "stone_snow": {
+            "fx": "hit_28_38mm_snow_ap",
+            "ricochetFx": "hit_19_27mm_snow_ap",
+            "pierceFx": "hit_19_27mm_snow_ap"
+          },
+          "wood_solid": {
+            "fx": "hit_28_38mm_wood_ap",
+            "ricochetFx": "hit_19_27mm_wood_ap",
+            "pierceFx": "hit_19_27mm_wood_ap"
+          },
+          "softWoodDoor": {
+            "fx": "hit_28_38mm_wood_ap",
+            "ricochetFx": "hit_19_27mm_wood_ap",
+            "pierceFx": "hit_19_27mm_wood_ap"
+          },
+          "wood_aim_transparent": {
+            "fx": "hit_28_38mm_wood_ap",
+            "ricochetFx": "hit_19_27mm_wood_ap",
+            "pierceFx": "hit_19_27mm_wood_ap"
+          },
+          "window_wood": {
+            "fx": "hit_28_38mm_wood_ap",
+            "ricochetFx": "hit_19_27mm_wood_ap",
+            "pierceFx": "hit_19_27mm_wood_ap"
+          },
+          "softSteelDoor": {
+            "fx": "hit_28_38mm_metal_ap",
+            "ricochetFx": "hit_19_27mm_metal_ap",
+            "pierceFx": "hit_19_27mm_metal_ap"
+          },
+          "paper": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "plastic": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "rubber": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "ceramic": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "stone": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "glass_car": {
+            "fx": "armoured_glass",
+            "ricochetFx": "armoured_glass",
+            "pierceFx": "armoured_glass"
+          },
+          "steel_thin": {
+            "fx": "hit_28_38mm_wood_ap",
+            "ricochetFx": "hit_19_27mm_wood_ap",
+            "pierceFx": "hit_19_27mm_wood_ap"
+          },
+          "soil_brown": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "soil_sand": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "sandbag_grey": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "sandbag_biege": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "stone_biege": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "stone_white": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "airfield": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "concrete_snow": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "football_ramp": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "rocksSlipperyHigh": {
+            "fx": "hit_28_38mm_stone_ap",
+            "ricochetFx": "hit_19_27mm_stone_ap",
+            "pierceFx": "hit_19_27mm_stone_ap"
+          },
+          "glass_small": {
+            "fx": "armoured_glass",
+            "ricochetFx": "armoured_glass",
+            "pierceFx": "armoured_glass"
+          },
+          "ship_wood": {
+            "fx": "hit_28_38mm_wood_ap",
+            "ricochetFx": "hit_19_27mm_wood_ap",
+            "pierceFx": "hit_19_27mm_wood_ap"
+          }
+        }
+      },
+      {
+        "mass": 0.304,
+        "caliber": 0.03,
+        "ballisticCaliber": 0.018,
+        "damageCaliber": 0.018,
+        "damageMass": 0.304,
+        "Cx": 0.12,
+        "speed": 1120.0,
+        "maxDistance": 7000.0,
+        "normalizationPreset": "apcr",
+        "ricochetPreset": "apds",
+        "groundRicochetPreset": "apds_ground",
+        "secondaryShattersPreset": "apds",
+        "stabilityThreshold": 0.05,
+        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterPenetration": 0.0,
+        "stucking": 0.7,
+        "stuckingAngle": 45.0,
+        "bulletType": "apds_autocannon",
+        "slopeEffectPreset": "apds",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "gbufferModelName": "ac_apds",
+        "cartridgeCaseModelName": "ac_apds_with_cartridge_case",
+        "offsetForDemonstration": [
+          0.0,
+          0.01,
+          0.0
         ],
         "shellAnimation": "video/shells_animations/apds_belt.ivf",
         "bulletName": "30mm_3UBR8",
@@ -6781,6 +6833,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOR6",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
@@ -7204,6 +7258,13 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apfsds_modern_belt.ivf",
+        "gbufferModelName": "ac_apdsfs",
+        "cartridgeCaseModelName": "ac_apdsfs_with_cartridge_case",
+        "offsetForDemonstration": [
+          0.0,
+          0.015,
+          0.0
+        ],
         "bulletName": "30mm_3ubr_11",
         "relativeVelHitShift": [
           300.0,
@@ -7610,6 +7671,13 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apfsds_modern_belt.ivf",
+        "gbufferModelName": "ac_apdsfs",
+        "cartridgeCaseModelName": "ac_apdsfs_with_cartridge_case",
+        "offsetForDemonstration": [
+          0.0,
+          0.015,
+          0.0
+        ],
         "bulletName": "30mm_3ubr_11",
         "relativeVelHitShift": [
           300.0,
@@ -8016,6 +8084,13 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apfsds_modern_belt.ivf",
+        "gbufferModelName": "ac_apdsfs",
+        "cartridgeCaseModelName": "ac_apdsfs_with_cartridge_case",
+        "offsetForDemonstration": [
+          0.0,
+          0.015,
+          0.0
+        ],
         "bulletName": "30mm_3ubr_11",
         "relativeVelHitShift": [
           300.0,
@@ -8432,6 +8507,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOF8",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
@@ -8854,6 +8931,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOF8",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
@@ -9276,6 +9355,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOF8",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
@@ -9694,6 +9775,8 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+        "gbufferModelName": "ac_ap",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -10078,6 +10161,8 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+        "gbufferModelName": "ac_ap",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -10457,6 +10542,8 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+        "gbufferModelName": "ac_ap",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -10836,6 +10923,8 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap_belt.ivf",
+        "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
+        "gbufferModelName": "ac_ap",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -11219,6 +11308,8 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_belt.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "bulletName": "30mm_UOR6",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,

@@ -85,6 +85,7 @@ struct CanvasParams
   targetSizeMaxZoomFactor : float = 1.5
   isAAComplexMenuLayout : bool = false
   vignetteColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  cScopeIndicatorHeightMult : float = 0.42
 
 def hdpx(params : CanvasParams&; value : float)
   // identical to StdGuiRender::GuiContext that was used here
@@ -123,6 +124,15 @@ def has_a_detected_target()
       result = true
       return
   return result
+
+
+def circle_azimuth_rel(az : float)
+  let isFullCircle = (get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) >= PI2 - 2.0 * FLT_EPSILON
+  if !isFullCircle
+    return az
+  if az < 0.0 || az > 1.0
+    return az - floor(az)
+  return az
 
 [export]
 def setup_radar_data(props : Properties&; var storage : CanvasParams&)
@@ -172,6 +182,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.targetSizeMaxZoomFactor = props |> getFloat("targetSizeMaxZoomFactor", 1.5)
   storage.isAAComplexMenuLayout = props |> getBool("isAAComplexMenuLayout", false)
   storage.vignetteColor = props |> getColor("vignetteColor", storage.color)
+  storage.cScopeIndicatorHeightMult = props |> getFloat("cScopeIndicatorHeightMult", 0.42)
 
 [export]
 def handle_click(var elem : Element&; click_pos_x, click_pos_y : float; dev_id, button_id : int)
@@ -251,12 +262,12 @@ struct RadarMain : RadarInteractableEll
     if !radarVisible && get_game_params().collapsedIconForRadarTws
       return
 
+    var mainIndicatorSize = float2(min(self.size.x, self.size.y))
     if get_radar_hud_is_b_scope_visible()
       var mode = data.overrideMode >= 0 ? data.overrideMode : int(get_radar_hud_view_mode())
       if data.isAAComplexMenuLayout
         mode = int(RadarViewMode.B_SCOPE_ROUND)
 
-      var mainIndicatorSize = float2(min(self.size.x, self.size.y))
       let mainIndicatorPos = self.pos + float2(0.0, self.size.y - mainIndicatorSize.y)
 
       var elemPos = get_radar_hud_is_c_scope_visible() ? mainIndicatorPos - float2(0., self.size.y * 0.42) : mainIndicatorPos
@@ -294,8 +305,8 @@ struct RadarMain : RadarInteractableEll
         bScopeSquare.walkLayout(visitor)
 
     if get_radar_hud_is_c_scope_visible()
-      let elemSize = float2(self.size.x, self.size.y * 0.42)
-      var elemPos = self.pos + float2(0., self.size.y * 0.58)
+      let elemSize = mainIndicatorSize  * float2(1.0, data.cScopeIndicatorHeightMult)
+      var elemPos = self.pos + float2(0., self.size.y - elemSize.y)
       if data.enableByMfd
         elemPos += get_radar_hud_mfd_radar_offset()
       var cScopeMain = CScopeMain(elemPos, elemSize, *self.data)
@@ -1921,6 +1932,19 @@ def b_scope_square_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos
   ctx |> goto_xy(pos.x + size.x - strBoxAzMax.width.x - data |> hdpx(4.), pos.y + strBoxAzMax.width.y + data |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMaxText, azMaxText |> length())
 
+def b_scope_draw_line_circled(var ctx : GuiContext&; az_rel_left, az_rel_right, dist_rel : float; pos, size : float2; width : float)
+  let isFullCircle = (get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) >= PI2 - 2.0 * FLT_EPSILON
+  if isFullCircle
+    if az_rel_left < 0.0
+      let lCircled = circle_azimuth_rel(az_rel_left)
+      let rCircled = 1.0
+      ctx |> draw_line(pos.x + lCircled * size.x, pos.y + dist_rel * size.y, pos.x + rCircled * size.x, pos.y + dist_rel * size.y, width)
+    if az_rel_right > 1.0
+      let lCircled = 0.0
+      let rCircled = circle_azimuth_rel(az_rel_right)
+      ctx |> draw_line(pos.x + lCircled * size.x, pos.y + dist_rel * size.y, pos.x + rCircled * size.x, pos.y + dist_rel * size.y, width)
+  ctx |> draw_line(pos.x + az_rel_left * size.x, pos.y + dist_rel * size.y, pos.x + az_rel_right * size.x, pos.y + dist_rel * size.y, width)
+
 def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let azimuthRangeInv = azimuthRange != 0. ? 1. / azimuthRange : 1.
@@ -1942,9 +1966,11 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   let e3dColor = E3DCOLOR(Color4(color))
   ctx |> set_color(e3dColor)
   if scanAzimuthMinRelW <= 1. && scanAzimuthMinRelW >= 0.
-    ctx |> draw_line(pos.x + scanAzimuthMinRelW * size.x, pos.y, pos.x + scanAzimuthMinRelW * size.x, pos.y + size.y, data |> hdpx(1.6 * data.lineWidth))
+    ctx |> draw_line(pos.x + circle_azimuth_rel(scanAzimuthMinRelW) * size.x, pos.y,
+    pos.x + circle_azimuth_rel(scanAzimuthMinRelW) * size.x, pos.y + size.y, data |> hdpx(1.6 * data.lineWidth))
   if scanAzimuthMaxRelW <= 1. && scanAzimuthMaxRelW >= 0.
-    ctx |> draw_line(pos.x + scanAzimuthMaxRelW * size.x, pos.y, pos.x + scanAzimuthMaxRelW * size.x, pos.y + size.y, data |> hdpx(1.6 * data.lineWidth))
+    ctx |> draw_line(pos.x + circle_azimuth_rel(scanAzimuthMaxRelW) * size.x, pos.y,
+    pos.x + circle_azimuth_rel(scanAzimuthMaxRelW) * size.x, pos.y + size.y, data |> hdpx(1.6 * data.lineWidth))
 
   if data.hideBack
     return
@@ -1960,16 +1986,17 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   if get_radar_hud_has_distance_scale()
     var rang = 0.25
     while rang < distanceMinY + 0.01
-      ctx |> draw_line(pos.x + scanAzimuthMinRel * size.x, pos.y + rang * size.y, pos.x + scanAzimuthMaxRel * size.x, pos.y + rang * size.y, data |> hdpx(1.2 * data.lineWidth))
+      ctx |> b_scope_draw_line_circled(scanAzimuthMinRel, scanAzimuthMaxRel, rang, pos, size, data |> hdpx(1.2 * data.lineWidth))
       rang = rang + 0.25
     if distanceMinY % 0.25 != 0.0
-      ctx |> draw_line(pos.x + scanAzimuthMinRel * size.x, pos.y + distanceMinY * size.y, pos.x + scanAzimuthMaxRel * size.x, pos.y + distanceMinY * size.y, data |> hdpx(1.2 * data.lineWidth))
+      ctx |> b_scope_draw_line_circled(scanAzimuthMinRel, scanAzimuthMaxRel, distanceMinY, pos, size, data |> hdpx(1.2 * data.lineWidth))
 
   if get_radar_hud_has_azimuth_scale()
     let azimuthRelStep = PI / 12. * azimuthRangeInv
     var azRel = scanAzimuthMaxRel
     while azRel > scanAzimuthMinRel
-      ctx |> draw_line(pos.x + azRel * size.x, pos.y, pos.x + azRel * size.x, pos.y + distanceMinY * size.y, data |> hdpx(1.2 * data.lineWidth))
+      let azCircled = circle_azimuth_rel(azRel)
+      ctx |> draw_line(pos.x + azCircled * size.x, pos.y, pos.x + azCircled * size.x, pos.y + distanceMinY * size.y, data |> hdpx(1.2 * data.lineWidth))
       azRel -= azimuthRelStep
 
 def is_full_circle()
@@ -2043,8 +2070,25 @@ def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; po
   let e3dColor = E3DCOLOR(Color4(color))
   ctx |> set_color(e3dColor)
   let turretAzimuth = get_radar_hud_turret_azimuth()
-  ctx |> render_rect(pos.x + (turretAzimuth - halfAzimuthWidth) * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
-    pos.x + (turretAzimuth + halfAzimuthWidth) * size.x, pos.y + size.y, tc, tc, tc)
+
+  let l = turretAzimuth - halfAzimuthWidth
+  let r = turretAzimuth + halfAzimuthWidth
+
+  let isFullCircle = azimuthRange >= PI2 - 2.0 * FLT_EPSILON
+  if isFullCircle
+    if l < 0.0
+      let lCircled = circle_azimuth_rel(l)
+      let rCircled = 1.0
+      ctx |> render_rect(pos.x + lCircled * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
+        pos.x + rCircled * size.x, pos.y + size.y, tc, tc, tc)
+    if r > 1.0
+      let lCircled = 0.0
+      let rCircled = circle_azimuth_rel(r)
+      ctx |> render_rect(pos.x + lCircled * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
+        pos.x + rCircled * size.x, pos.y + size.y, tc, tc, tc)
+
+  ctx |> render_rect(pos.x + l * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
+    pos.x + r * size.x, pos.y + size.y, tc, tc, tc)
 
 def b_scope_square_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   var color = float4(Color4(is_color_or_white(data.lineColor)))

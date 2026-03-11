@@ -38,8 +38,18 @@ function ilsJf17(width, height) {
   })
 }
 
+function ilsJ15t(width, height) {
+  return ilsJ10aBase.__merge({
+    size = [width, height]
+    ilsFovDegX = 17.5
+    ilsFovDegY = 17.5
+    langId = getLangId("English")
+  })
+}
+
 return {
   ilsJ10a,
   ilsJ10c,
-  ilsJf17
+  ilsJf17,
+  ilsJ15t
 }

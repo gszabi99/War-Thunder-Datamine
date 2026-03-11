@@ -40,7 +40,7 @@ let maxCnt = 14
 let maxBulletCnt = 8
 
 let minimalCaliber = 0.019
-let maxShotFreq = 20.
+let maxShotFreq = 50.
 
 let targetsRotation = 0. * DEG_TO_RAD
 let tankBulletRotation = -90. * DEG_TO_RAD

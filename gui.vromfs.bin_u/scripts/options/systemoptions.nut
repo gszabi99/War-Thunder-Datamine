@@ -1796,7 +1796,7 @@ mSettings = {
   rayReconstruction = { widgetType = "checkbox" def = false blk = "video/rayReconstruction" restart = false
     enabled = hasRayReconstructionGUI
     onChanged = "rayReconstructionChanged"
-    infoImgPattern = "#ui/images/settings/rtTransQuality/%s"
+    infoImgPattern = "#ui/images/settings/rayReconstruction/%s"
   }
 }
 

@@ -1939,11 +1939,7 @@
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
-        "hp": 1016.0
-      },
-      "fire_control_room_02_dm": {
-        "napalmDamageMult": 0.0,
-        "hp": 860.0
+        "hp": 1100.0
       }
     },
     "ammo_storages_shells": {
@@ -2018,7 +2014,7 @@
         "hp": 3000.0
       },
       "ammunition_storage_aux_04_dm": {
-        "hp": 2300.0
+        "hp": 3000.0
       },
       "ammunition_storage_aux_05_dm": {
         "hp": 2300.0
@@ -2134,10 +2130,10 @@
         "hp": 1500.0
       },
       "main_caliber_turret_02_dm": {
-        "hp": 1500.0
+        "hp": 1130.0
       },
       "main_caliber_turret_03_dm": {
-        "hp": 1500.0
+        "hp": 1130.0
       },
       "main_caliber_turret_04_dm": {
         "hp": 1500.0
@@ -2597,7 +2593,7 @@
         "hp": 10000.0
       },
       "armor_cit_05_dm": {
-        "armorThickness": 203.0,
+        "armorThickness": 203.2,
         "hp": 10000.0
       },
       "armor_cit_06_dm": {
@@ -2637,7 +2633,12 @@
       },
       "armor_cit_13_dm": {
         "armorClass": "ship_RHA",
-        "armorThickness": 177.8,
+        "armorThickness": 203.2,
+        "hp": 10000.0
+      },
+      "armor_cit_14_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 31.75,
         "hp": 10000.0
       }
     },
@@ -3025,6 +3026,11 @@
         "armorThickness": 50.8,
         "hp": 10000.0
       },
+      "turret_05_bottom_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 101.6,
+        "hp": 10000.0
+      },
       "turret_03_front_dm": {
         "armorThickness": 406.4,
         "hp": 10000.0
@@ -3045,6 +3051,11 @@
       "turret_03_bottom_dm": {
         "armorClass": "ship_RHA",
         "armorThickness": 50.8,
+        "hp": 10000.0
+      },
+      "turret_06_bottom_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 101.6,
         "hp": 10000.0
       },
       "turret_04_front_dm": {
@@ -3272,7 +3283,7 @@
     "sailor3": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 59
+      "crew": 58
     },
     "sailor4": {
       "dmPart": "compartment_02_dm",
@@ -3282,7 +3293,7 @@
     "sailor5": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 59
+      "crew": 58
     },
     "sailor6": {
       "dmPart": "compartment_04_dm",
@@ -3292,12 +3303,12 @@
     "sailor7": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 59
+      "crew": 58
     },
     "sailor8": {
       "dmPart": "compartment_06_dm",
       "role": "sailor",
-      "crew": 76
+      "crew": 78
     },
     "sailor9": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -3494,7 +3505,7 @@
     "sailor47": {
       "dmPart": "fire_control_room_01_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 11
     },
     "sailor48": {
       "dmPart": "fire_director_01_dm",
@@ -4126,17 +4137,9 @@
     "binoculars": "navy_binoculars"
   },
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/naval/us_sk.blk",
-      "designationFromBody": true,
-      "dmPart": "antenna_target_location_01_dm"
-    },
     "fireDirecting": [
       {
-        "dmPartMain": [
-          "fire_control_room_01_dm",
-          "fire_control_room_02_dm"
-        ],
+        "dmPartMain": "fire_control_room_01_dm",
         "dmPart": [
           "fire_director_01_dm",
           "fire_director_02_dm",
@@ -4161,10 +4164,7 @@
         }
       },
       {
-        "dmPartMain": [
-          "fire_control_room_01_dm",
-          "fire_control_room_02_dm"
-        ],
+        "dmPartMain": "fire_control_room_01_dm",
         "dmPart": "rangefinder_01_dm",
         "rotationSpeed": [
           0.0,
@@ -8725,7 +8725,14 @@
           "entityMunition": "aux",
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_03_dm": {
-            "count": 920
+            "count": 460
+          }
+        },
+        {
+          "entityMunition": "aux",
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_04_dm": {
+            "count": 460
           }
         }
       ]
@@ -8745,24 +8752,14 @@
       "splashRadiusConstraint": 20.0,
       "splashDamageConstraint": 2000.0,
       "splashPenetrationConstraint": 15.0,
-      "shells": [
-        {
-          "explosionEvent": "ammo_aux_explosion_2",
-          "fireEvent": "ammo_aux_fire_2",
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_aux_05_dm": {
-            "count": 200
-          }
-        },
-        {
-          "explosionEvent": "ammo_aux_explosion_4",
-          "fireEvent": "ammo_aux_fire_4",
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_aux_04_dm": {
-            "count": 200
-          }
+      "shells": {
+        "explosionEvent": "ammo_aux_explosion_2",
+        "fireEvent": "ammo_aux_fire_2",
+        "damageEffect": "ammunition_storage_shells",
+        "ammunition_storage_aux_05_dm": {
+          "count": 400
         }
-      ]
+      }
     },
     "ammo7": {
       "weaponTrigger": [

@@ -171,38 +171,46 @@ function mkAgmAimIndicator(watchedColor, watchedAlertColor) {
   }
 }
 
+let aircraftDefaultHud = @(){
+  halign = ALIGN_LEFT
+  valign = ALIGN_TOP
+  size = flex()
+  watch = [IsRadarDamaged, isCollapsedRadarInReplay, IsTwsDamaged, radarPosWatched, LaserAtgmSightVisible]
+  children = [
+    twsElement(IsTwsDamaged.get() ? AlertColorHigh : HudColor, twsPosWatched, twsSize)
+    radarElement(IsRadarDamaged.get() ? AlertColorHigh : HudColor, radarPosWatched.get())
+    radarIndication(HudColor)
+    !isCollapsedRadarInReplay.get() ? radarHud(radarSize[0], radarSize[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
+      canZoom = true
+      magnifiedIndicator = true
+    }, true) : null
+    laserPointComponent(HudColor)
+    !LaserAtgmSightVisible.get() ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
+  ]
+}
+
 let aircraftHud = {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = const [sw(100), sh(100)]
   children = @() {
-    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, isCollapsedRadarInReplay, IsRadarDamaged, IsTwsDamaged, radarPosWatched, TargetingPodSightVisible]
+    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, TargetingPodSightVisible]
     size = flex()
-    children = TargetingPodSightVisible.get() ? [
-      aircraftTargetingPodSight(sw(100), sh(100))
-      actionBarTopPanel
-    ] : [
+    children = [
       mkAircraftMainHud()
       aircraftGunnerHud
       aircraftPilotHud
       aircraftArbiterHud
       leftPanel
       actionBarTopPanel
-      twsElement(IsTwsDamaged.get() ? AlertColorHigh : HudColor, twsPosWatched, twsSize)
-      radarElement(IsRadarDamaged.get() ? AlertColorHigh : HudColor, radarPosWatched.get())
       OpticAtgmSightVisible.get() ? opticAtgmSight(sw(100), sh(100)) : null
       mkAgmAimIndicator(crosshairColorOpt, AlertColorHigh)
       weaponHud
-      laserPointComponent(HudColor)
       LaserAtgmSightVisible.get() ? laserAtgmSight(sw(100), sh(100)) : null
-      !LaserAtgmSightVisible.get() ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
       planeHmdElem
-      !isCollapsedRadarInReplay.get() ? radarHud(radarSize[0], radarSize[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
-        canZoom = true
-        magnifiedIndicator = true
-      }, true) : null
-      radarIndication(HudColor)
       sensorViewIndicators
+      TargetingPodSightVisible.get() ? aircraftTargetingPodSight(sw(100), sh(100))
+      : aircraftDefaultHud
     ]
   }
 

@@ -159,6 +159,7 @@ let radarSettings = Watched({
     isMetricUnits = false
     radarModeNameLangId = -1
     stretchFull = false
+    cScopeIndicatorHeightMult = 1.0
   })
 
 function radarSettingsUpd(page_blk) {
@@ -200,6 +201,7 @@ function radarSettingsUpd(page_blk) {
     isMetricUnits = page_blk.getBool("isMetricUnits", false)
     radarModeNameLangId = getLangId(page_blk.getStr("radarModeNameLangId", ""))
     stretchFull = page_blk.getBool("stretchFull", false)
+    cScopeIndicatorHeightMult = page_blk.getReal("cScopeIndicatorHeightMult", 1.0)
   })
 }
 
@@ -208,7 +210,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
     backgroundColor, textColor, radarBackgroundColor, radarScanColor, beamShape, netRowCnt, netColor, hideWeaponIndication,
     cueHeights, fontSize, showScanAzimuth, scriptPath, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
-    radarModeNameLangId, stretchFull } = radarSettings.get()
+    radarModeNameLangId, stretchFull, cScopeIndicatorHeightMult } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.get().w, pos_and_size.get().h]
@@ -254,6 +256,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     isMetricUnits
     radarModeNameLangId
     stretchFull
+    cScopeIndicatorHeightMult
   }
 }
 

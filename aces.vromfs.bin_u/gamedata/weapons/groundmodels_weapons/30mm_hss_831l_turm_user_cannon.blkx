@@ -84,7 +84,11 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "sapi",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_heat",
+      "modelName": [
+        "tank_bullet_heat",
+        "ac_ap"
+      ],
+      "gbufferModelName": "ac_ap_with_cartridge_case",
       "fresnel": [
         0.23,
         0.1,
@@ -507,6 +511,8 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_belt.ivf",
+      "gbufferModelName": "ac_he",
+      "cartridgeCaseModelName": "ac_he_with_cartridge_case",
       "bulletName": "30_170mm_he_i_t",
       "selfDestructionInAir": true,
       "fuseOnWater": true,
