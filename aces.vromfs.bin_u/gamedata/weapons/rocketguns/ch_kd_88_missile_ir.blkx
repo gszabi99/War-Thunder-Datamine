@@ -25,33 +25,30 @@
       0.1,
       0.1
     ],
-    "CxK": 2.3,
+    "CxK": 1.75,
     "brakeTime": [
       5.0,
       5.05
     ],
     "brakeCxK": 0.0,
     "brakeArm": 0.0,
-    "wingAreaMult": 5.75,
+    "wingAreaMult": 6.25,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
     "distFromCmToStab": 0.25,
-    "mass": 600.0,
-    "massEnd": 500.0,
-    "massEnd1": 480.0,
-    "timeFire": 4.4,
-    "timeFire1": 600.0,
+    "mass": 640.0,
+    "massEnd": 600.0,
+    "timeFire": 650.0,
     "fireDelay": 0.6,
-    "force": 27500.0,
-    "force1": 4400.0,
+    "force": 3300.0,
     "timeLife": 600.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
-    "machMax": 0.95,
+    "machMax": 0.9,
     "endSpeed": 1000.0,
-    "maxDistance": 120000.0,
+    "maxDistance": 180000.0,
     "minDistance": 2000.0,
-    "rangeMax": 120000.0,
+    "rangeMax": 180000.0,
     "opticSightFov": [
       12.0,
       2.9
@@ -78,8 +75,9 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tgaf_5m",
-    "explosiveMass": 119.0,
+    "explosiveType": "pbxn_3",
+    "explosiveMass": 70.5,
+    "warheadMass": 190.0,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.025,
     "shellCollision": true,
@@ -100,9 +98,14 @@
     "rendinstDamageRadius": 20.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
+    "fireEffect": "",
+    "smokeEffect": "trail_jet",
+    "smokeEffect2": "",
+    "hazeEffect": "haze_jet",
+    "endSmokeViscosity": 0.05,
     "effectOffset": [
-      -2.0,
-      0.0,
+      -2.4,
+      -0.2,
       0.0
     ],
     "arcadeProp": {
@@ -122,12 +125,12 @@
       "designationError": 7.0,
       "breakLockMaxTime": 600.0,
       "opticalSeeker": {
-        "targetSignatureType": "optic",
-        "rangeBand0": 12000.0,
+        "targetSignatureType": "infraRed",
+        "rangeBand0": 20000.0,
         "rangeMax": 120000.0,
         "rangeSurface": 120000.0,
         "fov": 0.1,
-        "minAngleToSun": 0.0,
+        "minAngleToSun": 1.0,
         "lockAngleMax": 55.0,
         "angleMax": 60.0,
         "rateMax": 7.0,
@@ -137,7 +140,9 @@
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        "targetRadiusMin": 1.5,
+        "rangeBand1": 20000.0,
+        "rangeBand8": 200.0
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,
@@ -145,14 +150,14 @@
           1.0,
           600.0
         ],
-        "altitudeHoldTargetElevation": -11.0,
+        "altitudeHoldTargetElevation": -15.0,
         "altitudeHoldTargetOmegaMax": 1.5,
         "altitudeDiffToClimb": 0.2,
         "altitudeRateRateToClimb": 0.15,
         "climbDiffToAccelMult": 0.025,
         "altitudeHoldAngleLimith": [
-          -23.0,
-          23.0
+          -30.0,
+          30.0
         ],
         "courseErrorAngleToAccelMult": 1.5,
         "courseErrorFinalAngleCorrection": 1.25,
@@ -160,9 +165,9 @@
         "propNavMult": 4.0,
         "reqAccelMax": 5.0,
         "baseIndSpeed": 1800.0,
-        "accelControlProp": 0.0096,
-        "accelControlIntg": 0.003,
-        "accelControlDiff": 0.0005,
+        "accelControlProp": 0.0111,
+        "accelControlIntg": 0.0395,
+        "accelControlDiff": 0.0017,
         "accelControlIntgLim": 1.0
       }
     },
@@ -554,36 +559,6 @@
       "stone_snow": {
         "fx": "hit_12_14mm_snow_ap"
       }
-    },
-    "tracerTrail": [
-      {
-        "fireEffect": "fires_exhaust_jet_mach_discs_big",
-        "smokeEffect": "smoke_rocket_tail_short_med_optical",
-        "smokeEffect2": "",
-        "hazeEffect": "haze_missile",
-        "endSmokeViscosity": 0.05,
-        "effectOffset": [
-          -2.4,
-          -0.2,
-          0.0
-        ],
-        "hasTracerTrail": true,
-        "inactiveAtStage2": true
-      },
-      {
-        "fireEffect": "",
-        "smokeEffect": "trail_jet",
-        "smokeEffect2": "",
-        "hazeEffect": "haze_jet",
-        "endSmokeViscosity": 0.05,
-        "effectOffset": [
-          -0.5,
-          -0.5,
-          0.0
-        ],
-        "hasTracerTrail": true,
-        "inactiveAtStage1": true
-      }
-    ]
+    }
   }
 }

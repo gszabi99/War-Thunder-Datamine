@@ -3274,6 +3274,7 @@
         "pylon_11_pfx10x",
         "pylon_11_bomb_adapter_long",
         "pylon_11_pl12_launcher",
+        "pylon_11_for_yj_83k_missile",
         "pylon_10",
         "pylon_10_bomb",
         "pylon_10_pfx10",
@@ -3303,6 +3304,7 @@
         "pylon_12_pfx10x",
         "pylon_12_bomb_adapter_long",
         "pylon_12_pl12_launcher",
+        "pylon_12_for_yj_83k_missile",
         "pylon_4",
         "pylon_4_bomb",
         "pylon_4_pfx10x",
@@ -3727,7 +3729,7 @@
           {
             "iconType": "missile_air_to_uni_smal_x59",
             "name": "kd_88_ir_slot3",
-            "reqModification": "ch_kd_88",
+            "reqModification": "ch_kd_88a",
             "ShowNodes": {
               "node": "pylon_3_for_yj_83k_missile"
             },
@@ -4084,10 +4086,7 @@
             "name": "kd_88_tv_slot4",
             "reqModification": "ch_kd_88",
             "ShowNodes": {
-              "node": [
-                "pylon_11",
-                "pylon_11_bomb_adapter_long"
-              ]
+              "node": "pylon_11_for_yj_83k_missile"
             },
             "Weapon": {
               "trigger": "atgm",
@@ -4103,12 +4102,9 @@
           {
             "iconType": "missile_air_to_uni_smal_x59",
             "name": "kd_88_ir_slot4",
-            "reqModification": "ch_kd_88",
+            "reqModification": "ch_kd_88a",
             "ShowNodes": {
-              "node": [
-                "pylon_11",
-                "pylon_11_bomb_adapter_long"
-              ]
+              "node": "pylon_11_for_yj_83k_missile"
             },
             "Weapon": {
               "trigger": "atgm",
@@ -4126,10 +4122,7 @@
             "name": "yj_83k_slot4",
             "reqModification": "ch_yj_83k",
             "ShowNodes": {
-              "node": [
-                "pylon_11",
-                "pylon_11_bomb_adapter_long"
-              ]
+              "node": "pylon_11_for_yj_83k_missile"
             },
             "Weapon": {
               "trigger": "atgm",
@@ -5074,10 +5067,7 @@
             "name": "kd_88_tv_slot9",
             "reqModification": "ch_kd_88",
             "ShowNodes": {
-              "node": [
-                "pylon_12",
-                "pylon_12_bomb_adapter_long"
-              ]
+              "node": "pylon_12_for_yj_83k_missile"
             },
             "Weapon": {
               "trigger": "atgm",
@@ -5093,12 +5083,9 @@
           {
             "iconType": "missile_air_to_uni_smal_x59",
             "name": "kd_88_ir_slot9",
-            "reqModification": "ch_kd_88",
+            "reqModification": "ch_kd_88a",
             "ShowNodes": {
-              "node": [
-                "pylon_12",
-                "pylon_12_bomb_adapter_long"
-              ]
+              "node": "pylon_12_for_yj_83k_missile"
             },
             "Weapon": {
               "trigger": "atgm",
@@ -5116,10 +5103,7 @@
             "name": "yj_83k_slot9",
             "reqModification": "ch_yj_83k",
             "ShowNodes": {
-              "node": [
-                "pylon_12",
-                "pylon_12_bomb_adapter_long"
-              ]
+              "node": "pylon_12_for_yj_83k_missile"
             },
             "Weapon": {
               "trigger": "atgm",
@@ -5358,7 +5342,7 @@
           {
             "iconType": "missile_air_to_uni_smal_x59",
             "name": "kd_88_ir_slot10",
-            "reqModification": "ch_kd_88",
+            "reqModification": "ch_kd_88a",
             "ShowNodes": {
               "node": "pylon_4_for_yj_83k_missile"
             },
@@ -7123,11 +7107,6 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "ch_kd_88": {
-      "prevModification": "ch_yj_83k",
-      "modClass": "weapon",
-      "tier": 4
-    },
     "cn_k_adc03a": {
       "modClass": "weapon",
       "tier": 1
@@ -7142,13 +7121,22 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "cn_sns_bomb": {
+    "ch_kd_88": {
       "prevModification": "cn_glide_bomb",
       "modClass": "weapon",
       "tier": 4
     },
+    "cn_sns_bomb": {
+      "modClass": "weapon",
+      "tier": 2
+    },
     "cn_glide_bomb_ir": {
       "prevModification": "cn_sns_bomb",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "ch_kd_88a": {
+      "prevModification": "cn_glide_bomb_ir",
       "modClass": "weapon",
       "tier": 4
     },

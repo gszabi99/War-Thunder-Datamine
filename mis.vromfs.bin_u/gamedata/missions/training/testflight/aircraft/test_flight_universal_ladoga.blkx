@@ -146,73 +146,137 @@
     "is_enabled": true
   },
   "variables": {
-    "base_total": 4
+    "base_total": 4,
+    "tmp_units_count": 0
   },
   "dialogs": {},
   "airfields": {},
   "effects": {},
   "units": {
-    "armada": {
-      "name": "armada_01",
-      "tm": [
-        [
-          0.00142521,
-          0.0,
-          0.999999
+    "armada": [
+      {
+        "name": "armada_01",
+        "tm": [
+          [
+            0.00142521,
+            0.0,
+            0.999999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999999,
+            0.0,
+            0.00142521
+          ],
+          [
+            -9016.01,
+            48.5698,
+            -2683.6
+          ]
         ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.999999,
-          0.0,
-          0.00142521
-        ],
-        [
-          -9016.01,
-          48.5698,
-          -2683.6
-        ]
-      ],
-      "unit_class": "mig-21_s",
-      "closed_waypoints": false,
-      "isShipSpline": false,
-      "shipTurnRadius": 100.0,
-      "weapons": "",
-      "bullets0": "",
-      "bullets1": "",
-      "bullets2": "",
-      "bullets3": "",
-      "bulletsCount0": 0,
-      "bulletsCount1": 0,
-      "bulletsCount2": 0,
-      "bulletsCount3": 0,
-      "crewSkillK": 0.0,
-      "applyAllMods": true,
-      "props": {
-        "army": 1,
-        "free_distance": 70.0,
-        "floating_distance": 50.0,
-        "minimum_distance_to_earth": 20.0,
-        "altLimit": 6000.0,
-        "attack_type": "fire_at_will",
-        "skill": 4,
-        "count": 1,
-        "plane": {
-          "wing_formation": "Diamond",
-          "row_distances": 1.5,
-          "col_distances": 1.5,
-          "super_formation": "Diamond",
-          "super_row_distances": 1.5,
-          "super_col_distances": 1.5,
-          "ai_skill": "NORMAL",
-          "task": "FLY_WAYPOINT"
-        }
+        "unit_class": "mig-21_s",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
       },
-      "way": {}
-    },
+      {
+        "name": "armada_02",
+        "tm": [
+          [
+            -0.998132,
+            0.0,
+            -0.0610949
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0610949,
+            0.0,
+            -0.998132
+          ],
+          [
+            23429.2,
+            48.5698,
+            3762.73
+          ]
+        ],
+        "unit_class": "av_8b_plus",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      }
+    ],
     "objectGroups": [
       {
         "name": "airfield_low",

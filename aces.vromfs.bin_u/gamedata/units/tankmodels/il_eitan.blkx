@@ -2098,9 +2098,9 @@
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-        "emitter": "bone_mg_twin",
+        "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_twin_flame",
-        "barrelDP": "gun_barrel_03_dm",
+        "barrelDP": "gun_barrel_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "parkInDeadzone": false,
@@ -2124,8 +2124,8 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
-          "head": "bone_mg_twin",
-          "gun": "bone_mg_twin",
+          "head": "bone_mg_gun_twin",
+          "gun": "bone_mg_gun_twin",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
@@ -3688,6 +3688,57 @@
     ],
     "detectionHeight": 3.7
   },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": false,
+      "fatalExplosion": false,
+      "shells": {
+        "wreckedPartId": 0,
+        "ammo_turret_12_dm": {
+          "count": 50
+        },
+        "ammo_turret_11_dm": {
+          "count": 50
+        },
+        "ammo_turret_10_dm": {
+          "count": 50
+        },
+        "ammo_turret_09_dm": {
+          "count": 50
+        },
+        "ammo_turret_08_dm": {
+          "count": 50
+        },
+        "ammo_turret_07_dm": {
+          "count": 50
+        },
+        "ammo_turret_06_dm": {
+          "count": 50
+        },
+        "ammo_turret_05_dm": {
+          "count": 50
+        }
+      }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner1",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "ammoLoadedInGun": true,
+        "fatalFire": false,
+        "fatalExplosion": false,
+        "ammo_turret_01_dm": {
+          "count": 1
+        },
+        "ammo_turret_02_dm": {
+          "count": 1
+        }
+      }
+    }
+  },
   "modifications": {
     "new_wheels": {},
     "new_car_suspension": {},
@@ -3994,9 +4045,9 @@
               "trigger": "gunner2",
               "triggerGroup": "coaxial",
               "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-              "emitter": "bone_mg_twin",
+              "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_twin_flame",
-              "barrelDP": "gun_barrel_03_dm",
+              "barrelDP": "gun_barrel_02_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "parkInDeadzone": false,
@@ -4020,8 +4071,8 @@
               "errTargetting": 3.0,
               "errExplTime": 0.0,
               "turret": {
-                "head": "bone_mg_twin",
-                "gun": "bone_mg_twin",
+                "head": "bone_mg_gun_twin",
+                "gun": "bone_mg_gun_twin",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [

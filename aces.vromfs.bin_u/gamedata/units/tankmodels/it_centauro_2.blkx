@@ -215,10 +215,10 @@
         "armorThickness": 15.0
       },
       "turret_06_bottom_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 10.0
       },
       "superstructure_top_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 15.0
       },
       "ex_armor_body_l_04_dm": {
         "armorThickness": 5.0
@@ -341,8 +341,12 @@
       "turret_02_front_dm": {},
       "turret_front_dm": {},
       "turret_03_bottom_dm": {},
-      "turret_05_top_dm": {},
-      "turret_06_top_dm": {},
+      "turret_05_top_dm": {
+        "armorThickness": 40.0
+      },
+      "turret_06_top_dm": {
+        "armorThickness": 40.0
+      },
       "gun_trunnion_dm": {
         "armorThickness": 150.0,
         "armorEffectiveThicknessMax": 300.0,
@@ -477,6 +481,15 @@
       },
       "turret_06_back_dm": {
         "armorThickness": 5.0
+      },
+      "ex_armor_turret_05_dm": {
+        "armorThickness": 5.0
+      },
+      "ex_armor_02_dm": {
+        "armorThickness": 5.0
+      },
+      "ex_armor_01_dm": {
+        "armorThickness": 5.0
       }
     },
     "composite_shields": {
@@ -487,8 +500,6 @@
       "cumulativeArmorQuality": 1.5,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "ex_armor_02_dm": {},
-      "ex_armor_01_dm": {},
       "ex_armor_body_r_03_dm": {},
       "ex_armor_body_l_03_dm": {},
       "ex_armor_body_l_02_dm": {
@@ -504,7 +515,7 @@
         "armorThickness": 40.0
       },
       "ex_armor_turret_04_dm": {
-        "armorThickness": 35.0
+        "armorThickness": 25.0
       },
       "ex_armor_turret_08_dm": {
         "armorThickness": 25.0
@@ -515,11 +526,8 @@
       "ex_armor_turret_02_dm": {
         "armorThickness": 25.0
       },
-      "ex_armor_turret_05_dm": {
-        "armorThickness": 25.0
-      },
       "ex_armor_turret_01_dm": {
-        "armorThickness": 45.0
+        "armorThickness": 30.0
       },
       "ex_armor_turret_17_dm": {},
       "ex_armor_turret_18_dm": {},
@@ -1975,12 +1983,6 @@
       ]
     }
   },
-  "xrayOverride": {
-    "gun_trunnion_dm": {
-      "overrideTitle": "gun_trunnion",
-      "hideDescription": true
-    }
-  },
   "xray_viewer_data": {
     "armorArrayHull": [
       {
@@ -2038,6 +2040,19 @@
     "defaultDistance": 1000.0,
     "vertical": true,
     "horizontal": true
+  },
+  "xrayOverride": {
+    "gun_trunnion_dm": {
+      "overrideTitle": "gun_trunnion",
+      "hideDescription": true
+    },
+    "fire_control_system_dm": {
+      "overrideTitle": "fire_control_system",
+      "hideDescription": true
+    },
+    "turret_hydraulics_dm": {
+      "overrideTitle": "power_electronics"
+    }
   },
   "MetaParts": {
     "closed_fightning_compartment": {
@@ -2280,11 +2295,13 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "fire_control_system_dm",
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "fire_control_system_dm",
+            "turret_hydraulics_dm"
           ],
           "shootingDmPart": "fire_control_system_dm"
         },
@@ -4081,11 +4098,13 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "fire_control_system_dm",
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "fire_control_system_dm",
+                  "turret_hydraulics_dm"
                 ],
                 "shootingDmPart": "fire_control_system_dm"
               },

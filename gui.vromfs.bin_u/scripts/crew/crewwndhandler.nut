@@ -72,17 +72,21 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
   function getWndSizes() {
     let wnd = this.scene.findObject("wnd_frame")
     let wndHeight = to_pixels("1@crewWndBaseHeight")
+    let wndPosX = wnd.getPos()[0]
     let wndPosY = wnd.getPos()[1]
     let slotBarPosY = to_pixels("sh-1@slotbarOffset-1@slotbarTop-1@slotbarHeight")
     let heightReservePadding = to_pixels("0.5@frameMediumPadding")
     let freeHeightToSlotbar = slotBarPosY - (wndPosY + wndHeight + heightReservePadding)
+    let wndPosYLowered = to_pixels("1@infoPanelVertPosition")
 
     return {
       wnd
+      wndPosX
       wndPosY
       wndHeight
       slotBarPosY
       freeHeightToSlotbar
+      wndPosYLowered
     }
   }
 
@@ -102,7 +106,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
       return
     this.needRecalcWndHeight = false
 
-    let { wnd, freeHeightToSlotbar } = this.getWndSizes()
+    let { wnd, wndPosX, wndPosY, slotBarPosY, freeHeightToSlotbar, wndPosYLowered } = this.getWndSizes()
 
     
     let qualReqContainer = this.scene.findObject("upgrade_qualification_block")
@@ -132,11 +136,18 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     let fullSkillsTableHeight = skillsTable.childrenCount() > 0
       ? skillsTable.getChild(0).getSize()[1] * this.crewMemberSkillsMaxAmount
       : containerSkillsTableHeight
-    
-    if (containerSkillsTableHeight >= fullSkillsTableHeight)
-      return
 
-    wnd.height = resultWndHeight + min(freeHeightToSlotbar + increasedFreeHeight, fullSkillsTableHeight - containerSkillsTableHeight)
+    if (containerSkillsTableHeight < fullSkillsTableHeight)
+      resultWndHeight += min(freeHeightToSlotbar + increasedFreeHeight, fullSkillsTableHeight - containerSkillsTableHeight)
+
+    let updatedFreeHeightToSlotbar = slotBarPosY - (wndPosY + resultWndHeight)
+    
+    local updatedWndPosY = wndPosY
+    if (updatedFreeHeightToSlotbar >= 2 * (wndPosYLowered - wndPosY))
+      updatedWndPosY = wndPosYLowered
+
+    wnd.height = resultWndHeight
+    wnd.pos = $"{wndPosX},{updatedWndPosY}"
   }
 
   function updateCrewInfo() {

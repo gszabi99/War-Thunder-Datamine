@@ -30,18 +30,20 @@
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_zero",
-  "mass": 60000.0,
+  "mass": 15000.0,
   "bulletHitFx": "ground_model_hit",
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "destroysRendInstances": false,
   "destroysTrees": false,
+  "isDynamicObstacle": true,
+  "isConstantlyWinchable": true,
   "type": "typeLightTank",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "steel",
-    "hp": 10000.0,
+    "hp": 1000.0,
     "hull": {
       "body_dm": {
         "genericDamageMult": 0.01,
@@ -117,7 +119,7 @@
     "chassis": {
       "hp": 250.0,
       "armorThickness": 2.0,
-      "armorClass": "tank_steel_wheels",
+      "armorClass": "steel",
       "wheel_r_01_dm": {},
       "wheel_l_01_dm": {},
       "wheel_l_02_dm": {},
@@ -534,6 +536,17 @@
       }
     }
   },
+  "tracks": {
+    "armorClass": "tank_traks",
+    "allowRicochet": true,
+    "armorThickness": 15.0,
+    "hp": 250.0,
+    "genericEffectiveThicknessMax": 15.0,
+    "genericDamageMult": 1.5,
+    "cumulativeDamageMult": 1.5,
+    "track_r_dm": {},
+    "track_l_dm": {}
+  },
   "DamageEffects": {
     "part": [
       {
@@ -946,8 +959,27 @@
   },
   "MetaParts": {
     "body": {
-      "hp": 100000.0,
-      "part": "body_dm"
+      "hp": 1000.0,
+      "part": [
+        "body_dm",
+        "wheel_support_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "expl": 1.0,
+          "conditionDamage": 250.0,
+          "kill": true,
+          "killEffect": "fire"
+        },
+        {
+          "conditionDamageType": "cumulative",
+          "expl": 1.0,
+          "conditionDamage": 100.0,
+          "kill": true,
+          "killEffect": "fire"
+        }
+      ]
     }
   },
   "sound": {
@@ -960,9 +992,9 @@
   "class_tags": {},
   "VehiclePhys": {
     "Mass": {
-      "Empty": 60000.0,
+      "Empty": 15000.0,
       "Fuel": 0.0,
-      "TakeOff": 60000.0,
+      "TakeOff": 15000.0,
       "momentOfInertia": [
         10.0,
         15.0,
@@ -1016,19 +1048,15 @@
         -0.02,
         0.02
       ],
-      "suspensionOffsets": [
-        -0.1,
-        -0.1,
-        0.1
-      ],
-      "defaultGearRadius": 0.55,
+      "defaultGearRadius": 0.12,
       "defaultDampeningForce": [
-        1700000.0,
-        1700000.0
+        15000.0,
+        15000.0
       ],
-      "hasSuspensionOnDriveGear": true,
-      "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "wheel_l_front": 0.34,
+      "wheel_r_front": 0.34,
+      "wheel_l_drive": 0.4,
+      "wheel_r_drive": 0.4
     }
   },
   "unitFx": {
