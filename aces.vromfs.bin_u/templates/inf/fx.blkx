@@ -69,14 +69,6 @@
     "gun_fx__destroyIfGunDoesNotExist:tag": {},
     "attachedEffect:tag": {}
   },
-  "muzzle_smg_flash_effect": {
-    "_use": "base_gun_flash_fx",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "muzzle_smg_cmps_fx",
-      "effect__distance_scale": 1.0
-    }
-  },
   "base_gun_flash_fx": {
     "_use": "base_gun_unattached_fx",
     "attachedEffect:tag": {},
@@ -88,39 +80,6 @@
       "_tags": "render",
       "effect__name": "muzzle_rifle_cmps_fx",
       "effect__distance_scale": 1.0
-    }
-  },
-  "smoke_extractor_effect": {
-    "_use": "base_gun_flash_fx",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "muzzle_smoke_extraction_cmps_fx",
-      "effect__distance_scale": 1.0
-    }
-  },
-  "rifle_muzzle_preset": {
-    "_use": "gun_smoke_medium",
-    "_group": {
-      "_tags": "render",
-      "gun_flash_fx__nodeIds:list<i>": {},
-      "gun_flash_fx__nodes:shared:list<t>": {
-        "node": [
-          "gunFx_main",
-          "gunFx_add_bolt"
-        ]
-      },
-      "gun_flash_fx__template:shared:list<t>": {
-        "fx": [
-          "muzzle_rifle_flash_effect",
-          "smoke_extractor_effect"
-        ]
-      },
-      "gun_flash_fx__scale:shared:list<r>": {
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
     }
   },
   "gun_smoke_medium_rapid": {
@@ -172,39 +131,6 @@
       },
       "gun_smoke_fx__visibleAmountThreshold:shared:list<r>": {
         "threshold": 0.1
-      }
-    }
-  },
-  "muzzle_rapid_flash_effect": {
-    "_use": "base_gun_flash_fx",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "muzzle_rifle_auto_cmps_fx",
-      "effect__distance_scale": 1.0
-    }
-  },
-  "mg_rapid_muzzle_preset": {
-    "_use": "gun_smoke_medium_rapid",
-    "_group": {
-      "_tags": "render",
-      "gun_flash_fx__nodeIds:list<i>": {},
-      "gun_flash_fx__nodes:shared:list<t>": {
-        "node": [
-          "gunFx_main",
-          "gunFx_add_bolt"
-        ]
-      },
-      "gun_flash_fx__template:shared:list<t>": {
-        "fx": [
-          "muzzle_rapid_flash_effect",
-          "smoke_extractor_effect"
-        ]
-      },
-      "gun_flash_fx__scale:shared:list<r>": {
-        "scale": [
-          1.0,
-          1.0
-        ]
       }
     }
   },

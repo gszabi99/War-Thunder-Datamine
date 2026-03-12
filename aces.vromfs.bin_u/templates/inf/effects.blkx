@@ -95,8 +95,13 @@
     "_singleton": true,
     "_group": {
       "_tags": "render",
-      "gun_environment__defaultFxTemplate": "",
-      "gun_environment_fx__materials:object": {},
+      "gun_environment__defaultFxTemplate": "dust_ground_wave_object_dirt_effect",
+      "gun_environment_fx__materials:object": {
+        "group__dirt_and_mud": "dust_ground_wave_object_dirt_effect",
+        "group__sand": "dust_ground_wave_object_sand_effect",
+        "group__snow": "dust_ground_wave_object_snow_effect",
+        "group__stone": "dust_ground_wave_object_stone_effect"
+      },
       "gun_environment_fx__matTemplates:list<t>": {},
       "gun_ground_wave_fx__maxImpulses:list<r>": {
         "maxImpulse": [
@@ -108,8 +113,31 @@
       "gun_ground_wave_fx__effectGroups:array": {
         "group:object": [
           {},
-          {},
-          {}
+          {
+            "maxDistanceFromGun": 1.0,
+            "leavesCheckRadius": 4.0,
+            "leavesAlwaysSpawn": false,
+            "defaultFx": "dust_ground_wave_rifle_stone_effect",
+            "leavesFx": "dust_ground_wave_rifle_dirt_effect",
+            "info:object": {
+              "group__dirt_and_mud": "dust_ground_wave_rifle_dirt_effect",
+              "group__sand": "dust_ground_wave_rifle_sand_effect",
+              "group__snow": "dust_ground_wave_rifle_snow_effect",
+              "group__stone": "dust_ground_wave_rifle_stone_effect"
+            }
+          },
+          {
+            "maxDistanceFromGun": 4.0,
+            "leavesCheckRadius": 4.0,
+            "defaultFx": "dust_ground_wave_rpg_stone_effect",
+            "leavesFx": "dust_ground_wave_rpg_dirt_effect",
+            "info:object": {
+              "group__dirt_and_mud": "dust_ground_wave_rpg_dirt_effect",
+              "group__sand": "dust_ground_wave_rpg_sand_effect",
+              "group__snow": "dust_ground_wave_rpg_snow_effect",
+              "group__stone": "dust_ground_wave_rpg_stone_effect"
+            }
+          }
         ]
       }
     }
@@ -627,6 +655,118 @@
     "_group": {
       "_tags": "render",
       "effect__name": "destr_collision_bush_dead_cmps_fx"
+    }
+  },
+  "location_fire_surface_1m": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "location_fire_surface_1m_cmps_fx"
+    }
+  },
+  "location_fire_surface_2m": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "location_fire_surface_2m_cmps_fx"
+    }
+  },
+  "location_fire_surface_3m": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "location_fire_surface_3m_cmps_fx"
+    }
+  },
+  "location_fire_surface_4m": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "location_fire_surface_4m_cmps_fx"
+    }
+  },
+  "dust_ground_wave_object_dirt_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_object_dirt_cmps_fx"
+    }
+  },
+  "dust_ground_wave_object_sand_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_object_sand_cmps_fx"
+    }
+  },
+  "dust_ground_wave_object_snow_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_object_snow_cmps_fx"
+    }
+  },
+  "dust_ground_wave_object_stone_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_object_stone_cmps_fx"
+    }
+  },
+  "dust_ground_wave_rifle_dirt_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_small_dirt_cmps_fx"
+    }
+  },
+  "dust_ground_wave_rifle_sand_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_small_sand_cmps_fx"
+    }
+  },
+  "dust_ground_wave_rifle_snow_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_small_snow_cmps_fx"
+    }
+  },
+  "dust_ground_wave_rifle_stone_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_small_stone_cmps_fx"
+    }
+  },
+  "dust_ground_wave_rpg_dirt_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_med_dirt_cmps_fx"
+    }
+  },
+  "dust_ground_wave_rpg_sand_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_med_sand_cmps_fx"
+    }
+  },
+  "dust_ground_wave_rpg_snow_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_med_snow_cmps_fx"
+    }
+  },
+  "dust_ground_wave_rpg_stone_effect": {
+    "_use": "base_effect",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "dust_ground_wave_med_stone_cmps_fx"
     }
   }
 }

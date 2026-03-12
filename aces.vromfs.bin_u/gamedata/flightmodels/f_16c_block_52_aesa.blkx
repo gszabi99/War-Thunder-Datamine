@@ -3248,6 +3248,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_52_aesa_gbu_62_laser_pids.blk"
       },
       {
+        "name": "f_16c_block_52_aesa_agm154",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_52_aesa_agm154.blk"
+      },
+      {
         "name": "f_16c_block_52_aesa_blu_1",
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_52_aesa_blu_1.blk"
       },
@@ -3271,6 +3275,7 @@
         "launcher_aim9_3",
         "us_lau_117a_001",
         "pylon2_holder",
+        "pylon_bru_55a_001",
         "pylon4",
         "pylon4_holder",
         "pylon_gpu_5a",
@@ -3281,6 +3286,7 @@
         "pylon_ptb",
         "pylon6",
         "pylon6_holder",
+        "pylon_bru_55a_002",
         "pylon7",
         "launcher_aim9_4",
         "us_lau_117a_002",
@@ -4474,6 +4480,26 @@
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "sniper_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_spice",
+            "name": "agm_154a1",
+            "reqModification": "us_agm154_jsow",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_agm_154a1_jsow.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 0.95
             }
           },
           {
@@ -5858,6 +5884,26 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_small_spice",
+            "name": "agm_154a1",
+            "reqModification": "us_agm154_jsow",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_agm_154a1_jsow.blk",
+              "emitter": "bomb_2000lb_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 0.95
+            }
+          },
+          {
             "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot7",
             "ShowNodes": {
@@ -6562,6 +6608,11 @@
       "reqModification": "us_agm_65d",
       "modClass": "weapon",
       "tier": 3
+    },
+    "us_agm154_jsow": {
+      "prevModification": "us_agm_65g",
+      "modClass": "weapon",
+      "tier": 4
     },
     "us_aim_9m": {
       "modClass": "weapon",

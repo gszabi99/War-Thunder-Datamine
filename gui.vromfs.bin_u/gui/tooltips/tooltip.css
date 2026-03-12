@@ -86,7 +86,7 @@ modalInfoContent keyHolder {
 
 modalInfoContent[inHangar=yes] keyHolder {
   width: 1@airInfoKeyWidth + 1@modalInfoValueMargin - 4@sf/@pf;
-  min-height: 1@fontHeightSmall + 1@blockInterval + 2@referenceProgressHeight + @referenceProgressOffset;
+  min-height: 1@fontHeightSmall + 1@blockInterval + 1@referenceProgressHeight;
 }
 
 modalInfoContent keyHolder > key {
@@ -96,6 +96,10 @@ modalInfoContent keyHolder > key {
 
 modalInfoContent[inHangar=yes] keyHolder > key {
   max-width: 1@airInfoKeyWidth;
+}
+
+modalInfoContent[inHangar=yes] value {
+  min-height: 1@fontHeightSmall + 1@blockInterval + 1@referenceProgressHeight;
 }
 
 modalInfoContent keyHolder[type=service] > key {

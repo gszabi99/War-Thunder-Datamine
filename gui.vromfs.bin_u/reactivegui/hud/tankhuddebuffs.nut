@@ -1,7 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { PI, cos, sin, roundToDigits } = require("%sqstd/math.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
 let { dmgIndicatorWidth } = require("%rGui/hud/tankDmgIndicatorState.nut")
 let { userOptDamageIndicatorSize } = require("%rGui/options/options.nut")
 let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
@@ -28,12 +27,12 @@ let textShadowParams = {
 }
 
 let fontParams = {
-  [-2] = { font = fontsState.get("tiny"), fontSize = shHud(1) },
-  [-1] = { font = fontsState.get("tiny") },
-  [0] = { font = fontsState.get("small") },
-  [1] = { font = fontsState.get("small") },
-  [2] = { font = fontsState.get("normal") },
-  small = { font = fontsState.get("small") }
+  [-2] = { font = Fonts.very_tiny_text_hud, fontSize = shHud(1) },
+  [-1] = { font = Fonts.very_tiny_text_hud },
+  [0] = { font = Fonts.tiny_text_hud },
+  [1] = { font = Fonts.tiny_text_hud },
+  [2] = { font = Fonts.small_text_hud },
+  small = { font = Fonts.tiny_text_hud }
 }
 
 let fontParamsByScale = Computed(@() fontParams?[userOptDamageIndicatorSize.get()] ?? fontParams.small)
@@ -182,7 +181,7 @@ let mkTooltipText = @(text, ovr = {}) {
   maxWidth = sw(33)
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  font = fontsState.get("small")
+  font = fontParams.small.font
   text
 }.__update(ovr)
 
