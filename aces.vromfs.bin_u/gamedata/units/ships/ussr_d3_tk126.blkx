@@ -40,11 +40,8 @@
   "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "canReloadNonGuns": true,
   "perfectRangefinder": true,
+  "supportsCombinedPriSecTriggers": true,
   "debrisPreset": "debris_preset_boat",
-  "spawn_count": {
-    "numSpawnsPerBattleArcade": 3,
-    "numSpawnsPerBattleHistorical": 3
-  },
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1462,8 +1459,8 @@
       "Empty": 21200.0,
       "momentOfInertia": [
         7.0,
-        25.0,
-        15.0
+        23.0,
+        14.0
       ],
       "CenterOfGravity": [
         -2.45,
@@ -2063,7 +2060,7 @@
         }
       },
       {
-        "trigger": "gunner1",
+        "trigger": "gunner2",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
@@ -2318,19 +2315,19 @@
             "isFireBurnMark": false
           },
           {
-            "name": "water_explosion_small",
+            "name": "underwater_explosion_sub",
             "emitter": "emtr_fire_ammo_01"
           },
           {
-            "name": "water_explosion_small",
+            "name": "underwater_explosion_sub",
             "emitter": "emtr_fire_ammo_02"
           },
           {
-            "name": "water_explosion_small",
+            "name": "underwater_explosion_sub",
             "emitter": "emtr_fire_ammo_03"
           },
           {
-            "name": "water_explosion_small",
+            "name": "underwater_explosion_sub",
             "emitter": "emtr_fire_ammo_04"
           }
         ]
