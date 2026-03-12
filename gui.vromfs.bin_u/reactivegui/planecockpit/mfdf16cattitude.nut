@@ -522,7 +522,7 @@ function pitchHorizon(width, height){
         color = mfdWhite
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * mfdLineWidth
-        commands = [[VECTOR_LINE, -500, horizonY.get() * 100.0 - 50.0, 500, horizonY.get() * 100.0 - 50.0]]
+        commands = [[VECTOR_LINE, -500, horizonY.get() * 100.0, 500, horizonY.get() * 100.0]]
       }
 
     ]
