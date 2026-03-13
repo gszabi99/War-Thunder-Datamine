@@ -1,21 +1,43 @@
 crewUnitSpecUpgradeTooltip {
+  width:t='680@sf/@pf'
+  bgcolor:t='@weaponCardBackgroundColor'
+  padding:t='@frameMediumPadding'
   flow:t='vertical'
-  width:t='0.7*@sf'
 
-  textareaNoTab {
+  loadingHint {
     width:t='pw'
-    padding:t='1@tooltipPadding'
-    text:t='<<tooltipText>>'
-  }
-
-  <<#tinyTooltipText>>
-  textareaNoTab {
-    width:t='pw'
-    padding:t='1@tooltipPadding'
+    behaviour:t='bhvHint'
+    isWrapInRowAllowed:t='yes'
     smallFont:t='yes'
-    text:t='<<tinyTooltipText>>'
+    flow-align:t='left'
+    value:t='<<tooltipText>>'
+    isCommonHint:t='yes'
   }
-  <</tinyTooltipText>>
+
+  <<#bonusText>>
+  loadingHint {
+    width:t='pw'
+    smallFont:t='yes'
+    behaviour:t='bhvHint'
+    isWrapInRowAllowed:t='yes'
+    flow-align:t='left'
+    value:t='<<bonusText>>'
+    isCommonHint:t='yes'
+  }
+  <</bonusText>>
+
+  <<#notesText>>
+  loadingHint {
+    width:t='pw'
+    margin-top:t='1@blockInterval'
+    smallFont:t='yes'
+    behaviour:t='bhvHint'
+    isWrapInRowAllowed:t='yes'
+    flow-align:t='left'
+    value:t='<<notesText>>'
+    isCommonHint:t='yes'
+  }
+  <</notesText>>
 
   <<#hasExpUpgrade>>
   tdiv {

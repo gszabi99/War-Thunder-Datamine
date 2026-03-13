@@ -86,6 +86,8 @@ function fitSkillParamsTooltipWidth(infoWnd) {
 addTooltipTypes({
   SKILL_CATEGORY = { 
     isModalTooltip = true
+    modalOffsetX = "-10@sf/@pf"
+    modalOffsetY = "20@sf/@pf"
     isCustomTooltipFill = true
     getTooltipId = function(categoryName, unitName = "", _p2 = null, _p3 = null) {
       return this._buildId(categoryName, { unitName = unitName })
@@ -152,6 +154,9 @@ addTooltipTypes({
   CREW_SKILL_MODAL = { 
     isModalTooltip = true
     isCustomTooltipFill = true
+    modalPreferredSide = "left"
+    modalOffsetX = "-10@sf/@pf"
+    modalOffsetY = "-50@sf/@pf"
     getTooltipId = function(memberName, skillName = "", unitName = "", _p3 = null) {
       return this._buildId(memberName, { skillName, unitName })
     }

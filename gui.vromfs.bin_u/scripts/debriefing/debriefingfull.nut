@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import  get_player_army_for_hud, get_local_player_country, get_race_winners_count, stat_get_exp
+from "%scripts/dagui_natives.nut" import  get_local_player_country, get_race_winners_count, stat_get_exp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 from "%scripts/teams.nut" import g_team
@@ -27,7 +27,8 @@ let { is_benchmark_game_mode, get_game_mode, get_game_type, get_mp_local_team,
 } = require("mission")
 let { MISSION_STATUS_SUCCESS, get_mission_difficulty_int, stat_get_benchmark,
   get_race_best_lap_time, get_race_lap_times, get_player_score_for_exp_events,
-  get_mission_restore_type, get_mp_tbl_teams, get_mission_status } = require("guiMission")
+  get_player_army_for_hud, get_mission_restore_type, get_mp_tbl_teams, get_mission_status
+} = require("guiMission")
 let { dynamicApplyStatus } = require("dynamicMission")
 let { capitalize } = require("%sqstd/string.nut")
 let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")

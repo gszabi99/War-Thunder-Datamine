@@ -89,8 +89,12 @@ let platformDependentOpts = {
   vsync = true
 }
 
-let initialGfxApi = blkOptFromPath(get_config_name())?.video.driver ?? "auto"
+const fpsUnlimitedVal = 0
+const fpsUnlimitedTxt = "unlimited"
+const fpsMenuUnlimTxt = "off"
 
+let initialGfxApi = blkOptFromPath(get_config_name())?.video.driver ?? "auto"
+let fpsLimits = [30, 50, 60, 85, 100, 120, 144, 165, 180, 240, fpsUnlimitedVal]
 
 local mUiStruct = [
   {
@@ -587,14 +591,9 @@ function getFxDistortionAvailable() {
 }
 
 function getMenuFpsLimiterValues(fpsLimitValue) {
-  if (fpsLimitValue == "30")
-    return [ "off" ]
-  if (fpsLimitValue == "60")
-    return [ "30", "off" ]
-  else if (fpsLimitValue == "120")
-    return [ "30", "60", "off" ]
-  else
-    return [ "30", "60", "120", "off" ]
+  let idx = fpsLimits.findindex(@(v) fpsLimitValue == fpsUnlimitedTxt
+    ? v == fpsUnlimitedVal : fpsLimitValue == v.tostring())
+  return idx == null ? [fpsMenuUnlimTxt] : fpsLimits.slice(0, idx).append(fpsMenuUnlimTxt)
 }
 
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
@@ -958,7 +957,10 @@ mShared = {
   }
 
   fpsLimiterClick = function() {
-    enableGuiOption("menuFpsLimiter", getGuiValue("fpsLimiter") != "30")
+    let val = getGuiValue("fpsLimiter")
+    let idx = fpsLimits.findindex(@(v) val == fpsUnlimitedTxt
+      ? v == fpsUnlimitedVal : val == v.tostring()) ?? 0
+    enableGuiOption("menuFpsLimiter", idx > 0)
     updateOption("menuFpsLimiter")
   }
 
@@ -1288,46 +1290,32 @@ mSettings = {
     enabled = @() getGuiValue("mode", "fullscreen") != "windowed"
     isVisible = @() (get_available_monitors()?.list ?? []).len() > 2
   }
-  fpsLimiter = { widgetType = "options_bar" def = "unlimited" blk = "video/fpsLimit" restart = false
+  fpsLimiter = {
+    widgetType = "list" def = fpsUnlimitedTxt blk = "video/fpsLimit" restart = false
     init = function(_blk, desc) {
-        desc.values <- ["30", "60", "120", "240", "unlimited"]
+      desc.values <- fpsLimits.map(@(v) v != fpsUnlimitedVal ? v.tostring() : fpsUnlimitedTxt)
     }
-    getValueFromConfig = function(blk, desc) {
-      return getBlkValueByPath(blk, desc.blk, 0) 
-    }
+    getValueFromConfig = @(blk, desc) getBlkValueByPath(blk, desc.blk, fpsUnlimitedVal)
     setGuiValueToConfig = function(blk, desc, val) {
-      let fps = (val == "30") ? 30 : (val == "60") ? 60 : (val == "120") ? 120 : (val == "240") ? 240 : 0
-      setBlkValueByPath(blk, desc.blk, fps)
+      setBlkValueByPath(blk, desc.blk, to_integer_safe(val, fpsUnlimitedVal, false))
     }
-    configValueToGuiValue = function(val) {
-      if (val < 30)
-        return "unlimited"
-      let strVal = val.tostring()
-      return strVal
-    }
+    configValueToGuiValue = @(val) val == fpsUnlimitedVal ? fpsUnlimitedTxt : val.tostring()
     onChanged = "fpsLimiterClick"
     enabled = @() getGuiValue("vsync") == "vsync_off"
   }
-  menuFpsLimiter = { widgetType = "options_bar" def = "unlimited" blk = "video/menuFpsLimit" restart = false
+  menuFpsLimiter = {
+    widgetType = "list" def = fpsMenuUnlimTxt blk = "video/menuFpsLimit" restart = false
     init = function(_blk, desc) {
       desc.values <- getMenuFpsLimiterValues(getGuiValue("fpsLimiter"))
+        .map(@(v) v != fpsUnlimitedVal ? v.tostring() : fpsMenuUnlimTxt)
     }
-    getValueFromConfig = function(blk, desc) {
-      return getBlkValueByPath(blk, desc.blk, 0) 
-    }
+    getValueFromConfig = @(blk, desc) getBlkValueByPath(blk, desc.blk, fpsUnlimitedVal)
     setGuiValueToConfig = function(blk, desc, val) {
-      let fps = (val == "30") ? 30 : (val == "60") ? 60 : (val == "120") ? 120 : (val == "240") ? 240 : 0
-      setBlkValueByPath(blk, desc.blk, fps)
+      setBlkValueByPath(blk, desc.blk, to_integer_safe(val, fpsUnlimitedVal, false))
     }
-    configValueToGuiValue = function(val) {
-      if (val < 30)
-        return "off"
-      let strVal = val.tostring()
-      return strVal
-    }
+    configValueToGuiValue = @(val) val == fpsUnlimitedVal ? fpsMenuUnlimTxt : val.tostring()
     enabled = @() getGuiValue("vsync") == "vsync_off"
   }
-
   vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = false
     getValueFromConfig = function(blk, _desc) {
       let vsync = getBlkValueByPath(blk, "video/vsync", false)

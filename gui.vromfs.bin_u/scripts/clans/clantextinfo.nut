@@ -14,15 +14,15 @@ let DataBlock  = require("DataBlock")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { check_ugc_privilege } = require("%scripts/gdk/permissions.nut")
 
+let getConditionTypeText = @(conditionType) conditionType == "or"
+  ? loc("clan/rankReqInfoCondType_or")
+  : loc("clan/rankReqInfoCondType_and")
+
 function getClanRequirementsText(membershipRequirements) {
   if (!membershipRequirements)
     return ""
 
   let rawRanksCond = membershipRequirements.getBlockByName("ranks") || DataBlock();
-  let ranksConditionTypeText = (rawRanksCond?.type == "or")
-    ? loc("clan/rankReqInfoCondType_or")
-    : loc("clan/rankReqInfoCondType_and")
-
   let ranksReqTextArray = []
   foreach (unitType in unitTypes.types) {
     let req = rawRanksCond.getBlockByName($"rank_{unitType.name}")
@@ -37,12 +37,14 @@ function getClanRequirementsText(membershipRequirements) {
 
   local ranksReqText = ""
   if (ranksReqTextArray.len()) {
-    ranksReqText = $" {ranksConditionTypeText } ".join(ranksReqTextArray, true)
+    let ranksConditionTypeText = getConditionTypeText(rawRanksCond?.type)
+    ranksReqText = $" {ranksConditionTypeText} ".join(ranksReqTextArray, true)
     ranksReqText = "".concat(loc("clan/rankReqInfoHead"), loc("ui/colon"), ranksReqText)
   }
 
   local battlesReqText = ""
   local haveBattlesReq = false
+  let commonConditionTypeText = getConditionTypeText(membershipRequirements?.type)
   foreach (diff in g_difficulty.types)
     if (diff.egdCode != EGD_NONE) {
       let modeName = diff.getEgdName(false) 
@@ -53,7 +55,7 @@ function getClanRequirementsText(membershipRequirements) {
           if (!haveBattlesReq)
             battlesReqText = loc("clan/battlesReqInfoHead");
           else
-            battlesReqText = "".concat(battlesReqText, " ", ranksConditionTypeText)
+            battlesReqText = "".concat(battlesReqText, " ", commonConditionTypeText)
 
           haveBattlesReq = true;
           battlesReqText = "".concat( battlesReqText, " ", loc($"clan/battlesReqInfoMode_{modeName}"), " ",

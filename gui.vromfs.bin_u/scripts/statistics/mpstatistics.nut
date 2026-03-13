@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
+from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
@@ -23,7 +23,7 @@ let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadI
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode, get_game_type, GET_MPLAYERS_LIST } = require("mission")
-let { get_mission_difficulty_int, get_mp_tbl_teams } = require("guiMission")
+let { get_mission_difficulty_int, get_mp_tbl_teams, get_player_army_for_hud } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 } = require("%scripts/options/optionsExtNames.nut")

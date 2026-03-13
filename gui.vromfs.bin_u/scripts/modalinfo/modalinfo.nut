@@ -3,7 +3,6 @@ from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isActionsListOpen } = require("%scripts/actionsList/actionsListState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
@@ -13,7 +12,6 @@ const MODAL_INFO_HOLDER_PATH = "%gui/modalInfo/modalInfoHolder.blk"
 let watchedObjects = []
 local timer = null
 local onTimerTick = null
-let lastCursorPos = { x = -1, y = -1 }
 local lastHolder = null
 
 const HOLD_DELAY = 700
@@ -132,20 +130,31 @@ function getObjectBounds(obj) {
   }
 }
 
-function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds) {
+function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds, preferredSide, offsetX, offsetY) {
   let overlapDelta = to_pixels("1@blockInterval")
   let infosPlaceBounds = createInfoPlaceBounds()
-  let infoWndPos = [0, 0]
 
-  if (initiatorObjBounds.right + modalInfoObjBounds.width < infosPlaceBounds.right)
-    infoWndPos[0] = initiatorObjBounds.right - overlapDelta
-  else
-    infoWndPos[0] = max(infosPlaceBounds.left, initiatorObjBounds.left - modalInfoObjBounds.width + overlapDelta)
+  let posRight = initiatorObjBounds.right - overlapDelta
+  let posLeft = initiatorObjBounds.left - modalInfoObjBounds.width + overlapDelta
+  let isFitsRight = posRight + modalInfoObjBounds.width  < infosPlaceBounds.right
+  let isFitsLeft = posLeft > infosPlaceBounds.left
 
-  infoWndPos[1] = initiatorObjBounds.top
-  if (infoWndPos[1] + modalInfoObjBounds.height > infosPlaceBounds.bottom) {
-    infoWndPos[1] = max(infosPlaceBounds.top, infosPlaceBounds.bottom - modalInfoObjBounds.height)
-  }
+  let posX = preferredSide == "left"
+    ? isFitsLeft ? posLeft : max(infosPlaceBounds.left, posRight)
+    : isFitsRight ? posRight : max(infosPlaceBounds.left, posLeft)
+
+  let isOverflowBottom = initiatorObjBounds.top + modalInfoObjBounds.height > infosPlaceBounds.bottom
+  let posY = !isOverflowBottom
+    ? initiatorObjBounds.top
+    : max(infosPlaceBounds.top, infosPlaceBounds.bottom - modalInfoObjBounds.height)
+
+  let maxX = max(infosPlaceBounds.left, infosPlaceBounds.right - modalInfoObjBounds.width)
+  let maxY = max(infosPlaceBounds.top, infosPlaceBounds.bottom - modalInfoObjBounds.height)
+  let infoWndPos = [
+    clamp(posX + offsetX, infosPlaceBounds.left, maxX)
+    clamp(posY + offsetY, infosPlaceBounds.top, maxY)
+  ]
+
   modalInfoObjBounds.update(infoWndPos[0], infoWndPos[1])
   return ",".join(infoWndPos)
 }
@@ -224,14 +233,10 @@ onTimerTick = function() {
   }
 
   let cursorPos = getCursorPos()
-  if (isEqual(cursorPos, lastCursorPos)) {
-    isInAct = false
-    return
-  }
   isInAct = true
-  lastCursorPos.__update(cursorPos)
-  let { infoWnd, infoWndHolder, initiatorBounds, infoWndBounds } = watchedObjects[watchedObjects.len() - 1]
-  if (!isCursorInBounds([initiatorBounds, infoWndBounds], cursorPos)) {
+
+  let { infoWnd, infoWndHolder, initiatorObj, infoWndBounds } = watchedObjects[watchedObjects.len() - 1]
+  if (!isCursorInBounds([getObjectBounds(initiatorObj), infoWndBounds], cursorPos)) {
     watchedObjects.pop()
     if (infoWnd?.isValid()) {
       broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })
@@ -257,7 +262,9 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
 
   let initiatorBounds = getObjectBounds(initiatorObj)
   let infoWndBounds = getObjectBounds(infoWnd)
-  infoWnd["pos"] = getInfoWndPosition(initiatorBounds, infoWndBounds)
+  let offsetX = tooltipType.modalOffsetX != "" ? to_pixels(tooltipType.modalOffsetX) : 0
+  let offsetY = tooltipType.modalOffsetY != "" ? to_pixels(tooltipType.modalOffsetY) : 0
+  infoWnd["pos"] = getInfoWndPosition(initiatorBounds, infoWndBounds, tooltipType.modalPreferredSide, offsetX, offsetY)
 
   local fakeInitiator = null
   if (infoWndHolder != null) {
@@ -270,7 +277,7 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
     id
     infoWnd
     infoWndHolder
-    initiatorBounds
+    initiatorObj
     infoWndBounds
     fakeInitiator
   })
@@ -285,7 +292,7 @@ function closeModalInfo(isDelayed = false) {
     return
   let bounds = watchedObjects.map(@(t) t.infoWndBounds)
   if (isDelayed)
-    bounds.extend(watchedObjects.map(@(t) t.initiatorBounds))
+    bounds.extend(watchedObjects.map(@(t) getObjectBounds(t.initiatorObj)))
 
   if (isCursorInBounds(bounds, getCursorPos()))
     return

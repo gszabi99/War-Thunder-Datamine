@@ -407,7 +407,7 @@ function getUnitSystemsMarkup(unitName, unitType) {
   let systems = getUnitSystems(unitName, unitType).map(function(data, idx, arr) {
     let { name, ttype = null, params = null, count = 1 } = data
     let isNotLastItem = idx != arr.len() - 1
-    let itemName = count == 1 ? loc(name) : $"{loc(name)} - {count} {loc("measureUnits/pcs")}"
+    let itemName = count == 1 ? loc(name) : $"{count}x {loc(name)}"
     return {
       itemName = isNotLastItem ? $"{itemName}, " : itemName
       tooltipId = getTooltipType(ttype).getTooltipId(unitName, params)

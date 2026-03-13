@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud, get_mp_kick_countdown
+from "%scripts/dagui_natives.nut" import  get_mp_kick_countdown
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import locOrStrip
 
@@ -22,7 +22,7 @@ let { updateTopSquadScore, isShowSquad,
   getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode, get_mp_local_team } = require("mission")
-let { get_mission_difficulty_int, get_mp_session_info } = require("guiMission")
+let { get_mission_difficulty_int, get_mp_session_info, get_player_army_for_hud } = require("guiMission")
 let { stripTags } = require("%sqstd/string.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")

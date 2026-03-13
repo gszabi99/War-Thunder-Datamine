@@ -895,7 +895,10 @@ dmViewer = {
   onEventGameLocalizationChanged = @(_p) this.resetXrayCache()
   onEventModificationChanged = @(_p) this.resetXrayCache()
   onEventMainMenuReturn = @(_p) this.restoreSavedViewMode()
-  onEventSignOut = @(_p) dmViewerStorage.viewModeForRestore = null
+  function onEventSignOut(_p) {
+    dmViewerStorage.viewModeForRestore = null
+    this.unit = null
+  }
 }
 
 subscribe_handler(dmViewer, g_listener_priority.DEFAULT_HANDLER)

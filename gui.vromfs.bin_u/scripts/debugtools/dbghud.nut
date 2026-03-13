@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
@@ -6,7 +5,7 @@ let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { frnd, rnd } = require("dagor.random")
 let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_DEATH_REASON } = require("hudMessages")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
+let { GO_WIN, MISSION_CAPTURING_ZONE, get_player_army_for_hud } = require("guiMission")
 let { register_command } = require("console")
 let { add_streak_message, getLocForStreak } = require("%scripts/streaks.nut")
 let { get_local_mplayer } = require("mission")

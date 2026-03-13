@@ -7,8 +7,7 @@ tr {
         <<#count>>
         tdiv {
           width:t='@weaponsCountColWidth'
-          textareaNoTab { text:t='<<count>>' }
-          textareaNoTab { text:t='#measureUnits/pcs' }
+          textareaNoTab { text:t='<<count>>x' }
           <<#hiddenCount>>display:t='hide'<</hiddenCount>>
         }
         <</count>>

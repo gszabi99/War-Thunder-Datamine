@@ -16,6 +16,7 @@ let { getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep,
 } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const MIN_EXP_POINTS = 5
 const MAX_EXPERT_EXP_POINTS = 3
@@ -248,17 +249,21 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     local newValue = crewSkillStepToValue(item, newStep)
     let value = getCrewSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
     let maxValue = this.getSkillMaxAvailable(item)
-    if (newValue < value)
+    local needUpdateIncButton = false
+    if (newValue < value) {
       newValue = value
+      needUpdateIncButton = true
+    }
     if (newValue > maxValue) {
       newValue = maxValue
+      needUpdateIncButton = true
       if (item.newValue == maxValue)
         this.askBuySkills()
     }
     if (newValue == item.newValue) {
       this.guiScene.performDelayed(this, function() {
         if (this.isValid())
-          this.updateSkills(row, false)
+          this.updateSkills(row, needUpdateIncButton)
       })
       return
     }
@@ -343,6 +348,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       even = idx % 2 == 0
       skillName = item.name
       memberName = this.curPage.id
+      isDelayedTooltip = showConsoleButtons.get()
       skillTooltipId = getTooltipType("CREW_SKILL_MODAL")
         .getTooltipId(this.curPage.id, item.name, this.unit?.name ?? "")
       progressMax = getCrewTotalSteps(item)

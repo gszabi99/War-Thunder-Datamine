@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, get_player_army_for_hud, is_myself_grand_moderator, is_myself_moderator
+from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, is_myself_grand_moderator, is_myself_moderator
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 let { object_to_json_string } = require("json")
@@ -7,6 +7,7 @@ let { format } = require("string")
 let { stripTags, cutPrefix } = require("%sqstd/string.nut")
 let { rnd } = require("dagor.random")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { get_player_army_for_hud } = require("guiMission")
 let { is_mplayer_host, is_mplayer_peer } = require("multiplayer")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { fabs } = require("math")

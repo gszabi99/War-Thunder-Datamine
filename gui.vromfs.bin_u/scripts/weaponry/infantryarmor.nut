@@ -170,7 +170,17 @@ function getAppliedArmorForUnit(unit) {
   return res
 }
 
+function getArmorIconViewData(unit) {
+  let armorData = getAppliedArmorForUnit(unit)
+  return {
+    weaponName = armorData?.name ?? ""
+    itemImg = armorData?.image ?? ""
+    hasMargin = false
+  }
+}
+
 return {
   getUnitArmorData
   getAppliedArmorForUnit
+  getArmorIconViewData
 }

@@ -241,8 +241,16 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
     this.close()
   }
 
-  function onActionsListDeactivate(_obj) {
+  function onActionsListDeactivate(obj) {
     this.params?.onDeactivateCb()
+
+    let actionsList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
+    if (actionsList == null || !actionsList.scene?.isValid()) {
+      isActionsListOpen.set(false)
+      return
+    }
+    if (isActionsListOpen.get() && obj.isEqual(actionsList.scene))
+      actionsList.close()
   }
 
   static function removeActionsListFromObject(obj, fadeout = false) {

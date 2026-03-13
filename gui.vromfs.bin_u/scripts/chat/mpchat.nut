@@ -1,10 +1,11 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_menu_state, is_cursor_visible_in_gui
+from "%scripts/dagui_natives.nut" import is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 from "hudState" import is_hud_visible
 from "gameplayBinding" import getIsInFlightMenu, isInFlight
 
 let { isPC } = require("%sqstd/platform.nut")
+let { get_player_army_for_hud } = require("guiMission")
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")

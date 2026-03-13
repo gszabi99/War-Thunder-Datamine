@@ -94,8 +94,7 @@ skillParametersTooltip {
       <</isEven>>
       // Parameter description
       td {
-        width:t='270@sf/@pf'
-        padding-right:t='20@sf/@pf'
+        width:t='290@sf/@pf'
         textarea {
           position:t='relative'
           pos:t='0, 0.5(ph-h)'

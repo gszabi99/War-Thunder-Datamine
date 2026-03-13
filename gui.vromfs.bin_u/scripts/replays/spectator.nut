@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud, mpstat_get_sort_func, is_spectator_rotation_forced
+from "%scripts/dagui_natives.nut" import mpstat_get_sort_func, is_spectator_rotation_forced
 from "app" import isGamePaused
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
@@ -75,7 +75,7 @@ let { initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
 let { resetSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getBackFromReplaysFn, setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
 let DataBlock = require("DataBlock")
-let { get_current_mission_desc } = require("guiMission")
+let { get_current_mission_desc, get_player_army_for_hud } = require("guiMission")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 
 

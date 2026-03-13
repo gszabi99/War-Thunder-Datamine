@@ -372,7 +372,6 @@ return freeze({
   get_option_zoom_turret = r["get_option_zoom_turret"]
   get_pds_code_limit = r["get_pds_code_limit"]
   get_pds_code_suggestion = r["get_pds_code_suggestion"]
-  get_player_army_for_hud = r["get_player_army_for_hud"]
   get_player_external_ids = r["get_player_external_ids"]
   get_player_multipliers = r["get_player_multipliers"]
   get_player_public_stats = r["get_player_public_stats"]

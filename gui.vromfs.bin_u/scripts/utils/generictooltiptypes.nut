@@ -41,6 +41,9 @@ tooltipTypes.template <- {
   }
   onClose = @(_obj) null
   isModalTooltip = false 
+  modalPreferredSide = "right" 
+  modalOffsetX = "" 
+  modalOffsetY = ""
   isEmptyTooltipObjClass = false
 }
 

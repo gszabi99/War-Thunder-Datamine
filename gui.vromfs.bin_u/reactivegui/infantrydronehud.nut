@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { isPlayingReplay, isSpectatorMode, unitType, isUnitAlive } = require("%rGui/hudState.nut")
 let { rw, rh } = require("%rGui/style/screenState.nut")
 let killMarks = require("%rGui/hud/humanSquad/killMarks.nut")
-let { IsMainHudVisible, isParamTableActivated, HudParamColor, HasFPVCamera
+let { IsMainHudVisible, isParamTableActivated, HudParamColor, HasFPVCamera, IsSightHudVisible
 } = require("%rGui/airState.nut")
 let { xrayIndicator } = require("%rGui/airHudLeftPanel.nut")
 let { infantryHudLeftPanel } = require("%rGui/infantryHud.nut")
@@ -11,6 +11,8 @@ let { aircraftParamsTableView } = require("%rGui/aircraftHud.nut")
 let { helicopterParamsTableView } = require("%rGui/helicopterHud.nut")
 let { isHumanAirDrone } = require("%rGui/hudUnitType.nut")
 let { createScriptComponent } = require("%rGui/utils/builders.nut")
+let { aircraftTargetingPodSight } = require("%rGui/targetingPodSight.nut")
+let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
 
 function mkInfantryDroneMainHud() {
   let watch = [IsMainHudVisible, isParamTableActivated, unitType]
@@ -44,11 +46,14 @@ let xRayIndicatorPanel = {
 }
 
 return @() {
-  watch = [rw, rh, HasFPVCamera, isUnitAlive]
+  watch = [rw, rh, HasFPVCamera, isUnitAlive, IsSightHudVisible]
   size = [rw.get(), rh.get()]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  children = [
+  children = IsSightHudVisible.get() ? [
+    aircraftTargetingPodSight(sw(100), sh(100))
+    actionBarTopPanel
+  ] : [
     mkInfantryDroneMainHud()
     killMarks
     infantryHudLeftPanel

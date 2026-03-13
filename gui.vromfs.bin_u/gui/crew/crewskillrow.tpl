@@ -47,6 +47,7 @@ tr {
         on_tooltip_open:t='onGenericTooltipOpen'
         on_tooltip_close:t='onTooltipObjClose'
         display:t='hide'
+        noPadding:t='yes'
       }
       tdiv {
         flow:t='horizontal'

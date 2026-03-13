@@ -32,6 +32,7 @@ let { EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getModsListByType } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
+let { getArmorIconViewData } = require("%scripts/weaponry/infantryArmor.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -220,8 +221,21 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       else {
         let ediff = params?.curEdiff ?? getCurrentGameModeEdiff()
         let { compositionIcons, deleteButtonCanShow } = getPresetCompositionViewParams(unit, visualItem, ediff)
-        if (compositionIcons.len())
-          res.presetCompositionIcon = { compositionIcons }
+        let compositionIconsLen = compositionIcons.len()
+        if (compositionIconsLen) {
+          let maxSoldiersActive = params?.maxSoldiersActive
+          
+          if (maxSoldiersActive == 1) {
+            let armorIconData = getArmorIconViewData(unit)
+            let weaponsAndArmorIcons = compositionIcons.slice(0, 1)
+            weaponsAndArmorIcons[0].icons.append(armorIconData)
+            weaponsAndArmorIcons[0].icons.each(@(icon) icon.hasMargin = false)
+            weaponsAndArmorIcons[0].singleModeIcon <- true
+            res.presetCompositionIcon = { compositionIcons = weaponsAndArmorIcons }
+          }
+          else
+            res.presetCompositionIcon = { compositionIcons }
+        }
         if ((params?.canModifyCustomPrests ?? true) && item.type != weaponsItem.bundle)
           res.deleteButtonCanShow = deleteButtonCanShow
       }

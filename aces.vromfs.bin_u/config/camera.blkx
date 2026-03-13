@@ -997,13 +997,18 @@
     "condition": {
       "and": {
         "isFlightModel": {},
-        "or": {
-          "hasOpticTurret": {},
-          "hasOpticATGM": {}
-        },
-        "not": {
-          "hasFPVCamera": {}
-        }
+        "or": [
+          {
+            "hasOpticTurret": {},
+            "hasOpticATGM": {}
+          },
+          {
+            "not": {
+              "hasFPVCamera": {}
+            },
+            "hasFPVTargetCamera": {}
+          }
+        ]
       }
     }
   },

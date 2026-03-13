@@ -82,24 +82,31 @@ function updateSpareType(spare) {
     spare.type <- weaponsItem.spare
 }
 
-function getPresetWeaponsDescArrayForHuman(unit, item, ediff) {
+function getPresetWeaponsDescArrayForHuman(unit, item, ediff, maxSoldiersActive) {
   let presetsWeapons = []
   let { compositionIcons } = getPresetCompositionViewParams(unit, item, ediff)
   if (!compositionIcons.len())
     return presetsWeapons
 
   foreach(idx, soldierIcons in compositionIcons) {
-    let presetName = "".concat(loc("infantry/squad/member"), $"{idx + 1}", soldierIcons.disabledSoldier
-      ? loc("ui/parentheses/space", {
-          text = " ".concat(loc("infantry/squad/member_inactive"), loc("ui/mdash"), loc("infantry/squad/member_inactive_advice"))
-        })
-      : "")
+    let isSoldierInactiveInEvent = (maxSoldiersActive != null) && (idx + 1 > maxSoldiersActive)
+    let isSoldierDisabled = soldierIcons.disabledSoldier
+
+    local presetName = "".concat(loc("infantry/squad/member"), $"{idx + 1}")
+    let inactiveReason = isSoldierInactiveInEvent ? loc("infantry/squad/member_inactive_for_event")
+      : isSoldierDisabled ? " ".concat(loc("ui/mdash"), loc("infantry/squad/member_inactive_advice"))
+      : ""
+    if (inactiveReason != "")
+      presetName = "".concat(presetName, loc("ui/parentheses/space", {
+        text = " ".concat(loc("infantry/squad/member_inactive"), inactiveReason)
+      }))
+
     let presetParamsWithImg = []
     foreach (weapon in soldierIcons.icons) {
       presetParamsWithImg.append({
         weaponNameStr = loc($"weapons/{weapon.weaponName}")
         itemImg = weapon.itemImg
-        isDisabled = soldierIcons.disabledSoldier
+        isDisabled = isSoldierInactiveInEvent || isSoldierDisabled
       })
     }
     presetsWeapons.append({ presetName, presetParamsWithImg, hasPresetParamsWithImg = true })
@@ -525,8 +532,8 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     if (!params?.needDescInArrayForm)
       desc = getWeaponInfoText(unit, makeWeaponInfoData(unit, weaponInfoParams))
     else if (unit.isHuman()) {
-      let ediff = params?.curEdiff ?? getCurrentGameModeEdiff()
-      res.presetsWeapons <- getPresetWeaponsDescArrayForHuman(unit, item, ediff)
+      let { curEdiff = getCurrentGameModeEdiff(), maxSoldiersActive = null } = params
+      res.presetsWeapons <- getPresetWeaponsDescArrayForHuman(unit, item, curEdiff, maxSoldiersActive)
       res.presetCompositionHint <- loc("weaponry/presetCompositionHint")
     }
     else {

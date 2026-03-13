@@ -22,7 +22,8 @@ let { isUnitDefault, canResearchUnit, isUnitInResearch,
 let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
-let { getWeaponInfoText, makeWeaponInfoData, getWeaponInfoMarkup } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponInfoText, makeWeaponInfoData, getWeaponInfoMarkup,
+  getAdditionalWeaponInfoMarkup } = require("%scripts/weaponry/weaponryDescription.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getActiveBoostersArray, getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
@@ -69,7 +70,7 @@ let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace
 let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getTemplateCompValue } = require("%globalScripts/templates.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, getUnitAdditionWeaponry } = require("%scripts/weaponry/weaponryInfo.nut")
 let { hasUnitSystems, getUnitSystemsMarkup } = require("%scripts/unit/unitSystems.nut")
 let { hasSupportPlane, getUnitSupportPlaneData } = require("%scripts/unit/unitSupportPlane.nut")
 let { getUnitBulletsMarkup } = require("%scripts/unit/unitBullets.nut")
@@ -2580,12 +2581,11 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
 
   local needAdditionalWeaponInfo = !showShortestUnitInfo && unit.isShipOrBoat()
   if (needAdditionalWeaponInfo) {
-    weaponInfoParams.onlyAdditionWeaponry <- true
-    let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
-    needAdditionalWeaponInfo = needAdditionalWeaponInfo && weaponInfoData.resultWeaponBlocks.len() > 0
+    let unitAdditionWeaponsData = getUnitAdditionWeaponry(unit)
+    needAdditionalWeaponInfo = needAdditionalWeaponInfo && unitAdditionWeaponsData.len() > 0
     obj = showObjById("additionalWeaponsInfo", needAdditionalWeaponInfo, holderObj)
     if (needAdditionalWeaponInfo) {
-      let weaponsInfoMarkup = getWeaponInfoMarkup(unit, weaponInfoData, false)
+      let weaponsInfoMarkup = getAdditionalWeaponInfoMarkup(unitAdditionWeaponsData)
       holderObj.getScene().replaceContentFromText(obj, weaponsInfoMarkup, weaponsInfoMarkup.len(), handler)
     }
   }

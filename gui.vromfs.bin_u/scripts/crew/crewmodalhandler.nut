@@ -493,7 +493,8 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       upgradeBlock.findObject("upgrade_button_icon")["background-image"] = $"#ui/gameuiskin#spec_icon2{inactiveIcon}.svg"
     }
 
-    local crewLvlText = nextSpecType.getReqLevelText(this.crew, this.curUnit)
+    let upgradeCost = crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring()
+    local crewLvlText = nextSpecType.getReqLevelText(this.crew, this.curUnit, upgradeCost)
     if (crewLvlText.len() == 0) {
       let specDescriptionPart = isShowExpUpgrade ?
         loc("crew/qualification/specDescriptionPart", {

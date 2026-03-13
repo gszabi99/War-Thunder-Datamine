@@ -1007,26 +1007,43 @@ function getUnitWeaponry(unit, params = WEAPON_TEXT_PARAMS) {
 
 let unitAdditionWeaponryCache = {}
 
+function addUniqPresetWeapons(weapons, presetWeapons) {
+  let presetWeaponsData = {}
+
+  for (local i = 0; i < presetWeapons.len(); i++) {
+    let weapon = presetWeapons[i]
+    let bulletName = getWeaponNameByBlkPath(weapon.blk)
+    let bulletsCount = weapon.bullets
+
+    if (bulletName in weapons)
+      continue
+
+    if (bulletName not in presetWeaponsData)
+      presetWeaponsData[bulletName] <- bulletsCount
+    else
+      presetWeaponsData[bulletName] += bulletsCount
+  }
+  weapons.__update(presetWeaponsData)
+}
+
 function getUnitAdditionWeaponry(unit) {
   let unitName = unit.name
   if (unitAdditionWeaponryCache?[unitName] != null)
     return unitAdditionWeaponryCache[unitName]
 
   if (!unit)
-    return null
+    return {}
 
   let unitBlk = getFullUnitBlk(unitName)
   if (!unitBlk)
-    return null
+    return {}
 
   let presets = getUnitPresets(unitBlk)
   if (presets.len() == 0)
-    return null
+    return {}
 
   let weapons = {}
-
-  presets.each(@(preset) addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, preset, unitName),
-    unit, null, preset?.weaponConfig))
+  presets.each(@(preset) addUniqPresetWeapons(weapons, getPresetWeapons(unitBlk, preset, unitName)))
   unitAdditionWeaponryCache[unitName] <- weapons
   return weapons
 }

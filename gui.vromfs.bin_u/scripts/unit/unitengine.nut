@@ -61,9 +61,9 @@ function getUnitEngineMarkup(unitName) {
     let info = dmViewer.getPartTooltipInfo(null, { name = dmPart, viewMode = DM_VIEWER_XRAY, isAddEngineName = false })
 
     let itemName = " ".join([
+        count > 1 ? $"{count}x " : ""
         manufacturer != "" ? loc($"engine_manufacturer/{manufacturer}") : ""
         model != "" ? loc($"engine_model/{model}") : ""
-        count > 1 ? $" - {count} {loc("measureUnits/pcs")}" : ""
       ], true)
 
     return {

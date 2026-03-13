@@ -698,13 +698,7 @@ let Events = class {
       loadHandler(gui_handlers.EventDescriptionWindow, { event = event })
   }
 
-  
-
-
-
-  function checkEnableOnDebug(event) {
-    return !this.isEventEnableOnDebug(event) || hasFeature("ShowDebugEvents")
-  }
+  canShowByEnableOnDebug = @(event) this.isEventEnableOnDebug(event) || hasFeature("ShowDebugEvents")
 
   function isEventDisplayWide(event) {
     return (event?.displayWide ?? false) && !this.isEventEnableOnDebug(event)
@@ -840,8 +834,7 @@ let Events = class {
   }
 
   function getVisibleEventsList() {
-    return this.getEventsList(EVENT_TYPE.ANY,
-      @(event) (this.checkEnableOnDebug(event) || this.getEventIsVisible(event)))
+    return this.getEventsList(EVENT_TYPE.ANY, this.getEventIsVisible)
   }
 
   function getEventsForEventsWindow() {
@@ -2726,15 +2719,13 @@ let Events = class {
     return false
   }
 
-  function getEventIsVisible(event) {
-    if (this.isEventEnabled(event))
-      return true
-    return event?.visible ?? true
-  }
+  getEventIsVisible = @(event) this.canShowByEnableOnDebug(event)
+    || this.isEventEnabled(event)
+    || (event?.visible ?? true)
 
   isEventVisibleInEventsWindow = @(event) event?.chapter != "competitive"
     && getEventDisplayType(event).showInEventsWindow
-    && (this.checkEnableOnDebug(event) || this.getEventIsVisible(event))
+    && this.getEventIsVisible(event)
   
 
 

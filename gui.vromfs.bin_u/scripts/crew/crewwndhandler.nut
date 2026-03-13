@@ -326,7 +326,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
     let trainCostInstance = crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code)
 
-    local crewReqLevelText = nextSpecType.getReqLevelText(this.crew, this.curUnit)
+    local crewReqLevelText = nextSpecType.getReqLevelText(this.crew, this.curUnit, trainCostInstance.tostring())
     let canUpgradeNow = crewReqLevelText == ""
     upgradeBtnObj.inactiveColor = !canUpgradeNow ? "yes" : "no"
 

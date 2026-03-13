@@ -187,6 +187,8 @@ let tooltipTypes = {
     getTooltipId = function(unitName, weaponName = "", params = null, _p3 = null) {
       let p = validateWeaponryTooltipParams(params)
       p.weaponName <- weaponName
+      if (params?.maxSoldiersActive != null)
+        p.maxSoldiersActive <- params.maxSoldiersActive
       return this._buildId(unitName, p)
     }
     isCustomTooltipFill = true
@@ -215,6 +217,7 @@ let tooltipTypes = {
         weaponsFilterFunc = params?.weaponBlkPath ? (@(path, _blk) path == params.weaponBlkPath) : null
         needDescInArrayForm = true 
         markupFileName = "%gui/weaponry/weaponsPresetTooltip.tpl"
+        maxSoldiersActive = params?.maxSoldiersActive
       }, effect)
 
       return true

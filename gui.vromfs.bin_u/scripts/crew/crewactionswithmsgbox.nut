@@ -9,7 +9,8 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCrewTrainCost, getCrewLevel } = require("%scripts/crew/crew.nut")
-let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSkillsNotAffectedBySpecDesc
+} = require("%scripts/crew/crewSpecType.nut")
 let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
@@ -134,11 +135,14 @@ function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = 
   if (cost.isZero())
     return upgradeUnitSpecImpl(crew, unit, upgradesAmount)
 
+  let notes = getSkillsNotAffectedBySpecDesc(crewUnitType, "commonTextColor")
+  let bonusesText = nextSpecType.getFullBonusesText(crewUnitType, curSpecType.code, notes != "", false)
+  let bonuses = "\n\n".join([bonusesText, notes], true)
   let msgText = warningIfGold(
     "".concat(loc(msgLocId, msgLocParams), "\n\n",
       loc("shop/crewQualifyBonuses", {
         qualification = colorize("userlogColoredText", nextSpecType.getName())
-        bonuses = nextSpecType.getFullBonusesText(crewUnitType, curSpecType.code) }),
+        bonuses }),
       "\n", unitTypeSkillsMsg),
     cost)
   scene_msg_box("purchase_ask", null, msgText,

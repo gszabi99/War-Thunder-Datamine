@@ -10,8 +10,7 @@ let { secondsToString } = require("%scripts/time.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon,
   getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeapons, getLastPrimaryWeapon,
-  getWeaponExtendedInfo, getUnitAdditionWeaponry
-} = require("%scripts/weaponry/weaponryInfo.nut")
+  getWeaponExtendedInfo } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getBulletsSetData, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
 let { reloadCooldownTimeByCaliber } = require("%scripts/weaponry/weaponsParams.nut")
@@ -136,8 +135,7 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
   if (!unit)
     return res
 
-  let weapons = updatedParams?.weapons ??
-    (updatedParams?.onlyAdditionWeaponry ? getUnitAdditionWeaponry(unit) : getUnitWeaponry(unit, updatedParams))
+  let weapons = updatedParams?.weapons ?? getUnitWeaponry(unit, updatedParams)
 
   if (weapons == null)
     return res
@@ -472,7 +470,7 @@ function getFullItemCostText(unit, item, params = null) {
   return ", ".join(res)
 }
 
-function getWeaponInfoMarkup(unit, weaponInfoData, addTooltip = true) {
+function getWeaponInfoMarkup(unit, weaponInfoData) {
   let data = []
 
   if (!unit)
@@ -559,13 +557,35 @@ function getWeaponInfoMarkup(unit, weaponInfoData, addTooltip = true) {
       }
 
       let dmPart = weapon?.dmPart ?? ""
-      if (dmPart != "" && addTooltip) {
+      if (dmPart != "") {
         weaponData.isNotLink = false
         weaponData.tooltipId = getTooltipType("UNIT_DM_TOOLTIP").getTooltipId(unit.name, { unitId = unit.name, dmPart })
       }
       weaponData.hiddenCount <- weaponData.count == 1
       data.append(weaponData)
     }
+  }
+
+  return handyman.renderCached("%gui/unitInfo/weaponsInfoMarkup.tpl",
+    { weapons = data, isTooltipByHold = showConsoleButtons.get() })
+}
+
+function getAdditionalWeaponInfoMarkup(unitAdditionWeaponsData) {
+  let data = []
+
+  foreach(weaponName, bulletsCount in unitAdditionWeaponsData) {
+    let weaponData = {
+      weaponName
+      weaponNameLoc = loc($"weapons/{weaponName}")
+      additional = ""
+      ammo = $"{loc("shop/ammo")}{loc("ui/colon")} {bulletsCount}"
+      count = 1
+      rTime = ""
+      tooltipId = ""
+      isNotLink = true
+      hiddenCount = true
+    }
+    data.append(weaponData)
   }
 
   return handyman.renderCached("%gui/unitInfo/weaponsInfoMarkup.tpl",
@@ -585,4 +605,5 @@ return {
   getFullItemCostText
   makeWeaponInfoData
   getWeaponInfoMarkup
+  getAdditionalWeaponInfoMarkup
 }

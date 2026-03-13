@@ -1159,6 +1159,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
                                          unit = unit
                                          canShowPrice = true
                                          canChangeWeaponry = canChangeWeaponry
+                                         enableLoneFightersMode = this.missionTable?.enableLoneFightersMode
                                        })
 
     this.weaponsSelectorWeak = handler.weakref()

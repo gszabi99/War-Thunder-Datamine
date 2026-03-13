@@ -51,6 +51,8 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   getCurrentEdiff = null
 
+  enableLoneFightersMode = null
+
   function initScreen() {
     this.bulletsManager = UnitBulletsManager(this.unit, { isForcedAvailable = this.isForcedAvailable })
     this.setUnit(this.unit, true)
@@ -75,6 +77,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     isForceHidePlayerInfo = this.isForcedAvailable || this.forceShowDefaultTorpedoes
     canModifyCustomPrests = false
     curEdiff = this.getCurrentEdiff?()
+    maxSoldiersActive = this.enableLoneFightersMode ? 1 : null
   }
 
   getShowSelectorItemParams = @()

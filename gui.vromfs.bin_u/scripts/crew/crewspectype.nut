@@ -44,6 +44,51 @@ function getSpecTypeByCrewAndUnitName(crew, unitName) {
   return getCrewSpecTypeByCode(code)
 }
 
+function findFirstSpecBonusValue(crewUnitType, specMul) {
+  loadCrewSkillsOnce()
+  foreach (page in crewSkillPages) {
+    if (!page.isVisible(crewUnitType))
+      continue
+    foreach (item in page.items)
+      if (item.isVisible(crewUnitType) && item.useSpecializations)
+        return getSkillCrewLevel(item, specMul * getCrewMaxSkillValue(item))
+  }
+  return 0
+}
+
+function getSkillsNotAffectedBySpecDesc(crewUnitType, exceptTextColor = "fadedTextColor") {
+  loadCrewSkillsOnce()
+  let excludedSkills = []
+  foreach (page in crewSkillPages) {
+    if (!page.isVisible(crewUnitType))
+      continue
+    foreach (item in page.items)
+      if (item.isVisible(crewUnitType) && !item.useSpecializations)
+        excludedSkills.append({ pageId = page.id, skillName = item.name })
+  }
+
+  if (excludedSkills.len() == 0)
+    return ""
+
+  let exceptTxt = colorize(exceptTextColor,
+    $"*{loc("crewSkillParameter/except")}{loc("ui/colon")}")
+  let skillsByCategoriesDesc = "\n".join(excludedSkills.map(function(s) {
+    let pageName = colorize("activeTextColor", "".concat(loc($"crew/{s.pageId}"), loc("ui/colon")))
+    let skillName = colorize("commonTextColor", loc($"crew/{s.skillName}"))
+    return "".concat(pageName, skillName)
+  }))
+  return "\n".concat(exceptTxt, skillsByCategoriesDesc)
+}
+
+function formatSpecLabel(specType, cost = null, hasImage = null) {
+  hasImage = hasImage ?? hasFeature("FullScreenCrewWindow")
+  let specImg = hasImage ? "".concat("{{img=", specType.trainedIcon, "}}") : ""
+  let label = cost != null
+    ? "".concat(specType.getName(), loc("ui/parentheses/space", { text = cost }))
+    : specType.getName()
+  return "".concat(specImg, colorize("activeTextColor", label))
+}
+
 crewSpecTypes = {
   types = []
   cache = {
@@ -127,32 +172,22 @@ crewSpecTypes = {
       return 0.01 * addPct
     }
 
-    function getFullBonusesText(crewUnitType, prevSpecTypeCode = -1) {
+    function getFullBonusesText(crewUnitType, prevSpecTypeCode = -1, hasNotes = false, hasQualImage = false) {
       loadCrewSkillsOnce()
 
       if (prevSpecTypeCode < 0)
         prevSpecTypeCode = this.code - 1
       let specMul = this.getMulValue(prevSpecTypeCode)
-      let rowsArray = []
-      foreach (page in crewSkillPages) {
-        if (!page.isVisible(crewUnitType))
-          continue
+      
+      let bonusValue = findFirstSpecBonusValue(crewUnitType, specMul)
+      if (bonusValue == 0)
+        return ""
 
-        let textsArray = []
-        foreach (item in page.items)
-          if (item.isVisible(crewUnitType) && item.useSpecializations) {
-            let skillCrewLevel = getSkillCrewLevel(item, specMul * getCrewMaxSkillValue(item))
-            let skillText =  " ".concat(loc($"crew/{item.name}"), colorize("goodTextColor",$"+{skillCrewLevel}"))
-            textsArray.append(skillText.replace(" ", nbsp))
-          }
-
-        if (!textsArray.len())
-          continue
-
-        rowsArray.append("".concat(colorize("activeTextColor", loc($"crew/{page.id}")),
-          loc("ui/colon"), ", ".join(textsArray, true), loc("ui/dot")))
-      }
-      return "\n".join(rowsArray, true)
+      return loc("crew/qualifyBonuses/qualifyDesc", {
+        wantedQualify = formatSpecLabel(this, null, hasQualImage)
+        bonusValue = colorize("goodTextColor", $"+{bonusValue}")
+        asterisk = hasNotes ? "*" : ""
+      })
     }
 
     function _getReqCrewLevelByCode(unit, upgradeFromCode) {
@@ -185,29 +220,24 @@ crewSpecTypes = {
     }
 
     function getSkillBonusValueForNextLevel() {
-      local qualifyBonusesTotalText = ""
       let nextType = this.getNextType()
       if (nextType == crewSpecTypes.UNKNOWN)
-        return qualifyBonusesTotalText
+        return ""
 
       let bonusValue = this.nextTypeSkillBonusValue
-      let reqSpecLevelImg = "".concat("{{img=", nextType.trainedIcon, "}}")
-      qualifyBonusesTotalText = loc("crew/qualifyBonuses/total", {
-        wantedQualify = "".concat(reqSpecLevelImg, colorize("activeTextColor", nextType.getName()))
-        bonusValue = colorize("goodTextColor", $"{bonusValue}")
+      return loc("crew/qualifyBonuses/total", {
+        wantedQualify = formatSpecLabel(nextType)
+        bonusValue = colorize("goodTextColor", $"+{bonusValue}")
       })
-      return qualifyBonusesTotalText
     }
 
-    function getReqLevelText(crew, unit, skipImg = false) {
+    function getReqLevelText(crew, unit, cost) {
       let res = []
       let levels = this.getCurAndReqLevel(crew, unit)
       let reqLevel = levels.reqLevel
       let crewLevel = levels.curLevel
 
-      let reqSpecLevelImg = skipImg ? "" : "".concat("{{img=", this.trainedIcon, "}}")
-      let wantedQualify = hasFeature("FullScreenCrewWindow") ? "".concat(reqSpecLevelImg, this.getName())
-        : colorize("activeTextColor", this.getName())
+      let wantedQualify = formatSpecLabel(this)
       let locParams = {
         wantedQualify
         unitName = colorize("activeTextColor", getUnitName(unit))
@@ -225,6 +255,7 @@ crewSpecTypes = {
           res.append(loc(reqLevelLocId, locParams.__merge({
             reqLevel
             currentLevelText = colorize("badTextColor", loc("crew/currentLevel", { level = crewLevel }))
+            trainCost = colorize("activeTextColor", cost)
           })))
         }
         else {
@@ -243,9 +274,11 @@ crewSpecTypes = {
       let nextType = this.getNextType()
       if (nextType != crewSpecTypes.UNKNOWN) {
         let nextSpecName = nextType.getName()
+        let cost = getSpecTypeByCrewAndUnit(crew, unit)
+          .getUpgradeCostByCrewAndByUnit(crew, unit, nextType.code).tostring()
         tooltipText = "".concat(tooltipText, "\n\n",
           loc("crew/qualification/nextSpec"), ": ", colorize("activeTextColor", nextSpecName))
-        let reqLevelText = nextType.getReqLevelText(crew, unit)
+        let reqLevelText = nextType.getReqLevelText(crew, unit, cost)
         if (reqLevelText.len())
           tooltipText = "\n".concat(tooltipText, reqLevelText)
         else {
@@ -328,31 +361,29 @@ crewSpecTypes = {
     function getBtnBuyTooltipContent(crew, unit) {
       let view = {
         tooltipText = ""
-        tinyTooltipText = ""
+        bonusText = ""
+        notesText = ""
       }
 
       if (this.isCrewTrained(crew, unit) || !this.hasPrevType()) {
-        view.tooltipText = "".concat(loc("crew/trained"), loc("ui/colon"),
-          colorize("activeTextColor", this.getName()))
+        view.tooltipText = "".concat(loc("crew/trained"), loc("ui/colon"), this.getName())
       }
       else {
         let curSpecType = getSpecTypeByCrewAndUnit(crew, unit)
-        view.tooltipText = this.getReqLevelText(crew, unit, true)
+        let cost = curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, this.code).tostring()
+        let crewUnitType = unit?.getCrewUnitType?() ?? CUT_INVALID
+        let prevCode = curSpecType.code == -1 ? 0 : curSpecType.code
+
+        view.tooltipText = this.getReqLevelText(crew, unit, cost)
         if (!view.tooltipText.len())
           view.tooltipText = loc("crew/qualification/buy", {
-            qualify = colorize("activeTextColor", this.getName())
-            unitName = colorize("activeTextColor", getUnitName(unit))
-            cost = colorize("activeTextColor",
-              curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, this.code).tostring())
+            qualify = formatSpecLabel(this)
+            unitName = getUnitName(unit)
+            cost = colorize("activeTextColor", cost)
           })
-
-        view.tinyTooltipText = loc("shop/crewQualifyBonuses", {
-          qualification = colorize("userlogColoredText", this.getName())
-          bonuses = this.getFullBonusesText(unit?.getCrewUnitType?() ?? CUT_INVALID,
-            curSpecType.code == -1 ? 0 : curSpecType.code) 
-        })
+        view.notesText = getSkillsNotAffectedBySpecDesc(crewUnitType)
+        view.bonusText = this.getFullBonusesText(crewUnitType, prevCode, view.notesText != "", true)
       }
-      view.tooltipText = "\n\n".concat(view.tooltipText, loc("crew/qualification/tooltip"))
 
       return handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
     }
@@ -452,4 +483,5 @@ return {
   getTrainedCrewSpecCode
   getSpecTypeByCrewAndUnit
   getSpecTypeByCrewAndUnitName
+  getSkillsNotAffectedBySpecDesc
 }

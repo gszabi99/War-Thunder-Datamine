@@ -20,6 +20,18 @@ row {
       activeText {
         text:t='<<name>>'
 
+        <<#isDelayedTooltip>>
+          tooltipId:t='<<skillTooltipId>>'
+          behavior:t='button'
+          on_pushed:t='::gcb.delayedTooltipPush'
+          on_hold_start:t='::gcb.delayedTooltipHoldStart'
+          on_hold_stop:t='::gcb.delayedTooltipHoldStop'
+          on_hover:t='::gcb.delayedTooltipHover'
+          on_unhover:t='::gcb.delayedTooltipHover'
+          focusBtnName:t='A'
+        <</isDelayedTooltip>>
+
+        <<^isDelayedTooltip>>
         title:t='$tooltipObj'
         tooltipObj {
           id:t='tooltip'
@@ -29,6 +41,7 @@ row {
           display:t='hide'
           noPadding:t='yes'
         }
+        <</isDelayedTooltip>>
       }
       activeText {
         id:t='currentExpPoints'
@@ -76,6 +89,7 @@ row {
               on_tooltip_open:t='onGenericTooltipOpen'
               on_tooltip_close:t='onTooltipObjClose'
               display:t='hide'
+              noPadding:t='yes'
             }
           }
           tdiv {

@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -12,6 +11,7 @@ let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
 let { eventbus_send } = require("eventbus")
 let { get_mission_time, get_mplayer_by_id, get_local_mplayer } = require("mission")
+let { get_player_army_for_hud } = require("guiMission")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG,
   USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG,
   USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG

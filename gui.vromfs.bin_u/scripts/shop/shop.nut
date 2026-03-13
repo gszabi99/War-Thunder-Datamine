@@ -1829,7 +1829,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let grObj = silObj.findObject(item.name)
     if (!checkObj(grObj))
       return
-
+    destroyModalInfo()
     this.skipOpenGroup = true
     
     let tdObj = grObj.getParent()
@@ -2079,7 +2079,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateResearchVariables()
     this.checkUnitItemAndUpdate(unit)
 
-    this.selectCellByUnitName(unit)
+    this.selectCellByUnitName(unitName)
 
     if (this.shopResearchMode && this.availableFlushExp <= 0) {
       buyUnit(unit)

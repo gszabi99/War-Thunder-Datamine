@@ -1,9 +1,8 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let DataBlock = require("DataBlock")
-let { get_current_mission_desc } = require("guiMission")
+let { get_current_mission_desc, get_player_army_for_hud } = require("guiMission")
 let { g_team } = require("%scripts/teams.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { isStringInteger, isStringFloat, capitalize } = require("%sqstd/string.nut")

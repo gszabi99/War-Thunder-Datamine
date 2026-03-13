@@ -3745,6 +3745,13 @@
               "turretIdx": 0
             },
             {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "ils_duplicate"
+            },
+            {
               "type": "radar",
               "font": "usa_ils",
               "scale": 0.9,
@@ -3793,9 +3800,6 @@
               "hideWeaponIndication": true,
               "centerRadar": true,
               "showCueHeights": true
-            },
-            {
-              "type": "ils_duplicate"
             }
           ]
         },
@@ -3958,6 +3962,16 @@
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 2
+    }
+  },
   "gunnerOpticFps": {
     "TV": {
       "pos": [
@@ -3975,6 +3989,25 @@
       ],
       "opticType": "tv",
       "name": "GBU8"
+    },
+    "TV1": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -40.0,
+        40.0,
+        -40.0,
+        40.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2,
+      "name": "SPICE"
     }
   },
   "sensors": {
@@ -4047,6 +4080,14 @@
       {
         "name": "f_15c_baz_msip_gbu_8",
         "blk": "gameData/FlightModels/weaponPresets/f_15c_baz_msip_gbu_8.blk"
+      },
+      {
+        "name": "f_15c_baz_msip_spice_1000",
+        "blk": "gameData/FlightModels/weaponPresets/f_15c_baz_msip_spice_1000.blk"
+      },
+      {
+        "name": "f_15c_baz_msip_spice_2000",
+        "blk": "gameData/FlightModels/weaponPresets/f_15c_baz_msip_spice_2000.blk"
       },
       {
         "name": "f_15c_baz_msip_gbu_38",
@@ -4307,7 +4348,6 @@
           {
             "iconType": "bombs_middle",
             "name": "us_500lb_mk_82_ldgp_slot2",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4324,7 +4364,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "us_500lb_mk_82_ldgp_snakeye_slot2",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4341,7 +4380,6 @@
           {
             "iconType": "bombs_middle_group_x6",
             "name": "mer_mk82_x6_slot2",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4357,7 +4395,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_x6_snakeye_slot2",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4373,7 +4410,6 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84_slot2",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4415,9 +4451,64 @@
             ]
           },
           {
+            "iconType": "guided_bomb_red",
+            "name": "spice_1000_slot2",
+            "reqModification": "il_spice_1000",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+              "emitter": "us_2000lb_gbu_8_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "aim_120a_slot1"
+              },
+              {
+                "slot": 3,
+                "preset": "aim_120a_slot3_default"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "spice_2000_slot2",
+            "reqModification": "il_spice_2000",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+              "emitter": "us_2000lb_gbu_8_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "aim_120a_slot1"
+              },
+              {
+                "slot": 3,
+                "preset": "aim_120a_slot3_default"
+              }
+            ]
+          },
+          {
             "iconType": "napalm_large_group_x3",
             "name": "ter_us_blu_27_slot2",
-            "reqModification": "us_blu27_b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4433,7 +4524,7 @@
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "us_gbu_38_slot2",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4450,7 +4541,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot2",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4467,7 +4558,7 @@
           {
             "iconType": "glide_guided_bomb_middle_jdam",
             "name": "us_gbu_62_slot2",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4484,7 +4575,7 @@
           {
             "iconType": "glide_guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_64_slot2",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4998,7 +5089,6 @@
           {
             "iconType": "bombs_middle",
             "name": "us_500lb_mk_82_ldgp_slot7",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5015,7 +5105,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "us_500lb_mk_82_ldgp_snakeye_slot7",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5032,7 +5121,6 @@
           {
             "iconType": "bombs_middle_group_x6",
             "name": "mer_mk82_x6_slot7",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5048,7 +5136,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_x6_snakeye_slot7",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5064,7 +5151,6 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84_slot7",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5098,7 +5184,6 @@
           {
             "iconType": "napalm_large_group_x3",
             "name": "ter_us_blu_27_slot7",
-            "reqModification": "us_blu27_b",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5114,7 +5199,7 @@
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "us_gbu_38_slot7",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5131,7 +5216,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot7",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5148,7 +5233,7 @@
           {
             "iconType": "glide_guided_bomb_middle_jdam",
             "name": "us_gbu_62_slot7",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5165,7 +5250,7 @@
           {
             "iconType": "glide_guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_64_slot7",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_c"
             },
@@ -5674,7 +5759,6 @@
           {
             "iconType": "bombs_middle",
             "name": "us_500lb_mk_82_ldgp_slot12",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5691,7 +5775,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "us_500lb_mk_82_ldgp_snakeye_slot12",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5708,7 +5791,6 @@
           {
             "iconType": "bombs_middle_group_x6",
             "name": "mer_mk82_x6_slot12",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5724,7 +5806,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_x6_snakeye_slot12",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5740,7 +5821,6 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84_slot12",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5782,9 +5862,64 @@
             ]
           },
           {
+            "iconType": "guided_bomb_red",
+            "name": "spice_1000_slot12",
+            "reqModification": "il_spice_1000",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+              "emitter": "us_2000lb_gbu_8_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 13,
+                "preset": "aim_120a_slot13"
+              },
+              {
+                "slot": 11,
+                "preset": "aim_120a_slot11_default"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "spice_2000_slot12",
+            "reqModification": "il_spice_2000",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+              "emitter": "us_2000lb_gbu_8_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 13,
+                "preset": "aim_120a_slot13"
+              },
+              {
+                "slot": 11,
+                "preset": "aim_120a_slot11_default"
+              }
+            ]
+          },
+          {
             "iconType": "napalm_large_group_x3",
             "name": "ter_us_blu_27_slot12",
-            "reqModification": "us_blu27_b",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5800,7 +5935,7 @@
           {
             "iconType": "guided_bomb_middle_jdam",
             "name": "us_gbu_38_slot12",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5817,7 +5952,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot12",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5834,7 +5969,7 @@
           {
             "iconType": "glide_guided_bomb_middle_jdam",
             "name": "us_gbu_62_slot12",
-            "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -5851,7 +5986,7 @@
           {
             "iconType": "glide_guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_64_slot12",
-            "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -6553,22 +6688,22 @@
       "reqModification": "M60_belt_pack",
       "tier": 3
     },
-    "us_blu27_b": {
+    "us_jdam": {
       "modClass": "weapon",
       "tier": 1
     },
-    "us_500lb_mk82_gbu38_gbu62_jdam": {
-      "modClass": "weapon",
-      "tier": 2,
-      "prevModification": "us_blu27_b"
-    },
-    "us_2000lb_mk84_gbu31_gbu64_jdam": {
-      "modClass": "weapon",
-      "tier": 3,
-      "reqModification": "us_500lb_mk82_gbu38_gbu62_jdam"
-    },
     "us_gbu_8": {
-      "reqModification": "us_2000lb_mk84_gbu31_gbu64_jdam",
+      "prevModification": "us_jdam",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "il_spice_1000": {
+      "reqModification": "us_gbu_8",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "il_spice_2000": {
+      "reqModification": "il_spice_1000",
       "modClass": "weapon",
       "tier": 4
     },
