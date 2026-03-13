@@ -4603,6 +4603,25 @@
       "turretNo": 0,
       "name": "AGM62"
     },
+    "TV2": {
+      "pos": [
+        1.0,
+        -0.2,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -42.0,
+        42.0,
+        -54.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1,
+      "name": "AGM84H"
+    },
     "Target": {
       "pos": [
         1.0,
@@ -4747,6 +4766,10 @@
       {
         "name": "fa_18f_block_2_raaf_agm_65f",
         "blk": "gameData/FlightModels/weaponPresets/fa_18f_block_2_raaf_agm_65f.blk"
+      },
+      {
+        "name": "fa_18f_block_2_raaf_agm_84h",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18f_block_2_raaf_agm_84h.blk"
       },
       {
         "name": "fa_18f_block_2_raaf_apkws_m151",
@@ -4975,6 +4998,25 @@
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
               "emitter": "aim_9l_2",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special",
+            "name": "aim_120b_slot2",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": [
+                "pylon1_lau",
+                "lau_127ea_launcher_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
+              "bullets": 1,
+              "emitter": "aim_120a_2",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -5338,6 +5380,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115ca_aim9m_x2.blk",
+              "emitter": "lau_115a_1",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special_group",
+            "name": "aim_120b_x2_slot3",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/us_lau_115ca_aim120b_x2.blk",
               "emitter": "lau_115a_1",
               "external": true,
               "separate": true
@@ -5959,6 +6016,23 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_84h_slot3",
+            "reqModification": "us_agm_84h",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_84h_slam_er.blk",
+              "emitter": "bomb2_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_slot3",
             "showInWeaponMenu": true,
@@ -5998,6 +6072,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115ca_aim9m_x2.blk",
+              "emitter": "lau_115a_2",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special_group",
+            "name": "aim_120b_x2_slot4",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/us_lau_115ca_aim120b_x2.blk",
               "emitter": "lau_115a_2",
               "external": true,
               "separate": true
@@ -6602,6 +6691,23 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_84h_slot4",
+            "reqModification": "us_agm_84h",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_84h_slam_er.blk",
+              "emitter": "bomb3_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_slot4",
             "showInWeaponMenu": true,
@@ -6632,6 +6738,28 @@
         "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air_special",
+            "name": "aim_120b_default_slot5",
+            "ShowNodes": {
+              "node": [
+                "lau_116_1_lift",
+                "lau_116_1_aim_120_adapter",
+                "lau_116_1"
+              ]
+            },
+            "HideNodes": {
+              "node": "lau_116_1_cap"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
+              "emitter": "aim_120a_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
           {
             "iconType": "missile_type_b_air_to_air_midrange",
             "name": "aim_120d_default_slot5",
@@ -6826,6 +6954,28 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
+            "iconType": "missile_air_to_air_special",
+            "name": "aim_120b_default_slot7",
+            "ShowNodes": {
+              "node": [
+                "lau_116_2_lift",
+                "lau_116_2_aim_120_adapter",
+                "lau_116_2"
+              ]
+            },
+            "HideNodes": {
+              "node": "lau_116_2_cap"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
+              "emitter": "aim_120a_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_type_b_air_to_air_midrange",
             "name": "aim_120d_default_slot7",
             "ShowNodes": {
@@ -6886,6 +7036,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115ca_aim9m_x2.blk",
+              "emitter": "lau_115a_3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special_group",
+            "name": "aim_120b_x2_slot8",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/us_lau_115ca_aim120b_x2.blk",
               "emitter": "lau_115a_3",
               "external": true,
               "separate": true
@@ -7490,6 +7655,23 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_84h_slot8",
+            "reqModification": "us_agm_84h",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_84h_slam_er.blk",
+              "emitter": "bomb5_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_slot8",
             "showInWeaponMenu": true,
@@ -7529,6 +7711,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115ca_aim9m_x2.blk",
+              "emitter": "lau_115a_4",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special_group",
+            "name": "aim_120b_x2_slot9",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/us_lau_115ca_aim120b_x2.blk",
               "emitter": "lau_115a_4",
               "external": true,
               "separate": true
@@ -8150,6 +8347,23 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_84h_slot9",
+            "reqModification": "us_agm_84h",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_84h_slam_er.blk",
+              "emitter": "bomb6_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_slot9",
             "showInWeaponMenu": true,
@@ -8196,6 +8410,25 @@
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
               "emitter": "aim_9l_3",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special",
+            "name": "aim_120b_slot10",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": [
+                "pylon6_lau",
+                "lau_127ea_launcher_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
+              "bullets": 1,
+              "emitter": "aim_120a_5",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -9702,6 +9935,11 @@
     "us_agm_65f": {
       "prevModification": "M60_new_gun",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_agm_84h": {
+      "reqModification": "us_agm_65f",
+      "tier": 4,
       "modClass": "weapon"
     },
     "us_an_asq_228_pod": {

@@ -2207,12 +2207,12 @@
   },
   "120mm_DM_HE_FS": {
     "bullet": {
-      "mass": 19.0,
-      "explosiveType": "comp_b",
-      "explosiveMass": 3.0,
+      "mass": 17.0,
+      "explosiveType": "clx_663",
+      "explosiveMass": 2.3,
       "caliber": 0.12,
-      "Cx": 0.66,
-      "speed": 980.0,
+      "Cx": 0.431,
+      "speed": 900.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -2234,7 +2234,7 @@
       "gbufferModelName": "tank_shell_he_fs",
       "modelName": "tank_shell_he_fs",
       "canChangeFuseMode": true,
-      "bulletName": "120mm_dm_11",
+      "bulletName": "120mm_m339",
       "selfDestructionFx": [
         "explosion_midair_small",
         "explosion_air_selfexplosion_big"
@@ -2242,8 +2242,8 @@
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
-      "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.3,
+      "fuseDelayDist": 1.5,
+      "explodeTreshold": 3.0,
       "timeFuseDistanceError": 1.0,
       "explosionInAir": true,
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -2761,12 +2761,12 @@
   },
   "120mm_NATO_HE_FS": {
     "bullet": {
-      "mass": 17.0,
-      "explosiveType": "clx_663",
-      "explosiveMass": 2.3,
+      "bulletCount": 25,
+      "mass": 16.8,
+      "explosiveType": "comp_b",
+      "explosiveMass": 3.0,
       "caliber": 0.12,
-      "Cx": 0.431,
-      "speed": 900.0,
+      "speed": 1050.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -2776,7 +2776,7 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "he_frag_dist_fuse",
+      "bulletType": "he_frag_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [
         0.23,
@@ -2784,22 +2784,15 @@
         2.0
       ],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_df.ivf",
-      "gbufferModelName": "tank_shell_he_fs",
-      "modelName": "tank_shell_he_fs",
-      "canChangeFuseMode": true,
-      "bulletName": "120mm_m339",
-      "selfDestructionFx": [
-        "explosion_midair_small",
-        "explosion_air_selfexplosion_big"
-      ],
+      "useEffectiveArmorThicknessForShatter": true,
+      "shellAnimation": "video/shells_animations/he.ivf",
+      "bulletName": "120mm_f1_he",
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
-      "fuseDelayDist": 1.5,
-      "explodeTreshold": 3.0,
-      "timeFuseDistanceError": 1.0,
-      "explosionInAir": true,
+      "explodeTreshold": 0.1,
+      "fuseDelayDist": 0.3,
+      "selfDestructionFx": "explosion_air_selfexplosion_big",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_81_105mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -2825,6 +2818,24 @@
       },
       "pressureDamage": {
         "damageType": "pressure"
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "hitpower": {
         "HitPower0m": [
@@ -2854,25 +2865,25 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 3.25,
+          "countPortion": 2.4,
           "realShattersSplicing": 0.5,
           "segment": [
             {
-              "radiusScale": 1.25,
-              "penetrationScale": 4.5,
+              "radiusScale": 0.7,
+              "penetrationScale": 3.5,
               "damageScale": 1.0,
               "angles": [
                 0.0,
-                20.0
+                10.0
               ],
-              "countPortion": 0.14
+              "countPortion": 0.02
             },
             {
               "radiusScale": 0.3,
               "penetrationScale": 3.25,
               "damageScale": 1.0,
               "angles": [
-                30.0,
+                10.0,
                 55.0
               ],
               "countPortion": 0.05
@@ -2885,7 +2896,7 @@
                 55.0,
                 110.0
               ],
-              "countPortion": 0.61
+              "countPortion": 0.68
             },
             {
               "radiusScale": 0.3,
@@ -2895,7 +2906,7 @@
                 110.0,
                 165.0
               ],
-              "countPortion": 0.15
+              "countPortion": 0.2
             },
             {
               "radiusScale": 0.3,
@@ -2919,7 +2930,8 @@
           0.0
         ],
         "traceFreq": 1,
-        "tracer": "noColor"
+        "tracer": "30mmWhite",
+        "trail": "black"
       },
       "collisions": {
         "default": {
