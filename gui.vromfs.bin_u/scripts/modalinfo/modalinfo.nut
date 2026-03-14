@@ -177,7 +177,7 @@ function createInfoHolderModal(initiatorObj) {
 }
 
 function isCursorInBounds(bounds, cursorPos) {
-  return bounds.findindex(@(b) b.isOnObject(cursorPos)) != null
+  return bounds.findindex(@(b) b?.isOnObject(cursorPos) ?? false) != null
 }
 
 function destroy() {
@@ -292,7 +292,10 @@ function closeModalInfo(isDelayed = false) {
     return
   let bounds = watchedObjects.map(@(t) t.infoWndBounds)
   if (isDelayed)
-    bounds.extend(watchedObjects.map(@(t) getObjectBounds(t.initiatorObj)))
+    bounds.extend(watchedObjects.map(@(t) t.initiatorObj.isValid()
+      ? getObjectBounds(t.initiatorObj)
+      : null
+    ))
 
   if (isCursorInBounds(bounds, getCursorPos()))
     return
