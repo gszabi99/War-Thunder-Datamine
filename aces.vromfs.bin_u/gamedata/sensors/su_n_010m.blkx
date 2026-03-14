@@ -3634,6 +3634,24 @@
         60.0
       ],
       "hmd": true
+    },
+    "irstBoresightLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -30.0,
+        30.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        15.0
+      ],
+      "period": 0.12,
+      "width": 3.0,
+      "barHeight": 4.0,
+      "barsCount": 1,
+      "rowMajor": false,
+      "centerElevation": 1.0,
+      "indicate": true
     }
   },
   "signals": {
@@ -3827,7 +3845,8 @@
       "scanPattern3": "radarHudLock"
     },
     "irstAcmLock": {
-      "scanPattern1": "irstVerticalLock"
+      "scanPattern1": "irstBoresightLock",
+      "scanPattern2": "irstVerticalLock"
     },
     "radarHmdLock": {
       "scanPattern1": "radarHmdLock"

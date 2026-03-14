@@ -55,6 +55,7 @@
       "armorThickness": 20.0,
       "turret_01_front_dm": {},
       "turret_01_back_dm": {},
+      "turret_07_front_dm": {},
       "turret_01_top_dm": {},
       "turret_01_side_dm": {},
       "turret_01_bottom_dm": {},
@@ -174,6 +175,14 @@
         "armorThickness": 12.7
       },
       "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "armorClass": "RHA_tank"
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 5.0,
+        "armorClass": "RHA_tank"
+      },
+      "composite_armor_hull_03_dm": {
         "armorThickness": 5.0,
         "armorClass": "RHA_tank"
       }
@@ -306,6 +315,8 @@
       "armorClass": "hull_side_special_armor",
       "hidableInXrayViewer": true,
       "armorThickness": 90.0,
+      "hp": 30.0,
+      "ex_armor_body_r_01_dm": {},
       "ex_armor_body_r_02_dm": {},
       "ex_armor_body_r_03_dm": {},
       "ex_armor_body_r_04_dm": {},
@@ -368,6 +379,7 @@
       "armorClass": "aluminium",
       "hidableInXrayViewer": true,
       "armorThickness": 3.0,
+      "hp": 30.0,
       "ex_armor_body_l_01_dm": {},
       "ex_armor_body_l_02_dm": {},
       "ex_armor_body_l_03_dm": {},
@@ -394,7 +406,6 @@
       "ex_armor_body_l_44_dm": {},
       "ex_armor_body_l_47_dm": {},
       "ex_armor_body_l_48_dm": {},
-      "ex_armor_body_r_01_dm": {},
       "ex_armor_body_r_07_dm": {},
       "ex_armor_body_r_11_dm": {},
       "ex_armor_body_r_13_dm": {},
@@ -1823,6 +1834,15 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "RHA_tank",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
           }
         }
       }
