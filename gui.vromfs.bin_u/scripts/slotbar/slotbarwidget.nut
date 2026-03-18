@@ -77,6 +77,7 @@ let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelper
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
 let hasCrewModalWndInScene = @() isHandlerInScene(gui_handlers.CrewModalHandler)
+  || isHandlerInScene(gui_handlers.CrewHandler)
 
 function initSlotbarTopBar(slotbarObj, boxesShow) {
   if (!checkObj(slotbarObj))

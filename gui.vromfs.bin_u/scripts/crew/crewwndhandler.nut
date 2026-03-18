@@ -69,6 +69,11 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
   isMaxLevel = false
   crewMemberSkillsMaxAmount = null
 
+  function initScreen() {
+    this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
+    base.initScreen()
+  }
+
   function getWndSizes() {
     let wnd = this.scene.findObject("wnd_frame")
     let wndHeight = to_pixels("1@crewWndBaseHeight")

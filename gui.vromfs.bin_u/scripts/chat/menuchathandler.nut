@@ -1672,7 +1672,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (customScene && !roomData)
       this.addRoom(id, customScene, ownerHandler) 
 
-    let task = gchat_join_room(gchat_escape_target(id), password) 
+    let task = gchat_join_room(gchat_escape_target(id), password ?? "") 
     if (task != "")
       this.chatTasks.append({ task = task, handler = this.onJoinRoom, roomId = id,
                          onJoinFunc = onJoinFunc, customScene = customScene,
