@@ -1296,11 +1296,12 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (newGmChangedStatus == GM_CHANGED_STATUS.NONE)
       return
 
-    let notice = newGmChangedStatus == GM_CHANGED_STATUS.BY_LEADER
+    let isChangedByLeader = newGmChangedStatus == GM_CHANGED_STATUS.BY_LEADER
+    let notice = isChangedByLeader
       ? loc("mainmenu/leader_gamemode_notice")
       : format(loc("mainmenu/gamemode_change_notice"), gameMode.text)
 
-    alertObj.hideConsoleImage = GM_CHANGED_STATUS.BY_LEADER ? "yes" : "no"
+    alertObj.hideConsoleImage = isChangedByLeader ? "yes" : "no"
     alertObj.setValue(notice)
   }
 

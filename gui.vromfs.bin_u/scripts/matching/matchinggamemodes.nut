@@ -15,7 +15,6 @@ let { startswith }=require("string")
 let { clearTimer, resetTimeout } = require("dagor.workcycle")
 let { parse_json } = require("json")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
-let { SERVER_ERROR_REQUEST_TIMEOUT } = require("matching.errors")
 
 
 
@@ -77,7 +76,7 @@ function getGmListFromQueue() {
 }
 
 function loadGameModesFromList(gm_list) {
-  if (fetchingInfo) {
+  if (fetchingInfo || !is_online_available()) {
     addGmListToQueue(gm_list)
     return
   }
@@ -91,10 +90,7 @@ function loadGameModesFromList(gm_list) {
     function (result) {
       fetchingInfo = false
       if (!checkMatchingError(result, false)) {
-        if (result.error == SERVER_ERROR_REQUEST_TIMEOUT)
-          self(gm_list)
-        else
-          queueGameModesForRequest.clear()
+        self(gm_list)
         return
       }
       if ("modes_str" in result)
@@ -259,10 +255,15 @@ function getModeById(gameModeId) {
 
 addListenersWithoutEnv({
   function MatchingConnect(_) {
-    if (!needForceUpdateOnReconnect)
+    if (needForceUpdateOnReconnect) {
+      needForceUpdateOnReconnect = false
+      queueGameModesForRequest.clear()
+      forceUpdateGameModes()
       return
-    needForceUpdateOnReconnect = false
-    forceUpdateGameModes()
+    }
+
+    if (queueGameModesForRequest.len() > 0 && !fetchingInfo)
+      loadGameModesFromList(getGmListFromQueue())
   }
   function SignOut(_) {
     gameModes.clear()

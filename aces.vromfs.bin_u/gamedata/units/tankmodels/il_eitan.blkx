@@ -2141,6 +2141,7 @@
           38
         ],
         "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "skipAxisEmitterCheck": true,
         "recoilMultiplier": 0.1,
         "changeBulletTypeForSet": true,
@@ -3819,6 +3820,35 @@
           "count": 50
         }
       }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner1",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "wreckedPartId": 0,
+          "ammo_turret_38_dm": {
+            "count": 1
+          },
+          "ammo_turret_37_dm": {
+            "count": 1
+          }
+        },
+        {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "ammo_turret_04_dm": {
+            "count": 1
+          },
+          "ammo_turret_03_dm": {
+            "count": 1
+          }
+        }
+      ]
     }
   },
   "modifications": {
@@ -4048,6 +4078,7 @@
                 38
               ],
               "emitterGenFmt": "bone_rocket_%02d",
+              "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "skipAxisEmitterCheck": true,
               "recoilMultiplier": 0.1,
               "changeBulletTypeForSet": true,

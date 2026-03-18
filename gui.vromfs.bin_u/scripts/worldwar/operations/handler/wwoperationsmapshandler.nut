@@ -757,7 +757,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (item)
           txtList.append(item.text)
       }
-      clustersTxt = txtList ? $"{loc("ui/colon")} {"; ".join(txtList)}" : ""
+      clustersTxt = txtList.len() > 0 ? $"{loc("ui/colon")} {"; ".join(txtList)}" : ""
     }
 
     clusterBtn.setValue($"{loc("worldwar/cluster")}{clustersTxt}")

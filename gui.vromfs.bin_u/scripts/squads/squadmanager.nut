@@ -90,6 +90,8 @@ enum msquadErrorId {
 const DEFAULT_SQUADS_VERSION = 1
 const SQUAD_REQEST_TIMEOUT = 45000
 
+const skipSetSquadDataParams = ["members", "invitedPlayers", "applications"] 
+
 let DEFAULT_SQUAD_PROPERTIES = {
   maxMembers = 4
   isApplicationsEnabled = true
@@ -111,7 +113,6 @@ let requestSquadInfo = @(successCallback, errorCallback = null, requestOptions =
   request_matching("msquad.get_info", successCallback, errorCallback, null, requestOptions)
 
 let leaveSquadImpl = @(successCallback = null) request_matching("msquad.leave_squad", successCallback)
-
 
 let squadData = persist("squadData", @() {
   id = ""
@@ -161,9 +162,21 @@ function checkSquadsVersion(memberSquadsVersion) {
 
 local g_squad_manager
 
+function setSquadData() {
+  if (!g_squad_manager.isSquadLeader())
+    return
+
+  let data = clone squadData
+  foreach (key in skipSetSquadDataParams)
+    data.$rawdelete(key)
+
+  request_matching("msquad.set_squad_data", null, null, data)
+}
+
 g_squad_manager = {
 
   getSquadData = @() squadData
+  setSquadData
 
   getSMMaxSquadSize = @() smData.MAX_SQUAD_SIZE
   getSquadSizesList = @() smData.squadSizesList
@@ -341,7 +354,7 @@ g_squad_manager = {
       return
 
     g_squad_manager.setMaxSquadSize(newSize)
-    g_squad_manager.setSquadData()
+    setSquadData()
     broadcastEvent(squadEvent.SIZE_CHANGED)
   }
 
@@ -402,17 +415,9 @@ g_squad_manager = {
       g_squad_manager.updateMyMemberData()
   }
 
-  
-  function setSquadData() {
-    if (!g_squad_manager.isSquadLeader())
-      return
-
-    request_matching("msquad.set_squad_data", null, null, squadData)
-  }
-
   function setPsnSessionId(id = null) {
     squadData.psnSessionId <- id
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 
   function setState(newState) {
@@ -654,14 +659,15 @@ g_squad_manager = {
 
   function updateApplications(applications) {
     let newApplicationsData = {}
-    foreach (uid in applications) {
+    foreach (uidInt64 in applications) {
+      let uid = uidInt64.tostring()
       if (uid in squadData.applications)
         newApplicationsData[uid] <- squadData.applications[uid]
       else {
-        newApplicationsData[uid] <- SquadMember(uid.tostring(), false, true)
+        newApplicationsData[uid] <- SquadMember(uid, false, true)
         smData.hasNewApplication = true
       }
-      requestUsersInfo([uid.tostring()])
+      requestUsersInfo([uid])
     }
     if (newApplicationsData.len() == 0)
       smData.hasNewApplication = false
@@ -738,7 +744,7 @@ g_squad_manager = {
       return
 
     squadData.properties.isApplicationsEnabled = shouldEnable
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 
   function readyCheck(considerInvitedPlayers = false) {
@@ -803,7 +809,7 @@ g_squad_manager = {
 
       smData.roomCreateInProgress = true
       callback = function() {
-        g_squad_manager.setSquadData()
+        setSquadData()
         smData.roomCreateInProgress = false
       }
     }
@@ -1235,11 +1241,12 @@ g_squad_manager = {
   }
 
   function addApplication(uid) {
+    uid = uid.tostring()
     if (uid in squadData.applications)
       return
 
-    squadData.applications[uid] <- SquadMember(uid.tostring(), false, true)
-    requestUsersInfo([uid.tostring()])
+    squadData.applications[uid] <- SquadMember(uid, false, true)
+    requestUsersInfo([uid])
     g_squad_manager.checkNewApplications()
     if (g_squad_manager.isSquadLeader())
       addPopup(null, colorize("chatTextInviteColor",
@@ -1254,7 +1261,8 @@ g_squad_manager = {
     if (!u.isArray(applications))
       applications = [applications]
     local isApplicationsChanged = false
-    foreach (uid in applications) {
+    foreach (uidInt in applications) {
+      let uid = uidInt.tostring()
       if (!(uid in squadData.applications))
         continue
       squadData.applications.$rawdelete(uid)
@@ -1372,7 +1380,7 @@ g_squad_manager = {
         g_squad_manager.updateCurrentWWOperation()
         g_squad_manager.updatePresenceSquad()
         g_squad_manager.updateLeaderData()
-        g_squad_manager.setSquadData()
+        setSquadData()
         return
       }
       if (g_squad_manager.getPresence().isInBattle)
@@ -1470,7 +1478,7 @@ g_squad_manager = {
     squadData.wwOperationInfo.country = profileCountrySq.get()
 
     g_squad_manager.updatePresenceSquad()
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 
   function cancelWwBattlePrepare() {
@@ -1545,7 +1553,7 @@ g_squad_manager = {
       g_squad_manager.setReadyFlag(false)
 
     g_squad_manager.updatePresenceSquad()
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 
   function onEventLobbyStatusChange(_params) {
@@ -1554,7 +1562,7 @@ g_squad_manager = {
 
     g_squad_manager.updateMyMemberData()
     g_squad_manager.updatePresenceSquad()
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 
   function onEventQueueChangeState(_params) {
@@ -1562,22 +1570,22 @@ g_squad_manager = {
       g_squad_manager.setCrewsReadyFlag(false)
 
     g_squad_manager.updatePresenceSquad()
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 
   function onEventBattleRatingChanged(_params) {
     g_squad_manager.updateLeaderData()
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 
   function onEventCurrentGameModeIdChanged(_params) {
     g_squad_manager.updateLeaderData(false)
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 
   function onEventEventsDataUpdated(_params) {
     g_squad_manager.updateLeaderData(false)
-    g_squad_manager.setSquadData()
+    setSquadData()
   }
 }
 

@@ -263,8 +263,9 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
   }
 
   function getCrewLevelToProgressValue(level) {
-    let progressValue =
-      round_by_value(level * CREW_MAX_PROGRESS_BAR_VALUE / getMaxCrewLevel(this.curCrewUnitType), 0.5)
+    let maxCrewLevel = getMaxCrewLevel(this.curCrewUnitType)
+    let progressValue = maxCrewLevel == 0 ? 0
+      : round_by_value(level * CREW_MAX_PROGRESS_BAR_VALUE / maxCrewLevel, 0.5)
     return progressValue
   }
 
