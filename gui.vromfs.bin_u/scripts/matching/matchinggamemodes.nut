@@ -15,6 +15,7 @@ let { startswith }=require("string")
 let { clearTimer, resetTimeout } = require("dagor.workcycle")
 let { parse_json } = require("json")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+let { SERVER_ERROR_REQUEST_TIMEOUT } = require("matching.errors")
 
 
 
@@ -22,7 +23,7 @@ let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 const MAX_FETCH_RETRIES = 5
 
-const MAX_GAME_MODES_FOR_REQUEST_INFO = 10
+const MAX_GAME_MODES_FOR_REQUEST_INFO = 5
 
 const NIGHT_GAME_MODE_TAG_PREFIX = "regular_with_night_"
 const SMALL_TEAMS_GAME_MODE_TAG_PREFIX = "small_teams_"
@@ -90,7 +91,10 @@ function loadGameModesFromList(gm_list) {
     function (result) {
       fetchingInfo = false
       if (!checkMatchingError(result, false)) {
-        queueGameModesForRequest.clear()
+        if (result.error == SERVER_ERROR_REQUEST_TIMEOUT)
+          self(gm_list)
+        else
+          queueGameModesForRequest.clear()
         return
       }
       if ("modes_str" in result)

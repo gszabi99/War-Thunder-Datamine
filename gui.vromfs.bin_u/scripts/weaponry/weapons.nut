@@ -2447,7 +2447,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (link?.rect) {
         let hintObj = handler.scene.findObject(link.msgId)
-        if (hintObj.isValid)
+        if (hintObj.isValid())
           hintObj.pos = $"{link.rect.x} -1@bw, {link.rect.y} -1@bh"
       }
     }

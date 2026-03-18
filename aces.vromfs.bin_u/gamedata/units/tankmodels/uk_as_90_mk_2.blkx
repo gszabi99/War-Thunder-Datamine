@@ -728,15 +728,15 @@
     }
   },
   "sound": {
-    "EngineName": "engine_t90a",
-    "EngineNameModification": "engine_t90a",
-    "TrackSoundName": "tracks_t72",
-    "TrackSoundNameCockpit": "tracks_t72_interior",
+    "EngineName": "engine_c1_ariete",
+    "TrackSoundName": "tracks_mbt",
+    "TrackSoundNameCockpit": "tracks_mbt_interior",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_t72",
+    "TrackSoundNameAi": "tracks_ai_mbt",
     "TrackSoundPath": "tanks/engines_tanks",
     "TrackSoundPathStudio": "ground/engines",
-    "turret_turn": "turret_turn_servo"
+    "turret_turn": "turret_turn_servo",
+    "gun_turn": "turret_turn_mg_light"
   },
   "DamageEffects": {
     "part": [
@@ -2140,7 +2140,10 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": "ex_decor_11"
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -3296,7 +3299,10 @@
                 ]
               }
             }
-          ]
+          ],
+          "hideNodes": {
+            "node": "ex_decor_11"
+          }
         }
       }
     }

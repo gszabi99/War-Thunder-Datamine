@@ -122,9 +122,9 @@ let isEventPS4OnlyAllowed =@(event) (event?.ps4OnlyAllowed ?? false) && isPlatfo
 
 let isEventPlatformOnlyAllowed =@(event) isEventXboxOnlyAllowed(event) || isEventPS4OnlyAllowed(event)
 
-function isTeamSizeBalancedEvent(event) {
-  return event?.balancerMode == "team_size"
-}
+let isTeamSizeBalancedEvent = @(event) event?.balancerMode == "team_size"
+
+let isNoneBalancedEvent = @(event) event?.balancerMode == "none"
 
 return {
   eventIdsForMainGameModeList
@@ -156,4 +156,5 @@ return {
   hasSmallTeamsGameModes
   isEventPlatformOnlyAllowed
   isTeamSizeBalancedEvent
+  isNoneBalancedEvent
 }

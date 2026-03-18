@@ -3252,6 +3252,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_52_aesa_agm154.blk"
       },
       {
+        "name": "f_16c_block_52_aesa_agm154_pids",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_52_aesa_agm154_pids.blk"
+      },
+      {
         "name": "f_16c_block_52_aesa_blu_1",
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_52_aesa_blu_1.blk"
       },
@@ -4277,10 +4281,9 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
-              "emitter": "bomb_2000lb_001",
+              "emitter": "ter_001",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -4293,10 +4296,9 @@
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
-                "emitter": "bomb_2000lb_001",
+                "emitter": "ter_001",
                 "external": true,
                 "separate": true,
-                "machLimit": 1.01,
                 "reqModification": "us_gbu39"
               },
               {
@@ -4515,10 +4517,43 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/bru_57_agm_154a1_jsow.blk",
-              "emitter": "pylon_bru_55a_001",
+              "emitter": "ter_001",
               "external": true,
               "separate": true,
               "machLimit": 0.95
+            }
+          },
+          {
+            "iconType": "glide_bomb_default_x2_maws_ltc_pod",
+            "name": "agm_154a1_x2_pids_slot3",
+            "ShowNodes": {
+              "node": "pylon_terma_mlu_pids_p_l"
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/bru_57_agm_154a1_jsow.blk",
+                "emitter": "ter_001",
+                "external": true,
+                "separate": true,
+                "machLimit": 0.95,
+                "reqModification": "us_agm154_jsow"
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 90,
+                "external": true,
+                "separate": false,
+                "reqModification": "PIDS_false_thermal_targets",
+                "bulletsCartridge": 1
+              }
+            ],
+            "sensors": {
+              "sensor": {
+                "blk": "gameData/sensors/us_an_aar_47.blk"
+              }
             }
           },
           {
@@ -5637,10 +5672,9 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
-              "emitter": "bomb_2000lb_004",
+              "emitter": "ter_004",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -5653,10 +5687,9 @@
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
-                "emitter": "bomb_2000lb_004",
+                "emitter": "ter_004",
                 "external": true,
                 "separate": true,
-                "machLimit": 1.01,
                 "reqModification": "us_gbu39"
               },
               {
@@ -5935,10 +5968,43 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/bru_57_agm_154a1_jsow.blk",
-              "emitter": "pylon_bru_55a_002",
+              "emitter": "ter_004",
               "external": true,
               "separate": true,
               "machLimit": 0.95
+            }
+          },
+          {
+            "iconType": "glide_bomb_default_x2_maws_ltc_pod",
+            "name": "agm_154a1_x2_pids_slot8",
+            "ShowNodes": {
+              "node": "pylon_terma_mlu_pids_p_r"
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/bru_57_agm_154a1_jsow.blk",
+                "emitter": "ter_004",
+                "external": true,
+                "separate": true,
+                "machLimit": 0.95,
+                "reqModification": "us_agm154_jsow"
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 90,
+                "external": true,
+                "separate": false,
+                "reqModification": "PIDS_false_thermal_targets",
+                "bulletsCartridge": 1
+              }
+            ],
+            "sensors": {
+              "sensor": {
+                "blk": "gameData/sensors/us_an_aar_47.blk"
+              }
             }
           },
           {

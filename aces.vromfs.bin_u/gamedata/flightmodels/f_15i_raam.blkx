@@ -4528,6 +4528,14 @@
         "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_gbu_15v2.blk"
       },
       {
+        "name": "f_15i_raam_spice_250",
+        "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_spice_250.blk"
+      },
+      {
+        "name": "f_15i_raam_spice_1000",
+        "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_spice_1000.blk"
+      },
+      {
         "name": "f_15i_raam_spice_2000",
         "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_spice_2000.blk"
       }
@@ -5035,9 +5043,27 @@
             ]
           },
           {
-            "iconType": "missile_air_to_uni_large",
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "spice_1000_slot2",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+              "emitter": "is_spice_2000_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
             "name": "spice_2000_slot2",
-            "reqModification": "il_spice_2000",
+            "reqModification": "il_spice_1000_2000",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6838,9 +6864,209 @@
             ]
           },
           {
+            "iconType": "bombs_ptb_fuse_glide_guided_bomb_small_jdam_group_x8",
+            "name": "il_spice_250_slot5_fuel_tank",
+            "reqModification": "il_spice_250",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_holder",
+                "pylon_5",
+                "pylon_5_holder",
+                "pylon_6",
+                "pylon_6_holder",
+                "pylon_10",
+                "pylon_10_holder",
+                "pylon_10_bomb_locks",
+                "fuel_tank1"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank10_dm"
+            },
+            "Weapon": [
+              {
+                "trigger": "fuel tanks",
+                "blk": "gameData/Weapons/drop_tank/us_750_gal_fastpack_f_15c_left.blk",
+                "emitter": "fuel_tank1",
+                "bullets": 1,
+                "external": true,
+                "jettisonable": false,
+                "dragCx": 0.028
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+                "emitter": "250lb_mk_81_004",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+                "emitter": "250lb_mk_81_007",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_bombs_ptb_fuse_guided_bomb_heavy_middle_jdam_group_x2",
+            "name": "spice_1000_slot5_fuel_tank",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_holder",
+                "pylon_5",
+                "pylon_5_holder",
+                "pylon_6",
+                "pylon_6_holder",
+                "pylon_10",
+                "pylon_10_holder",
+                "pylon_10_bomb_locks",
+                "fuel_tank1"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank10_dm"
+            },
+            "Weapon": [
+              {
+                "trigger": "fuel tanks",
+                "blk": "gameData/Weapons/drop_tank/us_750_gal_fastpack_f_15c_left.blk",
+                "emitter": "fuel_tank1",
+                "bullets": 1,
+                "external": true,
+                "jettisonable": false,
+                "dragCx": 0.028
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+                "emitter": "250lb_mk_81_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+                "emitter": "250lb_mk_81_007",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
             "iconType": "bombs_ptb_fuse_guided_bomb_heavy_middle_laser_group_x2",
             "name": "spice_2000_slot5_fuel_tank",
-            "reqModification": "il_spice_2000",
+            "reqModification": "il_spice_1000_2000",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -6871,16 +7097,7 @@
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
-                "emitter": "250lb_mk_81_007",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
-                "emitter": "250lb_mk_81_004",
+                "emitter": "250lb_mk_81_006",
                 "bullets": 1,
                 "external": true,
                 "separate": true,
@@ -7557,6 +7774,7 @@
           {
             "iconType": "bombs_ptb_fuse_glide_guided_bomb_small_jdam_group_x8",
             "name": "us_gbu_39_slot5_fuel_tank",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -7589,16 +7807,14 @@
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
                 "emitter": "250lb_mk_81_004",
                 "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "separate": true
               },
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
                 "emitter": "250lb_mk_81_007",
                 "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "separate": true
               }
             ],
             "BannedWeaponPreset": [
@@ -7940,9 +8156,9 @@
             ]
           },
           {
-            "iconType": "missile_air_to_uni_large_group",
-            "name": "spice_2000_slot5",
-            "reqModification": "il_spice_2000",
+            "iconType": "glide_guided_bomb_small_spice_group_x8",
+            "name": "il_spice_250_slot5",
+            "reqModification": "il_spice_250",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -7960,7 +8176,94 @@
             "Weapon": [
               {
                 "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+                "emitter": "250lb_mk_81_004",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+                "emitter": "250lb_mk_81_007",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam_group_x2",
+            "name": "spice_1000_slot5",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_holder",
+                "pylon_5",
+                "pylon_5_holder",
+                "pylon_6",
+                "pylon_6_holder",
+                "pylon_10",
+                "pylon_10_holder",
+                "pylon_10_bomb_locks",
+                "fuel_tank1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
                 "emitter": "250lb_mk_81_004",
                 "bullets": 1,
                 "external": true,
@@ -7969,7 +8272,7 @@
               },
               {
                 "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+                "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
                 "emitter": "250lb_mk_81_007",
                 "bullets": 1,
                 "external": true,
@@ -7977,6 +8280,84 @@
                 "machLimit": 1.01
               }
             ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "spice_2000_slot5",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_holder",
+                "pylon_5",
+                "pylon_5_holder",
+                "pylon_6",
+                "pylon_6_holder",
+                "pylon_10",
+                "pylon_10_holder",
+                "pylon_10_bomb_locks",
+                "fuel_tank1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+              "emitter": "250lb_mk_81_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
             "BannedWeaponPreset": [
               {
                 "slot": 4,
@@ -8575,6 +8956,7 @@
           {
             "iconType": "glide_guided_bomb_small_jdam_group_x8",
             "name": "us_gbu_39_slot5",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8595,16 +8977,14 @@
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
                 "emitter": "250lb_mk_81_004",
                 "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "separate": true
               },
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
                 "emitter": "250lb_mk_81_007",
                 "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "separate": true
               }
             ],
             "BannedWeaponPreset": [
@@ -8841,6 +9221,48 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "spice_1000_slot7",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+              "emitter": "us_2000lb_gbu_8_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "spice_2000_slot7",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+              "emitter": "us_2000lb_gbu_8_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            }
+          },
+          {
             "iconType": "guided_bomb_middle_jdam",
             "name": "us_gbu_38_slot7",
             "reqModification": "us_jdam",
@@ -8999,8 +9421,7 @@
               "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
               "emitter": "us_2000lb_gbu_8_002",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           }
         ]
@@ -10277,9 +10698,201 @@
             ]
           },
           {
+            "iconType": "bombs_ptb_fuse_glide_guided_bomb_small_jdam_group_x8",
+            "name": "il_spice_250_slot9_fuel_tank",
+            "reqModification": "il_spice_250",
+            "ShowNodes": {
+              "node": [
+                "pylon_7",
+                "pylon_7_holder",
+                "pylon_8",
+                "pylon_8_holder",
+                "pylon_9",
+                "pylon_9_holder",
+                "pylon_11",
+                "pylon_11_holder",
+                "pylon_11_bomb_locks",
+                "fuel_tank2"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank11_dm"
+            },
+            "Weapon": [
+              {
+                "trigger": "fuel tanks",
+                "blk": "gameData/Weapons/drop_tank/us_750_gal_fastpack_f_15c_right.blk",
+                "emitter": "fuel_tank2",
+                "bullets": 1,
+                "external": true,
+                "jettisonable": false,
+                "dragCx": 0.028
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+                "emitter": "250lb_mk_81_008",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+                "emitter": "250lb_mk_81_011",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_bombs_ptb_fuse_guided_bomb_heavy_middle_jdam_group_x2",
+            "name": "spice_1000_slot9_fuel_tank",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": [
+                "pylon_7",
+                "pylon_7_holder",
+                "pylon_8",
+                "pylon_8_holder",
+                "pylon_9",
+                "pylon_9_holder",
+                "pylon_11",
+                "pylon_11_holder",
+                "pylon_11_bomb_locks",
+                "fuel_tank2"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank11_dm"
+            },
+            "Weapon": [
+              {
+                "trigger": "fuel tanks",
+                "blk": "gameData/Weapons/drop_tank/us_750_gal_fastpack_f_15c_right.blk",
+                "emitter": "fuel_tank2",
+                "bullets": 1,
+                "external": true,
+                "jettisonable": false,
+                "dragCx": 0.028
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+                "emitter": "250lb_mk_81_008",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+                "emitter": "250lb_mk_81_011",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
             "iconType": "bombs_ptb_fuse_guided_bomb_heavy_middle_laser_group_x2",
             "name": "spice_2000_slot9_fuel_tank",
-            "reqModification": "il_spice_2000",
+            "reqModification": "il_spice_1000_2000",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -10310,16 +10923,7 @@
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
-                "emitter": "250lb_mk_81_011",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
-                "emitter": "250lb_mk_81_008",
+                "emitter": "250lb_mk_81_010",
                 "bullets": 1,
                 "external": true,
                 "separate": true,
@@ -11005,16 +11609,14 @@
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
                 "emitter": "250lb_mk_81_008",
                 "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "separate": true
               },
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
                 "emitter": "250lb_mk_81_011",
                 "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "separate": true
               }
             ],
             "BannedWeaponPreset": [
@@ -11340,9 +11942,9 @@
             ]
           },
           {
-            "iconType": "missile_air_to_uni_large_group",
-            "name": "spice_2000_slot9",
-            "reqModification": "il_spice_2000",
+            "iconType": "glide_guided_bomb_small_spice_group_x8",
+            "name": "il_spice_250_slot9",
+            "reqModification": "il_spice_250",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -11360,7 +11962,90 @@
             "Weapon": [
               {
                 "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+                "emitter": "250lb_mk_81_008",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+                "emitter": "250lb_mk_81_011",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam_group_x2",
+            "name": "spice_1000_slot9",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": [
+                "pylon_7",
+                "pylon_7_holder",
+                "pylon_8",
+                "pylon_8_holder",
+                "pylon_9",
+                "pylon_9_holder",
+                "pylon_11",
+                "pylon_11_holder",
+                "pylon_11_bomb_locks",
+                "fuel_tank2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
                 "emitter": "250lb_mk_81_008",
                 "bullets": 1,
                 "external": true,
@@ -11369,7 +12054,7 @@
               },
               {
                 "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+                "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
                 "emitter": "250lb_mk_81_011",
                 "bullets": 1,
                 "external": true,
@@ -11377,6 +12062,80 @@
                 "machLimit": 1.01
               }
             ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120c_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120c_tank_slot10"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "spice_2000_slot9",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": [
+                "pylon_7",
+                "pylon_7_holder",
+                "pylon_8",
+                "pylon_8_holder",
+                "pylon_9",
+                "pylon_9_holder",
+                "pylon_11",
+                "pylon_11_holder",
+                "pylon_11_bomb_locks",
+                "fuel_tank2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_2000.blk",
+              "emitter": "250lb_mk_81_010",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
             "BannedWeaponPreset": [
               {
                 "slot": 4,
@@ -11972,16 +12731,14 @@
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
                 "emitter": "250lb_mk_81_008",
                 "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "separate": true
               },
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
                 "emitter": "250lb_mk_81_011",
                 "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "separate": true
               }
             ],
             "BannedWeaponPreset": [
@@ -12589,9 +13346,27 @@
             ]
           },
           {
-            "iconType": "missile_air_to_uni_large",
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "spice_1000_slot12",
+            "reqModification": "il_spice_1000_2000",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+              "emitter": "is_spice_2000_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "dragCx": 0.02
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
             "name": "spice_2000_slot12",
-            "reqModification": "il_spice_2000",
+            "reqModification": "il_spice_1000_2000",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -13461,6 +14236,11 @@
       "tier": 3,
       "modClass": "weapon"
     },
+    "il_spice_250": {
+      "prevModification": "us_agm_65d",
+      "tier": 4,
+      "modClass": "weapon"
+    },
     "us_aim_9l": {
       "tier": 1,
       "modClass": "weapon"
@@ -13509,7 +14289,7 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "il_spice_2000": {
+    "il_spice_1000_2000": {
       "reqModification": "us_gbu_15v1",
       "modClass": "weapon",
       "tier": 4

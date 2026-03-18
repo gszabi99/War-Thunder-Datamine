@@ -408,7 +408,7 @@ struct BScopeHalfCenter : RadarInteractableEll
     targets.walkLayout(visitor)
 
   [unused_argument(rdata, rstate)] def override const draw(var ctx : GuiContext &; rdata : ElemRenderData & const; rstate : RenderState & const)
-    b_scope_half(ctx, *self.data, self.pos, self.origin, self.radius * 2.0)
+    b_scope_half(ctx, *self.data, self.origin, self.radius * 2.0)
 
 struct PolarTargetsElement : InteractableButton
   data : CanvasParams const? = null
@@ -876,7 +876,7 @@ struct BScopeHalfElevationCurret : InteractableButton
     ctx |> draw_line(origin.x + elevation * sina * sz.x, origin.y - elevation * cosa * sz.y,
     origin.x + (elevation * sina - markLenShort * cosa) * sz.x, origin.y - (elevation * cosa + markLenShort * sina) * sz.y, data |> hdpx(4. * data.lineWidth))
 
-def b_scope_half(var ctx : GuiContext&; data : CanvasParams&; grid_pos, origin, size : float2)
+def b_scope_half(var ctx : GuiContext&; data : CanvasParams&; origin, size : float2)
   if !data.hideBack
     b_scope_half_background(ctx, data, origin, size)
 
@@ -884,7 +884,7 @@ def b_scope_half(var ctx : GuiContext&; data : CanvasParams&; grid_pos, origin, 
   if half_width > 0. && !data.hideBack
     b_scope_sector(ctx, data, origin, size, half_width, 0.5)
 
-  let reflectionPos = grid_pos + float2(0., size.y * 0.5)
+  let reflectionPos = origin - float2(size * 0.5)
   render_ground_reflection(ctx, size, reflectionPos, is_color_or_white(data.lineColor), int2(16, 8), false)
   if get_radar_hud_is_visible() && !data.hideBeam
     if get_radar_hud_is_emitting()

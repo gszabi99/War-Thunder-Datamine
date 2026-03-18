@@ -2223,9 +2223,9 @@
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
         "flexionDir": [
-          0.0,
+          0.1,
           1.0,
-          0.3
+          0.0
         ]
       },
       {
@@ -2234,9 +2234,9 @@
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
         "flexionDir": [
-          0.0,
+          -0.1,
           1.0,
-          -0.3
+          0.0
         ]
       }
     ]
@@ -2315,16 +2315,16 @@
   },
   "cockpit": {
     "headPos": [
-      1.046,
+      1.0,
       0.829,
       -0.029
     ],
     "headPosOnShooting": [
-      1.195,
+      1.1,
       0.829,
       -0.029
     ],
-    "collimatorSize": 0.08,
+    "collimatorSize": 0.15,
     "lightPos": [
       1.63,
       0.41,
@@ -2371,9 +2371,68 @@
     "lightRadius3": 0.25,
     "gunLightRadiusMul": 0.01,
     "devices": {
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle1": [
+        0.0,
+        1.0
+      ],
+      "prop_pitch": [
+        0.0,
+        1.0
+      ],
+      "mixture": [
+        0.0,
+        1.0
+      ],
+      "weapon1": [
+        0.0,
+        1.0
+      ],
+      "weapon2": [
+        0.0,
+        1.0
+      ],
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_fixed": false,
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gear_fixed": false,
+      "airbrake_lever": [
+        0.0,
+        1.0
+      ],
+      "airbrake_fixed": false,
       "speed": [
         0.0,
-        208.333
+        277.778
+      ],
+      "speed_01": [
+        0.0,
+        277.778
       ],
       "compass": [
         0.0,
@@ -2387,43 +2446,13 @@
         0.0,
         360.0
       ],
-      "pedals1": [
-        -1.0,
-        1.0
-      ],
-      "pedals2": [
-        -1.0,
-        1.0
-      ],
-      "stick_ailerons": [
-        -1.2,
-        1.2
-      ],
-      "stick_elevator": [
-        -1.0,
-        1.0
-      ],
-      "throttle": [
-        [
-          -1.0,
-          1.0
-        ],
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "throttle1": [
-        -1.0,
-        1.0
-      ],
       "vario": [
-        -30.0,
-        30.0
+        -15.0,
+        15.0
       ],
       "altitude_10k": [
         0.0,
-        6000.0
+        12000.0
       ],
       "altitude_hour": [
         0.0,
@@ -2432,6 +2461,10 @@
       "altitude_min": [
         0.0,
         1000.0
+      ],
+      "altitude1_hour": [
+        0.0,
+        10000.0
       ],
       "altitude_koef": 1.0,
       "bank": [
@@ -2446,9 +2479,13 @@
         -0.23562,
         0.23562
       ],
-      "turn1": [
-        -0.23562,
-        0.23562
+      "aviahorizon_pitch": [
+        -60.0,
+        60.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
       ],
       "clock_hour": [
         0.0,
@@ -2462,13 +2499,25 @@
         0.0,
         60.0
       ],
+      "clock1_hour": [
+        0.0,
+        12.0
+      ],
+      "clock1_min": [
+        0.0,
+        60.0
+      ],
+      "clock1_sec": [
+        0.0,
+        60.0
+      ],
       "manifold_pressure": [
-        0.4,
-        2.133
+        0.6,
+        1.8
       ],
       "manifold_pressure1": [
-        0.4,
-        2.133
+        0.6,
+        1.8
       ],
       "rpm": [
         0.0,
@@ -2480,27 +2529,23 @@
       ],
       "fuel": [
         0.0,
-        576.0
-      ],
-      "fuel1": [
-        0.0,
-        576.0
+        432.0
       ],
       "oil_temperature": [
         0.0,
-        130.0
+        200.0
       ],
       "oil_temperature1": [
         0.0,
-        130.0
+        200.0
       ],
       "water_temperature": [
         0.0,
-        130.0
+        200.0
       ],
       "water_temperature1": [
         0.0,
-        130.0
+        200.0
       ],
       "oil_pressure": [
         0.0,
@@ -2518,41 +2563,26 @@
         0.0,
         15.0
       ],
-      "prop_pitch": [
+      "carb_temperature": [
+        -55.0,
+        25.0
+      ],
+      "prop_pitch_hour": [
+        0.0,
+        75.0
+      ],
+      "prop_pitch_min": [
         0.0,
         1.0
       ],
-      "mixture": [
+      "prop_pitch_hour1": [
+        0.0,
+        75.0
+      ],
+      "prop_pitch_min1": [
         0.0,
         1.0
       ],
-      "weapon1": [
-        0.0,
-        1.0
-      ],
-      "aviahorizon_pitch": [
-        -60.0,
-        60.0
-      ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "flaps": [
-        0.0,
-        1.0
-      ],
-      "flaps_fixed": false,
-      "gears": [
-        0.0,
-        1.0
-      ],
-      "gear_fixed": false,
-      "airbrake_lever": [
-        0.0,
-        1.0
-      ],
-      "airbrake_fixed": false,
       "ammo_counter1": [
         500.0,
         0.0

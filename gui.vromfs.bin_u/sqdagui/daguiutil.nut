@@ -342,23 +342,23 @@ function showObjectsByTable(obj, table) {
 }
 
 function enableObjsByTable(obj, table) {
-  if (!obj?.isValid)
+  if (!obj?.isValid())
     return
 
   foreach (id, status in table) {
     let curObj = obj.findObject(id)
-    if (curObj?.isValid)
+    if (curObj?.isValid())
       curObj.enable(status)
   }
 }
 
 function activateObjsByTable(obj, table) {
-  if (!obj?.isValid)
+  if (!obj?.isValid())
     return
 
   foreach (id, status in table) {
     let curObj = obj.findObject(id)
-    if (curObj?.isValid)
+    if (curObj?.isValid())
       curObj.inactiveColor = status ? "no" : "yes"
   }
 }

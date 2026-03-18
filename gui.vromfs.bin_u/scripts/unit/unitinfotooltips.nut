@@ -210,6 +210,7 @@ addTooltipTypes({
       dmViewer.updateUnitInfo(unitId)
       let info = dmViewer.getPartTooltipInfo(value, { name = dmPart ?? $"{value}1_dm", viewMode = DM_VIEWER_XRAY })
       updateDMTooltipView(obj, info)
+      dmViewer.reinit()
       return true
     }
   }

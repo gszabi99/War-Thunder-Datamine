@@ -142,7 +142,7 @@ local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     this.decoratorUnit = decorData.decoratorUnit
     this.decoratorSlot = decorData.decoratorSlot
-    if (obj?.isValid ?? false)
+    if (obj?.isValid() ?? false)
       obj.setValue(loc($"decorator/use/{resourceType}"))
   }
 

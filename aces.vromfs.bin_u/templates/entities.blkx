@@ -3124,7 +3124,7 @@
   },
   "bullet_target_apds_350mm": {
     "_use": "bullet_target",
-    "simpleObject__resName": "ap_target_350mm_dynmodel"
+    "simpleObject__resName": "apds_target_200mm_dynmodel"
   },
   "bullet_target_apcr_30mm": {
     "_use": "bullet_target",
@@ -3432,6 +3432,7 @@
               "aphe",
               "sap_hei_tank",
               "sap_tank",
+              "sapi",
               "sapbc_tank",
               "common_tank",
               "special_common_tank",
@@ -3953,8 +3954,6 @@
             "type": [
               "apds_tank",
               "apds_early_tank",
-              "apcr_tank",
-              "apcr_t",
               "apds_autocannon",
               "apds_fs_long_tank_belt"
             ]
@@ -4012,6 +4011,76 @@
               "targetTemplate": "bullet_target_apds_350mm",
               "penetration": [
                 271.0,
+                550.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "bullet_type:list<t>": {
+            "type": [
+              "apcr_tank",
+              "apcr_t"
+            ]
+          },
+          "targets:array": {
+            "bullet_target_apcr_30mm:object": {
+              "targetTemplate": "bullet_target_apcr_30mm",
+              "penetration": [
+                25.0,
+                50.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "bullet_target_apcr_75mm:object": {
+              "targetTemplate": "bullet_target_apcr_75mm",
+              "penetration": [
+                51.0,
+                180.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "bullet_target_apcr_150mm:object": {
+              "targetTemplate": "bullet_target_apcr_150mm",
+              "penetration": [
+                181.0,
+                250.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "bullet_target_apcr_200mm:object": {
+              "targetTemplate": "bullet_target_apcr_200mm",
+              "penetration": [
+                251.0,
+                400.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "bullet_target_apcr_350mm:object": {
+              "targetTemplate": "bullet_target_apcr_350mm",
+              "penetration": [
+                400.0,
                 550.0
               ],
               "targetOffset": [
