@@ -42,7 +42,10 @@ function updateCloseAllWindowsInfo() {
   if (watchedObjects.len() == 0)
     return
   foreach (idx, obj in watchedObjects) {
-    let closeAllWindowsInfo = obj.infoWnd.findObject("closeAllWindowsInfo")
+    let { infoWnd } = obj
+    if (!infoWnd.isValid())
+      continue
+    let closeAllWindowsInfo = infoWnd.findObject("closeAllWindowsInfo")
     closeAllWindowsInfo?.show(idx != 0 && idx == watchedObjects.len() - 1 && isUseGamePad())
   }
 }

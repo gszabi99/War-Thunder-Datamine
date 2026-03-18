@@ -545,13 +545,13 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
   prepareHelpPage = @(_handler) null
 
-  function setHangarCameraOffset(isFocused) {
+  function setHangarCameraOffsetForUnit(unit, isFocused) {
     local cameraOffset = 0
     if (isFocused) {
       let wnd = this.scene.findObject("wnd_frame")
       let wndWidth = wnd.getSize()[0]
       let totalWidth = to_pixels("sw - 1@frameThickPadding")
-      let addOffset = this.curUnit.isShipOrBoat() ? -0.2 : 0
+      let addOffset = unit.isShipOrBoat() ? -0.2 : 0
       cameraOffset = round_by_value(wndWidth / totalWidth.tofloat(), 0.05) + addOffset
     }
     hangar_set_camera_screen_offset(Point2(cameraOffset, 0))
@@ -559,7 +559,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
   function toggleHangarFocusModelAndCameraOffset(isFocused) {
     hangar_focus_model(isFocused)
-    this.setHangarCameraOffset(isFocused)
+    this.setHangarCameraOffsetForUnit(this.curUnit, isFocused)
   }
 
   function toggleXrayFilterMode(isEnabled) {
@@ -588,8 +588,8 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     dmViewer.placeHint(obj)
   }
 
-  function onEventHangarModelLoaded(_p) {
-    this.setHangarCameraOffset(true)
+  function onEventHangarModelLoaded(p) {
+    this.setHangarCameraOffsetForUnit(getAircraftByName(p.modelName), true)
     this.setXrayFilterShownParts()
   }
 
