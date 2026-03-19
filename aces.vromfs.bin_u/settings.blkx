@@ -2402,6 +2402,18 @@
     "fixedTimeStepHz": -60,
     "maxSubSteps": 3
   },
+  "dx11": {
+    "gpuPreferences": {
+      "intel": {
+        "vendorId": 32902,
+        "blacklistedFamily": [
+          32,
+          37,
+          39
+        ]
+      }
+    }
+  },
   "dx12": {
     "rootSignaturesUsesCBVDescriptorRanges": true,
     "pso_cache_enabled": true,
@@ -2412,6 +2424,7 @@
     "gpuPreferences": {
       "intel": {
         "vendorId": 32902,
+        "minDriver": "30.0.101.1340",
         "preferredDeviceIds": [
           22176,
           22177,
@@ -2423,8 +2436,7 @@
           22162,
           22163,
           22164
-        ],
-        "minDriver": "26.20.0.0"
+        ]
       },
       "nvidia": {
         "vendorId": 4318,
