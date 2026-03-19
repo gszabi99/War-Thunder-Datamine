@@ -72,6 +72,8 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
   }
 
   function onSubmit(_obj) {
+    if (!this.isValid())
+      return
     set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: checkLoginPass")

@@ -715,14 +715,12 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function goBack() {
     let cb = Callback(function() {
-      this.resetFiltersAndFocus()
       this.baseGoBack()
     }, this)
     this.checkSkillPointsAndDo(cb)
   }
 
   function onEventSetInQueue(_params) {
-    this.resetFiltersAndFocus()
     this.baseGoBack()
   }
 
@@ -1175,5 +1173,9 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     pageObj.tooltip =  "".concat(colorize("activeTextColor", loc("crew/skillUpgradesAvalible")),
       ":\n", "\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
+  }
+
+  function onDestroy() {
+    this.resetFiltersAndFocus()
   }
 }

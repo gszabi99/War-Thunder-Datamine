@@ -80,6 +80,7 @@ function onHoldTimerTick() {
 
 function startHoldTimer() {
   beginHoldTime = get_time_msec()
+  clearTimer(holdTimer)
   holdTimer = setInterval(0.05, onHoldTimerTick)
 }
 

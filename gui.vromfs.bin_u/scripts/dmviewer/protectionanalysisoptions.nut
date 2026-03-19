@@ -32,6 +32,7 @@ let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local options = {
   types = []
@@ -290,10 +291,13 @@ options.addTypes({
       list = list.map(@(unit) { unit, id = unit.name, br = unit.getBattleRating(ediff) })
       list.sort(@(a, b) a.br <=> b.br)
       this.values = list.map(@(v) v.unit)
+      
+      let needDisableTooltip = showConsoleButtons.get()
       this.items = list.map(@(v) {
         text  = format("[%.1f] %s", v.br, getUnitName(v.id))
         image = image_for_air(v.unit)
-        addDiv = getTooltipType("UNIT").getMarkup(v.id, { showLocalState = false })
+        addDiv = needDisableTooltip ? null
+          : getTooltipType("UNIT").getMarkup(v.id, { showLocalState = false })
       })
       let targetUnitId = options.targetUnit.name
       let preferredUnitId = this.value?.name ?? targetUnitId

@@ -552,7 +552,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
   function setHangarCameraOffsetForUnit(unit, isFocused) {
     local cameraOffset = 0
-    if (isFocused) {
+    if (isFocused && unit != null) {
       let wnd = this.scene.findObject("wnd_frame")
       let wndWidth = wnd.getSize()[0]
       let totalWidth = to_pixels("sw - 1@frameThickPadding")
