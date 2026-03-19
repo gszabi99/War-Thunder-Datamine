@@ -18,6 +18,8 @@ let { fillAirInfo } = require("%scripts/airInfo.nut")
 let fontScaleOption = require("%scripts/options/fonts.nut")
 
 
+let getAirInfoTooltipId = @(id) $"air_info_tooltip_{id}"
+
 addTooltipTypes({
   UNIT = {
     isCustomTooltipFill = true
@@ -45,11 +47,15 @@ addTooltipTypes({
         ? "%gui/unitInfo/unitModalInfo.blk"
         : "%gui/unitInfo/unitInfo.blk"
       guiScene.replaceContent(obj, blkPath, handler)
-
+      let contentObj = obj.findObject("air_info_tooltip")
+      contentObj.id = getAirInfoTooltipId(id)
       return this.fillTooltipContent(obj, handler, id, params)
     }
     fillTooltipContent = function(obj, handler, id, params) {
-      let contentObj = obj.findObject("air_info_tooltip")
+      let contentObj = obj.findObject(getAirInfoTooltipId(id))
+      if (!(contentObj?.isValid() ?? false))
+        return
+
       obj.getScene().setUpdatesEnabled(false, false)
 
       let unit = getAircraftByName(id)
