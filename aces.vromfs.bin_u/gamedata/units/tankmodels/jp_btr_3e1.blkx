@@ -47,6 +47,19 @@
   "canReloadNonGuns": true,
   "waterBreakerAnimVar": "btr_3e1_break_water_action",
   "waterBreakerToggleTime": 4.0,
+  "smokeScreenActivateTime": 5.0,
+  "smokeScreenEffectTime": 7.0,
+  "smokeScreenRad": 12.0,
+  "smokeScreenOffset": [
+    -3.0,
+    0.0,
+    2.0
+  ],
+  "smokeScreenDmPart": "engine_dm",
+  "smokeScreenFxType": "tank_smokescreen",
+  "smokeScreenFx": "smokescreen_no_therm_small",
+  "smokeVisibilityType1": "visual",
+  "smokeVisibilityType2": "optic",
   "controlDevices": {
     "device": [
       {
@@ -4295,5 +4308,13 @@
       "rotation": 2.5,
       "collisionNode": "cls_turret"
     }
+  },
+  "smokeScreenExhaustEmitters": {
+    "emitter": [
+      "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
+      "emtr_exhaust_04"
+    ]
   }
 }
