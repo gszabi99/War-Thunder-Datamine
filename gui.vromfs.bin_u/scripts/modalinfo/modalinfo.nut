@@ -247,7 +247,10 @@ onTimerTick = function() {
   isInAct = true
 
   let { infoWnd, infoWndHolder, initiatorObj, infoWndBounds } = watchedObjects[watchedObjects.len() - 1]
-  if (!isCursorInBounds([getObjectBounds(initiatorObj), infoWndBounds], cursorPos)) {
+  let boundsArr = [infoWndBounds]
+  if (initiatorObj.isValid())
+    boundsArr.append(getObjectBounds(initiatorObj))
+  if (!isCursorInBounds(boundsArr, cursorPos)) {
     watchedObjects.pop()
     if (infoWnd?.isValid()) {
       broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })

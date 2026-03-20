@@ -22,6 +22,7 @@ from "unitCalculcation" import get_aircraft_fuel_consumption, get_aircraft_max_f
 from "%scripts/missions/missionsUtils.nut" import isSkirmishWithKillStreaks, getMissionAllowedUnittypesMask, getGameModeMaps
 from "graphicsOptions" import getDgsTexQuality
 from "%sqstd/platform.nut" import is_ps5_pro, is_xbox_anaconda, is_xbox_lockhart
+from "dagor.workcycle" import defer
 let { get_current_campaign, set_mission_settings, get_mission_settings, get_mission_for_takeoff
 } = require("%scripts/missions/missionsStates.nut")
 let {
@@ -4827,7 +4828,7 @@ let optionsSetMap = {
     set_gui_option(optionId, value)
   },
   [USEROPT_PS4_CROSSPLAY] = @(value, _descr, _optionId) crossplayModule.setCrossPlayStatus(value),
-  [USEROPT_VSYNC_MODE] = @(value, _descr, _optionId) consoleSettings.setVSyncMode(value),
+  [USEROPT_VSYNC_MODE] = @(value, _descr, _optionId) defer(@() consoleSettings.setVSyncMode(value)),
   [USEROPT_PS4_CROSSNETWORK_CHAT] = @(value, _descr, _optionId) crossplayModule.setCrossNetworkChatStatus(value),
   [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS] = def_set_gui_option,
   [USEROPT_SHOW_SOCIAL_NOTIFICATIONS] = def_set_gui_option,
