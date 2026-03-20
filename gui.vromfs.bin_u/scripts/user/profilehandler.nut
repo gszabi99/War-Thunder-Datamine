@@ -70,6 +70,7 @@ let { Cost } = require("%scripts/money.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let gfn = require_optional("gfn")
 
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
@@ -339,7 +340,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function updateButtons() {
     let isProfileOpened = this.selectedSheet == "UserCard"
-    let needHideChangeAccountBtn = steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
+    let needHideChangeAccountBtn = (steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)) || gfn?.is_running()
     let buttonsList = {
       btn_changeAccount = isInMenu.get() && isProfileOpened && !isPlatformSony && !is_gdk && !needHideChangeAccountBtn && !this.isEditModeEnabled
       btn_changeName = isInMenu.get() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !this.isEditModeEnabled
