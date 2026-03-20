@@ -56,15 +56,22 @@ function closeLastModalInfo(removeHolder = true) {
     return
 
   let { fakeInitiator, infoWndHolder, infoWnd } = watchedObjects.pop()
-  let guiScene = infoWnd.getScene()
-  move_mouse_on_obj(fakeInitiator)
   broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })
-  guiScene.destroyElement(infoWnd)
+
+  local guiScene = null
+  if (infoWnd.isValid()) {
+    guiScene = infoWnd.getScene()
+    guiScene.destroyElement(infoWnd)
+  }
+  if (fakeInitiator.isValid())
+    move_mouse_on_obj(fakeInitiator)
+
   if (infoWndHolder?.isValid()) {
-    if (removeHolder)
+    if (removeHolder) {
+      guiScene = guiScene ?? infoWndHolder.getScene()
       guiScene.destroyElement(infoWndHolder)
-    else
-     lastHolder = infoWndHolder
+    } else
+      lastHolder = infoWndHolder
   }
   updateCloseAllWindowsInfo()
 }

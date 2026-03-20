@@ -5,6 +5,7 @@ from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 let { is_windows, platformId, is_gdk } = require("%sqstd/platform.nut")
 let { steam_is_running } = require("steam")
 let samsung = require("samsung")
+let gfn = require("gfn")
 let statsd = require("statsd")
 let { get_meta_missions_info } = require("guiMission")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
@@ -46,6 +47,8 @@ function loadLoginHandler() {
     hClass = gui_handlers.LoginWndHandlerEpic
   else if (samsung.is_running())
     hClass = gui_handlers.LoginWndHandlerSamsung
+  else if (gfn.is_running())
+    hClass = gui_handlers.LoginWndHandlerGfn
 
   loadHandler(hClass)
 }
