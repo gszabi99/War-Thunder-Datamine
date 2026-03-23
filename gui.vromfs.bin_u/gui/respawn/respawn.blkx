@@ -891,11 +891,18 @@
     "behavior": "button",
     "_on_click": "goBack"
   },
-  "timer": {
-    "id": "stat_update",
-    "timer_handler_func": "onUpdate",
-    "timer_interval_msec": "250"
-  },
+  "timer": [
+    {
+      "id": "stat_update",
+      "timer_handler_func": "onUpdate",
+      "timer_interval_msec": "250"
+    },
+    {
+      "id": "map_update",
+      "timer_handler_func": "onMapUpdate",
+      "timer_interval_msec": "100"
+    }
+  ],
   "DummyButton": {
     "id": "btn_hide_show_hud",
     "on_click": "showHud",

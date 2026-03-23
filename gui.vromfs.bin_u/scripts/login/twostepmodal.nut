@@ -84,6 +84,10 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
       getObjValue(this.scene, "loginbox_code", ""),
       getObjValue(this.scene, "loginbox_code_remember_this_device", false),
       true)
+    
+    
+    if (!this.isValid())
+      return
     this.proceedAuth(result)
   }
 

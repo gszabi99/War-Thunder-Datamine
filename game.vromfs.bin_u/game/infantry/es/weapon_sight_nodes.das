@@ -121,9 +121,9 @@ def apply_sight_preset(parentGunEid : EntityId; presetsEid : EntityId; curSightE
     if aimOffset != null
       weapon__aimNodeOffset = *aimOffset
 
-    let useAnimIndex = preset |> get_int("useAnimNodeIndex")
+    let useAnimIndex = preset |> get_float("useAnimNodeIndex")
     if useAnimIndex != null && weapon__aimSightPresetIndex != null
-      setVar(phys_vars, *weapon__aimSightPresetIndex, float(*useAnimIndex))
+      setVar(phys_vars, *weapon__aimSightPresetIndex, *useAnimIndex)
       return
 
     let frontsightNodeName = preset |> get_string("frontsightNode", "")
@@ -159,7 +159,7 @@ def weapon_set_sight_preset_es(evt : CmdWeapSetSightPreset;
 def init_sight_preset_index_id(evt : Event;
                                var phys_vars : PhysVars&;
                                var weapon__aimSightPresetIndex : int&)
-  weapon__aimSightPresetIndex = registerVar(phys_vars, "sight_preset_index", float(0))
+  weapon__aimSightPresetIndex = registerVar(phys_vars, "sight_preset_index", 0.0)
 
 [es(on_appear)]
 def init_gun_launch_vertical_angle_es(evt : Event;

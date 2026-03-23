@@ -94,6 +94,10 @@ function getInfantrySkinsLocationsList() {
   if (cachedSkinFileList == null) {
     let pathToConfigs = "%gameBase/templates/infantry_skins/"
     cachedSkinFileList = scan_folder({ root = pathToConfigs, vromfs = true, realfs = true, recursive = false, files_suffix = "*.blk" })
+    
+
+
+
   }
   return cachedSkinFileList
 }

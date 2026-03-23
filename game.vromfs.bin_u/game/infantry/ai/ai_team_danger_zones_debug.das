@@ -84,34 +84,17 @@ def ai_nav_zones_debug_remove(option : string)
         cur = danger_zones_list_remove(cur, death_danger_zones__list, death_danger_zones__prevNext)
 
 
-[console_cmd(name="ai.create_nav_zone", hint="<turret|death> <team> <radius=10.0> <height=3.0> <weight=30.0> <duration=15.0>")]
-def ai_nav_zones_debug_create(option : string;
-                              team : int;
-                              radius = 10.0;
-                              height = 3.0;
-                              weight = 30.0;
-                              duration = 15.0)
+def private create_nav_zone_impl(pos : float3;
+                                 option : string;
+                                 team : int;
+                                 radius : float;
+                                 height : float;
+                                 weight : float;
+                                 duration : float)
   let isTurretZone = option == "turret"
   let isDeathZone  = option == "death"
   if !isTurretZone && !isDeathZone
     console_print("Unknown option '{option}'. Valid options are: turret, death.")
-    return
-
-  var areaPos : float3
-  let isOk = find_query() <| $ [es] (camera__active : bool; transform : float3x4)
-    if !camera__active
-      return false
-    var len = 100.0
-    var norm = float3()
-    let dir = transform[2]
-    let pos = transform[3]
-    if !traceray_normalized(pos, dir, len, norm)
-      return false
-    areaPos = pos + dir * len
-    return true
-
-  if !isOk
-    console_print("Trace failed")
     return
 
   let curTime = get_sync_time()
@@ -130,7 +113,6 @@ def ai_nav_zones_debug_create(option : string;
                      var death_danger_zones__areasTime : FloatList&)
     if team__id != team
       return
-
     let areaId = walker_agent_nav_allocAreaId()
     if isTurretZone
       let areaIdx = danger_zones_list_insertSorted(areaId, curTime + duration,
@@ -138,7 +120,7 @@ def ai_nav_zones_debug_create(option : string;
                                                    turret_danger_zones__prevNext,
                                                    turret_danger_zones__areasData,
                                                    turret_danger_zones__areasTime)
-      walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, areaPos, areaRadius,
+      walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, pos, areaRadius,
                                                  weight, sideWeight, curTime, curTime + duration, true)
       walker_custom_nav_setAreaUserTagData(walker_custom_nav, areaId, CUSTOMNAV_TAG_TURRETDANGER, areaIdx)
     elif isDeathZone
@@ -147,9 +129,49 @@ def ai_nav_zones_debug_create(option : string;
                                                    death_danger_zones__prevNext,
                                                    death_danger_zones__areasData,
                                                    death_danger_zones__areasTime)
-      walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, areaPos, areaRadius,
+      walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, pos, areaRadius,
                                                  weight, sideWeight, curTime, curTime + duration, true)
       walker_custom_nav_setAreaUserTagData(walker_custom_nav, areaId, CUSTOMNAV_TAG_DEATH, areaIdx)
+
+
+[console_cmd(name="ai.create_nav_zone", hint="<turret|death> <team> <radius=10.0> <height=3.0> <weight=30.0> <duration=15.0>")]
+def ai_nav_zones_debug_create(option : string;
+                              team : int;
+                              radius = 10.0;
+                              height = 3.0;
+                              weight = 30.0;
+                              duration = 15.0)
+  var areaPos : float3
+  let isOk = find_query() <| $ [es] (camera__active : bool; transform : float3x4)
+    if !camera__active
+      return false
+    var len = 100.0
+    var norm = float3()
+    let dir = transform[2]
+    let pos = transform[3]
+    if !traceray_normalized(pos, dir, len, norm)
+      return false
+    areaPos = pos + dir * len
+    return true
+
+  if !isOk
+    console_print("Trace failed")
+    return
+
+  create_nav_zone_impl(areaPos, option, team, radius, height, weight, duration)
+
+
+[console_cmd(name="ai.create_nav_zone_at", hint="<turret|death> <team> <x> <y> <z> <radius=10.0> <height=3.0> <weight=30.0> <duration=15.0>")]
+def ai_nav_zones_debug_create_at(option : string;
+                                 team : int;
+                                 x : float;
+                                 y : float;
+                                 z : float;
+                                 radius = 10.0;
+                                 height = 3.0;
+                                 weight = 30.0;
+                                 duration = 15.0)
+  create_nav_zone_impl(float3(x, y, z), option, team, radius, height, weight, duration)
 
 
 [console_cmd(name="ai.check_point_safe")]
@@ -157,6 +179,46 @@ def ai_check_point_safe_cmd(x : float; y : float; z : float; team : int)
   let pos = float3(x, y, z)
   let safe = is_point_safe(pos, team)
   console_print("Point ({x}, {y}, {z}) for team {team} is {safe ? "SAFE" : "DANGEROUS"}")
+
+
+[console_cmd(name="ai.find_nav_zones_path", hint="<from_x> <from_y> <from_z> <to_x> <to_y> <to_z> <thru_blocked=false> <team=1>")]
+def find_nav_zones_path_cmd(from_x : float; from_y : float; from_z : float; to_x : float; to_y : float; to_z : float;
+                            thru_blocked : bool = false; team : int = 1)
+  let extents = float3(1.5, 1.0, 1.5)
+  let fromPos = float3(from_x, from_y, from_z)
+  let toPos = float3(to_x, to_y, to_z)
+  var customNav : CustomNav const? = null
+  find_query() <| $ [es] (team__id : int; walker_custom_nav : CustomNav const?)
+    if team__id == team && walker_custom_nav != null
+      customNav = walker_custom_nav
+      return true
+    return false
+
+  var path : array<float3>
+  var result = FindPathResult.FPR_FAILED
+  let stepSize = 0.5
+  let pathSlope = 0.25
+  let t0 = ref_time_ticks()
+  if thru_blocked
+    result = find_any_path(fromPos, toPos, extents, stepSize, pathSlope, customNav) <| $(out_path)
+      path := out_path
+  else
+    result = find_path(fromPos, toPos, extents, stepSize, pathSlope, customNav) <| $(out_path)
+      path := out_path
+  let msec = float(double(get_time_usec(t0)) / 1000.0lf)
+
+  let len = length(path)
+  if len > 0
+    var atPos = path[0]
+    let radius = 0.1f
+    draw_debug_sphere_buffered(atPos, radius, E3DCOLOR(0xFFFF0000), 30, 2000)
+    for i in range(1, len)
+      let nextPos = path[i]
+      draw_debug_sphere_buffered(nextPos, radius, E3DCOLOR(0xFFFF0000), 30, 2000)
+      draw_debug_line_buffered(atPos, nextPos, E3DCOLOR(0xFFFF0000), 2000)
+      atPos = nextPos
+
+  console_print("find_path_debug: res={result}; len={len}; dist={distance(fromPos, toPos)} time={msec}ms")
 
 
 def private draw_nav_zones(walker_custom_nav : CustomNav;

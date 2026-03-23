@@ -747,7 +747,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   human_fast_prone__inProgress : bool;
                   human_sprint_leap__isLeaping : bool;
                   animchar__updatable : bool;
-                  animchar__visible : bool = false;
+                  animchar__visible : bool = true;
                   animchar__accumDt = -1.f;
                   animchar__dtThreshold = 0.f;
                   human_anim__jumpStartStateRange : float2;
@@ -928,6 +928,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                           phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_EQUIPING ||
                           phys.previousState.weapEquipState.curState == HUWeaponEquipState.EES_HOLSTERING ||
                           phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_EQUIPED)
+
   if human_weap__throwMode
     stateUpperBody = (effectiveCurSlot == HUWeaponSlots.EWS_GRENADE ? HumanStateUpperBody.E_THROW
                                                                     : HumanStateUpperBody.E_FAST_THROW)
@@ -1303,3 +1304,17 @@ def human_spine_rotate_on_lean_update(info : ParallelUpdateFrameDelayed;
   let lean = lerp(phys.previousState.leanPosition, phys.currentState.leanPosition, interpK)
   let leanRotate = cvt(lean, -45.0, 0.0, human_anim__leanSpineRotateAngles.x, human_anim__leanSpineRotateAngles.y)
   phys_vars |> setVar(human_anim__leanSpineRotateVarId, leanRotate)
+
+
+[es(before=human_anim_es)]
+def human_anim_on_finish_equipping_es(info : ParallelUpdateFrameDelayed;
+                                      human_anim__changeWeaponVarId : int;
+                                      human_net_phys : HumanActor;
+                                      var phys_vars : PhysVars)
+  assume currentWeapState = human_net_phys.phys.currentState.weapEquipState.curState
+  assume previousWeapState = human_net_phys.phys.previousState.weapEquipState.curState
+
+  let finishedChangingWeapon = (currentWeapState == HUWeaponEquipState.EES_EQUIPED &&
+                                previousWeapState != HUWeaponEquipState.EES_EQUIPED)
+  if finishedChangingWeapon
+    phys_vars |> setVar(human_anim__changeWeaponVarId, 0.0)

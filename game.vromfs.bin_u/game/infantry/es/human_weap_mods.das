@@ -243,7 +243,13 @@ def human_weap_change_zoom_to_next(evt : NextVariableZoomGunScope;
     gunmod__previousCamShiftMin = gunmod__camShiftMin
     gunmod__previousCamShiftMax = gunmod__camShiftMax
     gunmod__currentZoomIndex = (gunmod__currentZoomIndex + 1) % length(gunmod__variableZoomOptions)
+    send_net_event(gunScopeEid, ChangeGunModZoomIndex(zoomIndex = gunmod__currentZoomIndex))
     gunmod__zoomAnimationTime = 0.0
+
+[es(tag=server)]
+def human_weap_server_change_zoom_to_next(evt : ChangeGunModZoomIndex;
+                                          var gunmod__currentZoomIndex : int&)
+  gunmod__currentZoomIndex = evt.zoomIndex
 
 [es(tag=gameClient, no_order)]
 def human_weap_zoom_animation(info : UpdateStageInfoAct;

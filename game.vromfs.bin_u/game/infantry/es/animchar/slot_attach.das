@@ -17,7 +17,7 @@ def slot_attach_init_tms_impl(dt : float;
                               disableUpdate : Tag const?;
                               var animchar_node_wtm : AnimcharNodesMat44?;
                               var animchar_render__root_pos : vec4f?;
-                              animchar__visible : bool = true;
+                              animchar__visible : bool = false; 
                               slot_attach__calcAnim : bool = true;
                               slot_attach__rotTm : float3x4 const?)
   if slot_attach__slotId < 0 || !animchar_attach__attachedTo
@@ -80,7 +80,7 @@ def slot_attach_first_priority_update_es(info : SlotAttachUpdateEvent;
                                          disableUpdate : Tag const?;
                                          var animchar_node_wtm : AnimcharNodesMat44?;
                                          var animchar_render__root_pos : vec4f?;
-                                         animchar__visible : bool = true;
+                                         animchar__visible : bool = false;
                                          slot_attach__calcAnim : bool = true;
                                          slot_attach__rotTm : float3x4 const?)
   slot_attach_init_tms_impl(info.dt, slot_attach__slotId, animchar_attach__attachedTo, animchar, disableUpdate,
@@ -96,7 +96,7 @@ def slot_attach_secondary_priority_update_es(info : SlotAttachUpdateEvent;
                                              disableUpdate : Tag const?;
                                              var animchar_node_wtm : AnimcharNodesMat44?;
                                              var animchar_render__root_pos : vec4f?;
-                                             animchar__visible : bool = true;
+                                             animchar__visible : bool = false;
                                              slot_attach__calcAnim : bool = true;
                                              slot_attach__rotTm : float3x4 const?)
   slot_attach_init_tms_impl(info.dt, slot_attach__slotId, animchar_attach__attachedTo, animchar, disableUpdate,

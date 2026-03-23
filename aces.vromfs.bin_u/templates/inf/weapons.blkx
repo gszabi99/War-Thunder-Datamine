@@ -123,17 +123,19 @@
   "scope_optical_gunmod": {
     "_use": "scope_gunmod",
     "gun_scope_hitmark__NodeName": "crosshair",
-    "gunmod__scopeOffsetInBipod": 0.15,
+    "gunmod__bipodScopeOffset": 0.12,
     "isCameraAlwaysOnScope:tag": {}
   },
   "scope_thermal_gunmod": {
     "_use": "scope_gunmod",
     "gun_scope_hitmark__NodeName": "crosshair",
+    "gunmod__bipodScopeOffset": 0.1,
     "isCameraAlwaysOnScope:tag": {}
   },
   "scope_collimator_gunmod": {
     "_use": "scope_gunmod",
     "gun_scope_hitmark__NodeName": "collimator_glass",
+    "gunmod__bipodScopeOffset": 0.035,
     "isCameraAlwaysOnScope:tag": {}
   },
   "scope_hitmark_position": {
@@ -155,7 +157,7 @@
       "flashlight__blinkOnPeriod": 0.05,
       "flashlight__blinkOffPeriod": 0.05,
       "flashlight__blinkNextTime": -1.0,
-      "flashlight__brightness": 10.0,
+      "flashlight__brightness": 2.5,
       "flashlight__eid:eid": {}
     }
   },
@@ -2042,6 +2044,7 @@
       2.0
     ],
     "gun__reloadTime": 3.55,
+    "gunmod__bipodScopeOffset": 0.1,
     "item__id:i": {
       "value": 0,
       "_hide": true
@@ -2299,7 +2302,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.8,
             0.07,
@@ -2311,7 +2314,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.575,
             0.01,
@@ -2320,7 +2323,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.13,
             -0.08,
@@ -2489,7 +2492,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.93,
             0.12,
@@ -2501,7 +2504,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.93,
             -0.05,
@@ -3348,7 +3351,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.6,
             0.05,
@@ -3360,7 +3363,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.7,
             -0.02,
@@ -3518,7 +3521,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.6,
             0.05,
@@ -3530,7 +3533,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.4,
+          "recoil": 0.65,
           "offset": [
             0.7,
             -0.02,
@@ -3720,7 +3723,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.25,
+          "recoil": 0.65,
           "offset": [
             0.8,
             0.05,
@@ -3919,7 +3922,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.25,
+          "recoil": 0.65,
           "offset": [
             0.64,
             0.03,
@@ -4274,7 +4277,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.38,
             0.0,
@@ -4283,7 +4286,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.15,
             -0.12,
@@ -4603,7 +4606,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.52,
             -0.01,
@@ -4612,7 +4615,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.11,
             -0.14,
@@ -4825,15 +4828,26 @@
       }
     },
     "gun__mountPoints:shared:array": {
-      "point:object": {
-        "type": "rest",
-        "recoil": 0.65,
-        "offset": [
-          0.17,
-          -0.16,
-          0.0
-        ]
-      }
+      "point:object": [
+        {
+          "type": "rest",
+          "recoil": 0.9,
+          "offset": [
+            0.17,
+            -0.16,
+            0.0
+          ]
+        },
+        {
+          "type": "rest",
+          "recoil": 0.9,
+          "offset": [
+            0.45,
+            0.0,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "ak_15": {
@@ -5030,7 +5044,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.5,
+          "recoil": 0.9,
           "offset": [
             0.25,
             -0.145,
@@ -5039,7 +5053,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.58,
             0.01,
@@ -5243,7 +5257,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.5,
+          "recoil": 0.9,
           "offset": [
             0.25,
             -0.145,
@@ -5252,7 +5266,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.58,
             0.01,
@@ -5430,7 +5444,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.13,
             -0.15,
@@ -5439,7 +5453,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.43,
             -0.02,
@@ -5658,6 +5672,28 @@
         "hero": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
+    },
+    "gun__mountPoints:shared:array": {
+      "point:object": [
+        {
+          "type": "rest",
+          "recoil": 0.9,
+          "offset": [
+            0.2,
+            -0.16,
+            0.0
+          ]
+        },
+        {
+          "type": "rest",
+          "recoil": 0.9,
+          "offset": [
+            0.55,
+            0.01,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "kord_6p68": {
@@ -5856,6 +5892,28 @@
         "hero": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
+    },
+    "gun__mountPoints:shared:array": {
+      "point:object": [
+        {
+          "type": "rest",
+          "recoil": 0.9,
+          "offset": [
+            0.24,
+            -0.16,
+            0.0
+          ]
+        },
+        {
+          "type": "rest",
+          "recoil": 0.9,
+          "offset": [
+            0.55,
+            0.01,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "sig_xm5": {
@@ -6047,7 +6105,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.13,
             -0.12,
@@ -6056,7 +6114,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.43,
             0.0,
@@ -6493,7 +6551,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.25,
+          "recoil": 0.65,
           "offset": [
             0.575,
             -0.01,
@@ -6505,7 +6563,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.25,
+          "recoil": 0.65,
           "offset": [
             0.45,
             -0.01,
@@ -6514,7 +6572,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.25,
+          "recoil": 0.65,
           "offset": [
             0.75,
             0.0,
@@ -6676,7 +6734,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.25,
+          "recoil": 0.65,
           "offset": [
             0.42,
             0.0,
@@ -6688,7 +6746,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.25,
+          "recoil": 0.65,
           "offset": [
             0.54,
             0.01,
@@ -6823,7 +6881,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.25,
+          "recoil": 0.65,
           "offset": [
             0.5,
             0.03,
@@ -6989,7 +7047,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.5,
+          "recoil": 0.65,
           "offset": [
             0.45,
             0.02,
@@ -7001,7 +7059,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.5,
+          "recoil": 0.65,
           "offset": [
             0.75,
             0.035,
@@ -7324,7 +7382,7 @@
     "gun__mountPoints:shared:array": {
       "point:object": {
         "type": "rest",
-        "recoil": 0.65,
+        "recoil": 0.9,
         "offset": [
           0.28,
           -0.1,
@@ -7994,7 +8052,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.17,
             -0.16,
@@ -8003,7 +8061,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.58,
             0.01,
@@ -8192,7 +8250,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.45,
+          "recoil": 0.65,
           "offset": [
             0.73,
             -0.01,
@@ -8204,7 +8262,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.45,
+          "recoil": 0.65,
           "offset": [
             0.78,
             -0.02,
@@ -8213,7 +8271,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.45,
+          "recoil": 0.65,
           "offset": [
             0.38,
             -0.04,
@@ -8391,7 +8449,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.35,
+          "recoil": 0.65,
           "offset": [
             0.44,
             0.015,
@@ -8403,7 +8461,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.35,
+          "recoil": 0.65,
           "offset": [
             0.53,
             -0.01,
@@ -8412,7 +8470,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.35,
+          "recoil": 0.65,
           "offset": [
             0.15,
             -0.12,
@@ -8589,7 +8647,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.35,
+          "recoil": 0.65,
           "offset": [
             0.61,
             0.015,
@@ -8601,7 +8659,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.35,
+          "recoil": 0.65,
           "offset": [
             0.53,
             0.04,
@@ -8610,7 +8668,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.35,
+          "recoil": 0.65,
           "offset": [
             -0.06,
             -0.068,
@@ -8819,7 +8877,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.45,
+          "recoil": 0.65,
           "offset": [
             0.44,
             0.015,
@@ -9016,7 +9074,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.35,
+          "recoil": 0.65,
           "offset": [
             0.55,
             0.015,
@@ -9028,7 +9086,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.35,
+          "recoil": 0.65,
           "offset": [
             0.67,
             0.01,
@@ -9064,6 +9122,7 @@
     "gun__altReloadTime": 4.6,
     "gun__quickReloadTime": 3.4,
     "gun__inspectTime": 4.3,
+    "gunmod__bipodScopeOffset": 0.1,
     "item__id:i": {
       "value": 0,
       "_hide": true
@@ -9152,7 +9211,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.5,
+          "recoil": 0.65,
           "offset": [
             0.45,
             0.02,
@@ -9164,7 +9223,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.5,
+          "recoil": 0.65,
           "offset": [
             0.75,
             0.035,
@@ -9537,7 +9596,136 @@
     "gun__mountPoints:shared:array": {
       "point:object": {
         "type": "rest",
-        "recoil": 0.65,
+        "recoil": 0.9,
+        "offset": [
+          0.52,
+          -0.037,
+          -0.002
+        ]
+      }
+    }
+  },
+  "ks_p_18_5": {
+    "_use": [
+      "main_weap_slots",
+      "reload_single_bullet",
+      "assault_rifle_deviation_preset",
+      "ironsights_open_shotgun"
+    ],
+    "reload__singleReloadAmmoCount": 2,
+    "single_reload__prepareTime": 0.4,
+    "single_reload__loopTime": 0.8,
+    "single_reload__postTime": 0.6,
+    "animchar__res": "18_5_ks_p_char",
+    "gun__blk": "gameData/weapons/human_weapons/ks_p_18_5.blk",
+    "item__template": "ks_p_18_5_gun_item",
+    "item__proto": "gameData/weapons/human_weapons/ks_p_18_5.blk",
+    "item__locDetails": "12 gauge",
+    "item__weapTemplate": "ks_p_18_5_gun",
+    "item__name": "items/ks_p_18_5",
+    "item__weapType": "shotgun",
+    "item__weight": 4.0,
+    "gun__inertialMass": 4.5,
+    "gun__locName": "KS-P",
+    "gun__statName": "shotgun",
+    "gun__sightsDistance": 0.05,
+    "gun__shotFreq": 2.9167,
+    "gun__boltFreq": 27.0,
+    "gun__automaticReload": false,
+    "gun_spread__maxDeltaAngle": 0.15,
+    "gun__chokeSpread": 2.4,
+    "gun__reloadTime": 4.6,
+    "gun__inspectTime": 2.1,
+    "item__id:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "gun__ammoHolders:array": {
+      "ammoHolders": "ks_p_18_5_magazine"
+    },
+    "gun_mods__slots:object": {
+      "scope:object": {
+        "scope_m68_cco": "scope_m68_cco",
+        "scope_aimpoint_pro_red_dot": "scope_aimpoint_pro_red_dot",
+        "scope_aimpoint_acro_p2_red_dot": "scope_aimpoint_acro_p2_red_dot",
+        "scope_1p87": "scope_1p87",
+        "scope_ekp_8_18_cobra": "scope_ekp_8_18_cobra",
+        "scope_exps3": "scope_exps3",
+        "scope_vzor_red_dot": "scope_vzor_red_dot_elevated_1",
+        "scope_aimpoint_micro_t2_red_dot": "scope_aimpoint_micro_t2_red_dot",
+        "scope_docter_red_dot": "scope_docter_red_dot",
+        "scope_trijicon_rmr_red_dot": "scope_trijicon_rmr_red_dot"
+      }
+    },
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/bullets/12gauge_shell.blk"
+    },
+    "gun__firingModes:array": {
+      "mode:object": {
+        "modeType": "manual"
+      }
+    },
+    "gun__firingModeNames:array": {
+      "mode": "bolt_action"
+    },
+    "gun__canZoomInBoltAction:tag": {}
+  },
+  "ks_p_18_5_gun": {
+    "_use": [
+      "equipable_gun",
+      "shotgun_ww2_preset",
+      "ks_p_18_5",
+      "shotgun_muzzle_preset",
+      "shotgun_gun_tilt",
+      "rifle_gun_aim_sound",
+      "gun_bolt_action_sound"
+    ],
+    "gun_anim_var__tpsGunOffsetAlong": -0.015,
+    "gun_anim_var__tpsGunOffsetAcross": 0.037,
+    "gun_anim_var__tpsGunOffsetUp": -0.06,
+    "gun_tilt__tpsAngle": 2.0,
+    "gun_anim_var__fpsGunOffsetAlong": -0.07,
+    "gun_anim_var__fpsGunOffsetAcross": 0.045,
+    "gun_anim_var__fpsGunOffsetUp": -0.02,
+    "gun_shell_ejection__timeMult": 0.35,
+    "gun__length": 0.4,
+    "gun__recoilAmount": 0.27,
+    "gun__recoilDirAmount": 0.76,
+    "gun__recoilDir": 0.15,
+    "gun__visualRecoilMult": 1.6,
+    "gun__recoilOffsMult": 0.2,
+    "gun_attach__slot": "weapon",
+    "meleeSoundType": "rifle",
+    "gun_reload_state__emptyChamberTime": 1.6,
+    "gun_reload_state__prepareTime": 0.46,
+    "gun_reload_state__bulletSingleTime": 0.8,
+    "gun_reload_state__bulletMultipleTime": 0.8,
+    "gun_reload_state__bulletMultipleCount": 2,
+    "gun_reload_state__postTime": 0.6,
+    "multiStateReloadSystem:tag": {},
+    "gun_sound__shotPath:shared:object": {
+      "_tags": "sound",
+      "path": "/weapon/rifle/ks_p_18_5"
+    },
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "foley_start:object": {
+        "path": "/weapon/rifle/ks_p_18_5/reload_foley_start"
+      },
+      "shell_in:object": {
+        "path": "/weapon/rifle/ks_p_18_5/reload_shell_in"
+      },
+      "shell_second_in:object": {
+        "path": "/weapon/rifle/ks_p_18_5/reload_shell_second_in"
+      },
+      "foley_end:object": {
+        "path": "/weapon/rifle/ks_p_18_5/reload_foley_end"
+      }
+    },
+    "gun__mountPoints:shared:array": {
+      "point:object": {
+        "type": "rest",
+        "recoil": 0.9,
         "offset": [
           0.52,
           -0.037,
@@ -10514,7 +10702,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.172,
             -0.17,
@@ -10523,7 +10711,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.46,
             0.0,
@@ -10696,30 +10884,6 @@
     "backblast__coneHeight": 2.0,
     "backblast__coneAngle": 45.0
   },
-  "rpg_7_rocket_phys": {
-    "_use": [
-      "projectile_phys",
-      "rpg_7_rocket_shell",
-      "rocket_shell"
-    ],
-    "shell__expl_node": "weaponRoot",
-    "phys_obj_net_phys__blk": "gameData/weapons/human_weapons/bullets/rpg_7_rocket.blk",
-    "shell_explosion_fx__infoTemplate": "hit_effect_group_antitank_rocket_explosion",
-    "shell__waterImpactFx": "hit_water_medium_effect",
-    "shell__fuseTime": 0.0125,
-    "start_omega": [
-      0.0,
-      0.0,
-      -100.0
-    ],
-    "explTimeAdd": 3.0,
-    "shell_backblastTemplate": "rpg_7_rocket_backblast",
-    "fins_animation__timeToOpen": 0.1,
-    "shell__concussionMaxRadius:r": {
-      "value": 2.8,
-      "_tags": "server"
-    }
-  },
   "rpg_2": {
     "_use": [
       "main_weap_slots",
@@ -10836,10 +11000,10 @@
       "_hide": true
     },
     "gun__ammoHolders:array": {
-      "ammoHolders": "rpg_7_rocket_item"
+      "ammoHolders": "rpg_7_pg_7vl_rocket_item"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/rpg_7_rocket.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/rpg_7_pg_7vl_rocket.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -10881,6 +11045,37 @@
     "gun__showChamberedAmmo": true,
     "gun__backblastToPosNodeIdx": -1,
     "gun__backblastToPosNodeName": "gunFx_main",
+    "weapon__aimSightPresetIndex": -1,
+    "weap__current_sight_preset": 0,
+    "_replicated": [
+      "weap__current_sight_preset",
+      "gun__launchVerticalAngle"
+    ],
+    "gun__launchVerticalAngle": 0.0,
+    "sightPresets:array": {
+      "preset:object": [
+        {
+          "loc": "sight/100m",
+          "useAnimNodeIndex": 0.0,
+          "additionalVertAngle": 0.05465
+        },
+        {
+          "loc": "sight/150m",
+          "useAnimNodeIndex": 1.0,
+          "additionalVertAngle": 0.05518
+        },
+        {
+          "loc": "sight/200m",
+          "useAnimNodeIndex": 2.0,
+          "additionalVertAngle": 0.05392
+        },
+        {
+          "loc": "sight/300m",
+          "useAnimNodeIndex": 3.0,
+          "additionalVertAngle": 0.0571
+        }
+      ]
+    },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "path": "/weapon/antivehicle/rpg_7"
@@ -10930,10 +11125,10 @@
       "_hide": true
     },
     "gun__ammoHolders:array": {
-      "ammoHolders": "rpg_7_rocket_item"
+      "ammoHolders": "rpg_7_pg_7vl_rocket_item"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/rpg_7_rocket.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/rpg_7_pg_7vl_rocket.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -11597,7 +11792,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.34,
             0.028,
@@ -11606,7 +11801,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.11,
             -0.13,
@@ -11742,7 +11937,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.5,
+          "recoil": 0.65,
           "offset": [
             0.58,
             0.02,
@@ -11754,7 +11949,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.5,
+          "recoil": 0.65,
           "offset": [
             0.75,
             0.035,
@@ -11763,7 +11958,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.5,
+          "recoil": 0.65,
           "offset": [
             -0.01,
             -0.109,
@@ -11906,7 +12101,7 @@
       "point:object": [
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.16,
             -0.155,
@@ -11915,7 +12110,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.9,
           "offset": [
             0.43,
             -0.005,

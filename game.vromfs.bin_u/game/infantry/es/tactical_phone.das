@@ -43,8 +43,10 @@ def update_tactical_phone_state_on_equip(evt : Event;
 
 
 [es(tag=server, on_appear)]
-def add_tactical_phone_to_soldier(evt : Event; var itemContainer : EidList&)
-  itemContainer |> push(createEntity("tactical_phone_gun"))
+def add_tactical_phone_to_soldier(evt : Event; eid : EntityId; var itemContainer : EidList&)
+  let phoneGun = createEntity("tactical_phone_gun") <| $(var init : ComponentsInitializer)
+    set(init, "gun__owner", eid)
+  itemContainer |> push(phoneGun)
 
 [es(tag=server, track=gun__owner, on_appear)]
 def tactical_phone_on_owner_changed(evt : Event;

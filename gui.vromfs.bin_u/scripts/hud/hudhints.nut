@@ -3314,6 +3314,18 @@ NEED_STOP_FOR_RADAR = {
     lifeTime  = 25.0
   }
 
+  STOP_BLEEDING_TOURNIQUET = {
+    hintType  = g_hud_hint_types.ACTIONBAR
+    shouldBlink = true
+    isHideOnDeath = @(_eventData) false
+    isHideOnWatchedHeroChanged = true
+    locId     = "hint/tourniquetUsage"
+    showEvent = "hint:bleeding_tourniquet_tip_show"
+    hideEvent = "hint:bleeding_tourniquet_tip_hide"
+    shortcuts = "ID_HUMAN_USE_MEDKIT"
+    lifeTime  = 25.0
+  }
+
   STOP_BURNING = {
     hintType  = g_hud_hint_types.ACTIONBAR
     shouldBlink = true

@@ -552,6 +552,13 @@
     ],
     "collres__res": "mossberg_590_collision"
   },
+  "ks_p_18_5_gun_item": {
+    "_use": [
+      "item_gun",
+      "ks_p_18_5"
+    ],
+    "collres__res": "18_5_ks_p_collision"
+  },
   "ab_46_gun_item": {
     "_use": [
       "item_gun",
@@ -643,6 +650,43 @@
   "medkit_item": {
     "_use": "medkit_item_base",
     "item__medkit:tag": {},
+    "backpackPlaceableItem:tag": {}
+  },
+  "tourniquet_item": {
+    "_use": [
+      "item",
+      "heal_anim_item"
+    ],
+    "animchar__res": "ifak_nz_first_aid_pouch_belt_back_r_char",
+    "collres__res": "medkit_collision",
+    "item__template": "tourniquet_item",
+    "item__proto": "gamedata/items/medkit.blk",
+    "item__locDetails": "",
+    "item__lootSoundType": "healing",
+    "using_item_sound__prefix": "infantry/",
+    "item__weight": 0.1,
+    "item__volume": 0.2,
+    "item__name": "items/tourniquet",
+    "item__healDamageOverTimeAmount": 1000.0,
+    "item__useCount": 999999,
+    "item__useTime": 2.0,
+    "item__isCurrentlyUsedForReviveTarget": true,
+    "item__useTimeToTarget": 1.5,
+    "item__downedTimeMultiplier": 3.0,
+    "item__healAnimEnumName": "first_aid_bandage",
+    "item__healTargetAnimEnumName": "first_aid_revive",
+    "item__selfUseVisEntityTemplateName": "medbandage_roll_in_use",
+    "item__targetUseVisEntityTemplateName": "medbandage_roll_in_use",
+    "item__iconYaw": 180.0,
+    "using_item_sound__path:shared:object": {
+      "_tags": "sound",
+      "path": "/walker/ww2_soldier/items/healing/activate"
+    },
+    "item__tourniquet:tag": {},
+    "item__ignoreAimInterrupt:tag": {},
+    "item__stopUseWhileJumping:tag": {},
+    "item__stopUseWhileAiming:tag": {},
+    "item__interruptsReloading:tag": {},
     "backpackPlaceableItem:tag": {}
   },
   "medic_medkit_item": {
@@ -851,21 +895,21 @@
     ],
     "collres__res": "pslr_1_collision"
   },
-  "rpg_7_rocket_item": {
+  "rpg_7_pg_7vl_rocket_item": {
     "_use": [
       "item_grenade",
       "rpg_7_rocket_shell"
     ],
-    "item__template": "rpg_7_rocket_item",
-    "item__proto": "gameData/weapons/human_weapons/bullets/rpg_7_rocket.blk",
+    "item__template": "rpg_7_pg_7vl_rocket_item",
+    "item__proto": "gameData/weapons/human_weapons/bullets/rpg_7_pg_7vl_rocket.blk",
     "item__locDetails": "",
-    "item__shell": "gameData/weapons/human_weapons/bullets/rpg_7_rocket.blk",
+    "item__shell": "gameData/weapons/human_weapons/bullets/rpg_7_pg_7vl_rocket.blk",
     "item__weight": 2.6,
     "item__volume": 0.5,
     "item__name": "items/rpg_7_rocket",
     "item__grenadeType": "shell",
     "ammo_holder__id": -1,
-    "ammo_holder__templateName": "rpg_7_rocket_item",
+    "ammo_holder__templateName": "rpg_7_pg_7vl_rocket_item",
     "ammo_holder__ammoCount": 1
   },
   "mpads_fim_92e_stinger_gun_item": {

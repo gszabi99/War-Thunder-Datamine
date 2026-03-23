@@ -78,7 +78,7 @@ let { getUnitEngineMarkup } = require("%scripts/unit/unitEngine.nut")
 let { getUnitProtectionMarkup } = require("%scripts/unit/unitProtection.nut")
 let { getSelectedPresetMarkup } = require("%scripts/unit/unitSecondaryWeapon.nut")
 let { getWeaponModsInfoIcons } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getSoldiersCount, getPresetCompositionByName, getHumanWeaponIcons
+let { getSoldiersCount, getPresetCompositionByName, getHumanWeaponIcons, INF_SOLDIER_EMPTY
 } = require("%scripts/weaponry/infantryWeapons.nut")
 let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
 let { calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
@@ -291,17 +291,19 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
   let mainPresets = {}
   let otherPresets = {}
   let presetsCount = {}
-  foreach (preset in getPresetCompositionByName(unit, getLastWeapon(name))?.soldiers ?? []) {
-    if (preset.index >= currentMaxCount)
+  foreach (soldier in getPresetCompositionByName(unit, getLastWeapon(name))?.soldiers ?? []) {
+    if (soldier.index >= currentMaxCount)
       break
-    foreach (idx, weapon in preset.weapons) {
+    foreach (idx, weapon in soldier.weapons) {
+      if (weapon.name == INF_SOLDIER_EMPTY)
+        continue
       let presetTxt = idx == 0 ? mainPresets : otherPresets
       let presetView = idx == 0 ? mainPresetsView : otherPresetsView
       presetsCount[weapon.name] <- (presetsCount?[weapon.name] ?? 0) + 1
       presetTxt[weapon.name] <- true
       presetView.append({
         image = weaponIcons?[weapon.name] ?? ""
-        unlocked = preset.index < currentMaxCount
+        unlocked = soldier.index < currentMaxCount
         imgSize = "1@cIco"
         tooltipId = INFANTRY_WEAPON.getTooltipId(unit.name, weapon.name)
       })

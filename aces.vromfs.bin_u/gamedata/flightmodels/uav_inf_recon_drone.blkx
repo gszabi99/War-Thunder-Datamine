@@ -43,6 +43,14 @@
   "radarCrossSectionAspectMultRear": 1e-9,
   "humanDrone": true,
   "overrideIndicatorIcon": "iconScoutDrone",
+  "hasFPVCamera": true,
+  "disableFPVHud": true,
+  "fpvCameraOffset": [
+    0.107,
+    -0.035,
+    0.0
+  ],
+  "hasFPVTargetCamera": true,
   "gForceTolerationMult": 0.0001,
   "customClassIco": "!#ui/gameuiskin#uav_quadcopter_ico.svg",
   "customImage": "!#ui/unitskin#uav_quadcopter",
@@ -380,11 +388,9 @@
     "shouldHaveExplosionEffects": false
   },
   "cockpit": {
-    "zoomOutFov": 22.46,
-    "zoomInFov": 7.37,
-    "sightInFov": 1.2,
-    "sightOutFov": -1.0,
-    "sightFov": 0.001,
+    "sightInFov": 40.5,
+    "sightOutFov": 50.5,
+    "sightFov": 1.0,
     "cameraHeightOnGround": 0.1,
     "openedCockpit": true
   },
@@ -408,10 +414,10 @@
       "crosshairPreset": "test_crosshair",
       "offsetRotatable": true,
       "angularLimits": [
-        -110.0,
-        110.0,
-        -45.0,
-        45.0
+        -70.0,
+        70.0,
+        -95.0,
+        15.0
       ],
       "opticType": "",
       "turretNo": 0
