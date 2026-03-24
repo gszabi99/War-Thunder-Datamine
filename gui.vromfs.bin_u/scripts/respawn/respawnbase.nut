@@ -12,16 +12,10 @@ local RespawnBase = class {
   isGround = false
   isMapSelectable = false
   isAutoSelected = false
-  isSquadRespawnBase = false
-  isAvailable = true
 
-  constructor(v_id, v_isAutoSelected = false, v_isSquadRespawnBase = false) {
+  constructor(v_id, v_isAutoSelected = false) {
     this.id = v_id
     this.isAutoSelected = v_isAutoSelected
-    this.isSquadRespawnBase = v_isSquadRespawnBase
-    if (v_isSquadRespawnBase)
-      return
-
     this.name = getRespawnBaseNameById(this.id)
     this.isRandom = isRandomRespawnBaseById(this.id)
     this.isDefault = isDefaultRespawnBase(this.id)
@@ -37,10 +31,7 @@ local RespawnBase = class {
   }
 
   function isEqual(respBase) {
-    return respBase != null
-      && this.isAutoSelected == respBase.isAutoSelected
-      && this.id == respBase.id
-      && this.isAvailable == respBase.isAvailable
+    return respBase != null && this.isAutoSelected == respBase.isAutoSelected && this.id == respBase.id
   }
 
   function isSpawnIsAirfiled() {
@@ -48,11 +39,6 @@ local RespawnBase = class {
     if (spawnLocSubName == "")
       return false
     return startsWith(spawnLocSubName, "airfield")
-  }
-
-  function fillSquadRespawnBase(params) {
-    this.name = params.name
-    this.isAvailable = params.isAvailable
   }
 }
 

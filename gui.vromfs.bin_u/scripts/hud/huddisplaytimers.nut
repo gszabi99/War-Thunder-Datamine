@@ -215,11 +215,6 @@ let timersList = [
     icon = "#ui/gameuiskin#building_wall.svg"
   },
   {
-    id = "self_tourniquet"
-    color = "@white"
-    icon = "#ui/gameuiskin#heartbeat.svg"
-  },
-  {
     id = "self_healing"
     color = "@white"
     icon = "#ui/gameuiskin#cross.svg"
@@ -970,29 +965,6 @@ function onBuildingWallEvent(eventData) {
   g_time_bar.setCurrentTime(timebarObj, 0)
 }
 
-function onSelfTourniquetEvent(eventData) {
-  if (!scene?.isValid())
-    return
-
-  let placeObj = scene.findObject("self_tourniquet")
-  if (!placeObj?.isValid())
-    return
-
-  let showTimer = eventData.isTourniquetUsing
-  placeObj.animation = showTimer ? "show" : "hide"
-
-  let timebarObj = placeObj.findObject("timer")
-
-  if (!showTimer) {
-    g_time_bar.setPeriod(timebarObj, 0)
-    g_time_bar.setCurrentTime(timebarObj, 0)
-    return
-  }
-
-  g_time_bar.setPeriod(timebarObj, eventData.entityUseTotalTime, true)
-  g_time_bar.setCurrentTime(timebarObj, 0)
-}
-
 function onSelfHealingEvent(eventData) {
   if (!scene?.isValid())
     return
@@ -1070,7 +1042,6 @@ function hudDisplayTimersInit(nest, v_unitType) {
   g_hud_event_manager.subscribe("deathInProgress", onDeathInProgress, scene)
   g_hud_event_manager.subscribe("plantedBombInProgress", onPlantedBombEvent, scene)
   g_hud_event_manager.subscribe("buildingWallInProgress", onBuildingWallEvent, scene)
-  g_hud_event_manager.subscribe("selfTourniquetInProgress", onSelfTourniquetEvent, scene)
   g_hud_event_manager.subscribe("selfHealingInProgress", onSelfHealingEvent, scene)
   g_hud_event_manager.subscribe("firePutOutInProgress", onFirePutOutEvent, scene)
 

@@ -13,12 +13,12 @@ let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { parse_json } = require("json")
 let mkKillerCardXray = require("scripts/hud/mkKillerCardXray.nut")
-let { doesLocTextExist } = require("dagor.localize")
 
 let offenderHitsOrder = ["armor", "head", "torso", "hand", "leg"]
 
 function isKillerCardData(messageData) {
   let { isKill = false, playerId = -1, victimPlayerId = null, isDebugData = false } = messageData
+
   if (!isKill)
     return false
 
@@ -49,10 +49,6 @@ function getKillerCardView(messageData, userInfo) {
     : getUnitTooltipImage(unit)
 
   let weaponEcsTemplateNameCutted = cutPostfix(weaponEcsTemplateName, "_gun", "")
-  local customItemLocName = ""
-  if (showCustomItem)
-    customItemLocName = doesLocTextExist(weaponEcsTemplateNameCutted) ? weaponEcsTemplateNameCutted
-    : $"{weaponEcsTemplateNameCutted}_shop"
 
   let rank = get_roman_numeral(unit.rank)
   let rankText = loc("ui/colon").concat(loc("sm_rank"), colorize("@white", rank))
@@ -60,7 +56,7 @@ function getKillerCardView(messageData, userInfo) {
   let battleRating = unit.getBattleRating(events.getCurBattleEdiff())
   let battleRatingText = loc("ui/colon")
     .concat(loc("shop/battle_rating"), colorize("@white", format("%.1f", battleRating)))
-  let shellNameLoc = showCustomItem ? loc(customItemLocName)
+  let shellNameLoc = showCustomItem ? loc(weaponEcsTemplateNameCutted)
     : killerProjectileName != "" ? getProjectileNameLoc(killerProjectileName, true, unit)
     : ""
 

@@ -571,12 +571,13 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     hangar_toggle_xray_filter(isEnabled)
     hangar_reset_xray_filter()
 
-    dmViewer.restoreSavedViewMode()
     if (isEnabled) {
       dmViewer.saveViewModeForRestore()
       dmViewer.init(this)
       dmViewer.toggle(DM_VIEWER_CREW)
     }
+    else
+      dmViewer.restoreSavedViewMode()
   }
 
   function setXrayFilterShownParts() {

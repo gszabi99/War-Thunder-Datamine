@@ -30,13 +30,11 @@ def spawn_immunity_es(info : ParallelUpdateFrameDelayed;
 
 [es(on_event=(EventUnitRespawn, EventUnitSpawned), after=human_init_tm)]
 def spawn_immunity_init_es(evt : Event;
-                           dynamic_respawn__spawnOnUnitEid : EntityId;
                            var spawn_immunity__initialPos : float3&;
                            var spawn_immunity__posInited : bool&;
                            transform : float3x4)
-  if !dynamic_respawn__spawnOnUnitEid
-    spawn_immunity__initialPos = transform[3]
-    spawn_immunity__posInited = true
+  spawn_immunity__initialPos = transform[3]
+  spawn_immunity__posInited = true
 
 
 [es(on_event=EventOnEntityReanimated)]

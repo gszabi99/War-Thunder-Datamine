@@ -9,7 +9,6 @@ def human_death_sound(evt : EventEntityDied;
                       @shared_comp human_voice_sound__path : Object;
                       @shared_comp human_voice_sound__descs : Object;
                       var human_death_sound__event : SoundEvent&;
-                      human_weap__currentGunEid :  EntityId;
                       human_suicide_sound__path : string;
                       transform : float3x4;
                       sound_tags : Object;
@@ -23,10 +22,6 @@ def human_death_sound(evt : EventEntityDied;
 
     human_death_sound__event |> reset(play("death", human_voice_sound__path, human_voice_sound__descs, sound_tags, is_watched_sound, transform[3], false))
     human_death_sound__event.abandonOnReset = true
-
-    query(human_weap__currentGunEid) <| $ [es] (gun_sound__event : SoundEvent)
-      if (is_playing(gun_sound__event))
-        set_var_optional(gun_sound__event, "on_shot", 0.)
 
     if evt.offender == evt.victim
       let playerStr = is_watched_sound ? "player/" : "enemy/"

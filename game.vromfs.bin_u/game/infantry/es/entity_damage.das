@@ -29,7 +29,6 @@ require AnimV20
 require GeomNodeTree
 require CollRes
 require WTDamageModel
-require DaWeaponProps
 
 require %appGame.wt_events
 
@@ -172,11 +171,6 @@ def apply_damage(victim : EntityId;
     var deltaHp = damage_to_hp * hitpoints__dmgMult
     var victim_unit = get_unit(victim)
 
-    if hitpoints__dmgMult == 0.0 && victim_unit != null && offender != INVALID_ENTITY_ID
-      var offender_unit = get_unit(offender)
-      if offender_unit != null
-        showInvulnerabilityIcon(*victim_unit, offender_unit, true)
-
     var offenderPossessedByPlayer = INVALID_ENTITY_ID
     let offenderExists = query(offender) <| $ [es] (possessedByPlr : EntityId)
       offenderPossessedByPlayer = possessedByPlr
@@ -220,11 +214,6 @@ def apply_damage(victim : EntityId;
     if damage_type == DamageType.DM_COLLISION && offender != INVALID_ENTITY_ID && offender != victim
       offender_data.dmgTypeForUnlock = UnlockDmgType.UNL_DMG_TYPE_GENERIC
       offender_data.setDmgInitiatorWeaponName("ran_over")
-    elif damage_type == DamageType.DM_EXPLOSION || damage_type == DamageType.DM_PROJECTILE
-      shell_entity_get_props(proj_props_id) <| $(entProps : ShellEntityTypeProps)
-        let bName = entProps.bulletName
-        if !empty(bName)
-          offender_data.setDmgInitiatorWeaponName(bName)
 
     
     if hitr == HitResult.HIT_RES_KILLED && victim_unit != null

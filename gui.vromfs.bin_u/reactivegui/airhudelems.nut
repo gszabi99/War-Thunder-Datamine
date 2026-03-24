@@ -31,9 +31,8 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   RocketAimX, RocketAimY, TATargetVisible, IRCMState,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced, IsEnginesControled, ThrottleState, isEngineControled,
   DistanceToGround, RadarAltitude, RadarAltitudeAlert, IsMfdEnabled, VerticalSpeed, MfdColor,
-  ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed, IsMainHudVisible, IsGunnerHudVisible
+  ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("%rGui/airState.nut")
-let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let HudStyle = require("%rGui/style/airHudStyle.nut")
 let weaponUtils = require("weaponUtils")
@@ -62,7 +61,7 @@ let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let { isUnitAlive, unitType, isPlayingReplay } = require("%rGui/hudState.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { clearTimer, setTimeout } = require("dagor.workcycle")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 
 function getAirHudElemsTable() {
 
@@ -178,7 +177,6 @@ let distToGroundText = Computed(function() {
 
 function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = HudStyle.styleText) {
   let relativeHeight = Computed(@() clamp(DistanceToGround.get() * 2.0, 0, 100))
-  let verticalSpeedTranslatePosY = Computed(@() height * 0.01 * clamp(50 - VerticalSpeed.get() * 5.0, 0, 100))
 
   return {
     pos = [posX, posY]
@@ -212,26 +210,13 @@ function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = 
           halign = ALIGN_RIGHT
           color
           text = distToGroundText.get()
-          behavior = Behaviors.RecalcHandler
-          function onRecalcLayout(_initial, elem) {
-            if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-              eventbus_send("update_helicopter_hud_aabb_state", {
-                partName = "altimeter"
-                pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-                size = [scaleWidth * 4, elem.getHeight()]
-                visible = IsMainHudVisible.get() || IsGunnerHudVisible.get()
-              })
-            }
-            else
-              eventbus_send("update_helicopter_hud_aabb_state", { partName = "altimeter" })
-          }
         })
       }
       @() {
         watch = VerticalSpeed
         pos = [scaleWidth + sh(0.5), 0]
         transform = {
-          translate = [0, verticalSpeedTranslatePosY.get()]
+          translate = [0, height * 0.01 * clamp(50 - VerticalSpeed.get() * 5.0, 0, 100)]
         }
         children = [
           verticalSpeedInd(hdpx(25), elemStyle, color),
@@ -245,19 +230,6 @@ function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = 
               text = IsMfdEnabled.get() ?
                 math.round_by_value(VerticalSpeed.get(), 1).tostring() :
                 cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.get())
-              behavior = Behaviors.RecalcHandler
-              function onRecalcLayout(_initial, elem) {
-                if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-                  eventbus_send("update_helicopter_hud_aabb_state", {
-                    partName = "verticalSpeed"
-                    pos = [elem.getScreenPosX(), elem.getScreenPosY() + verticalSpeedTranslatePosY.get()]
-                    size = [scaleWidth * 4, height]
-                    visible = IsMainHudVisible.get() || IsGunnerHudVisible.get()
-                  })
-                }
-                else
-                  eventbus_send("update_helicopter_hud_aabb_state", { partName = "verticalSpeed" })
-              }
             })
           }
         ]
@@ -600,12 +572,11 @@ let mkShHintComponent = @(shW) @() {
   }]
 }
 
-function createParam(param, width, height, style, colorWatch, options) {
-  let { needCaption, forIls, isBomberView, font_size, isHelicopter } = options
+function createParam(param, width, height, style, colorWatch, needCaption, for_ils, isBomberView, font_size) {
   let { valueComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed,
     isSelectedComputed = WatchedRo(false), additionalComputed = WatchedRo(""),
     fireSelectedShortcut = null, selectedSign = ">", blinkComputed = null, blinkTrigger = null,
-    shortcutComputed = null, aabbObjectName = ""
+    shortcutComputed = null
   } = param
 
   let selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor) {
@@ -648,21 +619,6 @@ function createParam(param, width, height, style, colorWatch, options) {
     fontFxFactor = factorFxCaption.get()
     fontSize = font_size
     opacity =  alertStateCaptionComputed.get() >= HudColorState.LOW_ALERT ? 0.7 : 1.0
-    behavior = isHelicopter ? Behaviors.RecalcHandler : null
-    function onRecalcLayout(_initial, elem) {
-      if (aabbObjectName == "")
-        return
-      if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-        eventbus_send("update_helicopter_hud_aabb_state", {
-          partName = aabbObjectName
-          pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-          size = [elem.getWidth(), height]
-          visible = IsMainHudVisible.get()
-        })
-      }
-      else
-        eventbus_send("update_helicopter_hud_aabb_state", { partName = aabbObjectName })
-    }
   })
 
   let selectedSignText = Computed(@() isSelectedComputed.get() ? selectedSign : "")
@@ -678,7 +634,7 @@ function createParam(param, width, height, style, colorWatch, options) {
     opacity =  alertStateCaptionComputed.get() >= HudColorState.LOW_ALERT ? 0.7 : 1.0
   })
 
-  let valueColor = Computed(@() forIls ? MfdColor.get() : selectColor(alertValueStateComputed.get(), colorWatch.get(), PassivColor.get(),
+  let valueColor = Computed(@() for_ils ? MfdColor.get() : selectColor(alertValueStateComputed.get(), colorWatch.get(), PassivColor.get(),
     AlertColorLow.get(), AlertColorMedium.get(), AlertColorHigh.get()))
 
   let colorFxValue = Computed(@() selectFxColor(alertValueStateComputed.get(), colorWatch.get(), ParamTableShadowOpacity.get()))
@@ -769,7 +725,6 @@ let textParamsMapMain = {
     valueComputed = Computed(@() IsRpmVisible.get() ? generateRpmTextFunction(TrtModeForRpm.get(), Rpm.get()) : "")
     alertStateCaptionComputed = Computed(@() IsRpmCritical.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsRpmCritical.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
-    aabbObjectName = "rotorRpm"
   },
   [AirParamsMain.IAS_HUD] = {
     titleComputed = Watched(loc("HUD/INDICATED_AIR_SPEED_SHORT"))
@@ -782,7 +737,6 @@ let textParamsMapMain = {
     valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? "" : " ".concat(Spd.get(), loc(measureUnitsNames.get().speed)))
     alertStateCaptionComputed = WatchedRo(HudColorState.ACTIV)
     alertValueStateComputed = WatchedRo(HudColorState.ACTIV)
-    aabbObjectName = "speed"
   },
   [AirParamsMain.MACH] = {
     titleComputed = WatchedRo(loc("HUD/TXT_MACH_SHORT"))
@@ -919,7 +873,6 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
     valueComputed = Computed(@() getThrottleText(trtModeComputed.get(), trtComputed.get()))
     alertStateCaptionComputed = Computed(@() getThrottleState(isEngineControledComputed.get()))
     alertValueStateComputed = Computed(@() getThrottleValueState(throttleStateComputed.get(), isEngineControledComputed.get()))
-    aabbObjectName = index == 0 ? $"rotorPitch{index}" : ""
   }
 }
 
@@ -1036,13 +989,12 @@ let fuelKeyId = AirParamsSecondary.FUEL
 
 function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, font_size = HudStyle.hudFontHgt) {
   function getChildren(colorWatch, style, isBomberView) {
-    let createParamOptions = { needCaption, forIls, font_size, isBomberView, isHelicopter = hudUnitType.isHelicopter() }
     let children = []
     let vertIndent = { size = const [0, hdpx(12)] }
 
     foreach (key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.get())
-        children.append(createParam(param, width, height, style, colorWatch, createParamOptions))
+        children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView, font_size))
       if (key == AirParamsMain.RADAR_ALTITUDE && is_aircraft)
         children.append(vertIndent)
 
@@ -1050,7 +1002,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
     local secondaryMaskValue = secondaryMask.get()
     if (is_aircraft) {
       if ((1 << fuelKeyId) & secondaryMaskValue) {
-        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, colorWatch, createParamOptions))
+        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, colorWatch, needCaption, forIls, isBomberView, font_size))
         secondaryMaskValue = secondaryMaskValue - (1 << fuelKeyId)
       }
     }
@@ -1060,7 +1012,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
 
     foreach (key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
-        children.append(createParam(param, width, height, style, colorWatch, createParamOptions))
+        children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView, font_size))
     }
 
     return children
@@ -1122,21 +1074,6 @@ function airHorizon(elemStyle, height, color) {
       pivot = [0.5, 0.5]
       rotate = HorAngle.get()
     }
-    behavior = Behaviors.RecalcHandler
-    function onRecalcLayout(_initial, elem) {
-      if (!hudUnitType.isHelicopter())
-        return
-      if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-        eventbus_send("update_helicopter_hud_aabb_state", {
-          partName = "attitudeIndicator"
-          pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-          size = [4 * height, height]
-          visible = IsMainHudVisible.get()
-        })
-      }
-      else
-        eventbus_send("update_helicopter_hud_aabb_state", { partName = "attitudeIndicator" })
-    }
   })
 }
 
@@ -1148,19 +1085,6 @@ function horizontalSpeedVector(elemStyle, color, height) {
     minLengthArrowVisibleSq = 200
     velocityScale = 5
     color
-    behavior = Behaviors.RecalcHandler
-    function onRecalcLayout(_initial, elem) {
-      if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-        eventbus_send("update_helicopter_hud_aabb_state", {
-          partName = "velocityVector"
-          pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-          size = [height, height]
-          visible = IsMainHudVisible.get()
-        })
-      }
-      else
-        eventbus_send("update_helicopter_hud_aabb_state", { partName = "velocityVector" })
-    }
   })
 }
 

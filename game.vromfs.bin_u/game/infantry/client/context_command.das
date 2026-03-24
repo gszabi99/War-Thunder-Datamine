@@ -7,7 +7,7 @@ require %game.events
 require %appGame.wt_events
 require %appGame.infantry.input.human_context_command_point_common
 require %appGame.infantry.input.human_context_command_camera_common
-require %appGame.infantry.client.context_command_common
+require %appGame.infantry.es.context_command_common
 require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 require net

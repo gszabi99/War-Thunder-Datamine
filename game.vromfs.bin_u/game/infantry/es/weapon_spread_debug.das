@@ -5,8 +5,6 @@ require DaWeapons
 require DagorDebug3D
 require DagorConsole
 require %appGame.infantry.es.net_console_macro
-require daslib/strings_boost
-require %appGame.infantry.es.hero_common
 
 
 [ecs_template]
@@ -42,28 +40,3 @@ def gun_change_magnification(magnification : float = 1.0, @net_hero eid : Entity
     query(human_weap__currentGunEid) <| $ [es] (var gun__magnification : float&)
       let clampedMagnification = clamp(magnification, 0.1, 20.0)
       gun__magnification = clampedMagnification
-
-
-[console_processor]
-def scope_cam_base_lerp_processor(args : array<string>;
-                                  collect : bool;
-                                  var hints : ConsoleProcessorHints)
-  let cmd = "scope.set_bipodScopeOffset"
-  if collect
-    let inputs <- args[0] |> split(" ")
-    if length(inputs) >= 1 && inputs[0] == cmd
-      var curValue = 0.0
-      let heroEid = get_controlled_hero_eid()
-      if !!heroEid
-        query(heroEid) <| $ [es] (human_weap__currentScope : EntityId)
-          query(human_weap__currentScope) <| $ [es] (gunmod__bipodScopeOffset : float)
-            curValue = gunmod__bipodScopeOffset
-      hints |> add_hint("{cmd} 0.0", 0, 2, "", "(current value: {curValue})")
-  return false
-
-[console_cmd(name="scope.set_bipodScopeOffset", hint="Set gunmod__bipodScopeOffset on current scope")]
-def scope_set_bipod_scope_offset(value : float = 0.0)
-  query() <| $ [es(REQUIRE=hero)] (human_weap__currentScope : EntityId)
-    query(human_weap__currentScope) <| $ [es] (var gunmod__bipodScopeOffset : float&)
-      gunmod__bipodScopeOffset = value
-      console_print("gunmod__bipodScopeOffset = {value}")

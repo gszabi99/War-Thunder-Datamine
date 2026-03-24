@@ -255,10 +255,11 @@ def ai_listening_on_grenade_es(evt : Event;
       ai_squad_tactical_add_update_target(squad_member__squad, offenderEid, false)
 
 [es(tag=server)]
-def ai_listening_on_shot_es(evt : EventShot; gun__owner : EntityId; gun__curShellId : PropsId; gun_sound_mods__suppressor : float = 0.f)
+def ai_listening_on_shot_es(evt : EventShot; gun__owner : EntityId; gun__curShellId : PropsId)
   var ignoreShot = false
   shell_entity_get_props(gun__curShellId) <| $(entProps : ShellEntityTypeProps)
-    if !shell_entity_props_isEmpty_templName(entProps)
+    let templName = entProps.templName
+    if !(templName == "")
       ignoreShot = true
   if ignoreShot
     return
@@ -277,7 +278,7 @@ def ai_listening_on_shot_es(evt : EventShot; gun__owner : EntityId; gun__curShel
   
 
   let RECENT_TARGET_TIME = 5.0
-  let DETECT_SHOOTER_DISTANCE = cvt(gun_sound_mods__suppressor, 0.0, 1.0, 35.0, 5.0)
+  let DETECT_SHOOTER_DISTANCE = 35.0
   for_each_entity_in_grid(ecs_hash("humans"), BSphere3(shotPos, DETECT_SHOOTER_DISTANCE), GridEntCheck.BOUNDING) <| $(that_eid : EntityId)
     query(that_eid) <| $ [es] (team : int; transform : float3x4; squad_member__squad : EntityId)
       if is_teams_friendly(team, offenderTeam)

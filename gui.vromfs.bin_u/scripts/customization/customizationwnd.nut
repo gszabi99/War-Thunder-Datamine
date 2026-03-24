@@ -502,9 +502,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.access_Skins)
       return
 
-    this.skinList = getSkinsOption(this.unit.name, {
-      showLocked = true, needAutoSkin = false, showDownloadable = true
-    })
+    this.skinList = getSkinsOption(this.unit.name, true, false, true)
     let curSkinId = this.getSelectedBuiltinSkinId()
     let curSkinIndex = u.find_in_array(this.skinList.values, curSkinId, 0)
 

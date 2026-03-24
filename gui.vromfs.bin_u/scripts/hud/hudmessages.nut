@@ -973,14 +973,9 @@ enumsAddTypes(g_hud_messages, {
 
     addMessage = function (messageData, timestamp = null, needAnimations = true) {
       this.cleanUp()
-      if (this.hasKillerInfo(messageData)) {
-        let killerInfo = g_hud_messages.KILLER_INFO
-        if (killerInfo.killerCardView) {
-          killerInfo.showKillerCard()
-          return
-        }
-        if (checkObj(killerInfo.nest) && killerInfo.nest.isVisible())
-          return
+      if (g_hud_messages.KILLER_INFO.killerCardView && this.hasKillerInfo(messageData)) {
+        g_hud_messages.KILLER_INFO.showKillerCard()
+        return
       }
       let message = {
         timer = null
@@ -1054,7 +1049,7 @@ enumsAddTypes(g_hud_messages, {
     killerCardView = null
 
     hudEvents = {
-      HudMessageHide = @(_ed) this.hideCard()
+      HudMessageHide = @(_ed) this.destroy()
       LocalPlayerAlive  = @(_ed) this.destroy()
     }
 
@@ -1079,22 +1074,14 @@ enumsAddTypes(g_hud_messages, {
       let unitInfo = cardObj.findObject("unit_info")
       cardObj.width = cardObj.getSize()[0]
       unitInfo.width = unitInfo.getSize()[0]
-      this.killerCardView = null
-    }
-
-    
-    
-    
-    function hideCard() {
-      if (this.nest?.isValid()) {
-        this.nest.deleteChildren()
-        this.nest.show(false)
-      }
     }
 
     function destroy() {
       this.killerCardView = null
-      this.hideCard()
+      if (this.nest?.isValid()) {
+        this.nest.deleteChildren()
+        this.nest.show(false)
+      }
     }
   }
 },

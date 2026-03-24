@@ -25,16 +25,6 @@ def get_fastest_heal_item(item_container : EidList; heal_amount_comp : array<uin
   return fastestEid
 
 
-def find_tourniquet_item(item_container : EidList) : EntityId
-  var result = INVALID_ENTITY_ID
-  for itemEid in item_container
-    query(itemEid) <| $ [es(REQUIRE=item__tourniquet, REQUIRE_NOT=item__targetUseOnly)] ()
-      result = itemEid
-    if result != INVALID_ENTITY_ID
-      return result
-  return result
-
-
 def get_fastest_heal_item(item_container : Object; heal_amount_comp : array<uint>)
   var fastestTime = 1e+06f
   var fastestEid = INVALID_ENTITY_ID
@@ -114,7 +104,7 @@ def get_most_effective_heal_item(item_container : EidList;
 
 [es(on_appear, track=(isAlive, isDowned, isInVehicle, burning__isBurning, hitpoints__hp, hitpoints__maxHp, total_kits__selfHeal,
   total_kits__selfRevive, human_breath__isUnderWater, human_net_phys__isSwimming, human_freefall__isFreefall, hitpoints__criticalHpRatio, human_parachute__isDeployed,
-  maintenance__isExtinguishAvailable, maintenance__isRepairAvailable, hitpoints__totalDotAmount, total_kits__selfTourniquet))]
+  maintenance__isExtinguishAvailable, maintenance__isRepairAvailable))]
 def human_inventory_update_can_use_heal(evt : Event;
                                         isAlive : bool;
                                         isDowned : bool;
@@ -131,22 +121,16 @@ def human_inventory_update_can_use_heal(evt : Event;
                                         human_parachute__isDeployed : bool;
                                         maintenance__isExtinguishAvailable : bool = false;
                                         maintenance__isRepairAvailable : bool = false;
-                                        hitpoints__totalDotAmount : float = 0.0;
-                                        total_kits__selfTourniquet : int = 0;
                                         var human_inventory__canUseMedkit : bool&)
   let canSelfHeal = !isDowned && total_kits__selfHeal > 0
   let canSelfRevive = isDowned && total_kits__selfRevive > 0
   let canSelfExtinguish = burning__isBurning && !isInVehicle
-  let canSelfStopBleeding = !isDowned && total_kits__selfTourniquet > 0
 
   let lostHp = hitpoints__maxHp - max(hitpoints__hp, 0.0)
   let needMedkitUse = (lostHp >= 1e-06f || hitpoints__hp <= hitpoints__maxHp * hitpoints__criticalHpRatio)
-  let hasBleeding = hitpoints__totalDotAmount > 0.0
 
   human_inventory__canUseMedkit = (isAlive && !human_breath__isUnderWater && !human_net_phys__isSwimming && !human_freefall__isFreefall && !human_parachute__isDeployed
-                               && (!burning__isBurning || !isInVehicle)
-                               && ((needMedkitUse && (canSelfHeal || canSelfRevive || canSelfExtinguish))
-                                   || (hasBleeding && (canSelfHeal || canSelfStopBleeding)))
+                               && (!burning__isBurning || !isInVehicle) && needMedkitUse && (canSelfHeal || canSelfRevive || canSelfExtinguish)
                                && !maintenance__isExtinguishAvailable && !maintenance__isRepairAvailable)
 
 
@@ -162,8 +146,7 @@ def human_inventory_medkit_es(evt : Event;
                               burning__isBurning : bool = false;
                               isDowned : bool = false;
                               hitpoints__criticalHpRatio : float;
-                              hitpoints__maxHealAmountWasteRatio : float = 0.2;
-                              hitpoints__totalDotAmount : float = 0.0)
+                              hitpoints__maxHealAmountWasteRatio : float = 0.2)
   if !human_inventory__canUseMedkit
     return
 
@@ -172,15 +155,9 @@ def human_inventory_medkit_es(evt : Event;
       send_net_event(eid, CmdPutOutFireStart())
     return
 
+  let healAmountComp <- isDowned ? [ ecs_hash("item__reviveAmount")] : [ ecs_hash("item__healAmount")]
   var bestItem : EntityId = INVALID_ENTITY_ID
-
-  
-  if hitpoints__totalDotAmount > 0.0 && !isDowned && length(itemContainer) != 0
-    bestItem = find_tourniquet_item(itemContainer)
-
-  
-  if bestItem == INVALID_ENTITY_ID && length(itemContainer) != 0
-    let healAmountComp <- isDowned ? [ ecs_hash("item__reviveAmount")] : [ ecs_hash("item__healAmount")]
+  if length(itemContainer) != 0
     let criticalHpLevel = hitpoints__maxHp * hitpoints__criticalHpRatio
     if isDowned || hitpoints__hp < criticalHpLevel
       bestItem = get_fastest_heal_item(itemContainer, healAmountComp)
@@ -229,27 +206,3 @@ def apply_medic_more_medpack_uses_perk(evt : Event;
   query(item__ownerEid) <| $ [es] (entity_mods__medicMedpacksMult : float)
     item__useCount = int(float(item__useCount) * entity_mods__medicMedpacksMult)
     sendEvent(item__ownerEid, EventUpdatedItemContainer())
-
-[es(tag=server)]
-def tourniquet_auto_chain_medkit_es(evt : EventOnLootUse;
-                                    eid : EntityId;
-                                    hitpoints__hp : float;
-                                    hitpoints__maxHp : float;
-                                    itemContainer : EidList;
-                                    isDowned : bool = false;
-                                    hitpoints__criticalHpRatio : float;
-                                    hitpoints__maxHealAmountWasteRatio : float = 0.2)
-  if !has(evt.itemEid, "item__tourniquet")
-    return
-  
-  let lostHp = hitpoints__maxHp - max(hitpoints__hp, 0.0)
-  if lostHp < 1e-06f
-    return
-  let healAmountComp <- isDowned ? [ecs_hash("item__reviveAmount")] : [ecs_hash("item__healAmount")]
-  var bestItem = INVALID_ENTITY_ID
-  if isDowned || hitpoints__hp < hitpoints__maxHp * hitpoints__criticalHpRatio
-    bestItem = get_fastest_heal_item(itemContainer, healAmountComp)
-  else
-    bestItem = get_most_effective_heal_item(itemContainer, lostHp, hitpoints__maxHealAmountWasteRatio, healAmountComp)
-  if bestItem != INVALID_ENTITY_ID
-    sendEvent(eid, EventUseItem(item = bestItem, target = INVALID_ENTITY_ID))

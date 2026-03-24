@@ -21,12 +21,11 @@ function getAabbObjFromHud(hudFuncName) {
 
 let dmPanelStatesAabb = mkWatched(persist, "dmPanelStatesAabb", {})
 let twsPanelStateAabb = persist("twsPanelStateAabb", @() {})
-let helicopterHudStatesAabb = {}
 
 let prevHashAabbParams = {}
 
 function getHashAabbParams(params) {
-  let { pos = [0, 0], size = [0, 0], visible = false } = params
+  let {pos = [0, 0], size = [0, 0], visible = false} = params
   return ";".concat(pos[0], pos[1], size[0], size[1], visible)
 }
 
@@ -48,23 +47,6 @@ function updateTwsPanelState(params) {
   twsPanelStateAabb.pos <- pos
   twsPanelStateAabb.size <- size
   twsPanelStateAabb.visible <- visible
-}
-
-function updateHelicopterHudAabbState(params) {
-  let { partName = "", pos = [0, 0], size = [0, 0], visible = false } = params
-
-  if (partName == "")
-    return
-  let hashAabbParams = getHashAabbParams(params)
-  if (prevHashAabbParams?[partName] == hashAabbParams)
-    return
-
-  prevHashAabbParams[partName] <- hashAabbParams
-  helicopterHudStatesAabb[partName] <- { pos, size, visible }
-}
-
-function getHelicopterHudAabb(partName) {
-  return helicopterHudStatesAabb?[partName].visible ? helicopterHudStatesAabb[partName] : null
 }
 
 function getTwsRadarAabb() {
@@ -124,13 +106,6 @@ let aabbList = {
   tankDebuffs = @() dmPanelStatesAabb.get()
   aircraftInstruments = getAircraftInstrumentsAabb
   actionBarItem = getActionBarItemAabb
-  verticalSpeed = @() getHelicopterHudAabb("verticalSpeed")
-  velocityVector = @() getHelicopterHudAabb("velocityVector")
-  altimeter = @() getHelicopterHudAabb("altimeter")
-  attitudeIndicator = @() getHelicopterHudAabb("attitudeIndicator")
-  rotorPitch0 = @() getHelicopterHudAabb("rotorPitch0")
-  rotorRpm = @() getHelicopterHudAabb("rotorRpm")
-  speed = @() getHelicopterHudAabb("speed")
 }
 
 function getHudElementAabb(elemId) {
@@ -147,8 +122,6 @@ eventbus_subscribe("update_damage_panel_state", @(value) update_damage_panel_sta
 
 registerForNativeCall("get_rwr_radar_aabb", @() aabbList.rwr())
 eventbus_subscribe("update_tws_panel_state", @(value) updateTwsPanelState(value))
-
-eventbus_subscribe("update_helicopter_hud_aabb_state", @(params) updateHelicopterHudAabbState(params))
 
 return {
   getHudElementAabb

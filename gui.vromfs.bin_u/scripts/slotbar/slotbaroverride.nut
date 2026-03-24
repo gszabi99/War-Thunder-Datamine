@@ -11,7 +11,7 @@ let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { eachBlock, convertBlk } = require("%sqstd/datablock.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { rnd } = require("dagor.random")
 
@@ -214,20 +214,6 @@ function getEventSlotbarHint(event, country) {
     : loc("event/unlockAircrafts")
 }
 
-function getOverridedSlotbarSkins(missionParams) {
-  let res = {}
-  if (!missionParams?.editSlotbar)
-    return res
-
-  eachBlock(missionParams.editSlotbar, function(country) {
-    eachBlock(country, function(options, unitName) {
-      if (options?.skin)
-        res[unitName] <- options.skin
-    })
-  })
-  return res
-}
-
 return {
   getMissionEditSlotbarBlk
   getSlotbarOverrideCountriesByMissionName
@@ -238,5 +224,4 @@ return {
   resetSlotbarOverrided
   getEventSlotbarHint
   selectCountryForCurrentOverrideSlotbar
-  getOverridedSlotbarSkins
 }

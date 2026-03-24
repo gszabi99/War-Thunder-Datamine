@@ -123,11 +123,7 @@ def private generate_new_positions_on_leader_change(leader_pos : float3; var squ
 def squad_follow_leader_update_es(info : ParallelUpdateFrameDelayed;
                                   eid aka squad_eid : EntityId;
                                   squad__followLeaderGenPeriod : float;
-                                  squad__numAliveMembers : int;
                                   var squad__followLeaderGenTimer : float&)
-  if squad__numAliveMembers <= 1
-    return
-
   if squad__followLeaderGenTimer >= 0.0
     squad__followLeaderGenTimer += info.dt
     if squad__followLeaderGenTimer < squad__followLeaderGenPeriod

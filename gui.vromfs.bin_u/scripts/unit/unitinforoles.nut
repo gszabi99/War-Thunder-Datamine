@@ -118,6 +118,35 @@ let unitRoleByName = {}
 
 let getRoleTextByTag = @(tag) loc($"mainmenu/{tag}")
 
+function getFullUnitRoleText(unit) {
+  let tags = unit?.tags
+  if (tags == null)
+    return ""
+
+  if (unit?.isSubmarine())
+    return getRoleText("submarine")
+
+  let needShowBaseTag = tags.indexof("visibleBaseTag") != null
+  let basicRoles = basicUnitRoles?[getEsUnitType(unit)] ?? []
+  local basicRole = ""
+  let textsList = []
+  foreach (tag in tags)
+    if (tag.len() > 5 && tag.slice(0, 5) == "type_") {
+      if (!isInArray(tag, basicRoles))
+        textsList.append(getRoleTextByTag(tag))
+      else if (basicRole == "") {
+        basicRole = tag
+        if (needShowBaseTag)
+          textsList.append(getRoleTextByTag(tag))
+      }
+    }
+
+  if (textsList.len())
+    return loc("mainmenu/unit_type_separator").join(textsList, true)
+
+  return basicRole != "" ? getRoleTextByTag(basicRole) : ""
+}
+
 function getUnitRole(unitData) { 
   local unit = unitData
   if (type(unitData) == "string")
@@ -162,39 +191,6 @@ function getUnitRoleIcon(source) {
   let role = u.isString(source) ? source
     : getUnitBasicRole(source)
   return unitRoleFontIcons?[role] ?? ""
-}
-
-
-function getFullUnitRoleText(unit) {
-  let tags = unit?.tags
-  if (tags == null)
-    return ""
-
-  if (unit.isSubmarine())
-    return getRoleText("submarine")
-
-  if (unit.isHuman())
-    return loc($"role/{getUnitBasicRole(unit)}")
-
-  let needShowBaseTag = tags.indexof("visibleBaseTag") != null
-  let basicRoles = basicUnitRoles?[getEsUnitType(unit)] ?? []
-  local basicRole = ""
-  let textsList = []
-  foreach (tag in tags)
-    if (tag.len() > 5 && tag.slice(0, 5) == "type_") {
-      if (!isInArray(tag, basicRoles))
-        textsList.append(getRoleTextByTag(tag))
-      else if (basicRole == "") {
-        basicRole = tag
-        if (needShowBaseTag)
-          textsList.append(getRoleTextByTag(tag))
-      }
-    }
-
-  if (textsList.len())
-    return loc("mainmenu/unit_type_separator").join(textsList, true)
-
-  return basicRole != "" ? getRoleTextByTag(basicRole) : ""
 }
 
 function getUnitRoleIconAndTypeCaption(unit) {

@@ -374,6 +374,4 @@ return {
   getSoldiersCount
   getWeaponDataByWeaponInfo
   getHumanWeaponIcons
-
-  INF_SOLDIER_EMPTY
 }

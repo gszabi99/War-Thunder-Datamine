@@ -40,13 +40,10 @@ def human_medkit_update_need_display_bleeding_tip(info : ParallelUpdateFrameDela
                                                   human_inventory__dotThresholdForBleedingTip : float;
                                                   human_inventory__entityUseEnd : float;
                                                   human_inventory__canUseMedkit : bool;
-                                                  total_kits__selfTourniquet : int = 0;
                                                   var human_medkit__needDisplayBleedingTip : bool&)
   let needUseMedkitOrRevive = !isDowned && !burning__isBurning && human_inventory__entityUseEnd < info.curTime
   let isDotMoreThanThreshold = hitpoints__maxHp > 0.0 && hitpoints__totalDotAmount / hitpoints__maxHp > human_inventory__dotThresholdForBleedingTip
-  let showBleeding = needUseMedkitOrRevive && human_inventory__canUseMedkit && heal__continuousInput && isDotMoreThanThreshold
-  human_medkit__needDisplayBleedingTip = showBleeding && total_kits__selfTourniquet > 0
-
+  human_medkit__needDisplayBleedingTip = needUseMedkitOrRevive && human_inventory__canUseMedkit && heal__continuousInput && isDotMoreThanThreshold
 
 [es(tag=gameClient, REQUIRE=hero, REQUIRE_NOT=isReplayObserved, track=(human_medkit__needDisplayBleedingTip, human_ladder__attached))]
 def human_bleeding_tip_show_es(evt : Event;

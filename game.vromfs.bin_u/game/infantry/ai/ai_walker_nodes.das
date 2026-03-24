@@ -296,15 +296,11 @@ class ValidateStandPositionNode : BehNodeAdapter
     return movingTime > 0f ? EBehResult.ER_RUNNING : EBehResult.ER_SUCCESS
 
 
-def private pick_nav_position(positions : Point3List; from_pos : float3; min_dist_sq : float; closest : bool;
-                              round_len : float; def_pos : float3; customNav : CustomNav const?; prefer_unsafe : bool)
-  let numPositions = length(positions)
-  if numPositions <= 0
+def private pick_nav_position(positions : Point3List; from_pos : float3; min_dist_sq : float; closest : bool; round_len : float; def_pos : float3; customNav : CustomNav const?)
+  if empty(positions)
     return def_pos
   var points : array<float3>
-  var pointsOther : array<float3>
-  points |> reserve(numPositions)
-  pointsOther |> reserve(numPositions)
+  var pointsUnsafe : array<float3>
   for pos in positions
     var waterLevel = 0.0
     let MAX_HEIGHT_UNDERWATER = -0.1
@@ -321,13 +317,13 @@ def private pick_nav_position(positions : Point3List; from_pos : float3; min_dis
           isSafe = false
           return true
         return false
-    if isSafe == prefer_unsafe
-      pointsOther |> push(pos)
+    if !isSafe
+      pointsUnsafe |> push(pos)
     else
       points |> push(pos)
-  if length(points) <= 1 && length(pointsOther) > 0
-    for otherPos in pointsOther
-      points |> push(otherPos)
+  if length(points) <= 1 && length(pointsUnsafe) > 0
+    for unsafePos in pointsUnsafe
+      points |> push(unsafePos)
   if empty(points)
     return def_pos
   if !closest
@@ -592,8 +588,6 @@ class GetCapzonePoint : BehNodeAdapter
   minDistSq : float = 0.0
   minDistChance : float = 1.0
 
-  chanceUnsafe : float = 0.1
-
   def override loadFromBlk(var data : DataBlock) : void
     outPosParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outPosParam", ""), float3())
     zoneEidParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "zoneEidParam", ""), 0)
@@ -605,8 +599,6 @@ class GetCapzonePoint : BehNodeAdapter
 
     minDistSq = square(datablock_getReal(data, "minDist", 0.0))
     minDistChance = datablock_getReal(data, "minDistChance", minDistChance)
-
-    chanceUnsafe = datablock_getReal(data, "chanceUnsafe", chanceUnsafe)
 
   def override update(dt : float) : EBehResult
     let agentEid = beh_tree_eid(owner)
@@ -625,15 +617,14 @@ class GetCapzonePoint : BehNodeAdapter
       let allowNearDist = minDistChance >= 1.0 || rnd_float(0.0, 1.0) < minDistChance
       let minDistSqAllowed = allowNearDist ? minDistSq : 0.0
       let findClosest = closestPoint && (notClosestChance <= 0.0 || rnd_float(0.0, 1.0) > notClosestChance)
-      let prioritizeUnsafe = chanceUnsafe >= 1.0 || rnd_float(0.0, 1.0) < chanceUnsafe
 
       if insideCapzone
         query(zoneEid) <| $ [es] (transform aka capzone_transform : float3x4; capzone__insideNavmeshPositions : Point3List)
-          pointPos = pick_nav_position(capzone__insideNavmeshPositions, agentPos, minDistSqAllowed, findClosest, closestRoundLen, capzone_transform[3], customNav, prioritizeUnsafe)
+          pointPos = pick_nav_position(capzone__insideNavmeshPositions, agentPos, minDistSqAllowed, findClosest, closestRoundLen, capzone_transform[3], customNav)
           gotPoint = true
       else
         query(zoneEid) <| $ [es] (transform aka capzone_transform : float3x4; capzone__outsideNavmeshPositions : Point3List)
-          pointPos = pick_nav_position(capzone__outsideNavmeshPositions, agentPos, minDistSqAllowed, findClosest, closestRoundLen, capzone_transform[3], customNav, prioritizeUnsafe)
+          pointPos = pick_nav_position(capzone__outsideNavmeshPositions, agentPos, minDistSqAllowed, findClosest, closestRoundLen, capzone_transform[3], customNav)
           gotPoint = true
 
     if gotPoint
@@ -747,19 +738,20 @@ class FindEnemyAttackDirPos : BehNodeAdapter
         owner.blackBoard |> set(outPosParam, resultPos)
     return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
 
-def private find_path_full(from_pos : float3; to_pos : float3; extents : float3; step_size : float; path_slope : float; max_partial : int;
+def private find_path_full(from_pos : float3; to_pos : float3; extents : float3; step_size : float; path_slope : float;
                            reach_dist : float; reach_height : float; thru_blocked : bool; custom_nav : CustomNav const?; var out_path : array<float3>&)
   let reachDistSq = square(reach_dist)
+  let maxPartial = 5
   var fromPt = from_pos
   var found = false
 
-  let RESERVE_PATH_LEN = 1024
+  let RESERVE_PATH_LEN = 64
   clear(out_path)
   var partPath : array<float3>
   out_path |> reserve(RESERVE_PATH_LEN)
   partPath |> reserve(RESERVE_PATH_LEN)
 
-  for _i in range(max_partial)
+  for _i in range(maxPartial)
     clear(partPath)
     var result = FindPathResult.FPR_FAILED
     if thru_blocked
@@ -773,7 +765,7 @@ def private find_path_full(from_pos : float3; to_pos : float3; extents : float3;
     if result == FindPathResult.FPR_FAILED || len <= 1
       return false
 
-    let reached = distance_sq(to_pos.xz, partPath[len - 1].xz) < reachDistSq && (reach_height < 0.0 || abs(to_pos.y - partPath[len - 1].y) < reach_height)
+    let reached = distance_sq(to_pos.xz, partPath[len - 1].xz) < reachDistSq && abs(to_pos.y - partPath[len - 1].y) < reach_height
     if reached && result == FindPathResult.FPR_FULL
       for i in range(0, len)
         let partPos = partPath[i]
@@ -2980,9 +2972,6 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
     if !hasAgentInfo || agentSquad == INVALID_ENTITY_ID
       return EBehResult.ER_FAILED
 
-    if !team_bots_tick_limiter_check(agentTeam, TB_LIMITER_TACTICALPATH, 1)
-      return EBehResult.ER_RUNNING
-
     let fromPos = agentPos
     let destPos = owner.blackBoard |> datablock_getPoint3(pointParam)
 
@@ -2994,17 +2983,8 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
         customNav = walker_custom_nav
         return true
       return false
-
-    let tooFarSearchDist = 150.0
-    let tooFar = distance_sq(fromPos, destPos) > square(tooFarSearchDist)
-    let stepSize = 1.0
-    let pathSlope = 0.1
-    let maxPartial = !tooFar ? 2 : 1
-    let reachDist = !tooFar ? 0.5 : (distance(fromPos, destPos) - tooFarSearchDist)
-    let reachHeight = !tooFar ? 1.0 : -1.0
-    if !find_path_full(fromPos, destPos, extents, stepSize, pathSlope, maxPartial, reachDist, reachHeight, findThruBlocked, customNav, path)
+    if !find_path_full(fromPos, destPos, extents, 0.5, 0.25, 0.5, 1.0, findThruBlocked, customNav, path)
       if !allowPartialAsLastChance || empty(path)
-        
         return EBehResult.ER_FAILED
     let len = length(path)
     if len <= 1
@@ -3144,9 +3124,6 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
     if !hasAgentInfo
       return EBehResult.ER_FAILED
 
-    if !team_bots_tick_limiter_check(agentTeam, TB_LIMITER_TACTICALPATH, 1)
-      return EBehResult.ER_RUNNING
-
     let detailStep = 0.5
     let advanceDistRange = float2(30.0, 40.0)
     let advanceDist = rnd_float(advanceDistRange.x, advanceDistRange.y)
@@ -3285,7 +3262,8 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
             owner.blackBoard |> set(outActionPosFromParam, foundPos)
         return
 
-      path |> erase(0, foundIdx)
+      for _j in range(foundIdx)
+        path |> erase(0)
       if length(path) < 2
         found = false
         return
@@ -3399,8 +3377,14 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
     let COS_30 = 0.87
     let COS_60 = 0.50
 
+    
+    
+    
+    
+    
+    
+
     let MAX_STEPS_AHEAD = 32
-    let NUM_STEPS_ADVANCE = 10
     let MAX_RECONS_AROUND = 500
 
     var stopIdx = -1
@@ -3414,7 +3398,9 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
       
       var idx = 1
       var prevPos = path[0]
+      var mmm = 0
       while idx < limitIdx
+        ++mmm
         let nextPos = path[idx]
         var lookDir = float3()
         if distance_sq(agent_pos, nextPos) > MIN_RADIUS_SQ && (fullRecons > 0 || distance_sq(nextPos, pos) < CLOSE_RADIUS_SQ)
@@ -3435,6 +3421,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
                   let tracePos = pos - (dir1 * 0.1 + dir2 * 0.1) + float3(0.0, 1.5, 0.0)
                   let traceDir = normalize(tracePos - fromPos)
                   let traceDist = 15.0
+                  
                   if !rayhit_normalized(fromPos, traceDir, traceDist, ETF_ALL, -1)
                     if stopIdx < 0 || idx < stopIdx
                       
@@ -3446,10 +3433,13 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
                       limitIdx = min(limitIdx, idx + 2)
                     break
         prevPos = nextPos
-        if idx + 1 < limitIdx && idx + NUM_STEPS_ADVANCE >= limitIdx
-          idx = limitIdx - 1
-        else
-          idx += NUM_STEPS_ADVANCE
+        ++idx
+      
+      
+      
+      
+    
+    
     if stopIdx < 0
       return false
 
@@ -3473,7 +3463,8 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
       
 
       out_found_pos = path[stopIdx - 1]
-      path |> erase(0, stopIdx)
+      for _j in range(stopIdx)
+        path |> erase(0)
       result = true
 
       

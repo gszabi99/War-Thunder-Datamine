@@ -242,12 +242,10 @@ def set_phys_height_on_spawn_selected(evt : Event;
 
 [es(REQUIRE=human)]
 def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
-                                            eid : EntityId;
                                             var dynamic_respawn__spawnOnUnitEid : EntityId?;
                                             dynamic_respawn__vehicleDistTraces : float;
                                             dynamic_respawn__humanDist : float;
-                                            dynamic_respawn__vehicleFallbackOffset : float3;
-                                            dynamic_respawn__fallbackMinDistToUnitSq : float = 225.)
+                                            dynamic_respawn__vehicleFallbackOffset : float3)
   let spawnOnEid = evt.spawnOnEid
   evt.verified = false
 
@@ -262,9 +260,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
                                     dynamic_respawn__prevPositions : Point3List const?)
     let unit = unit__ref.unit
     if !unit.isAlive || unit.isDelayed || (!dynamic_respawn__onUnitAllowed && dynamic_respawn__onUnitCanBlockSpawn)
-      print("[SPSQUAD] spawn on unit {spawnOnEid} rejected: alive={unit.isAlive} delayed={unit.isDelayed} allowed={dynamic_respawn__onUnitAllowed} canBlock={dynamic_respawn__onUnitCanBlockSpawn}")
       return
-    let unitPos = unit.unitTm[3]
     if unit.isHuman
       evt.spawnTm = unit.unitTm
       var verifyDebugDeltaSq = FLT_MAX
@@ -277,29 +273,19 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
           if distSq < 100.f 
             evt.verified = true
             evt.spawnTm[3] = evt.requestPos 
-            print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} VERIFIED requestPos=({evt.requestPos}) unitPos=({unitPos}) dist={length(evt.spawnTm[3] - unitPos)} verifyDelta={sqrt(distSq)}")
+            print("[SPSQUAD] Spawn squadmate invis req (distance {length(evt.spawnTm[3] - unit.unitTm[3])}) verify delta {sqrt(distSq)}")
             break
       if !evt.verified
-        var posForSearch = unitPos
-        if dynamic_respawn__prevPositions != null && length(*dynamic_respawn__prevPositions) > 0
-          var closestDistSq = FLT_MAX
-          for pos in *dynamic_respawn__prevPositions
-            let dSq = length_sq(pos - unitPos)
-            if dSq >= dynamic_respawn__fallbackMinDistToUnitSq && dSq < closestDistSq
-              closestDistSq = dSq
-              posForSearch = pos
         var resPos : float3
-        let foundNavmesh = find_random_point_around_circle(posForSearch, dynamic_respawn__humanDist, resPos)
-        if foundNavmesh
+        if find_random_point_around_circle(unit.unitTm[3], dynamic_respawn__humanDist, resPos)
           evt.spawnTm[3] = resPos
         dropObjectOnNavmesh(evt.spawnTm, 2.5, 1.)
         evt.verified = true
-        let fallbackPos = evt.spawnTm[3]
         if dynamic_respawn__prevPositions != null
           if !requestPosCorrectly
-            print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} FALLBACK (no client invis point) unitPos=({unitPos}) fallbackPos=({fallbackPos}) navmesh={foundNavmesh}")
+            print("[SPSQUAD] Player can't find invis point for spawn")
           else
-            print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} FALLBACK (verify failed) requestPos=({evt.requestPos}) unitPos=({unitPos}) fallbackPos=({fallbackPos}) closestDelta={sqrt(verifyDebugDeltaSq)} navmesh={foundNavmesh}")
+            print("[SPSQUAD] Spawn squadmate invis FAIL POS: {evt.requestPos} verifyDebugDelta {sqrt(verifyDebugDeltaSq)}")
 
     elif unit.isTank
       evt.spawnTm = unit.unitTm
@@ -314,16 +300,13 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
           evt.spawnTm = unit.unitTm
           evt.spawnTm[3] = evt.spawnTm[3] + traceDir * t
           dropObjectOnNavmesh(evt.spawnTm, 1.5, 1.)
-          print("[SPSQUAD] spawn unit {eid} on tank {spawnOnEid} VERIFIED traceDir=({traceDir}) finalPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
           break
       if !evt.verified
         evt.spawnTm = unit.unitTm
         var resPos : float3
-        if find_random_point_around_circle(unitPos, dynamic_respawn__vehicleDistTraces, resPos)
+        if find_random_point_around_circle(unit.unitTm[3], dynamic_respawn__vehicleDistTraces, resPos)
           evt.spawnTm[3] = resPos
-          print("[SPSQUAD] spawn unit {eid} on tank {spawnOnEid} FALLBACK (navmesh) fallbackPos=({resPos}) unitPos=({unitPos})")
         else
           evt.spawnTm[3] = evt.spawnTm[3] + dynamic_respawn__vehicleFallbackOffset 
-          print("[SPSQUAD] spawn unit {eid} on tank {spawnOnEid} FALLBACK (offset) fallbackPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
   if dynamic_respawn__spawnOnUnitEid != null
     *dynamic_respawn__spawnOnUnitEid = evt.verified ? spawnOnEid : INVALID_ENTITY_ID

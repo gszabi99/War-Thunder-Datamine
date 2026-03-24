@@ -210,9 +210,7 @@ function addSkinItemToOption(option, locName, value, decorator, shouldSetFirst =
   return option.access[idx]
 }
 
-function getSkinsOption(unitName, params = {}) {
-  let { showLocked = false, needAutoSkin = true, showDownloadable = false,
-    overridedUnitSkin = null } = params
+function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, showDownloadable = false) {
   let descr = {
     items      = []
     values     = []
@@ -232,19 +230,11 @@ function getSkinsOption(unitName, params = {}) {
   if (showDownloadable)
     skins = addDownloadableLiveSkins(skins, unit)
 
-  local hasOverridedSkin = false
   for (local skinNo = 0; skinNo < skins.len(); ++skinNo) {
-    if (hasOverridedSkin)
-      break
     let skin = skins[skinNo]
     let isDefault = skin.name.len() == 0
     
     let skinName = isDefault ? DEFAULT_SKIN_NAME : skin.name
-
-    hasOverridedSkin = skinName == overridedUnitSkin
-    if (overridedUnitSkin != null && !hasOverridedSkin)
-      continue
-
     let skinBlockName = getSkinId(unitName, skinName)
     let isPreviewedLiveSkin = hasFeature("EnableLiveSkins")
       && isInArray(skinBlockName, previewedLiveSkinIds)
@@ -257,7 +247,7 @@ function getSkinsOption(unitName, params = {}) {
     }
 
     let isUnlocked = decorator.isUnlocked()
-    let isOwn = isDefault || isUnlocked || hasOverridedSkin
+    let isOwn = isDefault || isUnlocked
     if (!isOwn && !showLocked)
       continue
 
@@ -284,7 +274,7 @@ function getSkinsOption(unitName, params = {}) {
   }
 
   let hasAutoSkin = needAutoSkin && isAutoSkinAvailable(unitName)
-  if (!hasOverridedSkin && hasAutoSkin) {
+  if (hasAutoSkin) {
     let autoSkin = getAutoSkin(unitName)
     let decorator = getDecorator(getSkinId(unitName, autoSkin), decoratorTypes.SKINS)
     let locName = loc("skins/auto", { skin = (decorator?.getName() ?? "") })
@@ -293,7 +283,7 @@ function getSkinsOption(unitName, params = {}) {
     descr.autoSkin = autoSkin
   }
 
-  let curSkin = hasOverridedSkin ? overridedUnitSkin : getLastSkin(unit.name)
+  let curSkin = getLastSkin(unit.name)
   descr.value = find_in_array(descr.values, curSkin, -1)
   if (descr.value != -1 || !descr.values.len())
     return descr

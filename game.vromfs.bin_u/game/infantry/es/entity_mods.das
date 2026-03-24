@@ -129,8 +129,8 @@ def entity_mods_appliers_server_es(info : ParallelUpdateFrameDelayed;
                                    human_fast_prone__fasterChangePoseDuration : float;
                                    human_fast_prone__fasterChangePose_speed : float;
                                    human_sprint_leap__isLeaping : bool;
-                                   beh_tree__enabled : bool = false;
-                                   squad_member__squad : EntityId = INVALID_ENTITY_ID;
+                                   beh_tree__enabled : bool;
+                                   squad_member__squad : EntityId;
                                    var human_stamina_regen_affect__mult : float&;
                                    var human_net_phys : HumanActor&)
   var entityModSprintSpeedMult = entity_mods__sprintSpeedMult

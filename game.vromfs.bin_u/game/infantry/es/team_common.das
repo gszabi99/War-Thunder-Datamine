@@ -1,6 +1,6 @@
 module team_common shared
 require ecs
-require app
+
 require DagorSystem
 require DagorRandom
 
@@ -56,31 +56,3 @@ def assign_team(var out_team_id : int&; var out_team_eid : EntityId&)
   out_team_eid = filteredTeams[rnd_int(0, filteredTeams |> length() - 1)]
   out_team_id = get_int(out_team_eid, "team__id") ?? int(TEAM_UNASSIGNED)
   print("Found already existing team with id: {out_team_id}, eid: {out_team_eid}")
-
-
-let
-  TB_LIMITER_TACTICALPATH = 0
-  TB_LIMITERS_MAX = 1
-
-def team_bots_tick_limiter_check(for_team : int; kind_idx : int; max_num : int)
-  if kind_idx >= TB_LIMITERS_MAX
-    return false
-  var result = false
-  find_query() <| $ [es] (team__id : int; var team_bots__limitersTime : FloatList&; var team_bots__limitersNum : IntList&)
-    if for_team != team__id
-      return false
-    if kind_idx >= length(team_bots__limitersTime)
-      team_bots__limitersTime |> resize(1 + kind_idx)
-      team_bots__limitersNum |> resize(1 + kind_idx)
-    let curTime = get_sync_time()
-    assume lastTime = team_bots__limitersTime[kind_idx]
-    assume lastNum = team_bots__limitersNum[kind_idx]
-    if lastTime < curTime
-      lastTime = curTime
-      lastNum = 0
-    if lastTime == curTime && lastNum < max_num
-      lastNum += 1
-      result = true
-    return true
-  return result
-

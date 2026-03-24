@@ -30,7 +30,7 @@ let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWe
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, makeWeaponInfoData
 } = require("weaponryDescription.nut")
 let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
-let { getUnitArmorData, getArmorIconViewData } = require("%scripts/weaponry/infantryArmor.nut")
+let { getUnitArmorData } = require("%scripts/weaponry/infantryArmor.nut")
 let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup,
   calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
@@ -46,12 +46,9 @@ let { getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 const UI_BASE_REWARD_DECORATION = 10
-const PRESETS_IN_ROW = 2
 
 function setWidthForWeaponsPresetTooltip(obj, descTbl) {
-  let { bulletPenetrationData = null, maxPresetsInRow = PRESETS_IN_ROW } = descTbl
-  let isFullWidth = bulletPenetrationData != null || maxPresetsInRow > PRESETS_IN_ROW
-  obj["weaponTooltipWidth"] = isFullWidth ? "full" : "narrow"
+  obj["weaponTooltipWidth"] = descTbl?.bulletPenetrationData ? "full" : "narrow"
 }
 
 function setInternalPadingForWeaponsPresetTooltip(descTbl) {
@@ -92,9 +89,6 @@ function getPresetWeaponsDescArrayForHuman(unit, item, ediff, maxSoldiersActive)
     return presetsWeapons
 
   foreach(idx, soldierIcons in compositionIcons) {
-    if (maxSoldiersActive != null && idx >= maxSoldiersActive)
-      continue
-
     let isSoldierInactiveInEvent = (maxSoldiersActive != null) && (idx + 1 > maxSoldiersActive)
     let isSoldierDisabled = soldierIcons.disabledSoldier
 
@@ -114,15 +108,6 @@ function getPresetWeaponsDescArrayForHuman(unit, item, ediff, maxSoldiersActive)
         itemImg = weapon.itemImg
         isDisabled = isSoldierInactiveInEvent || isSoldierDisabled
       })
-    }
-    if (maxSoldiersActive == 1) {
-      let armorViewData = getArmorIconViewData(unit)
-      if (armorViewData != null)
-        presetParamsWithImg.append({
-          weaponNameStr = loc($"modification/{armorViewData.weaponName}")
-          itemImg = armorViewData.itemImg
-          isDisabled = false
-        })
     }
     presetsWeapons.append({ presetName, presetParamsWithImg, hasPresetParamsWithImg = true })
   }
@@ -550,11 +535,6 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
       let { curEdiff = getCurrentGameModeEdiff(), maxSoldiersActive = null } = params
       res.presetsWeapons <- getPresetWeaponsDescArrayForHuman(unit, item, curEdiff, maxSoldiersActive)
       res.presetCompositionHint <- loc("weaponry/presetCompositionHint")
-      local maxPresetsInRow = PRESETS_IN_ROW
-      foreach (presetWeapons in res.presetsWeapons)
-        maxPresetsInRow = max(maxPresetsInRow, presetWeapons.len())
-      if (maxPresetsInRow > PRESETS_IN_ROW)
-        res.maxPresetsInRow <- maxPresetsInRow
     }
     else {
       let { presetsWeapons, presetsNames } = getPresetWeaponsDescArray(unit, weaponInfoData, params)

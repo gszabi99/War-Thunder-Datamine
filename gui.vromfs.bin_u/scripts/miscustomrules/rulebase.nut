@@ -17,7 +17,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { get_game_mode, get_game_type, get_local_mplayer, get_mp_local_team,
   get_user_custom_state, get_mission_custom_state } = require("mission")
 let { get_mission_difficulty_int, get_respawns_left,
-  get_respawns_total_count, get_current_mission_desc } = require("guiMission")
+  get_current_mission_desc } = require("guiMission")
 let { get_current_mission_info_cached, get_warpoints_blk  } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
@@ -84,11 +84,8 @@ let Base = class {
 
   function getLeftRespawns() {
     local res = RESPAWNS_UNLIMITED
-    let maxResp = this.missionParams?.maxRespawns ?? 0
-    if (!this.isScoreRespawnEnabled && maxResp > 0)
+    if (!this.isScoreRespawnEnabled && getTblValue("maxRespawns", this.missionParams, 0) > 0)
       res = get_respawns_left() 
-    if (maxResp > 0 && get_respawns_total_count() >= maxResp)
-      res = 0
     return res
   }
 

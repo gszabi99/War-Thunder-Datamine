@@ -11,7 +11,6 @@ let mkHealth = require("%rGui/hud/humanSquad/mkHealth.nut")
 let mkStamina = require("%rGui/hud/humanSquad/mkStamina.nut")
 let mkCurWeapon = require("%rGui/hud/humanSquad/mkWeapons.nut")
 let mkWeaponsList = require("%rGui/hud/humanSquad/mkWeaponsList.nut")
-let sightPresetsPanel = require("%rGui/hud/humanSquad/sightPresets.nut")
 let { weaponBlockGap, healthStateBlockGap } = require("%rGui/hud/humanSquad/humanConst.nut")
 let { isHuman } = require("%rGui/hudUnitType.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -106,7 +105,6 @@ let infantryHud = @() {
   children = [
     killMarks
     centerPanel
-    sightPresetsPanel
     leftPanel
     rightPanel
   ]

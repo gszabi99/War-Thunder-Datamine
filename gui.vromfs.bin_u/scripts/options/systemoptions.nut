@@ -505,8 +505,7 @@ function localize(optionId, valueId) {
       optionId == "fxQuality" ||
       optionId == "tireTracksQuality" ||
       optionId == "waterQuality" ||
-      optionId == "giQuality" ||
-      optionId == "volfogQuality"
+      optionId == "giQuality"
     ) {
     if (valueId == "none")
       return loc("options/none")
@@ -1515,7 +1514,7 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/shadowQuality/%s"
   }
   volfogQuality = { widgetType = "options_bar" def = "low" blk = "graphics/volfogQuality" restart = false
-    values = [ "low", "medium", "high" ]
+    values = [ "off", "low", "medium", "high" ]
     isVisible = is_dev_version
   }
   waterEffectsQuality = { widgetType = "options_bar" def = "high" blk = "graphics/waterEffectsQuality" restart = false

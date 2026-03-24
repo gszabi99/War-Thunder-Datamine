@@ -17,20 +17,6 @@ def create_items_for_soldier_on_appear(evt : Event;
       if inventory__itemsWaitingCreate != null
         *inventory__itemsWaitingCreate |> push(itemEid)
 
-[es(on_appear, tag=server, before=create_items_for_soldier_on_appear)]
-def create_tourniquet_for_soldier(evt : Event;
-                                  eid : EntityId;
-                                  human_inventory__giveTourniquet : bool;
-                                  var inventory__itemsWaitingCreate : EidList?)
-  if !human_inventory__giveTourniquet
-    return
-  let tmpl = add_sub_template_name("tourniquet_item", "initial_inventory")
-  let itemEid = createEntity(tmpl) <| $(var init : ComponentsInitializer)
-    set(init, "item__lastOwner", eid)
-    set(init, "item__ownerEid", eid)
-  if inventory__itemsWaitingCreate != null
-    *inventory__itemsWaitingCreate |> push(itemEid)
-
 [es(on_appear, tag=server)]
 def check_items_for_soldier_on_appear(evt : Event;
                                       eid aka item_eid : EntityId;

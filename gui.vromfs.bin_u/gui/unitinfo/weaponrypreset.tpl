@@ -1,5 +1,5 @@
 weaponryPreset {
-  size:t='<<tiersCount>>*<<slotScale>>*@modalInfoTierIconSize, <<slotScale>>*1@modalInfoTierIconSize'
+  size:t='13*@modalInfoTierIconSize, 1@modalInfoTierIconSize'
   halign:t='center'
   tdiv {
     width:t='pw'
@@ -15,16 +15,16 @@ weaponryPreset {
       <<#tiersView>>
       tooltipLink {
         weaponryTier{
-          size:t='<<slotScale>>*@modalInfoTierIconSize, <<slotScale>>*@modalInfoTierIconSize'
+          size:t='@modalInfoTierIconSize, @modalInfoTierIconSize'
           <<^isActive>>enable:t='no'<</isActive>>
           interactive:t='yes'
           shortcut-on-hover:t='yes'
           img {
-            size:t='<<slotScale>>*@modalInfoTierIconSize, <<slotScale>>*@modalInfoTierIconSize'
+            size:t='@modalInfoTierIconSize, @modalInfoTierIconSize'
             position:t='relative'
             background-image:t='<<#img>><<img>><</img>>'
             background-repeat:t='expand'
-            background-svg-size:t='<<slotScale>>*@modalInfoTierIconSize, <<slotScale>>*@modalInfoTierIconSize'
+            background-svg-size:t='@modalInfoTierIconSize, @modalInfoTierIconSize'
           }
           <<#tierTooltipId>>
           tooltip-float:t='horizontal'

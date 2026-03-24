@@ -123,8 +123,6 @@ ecs.register_es("hero_ui_weapons_es",
             attachedItemModSlotName
             isVariableScope = comp["gunmod__variableScope"]
             hasSwitchableSights = (comp["sightPresets"]?.len() ?? 0) > 1
-            currentSightPreset = comp["weap__current_sight_preset"]
-            sightPresetsData = (comp["sightPresets"]?.getAll() ?? []).map(@(p) p?.loc ?? "")
           }.__update(modsDesc)
           return v
         })
@@ -151,9 +149,6 @@ ecs.register_es("hero_ui_weapons_es",
         guidanceState = comp["gun__guidanceState"]
         isModActive = comp["weapon_mod__active"]
         launcherEid = comp["tactical_phone__droneLauncher"]
-        hasSwitchableSights = (comp["sightPresets"]?.len() ?? 0) > 1
-        currentSightPreset = comp["weap__current_sight_preset"]
-        sightPresetsData = (comp["sightPresets"]?.getAll() ?? []).map(@(p) p?.loc ?? "")
       }
       weaponSlotsStaticRaw[idx].setValue(staticDesc)
       weaponSlotsRaw[idx].setValue(desc)
@@ -211,8 +206,7 @@ ecs.register_es("hero_ui_weapons_es",
       ["gun__iconByHolders", ecs.TYPE_STRING_LIST, null],
       ["subsidiaryGun", ecs.TYPE_TAG, null],
       ["weapon_mod__active", ecs.TYPE_BOOL, false],
-      ["tactical_phone__droneLauncher", ecs.TYPE_EID, 0],
-      ["weap__current_sight_preset", ecs.TYPE_INT, 0]
+      ["tactical_phone__droneLauncher", ecs.TYPE_EID, 0]
     ]
   }
 )

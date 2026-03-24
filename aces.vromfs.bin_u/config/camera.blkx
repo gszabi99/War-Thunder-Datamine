@@ -4708,7 +4708,12 @@
     "type": "TpsTargetFlightCameraReplay",
     "freeCamOrientInert": 0.5,
     "freeCamPosInert": 1.2,
-    "freeCamOrientMaxSpeed": 0.5
+    "freeCamOrientMaxSpeed": 0.5,
+    "condition": {
+      "not": {
+        "isHuman": {}
+      }
+    }
   },
   "spectator_target_fps_shake": {
     "type": "TpsTargetFlightCameraReplay",

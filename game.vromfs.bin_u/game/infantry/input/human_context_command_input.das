@@ -4,7 +4,7 @@ require WTInput
 require %game.input.input_events
 
 require %appGame.wt_events
-require %appGame.infantry.client.context_command_common
+require %appGame.infantry.es.context_command_common
 require %appGame.infantry.es.squad_personal_order_common
 require %appGame.infantry.input.human_context_command_point_common
 require %appGame.infantry.client.destroyable_wall_client_common

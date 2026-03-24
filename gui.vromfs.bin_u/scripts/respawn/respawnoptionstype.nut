@@ -163,7 +163,7 @@ options.addTypes({
     tooltipName = "skin_tooltip"
     cb = "onSkinSelect"
     getUseropt = function(p) {
-      let skinsOpt = getSkinsOption(p.unit?.name ?? "", { overridedUnitSkin = p?.overridedUnitSkin })
+      let skinsOpt = getSkinsOption(p.unit?.name ?? "")
       skinsOpt.items = skinsOpt.items.map(function(v, i) {
         let isBanned = isSkinBanned(skinsOpt.decorators[i].id)
         if(isBanned)
@@ -331,34 +331,48 @@ options.addTypes({
   respawn_base = {
     sortIdx = idx++
     userOption = -1
-    triggerUpdateBitMask = RespawnOptUpdBit.RESPAWN_BASES
-    triggerUpdContentBitMask = RespawnOptUpdBit.RESPAWN_BASES
+    triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.RESPAWN_BASES
+    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.RESPAWN_BASES
     cb = "onRespawnbaseOptionUpdate"
     needCallCbOnContentUpdate = true
     isShowForUnit = @(p) p.haveRespawnBases
     getUseropt = function(p) {
-      local value = -1
-      if (p.unit?.isHuman() && p.curSquadRespawnBase != null)
-        value = p.respawnBasesList.findindex(
-          @(s) s.isSquadRespawnBase && s.id == p.curSquadRespawnBase.id) ?? -1
-      if (value == -1) {
-        value = p.respawnBasesList.indexof(p.curRespawnBase) ?? -1
-        let savedSpawnType = p.unit?.isAir() ? respawnBases.getSavedBaseType() : null
-        if (savedSpawnType != null)
-          value = getRespawnBasesIndexBySpawnType(p.respawnBasesList, savedSpawnType) ?? value
-      }
+      local value = p.respawnBasesList.indexof(p.curRespawnBase) ?? -1
+      let savedSpawnType = p.unit?.isAir() ? respawnBases.getSavedBaseType() : null
+      if (savedSpawnType != null)
+        value = getRespawnBasesIndexBySpawnType(p.respawnBasesList, savedSpawnType) ?? value
       return {
         items = p.respawnBasesList.map(function(spawn) {
           let res = { text = spawn.getTitle() }
           if (p?.isBadWeatherForAircraft && spawn.isSpawnIsAirfiled())
             res.image <- "#ui/gameuiskin#weather_cloud_lightning.svg"
-          if (!spawn.isAvailable)
-            res.inactive <- "yes"
           return res
         })
         value
       }
     }
+    isNeedUpdContentByTrigger = @(trigger, p) _isNeedUpdContentByTrigger(trigger, p) && p.isRespawnBasesChanged
+
+  }
+  squad_respawn_base = {
+    sortIdx = idx++
+    userOption = -1
+    triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.SQUAD_RESPAWN
+    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.SQUAD_RESPAWN
+    cb = "onSquadRespawnbaseOptionUpdate"
+    needCallCbOnContentUpdate = true
+    isShowForUnit = @(p) p.haveRespawnBases && p.hasSquadRespawnBasesList && p.unit.isHuman()
+    getUseropt = function(p) {
+      local value = p.squadRespawnBasesList.indexof(p.curSquadRespawnBase) ?? 0
+      return {
+        items = p.squadRespawnBasesList.map(function(player) {
+          let res = { text = player.name }
+          return res
+        })
+        value
+      }
+    }
+    isNeedUpdContentByTrigger = @(trigger, p) _isNeedUpdContentByTrigger(trigger, p)
   }
   save_aircraft_spawn = {
     sortIdx = idx++

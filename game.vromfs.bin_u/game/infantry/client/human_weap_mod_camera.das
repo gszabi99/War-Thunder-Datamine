@@ -1,11 +1,13 @@
 require ecs
 require DngHuman
 require DagorMath
+require math.base
 require AnimV20
 require GeomNodeTree
 
 
 def set_lookat_from_sight_node(cur_time : float;
+                               dt : float;
                                human_net_phys : HumanActor;
                                optics_cam_node : int;
                                frontsight_cam_node : int;
@@ -20,9 +22,10 @@ def set_lookat_from_sight_node(cur_time : float;
                                cam_fov_min : float;
                                cam_fov_max : float;
                                gunmod_eid : EntityId;
-                               gunmod__bipodScopeOffset : float;
-                               bipod_enabled : bool;
                                action__running : bool;
+                               bipod__enabled : bool;
+                               gunmod__scopeOffsetInBipod : float const?;
+                               isInReload : bool;
                                var camera__look_at : DPoint3&;
                                var gun_aim_offset : float2&;
                                var camera__lastValidGunAimPos : float3&)
@@ -34,6 +37,11 @@ def set_lookat_from_sight_node(cur_time : float;
   var wpos = DPoint3(wposRelScalar) + DPoint3(wtmOfs)
 
   var nodeDir = -DPoint3(gun_tm[2])
+  if bipod__enabled && gunmod__scopeOffsetInBipod != null && !isInReload
+    let offsetFromScope = *gunmod__scopeOffsetInBipod * normalize(gun_tm[2])
+    let posInBipod = wpos + DPoint3(offsetFromScope)
+    camera__look_at = approach(camera__look_at, posInBipod, dt, 0.1)
+
   var aimOffset = gun_aim_offset
   if frontsight_cam_node > 0
     let fsPos = *animchar.nodeTree |> geomtree_getNodeWposRel(frontsight_cam_node)
@@ -45,9 +53,6 @@ def set_lookat_from_sight_node(cur_time : float;
     let nodeDirF = normalize(fsPos - wposRelScalar)
     nodeDir = DPoint3(nodeDirF)
 
-  assume hphys = human_net_phys.phys
-  let interpK = get_phys_interpk_clamped(hphys, cur_time)
-  let zoomPosition = lerp(hphys.previousState.zoomPosition, hphys.currentState.zoomPosition, interpK)
   query(bindedCamera) <| $ [es] (fov : float;
                                  camera__active : bool)
     if !camera__active
@@ -59,14 +64,15 @@ def set_lookat_from_sight_node(cur_time : float;
       rotzTM(-aimOffset.y, rotTm)
       aimTm = human__aimTm * rotTm
     let lookDir = normalize(aimTm[0])
-    let rawShift = cvt(fov, cam_fov_min, cam_fov_max, cam_shift_min, cam_shift_max)
-    let baseShift = bipod_enabled ? lerp(gunmod__bipodScopeOffset, rawShift, zoomPosition) : rawShift
-    let shift = baseShift + human_weap__gunOffset.x * gunmod__gunOffsetMult
+    let shift = cvt(fov, cam_fov_min, cam_fov_max, cam_shift_min, cam_shift_max) + human_weap__gunOffset.x * gunmod__gunOffsetMult
     let threshold = 0.5
     wpos += nodeDir * threshold - DPoint3(lookDir) * (shift + threshold)
 
+  assume hphys = human_net_phys.phys
+  let interpK = get_phys_interpk_clamped(hphys, cur_time)
   let aimPosition = lerp(hphys.previousState.aimPosition, hphys.currentState.aimPosition, interpK)
-  let baseValue = (has(gunmod_eid, "isCameraAlwaysOnScope") || bipod_enabled) && !action__running ? 1.0 : 0.0
+  let zoomPosition = lerp(hphys.previousState.zoomPosition, hphys.currentState.zoomPosition, interpK)
+  let baseValue = has(gunmod_eid, "isCameraAlwaysOnScope") && !action__running ? 1.0 : 0.0
   let lerpFactor = lerp(0.0, max(zoomPosition, baseValue), aimPosition)
   if !human_net_phys.phys.currentState |> human_phys_state_can_aim()
     wpos = DPoint3(camera__lastValidGunAimPos) + DPoint3(wtmOfs)
@@ -82,6 +88,7 @@ def set_lookat_from_sight_node(cur_time : float;
      REQUIRE=watchedByPlr)]
 
 def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
+                                  bipod__enabled : bool;
                                   human__aimTm : float3x4;
                                   human_net_phys : HumanActor;
                                   human_weap__currentGunEid : EntityId;
@@ -91,16 +98,18 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                   var camera__look_at : DPoint3&;
                                   var camera__gunAimOffset : float2&;
                                   var camera__lastValidGunAimPos : float3&;
-                                  action__running : bool = false;
-                                  bipod__enabled : bool = false)
+                                  action__running : bool = false)
   var gunScopeEid = human_weap__currentScope
   let isIntegratedScope = get_bool(human_weap__currentGunEid, "gun__integratedScope") ?? false
   if isIntegratedScope && !gunScopeEid
     gunScopeEid = human_weap__currentGunEid
 
   var gunTm = human__aimTm
+  var isInReload = false
   query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
+                                              gun_anim__reloadProgress : float;
                                               subsidiaryGunEid : EntityId = INVALID_ENTITY_ID)
+    isInReload = gun_anim__reloadProgress > 0.0 && gun_anim__reloadProgress < 1.0
     animchar |> animchar_get_tm(gunTm)
     if !!subsidiaryGunEid
       query(subsidiaryGunEid) <| $ [es] (sightPresets : Array const?;
@@ -120,17 +129,18 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                 gunmod__camFovMin : float;
                                 gunmod__camFovMax : float;
                                 gunmod__frontsightCamNodeId : int = -1;
-                                gunmod__bipodScopeOffset : float = 0.1)
-    set_lookat_from_sight_node(info.curTime, human_net_phys,
+                                gunmod__scopeOffsetInBipod : float const?)
+    set_lookat_from_sight_node(info.curTime, info.dt, human_net_phys,
                                gunmod__camNodeId, gunmod__frontsightCamNodeId, animchar,
                                human__aimTm, human_weap__gunOffset, gunmod__gunOffsetMult,
                                gunTm, bindedCamera,
                                gunmod__camShiftMin, gunmod__camShiftMax,
                                gunmod__camFovMin, gunmod__camFovMax,
                                gunScopeEid,
-                               gunmod__bipodScopeOffset,
-                               bipod__enabled,
                                action__running,
+                               bipod__enabled,
+                               gunmod__scopeOffsetInBipod,
+                               isInReload,
                                camera__look_at,
                                camera__gunAimOffset,
                                camera__lastValidGunAimPos)
