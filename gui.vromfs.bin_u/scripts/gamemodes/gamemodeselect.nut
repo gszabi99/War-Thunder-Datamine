@@ -473,7 +473,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (gameMode?.diffCode == DIFFICULTY_HARDCORE &&
-        !checkPackageAndAskDownload("pkg_main"))
+        !checkPackageAndAskDownload(["pkg_main"]))
       return
 
     let event = getGameModeEvent(gameMode)

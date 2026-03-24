@@ -1100,7 +1100,7 @@ let ItemExternal = class (BaseItem) {
         return false
 
     let misBlk = get_meta_mission_info_by_name(this.itemDef.tags.canRunCustomMission)
-    if (misBlk?.requiredPackage != null && !checkPackageAndAskDownload(misBlk.requiredPackage))
+    if (misBlk?.requiredPackage != null && !checkPackageAndAskDownload([misBlk.requiredPackage]))
       return true
 
     broadcastEvent("BeforeStartCustomMission")

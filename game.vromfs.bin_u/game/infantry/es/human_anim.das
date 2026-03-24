@@ -671,7 +671,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   eid : EntityId;
                   isAlive : bool = true; 
                   stunTimer : float = -1.; 
-                  human_anim__isFpv : bool;
+                  human_anim__isFpv : bool = false;
                   human_anim__gunPitchVarId : int;
                   human_anim__leanVarId : int;
                   human_anim__standHeightVarId : int;

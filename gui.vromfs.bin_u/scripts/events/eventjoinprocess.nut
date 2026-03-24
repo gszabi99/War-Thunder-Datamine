@@ -141,11 +141,11 @@ let EventJoinProcess = class {
   function joinStep3_external() {
     this.processStepName = "joinStep3_external"
     if (events.getEventDiffCode(this.event) == DIFFICULTY_HARDCORE &&
-        !checkPackageAndAskDownload("pkg_main"))
+        !checkPackageAndAskDownload(["pkg_main"]))
       return this.remove()
 
     if (!events.isEventAllowedByPackage(this.event)
-      && !checkPackageAndAskDownload(this.event.reqPack))
+      && !checkPackageAndAskDownload(this.event.reqPacks))
       return this.remove()
 
     if (!events.checkEventFeature(this.event))

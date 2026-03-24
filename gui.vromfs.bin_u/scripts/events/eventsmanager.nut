@@ -91,7 +91,7 @@ let { getItemsList, getInventoryList } = require("%scripts/items/itemsManagerMod
 let { getBrokenAirsInfo } = require("%scripts/instantAction.nut")
 let { getMemberStatusLocTag, getMemberStatusLocId, getSquadMembersFlyoutData
 } = require("%scripts/squads/squadUtils.nut")
-let { checkPackageFull, getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
+let { havePackage, getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
 let { EventChaptersManager } = require("%scripts/events/eventsChapter.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
@@ -913,6 +913,10 @@ let Events = class {
       eventData.$rawdelete("loc_name")
     }
 
+    let { reqPack = null } = eventData
+    if (reqPack != null)
+     eventData.reqPacks <- reqPack.replace(";", ",").split(",")
+
     return eventData
   }
 
@@ -1212,7 +1216,7 @@ let Events = class {
 
   isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibilityMode()
 
-  isEventAllowedByPackage = @(event) event?.reqPack == null || checkPackageFull(event.reqPack, true)
+  isEventAllowedByPackage = @(event) event?.reqPacks.findvalue(@(packName) !havePackage(packName)) == null
 
   function getEventsVisibleInEventsWindowCount() {
     return this.__countEventsList(EVENT_TYPE.ANY, this.isEventVisibleInEventsWindow)
@@ -2357,7 +2361,10 @@ let Events = class {
     else if (!this.isEventAllowedByComaptibilityMode(event))
       data.reasonText = loc("events/noCompatibilityMode")
     else if (!this.isEventAllowedByPackage(event))
-      data.reasonText = loc("events/no_entitlement", { entitlement = getPkgLocName(event.reqPack, true)})
+      data.reasonText = loc("events/no_entitlement", { entitlement = loc("ui/comma").join(
+        event.reqPacks.filter(@(packName) !havePackage(packName))
+          .map(@(packName) getPkgLocName(packName, true)))
+      })
     else if (!isCreationCheck && !this.isEventEnabled(event)) {
       local startTime = events.getEventStartTime(event)
       if (startTime > 0)

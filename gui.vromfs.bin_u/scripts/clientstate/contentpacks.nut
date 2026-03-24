@@ -78,9 +78,10 @@ function isAskedPack(pack) {
   return (askedPackages?[pack] ?? 0) + OFFER_DOWNLOAD_PACK_TIME_SEC > get_charserver_time_sec()
 }
 
-function setAskedPack(pack) {
+function setAskedPack(packs) {
   initAskedPackagesOnce()
-  askedPackages[pack] <- get_charserver_time_sec()
+  foreach (pack in packs)
+    askedPackages[pack] <- get_charserver_time_sec()
   saveLocalAccountSettings("askedPackages", askedPackages)
 }
 
@@ -104,8 +105,9 @@ function request_packages_and_restart(packList) {
   log("ERROR: new_content action not implemented");
 }
 
-function checkPackageAndAskDownload(pack, msg = null, continueFunc = null, owner = null, cancelFunc = null) {
-  if (havePackage(pack)) {
+function checkPackageAndAskDownload(packs, msg = null, continueFunc = null, owner = null, cancelFunc = null) {
+  packs = packs.filter(@(pack) !havePackage(pack))
+  if (packs.len() == 0) {
     if (continueFunc)
       call_for_handler(owner, continueFunc)
     return true
@@ -122,7 +124,7 @@ function checkPackageAndAskDownload(pack, msg = null, continueFunc = null, owner
       let ending = continueFunc ? "/continue" : ""
       _msg = loc($"msgbox/no_package{ending}")
     }
-    _msg = format(_msg, colorize("activeTextColor", getPkgLocName(pack)))
+    _msg = format(_msg, colorize("activeTextColor", loc("ui/comma").join(packs.map(@(pack) getPkgLocName(pack)))))
   }
 
   local defButton = "cancel"
@@ -140,7 +142,7 @@ function checkPackageAndAskDownload(pack, msg = null, continueFunc = null, owner
   }
   else if (!is_gdk) {
     buttons.insert(0, ["download",  function() {
-                       request_packages_and_restart([pack])
+                       request_packages_and_restart(packs)
                      }])
   }
 
@@ -151,7 +153,7 @@ function checkPackageAndAskDownload(pack, msg = null, continueFunc = null, owner
                    }])
   }
   scene_msg_box("req_new_content", null, _msg, buttons, defButton)
-  setAskedPack(pack)
+  setAskedPack(packs)
   return false
 }
 
@@ -160,7 +162,7 @@ function checkPackageFull(pack, silent = false) {
   if (silent)
     res = havePackage(pack)
   else
-    res = checkPackageAndAskDownload(pack)
+    res = checkPackageAndAskDownload([pack])
 
   res = res && (silent || check_members_pkg(pack))
   return res
@@ -168,7 +170,7 @@ function checkPackageFull(pack, silent = false) {
 
 function checkPackageAndAskDownloadByTimes(pack, continueFunc = null, owner = null, cancelFunc = null) {
   if (!isAskedPack(pack)) {
-    checkPackageAndAskDownload(pack, null, continueFunc, owner, cancelFunc)
+    checkPackageAndAskDownload([pack], null, continueFunc, owner, cancelFunc)
     return
   }
   if (continueFunc)
@@ -367,7 +369,7 @@ function checkLocalizationPackageAndAskDownload(langId = null) {
     [["download", function() { request_packages_and_restart([pack]) }], ["cancel"]], "cancel", params)
 }
 
-addPromoAction("content_pack", @(_handler, params, _obj) checkPackageAndAskDownload(params?[0] ?? ""),
+addPromoAction("content_pack", @(_handler, params, _obj) checkPackageAndAskDownload([params?[0] ?? ""]),
   @(params) hasFeature("Packages") && !havePackage(params?[0] ?? ""))
 
 addListenersWithoutEnv({

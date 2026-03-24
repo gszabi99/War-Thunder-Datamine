@@ -116,7 +116,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
-        !checkPackageAndAskDownload("pkg_main"))
+        !checkPackageAndAskDownload(["pkg_main"]))
       return
 
     handlersManager.loadHandler(gui_handlers.EventRoomsHandler,

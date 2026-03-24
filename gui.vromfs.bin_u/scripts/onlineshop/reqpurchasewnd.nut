@@ -98,7 +98,7 @@ gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (!u.isEmpty(this.checkPackage))
-      checkPackageAndAskDownload(this.checkPackage)
+      checkPackageAndAskDownload([this.checkPackage])
 
     this.goBack()
   }

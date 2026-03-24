@@ -126,7 +126,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
     if (isPlatformSony || isPlatformXbox)
       showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
     else
-      checkPackageAndAskDownload("pkg_main", loc("msgbox/ask_package_download"))
+      checkPackageAndAskDownload(["pkg_main"], loc("msgbox/ask_package_download"))
   }
 
   function initPromoBlock() {

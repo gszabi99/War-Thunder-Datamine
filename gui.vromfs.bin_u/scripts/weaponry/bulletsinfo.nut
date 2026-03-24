@@ -64,7 +64,7 @@ let DEFAULT_PRIMARY_BULLETS_INFO = {
   forcedMaxBulletsInRespawn = false
   groupName                 = null
   bulletSetAvailiable       = null
-  bulletSetCount            = 2
+  bulletSetCount            = -1
 }
 
 let BULLETS_LIST_PARAMS = {
@@ -625,7 +625,7 @@ function getBulletsInfoForPrimaryGuns(air) {
           continue
 
         wpList[weapIdx].isBulletBelt = wBlk?.isBulletBelt ?? true
-        wpList[weapIdx].bulletSetCount = wBlk?.bulletSetCount ?? 2
+        wpList[weapIdx].bulletSetCount = wBlk?.bulletSetCount ?? -1
         wpList[weapIdx].cartridge = max((weapon?.bulletsCartridge ?? wBlk?.bulletsCartridge ?? 1), 1)
         wpList[weapIdx].total = ceil(wpList[weapIdx].total * 1.0 /
           wpList[weapIdx].cartridge).tointeger()
@@ -696,11 +696,14 @@ function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit,
     return groupIdx
 
   let gunsInfo = unitGunsInfo ?? getBulletsInfoForPrimaryGuns(unit)
-  let bulletSetsCount = gunsInfo.reduce(@(res, val) res + val.bulletSetCount, 0)
+  let defBulletSetCount = max((bulletSetsQuantity / totalGroups  + 0.001).tointeger(), 2)
+  let bulletSetsCount = gunsInfo.reduce(
+    @(res, val) res + (val.bulletSetCount == -1 ? defBulletSetCount : val.bulletSetCount), 0)
+
   if (bulletSetsCount <= bulletSetsQuantity) {
     local count = 0
     foreach (idx, gunInfo in gunsInfo) {
-      count += gunInfo.bulletSetCount
+      count += (gunInfo.bulletSetCount == -1) ? defBulletSetCount : gunInfo.bulletSetCount
       if (count > groupIdx)
         return idx
     }
