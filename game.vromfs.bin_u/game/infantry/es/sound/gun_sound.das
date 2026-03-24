@@ -235,7 +235,7 @@ def gun_sound_on_shot(pos : float3;
                 gun_sound__prefix)
 
 
-[es(tag=sound, REQUIRE=gunSound)]
+[es(tag=sound, REQUIRE=gunSound, REQUIRE_NOT=deadEntity)]
 def gun_sound_on_net_shot(evt : CmdNetShot;
                           gun : Gun;
                           gun__timeBetweenShots : float = 0.;
@@ -287,7 +287,7 @@ def gun_sound_on_net_shot(evt : CmdNetShot;
                     gun_sound__prefix)
 
 
-[es(tag=sound, REQUIRE=gunSound)]
+[es(tag=sound, REQUIRE=gunSound, REQUIRE_NOT=deadEntity)]
 def gun_sound_on_shot_evt(evt : EventShot;
                           gun : Gun;
                           gun__timeBetweenShots : float = 0.;

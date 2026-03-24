@@ -5,7 +5,7 @@ require %appGame.infantry.es.squad_personal_order_common
 require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 require %appGame.infantry.input.human_context_command_point_common
-require %appGame.infantry.es.context_command_common
+require %appGame.infantry.client.context_command_common
 require net
 
 [es(tag=gameClient, REQUIRE=human_context_command_input)]

@@ -186,7 +186,7 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
     logerr(msg)
 
 
-[es(tag=netClient, after=ship_init_cover_parts_handle_es)]
+[es(tag=netClient, after=ship_init_cover_parts_handle_es, REQUIRE=unit_tag__ship)]
 def ship_request_net_sync_on_load_es(evt : CmdInitComponent; eid : EntityId)
   send_net_event(eid, EventShipRequestNetSync())
 

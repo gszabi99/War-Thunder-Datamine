@@ -1,0 +1,1424 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/hvg_amaddu.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "airfield_aaa_spawn_settings": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSpawnOnObjectGroup": [
+          {
+            "type": "air_def",
+            "object": "t1_airfield_aaa_squad",
+            "target": "t1_airfield"
+          },
+          {
+            "type": "air_def",
+            "object": "t2_airfield_aaa_squad",
+            "target": "t2_airfield"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "t2_airfield",
+        "tm": [
+          [
+            0.510627,
+            0.0,
+            -0.859802
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.859802,
+            0.0,
+            0.510627
+          ],
+          [
+            10701.2,
+            182.55,
+            -16594.1
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_green_infantry",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield",
+        "tm": [
+          [
+            -0.667284,
+            0.0,
+            0.744803
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.744803,
+            0.0,
+            -0.667284
+          ],
+          [
+            -12923.6,
+            984.45,
+            16041.9
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_green_infantry",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    ],
+    "air_defence": [
+      {
+        "name": "t2_airfield_aaa_big_01",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            10827.8,
+            159.215,
+            -15839.0
+          ]
+        ],
+        "unit_class": "germ_88mm_flak36_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_big_02",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            10279.7,
+            148.952,
+            -17301.6
+          ]
+        ],
+        "unit_class": "germ_88mm_flak36_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_big_03",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            10612.5,
+            143.27,
+            -17679.8
+          ]
+        ],
+        "unit_class": "germ_88mm_flak36_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_big_04",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            9868.1,
+            130.549,
+            -17027.3
+          ]
+        ],
+        "unit_class": "germ_88mm_flak36_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_small_06",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            9879.25,
+            141.015,
+            -16490.2
+          ]
+        ],
+        "unit_class": "germ_37mm_flak43_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_small_01",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            11139.8,
+            160.608,
+            -16268.2
+          ]
+        ],
+        "unit_class": "germ_37mm_flak43_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_small_02",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            10438.3,
+            140.721,
+            -17498.1
+          ]
+        ],
+        "unit_class": "germ_37mm_flak43_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_small_03",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            10016.1,
+            126.394,
+            -17609.3
+          ]
+        ],
+        "unit_class": "germ_37mm_flak43_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_small_04",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            9798.61,
+            130.22,
+            -16754.1
+          ]
+        ],
+        "unit_class": "germ_37mm_flak43_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_airfield_aaa_small_05",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            10421.4,
+            131.548,
+            -15165.2
+          ]
+        ],
+        "unit_class": "germ_37mm_flak43_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_small_06",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -12784.0,
+            927.276,
+            15024.3
+          ]
+        ],
+        "unit_class": "germ_37mm_flak43_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_small_01",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -12942.4,
+            928.714,
+            15294.1
+          ]
+        ],
+        "unit_class": "ussr_37mm_61k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_big_04",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -13323.9,
+            944.632,
+            15381.5
+          ]
+        ],
+        "unit_class": "ussr_85mm_52k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_big_03",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -13754.2,
+            945.461,
+            15798.4
+          ]
+        ],
+        "unit_class": "ussr_85mm_52k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_big_02",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -12615.0,
+            958.486,
+            16662.7
+          ]
+        ],
+        "unit_class": "ussr_85mm_52k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_big_01",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -12108.0,
+            936.194,
+            16114.2
+          ]
+        ],
+        "unit_class": "ussr_85mm_52k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_small_02",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -13466.0,
+            943.88,
+            15717.5
+          ]
+        ],
+        "unit_class": "ussr_37mm_61k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_small_03",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -12924.5,
+            958.812,
+            16937.2
+          ]
+        ],
+        "unit_class": "ussr_37mm_61k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_small_04",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -12352.5,
+            947.13,
+            16410.5
+          ]
+        ],
+        "unit_class": "ussr_37mm_61k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_airfield_aaa_small_05",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -11984.0,
+            925.582,
+            16017.7
+          ]
+        ],
+        "unit_class": "ussr_37mm_61k_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "t2_airfield_aaa_squad",
+        "tm": [
+          [
+            -0.199569,
+            0.0,
+            -0.979884
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.979884,
+            0.0,
+            -0.199569
+          ],
+          [
+            10051.3,
+            137.844,
+            -16419.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_airfield_aaa_big_01",
+            "t2_airfield_aaa_big_02",
+            "t2_airfield_aaa_big_03",
+            "t2_airfield_aaa_big_04",
+            "t2_airfield_aaa_small_06",
+            "t2_airfield_aaa_small_01",
+            "t2_airfield_aaa_small_02",
+            "t2_airfield_aaa_small_03",
+            "t2_airfield_aaa_small_04",
+            "t2_airfield_aaa_small_05"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_airfield_aaa_squad",
+        "tm": [
+          [
+            -0.863571,
+            0.0,
+            0.504225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.504225,
+            0.0,
+            -0.863571
+          ],
+          [
+            -12546.0,
+            946.016,
+            16117.1
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_airfield_aaa_small_06",
+            "t1_airfield_aaa_small_01",
+            "t1_airfield_aaa_big_04",
+            "t1_airfield_aaa_big_03",
+            "t1_airfield_aaa_big_02",
+            "t1_airfield_aaa_big_01",
+            "t1_airfield_aaa_small_02",
+            "t1_airfield_aaa_small_03",
+            "t1_airfield_aaa_small_04",
+            "t1_airfield_aaa_small_05"
+          ],
+          "object_marking": 0
+        }
+      }
+    ]
+  },
+  "areas": {
+    "air_20000": {
+      "type": "Sphere",
+      "tm": [
+        [
+          40000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40000.0
+        ],
+        [
+          -107.207,
+          967.64,
+          -56.829
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

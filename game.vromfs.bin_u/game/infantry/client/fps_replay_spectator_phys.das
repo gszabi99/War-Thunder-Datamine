@@ -46,3 +46,23 @@ def spectator_simulate_net_phys_update_es(info : ParallelUpdateFrameDelayed;
              human_net_phys__isClimbing,
              human_weap__opticsAttached,
              spectator_gun__vertOffsetRestoreVisc)
+
+
+
+
+
+
+[es(tag=playingReplay, before=human_look_dir_camera_es, REQUIRE=(watchedByPlr, isReplayObserved))]
+def replay_simulate_net_phys_update_es(info : ParallelUpdateFrameDelayed;
+                                       var human_net_phys : HumanActor&;
+                                       isDowned : bool;
+                                       human_net_phys__isClimbing : bool;
+                                       
+                                       human_weap__opticsAttached : bool;
+                                       replay_gun__vertOffsetRestoreVisc : float = 0.4)
+  setup_phys(info,
+             human_net_phys,
+             isDowned,
+             human_net_phys__isClimbing,
+             human_weap__opticsAttached,
+             replay_gun__vertOffsetRestoreVisc)

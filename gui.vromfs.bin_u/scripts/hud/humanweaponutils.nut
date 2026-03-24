@@ -47,6 +47,10 @@ let sightPresetsQuery = ecs.SqQuery("sightPresetsQuery", {
   comps_ro=[["sightPresets", ecs.TYPE_ARRAY]]
 })
 
+let sightEidQuery = ecs.SqQuery("sightEidQuery", {
+  comps_ro=[["weap__sightEid", ecs.TYPE_EID]]
+})
+
 let currentHeroQuery = ecs.SqQuery("currentHeroQuery", {
   comps_ro=[["human_weap__currentGunModEids", ecs.TYPE_EID_LIST]]
 })
@@ -148,6 +152,18 @@ function onHeroUpdated(human_weap__currentGunModEids) {
     updateLaser(false, false)
   if (!flashlightModFound)
     updateFlashlight(false, false)
+  if (!sightPresetsFound) {
+    let gunEid = currentGunEid.get()
+    sightEidQuery(gunEid, function(_, comp) {
+      sightPresetsQuery(comp["weap__sightEid"], function(_, sightComp) {
+        let presets = sightComp.sightPresets?.getAll() ?? []
+        if (presets.len() > 1) {
+          updateSightPresets(presets)
+          sightPresetsFound = true
+        }
+      })
+    })
+  }
   if (!sightPresetsFound)
     updateSightPresets([])
 }

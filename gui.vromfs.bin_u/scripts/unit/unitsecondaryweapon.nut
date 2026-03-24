@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryPresets.nut" import MIN_TIERS_COUNT
+
 let { getSinglePresetView } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getLastWeapon, getPresetsList } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -24,8 +26,12 @@ function getSelectedPresetMarkup(unit) {
     })
   })
 
+  let tiersCount = max(weaponryItem.tiersView.len(), MIN_TIERS_COUNT)
+  let slotScale = tiersCount <= MIN_TIERS_COUNT ? 1
+    : MIN_TIERS_COUNT.tofloat() / tiersCount
+
   return handyman.renderCached("%gui/unitInfo/weaponryPreset.tpl",
-    { weaponryItem, isTooltipByHold = showConsoleButtons.get() })
+    { weaponryItem, tiersCount, slotScale, isTooltipByHold = showConsoleButtons.get() })
 }
 
 return {

@@ -188,7 +188,7 @@ return {
   open = function (unit, skinId) {
     if (!hasFeature("CustomizationLayoutPresets"))
       return
-    let skinList = getSkinsOption(unit?.name, false, false)
+    let skinList = getSkinsOption(unit?.name, { showLocked = false, needAutoSkin = false })
     if (!isInArray(skinId, skinList.values))
       return
     handlersManager.loadHandler(gui_handlers.DecorLayoutPresets, {

@@ -183,8 +183,13 @@ def check_drone_owner_far_from_leader(info : ParallelUpdateFrameDelayed;
 [es(tag=server, no_order, REQUIRE=(isDrone, canBeWirelesslyMonitored))]
 def update_drone_monitoring(info : ParallelUpdateFrameDelayed;
                             drone__owner : EntityId;
+                            possessedByPlr : EntityId;
                             var unit__ref : UnitRef&)
+  var fmw = as_fmw(unit__ref.unit)
+  if fmw == null
+    return
+  if !!possessedByPlr
+    (*fmw).isWirelesslyMonitored = true
+    return
   query(drone__owner) <| $ [es] (human_weap__currentGunEid : EntityId)
-    var fmw = as_fmw(unit__ref.unit)
-    return if fmw == null
     (*fmw).isWirelesslyMonitored = has(human_weap__currentGunEid, "tactical_phone")

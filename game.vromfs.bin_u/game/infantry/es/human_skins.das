@@ -7,6 +7,7 @@ require daslib.strings_boost
 require DagorDataBlock
 require Unit
 require Mission
+require DagorRandom
 
 def find_key_in_initial_equip_by_slot(slot : string; equipList : Object)
   for equipKV in equipList
@@ -69,10 +70,17 @@ def human_init_skins_preset_es(evt : CmdInitComponent;
                                squad_member__memberIdx : int;
                                unit__ref : UnitRef;
                                var human_equipment__initialEquip : Object;
+                               squad_member__noBotsMaxSkinId : int = 0;
                                unit__overrideSkinRank : int const?)
   let missionTier = unit__overrideSkinRank == null ? get_mission_max_rank() : *unit__overrideSkinRank
   let skin = evt.data.humanSkin != "" ? string(evt.data.humanSkin) : "default"
-  let soldierIdx = squad_member__memberIdx + 1
+  var loneFightersMode = false
+  static_if typeinfo(builtin_function_exists @@ < () : bool > _::get_mission_lone_fighters_mode)
+    loneFightersMode = get_mission_lone_fighters_mode()
+  else
+    loneFightersMode = false
+  let soldierSkinIdx = loneFightersMode ? rnd_int(0, squad_member__noBotsMaxSkinId - 1) : squad_member__memberIdx;
+  let soldierIdx = soldierSkinIdx + 1
 
   find_query() <| $ [es] (infantry_equipment__teamSkins : Object)
     let teamInfo = infantry_equipment__teamSkins |> get_ecs_object("team_{team}")

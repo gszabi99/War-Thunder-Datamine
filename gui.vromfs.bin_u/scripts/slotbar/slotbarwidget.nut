@@ -446,7 +446,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         curUnit = null
     }
     else if (forcedCountry && this.curSlotIdInCountry >= 0) {
-      let curCrew = getCrew(this.curSlotCountryId, this.curSlotIdInCountry)
+      let curCrew = getCrew(this.curSlotCountryId, this.curSlotIdInCountry, this.singleCountry)
       if (curCrew)
         curCrewId = curCrew.id
     }

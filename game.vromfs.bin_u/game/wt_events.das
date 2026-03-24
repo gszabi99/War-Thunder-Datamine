@@ -379,6 +379,10 @@ struct CmdCollisionDamage
 [event(unicast)]
 struct NextVariableZoomGunScope {}
 
+[event(unicast, routing=ROUTING_CLIENT_TO_SERVER, net_liable=ignore)]
+struct ChangeGunModZoomIndex
+  zoomIndex : int
+
 [event(unicast, routing=ROUTING_CLIENT_TO_SERVER)]
 struct RequestSquadMateOrder
   orderType : SquadMateOrder

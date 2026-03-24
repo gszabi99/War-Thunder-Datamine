@@ -97,8 +97,12 @@ tdiv {
 
           <<#presetParamsWithImg>>
           tdiv {
+            <<#maxPresetsInRow>>
+            width:t='pw/<<maxPresetsInRow>>'
+            <</maxPresetsInRow>>
+            <<^maxPresetsInRow>>
             width:t='pw/2'
-
+            <</maxPresetsInRow>>
             presetWeaponIcon {
               size:t='0.8@modItemHeight,0.8@modItemHeight'
               border-color:t='@modBorderColor'

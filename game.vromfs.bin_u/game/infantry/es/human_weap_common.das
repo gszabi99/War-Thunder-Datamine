@@ -15,10 +15,12 @@ require WeapHelpers
 require PropsManager
 require %appGame.infantry.es.human_gun_common
 require %appGame.infantry.es.human_reload_common
+require daslib/enum_trait
 require %appGame.infantry.es.human_weapon_utils_common
 require %appGame.infantry.es.inventory_drop_common
 require %appGame.infantry.es.multiple_guns_slot_common
 require %appGame.infantry.es.walker_common
+require %appGame.infantry.es.gun_anim_common
 require DngWalkerai
 require Dacoll
 require daslib.strings_boost
@@ -90,7 +92,7 @@ def find_rethrowable_grenade(to_whom : EntityId)
 
 def get_weapon_slot_from_name(name : string) : tuple<slot : HUWeaponSlots; found : bool>
   let slotIdx = get_weapon_slot_index_from_name(name)
-  for slot in each_enum(HUWeaponSlots.EWS_PRIMARY)
+  for slot in each(HUWeaponSlots.EWS_PRIMARY)
     if int(slot) == slotIdx
       return (slot, true)
 
@@ -545,7 +547,7 @@ def search_grenade_for_fast_throw(var result_ammo_type : int&;
                                       item__grenadeType : string)
               let slotConfig = *fastThrowSlots[item__grenadeType] as int
               if slotConfig != null
-                for slot in each_enum(HumanControlThrowSlot.HCTS_SLOT0)
+                for slot in each(HumanControlThrowSlot.HCTS_SLOT0)
                   if int(slot) == 1 << (*slotConfig - 1) && control_state |> human_control_state_is_throw_state_set(slot)
                     result_ammo_type = ammoItemId
                     foundGrenade = true
@@ -889,9 +891,12 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
     let isRequestingReload = ct |> is_control_bit_set(HumanPhysControlType.HCT_RELOAD)
     var isInspecting = false
     var isReloadingStarted = false
-    query(overrideGunEid) <| $ [es] (gun_anim__inspectProgress : float; gun_anim__reloadProgress : float)
+    var weapModState = int(GunWeapModState.WEAP_MOD_STATE_NONE)
+    query(overrideGunEid) <| $ [es] (gun_anim__inspectProgress : float; gun_anim__reloadProgress : float; gun_anim__weapModState : int const?)
       isInspecting = gun_anim__inspectProgress < 1.0
       isReloadingStarted = gun_anim__reloadProgress > 0.2 && gun_anim__reloadProgress < 0.21
+      if gun_anim__weapModState != null
+        weapModState = *gun_anim__weapModState
 
     
     if !isInspecting && isRequestingReload && ct.dodgeState != DodgeState.No
@@ -902,7 +907,7 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
     elif !isInspecting && isRequestingReload && ct.dodgeState == DodgeState.No 
       sendEvent(ctx.eid, CmdGunRequestInspect(atTime = ctx.atTime, gunEid = overrideGunEid))
 
-    if isReloadingStarted && !isInspecting
+    if isReloadingStarted && !isInspecting && weapModState == int(GunWeapModState.WEAP_MOD_STATE_NONE)
       sendEvent(ctx.eid, EventHumanStartedReload())
 
     query(overrideGunEid) <| $ [es] (var gun_reload__isRequesting : bool&)

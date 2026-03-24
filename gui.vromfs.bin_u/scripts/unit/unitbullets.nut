@@ -6,12 +6,14 @@ let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
 let { getBulletSetNameByBulletName, getBulletsSearchName, getBulletsSetData,
   getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { format } = require("string")
+let { floor } = require("math")
 let { getUnitWeaponry } = require("%scripts/weaponry/weaponryInfo.nut")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
+let uintModificationsCache = {}
 let unitBulletsCache = {}
 
 function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false, isShip = false) {
@@ -67,6 +69,20 @@ function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false, isShip = fa
   })
 }
 
+function cacheUintModifications(unit) {
+  if (unit.name in uintModificationsCache)
+    return
+
+  uintModificationsCache[unit.name] <- unit.modifications.reduce(function(res, v) {
+    let modName = v.name
+    res[modName] <- true
+    let eff = getModificationBulletsEffect(modName)
+    if (eff != "")
+      res[eff] <- true
+    return res
+  }, {})
+}
+
 function cacheTankBullets(unit) {
   if (unit.name in unitBulletsCache)
     return
@@ -85,14 +101,14 @@ function cacheTankBullets(unit) {
       let notUseDefaultBulletInGui = weaponBlk?.notUseDefaultBulletInGui ?? false
       if (!notUseDefaultBulletInGui) {
         let bullets = weaponBlk % "bullet"
-        bullets.each(@(v) addOnceUnitBullet(unit v, bullets.len() > 1))
+        bullets.each(@(v) addOnceUnitBullet(unit, v, bullets.len() > 1))
       }
 
       let bulletsBlockCount = weaponBlk.blockCount()
       for (local b = 0; b < bulletsBlockCount; b++) {
         let bulletBlk = weaponBlk.getBlock(b)
         let modName = bulletBlk.getBlockName()
-        if (modName == "bullet" || unit.modifications.findindex(@(v) v.name == modName) == null)
+        if (modName == "bullet" || (modName not in uintModificationsCache[unit.name]))
           continue
         let bullets = bulletBlk % "bullet"
         bullets.each(@(v) addOnceUnitBullet(unit, v, bullets.len() > 1))
@@ -128,7 +144,7 @@ function cacheShipBullets(unit) {
     for (local b = 0; b < bulletsBlockCount; b++) {
       let bulletBlk = weaponBlk.getBlock(b)
       let modName = bulletBlk.getBlockName()
-      if (modName == "bullet" || unit.modifications.findindex(@(v) v.name == modName) == null)
+      if (modName == "bullet" || (modName not in uintModificationsCache[unit.name]))
         continue
       let bullets = bulletBlk % "bullet"
       bullets.each(@(v) addOnceUnitBullet(unit, v, bullets.len() > 1, true))
@@ -138,6 +154,8 @@ function cacheShipBullets(unit) {
 
 function cacheUnitBullets(unitName, unitType) {
   let unit = getAircraftByName(unitName)
+  cacheUintModifications(unit)
+
   if (unitType == ES_UNIT_TYPE_TANK) {
     cacheTankBullets(unit)
     return
@@ -151,10 +169,10 @@ function getUnitBulletsMarkup(unitName, unitType) {
   let bullets = unitBulletsCache[unitName]
   let items = []
   for (local i = 0; i < bullets.len(); i++) {
-    let caliber = bullets[i].caliber
+    let caliber = floor(bullets[i].caliber * 1000)
     local bulletsByCaliber = items.findvalue(@(v) v.caliber == caliber)
     if (bulletsByCaliber == null) {
-      bulletsByCaliber = { caliber, bullets = [], getCaliber = @() format(loc("caliber/mm"), caliber * 1000) }
+      bulletsByCaliber = { caliber, bullets = [], getCaliber = @() format(loc("caliber/mm"), caliber) }
       items.append(bulletsByCaliber)
     }
     bulletsByCaliber.bullets.append(bullets[i].__merge({ isLastItem = i == bullets.len() - 1 }))

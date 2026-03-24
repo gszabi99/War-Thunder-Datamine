@@ -49,7 +49,21 @@ function isCountryHasAnyEsUnitType(country, esUnitTypeMask) {
   return false
 }
 
-let getCrew = @(countryId, idInCountry) getCrewsList()?[countryId].crews[idInCountry]
+function getCrewByCountry(country, idInCountry) {
+  if (country == null)
+    return null
+
+  foreach(crewData in getCrewsList())
+    if (crewData.country == country)
+      return crewData?.crews[idInCountry]
+
+  return null
+}
+
+function getCrew(countryId, idInCountry, singleCountry = null) {
+  return getCrewsList()?[countryId].crews[idInCountry]
+    ?? getCrewByCountry(singleCountry, idInCountry)
+}
 
 function createCrewBuyPointsHandler(crew) {
   return loadHandler(gui_handlers.CrewBuyPointsHandler, { crew })
