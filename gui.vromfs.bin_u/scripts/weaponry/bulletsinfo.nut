@@ -696,7 +696,11 @@ function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit,
     return groupIdx
 
   let gunsInfo = unitGunsInfo ?? getBulletsInfoForPrimaryGuns(unit)
-  let defBulletSetCount = max((bulletSetsQuantity / totalGroups  + 0.001).tointeger(), 2)
+  let averageBulletSetCount = totalGroups > 0
+    ? (bulletSetsQuantity / totalGroups  + 0.001).tointeger()
+    : 0
+
+  let defBulletSetCount = max(averageBulletSetCount, 2)
   let bulletSetsCount = gunsInfo.reduce(
     @(res, val) res + (val.bulletSetCount == -1 ? defBulletSetCount : val.bulletSetCount), 0)
 
