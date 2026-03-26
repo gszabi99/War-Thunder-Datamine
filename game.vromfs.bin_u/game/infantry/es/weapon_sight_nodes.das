@@ -157,9 +157,21 @@ def weapon_set_sight_preset_es(evt : CmdWeapSetSightPreset;
 
 [es(on_appear)]
 def init_sight_preset_index_id(evt : Event;
+                               sightPresets : Array;
+                               weap__current_sight_preset : int;
                                var phys_vars : PhysVars&;
                                var weapon__aimSightPresetIndex : int&)
-  weapon__aimSightPresetIndex = registerVar(phys_vars, "sight_preset_index", 0.0)
+  var initValue = 0.0
+  let presetsCount = length(sightPresets)
+  if presetsCount > 0
+    let presetIdx = clamp(weap__current_sight_preset, 0, presetsCount - 1)
+    let preset = get_ecs_object(sightPresets[presetIdx])
+    if preset != null
+      let useAnimIndex = preset |> get_float("useAnimNodeIndex")
+      if useAnimIndex != null
+        initValue = *useAnimIndex
+  weapon__aimSightPresetIndex = registerVar(phys_vars, "sight_preset_index", initValue)
+
 
 [es(on_appear)]
 def init_gun_launch_vertical_angle_es(evt : Event;
