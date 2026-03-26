@@ -159,13 +159,6 @@ def switch_ai_drone_owner_beh_node_on_changed_weapon(evt : Event;
     beh_tree__wantRoleDroner = true
 
 
-[es(tag=server)]
-def switch_ai_drone_owner_beh_node_on_lost_control(evt : EventPlayerUnitControlLost;
-                                                   drone__owner : EntityId)
-  query(drone__owner) <| $ [es] (var beh_tree__wantRoleDroner : bool&)
-    beh_tree__wantRoleDroner = false
-
-
 [es(tag=server, no_order)]
 def check_drone_owner_far_from_leader(info : ParallelUpdateFrameDelayed;
                                       transform aka droner_transform : float3x4;

@@ -24,6 +24,8 @@ def drone_switch_on_control_lost(evt : EventPlayerUnitControlLost;
   if drone__releaseControlsDelay > 0.0 && !isAlive
     drone__releaseControlsAtTime = get_sync_time() + drone__releaseControlsDelay
   else
+    query(drone__owner) <| $ [es] (var beh_tree__wantRoleDroner : bool&)
+      beh_tree__wantRoleDroner = false
     sendEventImmediate(possessedByPlr, CmdRequestSwitchControlledUnit(toEid = drone__owner))
     ownedByPlr = INVALID_ENTITY_ID
 

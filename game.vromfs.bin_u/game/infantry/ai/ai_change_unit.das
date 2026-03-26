@@ -46,6 +46,8 @@ def human_ai_bot_switch_beh(evt : Event;
 [es(tag=server)]
 def human_ai_enable_on_switch_to(evt : EventPlayerChangeControlTo;
                                  squad_member__playerEid : EntityId;
-                                 var beh_tree__enabled : bool&)
+                                 var beh_tree__enabled : bool&;
+                                 var beh_tree__wantRoleDroner : bool&)
   if !has(squad_member__playerEid, "playerIsBot")
     beh_tree__enabled = false
+    beh_tree__wantRoleDroner = false
