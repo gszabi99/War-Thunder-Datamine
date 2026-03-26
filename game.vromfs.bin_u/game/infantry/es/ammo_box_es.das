@@ -304,8 +304,9 @@ def ammo_box_resupply_drone_launches_es(evt : CmdUseUsefulBox;
                                         var useful_box__successUse : bool&;
                                         var useful_box__requiredUseCount : int&)
   useful_box__requiredUseCount = 1
-  useful_box__successUse = refill_drone_launches(evt.requesterEid)
-  if useful_box__successUse
+  let success = refill_drone_launches(evt.requesterEid)
+  useful_box__successUse ||= success
+  if success
     send_net_event(eid, CmdPlayItemUseSound(requesterEid = evt.requesterEid))
 
 

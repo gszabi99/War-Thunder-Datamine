@@ -653,7 +653,9 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
                           human_phys__jumpEndTime : float;
                           human_phys__afterJumpDelay : float;
                           human_phys__isInAirLong : bool;
-                          bipod__enabled : bool)
+                          bipod__enabled : bool;
+                          human_weap__weapModActivateStartTime : float;
+                          human_weap__weapModActivateFinishTime : float)
   assume phys = human_net_phys.phys
   let selectedGun = determine_current_weapon_slot(ctx.atTime, human_net_phys)
   let curGun = selectedGun
@@ -891,12 +893,9 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
     let isRequestingReload = ct |> is_control_bit_set(HumanPhysControlType.HCT_RELOAD)
     var isInspecting = false
     var isReloadingStarted = false
-    var weapModState = int(GunWeapModState.WEAP_MOD_STATE_NONE)
-    query(overrideGunEid) <| $ [es] (gun_anim__inspectProgress : float; gun_anim__reloadProgress : float; gun_anim__weapModState : int const?)
+    query(overrideGunEid) <| $ [es] (gun_anim__inspectProgress : float; gun_anim__reloadProgress : float)
       isInspecting = gun_anim__inspectProgress < 1.0
       isReloadingStarted = gun_anim__reloadProgress > 0.2 && gun_anim__reloadProgress < 0.21
-      if gun_anim__weapModState != null
-        weapModState = *gun_anim__weapModState
 
     
     if !isInspecting && isRequestingReload && ct.dodgeState != DodgeState.No
@@ -907,7 +906,8 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
     elif !isInspecting && isRequestingReload && ct.dodgeState == DodgeState.No 
       sendEvent(ctx.eid, CmdGunRequestInspect(atTime = ctx.atTime, gunEid = overrideGunEid))
 
-    if isReloadingStarted && !isInspecting && weapModState == int(GunWeapModState.WEAP_MOD_STATE_NONE)
+    let isSwitchingMod = ctx.atTime > human_weap__weapModActivateStartTime && ctx.atTime < human_weap__weapModActivateFinishTime
+    if isReloadingStarted && !isInspecting && !isSwitchingMod
       sendEvent(ctx.eid, EventHumanStartedReload())
 
     query(overrideGunEid) <| $ [es] (var gun_reload__isRequesting : bool&)

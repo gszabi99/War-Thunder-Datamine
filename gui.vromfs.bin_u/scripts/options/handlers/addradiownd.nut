@@ -33,6 +33,8 @@ gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChanged() {
+    if (!this.scene?.isValid())
+      return
     local msg = this.getMsgByEditbox("url")
     if (msg == "")
       msg = this.getMsgByEditbox("name")

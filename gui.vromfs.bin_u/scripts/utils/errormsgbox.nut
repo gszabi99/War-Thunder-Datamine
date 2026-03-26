@@ -89,7 +89,9 @@ function showErrorMessageBox(header, error_code, buttons, def_btn, options = {},
   if (checkObj(guiScene["errorMessageBox"]))
     return
 
-  if (error_code == SERVER_ERROR_PLAYER_BANNED) {
+  if (error_code == SERVER_ERROR_PLAYER_BANNED
+      || error_code == (SERVER_ERROR_PLAYER_BANNED & 0xFFFFFFFF)) { 
+                                                                    
     let banMessage = getBannedMessage()
     if (banMessage != "") {
       scene_msg_box("errorMessageBox", guiScene, banMessage, buttons, def_btn, options)

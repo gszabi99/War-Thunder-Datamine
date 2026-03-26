@@ -172,7 +172,7 @@ def apply_damage(victim : EntityId;
     var deltaHp = damage_to_hp * hitpoints__dmgMult
     var victim_unit = get_unit(victim)
 
-    static_if typeinfo(builtin_function_exists @@ < (self : Unit; arg0 : Unit?; arg1 : bool) : void > showInvulnerabilityIcon)
+    static_if typeinfo(builtin_function_exists @@ < (var self : Unit&; arg0 : Unit?; arg1 : bool) : void > showInvulnerabilityIcon)
       if hitpoints__dmgMult == 0.0 && victim_unit != null && offender != INVALID_ENTITY_ID
         var offender_unit = get_unit(offender)
         if offender_unit != null

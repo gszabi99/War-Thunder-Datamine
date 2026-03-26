@@ -109,6 +109,7 @@ local mUiStruct = [
       "gfx_api"
       "backgroundScale"
       "antialiasingMode"
+      "antialiasingdlssLegacyMode"
       "antialiasingUpscaling"
       "antialiasingSharpening"
       "anisotropy"
@@ -606,7 +607,8 @@ let isRRGUIEnabled = @() getGuiValue("rayReconstruction", false) != false && has
 let hasRTAOGUI = @() getGuiValue("rayTracing", "off") != "off" && getGuiValue("ptgi", "off") == "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
-let isRRSupported = @() hasRTGUI() && is_nvidia_gpu() && getGuiValue("antialiasingMode", "off") == "dlss"
+let isDlssSelected = @() getGuiValue("antialiasingMode", "off") == "dlss"
+let isRRSupported = @() hasRTGUI() && is_nvidia_gpu() && isDlssSelected()
 let hasRayReconstructionGUI = @() hasRTGUI() && isRRSupported()
 let hasRTRResGUI = @() hasRTR() && !isRRGUIEnabled()
 let hasRTDecalsGUI = @() hasRTR()
@@ -1346,6 +1348,13 @@ mSettings = {
     hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa", tsr = "tsr" }
     enabled = @() !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/antiAliasing/%s"
+  }
+
+  antialiasingdlssLegacyMode = { widgetType = "list" def = "auto" blk = "video/dlssLegacyMode" restart = false
+    isVisible = isDlssSelected
+    init = function(_blk, desc) {
+      desc.values <- [ "auto", "on", "off" ]
+    }
   }
 
   antialiasingUpscaling = { widgetType = "list" def = "native" blk = "video/antialiasing_upscaling" restart = false

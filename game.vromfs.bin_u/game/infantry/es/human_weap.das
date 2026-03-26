@@ -460,6 +460,8 @@ def human_weap_post_phys_es(evt : CmdPostPhysUpdate;
                             bipod__enabled : bool = false;
                             human_attached_gun__attachedGunEid : EntityId = INVALID_ENTITY_ID;
                             var human_net_phys : HumanActor;
+                            human_weap__weapModActivateStartTime : float;
+                            human_weap__weapModActivateFinishTime : float;
                             var human_weap__gunEids : EidList;
                             var human_weap__throwMode : bool&)
   if isAlive && !isDowned
@@ -490,7 +492,8 @@ def human_weap_post_phys_es(evt : CmdPostPhysUpdate;
                           human_net_phys.phys.appliedCT, grenade_rethrow__grenadeEid,
                           human_unarmed__active, human_attached_gun__attachedGunEid, human_weap__currentGunEid,
                           human_weap__jumpDeviation, human_weap__changePosDeviationCanAim, human_weap__changePosDeviationCanNotAim,
-                          human_weap__grenadeThrower, human_phys__jumpEndTime, human_phys__afterJumpDelay, human_phys__isInAirLong, bipod__enabled)
+                          human_weap__grenadeThrower, human_phys__jumpEndTime, human_phys__afterJumpDelay, human_phys__isInAirLong, bipod__enabled,
+                          human_weap__weapModActivateStartTime, human_weap__weapModActivateFinishTime)
 
 
 def determine_current_slot(cur_time : float;
