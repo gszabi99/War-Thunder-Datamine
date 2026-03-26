@@ -9,7 +9,7 @@ let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { checkPackageFull } = require("%scripts/clientState/contentPacks.nut")
+let { checkPackageFull, havePackage } = require("%scripts/clientState/contentPacks.nut")
 let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
 
 let eventIdsForMainGameModeList = [
@@ -17,7 +17,10 @@ let eventIdsForMainGameModeList = [
   "air_arcade"
 ]
 
-let needShowOverrideSlotbar = @(event) event?.showEditSlotbar ?? false
+let isEventAllowedByPackage = @(event) event?.reqPacks.findvalue(@(packName) !havePackage(packName)) == null
+
+let needShowOverrideSlotbar = @(event) (event?.showEditSlotbar ?? false)
+  && isEventAllowedByPackage(event)
 
 let getCustomViewCountryData = @(event) event?.customViewCountry
 
@@ -157,4 +160,5 @@ return {
   isEventPlatformOnlyAllowed
   isTeamSizeBalancedEvent
   isNoneBalancedEvent
+  isEventAllowedByPackage
 }

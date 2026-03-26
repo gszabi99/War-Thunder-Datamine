@@ -109,12 +109,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
           / max(to_pixels("1@rows16height"), 1)).tointeger() - 2, 19)
   }
 
-  function getSelfPos() {
-    if (!this.selfRowData?.len())
-      return -1
-
-    return this.selfRowData[0].pos
-  }
+  getSelfPos = @() this.selfRowData?[0].pos ?? -1
 
   function requestSelfPage(selfPos) {
     if (!selfPos) {
@@ -379,7 +374,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     this.lbModel.requestSelfRow(
       this.prepareRequest(),
       function (self_row_data) {
-        this.selfRowData = self_row_data?[0].pos != null ? self_row_data : null
+        this.selfRowData = self_row_data
         if (!this.selfRowData)
           return
 

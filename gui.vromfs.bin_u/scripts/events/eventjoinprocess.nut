@@ -11,7 +11,8 @@ let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
-let { getEventEconomicName, checkEventFeaturePacks, isEventForNewbies
+let { getEventEconomicName, checkEventFeaturePacks, isEventForNewbies,
+  isEventAllowedByPackage
 } = require("%scripts/events/eventInfo.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
@@ -144,7 +145,7 @@ let EventJoinProcess = class {
         !checkPackageAndAskDownload(["pkg_main"]))
       return this.remove()
 
-    if (!events.isEventAllowedByPackage(this.event)
+    if (!isEventAllowedByPackage(this.event)
       && !checkPackageAndAskDownload(this.event.reqPacks))
       return this.remove()
 

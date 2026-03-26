@@ -64,7 +64,7 @@ let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventForClan,
   getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
   isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature,
-  isEventPlatformOnlyAllowed
+  isEventPlatformOnlyAllowed, isEventAllowedByPackage
 } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
@@ -1210,13 +1210,11 @@ let Events = class {
     return getEventDisplayType(event) != g_event_display_type.NONE
       && this.checkEventFeature(event, true)
       && this.isEventAllowedByComaptibilityMode(event)
-      && this.isEventAllowedByPackage(event)
+      && isEventAllowedByPackage(event)
       && (!this.eventRequiresTicket(event) || this.getEventActiveTicket(event) != null)
   }
 
   isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibilityMode()
-
-  isEventAllowedByPackage = @(event) event?.reqPacks.findvalue(@(packName) !havePackage(packName)) == null
 
   function getEventsVisibleInEventsWindowCount() {
     return this.__countEventsList(EVENT_TYPE.ANY, this.isEventVisibleInEventsWindow)
@@ -2360,7 +2358,7 @@ let Events = class {
     }
     else if (!this.isEventAllowedByComaptibilityMode(event))
       data.reasonText = loc("events/noCompatibilityMode")
-    else if (!this.isEventAllowedByPackage(event))
+    else if (!isEventAllowedByPackage(event))
       data.reasonText = loc("events/no_entitlement", { entitlement = loc("ui/comma").join(
         event.reqPacks.filter(@(packName) !havePackage(packName))
           .map(@(packName) getPkgLocName(packName, true)))

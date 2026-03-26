@@ -43,6 +43,7 @@ let { showUserSightMigrationPopupIfNeeded } = require("%scripts/options/tankSigh
 let { checkLogoutScheduled } = require("%scripts/login/logout.nut")
 let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
+let { showMsgboxIfSoundModsForceDisabled } = require("%scripts/penitentiary/soundMods.nut")
 
 let delayed_gblk_error_popups = []
 function showGblkErrorPopup(errCode, path) {
@@ -155,6 +156,7 @@ function onMainMenuReturn(handler, isAfterLogin) {
     checkShowGraphicSettingsWasModified()
     searchAndRepairInvalidPresets()
     showUserSightMigrationPopupIfNeeded()
+    showMsgboxIfSoundModsForceDisabled()
   }
 
   handler.doWhenActive(popGblkErrorPopups)
