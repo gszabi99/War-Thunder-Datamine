@@ -18,6 +18,7 @@ let tabGroups = [
       helpTypes.KEYBOARD_AIRCRAFT
       helpTypes.RADAR_AIRCRAFT
       helpTypes.RWR_AIRCRAFT
+      helpTypes.ARM_AIRCRAFT
     ]
   }
   {

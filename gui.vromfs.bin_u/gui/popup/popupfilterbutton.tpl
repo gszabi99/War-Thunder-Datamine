@@ -23,8 +23,7 @@ tdiv {
     }
     textarea {
       id:t='filter_button_text'
-      pos:t='pw-w, 0.5ph-0.5h'
-      padding-right:t='1@buttonImgPadding'
+      pos:t='pw-w-1@buttonImgPadding, 0.5ph-0.5h'
       position:t='absolute'
     }
   }

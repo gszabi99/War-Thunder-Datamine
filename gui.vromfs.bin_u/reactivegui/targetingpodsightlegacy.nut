@@ -22,7 +22,7 @@ let aircraftSight = @(width, height) function() {
   let paramsTableHeight = hdpx(22)
   let tablePos = Computed(@() [max(bw.get(), sw(50) - hdpx(500)), sh(50) - hdpx(100)])
 
-  let aircraftParamsTable = paramsTable(TargetPodMask, EmptyMask,
+  let aircraftParamsTable = paramsTable(TargetPodMask, EmptyMask, EmptyMask,
       paramsTableWidth, paramsTableHeight,
       tablePos,
       hdpx(1), true, false, true)
@@ -108,7 +108,7 @@ let helicopterSight = @(width, height) function() {
   let paramsSightTableWidth = hdpx(270)
   let positionParamsSightTable = Watched([sw(50) - hdpx(250) - hdpx(200), hdpx(480)])
 
-  let helicopterSightParamsTable = paramsTable(SightMask, EmptyMask,
+  let helicopterSightParamsTable = paramsTable(SightMask, EmptyMask, EmptyMask,
     paramsSightTableWidth, paramsTableHeightHeli,
     positionParamsSightTable,
     hdpx(3))

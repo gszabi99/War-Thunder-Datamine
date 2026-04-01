@@ -20,6 +20,8 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
   btnPosition          = null
   btnHeight            = null
   visualStyle          = null
+  closeAsPopup         = true
+  isShowCountFilters   = true
 
   function getSceneTplView() {
     let maxTextWidths = {}
@@ -35,7 +37,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
 
     let columns = []
     foreach(idx, fType in this.filterTypes) {
-      let { checkbox } = fType
+      let { checkbox, title = "" } = fType
       if (!checkbox.len())
         continue
 
@@ -52,6 +54,8 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
         typeIdx = idx
         textWidth = maxTextWidths[typeName]
         hasIcon
+        title = loc(title)
+        hasTitle = title != ""
         checkbox = checkbox.map(function(cb) {
           return cb.__merge({
             typeName
@@ -80,6 +84,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
       visualStyle = this.visualStyle
       buttonPos = ", ".join(this.btnPosition)
       on_click = "close"
+      closeAsPopup = this.closeAsPopup
     }
   }
 
@@ -123,6 +128,9 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButton() {
+    if (!this.isShowCountFilters)
+      return
+
     let count = this.getSelectedFiltersCount()
     setDoubleTextToButton(this.scene, "filter_button", this.btnTitle,
       count == 0 ? ""
@@ -139,7 +147,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
     local isSelectAllHide = true
     for (local i = 0; i < columnObj.childrenCount(); i++) {
       let child = columnObj.getChild(i)
-      if (!["reset_btn", "separator", "select_all_btn"].contains(child.id)) {
+      if (!["reset_btn", "separator", "select_all_btn", "column_title"].contains(child.id)) {
         let value = curList[child.id].value
         child.setValue(value)
         isResetShow = value || isResetShow

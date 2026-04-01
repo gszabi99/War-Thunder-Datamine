@@ -7,6 +7,7 @@ let { getWeaponryByPresetInfo, findAvailableWeapon } = require("%scripts/weaponr
 let { openFixWeaponryPresets } = require("%scripts/weaponry/fixWeaponryPreset.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
+let { validateBadLastWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 
 local invalidPresetsByCountries = {}
 local curCountryInvalidPresets
@@ -80,6 +81,10 @@ function searchAndRepairInvalidPresets(uNames = null) {
   curCountryInvalidPresets = invalidPresetsByCountries[countryId]
   foreach (unitName in unitsList) {
     let unit = getAircraftByName(unitName)
+    if (unit == null)
+      continue
+
+    validateBadLastWeapons(unit)
     
     if (!unit.hasWeaponSlots)
       continue

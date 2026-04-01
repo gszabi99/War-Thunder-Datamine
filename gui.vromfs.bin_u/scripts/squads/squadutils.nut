@@ -24,6 +24,7 @@ let { CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { setSessionLobbyCountryData } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { canJoinWithoutRequireCrafts } = require("%scripts/events/eventInfo.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -277,43 +278,46 @@ function getSquadMembersFlyoutData(teamData, event) {
 
     let brokenUnits = []
     let { country } = memberData
-    let needCheckRequired = events.getRequiredCrafts(teamData).len() > 0
-    local haveNotBroken = false
+    let isForceAvailable = canJoinWithoutRequireCrafts(event)
+    let needCheckRequired = !isForceAvailable && events.getRequiredCrafts(teamData).len() > 0
+    local haveNotBroken = isForceAvailable
     local isValidCountry = true
     local availableUnitsCount = 0
     if (isInArray(country, teamData.countries)) {
-      local haveAvailable = false
+      local haveAvailable = isForceAvailable
       local haveRequired  = !needCheckRequired
 
-      if (!respawn) {
-        let unitName = memberData.selAirs?[country] ?? ""
-        if (unitName == "")
-          continue
+      if (!haveAvailable) {
+        if (!respawn) {
+          let unitName = memberData.selAirs?[country] ?? ""
+          if (unitName == "")
+            continue
 
-        haveAvailable = events.isUnitAllowedByTeamData(teamData, unitName, ediff)
-        let isBroken = isInArray(unitName, memberData.brokenAirs)
-        if (isBroken)
-          brokenUnits.append(unitName)
-        haveNotBroken = haveAvailable && !isBroken
-        if (haveNotBroken)
-          availableUnitsCount++
-        haveRequired  = haveRequired || events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
-      }
-      else {
-        if ((memberData.crewAirs?[country] ?? []).len() == 0)
-          continue
-
-        foreach (unitName in memberData.crewAirs[country]) {
-          let isAvailable = events.isUnitAllowedByTeamData(teamData, unitName, ediff)
-          haveAvailable = haveAvailable || isAvailable
+          haveAvailable = events.isUnitAllowedByTeamData(teamData, unitName, ediff)
           let isBroken = isInArray(unitName, memberData.brokenAirs)
           if (isBroken)
             brokenUnits.append(unitName)
-          let isNotBroken = isAvailable && !isBroken
-          haveNotBroken = haveNotBroken || isNotBroken
-          if (isNotBroken)
+          haveNotBroken = haveAvailable && !isBroken
+          if (haveNotBroken)
             availableUnitsCount++
-          haveRequired  = haveRequired  || events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
+          haveRequired  = haveRequired || events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
+        }
+        else {
+          if ((memberData.crewAirs?[country] ?? []).len() == 0)
+            continue
+
+          foreach (unitName in memberData.crewAirs[country]) {
+            let isAvailable = events.isUnitAllowedByTeamData(teamData, unitName, ediff)
+            haveAvailable = haveAvailable || isAvailable
+            let isBroken = isInArray(unitName, memberData.brokenAirs)
+            if (isBroken)
+              brokenUnits.append(unitName)
+            let isNotBroken = isAvailable && !isBroken
+            haveNotBroken = haveNotBroken || isNotBroken
+            if (isNotBroken)
+              availableUnitsCount++
+            haveRequired  = haveRequired  || events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
+          }
         }
       }
 

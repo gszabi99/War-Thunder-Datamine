@@ -279,7 +279,8 @@
             "fsm": "track",
             "active": true
           }
-        }
+        },
+        "resetTrackMode": {}
       },
       "transitions": {
         "init": {
@@ -413,10 +414,27 @@
           ],
           "stateTo": "standby",
           "actions": {
+            "resetTrackMode": {},
             "setStandbyMode": {},
             "setFsmActive": {
               "fsm": "track",
               "active": false
+            }
+          }
+        },
+        "activateWeaponTracking": {
+          "event": "updateWeaponTracking",
+          "actions": {
+            "setWeaponRcTransmissionTimeOut": {
+              "timeOut": 2.0
+            }
+          }
+        },
+        "deactivateWeaponTracking": {
+          "event": "update",
+          "actions": {
+            "checkWeaponRcTransmissionTimeOut": {
+              "transmitter": "rc"
             }
           }
         }
@@ -511,6 +529,16 @@
             }
           }
         }
+      }
+    }
+  },
+  "transmitters": {
+    "rc": {
+      "power": 200.0,
+      "band": 8,
+      "antenna": {
+        "angleHalfSens": 10.0,
+        "sideLobesSensitivity": -20.0
       }
     }
   }

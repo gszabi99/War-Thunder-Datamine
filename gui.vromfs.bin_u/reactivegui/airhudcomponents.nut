@@ -5,10 +5,9 @@ let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
 let { IsTwsActivated, IsTwsDamaged, CollapsedIcon, IsRwrHudVisible, IsMlwsLwsHudVisible } = require("%rGui/twsState.nut")
 let { mkRadar } = require("%rGui/radarComponent.nut")
 let { IsRadarVisible, IsRadar2Visible, IsRadarDamaged, IsRadarHudVisible, isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
-let { tws } = require("%rGui/tws.nut")
+let { twsDas } = require("%rGui/tws.nut")
 let { isPlayingReplay } = require("%rGui/hudState.nut")
 let { eventbus_send } = require("eventbus")
-
 
 let rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
 let rwrPicDamaged = Picture("!ui/gameuiskin#rwr_stby_icon")
@@ -49,11 +48,10 @@ let twsElement = @(colorWatch, posWatched, size) function() {
     return res.__update({
       children = (!IsMlwsLwsHudVisible.get() && !IsRwrHudVisible.get()) ? null :
         [
-          tws({
+          twsDas({
             colorWatched = colorWatch,
-            posWatched,
+            posWatched = posWatched,
             sizeWatched = Watched([size, size]),
-            relativCircleSize = 43
           }),
           isPlayingReplay.get() ? mkCollapseButton(picPos, CollapsedIcon) : null
         ]

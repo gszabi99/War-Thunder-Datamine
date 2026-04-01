@@ -1,44 +1,48 @@
 from "%rGui/globals/ui_library.nut" import *
 let { GuidanceLockResult } = require("guidanceConstants")
+let { HudColor } = require("%rGui/airState.nut")
 
 
 
 
 
 
+let cornersLinesCommands = function(width, height, cornerScale = 0.28) {
+  let w = 0.5 * width
+  let h = 0.5 * height
+  let lX = width * cornerScale
+  let lY = height * cornerScale
+  return [
+    [VECTOR_LINE, -w, h, -w + lX, h],   
+    [VECTOR_LINE, -w, h, -w, h - lY],
 
-let cornersLines = @(width, height, colorTracker) function() {
-  let w = 1.5 * width
-  let h = 1.5 * height
-  let lX = width * 0.84
-  let lY = height * 0.84
+    [VECTOR_LINE, w, h, w - lX, h],   
+    [VECTOR_LINE, w, h, w, h - lY],
 
+    [VECTOR_LINE, -w, -h, -w + lX, -h],   
+    [VECTOR_LINE, -w, -h, -w, -h + lY],
+
+    [VECTOR_LINE, w, -h, w - lX, -h],   
+    [VECTOR_LINE, w, -h, w, -h + lY],
+  ]
+}
+
+let cornersLines = @(width, height, colorTracker, cornerScale = 0.28) function() {
   return {
     lineWidth = hdpx(LINE_WIDTH * 1.75)
     size = const [sw(100), sh(100)]
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = Color(0, 0, 0, 0)
     color = colorTracker
-    commands = [
-      [VECTOR_LINE, -w, h, -w + lX, h],   
-      [VECTOR_LINE, 0- w, h, -w, h - lY],
-
-      [VECTOR_LINE, w, h, w - lX, h],   
-      [VECTOR_LINE, w, h, w, h - lY],
-
-      [VECTOR_LINE, -w, -h, -w + lX, -h],   
-      [VECTOR_LINE, -w, -h, -w, -h + lY],
-
-      [VECTOR_LINE, w, -h, w - lX, -h],   
-      [VECTOR_LINE, w, -h, w, -h + lY],
-    ]
+    commands = cornersLinesCommands(width, height, cornerScale)
   }
 }
 
 
 
 let opticWeaponAim = @(
-  TrackerSize, TrackerX, TrackerY, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible,
+  TrackerSize, TrackerX, TrackerY, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible, IsAntiRadiation,
+  TrackedTargetName, IsTrackerLoosingIcon,
   color_watched, alert_color_watched, show_tps_sight, IsPointTrack,
 )
 function() {
@@ -57,10 +61,8 @@ function() {
       width = minMarkWidth
     }
 
-    let squareMark = [
-      [VECTOR_RECTANGLE, -width * 0.5, -height * 0.5, width, height],
-    ]
-
+    let squareMark = IsTrackerLoosingIcon.get() ? cornersLinesCommands(width, height) :
+       [[VECTOR_RECTANGLE, -width * 0.5, -height * 0.5, width, height],]
     let trackingMark = [
       [VECTOR_RECTANGLE, -0.5 * width, -0.5 * height, width, height],
       [VECTOR_LINE, 0, -0.165 * height, 0, -0.5*height],
@@ -69,7 +71,7 @@ function() {
       [VECTOR_LINE, 0.165 * width, 0, 0.5*width, 0]
     ]
 
-    let colorTracker = color_watched.get()
+    let colorTracker = IsAntiRadiation.get() ? HudColor.get() : color_watched.get()
     let gs = GuidanceLockState.get()
     let gsb = GuidanceLockStateBlinked.get()
 
@@ -84,13 +86,30 @@ function() {
       size = const [sw(100), sh(100)]
       pos = [TrackerX.get(), TrackerY.get()]
 
-      watch = [color_watched, alert_color_watched, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible, TrackerSize, TrackerX, TrackerY]
+      watch = [color_watched, alert_color_watched, HudColor, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible, TrackerSize, TrackerX, TrackerY, TrackedTargetName,
+         IsAntiRadiation, IsTrackerLoosingIcon]
       rendObj = ROBJ_VECTOR_CANVAS
       color = colorTracker
       fillColor = Color(0, 0, 0, 0)
       lineWidth = hdpx(LINE_WIDTH * 0.25)
       commands = isTrack ? (IsPointTrack.get() ? squareMark : trackingMark) : (hasSquare && !isSquareBlink ? squareMark : null)
-      children = (!isTrack && show_tps_sight) ? [cornersLines(width, height, colorTracker)] : null
+      children = [
+        {
+          children = (!IsAntiRadiation.get() && !isTrack && show_tps_sight) ? [cornersLines(3 * width, 3 * height, colorTracker)] : null
+        }
+        {
+          pos = [0, 0 - height * sh(0.5) - hdpx(20)]
+          halign = ALIGN_CENTER
+          size = [0, SIZE_TO_CONTENT]
+          children = {
+            rendObj = ROBJ_TEXT
+            text = TrackedTargetName.get() != "" ? loc($"{TrackedTargetName.get()}_1") : ""
+            color = colorTracker
+            font = Fonts.hud
+            fontSize = hdpx(20)
+          }
+        }
+      ]
     }
   }
 
@@ -102,4 +121,53 @@ function() {
   }
 }
 
-return opticWeaponAim
+
+
+let opticWeaponSight = @(
+  SightSize, SightX, SightY, SightVisible,
+  GuidanceLockState, show_tps_sight,
+)
+function() {
+  let sightTracker = @() function() {
+    if (!SightVisible.get())
+      return {
+        watch = SightVisible
+      }
+
+    let colorSight = HudColor.get()
+    let gs = GuidanceLockState.get()
+    let isTrack = (gs == GuidanceLockResult.RESULT_TRACKING)
+
+    let isSightVisible = !isTrack && show_tps_sight
+    local sightWidth = SightSize.get() / sw(1)
+    local sightHeight = SightSize.get() / sh(1)
+
+    return {
+      watch = [HudColor, GuidanceLockState, SightSize, SightX, SightY, SightVisible]
+      children = [
+        {
+          halign = ALIGN_LEFT
+          valign = ALIGN_TOP
+          size = const [sw(100), sh(100)]
+          pos = [SightX.get(), SightY.get()]
+          rendObj = ROBJ_VECTOR_CANVAS
+          color = colorSight
+          fillColor = Color(0, 0, 0, 0)
+          lineWidth = hdpx(LINE_WIDTH * 0.25)
+          children = isSightVisible ? [cornersLines(sightWidth, sightHeight, colorSight, 0.056)] : null
+        }
+      ]
+    }
+  }
+
+  return {
+    children = [
+      sightTracker()
+    ]
+  }
+}
+
+return {
+  opticWeaponAim
+  opticWeaponSight
+}

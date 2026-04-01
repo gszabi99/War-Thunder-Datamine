@@ -82,29 +82,31 @@ enum AirParamsMain {
   THROTTLE_4 =        4,
   THROTTLE_5 =        5,
   THROTTLE_6 =        6,
-  IAS_HUD =           7,
-  SPEED =             8,
-  MACH =              9,
-  ALTITUDE =          10,
-  RADAR_ALTITUDE =    11,
-  ROCKET =            12,
-  BOMBS =             13,
-  TORPEDO =           14,
-  AGM =               15,
-  AAM =               16,
-  GUIDED_BOMBS =      17,
-  FLARES =            18,
-  CHAFFS =            19,
-  MACHINE_GUNS_1 =    20,
-  MACHINE_GUNS_2 =    21,
-  MACHINE_GUNS_3 =    22,
-  CANNON_1 =          23,
-  CANNON_2 =          24,
-  CANNON_3 =          25,
-  MACHINE_GUN =       26,
-  CANNON_ADDITIONAL = 27,
-  IRCM =              28,
-  RATE_OF_FIRE =      29
+  THROTTLE_7 =        7,
+  THROTTLE_8 =        8,
+  IAS_HUD =           9,
+  SPEED =             10,
+  MACH =              11,
+  ALTITUDE =          12,
+  RADAR_ALTITUDE =    13,
+  ROCKET =            14,
+  BOMBS =             15,
+  TORPEDO =           16,
+  AGM =               17,
+  AAM =               18,
+  GUIDED_BOMBS =      19,
+  FLARES =            20,
+  CHAFFS =            21,
+  MACHINE_GUNS_1 =    22,
+  MACHINE_GUNS_2 =    23,
+  MACHINE_GUNS_3 =    24,
+  CANNON_1 =          25,
+  CANNON_2 =          26,
+  CANNON_3 =          27,
+  MACHINE_GUN =       28,
+  CANNON_ADDITIONAL = 29,
+  IRCM =              30,
+  RATE_OF_FIRE =      31
 };
 
 enum AirParamsSecondary {
@@ -126,15 +128,26 @@ enum AirParamsSecondary {
   OIL_6 =          15,
   WATER_6 =        16,
   ENGINE_6 =       17,
-  TRANSMISSION_1 = 18,
-  TRANSMISSION_2 = 19,
-  TRANSMISSION_3 = 20,
-  TRANSMISSION_4 = 21,
-  TRANSMISSION_5 = 22,
-  TRANSMISSION_6 = 23,
-  FUEL =           24,
-  STAMINA =        25,
-  INSTRUCTOR =     26
+  OIL_7 =          18,
+  WATER_7 =        19,
+  ENGINE_7 =       20,
+  OIL_8 =          21,
+  WATER_8 =        22,
+  ENGINE_8 =       23,
+  TRANSMISSION_1 = 24,
+  TRANSMISSION_2 = 25,
+  TRANSMISSION_3 = 26,
+  TRANSMISSION_4 = 27,
+  TRANSMISSION_5 = 28,
+  TRANSMISSION_6 = 29,
+  TRANSMISSION_7 = 30,
+  TRANSMISSION_8 = 31
+};
+
+enum AirParamsTertiary {
+  FUEL =           0,
+  STAMINA =        1,
+  INSTRUCTOR =     2
 };
 
 enum TemperatureState {
@@ -224,4 +237,4 @@ enum WeaponMask {
   ALL_ROCKETS_MASK      = 0x0000E0
 };
 
-return({ MouseAxis, CtrlsInGui, AxisInvertOption, DargWidgets, AirParamsMain, AirParamsSecondary, TemperatureState, AirThrottleMode, RadarViewMode, CountermeasureMode, WeaponMode, IRCMMode, HudColorState, FCSShotState, WeaponMask});
+return({ MouseAxis, CtrlsInGui, AxisInvertOption, DargWidgets, AirParamsMain, AirParamsSecondary, AirParamsTertiary, TemperatureState, AirThrottleMode, RadarViewMode, CountermeasureMode, WeaponMode, IRCMMode, HudColorState, FCSShotState, WeaponMask});

@@ -200,6 +200,7 @@ const DELAYED_TOOLTIP_MARKUP =
   on_hold_stop:t='::gcb.delayedTooltipHoldStop'
   on_hover:t='::gcb.delayedTooltipHover'
   on_unhover:t='::gcb.delayedTooltipHover'
+  on_r_click:t='onUserRClick'
   tooltipId:t=''
   focusBtnName:t='A'"
 
@@ -223,6 +224,8 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
     hdr.reverse()
   }
 
+  let { hasCustomTooltip = false } = params
+
   let data = []
   for (local i = 0; i < numRows; i++) {
     let isEmpty = i >= numTblRows
@@ -236,13 +239,12 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
       local tdData = ""
       let widthAdd = ((j == 0) || (j == (hdr.len() - 1))) ? "+@tablePad" : ""
       let textPadding = "style:t='padding:@tablePad,0;'; "
-      local customTooltipId = null
+      let customTooltipId = hasCustomTooltip && hdr[j] in colsWithCustomTooltip
+        ? $"{hdr[j]}_tooltip"
+        : null
 
       if (!isEmpty && (hdr[j] in table[i]))
         item = table[i][hdr[j]]
-
-      if (hdr[j] in colsWithCustomTooltip)
-        customTooltipId = $"{hdr[j]}_tooltip"
 
       if (hdr[j] == "hasPassword") {
         let icon = item ? "#ui/gameuiskin#password.svg" : ""
@@ -448,7 +450,7 @@ function setMpTable(obj_tbl, table, params = {}) {
     return
 
   let { showUnitsInfo = true, continueRowNum = 0, numberOfWinningPlaces = -1,
-    isDebriefing = false } = params
+    isDebriefing = false, hasCustomTooltip = false } = params
   let needColorizeNotInGame = isInFlight()
   let isReplay = is_replay_playing()
   let isAlly = obj_tbl?.team == "blue"
@@ -480,7 +482,7 @@ function setMpTable(obj_tbl, table, params = {}) {
       objTr.inGame = isInGame ? "yes" : "no"
     }
 
-    let unitCardTooltipId = showUnitsInfo ? getUnitCardTooltipId(player) : null
+    let unitCardTooltipId = hasCustomTooltip && showUnitsInfo ? getUnitCardTooltipId(player) : null
 
     let totalCells = objTr.childrenCount()
     for (local idx = 0; idx < totalCells; idx++) {
@@ -582,7 +584,7 @@ function setMpTable(obj_tbl, table, params = {}) {
         objTr.spectator = table[i]?.spectator ? "yes" : "no"
 
         let userIdInt = player.userId.tointeger()
-        if (!player.isBot || (isReplay && userIdInt > 0)) {
+        if (hasCustomTooltip && (!player.isBot || (isReplay && userIdInt > 0))) {
           let tooltipId = getTooltipType("MP_STAT_PLAYER").getTooltipId(player.userId, { isAlly, isDebriefing })
           let baseTooltipObj = objTd.findObject("name_tooltip")
           if (baseTooltipObj?.isValid()) {
@@ -703,7 +705,8 @@ function setMpTable(obj_tbl, table, params = {}) {
         let objText = objTd.getChild(0)
         objText.setValue(txt)
 
-        let tooltipId = paramType?.getTooltipId(player.userId, { isDebriefing, paramId = hdr, val = item }) ?? ""
+        let tooltipId = !hasCustomTooltip ? ""
+          : paramType?.getTooltipId(player.userId, { isDebriefing, paramId = hdr, val = item }) ?? ""
         let hasGenericTooltip = tooltipId != ""
 
         if (hasGenericTooltip) {

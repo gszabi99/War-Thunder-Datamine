@@ -63,7 +63,7 @@ function findUnitSystemsESS(unitName, modName, modData) {
 function findUnitSystemsInMods(unit) {
   let modifications = get_modifications_blk().modifications
 
-  unit.modifications.each(function(mod) {
+  unit.getModifications().each(function(mod) {
     let modData = modifications?[mod.name]
     if (modData == null)
       return
@@ -95,7 +95,11 @@ function findUnitSystemsInSensors(unit, unitType) {
     return
 
   foreach (sensor in sensors % "sensor") {
-    let sensorBlk = blkOptFromPath(sensor?.blk)
+    let sensorBlkName = sensor?.blk
+    if (sensorBlkName == null)
+      continue
+
+    let sensorBlk = blkOptFromPath(sensorBlkName)
     let sensorType = sensorBlk?.type ?? ""
     let sensorName = sensorBlk?.name ?? ""
     if (sensorType == "radar" && sensorName == "Auto tracker")
@@ -104,12 +108,12 @@ function findUnitSystemsInSensors(unit, unitType) {
 
     foreach (dmPart in sensor % "dmPart") {
       if (dmPart.contains("antenna_target_location")) {
-        local sens = unitSystemsCache[unit.name].findvalue(@(v) v?.sensorName == sensorName)
+        local sens = unitSystemsCache[unit.name].findvalue(@(v) v?.sensorBlkName == sensorBlkName)
         if (sens == null) {
           sens = {
             name = "armor_class/antenna_target_location"
             ttype = "UNIT_DM_TOOLTIP"
-            sensorName
+            sensorBlkName
             params = { unitId = unit.name, dmPart }
             count = 1
           }
@@ -119,12 +123,12 @@ function findUnitSystemsInSensors(unit, unitType) {
           sens.count++
       }
       else if (dmPart.contains("antenna_target_tagging")) {
-        local sens = unitSystemsCache[unit.name].findvalue(@(v) v?.sensorName == sensorName)
+        local sens = unitSystemsCache[unit.name].findvalue(@(v) v?.sensorBlkName == sensorBlkName)
         if (sens == null) {
           sens = {
             name = "armor_class/antenna_target_tagging"
             ttype = "UNIT_DM_TOOLTIP"
-            sensorName
+            sensorBlkName
             params = { unitId = unit.name, dmPart }
             count = 1
           }
@@ -365,7 +369,7 @@ function findAirSystems(unit, unitBlk, unitType) {
 
   let modifications = get_modifications_blk().modifications
 
-  unit.modifications.each(function(mod) {
+  unit.getModifications().each(function(mod) {
     let modData = modifications?[mod.name]
     if (modData == null)
       return

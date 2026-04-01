@@ -24,11 +24,10 @@ let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsPara
 let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams
 } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getTntEquivalentText, getDestructionInfoTexts } = require("%scripts/weaponry/dmgModel.nut")
+let { getTntEquivalentText, getDestructionInfoTexts, getNuclearWeaponAdditionalInfo } = require("%scripts/weaponry/dmgModel.nut")
 let { set_unit_option } = require("guiOptions")
 let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { lastIndexOf, INVALID_INDEX, endsWith } = require("%sqstd/string.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
@@ -436,8 +435,9 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       blk = ""
       bulletName
       dmPart = ""
+      nukePower = 0
+      weaponTag
     }
-
 
     if ( weapon?.sweepRange )
       weapons.hasSweepRange = true
@@ -505,6 +505,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       item.caliber = itemBlk?.caliber ?? item.caliber
       item.massKg = itemBlk?.mass ?? item.massKg
       item.massLbs = itemBlk?.mass_lbs ?? item.massLbs
+      item.nukePower = itemBlk?["yield"] ?? 0
       item.explosiveType = itemBlk?.explosiveType ?? item.explosiveType
       item.explosiveMass = itemBlk?.explosiveMass ?? item.explosiveMass
       item.cumulativeDamage = itemBlk?.cumulativeDamage.armorPower ?? item.cumulativeDamage
@@ -857,7 +858,7 @@ function getWeaponExtendedInfo(weapon, unit, par) {
   if (weapon?.machLimitRockets)
     addParamsToRes(format("%.1f %s", weapon.machLimitRockets, loc("measureUnits/machNumber")), loc("rocketProperties/machLimit"))
 
-  if (weapon.explosiveType != null) {
+  if (weapon.explosiveType && !weapon.nukePower) {
     let { explosiveType, explosiveMass, massKg, hasAdditionalExplosiveInfo } = weapon
     addParamsToRes(loc($"explosiveType/{explosiveType}"), loc("bullet_properties/explosiveType"))
     if (explosiveMass) {
@@ -878,6 +879,14 @@ function getWeaponExtendedInfo(weapon, unit, par) {
       }
     }
   }
+
+  if (weapon.nukePower > 0) {
+    let nuclearWeaponInfo = getNuclearWeaponAdditionalInfo(weapon)
+    if (nuclearWeaponInfo != null)
+      foreach (data in nuclearWeaponInfo)
+        addParamsToRes(data.val, data.loc)
+  }
+
   if (weapon?.warhead)
     addParamsToRes(loc("rocket/warhead/{0}".subst(weapon.warhead)), loc("rocket/warhead"))
 
@@ -1136,18 +1145,16 @@ function checkUnitWeapons(unit, isCheckAll = false) {
   return weaponsState != UNIT_WEAPONS_READY ? weaponsState : checkUnitBullets(unit, isCheckAll)
 }
 
-function checkBadWeapons() {
-  foreach (unit in getAllUnits()) {
-    if (!unit.isUsable())
-      continue
+function validateBadLastWeapons(unit) {
+  if (!unit.isUsable())
+    return
 
-    let curWeapon = getLastWeapon(unit.name)
-    if (curWeapon == "")
-      continue
+  let curWeapon = getLastWeapon(unit.name)
+  if (curWeapon == "")
+    return
 
-    if (!shop_is_weapon_available(unit.name, curWeapon, false, false) && !shop_is_weapon_purchased(unit.name, curWeapon))
-      setLastWeapon(unit.name, "")
-  }
+  if (!shop_is_weapon_available(unit.name, curWeapon, false, false) && !shop_is_weapon_purchased(unit.name, curWeapon))
+    setLastWeapon(unit.name, "")
 }
 
 function getOverrideBullets(unit) {
@@ -1223,7 +1230,7 @@ return {
   isWeaponEnabled
   isWeaponVisible
   isDefaultTorpedoes
-  checkBadWeapons
+  validateBadLastWeapons
   getOverrideBullets
   needSecondaryWeaponsWnd
   getWeaponDisabledMods

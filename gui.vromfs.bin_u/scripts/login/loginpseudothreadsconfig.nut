@@ -24,7 +24,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { shownUserlogNotifications, collectOldNotifications, collectUserlogItemdefs
 } = require("%scripts/userLog/userlogUtils.nut")
-let { checkBadWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
 let { isNeedFirstCountryChoice, clearUnlockedCountries, checkUnlockedCountries,
@@ -81,7 +80,6 @@ function initLoginPseudoThreadsConfig(cb) {
 
       shownUserlogNotifications.mutate(@(v) v.clear())
       collectOldNotifications()
-      checkBadWeapons()
       return null
     }
     function() {

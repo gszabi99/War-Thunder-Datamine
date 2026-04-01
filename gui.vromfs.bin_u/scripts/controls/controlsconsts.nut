@@ -72,6 +72,7 @@ enum CONTROL_HELP_PATTERN {
   HOTAS4,
   RADAR,
   RWR,
+  ARM
 }
 
 enum AxisDirection {

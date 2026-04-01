@@ -25,7 +25,7 @@ function canGoToNightBattleOnUnit(unit, modeName = null) {
 
   if (modeName != null)
     return unit.getNVDSights(modeName).len() > 0
-  return unit.modifications.findvalue(@(v) unit.getNVDSights(v.name).len() > 0) != null
+  return unit.getModifications().findvalue(@(v) unit.getNVDSights(v.name).len() > 0) != null
 }
 
 function needShowUnseenNightBattlesForUnit(unit, modeName = null) {

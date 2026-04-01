@@ -319,13 +319,13 @@ options.addTypes({
       let groupsCount = getBulletsGroupCount(unit)
 
       
-      for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
-        let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity,
+      for (local bulletSetIdx = 0; bulletSetIdx < getLastFakeBulletsIndex(unit); bulletSetIdx++) {
+        let gunIdx = getLinkedGunIdx(bulletSetIdx, groupsCount, unit.unitType.bulletSetsQuantity,
           unit, null, false)
         if (gunIdx == curGunIdx)
           continue
 
-        let bulletsList = getBulletsList(unit.name, groupIndex, {
+        let bulletsList = getBulletsList(unit.name, bulletSetIdx, {
           needCheckUnitPurchase = false, needOnlyAvailable = false, needTexts = true
         })
         if (bulletsList.values.len())

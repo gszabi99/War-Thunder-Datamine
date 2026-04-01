@@ -66,8 +66,8 @@ let { eventbus_send, eventbus_subscribe } = require("eventbus")
 
 function getAirHudElemsTable() {
 
-const NUM_VISIBLE_ENGINES_MAX = 6
-const NUM_TRANSMISSIONS_MAX = 6
+const NUM_VISIBLE_ENGINES_MAX = 8
+const NUM_TRANSMISSIONS_MAX = 8
 const NUM_CANNONS_MAX = 3
 const SH_HINTS_VISIBLE_TIME_SEC = 20
 const SH_HINTS_FADE_OUT_ANIM_TIME_SEC = 0.7
@@ -1010,31 +1010,33 @@ for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
   }
 }
 
-textParamsMapSecondary[AirParamsSecondary.FUEL] <- {
-  titleComputed = WatchedRo(loc("HUD/FUEL_SHORT"))
-  valueComputed = Computed(@() getFuelState(Fuel.get(), HasExternalFuel.get(), ExternalFuel.get(), FuelState.get()))
-  alertStateCaptionComputed = Computed(@() getFuelAlertState(FuelState.get()))
-  alertValueStateComputed = Computed(@() getFuelAlertState(FuelState.get()))
-  shortcutComputed = Computed(@() HasExternalFuel.get() ? "{{ID_FUEL_TANKS}}" : "")
+let fuelKeyId = AirParamsTertiary.FUEL
+let instructorKeyId = AirParamsTertiary.INSTRUCTOR
+let staminaKeyId = AirParamsTertiary.STAMINA
+
+let textParamsMapTertiary = {
+  [fuelKeyId] = {
+    titleComputed = WatchedRo(loc("HUD/FUEL_SHORT"))
+    valueComputed = Computed(@() getFuelState(Fuel.get(), HasExternalFuel.get(), ExternalFuel.get(), FuelState.get()))
+    alertStateCaptionComputed = Computed(@() getFuelAlertState(FuelState.get()))
+    alertValueStateComputed = Computed(@() getFuelAlertState(FuelState.get()))
+    shortcutComputed = Computed(@() HasExternalFuel.get() ? "{{ID_FUEL_TANKS}}" : "")
+  },
+  [staminaKeyId] = {
+    titleComputed = WatchedRo(loc("HUD/TXT_STAMINA_SHORT"))
+    valueComputed = Computed(@() getStaminaValue(StaminaValue.get()))
+    alertStateCaptionComputed = Computed(@() StaminaState.get())
+    alertValueStateComputed = Computed(@() StaminaState.get())
+  },
+  [instructorKeyId] = {
+    titleComputed = Computed(@() getInstructorCaption(InstructorForced.get()))
+    valueComputed = WatchedRo("")
+    alertStateCaptionComputed = Computed(@() InstructorState.get())
+    alertValueStateComputed = Computed(@() InstructorState.get())
+  }
 }
 
-textParamsMapSecondary[AirParamsSecondary.STAMINA] <- {
-  titleComputed = WatchedRo(loc("HUD/TXT_STAMINA_SHORT"))
-  valueComputed = Computed(@() getStaminaValue(StaminaValue.get()))
-  alertStateCaptionComputed = Computed(@() StaminaState.get())
-  alertValueStateComputed = Computed(@() StaminaState.get())
-}
-
-textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
-  titleComputed = Computed(@() getInstructorCaption(InstructorForced.get()))
-  valueComputed = WatchedRo("")
-  alertStateCaptionComputed = Computed(@() InstructorState.get())
-  alertValueStateComputed = Computed(@() InstructorState.get())
-}
-
-let fuelKeyId = AirParamsSecondary.FUEL
-
-function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, font_size = HudStyle.hudFontHgt) {
+function generateParamsTable(mainMask, secondaryMask, tertiaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, font_size = HudStyle.hudFontHgt) {
   function getChildren(colorWatch, style, isBomberView) {
     let createParamOptions = { needCaption, forIls, font_size, isBomberView, isHelicopter = hudUnitType.isHelicopter() }
     let children = []
@@ -1047,20 +1049,36 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
         children.append(vertIndent)
 
     }
-    local secondaryMaskValue = secondaryMask.get()
+
+    local tertiaryMaskValue = tertiaryMask.get()
     if (is_aircraft) {
-      if ((1 << fuelKeyId) & secondaryMaskValue) {
-        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, colorWatch, createParamOptions))
-        secondaryMaskValue = secondaryMaskValue - (1 << fuelKeyId)
+      if ((1 << fuelKeyId) & tertiaryMaskValue) {
+        children.append(createParam(textParamsMapTertiary[fuelKeyId], width, height, style, colorWatch, createParamOptions))
+        tertiaryMaskValue = tertiaryMaskValue - (1 << fuelKeyId)
       }
     }
 
     if (is_aircraft)
       children.append(vertIndent)
 
+    local secondaryMaskValue = secondaryMask.get()
     foreach (key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
         children.append(createParam(param, width, height, style, colorWatch, createParamOptions))
+    }
+
+    if (is_aircraft) {
+      if ((1 << instructorKeyId) & tertiaryMaskValue) {
+        children.append(createParam(textParamsMapTertiary[instructorKeyId], width, height, style, colorWatch, createParamOptions))
+        tertiaryMaskValue = tertiaryMaskValue - (1 << instructorKeyId)
+      }
+    }
+
+    if (is_aircraft) {
+      if ((1 << staminaKeyId) & tertiaryMaskValue) {
+        children.append(createParam(textParamsMapTertiary[staminaKeyId], width, height, style, colorWatch, createParamOptions))
+        tertiaryMaskValue = tertiaryMaskValue - (1 << staminaKeyId)
+      }
     }
 
     return children
@@ -1069,7 +1087,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
   return function(colorWatch, isBomberView = false, style = HudStyle.styleText) {
     let table = @() style.__merge({
       key = {}
-      watch = [mainMask, secondaryMask, posWatched]
+      watch = [mainMask, secondaryMask, tertiaryMask, posWatched]
       pos = posWatched.get()
       size = [width, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL

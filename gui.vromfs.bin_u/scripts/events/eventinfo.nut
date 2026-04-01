@@ -129,6 +129,8 @@ let isTeamSizeBalancedEvent = @(event) event?.balancerMode == "team_size"
 
 let isNoneBalancedEvent = @(event) event?.balancerMode == "none"
 
+let canJoinWithoutRequireCrafts = @(event) !(event?.requireCrafts ?? true)
+
 return {
   eventIdsForMainGameModeList
   getEventEconomicName
@@ -160,5 +162,6 @@ return {
   isEventPlatformOnlyAllowed
   isTeamSizeBalancedEvent
   isNoneBalancedEvent
+  canJoinWithoutRequireCrafts
   isEventAllowedByPackage
 }

@@ -51,10 +51,10 @@ function canResearchMod(unit, mod, checkCurrent = false) {
 }
 
 function findAnyNotResearchedMod(unit) {
-  if (!("modifications" in unit))
+  if (unit == null)
     return null
 
-  foreach (mod in unit.modifications)
+  foreach (mod in unit.getModifications())
     if (canResearchMod(unit, mod) && !isModResearched(unit, mod))
       return mod
 
@@ -103,10 +103,10 @@ let hasActiveOverdrive = @(unitName, modName) get_modifications_overdrive(unitNa
   && getModBlock(modName, "overdriveEffect", "modOverdriveType")
 
 function getModificationByName(unit, modName) {
-  if (!("modifications" in unit))
+  if (unit == null)
     return null
 
-  foreach (_i, modif in unit.modifications)
+  foreach (_i, modif in unit.getModifications())
     if (modif.name == modName)
       return modif
 
@@ -115,10 +115,10 @@ function getModificationByName(unit, modName) {
 
 function getModificationsByModClass(unit, modClass) {
   let res = []
-  if (!("modifications" in unit))
+  if (unit == null)
     return res
 
-  foreach (mod in unit.modifications)
+  foreach (mod in unit.getModifications())
     if (mod?.modClass == modClass)
       res.append(mod)
 
@@ -168,7 +168,7 @@ function updateRelationModificationList(unit, modifName) {
   if (mod && !("relationModification" in mod)) {
     let modificationsBlk = get_modifications_blk()
     mod.relationModification <- [];
-    foreach (_ind, m in unit.modifications) {
+    foreach (_ind, m in unit.getModifications()) {
       if ("reqModification" in m && isInArray(modifName, m.reqModification)) {
         let modification = modificationsBlk?.modifications?[m.name]
         if (modification?.effects)
@@ -192,7 +192,7 @@ function isModificationEnabled(unitName, modName) {
 
 let modificationsWithTemplates = {}
 function getModificationsWithTemplates(unit) {
-  if (!unit?.modifications)
+  if (unit == null)
     return {}
   if (modificationsWithTemplates?[unit.name] != null)
     return modificationsWithTemplates[unit.name]
@@ -200,7 +200,7 @@ function getModificationsWithTemplates(unit) {
   let modificationsBlk = get_modifications_blk()
   let res = {}
 
-  foreach(mod in unit.modifications) {
+  foreach(mod in unit.getModifications()) {
     let modBlock = modificationsBlk?.modifications[mod.name]
     if (modBlock?.effects != null)
       res[mod.name] <- (mod.__merge({ effects = convertBlk(modBlock.effects) }))

@@ -1,11 +1,13 @@
 tdiv {
   id:t='filter_popup_nest'
 
+  <<#closeAsPopup>>
   rootUnderPopupMenu {
     _on_click:t='<<underPopupClick>>'
     _on_r_click:t='<<underPopupDblClick>>'
     order-popup:t='yes'
   }
+  <</closeAsPopup>>
 
   include "%gui/popup/popupFilterButton.tpl"
 
@@ -24,7 +26,16 @@ tdiv {
       position:t='relative'
       padding:t='1@blockInterval, 0'
       flow:t='vertical'
+      css-hier-invalidate:t='yes'
       <<^isButtonsOnTop>>
+      <<#hasTitle>>
+      textareaNoTab {
+        id:t="column_title"
+        left:t='pw-w'
+        css-hier-invalidate:t='yes'
+        text:t='<<title>>'
+      }
+      <</hasTitle>>
       include "%gui/commonParts/checkbox.tpl"
       tdiv {
         id:t='separator'
@@ -60,6 +71,14 @@ tdiv {
         id:t='separator'
         size:t='pw, 1@blockInterval'
       }
+      <<#hasTitle>>
+      textareaNoTab {
+        id:t="column_title"
+        left:t='pw-w'
+        css-hier-invalidate:t='yes'
+        text:t='<<title>>'
+      }
+      <</hasTitle>>
       include "%gui/commonParts/checkbox.tpl"
       <</isButtonsOnTop>>
       <<^isLast>>

@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import tactical_map_set_team_for_briefing
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
+let { tacticalMapSetTeamForBriefing } = require("guiTacticalMap")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -560,7 +560,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     setMapPreview(tacticalMapObj, misFileBlk)
     let playerTeam = this.operationBattle.getTeamBySide(playerSide)
     if (playerTeam && "name" in playerTeam)
-      tactical_map_set_team_for_briefing(get_mp_team_by_team_name(playerTeam.name))
+      tacticalMapSetTeamForBriefing(get_mp_team_by_team_name(playerTeam.name))
   }
 
   function updateViewMode() {

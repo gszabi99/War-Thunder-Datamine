@@ -27,13 +27,16 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
   btnTitle             = null
   visualStyle          = null
   popupFilterWnd       = null
+  closeAsPopup         = true
+  isShowCountFilters   = true
 
   function getSceneTplView() {
     this.btnTitle = this.btnTitle ?? loc("tournaments/filters")
     let k = showConsoleButtons.get() ? 2 : 1
+    let countFiltersText = this.isShowCountFilters ? $" {loc("ui/parentheses", {text = " +99"})}" : ""
     this.btnWidth = this.btnWidth
       ?? (to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
-        + getStringWidthPx($"{this.btnTitle} {loc("ui/parentheses", {text = " +99"})}", "nav_button_font"))
+        + getStringWidthPx($"{this.btnTitle}{countFiltersText}", "nav_button_font"))
 
     return {
       btnName = this.btnName == "" ? null
@@ -49,6 +52,9 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
   onEventUpdateFiltersCount = @(_p) this.updateButton()
 
   function updateButton() {
+    if (!this.isShowCountFilters)
+      return
+
     let count = this.getSelectedFiltersCount()
     setDoubleTextToButton(this.scene, "filter_button", this.btnTitle,
       count == 0 ? ""
@@ -71,6 +77,8 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
         btnPosition = this.scene.findObject("filter_button").getPosRC()
         btnHeight = to_pixels("1@buttonHeight")
         popupAlign = this.popupAlign ?? "bottom"
+        closeAsPopup = this.closeAsPopup
+        isShowCountFilters = this.isShowCountFilters
       })
     else
       this.popupFilterWnd.close()

@@ -137,7 +137,7 @@ function isWeaponTierAvailable(unit, tierNum) {
 
   if (!isAvailable && tierNum > 1) { 
     local reqMods = unit.needBuyToOpenNextInTier[tierNum - 2]
-    foreach (mod in unit.modifications)
+    foreach (mod in unit.getModifications())
       if (mod.tier == (tierNum - 1)
         && isModificationInTree(unit, mod)
         && isModResearched(unit, mod)
@@ -185,14 +185,14 @@ function getBulletsItemsList(unit, bulletsList, groupIndex) {
 }
 
 function getBulletsSearchName(unit, modifName) { 
-  if (!("modifications" in unit))
+  if (unit == null)
     return ""
   if (getModificationByName(unit, modifName))
     return modifName  
 
   let groupName = getModificationBulletsGroup(modifName)
   if (groupName != "")
-    foreach (_i, modif in unit.modifications)
+    foreach (_i, modif in unit.getModifications())
       if (getModificationBulletsGroup(modif.name) == groupName)
         return modif.name
   return ""
@@ -455,8 +455,8 @@ function getBulletsModListByGroups(air) {
   let modsList = []
   let groupsList = []
 
-  if ("modifications" in air)
-    foreach (m in air.modifications) {
+  if (air != null)
+    foreach (m in air.getModifications()) {
       let groupName = getModificationBulletsGroup(m.name)
       if (groupName != "" && !isInArray(groupName, groupsList)) {
         groupsList.append(groupName)
@@ -662,7 +662,7 @@ function getBulletsGroupCount(air, full = false) {
     return 0
   if (air.bulGroups < 0) {
     let modList = []
-    foreach (m in air.modifications) {
+    foreach (m in air.getModifications()) {
       let groupName = getModificationBulletsGroup(m.name)
       if (groupName != "")
         modList.append(m.name)
@@ -689,11 +689,11 @@ function canBulletsBeDuplicate(unit) {
   return unit?.unitType.canUseSeveralBulletsForGun ?? false
 }
 
-function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit,
+function getLinkedGunIdx(bulletSetIdx, totalGroups, bulletSetsQuantity, unit,
   unitGunsInfo = null, canBeDuplicate = true
 ) {
   if (!canBeDuplicate)
-    return groupIdx
+    return bulletSetIdx
 
   let gunsInfo = unitGunsInfo ?? getBulletsInfoForPrimaryGuns(unit)
   let averageBulletSetCount = totalGroups > 0
@@ -708,13 +708,13 @@ function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit,
     local count = 0
     foreach (idx, gunInfo in gunsInfo) {
       count += (gunInfo.bulletSetCount == -1) ? defBulletSetCount : gunInfo.bulletSetCount
-      if (count > groupIdx)
+      if (count > bulletSetIdx)
         return idx
     }
   }
 
   if (totalGroups * 2 <= bulletSetsQuantity)
-    return (groupIdx.tofloat() * totalGroups / bulletSetsQuantity + 0.001).tointeger()
+    return (bulletSetIdx.tofloat() * totalGroups / bulletSetsQuantity + 0.001).tointeger()
 
   
   
@@ -725,14 +725,14 @@ function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit,
       gunIdxWithDupicate.append(gunIdx)
       continue
     }
-    if (groupIdx == groupCount)
+    if (bulletSetIdx == groupCount)
       return gunIdx
     groupCount++
   }
   if (gunIdxWithDupicate.len() == 0)
-    return groupIdx
+    return bulletSetIdx
 
-  return gunIdxWithDupicate[((groupIdx.tofloat() - groupCount) * gunIdxWithDupicate.len()
+  return gunIdxWithDupicate[((bulletSetIdx.tofloat() - groupCount) * gunIdxWithDupicate.len()
     / (bulletSetsQuantity - groupCount) + 0.001).tointeger()]
 }
 
@@ -1024,7 +1024,7 @@ function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabl
   item.tooltip <- " ".join([ amountText, getModificationInfo(air, modifName).desc ])
 }
 
-function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
+function getBulletsList(airName, bulletSetIdx, params = BULLETS_LIST_PARAMS) {
   params = BULLETS_LIST_PARAMS.__merge(params)
   let descr = {
     values = []
@@ -1041,7 +1041,7 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
     items = []
   }
   let air = getAircraftByName(airName)
-  if (!air || !("modifications" in air))
+  if (!air)
     return descr
 
   let { WeaponPilons = null } = getFullUnitBlk(airName)
@@ -1054,14 +1054,14 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
 
   let canBeDuplicate = canBulletsBeDuplicate(air)
   let groupCount = getBulletsGroupCount(air, true)
-  if (groupCount <= groupIdx && !canBeDuplicate)
+  if (groupCount <= bulletSetIdx && !canBeDuplicate)
     return descr
 
   let modTotal = getBulletsGroupCount(air, false)
   let bulletSetsQuantity = air.unitType.bulletSetsQuantity
   let firstFakeIdx = canBeDuplicate ? bulletSetsQuantity : modTotal
-  if (firstFakeIdx <= groupIdx) {
-    let fakeIdx = groupIdx - firstFakeIdx
+  if (firstFakeIdx <= bulletSetIdx) {
+    let fakeIdx = bulletSetIdx - firstFakeIdx
     let modifName = getFakeBulletName(fakeIdx)
     let bData = getBulletsSetData(air, modifName)
     if (bData) {
@@ -1078,14 +1078,15 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
   }
 
   let bulletsInfo = getBulletsInfoForPrimaryGuns(air)
-  let linkedIndex = getLinkedGunIdx(groupIdx, modTotal, bulletSetsQuantity, air,
+  let linkedIndex = getLinkedGunIdx(bulletSetIdx, modTotal, bulletSetsQuantity, air,
     bulletsInfo, canBeDuplicate)
-  descr.duplicate = canBeDuplicate && groupIdx > 0 &&
-    linkedIndex == getLinkedGunIdx(groupIdx - 1, modTotal, bulletSetsQuantity, air,
+  descr.duplicate = canBeDuplicate && bulletSetIdx > 0 &&
+    linkedIndex == getLinkedGunIdx(bulletSetIdx - 1, modTotal, bulletSetsQuantity, air,
       bulletsInfo, canBeDuplicate)
 
-  for (local modifNo = 0; modifNo < air.modifications.len(); modifNo++) {
-    let modif = air.modifications[modifNo]
+  let modifications = air.getModifications()
+  for (local modifNo = 0; modifNo < modifications.len(); modifNo++) {
+    let modif = modifications[modifNo]
     let modifName = modif.name
 
     let groupName = getModificationBulletsGroup(modifName)
@@ -1471,7 +1472,7 @@ function getProjectileNameLoc(projectileName, needToUseBulletTypeName = false, u
     if (doesLocTextExist($"{projectileName}/name"))
       return loc($"{projectileName}/name")
     if (unit) {
-      let caliber = (unit?.modifications.findvalue(@(m) m.name == projectileName).caliber ?? 0) * 1000
+      let caliber = (unit?.getModifications().findvalue(@(m) m.name == projectileName).caliber ?? 0) * 1000
       let bulletLocId = getBulletBeltShortLocId(projectileName)
       if (caliber && doesLocTextExist(bulletLocId)) {
         let caliberString = caliber % 1 != 0

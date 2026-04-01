@@ -520,7 +520,7 @@ struct PolarTargetsElement : InteractableButton
         angle = norm_s_ang(angleRelToAngle(target.azimuthRel) + azimuthCorrection)
         angularWidth = max(azimuthRange * target.azimuthWidthRel, angularWidthMin)
 
-      let distCheck = abs(distanceRel - pressDistRel) <= radialWidthRel
+      let distCheck = abs(distanceRel - pressDistRel) <= min(radialWidthRel, 1.0)
       let azCheck = abs(angle - pressAzimuth) <= angularWidth
       if distCheck && azCheck
         radar_switch_to_target(target.sourceObjectId)
@@ -631,7 +631,11 @@ struct PolarTargetsElement : InteractableButton
               ctx |> set_color(e3dColor)
               ctx |> draw_line(targetPos, losPos, data |> hdpx(2. * data.lineWidth))
         else
-          ctx |> render_sector_aa(origin, radius * distanceRel, float2(angleLeft, angleRight), 100. * radialWidthRel, e3dColor, transparentColor)
+          let sectorInnerRel = max(distanceRel - radialWidthRel * 0.5, 0.0)
+          let sectorOuterRel = min(distanceRel + radialWidthRel * 0.5, 1.0)
+          let sectorCenterRel = (sectorInnerRel + sectorOuterRel) * 0.5
+          let sectorLineWidth = max(radius.x, radius.y) * (sectorOuterRel - sectorInnerRel)
+          ctx |> render_sector_aa(origin, radius * sectorCenterRel, float2(angleLeft, angleRight), sectorLineWidth, e3dColor, transparentColor)
 
         if data.annotateTargets
           let targetIndex = "{int(target.persistentIndex)}"
@@ -663,12 +667,12 @@ struct PolarTargetsElement : InteractableButton
           ctx |> render_line_aa(rcoord, false, data |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
 
         if !target.isEnemy
-          let iffDistReal = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
+          let iffDistReal = get_radar_hud_velocity_search() ? 0.9 : min(distanceRel + (0.5 + iffDistRelMult) * radialWidthRel, 1.0)
           ctx |> render_sector_aa(origin, radius * iffDistReal, float2(angleLeft, angleRight), data |> hdpx(3. * data.lineWidth), e3dColor, transparentColor)
           //animation targetSelectedAnim ???
 
         if target.isAttacked
-          let attackMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + attackDistRelMult) * radialWidthRel
+          let attackMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : min(distanceRel + (0.5 + attackDistRelMult) * radialWidthRel, 1.0)
           let coord <- to_array_move(fixed_array<float2>(origin + radius * attackMarkDistRel * float2(cos(angle), sin(angle)),
           origin + (radius * (attackMarkDistRel + attackHeightRel)) * float2(cos(angle), sin(angle))))
           ctx |> render_line_aa(coord, false, data |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)

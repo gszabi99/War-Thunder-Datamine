@@ -137,13 +137,13 @@ let modsTree = {
   function generateTree(genAir) {
     this.air = genAir
     this.tree = [null] 
-    if (!("modifications" in this.air))
+    if (this.air == null)
       return this.tree
 
     this.tree.extend(this.air.unitType.modClassOrder.map(@(v) [v]))
 
     let notInTreeMods = []
-    foreach (_idx, mod in this.air.modifications)
+    foreach (_idx, mod in this.air.getModifications())
       if (getModificationBulletsGroup(mod.name) == "" &&
           this.mustBeInModTree(mod) &&
           (!this.ignoreGoldMods || !wp_get_modification_cost_gold(this.air.name, mod.name))
@@ -565,11 +565,11 @@ let modsTree = {
 }
 
 function getNextTierModsCount(unit, tier) {
-  if (tier < 1 || tier > unit.needBuyToOpenNextInTier.len() || !("modifications" in unit))
+  if (tier < 1 || tier > unit.needBuyToOpenNextInTier.len())
     return 0
 
   local req = unit.needBuyToOpenNextInTier[tier - 1]
-  foreach (mod in unit.modifications)
+  foreach (mod in unit.getModifications())
     if (("tier" in mod) && mod.tier == tier
       && isModificationInTree(unit, mod)
       && isModResearched(unit, mod)

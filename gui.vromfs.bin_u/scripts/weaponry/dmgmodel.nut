@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
-let { lerp } = require("%sqstd/math.nut")
+let { lerp, sqrt } = require("%sqstd/math.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
 let { Point2 } = require("dagor.math")
@@ -318,6 +318,61 @@ function getShipDamageControl() {
   return shipDamageControl
 }
 
+function getNuclearWeaponAdditionalInfo(weapon) {
+  let weaponBlk = DataBlock()
+  weaponBlk.load(weapon.blk)
+  let weaponTag = weapon?.weaponTag ?? "bomb"
+  let bombPower = weaponBlk[weaponTag]["yield"]
+  if (!bombPower || (bombPower < 0))
+    return null
+
+  let blk = getExplosiveBlk()
+  let yields = blk.yieldToExplosionParameters
+  local minPower = 0
+  local maxPower = 0
+  local minData = null
+  local maxData = null
+
+  eachBlock(yields, function(block) {
+    let power = block["yield"]
+    if ((power >= minPower) && (power <= bombPower)) {
+      minPower = power
+      minData = block
+    }
+    if (((maxPower == 0) || (power <= maxPower)) && (power >= bombPower)) {
+      maxPower = power
+      maxData = block
+    }
+  })
+
+  if (maxData == null) {
+    maxData = minData
+    maxPower = minPower
+  }
+
+  let percent = maxPower != minPower
+    ? (bombPower - minPower) / (maxPower - minPower)
+    : 0
+
+  let lerpProp = @(propName) minData[propName] + (maxData[propName] - minData[propName]) * percent
+  let outerRadius = lerpProp("outerRadius")
+  let fullDestructionRadius = lerpProp("minRealSplashWaveRadius")
+
+  let armorToShowRadus = blk?.penetrationToCalcDestructionRadius ?? DEFAULT_ARMOR_FOR_PENETRATION_RADIUS
+  let penetration = lerpProp("penetration")
+  let explosiveCoreRadius = lerpProp("explosiveCoreRadius")
+  let destroyRadiusArmored = sqrt(explosiveCoreRadius * explosiveCoreRadius * penetration / armorToShowRadus).tointeger()
+
+  let res = []
+  res.append(
+    {loc = loc("bullet_properties/explosiveMassInTNTEquivalent"), val = " ".concat(bombPower.tostring(), loc("measureUnits/kiloton"))},
+    {loc = loc("bombProperties/destroyOutherRadius"), val = " ".concat(outerRadius.tostring(), loc("measureUnits/meters_dist"))},
+    {loc = loc("bombProperties/destroyRadiusArmored"), val = " ".concat(destroyRadiusArmored.tostring(), loc("measureUnits/meters_dist"))},
+    {loc = loc("bombProperties/totalDestructionRadius"), val = " ".concat(fullDestructionRadius.tostring(), loc("measureUnits/meters_dist"))},
+  )
+  return res
+}
+
 addListenersWithoutEnv({
   SignOut = @(_p) resetData()
 }, g_listener_priority.CONFIG_VALIDATION)
@@ -332,4 +387,5 @@ return {
   getShipXrayFilter
   getMaxArmorPiercing
   getShipDamageControl
+  getNuclearWeaponAdditionalInfo
 }

@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 let { paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight, targetSize } = require("%rGui/airHudElems.nut")
-let { IsMfdSightHudVisible, MfdSightMask, MfdSightPosSize, MfdFontScale, SecondaryMask, HudParamColor } = require("%rGui/airState.nut")
+let { IsMfdSightHudVisible, MfdSightMask, MfdSightPosSize, MfdFontScale, SecondaryMask, TertiaryMask, HudParamColor } = require("%rGui/airState.nut")
 let { ceil } = require("%sqstd/math.nut")
 
 let sightSh = @(h) ceil(h * MfdSightPosSize.get()[3] / 100)
@@ -9,7 +9,7 @@ let sightHdpx = @(px) ceil(px * MfdSightPosSize.get()[3] / 1024)
 
 let mfdSightParamTablePos = Watched([hdpx(30), hdpx(175)])
 
-let mfdSightParamsTable = paramsTable(MfdSightMask, SecondaryMask,
+let mfdSightParamsTable = paramsTable(MfdSightMask, SecondaryMask, TertiaryMask,
   hdpx(250), hdpx(28),
   mfdSightParamTablePos,
   hdpx(3),

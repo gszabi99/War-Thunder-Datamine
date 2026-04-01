@@ -8,9 +8,13 @@ let opticAtgmSight = require("%rGui/opticAtgmSight.nut")
 let laserAtgmSight = require("%rGui/laserAtgmSight.nut")
 let { aircraftTargetingPodSight } = require("%rGui/targetingPodSight.nut")
 let { leftPanel } = require("%rGui/airHudLeftPanel.nut")
-let { OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible } = require("%rGui/planeState/planeWeaponState.nut")
+let { OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible
+
+
+
+} = require("%rGui/planeState/planeWeaponState.nut")
 let {
-  IndicatorsVisible, MainMask, SecondaryMask, IsArbiterHudVisible,
+  IndicatorsVisible, MainMask, SecondaryMask, TertiaryMask IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
   HudColor, AlertColorHigh, IsBomberViewHudVisible, HudParamColor,
   isBombSightActivated, isAAMSightActivated, isRocketSightActivated,
@@ -32,6 +36,9 @@ let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
 let { isCollapsedRadarInReplay, IsRadarDamaged } = require("%rGui/radarState.nut")
+
+
+
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -72,12 +79,12 @@ let twsPosWatched = Computed(@()
   ])
 )
 
-let aircraftParamsTable = paramsTable(MainMask, SecondaryMask,
+let aircraftParamsTable = paramsTable(MainMask, SecondaryMask, TertiaryMask,
         paramsTableWidthAircraft, paramsTableHeightAircraft,
         aircraftParamsTablePos,
         hdpx(1), true, false, true)
 
-let aircraftArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
+let aircraftArbiterParamsTable = paramsTable(MainMask, SecondaryMask, TertiaryMask,
         arbiterParamsTableWidthAircraft, paramsTableHeightAircraft,
         aircraftArbiterParamsTablePos,
         hdpx(1), true, false, true)
@@ -194,9 +201,17 @@ let aircraftHud = {
   valign = ALIGN_TOP
   size = const [sw(100), sh(100)]
   children = @() {
-    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, TargetingPodSightVisible]
+    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, TargetingPodSightVisible
+
+
+
+    ]
     size = flex()
-    children = [
+    children =
+
+
+
+    [
       mkAircraftMainHud()
       aircraftGunnerHud
       aircraftPilotHud

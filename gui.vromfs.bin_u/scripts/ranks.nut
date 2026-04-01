@@ -74,20 +74,13 @@ let minValuesToShowRewardPremium = mkWatched(persist, "minValuesToShowRewardPrem
 
 function updateAircraftWarpoints(maxCallTimeMsec = 0) {
   let startTime = get_time_msec()
-  let errorsTextArray = []
   foreach (unit in getAllUnits()) {
     if (unit.isInited)
       continue
 
-    let errors = unit.initOnce()
-    if (errors)
-      errorsTextArray.extend(errors)
-
-    if (maxCallTimeMsec && get_time_msec() - startTime >= maxCallTimeMsec) {
-      if (errorsTextArray.len() > 0)
-        logerr("\n".join(errorsTextArray))
+    unit.initOnce()
+    if (maxCallTimeMsec && get_time_msec() - startTime >= maxCallTimeMsec)
       return PT_STEP_STATUS.SUSPEND
-    }
   }
 
   
@@ -107,8 +100,6 @@ function updateAircraftWarpoints(maxCallTimeMsec = 0) {
     exp = ws?.exp_to_show_premium_reward ?? 0
   })
 
-  if (errorsTextArray.len() > 0)
-    logerr("\n".join(errorsTextArray))
   return PT_STEP_STATUS.NEXT_STEP
 }
 

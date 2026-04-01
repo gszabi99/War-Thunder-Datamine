@@ -1,0 +1,1097 @@
+{
+  "model": "mim_23_hawk_radar_an_mpq46",
+  "hasExpl": true,
+  "hasDmg2": false,
+  "hasQualityModels": true,
+  "collisionSphere0": [
+    0.0,
+    -1.5,
+    0.0,
+    5.0
+  ],
+  "collisionSphere1": [
+    5.0,
+    2.0,
+    0.0,
+    1.0
+  ],
+  "exhaustFx": "tank_exhaust_med",
+  "damagedExhaustFx": "tank_broken_exhaust",
+  "thermalExhaustFx": "tank_exhaust_nightvision",
+  "dustFx": "",
+  "support_unit_class": "structures/ussr_152mm_d1",
+  "support_unit_tag": "artillery",
+  "useSimpleDeathConditionsAndEffects": false,
+  "timeToFire": 5.0,
+  "subclass": "heavyVehicle",
+  "onRadarAs": "radar",
+  "moveType": "vehicle",
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 20.0,
+  "maxAccel": 10.0,
+  "maxDecel": 10.0,
+  "maxAngAccel0": 10.0,
+  "maxAngAccelV": 10.0,
+  "maxAngAccel": 10.0,
+  "groundNormSmoothViscosity": 0.1,
+  "minDistBetween": 10.0,
+  "maxAnglesForFire": [
+    -70.0,
+    70.0
+  ],
+  "expClass": "exp_ai_sam_tracking_radar",
+  "mass": 5000.0,
+  "bulletHitFx": "ground_model_hit",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
+  "destroysRendInstances": true,
+  "destroysTrees": true,
+  "killIfFlipped": true,
+  "type": "typeLightTank",
+  "sensorTargetTurretTrack": false,
+  "DamageEffects": {},
+  "tank_crew": {},
+  "unitFx": {
+    "event": [
+      {
+        "lifetime": 120.0,
+        "name": "engine_fire",
+        "fx": [
+          {
+            "name": "tank_engine_fire",
+            "emitter": "emtr_fire_engine"
+          },
+          {
+            "name": "tank_engine_fire",
+            "emitter": "emtr_fire_engine_01"
+          },
+          {
+            "name": "tank_engine_fire",
+            "emitter": "emtr_fire_engine_02"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire",
+        "lifetime": 9.0,
+        "fx": [
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_01",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_02",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_03",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_04",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_05",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_06",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_07",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_08",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_09",
+            "useVelocity": false
+          },
+          {
+            "name": "tank_ammo_fire",
+            "emitter": "emtr_fire_ammo_10",
+            "useVelocity": false
+          },
+          {
+            "name": "fire_tank_ammo_gun_fire",
+            "emitter": "emtr_gun_flame",
+            "setOrientation": true
+          }
+        ]
+      },
+      {
+        "name": "light_smoke",
+        "lifetime": 60.0,
+        "fx": [
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_fire_ammo"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_fire_ammo_02"
+          }
+        ]
+      },
+      {
+        "name": "total_smoke",
+        "lifetime": 60.0,
+        "fx": [
+          {
+            "name": "tank_smoke_big",
+            "emitter": "emtr_smoke_dmg"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_16"
+          }
+        ]
+      },
+      {
+        "name": "total_fire",
+        "lifetime": 40.0,
+        "fx": [
+          {
+            "name": "tank_fire_big",
+            "emitter": "emtr_fire_dmg"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_01"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_02"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_03"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_04"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_05"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_06"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_07"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_08"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_09"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_10"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_11"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_12"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_13"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_14"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_15"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_16"
+          }
+        ]
+      },
+      {
+        "name": "attached_fire",
+        "lifetime": 15.0,
+        "fx": [
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_dmg"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_01"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_02"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_03"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_04"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_05"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_06"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_07"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_08"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_09"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_10"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_11"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_12"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_13"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_14"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_15"
+          },
+          {
+            "name": "fire_tank_napalm_smal",
+            "emitter": "emtr_fire_small_dmg_16"
+          }
+        ]
+      },
+      {
+        "name": "fuel_exterior",
+        "lifetime": 50.0,
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "fuel_internal",
+        "lifetime": 50.0,
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "hydraulic_internal",
+        "lifetime": 200.0,
+        "fx": {
+          "name": "tank_engine_fire",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_internal",
+        "lifetime": 100.0,
+        "fx": {
+          "name": "tank_engine_fire",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_exterior",
+        "lifetime": 50.0,
+        "fx": {
+          "name": "tank_engine_fire",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "tank_explosion",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 8,
+            "speed": [
+              15.0,
+              35.0
+            ],
+            "angle": 55.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": [
+              20.0,
+              40.0
+            ],
+            "angle": 35.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": [
+              10.0,
+              30.0
+            ],
+            "angle": 65.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "tank_explosion",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": [
+              15.0,
+              35.0
+            ],
+            "angle": 55.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": [
+              20.0,
+              40.0
+            ],
+            "angle": 35.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": [
+              10.0,
+              30.0
+            ],
+            "angle": 65.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": {
+          "name": "tank_explosion_small",
+          "emitter": "emtr_explosion_center"
+        },
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": [
+              10.0,
+              30.0
+            ],
+            "angle": 50.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": [
+              20.0,
+              40.0
+            ],
+            "angle": 35.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": [
+              10.0,
+              30.0
+            ],
+            "angle": 65.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "tank_explosion_ammo",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 25,
+            "speed": [
+              15.0,
+              35.0
+            ],
+            "angle": 50.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": [
+              25.0,
+              45.0
+            ],
+            "angle": 30.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": [
+              10.0,
+              30.0
+            ],
+            "angle": 65.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "tank_explosion_ammo_small",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 14,
+            "speed": [
+              15.0,
+              35.0
+            ],
+            "angle": 55.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": [
+              20.0,
+              40.0
+            ],
+            "angle": 30.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": [
+              10.0,
+              30.0
+            ],
+            "angle": 65.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "full_expl",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "tank_explosion_ammo",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 25,
+            "speed": [
+              15.0,
+              35.0
+            ],
+            "angle": 50.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": [
+              25.0,
+              45.0
+            ],
+            "angle": 30.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": [
+              10.0,
+              30.0
+            ],
+            "angle": 65.0,
+            "turbulence": 10.0,
+            "spiralForce": 4.0,
+            "spiralSpeed": 3.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_tiny",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_tiny",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_tiny",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_tiny",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
+      }
+    ],
+    "procedural": {
+      "name": "default",
+      "fx": {
+        "name": "tank_engine_fire"
+      }
+    }
+  },
+  "MetaParts": {
+    "body": {
+      "hp": 200.0,
+      "part": [
+        "gun_barrel_dm",
+        "body_dm",
+        "body_top_dm",
+        "turret_front_dm",
+        "antenna_target_tagging_dm",
+        "turret_01_back_dm",
+        "turret_01_front_dm",
+        "gun_dm"
+      ],
+      "effect": [
+        {
+          "conditionDead": true,
+          "kill": true,
+          "killEffect": "expl",
+          "expl": 1.0
+        },
+        {
+          "conditionDamageType": "generic",
+          "expl": 1.0,
+          "conditionDamage": 100.0,
+          "kill": true,
+          "killEffect": "expl",
+          "conditionDead": true
+        },
+        {
+          "conditionDamageType": "explosion",
+          "expl": 1.0,
+          "conditionDamage": 150.0,
+          "kill": true,
+          "killEffect": "expl",
+          "conditionDead": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "expl": 1.0,
+          "conditionDamage": 200.0,
+          "kill": true,
+          "killEffect": "expl",
+          "conditionDead": true
+        },
+        {
+          "conditionDamageType": "cumulative",
+          "expl": 1.0,
+          "conditionDamage": 50.0,
+          "kill": true,
+          "killEffect": "expl",
+          "conditionDead": true
+        },
+        {
+          "conditionDamageType": "napalm",
+          "expl": 1.0,
+          "conditionDamage": 50.0,
+          "kill": true,
+          "killEffect": "expl",
+          "conditionDead": true
+        }
+      ]
+    }
+  },
+  "DamageParts": {
+    "formatVersion": 2,
+    "hp": 5000.0,
+    "armorClass": "RHA_tank",
+    "hull": {
+      "hp": 500.0,
+      "armorClass": "RHA_tank",
+      "napalmDamageMult": 10.0,
+      "explosionDamageMult": 0.5,
+      "shatterDamageMult": 0.5,
+      "body_dm": {},
+      "gun_barrel_dm": {},
+      "body_top_dm": {},
+      "turret_front_dm": {},
+      "antenna_target_tagging_dm": {},
+      "turret_01_back_dm": {},
+      "turret_01_front_dm": {},
+      "gun_dm": {}
+    },
+    "chassis": {
+      "armorClass": "car_wheels",
+      "hp": 250.0,
+      "armorThickness": 10.0,
+      "wheel_r_01_dm": {},
+      "wheel_l_01_dm": {},
+      "wheel_r_02_dm": {},
+      "wheel_l_02_dm": {},
+      "wheel_r_03_dm": {},
+      "wheel_l_03_dm": {},
+      "wheel_r_04_dm": {},
+      "wheel_l_04_dm": {},
+      "wheel_r_05_dm": {},
+      "wheel_l_05_dm": {},
+      "wheel_r_06_dm": {},
+      "wheel_l_06_dm": {},
+      "wheel_r_drive_dm": {},
+      "wheel_l_drive_dm": {},
+      "wheel_l_front_dm": {},
+      "wheel_r_front_dm": {}
+    }
+  },
+  "sound": {
+    "path": "sounds/engines/apc",
+    "pathStudio": "aircraft/engines/apc",
+    "engine": "",
+    "turret_turn": "turret_turn_manual"
+  },
+  "class_tags": {},
+  "commonWeapons": {
+    "Weapon": {
+      "dummy": true,
+      "trigger": "gunner0",
+      "triggerGroup": "primary",
+      "blk": "gameData/Weapons/dummy_weapon.blk",
+      "emitter": "bone_gun",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 85.0,
+      "speedPitch": 40.0,
+      "bullets": 1,
+      "AttackMaxRadius": 50000.0,
+      "turret": {
+        "head": "bone_turret",
+        "gun": "bone_gun"
+      },
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -8.0,
+          80.0
+        ]
+      },
+      "gunStabilizer": {
+        "hasVerticalGunFreeMode": false,
+        "hasHorizontal": true,
+        "horizontalOmegaMult": 1.0,
+        "horizontalSpeedLimitKPH": 75.0,
+        "hasVertical": true,
+        "verticalOmegaMult": 1.0,
+        "verticalSpeedLimitKPH": 75.0,
+        "errorKPHToDegrees": {
+          "row": [
+            [
+              5.0,
+              0.0
+            ],
+            [
+              25.0,
+              0.015
+            ],
+            [
+              35.0,
+              0.02
+            ],
+            [
+              45.0,
+              0.1
+            ],
+            [
+              50.0,
+              0.3
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "us_ai_sam_radar_an_mpq_46_default",
+      "blk": "gameData/units/tankModels/weaponPresets/us_ai_sam_radar_an_mpq_46_default.blk"
+    }
+  },
+  "VehiclePhys": {
+    "Mass": {
+      "Empty": 5000.0,
+      "Fuel": 0.0,
+      "TakeOff": 5000.0,
+      "momentOfInertia": [
+        6.0,
+        1.0,
+        6.0
+      ],
+      "CenterOfGravity": [
+        -0.8,
+        0.2,
+        0.0
+      ],
+      "AdvancedMass": false,
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ],
+      "cls_body": 1.0
+    },
+    "tracks": {
+      "animationMultiplier": 0.5,
+      "height": 0.0,
+      "width": 0.1,
+      "trackPhysMat": "wheel",
+      "fricFrontal": [
+        10.0,
+        10.0
+      ]
+    },
+    "collisionProps": {
+      "cls_body": "convex_hull"
+    },
+    "engine": {
+      "horsePowers": 1.0,
+      "maxRPM": 2200.0,
+      "minRPM": 700.0
+    },
+    "mechanics": {
+      "maxBrakeForce": 3200.0,
+      "driveGearRadius": 0.3165,
+      "mainGearRatio": 1.084,
+      "sideGearRatio": 4.3,
+      "tracked": false,
+      "gearRatios": {
+        "ratio": [
+          -15.0,
+          0.0,
+          15.0
+        ]
+      }
+    },
+    "suspension": {
+      "suspensionOffsets": [
+        -0.05,
+        -0.05,
+        0.05
+      ],
+      "defaultGearRadius": 0.372,
+      "defaultDampeningForce": [
+        17000.0,
+        17000.0
+      ],
+      "hasSuspensionOnDriveGear": true,
+      "dampeningRelaxationRatio": 0.4,
+      "dampeningCompressionRatio": 0.15,
+      "brokenWheelSteeringDeflection": -15.0,
+      "wheel_l_01": 0.372,
+      "wheel_r_01": 0.372,
+      "wheel_l_02": 0.372,
+      "wheel_r_02": 0.372,
+      "driven": {
+        "wheel_l_01": true,
+        "wheel_r_01": true,
+        "wheel_l_02": true,
+        "wheel_r_02": true
+      }
+    }
+  },
+  "cockpit": {
+    "zoomOutFov": 10.21,
+    "zoomInFov": 9.21,
+    "sightFov": 5.0,
+    "sightName": "stormer_sight",
+    "openedCockpit": true,
+    "headPos": [
+      0.2,
+      3.3,
+      -6.0
+    ],
+    "headPosOnShooting": [
+      -2.0,
+      1.8,
+      0.2
+    ],
+    "detectionHeight": 2.8
+  },
+  "modifications": {
+    "manual_extinguisher": {},
+    "tank_tool_kit": {}
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_mpq_61.blk",
+      "turretIndex": 0,
+      "dmPart": "antenna_target_tagging_dm"
+    }
+  }
+}

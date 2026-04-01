@@ -325,7 +325,8 @@
             "fsm": "track",
             "active": true
           }
-        }
+        },
+        "resetTrackMode": {}
       },
       "transitions": {
         "init": {
@@ -456,6 +457,7 @@
           "stateTo": "standby",
           "command": "designateTarget",
           "actions": {
+            "resetTrackMode": {},
             "setStandbyMode": {},
             "setFsmActive": {
               "fsm": "track",

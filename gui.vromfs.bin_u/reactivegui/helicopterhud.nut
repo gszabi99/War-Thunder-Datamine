@@ -4,7 +4,7 @@ let mfdHud = require("%rGui/mfd.nut")
 let { planeIlsSwitcher } = require("%rGui/planeIls.nut")
 let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
 let {
-  IndicatorsVisible, MainMask, SecondaryMask, IsArbiterHudVisible,
+  IndicatorsVisible, MainMask, SecondaryMask, TertiaryMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
   HudColor, MfdColor, AlertColorHigh, IsMfdEnabled, IsSightHudVisible } = require("%rGui/airState.nut")
 let { isCollapsedRadarInReplay, IsRadarDamaged, IsRadarVisible, IsRadar2Visible} = require("%rGui/radarState.nut")
@@ -53,12 +53,12 @@ let twsPosComputed = Computed(@() isPlayingReplay.get() ?
 
 let helicopterArbiterParamsTablePos = Computed(@() [max(bw.get(), sw(17.5)), sh(12)])
 
-let helicopterParamsTable = paramsTable(MainMask, SecondaryMask,
+let helicopterParamsTable = paramsTable(MainMask, SecondaryMask, TertiaryMask,
   paramsTableWidthHeli, paramsTableHeightHeli,
   positionParamsTable,
   hdpx(5))
 
-let helicopterArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
+let helicopterArbiterParamsTable = paramsTable(MainMask, SecondaryMask, TertiaryMask,
   arbiterParamsTableWidthHelicopter, paramsTableHeightHeli,
   helicopterArbiterParamsTablePos,
   hdpx(1), true, false, true)

@@ -53,7 +53,7 @@ function checkShowShipWeaponsTutor(weaponsHandler, columnsConfig) {
       || (getPvpRespawnsOnUnitType(ES_UNIT_TYPE_SHIP) < MIN_RESPAWNS_REQUIRED))
     return
 
-  let hasReqMods = weaponsHandler.unit.modifications.findindex(
+  let hasReqMods = weaponsHandler.unit.getModifications().findindex(
     @(mod) (mod.modClass == "firepower")
       && (mod.tier == 1)
       && !isModMounted(weaponsHandler.unit.name, mod.name)) == null

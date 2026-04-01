@@ -64,7 +64,7 @@ let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventForClan,
   getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
   isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature,
-  isEventPlatformOnlyAllowed, isEventAllowedByPackage
+  isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage
 } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
@@ -1507,6 +1507,9 @@ let Events = class {
     if (!event)
       return false
 
+    if (canJoinWithoutRequireCrafts(event))
+      return true
+
     let teamData = this.getTeamWithUnitsReq(event, room, country)
     if (teamData == null)
       return true
@@ -1577,6 +1580,8 @@ let Events = class {
   }
 
   function checkPlayersCrafts(event, room = null, minCrafts = 1) {
+    if (canJoinWithoutRequireCrafts(event))
+      return true
     let mGameMode = events.getMGameMode(event, room)
     let roomSpecialRules = room && getRoomSpecialRules(room)
     let playersCurCountry = profileCountrySq.get()

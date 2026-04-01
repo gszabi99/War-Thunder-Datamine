@@ -4,7 +4,7 @@ let interopGen = require("%rGui/interopGen.nut")
 let { interop } = require("%rGui/globals/interop.nut")
 let { NUM_ENGINES_MAX } = require("hudState")
 
-const NUM_TRANSMISSIONS_MAX = 6
+const NUM_TRANSMISSIONS_MAX = 8
 const NUM_CANNONS_MAX = 3
 const NUM_TURRETS_MAX = 10
 
@@ -79,6 +79,7 @@ let AtgmTrackerRadius = Watched(0.0)
 
 let MainMask = Watched(0)
 let SecondaryMask = Watched(0)
+let TertiaryMask = Watched(0)
 let SightMask = Watched(0)
 let IlsMask = Watched(0)
 let MfdSightMask = Watched(0)
@@ -342,6 +343,7 @@ let helicopterState = {
 
   MainMask,
   SecondaryMask,
+  TertiaryMask,
   SightMask,
   IlsMask,
   MfdSightMask,

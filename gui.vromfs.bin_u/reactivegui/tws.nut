@@ -8,6 +8,7 @@ let { IPoint3 } = require("dagor.math")
 let { MfdRwrColor } = require("%rGui/planeState/planeToolsState.nut")
 let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("%rGui/style/airHudStyle.nut")
 let { CompassValue } = require("%rGui/compassState.nut")
+let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
 const RADAR_LINES_OPACITY = 0.42
@@ -610,7 +611,7 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
           trackLine,
           sector,
           targetComponent,
-          newTarget
+          newTarget 
         ]
       },
       targetType,
@@ -936,9 +937,9 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
     watch = mfdRwrSettings
     size = flex()
     children = [
-      twsBackground(colorWatched, !needDrawCentralIcon),
-      needDrawBackground ? rwrBackground(lineColor, scale, forMfd) : null,
-      needDrawCentralIcon ? getCentralMark(forMfd, mfdRwrSettings.get().centralMark)?(colorWatched, centralCircleSizeMult) : null,
+      twsBackground(colorWatched, !needDrawCentralIcon), 
+      needDrawBackground ? rwrBackground(lineColor, scale, forMfd) : null, 
+      needDrawCentralIcon ? getCentralMark(forMfd, mfdRwrSettings.get().centralMark)?(colorWatched, centralCircleSizeMult) : null, 
       compass(lineColor, forMfd, scale, mfdRwrSettings.get().angleMarkStep),
       {
         size = [pw(relativCircleRadius * scale * ratio), ph(relativCircleRadius * scale)]
@@ -972,8 +973,29 @@ let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSiz
   }
 })
 
+let twsDas = kwarg(function(colorWatched, posWatched, sizeWatched) {
+  return @() {
+    watch = [posWatched, sizeWatched, colorWatched]
+    size = sizeWatched.get()
+    pos = posWatched.get()
+    rendObj = ROBJ_DAS_CANVAS
+    script = getDasScriptByPath("%rGui/tws.das")
+    drawFunc = "draw_hud"
+    setupFunc = "setup_data"
+
+    lineWidth = LINE_WIDTH
+    color = colorWatched.get()
+    font = Fonts.hud
+    fontSize = hudFontHgt
+    fontFxColor = fontOutlineColor
+    fontFxFactor = fontOutlineFxFactor
+    textColor = greenColor
+  }
+})
+
 return {
   tws
+  twsDas
   mfdRwrSettings
   mfdRwrSettingsUpd
 }

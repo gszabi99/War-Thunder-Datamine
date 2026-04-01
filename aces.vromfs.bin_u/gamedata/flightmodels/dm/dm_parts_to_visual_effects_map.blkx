@@ -2694,6 +2694,246 @@
       ]
     },
     {
+      "dm": "engine7_dm",
+      "state": [
+        {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": [
+            {
+              "type": "particles",
+              "particles": "engine_fuel_leak",
+              "emitter": 6,
+              "enabled": false
+            },
+            {
+              "type": "particles",
+              "particles": "engine_oil_leak",
+              "emitter": 6,
+              "enabled": false
+            },
+            {
+              "type": "particles",
+              "particles": "leak_water",
+              "emitter": 6,
+              "enabled": false
+            },
+            {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 6,
+              "enabled": false
+            },
+            {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 6,
+              "enabled": false
+            },
+            {
+              "type": "propellerVisibility",
+              "index": 6,
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "leak",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_fuel_leak",
+            "emitter": 6,
+            "enabled": true
+          }
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_oil_leak",
+            "emitter": 6,
+            "enabled": true
+          }
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 6,
+            "enabled": true
+          }
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "effect": [
+            {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 6,
+              "enabled": true
+            },
+            {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 6,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "expl",
+          "effect": [
+            {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 6,
+              "enabled": true
+            },
+            {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 6,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "state": "wrecked",
+          "effect": {
+            "type": "propellerVisibility",
+            "index": 6,
+            "enabled": false
+          }
+        }
+      ]
+    },
+    {
+      "dm": "engine8_dm",
+      "state": [
+        {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": [
+            {
+              "type": "particles",
+              "particles": "engine_fuel_leak",
+              "emitter": 7,
+              "enabled": false
+            },
+            {
+              "type": "particles",
+              "particles": "engine_oil_leak",
+              "emitter": 7,
+              "enabled": false
+            },
+            {
+              "type": "particles",
+              "particles": "leak_water",
+              "emitter": 7,
+              "enabled": false
+            },
+            {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 7,
+              "enabled": false
+            },
+            {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 7,
+              "enabled": false
+            },
+            {
+              "type": "propellerVisibility",
+              "index": 7,
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "leak",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_fuel_leak",
+            "emitter": 7,
+            "enabled": true
+          }
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_oil_leak",
+            "emitter": 7,
+            "enabled": true
+          }
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 7,
+            "enabled": true
+          }
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "effect": [
+            {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 7,
+              "enabled": true
+            },
+            {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 7,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "state": "damaged",
+          "requiredDamageEffect": "expl",
+          "effect": [
+            {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 7,
+              "enabled": true
+            },
+            {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 7,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "state": "wrecked",
+          "effect": {
+            "type": "propellerVisibility",
+            "index": 7,
+            "enabled": false
+          }
+        }
+      ]
+    },
+    {
       "dm": "oil1_dm",
       "state": [
         {

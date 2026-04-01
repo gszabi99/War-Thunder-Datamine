@@ -384,7 +384,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateWeaponsAndBulletsLists() {
     this.premiumModsList = []
-    foreach (mod in this.air.modifications)
+    foreach (mod in this.air.getModifications())
       if ((!this.researchMode || canResearchMod(this.air, mod))
           && (isModClassPremium(mod)
               || (mod.modClass == "" && getModificationBulletsGroup(mod.name) == "")
@@ -1296,9 +1296,9 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getResearchedModsArray(tiersCount) {
     local tiersArray = []
-    if ("modifications" in this.air && tiersCount > 0) {
+    if (tiersCount > 0) {
       tiersArray = array(tiersCount, null)
-      foreach (mod in this.air.modifications) {
+      foreach (mod in this.air.getModifications()) {
         if (!isModificationInTree(this.air, mod))
           continue
 
@@ -1354,10 +1354,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getExpendableModificationsArray(unit) {
-    if (!("modifications" in unit))
-      return []
-
-    return unit.modifications.filter(isModClassExpendable)
+    return unit.getModifications().filter(isModClassExpendable)
   }
 
   function getModifiedSoldierWeaponsArray(weaponsArray, currSoldiertWeapon, slotIdx, index, presetSpecialWeapons = {}) {
@@ -2253,7 +2250,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventMarkSeenNightBattle(_) {
     let unit = this.air
-    let modificationsWithNVDSighst = unit.modifications
+    let modificationsWithNVDSighst = unit.getModifications()
       .filter(@(v) unit.getNVDSights(v.name).len() > 0)
     if (modificationsWithNVDSighst.len() == 0)
       return

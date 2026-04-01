@@ -368,6 +368,92 @@
         "type": "weapon"
       },
       {
+        "name": "HAWK",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "AN/MPQ-50",
+          "AN/MPQ-61"
+        ]
+      },
+      {
+        "name": "HAWK LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "AN/MPQ-50",
+          "AN/MPQ-61"
+        ],
+        "threatFlag": "RWR SARH LAUNCH"
+      },
+      {
+        "name": "S-300",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "5N63S",
+          "5N64S"
+        ]
+      },
+      {
+        "name": "S-300 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "5N63S",
+          "5N64S"
+        ],
+        "threatFlag": "RWR SARH LAUNCH"
+      },
+      {
+        "name": "PATRIOT",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "AN/MPQ-53"
+      },
+      {
+        "name": "PATRIOT LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "AN/MPQ-53",
+        "threatFlag": "RWR SARH LAUNCH"
+      },
+      {
+        "name": "BUK",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "9S18",
+          "9S35"
+        ]
+      },
+      {
+        "name": "BUK LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "9S18",
+          "9S35"
+        ],
+        "threatFlag": "RWR SARH LAUNCH"
+      },
+      {
         "name": "Roland",
         "detectLaunch": true,
         "search": true,
@@ -528,8 +614,8 @@
         "type": "Type 81 TA"
       },
       {
-        "name": "Spider",
-        "type": "SPIDER AIO TA"
+        "name": "Spyder",
+        "type": "SPYDER AIO TA"
       },
       {
         "name": "IRIS",
@@ -616,6 +702,27 @@
         "group": "ARH"
       },
       {
+        "text": "hud/rwr_threat_hawk",
+        "group": [
+          "HAWK",
+          "HAWK LAUNCH"
+        ]
+      },
+      {
+        "text": "PRT",
+        "group": [
+          "PATRIOT",
+          "PATRIOT LAUNCH"
+        ]
+      },
+      {
+        "text": "S300",
+        "group": [
+          "S-300",
+          "S-300 LAUNCH"
+        ]
+      },
+      {
         "text": "RLD",
         "group": [
           "Roland",
@@ -669,7 +776,7 @@
       },
       {
         "text": "SPR",
-        "group": "Spider"
+        "group": "Spyder"
       },
       {
         "text": "IRS",
@@ -681,7 +788,11 @@
       },
       {
         "text": "BUK",
-        "group": "BUK M3"
+        "group": [
+          "BUK",
+          "BUK LAUNCH",
+          "BUK M3"
+        ]
       },
       {
         "text": "HQ11",

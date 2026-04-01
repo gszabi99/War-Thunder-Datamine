@@ -52,7 +52,7 @@ function hasAvailableModTutorial(unit, mod) {
 }
 
 function needShowUnseenModTutorialForUnit(unit) {
-  return unit.modifications
+  return unit.getModifications()
     .findvalue(@(mod) hasAvailableModTutorial(unit, mod) && !isSeenTutorial(mod?.tutorialMission))
 }
 

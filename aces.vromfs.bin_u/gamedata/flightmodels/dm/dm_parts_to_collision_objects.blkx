@@ -181,6 +181,18 @@
       "dm": "engine6_dm"
     },
     {
+      "fm": "engine7",
+      "elementType": "engine",
+      "elementIndex": 6,
+      "dm": "engine7_dm"
+    },
+    {
+      "fm": "engine8",
+      "elementType": "engine",
+      "elementIndex": 7,
+      "dm": "engine8_dm"
+    },
+    {
       "fm": "gear_l",
       "elementType": "gear",
       "elementIndex": 0,
@@ -219,6 +231,25 @@
       "enableSceneCollision": false
     },
     {
+      "fm": "gear_l",
+      "elementType": "gear",
+      "elementIndex": 1,
+      "dm": [
+        "gear_2l_dm",
+        "gear%d_2l_dm",
+        "wheel_2l_dm",
+        "wheel%d_2l_dm",
+        "_Clip2LGear",
+        "_Clip2LGear_%02d"
+      ],
+      "impulseVelLimits": [
+        2.0,
+        6.0
+      ],
+      "dmCut": "gear_2l_dm",
+      "enableSceneCollision": false
+    },
+    {
       "fm": "gear_r",
       "elementType": "gear",
       "elementIndex": 2,
@@ -254,6 +285,25 @@
         6.0
       ],
       "dmCut": "gear_1r_dm",
+      "enableSceneCollision": false
+    },
+    {
+      "fm": "gear_r",
+      "elementType": "gear",
+      "elementIndex": 3,
+      "dm": [
+        "gear_2r_dm",
+        "gear%d_2r_dm",
+        "wheel_2r_dm",
+        "wheel%d_2r_dm",
+        "_Clip2RGear",
+        "_Clip2RGear_%02d"
+      ],
+      "impulseVelLimits": [
+        2.0,
+        6.0
+      ],
+      "dmCut": "gear_2r_dm",
       "enableSceneCollision": false
     },
     {
@@ -392,6 +442,34 @@
         "_Clip_prop_6_%02d"
       ],
       "dmCut": "prop02_6_dm",
+      "impulseVelLimits": [
+        1.0,
+        3.0
+      ]
+    },
+    {
+      "fm": "propeller7",
+      "elementType": "propeller",
+      "elementIndex": 6,
+      "dm": [
+        "prop02_7_dm",
+        "_Clip_prop_7_%02d"
+      ],
+      "dmCut": "prop02_7_dm",
+      "impulseVelLimits": [
+        1.0,
+        3.0
+      ]
+    },
+    {
+      "fm": "propeller8",
+      "elementType": "propeller",
+      "elementIndex": 7,
+      "dm": [
+        "prop02_8_dm",
+        "_Clip_prop_8_%02d"
+      ],
+      "dmCut": "prop02_8_dm",
       "impulseVelLimits": [
         1.0,
         3.0

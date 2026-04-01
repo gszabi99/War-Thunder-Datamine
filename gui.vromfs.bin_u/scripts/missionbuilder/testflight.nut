@@ -253,13 +253,17 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
         [USEROPT_COUNTERMEASURES_SERIES, "spinner"],
       )
 
-    if (this.unit?.isShipOrBoat() || isAir) {
+    if (this.unit?.isShipOrBoat())
       this.options.append(
         [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
         [USEROPT_ROCKET_FUSE_DIST, "spinner"],
         [USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
       )
-    }
+    else if (isAir)
+      this.options.append(
+        [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
+        [USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
+      )
 
     let radarModesCount = get_radar_mode_names(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get())).len()
 

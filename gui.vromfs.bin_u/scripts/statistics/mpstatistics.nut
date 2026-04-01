@@ -361,7 +361,8 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       if (!this.isTeamplay)
         this.sortTable(tbl)
 
-      let data = buildMpTable(tbl, markupData, tblData, 1, {canHasBonusIcon = true})
+      let data = buildMpTable(tbl, markupData, tblData, 1,
+        { canHasBonusIcon = true, hasCustomTooltip = true })
       this.guiScene.replaceContentFromText(objTbl, data, data.len(), this)
     }
   }
@@ -451,6 +452,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         numberOfWinningPlaces = this.numberOfWinningPlaces
         roomEventName = this.getRoomEventEconomicName()
         isDebriefing = !!this?.debriefingResult
+        hasCustomTooltip = true
       })
       updateTeamCssLabel(objTbl, this.getLocalTeam())
 

@@ -94,6 +94,13 @@ enumsAddTypes(g_mission_type, {
     filterGroup = MISSION_GROUP.RACE
   }
 
+  A_NUKE = {  
+    reMisName = regexp2(@"nuclear_escalation")
+    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.ZONE_BOMBING
+    objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.ZONE_BOMBING
+    filterGroup = MISSION_GROUP.GROUND_STRIKE
+  }
+
   H_GS = {  
     reMisName = regexp2(@"_HS(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI

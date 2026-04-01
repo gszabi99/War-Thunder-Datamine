@@ -2148,13 +2148,32 @@ function mkCommanderPanoramicSightDesc(_partType, _params, commonData) {
   return { desc }
 }
 
-let getFireControlSystems = @(unitSensorsList, key, node) unitSensorsList
-  .filter(@(blk) blk.getBlockName() == "fireDirecting" && (blk % key).findvalue(@(v) v == node) != null)
+function getDmPartsFromLimits(fcBlk) {
+  let res = []
+  for (local i = 0; i < fcBlk.blockCount(); i++) {
+    let subBlk = fcBlk.getBlock(i)
+    let dmPartFromLimits = subBlk.getBlockName() == "dmPartLimits" ? subBlk?.dmPart : null
+    if (dmPartFromLimits != null)
+      res.append(dmPartFromLimits)
+  }
+  return res
+}
 
+let getFireControlSystems = @(unitSensorsList, key, node) unitSensorsList
+  .filter(function(blk) {
+    if (blk.getBlockName() != "fireDirecting")
+      return false
+    if ((blk % key).findvalue(@(v) v == node) != null)
+      return true
+    if (key == "dmPart")
+      return getDmPartsFromLimits(blk).findvalue(@(v) v == node) != null
+    return false
+  })
+
+let getAllFireControlParts = @(fcBlk) (fcBlk % "dmPart").extend(getDmPartsFromLimits(fcBlk))
 let getNumFireControlNodes = @(unitSensorsList, mainNode, nodeId)
   getFireControlSystems(unitSensorsList, "dmPartMain", mainNode)
-    .map(@(fcBlk) fcBlk % "dmPart")
-    .map(@(nodes) nodes.filter(@(node) node.indexof(nodeId) == 0).len())
+    .map(@(fcBlk) getAllFireControlParts(fcBlk).filter(@(node) node.indexof(nodeId) == 0).len())
     .reduce(@(sum, num) sum + num, 0)
 
 function getFireControlTriggerGroups(fcBlk) {

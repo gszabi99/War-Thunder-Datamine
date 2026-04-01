@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, HudColor } = require("%rGui/airState.nut")
+let { IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, TertiaryMask, HudColor } = require("%rGui/airState.nut")
 let { paramsTable, horSpeed, vertSpeed, rocketAim, taTarget } = require("%rGui/airHudElems.nut")
 let compass = require("%rGui/compass.nut")
 let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("%rGui/style/airHudStyle.nut")
@@ -23,7 +23,7 @@ let pilotHdpx = @(px) px * IlsPosSize[3] / 1024
 
 let mfdPilotParamsTablePos = Watched([0, 300])
 
-let mfdPilotParamsTable = paramsTable(IlsMask, SecondaryMask,
+let mfdPilotParamsTable = paramsTable(IlsMask, SecondaryMask, TertiaryMask,
   800, 50,
   mfdPilotParamsTablePos,
   10,  false)

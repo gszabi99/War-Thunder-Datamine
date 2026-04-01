@@ -49,7 +49,8 @@ function fillBulletHint(obj, unitName, bulletName, bulletType) {
 
   let ammoType = bulletName != "" ? bulletName : bulletType
   let bulletSetName = getBulletSetNameByBulletName(unit, bulletName)
-  let bulletsSet = getBulletsSetData(unit, bulletSetName ?? ammoType)
+  let modName = bulletSetName ?? ammoType
+  let bulletsSet = getBulletsSetData(unit, modName)
   if (bulletsSet == null) {
     obj.show(false)
     return
@@ -62,8 +63,8 @@ function fillBulletHint(obj, unitName, bulletName, bulletType) {
     let bSet = bulletsSet.__merge({ bullets = [bulletType] },
       bulletsSet.bulletDataByType?[bulletType] ?? {})
 
-    let searchName = getBulletsSearchName(unit, bulletName)
-    let useDefaultBullet = searchName != bulletName
+    let searchName = getBulletsSearchName(unit, modName)
+    let useDefaultBullet = searchName != modName
     let bulletParameters = calculate_tank_bullet_parameters(unit.name,
       useDefaultBullet ? bulletsSet.weaponBlkName : getModificationBulletsEffect(searchName),
       useDefaultBullet, false)

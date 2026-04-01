@@ -394,12 +394,13 @@ function getWeaponShortTypeFromWpName(wpName, unit = null) {
 }
 
 function getDefaultBulletName(unit) {
-  if (!("modifications" in unit))
+  if (unit == null)
     return ""
 
   let ignoreGroups = [null, ""]
-  for (local modifNo = 0; modifNo < unit.modifications.len(); modifNo++) {
-    let modif = unit.modifications[modifNo]
+  let modifications = unit.getModifications()
+  for (local modifNo = 0; modifNo < modifications.len(); modifNo++) {
+    let modif = modifications[modifNo]
     let modifName = modif.name;
 
     let groupName = getModificationBulletsGroup(modifName);
@@ -467,7 +468,7 @@ function getFullItemCostText(unit, item, params = null) {
     if (scoreCostText.len())
       res.append(scoreCostText)
   }
-  return ", ".join(res)
+  return ", ".join(res, true)
 }
 
 function getWeaponInfoMarkup(unit, weaponInfoData) {

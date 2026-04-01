@@ -374,7 +374,7 @@ function updateTiersActivity(tiers, weapons, weaponsSlotCount) {
 }
 
 function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = null) {
-  let modifications = unit.modifications
+  let modifications = unit.getModifications()
   let pType = preset?.presetType ?? getTypeByPurpose(weaponry)
   let isFavorite = favoriteArr.contains(preset.name)
   let isCustom = isCustomPreset(preset)

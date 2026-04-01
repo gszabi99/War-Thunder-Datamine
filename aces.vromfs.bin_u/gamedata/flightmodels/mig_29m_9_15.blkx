@@ -2915,6 +2915,10 @@
               "Arabel",
               "Type 81 TA",
               "AN/MPQ-64",
+              "AN/MPQ-50",
+              "AN/MPQ-61",
+              "9S35",
+              "5N63S",
               "PGZ-625 TA",
               "TRML-4D",
               "Giraffe AMB",
@@ -2940,6 +2944,28 @@
               "US R21G M1",
               "Type 208A"
             ]
+          },
+          {
+            "name": "HAWK",
+            "search": true,
+            "track": true,
+            "launch": true,
+            "detectLaunch": true,
+            "priority": 0,
+            "type": [
+              "AN/MPQ-50",
+              "AN/MPQ-61",
+              "9S35"
+            ]
+          },
+          {
+            "name": "PATRIOT",
+            "search": true,
+            "track": true,
+            "launch": true,
+            "detectLaunch": true,
+            "priority": 0,
+            "type": "AN/MPQ-53"
           }
         ]
       },
@@ -2957,10 +2983,12 @@
             "group": "AI PD"
           },
           {
-            "text": "hud/rwr_threat_nike_hercules"
+            "text": "hud/rwr_threat_nike_hercules",
+            "group": "PATRIOT"
           },
           {
-            "text": "hud/rwr_threat_hawk"
+            "text": "hud/rwr_threat_hawk",
+            "group": "HAWK"
           },
           {
             "text": "hud/rwr_threat_air_defence",

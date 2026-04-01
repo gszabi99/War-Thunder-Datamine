@@ -35,7 +35,7 @@ function enable_current_modifications(unitName) {
   db[unitName] <- DataBlock()
 
   let air = getAircraftByName(unitName)
-  foreach (mod in air.modifications)
+  foreach (mod in air.getModifications())
     db[unitName][mod.name] <- shopIsModificationEnabled(unitName, mod.name)
 
   return shop_enable_modifications(db)

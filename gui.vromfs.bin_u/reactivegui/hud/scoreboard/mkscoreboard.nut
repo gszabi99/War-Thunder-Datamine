@@ -10,6 +10,7 @@ let deathmatch = require("%rGui/hud/scoreboard/deathmatch.ui.nut")
 let po2OpMission = require("%rGui/hud/scoreboard/po2OpMission.ui.nut")
 let convoyHunting = require("%rGui/hud/scoreboard/convoyHunting.nut")
 let mkBattleMissionHud = require("%rGui/hud/scoreboard/battleMissionHud/mkBattleMissionHud.ui.nut")
+let mkNuclearEscalationHud = require("%rGui/hud/scoreboard/nuclearEscalation.ui.nut")
 let { isInSpectatorMode, isInRespawnWnd } = require("%rGui/respawnWndState.nut")
 let { fontSizeMultiplier } = require("%rGui/style/fontsState.nut")
 let extraction = require("%rGui/hud/scoreboard/extraction.nut")
@@ -40,6 +41,8 @@ function getScoreBoardChildren() {
     return mkBattleMissionHud()
   else if (customHUD.get() == "infantryMission")
     return mkInfantry()
+  else if (customHUD.get() == "nuclearEscalation")
+    return mkNuclearEscalationHud()
 
   let customHudComp = customHudNameToComp?[customHUD.get()]
   if (customHudComp)

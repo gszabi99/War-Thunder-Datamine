@@ -186,6 +186,7 @@ dmViewer = {
   xrayRemap = {}
   ediff = null
   difficulty = null
+  filtersWidget = null
 
   modes = {
     [DM_VIEWER_NONE]  = "none",
@@ -495,7 +496,7 @@ dmViewer = {
       obj.show(isShowOption)
       if (isShowOption) {
         if (obj.childrenCount() == 0) {
-          openPopupFilter({
+          let popupFilterHandler = openPopupFilter({
             scene = obj
             btnTitle = loc("xray_part_filter")
             btnName = ""
@@ -503,13 +504,18 @@ dmViewer = {
             popupAlign = "top"
             onChangeFn = applyXrayFilter
             filterTypesFn = getXrayFilterList
+            closeAsPopup = false
           })
+          this.filtersWidget = popupFilterHandler.weakref()
         }
         else
           broadcastEvent("UpdateFiltersCount") 
         set_xray_parts_filter(xrayFilterOption.value)
       } else if (this.isDmModeValidForXrayView() && hasLoadedModel())
         set_xray_parts_filter(0)
+
+      if (!isShowOption && this.filtersWidget?.popupFilterWnd.isValid())
+        this.filtersWidget.popupFilterWnd.close()
     }
 
     obj = handler.scene.findObject("dmviewer_show_extended_hints")

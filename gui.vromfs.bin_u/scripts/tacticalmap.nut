@@ -1,6 +1,8 @@
 from "gameplayBinding" import isInFlight, closeIngameGui
 from "guiRespawn" import isRespawnScreen
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
+
 let { get_player_unit_name, get_cur_unit_weapon_preset } = require("unit")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -12,6 +14,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { get_game_type, get_cur_game_mode_name } = require("mission")
 let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active,
   is_aircraft_player, set_tactical_screen_player, get_player_group, get_current_mission_desc,
+  is_allow_to_choose_hud_icon_preset,
   ERT_TACTICAL_CONTROL, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -19,7 +22,8 @@ let { setMissionEnviroment, getLevelMapBackgroundColors } = require("%scripts/mi
 let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType,
-  setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet  } = require("guiTacticalMap")
+  setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet,
+  setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset } = require("guiTacticalMap")
 let { hasSightStabilization } = require("vehicleModel")
 let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
@@ -139,6 +143,23 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
         let buttonImg = setHudTypeObj.findObject("hud_type_img")
         buttonImg["background-image"] = isAircraft ? "#ui/gameuiskin#objective_tank.svg" : "#ui/gameuiskin#objective_fighter.svg"
         showObjById("hint_btn_set_hud_type", !showConsoleButtons.get(), setHudTypeObj)
+      }
+
+      let presets = getHudIconsPresetsList()
+      let isShowIconPresets = is_allow_to_choose_hud_icon_preset() && presets != null && presets.len() > 1
+      let iconPresetBox = showObjById("hud_icon_preset_box", isShowIconPresets, this.scene)
+      if (isShowIconPresets) {
+        let comboBox = iconPresetBox.findObject("hud_icon_preset_select")
+        let curPresetname = getCurHudIconsPreset()
+        local curPresetIdx = 0
+        let locPresets = presets.map(@(p) loc($"iconPreset/{p}"))
+        for (local i = 0; i < presets.len(); ++i)
+          if (presets[i] == curPresetname) {
+            curPresetIdx = i
+            break
+          }
+        let markup = create_option_combobox("hud_icon_preset_select", locPresets, curPresetIdx, null, false)
+        this.guiScene.replaceContentFromText(comboBox, markup, markup.len(), this)
       }
 
       setAllowMoveCenter(false)
@@ -464,6 +485,13 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     let isSwitchToTankHud = curHudType == HUD_TYPE_AIRPLANE
     setForcedHudType(isSwitchToTankHud ? HUD_TYPE_TANK : HUD_TYPE_AIRPLANE)
     obj.findObject("hud_type_img")["background-image"] = isSwitchToTankHud  ? "#ui/gameuiskin#objective_fighter.svg" : "#ui/gameuiskin#objective_tank.svg"
+  }
+
+  function onHudIconPresetSelect(obj) {
+    let idx = obj.getValue()
+    let presets = getHudIconsPresetsList()
+    if (idx >= 0 && idx < presets.len())
+      setHudIconsPreset(presets[idx])
   }
 
   function onSetPointOfInterest(obj) {

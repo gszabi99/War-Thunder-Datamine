@@ -288,7 +288,8 @@
             "fsm": "track",
             "active": true
           }
-        }
+        },
+        "resetTrackMode": {}
       },
       "transitions": {
         "init": {
@@ -422,6 +423,7 @@
           ],
           "stateTo": "standby",
           "actions": {
+            "resetTrackMode": {},
             "setStandbyMode": {},
             "setFsmActive": {
               "fsm": "track",

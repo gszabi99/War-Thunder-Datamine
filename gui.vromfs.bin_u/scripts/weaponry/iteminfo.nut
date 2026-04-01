@@ -302,7 +302,8 @@ function getDiscountPath(unit, item, discountType) {
 
 function getAllModsCost(unit, open = false) {
   local modsCost = Cost()
-  foreach (modification in (unit?.modifications ?? {})) {
+  let modifications = unit?.getModifications() ?? []
+  foreach (modification in modifications) {
     let statusTbl = getItemStatusTbl(unit, modification)
     if (statusTbl.maxAmount == statusTbl.amount)
       continue

@@ -113,13 +113,13 @@ function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
-  if (isAllowPopups && hasFeature("Invites") && !isGuestLogin.get() && !guiScene.hasModalObject())
+  if (isAllowPopups && hasFeature("Invites") && !isGuestLogin.get())
     handler.doWhenActiveOnce("checkShowViralAcquisition")
 
-  if (isAllowPopups && !guiScene.hasModalObject())
+  if (isAllowPopups)
     handler.doWhenActive(@() checkShowEmailRegistration())
 
-  if (isAfterLogin && isAllowPopups && !guiScene.hasModalObject())
+  if (isAfterLogin && isAllowPopups)
     handler.doWhenActive(@() checkShowGuestEmailRegistrationAfterLogin())
 
   if (handler.unitInfoPanel == null) {

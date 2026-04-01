@@ -14,13 +14,14 @@
     0.0,
     1.0
   ],
-  "timeToFire": 5.0,
+  "timeToFire": 10.0,
   "fireFx": [
     "fire_ground_black_fx",
     "ground_model_fire"
   ],
   "subclass": "lightVehicle",
   "expClass": "exp_vehicle",
+  "onRadarAs": "wheeled",
   "moveType": "vehicle",
   "maxFwdSpeed": 60.0,
   "maxRevSpeed": 30.0,
@@ -47,15 +48,19 @@
       "hp": 480.0,
       "armorThickness": 2.0,
       "engine_dm": {
-        "armorThickness": 1.0,
+        "armorThickness": 4.0,
         "hp": 30.0,
-        "explosionDamageMult": 3.0
+        "shatterDamageMult": 0.5,
+        "explosionDamageMult": 1.0,
+        "pressureDamageMult": 0.0
       },
       "body_dm": {
         "armorThickness": 2.0,
-        "hp": 60.0,
-        "explosionDamageMult": 3.0,
-        "napalmDamageMult": 1.0
+        "hp": 200.0,
+        "shatterDamageMult": 0.5,
+        "explosionDamageMult": 1.0,
+        "napalmDamageMult": 2.0,
+        "pressureDamageMult": 0.0
       }
     }
   },
@@ -72,9 +77,16 @@
       },
       {
         "name": "engine_dm",
-        "onHit": {
-          "smoke": 0.1
-        },
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "smoke": 0.1
+          },
+          {
+            "damageType": "shatter",
+            "smoke": 0.1
+          }
+        ],
         "onKill": {
           "body_dm": 1.0
         }
@@ -85,10 +97,10 @@
     "expl": {
       "node": "body",
       "partNo": 0,
-      "timeToExplode": 0.5,
-      "preEffectName": "",
-      "postEffectName": "smoke_ground_black_fx",
-      "explosionEffectName": "explosion_midair_medium",
+      "timeToExplode": 2.0,
+      "preEffectName": "fire_ground_black_fx",
+      "postEffectName": "tank_fire_big",
+      "explosionEffectName": "explosion_barrel_medium",
       "timeForPostEffect": 60.0,
       "preScale": 1.0,
       "postScale": 1.0

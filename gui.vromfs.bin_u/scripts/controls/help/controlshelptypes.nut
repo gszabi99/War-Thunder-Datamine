@@ -639,6 +639,7 @@ enums.addTypes(result, {
     }
   }
   RWR_AIRCRAFT = aircraftControls.RWR_AIRCRAFT
+  ARM_AIRCRAFT = aircraftControls.ARM_AIRCRAFT
   RWR_HELICOPTER = aircraftControls.RWR_AIRCRAFT.__merge({
     checkFeature = unitTypes.HELICOPTER.isAvailable
     pageUnitTypeBit = unitTypes.HELICOPTER.bit

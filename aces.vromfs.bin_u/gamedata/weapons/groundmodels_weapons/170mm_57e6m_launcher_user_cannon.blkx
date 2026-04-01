@@ -135,7 +135,6 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
-      "shellCollision": true,
       "dragCx": 0.01,
       "hasProximityFuse": true,
       "hitPowerMult": 400.0,
@@ -176,6 +175,9 @@
         0.0,
         0.0
       ],
+      "overallRadius": 0.085,
+      "overallLength": 3.25,
+      "shellCollision": true,
       "guidance": {
         "controlRangeMax": 20000.0,
         "beaconBand": 5,
@@ -247,73 +249,6 @@
       },
       "pressureDamage": {
         "damageType": "pressure"
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 50.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": [
-            {
-              "shellState": "inFlight",
-              "expl": 1.0
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.45,
-              "break": 0.5,
-              "damage": 3.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.3,
-              "break": 0.2,
-              "damage": 30.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "explosion",
-              "expl": 0.45,
-              "fire": 0.45,
-              "break": 0.1,
-              "damage": 50.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.4,
-              "break": 0.1,
-              "damage": 100.0,
-              "fHitCritical": true
-            }
-          ],
-          "onKill": [
-            {
-              "shellState": "inFlight",
-              "destruction": 1.0
-            },
-            {
-              "shellState": "onUnit",
-              "expl": 0.05,
-              "fire": 0.05,
-              "break": 0.9,
-              "fHitCritical": true
-            }
-          ]
-        }
       },
       "proximityFuse": {
         "radius": 9.0,
@@ -840,6 +775,63 @@
           "tracer": "tracers_rocket_med_red_sparks",
           "trail": "noTrail"
         }
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 50.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": [
+            {
+              "shellState": "inFlight",
+              "expl": 1.0
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "generic",
+              "expl": 0.05,
+              "damage": 3.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "generic",
+              "expl": 1.0,
+              "damage": 30.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "explosion",
+              "expl": 1.0,
+              "damage": 50.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "cumulative",
+              "expl": 1.0,
+              "damage": 100.0,
+              "fHitCritical": true
+            }
+          ],
+          "onKill": [
+            {
+              "shellState": "inFlight",
+              "destruction": 1.0
+            },
+            {
+              "shellState": "onUnit",
+              "expl": 1.0,
+              "fHitCritical": true
+            }
+          ]
+        }
       }
     }
   },
@@ -973,6 +965,8 @@
           0.0,
           0.0
         ],
+        "overallRadius": 0.085,
+        "overallLength": 3.25,
         "shellCollision": true,
         "guidance": {
           "controlRangeMax": 20000.0,
@@ -1765,6 +1759,8 @@
           0.0,
           0.0
         ],
+        "overallRadius": 0.085,
+        "overallLength": 3.25,
         "shellCollision": true,
         "guidance": {
           "controlRangeMax": 40000.0,
@@ -2478,6 +2474,8 @@
           0.0,
           0.0
         ],
+        "overallRadius": 0.085,
+        "overallLength": 3.25,
         "shellCollision": true,
         "guidance": {
           "beaconBand": 5,

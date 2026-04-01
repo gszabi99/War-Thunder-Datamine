@@ -319,6 +319,7 @@
   "canEveryoneRepairAnyAlly": true,
   "rendinstExtraMaxCnt": 131072,
   "rendinstExtraSubstFaceThres": 65536,
+  "gmEffectsCutoffDist": 5000.0,
   "aircraftRelSpeedToWingWaveAmplitude": 0.0,
   "maxTankInactiveTime": 10.0,
   "syncGunRocketLaunch": true,
@@ -669,6 +670,420 @@
         0
       ],
       "startTime": 0.0
+    },
+    "5mmInfRed": {
+      "halfSize": 1.7,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 1.8,
+      "radius": 0.02,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        15,
+        15,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        0,
+        230,
+        255
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "5mmInfGreen": {
+      "halfSize": 1.7,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 1.8,
+      "radius": 0.02,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        102,
+        255,
+        102,
+        220
+      ],
+      "color2": [
+        0,
+        255,
+        0,
+        220
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "5mmInfYellow": {
+      "halfSize": 1.7,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 1.8,
+      "radius": 0.02,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "color2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "7mmInfRed": {
+      "halfSize": 2.1,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 2.2,
+      "radius": 0.02,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        15,
+        15,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        0,
+        230,
+        255
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "7mmInfGreen": {
+      "halfSize": 2.1,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 2.2,
+      "radius": 0.02,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        102,
+        255,
+        102,
+        220
+      ],
+      "color2": [
+        0,
+        255,
+        0,
+        220
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "7mmInfYellow": {
+      "halfSize": 2.1,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 2.2,
+      "radius": 0.02,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "color2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "12mmInfRed": {
+      "halfSize": 2.8,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 2.5,
+      "radius": 0.02,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        15,
+        15,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        0,
+        230,
+        255
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "12mmInfGreen": {
+      "halfSize": 2.8,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 2.5,
+      "radius": 0.02,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        102,
+        255,
+        102,
+        220
+      ],
+      "color2": [
+        0,
+        255,
+        0,
+        220
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "12mmInfYellow": {
+      "halfSize": 2.8,
+      "distScaleStart": 2.0,
+      "distScaleEnd": 10.0,
+      "distScale": 2.5,
+      "radius": 0.02,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.9,
+      "amplifyScale": 1.0,
+      "color1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "color2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startColor1": [
+        60,
+        248,
+        255,
+        120
+      ],
+      "startColor2": [
+        50,
+        248,
+        255,
+        70
+      ],
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.08,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.08,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
     },
     "7mmRed": {
       "halfSize": 2.5,
@@ -13551,9 +13966,9 @@
     "burnRadiusMultHV": 1.7
   },
   "gmTickThrottle": {
-    "minUnitCnt": 128,
+    "minUnitCnt": 192,
     "minDist": 5000.0,
-    "maxDt": 0.1,
+    "maxDt": 0.2,
     "screenVelToDtK": 0.0005
   },
   "gameLimits": {
@@ -13833,7 +14248,8 @@
     "sightLineDistMax": 22000.0,
     "sightLineDistHumanDroneMax": 160.0,
     "applyViewDistKInSight": false,
-    "maxDistTraceableFromHero": 10000.0
+    "maxDistTraceableFromHero": 10000.0,
+    "limitTraces": 256
   },
   "antialiasing": {
     "fxaaQuality": 29,
@@ -23222,6 +23638,7 @@
         "universal_1line_3000_a_mesh",
         "universal_1line_3000_a_mesh_universal",
         "universal_1line_3000_a_mesh_snow",
+        "universal_1line_2000_a_mesh_universal",
         "watch_tower_e",
         "hangar_field_tent",
         "airfield_barrack_a",

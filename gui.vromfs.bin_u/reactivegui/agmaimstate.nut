@@ -8,6 +8,14 @@ let agmAimState = {
   TrackerSize = Watched(0.0)
   TrackerVisible = Watched(false)
   TrackerAngle = Watched(0.0)
+  TrackedTargetName = Watched("")
+  IsTrackerLoosingIcon = Watched(false)
+
+  IsAntiRadiation = Watched(false)
+  SightX = Watched(0.0)
+  SightY = Watched(0.0)
+  SightSize = Watched(0.0)
+  SightVisible = Watched(false)
 
   GuidanceLockState = Watched(-1)
   GuidanceLockStateBlinked = Watched(-1)

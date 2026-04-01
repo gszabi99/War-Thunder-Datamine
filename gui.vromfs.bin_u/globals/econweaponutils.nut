@@ -1,6 +1,7 @@
 from "math" import min
 let { logerr } = require("dagor.debug")
 let { get_wpcost_blk, get_warpoints_blk } = require("blkGetters")
+let { interpolateArray } = require("%sqstd/math.nut")
 
 function getPresetRewardMul(unitName, weaponDamage, shouldUsePremMul = true) {
   local presetRewardMul = 1.0
@@ -8,6 +9,17 @@ function getPresetRewardMul(unitName, weaponDamage, shouldUsePremMul = true) {
     return presetRewardMul
 
   let mulsBlk = get_warpoints_blk()?.BombingRewardMultipliers
+
+  if (weaponDamage >= 200000) {
+    let piecewiseLinearTable = mulsBlk?.piecewiseLinearTable
+      ? mulsBlk.piecewiseLinearTable % "v"
+      : []
+    if (piecewiseLinearTable.len() == 0)
+      logerr("ERROR. BombingRewardMultipliers.piecewiseLinearTable is empty!")
+    else
+      return interpolateArray(piecewiseLinearTable, weaponDamage)
+  }
+
   let presetDmgMin = mulsBlk?.presetDmgMin ?? 0.0
   let presetDmgMax = mulsBlk?.presetDmgMax ?? 1.0
   let bombingRewardModifier = mulsBlk?.bombingRewardModifier ?? 1.0

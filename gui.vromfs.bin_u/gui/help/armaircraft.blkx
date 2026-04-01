@@ -1,0 +1,113 @@
+{
+  "tdiv": {
+    "id": "help_background_image",
+    "size": "pw, ph",
+    "max-height": "pw/1760*900",
+    "background-repeat": "expand",
+    "background-color": "@white",
+    "background-image": "#ui/images/help/country_us_fighter_anti_radioloc_missile.avif?P1",
+    "tdiv": {
+      "size": "pw, ph",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "relative",
+      "controlsHelpPoint": [
+        {
+          "id": "arm_target_indicator_point",
+          "pos": "845/1760pw, 415/900ph",
+          "position": "absolute"
+        },
+        {
+          "id": "arm_rwr_indicator_point",
+          "pos": "115/1760pw, 330/900ph",
+          "position": "absolute"
+        }
+      ],
+      "controlsHelpTextArea": [
+        {
+          "id": "arm_target_indicator_Label",
+          "max-width": "250/1760pw",
+          "pos": "950/1760pw, 350/900ph",
+          "position": "absolute",
+          "text": "#controls/help/arm/target_indicator_label"
+        },
+        {
+          "id": "arm_rwr_indicator_Label",
+          "max-width": "250/1760pw",
+          "pos": "200/1760pw, 200/900ph",
+          "position": "absolute",
+          "text": "#controls/help/arm/rwr_indicator_label"
+        },
+        {
+          "id": "arm_indicators_description_Label",
+          "width": "250/1760pw",
+          "pos": "1735/1760pw-w, 25/900ph",
+          "position": "absolute",
+          "text": "#controls/help/arm/indicators_description_label"
+        }
+      ],
+      "tdiv": {
+        "pos": "25/1760pw, ph-h-25/900ph",
+        "position": "absolute",
+        "flow": "vertical",
+        "max-width": "380/1760pw",
+        "width": "pw",
+        "controlsHelpTextArea": {
+          "width": "pw",
+          "text": "#controls/help/arm/arm_controls_header_label"
+        },
+        "controlsHelpFrame": [
+          {
+            "width": "pw",
+            "keyDiv": {
+              "blockFlow": "yes",
+              "value": "{{ID_AGM_LOCK}}"
+            },
+            "textareaNoTab": {
+              "text": "#hotkeys/ID_AGM_LOCK"
+            }
+          },
+          {
+            "width": "pw",
+            "keyDiv": {
+              "blockFlow": "yes",
+              "value": "{{ID_SWITCH_SHOOTING_CYCLE_SECONDARY}}"
+            },
+            "textareaNoTab": {
+              "text": "#hotkeys/ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+            }
+          },
+          {
+            "width": "pw",
+            "keyDiv": {
+              "blockFlow": "yes",
+              "value": "{{ID_OPEN_VISUAL_WEAPON_SELECTOR}}"
+            },
+            "textareaNoTab": {
+              "text": "#hotkeys/ID_OPEN_VISUAL_WEAPON_SELECTOR"
+            }
+          },
+          {
+            "width": "pw",
+            "keyDiv": {
+              "blockFlow": "yes",
+              "value": "{{ID_AGM}}"
+            },
+            "textareaNoTab": {
+              "text": "#hotkeys/ID_AGM"
+            }
+          },
+          {
+            "width": "pw",
+            "keyDiv": {
+              "blockFlow": "yes",
+              "value": "{{ID_FIRE_SECONDARY}}"
+            },
+            "textareaNoTab": {
+              "text": "#hotkeys/ID_FIRE_SECONDARY"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

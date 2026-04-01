@@ -158,6 +158,8 @@ local Unit = class {
    masterUnit = null
    bulletsIconParams = null
 
+   isWeaponsInited = false
+
   
   constructor(unitTbl) {
     
@@ -165,7 +167,7 @@ local Unit = class {
       if (key in this)
         this[key] = value
 
-    foreach (key in ["tags", "weapons", "modifications", "skins", "weaponUpgrades", "needBuyToOpenNextInTier"])
+    foreach (key in ["tags", "weapons", "skins", "weaponUpgrades", "needBuyToOpenNextInTier"])
       if (!isArray(this[key]))
         this[key] = []
     foreach (key in ["shop", "info", "primaryBullets", "secondaryBullets", "bulletsSets", "skinsBlocks", "weaponsContainers"])
@@ -224,15 +226,6 @@ local Unit = class {
     foreach (weapon in this.weapons)
       weapon.type <- weaponsItem.weapon
 
-    if (uWpCost?.weapons != null) {
-      if (this.hasWeaponSlots)
-        initUnitWeaponsContainers(this.weaponsContainers, uWpCost.weapons)
-      initUnitWeapons(this, this.weapons, uWpCost.weapons) 
-      initWeaponryUpgrades(this, uWpCost)
-    }
-
-    let errorsTextArray = initUnitModifications(this.modifications,
-      uWpCost?.modifications ?? getFullUnitBlk(this.name)?.modifications, this.esUnitType)
     if (uWpCost?.spare != null) {
       let spareBlk = get_modifications_blk()?.modifications.spare
 
@@ -257,7 +250,7 @@ local Unit = class {
     if (this.customImage && !isInArray(this.customImage.slice(0, 1), ["#", "!"]))
       this.customImage = get_unit_icon_by_unit(this, this.customImage)
     shopSearchCore.cacheUnitSearchTokens(this)
-    return errorsTextArray
+    return
   }
 
   function hasPlatformFromBlkStr(blk, fieldName, defValue = false, separator = "; ") {
@@ -576,11 +569,43 @@ local Unit = class {
 
   isSquadronVehicle       = @() this.researchType == "clanVehicle"
   getOpenCost             = @() Cost(0, clan_get_unit_open_cost_gold(this.name))
-  getWeapons = function() {
+
+  function initWeaponsOnce() {
+    if (this.isWeaponsInited)
+      return
+
+    let uWpCost = this.getUnitWpCostBlk()
+    if (uWpCost?.weapons != null) {
+      if (this.hasWeaponSlots)
+        initUnitWeaponsContainers(this.weaponsContainers, uWpCost.weapons)
+      initUnitWeapons(this, this.weapons, uWpCost.weapons) 
+      initWeaponryUpgrades(this, uWpCost)
+    }
+
+    this.isWeaponsInited = true
+  }
+
+  function getWeapons() {
+    this.initWeaponsOnce()
     if (!this.hasWeaponSlots || !hasFeature("WeaponryCustomPresets"))
       return this.weapons
 
     return [].extend(this.weapons, getWeaponryCustomPresets(this))
+  }
+
+  function getModifications() {
+    if (this.modifications != null)
+      return this.modifications
+
+    this.modifications = []
+    let uWpCost = this.getUnitWpCostBlk()
+    let errorsTextArray = initUnitModifications(this.modifications,
+      uWpCost?.modifications ?? getFullUnitBlk(this.name)?.modifications, this.esUnitType)
+
+    if (errorsTextArray.len() > 0)
+      logerr("\n".join(errorsTextArray))
+
+    return this.modifications
   }
 }
 

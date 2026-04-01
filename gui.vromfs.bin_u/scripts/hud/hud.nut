@@ -60,6 +60,7 @@ let DataBlock = require("DataBlock")
 let { get_current_mission_desc } = require("guiMission")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
+require("%scripts/hud/scoreboardTooltipBridge.nut")
 
 dagui_propid_add_name_id("fontSize")
 

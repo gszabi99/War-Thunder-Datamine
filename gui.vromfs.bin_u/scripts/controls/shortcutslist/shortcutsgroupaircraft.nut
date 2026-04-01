@@ -721,6 +721,13 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
+  
+
+
+
+
+
+
   {
     id = "ID_TARGET_CAMERA"
     checkAssign = false

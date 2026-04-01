@@ -23,10 +23,11 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { showWaitScreen, closeWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
-let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
+let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin") && !isMeNewbie()
 
 function launchGuestEmailRegistration(stoken) {
   let language = getCurLangShortName()
@@ -88,7 +89,7 @@ function launchSteamEmailRegistration() {
 }
 
 function checkShowSteamEmailRegistration() {
-  if (!canEmailRegistration())
+  if (!canEmailRegistration() && !isMeNewbie())
     return
 
   if (getLanguageName() != "Japanese") {
@@ -111,7 +112,7 @@ let launchPS4EmailRegistration = @()
   ps4_open_url_logged_in(loc("url/ps4_bind_url"), loc("url/ps4_bind_redirect"))
 
 function checkShowPS4EmailRegistration() {
-  if (!canEmailRegistration())
+  if (!canEmailRegistration() && !isMeNewbie())
     return
 
   if (loadLocalByAccount("PS4EmailRegistrationShowed", false))
@@ -166,7 +167,7 @@ let forceLauncheXboxSuggestionEmailRegistration = @()
   })
 
 function checkShowXboxEmailRegistration() {
-  if (!canEmailRegistration())
+  if (!canEmailRegistration() && !isMeNewbie())
     return
 
   if (loadLocalByAccount("XboxEmailRegistrationShowed", false))

@@ -179,7 +179,8 @@ function setReferenceMarker(obj, vMin, vMax, refer, modeName) {
 
 function fillHumanInfoCard(unit, holderObj, handler, p) {
   let { crew, ediff, overrideMods, canUseIcons = false } = p
-  let { name = "", modifications = [] } = unit
+  let { name = "" } = unit
+  let modifications = unit?.getModifications() ?? []
   let usedMods = getWeaponUsedMods(name, modifications, overrideMods)
   let effects = {}
   foreach (mod in usedMods)

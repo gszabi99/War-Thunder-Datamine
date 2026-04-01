@@ -6,6 +6,18 @@
     "background-color": "@editboxColor",
     "tdiv": [
       {
+        "id": "hud_icon_preset_box",
+        "margin": "1@blockInterval",
+        "display": "hide",
+        "width": "0.1@sf",
+        "ComboBox": {
+          "id": "hud_icon_preset_select",
+          "width": "pw",
+          "on_select": "onHudIconPresetSelect",
+          "tooltip": "#iconPreset/hud_icon_preset_select_hint"
+        }
+      },
+      {
         "id": "hint_attention_to_map",
         "margin": "1@blockInterval",
         "tooltip": "#voice_message_attention_to_point_2",
@@ -127,6 +139,12 @@
             }
           }
         }
+      },
+      {
+        "id": "btn_filter_markers",
+        "margin": "1@blockInterval",
+        "display": "hide",
+        "popupFilter": {}
       }
     ]
   }

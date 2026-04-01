@@ -53,7 +53,7 @@ let class ModsSetupHandler (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.unit = unit
-    this.modifications = unit.modifications ?? []
+    this.modifications = unit.getModifications()
     let groupsByType = getModsListByType(this.modifications)
     this.modsListByType = groupsByType
     this.groups = modGroups.filter(@(v) v in groupsByType)

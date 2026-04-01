@@ -71,6 +71,7 @@
   "smoothGuidedMissilesResyncRelativeTargetMinTimeToHit": 3.0,
   "smoothGuidedMissilesResyncRelativeTargetTimeConst": 0.5,
   "resyncRemotelyControlleMissileGuidance": false,
+  "missileMaxDistanceToShadowForGuidanceSimulation": 5000.0,
   "postArretTimeOut": 0.5,
   "lockResetMinAcquisitionTime": 5.0,
   "weaponLockDeadUnits": true,
@@ -8473,7 +8474,12 @@
   "radarSeeker": {
     "targetSearchBeamWidthMult": 1.0
   },
-  "targetSignature": {},
+  "targetSignature": {
+    "ecmSourceMask": [
+      4,
+      8
+    ]
+  },
   "radarCommon": {
     "singleTargetDetectionSensitivityMult": 0.5,
     "directionWithinMainLobe": true,
@@ -8483,6 +8489,7 @@
     "chaffAttenuationPower": 0.35
   },
   "radar": {
+    "scanInScanZoneOnly": true,
     "targetMatchingMinDist": 3.0,
     "normalizeTargetMatchingToScanPeriod": true,
     "slavedFsmBlk": "gameData/sensors/slaved_radar_fsm.blk",
@@ -8587,6 +8594,12 @@
       "IRST ACM",
       "IRST HMD",
       "IRST track",
+      "ESM standby",
+      "ESM search",
+      "ESM acquisition",
+      "ESM ACM",
+      "ESM HMD",
+      "ESM track",
       "air_search",
       "ground_search",
       "auto acquisition",

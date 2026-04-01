@@ -73,7 +73,7 @@ function cacheUintModifications(unit) {
   if (unit.name in uintModificationsCache)
     return
 
-  uintModificationsCache[unit.name] <- unit.modifications.reduce(function(res, v) {
+  uintModificationsCache[unit.name] <- unit.getModifications().reduce(function(res, v) {
     let modName = v.name
     res[modName] <- true
     let eff = getModificationBulletsEffect(modName)

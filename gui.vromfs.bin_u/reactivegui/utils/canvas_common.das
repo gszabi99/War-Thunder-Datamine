@@ -171,6 +171,9 @@ class Canvas
   def rightBottom()
     return toRelPos(canvasPos + canvasSize)
 
+  def hdpx(val : float)
+    return *ctx |> hdpx(val)
+
 // ****************************************************************************
 // ***   Common Methods   *****************************************************
 // ****************************************************************************
@@ -305,7 +308,10 @@ class Canvas
     render_rectangle_aa(*ctx, toAbsPos(lt), toAbsPos(rb), lineWidthHdpx, color, fillColor)
 
   def drawBBox(box : BBox2; padding : float = 0.0)
-    let offset = toAbsXY(float2(padding))
+    drawBBoxPadded(box, float2(padding))
+
+  def drawBBoxPadded(box : BBox2; padding : float2)
+    let offset = toAbsXY(padding)
     let lt = box.leftTop - offset
     let rb = box.rightBottom + offset
     render_rectangle_aa(*ctx, lt, rb, lineWidthHdpx, color, fillColor)

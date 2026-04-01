@@ -293,18 +293,18 @@ let UnitBulletsManager = class {
     let bulletsTotal = this.unit.unitType.canUseSeveralBulletsForGun
       ? this.unit.unitType.bulletSetsQuantity : getBulletsGroupCount(this.unit)
 
-    for (local groupIndex = 0; groupIndex < bulletsTotal; groupIndex++) {
-      let linkedIdx = getLinkedGunIdx(groupIndex, this.getGunTypesCount(),
+    for (local bulletSetIdx = 0; bulletSetIdx < bulletsTotal; bulletSetIdx++) {
+      let linkedIdx = getLinkedGunIdx(bulletSetIdx, this.getGunTypesCount(),
         this.unit.unitType.bulletSetsQuantity, this.unit)
 
-      let bullets = getOptionsBulletsList(this.unit, groupIndex, false, this.isForcedAvailable)
+      let bullets = getOptionsBulletsList(this.unit, bulletSetIdx, false, this.isForcedAvailable)
       let selectedName = bullets.values?[bullets.value] ?? ""
       let bulletsSet = getBulletsSetData(this.unit, selectedName)
       let { maxToRespawn,  constrainedTotalCount } = calcBulletLimits(this.unit, selectedName)
 
       
       let currBulletType = bulletsSet?.isBulletBelt ? "belt" : bulletsSet?.bullets[0].split("_")[0]
-      bulletDataByGroup[groupIndex] <- {
+      bulletDataByGroup[bulletSetIdx] <- {
         linkedIdx
         selectedName
         maxToRespawn

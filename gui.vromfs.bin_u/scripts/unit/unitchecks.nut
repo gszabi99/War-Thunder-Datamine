@@ -154,7 +154,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
   air.modificatorsRequestTime = get_time_msec()
   calculate_min_and_max_parameters(air.name, this,  function(effect, ...) {
     air.modificatorsRequestTime = -1
-    if (effect) {
+    if (effect && effect.len() > 0) {
       air.modificators = {
         arcade = effect.arcade
         historical = effect.historical
@@ -230,7 +230,7 @@ function updateUnitAfterSwitchMod(unit, modName = null) {
 
   if (unit.name == hangar_get_current_unit_name() && modName) {
     let modsList = modName == ""
-      ? unit.modifications
+      ? unit.getModifications()
       : [ getModificationByName(unit, modName) ]
     foreach (mod in modsList) {
       if (!(mod?.requiresModelReload ?? false))

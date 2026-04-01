@@ -42,3 +42,39 @@ def disable_move_es(evt : CmdDisableMove;
       if gm != null && gm.moveSys != null
         gm.moveSys.inactive = true
 
+[es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
+def set_aimers_custom_settings_es(evt : Event;
+                                  var unit__ref : UnitRef&;
+                                  aimer_custom_setting__checkVisibilityTarget : bool;
+                                  aimer_custom_setting__ignoreStopForFire : bool;
+                                  aimer_custom_setting__targetAAA : bool;
+                                  aimer_custom_setting__moveSpeedKAtShooting : float)
+  var gm = unit__ref.unit |> as_gm()
+  *gm |> set_check_visibility_target(aimer_custom_setting__checkVisibilityTarget)
+  gm.mayTargetAAA = aimer_custom_setting__targetAAA
+  gm.moveSpeedKAtShooting = aimer_custom_setting__moveSpeedKAtShooting
+  if aimer_custom_setting__ignoreStopForFire
+    *gm |> set_ignore_stop_for_fire(true)
+
+[es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
+def set_custom_gun_properties_settings_es(evt : Event;
+                                          var unit__ref : UnitRef&;
+                                          custom_gun_properties__tiggerGroupNo : IntList;
+                                          custom_gun_properties__aimMinDist : float;
+                                          custom_gun_properties__aimMaxDist : float;
+                                          custom_gun_properties__attackMaxDist : float;
+                                          custom_gun_properties__attackMinHeight : float;
+                                          custom_gun_properties__attackMaxHeight : float)
+  var gm = unit__ref.unit |> as_gm()
+  for triggerNo in custom_gun_properties__tiggerGroupNo
+    (*gm) |> set_gun_properties_from_mission(triggerNo, false, custom_gun_properties__aimMaxDist,
+                                             custom_gun_properties__aimMinDist,
+                                             custom_gun_properties__attackMaxDist,
+                                             custom_gun_properties__attackMinHeight,
+                                             custom_gun_properties__attackMaxHeight)
+
+[es(tag=server, on_event=CmdInitComponent, REQUIRE=(unit_tag__gm, disable_radar_on_start))]
+def disable_radar_on_start_es(evt : Event;
+                              var unit__ref : UnitRef&)
+  var gm = unit__ref.unit |> as_gm()
+  gm.useSearchRadar = false

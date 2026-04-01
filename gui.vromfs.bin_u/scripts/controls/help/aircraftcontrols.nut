@@ -246,6 +246,27 @@ let aircraftControls = {
       ]
     }
   }
+  ARM_AIRCRAFT = {
+    subTabName = "#avionics_sensor_arm"
+
+    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
+    helpPattern = CONTROL_HELP_PATTERN.ARM
+
+    specificCheck = @() !isInFlight() || isUnitWithRadar(getPlayerCurUnit())
+    checkFeature = @() unitTypes.AIRCRAFT.isAvailable
+    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
+
+    pageBlkName = "%gui/help/armAircraft.blk"
+    imagePattern = "#ui/images/help/country_us_fighter_anti_radioloc_missile.avif?P1"
+    defaultValues = { country = "us" }
+    countryRelatedObjs = { us = [] }
+    linkLines = {
+      links = [
+        { start = "arm_target_indicator_Label", end = "arm_target_indicator_point" }
+        { start = "arm_rwr_indicator_label", end = "arm_rwr_indicator_point" }
+      ]
+    }
+  }
 }
 
 return aircraftControls
