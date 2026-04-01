@@ -4479,24 +4479,36 @@
           }
         },
         "actions": {
-          "moSetObjectiveStatus": [
-            {
-              "target": "nuclear_escalation_objective_t1",
-              "status": 2,
-              "object_marking": 0,
-              "object_var_comp_op": "equal",
-              "object_var_name": ""
-            },
-            {
-              "target": "nuclear_escalation_objective_t2",
-              "status": 3,
-              "object_marking": 0,
-              "object_var_comp_op": "equal",
-              "object_var_name": ""
-            }
-          ],
+          "moSetObjectiveStatus": {
+            "target": "nuclear_escalation_objective_t1",
+            "status": 2,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          },
+          "triggerEnable": {
+            "target": "t1_smooth_win"
+          }
+        },
+        "else_actions": {}
+      },
+      "t1_smooth_win": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 2.0
+          }
+        },
+        "conditions": {},
+        "actions": {
           "gameMPChangeScore": {
-            "value": -100,
+            "value": -1,
             "valueSystem": "percentage",
             "team": "B"
           }
@@ -4522,24 +4534,36 @@
           }
         },
         "actions": {
-          "moSetObjectiveStatus": [
-            {
-              "target": "nuclear_escalation_objective_t2",
-              "status": 2,
-              "object_marking": 0,
-              "object_var_comp_op": "equal",
-              "object_var_name": ""
-            },
-            {
-              "target": "nuclear_escalation_objective_t1",
-              "status": 3,
-              "object_marking": 0,
-              "object_var_comp_op": "equal",
-              "object_var_name": ""
-            }
-          ],
+          "moSetObjectiveStatus": {
+            "target": "nuclear_escalation_objective_t2",
+            "status": 2,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          },
+          "triggerEnable": {
+            "target": "t2_smooth_win"
+          }
+        },
+        "else_actions": {}
+      },
+      "t2_smooth_win": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 2.0
+          }
+        },
+        "conditions": {},
+        "actions": {
           "gameMPChangeScore": {
-            "value": -100,
+            "value": -1,
             "valueSystem": "percentage",
             "team": "A"
           }
