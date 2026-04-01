@@ -2273,7 +2273,8 @@ let optionsMap = {
     descr.id = "activate_airborne_weapon_selection_on_spawn"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.value = get_gui_option(optionId)
+    descr.value = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    descr.defaultValue = true
   },
   [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = function(_optionId, descr, _context) {
     descr.id = "activate_bombs_auto_release_on_spawn"
@@ -4227,6 +4228,9 @@ function set_xray_filter_option(value, descr, optionId) {
   set_xray_parts_filter(value)
 }
 
+let setGuiOptionInGameplayMode =
+  @(value, _descr, optionId) set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY)
+
 let optionsSetMap = {
   [USEROPT_LANGUAGE] = @(value, descr, _optionId) setGameLocalization(descr.values[value], false, true),
   [USEROPT_CUSTOM_LANGUAGE] = @(value, _descr, _optionId) setCustomLocalization(value),
@@ -4441,10 +4445,10 @@ let optionsSetMap = {
   [USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN] = @(value, _descr, _optionId) set_option_activate_airborne_active_counter_measures_on_spawn(value),
   [USEROPT_SAVE_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_ai_target_type(value ? 1 : 0),
   [USEROPT_DEFAULT_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_default_ai_target_type(value),
-  [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN] = def_set_gui_option,
+  [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN] = setGuiOptionInGameplayMode,
   [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = @(value, _descr, _optionId) set_activate_bombs_auto_release_on_spawn(value),
   [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON] = def_set_gui_option,
-  [USEROPT_IGNORE_BAD_WEATHER] = @(value, _descr, optionId) set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY),
+  [USEROPT_IGNORE_BAD_WEATHER] = setGuiOptionInGameplayMode,
   [USEROPT_SHOW_INDICATORS_TYPE] = function(value, descr, _optionId) {
     local val = get_option_indicators_mode() & ~(HUD_INDICATORS_SELECT | HUD_INDICATORS_CENTER | HUD_INDICATORS_ALL)
     if (descr.values[value] == 0)
@@ -4784,7 +4788,7 @@ let optionsSetMap = {
     userOptDamageIndicatorSize.set(value)
   },
   [USEROPT_TACTICAL_MAP_SIZE] = set_useropt_damage_indicator_size,
-  [USEROPT_AIR_RADAR_SIZE] = @(value, _descr, optionId) set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY),
+  [USEROPT_AIR_RADAR_SIZE] = setGuiOptionInGameplayMode,
   [USEROPT_PLAY_INACTIVE_WINDOW_SOUND] = def_set_gui_option,
   [USEROPT_INTERNET_RADIO_ACTIVE] = function(value, _descr, _optionId) {
     let internet_radio_options = get_internet_radio_options()
