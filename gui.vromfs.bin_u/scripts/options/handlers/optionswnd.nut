@@ -720,6 +720,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function testHeadphones() {
+    if (!this.isValid())
+      return
     let obj = this.scene.findObject("sound_test_headphones")
     if (!(obj?.isValid() ?? false))
       return
