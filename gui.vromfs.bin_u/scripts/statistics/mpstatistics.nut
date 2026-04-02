@@ -104,7 +104,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
   defaultRowHeaders         = ["squad", "name", "unitIcon", "aircraft", "missionAliveTime", "score", "kills", "groundKills", "navalKills",
                                "humanKills",
-                               "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "awardDamage", "assists", "captureZone", "damageZone", "deaths"]
+                               "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "awardDamage", "assists", "captureZone", "damageZone", "damageZoneNuke", "deaths"]
   raceRowHeaders            = ["rowNo", "name", "unitIcon", "aircraft", "raceFinishTime", "raceLap", "raceLastCheckpoint",
                                "raceLastCheckpointTime", "deaths"]
   footballRowHeaders        = ["name", "footballScore", "footballGoals", "footballSaves", "footballAssists"]

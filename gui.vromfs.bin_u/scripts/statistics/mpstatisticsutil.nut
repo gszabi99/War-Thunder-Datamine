@@ -63,7 +63,7 @@ let eventNameBonusTypes = {
 }
 
 let colsWithParamType = { aiTotalKills = true, assists = true, score = true, damageZone = true,
-  raceFinishTime = true, raceLastCheckpoint = true, raceLastCheckpointTime = true,
+  raceFinishTime = true, raceLastCheckpoint = true, raceLastCheckpointTime = true, damageZoneNuke = true,
   raceBestLapTime = true, missionAliveTime = true, kills = true, deaths = true, navalKills = true
 }
 

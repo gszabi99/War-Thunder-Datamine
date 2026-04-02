@@ -41,6 +41,7 @@ let MISSION_OBJECTIVE = {
 
   WITHOUT_SCORE       = 0x1000
 
+  ZONE_BOMBING_NUKE   = 0x2000
   
   NONE                = 0x0000
   ANY                 = 0xFFFF

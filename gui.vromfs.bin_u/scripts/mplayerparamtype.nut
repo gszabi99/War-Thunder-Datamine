@@ -15,6 +15,7 @@ let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltip
 let { getDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 
 const KG_TO_TONS = 0.001
+const KG_TO_KILOTONS = 0.000001
 
 let expEventLocIds = {
   [EXP_EVENT_CAPTURE_ZONE]       = "expEventScore/captureZone",
@@ -385,9 +386,17 @@ enumsAddTypes(g_mplayer_param_type, {
     tooltip = "debriefing/Damage"
     relWidth = 15
     missionObjective = MISSION_OBJECTIVE.ZONE_BOMBING
-    printFunc = function(val, _player) {
-      return stdMath.roundToDigits(val * KG_TO_TONS, 3).tostring()
-    }
+    printFunc = @(val, _player) stdMath.roundToDigits(val * KG_TO_TONS, 3).tostring()
+  }
+
+  DAMAGE_ZONE_NUKE = {
+    id = "damageZoneNuke"
+    fontIcon = "#icon/mpstats/damageZone"
+    tooltip = "debriefing/DamageKilo"
+    relWidth = 15
+    missionObjective = MISSION_OBJECTIVE.ZONE_BOMBING_NUKE
+    printFunc = @(_val, player) stdMath.roundToDigits(this.getVal(player) * KG_TO_KILOTONS, 3).tostring()
+    getVal = @(player) player?["damageZone"] ?? 0
   }
 
   ROW_NO = {
