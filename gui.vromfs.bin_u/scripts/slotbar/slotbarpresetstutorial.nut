@@ -281,7 +281,7 @@ let SlotbarPresetsTutorial = class {
     if (this.checkCurrentTutorialCanceled())
       return
     let objs = [
-      topMenuHandler.get().scene.findObject("to_battle_button"),
+      topMenuHandler.get().getObj("to_battle_button"),
       topMenuHandler.get().getObj("to_battle_console_image")
     ]
     let steps = [{
