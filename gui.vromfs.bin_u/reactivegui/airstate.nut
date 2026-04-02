@@ -165,7 +165,7 @@ let IsMachineGunsEmpty = Watched(array(NUM_CANNONS_MAX, false))
 let isAllMachineGunsEmpty = Computed(@() !IsMachineGunsEmpty.get().contains(false))
 
 let BombsState = Watched({
-  count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1 })
+  count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1, isActiveBombsAutoRelease = false })
 let RocketsState = Watched({                                                      
   count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1 })
 let TorpedoesState = Watched({                                                    
@@ -440,6 +440,7 @@ let helicopterState = {
   BombsName = Computed(@() BombsState.get().name),
   BombsActualCount = Computed(@() BombsState.get().actualCount),
   BombsWeaponIdx = Computed(@() BombsState.get().weaponIdx),
+  isActiveBombsAutoRelease = Computed(@() BombsState.get()?.isActiveBombsAutoRelease ?? false),
 
   RocketsCount = Computed(@() RocketsState.get().count),
   RocketsSeconds = Computed(@() RocketsState.get().seconds),

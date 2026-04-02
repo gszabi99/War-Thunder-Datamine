@@ -1,38 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%rGui/airState.nut" import *
+
 let cross_call = require("%rGui/globals/cross_call.nut")
 
 let math = require("%sqstd/math.nut")
 let string = require("string")
-
-let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCount, IsCannonEmpty,
-  OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
-  EngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, HasExternalFuel, ExternalFuel, FuelState, IsCompassVisible,
-  IsMachineGunsEmpty, MachineGunsSelectedArray, MachineGunsCount, MachineGunsReloadTime, MachineGunsMode,
-  CannonsAdditionalCount, CannonsAdditionalSeconds, CannonsAdditionalMode, CannonsAdditionalSelected, IsCanAdditionalEmpty,
-  AgmCount, AgmSeconds, AgmTimeToHit, AgmTimeToWarning, AgmActualCount, AgmName, AgmSelected, IsAgmEmpty, AgmWeaponIdx,
-  AamCount, AamSeconds, AamTimeToHit, AamActualCount, AamName, AamSelected, IsAamEmpty, AamWeaponIdx,
-  GuidedBombsCount, GuidedBombsSeconds, GuidedBombsTimeToHit, GuidedBombsMode, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
-  GuidedBombsWeaponIdx,
-  FlaresCount, FlaresSeconds, FlaresMode, IsFlrEmpty,
-  ChaffsCount, ChaffsSeconds, ChaffsMode, IsChaffsEmpty,
-  RocketsCount, RocketsSeconds, RocketsActualCount, RocketsSalvo, RocketsMode, RocketsName, RocketsSelected, IsRktEmpty, DetectAllyProgress, DetectAllyState,
-  RocketsWeaponIdx,
-  BombsCount, BombsSeconds, BombsActualCount, BombsSalvo, BombsMode, BombsName, BombsSelected, IsBmbEmpty, BombsWeaponIdx,
-  IsTrpEmpty, TorpedoesCount, TorpedoesSeconds, TorpedoesActualCount, TorpedoesSalvo, TorpedoesMode, TorpedoesName, TorpedoesSelected,
-  IsHighRateOfFire, IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
-  AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin, AgmRotatedLaunchZoneYawMax,
-  AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, FovYaw, FovPitch, IsZoomedAgmLaunchZoneVisible,
-  IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsLaunchZoneAvailable, IsOutLaunchZone, IsLaunchZoneOnTarget, LaunchZonePosX, LaunchZonePosY, LaunchZoneWatched,
-  IsRangefinderEnabled, RangefinderDist,
-  Rpm, IsRpmVisible, IsRpmCritical, TrtMode, Trt, Spd, WaterAlert, HorAngle, AgmLaunchZoneDistMin,
-  AlertColorLow, AlertColorMedium, AlertColorHigh, OilAlert,
-  PassivColor, IsLaserDesignatorEnabled, IsInsideLaunchZoneDist, GunInDeadZone,
-  RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
-  RocketAimX, RocketAimY, TATargetVisible, IRCMState,
-  Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced, IsEnginesControled, ThrottleState, isEngineControled,
-  DistanceToGround, RadarAltitude, RadarAltitudeAlert, IsMfdEnabled, VerticalSpeed, MfdColor,
-  ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed, IsMainHudVisible, IsGunnerHudVisible
-} = require("%rGui/airState.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let HudStyle = require("%rGui/style/airHudStyle.nut")
@@ -64,8 +36,6 @@ let { isInFlight } = require("%rGui/globalState.nut")
 let { clearTimer, setTimeout } = require("dagor.workcycle")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 
-function getAirHudElemsTable() {
-
 const NUM_VISIBLE_ENGINES_MAX = 8
 const NUM_TRANSMISSIONS_MAX = 8
 const NUM_CANNONS_MAX = 3
@@ -76,6 +46,11 @@ let needShowShHints = Computed(@() isUnitAlive.get() && isInFlight.get() && !isP
 let shHintsColumnWidth = mkWatched(persist, "shHintsColumnWidth", 0)
 let isShHintsVisible = mkWatched(persist, "isShHintsVisible", false)
 let isShHintsColumnVisible = mkWatched(persist, "isShHintsColumnVisible", false)
+
+let needShowBombsAutoReleaseTargetActivatedHint = keepref(Computed(@()
+  unitType.get() == "aircraft" && isActiveBombsAutoRelease.get()
+    && ((BombsMode.get() & (1 << WeaponMode.CCRP_MODE)) != 0)
+))
 
 let needShowShHintsAppliedState = persist("needShowShHintsAppliedState", @() { value = false })
 isInFlight.subscribe(function resetShHintAppliedStateOnFlightExit(v) {
@@ -1808,6 +1783,12 @@ let detectAllyComponent = @(posX, posY) function() {
   }))
 }
 
+needShowBombsAutoReleaseTargetActivatedHint.subscribe(@(v)
+  eventbus_send("onHudHintEvent", {
+    eventName = v ? "hint:bombs_auto_release_target_point_activated:show"
+      : "hint:bombs_auto_release_target_point_activated:hide"
+}))
+
 return {
   vertSpeed = HelicopterVertSpeed
   paramsTable = generateParamsTable
@@ -1826,6 +1807,3 @@ return {
   detectAlly = detectAllyComponent
   airHorizon
 }
-} 
-
-return getAirHudElemsTable()

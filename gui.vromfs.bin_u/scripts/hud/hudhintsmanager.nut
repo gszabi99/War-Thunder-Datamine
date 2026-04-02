@@ -694,6 +694,11 @@ let isHintWillBeShown = @(event_name) isHintShowAllowed(event_name, null, {needC
 
 eventbus_subscribe("update_ship_fire_control_panel", @(value) onUpdateShipFireControlPanel(value))
 
+eventbus_subscribe("onHudHintEvent", function(v) {
+  let { eventName, eventData = {} } = v
+  g_hud_event_manager.onHudEvent(eventName, eventData)
+})
+
 addListenersWithoutEnv({
   function LoadingStateChange(_) {
     if (!isInFlight()) {

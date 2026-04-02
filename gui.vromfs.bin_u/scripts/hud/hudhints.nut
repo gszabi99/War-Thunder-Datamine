@@ -90,6 +90,7 @@ g_hud_hints._getHintMarkupParams <- function _getHintMarkupParams(eventData, hin
     showKeyBoardShortcutsForMouseAim = eventData?.showKeyBoardShortcutsForMouseAim ?? false
     isVerticalAlignText = this.isVerticalAlignText
     isWrapInRowAllowed = this.isWrapInRowAllowed
+    showShortcutsNameIfNotAssign = this.showShortcutsNameIfNotAssign
     topImages = getHinToptImagesView(this.hintTopImages)
   }
 }
@@ -481,8 +482,8 @@ g_hud_hints.template <- {
   hintType = g_hud_hint_types.COMMON
   uid = -1
   priority = 0
-  
-  isWrapInRowAllowed = false
+  isWrapInRowAllowed = false            
+  showShortcutsNameIfNotAssign = false  
   getHintNestId = g_hud_hints._getHintNestId
   getHintStyle = g_hud_hints._getHintStyle
 
@@ -3478,6 +3479,17 @@ NEED_STOP_FOR_RADAR = {
     maskId = 32
     totalCount = 3
     countIntervals = [{ timeInterval = 15 * 60 }]
+  }
+
+  BOMBS_AUTO_RELEASE_TARGET_POINT_ACTIVATED = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hints/bombs_auto_release_target_point_activated"
+    showEvent = "hint:bombs_auto_release_target_point_activated:show"
+    hideEvent = "hint:bombs_auto_release_target_point_activated:hide"
+    isWrapInRowAllowed = true
+    showShortcutsNameIfNotAssign = true
+    uid = 33
+    totalCount = 5
   }
 },
 function() {
