@@ -8,42 +8,56 @@
     "band": 2,
     "visibility": 10000.0
   },
-  "program": {
-    "efficiencyBands": {
-      "band": 2,
-      "efficiency": 1.0
-    },
-    "angle": {
-      "noise": {
-        "speed": 0.025,
-        "amplitude": 6.0
+  "program": [
+    {
+      "efficiencyBands": {
+        "band": 2,
+        "efficiency": 1.0
+      },
+      "angle": {
+        "noise": {
+          "speed": 0.025,
+          "amplitude": 5.5
+        }
+      },
+      "distance": {
+        "noise": {
+          "speed": 3.0,
+          "amplitude": 200000.0
+        }
+      },
+      "distanceWidth": {
+        "static": {
+          "amplitude": 1000000.0,
+          "hold": 1.0,
+          "pause": 0.0
+        }
+      },
+      "dopplerSpeed": {
+        "noise": {
+          "speed": 4.0,
+          "amplitude": 2000.0
+        }
+      },
+      "dopplerSpeedWidth": {
+        "static": {
+          "amplitude": 4000.0,
+          "hold": 2.0,
+          "pause": 0.1
+        }
       }
     },
-    "distance": {
-      "noise": {
-        "speed": 3.0,
-        "amplitude": 200000.0
-      }
-    },
-    "distanceWidth": {
-      "static": {
-        "amplitude": 1000000.0,
-        "hold": 1.0,
-        "pause": 0.0
-      }
-    },
-    "dopplerSpeed": {
-      "noise": {
-        "speed": 4.0,
-        "amplitude": 2000.0
-      }
-    },
-    "dopplerSpeedWidth": {
-      "static": {
-        "amplitude": 4000.0,
-        "hold": 2.0,
-        "pause": 0.1
+    {
+      "efficiencyBands": {
+        "band": 2,
+        "efficiency": 1.0
+      },
+      "angle": {
+        "noise": {
+          "speed": 0.01,
+          "amplitude": 0.1
+        }
       }
     }
-  }
+  ]
 }

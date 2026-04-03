@@ -5,6 +5,7 @@
     "equip_storage__repairTime": 300.0,
     "equip_storage__repairTimer": -1.0,
     "on_death_substract_team_tickets_num": 30,
+    "equip_storage__ticketsByCapture": 150,
     "_replicated": [
       "equip_storage__current",
       "equip_storage__repairTimer"
@@ -51,13 +52,14 @@
   "tank_factory": {
     "_use": "equip_factory",
     "tank_factory__spawnPoints": 0.0,
-    "tank_factory__spawnThreshold": 900.0,
+    "tank_factory__spawnThreshold": 500.0,
     "tank_factory__baseProductionRate": 0.3,
     "tank_factory__fuelConsumeRate": 1.0,
     "tank_factory__ammoConsumeRate": 1.0,
     "tank_factory__consumeInterval": 5.0,
     "tank_factory__consumeTimer": 0.0,
     "tank_factory__spgColummProbability": 0.15,
+    "equip_storage__ticketsByCapture": 200,
     "_replicated": "tank_factory__spawnPoints",
     "tank_factory:tag": {},
     "equip_factory__columnUnitNames1:list<t>": {
@@ -65,13 +67,8 @@
         "ussr_t_80b",
         "ussr_t_80b",
         "ussr_t_80b",
-        "ussr_t_80b",
-        "ussr_t_80b",
-        "ussr_t_80b",
         "ussr_bmp_2",
-        "ussr_bmp_2",
-        "ussr_9a33bm3",
-        "ussr_zsu_23_4m4"
+        "ussr_9a33bm3"
       ]
     },
     "equip_factory__columnUnitNames2:list<t>": {
@@ -79,13 +76,8 @@
         "us_m1a1_abrams",
         "us_m1a1_abrams",
         "us_m1a1_abrams",
-        "us_m1a1_abrams",
-        "us_m1a1_abrams",
-        "us_m1a1_abrams",
         "us_m3_bradley",
-        "us_m3_bradley",
-        "germ_flarakpz_1",
-        "germ_flakpz_1a2_Gepard"
+        "germ_flarakpz_1"
       ]
     },
     "tank_factory__spgColumnUnitNames1:list<t>": {
@@ -149,7 +141,7 @@
   },
   "spg_units_column": {
     "_use": "units_column",
-    "spg_units_column__fireDist": 13000.0,
+    "spg_units_column__fireDist": 9000.0,
     "spg_units_column__readyToFire": false,
     "spg_units_column__changeStateTimer": 0.0,
     "spg_units_column__changeStateTime": 5.0
@@ -188,6 +180,7 @@
       ]
     ],
     "strongpoint__radius": 100.0,
+    "strongpoint__ticketsByCapture": 50,
     "strongpoint__units:list<eid>": {},
     "object_group_spawn_units__namesTeam1:list<t>": {},
     "object_group_spawn_units__namesTeam2:list<t>": {},
