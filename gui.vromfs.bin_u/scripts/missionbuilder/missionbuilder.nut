@@ -217,7 +217,8 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     let descrWeap = get_option(USEROPT_DYN_ZONE)
     let txt = create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, "onSectorChange", false)
     let dObj = this.scene.findObject(descrWeap.id)
-    guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
+    if (dObj?.isValid())
+      guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
     return descrWeap
   }
 
@@ -226,7 +227,8 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     let descrWeap = get_option(USEROPT_DMP_MAP)
     let txt = create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, null, false)
     let dObj = this.scene.findObject(descrWeap.id)
-    guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
+    if (dObj?.isValid())
+      guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
 
     this.update_takeoff()
 
@@ -440,6 +442,8 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onRandom(_obj) {
+    if (this.isInRandomizeOptionsProcess)
+      return
     this.randomize_builder_options()
   }
 

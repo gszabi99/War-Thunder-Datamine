@@ -533,6 +533,12 @@ function getStaminaValue(stamina) {
   return string.format("%d %%", stamina)
 }
 
+function mkShortcutTextByUnitType(unitTypeValue, shortcut) {
+  let shId = unitTypeValue == "helicopter" ? $"{shortcut}_HELICOPTER"
+    : shortcut
+  return shId.concat("{{", "}}")
+}
+
 let formatFuelText = @(fuel) string.format("%d:%02d", math.floor(fuel / 60), fuel % 60)
 function getFuelState(fuel, hasExternalFuel, externalFuel, fuelState) {
   if (fuelState == TemperatureState.FUEL_LEAK)
@@ -695,11 +701,9 @@ function createParam(param, width, height, style, colorWatch, options) {
     shHintComponent = mkShHintComponent(shortcutComputed)
   else if (fireSelectedShortcut != null) {
     let fireSelectedShId = Computed(function() {
-    if (!isSelectedComputed.get())
-      return ""
-    let shId = unitType.get() == "helicopter" ? $"{fireSelectedShortcut}_HELICOPTER"
-      : fireSelectedShortcut
-    return shId.concat("{{", "}}")
+      if (!isSelectedComputed.get())
+        return ""
+      return mkShortcutTextByUnitType(unitType.get(), fireSelectedShortcut)
     })
     shHintComponent = mkShHintComponent(fireSelectedShId)
   }
@@ -812,7 +816,10 @@ let textParamsMapMain = {
     valueComputed = Computed(@() generateBulletsTextFunction(BombsCount.get(), BombsSeconds.get(),
       BombsSalvo.get(), BombsActualCount.get(), BombsWeaponIdx.get()))
     isSelectedComputed = Computed(@() BombsSelected.get())
-    fireSelectedShortcut = "ID_FIRE_SECONDARY"
+    shortcutComputed = Computed(function() {
+      let shortcut = BombsSelected.get() ? "ID_FIRE_SECONDARY" : "ID_BOMBS"
+      return mkShortcutTextByUnitType(unitType.get(), shortcut)
+    })
     additionalComputed = Computed(@() loc(BombsName.get()))
     alertStateCaptionComputed = Computed(@() IsBmbEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsBmbEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -1783,11 +1790,17 @@ let detectAllyComponent = @(posX, posY) function() {
   }))
 }
 
-needShowBombsAutoReleaseTargetActivatedHint.subscribe(@(v)
+needShowBombsAutoReleaseTargetActivatedHint.subscribe(function(v) {
   eventbus_send("onHudHintEvent", {
     eventName = v ? "hint:bombs_auto_release_target_point_activated:show"
       : "hint:bombs_auto_release_target_point_activated:hide"
-}))
+  })
+
+  if (v)
+    showShHints()
+  else
+    hideShHints()
+})
 
 return {
   vertSpeed = HelicopterVertSpeed

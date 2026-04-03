@@ -315,9 +315,9 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     this.guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
 
     this.optionsContainers = [container.descr]
+    this.updateWeaponsSelector()
     this.updateLinkedOptions()
     this.setDifficultyOption()
-    this.updateWeaponsSelector()
   }
 
   function isBuilderAvailable() {

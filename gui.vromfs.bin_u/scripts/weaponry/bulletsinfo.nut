@@ -1166,7 +1166,9 @@ function getBulletGroupIndex(airName, item) {
   let { bulletGroupIndex = -1 } = item
   if (bulletGroupIndex >= 0)
     return bulletGroupIndex
-  let bulletName = item.name
+  let bulletName = item?.name
+  if (bulletName == null)
+    return -1
   local group = -1
   let groupName = getModificationBulletsGroup(bulletName)
   if (!groupName || groupName == "")

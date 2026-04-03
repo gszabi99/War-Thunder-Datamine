@@ -969,7 +969,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function updateSessionWpBalance() {
-    if (!(this.missionRules.isWarpointsRespawnEnabled && this.isRespawn))
+    if (!this.missionRules.isWarpointsRespawnEnabled || this.isSpectator())
       return
 
     let info = get_cur_rank_info()
@@ -978,7 +978,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function setRespawnCost() {
-    let showWPSpend = this.missionRules.isWarpointsRespawnEnabled && this.isRespawn
+    let showWPSpend = this.missionRules.isWarpointsRespawnEnabled && !this.isSpectator()
     local wpBalance = ""
     if (showWPSpend) {
       this.updateSessionWpBalance()

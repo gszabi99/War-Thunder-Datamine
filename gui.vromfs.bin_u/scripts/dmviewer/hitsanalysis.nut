@@ -213,11 +213,15 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.selectedHit = this.currentHitsData[idx]
     let unit = getAircraftByName(this.selectedHit.offenderObject)
     let unitType = $"{unit.unitType.fontIcon} {unit.unitType.getArmyLocName()}"
+    let hasFullUnitInfo = unit.isInShop
     let unitCountryFlag = getUnitCountryIcon(unit, true)
     let unitCountry = loc(getUnitCountry(unit))
-    let unitRank = $"{get_roman_numeral(unit.rank)} {loc("shop/age")}"
-    let unitIcon = image_for_air(unit)
-    let unitName = $"[{unit.getBattleRating(this.ediff)}] {getUnitName(this.selectedHit.offenderObject, true)}"
+    let unitId = this.selectedHit.offenderObject
+    let unitRank = hasFullUnitInfo ? $"{get_roman_numeral(unit.rank)} {loc("shop/age")}" : ""
+    let unitIcon = hasFullUnitInfo ? image_for_air(unit) : ""
+    let unitName = hasFullUnitInfo
+      ? $"[{unit.getBattleRating(this.ediff)}] {getUnitName(unitId, true)}"
+      : loc($"{unitId}_1")
 
     let { bulletDesc } = getBulletInfo(unit, this.selectedHit)
 
@@ -228,7 +232,9 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("unitIcon")["background-image"] = unitIcon
     this.scene.findObject("unitName").setValue(unitName)
 
-    this.scene.findObject("unitTooltip")["tooltipId"] = getTooltipType("UNIT").getTooltipId(unit.name, { showLocalState = false })
+    this.scene.findObject("unitTooltip")["tooltipId"] = hasFullUnitInfo
+      ? getTooltipType("UNIT").getTooltipId(unit.name, { showLocalState = false })
+      : ""
     this.scene.findObject("bulletName").setValue(bulletDesc)
     let distance = this.selectedHit?.shotDistance ?? this.selectedHit.distance
     this.scene.findObject("shotDistance").setValue(distance)
@@ -272,12 +278,13 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if (isRocketInBullet) {
+    let hasBulletSet = (bulletSetName ?? "") != ""
+    if (isRocketInBullet && hasBulletSet) {
       this.scene.findObject("bulletTooltip")["tooltipId"] = getTooltipType("MODIFICATION").getTooltipId(unit.name, bulletSetName, { hasPlayerInfo = false })
       return
     }
 
-    if (!isBulletBelt && bulletSetName != "") {
+    if (!isBulletBelt && hasBulletSet) {
       this.scene.findObject("bulletTooltip")["tooltipId"] = getTooltipType("MODIFICATION").getTooltipId(unit.name, bulletSetName)
       return
     }

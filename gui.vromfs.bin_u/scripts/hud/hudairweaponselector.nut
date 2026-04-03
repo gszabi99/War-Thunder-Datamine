@@ -212,6 +212,8 @@ let class HudAirWeaponSelector {
     this.updateButtonsIndexByWeaponName()
     this.updatePresetData()
     this.updateCounterMeasures()
+    let updateTimer = this.nestObj.findObject("visual_selector_timer")
+    updateTimer.setUserData(this)
   }
 
   function getPresetsMarkup(preset) {
@@ -290,8 +292,6 @@ let class HudAirWeaponSelector {
       this.updatePinView()
     this.nestObj.show(true)
     this.updateControlsVisibility()
-    let updateTimer = this.nestObj.findObject("visual_selector_timer")
-    updateTimer.setUserData(this)
     this.isInOpenedState = true
     isSelectorClosed = false
 
