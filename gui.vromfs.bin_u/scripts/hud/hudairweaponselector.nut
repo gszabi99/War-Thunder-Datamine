@@ -580,6 +580,16 @@ let class HudAirWeaponSelector {
     data = data ?? get_all_weapons()
     if (data == null)
       return
+    let hudUnit = getPlayerCurUnit()
+    if (hudUnit == null) {
+      log($"HudAirWeaponSelector::updatePresetData hudUnit == null, prevUnit = {this.unit?.name}")
+      return
+    }
+    if (hudUnit?.name != this.unit?.name) {
+      log($"HudAirWeaponSelector::updatePresetData hudUnit.name != this.unit.name, {hudUnit?.name} != {this?.unit.name}")
+      this.selectUnit(hudUnit)
+      return
+    }
     this.nextWeaponsTiers = []
     this.cachedWeaponsData = data
     if (this.unit.hasWeaponSlots)
@@ -866,7 +876,7 @@ let class HudAirWeaponSelector {
       if (current.weapons[idx] != val)
         return true
     foreach (idx, val in old.selected)
-      if (current.selected?[idx] != val)
+      if (current.selected[idx] != val)
         return true
     return false
   }
