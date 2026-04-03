@@ -866,7 +866,7 @@ let class HudAirWeaponSelector {
       if (current.weapons[idx] != val)
         return true
     foreach (idx, val in old.selected)
-      if (current.selected[idx] != val)
+      if (current.selected?[idx] != val)
         return true
     return false
   }

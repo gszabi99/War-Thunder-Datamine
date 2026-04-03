@@ -38,6 +38,7 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
                             var equip_storage__current aka factory_equip_storage__current : float&;
                             equip_factory__columnUnitNames1 : StringList;
                             equip_factory__columnUnitNames2 : StringList;
+                            equip_factory__unitsColumnMods : StringList;
                             var equip_factory__columnUnits : EidList&;
                             var equip_factory__currentColumnTarget : EntityId&;
                             fuel_factory : Tag const?;
@@ -92,6 +93,7 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
             disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_COAXIAL_GUN))
             init |> set("custom_gun_properties__tiggerGroupNo", disabledTriggers)
             init |> set("custom_gun_properties__aimMaxDist", 0.)
+            init |> set("unit_params__modList", equip_factory__unitsColumnMods)
           equip_factory__columnUnits |> push(unitEid)
           columnUnits |> push(unitEid)
       if columnUnits |> length() > 0
@@ -138,7 +140,8 @@ def on_column_unit_appear_es(evt : Event;
         gm.slowWhenEnemyNear = 0.2
         gm.slowWhenEnemyNearDistance = 300.
 
-[es(tag=server, no_order, REQUIRE_NOT=spg_units_column)]
+let arrivedDistSq = 20. * 20.
+[es(tag=server, REQUIRE_NOT=spg_units_column, after=tank_column_capture_check_es)]
 def units_column_update_es(act : UpdateStageInfoAct;
                            eid : EntityId;
                            var units_column__units : EidList&;
@@ -160,7 +163,7 @@ def units_column_update_es(act : UpdateStageInfoAct;
         if !column_unit_unit__ref.unit.isDelayed
           hasAlive = hasAlive || column_unit_unit__ref.unit.isAlive
           foundSomething = true
-          if column_unit_unit__ref.unit.isAlive && length_sq(targetTm[3]) > 0. && length_sq(column_unit_unit__ref.unit.pos - targetTm[3]) < 400.
+          if column_unit_unit__ref.unit.isAlive && length_sq(targetTm[3]) > 0. && length_sq(column_unit_unit__ref.unit.pos - targetTm[3]) < arrivedDistSq
             equip_storage__current = min(equip_storage__current + units_column__transportedEquipment, equip_storage__capacity)
             destroyEntity(unitEid)
 
@@ -242,6 +245,7 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
                            tank_factory__spgColumnUnitNames1 : StringList;
                            tank_factory__spgColumnUnitNames2 : StringList;
                            tank_factory__spgColummProbability : float;
+                           equip_factory__unitsColumnMods : StringList;
                            var tank_factory__spawnPoints : float&;
                            var tank_factory__consumeTimer : float&;
                            var equip_factory__columnUnits : EidList&;
@@ -344,6 +348,7 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
               disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_COAXIAL_GUN))
               init |> set("custom_gun_properties__tiggerGroupNo", disabledTriggers)
               init |> set("custom_gun_properties__aimMaxDist", 0.)
+              init |> set("unit_params__modList", equip_factory__unitsColumnMods)
             columnUnits |> push(unitEid)
             equip_factory__columnUnits |> push(unitEid)
         if columnUnits |> length() > 0
@@ -378,7 +383,7 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
     for unitEid in units_column__units
       query(unitEid) <| $ [es] (unit__ref aka column_unit__ref : UnitRef)
         if !column_unit__ref.unit.isDelayed && column_unit__ref.unit.isAlive && column_unit__ref.unit.army != target_unit__ref.unit.army
-          if length_sq(column_unit__ref.unit.pos - target_unit__ref.unit.pos) < 400.
+          if length_sq(column_unit__ref.unit.pos - target_unit__ref.unit.pos) < arrivedDistSq * 4.
             captured = true
             newArmy = column_unit__ref.unit.army
       if captured
@@ -443,6 +448,7 @@ def on_strongpoint_appear_es(evt : Event;
                              object_group_spawn_units__positions : TMatrixList;
                              object_group_spawn_units__namesTeam1 : StringList;
                              object_group_spawn_units__namesTeam2 : StringList;
+                             strongpoint__unitMods : StringList;
                              var strongpoint__units : EidList&)
   assume unitList = team == 1 ? object_group_spawn_units__namesTeam1 : object_group_spawn_units__namesTeam2
   for unit, tm in unitList, object_group_spawn_units__positions
@@ -459,6 +465,7 @@ def on_strongpoint_appear_es(evt : Event;
         disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_COAXIAL_GUN))
         init |> set("custom_gun_properties__tiggerGroupNo", disabledTriggers)
         init |> set("custom_gun_properties__aimMaxDist", 0.)
+        init |> set("unit_params__modList", strongpoint__unitMods)
       strongpoint__units |> push(unitEid)
 
 let distSqToAlly = 50. * 50.

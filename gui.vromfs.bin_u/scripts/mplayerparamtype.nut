@@ -395,7 +395,10 @@ enumsAddTypes(g_mplayer_param_type, {
     tooltip = "debriefing/DamageKilo"
     relWidth = 15
     missionObjective = MISSION_OBJECTIVE.ZONE_BOMBING_NUKE
-    printFunc = @(_val, player) stdMath.roundToDigits(this.getVal(player) * KG_TO_KILOTONS, 3).tostring()
+    function printFunc(_val, player) {
+      let damage = this.getVal(player) * KG_TO_KILOTONS
+      return damage < 1 ? "0" : stdMath.roundToDigits(damage, 3).tostring()
+    }
     getVal = @(player) player?["damageZone"] ?? 0
   }
 
