@@ -876,7 +876,7 @@ let class HudAirWeaponSelector {
       if (current.weapons[idx] != val)
         return true
     foreach (idx, val in old.selected)
-      if (current.selected[idx] != val)
+      if (current.selected?[idx] != val)
         return true
     return false
   }
@@ -888,6 +888,8 @@ let class HudAirWeaponSelector {
   }
 
   function updateDataByTimer() {
+    if (!this.isOpened())
+      return
     let data = get_all_weapons()
     if (data == null)
       return
