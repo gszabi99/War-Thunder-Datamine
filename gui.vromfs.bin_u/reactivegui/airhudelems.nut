@@ -33,7 +33,7 @@ let hints = require("%rGui/hints/hints.nut")
 let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let { isUnitAlive, unitType, isPlayingReplay } = require("%rGui/hudState.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
-let { clearTimer, setTimeout } = require("dagor.workcycle")
+let { clearTimer, setTimeout, resetTimeout } = require("dagor.workcycle")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 
 const NUM_VISIBLE_ENGINES_MAX = 8
@@ -75,7 +75,7 @@ function hideShHintsColumn() {
 
 function hideShHints() {
   isShHintsVisible.set(false)
-  hideShHintsColumnTimer = setTimeout(SH_HINTS_FADE_OUT_ANIM_TIME_SEC, hideShHintsColumn)
+  hideShHintsColumnTimer = resetTimeout(SH_HINTS_FADE_OUT_ANIM_TIME_SEC, hideShHintsColumn)
 }
 
 function showShHints() {
