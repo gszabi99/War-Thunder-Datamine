@@ -567,6 +567,7 @@ let helicopterState = {
   ParamTableShadowFactor,
   TurretSightOpacity,
   TurretSightLineWidthFactor,
+  isWeaponSelectorOn = Watched(false),
 }
 
 interop.updateIsCannonEmpty <- function(index, is_empty) {

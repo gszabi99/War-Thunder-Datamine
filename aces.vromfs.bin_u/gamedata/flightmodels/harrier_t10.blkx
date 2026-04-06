@@ -2998,10 +2998,7 @@
             "search": true,
             "track": true,
             "launch": false,
-            "type": [
-              "1RS1",
-              "1RS1-4"
-            ]
+            "type": "1RS1"
           },
           {
             "name": "S1 LAUNCH",
@@ -3009,10 +3006,24 @@
             "search": false,
             "track": false,
             "launch": true,
-            "type": [
-              "1RS1",
-              "1RS1-4"
-            ],
+            "type": "1RS1",
+            "threatFlag": "RWR SACLOS LAUNCH"
+          },
+          {
+            "name": "SM",
+            "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": "1RS1-4"
+          },
+          {
+            "name": "SM LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "1RS1-4",
             "threatFlag": "RWR SACLOS LAUNCH"
           },
           {
@@ -3146,6 +3157,13 @@
             "group": [
               "S1",
               "S1 LAUNCH"
+            ]
+          },
+          {
+            "text": "SM",
+            "group": [
+              "SM",
+              "SM LAUNCH"
             ]
           },
           {

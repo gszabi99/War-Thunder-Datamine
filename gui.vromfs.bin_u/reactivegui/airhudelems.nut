@@ -50,6 +50,7 @@ let isShHintsColumnVisible = mkWatched(persist, "isShHintsColumnVisible", false)
 let needShowBombsAutoReleaseTargetActivatedHint = keepref(Computed(@()
   unitType.get() == "aircraft" && isActiveBombsAutoRelease.get()
     && ((BombsMode.get() & (1 << WeaponMode.CCRP_MODE)) != 0)
+    && (!isWeaponSelectorOn.get() || BombsSelected.get() || GuidedBombsSelected.get())
 ))
 
 let needShowShHintsAppliedState = persist("needShowShHintsAppliedState", @() { value = false })
@@ -817,7 +818,10 @@ let textParamsMapMain = {
       BombsSalvo.get(), BombsActualCount.get(), BombsWeaponIdx.get()))
     isSelectedComputed = Computed(@() BombsSelected.get())
     shortcutComputed = Computed(function() {
-      let shortcut = BombsSelected.get() ? "ID_FIRE_SECONDARY" : "ID_BOMBS"
+      let isSelected = BombsSelected.get()
+      if (!isSelected && isWeaponSelectorOn.get())
+        return ""
+      let shortcut = isSelected ? "ID_FIRE_SECONDARY" : "ID_BOMBS"
       return mkShortcutTextByUnitType(unitType.get(), shortcut)
     })
     additionalComputed = Computed(@() loc(BombsName.get()))
