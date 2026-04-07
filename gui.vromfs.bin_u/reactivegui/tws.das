@@ -153,9 +153,10 @@ class Component : Canvas
     let isTargetVisible = dirIdx != int(RwrDirectionMapResult.DIRECTION_HIDDEN)
     var isTargetMapped = false
     if isTargetVisible
-      isTargetMapped = dirIdx != int(RwrDirectionMapResult.DIRECTION_UNMAPPED)
+      let isTargetUnknown = dirIdx < int(RwrDirectionMapResult.DIRECTION_UNMAPPED) // == DIRECTION_UNKNOWN, 2_51
+      isTargetMapped = dirIdx >= 0 || isTargetUnknown
       if isTargetMapped
-        let text = rwrProps |> getDirection(dirIdx)
+        let text = isTargetUnknown ? "?" : rwrProps |> getDirection(dirIdx)
 
         let fxColor = color_mult4(props.fontFxColor, targetOpacity)
         *ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, fxColor, props.fontFxFactor)

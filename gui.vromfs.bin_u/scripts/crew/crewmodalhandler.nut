@@ -950,6 +950,9 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let specMsgBox = scene_msg_boxes_list.top()
+    if (!specMsgBox?.isValid())
+      return
+
     let steps = [
       {
         obj = [[specMsgBox.findObject("buttons_holder"), specMsgBox.findObject("msgText")]]
