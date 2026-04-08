@@ -78,3 +78,12 @@ def disable_radar_on_start_es(evt : Event;
                               var unit__ref : UnitRef&)
   var gm = unit__ref.unit |> as_gm()
   gm.useSearchRadar = false
+
+[es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
+def set_rearm_on_field_time_es(evt : Event;
+                               var unit__ref : UnitRef&;
+                               unit_params__rearmOnFieldTime : float)
+  if unit_params__rearmOnFieldTime > 0.
+    var gm = as_gm(unit__ref.unit)
+    gm.rearmOnField.rearmTime = unit_params__rearmOnFieldTime
+    gm.rearmOnField.isRearmAllowedByMission = true

@@ -1,5 +1,6 @@
 require ecs
 require ecs.common
+require ecs.safe
 require Unit
 require IGroundModel
 require DagorMath
@@ -29,6 +30,45 @@ def on_equip_storage_appear_es(evt : Event;
                                equip_storage__capacity : float)
   equip_storage__current = rnd_float(equip_storage__capacity * 0.2, equip_storage__capacity * 0.4)
 
+def create_unit(template_name : string;
+                unit_name : das_string;
+                transform : float3x4;
+                team : int;
+                mods : StringList;
+                settings : Array;
+                check_visibility_target : bool = true;
+                move_speed_k_at_shooting : float = 1.)
+  var unitEid = INVALID_ENTITY_ID
+  using() <| $(var disabledTriggers : IntList)
+    unitEid = createEntity(template_name) <| $(init)
+      init |> set("unit__className", unit_name)
+      init |> set("transform", transform)
+      init |> set("team", team)
+      init |> set("unit__ownsUnitId", true)
+      init |> set("aimer_custom_setting__checkVisibilityTarget", check_visibility_target)
+      init |> set("aimer_custom_setting__ignoreStopForFire", true)
+      init |> set("aimer_custom_setting__targetAAA", false)
+      init |> set("aimer_custom_setting__moveSpeedKAtShooting", move_speed_k_at_shooting)
+      disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_MACHINE_GUN))
+      disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_COAXIAL_GUN))
+      init |> set("custom_gun_properties__tiggerGroupNo", disabledTriggers)
+      init |> set("custom_gun_properties__aimMaxDist", 0.)
+      init |> set("unit_params__modList", mods)
+      init |> set("unit_params__rearmOnFieldTime", 20.)
+      for j in range(length(settings))
+        let obj = settings[j] as Object
+        if obj != null
+          let unitName = obj?.unit ?? ""
+          if unitName == unit_name
+            let nameList = get_ecs_StringList(obj, "bulletNames")
+            if nameList != null
+              init |> set("unit_params__bulletNames", *nameList)
+            let countList = get_ecs_IntList(obj, "bulletsCount")
+            if countList != null
+              init |> set("unit_params__bulletsCount", *countList)
+            break;
+  return unitEid
+
 [es(tag=server, no_order)]
 def equip_storage_update_es(act : UpdateStageInfoAct;
                             unit__ref aka storage_unit__ref : UnitRef;
@@ -40,6 +80,7 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
                             equip_factory__columnUnitNames1 : StringList;
                             equip_factory__columnUnitNames2 : StringList;
                             equip_factory__unitsColumnMods : StringList;
+                            equip_factory__bulletSetsForUnits : Array;
                             var equip_factory__columnUnits : EidList&;
                             var equip_factory__currentColumnTarget : EntityId&;
                             fuel_factory : Tag const?;
@@ -83,20 +124,9 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
         var templateName = "tank+delayed_destroy_dead_unit+aimer_custom_setting+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
         if string(unit) |> find("/") != -1
           templateName = "simple_tank+delayed_destroy_dead_unit+aimer_custom_setting+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-        using() <| $(var disabledTriggers : IntList)
-          let unitEid = createEntity(templateName) <| $(init)
-            init |> set("unit__className", unit)
-            init |> set("transform", unitTransform)
-            init |> set("team", storage_unit__ref.unit.army)
-            init |> set("unit__ownsUnitId", true)
-            init |> set("aimer_custom_setting__ignoreStopForFire", true)
-            disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_MACHINE_GUN))
-            disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_COAXIAL_GUN))
-            init |> set("custom_gun_properties__tiggerGroupNo", disabledTriggers)
-            init |> set("custom_gun_properties__aimMaxDist", 0.)
-            init |> set("unit_params__modList", equip_factory__unitsColumnMods)
-          equip_factory__columnUnits |> push(unitEid)
-          columnUnits |> push(unitEid)
+        let unitEid = create_unit(templateName, unit, unitTransform, storage_unit__ref.unit.army, equip_factory__unitsColumnMods, equip_factory__bulletSetsForUnits)
+        equip_factory__columnUnits |> push(unitEid)
+        columnUnits |> push(unitEid)
       if columnUnits |> length() > 0
         factory_equip_storage__current -= equip_factory__equipForSendColumn
         createEntity("units_column") <| $(init)
@@ -260,6 +290,7 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
                            tank_factory__spgColumnUnitNames1 : StringList;
                            tank_factory__spgColumnUnitNames2 : StringList;
                            tank_factory__spgColummProbability : float;
+                           equip_factory__bulletSetsForUnits : Array;
                            equip_factory__unitsColumnMods : StringList;
                            var tank_factory__spawnPoints : float&;
                            var tank_factory__consumeTimer : float&;
@@ -349,23 +380,9 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
           var templateName = "tank+delayed_destroy_dead_unit+aimer_custom_setting+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
           if string(unit) |> find("/") != -1
             templateName = "simple_tank+delayed_destroy_dead_unit+aimer_custom_setting+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-          using() <| $(var disabledTriggers : IntList)
-            let unitEid = createEntity(templateName) <| $(init)
-              init |> set("unit__className", unit)
-              init |> set("transform", unitTransform)
-              init |> set("team", army)
-              init |> set("unit__ownsUnitId", true)
-              init |> set("aimer_custom_setting__checkVisibilityTarget", !isSpg)
-              init |> set("aimer_custom_setting__ignoreStopForFire", true)
-              init |> set("aimer_custom_setting__targetAAA", false)
-              init |> set("aimer_custom_setting__moveSpeedKAtShooting", 0.1)
-              disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_MACHINE_GUN))
-              disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_COAXIAL_GUN))
-              init |> set("custom_gun_properties__tiggerGroupNo", disabledTriggers)
-              init |> set("custom_gun_properties__aimMaxDist", 0.)
-              init |> set("unit_params__modList", equip_factory__unitsColumnMods)
-            columnUnits |> push(unitEid)
-            equip_factory__columnUnits |> push(unitEid)
+          let unitEid = create_unit(templateName, unit, unitTransform, army, equip_factory__unitsColumnMods, equip_factory__bulletSetsForUnits, !isSpg, 0.1)
+          columnUnits |> push(unitEid)
+          equip_factory__columnUnits |> push(unitEid)
         if columnUnits |> length() > 0
           tank_factory__spawnPoints -= tank_factory__spawnThreshold
           createEntity(isSpg ? "spg_units_column" : "units_column") <| $(init)
@@ -480,24 +497,15 @@ def on_strongpoint_appear_es(evt : Event;
                              object_group_spawn_units__namesTeam1 : StringList;
                              object_group_spawn_units__namesTeam2 : StringList;
                              strongpoint__unitMods : StringList;
+                             strongpoint__bulletSetsForUnits : Array;
                              var strongpoint__units : EidList&)
   assume unitList = team == 1 ? object_group_spawn_units__namesTeam1 : object_group_spawn_units__namesTeam2
   for unit, tm in unitList, object_group_spawn_units__positions
     var templateName = "tank+delayed_destroy_dead_unit+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
     if string(unit) |> find("/") != -1
       templateName = "simple_tank+delayed_destroy_dead_unit+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-    using() <| $(var disabledTriggers : IntList)
-      let unitEid = createEntity(templateName) <| $(init)
-        init |> set("unit__className", unit)
-        init |> set("transform", transform * tm)
-        init |> set("team", team)
-        init |> set("unit__ownsUnitId", true)
-        disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_MACHINE_GUN))
-        disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_COAXIAL_GUN))
-        init |> set("custom_gun_properties__tiggerGroupNo", disabledTriggers)
-        init |> set("custom_gun_properties__aimMaxDist", 0.)
-        init |> set("unit_params__modList", strongpoint__unitMods)
-      strongpoint__units |> push(unitEid)
+    let unitEid = create_unit(templateName, unit, transform * tm, team, strongpoint__unitMods, strongpoint__bulletSetsForUnits)
+    strongpoint__units |> push(unitEid)
 
 let distSqToAlly = 300. * 300.
 
