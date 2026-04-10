@@ -5088,6 +5088,69 @@
       }
     },
     {
+      "id": "2026_04_10_easter_key_store",
+      "type": "award",
+      "hidden": true
+    },
+    {
+      "id": "2026_04_10_decal_easter_egg",
+      "locId": "decals/easter_egg",
+      "userLogId": "2026_04_10_decal_easter_egg",
+      "hideUntilPrevUnlocked": "2026_04_10_easter_key_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "easter",
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2026-04-10 10:00:00",
+        "endDate": "2026-04-19 23:59:59",
+        "condition": {
+          "type": "char_unlocked",
+          "unlock": "2026_04_10_easter_key_store"
+        }
+      }
+    },
+    {
+      "id": "2026_04_10_decal_easter_rabbit",
+      "locId": "decals/easter_rabbit",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2026_04_10_decal_easter_rabbit",
+      "hideUntilPrevUnlocked": "2026_04_10_easter_key_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "easter",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "unlocked",
+            "unlock": "2026_04_10_easter_key_store"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-04-10 10:00:00",
+            "endDate": "2026-04-19 23:59:59"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_04_10_decor_lunokhod",
       "locId": "attachables/decor_lunokhod",
       "locDescId": "gift_decor_trophy/desc",
@@ -27346,6 +27409,27 @@
       }
     },
     {
+      "id": "ger_3rd_sboot_fl_serpent",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "ussr_133rd_tank_bat_badge",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "fr_8f_fl_dog",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideUntilUnlocked": true
+    },
+    {
       "id": "us_missile_wizard_decal",
       "type": "decal",
       "chapter": "decals",
@@ -32399,13 +32483,6 @@
       "hideUntilUnlocked": true
     },
     {
-      "id": "fr_8f_fl_dog",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideUntilUnlocked": true
-    },
-    {
       "id": "fr_3rd_machine_gun_regiment",
       "type": "decal",
       "chapter": "decals",
@@ -32672,21 +32749,7 @@
       "hideUntilUnlocked": true
     },
     {
-      "id": "ger_3rd_sboot_fl_serpent",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideUntilUnlocked": true
-    },
-    {
       "id": "it_divisione_savoia_cavalleria",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideUntilUnlocked": true
-    },
-    {
-      "id": "ussr_133rd_tank_bat_badge",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
