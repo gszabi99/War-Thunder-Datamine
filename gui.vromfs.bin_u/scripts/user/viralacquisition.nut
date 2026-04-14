@@ -7,26 +7,38 @@ let { userIdStr, isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
 let awardRanks = [3, 4, 7]
-let awardVesselsRanks = [3, 4, 5]
 let awards = [[70000, 0], [300000, 100], [0, 2500]]
+let awardCount = 3
 
 let getLinkString = @() format(loc("msgBox/viralAcquisition"), userIdStr.get())
 
-function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
-  locId = "/".concat(locId, "disabledSecondAndThirdStageForVessels") 
-  let desc = loc(locId, {
-    firstAwardRank = get_roman_numeral(awardRanks[0]),
-    secondAwardRank = get_roman_numeral(awardRanks[1]),
-    thirdAwardRank = get_roman_numeral(awardRanks[2]),
-    firstAwardVesselsRank = get_roman_numeral(awardVesselsRanks[0]),
-    secondAwardVesselsRank = get_roman_numeral(awardVesselsRanks[1]),
-    thirdAwardVesselsRank = get_roman_numeral(awardVesselsRanks[2]),
-    firstAwardPrize = Cost(awards[0][0], awards[0][1]).tostring(),
-    secondAwardPrize = Cost(awards[1][0], awards[1][1]).tostring(),
-    thirdAwardPrize = Cost(awards[2][0], awards[2][1]).tostring(),
-    gift = Cost(0, 50).tostring(),
-    link = getLinkString() })
-  return desc
+function getViralAcquisitionDesc(showLink = true) {
+  let awardLines = [
+    loc("msgbox/linkCopied/without2faAnyVehicleType", {
+      awardPrize = Cost(awards[0][0], awards[0][1]).tostring()
+      awardRank = get_roman_numeral(awardRanks[0])
+    })
+    loc("msgbox/linkCopied/with2faAviationArmy", {
+      awardPrize = Cost(awards[1][0], awards[1][1]).tostring()
+      awardRank = get_roman_numeral(awardRanks[1])
+    })
+    loc("msgbox/linkCopied/with2faAviationArmy", {
+      awardPrize = Cost(awards[2][0], awards[2][1]).tostring()
+      awardRank = get_roman_numeral(awardRanks[2])
+    })
+  ]
+  let lines = [
+    loc("msgbox/linkCopied/header")
+    loc("msgbox/linkCopied/listTitle")
+    ""
+    "\n".join(awardLines)
+    loc("msgbox/linkCopied/limit", { awardCount })
+    ""
+    loc("msgbox/linkCopied/inviteeReward", { gift = Cost(0, 50).tostring() })
+  ]
+  if (showLink)
+    lines.append("", loc("msgbox/linkCopied/link", { link = getLinkString() }))
+  return "\n".join(lines)
 }
 
 function showViralAcquisitionWnd() {

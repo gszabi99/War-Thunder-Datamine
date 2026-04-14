@@ -217,7 +217,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.initTabs()
     let bntGetLinkObj = this.scene.findObject("btn_getLink")
     if (checkObj(bntGetLinkObj))
-      bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
+      bntGetLinkObj.tooltip = getViralAcquisitionDesc(false)
 
     this.initShortcuts()
     this.updateProfileAppearance()
