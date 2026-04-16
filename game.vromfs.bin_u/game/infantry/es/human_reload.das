@@ -146,24 +146,29 @@ def gun_reload_interrupt_on_shoot(info : ParallelUpdateFrameDelayed;
                                   human_weap__isReloading : bool;
                                   human_weap__currentGunEid : EntityId;
                                   human_net_phys : HumanActor&)
+  if !human_weap__isReloading
+    return
   let isShoot = human_net_phys.phys.appliedCT |> is_control_bit_set(HumanPhysControlType.HCT_SHOOT)
   let isAim = human_net_phys.phys.appliedCT |> is_control_bit_set(HumanPhysControlType.HCT_AIM)
-  if human_weap__isReloading && (isShoot || isAim)
-    query(human_weap__currentGunEid) <| $ [es] (gun_reload__stateAcceptsInterruptRequest : bool; var gun_reload__shouldInterrupt : bool&)
-      if gun_reload__stateAcceptsInterruptRequest
-        gun_reload__shouldInterrupt = true
+  query(human_weap__currentGunEid) <| $ [es] (gun_reload__stateAcceptsInterruptRequest : bool;
+                                              var gun_reload__shouldInterrupt : bool&;
+                                              var gun_reload__startedWhileShootHeld : bool&)
+    if !isShoot
+      gun_reload__startedWhileShootHeld = false
+    if gun_reload__stateAcceptsInterruptRequest && (isShoot || isAim) && !(isShoot && gun_reload__startedWhileShootHeld)
+      gun_reload__shouldInterrupt = true
 
 struct GunReloadData
   reloadStyle : GunReloadStyle
   prereq : bool
   reloadTime : float
 
-[es(tag=server, REQUIRE=human, REQUIRE_NOT=deadEntity, on_appear)]
+[es(REQUIRE=human, REQUIRE_NOT=deadEntity, on_appear)]
 def human_inspect_on_spawn_init(evt : Event;
                                 eid : EntityId)
   addSubTemplate(eid, "inspect_on_spawn")
 
-[es(tag=server, REQUIRE=inspectOnSpawn, on_event=ParallelUpdateFrameDelayed)]
+[es(REQUIRE=inspectOnSpawn, on_event=ParallelUpdateFrameDelayed)]
 def human_inspect_on_spawn(evt : Event;
                            eid : EntityId;
                            dynamic_respawn__spawnOnUnitEid : EntityId;
@@ -180,7 +185,7 @@ def human_inspect_on_spawn(evt : Event;
       sendEvent(eid, CmdGunRequestInspect(atTime = get_sync_time(), gunEid = human_weap__currentGunEid))
     removeSubTemplate(eid, "inspect_on_spawn")
 
-[es(tag=server)]
+[es]
 def human_weap_request_inspection_es(evt : CmdGunRequestInspect;
                                      eid : EntityId;
                                      human_weap__reloadStartTime : float;
@@ -189,49 +194,57 @@ def human_weap_request_inspection_es(evt : CmdGunRequestInspect;
                                      var human_weap__isReloadRequested : bool&;
                                      var human_weap__inspectStartTime : float&;
                                      var human_weap__inspectEndTime : float&;
+                                     var human_anim__heroInspectStartTime : float&;
+                                     var human_anim__heroInspectEndTime : float&;
                                      var human_weap__singleReload : bool&)
   let atTime = evt.atTime
   let gunEid = evt.gunEid
 
-  if human_weap__inspectEndTime > atTime
+  if human_anim__heroInspectEndTime > atTime
     return
 
   if !human_weap_can_reload(eid, gunEid)
     return
 
   query(gunEid) <| $ [es] (gun__inspectTime : float;
-                           var gun_anim__reloadStyle : int&)
+                           var gun_anim__reloadStyle : int&;
+                           var gun_anim__heroReloadStyle : int&)
     let isReloading = atTime < human_weap__reloadFinishTime
     if isReloading
       interrupt_reload_immediately_impl(human_weap__reloadStartTime, human_weap__reloadFinishTime, human_weap__reloadAtTime, human_weap__isReloadRequested)
     human_weap__inspectStartTime = isReloading ? human_weap__reloadStartTime : atTime
     human_weap__inspectEndTime = atTime + gun__inspectTime
+
     
     
     
     human_weap__singleReload = false
     gun_anim__reloadStyle = int(GunReloadStyle.RELOAD_STYLE_INSPECT)
+    gun_anim__heroReloadStyle = gun_anim__reloadStyle
+
+    human_anim__heroInspectStartTime = human_weap__inspectStartTime
+    human_anim__heroInspectEndTime = human_weap__inspectEndTime
 
 [es(tag=gameClient, track=human_weap__inspectStartTime, REQUIRE=(hero, human_weap__inspectStartTime))]
 def show_weapons_ui_on_inspection_anim(evt : Event)
   broadcastEvent(CmdUIShowWeaponsBlock())
 
-[es(tag=server)]
+[es]
 def human_weap_request_reload_es(evt : CmdRequestReload;
                                  eid : EntityId;
                                  itemContainer : EidList;
-                                 human_weap__infiniteAmmoHolders : bool;
                                  var human_weap__reloadGunEid : EntityId&;
                                  var human_weap__reloadAtTime : float&;
                                  var human_weap__reloadFinishTime : float&;
                                  var human_weap__reloadStartTime : float&;
-                                 var human_weap__reloadMode : int&;
                                  var human_weap__singleReload : bool&;
                                  var human_weap__singleReloadAmmoCount : int&;
                                  var human_weap__reloadPrevTime : float&;
                                  var human_weap__isReloadRequested : bool&;
                                  var human_weap__isDualMagReload : bool&;
                                  var human_weap__isQuickReload : bool&;
+                                 var human_anim__heroReloadStartTime : float&;
+                                 var human_anim__heroReloadEndTime : float&;
                                  entity_mods__jamChanceMult : float = 1.0;
                                  entity_mods__reloadMult : float = 1.0)
   let atTime = evt.atTime
@@ -262,11 +275,14 @@ def human_weap_request_reload_es(evt : CmdRequestReload;
     elif isQuickReloadRequested && !human_weap__isQuickReload
       query(gunEid) <| $ [es] (gun__quickReloadTime : float;
                                gun__reloadFinishMult : float = 0.9;
-                               var gun_anim__reloadStyle : int&)
+                               var gun_anim__reloadStyle : int&;
+                               var gun_anim__heroReloadStyle : int&)
         gun_anim__reloadStyle = int(GunReloadStyle.RELOAD_STYLE_QUICK)
+        gun_anim__heroReloadStyle = gun_anim__reloadStyle
         human_weap__reloadAtTime = human_weap__reloadStartTime + gun__quickReloadTime
         human_weap__reloadFinishTime = human_weap__reloadStartTime + gun__quickReloadTime * gun__reloadFinishMult
         human_weap__isQuickReload = true
+        human_anim__heroReloadEndTime = human_weap__reloadAtTime
     return
 
   query(gunEid) <| $ [es] (gun__ammo : int;
@@ -284,23 +300,27 @@ def human_weap_request_reload_es(evt : CmdRequestReload;
                            gun__forceFiniteAmmo : bool = false;
                            var gun__ammoOnSwitch : int&;
                            var gun__ammoToReloadCount : int&;
-                           var gun_anim__reloadStyle : int&)
+                           var gun_anim__reloadStyle : int&;
+                           var gun_anim__heroReloadStyle : int&)
     
     let maxAmmo = gun__maxAmmo + (gun__saveAmmoInChamberOnReload ? 1 : 0)
     if gun__ammo >= maxAmmo && gun__ammo > 0
       return
 
-    human_weap__reloadMode = int(human_weap__infiniteAmmoHolders && !gun__forceFiniteAmmo ? ReloadAmmoMode.INFINITE : ReloadAmmoMode.CONSUME)
-    if human_weap__infiniteAmmoHolders && gun__ammoOnSwitch == 0
-      
-      gun__ammoOnSwitch = gun__maxAmmo
-      human_weap__reloadMode = int(ReloadAmmoMode.CONSUME)
+    query(eid) <| $ [es] (human_weap__infiniteAmmoHolders : bool;
+                          var human_weap__reloadMode : int&)
+      human_weap__reloadMode = int(human_weap__infiniteAmmoHolders && !gun__forceFiniteAmmo ? ReloadAmmoMode.INFINITE : ReloadAmmoMode.CONSUME)
+      if human_weap__infiniteAmmoHolders && gun__ammoOnSwitch == 0
+        
+        gun__ammoOnSwitch = gun__maxAmmo
+        human_weap__reloadMode = int(ReloadAmmoMode.CONSUME)
 
     find_ammo_for_gun(gunEid, itemContainer, INVALID_ITEM_ID, gun__ammo) <| $(ammoForGun : AmmoItemForGunResult)
       if ammoForGun.itemIndex < 0
         return
 
       gun_anim__reloadStyle = int(GunReloadStyle.RELOAD_STYLE_SIMPLE)
+      gun_anim__heroReloadStyle = gun_anim__reloadStyle
       let isDualMagReload = (gun__isDualMagReady && gun__ammo == 0)
 
       var reloadTime = 0.0
@@ -346,6 +366,7 @@ def human_weap_request_reload_es(evt : CmdRequestReload;
           if r.prereq && (r.reloadTime >= 0.0)
             reloadTime = r.reloadTime
             gun_anim__reloadStyle = int(r.reloadStyle)
+            gun_anim__heroReloadStyle = gun_anim__reloadStyle
             break
       else
         query(gunEid) <| $ [es] (single_reload__prepareTime : float = 0.1;
@@ -356,6 +377,7 @@ def human_weap_request_reload_es(evt : CmdRequestReload;
           let shouldJam = gfrnd() < gun__jamChance * entity_mods__jamChanceMult || forceJam
           if single_reload__jammedPostTime >= 0.0 && shouldJam
             gun_anim__reloadStyle = int(GunReloadStyle.RELOAD_STYLE_JAMMED)
+            gun_anim__heroReloadStyle = gun_anim__reloadStyle
             postTime = single_reload__jammedPostTime
 
           let singleReloadAmmoCount = float(ammoForGun.singleReloadAmmoCount)
@@ -368,6 +390,8 @@ def human_weap_request_reload_es(evt : CmdRequestReload;
       human_weap__reloadStartTime = atTime
       human_weap__reloadAtTime = human_weap__reloadStartTime + reloadTime
       human_weap__reloadFinishTime = human_weap__reloadStartTime + reloadTime * gun__reloadFinishMult
+      human_anim__heroReloadStartTime = human_weap__reloadStartTime
+      human_anim__heroReloadEndTime = human_weap__reloadAtTime
       human_weap__isDualMagReload = isDualMagReload
       human_weap__isQuickReload = gun_anim__reloadStyle == int(GunReloadStyle.RELOAD_STYLE_QUICK)
       human_weap__singleReload = ammoForGun.singleReload

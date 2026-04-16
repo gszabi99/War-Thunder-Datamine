@@ -88,6 +88,7 @@
     "gun_reload__stateStartTime": -1.0,
     "gun_reload__stateEndTime": -1.0,
     "gun_reload__stateAcceptsInterruptRequest": false,
+    "gun_reload__startedWhileShootHeld": false,
     "_group": [
       {
         "_track": true,
@@ -157,7 +158,8 @@
       "item__iconOffset": [
         0.0,
         0.0
-      ]
+      ],
+      "item__attachmentShading": "silhouette"
     },
     "hud_squad_manager:object": {
       "item__iconPitch": 0.0,
@@ -169,7 +171,8 @@
       "item__iconOffset": [
         0.0,
         0.0
-      ]
+      ],
+      "item__attachmentShading": "silhouette"
     },
     "unit_slot:object": {
       "item__iconPitch": 0.0,
@@ -544,6 +547,7 @@
     "gun_anim__singleReloadProgress": -1.0,
     "gun_anim__singleReloadState": 0,
     "gun_anim__reloadStyle": 0,
+    "gun_anim__heroReloadStyle": 0,
     "_replicated": [
       "item__lastOwner",
       "shell_props",
@@ -726,28 +730,6 @@
     "gun_shell_ejection__templateName": "7_62x51_ejected_shell",
     "gun__canPierceHPEntity:tag": {}
   },
-  "lmg_deviation_preset": {
-    "gun_deviation__omegaRange": [
-      30.0,
-      180.0
-    ],
-    "gun_deviation__omegaDevInc": [
-      0.04,
-      0.3
-    ],
-    "gun_deviation__movementRange": [
-      2.1,
-      4.0
-    ],
-    "gun_deviation__movementDevInc": [
-      5.0,
-      20.0
-    ],
-    "gun_deviation__onShotDeviationChange": 0.0,
-    "gun_deviation__shotTau": 0.1,
-    "gun_deviation__extraDeviationTau": 0.18,
-    "gun_deviation__maxDeviation": 13.0
-  },
   "ironsights_open_assault_rifle": {
     "gun__magnification": 2.0
   },
@@ -843,6 +825,8 @@
     ],
     "allowRequestAmmo": true,
     "item_pickup_priority__lookAtWeight": 3.85,
+    "ammo_holder__emptyWeight": -1.0,
+    "ammo_holder__bulletWeight": -1.0,
     "fastPickup:tag": {}
   },
   "ironsights_open_rifle": {

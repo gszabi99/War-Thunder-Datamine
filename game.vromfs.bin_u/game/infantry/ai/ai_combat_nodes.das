@@ -3713,6 +3713,8 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
     stepsRange = datablock_getIPoint2(data, "stepsRange", stepsRange)
     stepDist = datablock_getReal(data, "stepDist", stepDist)
 
+    traceSeenDist = datablock_getReal(data, "traceSeenDist", traceSeenDist)
+
   def trace_not_hidden_ray(pos1 : float3; pos2 : float3; ray_mat : int; exclude_eid : EntityId)
     let dir = normalize(pos2 - pos1)
     let flags = (ETF_ALL) & ~(ETF_LMESH | ETF_HEIGHTMAP)
@@ -3722,18 +3724,20 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
       collides = rayhit_entities_in_grid(ecs_hash("vehicles"), pos1, dir, traceSeenDist, exclude_eid)
     return !collides
 
-  def trace_hidden(agent_pos : float3; enemy_eid : EntityId; ray_mat : int; var num_traces : int&)
+  def trace_hidden(agent_pos : float3; enemy_eid : EntityId; ray_mat : int; var num_traces : int&; var out_pos : float3&)
     var result = true
+    out_pos = float3()
     query(enemy_eid) <| $ [es] (transform : float3x4; isAlive : bool = true)
       if !isAlive
         return
-      let enemyPos = transform[3] + enemyOfs
+      out_pos = transform[3]
+      let traceToPos = transform[3] + enemyOfs
       
       
       
       
       num_traces += 1
-      if trace_not_hidden_ray(agent_pos + bodyOfs2, enemyPos, ray_mat, enemy_eid)
+      if trace_not_hidden_ray(agent_pos + bodyOfs2, traceToPos, ray_mat, enemy_eid)
         result = false
         return
     return result
@@ -3742,24 +3746,14 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
     let agentEid = beh_tree_eid(owner)
     var mainEnemyEid = EntityId(uint(owner.blackBoard |> datablock_getInt(mainEnemyEidParam)))
 
+    var forwDir = float3()
     var bodyPos = float3()
-    var stepDirLt = float3()
-    var stepDirRt = float3()
     var shootRayMat = -1
     var hasAgentInfo = false
     query(agentEid) <| $ [es] (transform : float3x4;
                                human_attached_gun__attachedGunEid : EntityId = INVALID_ENTITY_ID;
                                human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID)
-      stepDirLt = transform[0] * stepLocalDir.z
-      stepDirLt += transform[1] * stepLocalDir.y
-      stepDirLt += transform[2] * stepLocalDir.x
-      stepDirLt = normalize(stepDirLt)
-
-      stepDirRt = transform[0] * stepLocalDir.z
-      stepDirRt += transform[1] * stepLocalDir.y
-      stepDirRt += transform[2] * -stepLocalDir.x
-      stepDirRt = normalize(stepDirRt)
-
+      forwDir = transform[0]
       bodyPos = transform[3]
       shootRayMat = get_shoot_ray_mat(human_attached_gun__attachedGunEid, human_weap__currentGunEid)
       hasAgentInfo = true
@@ -3776,19 +3770,56 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
     if !hasMainEnemy
       mainEnemyEid = INVALID_ENTITY_ID
 
+    var enemyPos = float3()
+    var totalPos = float3()
+    var totalCnt = 0
+
     var numTraces = 0
     query(agentEid) <| $ [es] (agent_dangers : AgentDangers)
       var numDangers = 0
-      if hasMainEnemy && !trace_hidden(bodyPos, mainEnemyEid, shootRayMat, numTraces)
+      if hasMainEnemy && !trace_hidden(bodyPos, mainEnemyEid, shootRayMat, numTraces, enemyPos)
         ++numDangers
+        if enemyPos != float3()
+          totalPos += enemyPos
+          totalCnt += 1
       else
         for danger in agent_dangers.dangers
           if danger.eid != mainEnemyEid
-            if !trace_hidden(bodyPos, danger.eid, shootRayMat, numTraces)
+            enemyPos = float3()
+            if !trace_hidden(bodyPos, danger.eid, shootRayMat, numTraces, enemyPos)
               numDangers += 1
+            if enemyPos != float3()
+              totalPos += enemyPos
+              totalCnt += 1
       if numDangers <= 0
         
         return
+
+      if totalCnt > 0
+        let avgEnemyPos = totalPos / float(totalCnt)
+        let newDir = normalize(avgEnemyPos - bodyPos)
+        if length_sq(newDir) >= 0.99
+          forwDir = newDir
+      let fixedDir = normalize(x0z(forwDir))
+      if length_sq(fixedDir) >= 0.99
+        forwDir = fixedDir
+      let upDir = float3(0, 1, 0)
+      let rightDir = float3(forwDir.z, 0.0, -forwDir.x)
+
+      
+
+      var stepDirLt = float3()
+      var stepDirRt = float3()
+
+      stepDirLt = forwDir * stepLocalDir.z
+      stepDirLt += upDir * stepLocalDir.y
+      stepDirLt += rightDir * -stepLocalDir.x
+      stepDirLt = normalize(stepDirLt)
+
+      stepDirRt = forwDir * stepLocalDir.z
+      stepDirRt += upDir * stepLocalDir.y
+      stepDirRt += rightDir * stepLocalDir.x
+      stepDirRt = normalize(stepDirRt)
 
       var checkOneDir = true
       var checkInvDir = true
@@ -3819,7 +3850,7 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
             
             
           if checkDir
-            if hasMainEnemy && !trace_hidden(atPos, mainEnemyEid, shootRayMat, numTraces)
+            if hasMainEnemy && !trace_hidden(atPos, mainEnemyEid, shootRayMat, numTraces, enemyPos)
               continue
 
             
@@ -3830,7 +3861,7 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
               if !danger.traceable || danger.eid == mainEnemyEid
                 continue
               ++extraTraced
-              if !trace_hidden(atPos, danger.eid, shootRayMat, numTraces)
+              if !trace_hidden(atPos, danger.eid, shootRayMat, numTraces, enemyPos)
                 extraSeen += 1
               if extraTraced >= maxExtraEnemiesToTrace
                 break
@@ -3840,7 +3871,7 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
                 if danger.traceable || danger.eid == mainEnemyEid
                   continue
                 ++extraTraced
-                if !trace_hidden(atPos, danger.eid, shootRayMat, numTraces)
+                if !trace_hidden(atPos, danger.eid, shootRayMat, numTraces, enemyPos)
                   extraSeen += 1
                 if extraTraced >= maxExtraEnemiesToTrace
                   break

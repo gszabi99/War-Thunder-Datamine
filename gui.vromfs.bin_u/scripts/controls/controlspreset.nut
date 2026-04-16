@@ -11,7 +11,7 @@ let { getControlsPresetFilename, parseControlsPresetFileName
 
 const PRESET_ACTUAL_VERSION  = 5
 const PRESET_DEFAULT_VERSION = 4
-const FALLBACKS_ACTUAL_VERSION = 1
+const FALLBACKS_ACTUAL_VERSION = 3
 
 const BACKUP_OLD_CONTROLS_DEFAULT = 0 
 
@@ -221,13 +221,17 @@ ControlsPreset = class {
             this.axes[name] <- u.copy(fallbackAxis)
           else
             u.extend(axis, fallbackAxis)
-          
-          
-          let mid = this.axes[name].mouseAxisId
-          if (mid == MouseAxis.MOUSE_SCROLL || mid == MouseAxis.MOUSE_SCROLL_HELICOPTER)
-            this.axes[name].mouseAxisId = MouseAxis.MOUSE_SCROLL_HUMAN
         }
       }
+      
+      
+      let mid = this.axes?[name].mouseAxisId ?? -1
+      if (mid == MouseAxis.MOUSE_SCROLL || mid == MouseAxis.MOUSE_SCROLL_HELICOPTER)
+        this.axes[name].mouseAxisId = MouseAxis.MOUSE_SCROLL_HUMAN
+      
+      
+      else if (mid == MouseAxis.MOUSE_X || mid == MouseAxis.MOUSE_Y)
+        this.axes[name].mouseAxisId = -1
     }
   }
 

@@ -13223,7 +13223,8 @@
           "metalness": 0.1,
           "texScale": 3.4,
           "maxLevel": 1.0,
-          "topProjScale": 4.00997
+          "topProjScale": 4.00997,
+          "useRemoval": true
         },
         "mud": {
           "name": "mud",
@@ -21821,6 +21822,7 @@
         "m_east_palace_f_hall_building_dome_l_inside"
       ],
       "excRE": [
+        "m_east_palace_f_dome_scaffolding_a",
         "m_east_palace_fence_a",
         "m_east_lion_statue_a",
         "m_east_fountain_b",
@@ -22689,6 +22691,7 @@
         "metal_lattice_"
       ],
       "excRE": [
+        "m_east_palace_f_dome_scaffolding_a",
         "m_east_palace_fence_a",
         "m_east_lion_statue_a",
         "m_east_fountain_b",
@@ -23808,6 +23811,21 @@
         "ph_1605am_section_right_walls_top_a_damaged",
         "ph_1605am_section_roof_ventilation_a",
         "ph_1605am_section_roof_walls_a",
+        "m_east_palace_f_hall_building_dome_l",
+        "m_east_palace_f_wood_planks_a",
+        "m_east_palace_f_wood_planks_b",
+        "m_east_palace_f_wood_planks_c",
+        "m_east_palace_f_wood_planks_d",
+        "m_east_palace_f_wood_planks_e",
+        "m_east_palace_f_dome_tarpaulin_a",
+        "m_east_palace_f_dome_tarpaulin_b",
+        "m_east_palace_f_dome_tarpaulin_c",
+        "m_east_palace_f_dome_tarpaulin_d",
+        "m_east_palace_f_dome_tarpaulin_e",
+        "m_east_palace_f_dome_tarpaulin_f",
+        "m_east_palace_f_dome_tarpaulin_g",
+        "m_east_palace_f_dome_tarpaulin_h",
+        "m_east_palace_f_dome_scaffolding_a",
         "modern_city_building_concrete_a_13fl_a",
         "modern_city_building_concrete_a_13fl_a_damaged",
         "modern_city_building_concrete_a_16fl_a",
@@ -27044,10 +27062,12 @@
     "minDirVelAngleDegrees": 6.0
   },
   "navQueryFilterWeights_human": {
-    "jumpWeight": 10.0,
-    "jumpOverWeight": 5.0,
-    "jumpDownWeight": 5.0,
-    "jumpDownThreshold": 0.4
+    "jumpWeight": 50.0,
+    "jumpOverWeight": 25.0,
+    "jumpDownWeight": 25.0,
+    "jumpDownThreshold": 0.4,
+    "heuristicScale": 15.0,
+    "reopenTotalThreshold": 20.0
   },
   "navQueryFilterWeights_tilecache": {
     "jumpWeight": 10.0,

@@ -387,6 +387,9 @@
                 "minSimSpeedCoef": 0.5
               }
             },
+            "acquireTacticalTarget": {
+              "targetEidParam": "shootEnemy"
+            },
             "setDebugSym": [
               {
                 "act": "r1"
@@ -1527,7 +1530,7 @@
                                                 3
                                               ],
                                               "shootTime": [
-                                                0.1,
+                                                0.3,
                                                 1.0
                                               ],
                                               "cooldownTime": [
@@ -1560,6 +1563,214 @@
                                             "unblockReload": {}
                                           }
                                         }
+                                      },
+                                      {
+                                        "not": [
+                                          {
+                                            "isOrderOverwatch": {}
+                                          },
+                                          {
+                                            "checkDistance": {
+                                              "posParam": "posNearTarget",
+                                              "radius": 5.0,
+                                              "yRadius": 4.0
+                                            }
+                                          },
+                                          {
+                                            "isAtStance": {
+                                              "stanceParam": "crawlStance"
+                                            }
+                                          },
+                                          {
+                                            "and": {
+                                              "isVarsIntEqual": {
+                                                "lhs": "lastStayCrawl",
+                                                "rhs_value": 1
+                                              },
+                                              "checkAtTime": {
+                                                "timeParam": "lastStayCrawlTime",
+                                                "range": [
+                                                  -10.0,
+                                                  15.0
+                                                ]
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "checkAtTime": {
+                                              "timeParam": "lastHideMoveAttackTime",
+                                              "range": [
+                                                0.0,
+                                                2.0
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "checkDistance": {
+                                              "posParam": "saferPosForAttack",
+                                              "radius": 0.5,
+                                              "yRadius": 0.5
+                                            }
+                                          }
+                                        ],
+                                        "or": {
+                                          "ignoreChance": {
+                                            "chance": 0.75
+                                          },
+                                          "checkTooManyEnemiesWatching": {
+                                            "maxSumCosCoef": 1.5
+                                          }
+                                        },
+                                        "orderedSelector": [
+                                          {
+                                            "sequencer": {
+                                              "ignoreChance": {
+                                                "chance": 0.5
+                                              },
+                                              "traceMoveToHideFromEnemies": {
+                                                "stepLocalDir": [
+                                                  1.0,
+                                                  0.0,
+                                                  0.32
+                                                ],
+                                                "stepsRange": [
+                                                  1,
+                                                  3
+                                                ],
+                                                "outMoveToPosParam": "saferPosForAttack",
+                                                "mainEnemyEidParam": "shootEnemy",
+                                                "traceSeenDist": 15.0
+                                              }
+                                            },
+                                            "traceMoveToHideFromEnemies": {
+                                              "stepLocalDir": [
+                                                1.0,
+                                                0.0,
+                                                -0.61
+                                              ],
+                                              "stepsRange": [
+                                                1,
+                                                3
+                                              ],
+                                              "outMoveToPosParam": "saferPosForAttack",
+                                              "mainEnemyEidParam": "shootEnemy",
+                                              "traceSeenDist": 15.0
+                                            }
+                                          },
+                                          {
+                                            "isLookingToPos": {
+                                              "posParam": "posNearTarget",
+                                              "offAngle": 10.0
+                                            },
+                                            "rotateToPoint": {
+                                              "posParam": "posNearTarget",
+                                              "aimSpeedCoef": 0.33,
+                                              "maxSimAngle": [
+                                                50.0,
+                                                60.0
+                                              ],
+                                              "minSimAngle": 5.0,
+                                              "minSimSpeedCoef": 0.25
+                                            }
+                                          }
+                                        ],
+                                        "setDebugSym": {
+                                          "act": "a37"
+                                        },
+                                        "getTime": [
+                                          {
+                                            "to": "lastHideMoveAttackTime"
+                                          },
+                                          {
+                                            "to": "lastMoveShootTime"
+                                          }
+                                        ],
+                                        "acquireTacticalTarget": {
+                                          "targetEidParam": "shootEnemy"
+                                        },
+                                        "debugDanger": [
+                                          {
+                                            "type": 5,
+                                            "kind": 50,
+                                            "paramName": "shootEnemy"
+                                          },
+                                          {
+                                            "type": 7,
+                                            "kind": 50,
+                                            "paramName": "shootEnemy"
+                                          }
+                                        ],
+                                        "changeStance": {
+                                          "stanceName": "stand",
+                                          "maxStanceParam": "maxStanceInAttack"
+                                        },
+                                        "success": {
+                                          "parallel": {
+                                            "moveShoot": {
+                                              "posParam": "saferPosForAttack",
+                                              "distThreshold": 0.4,
+                                              "angleThreshold": 180.0,
+                                              "keepCrouch": true,
+                                              "onlyAliveTarget": true,
+                                              "chooseStance": true,
+                                              "tryToSaveCurrentStance": true,
+                                              "minStanceChance": 1.5,
+                                              "distOfAimingFade": 7.0,
+                                              "accuracyForceShot": [
+                                                0.75,
+                                                0.5
+                                              ],
+                                              "failOnNotReady": false,
+                                              "forceStanceLimit": true,
+                                              "targetUnitParam": "shootEnemy",
+                                              "minStanceParam": "minStance",
+                                              "shootCyclesRange": [
+                                                1,
+                                                2
+                                              ],
+                                              "shootTime": [
+                                                1.5,
+                                                2.1
+                                              ],
+                                              "cooldownTime": [
+                                                0.1,
+                                                0.1
+                                              ],
+                                              "minAimTime": [
+                                                0.15,
+                                                0.25
+                                              ],
+                                              "maxStanceParam": "maxStanceInAttack",
+                                              "alwaysAiming": true,
+                                              "cyclesSuccess": true,
+                                              "lostTargetCooldownRange": [
+                                                0.6,
+                                                0.9
+                                              ],
+                                              "closeShootRange": [
+                                                1.0,
+                                                50.0
+                                              ],
+                                              "closeShootAngles": [
+                                                45.0,
+                                                30.0
+                                              ],
+                                              "criticalShotTime": 0.5,
+                                              "criticalShotAngle": 60.0,
+                                              "checkFriendlyFireRadius": 0.05,
+                                              "ignoreLostTargetParam": "enemiesWatching50",
+                                              "useTeamCustomNav": true
+                                            },
+                                            "wait": {
+                                              "range": [
+                                                3.0,
+                                                5.0
+                                              ],
+                                              "resetable": true
+                                            }
+                                          }
+                                        },
+                                        "break": {}
                                       },
                                       {
                                         "or": {
@@ -2374,6 +2585,9 @@
                                         "getTime": {
                                           "to": "lastMoveShootTime"
                                         },
+                                        "acquireTacticalTarget": {
+                                          "targetEidParam": "shootEnemy"
+                                        },
                                         "debugDanger": [
                                           {
                                             "type": 5,
@@ -3139,6 +3353,9 @@
       },
       "forceWeaponReady": {
         "forceReady": true
+      },
+      "acquireTacticalTarget": {
+        "targetEidParam": "shootEnemy"
       },
       "success": [
         {

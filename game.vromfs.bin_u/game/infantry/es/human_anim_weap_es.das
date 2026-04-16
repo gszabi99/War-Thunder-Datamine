@@ -38,7 +38,7 @@ def constraint_movement(var pos : float3&; var vel : float3&; limit_min, limit_m
       vel[i] = 0.f
     pos[i] = clamp(pos[i], limit_min[i], limit_max[i])
 
-[es(after=update_phys_es, before=anim_phys_updater_es, before=animchar_es, REQUIRE_NOT=deadEntity)]
+[es(tag=gameClient, after=update_phys_es, before=anim_phys_updater_es, before=animchar_es, REQUIRE_NOT=deadEntity)]
 def human_anim_weap(info : ParallelUpdateFrameDelayed;
                     transform : float3x4;
                     human_net_phys : HumanActor;

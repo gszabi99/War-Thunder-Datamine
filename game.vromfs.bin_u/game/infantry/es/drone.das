@@ -117,8 +117,10 @@ def drone_destroy_request(evt : CmdRequestDestroyDrone;
 
 
 [es(REQUIRE=isDrone)]
-def drone_on_became_dead(evt : EventUnitBecameDead; var isAlive : bool&)
+def drone_on_became_dead(evt : EventUnitBecameDead; var isAlive : bool&; eid : EntityId)
   isAlive = false
+  if is_server()
+    sendEventImmediate(eid, CmdDestroyDrone())
 
 
 [es(on_appear, REQUIRE=(isDrone, deadEntity))]

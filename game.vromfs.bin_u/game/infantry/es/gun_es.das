@@ -229,7 +229,10 @@ def private gun_update(var gun : Gun&;
     state.loaded = true
 
   if state.isPrevAppliedControlShoot && !gun.appliedControls.shoot
-    sendEventImmediate(input.gunEid, EventStopShoot())
+    if is_server()
+      send_net_event(input.gunEid, EventNetStopShoot())
+    else
+      sendEventImmediate(input.gunEid, EventStopShoot())
 
 
   state.isPrevAppliedControlShoot = gun.appliedControls.shoot

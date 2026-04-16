@@ -917,7 +917,7 @@ def human_weap_on_net_shoot_es(evt : CmdNetUnitShot;
                                human_weap__gunEids : EidList)
   var gunFound = false
   for weapEid in human_weap__gunEids
-    query(weapEid) <| $ [es] (gun__shell_prop_ids : PropsIdList)
+    query(weapEid) <| $ [es] (gun__shell_prop_ids : PropsIdList; gun__firingModeIndex : int)
       for curShellId in gun__shell_prop_ids
         if curShellId == evt.shellId
           gunFound = true
@@ -931,7 +931,7 @@ def human_weap_on_net_shoot_es(evt : CmdNetUnitShot;
                                                  initialLifeTime = 0.,
                                                  tm = shootTm,
                                                  vel = evt.vel,
-                                                 firingMode = uint(0),
+                                                 firingMode = uint(gun__firingModeIndex),
                                                  bombBayHeight = 0.))
           break
     if gunFound

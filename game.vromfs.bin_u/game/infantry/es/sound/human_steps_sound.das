@@ -218,9 +218,15 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                                              human_steps_sound_generator__walkRunSprint_crouch_intervals : float3;
                                              human_steps_sound_generator__enableForVisible : bool;
                                              human_steps_sound_generator__enableForInvisible : bool;
-                                             human_steps_sound_generator__enableAlways : bool)
+                                             human_steps_sound_generator__enableAlways : bool;
+                                             managed_sound__isStealed : bool = false;
+                                             var managed_sound__pos : float3&)
+    managed_sound__pos = transform[3]
 
-    if !have_sound(sound_control__state) || is_faraway_step(is_watched_sound, transform[3], human_steps_sound__farawayThresholdSq, listenerPos)
+    if !have_sound(sound_control__state) || is_faraway_step(is_watched_sound, transform[3], human_steps_sound__farawayThresholdSq, listenerPos) || managed_sound__isStealed
+      if managed_sound__isStealed
+        abandon(human_step_sound_grains__event)
+        human_step_sound_grains__ttl = 0.
       human_sound_landmesh_queries_vars__speedSq = 0.
       human_sound_landmesh_queries_vars__isOnGround = true
       human_steps_sound__physStates = human_net_phys__states

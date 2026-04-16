@@ -127,7 +127,6 @@ def human_weap_update_shoot_dir_es(info : UpdateStageUpdateInput;
   if ct |> is_control_bit_set(HumanPhysControlType.HCT_SHOOT) && !ct.haveUnenqueuedHctShoot
     atTime = floor(atTime / human_net_phys.phys.timeStep) * human_net_phys.phys.timeStep
 
-  let isForReal = true
   let wishGunDir = ct.wishShootDir
   var gunDir = wishGunDir
   let gunAnglesOffset = human_weap__aimInertia
@@ -597,6 +596,7 @@ def human_input_es(info : UpdateStageUpdateInput;
                    human_input__holdBreathLastPressingTime : float;
                    human_input__holdBreathLongPressThres : float;
                    human_input__forceSprintAction : bool = false;
+                   unit__ref : UnitRef;
                    var human_input__sprintHoldReset : bool&;
                    var human_input__currentRotationSpeed : float&;
                    var human_melee_charge__forceEnabled : bool&;
@@ -614,7 +614,7 @@ def human_input_es(info : UpdateStageUpdateInput;
                    var human_input__moveInputAccum : float2&;
                    var human_net_phys__prevRootDir : float3&;
                    var human_net_phys__prevVertDir : float3&)
-  if camera_input__disabled
+  if camera_input__disabled || unit__ref.unit.isDelayed
     return
   assume phys = human_net_phys.phys
   human_input__oldAimAngle = human_input__aimAngle
@@ -937,7 +937,7 @@ def human_crew_input_es(evt : EventOnKeyDown;
   if player == null
     return
 
-  var curSoldierEid = drone__owner == INVALID_ENTITY_ID ? eid : drone__owner
+  let curSoldierEid = drone__owner == INVALID_ENTITY_ID ? eid : drone__owner
   var squad = squad_member__squad
   if squad == INVALID_ENTITY_ID
     query(drone__owner) <| $ [es] (squad_member__squad : EntityId)
@@ -952,7 +952,7 @@ def human_crew_input_es(evt : EventOnKeyDown;
         for i in range(1, count)
           if soldierFound
             break
-          var nextSoldierIndex = (curSoldierIndex + i) % count
+          let nextSoldierIndex = (curSoldierIndex + i) % count
           let nextSoldier = squad__allMembers[nextSoldierIndex]
           query(nextSoldier) <| $ [es] (isAlive : bool; isInVehicle : bool)
             if isAlive && !isInVehicle

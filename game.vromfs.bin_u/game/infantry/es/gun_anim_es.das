@@ -187,6 +187,7 @@ def  gun_anim_updater_es(info : ParallelUpdateFrameDelayed&;
                          gun_anim__singleReloadProgress : float = -1.0f;
                          gun_anim__singleReloadState : int = 0;
                          gun_anim__reloadStyle : int = 0;
+                         gun_anim__heroReloadStyle : int = 0;
                          gun_anim__weapModState : int = int(GunWeapModState.WEAP_MOD_STATE_NONE);
                          gun__isDualMagReady : bool = true;
                          animchar__visible : bool = true;
@@ -194,8 +195,9 @@ def  gun_anim_updater_es(info : ParallelUpdateFrameDelayed&;
   if !animchar__visible
     return
 
+  let isOwnerHero = has(gun__owner, "hero")
   let singleReloadStateEnum = gun_anim__singleReloadStates[gun_anim__singleReloadState]
-  let reloadStyleEnum = gun_anim__reloadStyles[gun_anim__reloadStyle]
+  let reloadStyleEnum = gun_anim__reloadStyles[isOwnerHero ? gun_anim__heroReloadStyle : gun_anim__reloadStyle]
   let reloadStateEnum = gun_anim__reloadStates[gun_reload__state]
 
   setVar(phys_vars, gun_anim__weapModStateVarId, float(gun_anim__weapModStates[gun_anim__weapModState]))

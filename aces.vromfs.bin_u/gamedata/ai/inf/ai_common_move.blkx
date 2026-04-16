@@ -677,10 +677,25 @@
                     }
                   },
                   {
-                    "changeStance": {
-                      "stanceName": "crouch",
-                      "maxStanceParam": "maxStance",
-                      "wait": true
+                    "orderedSelector": {
+                      "not": {
+                        "or": {
+                          "findDanger": {
+                            "paramName": "testEnemy",
+                            "radiusParamName": "enemyFarRadius",
+                            "minDanger": 0.1,
+                            "tag": "human"
+                          },
+                          "hasTacticalTargets": {
+                            "maxActualTime": 10.0
+                          }
+                        }
+                      },
+                      "changeStance": {
+                        "stanceName": "crouch",
+                        "maxStanceParam": "maxStance",
+                        "wait": true
+                      }
                     },
                     "tryFindSquadPathToGoalPoint": {
                       "pointParam": "leaderTargetPos",
@@ -844,7 +859,7 @@
                 "rotateStartTime": 0.5,
                 "useTeamCustomNav": true,
                 "timeToStuck": 0.9,
-                "incObstacles": true,
+                "incObstacles": false,
                 "avoidAiObstacles": false,
                 "distThreshold": 0.5,
                 "jumpDownTraceCheck": [
@@ -1419,7 +1434,10 @@
           },
           {
             "orderedSelector": {
-              "isOnNavmesh": {},
+              "isOnNavmesh": {
+                "minPolys": 10,
+                "maxDepth": 3
+              },
               "isInAir": {},
               "sequencer": {
                 "setDebugSym": {
@@ -1572,7 +1590,10 @@
             }
           },
           "isInAir": {},
-          "isOnNavmesh": {},
+          "isOnNavmesh": {
+            "minPolys": 10,
+            "maxDepth": 3
+          },
           "sequencer": {
             "setDebugSym": {
               "act": "r11"
@@ -2241,7 +2262,7 @@
             "incLadders": true,
             "strafeNearDistParam": "moveStrafeNearDist",
             "timeToStuck": 0.9,
-            "incObstacles": true,
+            "incObstacles": false,
             "avoidAiObstacles": false,
             "distThreshold": 0.5,
             "pauseStuckTimerOnHtVel": 0.5,
@@ -2565,7 +2586,7 @@
             "incLadders": true,
             "strafeNearDistParam": "moveStrafeNearDist2",
             "timeToStuck": 1.5,
-            "incObstacles": false,
+            "incObstacles": true,
             "avoidAiObstacles": true,
             "distThreshold": 0.25,
             "pauseStuckTimerOnHtVel": 0.5,

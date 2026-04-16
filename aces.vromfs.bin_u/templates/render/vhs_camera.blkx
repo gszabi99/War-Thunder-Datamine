@@ -1,0 +1,38 @@
+{
+  "vhs_camera_preset": {
+    "vhs_camera__isPreset:tag": {},
+    "_group": {
+      "_track": true,
+      "vhs_camera__isActive": true,
+      "vhs_camera__resolutionDownscale": 0.5,
+      "vhs_camera__saturationMultiplier": 1.15,
+      "vhs_camera__noiseIntensity": 0.06,
+      "vhs_camera__noiseSaturation": 1.0,
+      "vhs_camera__noiseUvScale": 1.0,
+      "vhs_camera__chromaticAberrationIntensity": 0.01,
+      "vhs_camera__chromaticAberrationStart": 0.0,
+      "vhs_camera__dynamicRangeMin": 0.0,
+      "vhs_camera__dynamicRangeMax": 0.8,
+      "vhs_camera__dynamicRangeGamma": 1.27,
+      "vhs_camera__scanlineHeight": 0.05
+    }
+  },
+  "vhs_camera_renderer": {
+    "_tags": "render, noCompatibility",
+    "_singleton": true,
+    "_tracked": "vhs_camera__activePresets",
+    "vhs_camera__activePresets:list<eid>": {},
+    "vhs_camera__downscale:ShaderVar": {},
+    "vhs_camera__saturation:ShaderVar": {},
+    "vhs_camera__noise_strength:ShaderVar": {},
+    "vhs_camera__noise_uv_scale:ShaderVar": {},
+    "vhs_camera__noise_saturation:ShaderVar": {},
+    "vhs_camera__chromatic_aberration_intensity:ShaderVar": {},
+    "vhs_camera__chromatic_aberration_start:ShaderVar": {},
+    "vhs_camera__dynamic_range_min:ShaderVar": {},
+    "vhs_camera__dynamic_range_max:ShaderVar": {},
+    "vhs_camera__dynamic_range_gamma:ShaderVar": {},
+    "vhs_camera__scanline_height:ShaderVar": {},
+    "vhsCamera:dafg::NodeHandle": {}
+  }
+}

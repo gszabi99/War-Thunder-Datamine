@@ -1,4 +1,5 @@
 require ecs
+require app
 require math
 require AnimV20
 require HumanPhys
@@ -7,6 +8,7 @@ require Dacoll
 require GeomNodeTree
 require %appGame.infantry.es.hitpoints_common
 require PropsManager
+require %game.events
 
 require %appGame.wt_events
 
@@ -34,7 +36,7 @@ def update_breath(dt : float;
       
 
 [es(tag=server, REQUIRE_NOT=(disableUpdate, deadEntity), no_order)]
-def human_breath_is_under_water_es(info : UpdateStageInfoAct;
+def human_breath_is_under_water_es(info : CmdPostPhysUpdate;
                                    animchar : AnimcharBaseComponent;
                                    human_net_phys : HumanActor;
                                    breath_node__nodeId : int;
@@ -45,13 +47,13 @@ def human_breath_is_under_water_es(info : UpdateStageInfoAct;
   let isNotSwimming = human_net_phys.phys.currentState.standState != HUStandState.ESS_SWIM
   if isNotSwimming
     let pos = geomtree_getNodeWpos(*animchar.nodeTree, breath_node__nodeId)
-    if !is_valid_water_height(traceht_water_at_time(pos, 5.f, info.curTime, human_breath__isUnderWater))
+    if !is_valid_water_height(traceht_water_at_time(pos, 5.f, get_sync_time(), human_breath__isUnderWater))
       human_breath__isUnderWater = false
   else
     human_breath__isUnderWater = human_phys_state_get_is_underwater(human_net_phys.phys.currentState)
 
 [es(tag=server, REQUIRE_NOT=(disableUpdate, deadEntity), after=human_breath_is_under_water_es)]
-def human_breath_timer_es(act : UpdateStageInfoAct;
+def human_breath_timer_es(act : CmdPostPhysUpdate;
                           eid : EntityId;
                           var human_breath__timer : float&;
                           var human_breath__asphyxiationTimer : float&;

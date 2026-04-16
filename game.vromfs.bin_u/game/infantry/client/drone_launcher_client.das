@@ -11,12 +11,14 @@ require DngHuman
 require net
 require DagorDataBlock
 require hud
+require Unit
+require FlightModelWrap
 
 
 def check_respawn_base_for_launching_drone(human_eid : EntityId)
   var respawnExists = false
   query(human_eid) <| $ [es] (team : int)
-    respawnExists = get_respawn_base_for_drone(team) is transform
+    respawnExists = get_respawn_base_for_drone(team, true) is transform
   return respawnExists
 
 
@@ -253,3 +255,14 @@ def hud_appear_controls_on_drone_creation_es(evt : Event;
     using() <| $(var eventData : DataBlock)
       hud_notify_script("hint:drone_switch_control_mode", eventData)
 
+[es(tag=gameClient, on_appear, REQUIRE=isDrone)]
+def hud_appear_toggle_view_on_drone_creation_es(evt : Event;
+                                                ownedByPlr : EntityId;
+                                                unit__ref : UnitRef)
+  if ownedByPlr != get_local_player_eid()
+    return
+  let fmw = as_fmw(unit__ref.unit)
+  if fmw == null || !fmw.props.hasFPVTargetCamera
+    return
+  using() <| $(var eventData : DataBlock)
+    hud_notify_script("hint:drone_switch_camera_type", eventData)

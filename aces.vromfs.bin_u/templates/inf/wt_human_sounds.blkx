@@ -100,6 +100,7 @@
       "human_hit_cry_sound",
       "sound_preset",
       "human_step_sound_grains",
+      "managed_sound_human_steps",
       "human_bleeding_sound",
       "wt_enemy_reverb_sound"
     ],
@@ -191,8 +192,13 @@
     "_group": {
       "_tags": "sound",
       "human_voice_effect_fallcry__isFalling": false,
+      "human_voice_effect_fallcry__prevHTVel": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "human_voice_effect_fallcry__enabled": true,
-      "human_voice_effect_fallcry__threshold": 40.0
+      "human_voice_effect_fallcry__threshold": 13.5
     }
   },
   "human_hit_cry_sound": {
@@ -1125,6 +1131,40 @@
       "_tags": "sound",
       "human_bleeding_sound__name": "infantry/player/walker/mc_soldier/voice_fx/bleed_out",
       "human_bleeding_sound__event:SoundEvent": {}
+    }
+  },
+  "managed_sound": {
+    "_group": {
+      "_tags": "sound",
+      "managed_sound__pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "managed_sound__isStealed": false
+    }
+  },
+  "managed_sound_human_steps": {
+    "_use": "managed_sound",
+    "humanSteps:tag": {}
+  },
+  "managed_sound_group": {
+    "_group": {
+      "_tags": "sound",
+      "managed_sound_group__type": "",
+      "managed_sound_group__isEnemy": false,
+      "managed_sound_group__maxRadiusSq": 0.0,
+      "managed_sound_group__updateTimer": 0.0,
+      "managed_sound_group__debugCloseLodCount": 0,
+      "managed_sound_group__debugSectorCounts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "managed_sound_group__debugEnabled": false,
+      "managed_sound_group__lodRadiusSq:list<r>": {},
+      "managed_sound_group__lodMaxSounds:list<i>": {}
     }
   }
 }

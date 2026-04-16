@@ -739,6 +739,9 @@ struct ReplayTrackAttachToWeapon {}
 [cpp_event(unicast)]
 struct EventStopShoot {}
 
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventNetStopShoot {}
+
 [event(unicast)]
 struct ReplayPostProdSaveEntity
   templateName : string
@@ -828,3 +831,9 @@ struct CmdRequestHelp
 [event(broadcast)]
 struct EventOnInfantryPresetLoaded
   loaded : bool
+
+[event(unicast)]
+struct CmdRecalcMagazineWeight {}
+
+[event(unicast)]
+struct CmdRecalcHumanWeight {}

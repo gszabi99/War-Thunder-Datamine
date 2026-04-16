@@ -41,31 +41,42 @@ let overrideItemIcon = {
 
 
 let WEAPONS_LIST_ANIM_START_APPEAR = "weapons_list_anim_start_appear"
+let WEAPONS_LIST_ANIM_EXTEND = "weapons_list_anim_extend"
+let WEAPONS_LIST_ANIM_HIDE = "weapons_list_anim_hide"
 let changeOpacityAnimTime = 0.2
 let delayAnimTime = 3.0
 let mkAnimations = [
   { prop=AnimProp.opacity, to=1, duration=changeOpacityAnimTime, playFadeOut = true,
-    trigger = WEAPONS_LIST_ANIM_START_APPEAR, onStart = @() isWeaponsListVisible.set(true)
+    trigger = WEAPONS_LIST_ANIM_START_APPEAR, onStart = @() isWeaponsListVisible.set(true),
+    onFinish = @() anim_start(WEAPONS_LIST_ANIM_EXTEND)
   },
   { prop=AnimProp.opacity, from=1, to=1, duration=delayAnimTime, playFadeOut = true,
-    delay=changeOpacityAnimTime, trigger = WEAPONS_LIST_ANIM_START_APPEAR },
+    trigger = WEAPONS_LIST_ANIM_EXTEND, onFinish = @() anim_start(WEAPONS_LIST_ANIM_HIDE)
+  },
   { prop=AnimProp.opacity, from=1, to=0, duration=changeOpacityAnimTime, playFadeOut = true,
-    delay=delayAnimTime+changeOpacityAnimTime, trigger = WEAPONS_LIST_ANIM_START_APPEAR,
-    onFinish = @() isWeaponsListVisible.set(false) }
+    trigger = WEAPONS_LIST_ANIM_HIDE, onFinish = @() isWeaponsListVisible.set(false)
+  }
 ]
 
-humanCurGunSlotIdx.subscribe(@(v) v < 0 ? null : anim_start(WEAPONS_LIST_ANIM_START_APPEAR))
+let startWeaponsListAnim = function() {
+  if (isWeaponsListVisible.get())
+    anim_start(WEAPONS_LIST_ANIM_EXTEND)
+  else
+    anim_start(WEAPONS_LIST_ANIM_START_APPEAR)
+}
+
+humanCurGunSlotIdx.subscribe(@(v) v < 0 ? null : startWeaponsListAnim())
 watchedHeroEid.subscribe(@(v) v == ecs.INVALID_ENTITY_ID
   ? null
-  : anim_start(WEAPONS_LIST_ANIM_START_APPEAR)
+  : startWeaponsListAnim()
 )
 
 ecs.register_es("ui_show_weapons_block", {
-  [CmdUIShowWeaponsBlock] = @(_evt, _eid) anim_start(WEAPONS_LIST_ANIM_START_APPEAR)
+  [CmdUIShowWeaponsBlock] = @(_evt, _eid) startWeaponsListAnim()
 },{})
 
 let weaponModState = keepref(Computed(@() humanCurGunModeInfo.get()?.modWeapon.isModActive))
-weaponModState.subscribe(@(v) v == null ? null : anim_start(WEAPONS_LIST_ANIM_START_APPEAR))
+weaponModState.subscribe(@(v) v == null ? null : startWeaponsListAnim())
 
 let weaponShortcut = {
   [0] = "{{ID_HUMAN_MAIN_WEAPON}}",

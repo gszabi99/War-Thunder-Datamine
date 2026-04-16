@@ -222,18 +222,27 @@ def updateState(eid : EntityId;
     var upperStateIdx = -1
     var lowerStateIdx = -1
     var comboStateIdx = -1
-    let useFullBodyAnims = find_query() <| $ [es(REQUIRE=full_body_anim_test_tag)] () => true
 
     if state_pos == HumanStatePos.E_STAND
       if state_move == HumanStateMove.E_STILL
         lowerStateIdx = human_anim__lowerStateStand
       elif state_move == HumanStateMove.E_MOVE
         lowerStateIdx = human_anim__lowerStateWalk
-        if !is_fpv && useFullBodyAnims
+        if (!is_fpv &&
+            state_upper_body != HumanStateUpperBody.E_CHANGE &&
+            state_upper_body != HumanStateUpperBody.E_RELOAD &&
+            state_upper_body != HumanStateUpperBody.E_THROW &&
+            state_upper_body != HumanStateUpperBody.E_FAST_THROW &&
+            state_upper_body != HumanStateUpperBody.E_HEAL)
           comboStateIdx = human_anim__comboStateFullBodyWalk
       elif state_move == HumanStateMove.E_RUN
         lowerStateIdx = human_anim__lowerStateRun
-        if !is_fpv && useFullBodyAnims
+        if (!is_fpv &&
+            state_upper_body != HumanStateUpperBody.E_CHANGE &&
+            state_upper_body != HumanStateUpperBody.E_RELOAD &&
+            state_upper_body != HumanStateUpperBody.E_THROW &&
+            state_upper_body != HumanStateUpperBody.E_FAST_THROW &&
+            state_upper_body != HumanStateUpperBody.E_HEAL)
           comboStateIdx = human_anim__comboStateFullBodyRun
       elif state_move == HumanStateMove.E_ROTATE_LEFT
         lowerStateIdx = human_anim__lowerStateRotateLeft
@@ -386,7 +395,8 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__selectedWeaponVarId : int&;
                          var human_anim__crawlContinuousRotationVarId : int&;
                          var human_anim__leanSpineRotateVarId : int&;
-                         var human_anim__gunLengthCompensationVarId : int&)
+                         var human_anim__gunLengthCompensationVarId : int&;
+                         var human_anim__fullBodyRootRotateVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
   human_anim__changeWeaponVarId = phys_vars |> registerVar("changeweapon_progress", 0.f)
@@ -415,6 +425,7 @@ def init_human_anim_vars(evt : Event;
   human_anim__crawlContinuousRotationVarId = phys_vars |> registerVar("is_continuous_crawl_rotating", 0.0)
   human_anim__leanSpineRotateVarId = phys_vars |> registerVar("torso_lean_rotate", 0.0)
   human_anim__gunLengthCompensationVarId = phys_vars |> registerVar("gun_length_compensation", 0.0)
+  human_anim__fullBodyRootRotateVarId = phys_vars |> registerVar("full_body_root_rotate", 0.0)
 
 
 def private calc_head_pitch_yaw(state : HumanPhysState)
@@ -904,6 +915,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
     let rootRotate = approach(prevRootRotate, standingInPlace ? localWalkDirFrom : 0.0, dt, rootRotateVisc)
     phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
 
+  var gunLengthCompensationValue = 0.0
   if human_anim__gunLengthCompensationVarId != -1
     query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
                                                 gun_anim_length_compensation__lHandNodeId : int;
@@ -920,7 +932,8 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
         let projectedLength = dot(phys.currentState.gunDir, leftP - rightP) 
         let compensation = cvt(projectedLength, gun_anim_length_compensation__handDistanceMin, gun_anim_length_compensation__handDistanceMax, gun_anim_length_compensation__spineRotationMin, gun_anim_length_compensation__spineRotationMax)
         let bodyAngleCoeff = cvt(bodyAngles.x, 0.0, -deg_to_rad(60.0), 0.0, 1.0)
-        phys_vars |> setVar(human_anim__gunLengthCompensationVarId, compensation * (1.0 - lean01) * (1.0 - bodyAngleCoeff))
+        gunLengthCompensationValue = compensation * (1.0 - lean01) * (1.0 - bodyAngleCoeff)
+  phys_vars |> setVar(human_anim__gunLengthCompensationVarId, gunLengthCompensationValue)
 
   var stateUpperBody = HumanStateUpperBody.E_READY
   let effectiveCurSlot = phys.currentState.weapEquipState.effectiveCurSlot

@@ -284,7 +284,7 @@ def animchar_visibility_in_bipod_state(evt : Event;
       if human_target == human_eid
         destroyEntity(sphere_eid)
 
-[es(after=update_phys_es, before=animchar_es, REQUIRE_NOT=(hero, deadEntity))]
+[es(tag=gameClient, after=update_phys_es, before=animchar_es, REQUIRE_NOT=(hero, deadEntity))]
 def bipod_weapon_placing_update_non_hero(info : ParallelUpdateFrameDelayed; eid : EntityId; human_net_phys : HumanActor)
   bipod_weapon_placing_update(eid, human_net_phys.phys.appliedCT.wishShootDir)
 

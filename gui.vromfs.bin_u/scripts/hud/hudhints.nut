@@ -3067,6 +3067,16 @@ NEED_STOP_FOR_RADAR = {
     isHideOnWatchedHeroChanged = false
   }
 
+  DRONE_SWITCH_CAMERA_TYPE = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "hints/drone_switch_camera_type"
+    showEvent = "hint:drone_switch_camera_type"
+    shortcuts = "ID_TOGGLE_VIEW_HUMAN_UAV"
+    lifeTime  = 5.0
+    isHideOnDeath = @(_eventData) false
+    isHideOnWatchedHeroChanged = false
+  }
+
   DRONE_RESPAWN_IS_MISSING = {
     hintType  = g_hud_hint_types.COMMON
     locId     = "hints/drone/respawn_is_missing"
@@ -3125,7 +3135,7 @@ NEED_STOP_FOR_RADAR = {
 
   HANDS_FULL = {
     hintType  = g_hud_hint_types.COMMON
-    locId     = "hints/humanHandsFull"
+    locId     = "hint/humanHandsFull"
     showEvent = "hint:human_hands_full:show"
     lifeTime  = 3.0
   }

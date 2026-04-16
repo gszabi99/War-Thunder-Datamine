@@ -345,9 +345,13 @@ def apply_dot_damage(victim : EntityId;
     return
   query(victim) <| $ [es] (hitpoints__dotBaseSpeed : float;
                            hitpoints__dotSpeedThreshold : float;
+                           hitpoints__dmgMult : float = 1.0;
                            var hitpoints__dotDamage : FloatList&;
                            var hitpoints__totalDotAmount : float&)
-    add_damage_over_time_entry(damage, hitpoints__dotBaseSpeed, hitpoints__dotSpeedThreshold, hitpoints__dotDamage, hitpoints__totalDotAmount)
+    let actualDamage = damage * hitpoints__dmgMult
+    if actualDamage <= 0.0
+      return
+    add_damage_over_time_entry(actualDamage, hitpoints__dotBaseSpeed, hitpoints__dotSpeedThreshold, hitpoints__dotDamage, hitpoints__totalDotAmount)
 
 
 def check_friendly_fire(victim_team : int;

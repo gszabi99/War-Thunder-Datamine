@@ -29,14 +29,19 @@ def make_log_msg(owner; eid : EntityId; msg : string; paramName : string)
 class Log : BehNodeAdapter
   msg : string = "msg"
   paramName : string
+  agentEid : int
 
   def override loadFromBlk(var data : DataBlock) : void
     msg = datablock_getStr(data, "msg", msg)
     paramName = datablock_getStr(data, "paramName", "")
+    agentEid = datablock_getInt(data, "agentEid", 0)
 
   def override update(dt : float) : EBehResult
     let eid = beh_tree_eid(owner)
+    if agentEid != 0 && int(uint(eid)) != agentEid
+      return EBehResult.ER_SUCCESS
     print(make_log_msg(owner, eid, msg, paramName))
+    
     return EBehResult.ER_SUCCESS
 
 [beh_node(name="visualLog")]
@@ -154,18 +159,24 @@ class SuccessChance : BehNodeAdapter
 
 [beh_node(name="debugBlink")]
 class DebugBlink : BehNodeAdapter
-  duration : int = 1000
+  
   color : E3DCOLOR = E3DCOLOR(0xffffffff)
+  radius : float = 1.0
+  duration : int = 1000
   posParam : string
   eidParam : string
   @hidden posParamHash : uint
   @hidden eidParamHash : uint
+  posFromParam : int = -1
 
   def override loadFromBlk(var data : DataBlock) : void
-    duration = data |> datablock_getInt("duration", duration)
     color = data |> datablock_getE3dcolor("color", color)
+    radius = data |> datablock_getReal("radius", radius)
+    duration = data |> datablock_getInt("duration", duration)
     data |> load_optional_ecs_param("posParam", posParam, posParamHash)
     data |> load_optional_ecs_param("eidParam", eidParam, eidParamHash)
+    if datablock_find_param(data, "posFromParam") >= 0
+      posFromParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "posFromParam", ""), float3())
 
   def override update(dt : float) : EBehResult
     let eid = beh_tree_eid(owner)
@@ -176,7 +187,9 @@ class DebugBlink : BehNodeAdapter
       let targetEid = get_Eid(eid, eidParam, eidParamHash) ?? INVALID_ENTITY_ID
       query(targetEid) <| $ [es] (transform : float3x4)
         pos = transform[3]
-    draw_debug_sphere_buffered(pos, 1, color, duration)
+    if posFromParam >= 0
+      pos = owner.blackBoard |> datablock_getPoint3(posFromParam)
+    draw_debug_sphere_buffered(pos, radius, color, duration)
     return EBehResult.ER_SUCCESS
 
 

@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "hudMessages" import UT_Unknown, UT_Human
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { getUnitTooltipImage, genUnitTooltipWeaponIcon
@@ -18,12 +19,13 @@ let { doesLocTextExist } = require("dagor.localize")
 let offenderHitsOrder = ["armor", "head", "torso", "hand", "leg"]
 
 function isKillerCardData(messageData) {
-  let { isKill = false, playerId = -1, victimPlayerId = null, isDebugData = false } = messageData
+  let { isKill = false, playerId = -1, victimPlayerId = null, isDebugData = false,
+    unitType = UT_Unknown } = messageData
   if (!isKill)
     return false
 
   let killer = get_mplayer_by_id(playerId)
-  if ((!killer || killer?.isBot) && !isDebugData)
+  if ((!killer || (killer?.isBot && unitType != UT_Human)) && !isDebugData)
     return false
 
   if (get_local_mplayer().id != victimPlayerId)
@@ -67,9 +69,9 @@ function getKillerCardView(messageData, userInfo) {
   let shellIconLayers = getProjectileIconLayers(killerProjectileName)
 
   let offenderHitsTable = offenderHits.len() ? parse_json(offenderHits) : {}
-  let offenderHitsArray = !offenderHitsTable.len() ? [] : offenderHitsOrder
-      .filter(@(area) offenderHitsTable?[area] != null )
-      .map(@(area) {areaLocId = loc($"hits/area/{area}"), hitsNum = offenderHitsTable[area]})
+  let offenderHitsArray = offenderHitsOrder.map(@(area) {
+    areaLocId = loc($"hits/area/{area}"), hitsNum = offenderHitsTable?[area] ?? 0
+  })
 
   let needShowXrayDoll = offenderHp >= 0 && offenderArmorSegmentsInfo != ""
 
@@ -97,7 +99,7 @@ function getKillerCardView(messageData, userInfo) {
     shellIconLayers
     shellHeader = showCustomItem ? loc("hotkeys/ID_HUMAN_FIRE_HEADER") : loc("logs/ammunition")
 
-    hasKillerHitsInfo = offenderHitsArray.len() > 0
+    hasKillerHitsInfo = needShowXrayDoll
     offenderHits = offenderHitsArray
 
     needShowXrayDoll

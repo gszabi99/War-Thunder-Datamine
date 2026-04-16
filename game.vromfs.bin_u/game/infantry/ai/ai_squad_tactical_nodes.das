@@ -52,6 +52,8 @@ class FindTacticalTarget : BehNodeAdapter
   outTargetPosParam : int = -1
   outTargetEidParam : int = -1
   maxActualTime : float = -1.0
+  allowAcquried : bool = false
+  acquireTarget : bool = false
 
   def override loadFromBlk(data : DataBlock) : void
     if datablock_find_param(data, "outTargetPosParam") >= 0
@@ -68,7 +70,8 @@ class FindTacticalTarget : BehNodeAdapter
         return
       let agentPos = transform[3]
       var lastPos = float3()
-      let targetEid = ai_find_acqure_tactical_target(lastPos, squad_member__squad, agentPos, maxActualTime, true )
+      let acquireByEid = acquireTarget ? agentEid : INVALID_ENTITY_ID
+      let targetEid = ai_find_acqure_tactical_target(lastPos, squad_member__squad, agentPos, maxActualTime, allowAcquried, acquireByEid)
       if targetEid != INVALID_ENTITY_ID
         if outTargetPosParam >= 0
           owner.blackBoard |> set(outTargetPosParam, lastPos)
@@ -76,6 +79,27 @@ class FindTacticalTarget : BehNodeAdapter
           owner.blackBoard |> set(outTargetEidParam, int(uint(targetEid)))
         result = true
     return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
+
+[beh_node(name="acquireTacticalTarget")]
+class AcquireTacticalTarget : BehNodeAdapter
+  targetEidParam : int = -1
+  onlyActual : bool = true
+  acquireTime : float = 5.0
+
+  def override loadFromBlk(data : DataBlock) : void
+    if datablock_find_param(data, "targetEidParam") >= 0
+      targetEidParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "targetEidParam", ""), 0)
+    onlyActual = datablock_getBool(data, "onlyActual", onlyActual)
+    acquireTime = datablock_getReal(data, "acquireTime", acquireTime)
+
+  def override update(dt : float) : EBehResult
+    let agentEid = beh_tree_eid(owner)
+    let targetEid = EntityId(uint(owner.blackBoard |> datablock_getInt(targetEidParam)))
+    query(agentEid) <| $ [es] (squad_member__squad : EntityId)
+      if squad_member__squad != INVALID_ENTITY_ID
+        ai_reacqure_tactical_target(squad_member__squad, targetEid, onlyActual, agentEid)
+    return EBehResult.ER_SUCCESS
+
 
 [beh_node(name="isTargetTraceable")]
 class IsTargetTraceable : BehNodeAdapter

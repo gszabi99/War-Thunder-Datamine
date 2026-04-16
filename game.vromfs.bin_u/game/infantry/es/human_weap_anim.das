@@ -69,12 +69,17 @@ def human_weap_anim_es(info : ParallelUpdateFrameDelayed;
                        human_weap__reloadStartTime : float;
                        human_weap__inspectStartTime : float;
                        human_weap__inspectEndTime : float;
+                       human_anim__heroReloadStartTime : float;
+                       human_anim__heroReloadEndTime : float;
+                       human_anim__heroInspectStartTime : float;
+                       human_anim__heroInspectEndTime : float;
                        human_weap__weapModActivateStartTime : float;
                        human_weap__weapModActivateFinishTime : float;
                        grenadeThrowProgress : float;
                        entity_mods__reloadMult : float = 1.0;
                        animchar__visible : bool = true;
                        animchar__updatable : bool = true;
+                       hero : Tag const?;
                        var phys_vars : PhysVars;
                        var reloadProgress : float&;
                        var boltActionProgress : float&;
@@ -95,10 +100,16 @@ def human_weap_anim_es(info : ParallelUpdateFrameDelayed;
   if !human_weap__throwMode
     isReloading = human_weap__reloadStartTime <= info.curTime && info.curTime <= human_weap__reloadAtTime
     let isInspecting = human_weap__inspectStartTime <= info.curTime && info.curTime <= human_weap__inspectEndTime
-    inspectProgress = cvt(info.curTime, human_weap__inspectStartTime, human_weap__inspectEndTime, 0.0, 1.0) 
+    if hero != null
+      inspectProgress = cvt(info.curTime, human_anim__heroInspectStartTime, human_anim__heroInspectEndTime, 0.0, 1.0)
+    else
+      inspectProgress = cvt(info.curTime, human_weap__inspectStartTime, human_weap__inspectEndTime, 0.0, 1.0) 
 
     if isReloading
-      reloadProgress = cvt(info.curTime, human_weap__reloadStartTime, human_weap__reloadAtTime, 0.0, 1.0)
+      if hero != null
+        reloadProgress = cvt(info.curTime, human_anim__heroReloadStartTime, human_anim__heroReloadEndTime, 0.0, 1.0)
+      else
+        reloadProgress = cvt(info.curTime, human_weap__reloadStartTime, human_weap__reloadAtTime, 0.0, 1.0)
     elif isInspecting
       reloadProgress = inspectProgress 
 
@@ -114,10 +125,12 @@ def human_weap_anim_es(info : ParallelUpdateFrameDelayed;
 
   var reloadStyle = 0
   query(human_weap__gunEids[curSlot]) <| $ [es] (gun_anim__reloadStyle : int;
+                                                 gun_anim__heroReloadStyle : int;
                                                  gun_anim__reloadStyles : IntList)
     reloadStyle = gun_anim__reloadStyle
     if human_weap_anim__reloadStyleVarId >= 0
-      phys_vars |> setVar(human_weap_anim__reloadStyleVarId, float(gun_anim__reloadStyles[gun_anim__reloadStyle]))
+      let reloadStyleValue = float(gun_anim__reloadStyles[hero != null ? gun_anim__heroReloadStyle : gun_anim__reloadStyle])
+      phys_vars |> setVar(human_weap_anim__reloadStyleVarId, reloadStyleValue)
 
   if human_weap_anim__inspectVarId >= 0
     phys_vars |> setVar(human_weap_anim__inspectVarId, inspectProgress)

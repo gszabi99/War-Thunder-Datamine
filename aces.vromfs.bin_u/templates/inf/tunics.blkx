@@ -821,19 +821,11 @@
   "attachable_wear_pcscu_jacket_item": {
     "_use": [
       "attachable_tunic",
-      "hands_collapser_in_sleeves",
-      "node_collapser"
+      "hands_collapser_in_sleeves"
     ],
     "item__uniqueName": "attachable_wear_pcscu_jacket_item",
     "animchar__res": "pcscu_jacket_char",
-    "collres__res": "pcscu_jacket_collision",
-    "animchar_node_collapser__camThreshold": 0.15,
-    "_group": {
-      "_tags": "render",
-      "animchar_node_collapser__nodes:object": {
-        "Bip01 Spine1": ""
-      }
-    }
+    "collres__res": "pcscu_jacket_collision"
   },
   "attachable_wear_pcscu_jacket_olive_item": {
     "_use": "attachable_wear_pcscu_jacket_item",
@@ -1060,5 +1052,117 @@
     "item__uniqueName": "attachable_wear_acu_jacket_rolled_item",
     "animchar__res": "acu_jacket_rolled_char",
     "collres__res": "acu_jacket_rolled_collision"
+  },
+  "attachable_wear_iraq_jacket_w_pouch_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_iraq_jacket_w_pouch_item",
+    "animchar__res": "iraq_jacket_w_pouch_char",
+    "collres__res": "iraq_jacket_w_pouch_collision",
+    "animchar_fast_phys__res": "iraq_jacket_w_pouch_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_iraq_jacket_w_pouch_green_item": {
+    "_use": "attachable_wear_iraq_jacket_w_pouch_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.25,
+          0.25,
+          0.1,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.25,
+          0.25,
+          0.1,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.5,
+          0.38,
+          0.2,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.8,
+          0.7,
+          0.5,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.5,
+          0.38,
+          0.2,
+          1.0
+        ]
+      },
+      "material6:object": {
+        "material_id": 6,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.2,
+          0.2,
+          0.15,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_iraq_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_iraq_jacket_item",
+    "animchar__res": "iraq_jacket_char",
+    "collres__res": "iraq_jacket_collision"
+  },
+  "attachable_wear_iraq_jacket_green_item": {
+    "_use": "attachable_wear_iraq_jacket_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.25,
+          0.25,
+          0.1,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.25,
+          0.25,
+          0.1,
+          1.0
+        ]
+      }
+    }
   }
 }

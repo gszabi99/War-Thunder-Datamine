@@ -103,6 +103,8 @@ def private create_nav_zone_impl(pos : float3;
 
   query() <| $ [es] (team__id : int;
                      var walker_custom_nav : CustomNav&;
+                     var team_danger_zones__checkPathAreasPosList : Point3List&;
+                     var team_danger_zones__checkPathAreasTimeRadiusList : Point2List&;
                      var turret_danger_zones__list : int3&;
                      var turret_danger_zones__prevNext : IPoint2List&;
                      var turret_danger_zones__areasData : IntList&;
@@ -132,6 +134,8 @@ def private create_nav_zone_impl(pos : float3;
       walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, pos, areaRadius,
                                                  weight, sideWeight, curTime, curTime + duration, true)
       walker_custom_nav_setAreaUserTagData(walker_custom_nav, areaId, CUSTOMNAV_TAG_DEATH, areaIdx)
+      team_danger_zones__checkPathAreasPosList |> push(pos)
+      team_danger_zones__checkPathAreasTimeRadiusList |> push(float2(curTime, radius))
 
 
 [console_cmd(name="ai.create_nav_zone", hint="<turret|death> <team> <radius=10.0> <height=3.0> <weight=30.0> <duration=15.0>")]
@@ -181,6 +185,44 @@ def ai_check_point_safe_cmd(x : float; y : float; z : float; team : int)
   console_print("Point ({x}, {y}, {z}) for team {team} is {safe ? "SAFE" : "DANGEROUS"}")
 
 
+[console_cmd(name="ai.change_nav_zones_weight", hint="<w>")]
+def ai_change_nav_zones_weight_cmd(w : float)
+  var totalChanged = 0
+  let curTime = get_sync_time()
+  query() <| $ [es] (var walker_custom_nav : CustomNav&;
+                     turret_danger_zones__areasData : IntList;
+                     turret_danger_zones__areasTime : FloatList;
+                     turret_danger_zones__list : int3;
+                     turret_danger_zones__prevNext : IPoint2List;
+                     death_danger_zones__areasData : IntList;
+                     death_danger_zones__areasTime : FloatList;
+                     death_danger_zones__list : int3;
+                     death_danger_zones__prevNext : IPoint2List)
+    var cur = turret_danger_zones__list.x
+    while cur != -1
+      let areaId = turret_danger_zones__areasData[cur]
+      let posRadius = walker_custom_nav_getCylAreaBBoxPosRadius(walker_custom_nav, areaId)
+      let bbox = walker_custom_nav_getAreaBBox(walker_custom_nav, areaId)
+      let areaRadius = float2(posRadius.w, bbox.boxMax.y - bbox.boxMin.y)
+      walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, posRadius.xyz, areaRadius,
+                                                 w, w, curTime, turret_danger_zones__areasTime[cur], true)
+      totalChanged++
+      cur = turret_danger_zones__prevNext[cur].y
+
+    cur = death_danger_zones__list.x
+    while cur != -1
+      let areaId = death_danger_zones__areasData[cur]
+      let posRadius = walker_custom_nav_getCylAreaBBoxPosRadius(walker_custom_nav, areaId)
+      let bbox = walker_custom_nav_getAreaBBox(walker_custom_nav, areaId)
+      let areaRadius = float2(posRadius.w, bbox.boxMax.y - bbox.boxMin.y)
+      walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, posRadius.xyz, areaRadius,
+                                                 w, w, curTime, death_danger_zones__areasTime[cur], true)
+      totalChanged++
+      cur = death_danger_zones__prevNext[cur].y
+
+  console_print("Changed weight to {w} for {totalChanged} nav zones")
+
+
 [console_cmd(name="ai.find_nav_zones_path", hint="<from_x> <from_y> <from_z> <to_x> <to_y> <to_z> <thru_blocked=false> <team=1>")]
 def find_nav_zones_path_cmd(from_x : float; from_y : float; from_z : float; to_x : float; to_y : float; to_z : float;
                             thru_blocked : bool = false; team : int = 1)
@@ -228,6 +270,7 @@ def private draw_nav_zones(walker_custom_nav : CustomNav;
                            areas_data : IntList;
                            areas_time : FloatList;
                            area_fade_time : float;
+                           area_heights : float2;
                            color : E3DCOLOR)
   var cur = head_node
   while cur != -1
@@ -243,11 +286,17 @@ def private draw_nav_zones(walker_custom_nav : CustomNav;
 
     if alpha > 0.0
       let col = E3DCOLOR(uint(int(float(0xFF) * alpha) << 24) | uint(color))
-      draw_debug_circle_buffered(areaPos + float3(0.f, 0.2f, 0.f), float3(0, 1, 0), areaRadius, col, 16, 1)
-      draw_debug_sphere_buffered(areaPos, 0.2f, col, 1)
+      draw_debug_circle_buffered(areaPos + float3(0., 0.0, 0.), float3(0, 1, 0), areaRadius, col, 16, 1)
+      draw_debug_circle_buffered(areaPos + float3(0., area_heights.x, 0.), float3(0, 1, 0), areaRadius, col, 16, 1)
+      draw_debug_circle_buffered(areaPos + float3(0., area_heights.y, 0.), float3(0, 1, 0), areaRadius, col, 16, 1)
+      draw_debug_sphere_buffered(areaPos, 0.1, col, 1)
+      
+      let weight = walker_custom_nav_getAreaCurrentWeight(walker_custom_nav, areaId).x
       
       
       
+      let textPos = areaPos + float3(0.0, 0.05, 0.0)
+      add_debug_text_mark(textPos, "{fmt(":.1f", weight)}", -1, 0f, col)
 
     cur = prev_next[cur].y
 
@@ -256,6 +305,7 @@ def ai_nav_zones_draw_debug(info : ParallelUpdateFrameDelayed;
                             nav_zones_debug__modeFlags : int)
   if (nav_zones_debug__modeFlags & int(NavZonesDebugFlags.Turret)) != 0
     query() <| $ [es] (walker_custom_nav : CustomNav;
+                       team__id : int;
                        turret_danger_zones__vehicleMainAreaList : IntList;
                        turret_danger_zones__vehicleMainAreaRadius : float;
                        turret_danger_zones__list : int3;
@@ -264,23 +314,25 @@ def ai_nav_zones_draw_debug(info : ParallelUpdateFrameDelayed;
                        turret_danger_zones__areasTime : FloatList;
                        turret_danger_zones__areaDuration : float;
                        turret_danger_zones__areaFadeTimeStart : float)
+      let vehicleColor = team__id == 1 ? E3DCOLOR(0xFF0066FF) : E3DCOLOR(0xFF00CCFF)
       for mainArea in turret_danger_zones__vehicleMainAreaList
         let areaBBox = walker_custom_nav_getAreaBBox(walker_custom_nav, mainArea)
         let areaCenter = areaBBox.center
         let areaBottom = float3(areaCenter.x, areaBBox.boxMin.y, areaCenter.z)
         let areaTop = float3(areaCenter.x, areaBBox.boxMax.y, areaCenter.z)
         let radius = turret_danger_zones__vehicleMainAreaRadius
-        draw_debug_circle_buffered(areaBottom, float3(0, 1, 0), radius, E3DCOLOR(0xFF00FFFF), 24, 1)
-        draw_debug_circle_buffered(areaTop, float3(0, 1, 0), radius, E3DCOLOR(0xFF00FFFF), 24, 1)
+        draw_debug_circle_buffered(areaBottom, float3(0, 1, 0), radius, vehicleColor, 24, 1)
+        draw_debug_circle_buffered(areaTop, float3(0, 1, 0), radius, vehicleColor, 24, 1)
 
       assume head_node = turret_danger_zones__list.x
       let fadeTime = turret_danger_zones__areaDuration - turret_danger_zones__areaFadeTimeStart
+      let turretColor = team__id == 1 ? E3DCOLOR(0xFF0000) : E3DCOLOR(0xFF5E00)
       draw_nav_zones(walker_custom_nav, info.curTime, head_node,
                     turret_danger_zones__prevNext,
                     turret_danger_zones__areasData,
                     turret_danger_zones__areasTime,
-                    fadeTime,
-                    E3DCOLOR(0x00FF00))
+                    fadeTime, float2(0.5, 1.0),
+                    turretColor)
 
   if (nav_zones_debug__modeFlags & int(NavZonesDebugFlags.Death)) != 0
     query() <| $ [es] (walker_custom_nav : CustomNav;
@@ -291,10 +343,11 @@ def ai_nav_zones_draw_debug(info : ParallelUpdateFrameDelayed;
                        death_danger_zones__areasTime : FloatList;
                        death_danger_zones__areaFadeTime : float = 15.0)
       assume head_node = death_danger_zones__list.x
-      let color = team__id == 1 ? E3DCOLOR(0xFFFF0000) : E3DCOLOR(0xFF9400D3)
+      let color = team__id == 1 ? E3DCOLOR(0x0000FF) : E3DCOLOR(0xAB00FF)
       draw_nav_zones(walker_custom_nav, info.curTime, head_node,
                      death_danger_zones__prevNext,
                      death_danger_zones__areasData,
                      death_danger_zones__areasTime,
                      death_danger_zones__areaFadeTime,
+                     float2(1.8, 3.5),
                      color)

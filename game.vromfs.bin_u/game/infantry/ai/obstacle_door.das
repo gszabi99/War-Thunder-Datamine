@@ -99,25 +99,41 @@ def obstacle_door_physics_start_es(evt : Event;
   obstacle__lastCheckTime = get_sync_time()
 
 
-[es(tag=server, no_order)]
-def obstacle_door_check_es(info : UpdateStageInfoAct;
-                           transform : float3x4;
-                           rendinst_axis_rotation__curAngle : float;
-                           door_operations__closedAngle : float;
-                           ri_extra : RiExtraComponent;
-                           obstacle__checkDelta : float;
-                           var obstacle__lastCheckTime : float&;
-                           var obstacle__handle : int&;
-                           rotating_rendinst_simple_phys_processing : Tag const?;
-                           rendinst_axis_rotation__enabled : Tag const?;
-                           isDoor : bool = false;
-                           obstacle__padding : float = 0.0f;
-                           obstacle__doorMaxStillAngularVelocity : float = 10.0;
-                           obstacle__doorMaxAngleDeviationFromClosed : float = 45.0;
-                           rotating_rendinst_simple_phys__angularVelocity : float = FLT_MAX)
-  if !isDoor || (rendinst_axis_rotation__enabled == null && rotating_rendinst_simple_phys_processing == null)
+[es(tag=server, no_order, REQUIRE=rendinst_axis_rotation__enabled)]
+def obstacle_door_rotation_check_es(info : UpdateStageInfoAct;
+                                    transform : float3x4;
+                                    rendinst_axis_rotation__curAngle : float;
+                                    door_operations__closedAngle : float;
+                                    ri_extra : RiExtraComponent;
+                                    obstacle__checkDelta : float;
+                                    var obstacle__lastCheckTime : float&;
+                                    var obstacle__handle : int&;
+                                    isDoor : bool;
+                                    obstacle__padding : float = 0.0f;
+                                    obstacle__doorMaxAngleDeviationFromClosed : float = 45.0)
+  if !isDoor || info.curTime < obstacle__lastCheckTime + obstacle__checkDelta
     return
-  if (info.curTime < obstacle__lastCheckTime + obstacle__checkDelta)
+  obstacle__lastCheckTime = info.curTime
+  obstacle_door_update(obstacle__handle, transform,
+    rendinst_axis_rotation__curAngle, door_operations__closedAngle,
+    ri_extra, obstacle__padding, obstacle__doorMaxAngleDeviationFromClosed, false)
+
+
+[es(tag=server, no_order, REQUIRE=rotating_rendinst_simple_phys_processing)]
+def obstacle_door_physics_check_es(info : UpdateStageInfoAct;
+                                   transform : float3x4;
+                                   rendinst_axis_rotation__curAngle : float;
+                                   door_operations__closedAngle : float;
+                                   ri_extra : RiExtraComponent;
+                                   obstacle__checkDelta : float;
+                                   var obstacle__lastCheckTime : float&;
+                                   var obstacle__handle : int&;
+                                   isDoor : bool;
+                                   obstacle__padding : float = 0.0f;
+                                   obstacle__doorMaxStillAngularVelocity : float = 10.0;
+                                   obstacle__doorMaxAngleDeviationFromClosed : float = 45.0;
+                                   rotating_rendinst_simple_phys__angularVelocity : float = FLT_MAX)
+  if !isDoor || info.curTime < obstacle__lastCheckTime + obstacle__checkDelta
     return
   obstacle__lastCheckTime = info.curTime
   obstacle_door_update(obstacle__handle, transform,

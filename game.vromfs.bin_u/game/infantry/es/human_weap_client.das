@@ -14,6 +14,7 @@ require CollisionTraces
 require Dacoll
 require AnimV20
 require GeomNodeTree
+require Unit
 
 
 def do_gun_traceray(from : float3; dir : float3; var t : float&; ray_mat_id : int; ignore_human_eid : EntityId)
@@ -108,8 +109,9 @@ def human_weap_update_es(info : ParallelUpdateFrameDelayed;
                          human_weap__weapModActivateStartTime : float;
                          human_weap__weapModActivateFinishTime : float;
                          var human_weap__gunEids : EidList;
-                         var human_weap__throwMode : bool&)
-  if !isAlive || isDowned || human_net_phys.phys.currentState |> human_phys_state_attachedToLadder
+                         var human_weap__throwMode : bool&;
+                         unit__ref : UnitRef)
+  if !isAlive || isDowned || unit__ref.unit.isDelayed || human_net_phys.phys.currentState |> human_phys_state_attachedToLadder
     return
 
   let dt = info.dt

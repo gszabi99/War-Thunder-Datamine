@@ -9,6 +9,7 @@ require PropsManager
 require DagorSystem
 require %appGame.infantry.es.human_weapon_utils_common
 require WeapHelpers
+require %appGame.wt_events
 
 
 enum ReloadAmmoMode
@@ -501,5 +502,6 @@ def reload_with_bullets(owner : EntityId;
           item_container |> erase(ammoHolderInfo.itemContainerId)
         else
           sendEvent(owner, EventUpdatedItemContainer())
+          sendEvent(itemEid, CmdRecalcMagazineWeight())
 
   return reloaded

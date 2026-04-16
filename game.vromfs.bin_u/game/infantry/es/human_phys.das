@@ -28,16 +28,22 @@ def human_phys_force_simpified_phys(evt : Event)
 def human_phys_force_disable_simpified_qeury_walk(evt : Event)
   broadcastEvent(UpdateSimplifiedPhysState())
 
+[es(REQUIRE=human_phys__forceTraceCapsuleCastForWalk, track=human_phys__forceTraceCapsuleCastForWalk, on_appear, on_disappear)]
+def human_phys_force_trace_capsule_walk(evt : Event)
+  broadcastEvent(UpdateSimplifiedPhysState())
+
 [es(track=beh_tree__enabled, on_event=UpdateSimplifiedPhysState, on_appear)]
 def human_phys_set_simpified(evt : Event;
                              beh_tree__enabled : bool;
                              var human_net_phys__isSimplifiedQueryWalkPosition : bool&;
                              var human_net_phys__isSimplifiedPhys : bool&;
+                             var human_net_phys__useTraceCapsuleCastForWalk : bool&;
                              var human_weap__infiniteAmmoHolders : bool?;
                              devSoldier : Tag const?)
   let isAi = beh_tree__enabled || devSoldier != null
   human_net_phys__isSimplifiedPhys = isAi
   human_net_phys__isSimplifiedQueryWalkPosition = isAi
+  human_net_phys__useTraceCapsuleCastForWalk = true 
   if human_weap__infiniteAmmoHolders != null
     *human_weap__infiniteAmmoHolders = isAi
 
@@ -45,6 +51,8 @@ def human_phys_set_simpified(evt : Event;
     human_net_phys__isSimplifiedPhys = human_phys__forceSimplifiedPhys
   query() <| $ [es] (human_phys__forceSimplifiedWalkQuery : bool)
     human_net_phys__isSimplifiedQueryWalkPosition = human_phys__forceSimplifiedWalkQuery
+  query() <| $ [es] (human_phys__forceTraceCapsuleCastForWalk : bool)
+    human_net_phys__useTraceCapsuleCastForWalk = human_phys__forceTraceCapsuleCastForWalk
 
 [es(on_appear, track=(human_phys__botFrictionGroundCoeffWalk, human_phys__botFrictionGroundCoeffRun, human_phys__botFrictionGroundCoeffSprint,
   human_phys__botAccelerationWalk, human_phys__botAccelerationRun, human_phys__botAccelerationSprint))]
@@ -391,9 +399,11 @@ def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
 def human_phys_set_simplified_phys_es(evt : CmdPrePhysUpdate;
                                       human_net_phys__isSimplifiedPhys : bool;
                                       human_net_phys__isSimplifiedQueryWalkPosition : bool;
+                                      human_net_phys__useTraceCapsuleCastForWalk : bool;
                                       var human_net_phys : HumanActor&)
   human_net_phys.phys.isSimplifiedPhys = human_net_phys__isSimplifiedPhys
   human_net_phys.phys.isSimplifiedQueryWalkPosition = human_net_phys__isSimplifiedQueryWalkPosition
+  human_net_phys.phys.useTraceCapsuleCastForWalk = human_net_phys__useTraceCapsuleCastForWalk
 
 [es(after=before_net_phys_sync )]
 def human_pre_phys_ladder_update_es(evt : CmdPrePhysUpdate;

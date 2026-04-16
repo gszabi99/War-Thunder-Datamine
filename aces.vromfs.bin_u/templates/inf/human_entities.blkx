@@ -31,11 +31,10 @@
   "dev_soldier_equip": {
     "human_equipment__initialEquip:object": {
       "attachable_wear_head_russian_02_item": "face",
-      "attachable_wear_pasgt_helmet_fastener_desert_item": "helmet",
+      "attachable_wear_pasgt_helmet_cuted_desert_item": "helmet",
       "attachable_wear_tactical_gloves_item": "gloves",
       "attachable_wear_acu_jacket_ucp_urban_item": "tunic",
       "attachable_wear_acu_pants_ucp_urban_item": "pants",
-      "attachable_wear_viper_sniper_cape_cover_ucp_urban_item": "cape",
       "attachable_wear_lbx_armatus2_desert_gray_item": "chest_armor",
       "ballistic_glasses_transp_item": "face_goggles",
       "attachable_wear_narrow_tactical_belt_desert_item": "belt",
@@ -53,6 +52,10 @@
   "force_simplified_walk_query": {
     "human_phys__forceSimplifiedWalkQuery": true,
     "_tracked": "human_phys__forceSimplifiedWalkQuery"
+  },
+  "force_trace_capsule_walk": {
+    "human_phys__forceTraceCapsuleCastForWalk": true,
+    "_tracked": "human_phys__forceTraceCapsuleCastForWalk"
   },
   "bipod_debug": {
     "bipodDebug:tag": {
@@ -261,8 +264,8 @@
     "_tracked": "hitpoints__totalDotAmount",
     "_group": {
       "_tags": "server",
-      "hitpoints__dotBaseSpeed": 0.15,
-      "hitpoints__dotSpeedThreshold": 0.4,
+      "hitpoints__dotBaseSpeed": 0.3,
+      "hitpoints__dotSpeedThreshold": 0.6,
       "hitpoints__dotInterval": 0.25,
       "hitpoints__dotUpdateAt": 0.0,
       "dm_parts__dotMult:list<r>": {},
@@ -445,7 +448,6 @@
       "multiple_guns_slots__wantedGunEid",
       "multiple_guns_slots__hiddenGunInSlot",
       "human_weap__currentScope",
-      "human__hitmarkEid",
       "human_weap__grenadeThrowModeServer"
     ],
     "_use": "human_melee",
@@ -502,7 +504,7 @@
     ],
     "human_weap__crawlClampVertAngleRad": [
       -0.698132,
-      0.872665
+      1.48353
     ],
     "human_weap__gunMatId": -1,
     "human_weap__gunCheckOffsetUp": 1.4,
@@ -916,7 +918,6 @@
       "_tags": "netClient"
     },
     "attached_gun_scope__currentEid:eid": {},
-    "human__hitmarkEid:eid": {},
     "grenadeThrowViaRethrowEnabled:tag": {}
   },
   "base_cover_updater": {
@@ -964,6 +965,12 @@
       0.2
     ],
     "ai_target__noiseLevel": 0.0,
+    "ai_target__prevPosTime": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
     "ai_target": {
       "_tags": "server"
     },
@@ -1195,6 +1202,16 @@
     "human_lean__leanMat": "aimRay",
     "human_lean__leanMatId": -1
   },
+  "human_backblast_check_bones": {
+    "human__backblastCheckBoneNames:list<t>": {
+      "name": [
+        "Bip01 Head",
+        "Bip01 Spine1",
+        "Bip01 Pelvis"
+      ]
+    },
+    "human__backblastCheckBoneIds:list<i>": {}
+  },
   "base_human_net_phys": {
     "_use": [
       "reanimation",
@@ -1202,6 +1219,7 @@
       "human_heat_sources",
       "base_dm_parts",
       "human_dm_parts",
+      "human_backblast_check_bones",
       "node_collapser",
       "animchar_turn_dir",
       "animchar_with_attaches",
@@ -1277,6 +1295,7 @@
     "human_net_phys__attachedToLadder": false,
     "human_net_phys__isSimplifiedPhys": false,
     "human_net_phys__isSimplifiedQueryWalkPosition": true,
+    "human_net_phys__useTraceCapsuleCastForWalk": true,
     "human_net_phys__weapEquipCurState": 0,
     "human_net_phys__weapEquipNextSlot": 0,
     "human_net_phys__isHoldBreath": false,
@@ -1707,6 +1726,10 @@
     "human_anim__horizontalSpeedVarId": -1,
     "human_anim__horizontalVelocityViscosity": 0.2,
     "human_anim__plantProgressVarId": -1,
+    "human_anim__heroReloadStartTime": -1.0,
+    "human_anim__heroReloadEndTime": -1.0,
+    "human_anim__heroInspectStartTime": -1.0,
+    "human_anim__heroInspectEndTime": -1.0,
     "human_anim__bipodVar": "bipod_enabled",
     "human_anim__bipodVarId": -1,
     "human_anim__gunPitchVarId": -1,
@@ -1737,6 +1760,7 @@
     "human_anim__sprintVariationVarId": -1,
     "human_anim__crawlContinuousRotationVarId": -1,
     "human_anim__gunLengthCompensationVarId": -1,
+    "human_anim__fullBodyRootRotateVarId": -1,
     "human_anim__leanSpineRotateVarId": -1,
     "human_anim__isCrawlContinuousRotating": true,
     "human_anim__crawlContinuousRotationLastChangeTime": -1.0,
@@ -1798,6 +1822,7 @@
       0.0,
       0.0
     ],
+    "human_anim__fullBodyRootRotateValue": 0.0,
     "human_anim__isFpv:b": {
       "value": false,
       "_track": true,
@@ -2228,56 +2253,6 @@
         "entities:array": {}
       },
       "chest:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "upper_r_hand_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "lower_r_hand_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "upper_l_hand_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "lower_l_hand_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "upper_r_leg_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "lower_r_leg_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "upper_l_leg_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "lower_l_leg_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "upper_neck_gibs:object": {
-        "template": "",
-        "item:eid": {},
-        "entities:array": {}
-      },
-      "bottom_neck_gibs:object": {
         "template": "",
         "item:eid": {},
         "entities:array": {}

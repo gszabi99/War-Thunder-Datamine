@@ -36,6 +36,7 @@ let overrideItemIcon = {
 
 
 let whiteColor4 = Color4(255,255,255,255)
+let inactiveColor4 = Color4(179,179,179,255)
 
 
 let isWeaponEnabled = Computed(function() {
@@ -75,7 +76,7 @@ function mkWeaponImage() {
     }
 
   return {
-    watch = [ humanCurGunStaticInfo, forceRealTimeRenderIcon, isWeaponEnabled ]
+    watch = [ humanCurGunStaticInfo, forceRealTimeRenderIcon, humanCurGunModeInfo, isWeaponEnabled ]
     size = weaponImageSize
     rendObj = ROBJ_IMAGE
     color = isWeaponEnabled.get() ? white : infantryHudDisabledColor
@@ -83,9 +84,10 @@ function mkWeaponImage() {
       width = weaponImageSize[0]
       height = weaponImageSize[1]
       silhouetteColor = whiteColor4
+      silhouetteInactiveColor = inactiveColor4
       forceRealTimeRenderIcon = forceRealTimeRenderIcon.get()
       renderSettingsPlace = "hud_action_bar"
-      
+      iconAttachments = humanCurGunModeInfo.get()?.iconAttachments
     }))
   }
 }
@@ -144,6 +146,15 @@ function mkWeaponAmmo(ammoWatch, ammoTotalWatch, addChildren) {
   }
 }
 
+function mkAdditionalWeaponInfo() {
+  return {
+    children = [
+      bigText(coolDownTime)
+      fireModeChildren()
+    ]
+  }
+}
+
 function mkAmmoBlock() {
   let haveAmmo = Computed(@() humanCurGunStaticInfo.get()?.haveAmmo ?? false)
   let curGunMod = Computed(@() humanCurGunModeInfo.get()?.modWeapon)
@@ -160,7 +171,7 @@ function mkAmmoBlock() {
     children = [
       !haveAmmo.get() ? null : isModActive.get()
         ? mkWeaponAmmo(curWeaponAltAmmo, curWeaponAltTotalAmmo, mkAmmoTypeImage)
-        : mkWeaponAmmo(curWeaponAmmo, curWeaponTotalAmmo, fireModeChildren())
+        : mkWeaponAmmo(curWeaponAmmo, curWeaponTotalAmmo, mkAdditionalWeaponInfo)
     ]
   }
 }
@@ -219,7 +230,6 @@ return {
           valign = ALIGN_CENTER
           children = [
             mkWeaponImage
-            bigText(coolDownTime)
           ]
         }
         {

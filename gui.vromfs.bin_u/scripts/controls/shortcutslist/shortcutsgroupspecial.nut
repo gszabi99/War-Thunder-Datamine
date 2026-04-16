@@ -71,6 +71,12 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
+  {
+    id = "human_lean"
+    type = CONTROL_TYPE.AXIS
+    axisDirection = AxisDirection.X
+    needShowInHelp = true
+  }
 
   {
     id = "ID_HUMAN_FIRE_HEADER"
@@ -380,6 +386,16 @@ return [
     id = "ID_HUMAN_USE_MEDKIT"
     checkAssign = false
     needHoldToUse = true
+  }
+  {
+    id = "ID_HUMAN_USE"
+    checkAssign = true
+    needShowInHelp = true
+  }
+  {
+    id = "ID_HUMAN_USE_ALT"
+    checkAssign = true
+    needShowInHelp = true
   }
   {
     id = "ID_REPAIR_HUMAN"

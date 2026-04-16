@@ -51,6 +51,12 @@ let { Color4 } = require("dagor.math")
 
 
 
+
+
+
+
+
+
 let RENDER_PARAMS = @"ui/gameuiskin#render{
   itemName:t={itemName};animchar:t={animchar};autocrop:b=false;
   yaw:r={yaw};pitch:r={pitch};roll:r={roll};
@@ -76,6 +82,28 @@ let RENDER_PARAMS = @"ui/gameuiskin#render{
   sharpening:r={sharpening}
 }.render"
 
+let ATTACHMENT_PARAMS = @"a{idx}{
+  animchar:t={animchar};
+  slot:t={slot};
+  scale:r={scale};
+  outline:c={attOutlineColor};
+  shading:t={attrShading};
+  silhouette:c={attSilhouetteColor};
+  {attAttachType}
+  {hideNodesAtt}
+  {shaderColorsString}
+  {objTexReplaceRules}
+}"
+
+let DECORATOR_PARAMS = @"a{
+  relativeTm:m={tmatrixString};
+  animchar:t={animchar};
+  parentNode:t={nodeName};
+  shading:t=same;
+  attachType:t=node;
+  swapYZ:b={swapYZ};
+}"
+
 let getTMatrixString = @(m)
   "[{0}]".subst(" ".join(array(4).map(@(_, i) $"[{m[i].x}, {m[i].y}, {m[i].z}]")))
 
@@ -93,11 +121,11 @@ function getShaderColorsString(item) {
   return "".join(list)
 }
 
-let getColor4String = @(col) $"{col.a},{col.r},{col.g},{col.b}"
+let getColor4String = @(col) $"{col.r},{col.g},{col.b},{col.a}"
 let getPoint4String = @(col) $"{col.x},{col.y},{col.z},{col.w}"
 
+
 let transparentTxt = getColor4String(Color4(0,0,0,0))
-let silverTxt = getColor4String(Color4(192,192,192,200))
 let whiteTxt = getColor4String(Color4(255, 255, 255, 255))
 
 function iconWidget(item, params = {}) {
@@ -118,14 +146,19 @@ function iconWidget(item, params = {}) {
     paintColor = null,
     hideNodes = []
     iconAttachments = []
+    iconAttachmentShading = "same"
   } = item
 
   let outlineColor = item?.outlineColor ? getColor4String(item.outlineColor) : transparentTxt
   let outlineColorInactive = item?.outlineInactiveColor
     ? getColor4String(item.outlineInactiveColor) : transparentTxt
-  let silhouetteColor = item?.silhouetteColor ? getColor4String(item.silhouetteColor) : silverTxt
+  let silhouetteColor = item?.silhouetteColor ? getColor4String(item.silhouetteColor)
+    : params?.silhouetteColor ? getColor4String(params.silhouetteColor)
+    : whiteTxt
   let silhouetteColorInactive = item?.silhouetteInactiveColor
-    ? getColor4String(item.silhouetteInactiveColor) : silverTxt
+    ? getColor4String(item.silhouetteInactiveColor)
+    : params?.silhouetteInactiveColor ? getColor4String(params.silhouetteInactiveColor)
+    : whiteTxt
 
   let imageHeight = height.tointeger()
   let imageWidth = width.tointeger()
@@ -136,14 +169,52 @@ function iconWidget(item, params = {}) {
   let shaderColors = getShaderColorsString(item)
 
   let sunColor = item?.sunColor ? getColor4String(item.sunColor) : whiteTxt
+  let itemScale = item?.iconScale ?? 1
 
-  let haveActiveAttachments = (iconAttachments ?? []).len() > 0
+  local haveActiveAttachments = false
   let attachments = []
   foreach (i, attachment in iconAttachments ?? []) {
-    attachments.append($"a{i}\{animchar:t={attachment?.animchar};slot:t={attachment?.slot};scale:r={attachment?.scale ?? 1.0};outline:c={outlineColor};shading:t={shading};silhouette:c={silhouetteColor};\}")
+    let active = attachment?.active ?? false
+    if (shading == "full" && !active) {
+      
+      continue
+    }
+    haveActiveAttachments = haveActiveAttachments || active
+
+    let { animchar = null, slot = -1, scale = itemScale, attachType = null } = attachment
+
+    let attAttachType = attachType != null ? $"attachType:t={attachType};" : ""
+
+    local hideNodesAtt = (attachment?.hideNodes ?? []).map(@(node) $"node:t={node};")
+    hideNodesAtt = hideNodesAtt.len() > 0 ? "hideNodes{{0}};".subst("".join(hideNodesAtt)) : ""
+
+    let attOutlineColor = active ? outlineColor : outlineColorInactive
+    let attSilhouetteColor = active ? silhouetteColor : silhouetteColorInactive
+    let attrShading = attachment?.shading ?? iconAttachmentShading
+    let attrObjTexReplaceRules = getTexReplaceString(attachment)
+
+    attachments.append(ATTACHMENT_PARAMS.subst({
+      idx = i
+      animchar
+      slot
+      scale
+      attAttachType
+      hideNodesAtt
+      attOutlineColor
+      attrShading
+      attSilhouetteColor
+      objTexReplaceRules = "objTexReplaceRules{{0}}".subst(attrObjTexReplaceRules)
+      shaderColorsString = getShaderColorsString(attachment)
+    }))
   }
+
   foreach (decorator in item?.decorators ?? []) {
-    attachments.append($"a\{relativeTm:m={getTMatrixString(decorator?.relativeTm)};animchar:t={decorator?.animchar};parentNode:t={decorator?.nodeName};shading:t=same;attachType:t=node;swapYZ:b={decorator?.swapYZ ?? true};\}")
+    attachments.append(DECORATOR_PARAMS.subst({
+      animchar = decorator?.animchar
+      nodeName = decorator?.nodeName
+      tmatrixString = getTMatrixString(decorator?.relativeTm)
+      swapYZ = decorator?.swapYZ ?? true
+    }))
   }
 
   let hideNodesTex = hideNodes.map(@(node) $"node:t={node};")
@@ -151,7 +222,6 @@ function iconWidget(item, params = {}) {
   let needEnableRTRender = forceRealTimeRenderIcon == "" || itemTemplate == forceRealTimeRenderIcon
   
   let ssaa = item?.ssaaX && item?.ssaaY ? $"ssaaX:i={item.ssaaX};ssaaY:i={item.ssaaY};" : ""
-
 
   return RENDER_PARAMS.subst({
     itemName = itemTemplate
@@ -164,7 +234,7 @@ function iconWidget(item, params = {}) {
     calcBBox = item?.calcBBox ?? true
     offset_x = item?.iconOffsX ?? 0
     offset_y = item?.iconOffsY ?? 0
-    scale = item?.iconScale ?? 1
+    scale = itemScale
     distance = item?.distance ?? 4.0
     ssaa
     outlineColor = haveActiveAttachments ? outlineColorInactive : outlineColor

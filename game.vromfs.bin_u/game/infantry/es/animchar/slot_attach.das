@@ -72,7 +72,7 @@ def slot_attach_init_tms_es(info : ParallelUpdateFrameDelayed)
         transform[3] += wtmOfs
   broadcastEventImmediate(SlotAttachUpdateEvent(dt = info.dt))
 
-[es(REQUIRE_NOT=(menuPoseTm, slot_attach__secondaryUpdate), REQUIRE=(slot_attach, slot_attach__slotName), parallel_for=4)]
+[es(REQUIRE_NOT=(menuPoseTm, slot_attach__secondaryUpdate), REQUIRE=(attachedToParent, slot_attach, slot_attach__slotName), parallel_for=4)]
 def slot_attach_first_priority_update_es(info : SlotAttachUpdateEvent;
                                          slot_attach__slotId : int;
                                          animchar_attach__attachedTo : EntityId;
@@ -88,7 +88,7 @@ def slot_attach_first_priority_update_es(info : SlotAttachUpdateEvent;
                             slot_attach__rotTm)
 
 
-[es(after=slot_attach_first_priority_update_es, REQUIRE_NOT=menuPoseTm, REQUIRE=(slot_attach, slot_attach__secondaryUpdate, slot_attach__slotName))]
+[es(after=slot_attach_first_priority_update_es, REQUIRE_NOT=menuPoseTm, REQUIRE=(slot_attach, slot_attach__secondaryUpdate, slot_attach__slotName), tag=gameClient)]
 def slot_attach_secondary_priority_update_es(info : SlotAttachUpdateEvent;
                                              slot_attach__slotId : int;
                                              animchar_attach__attachedTo : EntityId;

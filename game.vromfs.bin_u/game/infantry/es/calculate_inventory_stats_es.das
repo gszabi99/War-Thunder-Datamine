@@ -1,4 +1,5 @@
 require ecs
+require %appGame.wt_events
 
 def calculate_current_volume_impl(itemContainer : EidList;
                                   human_equipment__slots : Object;
@@ -47,7 +48,8 @@ def calculate_current_volume_impl(itemContainer : EidList;
       track=human_equipment__slots,
       track=human_weap__gunEids,
       track=human_weap__gunMods,
-      on_event=EventScriptReloaded)]
+      on_event=EventScriptReloaded,
+      on_event=CmdRecalcHumanWeight)]
 def calculate_current_volume_es(evt : Event;
                                 itemContainer : EidList;
                                 human_equipment__slots : Object;
@@ -74,3 +76,31 @@ def calculate_current_volume_for_gun_es(evt : Event;
     calculate_current_volume_impl(itemContainer, human_equipment__slots,
       human_weap__gunEids, human_weap__gunMods,
       human_inventory__currentVolume, human_inventory__currentWeight)
+
+
+def private recalc_magazine_weight_impl(ammo_holder__ammoCount : int;
+                                        ammo_holder__emptyWeight : float;
+                                        ammo_holder__bulletWeight : float;
+                                        var item__weight : float&) : bool
+  if ammo_holder__bulletWeight >= 0.0 && ammo_holder__emptyWeight >= 0.0
+    item__weight = ammo_holder__emptyWeight + float(ammo_holder__ammoCount) * ammo_holder__bulletWeight
+    return true
+  return false
+
+[es(tag=server, on_appear, before=inventory_item_push_es)]
+def recalc_magazine_weight_es(evt : Event;
+                              ammo_holder__ammoCount : int;
+                              ammo_holder__emptyWeight : float;
+                              ammo_holder__bulletWeight : float;
+                              var item__weight : float&)
+  recalc_magazine_weight_impl(ammo_holder__ammoCount, ammo_holder__emptyWeight, ammo_holder__bulletWeight, item__weight)
+
+[es(tag=server, on_event=CmdRecalcMagazineWeight)]
+def recalc_magazine_weight_on_reload_es(evt : Event;
+                                        ammo_holder__ammoCount : int;
+                                        ammo_holder__emptyWeight : float;
+                                        ammo_holder__bulletWeight : float;
+                                        item__ownerEid : EntityId;
+                                        var item__weight : float&)
+  if recalc_magazine_weight_impl(ammo_holder__ammoCount, ammo_holder__emptyWeight, ammo_holder__bulletWeight, item__weight)
+    sendEvent(item__ownerEid, CmdRecalcHumanWeight())

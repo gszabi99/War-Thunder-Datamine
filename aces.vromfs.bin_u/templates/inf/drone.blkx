@@ -238,8 +238,8 @@
     "unit__className": "uav_inf_strike_drone",
     "drone__start_velocity_speed": 25.0,
     "drone__coverageArea": [
-      400.0,
-      800.0
+      600.0,
+      1000.0
     ],
     "drone_type__kamikaze:tag": {}
   },
@@ -270,8 +270,8 @@
     "unit__className": "uav_inf_fpv_strike_drone",
     "drone__start_velocity_speed": 1.0,
     "drone__coverageArea": [
-      400.0,
-      800.0
+      600.0,
+      1000.0
     ],
     "isQuadrocopterHints:tag": {},
     "_group": {
@@ -294,5 +294,55 @@
     "drone_launcher__cooldown": 90.0,
     "drone_launcher__firstLaunchTimeout": 30.0,
     "drone_launcher__maxLaunches": 2
+  },
+  "drone_camera_vhs_effect": {
+    "_singleton": true,
+    "_use": "vhs_camera_preset",
+    "vhs_camera__isActive": false,
+    "vhs_camera__saturationMultiplier": 1.0,
+    "vhs_camera__dynamicRangeMin": 0.0,
+    "vhs_camera__dynamicRangeMax": 0.9,
+    "vhs_camera__dynamicRangeGamma": 1.0,
+    "vhs_camera__resolutionDownscale": 1.0,
+    "vhs_camera__noiseIntensity": 0.0,
+    "vhs_camera__noiseSaturation": 1.0,
+    "vhs_camera__noiseUvScale": 1.0,
+    "vhs_camera__chromaticAberrationIntensity": 0.0,
+    "vhs_camera__chromaticAberrationStart": 0.0,
+    "vhs_camera__scanlineHeight": 0.001,
+    "vhs_camera__noiseEndTime": -1.0,
+    "vhs_camera__dynamicRangeMinNear": 0.0,
+    "vhs_camera__dynamicRangeMinFar": -0.1,
+    "vhs_camera__dynamicRangeMinDestroyed": -0.5,
+    "vhs_camera__dynamicRangeMaxNear": 0.9,
+    "vhs_camera__dynamicRangeMaxFar": 0.5,
+    "vhs_camera__dynamicRangeMaxDestroyed": 2.0,
+    "vhs_camera__dynamicRangeGammaNear": 1.0,
+    "vhs_camera__dynamicRangeGammaFar": 1.0,
+    "vhs_camera__dynamicRangeGammaDestroyed": 1.0,
+    "vhs_camera__chromaticAberrationIntensityNear": 0.005,
+    "vhs_camera__chromaticAberrationIntensityFar": 0.02,
+    "vhs_camera__chromaticAberrationIntensityDestroyed": 5.0,
+    "vhs_camera__chromaticAberrationStartNear": 0.25,
+    "vhs_camera__chromaticAberrationStartFar": 0.25,
+    "vhs_camera__chromaticAberrationStartDestroyed": 0.0,
+    "vhs_camera__noiseIntensityNear": 0.01,
+    "vhs_camera__noiseIntensityFar": 0.15,
+    "vhs_camera__noiseIntensityDestroyed": 0.2,
+    "vhs_camera__noiseUvScaleNear": 4.0,
+    "vhs_camera__noiseUvScaleFar": 4.0,
+    "vhs_camera__noiseUvScaleDestroyed": 4.0,
+    "vhs_camera__scanlineHeightNear": 0.0005,
+    "vhs_camera__scanlineHeightFar": 0.2,
+    "vhs_camera__scanlineHeightDestroyed": 1.5,
+    "vhs_camera__resolutionDownscaleDefault": 1.0,
+    "vhs_camera__resolutionDownscaleDestroyed": 0.25,
+    "vhs_camera__saturationMultiplierNear": 0.75,
+    "vhs_camera__saturationMultiplierFar": 0.2,
+    "vhs_camera__saturationMultiplierDestroyed": 0.0,
+    "vhs_camera__noiseSaturationNear": 0.0,
+    "vhs_camera__noiseSaturationFar": 0.25,
+    "vhs_camera__noiseSaturationDestroyed": 0.5,
+    "drone_camera_vhs_effect:tag": {}
   }
 }

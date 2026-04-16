@@ -229,12 +229,14 @@ def ai_death_danger_zones_on_soldier_die(evt : EventEntityDied;
                      death_danger_zones__areaMaxWeight : float = 500.0;
                      death_danger_zones__areaMergeCoef : float = 1.5;
                      death_danger_zones__areaSideWeightCoef : float = 0.8;
-                     death_danger_zones__areaHeight : float = 3.0;
+                     death_danger_zones__areaHeights : float2 = float2(-1.5, 2.0);
                      var walker_custom_nav : CustomNav&;
                      var death_danger_zones__list : int3&;
                      var death_danger_zones__areasData : IntList&;
                      var death_danger_zones__areasTime : FloatList&;
-                     var death_danger_zones__prevNext : IPoint2List&)
+                     var death_danger_zones__prevNext : IPoint2List&;
+                     var team_danger_zones__checkPathAreasPosList : Point3List&;
+                     var team_danger_zones__checkPathAreasTimeRadiusList : Point2List&)
     if team__id != evt.victimTeam
       return
 
@@ -244,6 +246,9 @@ def ai_death_danger_zones_on_soldier_die(evt : EventEntityDied;
     var areaDuration = death_danger_zones__areaBaseDuration
     var areaRadius = death_danger_zones__areaBaseRadius
     var totalAreaWeight = death_danger_zones__areaBaseWeight * square(death_danger_zones__areaBaseRadius)
+
+    areaPos.y += death_danger_zones__areaHeights.x
+    let areaHeight = -death_danger_zones__areaHeights.x + death_danger_zones__areaHeights.y
 
     let MAX_CHECK_MERGE_COUNT = 3
     var checkMergeCount = 0
@@ -294,7 +299,93 @@ def ai_death_danger_zones_on_soldier_die(evt : EventEntityDied;
 
     let areaWeight = min(totalAreaWeight / square(areaRadius), death_danger_zones__areaMaxWeight)
     let sideWeight = areaWeight * death_danger_zones__areaSideWeightCoef
-    let areaRadiusHeight = float2(areaRadius, death_danger_zones__areaHeight)
+    let areaRadiusHeight = float2(areaRadius, areaHeight)
     walker_custom_nav_areaUpdateFadingCylinder(walker_custom_nav, areaId, areaPos, areaRadiusHeight, areaWeight, sideWeight,
                                                curTime, curTime + areaDuration, true)
     walker_custom_nav_setAreaUserTagData(walker_custom_nav, areaId, CUSTOMNAV_TAG_DEATH, areaIdx)
+
+    team_danger_zones__checkPathAreasPosList |> push(areaPos)
+    team_danger_zones__checkPathAreasTimeRadiusList |> push(float2(curTime, areaRadius))
+
+
+[es(tag=server, no_order)]
+def ai_nav_zones_squad_tactical_path_update(info : ParallelUpdateFrameDelayed;
+                                            team__id : int;
+                                            team_danger_zones__checkPathDeltaTime : float;
+                                            team_danger_zones__checkPathAreaHeight : float = 4.0;
+                                            team_danger_zones__checkPathStartMaxDist : float = 70.0;
+                                            team_danger_zones__checkPathStep : float = 10.0;
+                                            var team_danger_zones__checkPathLastTime : float&;
+                                            var team_danger_zones__checkPathAreasPosList : Point3List&;
+                                            var team_danger_zones__checkPathAreasTimeRadiusList : Point2List&)
+  let curTime = info.curTime
+  if curTime < team_danger_zones__checkPathLastTime + team_danger_zones__checkPathDeltaTime
+    return
+  team_danger_zones__checkPathLastTime = curTime
+
+  if empty(team_danger_zones__checkPathAreasPosList)
+    return
+
+  let areaPos = team_danger_zones__checkPathAreasPosList[0]
+  let zoneCreationTime = team_danger_zones__checkPathAreasTimeRadiusList[0].x
+  let areaRadius = team_danger_zones__checkPathAreasTimeRadiusList[0].y
+  let areaPosXZ = float2(areaPos.x, areaPos.z)
+  let areaRadiusSq = square(areaRadius)
+  let areaHeight = team_danger_zones__checkPathAreaHeight
+  let startPosMaxDistSq = square(team_danger_zones__checkPathStartMaxDist + areaRadius)
+  let checkPathDist = team_danger_zones__checkPathStartMaxDist
+  let checkStep = team_danger_zones__checkPathStep
+
+  query() <| $ [es] (squad__ownerPlayer : EntityId;
+                     var squadAI_tactical__pathUpdateTime : float&;
+                     var squadAI_tactical__path : Point3List&)
+    let squadTeam = get_int(squad__ownerPlayer, "team") ?? -1
+    if squadTeam != team__id
+      return
+
+    if squadAI_tactical__pathUpdateTime == -1.0 || squadAI_tactical__pathUpdateTime >= zoneCreationTime
+      return
+
+    assume path = squadAI_tactical__path
+    let len = length(path)
+    if len <= 1
+      return
+    if distance_sq(path[0], areaPos) > startPosMaxDistSq
+      return
+    if distance_sq(path[len - 1], areaPos) < areaRadiusSq
+      return
+
+    var atPos = path[0]
+    var totalDist = 0.0
+    var intervalStartPos = path[0]
+    var accumulatedDist = 0.0
+    for i in range(1, len)
+      if totalDist >= checkPathDist
+        break
+      let nextPos = path[i]
+      let segDist = length(nextPos - atPos)
+      if segDist <= 0.0
+        atPos = nextPos
+        continue
+
+      accumulatedDist += segDist
+      if accumulatedDist >= checkStep || i == len - 1 || totalDist + segDist >= checkPathDist
+        let segDirXZ = float2(nextPos.x - intervalStartPos.x, nextPos.z - intervalStartPos.z)
+        let toAreaXZ = float2(areaPos.x - intervalStartPos.x, areaPos.z - intervalStartPos.z)
+        let segLenSqXZ = length_sq(segDirXZ)
+        let t = segLenSqXZ > 0.0 ? saturate(dot(toAreaXZ, segDirXZ) / segLenSqXZ) : 0.0
+        let closestXZ = float2(intervalStartPos.x, intervalStartPos.z) + segDirXZ * t
+        if distance_sq(closestXZ, areaPosXZ) < areaRadiusSq
+          let closestY = lerp(intervalStartPos.y, nextPos.y, t)
+          if abs(closestY - areaPos.y) < areaHeight
+            squadAI_tactical__pathUpdateTime = -1.0
+            clear(squadAI_tactical__path)
+            return
+        intervalStartPos = nextPos
+        accumulatedDist = 0.0
+
+      totalDist += segDist
+      atPos = nextPos
+
+  team_danger_zones__checkPathAreasPosList |> erase(0)
+  team_danger_zones__checkPathAreasTimeRadiusList |> erase(0)

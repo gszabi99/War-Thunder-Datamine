@@ -63,6 +63,18 @@ def human_phys_simplified_walk_query_debug(mode = 0)
       init |> set("human_phys__forceSimplifiedWalkQuery", (mode == 1))
 
 
+[net_console_cmd(name="humanphys.forceTraceCapsuleWalkAll", hint="0 - default, 1 for enable, 2 force disable")]
+def human_phys_trace_capsule_walk_debug(mode = 0)
+  let forceTraceCapsuleWalk = find_query() <| $ [es] (eid : EntityId; var human_phys__forceTraceCapsuleCastForWalk : bool&)
+    if mode == 0
+      destroyEntity(eid)
+    else
+      human_phys__forceTraceCapsuleCastForWalk = (mode == 1)
+    return true
+  if !forceTraceCapsuleWalk && mode != 0
+    createEntity("force_trace_capsule_walk") <| $(init)
+      init |> set("human_phys__forceTraceCapsuleCastForWalk", (mode == 1))
+
 [ecs_template]
 struct full_body_anim_test
   full_body_anim_test_tag : Tag

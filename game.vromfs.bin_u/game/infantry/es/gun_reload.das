@@ -5,6 +5,9 @@ require %appGame.infantry.es.human_reload_common
 require %appGame.infantry.es.gun_reload_common
 require %appGame.infantry.es.human_weap_common
 require %game.events
+require DngHuman
+require WTPhysActor
+require HumanPhys
 
 
 
@@ -170,7 +173,7 @@ def gun_reload_state_bullet_single(evt : CmdStartNextReloadState;
     return has_holder_with_enough_bullets(gun__owner, bulletsToInsert, gun__wishAmmoItemType, gun__ammoHolderIds, gun__maxAmmo)
 
 
-[es]
+[es(after=gun_reload_state_bullet_single)]
 def gun_reload_state_post(evt : CmdStartNextReloadState;
                           eid : EntityId;
                           gun__owner : EntityId;
@@ -255,7 +258,8 @@ def on_human_requested_reload(evt : CmdRequestReload;
                            gun__maxAmmo : int;
                            gun__wishAmmoItemType : int;
                            gun__ammoHolderIds : IntList;
-                           var gun_reload__isReloading : bool&)
+                           var gun_reload__isReloading : bool&;
+                           var gun_reload__startedWhileShootHeld : bool&)
 
     
     var minBulletsToInsert = 1
@@ -276,6 +280,10 @@ def on_human_requested_reload(evt : CmdRequestReload;
 
     
     gun_reload__isReloading = true
+    var appliedShoot = false
+    query(eid) <| $ [es] (human_net_phys : HumanActor&)
+      appliedShoot = human_net_phys.phys.appliedCT |> is_control_bit_set(HumanPhysControlType.HCT_SHOOT)
+    gun_reload__startedWhileShootHeld = appliedShoot
     sendEvent(eid, EventHumanStartedReload())
 
 

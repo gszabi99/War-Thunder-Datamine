@@ -84,12 +84,17 @@ ecs.register_es("human_curgunslot_ui_es",
 
 
 let launcherQuery = ecs.SqQuery("launcherQuery", {
-  comps_ro = [["drone_launcher__nextUseAtTime", ecs.TYPE_FLOAT, 0.0]]
+  comps_ro = [
+    ["drone_launcher__nextUseAtTime", ecs.TYPE_FLOAT, 0.0],
+    ["drone_launcher__launchesRemaining", ecs.TYPE_INT, -1],
+    ["drone_launcher__maxLaunches", ecs.TYPE_INT, -1],
+  ]
 })
 function getLauncherNextUseAtTime(eid) {
   local nextUseAtTime = 0.0
   launcherQuery(eid, function(_, comp) {
-    nextUseAtTime = comp.drone_launcher__nextUseAtTime
+    if (comp.drone_launcher__launchesRemaining != 0)
+      nextUseAtTime = comp.drone_launcher__nextUseAtTime
   })
   return nextUseAtTime
 }
@@ -134,7 +139,9 @@ ecs.register_es("hero_ui_weapons_es",
       if (comp.gun__owner != controlledHeroEid.get()
         && comp.item__ownerEid != controlledHeroEid.get())
         return
-
+      local launcherEid = comp["tactical_phone__droneLauncher"]
+      if (launcherEid == ecs.INVALID_ENTITY_ID && comp["drone_launcher"] != null)
+        launcherEid = eid
       let staticDesc = mkItemDescFromComp(eid, comp)
       let desc = {
         isReloading = comp["gun_anim__reloadProgress"] > 0.0
@@ -150,11 +157,19 @@ ecs.register_es("hero_ui_weapons_es",
         iconByHolders = comp["gun__iconByHolders"]?.getAll() ?? []
         guidanceState = comp["gun__guidanceState"]
         isModActive = comp["weapon_mod__active"]
-        launcherEid = comp["tactical_phone__droneLauncher"]
+        launcherEid
         hasSwitchableSights = (comp["sightPresets"]?.len() ?? 0) > 1
         currentSightPreset = comp["weap__current_sight_preset"]
         sightPresetsData = (comp["sightPresets"]?.getAll() ?? []).map(@(p) p?.loc ?? "")
       }
+      if (desc.launcherEid)
+        launcherQuery(desc.launcherEid, function(_, lcomp) {
+          if (lcomp.drone_launcher__launchesRemaining >= 0) {
+            staticDesc.haveAmmo = true
+            desc.curAmmo = lcomp.drone_launcher__launchesRemaining
+            desc.totalAmmo = lcomp.drone_launcher__maxLaunches
+          }
+        })
       weaponSlotsStaticRaw[idx].setValue(staticDesc)
       weaponSlotsRaw[idx].setValue(desc)
       weaponSlotsGenSetValue(weaponSlotsGen.get()+1)
@@ -192,6 +207,7 @@ ecs.register_es("hero_ui_weapons_es",
       ["weaponMod", ecs.TYPE_TAG, null],
       ["slot_attach__weaponSlotIdx", ecs.TYPE_INT, null],
       ["multiple_guns_slot_gun_hidden", ecs.TYPE_TAG, null],
+      ["drone_launcher", ecs.TYPE_TAG, null],
       ["gunAttachable__gunSlotName", ecs.TYPE_STRING, ""],
       ["gunmod__variableScope", ecs.TYPE_BOOL, false],
       ["sightPresets", ecs.TYPE_ARRAY, null]
@@ -217,6 +233,35 @@ ecs.register_es("hero_ui_weapons_es",
   }
 )
 
+ecs.register_es("hero_ui_drone_launcher_info_es",
+  {
+    [["onInit", ecs.EventComponentChanged]] = function(_, eid, comp) {
+      let remaining = comp.drone_launcher__launchesRemaining
+      if (remaining < 0)
+        return
+      foreach (idx, slot in weaponSlots) {
+        let curInfo = slot.get()
+        if (curInfo == null || curInfo.launcherEid != eid)
+          continue
+        weaponSlotsRaw[idx].setValue(curInfo.__merge({ curAmmo = remaining, totalAmmo = comp.drone_launcher__maxLaunches }))
+        let staticInfo = weaponSlotsStatic?[idx]?.get()
+        if (staticInfo != null && !(staticInfo?.haveAmmo ?? false))
+          weaponSlotsStaticRaw[idx].setValue(staticInfo.__merge({ haveAmmo = true }))
+        weaponSlotsGenSetValue(weaponSlotsGen.get() + 1)
+      }
+    }
+  },
+  {
+    comps_ro = [
+      ["drone_launcher__maxLaunches", ecs.TYPE_INT],
+    ]
+    comps_track = [
+      ["drone_launcher__launchesRemaining", ecs.TYPE_INT],
+    ]
+    comps_rq = ["watchedPlayerItem"]
+  }
+)
+
 let heroModsByWeaponSlot = Computed(function(){
   let res = array(WEAPON_SLOTS.EWS_NUM)
   foreach (slotNum, modsByEids in heroModsByWeaponSlotRaw.get()) {
@@ -224,7 +269,7 @@ let heroModsByWeaponSlot = Computed(function(){
     let iconAttachments = []
     local modWeapon
     foreach (mod in (modsByEids ?? [])){
-      let {animchar=null, isWeapon=false, attachedItemModSlotName=null} = mod
+      let {animchar=null, isWeapon=false, attachedItemModSlotName=null, isModActive=null} = mod
       if (attachedItemModSlotName==null)
         continue
       mods[attachedItemModSlotName] <- mod
@@ -232,7 +277,7 @@ let heroModsByWeaponSlot = Computed(function(){
         iconAttachments.append({
           animchar
           slot = attachedItemModSlotName
-          active = true
+          active = isModActive ?? true
         })
         modWeapon = mods[attachedItemModSlotName]
       }

@@ -191,6 +191,15 @@
       "not": [
         {
           "checkAtTime": {
+            "timeParam": "lastAttackedTime",
+            "range": [
+              0.0,
+              5.0
+            ]
+          }
+        },
+        {
+          "checkAtTime": {
             "timeParam": "rememberEnemyTime",
             "range": [
               0.0,
@@ -754,7 +763,7 @@
           0.75,
           0.5
         ],
-        "failOnNotReady": true,
+        "failOnNotReady": false,
         "forceStanceLimit": true,
         "chooseStance": true,
         "tryToSaveCurrentStance": true,
@@ -928,7 +937,7 @@
               0.75,
               0.5
             ],
-            "failOnNotReady": true,
+            "failOnNotReady": false,
             "forceStanceLimit": true,
             "chooseStance": true,
             "tryToSaveCurrentStance": true,

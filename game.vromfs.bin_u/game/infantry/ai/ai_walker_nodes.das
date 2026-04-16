@@ -2845,15 +2845,20 @@ class FindWayBackToNavmesh : BehNodeAdapter
 
 [beh_node(name="isOnNavmesh")]
 class IsOnNavmesh : BehNodeAdapter
+  minPolys : int = -1
+  maxDepth : int = 3
+
+  def override loadFromBlk(data : DataBlock) : void
+    minPolys = data |> datablock_getInt("minPolys", minPolys)
+    maxDepth = data |> datablock_getInt("maxDepth", maxDepth)
 
   def override update(dt : float) : EBehResult
     let agent = beh_tree_entity_agent(*owner)
-    let extents = 0.1
-    var pos = agent.pos
-    if project_to_nearest_navmesh_point(pos, extents) && abs(pos.y - agent.pos.y) < 1.0
+    let horzExtents = 0.1
+    let vertExtents = 1.0
+    if is_navmesh_position_suitable_ex(NM_MAIN, agent.pos, horzExtents, vertExtents, minPolys, maxDepth)
       return EBehResult.ER_SUCCESS
     return EBehResult.ER_FAILED
-
 
 [beh_node(name="forceDoor")]
 class ForceDoor : BehNodeAdapter
@@ -2946,6 +2951,102 @@ class setSquadGoal : BehNodeAdapter
           squadAI_tactical__actionType = -1
     return done ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
 
+
+[beh_node(name="tryFindPathAroundToAttack")]
+class TryFindPathAroundToAttack : BehNodeAdapter
+  posParam : int = -1
+  outPosParam1 : int = -1
+  outPosParam2 : int = -1
+
+  blockRadius : float = 3.5
+  blockHeights : float2 = float2(-1.0, 2.5)
+  blockWeight : float = 50.0
+  blockAreaId : int = -1
+
+  def override loadFromBlk(var data : DataBlock)
+    posParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "posParam", ""), float3())
+    outPosParam1 = owner.blackBoard |> get_or_create(datablock_getStr(data, "outPosParam1", ""), float3())
+    outPosParam2 = owner.blackBoard |> get_or_create(datablock_getStr(data, "outPosParam2", ""), float3())
+
+  def override update(dt : float) : EBehResult
+    let agentEid = beh_tree_eid(owner)
+    var agentPos = float3()
+    var agentSquad = INVALID_ENTITY_ID
+    var agentTeam = TEAM_UNASSIGNED
+    var hasAgentInfo = false
+    query(agentEid) <| $ [es] (transform : float3x4; squad_member__squad : EntityId; team : int)
+      agentPos = transform[3]
+      agentSquad = squad_member__squad
+      agentTeam = team
+      hasAgentInfo = true
+    if !hasAgentInfo || agentSquad == INVALID_ENTITY_ID
+      return EBehResult.ER_FAILED
+
+    if !team_bots_tick_limiter_check(agentTeam, TB_LIMITER_TACTICALPATH, 1)
+      return EBehResult.ER_RUNNING
+
+    var result = false
+    find_query() <| $ [es] (team__id : int; var walker_custom_nav : CustomNav?)
+      if team__id != agentTeam || walker_custom_nav == null
+        return false
+
+      let fromPos = agentPos
+      let destPos = owner.blackBoard |> datablock_getPoint3(posParam)
+
+      var path : array<float3>
+      let extents = float3(1.5, FLT_MAX, 1.5)
+
+      let stepSize = 1.0
+      let pathSlope = 0.1
+      let maxPartial = 2
+      let reachDist = 0.5
+      let reachHeight = 1.0
+      let findThruBlocked = false
+      if !find_path_full(fromPos, destPos, extents, stepSize, pathSlope, maxPartial, reachDist, reachHeight, findThruBlocked, walker_custom_nav, path)
+        return false
+      var len = length(path)
+      if len <= 1
+        return false
+
+      let prevPos = path[len - 2]
+      let lastPos = path[len - 1]
+      let dirVec = normalize(x0z(prevPos - lastPos))
+      if length_sq(dirVec) < 0.999
+        return false
+
+      if blockAreaId < 0
+        blockAreaId = walker_agent_nav_allocAreaId()
+
+      var pos = destPos + dirVec * blockRadius * 2.0
+      pos.y += blockHeights.x
+      let areaHeight = -blockHeights.x + blockHeights.y
+      let areaRadiusHeight = float2(blockRadius, areaHeight)
+      walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, blockAreaId, pos, areaRadiusHeight, blockWeight, blockWeight, true)
+      let gotPath = find_path_full(fromPos, destPos, extents, stepSize, pathSlope, maxPartial, reachDist, reachHeight, findThruBlocked, walker_custom_nav, path)
+      walker_custom_nav_areaRemove(*walker_custom_nav, blockAreaId)
+
+      
+
+      len = length(path)
+      if !gotPath || len < 3
+        return false
+
+      let mid1 = len / 3
+      let mid2 = (len * 2) / 3
+      owner.blackBoard |> set(outPosParam1, path[mid1])
+      owner.blackBoard |> set(outPosParam2, path[mid2])
+
+      
+      
+      
+      
+
+      result = true
+      return true
+    return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
+
+
+
 [beh_node(name="tryFindSquadPathToGoalPoint")]
 class TryFindSquadPathToGoalPoint : BehNodeAdapter
   pointParam : int = -1
@@ -2988,33 +3089,89 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
 
     var path : array<float3>
     let extents = float3(1.5, FLT_MAX, 1.5)
-    var customNav : CustomNav const? = null
-    find_query() <| $ [es] (team__id : int; walker_custom_nav : CustomNav const?)
-      if team__id != agentTeam && walker_custom_nav != null
-        customNav = walker_custom_nav
-        return true
-      return false
+    var pathFound = false
 
-    let tooFarSearchDist = 150.0
-    let tooFar = distance_sq(fromPos, destPos) > square(tooFarSearchDist)
-    let stepSize = 1.0
-    let pathSlope = 0.1
-    let maxPartial = !tooFar ? 2 : 1
-    let reachDist = !tooFar ? 0.5 : (distance(fromPos, destPos) - tooFarSearchDist)
-    let reachHeight = !tooFar ? 1.0 : -1.0
-    if !find_path_full(fromPos, destPos, extents, stepSize, pathSlope, maxPartial, reachDist, reachHeight, findThruBlocked, customNav, path)
-      if !allowPartialAsLastChance || empty(path)
-        
-        return EBehResult.ER_FAILED
+    find_query() <| $ [es] (team__id : int;
+                            path_blocker__maxEntries : int;
+                            path_blocker__distRange : float2;
+                            path_blocker__radius : float;
+                            path_blocker__heights : float2;
+                            path_blocker__weight : float;
+                            var path_blocker__areaIds : IntList&;
+                            var path_blocker__positions : Point3List&;
+                            var walker_custom_nav : CustomNav?)
+      if team__id != agentTeam
+        return false
+
+      if empty(path_blocker__areaIds)
+        path_blocker__areaIds |> reserve(path_blocker__maxEntries)
+        path_blocker__positions |> reserve(path_blocker__maxEntries)
+        for _i in range(path_blocker__maxEntries)
+          path_blocker__areaIds |> push(walker_agent_nav_allocAreaId())
+
+      var useBlockers = false
+      query(agentSquad) <| $ [es] (var squadAI_tactical__usedSpawnBlockers : bool&; var squadAI_tactical__usedSpawnPoint : float3&; squadAI_tactical__usedSpawnMaxDist : float = 30.0)
+        if !squadAI_tactical__usedSpawnBlockers || distance_sq(agentPos, squadAI_tactical__usedSpawnPoint) < square(squadAI_tactical__usedSpawnMaxDist)
+          if !squadAI_tactical__usedSpawnBlockers
+            squadAI_tactical__usedSpawnBlockers = true
+            squadAI_tactical__usedSpawnPoint = agentPos
+          useBlockers = true
+
+      let numBlockers = length(path_blocker__positions)
+      let areaHeight = -path_blocker__heights.x + path_blocker__heights.y
+      if useBlockers && walker_custom_nav != null && numBlockers > 0
+        let areaRadiusHeight = float2(path_blocker__radius, areaHeight)
+        for i in range(numBlockers)
+          var pos = path_blocker__positions[i]
+          pos.y += path_blocker__heights.x
+          walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, path_blocker__areaIds[i], pos, areaRadiusHeight, path_blocker__weight, path_blocker__weight, true)
+          
+
+      let tooFarSearchDist = 150.0
+      let tooFar = distance_sq(fromPos, destPos) > square(tooFarSearchDist)
+      let stepSize = 1.0
+      let pathSlope = 0.1
+      let maxPartial = !tooFar ? 2 : 1
+      let reachDist = !tooFar ? 0.5 : (distance(fromPos, destPos) - tooFarSearchDist)
+      let reachHeight = !tooFar ? 1.0 : -1.0
+      let findPathRes = find_path_full(fromPos, destPos, extents, stepSize, pathSlope, maxPartial, reachDist, reachHeight, findThruBlocked, walker_custom_nav, path)
+
+      if useBlockers && walker_custom_nav != null && numBlockers > 0
+        for i in range(numBlockers)
+          walker_custom_nav_areaRemove(*walker_custom_nav, path_blocker__areaIds[i])
+
+      let pathLen = length(path)
+      pathFound = (findPathRes || allowPartialAsLastChance) && pathLen > 1
+
+      if useBlockers && pathFound && walker_custom_nav != null
+        let targetDist = rnd_float(path_blocker__distRange.x, path_blocker__distRange.y)
+        var accDist = 0.0
+        for i in range(1, pathLen)
+          let segLen = distance(path[i - 1], path[i])
+          if segLen < 0.001
+            continue
+          if accDist + segLen >= targetDist
+            let t = (targetDist - accDist) / segLen
+            let blockerPos = lerp(path[i - 1], path[i], t)
+            if length(path_blocker__positions) >= path_blocker__maxEntries
+              path_blocker__positions |> erase(0)
+            path_blocker__positions |> push(blockerPos)
+            break
+          accDist += segLen
+
+      return true
+
     let len = length(path)
-    if len <= 1
+    if !pathFound || len <= 1
       return EBehResult.ER_FAILED
 
-    query(agentSquad) <| $ [es] (var squadAI_tactical__path : Point3List&)
+    query(agentSquad) <| $ [es] (var squadAI_tactical__path : Point3List&;
+                                 var squadAI_tactical__pathUpdateTime : float&)
       clear(squadAI_tactical__path)
       resize(squadAI_tactical__path, len)
       for i in range(len)
         squadAI_tactical__path[i] = path[i]
+      squadAI_tactical__pathUpdateTime = get_sync_time()
 
     var tooBack = false
     if notTooBack

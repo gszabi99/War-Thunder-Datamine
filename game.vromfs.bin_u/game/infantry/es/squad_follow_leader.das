@@ -88,9 +88,12 @@ def private generate_new_positions_on_leader_change(leader_pos : float3; var squ
 
   let humanRadius = 0.3
   let extents = float3(humanRadius, FLT_MAX, humanRadius)
+  var gotPath = false
   find_path(maxPos, leader_pos, extents, 1.0, 0.25) <| $(path)
     let numPoints = length(path)
     if numPoints <= 1
+      return
+    if distance_sq(leader_pos, path[numPoints - 1]) >= square(dist_too_far)
       return
     var pathDist = 0.0
     for j in range(0, numPoints - 1)
@@ -117,6 +120,9 @@ def private generate_new_positions_on_leader_change(leader_pos : float3; var squ
         squad__followLeaderPositions[genIdx--] = float4(genPos, 0.0)
         distAt += gen_step
       distAt -= dist
+    gotPath = true
+  if !gotPath
+    squad__followLeaderPositions |> clear()
 
 
 [es(tag=server)]
@@ -132,6 +138,13 @@ def squad_follow_leader_update_es(info : ParallelUpdateFrameDelayed;
     squad__followLeaderGenTimer += info.dt
     if squad__followLeaderGenTimer < squad__followLeaderGenPeriod
       return
+
+  var isBot = false
+  query(squad_eid) <| $ [es] (squad__ownerPlayer : EntityId)
+    query(squad__ownerPlayer) <| $ [es(REQUIRE=playerIsBot)] ()
+      isBot = true
+  if isBot
+    return
 
   var leaderPos = float3()
   var leaderStance = STANCE_CROUCH
@@ -179,7 +192,8 @@ def squad_follow_leader_update_es(info : ParallelUpdateFrameDelayed;
         if squad__leader != squad__followLeaderPositionsTryByEid
           
           squad__followLeaderPositionsTryByEid = squad__leader
-          squad__followLeaderPositionsLastPos = leaderPos
+          if !leaderTooFar
+            squad__followLeaderPositionsLastPos = leaderPos
         let lastPos = squad__followLeaderPositionsLastPos
         if distance_sq(leaderPos, lastPos) < reachDistSq
           

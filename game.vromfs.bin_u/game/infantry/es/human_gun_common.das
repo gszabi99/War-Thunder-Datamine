@@ -19,7 +19,7 @@ def try_reload_empty_gun(gun : Gun;
   if get_bool(gun_eid, "gun_reload__isReloading") ?? false
     return
 
-  if is_server() && is_for_real && gun_ammo == 0
+  if is_for_real && gun_ammo == 0
     let reloadOnShoot = get_bool(gun_owner, "human_weap__reloadOnShoot") ?? true
     let reloadOnEmptyMag = get_bool(gun_owner, "human_weap__reloadOnEmptyMag") ?? true
     var shouldReload = false
@@ -28,7 +28,7 @@ def try_reload_empty_gun(gun : Gun;
       let isAiming = get_bool(gun_owner, "human_net_phys__isAiming") ?? false
       let firingModeType = gun_getFiringMode(gun, int(gun.firingModeIndex)).modeType
       let isHoldToFireMode = firingModeType == EFiringModeType.EFM_AUTOMATIC
-      if !isAiming || isHoldToFireMode
+      if (!isAiming || isHoldToFireMode) && !has(gun_eid, "multiStateReloadSystem")
         shouldReload ||= shoot
       else
         shouldReload ||= !gun.appliedControls.shoot && shoot

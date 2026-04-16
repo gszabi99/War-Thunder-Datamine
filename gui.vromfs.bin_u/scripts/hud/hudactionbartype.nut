@@ -1019,7 +1019,9 @@ enumsAddTypes(g_hud_action_bar_type, {
       hudUnitType == HUD_UNIT_TYPE.HELICOPTER
       || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE_HELI
         ? "ID_LOCK_TARGETING_AT_POINT_HELICOPTER"
-        : "ID_LOCK_TARGETING"
+        : hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE
+          ? "ID_LOCK_TARGETING_AT_POINT_HUMAN_UAV"
+          : "ID_LOCK_TARGETING"
   }
 
   SIGHT_STABILIZATION_OFF = {
@@ -1032,7 +1034,9 @@ enumsAddTypes(g_hud_action_bar_type, {
       hudUnitType == HUD_UNIT_TYPE.HELICOPTER
       || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE_HELI
         ? "ID_UNLOCK_TARGETING_AT_POINT_HELICOPTER"
-        : "ID_UNLOCK_TARGETING"
+        : hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE
+          ? "ID_UNLOCK_TARGETING_AT_POINT_HUMAN_UAV"
+          : "ID_UNLOCK_TARGETING"
   }
 
   RAGE_SCANNER_ACTION = {

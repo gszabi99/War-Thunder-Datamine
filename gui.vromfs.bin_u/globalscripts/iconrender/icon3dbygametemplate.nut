@@ -93,15 +93,12 @@ function getIconInfoByGameTemplate(gametemplate, params = {}) {
     contrast = params?.contrast ?? getTemplateParam("item__contrast")
 
     iconAttachments = params?.iconAttachments ?? getTemplateParam("iconAttachments")
+    iconAttachmentShading = params?.iconAttachmentShading ?? getTemplateParam("item__attachmentShading")
     sharpening = params?.sharpening ?? getTemplateParam("item__sharpening")
   }
 }
 
-function getPicture(source, gametemplate, params) {
-  let cachedPic = cachedRendered3dIcons.get()?[source]
-  if (cachedPic)
-    return cachedPic
-
+function getPicture(gametemplate, params) {
   let template = getTemplate(gametemplate)
   if (template == null)
     return null
@@ -109,8 +106,13 @@ function getPicture(source, gametemplate, params) {
   let itemInfo = getIconInfoByGameTemplate(gametemplate, params)
   if (params?.genOverride != null)
     itemInfo.__update(params.genOverride)
+
   let pic = mkIcon3d(itemInfo, params)
-  cachedRendered3dIcons.mutate(@(v) v[source] <- pic)
+  let cachedPic = cachedRendered3dIcons.get()?[pic]
+  if (cachedPic)
+    return cachedPic
+
+  cachedRendered3dIcons.mutate(@(v) v[pic] <- pic)
   return pic
 }
 
@@ -118,9 +120,7 @@ function icon3dByGameTemplate(gametemplate, params = {}) {
   if (gametemplate == null)
     return null
 
-  let placeKey = params?.renderSettingsPlace ? $"_{params?.renderSettingsPlace}" : ""
-  let cacheKey = $"{gametemplate}{placeKey}"
-  return getPicture(cacheKey, gametemplate, params)
+  return getPicture(gametemplate, params)
 }
 
 return icon3dByGameTemplate

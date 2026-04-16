@@ -35,8 +35,15 @@ def update_entity_agent(var ent : EntityAgent;
     if gun__isOverheat || !gun__isReady || gun__ammo == 0
       readyToShoot = false
 
+  var reloadingByBurst = false
+  query(gun_eid) <| $ [es] (gun : Gun)
+    assume state = gun.curState
+    assume firingMode = gun_getFiringMode(gun, int(state.firingMode))
+    if firingMode.modeType == EFiringModeType.EFM_BURST && int(state.burstCounter) >= firingMode.burstSize
+      reloadingByBurst = true
+
   let interpK = get_phys_interpk_clamped(phys, cur_time)
-  ent.reloading = reload_progress > 0.0
+  ent.reloading = reload_progress > 0.0 || reloadingByBurst
   ent.readyToShoot = readyToShoot
   ent.shootDir = interp_dir(phys.previousState.gunDir, phys.currentState.gunDir, interpK)
   let gunEid = get_human_gun_eid(ent.eid)

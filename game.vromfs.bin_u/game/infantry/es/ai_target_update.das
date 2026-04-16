@@ -47,9 +47,17 @@ def ai_target_noise_level(act : UpdateStageInfoAct; human_net_phys : HumanActor;
 def ai_target_phys_velocity(act : UpdateStageInfoAct; net_phys__currentStateVelocity : float3; var ai_target : Target)
   ai_target.velocity = net_phys__currentStateVelocity
 
-[es(tag=server, no_order)]
+[es(tag=server, REQUIRE_NOT=ai_target__prevPosTime, no_order)]
 def ai_target_human_velocity(act : UpdateStageInfoAct; human_net_phys__velocity : float3; human_anim__vehicleSelected : EntityId; var ai_target : Target)
   ai_target.velocity = get_Point3(human_anim__vehicleSelected, "net_phys__currentStateVelocity") ?? human_net_phys__velocity
+
+[es(tag=server, no_order)]
+def ai_target_prev_velocity(act : UpdateStageInfoAct; var ai_target : Target; var ai_target__prevPosTime : float4&)
+  let dt = max(0.0, act.curTime - ai_target__prevPosTime.w)
+  if dt > 0.0
+    ai_target.velocity = (ai_target.targetPos - ai_target__prevPosTime.xyz) / dt
+    ai_target__prevPosTime.xyz = ai_target.targetPos
+    ai_target__prevPosTime.w = act.curTime
 
 [es(tag=server, no_order)]
 def ai_target_mindset(act : UpdateStageInfoAct; beh_tree__enabled : bool; var ai_target : Target)

@@ -12,6 +12,7 @@ let showWorldKillMark = Watched(false)
 let hitMarks = mkWatched(persist, "hits", [])
 let killMarks = mkWatched(persist, "killMarks", [])
 let hitMarkEid = Watched(ecs.INVALID_ENTITY_ID)
+let useHitMark = Watched(false)
 
 const DM_DIED = "DM_DIED"
 
@@ -204,18 +205,23 @@ ecs.register_es("script_hit_marks_es", {
   }, {}
 )
 
-ecs.register_es("script_hit_marks_position_es",
+ecs.register_es("script_hit_mark_entity_es",
   {
-    [["onInit", "onChange"]] = @(_eid, comp)
-      hitMarkEid.set(comp["human_net_phys__isAiming"] ? comp["human__hitmarkEid"]
-        : ecs.INVALID_ENTITY_ID)
+    onInit = @(eid, _comp) hitMarkEid.set(eid)
     onDestroy = @(...) hitMarkEid.set(ecs.INVALID_ENTITY_ID)
   },
   {
-    comps_track = [
-      ["human__hitmarkEid", ecs.TYPE_EID],
-      ["human_net_phys__isAiming", ecs.TYPE_BOOL]
-    ]
+    comps_rq = ["humanHitmark"]
+  }
+)
+
+ecs.register_es("script_hit_marks_position_es",
+  {
+    [["onInit", "onChange"]] = @(_eid, comp) useHitMark.set(comp["human_net_phys__isAiming"])
+    onDestroy = @(...) useHitMark.set(false)
+  },
+  {
+    comps_track = [["human_net_phys__isAiming", ecs.TYPE_BOOL]]
     comps_rq = ["watchedByPlr"]
   }
 )
@@ -225,4 +231,5 @@ return {
   killMarks
   showWorldKillMark
   hitMarkEid
+  useHitMark
 }

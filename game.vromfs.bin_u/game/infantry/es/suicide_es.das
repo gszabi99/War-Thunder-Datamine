@@ -6,9 +6,12 @@ require PropsManager
 
 [es(on_event=CmdRequestSuicide, tag=server, REQUIRE=hitpoints)]
 def human_suicide_es(evt : Event;
-                     eid aka hero_eid : EntityId)
+                     eid aka hero_eid : EntityId;
+                     active : bool = false)
                     
   
+  if !active
+    return
   query(hero_eid) <| $ [es] (vehicle__lastEid, possessedByPlr : EntityId; isInVehicle : bool)
     if !isInVehicle
       return

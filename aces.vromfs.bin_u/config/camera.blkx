@@ -1066,15 +1066,20 @@
     "minHoverDist": 10.0,
     "maxHoverDist": 250.0,
     "condition": {
-      "or": {
-        "not": [
-          {
-            "isHuman": {}
-          },
-          {
-            "isAlive": {}
-          }
-        ]
+      "and": {
+        "not": {
+          "isHumanDrone": {}
+        },
+        "or": {
+          "not": [
+            {
+              "isHuman": {}
+            },
+            {
+              "isAlive": {}
+            }
+          ]
+        }
       }
     }
   },
@@ -4716,8 +4721,15 @@
     "freeCamPosInert": 1.2,
     "freeCamOrientMaxSpeed": 0.5,
     "condition": {
-      "not": {
-        "isHuman": {}
+      "and": {
+        "not": [
+          {
+            "isHumanDrone": {}
+          },
+          {
+            "isHuman": {}
+          }
+        ]
       }
     }
   },
@@ -4976,6 +4988,7 @@
         "spectator_target_fps_shake",
         "tps",
         "fps",
+        "fps_fpv",
         "virtual_fps",
         "tps_ground",
         "replay_gun_camera"

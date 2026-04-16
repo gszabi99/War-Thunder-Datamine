@@ -367,6 +367,19 @@
                   "ignoreChance": {
                     "chance": 0.55
                   },
+                  "not": {
+                    "or": {
+                      "findDanger": {
+                        "paramName": "testEnemy",
+                        "radiusParamName": "enemyFarRadius",
+                        "minDanger": 0.1,
+                        "tag": "human"
+                      },
+                      "hasTacticalTargets": {
+                        "maxActualTime": 10.0
+                      }
+                    }
+                  },
                   "changeStance": {
                     "stanceName": "crouch",
                     "maxStanceParam": "maxStance",

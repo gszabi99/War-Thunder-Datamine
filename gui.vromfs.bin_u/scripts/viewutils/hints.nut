@@ -176,6 +176,7 @@ enum HINT_PIECE_TYPE {
 
 const symbolsToCheckSpace = [")", ".", ",", ":"]
 let noSpaceBeforeText = @(textValue) textValue == "" || symbolsToCheckSpace.contains(textValue.slice(0, 1))
+let noSpaceAfterText  = @(textValue) textValue.endswith("(")
 let isStringEndOfLine = @(textValue) textValue.endswith(".")
 
 let getTextSlice = @(textsArray) {
@@ -184,6 +185,7 @@ let getTextSlice = @(textsArray) {
     let currTextValue = trim(text)
     return {
       textValue = isStringEndOfLine(currTextValue) ? $"{currTextValue} "
+        : noSpaceAfterText(currTextValue) ? currTextValue
         : nextTextValue != null && noSpaceBeforeText(trim(nextTextValue)) ? currTextValue
         : $"{currTextValue} "
     }

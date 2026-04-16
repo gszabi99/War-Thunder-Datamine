@@ -3,7 +3,7 @@ import "%sqstd/ecs.nut" as ecs
 
 let { Projection } = require("wt.behaviors")
 
-let { hitMarks, hitMarkEid } = require("%rGui/hud/state/hit_marks_es.nut")
+let { hitMarks, hitMarkEid, useHitMark } = require("%rGui/hud/state/hit_marks_es.nut")
 let { mkColoredGradientX } = require("%rGui/style/gradients.nut")
 let { register_command } = require("console")
 
@@ -226,15 +226,15 @@ let hitMarkArmor = {
 
 function mkHitMarks() {
   return {
-    watch = hitMarkEid
-    behavior = hitMarkEid.get() == ecs.INVALID_ENTITY_ID ? null : Projection
+    watch = [hitMarkEid, useHitMark]
+    behavior = (useHitMark.get() && hitMarkEid.get() != ecs.INVALID_ENTITY_ID) ? Projection : null
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = {
       data = {
         eid = hitMarkEid.get()
       }
-      transform = hitMarkEid.get() == ecs.INVALID_ENTITY_ID ? null : {}
+      transform = (useHitMark.get() && hitMarkEid.get() != ecs.INVALID_ENTITY_ID) ? {} : null
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [

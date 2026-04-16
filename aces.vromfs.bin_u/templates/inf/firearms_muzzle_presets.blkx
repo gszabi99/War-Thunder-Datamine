@@ -1083,7 +1083,7 @@
       }
     }
   },
-  "antitank_launcher_muzzle_preset": {
+  "antitank_launcher_muzzle_med_preset": {
     "_group": {
       "_tags": "render",
       "gun_flash_fx__spawnGroundWave": true,
@@ -1097,8 +1097,34 @@
       },
       "gun_flash_fx__template:shared:list<t>": {
         "fx": [
-          "smoke_burst_big_effect",
-          "smoke_burst_small_effect"
+          "muzzle_back_blast_med_effect",
+          "muzzle_front_blast_med_effect"
+        ]
+      },
+      "gun_flash_fx__scale:shared:list<r>": {
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  },
+  "antitank_launcher_muzzle_small_preset": {
+    "_group": {
+      "_tags": "render",
+      "gun_flash_fx__spawnGroundWave": true,
+      "gun_flash_fx__shellImpulse": 150.0,
+      "gun_flash_fx__nodeIds:list<i>": {},
+      "gun_flash_fx__nodes:shared:list<t>": {
+        "node": [
+          "gunFx_main",
+          "gunFx_add_bolt"
+        ]
+      },
+      "gun_flash_fx__template:shared:list<t>": {
+        "fx": [
+          "muzzle_back_blast_small_effect",
+          "muzzle_front_blast_med_effect"
         ]
       },
       "gun_flash_fx__scale:shared:list<r>": {
@@ -1116,13 +1142,22 @@
       "gun_flash_fx__shellImpulse": 150.0,
       "gun_flash_fx__nodeIds:list<i>": {},
       "gun_flash_fx__nodes:shared:list<t>": {
-        "node": "gunFx_main"
+        "node": [
+          "gunFx_main",
+          "gunFx_add_bolt"
+        ]
       },
       "gun_flash_fx__template:shared:list<t>": {
-        "fx": "smoke_burst_small_effect"
+        "fx": [
+          "muzzle_back_blast_small_effect",
+          "muzzle_front_blast_small_effect"
+        ]
       },
       "gun_flash_fx__scale:shared:list<r>": {
-        "scale": 0.6
+        "scale": [
+          1.0,
+          1.0
+        ]
       }
     }
   },

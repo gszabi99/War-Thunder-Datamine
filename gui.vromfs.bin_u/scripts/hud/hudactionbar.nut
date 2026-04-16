@@ -252,6 +252,7 @@ let class ActionBar {
   }
 
   isCollapsable = @() this.canControl && ((this.actionItems.len() + this.extraActionsCount) > 0)
+    && (getHudUnitType() != HUD_UNIT_TYPE.HUMAN)
 
   function collapse() {
     if (this.isWeaponSelectorMode && this.isCollapsed && isVisualHudAirWeaponSelectorOpened())

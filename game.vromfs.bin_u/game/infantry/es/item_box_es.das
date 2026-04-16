@@ -27,9 +27,10 @@ def item_box_use_es(evt : CmdUseUsefulBox;
       let backpackItemEid = get_Eid(*backpack, "item")
       if backpackItemEid != null
         inventoryCapacity += get_int(*backpackItemEid, "attachable_backpack__capacity") ?? 0
+    let existTagHash = ecs_hash(useful_box__itemExistTag)
     var inventoryItemsCount = 0
     for itemEid in itemContainer
-      if has(itemEid, "backpackPlaceableItem")
+      if has(itemEid, useful_box__itemExistTag, existTagHash)
         ++inventoryItemsCount
 
     if inventoryItemsCount < inventoryCapacity

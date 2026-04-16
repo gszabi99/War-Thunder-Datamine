@@ -99,7 +99,9 @@ let private
   BIPOD_TRACE_BASE_UP       = float3(0.0, 0.01 + BIPOD_TRACE_BASE_RADIUS - BIPOD_TRACE_RADIUS, 0.0)
   BIPOD_TRACE_REST_UP       = float3(0.0, 0.01 + BIPOD_TRACE_REST_RADIUS - BIPOD_TRACE_RADIUS + 0.05, 0.0)
   BIPOD_TRACE_DOWN_DIST     = 1.0
+  BIPOD_TRACE_DOWN_DIST_MOVING = 0.7
   BIPOD_TRACE_DOWN_OFFSET   = float3(0.0, -BIPOD_TRACE_DOWN_DIST, 0.0)
+  BIPOD_TRACE_DOWN_OFFSET_MOVING = float3(0.0, -BIPOD_TRACE_DOWN_DIST_MOVING, 0.0)
   BIPOD_SPHERE_CAST_MASK    = int(PhysLayer.EPL_ALL) & ~(int(PhysLayer.EPL_CHARACTER) | int(PhysLayer.EPL_KINEMATIC) | int(PhysLayer.EPL_DEBRIS))
   BIPOD_CRAWL_OFFSET_DOWN   = 0.1
   BIPOD_PLACE_GUN_BACKDIST  = 0.3
@@ -180,7 +182,7 @@ def private check_place_gun_barrel_diff(tm : float3x4; diff : float3; barrel_off
 
 
 def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : EntityId; at_pos : float3; aim_dir : float3; is_crawl : bool;
-                         gun_pos_stand : float3; gun_pos_crouch : float3; gun_pos_crawl : float3; human_height : float; human_radius : float;
+                         gun_pos_stand : float3; gun_pos_crouch : float3; gun_pos_crawl : float3; human_height : float; human_radius : float; is_human_moving : bool;
                          var placeable : bool&; var placeCrawl : bool&;
                          var placePos : float3&; var placeHeight : float&; var placeOffset : float3&;
                          var placeNormal : float3&; var placeYawLimit : float&; var placeRecoilMult : float&;
@@ -357,8 +359,9 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
               if abs(ofs.y) < 0.0001 || !sphere_cast_ex(pt1, pt2, BIPOD_TRACE_REST_RADIUS, queryOut, -1, trace_handle, BIPOD_SPHERE_CAST_MASK)
                 nxt = true 
             else
+              let offset = is_human_moving ? BIPOD_TRACE_DOWN_OFFSET_MOVING : BIPOD_TRACE_DOWN_OFFSET
               let pt1 = bipod__solveTraceTm * ofs                        
-              let pt2 = pt1 + BIPOD_TRACE_DOWN_OFFSET                    
+              let pt2 = pt1 + offset                                     
               var queryOut = ShapeQueryOutput()
               if sphere_cast_ex(pt1, pt2, BIPOD_TRACE_RADIUS, queryOut, -1, trace_handle, BIPOD_SPHERE_CAST_MASK)
                 
@@ -645,9 +648,10 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
 
       let humanRadius = human_net_phys.phys.walkRad
       let humanHeight = !isCrawl ? human_net_phys.phys.standingHeight : (humanRadius * 2.01)
+      let humanMoving = human_net_phys.phys.currentState.moveState != HUMoveState.EMS_STAND
 
       update_bipod_placing(eid, full_check, human_weap__currentGunEid, curPos, aimDir, isCrawl,
-                           gunPosStand, gunPosCrouch, gunPosCrawl, humanHeight, humanRadius,
+                           gunPosStand, gunPosCrouch, gunPosCrawl, humanHeight, humanRadius, humanMoving,
                            bipod__placeable, bipod__placeCrawl,
                            bipod__placePos, bipod__placeHeight, bipod__placeOffset,
                            bipod__placeNormal, bipod__placeYawLimit, bipod__placeRecoilMult,

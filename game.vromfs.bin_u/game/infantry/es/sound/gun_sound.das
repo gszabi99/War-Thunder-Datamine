@@ -161,21 +161,28 @@ def on_shot_grain(launch_pos : float3;
   shot_loop_timeout = max(0.15, (time_between_shots * time_between_shots_mad.x + time_between_shots_mad.y))
 
   assume firingMode = gun_getFiringMode(gun, int(firing_mode))
-  let isOneshot = firingMode.modeType == EFiringModeType.EFM_MANUAL || firingMode.modeType == EFiringModeType.EFM_BURST && firingMode.burstSize == 1
   let burstSize = firingMode.modeType == EFiringModeType.EFM_BURST ? firingMode.burstSize : INT_MAX
 
-  if !is_watched || isOneshot || num_shots % burstSize == 0
+  if num_shots % burstSize == 0
     shot_loop_timeout = time_between_shots / 3.
 
 
   reset_wt_shooting_ambient_timer()
 
-[es(tag=sound, on_event=EventStopShoot, REQUIRE=gunSound)]
+[es(tag=sound, on_event=(EventStopShoot, EventNetStopShoot), REQUIRE=gunSound)]
 def gun_sound_on_stop_shot(evt : Event;
                            gun_sound__event : SoundEvent;
+                           gun : Gun;
+                           gun__firingModeIndex : int;
+                           var gun_sound__numShots : int&;
                            gun_sound__hasGrain : bool)
   if gun_sound__hasGrain && is_valid_handle_value(gun_sound__event)
     set_var_optional(gun_sound__event, "on_shot", 0.)
+    assume firingMode = gun_getFiringMode(gun, gun__firingModeIndex)
+    let burstSize = firingMode.modeType == EFiringModeType.EFM_BURST ? firingMode.burstSize : INT_MAX
+    if gun_sound__numShots % burstSize == 0
+      gun_sound__numShots = -1
+
 
 
 def gun_sound_on_shot(pos : float3;

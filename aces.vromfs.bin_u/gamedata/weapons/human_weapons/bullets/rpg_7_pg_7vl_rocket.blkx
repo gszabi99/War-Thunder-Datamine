@@ -125,13 +125,12 @@
     "distFromCmToStab": 0.05,
     "mass": 2.6,
     "massEnd": 2.35,
-    "force": 360.0,
+    "force": 11000.0,
     "thrustDeviation": 0.01,
-    "fireDelay": 0.04,
-    "timeFire": 0.75,
+    "fireDelay": 0.045,
+    "timeFire": 0.05,
     "useStartSpeed": true,
     "startSpeed": 112.0,
-    "speedPitch": 1.0,
     "endSpeed": 300.0,
     "maxDistance": 1500.0,
     "minDistance": 6.0,
@@ -186,6 +185,12 @@
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [
+      0.0,
+      0.0,
+      0.0
+    ],
     "effectOffset": [
       -0.14,
       0.0,
@@ -757,6 +762,14 @@
       },
       "stone_snow": {
         "fx": "hit_8_11mm_snow_ap"
+      }
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "tracers_rocket_med_red_sparks",
+        "trail": "noTrail"
       }
     }
   }

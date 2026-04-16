@@ -267,9 +267,20 @@
       255,
       255
     ],
-    "light__brightness": 0.3,
+    "light__brightness": 0.05,
+    "light__radius_scale": 3.0,
     "light__contact_shadows": false,
-    "light__nightly": false
+    "light__nightly": false,
+    "light__use_box": false,
+    "_group": {
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadow_near_far_planes": [
+        0.1,
+        0.0
+      ],
+      "omni_light__shadows": true
+    }
   },
   "light_chandelier_big": {
     "_use": "omni_light",
@@ -336,8 +347,8 @@
       255,
       255
     ],
-    "light__brightness": 0.75,
-    "light__radius_scale": 1.5,
+    "light__brightness": 0.35,
+    "light__radius_scale": 5.0,
     "light__contact_shadows": false,
     "light__texture_name": "ies_multilamp_sconce_a",
     "light__nightly": false
@@ -402,7 +413,7 @@
       255,
       255
     ],
-    "light__brightness": 0.15,
+    "light__brightness": 0.1,
     "light__radius_scale": 5.0,
     "light__contact_shadows": false,
     "light__direction": [
@@ -996,10 +1007,10 @@
       228,
       255
     ],
-    "light__brightness": 0.75,
-    "light__radius_scale": 2.0,
+    "light__brightness": 0.25,
+    "light__radius_scale": 5.0,
     "light__enable_lens_flares": true,
-    "light__texture_name": "ies_sovmod_lamp_fluorescent_a_type_a",
+    "light__texture_name": "",
     "light__direction": [
       0.0,
       0.0,
@@ -1021,9 +1032,9 @@
       255,
       255
     ],
-    "light__brightness": 0.4,
-    "light__radius_scale": 3.0,
-    "light__texture_name": "ies_sovmod_lamp_fluorescent_a_type_a",
+    "light__brightness": 0.1,
+    "light__radius_scale": 5.0,
+    "light__texture_name": "",
     "light__direction": [
       0.0,
       0.0,
@@ -1033,6 +1044,10 @@
     "light__nightly": false,
     "_group": {
       "omni_light__shadows": true,
+      "omni_light__shadow_near_far_planes": [
+        0.1,
+        0.0
+      ],
       "omni_light__dynamic_obj_shadows": false
     }
   },
@@ -1045,8 +1060,8 @@
       180,
       255
     ],
-    "light__brightness": 0.5,
-    "light__radius_scale": 3.0,
+    "light__brightness": 0.15,
+    "light__radius_scale": 5.0,
     "light__texture_name": "",
     "light__direction": [
       0.0,
@@ -1486,7 +1501,7 @@
       255,
       255
     ],
-    "light__brightness": 1.0,
+    "light__brightness": 2.0,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -1968,7 +1983,7 @@
       0,
       255
     ],
-    "light__brightness": 2.0,
+    "light__brightness": 1.0,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2028,7 +2043,7 @@
       255,
       255
     ],
-    "light__brightness": 0.5,
+    "light__brightness": 0.35,
     "light__contact_shadows": false,
     "light__texture_name": "",
     "light__use_box": false,
@@ -2680,14 +2695,14 @@
       170,
       255
     ],
-    "light__brightness": 0.5,
-    "light__texture_name": "ies_sovmod_lamp_fluorescent_a_type_a",
+    "light__brightness": 0.2,
+    "light__texture_name": "",
     "light__direction": [
       0.0,
       0.0,
       1.0
     ],
-    "light__radius_scale": 2.0,
+    "light__radius_scale": 5.0,
     "light__enable_lens_flares": true,
     "light__use_box": false,
     "light__nightly": false,
