@@ -7,6 +7,7 @@ require Unit
 require Plane
 require FlightModelWrap
 require DagorMath
+require Sound
 
 require %appGame.wt_events
 require %game.events
@@ -53,6 +54,13 @@ def drone_destroy_on_unit_collision_es(evt : EventUnitToUnitCollision; eid : Ent
 [es(tag=server, REQUIRE=isDrone)]
 def drone_destroy_on_crash_es(evt : EventAicraftCrash; eid : EntityId)
   sendEventImmediate(eid, CmdDestroyDrone())
+
+
+[es(tag=sound, before=sound_update_system_es, REQUIRE=(isDrone, controlledHero))]
+def drone_update_custom_listener(info : ParallelUpdateFrameDelayed;
+                                 drone__owner : EntityId)
+  query(drone__owner) <| $ [es] (transform aka owner_transform : float3x4)
+    set_custom_listener_tm(owner_transform)
 
 
 [es(tag=render, no_order)]
