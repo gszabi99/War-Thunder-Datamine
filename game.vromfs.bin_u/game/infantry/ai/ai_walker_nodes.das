@@ -48,7 +48,6 @@ require %appGame.infantry.ai.ai_team_danger_zones_common
 require %appGame.infantry.es.ai_dangers_attack_debug_common
 require strings
 
-
 [beh_node(name="isInConcussion")]
 class IsInConcussion : BehNodeAdapter
   def override update(dt : float) : EBehResult
@@ -2854,10 +2853,16 @@ class IsOnNavmesh : BehNodeAdapter
 
   def override update(dt : float) : EBehResult
     let agent = beh_tree_entity_agent(*owner)
-    let horzExtents = 0.1
-    let vertExtents = 1.0
-    if is_navmesh_position_suitable_ex(NM_MAIN, agent.pos, horzExtents, vertExtents, minPolys, maxDepth)
-      return EBehResult.ER_SUCCESS
+    static_if typeinfo(builtin_function_exists @@ < (arg0 : int; arg1 : float3&; arg2 : float; arg3 : float; arg4 : int; arg5 : int) : bool > _::is_navmesh_position_suitable_ex)
+      let horzExtents = 0.1
+      let vertExtents = 1.0
+      if is_navmesh_position_suitable_ex(NM_MAIN, agent.pos, horzExtents, vertExtents, minPolys, maxDepth)
+        return EBehResult.ER_SUCCESS
+    else
+      let extents = 0.1
+      var pos = agent.pos
+      if project_to_nearest_navmesh_point(pos, extents) && abs(pos.y - agent.pos.y) < 1.0
+        return EBehResult.ER_SUCCESS
     return EBehResult.ER_FAILED
 
 [beh_node(name="forceDoor")]

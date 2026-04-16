@@ -395,7 +395,7 @@ def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
 
   human_weap__curGunSlot = int(currentState.weapEquipState.curSlot)
 
-[es]
+[unused_argument(human_net_phys__useTraceCapsuleCastForWalk), es]
 def human_phys_set_simplified_phys_es(evt : CmdPrePhysUpdate;
                                       human_net_phys__isSimplifiedPhys : bool;
                                       human_net_phys__isSimplifiedQueryWalkPosition : bool;
@@ -403,7 +403,8 @@ def human_phys_set_simplified_phys_es(evt : CmdPrePhysUpdate;
                                       var human_net_phys : HumanActor&)
   human_net_phys.phys.isSimplifiedPhys = human_net_phys__isSimplifiedPhys
   human_net_phys.phys.isSimplifiedQueryWalkPosition = human_net_phys__isSimplifiedQueryWalkPosition
-  human_net_phys.phys.useTraceCapsuleCastForWalk = human_net_phys__useTraceCapsuleCastForWalk
+  static_if typeinfo has_field<useTraceCapsuleCastForWalk>(human_net_phys.phys)
+    human_net_phys.phys.useTraceCapsuleCastForWalk = human_net_phys__useTraceCapsuleCastForWalk
 
 [es(after=before_net_phys_sync )]
 def human_pre_phys_ladder_update_es(evt : CmdPrePhysUpdate;

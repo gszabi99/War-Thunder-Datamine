@@ -262,7 +262,10 @@ def hud_appear_toggle_view_on_drone_creation_es(evt : Event;
   if ownedByPlr != get_local_player_eid()
     return
   let fmw = as_fmw(unit__ref.unit)
-  if fmw == null || !fmw.props.hasFPVTargetCamera
+  if fmw == null
     return
+  static_if typeinfo has_field<hasFPVTargetCamera>(fmw.props)
+    if !fmw.props.hasFPVTargetCamera
+      return
   using() <| $(var eventData : DataBlock)
     hud_notify_script("hint:drone_switch_camera_type", eventData)

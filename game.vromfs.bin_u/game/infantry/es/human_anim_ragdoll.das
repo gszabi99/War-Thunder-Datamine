@@ -20,10 +20,17 @@ def start_ragdoll(var ragdoll__nextUpdateCacheTime : float&;
 
   let boxScale = float3(0.5f)
   let box = BBox3(unitTm[3] - boxScale, unitTm[3] + boxScale)
-  let curRiDestrTtl = dacoll_exchange_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
-  update_ri_cache_in_volume_to_phys_world(box)
-  ragdoll__riCacheLastUpdatePos = unitTm[3]
-  dacoll_exchange_ttl_for_collision_instances(curRiDestrTtl)
+  static_if typeinfo(builtin_function_exists @@ < (arg0 : float) : float > _::dacoll_exchange_ttl_for_collision_instances)
+    let curRiDestrTtl = dacoll_exchange_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
+    update_ri_cache_in_volume_to_phys_world(box)
+    ragdoll__riCacheLastUpdatePos = unitTm[3]
+    dacoll_exchange_ttl_for_collision_instances(curRiDestrTtl)
+  else
+    let curRiDestrTtl = dacoll_get_ttl_for_collision_instances()
+    dacoll_set_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
+    update_ri_cache_in_volume_to_phys_world(box)
+    ragdoll__riCacheLastUpdatePos = unitTm[3]
+    dacoll_set_ttl_for_collision_instances(curRiDestrTtl)
   ragdoll__nextUpdateCacheTime  = curTime + (RAGDOLL_COLLISION_INSTANCES_TTL - 1.f)
   
   
@@ -89,9 +96,15 @@ def update_ri_cache_around_ragdoll(info : ParallelUpdateFrameDelayed;
   if distance_sq(ragdoll__riCacheLastUpdatePos, tm[3]) > 0.25
     let boxScale = float3(0.5f)
     let box = BBox3(tm[3] - boxScale, tm[3] + boxScale)
-    let curRiDestrTtl = dacoll_exchange_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
-    update_ri_cache_in_volume_to_phys_world(box)
-    dacoll_exchange_ttl_for_collision_instances(curRiDestrTtl)
+    static_if typeinfo(builtin_function_exists @@ < (arg0 : float) : float > _::dacoll_exchange_ttl_for_collision_instances)
+      let curRiDestrTtl = dacoll_exchange_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
+      update_ri_cache_in_volume_to_phys_world(box)
+      dacoll_exchange_ttl_for_collision_instances(curRiDestrTtl)
+    else
+      let curRiDestrTtl = dacoll_get_ttl_for_collision_instances()
+      dacoll_set_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
+      update_ri_cache_in_volume_to_phys_world(box)
+      dacoll_set_ttl_for_collision_instances(curRiDestrTtl)
     ragdoll__riCacheLastUpdatePos = tm[3]
     ragdoll__nextUpdateCacheTime  = info.curTime + (RAGDOLL_COLLISION_INSTANCES_TTL - 1.f)
 
@@ -103,9 +116,15 @@ def update_ri_cache_time_around_ragdoll(info : ParallelUpdateFrameDelayed;
   if animchar__updatable && ragdoll__nextUpdateCacheTime < info.curTime
     let boxScale = float3(0.5f)
     let box = BBox3(transform[3] - boxScale, transform[3] + boxScale)
-    let curRiDestrTtl = dacoll_exchange_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
-    update_ri_cache_in_volume_to_phys_world(box)
-    dacoll_exchange_ttl_for_collision_instances(curRiDestrTtl)
+    static_if typeinfo(builtin_function_exists @@ < (arg0 : float) : float > _::dacoll_exchange_ttl_for_collision_instances)
+      let curRiDestrTtl = dacoll_exchange_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
+      update_ri_cache_in_volume_to_phys_world(box)
+      dacoll_exchange_ttl_for_collision_instances(curRiDestrTtl)
+    else
+      let curRiDestrTtl = dacoll_get_ttl_for_collision_instances()
+      dacoll_set_ttl_for_collision_instances(RAGDOLL_COLLISION_INSTANCES_TTL)
+      update_ri_cache_in_volume_to_phys_world(box)
+      dacoll_set_ttl_for_collision_instances(curRiDestrTtl)
     ragdoll__nextUpdateCacheTime  = info.curTime + (RAGDOLL_COLLISION_INSTANCES_TTL - 1.f)
 
 [es(tag=render, before=human_anim_ragdoll_start_es, after=ragdoll_deactivation_es)]
