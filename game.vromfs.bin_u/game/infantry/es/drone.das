@@ -59,8 +59,9 @@ def drone_destroy_on_crash_es(evt : EventAicraftCrash; eid : EntityId)
 [es(tag=sound, before=sound_update_system_es, REQUIRE=(isDrone, controlledHero))]
 def drone_update_custom_listener(info : ParallelUpdateFrameDelayed;
                                  drone__owner : EntityId)
-  query(drone__owner) <| $ [es] (transform aka owner_transform : float3x4)
-    set_custom_listener_tm(owner_transform)
+  query(drone__owner) <| $ [es, unused_argument(transform)] (transform aka owner_transform : float3x4)
+    static_if typeinfo(builtin_function_exists @@ < (arg0 : float3x4&) : void > _::set_custom_listener_tm)
+      set_custom_listener_tm(owner_transform)
 
 
 [es(tag=render, no_order)]
