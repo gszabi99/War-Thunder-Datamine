@@ -326,14 +326,16 @@ def camera_shake_on_shot_update(info : UpdateStageInfoAct;
   var offset = camera_shaker__onShotCameraOffset
 
   
-  if numSteps > 0
-    camera_shake_on_shot_iteration(prevOffset, offset, stiffness, viscocity, impulse * FIXED_DT, mass, FIXED_DT)
-    camera_shaker__onShotExternalImpulse = float3(0)
-  for _ in range(numSteps - 1)
+  
+  if length_sq(impulse) > 1e-8 && mass > 0.
+    let firstStepDt = numSteps > 0 ? FIXED_DT : residualTime
+    if firstStepDt > 1e-5f
+      prevOffset -= impulse * FIXED_DT / mass * firstStepDt
+      camera_shaker__onShotExternalImpulse = float3(0)
+  for _ in range(numSteps)
     camera_shake_on_shot_iteration(prevOffset, offset, stiffness, viscocity, float3(0), mass, FIXED_DT)
   if residualTime > 1e-5f
-    camera_shake_on_shot_iteration(prevOffset, offset, stiffness, viscocity, impulse * residualTime, mass, residualTime)
-    camera_shaker__onShotExternalImpulse = float3(0)
+    camera_shake_on_shot_iteration(prevOffset, offset, stiffness, viscocity, float3(0), mass, residualTime)
 
   camera_shaker__onShotCameraPrevOffset = prevOffset
   camera_shaker__onShotCameraOffset = offset
