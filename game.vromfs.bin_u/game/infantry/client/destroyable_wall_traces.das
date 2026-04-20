@@ -65,17 +65,19 @@ def mining_wall_check_availablity_on_update(evt : ParallelUpdateFrameDelayed;
   if traceray_normalized(traceStart, traceDir, t, pmid, human_mining_wall__plantingNorm, ETF_RI, riDesc, -1) && riDesc.isValid
     let riPoolId = int(handle_to_ri_type(riDesc.riExtraHandle))
     let riFlags = determine_mining_wall_flags(riPoolId)
+    let traceResPos = traceStart + traceDir * (t - human_mining_wall__plantingPosDistFromWall)
+    let relDist = length(human__aimTm[3] - traceResPos)
     if (riFlags & int(MineWallFlag.CAN_MINE)) != 0
       if human_mining_wall__bombEid != INVALID_ENTITY_ID
-        human_mining_wall__isPlantingAvailable = (t <= human_mining_wall__plantingMaxDist)
+        human_mining_wall__isPlantingAvailable = (relDist <= human_mining_wall__plantingMaxDist)
         human_mining_wall__isContinuePlantingAvailable = true
-        human_mining_wall__plantingPos = traceStart + traceDir * (t - human_mining_wall__plantingPosDistFromWall)
+        human_mining_wall__plantingPos = traceResPos
         human_mining_wall__wallEid = find_ri_extra_eid(riDesc.riExtraHandle)
 
     if human_input__standState == int(HumanPhysControlType.HCT_CRAWL)
       return
     human_mining_wall__reassemblingPosition = traceStart + traceDir * t
     if (riFlags & int(MineWallFlag.CAN_REASSEMBLE)) != 0
-      human_mining_wall__isReassemblingAvailable = (t <= human_mining_wall__plantingMaxDist)
+      human_mining_wall__isReassemblingAvailable = (relDist <= human_mining_wall__plantingMaxDist)
       human_mining_wall__isContinueReassemblingAvailable = true
       human_mining_wall__reassemblingEntityId = find_ri_extra_eid(riDesc.riExtraHandle)

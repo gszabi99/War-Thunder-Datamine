@@ -131,6 +131,8 @@ let isNoneBalancedEvent = @(event) event?.balancerMode == "none"
 
 let canJoinWithoutRequireCrafts = @(event) !(event?.requireCrafts ?? true)
 
+let isVrModeAllowedInEvent = @(event) event?.isVrModeAllowed != false
+
 return {
   eventIdsForMainGameModeList
   getEventEconomicName
@@ -164,4 +166,5 @@ return {
   isNoneBalancedEvent
   canJoinWithoutRequireCrafts
   isEventAllowedByPackage
+  isVrModeAllowedInEvent
 }

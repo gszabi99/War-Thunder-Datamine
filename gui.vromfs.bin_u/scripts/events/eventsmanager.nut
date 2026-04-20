@@ -36,7 +36,7 @@ let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isCompatibilityMode } = require("%scripts/options/systemOptions.nut")
+let { isCompatibilityMode, isVrModeEnable } = require("%scripts/options/systemOptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank, get_mission_mode, isUnitSpecial
 } = require("%appGlobals/ranks_common_shared.nut")
@@ -64,7 +64,7 @@ let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventForClan,
   getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
   isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature,
-  isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage
+  isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage, isVrModeAllowedInEvent
 } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
@@ -1210,9 +1210,12 @@ let Events = class {
     return getEventDisplayType(event) != g_event_display_type.NONE
       && this.checkEventFeature(event, true)
       && this.isEventAllowedByComaptibilityMode(event)
+      && this.isEventAllowedByVrMode(event)
       && isEventAllowedByPackage(event)
       && (!this.eventRequiresTicket(event) || this.getEventActiveTicket(event) != null)
   }
+
+  isEventAllowedByVrMode = @(event) isVrModeAllowedInEvent(event) || !isVrModeEnable()
 
   isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibilityMode()
 
@@ -2363,6 +2366,8 @@ let Events = class {
     }
     else if (!this.isEventAllowedByComaptibilityMode(event))
       data.reasonText = loc("events/noCompatibilityMode")
+    else if (!this.isEventAllowedByVrMode(event))
+      data.reasonText = loc("events/noVrMode")
     else if (!isEventAllowedByPackage(event))
       data.reasonText = loc("events/no_entitlement", { entitlement = loc("ui/comma").join(
         event.reqPacks.filter(@(packName) !havePackage(packName))

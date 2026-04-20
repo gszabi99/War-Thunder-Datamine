@@ -25,6 +25,7 @@ let { checkPackageAndAskDownload, checkPackageAndAskDownloadByTimes
 } = require("%scripts/clientState/contentPacks.nut")
 let { isEventAllowedForAllSquadMembers, canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
+let { disableVrModeValue } = require("%scripts/options/systemOptions.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -189,6 +190,20 @@ let EventJoinProcess = class {
     let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask) == 1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
     if (checkDiffTutorial(diffCode, checkTutorUnitType))
       return this.remove()
+
+    if (!events.isEventAllowedByVrMode(this.event)) {
+      let onDisable = Callback(this.joinStep5_cantJoinReason, this)
+      let onCancel = Callback(this.remove, this)
+      this.msgBox("suggestion_to_disable_vr_mode", loc("events/noVrMode/msg"),
+        [
+          ["cancel", onCancel ],
+          ["disable", function() {
+            disableVrModeValue()
+            onDisable()
+          }]
+        ], "disable")
+      return
+    }
 
     this.joinStep5_cantJoinReason()
   }

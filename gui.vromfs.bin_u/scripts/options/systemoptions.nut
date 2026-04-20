@@ -33,6 +33,9 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings,
 NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { isInFlight } = require("gameplayBinding")
+let { isVrModeAllowedInEvent } = require("%scripts/events/eventInfo.nut")
 
 
 local mSettings = {}
@@ -1698,6 +1701,7 @@ mSettings = {
     blk = "gameplay/enableVR"
     def = false
     enabled = @() is_windows && (platformId == "win64" || is_dev_version()) && !getGuiValue("compatibilityMode")
+      && (!isInFlight() || isVrModeAllowedInEvent(getRoomEvent()))
     onChanged = "vrModeClick"
   }
   vrMirror = { widgetType = "list" def = "left" blk = "video/vreye" restart = false values = [ "left", "right", "both" ]
@@ -2066,13 +2070,13 @@ function configMaintain() {
   configFree()
 }
 
-function applyRestartEngine(reloadScene = false) {
+function applyRestartEngine(reloadScene, shouldDoItOnSceneSwitch) {
   mCfgApplied = {}
   foreach (id, value in mCfgCurrent)
     mCfgApplied[id] <- value
 
   log("[sysopt] Resetting renderer.")
-  applyRendererSettingsChange(reloadScene, true)
+  applyRendererSettingsChange(reloadScene, shouldDoItOnSceneSwitch)
 }
 
 let isReloadSceneRerquired = @() mCfgApplied.resolution != mCfgCurrent.resolution
@@ -2085,13 +2089,13 @@ function onRestartClient() {
   applyRestartClient()
 }
 
-function hotReloadOrRestart() {
+function hotReloadOrRestart(shouldDoItOnSceneSwitch = true) {
   if (isSavePending())
     configWrite()
 
   let restartPending = isRestartPending()
   if (!restartPending && isHotReloadPending())
-    applyRestartEngine(isReloadSceneRerquired())
+    applyRestartEngine(isReloadSceneRerquired(), shouldDoItOnSceneSwitch)
 
   configFree()
 
@@ -2138,6 +2142,9 @@ function onConfigApplyWithoutUiUpdate() {
 
 let isCompatibilityMode = @() mCfgStartup?.compatibilityMode
   ?? getSystemConfigOption("video/compatibilityMode", false)
+
+let isVrModeEnable = @() getGuiValue("enableVr")
+  ?? getSystemConfigOption("gameplay/enableVR", false)
 
 function onGuiOptionChanged(obj) {
   let objId = obj?.isValid() ? obj.id : null
@@ -2350,6 +2357,17 @@ function checkShowGraphicSettingsWasModified() {
   )
 }
 
+function disableVrModeValue() {
+  if (mCfgInitial.len() == 0)
+    configRead()
+
+  if (!isVrModeEnable())
+    return
+
+  setGuiValue("enableVr", false)
+  hotReloadOrRestart(false)
+}
+
 function setQualityPreset(presetName, force = false) {
   if (mCfgInitial.len() == 0)
     configRead()
@@ -2394,4 +2412,6 @@ return {
   getSystemOptionInfoView = getOptionInfoView
   onSystemOptionControlHover
   checkShowGraphicSettingsWasModified
+  isVrModeEnable
+  disableVrModeValue
 }
