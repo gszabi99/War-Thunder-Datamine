@@ -1138,13 +1138,13 @@
     }
   },
   "warhead": {
-    "mass": 13.0,
+    "mass": 9.5,
     "caliber": 0.32,
     "length": 0.32,
     "distFromCmToStab": 0.05,
     "CxK": 0.85,
     "explosiveType": "tga_16",
-    "explosiveMass": 10.0,
+    "explosiveMass": 7.5,
     "distanceFuse": false,
     "hitPowerMult": 1.0,
     "explosionOffset": 0.05,
@@ -1193,71 +1193,65 @@
       ]
     },
     "damage": {
-      "kinetic": {
-        "damageType": "generic",
-        "demarrePenetrationK": 0.15,
-        "demarreSpeedPow": 1.43,
-        "demarreMassPow": 0.71,
-        "demarreCaliberPow": 1.07
-      },
       "explosive": {
-        "radius": 0.3,
-        "offset": 0.2
+        "radius": 0.45,
+        "offset": 0.05
       },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 2.4,
+        "countPortion": 1.5,
         "realShattersSplicing": 0.5,
         "segment": [
           {
-            "radiusScale": 0.7,
-            "penetrationScale": 3.5,
+            "radiusScale": 0.5,
+            "penetrationScale": 1.5,
             "damageScale": 1.0,
             "angles": [
               0.0,
-              10.0
+              20.0
             ],
-            "countPortion": 0.02
+            "countPortion": 0.04
           },
           {
-            "radiusScale": 0.3,
-            "penetrationScale": 3.25,
+            "radiusScale": 0.65,
+            "penetrationScale": 1.8,
             "damageScale": 1.0,
             "angles": [
-              10.0,
-              55.0
+              20.0,
+              50.0
             ],
-            "countPortion": 0.05
+            "countPortion": 0.08
           },
           {
-            "radiusScale": 0.7,
-            "penetrationScale": 3.0,
-            "damageScale": 1.0,
+            "radiusScale": 1.0,
+            "penetrationScale": 2.2,
+            "damageScale": 1.5,
             "angles": [
-              55.0,
-              110.0
+              50.0,
+              130.0
             ],
-            "countPortion": 0.68
+            "countPortion": 0.72,
+            "onHitChanceMultFire": 15.0
           },
           {
-            "radiusScale": 0.3,
-            "penetrationScale": 2.5,
+            "radiusScale": 0.4,
+            "penetrationScale": 1.5,
             "damageScale": 1.0,
             "angles": [
-              110.0,
-              165.0
+              130.0,
+              160.0
             ],
-            "countPortion": 0.2
+            "countPortion": 0.12
           },
           {
-            "radiusScale": 0.3,
-            "penetrationScale": 2.0,
-            "damageScale": 1.0,
+            "radiusScale": 0.2,
+            "penetrationScale": 1.0,
+            "damageScale": 0.8,
             "angles": [
-              165.0,
+              160.0,
               180.0
             ],
-            "countPortion": 0.05
+            "countPortion": 0.04
           }
         ]
       }
