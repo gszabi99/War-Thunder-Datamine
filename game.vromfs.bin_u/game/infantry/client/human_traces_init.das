@@ -4,8 +4,11 @@ require AnimV20
 require PhysMat
 require Unit
 require app
+require DngHuman
 
 require %appGame.wt_events
+require %appGame.infantry.es.team_common
+require %game.events
 
 def init_lod_nodes_list(animchar : AnimcharBaseComponent&; var node_ids : IntList; node_names : StringList)
   let nodesCount = length(node_names)
@@ -106,3 +109,46 @@ def apply_human_los_bots_data(info : UpdateStageInfoAct;
       query(soldierEid) <| $ [es] (nodes_los__considerMapAsVisibleTime : float;
                                    var nodes_los__considerMapVisibleToTime : float&)
         nodes_los__considerMapVisibleToTime = info.curTime + nodes_los__considerMapAsVisibleTime
+
+
+[es(tag=render, REQUIRE=watchedByPlr)]
+def nodes_los_track_sprint_active(info : ParallelUpdateFrameDelayed;
+                                  team : int)
+  let heroTeam = team
+  let curTime = info.curTime
+  query() <| $ [es(REQUIRE_NOT=deadEntity)] (team : int;
+                                             human_net_phys__curMoveState : int;
+                                             var nodes_los__enemyLastActive : float&;
+                                             animchar__mainVisible : bool = true)
+    if !animchar__mainVisible || is_teams_friendly(team, heroTeam)
+      return
+    if human_net_phys__curMoveState == int(HUMoveState.EMS_SPRINT)
+      nodes_los__enemyLastActive = curTime
+
+
+[es(tag=render, on_event=(EventShot, CmdNetShot))]
+def nodes_los_track_shot_active(evt : Event;
+                                gun__owner : EntityId)
+  let heroTeam = get_int(get_local_player_eid(), "team") ?? TEAM_UNASSIGNED
+  query(gun__owner) <| $ [es] (team : int;
+                               var nodes_los__enemyLastActive : float&;
+                               animchar__mainVisible : bool = true)
+    if !animchar__mainVisible || is_teams_friendly(team, heroTeam)
+      return
+    nodes_los__enemyLastActive = get_sync_time()
+
+
+[es(tag=render, no_order, REQUIRE=watchedByPlr)]
+def nodes_los_update_is_active_enemy(info : UpdateStageInfoAct;
+                                     team : int)
+  let heroTeam = team
+  let curTime = info.curTime
+  query() <| $ [es(REQUIRE_NOT=deadEntity)] (team : int;
+                                             nodes_los__enemyLastActive : float;
+                                             nodes_los__enemyActiveTime : float;
+                                             var nodes_los__isActiveEnemy : bool&;
+                                             animchar__mainVisible : bool = true)
+    if !animchar__mainVisible || is_teams_friendly(team, heroTeam)
+      nodes_los__isActiveEnemy = false
+      return
+    nodes_los__isActiveEnemy = (nodes_los__enemyLastActive + nodes_los__enemyActiveTime > curTime)
