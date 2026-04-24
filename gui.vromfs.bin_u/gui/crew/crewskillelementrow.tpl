@@ -105,7 +105,7 @@ row {
               size:t='pw, ph'
               background-image:t='<<barsType>>'
               background-svg-size:t='1@crewSkillBockWidth, 1@crewSkillBlockHeight'
-              background-repeat:t='repeat-x'
+              background-repeat:t='repeat-svg'
               background-position:t='0'
             }
             <</barsType>>
