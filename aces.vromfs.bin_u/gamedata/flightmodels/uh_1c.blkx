@@ -1276,6 +1276,10 @@
         "blk": "gameData/flightModels/weaponPresets/uh_1c_xm159.blk"
       },
       {
+        "name": "uh_1c_rocket_ss11_default",
+        "blk": "gameData/flightModels/weaponPresets/uh_1c_rocket_ss11_default.blk"
+      },
+      {
         "name": "uh_1c_rocket_ss11",
         "blk": "gameData/flightModels/weaponPresets/uh_1c_rocket_ss11.blk"
       },
@@ -1622,7 +1626,43 @@
             }
           },
           {
-            "iconType": "atgm_type1_x3_left",
+            "iconType": "missile_air_to_uni_group",
+            "name": "agm22_left_default",
+            "remotelyGuidedWeaponsMax": 1,
+            "ShowNodes": {
+              "node": "us_xm22_1"
+            },
+            "Weapon": [
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/us_AGM_22_default.blk",
+                "emitter": "ss11_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/us_AGM_22_default.blk",
+                "emitter": "ss11_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "ffar_extra"
+              },
+              {
+                "slot": 1,
+                "preset": "m134_xm21_left"
+              }
+            ]
+          },
+          {
+            "iconType": "missile_air_to_uni_x3",
             "name": "agm22_left",
             "reqModification": "ah_AGM_22",
             "remotelyGuidedWeaponsMax": 1,
@@ -1748,7 +1788,43 @@
             }
           },
           {
-            "iconType": "atgm_type1_x3_right",
+            "iconType": "missile_air_to_uni_group",
+            "name": "agm22_right_default",
+            "remotelyGuidedWeaponsMax": 1,
+            "ShowNodes": {
+              "node": "us_xm22_2"
+            },
+            "Weapon": [
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/us_AGM_22_default.blk",
+                "emitter": "ss11_006",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/us_AGM_22_default.blk",
+                "emitter": "ss11_005",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "ffar_extra"
+              },
+              {
+                "slot": 4,
+                "preset": "m134_xm21_right"
+              }
+            ]
+          },
+          {
+            "iconType": "missile_air_to_uni_x3",
             "name": "agm22_right",
             "reqModification": "ah_AGM_22",
             "remotelyGuidedWeaponsMax": 1,

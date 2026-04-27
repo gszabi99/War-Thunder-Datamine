@@ -1,5 +1,6 @@
 require ecs
 require %appGame.infantry.es.human_weap_common
+require %appGame.infantry.es.human_weap_client_common
 require %appGame.infantry.es.camera_common
 require %game.events
 require math.base
@@ -15,6 +16,18 @@ require Dacoll
 require AnimV20
 require GeomNodeTree
 require Unit
+
+
+struct AimInertiaStepCfg
+  dt : float          
+  timeStretch : float 
+  pMax : float2       
+  vMax : float        
+  yMin : float        
+  yMax : float        
+  vScaleFrac : float  
+  tqScale : float     
+  p0 : float2         
 
 
 def do_gun_traceray(from : float3; dir : float3; var t : float&; ray_mat_id : int; ignore_human_eid : EntityId)
@@ -188,42 +201,61 @@ def human_weap_update_es(info : ParallelUpdateFrameDelayed;
                         human_weap__grenadeThrower, human_phys__jumpEndTime, human_phys__afterJumpDelay, human_phys__isInAirLong, bipod__enabled,
                         human_weap__weapModActivateStartTime, human_weap__weapModActivateFinishTime)
 
-let INERTIA_BUFFER_MAX_SIZE = 128
+def deadzone(v : float2; thres : float) : float2
+  return float2(
+    abs(v.x) < thres ? 0.0 : sign(v.x) * (abs(v.x) - thres),
+    abs(v.y) < thres ? 0.0 : sign(v.y) * (abs(v.y) - thres))
 
-def private reset_inertia_buf(var human_weap__aimInertiaBuff : Point2List;
-                              var human_weap__aimInertiaDiffSum : float&;
-                              var human_weap__aimInertiaTimeSum : float&;
-                              var human_weap__aimInertiaCurInd : int&;
-                              var human_weap__aimInertiaBuffCnt : int&)
-  human_weap__aimInertiaBuff.resize(INERTIA_BUFFER_MAX_SIZE)
-  human_weap__aimInertiaDiffSum = 0.0
-  human_weap__aimInertiaTimeSum = 0.0
-  human_weap__aimInertiaCurInd = 0
-  human_weap__aimInertiaBuffCnt = 0
+def deadzone(v : float; thres : float) : float
+  return abs(v) < thres ? 0.0 : sign(v) * (abs(v) - thres)
 
-def private remove_old_value_from_inertia_buf(human_weap__aimInertiaCurInd : int;
-                                              var human_weap__aimInertiaBuff : Point2List;
-                                              var human_weap__aimInertiaDiffSum : float&;
-                                              var human_weap__aimInertiaTimeSum : float&;
-                                              var human_weap__aimInertiaBuffCnt : int&)
-  var oldIndex = (human_weap__aimInertiaCurInd - human_weap__aimInertiaBuffCnt) % length(human_weap__aimInertiaBuff)
-  if oldIndex < 0
-    oldIndex += length(human_weap__aimInertiaBuff)
-  human_weap__aimInertiaDiffSum -= human_weap__aimInertiaBuff[oldIndex].x
-  human_weap__aimInertiaTimeSum -= human_weap__aimInertiaBuff[oldIndex].y
-  human_weap__aimInertiaBuffCnt -= 1
+def aim_inertia_step(var p : float2&; var v : float2&; cfg : AimInertiaStepCfg;
+                     tqLut : FloatList; tqN : int; tqSharp : float;
+                     zetaLut : FloatList; zetaN : int; zetaSharp : float)
+  
+  let pN     = float2(abs(p.x) / cfg.pMax.x, abs(p.y) / cfg.pMax.y)     
+  let vRet   = float2(-sign(p.x) * v.x, -sign(p.y) * v.y)
+  let vScale = cfg.vScaleFrac * cfg.vMax / cfg.timeStretch
+  let vN     = float2(vRet.x / vScale, vRet.y / vScale)                 
 
-[es(tag=gameClient, on_appear, REQUIRE=hero)]
-def human_inertia_init_diff_buff(evt : Event;
-                                 var human_weap__aimInertiaBuff : Point2List;
-                                 var human_weap__aimInertiaDiffSum : float&;
-                                 var human_weap__aimInertiaTimeSum : float&;
-                                 var human_weap__aimInertiaCurInd : int&;
-                                 var human_weap__aimInertiaBuffCnt : int&)
-  reset_inertia_buf(human_weap__aimInertiaBuff, human_weap__aimInertiaDiffSum,
-                    human_weap__aimInertiaTimeSum, human_weap__aimInertiaCurInd,
-                    human_weap__aimInertiaBuffCnt)
+  
+  
+  let tqEff = float2(lookup_lut_2d(tqLut, tqN, pN.x, vN.x, tqSharp) * cfg.tqScale * cfg.timeStretch,
+                     lookup_lut_2d(tqLut, tqN, pN.y, vN.y, tqSharp) * cfg.tqScale * cfg.timeStretch)
+  let zEff  = float2(lookup_lut_2d(zetaLut, zetaN, pN.x, vN.x, zetaSharp),
+                     lookup_lut_2d(zetaLut, zetaN, pN.y, vN.y, zetaSharp))
+  let wEff  = 0.5 * PI * float2(safeinv(tqEff.x), safeinv(tqEff.y))
+  let k     = wEff * wEff
+  let c     = 2. * zEff * wEff
 
+  
+  
+  let rawP = p + v * cfg.dt
+  if rawP.x > cfg.pMax.x
+    p.x = cfg.pMax.x
+    if v.x > 0.
+      v.x = 0.
+  elif rawP.x < -cfg.pMax.x
+    p.x = -cfg.pMax.x
+    if v.x < 0.
+      v.x = 0.
+  else
+    p.x = rawP.x
+  if rawP.y > cfg.yMax
+    p.y = cfg.yMax
+    if v.y > 0.
+      v.y = 0.
+  elif rawP.y < cfg.yMin
+    p.y = cfg.yMin
+    if v.y < 0.
+      v.y = 0.
+  else
+    p.y = rawP.y
+
+  let accel = (cfg.p0 - p) * k - v * c
+  v += accel * cfg.dt
+  v.x = clamp(v.x, -cfg.vMax, cfg.vMax)
+  v.y = clamp(v.y, -cfg.vMax, cfg.vMax)
 
 [es(tag=gameClient, after=human_weap_update_es, REQUIRE=(hero, human_weap), REQUIRE_NOT=deadEntity)]
 def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
@@ -235,137 +267,125 @@ def human_weapon_inertia(info : ParallelUpdateFrameDelayed;
                          human_input__gunToAimAngleLimit : float2;
                          human_input__aimAngle : float2;
                          human_input__oldAimAngle : float2;
+                         human_weap__aimOmegaViscosity : float;
                          human_weap__currentGunEid : EntityId;
+                         human_weap__crawlClampVertAngleRad : float2;
+                         human_weap__clampVertAngleRad : float2;
+                         human_weap__aimInertiaDeltaTime : float;
                          human_weap__aimInertiaCrouchMult : float;
                          human_weap__aimInertiaCrawlMult : float;
                          human_weap__aimInertiaAimingMult : float;
-                         human_weap__aimInertiaStrengthMult : float;
-                         human_weap__aimInertiaStrengthPow : float;
-                         human_weap__aimInertiaDampingMult : float;
-                         human_weap__aimInertiaStiffnessMultStart : float;
-                         human_weap__aimInertiaStiffnessMultEnd : float;
-                         human_weap__aimInertiaDampingMultStart : float;
-                         human_weap__aimInertiaDampingMultEnd : float;
-                         human_weap__aimInertiaBoostInterval : float2;
-                         human_weap__aimInertiaDeltaTime : float;
+                         human_weap__aimInertiaVScaleFrac : float;
+                         human_weap__aimInertia_TqScale : float;
+                         human_weap__aimInertia_TqLut : FloatList;
+                         human_weap__aimInertia_TqLutColumnCount : int;
+                         human_weap__aimInertia_TqLutSharpness : float;
+                         human_weap__aimInertia_ZetaLut : FloatList;
+                         human_weap__aimInertia_ZetaLutColumnCount : int;
+                         human_weap__aimInertia_ZetaLutSharpness : float;
+                         human_weap__aimInertiaTimeStretchMin : float;
+                         human_weap__aimInertiaTimeStretchMax : float;
+                         human_weap__aimInertiaTimeStretchBias : float;
+                         human_weap__aimInertiaWeightMin : float;
+                         human_weap__aimInertiaWeightMax : float;
+                         human_weap__aimInertiaRestPointGainMin : float;
+                         human_weap__aimInertiaRestPointGainMax : float;
+                         human_weap__aimInertiaRestPointGainBias : float;
+                         human_weap__aimInertiaOmegaDrainMin : float;
+                         human_weap__aimInertiaOmegaDrainMax : float;
+                         human_weap__aimInertiaOmegaDrainBias : float;
+                         human_weap__aimInertiaAccumAngleMin : float;
+                         human_weap__aimInertiaAccumAngleMax : float;
                          human_weap__aimInertiaMaxMult : float;
                          human_weap__aimInertiaVelocityMax : float;
-                         human_weap__aimInertiaMinWeight : float;
-                         human_weap__aimInertiaMaxWeight : float;
                          human_weap__aimInertiaViscosity : float;
-                         human_weap__crawlClampVertAngleRad : float2;
-                         human_weap__clampVertAngleRad : float2;
-                         human_weap__aimInertiaExtraInertiaThres : float;
-                         human_weap__aimInertiaExtraInertiaMult : float;
-                         human_weap__aimInertialExtraInertiaTime : float;
-                         human_weap__aimInertiaTimeWindow : float;
-                         var human_weap__aimInertiaBuff : Point2List;
-                         var human_weap__aimInertiaDiffSum : float&;
-                         var human_weap__aimInertiaTimeSum : float&;
-                         var human_weap__aimInertiaCurInd : int&;
-                         var human_weap__aimInertiaBuffCnt : int&;
-                         var human_weap__aimInertiaExtraInertiaRest : float&;
+                         var human_weap__aimOmega : float2&;
+                         var human_weap__aimInertiaRestPoint : float2&;
                          var human_weap__aimInertia : float2&;
                          var human_weap__aimInertiaVelocity : float2&;
                          var human_weap__aimInertiaLastTick : int&;
-                         var human_weap__aimInertiaLocal : float2&)
+                         var human_weap__aimInertiaWish : float2&;
+                         var human_weap__aimInertiaAccumAngle : float2&)
   if human_weap__aimInertiaLastTick < 0
     human_weap__aimInertiaLastTick = int(safediv(info.curTime, human_weap__aimInertiaDeltaTime))
     return
 
   assume inertia = human_weap__aimInertia
-  assume localInertia = human_weap__aimInertiaLocal
+  assume wishInertia = human_weap__aimInertiaWish
   assume inertiaVel = human_weap__aimInertiaVelocity
 
   let curTick = int(safediv(info.curTime, human_weap__aimInertiaDeltaTime))
   var weight = get_float(human_weap__currentGunEid, "gun__inertialMass") ?? 0.0
   if weight == 0.0
     weight = get_float(human_weap__currentGunEid, "item__weight") ?? 0.0
-  weight = clamp(weight, 0.0, human_weap__aimInertiaMaxWeight)
+  weight = clamp(weight, 0.0, human_weap__aimInertiaWeightMax)
 
   if (!isAlive || isDowned || isInVehicle
       || has(human_weap__currentGunEid, "disableAimInertia")
-      || weight < human_weap__aimInertiaMinWeight
+      || weight < human_weap__aimInertiaWeightMin
       || bipod__enabled)
     inertia = float2()
-    localInertia = float2()
+    wishInertia = float2()
     inertiaVel = float2()
+    human_weap__aimInertiaRestPoint = float2()
+    human_weap__aimOmega = float2()
+    human_weap__aimInertiaAccumAngle = float2()
     human_weap__aimInertiaLastTick = curTick
     return
 
+  var timeStretch = param_curve(weight, human_weap__aimInertiaWeightMin, human_weap__aimInertiaWeightMax,
+    human_weap__aimInertiaTimeStretchMin, human_weap__aimInertiaTimeStretchMax, human_weap__aimInertiaTimeStretchBias)
+  let aimInertiaOmegaDrain = param_curve(weight, human_weap__aimInertiaWeightMin, human_weap__aimInertiaWeightMax,
+    human_weap__aimInertiaOmegaDrainMin, human_weap__aimInertiaOmegaDrainMax, human_weap__aimInertiaOmegaDrainBias)
+  let restPointGain = param_curve(weight, human_weap__aimInertiaWeightMin, human_weap__aimInertiaWeightMax,
+    human_weap__aimInertiaRestPointGainMin, human_weap__aimInertiaRestPointGainMax, human_weap__aimInertiaRestPointGainBias)
+
+  
+  if human_net_phys.phys.currentState.isCrouch
+    timeStretch *= human_weap__aimInertiaCrouchMult
+  elif human_net_phys.phys.currentState.isCrawl
+    timeStretch *= human_weap__aimInertiaCrawlMult
+  if human_phys_isAiming(human_net_phys.phys)
+    timeStretch *= human_weap__aimInertiaAimingMult
+
   let deltaAimAngleRaw = human_input__aimAngle - human_input__oldAimAngle
   let deltaAimAngle = float2(norm_s_ang(deltaAimAngleRaw.x), norm_s_ang(deltaAimAngleRaw.y))
-  localInertia -= deltaAimAngle
 
-  if human_weap__aimInertiaBuffCnt >= length(human_weap__aimInertiaBuff)
-    remove_old_value_from_inertia_buf(human_weap__aimInertiaCurInd, human_weap__aimInertiaBuff, human_weap__aimInertiaDiffSum,
-                                      human_weap__aimInertiaTimeSum, human_weap__aimInertiaBuffCnt)
+  human_weap__aimOmega = approach(human_weap__aimOmega, deltaAimAngle / max(info.dt, 1e-4), info.dt, human_weap__aimOmegaViscosity)
+  let aimAccumInertiaAngleMax = float2(human_weap__aimInertiaAccumAngleMax)
+  human_weap__aimInertiaAccumAngle += abs(human_weap__aimOmega) * info.dt
+  let aimInertiaOmegaDrainDt = float2(aimInertiaOmegaDrain * info.dt)
+  human_weap__aimInertiaAccumAngle = clamp(human_weap__aimInertiaAccumAngle - aimInertiaOmegaDrainDt, float2(), aimAccumInertiaAngleMax)
 
-  human_weap__aimInertiaBuff[human_weap__aimInertiaCurInd].x = length(deltaAimAngle)
-  human_weap__aimInertiaBuff[human_weap__aimInertiaCurInd].y = info.dt
-
-  human_weap__aimInertiaDiffSum += human_weap__aimInertiaBuff[human_weap__aimInertiaCurInd].x
-  human_weap__aimInertiaTimeSum += human_weap__aimInertiaBuff[human_weap__aimInertiaCurInd].y
-  human_weap__aimInertiaBuffCnt += 1
-
-  human_weap__aimInertiaCurInd = (human_weap__aimInertiaCurInd + 1) % length(human_weap__aimInertiaBuff)
-
-  while human_weap__aimInertiaTimeSum > human_weap__aimInertiaTimeWindow && human_weap__aimInertiaBuffCnt > 0
-    remove_old_value_from_inertia_buf(human_weap__aimInertiaCurInd, human_weap__aimInertiaBuff, human_weap__aimInertiaDiffSum,
-                                      human_weap__aimInertiaTimeSum, human_weap__aimInertiaBuffCnt)
-
-  if human_weap__aimInertiaTimeSum <= human_weap__aimInertiaTimeWindow && human_weap__aimInertiaDiffSum > human_weap__aimInertiaExtraInertiaThres
-    human_weap__aimInertiaExtraInertiaRest = human_weap__aimInertialExtraInertiaTime
-  if human_weap__aimInertiaExtraInertiaRest > 0.0
-    human_weap__aimInertiaExtraInertiaRest -= float(curTick - human_weap__aimInertiaLastTick) * human_weap__aimInertiaDeltaTime
-
-  var strength = pow(weight, human_weap__aimInertiaStrengthPow) * human_weap__aimInertiaStrengthMult
-
-  if human_net_phys.phys.currentState.isCrouch
-    strength *= human_weap__aimInertiaCrouchMult
-  elif human_net_phys.phys.currentState.isCrawl
-    strength *= human_weap__aimInertiaCrawlMult
-  if human_phys_isAiming(human_net_phys.phys)
-    strength *= human_weap__aimInertiaAimingMult
-    if human_weap__aimInertiaExtraInertiaRest > 0.0
-      strength *= human_weap__aimInertiaExtraInertiaMult
-  strength = safeinv(strength)
-
-  var k = square(strength)
-  var c = 2.0 * human_weap__aimInertiaDampingMult * strength
-
-  let inertiaLenSq = length_sq(inertia)
-  if inertiaLenSq < square(human_weap__aimInertiaBoostInterval.x)
-    k *= human_weap__aimInertiaStiffnessMultEnd
-    c *= human_weap__aimInertiaDampingMultEnd
-  elif inertiaLenSq > square(human_weap__aimInertiaBoostInterval.y)
-    k *= human_weap__aimInertiaStiffnessMultStart
-    c *= human_weap__aimInertiaDampingMultStart
+  human_weap__aimInertiaRestPoint = restPointGain * deadzone(human_weap__aimOmega, aimInertiaOmegaDrain)
+  if abs(human_weap__aimInertiaAccumAngle.x) < human_weap__aimInertiaAccumAngleMin
+    human_weap__aimInertiaRestPoint.x = 0.0
+  if abs(human_weap__aimInertiaAccumAngle.y) < human_weap__aimInertiaAccumAngleMin
+    human_weap__aimInertiaRestPoint.y = 0.0
 
   let inertiaMax = human_weap__aimInertiaMaxMult * deg_to_rad(human_input__gunToAimAngleLimit)
 
-  let localInertiaSpd = length(localInertia)
-  k *= cvt(localInertiaSpd, deg_to_rad(40.), inertiaMax.x, 1.f, 2.f)
-  c *= 1. - cvt(localInertiaSpd, deg_to_rad(40.), inertiaMax.x, 0., 0.6)
+  let vertLimits = human_net_phys.phys.currentState.isCrawl ? human_weap__crawlClampVertAngleRad : human_weap__clampVertAngleRad
+  let aimY = human_input__aimAngle.y
+  let wishYMin = max(-inertiaMax.y, vertLimits.x - aimY)
+  let wishYMax = min(inertiaMax.y, vertLimits.y - aimY)
+
+  let cfg = AimInertiaStepCfg(
+    dt = human_weap__aimInertiaDeltaTime,
+    timeStretch = timeStretch,
+    pMax = inertiaMax,
+    vMax = human_weap__aimInertiaVelocityMax,
+    yMin = wishYMin,
+    yMax = wishYMax,
+    vScaleFrac = human_weap__aimInertiaVScaleFrac,
+    tqScale = human_weap__aimInertia_TqScale,
+    p0 = human_weap__aimInertiaRestPoint)
 
   for _ in range(human_weap__aimInertiaLastTick, curTick)
-    let inertiaAccel = -localInertia * k - inertiaVel * c
-    localInertia += inertiaVel * human_weap__aimInertiaDeltaTime
-    localInertia.x = clamp(localInertia.x, -inertiaMax.x, inertiaMax.x)
-    localInertia.y = clamp(localInertia.y, -inertiaMax.y, inertiaMax.y)
-    inertiaVel += inertiaAccel * human_weap__aimInertiaDeltaTime
-    inertiaVel.x = clamp(inertiaVel.x, -human_weap__aimInertiaVelocityMax, human_weap__aimInertiaVelocityMax)
-    inertiaVel.y = clamp(inertiaVel.y, -human_weap__aimInertiaVelocityMax, human_weap__aimInertiaVelocityMax)
+    aim_inertia_step(wishInertia, inertiaVel, cfg,
+                     human_weap__aimInertia_TqLut,   human_weap__aimInertia_TqLutColumnCount,   human_weap__aimInertia_TqLutSharpness,
+                     human_weap__aimInertia_ZetaLut, human_weap__aimInertia_ZetaLutColumnCount, human_weap__aimInertia_ZetaLutSharpness)
+
+  inertia = approach(inertia, wishInertia, info.dt, human_weap__aimInertiaViscosity)
 
   human_weap__aimInertiaLastTick = curTick
-
-  let vertDir = human_net_phys.phys.currentState.vertDirection
-  let rootDir = get_some_normal(vertDir)
-  let aimDir = basis_aware_angles_to_dir(human_input__aimAngle, vertDir, rootDir)
-  let vertLimits = human_net_phys.phys.currentState.isCrawl ? human_weap__crawlClampVertAngleRad : human_weap__clampVertAngleRad
-  var localInertiaInLocAngles = human_input__aimAngle + localInertia
-  localInertiaInLocAngles.y = clamp(localInertiaInLocAngles.y, vertLimits.x, vertLimits.y)
-  let localInertiaInGlobDir = basis_aware_angles_to_dir(localInertiaInLocAngles, vertDir, rootDir)
-  var wishInertia = dir_to_angles(localInertiaInGlobDir) - dir_to_angles(aimDir)
-  wishInertia = float2(norm_s_ang(wishInertia.x), norm_s_ang(wishInertia.y))
-  inertia = approach(inertia, wishInertia, info.dt, human_weap__aimInertiaViscosity)

@@ -1915,6 +1915,10 @@
         "blk": "gameData/flightModels/weaponPresets/z_11wa_hj_8.blk"
       },
       {
+        "name": "z_11wa_hj_8_c",
+        "blk": "gameData/flightModels/weaponPresets/z_11wa_hj_8_c.blk"
+      },
+      {
         "name": "z_11wa_gun_pod",
         "blk": "gameData/flightModels/weaponPresets/z_11wa_gun_pod.blk"
       }
@@ -2020,15 +2024,14 @@
             }
           },
           {
-            "iconType": "missile_air_to_uni_group",
-            "name": "hj8_left_wing",
-            "reqModification": "cn_hj8",
-            "remotelyGuidedWeaponsMax": 1,
+            "iconType": "missile_air_to_uni_large_group",
+            "name": "hj8_c_left_wing",
+            "reqModification": "cn_hj8_c",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/cn_hj_8a_2_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/cn_hj_8c_2_left_wing.blk",
               "emitter": "hj_8_2_launcher_001"
             }
           },
@@ -2102,6 +2105,19 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/cn_hj_8a_2_x2_right_wing.blk",
+              "emitter": "hj_8_2_launcher_002"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_group",
+            "name": "hj8_c_right_wing",
+            "reqModification": "cn_hj8_c",
+            "remotelyGuidedWeaponsMax": 1,
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/cn_hj_8c_2_right_wing.blk",
               "emitter": "hj_8_2_launcher_002"
             }
           },
@@ -2711,6 +2727,12 @@
     "cn_hj8": {
       "deactivationIsAllowed": false,
       "reqModification": "cn_hf7d",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "cn_hj8_c": {
+      "deactivationIsAllowed": false,
+      "reqModification": "cn_hj8",
       "modClass": "weapon",
       "tier": 4
     },

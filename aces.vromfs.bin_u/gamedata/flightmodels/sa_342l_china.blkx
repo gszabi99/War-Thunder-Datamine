@@ -1182,6 +1182,10 @@
         "blk": "gameData/flightModels/weaponPresets/sa_342l_china_default.blk"
       },
       {
+        "name": "sa_342l_china_hj_8_default",
+        "blk": "gameData/flightModels/weaponPresets/sa_342l_china_hj_8_default.blk"
+      },
+      {
         "name": "sa_342l_china_hf_27",
         "blk": "gameData/flightModels/weaponPresets/sa_342l_china_hf_27.blk"
       },
@@ -1192,6 +1196,10 @@
       {
         "name": "sa_342l_china_hj_8e",
         "blk": "gameData/flightModels/weaponPresets/sa_342l_china_hj_8e.blk"
+      },
+      {
+        "name": "sa_342l_china_hot",
+        "blk": "gameData/flightModels/weaponPresets/sa_342l_china_hot.blk"
       },
       {
         "name": "sa_342l_china_gun_pod",
@@ -1298,8 +1306,7 @@
           },
           {
             "iconType": "missile_air_to_uni_group",
-            "name": "hj8_left",
-            "reqModification": "cn_hj8",
+            "name": "hj8_left_default",
             "remotelyGuidedWeaponsMax": [
               1,
               1
@@ -1357,6 +1364,46 @@
                 "blk": "gameData/Weapons/containers/cn_hj_8e_1.blk",
                 "emitter": "hj_8_tube_002",
                 "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_air_to_uni_middle_group",
+            "name": "hot_left",
+            "reqModification": "sa_heli_hot",
+            "remotelyGuidedWeaponsMax": [
+              1,
+              1
+            ],
+            "ShowNodes": {
+              "node": "pylon_rocket_l"
+            },
+            "Weapon": [
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/containers/hot_tube.blk",
+                "emitter": "hj_8_tube_001",
+                "emitteroffset": [
+                  0.0,
+                  0.1,
+                  0.0
+                ],
+                "external": true,
+                "separate": true,
+                "jettisonable": false
+              },
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/containers/hot_tube.blk",
+                "emitter": "hj_8_tube_002",
+                "emitteroffset": [
+                  0.0,
+                  0.1,
+                  0.0
+                ],
+                "external": true,
+                "separate": true,
+                "jettisonable": false
               }
             ]
           },
@@ -1487,6 +1534,46 @@
                 "blk": "gameData/Weapons/containers/cn_hj_8e_1.blk",
                 "emitter": "hj_8_tube_003",
                 "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "missile_air_to_uni_middle_group",
+            "name": "hot_right",
+            "reqModification": "sa_heli_hot",
+            "remotelyGuidedWeaponsMax": [
+              1,
+              1
+            ],
+            "ShowNodes": {
+              "node": "pylon_rocket_r"
+            },
+            "Weapon": [
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/containers/hot_tube.blk",
+                "emitter": "hj_8_tube_004",
+                "emitteroffset": [
+                  0.0,
+                  0.1,
+                  0.0
+                ],
+                "external": true,
+                "separate": true,
+                "jettisonable": false
+              },
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/containers/hot_tube.blk",
+                "emitter": "hj_8_tube_003",
+                "emitteroffset": [
+                  0.0,
+                  0.1,
+                  0.0
+                ],
+                "external": true,
+                "separate": true,
+                "jettisonable": false
               }
             ]
           },
@@ -2078,6 +2165,12 @@
       "reqModification": "cn_hj8",
       "modClass": "weapon",
       "tier": 2
+    },
+    "sa_heli_hot": {
+      "deactivationIsAllowed": false,
+      "reqModification": "cn_hj8_e",
+      "modClass": "weapon",
+      "tier": 3
     }
   },
   "user_skin": {

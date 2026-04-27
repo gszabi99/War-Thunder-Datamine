@@ -424,7 +424,95 @@
     "human_melee_charge__animUpperStateId": -1,
     "human_melee_charge__animProgressVarId": -1
   },
+  "base_human_weap_inertia": {
+    "human_weap__aimInertia": [
+      0.0,
+      0.0
+    ],
+    "human_weap__aimInertiaWish": [
+      0.0,
+      0.0
+    ],
+    "human_weap__aimInertiaVelocity": [
+      0.0,
+      0.0
+    ],
+    "human_weap__aimInertiaLastTick": -1,
+    "human_weap__aimInertiaVScaleFrac": 0.7,
+    "human_weap__aimInertia_TqScale": 0.075,
+    "human_weap__aimInertia_TqLutColumnCount": 3,
+    "human_weap__aimInertia_TqLutSharpness": 0.67,
+    "human_weap__aimInertia_ZetaLutColumnCount": 3,
+    "human_weap__aimInertia_ZetaLutSharpness": 0.86,
+    "human_weap__aimInertiaTimeStretchMin": 1.0,
+    "human_weap__aimInertiaTimeStretchMax": 3.0,
+    "human_weap__aimInertiaTimeStretchBias": 0.65,
+    "human_weap__aimInertiaWeightMin": 3.5,
+    "human_weap__aimInertiaWeightMax": 10.0,
+    "human_weap__aimInertiaDeltaTime": 0.001,
+    "human_weap__aimInertiaMaxMult": 0.4,
+    "human_weap__aimInertiaVelocityMax": 50.0,
+    "human_weap__aimInertiaCrouchMult": 0.8,
+    "human_weap__aimInertiaCrawlMult": 0.6,
+    "human_weap__aimInertiaAimingMult": 0.4,
+    "human_weap__aimInertiaViscosity": 0.05,
+    "human_weap__aimInertiaRestPointGainMin": 0.01,
+    "human_weap__aimInertiaRestPointGainMax": 0.23,
+    "human_weap__aimInertiaRestPointGainBias": 0.75,
+    "human_weap__aimInertiaRestPoint": [
+      0.0,
+      0.0
+    ],
+    "human_weap__aimOmega": [
+      0.0,
+      0.0
+    ],
+    "human_weap__aimInertiaAccumAngle": [
+      0.0,
+      0.0
+    ],
+    "human_weap__aimInertiaOmegaDrainMin": 5.0,
+    "human_weap__aimInertiaOmegaDrainMax": 3.0,
+    "human_weap__aimInertiaOmegaDrainBias": 0.6,
+    "human_weap__aimOmegaViscosity": 0.05,
+    "human_weap__aimInertiaAccumAngleMin": 0.5,
+    "human_weap__aimInertiaAccumAngleMax": 0.55,
+    "human_weap__aimInertiaDiffSum": 0.0,
+    "human_weap__aimInertiaTimeSum": 0.0,
+    "human_weap__aimInertiaCurInd": 0,
+    "human_weap__aimInertiaBuffCnt": 0,
+    "human_weap__aimInertiaTimeWindow": 0.1,
+    "human_weap__aimInertiaExtraInertiaThres": 2.09,
+    "human_weap__aimInertiaExtraInertiaMult": 3.0,
+    "human_weap__aimInertialExtraInertiaTime": 0.3,
+    "human_weap__aimInertiaExtraInertiaRest": -1.0,
+    "human_weap__aimInertia_TqLut:list<r>": {
+      "v": [
+        1.0,
+        0.92,
+        0.453,
+        0.693,
+        0.537,
+        0.473
+      ]
+    },
+    "human_weap__aimInertia_ZetaLut:list<r>": {
+      "v": [
+        0.473,
+        0.473,
+        0.473,
+        0.473,
+        0.473,
+        0.473
+      ]
+    },
+    "human_weap__aimInertiaBuff:list<p2>": {}
+  },
   "base_human_weap": {
+    "_use": [
+      "base_human_weap_inertia",
+      "human_melee"
+    ],
     "_tracked": [
       "human_weap__grenadeThrower",
       "human_weap__grenadeThrowDirection",
@@ -450,7 +538,6 @@
       "human_weap__currentScope",
       "human_weap__grenadeThrowModeServer"
     ],
-    "_use": "human_melee",
     "trajectory__startNodeName": "Bip01 Spine1",
     "trajectory__startNodeIdx": -1,
     "platformRecoilControlMult": 1.0,
@@ -646,49 +733,6 @@
       0.0,
       -25.0
     ],
-    "human_weap__aimInertia": [
-      0.0,
-      0.0
-    ],
-    "human_weap__aimInertiaLocal": [
-      0.0,
-      0.0
-    ],
-    "human_weap__aimInertiaVelocity": [
-      0.0,
-      0.0
-    ],
-    "human_weap__aimInertiaLastTick": -1,
-    "human_weap__aimInertiaStrengthMult": 0.005,
-    "human_weap__aimInertiaStrengthPow": 1.5,
-    "human_weap__aimInertiaDampingMult": 0.6,
-    "human_weap__aimInertiaStiffnessMultStart": 1.5,
-    "human_weap__aimInertiaStiffnessMultEnd": 1.75,
-    "human_weap__aimInertiaDampingMultStart": 1.0,
-    "human_weap__aimInertiaDampingMultEnd": 1.85,
-    "human_weap__aimInertiaBoostInterval": [
-      0.3,
-      0.6
-    ],
-    "human_weap__aimInertiaDeltaTime": 0.001,
-    "human_weap__aimInertiaMaxMult": 1.0,
-    "human_weap__aimInertiaVelocityMax": 50.0,
-    "human_weap__aimInertiaCrouchMult": 0.8,
-    "human_weap__aimInertiaCrawlMult": 0.6,
-    "human_weap__aimInertiaAimingMult": 0.4,
-    "human_weap__aimInertiaMinWeight": 1.5,
-    "human_weap__aimInertiaMaxWeight": 10.0,
-    "human_weap__aimInertiaHugeWeightBound": 6.7,
-    "human_weap__aimInertiaViscosity": 0.045,
-    "human_weap__aimInertiaDiffSum": 0.0,
-    "human_weap__aimInertiaTimeSum": 0.0,
-    "human_weap__aimInertiaCurInd": 0,
-    "human_weap__aimInertiaBuffCnt": 0,
-    "human_weap__aimInertiaTimeWindow": 0.1,
-    "human_weap__aimInertiaExtraInertiaThres": 2.09,
-    "human_weap__aimInertiaExtraInertiaMult": 3.0,
-    "human_weap__aimInertialExtraInertiaTime": 0.3,
-    "human_weap__aimInertiaExtraInertiaRest": -1.0,
     "_replicated": [
       "human_weap__grenadeThrowDirection",
       "human_weap__gunModsBySlot",
@@ -790,7 +834,6 @@
       "grenade": true,
       "special": true
     },
-    "human_weap__aimInertiaBuff:list<p2>": {},
     "human_weap__currentScope:eid": {},
     "human_weap__currentGunEid:eid": {},
     "human_weap__currentGunModEids:list<eid>": {},
