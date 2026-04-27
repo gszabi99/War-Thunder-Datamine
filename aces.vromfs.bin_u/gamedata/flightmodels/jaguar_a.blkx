@@ -2797,6 +2797,14 @@
         "blk": "gameData/FlightModels/weaponPresets/jaguar_a_bomb_fr_400_samp_type_21_200.blk"
       },
       {
+        "name": "jaguar_a_bomb_750lb_m117",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_bomb_750lb_m117.blk"
+      },
+      {
+        "name": "jaguar_a_bomb_gbu_12",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_bomb_gbu_12.blk"
+      },
+      {
         "name": "jaguar_a_bomb_fr_bgl400",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_a_bomb_fr_bgl400.blk"
       },
@@ -2823,6 +2831,18 @@
       {
         "name": "jaguar_a_rocket_lrf1",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_a_rocket_lrf1.blk"
+      },
+      {
+        "name": "jaguar_a_rocket_lau3a",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_rocket_lau3a.blk"
+      },
+      {
+        "name": "jaguar_a_rocket_lau10a",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_rocket_lau10a.blk"
+      },
+      {
+        "name": "jaguar_a_fire_bomb_fr_460l_secan_63",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_fire_bomb_fr_460l_secan_63.blk"
       },
       {
         "name": "jaguar_a_phimat_counteiner",
@@ -3062,9 +3082,25 @@
             }
           },
           {
+            "iconType": "bombs_large",
+            "name": "750lb_m117",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "400kg_type_21_a_001",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "nar_ap_middle",
             "name": "matra_lr_f4",
-            "reqModification": "fr_jl_100r",
+            "reqModification": "fr_matra_sneb",
             "ShowNodes": {
               "node": "jaguar_a_pylon_1_l"
             },
@@ -3078,7 +3114,7 @@
           {
             "iconType": "nar_ap_large",
             "name": "matra_lr_f1",
-            "reqModification": "fr_lr_f1",
+            "reqModification": "fr_matra_sneb",
             "ShowNodes": {
               "node": "jaguar_a_pylon_1_l"
             },
@@ -3087,6 +3123,34 @@
               "external": true,
               "blk": "gameData/Weapons/containers/matra_lr_f1.blk",
               "emitter": "matra_lrf1_1"
+            }
+          },
+          {
+            "iconType": "nar_large",
+            "name": "lau3a",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "matra_155_1"
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau10a",
+            "reqModification": "fr_lr_100_4",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "matra_155_1"
             }
           },
           {
@@ -3115,6 +3179,23 @@
               "external": true,
               "blk": "gameData/Weapons/containers/lr_100_4_tba_100_multi_dart.blk",
               "emitter": "tba_type100_4_1"
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "secan",
+            "reqModification": "fr_460l_secan_63",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_460l_secan_63.blk",
+              "emitter": "400kg_type_21_a_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           }
         ]
@@ -3189,9 +3270,41 @@
             }
           },
           {
+            "iconType": "bombs_large",
+            "name": "750lb_m117",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "fr_bgl_400kg_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x2",
+            "name": "750lb_m117_x2",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_m117_x2.blk",
+              "emitter": "au_f1_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "nar_ap_middle_group",
             "name": "matra_lr_f4_x2",
-            "reqModification": "fr_jl_100r",
+            "reqModification": "fr_matra_sneb",
             "ShowNodes": {
               "node": "jaguar_a_pylon_2_l"
             },
@@ -3205,7 +3318,7 @@
           {
             "iconType": "nar_ap_large",
             "name": "matra_lr_f1",
-            "reqModification": "fr_lr_f1",
+            "reqModification": "fr_matra_sneb",
             "ShowNodes": {
               "node": "jaguar_a_pylon_2_l"
             },
@@ -3214,6 +3327,62 @@
               "external": true,
               "blk": "gameData/Weapons/containers/matra_lr_f1.blk",
               "emitter": "matra_lrf1_2"
+            }
+          },
+          {
+            "iconType": "nar_large",
+            "name": "lau3a",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "fr_bgl_400kg_001"
+            }
+          },
+          {
+            "iconType": "nar_large_group",
+            "name": "lau3a_x2",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_lau3a_x2.blk",
+              "emitter": "au_f1_1"
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau10a",
+            "reqModification": "fr_lr_100_4",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "fr_bgl_400kg_001"
+            }
+          },
+          {
+            "iconType": "nar_ap_special_group",
+            "name": "lau10a_x2",
+            "reqModification": "fr_lr_100_4",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_lau10a_x2.blk",
+              "emitter": "au_f1_1"
             }
           },
           {
@@ -3242,6 +3411,45 @@
               "external": true,
               "blk": "gameData/Weapons/containers/lr_100_4_tba_100_multi_dart.blk",
               "emitter": "tba_type100_4_2"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_12",
+            "reqModification": "us_gbu_12",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "fr_bgl_400kg_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "atlis2"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser_group_x2",
+            "name": "gbu_12_x2",
+            "reqModification": "us_gbu_12",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_gbu_12_x2.blk",
+              "emitter": "au_f1_1",
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "atlis2"
             }
           },
           {
@@ -3302,6 +3510,23 @@
             "DependentWeaponPreset": {
               "slot": 3,
               "preset": "atlis2"
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "secan",
+            "reqModification": "fr_460l_secan_63",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_460l_secan_63.blk",
+              "emitter": "au_f1_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -3395,6 +3620,38 @@
             }
           },
           {
+            "iconType": "bombs_large",
+            "name": "750lb_m117",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "au_f1_2",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x2",
+            "name": "750lb_m117_x2",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_m117_x2.blk",
+              "emitter": "au_f1_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "optic_container",
             "name": "atlis2",
             "reqModification": "fr_atlis2",
@@ -3411,6 +3668,23 @@
               "emitter": "au_f1_2",
               "bullets": 1,
               "dragCx": 0.025
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "secan",
+            "reqModification": "fr_460l_secan_63",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_460l_secan_63.blk",
+              "emitter": "au_f1_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -3503,9 +3777,41 @@
             }
           },
           {
+            "iconType": "bombs_large",
+            "name": "750lb_m117",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "fr_bgl_400kg_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x2",
+            "name": "750lb_m117_x2",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_m117_x2.blk",
+              "emitter": "au_f1_3",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "nar_ap_middle_group",
             "name": "matra_lr_f4_x2",
-            "reqModification": "fr_jl_100r",
+            "reqModification": "fr_matra_sneb",
             "ShowNodes": {
               "node": "jaguar_a_pylon_2_r"
             },
@@ -3519,7 +3825,7 @@
           {
             "iconType": "nar_ap_large",
             "name": "matra_lr_f1",
-            "reqModification": "fr_lr_f1",
+            "reqModification": "fr_matra_sneb",
             "ShowNodes": {
               "node": "jaguar_a_pylon_2_r"
             },
@@ -3528,6 +3834,62 @@
               "external": true,
               "blk": "gameData/Weapons/containers/matra_lr_f1.blk",
               "emitter": "matra_lrf1_3"
+            }
+          },
+          {
+            "iconType": "nar_large",
+            "name": "lau3a",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "fr_bgl_400kg_002"
+            }
+          },
+          {
+            "iconType": "nar_large_group",
+            "name": "lau3a_x2",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_lau3a_x2.blk",
+              "emitter": "au_f1_3"
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau10a",
+            "reqModification": "fr_lr_100_4",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "fr_bgl_400kg_002"
+            }
+          },
+          {
+            "iconType": "nar_ap_special_group",
+            "name": "lau10a_x2",
+            "reqModification": "fr_lr_100_4",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_lau10a_x2.blk",
+              "emitter": "au_f1_3"
             }
           },
           {
@@ -3556,6 +3918,45 @@
               "external": true,
               "blk": "gameData/Weapons/containers/lr_100_4_tba_100_multi_dart.blk",
               "emitter": "tba_type100_4_3"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_12",
+            "reqModification": "us_gbu_12",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "fr_bgl_400kg_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "atlis2"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser_group_x2",
+            "name": "gbu_12_x2",
+            "reqModification": "us_gbu_12",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/auf_1_tri_us_gbu_12_x2.blk",
+              "emitter": "au_f1_3",
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "atlis2"
             }
           },
           {
@@ -3616,6 +4017,23 @@
             "DependentWeaponPreset": {
               "slot": 3,
               "preset": "atlis2"
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "secan",
+            "reqModification": "fr_460l_secan_63",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_460l_secan_63.blk",
+              "emitter": "au_f1_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -3727,9 +4145,25 @@
             }
           },
           {
+            "iconType": "bombs_large",
+            "name": "750lb_m117",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "400kg_type_21_a_005",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "nar_ap_middle",
             "name": "matra_lr_f4",
-            "reqModification": "fr_jl_100r",
+            "reqModification": "fr_matra_sneb",
             "ShowNodes": {
               "node": "jaguar_a_pylon_1_r"
             },
@@ -3743,7 +4177,7 @@
           {
             "iconType": "nar_ap_large",
             "name": "matra_lr_f1",
-            "reqModification": "fr_lr_f1",
+            "reqModification": "fr_matra_sneb",
             "ShowNodes": {
               "node": "jaguar_a_pylon_1_r"
             },
@@ -3752,6 +4186,34 @@
               "external": true,
               "blk": "gameData/Weapons/containers/matra_lr_f1.blk",
               "emitter": "matra_lrf1_4"
+            }
+          },
+          {
+            "iconType": "nar_large",
+            "name": "lau3a",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "matra_155_2"
+            }
+          },
+          {
+            "iconType": "nar_ap_special",
+            "name": "lau10a",
+            "reqModification": "fr_lr_100_4",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "emitter": "matra_155_2"
             }
           },
           {
@@ -3780,6 +4242,23 @@
               "external": true,
               "blk": "gameData/Weapons/containers/lr_100_4_tba_100_multi_dart.blk",
               "emitter": "tba_type100_4_4"
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "secan",
+            "reqModification": "fr_460l_secan_63",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_460l_secan_63.blk",
+              "emitter": "400kg_type_21_a_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -4283,52 +4762,68 @@
       "reqModification": "aden_belt_pack",
       "tier": 3
     },
+    "fr_matra_r_550_magic_1": {
+      "tier": 4,
+      "modClass": "weapon",
+      "prevModification": "aden_new_gun"
+    },
+    "fr_460l_secan_63": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "fr_250kg_type_25c": {
+      "prevModification": "fr_460l_secan_63",
       "modClass": "weapon",
       "tier": 2
     },
     "fr_400kg_type_21b": {
       "reqModification": "fr_250kg_type_25c",
       "modClass": "weapon",
-      "tier": 4
+      "tier": 3
     },
-    "fr_jl_100r": {
-      "tier": 1,
-      "modClass": "weapon"
-    },
-    "fr_lr_f1": {
-      "tier": 2,
+    "us_750lb_m117": {
       "modClass": "weapon",
-      "reqModification": "fr_jl_100r"
-    },
-    "fr_lr_100_4": {
-      "tier": 3,
-      "modClass": "weapon",
-      "reqModification": "fr_lr_f1"
-    },
-    "fr_matra_r_550_magic_1": {
       "tier": 4,
-      "modClass": "weapon",
-      "reqModification": "fr_lr_100_4"
+      "reqModification": "fr_400kg_type_21b"
     },
     "fr_atlis2": {
       "modClass": "weapon",
       "tier": 1
     },
-    "fr_bgl400": {
+    "us_gbu_12": {
       "reqModification": "fr_atlis2",
       "modClass": "weapon",
       "tier": 2
     },
+    "fr_bgl400": {
+      "reqModification": "us_gbu_12",
+      "modClass": "weapon",
+      "tier": 3
+    },
     "fr_bgl1000": {
       "reqModification": "fr_bgl400",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 4
     },
     "fr_as_30l": {
       "tier": 4,
       "modClass": "weapon",
+      "prevModification": "fr_lr_100_4",
       "reqModification": "fr_bgl1000"
+    },
+    "us_2_75_in_ffar_lau_3a": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "fr_matra_sneb": {
+      "tier": 2,
+      "modClass": "weapon",
+      "reqModification": "us_2_75_in_ffar_lau_3a"
+    },
+    "fr_lr_100_4": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fr_matra_sneb"
     }
   },
   "parachutes": {
