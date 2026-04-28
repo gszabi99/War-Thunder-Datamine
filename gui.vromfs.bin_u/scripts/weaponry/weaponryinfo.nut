@@ -67,6 +67,8 @@ let TRIGGER_TYPE = {
   ATGM            = "atgm"
   GUIDED_BOMBS    = "guided bombs"
   GUNNER          = "gunner"
+  CONTAINER_ITEM  = "container_item"
+  FUEL_TANKS      = "fuel tanks"
 }
 
 let WEAPON_TYPE = {
@@ -85,6 +87,23 @@ let WEAPON_TYPE = {
   AGM             = "agm"       
   GUIDED_BOMBS    = "guided bombs"
   CONTAINER_ITEM  = "container_item"
+}
+
+let triggerTypeToLoc = {
+  [TRIGGER_TYPE.BOMBS] = "bombs",
+  [TRIGGER_TYPE.GUIDED_BOMBS] = "guided_bombs",
+  [TRIGGER_TYPE.ROCKETS] = "rockets",
+  [TRIGGER_TYPE.AGM] = "atgm",
+  [TRIGGER_TYPE.CONTAINER_ITEM] = "targetingPod",
+  [TRIGGER_TYPE.FLARES] = "countermeasures",
+  [TRIGGER_TYPE.CHAFFS] = "countermeasures",
+  [TRIGGER_TYPE.FUEL_TANKS] = "fuel_tanks",
+  [TRIGGER_TYPE.ADD_GUN] = "additional_guns"
+}
+
+function getWeaponLocByTrigger(trigger) {
+  let locTriggerName = triggerTypeToLoc?[trigger] ?? trigger
+  return loc($"triggerType/{locTriggerName}")
 }
 
 let CONSUMABLE_TYPES = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, TRIGGER_TYPE.GUIDED_BOMBS,
@@ -1241,4 +1260,5 @@ return {
   getTurretGuidanceSpeedMultByDiff
   getBulletBeltShortLocId
   getScoutScoreMuliplierWithUavByDiff
+  getWeaponLocByTrigger
 }

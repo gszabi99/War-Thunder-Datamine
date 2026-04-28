@@ -27,12 +27,10 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
-function gui_choose_image(applyFunc, owner, scene = null) {
-  let params = { owner, applyFunc }
-  if (scene != null)
-    params.scene <- scene
-
-  handlersManager.loadHandler(gui_handlers.ChooseImage, params)
+function gui_choose_image(applyFunc, owner, scene, onCloseFunc) {
+  handlersManager.loadHandler(gui_handlers.ChooseImage,
+    { applyFunc, owner, scene, onCloseFunc }
+  )
 }
 
 function getStoredAvatarIndex() {
@@ -74,6 +72,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/chooseImage/chooseImage.blk"
   owner = null
   applyFunc = null
+  onCloseFunc = null
 
   itemsPerPage = 1
   isPageFill = false
@@ -386,6 +385,8 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   function goBack() {
     this.markCurPageSeen()
     this.scene.findObject("wnd_frame").show(false)
+    if (this.onCloseFunc != null)
+      this.onCloseFunc()
   }
 
   function getSeenConfig(start, end) {

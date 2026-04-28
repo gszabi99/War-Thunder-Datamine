@@ -351,7 +351,7 @@ let CrewTakeUnitProcess = class {
     this.isSuccess = true
     if (this.unit) {
       updateUnitAfterSwitchMod(this.unit)
-      selectCrew(this.crew.idCountry, this.crew.idInCountry, true)
+      selectCrew(this.crew.country, this.crew.idInCountry, true)
       setShowUnit(this.unit)
     }
     flushSlotbarUpdate()

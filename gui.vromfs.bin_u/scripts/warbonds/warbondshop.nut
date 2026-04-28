@@ -33,6 +33,7 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let { addTask } = require("%scripts/tasker.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
 
 
 gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -62,6 +63,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateShowItemButton()
     let infoObj = this.scene.findObject("item_info")
     this.guiScene.replaceContent(infoObj, "%gui/items/itemDesc.blk", this)
+    setWidthAndPosForItemNameElements(infoObj)
 
     this.curPageAwards = []
     if (!(this.curWbIdx in this.wbList))

@@ -1,7 +1,6 @@
 popup_menu {
   id:t='popup_list'
   not-input-transparent:t='yes'
-  css-hier-invalidate:t='yes'
   position:t='root'
 
   rootUnderPopupMenu {
@@ -12,13 +11,13 @@ popup_menu {
     <</clickPropagation>>
 
     DummyButton {
-      btnName:t='B';
+      btnName:t='B'
       on_click:t = 'goBack'
     }
   }
 
   tdiv {
-    max-height:t='0.9sh'
+    max-height:t='0.9@rh'
     overflow-y:t='auto'
     flow:t='vertical'
     include "%gui/commonParts/buttonsList.tpl"

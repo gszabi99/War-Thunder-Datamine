@@ -83,7 +83,7 @@ let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 let { checkLbRowVisibility } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
-let { getSessionLobbyClusterName } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getSessionLobbyClusterName, getSessionLobbyCurRoomEdiff } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getRoomSpecialRules, getRoomTeamData, getRoomMGameMode, getMembersCountByTeams, getRoomEvent
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
@@ -1019,7 +1019,10 @@ let Events = class {
   function getCurBattleEdiff() {
     let event = getRoomEvent()
     let ediff = event ? events.getEDiffByEvent(event) : -1
-    return ediff != -1 ? ediff : get_mission_mode()
+    if (ediff != -1)
+      return ediff
+    let lobbyEdiff = getSessionLobbyCurRoomEdiff()
+    return lobbyEdiff != -1 ? lobbyEdiff : get_mission_mode()
   }
 
   function getUnitEconomicRankByEvent(event, unit) {

@@ -893,7 +893,7 @@ ControlsPreset = class {
     if (name == null)
       name = "".concat("?:", buttonLocalized, buttonId + 1)
     if (!connected)
-      name = "".concat(name, " (", loc("composite/device_is_offline_short"), ")")
+      name = "".concat(name, loc("ui/parentheses/space", { text = loc("composite/device_is_offline_short") }))
     return name
   }
 
@@ -923,7 +923,7 @@ ControlsPreset = class {
     if (name == null)
       name = "".concat("?:", axisLocalized, axisId + 1)
     if (!connected)
-      name = "".concat(name, " (", loc("composite/device_is_offline"), ")")
+      name = "".concat(name, loc("ui/parentheses/space", { text = loc("composite/device_is_offline_short") }))
     return name
   }
 

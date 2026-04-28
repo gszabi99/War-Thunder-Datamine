@@ -38,7 +38,9 @@ gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(placeObj))
       return
 
-    let unit_blk = buildUnitSlot(this.unit.name, this.unit)
+    let unit_blk = buildUnitSlot(this.unit.name, this.unit, {
+      tooltipParams = { canOpenOtherWindows = false }
+    })
     this.guiScene.replaceContentFromText(placeObj, unit_blk, unit_blk.len(), this)
     placeObj.tooltipId = getTooltipType("UNIT").getTooltipId(this.unit.name)
     fillUnitSlotTimers(placeObj.findObject(this.unit.name), this.unit)

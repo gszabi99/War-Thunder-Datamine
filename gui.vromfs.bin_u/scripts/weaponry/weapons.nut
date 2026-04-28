@@ -248,6 +248,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       showNewSlot = false
       emptyText = "#shop/aircraftNotSelected"
       afterSlotbarSelect = this.onSlotbarSelect
+      modalPreferredSide = "center"
     })
   }
 

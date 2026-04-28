@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_ai
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/clans/clanState.nut" import is_in_clan
+
 let { abs } = require("math")
 let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -86,6 +87,8 @@ let { getAppliedArmorForUnit } = require("%scripts/weaponry/infantryArmor.nut")
 let { INFANTRY_WEAPON, INFANTRY_ARMOR } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { fillTooltipsIds } = require("%scripts/unit/unitInfoTooltips.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { isUseGamePad } = require("%scripts/modalInfo/modalInfo.nut")
+
 
 let usageRatingAmount = [0.0003, 0.0005, 0.001, 0.002]
 
@@ -307,6 +310,7 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
         unlocked = soldier.index < currentMaxCount
         imgSize = "1@cIco"
         tooltipId = INFANTRY_WEAPON.getTooltipId(unit.name, weapon.name)
+        isTooltipByHold = showConsoleButtons.get()
       })
     }
   }
@@ -342,6 +346,7 @@ function fillHumanInfoCard(unit, holderObj, handler, p) {
         unlocked = true
         imgSize = "1@cIco"
         tooltipId = INFANTRY_ARMOR.getTooltipId(unit.name, appliedArmor.name)
+        isTooltipByHold = showConsoleButtons.get()
       }]
       let markup = handyman.renderCached("%gui/commonParts/imgFrame.tpl", {
         items = view
@@ -1588,9 +1593,11 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   holderObj.shopStat = getUnitItemStatusText(bitStatus, false)
   holderObj.unitRarity = getUnitRarity(unit)
 
-  let {needCrewModificators = false, rentTimeHours = -1, isReceivedPrizes = false,
-    researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false, showInFlightInfo = true
-    inHangar = false } = params
+  let {
+    needCrewModificators = false, rentTimeHours = -1, isReceivedPrizes = false,
+    researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false,
+    showInFlightInfo = true, inHangar = false, canOpenOtherWindows = true
+  } = params
 
   let showLocalState = (params?.showLocalState ?? true) && !isSlave
   let needShopInfo = (params?.needShopInfo ?? false) && !isSlave
@@ -1968,12 +1975,12 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   if (notAirVehicle.contains(unitType)) {
     let protectionTrObj = holderObj.findObject("aircraft-protection-tr")
     if (protectionTrObj?.isValid()) {
-      let content = getUnitProtectionMarkup(unit.name)
+      let content = getUnitProtectionMarkup(unit.name, canOpenOtherWindows)
       if (content != null) {
         let protectionObj = protectionTrObj.findObject("aircraft-protection")
         holderObj.getScene().replaceContentFromText(protectionObj, content, content.len(), handler)
 
-        if (isInFlight())
+        if (isInFlight() || !canOpenOtherWindows)
           showObjById("button-div", false, protectionTrObj)
         else {
           let btn = protectionTrObj.findObject("aircraft-protection-btn")
@@ -1995,7 +2002,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
       let content = getUnitSystemsMarkup(unit.name, unitType)
       holderObj.getScene().replaceContentFromText(systemsObj, content, content.len(), handler)
 
-      if (isInFlight())
+      if (isInFlight() || !canOpenOtherWindows)
         showObjById("button-div", false, systemsTrObj)
       else {
         let btn = systemsTrObj.findObject("aircraft-systems-btn")
@@ -2603,7 +2610,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
       let secondaryWeaponInfoMarkup = getSelectedPresetMarkup(unit)
       holderObj.getScene().replaceContentFromText(obj, secondaryWeaponInfoMarkup, secondaryWeaponInfoMarkup.len(), handler)
 
-      if (isInFlight())
+      if (isInFlight() || !canOpenOtherWindows)
         showObjById("button-div", false, secondaryWeaponDivObj)
       else {
         let btn = secondaryWeaponDivObj.findObject("aircraft-secondaryWeapon-btn")
@@ -2728,6 +2735,10 @@ function fillAirInfo(unit, show, holderObj = null, handler = null, params = null
     fillUnitInfo(unit, show, holderObj, handler, params)
   else
     showAirInfoOld(unit, show, holderObj, handler, params)
+
+  let inHangar = params?.inHangar ?? false
+  showObjById("closeAllWindowsInfo", isUseGamePad() && !inHangar, holderObj)
+  showObjById("closeAllWindowsInfoByMouse", !isUseGamePad() && !inHangar, holderObj)
 }
 
 

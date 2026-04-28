@@ -141,7 +141,7 @@ function showUnitSkin(unitId, skinId = null, isForApprove = false) {
       }
     })
   }
-  handlersManager.animatedSwitchScene(startFunc())
+  handlersManager.animatedSwitchScene(startFunc)
 
   return true
 }

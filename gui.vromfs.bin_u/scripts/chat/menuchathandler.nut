@@ -1995,7 +1995,8 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function squadMsg(msg) {
     let sRoom = g_chat_room_type.getMySquadRoomId()
-    this.addRoomMsg(sRoom, "", msg)
+    if(sRoom)
+      this.addRoomMsg(sRoom, "", msg)
     if (this.curRoom && this.curRoom.id != sRoom)
       this.addRoomMsg(this.curRoom.id, "", msg)
   }
@@ -2077,7 +2078,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventSquadSetReady(_params) {
     this.updateReadyButton()
-    if (g_squad_manager.isInSquad())
+    if (g_squad_manager.isInSquad() && !g_squad_manager.isSquadLeader())
       this.squadMsg(loc(g_squad_manager.isMeReady() ? "squad/change_to_ready" : "squad/change_to_not_ready"))
   }
 
@@ -2086,11 +2087,11 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventSquadPlayerInvited(params) {
-    if (!g_squad_manager.isSquadLeader())
-      return
-
     let uid = getTblValue("uid", params, "")
     if (u.isEmpty(uid))
+      return
+
+    if (!g_squad_manager.isSquadLeader() && !g_squad_manager.isImInvitePlayer(uid))
       return
 
     let contact = getContact(uid)

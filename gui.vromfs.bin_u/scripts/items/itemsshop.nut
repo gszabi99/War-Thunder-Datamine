@@ -28,7 +28,7 @@ let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { fillDescTextAboutDiv, updateExpireAlarmIcon,
-  fillItemDescUnderTable } = require("%scripts/items/itemVisual.nut")
+  fillItemDescUnderTable, setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -132,6 +132,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateMouseMode()
     this.updateShowItemButton()
     this.infoHandler = itemInfoHandler(this.scene.findObject("item_info"))
+    setWidthAndPosForItemNameElements(this.scene)
+
     this.initNavigation()
     sheets.updateWorkshopSheets()
     this.initSheetsOnce()

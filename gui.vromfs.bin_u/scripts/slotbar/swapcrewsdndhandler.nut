@@ -3,7 +3,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { replaceCrewsInCurrentPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 
 let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -56,7 +56,7 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
     if(this.isSaved)
       return
 
-    slotbarPresets.replaceCrewsInCurrentPreset(this.draggedCrewCountry, this.getCrewsOrder())
+    replaceCrewsInCurrentPreset(this.draggedCrewCountry, this.getCrewsOrder())
 
     this.draggedClone.dragging = "no"
     let pos = this.draggedClone.getPosRC()

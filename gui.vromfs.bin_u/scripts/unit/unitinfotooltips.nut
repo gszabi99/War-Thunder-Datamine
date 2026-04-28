@@ -221,13 +221,13 @@ addTooltipTypes({
       if (!obj?.isValid())
         return false
 
-      let { unitId, armor } = params
+      let { unitId, armor, canOpenOtherWindows } = params
 
       let guiScene = obj.getScene()
       guiScene.createElementByObject(obj, "%gui/unitInfo/protectionHint.blk", "modalInfoContent", handler)
       obj.findObject("description").setValue(loc($"info/material/{armor}/tooltip"))
 
-      if (isInFlight()) {
+      if (isInFlight() || !canOpenOtherWindows) {
         showObjById("button-div", false, obj)
         return true
       }
@@ -245,14 +245,14 @@ addTooltipTypes({
       if (!obj?.isValid())
         return false
 
-      let { unitId, protectionType } = params
+      let { unitId, protectionType, canOpenOtherWindows } = params
 
       let guiScene = obj.getScene()
       guiScene.createElementByObject(obj, "%gui/unitInfo/protectionHint.blk", "modalInfoContent", handler)
       obj.findObject("description").setValue(loc($"info/material/{protectionType}/tooltip"))
       obj.findObject("protection-btn").show(false)
 
-      if (isInFlight()) {
+      if (isInFlight() || !canOpenOtherWindows) {
         showObjById("button-div", false, obj)
         return true
       }

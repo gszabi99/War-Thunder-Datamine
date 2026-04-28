@@ -15,7 +15,10 @@ let { stripTags } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { move_mouse_on_child_by_value, enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { ERA_ID_FOR_BONUS, canLoadSlotbarPreset, canEditCountryPreset, canEraseSlotbarPreset,
+  havePresetsReserve, getPresetsReseveTypesText, canCreateSlotbarPreset, createSlotbarPreset,
+  copySlotbarPreset, eraseSlotbarPreset, loadSlotbarPreset, moveSlotbarPreset, renameSlotbarPreset
+} = require("%scripts/slotbar/slotbarPresets.nut")
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
@@ -45,7 +48,7 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function reinit(showPreset = null, verbose = false) {
-    if (!slotbarPresets.canLoad(verbose))
+    if (!canLoadSlotbarPreset(verbose))
       return this.goBack()
 
     this.presets = getPresetsListFromSlotbar()
@@ -189,14 +192,14 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
     let isCurrentPresetSelected = this.chosenValue == this.activePreset
     let isNonCurrentPresetSelected = isAnyPresetSelected && !isCurrentPresetSelected
     let selectedPresetEnabled = isCurrentPresetSelected || ((this.chosenValue in this.presets) ? this.presets[this.chosenValue].enabled : false)
-    let canEdit = slotbarPresets.canEditCountryPresets(profileCountrySq.get())
+    let canEdit = canEditCountryPreset(profileCountrySq.get())
 
     enableObjsByTable(this.scene, {
         btn_preset_create = canEdit
         btn_preset_copy = canEdit
         btn_preset_rename = canEdit
-        btn_preset_delete = canEdit && slotbarPresets.canErase() && isNonCurrentPresetSelected
-        btn_preset_load   = slotbarPresets.canLoad()  && isAnyPresetSelected && selectedPresetEnabled
+        btn_preset_delete = canEdit && canEraseSlotbarPreset() && isNonCurrentPresetSelected
+        btn_preset_load   = canLoadSlotbarPreset() && isAnyPresetSelected && selectedPresetEnabled
         btn_preset_move_up = canEdit && isAnyPresetSelected && this.chosenValue > 0
         btn_preset_move_dn = canEdit && isAnyPresetSelected && this.chosenValue < this.presets.len() - 1
     })
@@ -216,16 +219,16 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showNotAllowedMessage() {
-    let reason = slotbarPresets.havePresetsReserve()
+    let reason = havePresetsReserve()
       ? loc("shop/slotbarPresetsReserve",
-        { tier = roman_numerals[slotbarPresets.eraIdForBonus], unitTypes = slotbarPresets.getPresetsReseveTypesText() })
+        { tier = roman_numerals[ERA_ID_FOR_BONUS], unitTypes = getPresetsReseveTypesText() })
       : loc("shop/slotbarPresetsMax")
     showInfoMsgBox(format(loc("weaponry/action_not_allowed"), reason))
   }
 
   function onBtnPresetAdd(_obj) {
-    if (slotbarPresets.canCreate())
-      slotbarPresets.create()
+    if (canCreateSlotbarPreset())
+      createSlotbarPreset()
     else
       this.showNotAllowedMessage()
   }
@@ -234,14 +237,14 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!(this.chosenValue in this.presets))
       return
 
-    if (slotbarPresets.canCreate())
-      slotbarPresets.copyPreset(this.presets[this.chosenValue])
+    if (canCreateSlotbarPreset())
+      copySlotbarPreset(this.presets[this.chosenValue])
     else
       this.showNotAllowedMessage()
   }
 
   function onBtnPresetDelete(_obj) {
-    if (!slotbarPresets.canErase() || !(this.chosenValue in this.presets))
+    if (!canEraseSlotbarPreset() || !(this.chosenValue in this.presets))
       return
 
     let preset = this.presets[this.chosenValue]
@@ -259,7 +262,7 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.msgBox("question_delete_preset", msgText,
     [
-      ["delete", (@(chosenValue) function() { slotbarPresets.erase(chosenValue) })(this.chosenValue) ], 
+      ["delete", (@(chosenValue) function() { eraseSlotbarPreset(chosenValue) })(this.chosenValue) ], 
       ["cancel", function() {} ]
     ], "cancel", { data_below_text = comment })
   }
@@ -267,24 +270,24 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
   function onBtnPresetLoad(_obj) {
     let handler = this
     this.checkedCrewModify(function () {
-      if (slotbarPresets.canLoad())
+      if (canLoadSlotbarPreset())
         if (this.chosenValue in this.presets) {
-          slotbarPresets.load(this.chosenValue)
+          loadSlotbarPreset(this.chosenValue)
           handler.goBack()
         }
     })
   }
 
   function onBtnPresetMoveUp(_obj) {
-    slotbarPresets.move(this.chosenValue, -1)
+    moveSlotbarPreset(this.chosenValue, -1)
   }
 
   function onBtnPresetMoveDown(_obj) {
-    slotbarPresets.move(this.chosenValue, 1)
+    moveSlotbarPreset(this.chosenValue, 1)
   }
 
   function onBtnPresetRename(_obj) {
-    slotbarPresets.rename(this.chosenValue)
+    renameSlotbarPreset(this.chosenValue)
   }
 
   function onBtnPresetSelect(_obj) {

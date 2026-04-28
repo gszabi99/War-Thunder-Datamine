@@ -95,7 +95,7 @@ let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nu
 let { isQueueActive, findQueue, isAnyQueuesActive, checkQueueType } = require("%scripts/queue/queueState.nut")
 let { getQueueSlots } = require("%scripts/queue/queueInfo.nut")
 let { leaveQueue, joinQueue } = require("%scripts/queue/queueManager.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { canEditCountryPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 
@@ -1115,7 +1115,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (missionCounter >= SlotbarPresetsTutorial.MAX_PLAYS_FOR_GAME_MODE)
       return false
 
-    if (!slotbarPresets.canEditCountryPresets(this.getCurCountry()))
+    if (!canEditCountryPreset(this.getCurCountry()))
       return false
 
     let tutorial = SlotbarPresetsTutorial()
@@ -1170,7 +1170,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   function checkShowChangelog() {
     this.guiScene.performDelayed({}, function() {
       if (needShowChangelog() && get_cur_base_gui_handler().isSceneActiveNoModals())
-        handlersManager.animatedSwitchScene(openChangelog())
+        handlersManager.animatedSwitchScene(openChangelog)
     })
   }
 

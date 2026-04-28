@@ -78,6 +78,8 @@ let DataBlock = require("DataBlock")
 let { get_current_mission_desc, get_player_army_for_hud } = require("guiMission")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 
+const AUTHOR_USER_ID_UNKNOWN = -1
+const REPLAY_TIME_TOTAL_ZERO = 0.0
 
 enum SPECTATOR_MODE {
   RESPAWN     
@@ -246,12 +248,12 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 
   cameraRotationByMouse = null
 
-  replayAuthorUserId = -1
+  replayAuthorUserId = AUTHOR_USER_ID_UNKNOWN
   replayTimeSpeedMin = 1.0
   replayTimeSpeedMax = 1.0
   replayPaused = null
   replayTimeSpeed = 0.0
-  replayTimeTotal = 0.0
+  replayTimeTotal = REPLAY_TIME_TOTAL_ZERO
   replayTimeProgress = 0
   replayMarkersEnabled = null
 
@@ -436,12 +438,9 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       this.replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
 
       let info = currentReplay.path.len() && get_replay_info(currentReplay.path)
-      let comments = info?.comments
-      if (comments) {
-        this.replayAuthorUserId = comments?.authorUserId ?? this.replayAuthorUserId
-        this.replayTimeTotal = comments?.timePlayed ?? this.replayTimeTotal
-        this.scene.findObject("txt_replay_time_total").setValue(time.preciseSecondsToString(this.replayTimeTotal))
-      }
+      this.replayAuthorUserId = info?.comments.authorUserId ?? AUTHOR_USER_ID_UNKNOWN
+      this.replayTimeTotal = info?.comments.timePlayed ?? REPLAY_TIME_TOTAL_ZERO
+      this.scene.findObject("txt_replay_time_total").setValue(time.preciseSecondsToString(this.replayTimeTotal))
 
       let replaySessionId = replayProps?.sessionId ?? ""
       this.scene.findObject("txt_replay_session_id").setValue(replaySessionId)
@@ -831,7 +830,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       let isPlayer = player ? !player.isBot : false
       let userId   = player?.userId ?? 0
       let isAuthor = userId == this.replayAuthorUserId
-      let isAuthorUnknown = this.replayAuthorUserId == -1
+      let isAuthorUnknown = this.replayAuthorUserId == AUTHOR_USER_ID_UNKNOWN
       let isAircraft = isInArray(this.lastHudUnitType,
         [HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER,
           HUD_UNIT_TYPE.HUMAN_DRONE, HUD_UNIT_TYPE.HUMAN_DRONE_HELI

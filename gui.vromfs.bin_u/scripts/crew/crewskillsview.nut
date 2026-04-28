@@ -70,7 +70,7 @@ function getUnitWithCrewType(unitName) {
 function getSelectedCrewData() {
   let country = profileCountrySq.get()
   let crewCountryId = shopCountriesList.findindex(@(v) v == country) ?? -1
-  let crewIdInCountry = getSelectedCrews(crewCountryId)
+  let crewIdInCountry = getSelectedCrews(country)
   return getCrew(crewCountryId, crewIdInCountry)
 }
 

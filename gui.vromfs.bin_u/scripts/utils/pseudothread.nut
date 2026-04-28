@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { defer } = require("dagor.workcycle")
+let { isAuthorized, isLoginRequired } = require("%appGlobals/login/loginState.nut")
 
 
 let PT_STEP_STATUS = {
@@ -12,6 +13,8 @@ let PT_STEP_STATUS = {
 function startPseudoThread(actionsList, onCrash = null, step = 0) {
   let self = callee()
   defer(function() {
+    if (isLoginRequired.get() && !isAuthorized.get()) 
+      return
     local curStep = step
     while (curStep in actionsList) {
       local stepStatus = PT_STEP_STATUS.NEXT_STEP

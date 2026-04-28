@@ -26,6 +26,7 @@ elemModelType.addTypes({
 
     onEventShopWndSwitched = @(_p) this.notify([])
     onEventPromoteUnitsChanged = @(_p) this.notify([])
+    onEventProfileUpdated = @(_p) this.notify([])
   }
 })
 

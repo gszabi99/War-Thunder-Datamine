@@ -24,48 +24,67 @@ local isSlotbarUpdateSuspended = false
 local isSlotbarUpdateRequired = false
 local isReinitSlotbarsInProgress = false
 
-function selectAvailableCrew(countryId) {
-  local isAnyUnitInSlotbar = false
-  if ((countryId in getCrewsList()) && (countryId in selectedCrews)) {
-    local id = getAvailableCrewId(countryId)
-    isAnyUnitInSlotbar = id >= 0
-    selectedCrews[countryId] = max(0, id)
-  }
-  return isAnyUnitInSlotbar
+function selectAvailableCrew(countryData) {
+  let id = getAvailableCrewId(countryData)
+  selectedCrews[countryData.country] <- max(0, id)
+  return id >= 0
 }
 
+function needInitSelectedCrews(curCrewList) {
+  let crewListLen = curCrewList.len()
+  if (crewListLen == 0)
+    return false
+
+  if (selectedCrews.len() < crewListLen)
+    return true
+
+  foreach (countryData in curCrewList) {
+    let { country } = countryData
+    if (country not in selectedCrews)
+      return true
+  }
+  return false
+}
+
+local isInitSelectedCrewsInProgress = false
 function initSelectedCrews(forceReload = false) {
   if (!isProfileReceived.get())
     return
 
   let crewList = getCrewsList()
-  let crewListLen = crewList.len()
-  if (!forceReload && (!crewListLen || selectedCrews.len() == crewListLen))
+  if (!forceReload && !needInitSelectedCrews(crewList))
     return
 
+  if (isInitSelectedCrewsInProgress) {
+    script_net_assert_once("initSelectedCrews recursion", "initSelectedCrews: recursive call found")
+    return
+  }
+
+  isInitSelectedCrewsInProgress = true
   let selCrewsBlk = loadLocalByAccount("selected_crews", null)
   local needSave = false
 
-  selectedCrews.resize(crewListLen, 0)
-  foreach (cIdx, country in crewList) {
-    let crewIdx = selCrewsBlk?[country.country] ?? 0
-    if ((country?.crews[crewIdx].aircraft ?? "") != "")
-      selectedCrews[cIdx] = crewIdx
+  foreach (countryData in crewList) {
+    let { country } = countryData
+    let crewIdx = selCrewsBlk?[country] ?? 0
+    if ((countryData?.crews[crewIdx].aircraft ?? "") != "")
+      selectedCrews[country] <- crewIdx
     else {
-      if (!selectAvailableCrew(cIdx)) {
-        let unitId = getReserveAircraftName({ country = country.country })
+      if (!selectAvailableCrew(countryData)) {
+        let unitId = getReserveAircraftName({ country })
         if (unitId != "")
           batchTrainCrew([{
-            crewId = country.crews[0].id
+            crewId = countryData.crews[0].id
             airName = unitId
           }])
       }
-      needSave = needSave || selectedCrews[cIdx] != crewIdx
+      needSave = needSave || selectedCrews?[country] != crewIdx
     }
   }
   if (needSave)
     saveSelectedCrews()
   broadcastEvent("CrewChanged", { isInitSelectedCrews = true })
+  isInitSelectedCrewsInProgress = false
 }
 
 function reinitSlotbars() {
@@ -82,7 +101,7 @@ function reinitSlotbars() {
   }
 
   isReinitSlotbarsInProgress = true
-  initSelectedCrews(true)
+  initSelectedCrews()
   broadcastEvent("CrewsListChanged")
   isReinitSlotbarsInProgress = false
 }
@@ -92,40 +111,41 @@ let reinitAllSlotbars = @() reinitSlotbars()
 function getSelSlotsData() {
   initSelectedCrews()
   let data = { slots = {}, units = {} }
-  foreach (cIdx, country in getCrewsList()) {
-    local unit = getCrewUnit(country.crews?[selectedCrews[cIdx]])
-    if (unit == null && isCountrySlotbarHasUnits(country.country)) {
-      selectAvailableCrew(cIdx)
-      unit = getCrewUnit(country.crews?[selectedCrews[cIdx]])
+  foreach (countryData in getCrewsList()) {
+    let { country, crews } = countryData
+    local unit = getCrewUnit(crews?[selectedCrews[country]])
+    if (unit == null && isCountrySlotbarHasUnits(country)) {
+      selectAvailableCrew(countryData)
+      unit = getCrewUnit(crews?[selectedCrews[country]])
     }
-    data.slots[country.country] <- selectedCrews[cIdx]
-    data.units[country.country] <- unit?.name ?? ""
+    data.slots[country] <- selectedCrews[country]
+    data.units[country] <- unit?.name ?? ""
   }
   return data
 }
 
-function selectCrewSilentNoCheck(countryId, idInCountry) {
-  if (selectedCrews[countryId] != idInCountry) {
-    selectedCrews[countryId] = idInCountry
+function selectCrewSilentNoCheck(country, idInCountry) {
+  if (selectedCrews[country] != idInCountry) {
+    selectedCrews[country] = idInCountry
     saveSelectedCrews()
   }
 }
 
-function selectCrew(countryId, idInCountry, airChanged = false) {
+function selectCrew(country, idInCountry, airChanged = false) {
   initSelectedCrews()
-  if ((countryId not in selectedCrews)
-      || (selectedCrews[countryId] == idInCountry && !airChanged))
+  if ((country not in selectedCrews)
+      || (selectedCrews[country] == idInCountry && !airChanged))
     return
 
-  selectCrewSilentNoCheck(countryId, idInCountry)
+  selectCrewSilentNoCheck(country, idInCountry)
   broadcastEvent("CrewChanged")
 }
 
 function getSelAircraftByCountry(country) {
   initSelectedCrews()
-  foreach (cIdx, c in getCrewsList())
+  foreach (c in getCrewsList())
     if (c.country == country)
-      return getCrewUnit(c.crews?[selectedCrews[cIdx]])
+      return getCrewUnit(c.crews?[selectedCrews[country]])
   return null
 }
 

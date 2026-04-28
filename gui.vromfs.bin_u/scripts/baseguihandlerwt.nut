@@ -47,6 +47,7 @@ let { topMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nu
 let { getContact, fillContactTooltip } = require("%scripts/contacts/contacts.nut")
 let { doAction } = require("%scripts/modalInfo/modalInfoActions.nut")
 let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
+let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -583,6 +584,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onTooltipObjClose(obj) {
     closeGenericTooltip(obj, this)
+  }
+
+  function onModalInfoClose() {
+    destroyModalInfo()
   }
 
   function onContactTooltipOpen(obj) {

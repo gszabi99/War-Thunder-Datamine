@@ -1,7 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
 let { getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { isCrewLockedByPrevBattle, getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
@@ -15,7 +14,7 @@ let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsLis
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
-let selectedCrews = persist("selectedCrews", @() [])
+let selectedCrews = persist("selectedCrews", @() {})
 
 let ignoreTransactions = [
   EATT_SAVING
@@ -31,10 +30,11 @@ function isCountrySlotbarHasUnits(countryId) {
   return getCrewsListByCountry(countryId).findvalue(@(crew) getCrewUnit(crew) != null) != null
 }
 
-function getAvailableCrewId(countryId) {
+function getAvailableCrewId(countryData) {
   local id = -1
+  let { crews = [] } = countryData
   let curUnitId = getShowedUnitName()
-  foreach (idx, crew in (getCrewsList()?[countryId].crews ?? [])) {
+  foreach (idx, crew in crews) {
     if (("aircraft" not in crew) || crew.aircraft == "")
       continue
     if (crew.aircraft == curUnitId) {
@@ -51,10 +51,7 @@ function saveSelectedCrews() {
   if (!isLoggedIn.get())
     return
 
-  let blk = DataBlock()
-  foreach (cIdx, country in getCrewsList())
-    blk[country.country] = selectedCrews?[cIdx] ?? 0
-  saveLocalByAccount("selected_crews", blk)
+  saveLocalByAccount("selected_crews", selectedCrews)
 }
 
 function checkReserveUnit(unit, paramsTable) {
@@ -167,7 +164,7 @@ function getFirstEmptyCrewSlot(country = null) {
 
 return {
   isCountrySlotbarHasUnits
-  getSelectedCrews = @(crewCountryId) selectedCrews?[crewCountryId] ?? -1
+  getSelectedCrews = @(country) selectedCrews?[country] ?? -1
   isCountryAllCrewsUnlockedInHangar
   getSlotbarUnitTypes
   getCrewUnlockTimeByUnit

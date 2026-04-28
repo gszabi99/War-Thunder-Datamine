@@ -36,7 +36,7 @@ let { needShowHdrSettingsOnStart, openHdrSettings } = require("%scripts/options/
 let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenResources.nut")
 let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { initSlotbarPresets } = require("%scripts/slotbar/slotbarPresets.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
@@ -94,9 +94,7 @@ function initLoginPseudoThreadsConfig(cb) {
     function() {
       updateDiscountData(true)
     }
-    function() {
-     slotbarPresets.init()
-    }
+    initSlotbarPresets
     function() {
       if (steam_is_running())
         steam_process_dlc()

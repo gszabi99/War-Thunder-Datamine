@@ -165,6 +165,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
       afterSlotbarSelect = this.openSelectedCrew
       onSlotDblClick = this.onSlotDblClick
+      modalPreferredSide = "center"
     }.__update(this.getSlotbarParams()), this.slotbarNestId)
 
     if (this.showTutorial)

@@ -15,6 +15,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
+let { setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
 
 gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -66,6 +67,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateShowItemButton()
     let infoObj = this.scene.findObject("item_info")
     this.guiScene.replaceContent(infoObj, "%gui/items/itemDesc.blk", this)
+    setWidthAndPosForItemNameElements(infoObj)
 
     let titleObj = this.scene.findObject("wnd_title")
     titleObj.setValue(loc(this.titleLocId))

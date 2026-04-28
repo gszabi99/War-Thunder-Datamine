@@ -313,10 +313,8 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     let nextSpecType = crewSpecType.getNextType()
     let levels = nextSpecType.getCurAndReqLevel(this.crew, this.curUnit)
     let isShowExpUpgrade = crewSpecType.needShowExpUpgrade(this.crew, this.curUnit) && levels.reqLevel <= levels.curLevel
+    let showProgressBar = nextSpecType == crewSpecTypes.ACE
     let isMaxQualification = nextSpecType == crewSpecTypes.UNKNOWN
-
-    let progressBarDiv = showObjById("expProgressBar", isShowExpUpgrade && !isMaxQualification, upgradeBlock)
-
     this.setVisibilityForQualElements(isMaxQualification)
     let qualificationReqObj = showObjById("qualification_requirement", !this.needHideQualReqBlock, upgradeBlock)
 
@@ -359,7 +357,8 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     if (!this.needHideQualReqBlock)
       qualificationReqObj.setValue(crewReqLevelText)
 
-    if (!isShowExpUpgrade) {
+    let progressBarDiv = showObjById("expProgressBar", showProgressBar, upgradeBlock)
+    if (!showProgressBar) {
       this.guiScene.replaceContentFromText(progressBarDiv, "", 0, this)
       return
     }
@@ -374,12 +373,13 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     }
 
     
-    local expUpgradeText = ""
-    let totalExp = crewSpecType.getTotalExpByUnit(this.curUnit)
+    let currentExpText = Cost().setRp(unitExpLeft).toStringWithParams({ isRpAlwaysShown = true })
+    let totalExpText = Cost().setRp(totalUnitExp).toStringWithParams({ isRpAlwaysShown = true })
+    local expUpgradeText = $"{loc("crew/qualification/expUpgradeLabel")}: {currentExpText}/{totalExpText}"
     let discountData = crewSpecType.getExpUpgradeDiscountData()
     foreach (i, dataItem in discountData) {
       let romanNumeral = get_roman_numeral(i + 1)
-      let expAmountValue = (dataItem.percent * totalExp / 100).tointeger()
+      let expAmountValue = (dataItem.percent * totalUnitExp / 100).tointeger()
       let expAmountText = Cost().setRp(expAmountValue).toStringWithParams({ isRpAlwaysShown = true })
       let trainCost = crewSpecType.getUpgradeCostByUnitAndExp(this.curUnit, expAmountValue).tostring()
       let markerView = {
@@ -415,7 +415,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     view.markers.append({
       markerRatio = 1
       markerPriceText = loc("shop/free")
-      markerRPText = Cost().setRp(totalExp).toStringWithParams({ isRpAlwaysShown = true })
+      markerRPText = Cost().setRp(totalUnitExp).toStringWithParams({ isRpAlwaysShown = true })
       alignRight = true
     })
 

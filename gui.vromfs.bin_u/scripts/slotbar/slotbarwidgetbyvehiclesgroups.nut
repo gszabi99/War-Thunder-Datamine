@@ -133,7 +133,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
     let newCrew = p?.crew
     let newUnit = p?.unit
     if (newCrew != null && newUnit != null) {
-      selectCrew(newCrew.idCountry, newCrew.idInCountry)
+      selectCrew(newCrew.country, newCrew.idInCountry)
       setShowUnit(newUnit)
     }
     this.validatePresetsParams()

@@ -38,18 +38,6 @@ function updateTimer() {
     startTimer()
 }
 
-function updateCloseAllWindowsInfo() {
-  if (watchedObjects.len() == 0)
-    return
-  foreach (idx, obj in watchedObjects) {
-    let { infoWnd } = obj
-    if (!infoWnd.isValid())
-      continue
-    let closeAllWindowsInfo = infoWnd.findObject("closeAllWindowsInfo")
-    closeAllWindowsInfo?.show(idx != 0 && idx == watchedObjects.len() - 1 && isUseGamePad())
-  }
-}
-
 function closeLastModalInfo(removeHolder = true) {
   clearTimer(holdTimer)
   if (watchedObjects.len() == 0)
@@ -73,7 +61,6 @@ function closeLastModalInfo(removeHolder = true) {
     } else
       lastHolder = infoWndHolder
   }
-  updateCloseAllWindowsInfo()
 }
 
 function onHoldTimerTick() {
@@ -143,27 +130,49 @@ function getObjectBounds(obj) {
 
 function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds, preferredSide, offsetX, offsetY) {
   let overlapDelta = to_pixels("1@blockInterval")
-  let infosPlaceBounds = createInfoPlaceBounds()
+  let nestPlaceBounds = createInfoPlaceBounds()
 
-  let posRight = initiatorObjBounds.right - overlapDelta
-  let posLeft = initiatorObjBounds.left - modalInfoObjBounds.width + overlapDelta
-  let isFitsRight = posRight + modalInfoObjBounds.width  < infosPlaceBounds.right
-  let isFitsLeft = posLeft > infosPlaceBounds.left
+  let nestObjTop = nestPlaceBounds.top
+  let nestObjBtm = nestPlaceBounds.bottom
+  let nestObjLft = nestPlaceBounds.left
+  let nestObjRgt = nestPlaceBounds.right
 
+  let mainObjTop = initiatorObjBounds.top
+  let mainObjBtm = initiatorObjBounds.bottom
+  let mainObjLft = initiatorObjBounds.left
+  let mainObjRgt = initiatorObjBounds.right
+  let mainObjWdh = initiatorObjBounds.width
+
+  let infoObjHgt = modalInfoObjBounds.height
+  let infoObjWdh = modalInfoObjBounds.width
+
+  let maxX = max(nestObjLft, nestObjRgt - infoObjWdh)
+  let maxY = max(nestObjTop, nestObjBtm - infoObjHgt)
+
+  if (preferredSide == "center") {
+    let posX = mainObjLft - (infoObjWdh - mainObjWdh) / 2
+    let posY = mainObjTop - nestObjTop > nestObjBtm - mainObjBtm
+      ? mainObjTop - infoObjHgt
+      : mainObjBtm
+    let infoWndPos = [ clamp(posX + offsetX, nestObjLft, maxX), posY ]
+
+    modalInfoObjBounds.update(infoWndPos[0], infoWndPos[1])
+    return ",".join(infoWndPos)
+  }
+
+  let posRight = mainObjRgt - overlapDelta
+  let posLeft = mainObjLft - infoObjWdh + overlapDelta
+  let isFitsRight = posRight + infoObjWdh  < nestObjRgt
+  let isFitsLeft = posLeft > nestObjLft
   let posX = preferredSide == "left"
-    ? isFitsLeft ? posLeft : max(infosPlaceBounds.left, posRight)
-    : isFitsRight ? posRight : max(infosPlaceBounds.left, posLeft)
+    ? isFitsLeft ? posLeft : max(nestObjLft, posRight)
+    : isFitsRight ? posRight : max(nestObjLft, posLeft)
 
-  let isOverflowBottom = initiatorObjBounds.top + modalInfoObjBounds.height > infosPlaceBounds.bottom
-  let posY = !isOverflowBottom
-    ? initiatorObjBounds.top
-    : max(infosPlaceBounds.top, infosPlaceBounds.bottom - modalInfoObjBounds.height)
-
-  let maxX = max(infosPlaceBounds.left, infosPlaceBounds.right - modalInfoObjBounds.width)
-  let maxY = max(infosPlaceBounds.top, infosPlaceBounds.bottom - modalInfoObjBounds.height)
+  let isOverflowBottom = mainObjTop + infoObjHgt > nestObjBtm
+  let posY = !isOverflowBottom ? mainObjTop : max(nestObjTop, nestObjBtm - infoObjHgt)
   let infoWndPos = [
-    clamp(posX + offsetX, infosPlaceBounds.left, maxX)
-    clamp(posY + offsetY, infosPlaceBounds.top, maxY)
+    clamp(posX + offsetX, nestObjLft, maxX)
+    clamp(posY + offsetY, nestObjTop, maxY)
   ]
 
   modalInfoObjBounds.update(infoWndPos[0], infoWndPos[1])
@@ -270,15 +279,25 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
   if (watchedObjects.findindex(@(o) o.id == id) != null)
     return null
 
-  let { infoWnd, infoWndHolder = null} = isUseGamePad() ? createInfoHolderModal(initiatorObj) : createInfoHolder(initiatorObj)
-  tooltipType.fillTooltip(infoWnd, handler, id, params)
+  let initiatorBounds = getObjectBounds(initiatorObj)
+  let infosPlaceBounds = createInfoPlaceBounds()
+  let { infoWnd, infoWndHolder = null} = isUseGamePad()
+    ? createInfoHolderModal(initiatorObj)
+    : createInfoHolder(initiatorObj)
+
+  let prefSide = params?.modalPreferredSide ?? tooltipType.modalPreferredSide
+  let maxHeight = prefSide != "center" ? null
+    : max(initiatorBounds.top - infosPlaceBounds.top,
+        infosPlaceBounds.bottom - initiatorBounds.bottom)
+
+  tooltipType.fillTooltip(infoWnd, handler, id, params.__update({ maxHeight }))
   infoWnd.getScene().applyPendingChanges(false)
 
-  let initiatorBounds = getObjectBounds(initiatorObj)
   let infoWndBounds = getObjectBounds(infoWnd)
   let offsetX = tooltipType.modalOffsetX != "" ? to_pixels(tooltipType.modalOffsetX) : 0
   let offsetY = tooltipType.modalOffsetY != "" ? to_pixels(tooltipType.modalOffsetY) : 0
-  infoWnd["pos"] = getInfoWndPosition(initiatorBounds, infoWndBounds, tooltipType.modalPreferredSide, offsetX, offsetY)
+
+  infoWnd["pos"] = getInfoWndPosition(initiatorBounds, infoWndBounds, prefSide, offsetX, offsetY)
 
   local fakeInitiator = null
   if (infoWndHolder != null) {
@@ -297,7 +316,6 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
   })
 
   updateTimer()
-  updateCloseAllWindowsInfo()
   return infoWnd
 }
 
@@ -328,4 +346,5 @@ return {
   openModalInfo
   closeModalInfo
   destroyModalInfo = destroy
+  isUseGamePad
 }

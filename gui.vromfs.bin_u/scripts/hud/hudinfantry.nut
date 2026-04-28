@@ -48,7 +48,6 @@ let HudInfantry = class (gui_handlers.BaseUnitHud) {
   }
 
   function updateShowHintsNest() {
-    showObjById("actionbar_hints_nest", true, this.scene)
     showObjById("infantry_crosshair_hints_nest", true, this.scene)
   }
 }

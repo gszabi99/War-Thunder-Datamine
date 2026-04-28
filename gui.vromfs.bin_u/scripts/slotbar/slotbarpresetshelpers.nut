@@ -77,7 +77,7 @@ function updatePresetFromSlotbar(preset, countryId) {
 
           units.append(crew.aircraft)
           crews.append(crew.id)
-          if (selected == -1 || crew.idInCountry == getSelectedCrews(crew.idCountry))
+          if (selected == -1 || crew.idInCountry == getSelectedCrews(countryId))
             selected = crew.id
         }
       }

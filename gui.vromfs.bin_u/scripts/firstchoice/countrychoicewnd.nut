@@ -25,8 +25,7 @@ let { getReserveAircraftName } = require("%scripts/slotbar/slotbarStateData.nut"
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { getUnitTypesInCountries } = require("%scripts/unit/unitInfo.nut")
-
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { newbieInitSlotbarPresets } = require("%scripts/slotbar/slotbarPresets.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -437,7 +436,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         
         
         
-        slotbarPresets.newbieInit(presetsData)
+        newbieInitSlotbarPresets(presetsData)
 
         checkUnlockedCountriesByAirs()
         broadcastEvent("EventsDataUpdated")

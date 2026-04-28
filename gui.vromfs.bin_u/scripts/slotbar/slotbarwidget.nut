@@ -69,7 +69,7 @@ let { GuiBox } = require("%scripts/guiBox.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { hasSessionInLobby, canChangeCrewUnits, canChangeCountry } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { setCurrentGameModeByPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 let { getCountryOverride, getCountryStyle, countryDisplayStyle, isCountryOverrided } = require("%scripts/countries/countriesCustomization.nut")
 let { isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
@@ -199,6 +199,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   needCheckUnitUnlock = false
   slotbarHintText = ""
   crewPopupSlotObj = null
+  modalTooltipPreferredSide = null
+  canOpenOtherWindows = null
 
   static function create(params) {
     let nest = params?.scene
@@ -237,6 +239,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function setParams(params) {
+    this.modalTooltipPreferredSide = params?.modalPreferredSide
+    this.canOpenOtherWindows = params?.canOpenOtherWindows
     base.setParams(params)
     if (this.ownerWeak)
       this.ownerWeak = this.ownerWeak.weakref()
@@ -462,7 +466,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
       
       local firstAvailableCrewData = null
-      let selCrewidInCountry = getSelectedCrews(countryData.id)
+      let { country } = countryData
+      let selCrewidInCountry = getSelectedCrews(country)
       foreach (crewData in countryData.crews) {
         let crew = crewData.crew
         let unit = crewData.unit
@@ -498,7 +503,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   
   function getSelectedCrewDataInCountry(countryData) {
     local selCrewData = null
-    let selCrewIdInCountry = getSelectedCrews(countryData.id)
+    let selCrewIdInCountry = getSelectedCrews(countryData.country)
     foreach (crewData in countryData.crews) {
       if (crewData.idInCountry == selCrewIdInCountry) {
         selCrewData = crewData
@@ -633,7 +638,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     else {
       this.curSlotCountryId   = this.selectedCrewData?.idCountry ?? -1
       this.curSlotIdInCountry = this.selectedCrewData?.idInCountry ?? -1
-      selectCrew(this.curSlotCountryId, this.curSlotIdInCountry)
+      selectCrew(this.getCurCountry(), this.curSlotIdInCountry)
     }
   }
 
@@ -820,7 +825,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
          function() {
           if (checkObj(obj)) {
             this.skipCheckAirSelect = true
-            this.selectTblAircraft(obj, getSelectedCrews(this.curSlotCountryId))
+            let country = getCrewsList()?[this.curSlotCountryId].country ?? ""
+            this.selectTblAircraft(obj, getSelectedCrews(country))
           }
         }
       )
@@ -925,7 +931,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
             return
           this.ignoreCheckSlotbar = false
           this.skipActionWithEmptySlot = true
-          this.selectTblAircraft(obj, getSelectedCrews(this.curSlotCountryId))
+          let country = getCrewsList()?[this.curSlotCountryId].country ?? ""
+          this.selectTblAircraft(obj, getSelectedCrews(country))
           this.skipActionWithEmptySlot = false
         }, this))
     this.afterSlotbarSelect?()
@@ -1062,7 +1069,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.shouldCheckQueue) {
       if (this.checkSelectCountryByIdx(obj)) {
         this.onSlotbarCountryImpl(countryData)
-        slotbarPresets.setCurrentGameModeByPreset(countryData.country)
+        setCurrentGameModeByPreset(countryData.country)
       }
     }
     else {
@@ -1073,7 +1080,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         function() {
           if (checkObj(obj)) {
             this.onSlotbarCountryImpl(countryData)
-            slotbarPresets.setCurrentGameModeByPreset(countryData.country)
+            setCurrentGameModeByPreset(countryData.country)
           }
         },
         function() {
@@ -1242,7 +1249,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!(this.curSlotCountryId in getCrewsList())
         || getCrewsList()[this.curSlotCountryId].country != curCountry
-        || this.curSlotIdInCountry != getSelectedCrews(this.curSlotCountryId)
+        || this.curSlotIdInCountry != getSelectedCrews(curCountry)
         || (this.getCurSlotUnit() == null && isCountrySlotbarHasUnits(curCountry)))
       this.updateSlotbarImpl()
     else if (this.selectedCrewData && this.selectedCrewData?.unit != getPlayerCurUnit())
@@ -1628,6 +1635,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
           needShopInfo = this.needCheckUnitUnlock && !isUnitOverrided
           crewId = crew?.id
           hideRepairInfo = isUnitOverrided
+          modalPreferredSide = this.modalTooltipPreferredSide
+          canOpenOtherWindows = this.canOpenOtherWindows
         }
         missionRules = this.missionRules
         forceCrewInfoUnit = this.unitForSpecType
@@ -1656,7 +1665,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function setCrewUnit(unit) {
     setShowUnit(unit, this.getHangarFallbackUnitParams())
     
-    selectCrew(this.curSlotCountryId, this.curSlotIdInCountry, true)
+    selectCrew(this.getCurCountry(), this.curSlotIdInCountry, true)
   }
 
   function getDefaultDblClickFunc() {

@@ -153,6 +153,10 @@ function isUnitRandomUnit(unitName) {
   return groupName != null && isInFlight()
 }
 
+function isClanUnitResearched(unit) {
+  return isUnitResearched(unit) && !canResearchUnit(unit) && !unit.isBought()
+}
+
 return {
   canBuyNotResearched
   isUnitEliteByStatus
@@ -175,4 +179,5 @@ return {
   isPrevUnitBought
   isTestFlightAvailable
   isUnitRandomUnit
+  isClanUnitResearched
 }

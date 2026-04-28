@@ -6,7 +6,7 @@ let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { getCurCraftsInfo } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { getMyCrewUnitsState } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
@@ -41,7 +41,7 @@ function getMyStateData() {
     crossplay = crossplayModule.isCrossPlayEnabled()
     bannedMissions = prefParams.bannedMissions
     dislikedMissions = prefParams.dislikedMissions
-    craftsInfoByUnitsGroups = slotbarPresets.getCurCraftsInfo()
+    craftsInfoByUnitsGroups = getCurCraftsInfo()
     platform = targetPlatform
     fakeName = !get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
     hideClan = !get_option_in_mode(USEROPT_DISPLAY_MY_REAL_CLAN, OPTIONS_MODE_GAMEPLAY).value

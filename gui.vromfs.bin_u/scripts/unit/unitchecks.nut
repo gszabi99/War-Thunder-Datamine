@@ -102,7 +102,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
     air.modificatorsRequestTime = get_time_msec()
     calculate_ship_parameters_async(air.name, this,  function(effect, ...) {
       air.modificatorsRequestTime = -1
-      if (effect) {
+      if (effect && effect.len() > 0) {
         air.modificators = {
           arcade = effect.arcade
           historical = effect.historical
@@ -127,7 +127,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
     air.modificatorsRequestTime = get_time_msec()
     calculate_tank_parameters_async(air.name, this,  function(effect, ...) {
       air.modificatorsRequestTime = -1
-      if (effect) {
+      if (effect && effect.len() > 0) {
         air.modificators = {
           arcade = effect.arcade
           historical = effect.historical

@@ -20,7 +20,7 @@ from "guiOptions" import get_unit_option, set_unit_option, set_gui_option, get_g
 from "chard" import setAllowToBeAddedToLb, getAllowToBeAddedToLb
 from "unitCalculcation" import get_aircraft_fuel_consumption, get_aircraft_max_fuel
 from "%scripts/missions/missionsUtils.nut" import isSkirmishWithKillStreaks, getMissionAllowedUnittypesMask, getGameModeMaps
-from "graphicsOptions" import getDgsTexQuality
+from "graphicsOptions" import getDgsTexQuality, is_hfr_supported
 from "%sqstd/platform.nut" import is_ps5_pro, is_xbox_anaconda, is_xbox_lockhart
 from "dagor.workcycle" import defer
 let { get_current_campaign, set_mission_settings, get_mission_settings, get_mission_for_takeoff
@@ -408,7 +408,10 @@ addListenersWithoutEnv({
 })
 
 function getConsolePresets() {
-  let res = ["quality", "performance"]
+  let res = ["quality"]
+  if (!is_ps5_pro || is_hfr_supported())
+    res.append("performance")
+
   if (isPlatformSony)
     res.append("raytraced", "raytraced_quality")
   else if (hasFeature("optionRT"))
@@ -1509,6 +1512,7 @@ let optionsMap = {
   },
   [USEROPT_ZOOM_SENSE] = function(_optionId, descr, _context) {
     descr.id = "multiplier_zoom"
+    descr.controlType = optionControlType.SLIDER
     descr.value = (get_option_multiplier(OPTION_ZOOM_SENSE) * 100).tointeger()
     if (descr.value < 0)
       descr.value = 0
@@ -1542,10 +1546,12 @@ let optionsMap = {
   },
   [USEROPT_GUNNER_VIEW_SENSE] = function(_optionId, descr, _context) {
     descr.id = "multiplier_gunner_view"
+    descr.controlType = optionControlType.SLIDER
     descr.value = (get_option_multiplier(OPTION_GUNNER_VIEW_SENSE) * 100.0).tointeger()
   },
   [USEROPT_GUNNER_VIEW_ZOOM_SENS] = function(_optionId, descr, _context) {
     descr.id = "multiplier_gunner_view_zoom"
+    descr.controlType = optionControlType.SLIDER
     descr.value = (get_option_multiplier(OPTION_GUNNER_VIEW_ZOOM_SENS) * 100.0).tointeger()
   },
   [USEROPT_ATGM_AIM_SENS_HELICOPTER] = function(_optionId, descr, _context) {

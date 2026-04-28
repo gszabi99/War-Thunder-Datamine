@@ -331,13 +331,12 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     if (checkSeen && was_video_seen(videoName))
       return
 
-    if (!checkPackageAndAskDownloadByTimes("hc_pacific"))
-      return
-
-    this.guiScene.performDelayed(this, function(_obj) {
+    let playVideo = @() this.guiScene.performDelayed(this, function(_obj) {
       play_movie(videoName, false, true, true)
       add_video_seen(videoName)
     })
+
+    checkPackageAndAskDownloadByTimes("hc_pacific", playVideo, this)
   }
 
   function getSelectedMissionIndex(needCheckFocused = true) {
@@ -640,6 +639,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       linkObj.link = linkData.link
       linkObj.tooltip = linkData.tooltip
       linkObj.setValue(linkData.text)
+      linkObj.forceExternal = linkData.forceExternal ? "yes" : "no"
     }
 
     if (this.gm == GM_CAMPAIGN)

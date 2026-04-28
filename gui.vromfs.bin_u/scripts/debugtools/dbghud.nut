@@ -249,6 +249,42 @@ function hud_human_killer_card_debug() {
     })
 }
 
+function hud_human_artillery_killer_card_debug() {
+  g_hud_event_manager.onHudEvent("HudMessage",
+    {
+      killerProjectileName = "artillery"
+      victimPlayerId = get_local_mplayer().id
+      victimUnitNameLoc = "MAC-11"
+      unitType = 14
+      text = ""
+      playerId = 0
+      team = 2
+      type = HUD_MSG_MULTIPLAYER_DMG
+      unitName = "m249_para"
+      victimUnitType = 14
+      id = -1
+      isKill = true
+      action = "artillery"
+      victimTeam = 1
+      unitNameLoc = "Minimi"
+      deathReason = DR_NEARBY_EXPLOSION
+      victimUnitName = "mac_11"
+      withVictimPlayerName = true
+      aircraftName = "m16a4"
+      aircraft = "m16a4_shop"
+      isDebugData = true
+      name = "WWWWWWWWWWWWWWWW"
+      clanTag = "^WWWWW^"
+    })
+
+  g_hud_event_manager.onHudEvent("HudMessage",
+    {
+      type = HUD_MSG_DEATH_REASON
+      id = -1
+      text = ""
+    })
+}
+
 let show_mine_the_wall_hint = @(needShow) needShow
   ? g_hud_event_manager.onHudEvent("hint:human_mine_the_wall_show")
   : g_hud_event_manager.onHudEvent("hint:human_mine_the_wall_hide")
@@ -301,6 +337,7 @@ register_command(text_tutorial_hint_with_shortcuts_engine_add, "debug.hud.text_t
 register_command(mission_hint_remove, "debug.hud.mission_hint_remove")
 register_command(hud_killer_card_debug, "debug.hud.killer_card")
 register_command(hud_human_killer_card_debug, "debug.hud.human_killer_card")
+register_command(hud_human_artillery_killer_card_debug, "debug.hud.human_artillery_killer_card")
 register_command(show_mine_the_wall_hint, "debug.hud.mine_the_wall_hint")
 register_command(test_mining_the_wall_progress, "debug.hud.mine_the_wall_progress")
 register_command(show_build_the_wall_hint, "debug.hud.build_the_wall_hint")

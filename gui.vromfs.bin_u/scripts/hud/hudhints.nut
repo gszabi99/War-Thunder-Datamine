@@ -3492,7 +3492,7 @@ NEED_STOP_FOR_RADAR = {
   }
 
   BOMBS_AUTO_RELEASE_TARGET_POINT_ACTIVATED = {
-    hintType = g_hud_hint_types.COMMON
+    hintType = g_hud_hint_types.ACTIONBAR
     locId    = "hints/bombs_auto_release_target_point_activated"
     showEvent = "hint:bombs_auto_release_target_point_activated:show"
     hideEvent = "hint:bombs_auto_release_target_point_activated:hide"

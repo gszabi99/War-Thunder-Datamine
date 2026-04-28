@@ -49,6 +49,7 @@ let { setMyTeamInRoom, setSessionLobbyReady, switchMyTeamInRoom, switchSpectator
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
+let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 
 function getLobbyChatRoomId() {
   return g_chat_room_type.MP_LOBBY.getRoomId(getSessionLobbyRoomId())
@@ -105,7 +106,10 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
       setMyTeamInRoom(getLobbyRandomTeam(), true)
 
     this.updateSessionInfo()
-    this.createSlotbar({ getLockedCountryData  = getSessionLobbyLockedCountryData })
+    this.createSlotbar({
+      getLockedCountryData  = getSessionLobbyLockedCountryData
+      needPresetsPanel = !isSlotbarOverrided()
+    })
     this.setSceneTitle(loc("multiplayer/lobby"))
     this.updateWindow()
     this.updateRoomInSession()

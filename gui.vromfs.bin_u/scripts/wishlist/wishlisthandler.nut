@@ -354,7 +354,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
       return
     let unit = getAircraftByName(itemObj.id)
     this.restoreUnitInfoSize()
-    fillAirInfo(unit, true, this.unitInfoObj, this, { parentWidth = true, needShopInfo = true, needShowExpiredMessage = true })
+    fillAirInfo(unit, true, this.unitInfoObj, this, { parentWidth = true, needShopInfo = true, needShowExpiredMessage = true, inHangar = true })
     this.updateUnitInfoSize()
 
     this.updateButtons()

@@ -42,8 +42,8 @@ let inactiveColor4 = Color4(179,179,179,255)
 let isWeaponEnabled = Computed(function() {
   let { curAmmo = 0, totalAmmo = 0 } = humanCurGunInfo.get()
   let { haveAmmo = false } = humanCurGunStaticInfo.get()
-  return haveAmmo ? curAmmo + totalAmmo > 0
-    : launcherEid.get() > 0 ? coolDownTime.get() == ""
+  return launcherEid.get() > 0 ? (coolDownTime.get() == "" && curAmmo > 0)
+    : haveAmmo ? (curAmmo + totalAmmo > 0)
     : true
 })
 

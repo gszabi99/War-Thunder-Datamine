@@ -210,10 +210,10 @@ function findAirSystems(unit, unitBlk, unitType) {
       params = { unitId = unit.name, textLoc = "avionics_aim_laser_designator/desc" } })
 
   let sighting = [
-    { keyPart = "Turret", locPart = "turret"},
-    { keyPart = "Gun", locPart = "cannon"},
-    { keyPart = "Rocket", locPart = "rocket"},
-    { keyPart = "Bombs", locPart = "bomb"}
+    { keyPart = "Turret", locPart = "turret", descKey = "sight_AUTO"},
+    { keyPart = "Gun", locPart = "cannon", descKey = "sight_AUTO"},
+    { keyPart = "Rocket", locPart = "rocket", descKey = "CCRPRocket"},
+    { keyPart = "Bombs", locPart = "bomb", descKey = "CCRP"}
   ]
 
   sighting.each(function(s) {
@@ -224,8 +224,8 @@ function findAirSystems(unit, unitBlk, unitType) {
       tooltipParts.append("CCIP/desc")
     }
     if (unitBlk?[$"haveCCRPFor{s.keyPart}"] ?? false) {
-      res.append("sight_AUTO")
-      tooltipParts.append("sight_AUTO/desc")
+      res.append(s.descKey)
+      tooltipParts.append($"{s.descKey}/desc")
     }
     if (res.len() > 0) {
       let text = $"{loc($"avionics_sight_{s.locPart}")}{loc("ui/colon")} {", ".join(res.map(@(v) loc(v)))}"

@@ -47,7 +47,7 @@ let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets
 } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getModificationName, getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getModificationName, getUnitLastBullets, getBeltlessGunsWeapNames } = require("%scripts/weaponry/bulletsInfo.nut")
 let { AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData
 } = require("%scripts/weaponry/ammoInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -140,7 +140,7 @@ let { yieldLimitFromStage } = require("%appGlobals/missions/nuclearEscalationCfg
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { getTacticalMapMarksFiltersView, applyTacticalMapMarksFilterChange,
 getTacticalMapMarksSelectedFilters } = require("%scripts/respawn/mapMarkersFilter.nut")
-
+let stdMath = require("%sqstd/math.nut")
 
 let currentSquadSpawnsDataQuery = ecs.SqQuery("currentSquadSpawnsDataQuery", {
   comps_ro=[["dynamic_respawn__playerId", ecs.TYPE_INT],
@@ -613,6 +613,29 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     return getTblValue("spectator", this.mplayerTable, false)
   }
 
+  function getRespawnUnitWpTotalCost(unit) {
+    let airRespawnCost = unit ? get_unit_wp_to_respawn(unit.name) : 0
+    let weaponPrice = unit ? this.getWeaponPrice(unit.name, getLastWeapon(unit.name)) : 0
+    return airRespawnCost + weaponPrice
+  }
+
+  function hasEnouhgWPToSpawn() {
+    if (!this.missionRules.isWarpointsRespawnEnabled)
+      return true
+
+    let wpBalance = this.sessionWpBalance
+    foreach (crew in getCrewsListByCountry(get_local_player_country())) {
+      let unit = getCrewUnit(crew)
+      if (unit != null
+        && isCrewAvailableInSession(crew, unit)
+        && get_unit_wp_to_respawn(unit.name) <= wpBalance
+      )
+        return true
+    }
+
+    return false
+  }
+
   function updateRespawnBasesStatus() { 
     let wasIsNoRespawns = this.isNoRespawns
     if (this.isGTCooperative) {
@@ -639,8 +662,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         this.noRespText = loc("multiplayer/noRespawnsInMission")
       else if (!this.haveSlots)
         this.noRespText = loc("multiplayer/noCrewsLeft")
-      else
-        this.isNoRespawns = false
+      else {
+        this.updateSessionWpBalance()
+        this.isNoRespawns = !this.hasEnouhgWPToSpawn()
+      }
     }
 
     this.updateNoRespawnText()
@@ -894,6 +919,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           draggableSlots = false
           showCrewUnseenIcon = false
           curSlotIdInCountry = slotId
+          modalPreferredSide = "center"
         }), "flight_menu_bgd")
         this.afterRefreshSlotbar()
         this.slotReadyAtHostMask = getCrewSlotReadyMask()
@@ -1020,13 +1046,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function getRespawnWpTotalCost() {
-    if (!this.missionRules.isWarpointsRespawnEnabled)
-      return 0
-
-    let air = this.getCurSlotUnit()
-    let airRespawnCost = air ? get_unit_wp_to_respawn(air.name) : 0
-    let weaponPrice = air ? this.getWeaponPrice(air.name, getLastWeapon(air.name)) : 0
-    return airRespawnCost + weaponPrice
+    return !this.missionRules.isWarpointsRespawnEnabled ? 0
+      : this.getRespawnUnitWpTotalCost(this.getCurSlotUnit())
   }
 
   function isInAutoChangeDelay() {
@@ -1172,7 +1193,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       colorize("activeTextColor", getUnitName(unit))
     )
     let weightTxt = "{0}{1}{2}".subst(loc("unit/weight"), loc("ui/colon"),
-      colorize("activeTextColor", " ".concat(this.selectedUnitWeight, loc("measureUnits/kg")))
+      colorize("activeTextColor", " ".concat(stdMath.round_by_value(this.selectedUnitWeight, 0.1), loc("measureUnits/kg")))
     )
     let speedTxt = "{0}{1}{2}".subst(loc("unit/speed"), loc("ui/colon"),
       colorize("activeTextColor", getHumanSpeed(this.selectedUnitWeight))
@@ -1781,6 +1802,14 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         res[$"bulletsWeapon{i}"] <- editSlotbarBullets?[$"bulletsWeapon{i}"] ?? ""
       }
 
+    local beltlessIdx = 0
+    let beltlessNames = getBeltlessGunsWeapNames(air)
+    for (local i = 0; i < BULLETS_SETS_QUANTITY && beltlessIdx < beltlessNames.len(); i++)
+      if (res[$"bulletsWeapon{i}"] == "") {
+        res[$"bulletsWeapon{i}"] = beltlessNames[beltlessIdx]
+        beltlessIdx++
+      }
+
     let optionsParams = this.getOptionsParams()
 
     foreach (option in respawnOptions.types) {
@@ -2091,6 +2120,12 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           isRespaMenuVisible = isRespaMenuVisible && (curScore <= this.curSpawnScore)
           if (curScore > 0)
             costTextArr.append(loc("shop/spawnScore", { cost = curScore }))
+        }
+
+        if (this.missionRules.isWarpointsRespawnEnabled && unit) {
+          let wpToSpawn = this.getRespawnUnitWpTotalCost(unit)
+          isAvailResp = isAvailResp && (wpToSpawn <= this.sessionWpBalance)
+          isRespaMenuVisible = isRespaMenuVisible && (wpToSpawn <= this.sessionWpBalance)
         }
 
         let reqUnitSpawnRageTokens = unit != null ? this.missionRules.getUnitSpawnRageTokens(unit) : 0

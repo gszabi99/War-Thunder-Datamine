@@ -9,7 +9,11 @@ function open_url_by_obj(obj) {
     return
 
   let baseUrl = (obj.link.slice(0, 1) == "#") ? loc(obj.link.slice(1)) : obj.link
-  eventbus_send("open_url", { baseUrl, biqQueryKey = obj?.bqKey ?? obj?.id })
+  eventbus_send("open_url", {
+    baseUrl
+    biqQueryKey = obj?.bqKey ?? obj?.id
+    forceExternal = obj?.forceExternal == "yes"
+  })
 }
 
 return { open_url_by_obj }

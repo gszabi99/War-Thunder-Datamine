@@ -56,42 +56,45 @@ addTooltipTypes({
       if (!(contentObj?.isValid() ?? false))
         return
 
-      obj.getScene().setUpdatesEnabled(false, false)
+      let { maxHeight = null } = params
+      let unitImgObj = contentObj.findObject("aircraft-image-nest")
+      unitImgObj.height = "40%sh"
 
+      let infoObj = contentObj.findObject("aircraft-tooltip-top_info")
+      infoObj.height = null
+      infoObj["overflow-y"] = null
+      obj["max-height"] = null
+
+      obj.getScene().setUpdatesEnabled(false, false)
       let unit = getAircraftByName(id)
       let airInfoParams = !isSlotbarOverrided() ? params
         : params.__merge({
             overrideMods = getSlotbarOverrideMods()?[unit.shopCountry][unit.name]
           })
       fillAirInfo(unit, true, contentObj, handler, airInfoParams)
-
+      showObjById("aircraft-countryImg", false, contentObj)
       obj.getScene().setUpdatesEnabled(true, true)
+      obj.getScene().applyPendingChanges(true)
 
-      let flagCard = contentObj.findObject("aircraft-countryImg")
-      let rhInPixels = toPixels(obj.getScene(), "1@rh")
-      if (obj.getSize()[1] < rhInPixels) {
-        if (flagCard?.isValid()) {
-          flagCard.show(false)
-        }
-        return true
-      }
+      let objHeight = obj.getSize()[1]
+      let imgHeight = unitImgObj.getSize()[1]
 
-      let unitImgObj = contentObj.findObject("aircraft-image-nest")
-      if (!unitImgObj?.isValid())
+      let freeHeight = maxHeight ?? toPixels(obj.getScene(), "1@rh")
+      if (freeHeight >= objHeight)
         return true
 
-      let unitImageHeightBeforeFit = unitImgObj.getSize()[1]
-      let isVisibleUnitImg = unitImageHeightBeforeFit - (obj.getSize()[1] - rhInPixels) >= 0.5 * unitImageHeightBeforeFit
-      if (isVisibleUnitImg) {
-        contentObj.height = "1@rh - 2@framePadding"
-        unitImgObj.height = "fh"
-        if (flagCard?.isValid()) {
-          flagCard.show(false)
-        }
+      local overflow = objHeight - freeHeight
+      if (overflow > 0) {
+        let imgLessHeight = min(overflow, imgHeight / 2)
+        unitImgObj.height = imgHeight - imgLessHeight
+        overflow -= imgLessHeight
       }
-      else {
-        unitImgObj.show(isVisibleUnitImg)
+      if (overflow > 0) {
+        infoObj.height = infoObj.getSize()[1] - overflow
+        infoObj["overflow-y"] = "auto"
       }
+      obj["max-height"] = freeHeight
+
       return true
     }
     onEventUnitModsRecount = function(eventParams, obj, handler, id, params) {

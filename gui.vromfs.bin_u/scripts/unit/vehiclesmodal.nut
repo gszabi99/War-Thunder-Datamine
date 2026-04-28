@@ -10,16 +10,17 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { ceil } = require("%sqstd/math.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
+let { isUnitGroup, isClanUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { showAirExpWpBonus } = require("%scripts/bonusModule.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
 
-
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 
                                                     
+
+let vehicleStatuses = ["researched", "purchased"]
 
 local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
@@ -28,6 +29,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   filteredUnits        = null
   lastSelectedUnit     = null
   needSkipFocus        = false
+  extendedFilters      = false
   sceneTplName         = "%gui/unit/vehiclesModal.tpl"
   wndTitleLocId        = "itemTypes/vehicles"
   slotbarActions       = [ "research", "buy", "go_to_event", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons", "showroom",
@@ -80,6 +82,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     let countries = {}
     let unitsTypes = {}
     let ranks = {}
+    let unitStatuses = {}
 
     foreach (unit in getAllUnits())
       if (!this.unitsFilter || this.unitsFilter(unit)) {
@@ -122,9 +125,25 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
             text  = $"{loc("shop/age")} {get_roman_numeral(rank)}"
           }
       }
+
+    if (this.extendedFilters) {
+      let data = this.filtersData
+      vehicleStatuses.each(function(val, idx) {
+        let unitstatusId = $"unitstatus_{val}"
+        unitStatuses[unitstatusId] <- {
+          id = val
+          idx
+          text = loc($"mainmenu/{val}_vehicle")
+          objId = unitstatusId
+          value = data?["unitstatus"][val].value ?? false
+        }
+      })
+    }
+
     this.filtersData["unittype"] <- unitsTypes
     this.filtersData["country"] <- countries
     this.filtersData["rank"] <- ranks
+    this.filtersData["unitstatus"] <- unitStatuses
   }
 
   function onChangeFilterItem(objId, typeName, value) {
@@ -139,7 +158,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
   function getFiltersView() {
     let res = []
-    foreach (tName in ["country", "unittype", "rank"]) {
+    foreach (tName in ["country", "unittype", "rank", "unitstatus"]) {
       let isUnitType = tName == "unittype"
       let responceArr = this.filtersData[tName]
 
@@ -173,13 +192,27 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       || ((params["unittype"].len() > 0) && params["unittype"]?[unit.unitType.esUnitType] == null)
       || ((params["rank"].len() > 0) && params["rank"]?[unit.rank] == null))
       return false
+
+    if (this.extendedFilters) {
+      let isShowOnlyResearched = params["unitstatus"]?.researched ?? false
+      let isShowOnlyPurchased = params["unitstatus"]?.purchased ?? false
+
+      if (isShowOnlyResearched && isShowOnlyPurchased) {
+        if (!isClanUnitResearched(unit) && !unit.isBought())
+          return false
+      }
+      else if (isShowOnlyResearched && !isClanUnitResearched(unit))
+        return false
+      else if (isShowOnlyPurchased && !unit.isBought())
+        return false
+    }
     return true
   }
 
   function filterUnits(units) {
     this.filteredUnits = []
     let params = {}
-    foreach (tName in ["country", "unittype", "rank"]) {
+    foreach (tName in ["country", "unittype", "rank", "unitstatus"]) {
       let oldFilter = this.filtersData[tName]
       let arr = {}
       foreach (v in oldFilter)

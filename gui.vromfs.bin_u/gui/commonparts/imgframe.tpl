@@ -22,6 +22,10 @@
   on_click:t='<<onClick>>'
   focusBtnName:t='A'
   <</onClick>>
+  <<^onClick>><<#tooltipId>><<#isTooltipByHold>>
+  behavior:t='button'
+  focusBtnName:t='A'
+  <</isTooltipByHold>><</tooltipId>><</onClick>>
 
   <<#focusBorder>>
   focus_border {}
@@ -98,13 +102,24 @@
   <</miniIcon>>
 
   <<#tooltipId>>
-  tooltipObj {
-    id:t='tooltip_<<tooltipId>>'
+  <<#isTooltipByHold>>
     tooltipId:t='<<tooltipId>>'
-    on_tooltip_open:t='onGenericTooltipOpen'
-    on_tooltip_close:t='onTooltipObjClose'
-    display:t='hide'
-  } title:t='$tooltipObj'
+    on_pushed = "::gcb.delayedTooltipPush"
+    on_hold_start = "::gcb.delayedTooltipHoldStart"
+    on_hold_stop = "::gcb.delayedTooltipHoldStop"
+    on_hover:t='::gcb.delayedTooltipHover'
+    on_unhover:t='::gcb.delayedTooltipHover'
+  <</isTooltipByHold>>
+  <<^isTooltipByHold>>
+    title:t='$tooltipObj'
+    tooltipObj {
+      id:t='tooltip_<<tooltipId>>'
+      tooltipId:t='<<tooltipId>>'
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+      display:t='hide'
+    }
+  <</isTooltipByHold>>
   <</tooltipId>>
 }
 <</items>>

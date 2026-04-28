@@ -99,3 +99,31 @@ rootUnderPopupMenu {
   behavior:button;
   skip-navigation:yes;
 }
+
+listBranch {
+  css-hier-invalidate:yes;
+}
+
+listBranch[isBranchOpened=no] > listBranchContent{
+  display:hide;
+}
+
+listBranchHeader {
+  css-hier-invalidate:yes;
+  background-color:@transparent;
+}
+
+listBranchHeader:hover {
+  background-color:@menuButtonColorHover;
+}
+
+listBranchStateText {
+  behavior:textarea;
+  re-type:textarea;
+  color:@chapterUnlockedColor;
+  font:@fontNormal;
+}
+
+listBranchHeader > textareaNoTab {
+  color:@chapterUnlockedColor;
+}

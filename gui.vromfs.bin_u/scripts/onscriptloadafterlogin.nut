@@ -239,7 +239,6 @@ foreach (fn in [
   "%scripts/crew/crew.nut"
   "%scripts/crew/skillParametersType.nut"
 
-  "%scripts/slotbar/slotbarPresets.nut"
   "%scripts/vehicleRequireFeatureWindow.nut"
   "%scripts/unit/unitInfoExporter.nut"
 

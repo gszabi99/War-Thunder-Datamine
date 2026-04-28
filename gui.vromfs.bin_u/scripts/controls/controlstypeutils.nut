@@ -44,7 +44,6 @@ let shortcutsNotChangeByPreset = [
   "ID_INTERNET_RADIO",
   "ID_INTERNET_RADIO_PREV",
   "ID_INTERNET_RADIO_NEXT",
-  "ID_PTT"
 ]
 
 function applyJoyPresetXchange(preset, updateHelpersMode = true) {

@@ -22,7 +22,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
+let { isMeNewbie, isNewbieInited } = require("%scripts/myStats.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
@@ -106,7 +106,8 @@ function firstMainMenuLoad() {
   let verificationSeenDate = loadLocalAccountSettings(EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH, 0)
   if (
     !havePlayerTag("email_verified")
-    && !isMeNewbie()
+    && !havePlayerTag("guestlogin")
+    && isNewbieInited() && !isMeNewbie()
     && !havePlayerTag("steam")
     && !is_console
     && !is_gdk
@@ -152,7 +153,7 @@ function firstMainMenuLoad() {
 
 function loadMainMenuDefer() {
   handlersManager.markfullReloadOnSwitchScene()
-  handlersManager.animatedSwitchScene(@() firstMainMenuLoad())
+  handlersManager.animatedSwitchScene(firstMainMenuLoad)
 }
 
 addListenersWithoutEnv({

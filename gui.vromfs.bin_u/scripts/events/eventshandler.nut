@@ -58,6 +58,7 @@ let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { profileCountrySq, switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { remove_scene_box } = require("%sqDagui/framework/msgBox.nut")
 let { get_charserver_time_sec } = require("chard")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -206,6 +207,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       showAlwaysFullSlotbar = true
       customViewCountryData = getCustomViewCountryData(event)
       needCheckUnitUnlock = showOverrideSlotbar
+      modalPreferredSide = "center"
     })
     this.showEventDescription(this.curEventId)
     this.updateButtons()
@@ -535,7 +537,8 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onDestroy() {
     remove_scene_box(CHANGE_TEAM_BOX_ID)
     seenEvents.markSeen(events.getEventsForEventsWindow())
-    resetSlotbarOverrided()
+    if (!isInSessionRoom.get())
+      resetSlotbarOverrided()
   }
 
   function getHandlerRestoreData() {

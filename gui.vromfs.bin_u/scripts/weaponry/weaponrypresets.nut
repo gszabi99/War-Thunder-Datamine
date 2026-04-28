@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
+let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const MIN_TIERS_COUNT = 13
@@ -25,24 +25,12 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
   && a?.flash == b?.flash
   && a?.emitter == b?.emitter
 
-let weaponBlkCacheForUnit = {
-  cacheUnitName = ""
-  blkByPath = {}
-}
-
 function getWeaponBlkParams(unitName, weaponBlkPath, params = {}) {
-  let { cacheUnitName, blkByPath } = weaponBlkCacheForUnit
-  if (cacheUnitName != unitName) {
-    weaponBlkCacheForUnit.cacheUnitName = unitName
-    blkByPath.clear()
-  }
-
   let self = callee()
   let { containersCount = 1, containerMassKg = 0 } = params
   local { bulletsCount = 1 } = params
 
-  let weaponBlk = blkByPath?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
-  blkByPath[weaponBlkPath] <- weaponBlk
+  let weaponBlk = blkOptFromPathCachedByUnit(weaponBlkPath, unitName)
 
   bulletsCount = bulletsCount * (weaponBlk?.bullets ?? 1)
   if (weaponBlk?.container && ("blk" in weaponBlk)) {
@@ -149,8 +137,12 @@ function getWeaponsByTypes(
   return res
 }
 
-let getPresetWeaponsByPath = @(unitName, unitBlk, blkPath) (blkPath == "" || blkPath == null) ? []
-  : getWeaponsByTypes(unitName, unitBlk, blkOptFromPath(blkPath), null, false)
+function getPresetWeaponsByPath(unitName, unitBlk, blkPath) {
+  if (blkPath == "" || blkPath == null)
+    return []
+
+  return getWeaponsByTypes(unitName, unitBlk, blkOptFromPathCachedByUnit(blkPath, unitName), null, false)
+}
 
 let getUnitPresets = @(unitBlk)  (unitBlk?.weapon_presets != null)
   ? (unitBlk.weapon_presets % "preset") : []
@@ -189,28 +181,21 @@ function getUnitWeapons(unitName, unitBlk) {
   return res
 }
 
-function isSiutableByWeaponBlkPath(unitName, weapon, weaponBlkPath) {
+function isSuitableByWeaponBlkPath(unitName, weapon, weaponBlkPath) {
   let { blk = null } = weapon
   if (blk == null)
     return null
   if (blk == weaponBlkPath)
     return true
 
-  let { cacheUnitName, blkByPath } = weaponBlkCacheForUnit
-  if (cacheUnitName != unitName) {
-    weaponBlkCacheForUnit.cacheUnitName = unitName
-    blkByPath.clear()
-  }
-  let weaponBlk = blkByPath?[blk] ?? blkOptFromPath(blk)
-  blkByPath[blk] <- weaponBlk
-  return isSiutableByWeaponBlkPath(unitName, weaponBlk, weaponBlkPath)
+  return isSuitableByWeaponBlkPath(unitName, blkOptFromPathCachedByUnit(blk, unitName), weaponBlkPath)
 }
 
 function getWeaponParamsByWeaponBlkPath(unitName, weaponBlkPath) {
   let unitBlk = getFullUnitBlk(unitName)
   let weapons = getUnitWeapons(unitName, unitBlk)
   foreach (weapon in weapons)
-    if (isSiutableByWeaponBlkPath(unitName, weapon, weaponBlkPath))
+    if (isSuitableByWeaponBlkPath(unitName, weapon, weaponBlkPath))
       return weapon
   return null
 }

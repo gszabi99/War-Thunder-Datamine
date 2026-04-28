@@ -1006,6 +1006,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     vehiclesModal.open(@(unit) unit.isSquadronVehicle() && unit.isVisibleInShop(), {
       wndTitleLocId = "clan/vehicles"
       lastSelectedUnit = getAircraftByName(clan_get_researching_unit())
+      extendedFilters = true
     })
   }
 

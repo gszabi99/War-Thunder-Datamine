@@ -22,7 +22,6 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
 
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
-    this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
     this.createAirWeaponSelector(getPlayerCurUnit())
 
@@ -36,7 +35,6 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
     hudDisplayTimersReInit()
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
-    this.updateShowHintsNest()
     this.actionBarWeak?.reinit()
   }
 
@@ -58,11 +56,6 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
     if (obj?.isValid())
       eventbus_send("updateDmgIndicatorStates", { size = obj.getSize() })
   }
-
-  function updateShowHintsNest() {
-    showObjById("actionbar_hints_nest", false, this.scene)
-  }
-
 }
 
 return {

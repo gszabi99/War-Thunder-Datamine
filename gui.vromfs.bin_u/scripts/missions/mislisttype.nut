@@ -273,6 +273,7 @@ g_mislist_type.template <- {
   getCurMission = function() { return null }
   getMissionNameText = g_mislist_type._getMissionNameText
 
+  forceExternalLink = false
   getInfoLink = @() ""
   infoLinkTextLocId = ""
   infoLinkTooltipLocId = ""
@@ -288,6 +289,7 @@ g_mislist_type.template <- {
       link = infoLink
       text = loc(this.infoLinkTextLocId)
       tooltip = loc(this.infoLinkTooltipLocId, "")
+      forceExternal = this.forceExternalLink
     }
   }
 
@@ -317,6 +319,7 @@ enumsAddTypes(g_mislist_type, {
     tabsOrder = mislistTabsOrder.UGM
     canRefreshList = true
     getTabName = function() { return loc("mainmenu/btnUserMission") }
+    forceExternalLink = true
     getInfoLink = @() getCurCircuitOverride("liveUserMissionsUrl", loc("url/live/user_missions"))
     infoLinkTextLocId = "missions/user_missions/getOnline"
     infoLinkTooltipLocId = "missions/user_missions/about"

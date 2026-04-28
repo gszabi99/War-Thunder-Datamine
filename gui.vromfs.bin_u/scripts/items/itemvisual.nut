@@ -6,7 +6,7 @@ let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let {shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
 let { findItemById, findItemByUid } = require("%scripts/items/itemsManagerModule.nut")
 let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
-
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function fillItemTable(item, holderObj) {
   let containerObj = holderObj.findObject("item_table_container")
@@ -156,6 +156,22 @@ function fillItemDescr(item, holderObj, handler = null, shopDesc = false, prefer
     }
 }
 
+function setWidthAndPosForItemNameElements(scene) {
+  if (!showConsoleButtons.get())
+    return
+
+  let itemNameObj = scene.findObject("item_name")
+  if (itemNameObj?.isValid())
+    itemNameObj["reducedWidthForIcon"] = "yes"
+
+  let itemHelpObj = scene.findObject("item_type_help")
+  if (!itemHelpObj?.isValid())
+    return
+
+  itemHelpObj["rightPlaced"] = "yes"
+  itemHelpObj["top"] = "(31@sf/@pf-h)/2"
+}
+
 function updateExpireAlarmIcon(item, itemObj) {
   if (!itemObj?.isValid())
     return
@@ -276,4 +292,5 @@ return {
   fillDescTextAboutDiv
   updateExpireAlarmIcon
   fillItemDescUnderTable
+  setWidthAndPosForItemNameElements
 }

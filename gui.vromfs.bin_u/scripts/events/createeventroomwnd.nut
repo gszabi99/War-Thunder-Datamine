@@ -43,6 +43,7 @@ gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
       roomCreationContext = this.roomCreationContext
       afterSlotbarSelect = this.updateApplyButton
       afterFullUpdate = this.updateApplyButton
+      modalPreferredSide = "center"
     })
     this.updateApplyButton()
     this.prevRanges = this.rangesToString(this.optionsConfig.brRanges)

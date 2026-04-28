@@ -434,7 +434,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     }
     else {
       this.onHeaderBackgroundListHide()
-      this.onChooseImageWndHide()
+      this.hideChooseImageWnd()
+      this.restoreSheetListFocus()
     }
     let showcase = getShowcaseByTerseInfo(this.terseInfo)
     if (showcase?.onChangeEditMode)
@@ -942,9 +943,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     }
 
     let chooseImageScene = showObjById("chooseImage", true)
-    if (chooseImageScene.findObject("wnd_frame")?.isVisible())
+    if (chooseImageScene.findObject("wnd_frame")?.isVisible()) {
+      chooseImageScene.findObject("image_types")?.select()
       return
-    gui_choose_image(this.onIconChoosen, this, chooseImageScene)
+    }
+    gui_choose_image(this.onIconChoosen, this, chooseImageScene, Callback(this.restoreSheetListFocus, this))
     this.onHeaderBackgroundListHide()
   }
 
@@ -1460,7 +1463,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (isVisible)
       return
 
-    this.onChooseImageWndHide()
+    this.hideChooseImageWnd()
+    this.restoreSheetListFocus()
 
     let filterObj = this.getHeaderBackgroundsFilterObj()
     if (filterObj.getValue() == "")
@@ -1475,8 +1479,14 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.scene.findObject("background_edit").show(false)
   }
 
-  function onChooseImageWndHide() {
+  function hideChooseImageWnd() {
     this.scene.findObject("chooseImage").show(false)
+  }
+
+  function restoreSheetListFocus() {
+    let sheetList = this.getSheetList()
+    if (sheetList?.isValid())
+      sheetList.select()
   }
 
   function resetHeaderBackgroundImage() {

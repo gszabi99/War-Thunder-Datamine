@@ -39,9 +39,17 @@ let handlerClass = class (gui_handlers.clanVehiclesModal) {
     let unit = getAircraftByName(this.userlog.body.unit)
     if (unit == null)
       return ""
+
     return format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
       buildUnitSlot(unit.name, unit, this.getUnitItemParams(unit)))
   }
+
+  getUnitItemParams = @(unit) base.getUnitItemParams(unit).__update({
+    tooltipParams = {
+      needShopInfo = true
+      canOpenOtherWindows = this.canQuitByGoBack
+    }
+  })
 
   function updateFlushExpUnit() {
     let data = this.getFlushExpUnitView()

@@ -6,7 +6,6 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { FAVORITE_UNLOCKS_LIMIT, getFavoriteUnlocksNum,
@@ -391,8 +390,9 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(contentObj) || (! contentObj.isVisible() && ! force))
       return
 
-    let crewCountryId = find_in_array(shopCountriesList, profileCountrySq.get(), -1)
-    let crewIdInCountry = getSelectedCrews(crewCountryId)
+    let country = profileCountrySq.get()
+    let crewIdInCountry = getSelectedCrews(country)
+    let crewCountryId = shopCountriesList.findindex(@(v) v == country) ?? -1
     let crewData = getCrew(crewCountryId, crewIdInCountry)
     if (crewData == null)
       return
@@ -415,9 +415,9 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let crewUnitType = unit.getCrewUnitType()
-    let country  = getUnitCountry(unit)
+    let unitCountry  = getUnitCountry(unit)
     let specType = getSpecTypeByCrewAndUnit(crewData, unit)
-    let isMaxLevel = isCrewMaxLevel(crewData, unit, country, crewUnitType)
+    let isMaxLevel = isCrewMaxLevel(crewData, unit, unitCountry, crewUnitType)
     local crewLevelText = getCrewLevel(crewData, unit, crewUnitType)
     if (isMaxLevel)
       crewLevelText = "".concat(
@@ -556,8 +556,9 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onCrewButtonClicked(_obj) {
-    let crewCountryId = find_in_array(shopCountriesList, profileCountrySq.get(), -1)
-    let crewIdInCountry = getSelectedCrews(crewCountryId)
+    let country = profileCountrySq.get()
+    let crewIdInCountry = getSelectedCrews(country)
+    let crewCountryId = shopCountriesList.findindex(@(v) v == country) ?? -1
     if (crewCountryId != -1 && crewIdInCountry != -1)
       gui_modal_crew({ countryId = crewCountryId, idInCountry = crewIdInCountry })
   }

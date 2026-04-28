@@ -167,7 +167,7 @@ function updateOverrideSlotbar(missionName, event = null) {
   if (missionCountry != null)
     switchProfileCountry(missionCountry)
 
-  if (missionCountry == null && event != null) {
+  if (missionCountry == null && event != null && ovrSlotBar != null) {
     let slotbarCountries = ovrSlotBar.map(@(c) c.country)
     let hasProfileCountry = slotbarCountries.contains(profileCountry)
     if (!hasProfileCountry) {

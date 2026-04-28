@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { request_matching } = require("%scripts/matching/api.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { getCurCraftsInfo } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { defaultDiffCode } = require("%scripts/globalWorldwarUtils.nut")
 let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
@@ -67,7 +67,7 @@ let WwBattle = class (BaseQueue) {
     let queueMembersParams = g_squad_manager.isSquadLeader()
       ? getSquadMembersFlyoutDataByUnitsGroups()
       : {
-        [userIdStr.get()] = { crafts_info = slotbarPresets.getCurCraftsInfo() }
+        [userIdStr.get()] = { crafts_info = getCurCraftsInfo() }
       }
 
     foreach (member in queueMembersParams) {

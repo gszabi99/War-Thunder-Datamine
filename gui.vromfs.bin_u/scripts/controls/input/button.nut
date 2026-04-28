@@ -4,6 +4,7 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let { getLocalizedControlName, getShortLocalizedControlName} = require("%scripts/controls/controlsVisual.nut")
 let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { hasXInputDevice } = require("controls")
 
 let Button = class (InputBase) {
   deviceId = -1
@@ -28,7 +29,7 @@ let Button = class (InputBase) {
       view = { hasHoldButtonSign }
     }
 
-    if (this.deviceId == JOYSTICK_DEVICE_0_ID && gamepadIcons.hasTextureByButtonIdx(this.buttonId)) {
+    if (this.deviceId == JOYSTICK_DEVICE_0_ID && hasXInputDevice() && gamepadIcons.hasTextureByButtonIdx(this.buttonId)) {
       data.template = "%gui/gamepadButton.tpl"
       data.view.buttonImage <- gamepadIcons.getTextureByButtonIdx(this.buttonId)
     }

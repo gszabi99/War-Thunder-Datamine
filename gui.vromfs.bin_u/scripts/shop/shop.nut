@@ -1334,7 +1334,10 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       flushExp = this.availableFlushExp
       showBR = hasFeature("GlobalShowBattleRating")
       getEdiffFunc = this.getCurrentEdiff.bindenv(this)
-      tooltipParams = { needShopInfo = true }
+      tooltipParams = {
+        needShopInfo = true
+        canOpenOtherWindows = !this.shopResearchMode
+      }
       unitTypeName = unit?.unitType.name ?? unit?.airsGroup[0].unitType.name
       hasNationBonus = this.isPageHasNationBonus
       maxRank = this.maxRank

@@ -82,6 +82,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
           isCountryChoiceAllowed = false,
           customCountry = this.unitCountry,
           showTopPanel = false
+          canOpenOtherWindows  = false
         },
         "slotbar_place")
 

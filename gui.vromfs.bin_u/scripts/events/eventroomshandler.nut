@@ -210,7 +210,11 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateWindow() {
-    this.createSlotbar({ eventId = this.event.name, room = this.getCurRoom() })
+    this.createSlotbar({
+      eventId = this.event.name
+      room = this.getCurRoom()
+      modalPreferredSide = "center"
+    })
     this.updateDescription()
     this.updateButtons()
   }

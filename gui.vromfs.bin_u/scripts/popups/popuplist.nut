@@ -53,5 +53,6 @@ let popupList = class (gui_handlers.BaseGuiHandlerWT) {
 gui_handlers.popupList <- popupList
 
 return {
+  popupList
   openPopupList = @(params = {}) handlersManager.loadHandler(popupList, params)
 }

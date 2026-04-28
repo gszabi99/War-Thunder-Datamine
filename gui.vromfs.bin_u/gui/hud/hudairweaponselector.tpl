@@ -225,11 +225,23 @@ airWeaponSelector {
 
     airWeaponSelectorBtn {
       id:t = 'pin_btn'
+      size:t='1@awsCounterMeasureHeight,1@awsCounterMeasureHeight'
       isPinBtn:t='yes'
-      text:t = '[]'
-      position:t='relative'
+      highlightBorderOnHover:t='yes'
+      text:t = ''
       tooltip:t='#tooltip/pinWeaponSelector'
       _on_click:t = 'onPinBtn'
+
+      img {
+        id:t='pin_btn_img'
+        re-type:t="9rect"
+        position:t='absolute'
+        size:t='0.6ph,0.6ph'
+        top:t='(ph-h)/2'
+        left:t='(pw-w)/2'
+        background-svg-size:t='w,h'
+        background-repeat:t='expand'
+      }
     }
 
     airWeaponSelectorCloseBtn {

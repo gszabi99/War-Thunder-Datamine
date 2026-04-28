@@ -9,7 +9,8 @@ let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { getTotalPresetsCount, canLoadSlotbarPreset, loadSlotbarPreset
+} = require("%scripts/slotbar/slotbarPresets.nut")
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
@@ -30,7 +31,7 @@ let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelp
       return
 
     this.scene.show(true)
-    this.maxPresets = slotbarPresets.getTotalPresetsCount()
+    this.maxPresets = getTotalPresetsCount()
     this.curPresetsData = array(this.maxPresets, this.NULL_PRESET_DATA)
     let view = {
       presets = array(this.maxPresets, null)
@@ -166,7 +167,7 @@ let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelp
   }
 
   function applySelect() {
-    if (!slotbarPresets.canLoad(true, this.getCurCountry()))
+    if (!canLoadSlotbarPreset(true, this.getCurCountry()))
       return this.update()
 
     let idx = this.getSelPresetIdx()
@@ -178,7 +179,7 @@ let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelp
     if (("canPresetChange" in this.ownerWeak) && !this.ownerWeak.canPresetChange())
       return
 
-    slotbarPresets.load(idx)
+    loadSlotbarPreset(idx)
     this.update()
   }
 

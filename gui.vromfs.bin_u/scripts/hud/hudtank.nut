@@ -41,7 +41,6 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     hudEnemyDamage.init(this.scene)
     let actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.actionBarWeak = actionBar.weakref()
-    this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
     this.updateTacticalMapSwitching()
@@ -51,13 +50,8 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     this.actionBarWeak?.reinit()
     hudEnemyDamage.reinit()
     hudDisplayTimersReInit()
-    this.updateShowHintsNest()
     this.updateTacticalMapVisibility()
     this.updateTacticalMapSwitching()
-  }
-
-  function updateShowHintsNest() {
-    showObjById("actionbar_hints_nest", true, this.scene)
   }
 
   function updateTacticalMapVisibility() {

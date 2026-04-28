@@ -19,7 +19,7 @@ function updateHangarPreset(forceUpdate = false) {
 
   let country = profileCountrySq.get()
   let newSlotCountryId = shopCountriesList.findindex(@(cName) cName == country) ?? -1
-  let newSlotIdInCountry = getSelectedCrews(newSlotCountryId)
+  let newSlotIdInCountry = getSelectedCrews(country)
   let newPresetId = getCurrentPresetIdx(country)
   if (!forceUpdate && newPresetId == curPresetId
     && newSlotCountryId == curSlotCountryId && newSlotIdInCountry == curSlotIdInCountry)

@@ -209,6 +209,8 @@ g_squad_manager = {
     && (!shouldCheckLeader || g_squad_manager.isSquadLeader())
     && smData.squadSizesList.len() > 1
 
+  isImInvitePlayer = @(inviteId) u.isEmpty(squadData.id) && squadData?.invitedPlayers[inviteId] != null
+    && squadData?.invitedPlayers[userIdStr.get()] == null
   getLeaderUid = @() squadData.id
   getSquadLeaderData = @() g_squad_manager.getMemberData(g_squad_manager.getLeaderUid())
   getMembers = @() squadData.members

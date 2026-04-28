@@ -790,12 +790,19 @@ let class HudAirWeaponSelector {
     let selectorObj = this.nestObj.findObject("air_weapon_selector")
     if (!selectorObj)
       return
+
     let needPin = this.isSelectorPinned()
+    let pinBtn = selectorObj.findObject("pin_btn")
+    pinBtn.tooltip = loc(needPin ? "tooltip/unpinWeaponSelector" : "tooltip/pinWeaponSelector")
+
+    let pinBtnImg = pinBtn.findObject("pin_btn_img")
+    pinBtnImg["background-image"] = needPin ? "#ui/gameuiskin#locked.svg" : "#ui/gameuiskin#unlocked.svg"
+    pinBtnImg["left"] = needPin ? "(pw-w)/2 + 3@sf/@pf" : "(pw-w)/2"
+
     let isPinned = selectorObj.isPinned == "yes"
     if (needPin == isPinned)
       return
-    let pinBtn = selectorObj.findObject("pin_btn")
-    pinBtn.tooltip = loc(needPin ? "tooltip/unpinWeaponSelector" : "tooltip/pinWeaponSelector")
+
     selectorObj.isPinned = needPin ? "yes" : "no"
     if (!this.isOpened())
       return

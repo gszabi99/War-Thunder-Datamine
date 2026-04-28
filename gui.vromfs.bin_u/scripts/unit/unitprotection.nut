@@ -39,7 +39,7 @@ let unitArmorCache = {}
 let unitProtectionTypeCache = {}
 let unitAPSCache = {}
 
-function getUnitArmor(unitName) {
+function getUnitArmor(unitName, canOpenOtherWindows) {
   if (unitName in unitArmorCache)
     return unitArmorCache[unitName]
 
@@ -54,7 +54,7 @@ function getUnitArmor(unitName) {
 
   unitArmor.each(@(armor) unitArmorCache[unitName].append({
     itemName = loc($"info/material/{armor}")
-    tooltipId = getTooltipType("UNIT_INFO_ARMOR").getTooltipId("armor", { armor, unitId = unitName })
+    tooltipId = getTooltipType("UNIT_INFO_ARMOR").getTooltipId("armor", { armor, unitId = unitName, canOpenOtherWindows })
   }))
 
   eraTypes.each(@(armor) unitArmorCache[unitName].append({
@@ -70,7 +70,7 @@ function getUnittags(unitName) {
   return get_unittags_blk()?[unitName] ?? {}
 }
 
-function getUnitProtectionType(unitName) {
+function getUnitProtectionType(unitName, canOpenOtherWindows) {
   if (unitName in unitProtectionTypeCache)
     return unitProtectionTypeCache[unitName]
 
@@ -80,7 +80,7 @@ function getUnitProtectionType(unitName) {
 
   unitProtectionTypeCache[unitName] <- protectionType != null ? {
     itemName = loc($"info/material/{protectionType}")
-    tooltipId = getTooltipType("UNIT_INFO_PROTECTION_TYPE").getTooltipId("protectionType", { protectionType, unitId = unitName })
+    tooltipId = getTooltipType("UNIT_INFO_PROTECTION_TYPE").getTooltipId("protectionType", { protectionType, unitId = unitName, canOpenOtherWindows })
   } : null
   return unitProtectionTypeCache[unitName]
 }
@@ -113,16 +113,16 @@ function getUnitAPS(unitName) {
   return unitAPSCache[unitName]
 }
 
-function combineUnitProtectionInfo(unitName) {
-  let armorData = getUnitArmor(unitName)
-  let protectionTypeData = getUnitProtectionType(unitName)
+function combineUnitProtectionInfo(unitName, canOpenOtherWindows) {
+  let armorData = getUnitArmor(unitName, canOpenOtherWindows)
+  let protectionTypeData = getUnitProtectionType(unitName, canOpenOtherWindows)
   let apsData = getUnitAPS(unitName)
   let data = [].extend(armorData, [protectionTypeData, apsData])
   return data.filter(@(v) v != null)
 }
 
-function getUnitProtectionMarkup(unitName) {
-  let items = combineUnitProtectionInfo(unitName)
+function getUnitProtectionMarkup(unitName, canOpenOtherWindows) {
+  let items = combineUnitProtectionInfo(unitName, canOpenOtherWindows)
   return items.len() > 0 ? handyman.renderCached("%gui/unitInfo/unitSystems.tpl", { items, isTooltipByHold = showConsoleButtons.get() }) : null
 }
 

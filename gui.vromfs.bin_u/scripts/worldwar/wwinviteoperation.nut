@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let DataBlock  = require("DataBlock")
-let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
+let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { notifyMailRead } = require("%scripts/matching/serviceNotifications/postbox.nut")
@@ -55,16 +55,20 @@ let Operation = class (BaseInvite) {
     this.operationId = p?.operationId ?? this.operationId
     this.clanTag = p?.clanTag ?? this.clanTag
 
-    this.updateInviterContact()
-
-    this.setDelayed(true)
-    requestUsersInfo(this.senderId)
+    if (this.senderId != "") {
+      this.updateInviterContact()
+      let userInfo = getUserInfo(this.senderId)
+      if (userInfo == null)
+        this.setDelayed(true)
+    }
 
     this.isAccepted = false
 
     if (initial) {
       this.setTimedParams(0, get_charserver_time_sec() + WW_OPERATION_INVITE_EXPIRE_SEC)
       draw_attention_to_inactive_window()
+      if (!this.isDelayed)
+        updateNewInvitesAmount()
 
       add_event_listener("UserInfoManagerDataUpdated",
         function(params) {

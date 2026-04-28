@@ -10,7 +10,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { blkFromPath, eachParam, copyParamsToTable, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { blkFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
 let { ceil, change_bit, interpolateArray } = require("%sqstd/math.nut")
-let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
+let { WEAPON_TYPE, TRIGGER_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
   getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath,
   getBulletBeltShortLocId
 } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -653,6 +653,39 @@ function getBulletsInfoForPrimaryGuns(air) {
         break
       }
     res.append(bInfo || (clone DEFAULT_PRIMARY_BULLETS_INFO))
+  }
+  return res
+}
+
+function getBeltlessGunsWeapNames(air) {
+  if (!air?.unitType.canUseSeveralBulletsForGun)
+    return []
+
+  let unitName = air.name
+  let airBlk = getFullUnitBlk(unitName)
+  if (!airBlk)
+    return []
+
+  let primaryWeapon = getLastPrimaryWeapon(air)
+  let commonWeapons = getCommonWeapons(airBlk, primaryWeapon, unitName)
+  let secondaryWeapon = air.getWeapons().findvalue(@(w) w.name == getLastWeapon(unitName))
+  let presetWeapons = getPresetWeapons(airBlk, secondaryWeapon, unitName)
+  local weapons = commonWeapons
+  weapons.extend(presetWeapons)
+  let { modsList } = getBulletsModListByGroups(air)
+  let res = []
+  foreach (weapon in weapons) {
+    let trigger = weapon?.trigger ?? ""
+    if (![TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON, TRIGGER_TYPE.ADD_GUN].contains(trigger))
+      continue
+    if (!weapon?.blk || weapon?.dummy || (weapon?.bullets ?? 0) == 0)
+      continue
+    let weapName = getWeaponNameByBlkPath(weapon.blk)
+    if (res.contains(weapName))
+      continue
+    let wBlk = blkFromPathCachedByUnit(weapon.blk, unitName)
+    if (!u.isEmpty(wBlk) && getWeaponModIdx(wBlk, modsList) < 0)
+      res.append(weapName)
   }
   return res
 }
@@ -1548,6 +1581,7 @@ return {
   getBulletsSetData
   getBulletsGroupCount
   getBulletsInfoForPrimaryGuns
+  getBeltlessGunsWeapNames
   getLastFakeBulletsIndex
   getBulletsList
   getBulletGroupIndex

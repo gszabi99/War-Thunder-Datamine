@@ -386,7 +386,7 @@ function check_new_user_logs() {
   for (local i = 0; i < total; i++) {
     let blk = DataBlock()
     get_user_log_blk_body(i, blk)
-    if (blk?.disabled || hiddenUserlogs.contains(blk?.type))
+    if (blk?.disabled || hiddenUserlogs.contains(blk?.type) || haveHiddenItem(blk?.body.itemDefId ?? blk?.itemDefId))
       continue
 
     let unlockId = blk?.body.unlockId

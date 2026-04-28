@@ -20,7 +20,6 @@ gui_handlers.HudInfantryDrone <- class(gui_handlers.BaseUnitHud) {
 
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
-    this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
 
     g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
@@ -32,7 +31,6 @@ gui_handlers.HudInfantryDrone <- class(gui_handlers.BaseUnitHud) {
     hudDisplayTimersReInit()
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
-    this.updateShowHintsNest()
     this.actionBarWeak.reinit()
   }
 
@@ -46,10 +44,6 @@ gui_handlers.HudInfantryDrone <- class(gui_handlers.BaseUnitHud) {
     let obj = this.scene.findObject("xray_render_dmg_indicator")
     if (obj?.isValid())
       eventbus_send("updateDmgIndicatorStates", { size = obj.getSize() })
-  }
-
-  function updateShowHintsNest() {
-    showObjById("actionbar_hints_nest", false, this.scene)
   }
 }
 

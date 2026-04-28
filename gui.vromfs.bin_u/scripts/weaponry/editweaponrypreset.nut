@@ -9,9 +9,9 @@ let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
+let { addWeaponsFromBlk, getWeaponLocByTrigger } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
-let { openPopupList } = require("%scripts/popups/popupList.nut")
+let { openPopupTreeList } = require("%scripts/popups/popupTreeList.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { addCustomPreset, isPresetChanged, convertPresetToBlk
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
@@ -25,8 +25,44 @@ let { set_weapon_visual_custom_blk } = require("unitCustomization")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { getChildInContainers } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
+let { eachParam } = require("%sqstd/datablock.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const MASS_KG_PRESIZE = 0.1
+
+local closedBranchesCache = {}
+const EDIT_PRESET_CLOSED_BRANCHES_SAVE_ID = "editPresetsClosedBranches"
+
+function getClosedBranchesCache(unitName) {
+  local closedBranches = closedBranchesCache?[unitName]
+  if (closedBranches)
+    return closedBranches
+
+  let states = loadLocalAccountSettings($"{EDIT_PRESET_CLOSED_BRANCHES_SAVE_ID}/{unitName}")
+  closedBranches = {}
+  if (states)
+    eachParam(states, @(_val, branchName) closedBranches[branchName] <- true)
+
+  closedBranchesCache[unitName] <- closedBranches
+  return closedBranches
+}
+
+function saveClosedBranches(unitName, closedBranches) {
+  saveLocalAccountSettings($"{EDIT_PRESET_CLOSED_BRANCHES_SAVE_ID}/{unitName}", closedBranches)
+}
+
+function saveBranchState(unitName, branchName, isBranchOpened) {
+  let closedBranches = getClosedBranchesCache(unitName)
+  if (isBranchOpened) {
+    if (closedBranches?[branchName] != null)
+      closedBranches.rawdelete(branchName)
+  } else
+    closedBranches[branchName] <- true
+
+  saveClosedBranches(unitName, closedBranches)
+}
 
 function openEditPresetName(name, okFunc) {
   openEditBoxDialog({
@@ -102,10 +138,10 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
     foreach (wBlk in weaponsBlk)
       foreach (key, val in (addWeaponsFromBlk({}, [wBlk], this.unit)?.weaponsByTypes ?? {}))
         weapons[key] <- (weapons?[key] ?? []).extend(val)
-    foreach (triggerType, triggers in weapons)
+    foreach (_triggerType, triggers in weapons)
       foreach (weapon in triggers)
         foreach (id, inst in weapon.weaponBlocks)
-          res.append(inst.__merge({ id = id, tType = triggerType }))
+          res.append(inst.__merge({ id = id, tType = weapon.trigger }))
     return res
   }
 
@@ -141,6 +177,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
 
       res.append({
         id = weapon.tiers?[tierId].presetId ?? weapon.id
+        tType = weapon.tType
         presetId = weapon.presetId 
         name = this.getPopupItemName(weapon, tierId)
         img = getTierIcon(tierWeaponConfig, weapon.ammo)
@@ -150,18 +187,34 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getWeaponsPopupView(parentObj, tierId, weaponsBlk) {
-    let buttons = []
     let tierIdInt = tierId.tointeger()
     let weapons = this.getPopupWeaponsList(weaponsBlk)
     let params = this.getWeaponsPopupParams(weapons, tierIdInt)
     let curTier = this.preset.tiers?[tierIdInt]
     let curPresetId = curTier?.presetId ?? ""
     local maxWidth = 0
+    let branchesList = []
+    let branchesByName = {}
     foreach (p in params)
       maxWidth = max(maxWidth, getStringWidthPx(p.name, "fontMedium"))
-    foreach (p in params)
-      if (p.id != curPresetId)
-        buttons.append({
+
+    foreach (p in params) {
+      if (p.id != curPresetId) {
+        let branchName = p.tType
+        local branch = branchesByName?[branchName]
+        if (branch == null) {
+          branch = {
+            branchName,
+            branches = [],
+            hasBranches = true,
+            btnWidth = maxWidth,
+            branchLocName = getWeaponLocByTrigger(branchName)
+          }
+          maxWidth = max(maxWidth, getStringWidthPx(branch.branchLocName, "fontMedium"))
+          branchesByName[branchName] <- branch
+          branchesList.append(branch)
+        }
+        let button = {
           id = p.id
           holderId = tierId
           image = p.img
@@ -169,10 +222,13 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
           buttonClass = "image"
           visualStyle = "noFrame"
           text = p.name
-          btnWidth = maxWidth
-        })
+        }
+        branch.branches.append(button)
+      }
+    }
+
     if (curTier != null)
-      buttons.append({
+      branchesList.append({
         id = ""
         holderId = tierId
         image = "#ui/gameuiskin#btn_close.svg"
@@ -183,11 +239,14 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
         btnWidth = maxWidth
       })
 
+    let closedBranches = clone getClosedBranchesCache(this.unit.name)
     return {
-      buttonsList = buttons
+      branches = branchesList
       parentObj = parentObj
       onClickCb  = Callback(@(obj) this.onWeaponChoose(obj), this)
       clickPropagation = true
+      onBranchCb = Callback(@(obj) this.onPresetBranchStateChanged(obj), this)
+      closedBranches
     }
   }
 
@@ -208,7 +267,13 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
 
     let view = this.getWeaponsPopupView(tierObj, tierObj.tierId, weaponsBlk)
     if (view)
-      openPopupList(view)
+      openPopupTreeList(view)
+  }
+
+  function onPresetBranchStateChanged(branchObj) {
+    let branchName = branchObj.id
+    let isOpened = branchObj["isBranchOpened"] == "yes"
+    saveBranchState(this.unit.name, branchName, isOpened)
   }
 
   function onPresetRename() {
@@ -330,6 +395,14 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
     }, 0)
   }
 }
+
+function clearCache() {
+  closedBranchesCache = {}
+}
+
+addListenersWithoutEnv({
+  SignOut = @(_p) clearCache()
+})
 
 gui_handlers.EditWeaponryPresetsModal <- EditWeaponryPresetsModal
 

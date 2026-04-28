@@ -451,10 +451,18 @@ gui_handlers.IngameCurrencyShopHandler <- class (gui_handlers.OnlineShopHandler)
   sceneNavBlkName = null
   isIngameCurrency = true
 
-  function updateProductInfo(product, productId) {
+  function initScreen() {
+    this.updateBanner()
+    base.initScreen()
+  }
+
+  function updateBanner() {
     let currency = this.chapter == "eagles" ? "eagles" : "lions"
     this.scene.findObject("header_banner")["background-image"]
       = $"!ui/images/ingame_currency_shop/{currency}/header_banner.avif"
+  }
+
+  function updateProductInfo(product, productId) {
     local descText = getEntitlementDescription(product, productId)
     let renewText = getEntitlementTimeText(product)
     if (renewText != "") {
@@ -473,6 +481,7 @@ gui_handlers.IngameCurrencyShopHandler <- class (gui_handlers.OnlineShopHandler)
 
   function reinitScreen(params = {}) {
     base.reinitScreen(params)
+    this.updateBanner()
     foreach (productId, product in this.goods) {
       this.updateProductInfo(product, productId) 
       break 

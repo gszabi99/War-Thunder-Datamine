@@ -36,7 +36,7 @@ function isKillerCardData(messageData) {
 function getKillerCardView(messageData, userInfo) {
   if (!isKillerCardData(messageData))
     return null
-  let { playerId = -1, killerProjectileName = "", isDebugData = false,
+  let { playerId = -1, killerProjectileName = "", isDebugData = false, action = "",
     weaponEcsTemplateName = "", offenderHits = "", offenderHp = -1, offenderArmorSegmentsInfo = ""
   } = messageData
   let { aircraftName, name, clanTag = "", title = "", aircraft } = isDebugData ? messageData
@@ -47,7 +47,9 @@ function getKillerCardView(messageData, userInfo) {
 
   let showCustomItem = weaponEcsTemplateName != ""
 
-  let unitImg = showCustomItem ? genUnitTooltipWeaponIcon(weaponEcsTemplateName)
+  let killedByArtillery = killerProjectileName == "artillery" && action == "artillery"
+  let unitImg = killedByArtillery ? "#ui/gameuiskin#artillery_fire"
+    : showCustomItem ? genUnitTooltipWeaponIcon(weaponEcsTemplateName)
     : getUnitTooltipImage(unit)
 
   let weaponEcsTemplateNameCutted = cutPostfix(weaponEcsTemplateName, "_gun", "")
@@ -89,7 +91,8 @@ function getKillerCardView(messageData, userInfo) {
     title = (userInfo?.title ?? "") != "" ? loc($"title/{title}") : messageData?.title ?? ""
 
     unitImg
-    countryFlagImg = getCountryFlagForUnitTooltip(unit.getOperatorCountry())
+    countryFlagImg = killedByArtillery ? ""
+      : getCountryFlagForUnitTooltip(unit.getOperatorCountry())
     unitName =  loc(aircraft)
     unitTypeText = getUnitRoleIconAndTypeCaption(unit)
     rankAndbattleRatingText = " ".concat(rankText, battleRatingText)
@@ -97,7 +100,8 @@ function getKillerCardView(messageData, userInfo) {
     shellNameLoc
     hasShellIcon = shellIconLayers.len() > 0
     shellIconLayers
-    shellHeader = showCustomItem ? loc("hotkeys/ID_HUMAN_FIRE_HEADER") : loc("logs/ammunition")
+    shellHeader = showCustomItem || killedByArtillery ? loc("hotkeys/ID_HUMAN_FIRE_HEADER")
+      : loc("logs/ammunition")
 
     hasKillerHitsInfo = needShowXrayDoll
     offenderHits = offenderHitsArray
