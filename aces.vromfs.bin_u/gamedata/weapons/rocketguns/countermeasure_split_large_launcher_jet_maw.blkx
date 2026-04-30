@@ -461,7 +461,7 @@
   },
   "maw_countermeasures_launcher_chaff_large": {
     "bullet": {
-      "mass": 0.1,
+      "mass": 1.0,
       "sound_path": "sounds/guns",
       "sound_pathStudio": "aircraft/weapon",
       "sound": "chaff_launcher_outside",
@@ -477,8 +477,8 @@
         "antiShipRocket": true
       },
       "rocket": {
-        "caliber": 0.026,
-        "length": 0.08,
+        "caliber": 0.05,
+        "length": 0.2,
         "WdK": [
           0.0,
           0.0,
@@ -492,14 +492,14 @@
         "massEnd": 0.01,
         "timeFire": 0.0,
         "force": 0.1,
-        "timeLife": 15.0,
+        "timeLife": 20.0,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
         "startSpeed": 70.0,
         "endSpeed": 0.0,
         "maxDistance": 1000.0,
         "minDistance": 200.0,
-        "maxDeltaAngle": 15.0,
+        "maxDeltaAngle": 25.0,
         "maxDeltaAngleVertical": 5.0,
         "normalizationPreset": "default",
         "ricochetPreset": "default",
@@ -555,9 +555,10 @@
           1000.0
         ],
         "distanceFuse": false,
-        "advancedMissiles": false,
         "speedViscosity": 0.2,
         "price": 300.0,
+        "amountPerTier": 30.0,
+        "iconType": "ltc",
         "explosionEffect": "",
         "fireEffect": "",
         "smokeEffect": "misc_chaff",
@@ -591,10 +592,10 @@
             "profile": [
               0.05,
               0.1,
-              12.0,
-              15.0
+              17.0,
+              20.0
             ],
-            "multiplier0": 0.2
+            "multiplier0": 1.1
           },
           "infraRed": {
             "multiplier": 0.0,

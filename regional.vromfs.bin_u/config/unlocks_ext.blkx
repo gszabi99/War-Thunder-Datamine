@@ -5088,6 +5088,72 @@
       }
     },
     {
+      "id": "2026_04_29_golden_week_decals",
+      "locId": "unlocks/group/japan_golden_week",
+      "locDescId": "gift_decals_trophy/desc",
+      "userLogId": "2026_04_29_golden_week_decals_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "japan_golden_week",
+      "costGold": 199,
+      "visibleDaysAfter": 1.0,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "chardType": "char_static_progress",
+        "num": 3000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-04-29 11:00:00",
+            "endDate": "2026-05-06 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_04_29_infantry_cbt_2_1_poll",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "cbt_human_event_conquest_rb",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-04-29 10:00:00",
+            "endDate": "2026-05-02 10:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_04_24_it_liberation_decals",
       "locId": "unlocks/group/italian_liberation_day",
       "locDescId": "gift_decals_trophy/desc",
@@ -5098,7 +5164,7 @@
       "group": "italian_liberation_day",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,

@@ -98,7 +98,9 @@ let triggerTypeToLoc = {
   [TRIGGER_TYPE.FLARES] = "countermeasures",
   [TRIGGER_TYPE.CHAFFS] = "countermeasures",
   [TRIGGER_TYPE.FUEL_TANKS] = "fuel_tanks",
-  [TRIGGER_TYPE.ADD_GUN] = "additional_guns"
+  [TRIGGER_TYPE.ADD_GUN] = "additional_guns",
+  [TRIGGER_TYPE.MACHINE_GUN] = "additional_guns",
+  [TRIGGER_TYPE.CANNON] = "additional_guns",
 }
 
 function getWeaponLocByTrigger(trigger) {
