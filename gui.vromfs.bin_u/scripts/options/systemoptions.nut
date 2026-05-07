@@ -13,7 +13,7 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options,
-  get_supported_generated_frames, is_dx11_supported, is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api,
+  get_supported_generated_frames, is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api,
   is_intel_gpu, getVideoModes, getDgsTexQuality } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
@@ -58,13 +58,8 @@ local prevRtMode = null
 let mQualityPresets = DataBlock()
 mQualityPresets.load("%guiConfig/graphicsPresets.blk")
 
-let isDx11Supported = hardPersistWatched("isDx11Supported", null)
 let isDx12Supported = hardPersistWatched("isDx12Supported", null)
-function initIsDxSupportedOnce() { 
-  if (isDx11Supported.get() == null) {
-    let is_dx11_sup = is_dx11_supported()
-    isDx11Supported.set(is_dx11_sup)
-  }
+function initIsDx12SupportedOnce() { 
   if (isDx12Supported.get() == null) {
     let is_dx12_sup = is_dx12_supported()
     isDx12Supported.set(is_win64 && is_dx12_sup)
@@ -101,7 +96,7 @@ const fpsUnlimitedVal = 0
 const fpsUnlimitedTxt = "unlimited"
 const fpsMenuUnlimTxt = "off"
 
-let initialGfxApi = get_active_gfx_api()
+let initialGfxApi = blkOptFromPath(get_config_name())?.video.driver ?? "auto"
 let fpsLimits = [30, 50, 60, 85, 100, 120, 144, 165, 180, 240, fpsUnlimitedVal]
 
 local mUiStruct = [
@@ -165,7 +160,7 @@ local mUiStruct = [
   }
   {
     title = "options/rt"
-    addTitleInfo = is_win64 && initialGfxApi != "dx12"
+    addTitleInfo = is_win64 && initialGfxApi == "auto"
       ? "options/dx12_only" : null
     items = [
       "rayTracing"
@@ -1224,18 +1219,9 @@ mShared = {
 
 mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
-    getValueFromConfig = function(blk, desc) {
-      let configValue = getBlkValueByPath(blk, desc.blk, desc.def)
-      if (configValue == "auto")
-        return "auto"
-      return get_active_gfx_api()
-    }
     init = function(blk, desc) {
-      initIsDxSupportedOnce()
-      desc.values <- [ "auto" ]
-
-      if (isDx11Supported.get())
-        desc.values.append("dx11")
+      initIsDx12SupportedOnce()
+      desc.values <- [ "auto", "dx11" ]
 
       if (isDx12Supported.get())
         desc.values.append("dx12")
@@ -1243,24 +1229,25 @@ mSettings = {
       if (is_win64 && hasFeature("optionGFXAPIVulkan"))
         desc.values.append("vulkan")
 
-      let configValue = getBlkValueByPath(blk, desc.blk, desc.def)
+      let startupValue = getBlkValueByPath(blk, desc.blk, desc.def)
       desc.items <- desc.values.map(function(value) {
         let optionLocText = loc($"options/gfx_api_{value}")
         if (is_win64 && value == "auto") {
-          let currentAutoApiText = configValue == "auto"
+          let currentAutoApi = startupValue == "auto"
             ? loc($"options/gfx_api_{get_active_gfx_api()}")
             : ""
           return {
             text = "".concat(
-              optionLocText, currentAutoApiText == ""
+              optionLocText, currentAutoApi == ""
                 ? ""
-                : loc("ui/parentheses/space", {text = $"{loc("options/currently")} {currentAutoApiText}"}))
+                : loc("ui/parentheses/space", {text = $"{loc("options/currently")} {currentAutoApi}"}))
             }
         }
         if (is_win64 && value == "vulkan")
           return { text = "".concat(optionLocText, loc("ui/parentheses/space", { text = "beta" })) }
         return { text = optionLocText }
       })
+      desc.def <- desc.values[0]
     }
     onChanged = "gfxApiClick"
     isVisible = @() is_win64

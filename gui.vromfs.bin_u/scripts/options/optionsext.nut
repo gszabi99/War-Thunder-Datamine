@@ -416,15 +416,11 @@ function getConsolePresets() {
     res.append("raytraced", "raytraced_quality")
   else if (hasFeature("optionRT"))
     res.append("raytraced")
-  return res.map(@(v) { text = $"#options/{v}", tooltip = $"#options/{v}/tooltip" })
+  return res.map(@(v) { valName = v, text = $"#options/{v}", tooltip = $"#options/{v}/tooltip" })
 }
 
 function getConsolePresetsValues() {
-  if (isPlatformSony)
-    return [0, 1, 2, 3];
-  else if (hasFeature("optionRT"))
-    return [0, 1, 2]
-  return [0, 1];
+  return getConsolePresets().map(@(v) consoleSettings.consoleGraphicsPresetMappingNames[v.valName])
 }
 
 const BOMB_ASSAULT_FUSE_TIME_OPT_VALUE = -1
