@@ -320,6 +320,9 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
     let upgradeBtnObj = upgradeBlock.findObject("upgrade_button")
     upgradeBtnObj.show(!this.needHideUpgradeButton)
+    let progressBarDiv = showObjById("expProgressBar", showProgressBar, upgradeBlock)
+    if (!showProgressBar)
+      this.guiScene.replaceContentFromText(progressBarDiv, "", 0, this)
 
     if (isMaxQualification) {
       qualificationReqObj.setValue("")
@@ -327,7 +330,6 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     }
 
     upgradeBtnObj.visualStyle = nextSpecType.code == crewSpecTypes.EXPERT.code ? "" : "purchase"
-
     let trainCostInstance = crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code)
 
     local crewReqLevelText = nextSpecType.getReqLevelText(this.crew, this.curUnit, trainCostInstance.tostring())
@@ -357,11 +359,8 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     if (!this.needHideQualReqBlock)
       qualificationReqObj.setValue(crewReqLevelText)
 
-    let progressBarDiv = showObjById("expProgressBar", showProgressBar, upgradeBlock)
-    if (!showProgressBar) {
-      this.guiScene.replaceContentFromText(progressBarDiv, "", 0, this)
+    if (!showProgressBar)
       return
-    }
 
     
     let unitExpLeft = crewSpecType.getExpLeftByCrewAndUnit(this.crew, this.curUnit)
