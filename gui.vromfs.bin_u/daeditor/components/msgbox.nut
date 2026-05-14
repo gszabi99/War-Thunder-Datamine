@@ -205,7 +205,7 @@ function showMsgbox(params) {
 
   local btnsDesc = params?.buttons ?? defaultButtons
   if (!(isObservable(btnsDesc)))
-    btnsDesc = Watched(btnsDesc)
+    btnsDesc = Watched(btnsDesc, FRP_DONT_CHECK_NESTED)
 
   local defCancel = null
   local initialBtnIdx = 0

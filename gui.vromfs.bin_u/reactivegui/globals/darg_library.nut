@@ -3,10 +3,14 @@ from "math" import min, max, clamp
 require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let { utf8 } = require("%globalScripts/ui_globals.nut")
 let sharedEnums = require("%globalScripts/sharedEnums.nut")
+let { DBGLEVEL } = require("dagor.system")
 let frp = require("frp")
 let log = require("%globalScripts/logs.nut")
 let darg_library = require("%darg/darg_library.nut")
 let {loc, doesLocTextExist} = require("dagor.localize")
+let { set_nested_observable_debug } = frp
+
+set_nested_observable_debug(DBGLEVEL > 0)
 
 
 let shHud = @[pure](value) (darg_library.fsh(value)).tointeger()

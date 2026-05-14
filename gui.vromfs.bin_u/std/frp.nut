@@ -1,5 +1,7 @@
-from "frp" import Computed, Watched, FRP_INITIAL, set_subscriber_validation,
-  make_all_observables_immutable, recalc_all_computed_values, gather_graph_stats, update_deferred
+from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug, set_subscriber_validation,
+  make_all_observables_immutable, recalc_all_computed_values, gather_graph_stats, update_deferred, set_default_deferred
+
+
 
 function WatchedImmediate(...) {
   let w = Watched.acall([this].extend(vargv))
@@ -214,11 +216,14 @@ return freeze({
   Watched
   WatchedImmediate
   FRP_INITIAL
+  FRP_DONT_CHECK_NESTED
+  set_nested_observable_debug
   set_subscriber_validation
   make_all_observables_immutable
   recalc_all_computed_values
   gather_graph_stats
   update_deferred
+  set_default_deferred
   WatchedRo
   isObservable
   isComputed
