@@ -44,7 +44,7 @@ let { checkLogoutScheduled } = require("%scripts/login/logout.nut")
 let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
 let { isTutorialBeforeCountrySelect, needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
-let { showMsgboxIfSoundModsForceDisabled } = require("%scripts/penitentiary/soundMods.nut")
+let { showMsgboxIfSoundModsForceDisabled, showMsgboxIfSoundModsBanksCheckFailed } = require("%scripts/penitentiary/soundMods.nut")
 
 
 let delayed_gblk_error_popups = []
@@ -169,6 +169,7 @@ function onMainMenuReturn(handler, isAfterLogin) {
     searchAndRepairInvalidPresets()
     showUserSightMigrationPopupIfNeeded()
     showMsgboxIfSoundModsForceDisabled()
+    showMsgboxIfSoundModsBanksCheckFailed()
   }
 
   handler.doWhenActive(popGblkErrorPopups)

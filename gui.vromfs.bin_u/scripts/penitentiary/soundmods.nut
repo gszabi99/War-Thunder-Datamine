@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
-let { is_sound_mods_enabled, restart_game_without_mods, is_sound_mods_force_disabled = null } = require("soundModCheck")
+let { is_sound_mods_enabled, restart_game_without_mods, is_sound_mods_force_disabled = null,
+  is_sound_mods_banks_check_failed = null } = require("soundModCheck")
 
 let isAllowSoundMods = @(event) event?.allowSoundMods ?? true
 
@@ -24,7 +25,17 @@ function showMsgboxIfSoundModsForceDisabled() {
   return false
 }
 
+function showMsgboxIfSoundModsBanksCheckFailed() {
+  if (is_sound_mods_banks_check_failed != null && is_sound_mods_banks_check_failed())
+    scene_msg_box("sound_mods_banks_check_failed", null, loc("sound_mods_banks_check_failed"),
+    [
+      ["ok", function() {}]
+    ], null)
+  return false
+}
+
 return {
   showMsgboxIfSoundModsNotAllowed
   showMsgboxIfSoundModsForceDisabled
+  showMsgboxIfSoundModsBanksCheckFailed
 }
