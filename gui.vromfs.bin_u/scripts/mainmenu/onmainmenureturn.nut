@@ -43,7 +43,9 @@ let { showUserSightMigrationPopupIfNeeded } = require("%scripts/options/tankSigh
 let { checkLogoutScheduled } = require("%scripts/login/logout.nut")
 let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
+let { isTutorialBeforeCountrySelect, needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
 let { showMsgboxIfSoundModsForceDisabled } = require("%scripts/penitentiary/soundMods.nut")
+
 
 let delayed_gblk_error_popups = []
 function showGblkErrorPopup(errCode, path) {
@@ -136,8 +138,18 @@ function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(@() itemNotifications.checkOfferToBuyAtExpiration())
     handler.doWhenActive(@() checkGaijinPassReminder())
 
-    handler.doWhenActive(checkTutorialOnStart)
-    handler.doWhenActiveOnce("checkNoviceTutor")
+    if (isTutorialBeforeCountrySelect()) {
+      handler.doWhenActive(checkTutorialOnStart)
+      handler.doWhenActiveOnce("checkCountrySelect")
+      if (!needShowTutorial("takeUnit", 1))
+        handler.doWhenActiveOnce("checkNoviceTutor")
+    }
+    else {
+      handler.doWhenActiveOnce("checkCountrySelect")
+      handler.doWhenActive(checkTutorialOnStart)
+      handler.doWhenActiveOnce("checkNoviceTutor")
+    }
+
     handler.doWhenActiveOnce("checkUpgradeCrewTutorial")
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
     handler.doWhenActive(steamCheckNewItems)

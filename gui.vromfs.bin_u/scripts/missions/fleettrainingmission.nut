@@ -24,8 +24,8 @@ let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScrip
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 
 let esUnitTypeMisNameMap = {
-  [ES_UNIT_TYPE_BOAT] = ["tutorial_boat_battle_arcade_part1", "tutorial_boat_battle_arcade_part2"],
-  [ES_UNIT_TYPE_SHIP] = ["tutorial_destroyer_battle_arcade_part1", "tutorial_destroyer_battle_arcade_part2"]
+  [ES_UNIT_TYPE_BOAT] = ["tutorial_boat_battle_arcade_part1"],
+  [ES_UNIT_TYPE_SHIP] = ["tutorial_destroyer_battle_arcade_part1"]
 }
 
 function getNextTutorialMissionParams(unit) {

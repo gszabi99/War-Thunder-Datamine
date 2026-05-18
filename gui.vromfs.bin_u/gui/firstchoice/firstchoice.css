@@ -1,15 +1,16 @@
-@const unitChoiceImageWidth: (450*@sf/@pf)\1; @const unitChoiceImageHeight: 1@unitChoiceImageWidth/2;
-@const countryChoiceImageWidth: (348@sf/@pf)\1;
-@const countryChoiceImageHeight: (230@sf/@pf)\1;
+@const unitChoiceImageWidth: (320*@sf/@pf)\1;
+@const unitChoiceImageHeight: (220*@sf/@pf)\1;
+@const unitChoiceTextBlockHeight: 80@sf/@pf;
+@const countryChoiceTextBlockHeight: 130@sf/@pf;
 @const countryChoiceInterval: (10@sf/@pf)\1;
 @const firstChoiceTextBlockHeight: 70@sf/@pf;
 @const firstChoiceSelSizeInc: (5@sf/@pf)\1;
+@const firstChoiceUserIconHeight: 48@sf/@pf;
 
 @const firstChoiceMargin: 30@sf/@pf;
 @const firstChoiceHeaderHeight: 0.05@scrn_tgt;
 
 @const firstChoiceAvailableHeight: 1@rh - 1@firstChoiceHeaderHeight - 1@frameFooterHeight;
-@const firstChoiceCountryFullHeight: 1@countryChoiceImageHeight + 1@dp + 1@firstChoiceTextBlockHeight;
 
 @const firstChoiceColor         : #cccccc;
 @const firstChoiceColorDisabled : #444444;
@@ -19,56 +20,29 @@
 @const firstChoiceTextBgColor           : #040910;
 @const firstChoiceTextBgSelectedColor   : #e0e0e0;
 
+
 firstChoiceItem {
-  margin:1@countryChoiceInterval;
+  margin-right:1@countryChoiceInterval;
   flow:vertical;
   css-hier-invalidate:yes;
-}
-
-firstChoiceItem.unit {
   width:1@unitChoiceImageWidth;
-  height:1@unitChoiceImageHeight + 1@dp + 1@firstChoiceTextBlockHeight;
+  height:1@unitChoiceImageHeight;
 }
 
-firstChoiceItem.country {
-  width:1@countryChoiceImageWidth;
-  height:1@firstChoiceCountryFullHeight;
+firstChoiceItem[isLast=yes] {
+  margin-right: 0;
 }
 
 firstChoiceImage {
-  position:relative;
+  position:absolute;
+  size:@unitChoiceImageWidth, @unitChoiceImageHeight;
+  pos:0.5pw - 0.5w, 0.5ph - 0.5h;
   background-repeat:expand;
   background-color:@firstChoiceColor;
   input-transparent: yes;
   css-hier-invalidate:yes;
-}
-
-.unit > firstChoiceImage {
-  size:@unitChoiceImageWidth, @unitChoiceImageHeight;
-  pos:0.5pw - 0.5w, 0.5@unitChoiceImageHeight - 0.5h;
-}
-
-[show_console_buttons=yes] .unit[selected=yes] > firstChoiceImage,
-[show_console_buttons=no] .unit:hover > firstChoiceImage
-{
-  size:@unitChoiceImageWidth + 2@firstChoiceSelSizeInc, @unitChoiceImageHeight + 2@firstChoiceSelSizeInc;
-}
-
-.country > firstChoiceImage {
-  size:@countryChoiceImageWidth, @countryChoiceImageHeight;
-  pos:0.5pw - 0.5w, 0.5@countryChoiceImageHeight - 0.5h;
-}
-
-[show_console_buttons=yes] .country[selected=yes] > firstChoiceImage,
-[show_console_buttons=no] .country:hover > firstChoiceImage
-{
-  size:@countryChoiceImageWidth + 2@firstChoiceSelSizeInc, @countryChoiceImageHeight + 2@firstChoiceSelSizeInc;
-}
-
-[show_console_buttons=yes] [selected=yes] > firstChoiceImage,
-[show_console_buttons=no] :hover > firstChoiceImage
-{
-  background-color:@white;
+  border: yes;
+  border-color: #2D3841;
 }
 
 :disabled > firstChoiceImage {
@@ -87,32 +61,27 @@ firstChoiceImage > movie {
   display: show;
 }
 
+firstChoiceShadow {
+  position: absolute;
+  pos: 0, ph-h;
+  bgcolor: #FFFFFF;
+}
+
 firstChoiceText {
-  re-type:text;
-  width:pw;
-  height:@firstChoiceTextBlockHeight;
-  pos:0.5pw-0.5w, @dp;
-  position:relative;
-
-  background-color:@firstChoiceTextBgColor;
-  color:@firstChoiceTextColor;
-  font:@fontMedium;
+  re-type: text;
+  pos: 0.5pw-0.5w, ph-h;
+  height: 1@unitChoiceTextBlockHeight;
+  position: absolute;
+  color: @commonTextColor;
+  font: @fontMedium;
 }
 
-[show_console_buttons=yes] [selected=yes] > firstChoiceText,
-[show_console_buttons=no] :hover > firstChoiceText
+firstChoiceItem[selected=yes] > firstChoiceImage > firstChoiceText,
+firstChoiceItem:hover > firstChoiceImage > firstChoiceText
 {
-  width:pw + 2@firstChoiceSelSizeInc;
-  padding:1@firstChoiceSelSizeInc, 0;
+  color: @activeTextColor;
 }
 
-[show_console_buttons=yes] [selected=yes] > firstChoiceText,
-[show_console_buttons=no] :hover > firstChoiceText
-{
-  background-color:@firstChoiceTextBgSelectedColor;
-  color:@firstChoiceTextSelectedColor;
-}
-
-:disabled > firstChoiceText {
+firstChoiceItem:disabled > firstChoiceImage > firstChoiceText {
   color:@disabledTextColor;
 }

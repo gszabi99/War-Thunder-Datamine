@@ -16,7 +16,8 @@ let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isNeedFirstCountryChoice, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
+let { reqFirstUnitTypeChoice, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
+let { reqFirstCountryChoice } = require("%scripts/user/newbieTutorialDisplay.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
 let { debug_dump_stack } = require("dagor.debug")
@@ -64,7 +65,8 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
 function canEditCountryPreset(country = null) {
   country = country ?? profileCountrySq.get()
   return !isSlotbarOverrided()
-    && (isCountrySlotbarHasUnits(country) || checkCanHaveEmptyPresets(country))
+    && (isCountrySlotbarHasUnits(country) || checkCanHaveEmptyPresets(country)
+      || reqFirstCountryChoice())
 }
 
 function canLoadSlotbarPreset(verbose = false, country = null) {
@@ -475,7 +477,7 @@ function getPresetsList(countryId) {
   }
   if (!res.len()) {
     res.append(createPresetFromSlotbar(countryId))
-    if (!isAlreadySendMissingPresetError && !isNeedFirstCountryChoice()
+    if (!isAlreadySendMissingPresetError && !reqFirstUnitTypeChoice()
         && hasDefaultUnitsInCountry(countryId)) {
       isAlreadySendMissingPresetError = true
       let blkString = toString(blk, 2)

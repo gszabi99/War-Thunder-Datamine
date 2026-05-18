@@ -212,6 +212,28 @@ function getUnitTypesInCountries() {
   return __types_for_coutries
 }
 
+let countriesByUnitType = {}
+function getCountriesByUnitTypes() {
+  if (countriesByUnitType.len() > 0)
+    return countriesByUnitType
+
+  countriesByUnitType.clear()
+  foreach (countryName, countryData in getUnitTypesInCountries()) {
+    foreach (unitType, available in countryData) {
+      if (!available)
+        continue
+      if (unitType not in countriesByUnitType)
+        countriesByUnitType[unitType] <- []
+      u.appendOnce(countryName, countriesByUnitType[unitType])
+    }
+  }
+  return countriesByUnitType
+}
+
+function getCountriesByUnitType(unitType) {
+  return getCountriesByUnitTypes()?[unitType] ?? []
+}
+
 function getBattleTypeByUnit(unit) {
   let esUnitType = getEsUnitType(unit)
   if (esUnitType == ES_UNIT_TYPE_TANK)
@@ -250,4 +272,5 @@ return {
   getBattleTypeByUnit
   getCountryByAircraftName
   reUnitLocNameSeparators
+  getCountriesByUnitType
 }

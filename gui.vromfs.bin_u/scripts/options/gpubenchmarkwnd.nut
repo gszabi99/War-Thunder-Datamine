@@ -2,17 +2,18 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
-  closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality,
-  getPresetForMaxFPS, isGpuBenchmarkRunning, getGpuName } = require("gpuBenchmark")
+  closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality, getGpuName
+  getPresetForMaxFPS, isGpuBenchmarkRunning } = require("gpuBenchmark")
 let { setQualityPreset, canShowGpuBenchmark, onConfigApplyWithoutUiUpdate,
   localizaQualityPreset } = require("%scripts/options/systemOptions.nut")
 let { secondsToString } = require("%scripts/time.nut")
 let { get_charserver_time_sec } = require("chard")
+let { GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID, needShowGpuBenchmark
+} = require("%scripts/options/gpuBenchmarkUtils.nut")
 
 let gpuBenchmarkPresets = [
   {
@@ -38,7 +39,7 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   hasInitedGraphicsAutodetect = false
 
   function initScreen() {
-    saveLocalAccountSettings("gpuBenchmark/seen", true)
+    saveLocalSharedSettings(GPU_BENCHMARK_SEEN_SAVE_ID, true)
     initGraphicsAutodetect()
     this.hasInitedGraphicsAutodetect = true
     showObjById("btnApply", false, this.scene)
@@ -146,25 +147,15 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
 gui_handlers.GpuBenchmarkWnd <- GpuBenchmarkWnd
 
 function checkShowGpuBenchmarkWnd() {
-  if (!canShowGpuBenchmark())
+  if (!needShowGpuBenchmark())
     return
-
-  local currentGpuName = getGpuName()
-  local lastSeenGpuName = loadLocalAccountSettings("gpuBenchmark/gpuName")
-
-  local gpuChanged = (currentGpuName != lastSeenGpuName)
-  if(gpuChanged)
-    saveLocalAccountSettings("gpuBenchmark/gpuName", currentGpuName)
-  else if (loadLocalAccountSettings("gpuBenchmark/seen", false))
-    return
-
+  saveLocalSharedSettings(GPU_BENCHMARK_GPU_SAVE_ID, getGpuName())
   handlersManager.loadHandler(GpuBenchmarkWnd)
 }
 
 function showGpuBenchmarkWnd() {
   if (!canShowGpuBenchmark())
     return
-
   handlersManager.loadHandler(GpuBenchmarkWnd, { needUiUpdate = true })
 }
 

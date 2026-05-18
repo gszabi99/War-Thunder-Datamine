@@ -151,6 +151,9 @@ shopItem {
         noPadding:t='yes'
         text:t='<<shopItemText>>'
         header:t='yes'
+        <<#translucentText>>
+        translucent:t='yes'
+        <</translucentText>>
       }
     }
   }
@@ -199,6 +202,9 @@ shopItem {
       <<^isItemLocked>>
       locked:t='no'
       <</isItemLocked>>
+      <<#translucentText>>
+      translucent:t='yes'
+      <</translucentText>>
 
       text-align:t='right'
     }
@@ -264,6 +270,17 @@ shopItem {
   on_move:t='onUnitCellMove'
   dragParent:t='yes'
   <</needDnD>>
+
+  <<#hasLockedIcon>>
+  img {
+    background-image:t='#ui/gameuiskin#locked_no_borders.svg'
+    position:t='absolute'
+    size:t='@sIco, @cIco'
+    background-svg-size:t='@sIco, @cIco'
+    halign:t='center'
+    valign:t='center'
+  }
+  <</hasLockedIcon>>
 }
 <<#needDnD>>
 on_end_edit:t='onCrewDropFinish'

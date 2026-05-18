@@ -701,9 +701,26 @@ slotBottomGradientLine {
   display:hide;
 }
 
+
+firstChoiceItem > slotHoverHighlight {
+  size:pw, ph-(@sf/@pf)/2;
+}
+
+firstChoiceItem > slotTopGradientLine {
+  size:pw, 2@slotTopLineHeight;
+}
+
+firstChoiceItem > slotBottomGradientLine {
+  size:pw, 2@slotbarBottomLineHeight;
+}
+
 unitCell[selected=yes] > shopItem > slotTopGradientLine,
 unitCell[selected=yes] > shopItem > slotBottomGradientLine,
 unitCell[selected=no] > shopItem:hover > slotBottomGradientLine,
+firstChoiceItem[selected=yes] > slotHoverHighlight,
+firstChoiceItem[selected=yes] > slotTopGradientLine,
+firstChoiceItem[selected=yes] > slotBottomGradientLine,
+firstChoiceItem:hover > slotHoverHighlight,
 unitCell > shopItem:hover > slotHoverHighlight,
 unitItemContainer[chosen=yes] > shopItem > slotTopGradientLine,
 unitItemContainer[chosen=yes] > shopItem > slotBottomGradientLine,
@@ -964,6 +981,10 @@ shopItemText[header=yes]  {
 
 shopItemText[disabled=yes]  {
   color:@fadedTextColor;
+}
+
+shopItemText[translucent=yes] {
+  color:@translucentTextColor;
 }
 
 classIcon[shopItemType=light_fighter]       { color:@light_fighterColor; }
@@ -1642,6 +1663,11 @@ rankUpList > unitCell
 {
   size:@slot_width, @slot_height + 2@slot_vert_pad;
   padding:@slot_interval, @slot_vert_pad;
+}
+
+tooltipLink > unitCell {
+  size: @slot_width, @slot_height;
+  padding: 0;
 }
 
 slotsHeader {

@@ -1,26 +1,22 @@
-div {
-  id:t='unit_type_list_box';
+tdiv {
   width:t='pw'
 
-  flow:t="h-flow"
+  flow:t='h-flow'
   flow-align:t='center'
   total-input-transparent:t='yes'
 
   behaviour:t='posNavigator'
   navigatorShortcuts:t='yes'
-  on_select:t='onSelectUnitType';
-  _on_activate:t='onEnterChoice'
-  _on_click:t='onEnterChoice'
+  on_select:t='onSelectSlot'
+  _on_activate:t='onClickUnitType'
+  _on_click:t='onClickUnitType'
 
-  <<#unitTypeItems>>
+  <<#items>>
   firstChoiceItem {
-    width:t='@unitChoiceImageWidth'
     tooltip:t='<<tooltip>>'
-    class:t='unit'
-
+    <<#isLast>>isLast:t='yes'<</isLast>>
     firstChoiceImage {
       background-image:t='<<backgroundImage>>'
-
       <<#videoPreview>>
       movie {
         movie-load='<<videoPreview>>'
@@ -28,20 +24,27 @@ div {
         movie-loop:t='yes'
       }
       <</videoPreview>>
-    }
 
-    firstChoiceText {
-      text:t='<<text>>'
-      css-hier-invalidate:t='yes'
+      firstChoiceShadow {
+        size:t='pw, 1@unitChoiceTextBlockHeight'
+        background-svg-size:t='1@unitChoiceImageWidth, 1@unitChoiceTextBlockHeight'
+        background-image:t='!ui/images/firstChoice/unitTypeChoiceShadow'
+      }
 
-      ButtonImg {
-        size:t='40@sf/@pf, 40@sf/@pf'
-        pos:t='50%ph-50%w, 50%ph-50%h'
-        position:t='absolute'
-        showOnSelect:t='yes'
-        btnName:t='A'
+      firstChoiceText {
+        text:t='<<text>>'
+        css-hier-invalidate:t='yes'
+
+        ButtonImg {
+          size:t='40@sf/@pf, 40@sf/@pf'
+          pos:t='-w-1@blockInterval, 50%ph-50%h'
+          position:t='absolute'
+          showOnSelect:t='yes'
+          btnName:t='A'
+        }
       }
     }
+    slotHoverHighlight {}
   }
-  <</unitTypeItems>>
+  <</items>>
 }

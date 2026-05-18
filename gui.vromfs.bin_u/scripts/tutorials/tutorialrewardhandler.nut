@@ -24,6 +24,7 @@ let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
 let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
+let { isTutorialBeforeCountrySelect, needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 register_command(
   function (misName) {
@@ -128,7 +129,8 @@ local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
   onUseDecorator = @() useDecorator(this.decorator, this.decoratorUnit, this.decoratorSlot)
 
   function updateDecoratorButton() {
-    local canUseDecorator = this.decorator != null && canStartPreviewScene(false)
+    let canUseDecoratorInTutorial = !needShowTutorial("countryChoice", 1) || !isTutorialBeforeCountrySelect()
+    local canUseDecorator = this.decorator != null && canUseDecoratorInTutorial && canStartPreviewScene(false)
     let obj = showObjById("btn_use_decorator", canUseDecorator, this.scene)
     if (!canUseDecorator)
       return

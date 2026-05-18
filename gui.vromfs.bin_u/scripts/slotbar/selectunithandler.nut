@@ -730,6 +730,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     let textArray = [loc("mainmenu/onlyShownUnitsByGroup", {
       groupName = loc(this.getSelectedGroup()?.name ?? "")
     })]
+
     if (u.isUnit(unit) && !canAssignInSlot(unit, this.config.unitsGroupsByCountry, this.country))
       textArray.append(colorize("red", loc("worldwar/help/slotbar/unit_unavailable")))
 
@@ -751,7 +752,6 @@ gui_handlers.SelectUnitHandler <- SelectUnitHandler
 return {
   open = @(crew, slotbar) get_cur_gui_scene().performDelayed({},
     function() {
-
       let params = getParamsFromSlotbarConfig(crew, slotbar)
       if (params == null)
         return broadcastEvent("ModalWndDestroy")

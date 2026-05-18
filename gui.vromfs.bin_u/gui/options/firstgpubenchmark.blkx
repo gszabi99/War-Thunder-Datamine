@@ -1,0 +1,69 @@
+{
+  "tdiv": [
+    {
+      "id": "bg_picture_container",
+      "size": "sw, sh",
+      "position": "root",
+      "background-color": "@black",
+      "tdiv": {
+        "pos": "50%sw-50%w,50%sh-50%h",
+        "position": "absolute",
+        "size": "2.333sh, sh",
+        "overflow": "hidden",
+        "tdiv": [
+          {
+            "id": "animated_bg_picture",
+            "pos": "pw/2-w/2, ph/2-h/2",
+            "position": "absolute",
+            "size": "2.5sh, sh",
+            "behaviour": "multiLayerImage",
+            "blend-time": "500"
+          },
+          {
+            "size": "0.333sh, sh",
+            "pos": "-w/2, 0",
+            "position": "absolute",
+            "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+            "background-color": "@black"
+          },
+          {
+            "size": "0.333sh, sh",
+            "pos": "pw -w/2, 0",
+            "position": "absolute",
+            "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+            "background-color": "@black"
+          }
+        ]
+      }
+    },
+    {
+      "width": "0.67@rw $min 2@rh",
+      "pos": "50%pw-50%w, 83%sh - 1@bh -50%h",
+      "position": "absolute",
+      "flow": "vertical",
+      "background-color": "@shadeBackgroundColor4",
+      "background-repeat": "expand",
+      "padding": "0.005sw, 0.01sh, 0.005sw, 0.02sh",
+      "textAreaCentered": [
+        {
+          "position": "relative",
+          "pos": "(pw-w)/2, 0",
+          "width": "pw",
+          "text": "#gpuBenchmark/progresshint"
+        },
+        {
+          "id": "progressText",
+          "position": "relative",
+          "pos": "(pw-w)/2, 0",
+          "width": "pw",
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "timer": {
+    "id": "progress_timer",
+    "timer_handler_func": "onUpdate",
+    "timer_interval_msec": "1000"
+  }
+}

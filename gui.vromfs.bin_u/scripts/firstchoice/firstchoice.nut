@@ -25,14 +25,14 @@ let getFirstChosenUnitType = function(defValue = ES_UNIT_TYPE_INVALID) {
   return defValue
 }
 
-let isNeedFirstCountryChoice = function() {
+let reqFirstUnitTypeChoice = function() {
   return getFirstChosenUnitType() == ES_UNIT_TYPE_INVALID
-         && !stat_get_value_respawns(0, 1)
-         && !disableNetwork
+    && !stat_get_value_respawns(0, 1)
+    && !disableNetwork
 }
 
-let fillUserNick = function (nestObj, _headerLocId = null) {
-  if (!isProfileReceived.get() || !is_gdk)
+let fillUserNick = function (nestObj, tpl = "%gui/firstChoice/userNick.tpl", doChecks = true) {
+  if (doChecks && (!isProfileReceived.get() || !is_gdk))
     return
 
   if (!nestObj?.isValid())
@@ -43,10 +43,11 @@ let fillUserNick = function (nestObj, _headerLocId = null) {
     return
 
   let cfg = getProfileInfo()
-  let data =  handyman.renderCached("%gui/firstChoice/userNick.tpl", {
-      userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}.avif" : ""
-      userName = colorize("@playerNameColorWhite", getPlayerName(cfg?.name ?? ""))
-    })
+  let data = handyman.renderCached(tpl, {
+    userIcon = cfg?.icon ?? "cardicon_default"
+    userName = colorize("@playerNameColorWhite", getPlayerName(cfg?.name ?? ""))
+    userFrame = "!ui/images/avatar_frames/frame_simple_solid_grey.avif"
+  })
   guiScene.replaceContentFromText(nestObj, data, data.len(), null)
 }
 
@@ -65,7 +66,7 @@ function unlockCountry(country, hideInUserlog = false, reqUnlock = true) {
 
 function checkUnlockedCountries() {
   let curUnlocked = []
-  if (isNeedFirstCountryChoice())
+  if (reqFirstUnitTypeChoice())
     return curUnlocked
 
   let unlockAll = disableNetwork || hasFeature("UnlockAllCountries") || isDiffUnlocked(1, ES_UNIT_TYPE_AIRCRAFT)
@@ -103,7 +104,7 @@ function checkUnlockedCountriesByAirs() {
 return {
   fillUserNick
   getFirstChosenUnitType
-  isNeedFirstCountryChoice
+  reqFirstUnitTypeChoice
   isFirstChoiceShown
   getUnlockedCountries = @() unlockedCountries
   clearUnlockedCountries = @() unlockedCountries.clear()

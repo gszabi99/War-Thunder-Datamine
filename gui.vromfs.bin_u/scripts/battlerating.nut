@@ -5,7 +5,7 @@ let { request_matching } = require("%scripts/matching/api.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
-let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
+let { reqFirstUnitTypeChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { get_time_msec } = require("dagor.time")
 let { isInFlight } = require("gameplayBinding")
 let { userName } = require("%scripts/user/profileStates.nut")
@@ -213,7 +213,7 @@ updateBattleRating = function(gameMode = null, brData = null) {
 
 local isRequestDelayed = false
 function updateBattleRatingDelayed() {
-  if (isRequestDelayed || isInFlight() || isNeedFirstCountryChoice() || !hasOptionsInitialized()) 
+  if (isRequestDelayed || isInFlight() || reqFirstUnitTypeChoice() || !hasOptionsInitialized()) 
     return
   isRequestDelayed = true
   handlersManager.doDelayed(function() {

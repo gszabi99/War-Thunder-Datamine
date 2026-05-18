@@ -39,7 +39,8 @@ foreach (fn in [
   "%scripts/postFxSettings.nut"
   "%scripts/artilleryMap.nut"
 
-  "%scripts/firstChoice/countryChoiceWnd.nut"
+  "%scripts/firstChoice/unitTypeChoiceHandler.nut"
+  "%scripts/firstChoice/countryChoiceHandler.nut"
 
   "%scripts/measureType.nut"
   "%scripts/genericOptions.nut"
@@ -307,6 +308,7 @@ require("%scripts/mainmenu/hideMainMenuUi.nut")
 require("%scripts/wheelmenu/chooseVehicleWheelMenu.nut")
 require("%scripts/login/loginContacts.nut")
 require("%scripts/mainmenu/onMainMenuReturn.nut")
+require("%scripts/options/firstGpuBenchmarkWnd.nut")
 require("%scripts/unlocks/regionalUnlocksPromo.nut")
 require("%scripts/user/suggestionEmailRegistrationPromo.nut")
 require("%scripts/statsd/missionStats.nut")

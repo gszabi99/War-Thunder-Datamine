@@ -14,7 +14,6 @@ let { handlersManager, get_cur_base_gui_handler, loadHandler } = require("%scrip
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { recentBR } = require("%scripts/battleRating.nut")
 let clanVehiclesModal = require("%scripts/clans/clanVehiclesModal.nut")
@@ -90,6 +89,9 @@ let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd
 let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
+let { isTutorialBeforeCountrySelect, needShowTutorial, reqFirstCountryChoice,
+  saveShowedTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
+
 
 let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nut")
 let { isQueueActive, findQueue, isAnyQueuesActive, checkQueueType } = require("%scripts/queue/queueState.nut")
@@ -322,7 +324,8 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventMyStatsUpdated(_params) {
     this.setCurrentGameModeName()
-    this.doWhenActiveOnce("checkNoviceTutor")
+    if (!needShowTutorial("takeUnit", 1))
+      this.doWhenActiveOnce("checkNoviceTutor")
     this.updateStartButton()
   }
 
@@ -996,18 +999,31 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       ], "no")
   }
 
+  function checkCountrySelect() {
+    if (!needShowTutorial("unitTypeChoice", 1) && reqFirstCountryChoice())
+      loadHandler(gui_handlers.CountryChoiceHandler)
+  }
+
+  function canRunNoviceTutor() {
+    return getPvpRespawns() == 0
+      || (isTutorialBeforeCountrySelect()
+            && !needShowTutorial("unitTypeChoice", 1)
+            && !needShowTutorial("countryChoice", 1)
+            && !needShowTutorial("takeUnit", 1))
+  }
+
   function checkNoviceTutor() {
-    if (hasFeature("BattleAutoStart"))
-      return
-
-    if (disableNetwork || !isStatsLoaded() || !checkObj(this.toBattleButtonObj))
-      return
-
-    if (!tutorialModule.needShowTutorial("toBattle", 1) || getPvpRespawns())
+    if (hasFeature("BattleAutoStart")
+        || disableNetwork
+        || !isStatsLoaded()
+        || !checkObj(this.toBattleButtonObj)
+        || !needShowTutorial("toBattle", 1)
+        || !this.canRunNoviceTutor()
+    )
       return
 
     this.toBattleTutor()
-    tutorialModule.saveShowedTutorial("toBattle")
+    saveShowedTutorial("toBattle")
   }
 
   function checkUpgradeCrewTutorial() {
@@ -1197,7 +1213,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       || !hasFeature("NewUnitTypeToBattleTutorial"))
       return
 
-    if (!tutorialModule.needShowTutorial("newUnitTypetoBattle", 1)
+    if (!needShowTutorial("newUnitTypetoBattle", 1)
       || getMissionsComplete(["pvp_played", "skirmish_played"])
            < SlotbarPresetsTutorial.MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE
       || g_squad_manager.isNotAloneOnline()
@@ -1241,7 +1257,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       if (isNotFoundUnitTypeForTutorial || isNotFoundValidPresetForTutorial) {
         sendBqEvent("CLIENT_GAMEPLAY_1", "new_unit_type_to_battle_tutorial_skipped",
           { result = isNotFoundUnitTypeForTutorial ? "isNotFoundUnitTypeForTutorial" : "isNotFoundValidPreset"})
-        tutorialModule.saveShowedTutorial("newUnitTypetoBattle")
+        saveShowedTutorial("newUnitTypetoBattle")
       }
       return
     }
@@ -1268,7 +1284,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         }.bindenv(this)]
       ], "yes")
 
-    tutorialModule.saveShowedTutorial("newUnitTypetoBattle")
+    saveShowedTutorial("newUnitTypetoBattle")
   }
 
   function updateNoticeGMChanged() {

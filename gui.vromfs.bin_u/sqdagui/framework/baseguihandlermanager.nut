@@ -192,7 +192,8 @@ let handlersManager = {
       return null
     }
 
-    let reloadScene = this.updatePostLoadCss() || this.needReloadScene()
+    let isPostLoadCssChanged = this.updatePostLoadCss()
+    let reloadScene = isPostLoadCssChanged || this.needReloadScene()
     let reload = !handlerClass.keepLoaded || reloadScene
     if (!reload) {
       let handler = this.findAndReinitHandler(handlerClass, params)
@@ -204,8 +205,14 @@ let handlersManager = {
       }
     }
 
+    if (isPostLoadCssChanged) {
+      let mainGuiScene = get_main_gui_scene()
+      if (!guiScene.isEqual(mainGuiScene))
+        this.clearScene(mainGuiScene)
+    }
+
     if (reloadScene)
-      this.clearScene()
+      this.clearScene(guiScene)
 
     let handler = this.createHandler(handlerClass, guiScene, params)
     let newLoadedRootHandler = this.loadHandlerScene(handler)
@@ -513,14 +520,17 @@ let handlersManager = {
     if (!this.needCheckPostLoadCss && !isForced)
       return false
     let handler = this.getActiveBaseHandler()
-    if (!handler || !handler.isSceneActiveNoModals())
+    if (handler != null && !handler.isSceneActiveNoModals())
       return false
 
     this.needCheckPostLoadCss = false
     if (!this.updatePostLoadCss())
       return false
 
-    handler.fullReloadScene()
+    if (handler == null)
+      get_cur_gui_scene().performDelayed(this, @() this.clearScene())
+    else
+      handler.fullReloadScene()
     return true
   }
 

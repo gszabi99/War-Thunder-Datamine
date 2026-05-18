@@ -1,7 +1,6 @@
 from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
-from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
 
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -33,7 +32,7 @@ local isCustomLangsList = false
 local langsList = []
 
 
-let canChooseThreadsLang = @() hasFeature("ChatThreadLang") && is_myself_anyof_moderators()
+let canChooseThreadsLang = @() hasFeature("ChatThreadLang")
 
 function getChatLatestThreadsUpdateState() {
   if (lastRequestTime > lastUpdatetTime && lastRequestTime + REQUEST_TIMEOUT_MSEC > get_time_msec())

@@ -1,51 +1,191 @@
 {
   "root": {
     "blur": {},
-    "blur_foreground": {},
-    "div": {
-      "id": "country_choice_block",
-      "max-width": "1@rw",
-      "max-height": "1@rh",
-      "pos": "50%pw-50%w, 50%ph-50%h",
-      "position": "absolute",
-      "flow": "vertical",
-      "tdiv": {
-        "id": "usernick_place"
+    "tdiv": [
+      {
+        "position": "absolute",
+        "pos": "1@bwInVr, 1@bhInVr",
+        "size": "1@swOrRwInVr, 1@shOrRhInVr",
+        "background-color": "#B30C1117",
+        "input-transparent": "yes"
       },
-      "activeText": {
-        "id": "choice_header",
-        "left": "1@countryChoiceInterval",
-        "position": "relative",
-        "caption": "yes",
-        "text": "",
-        "height": "1@firstChoiceHeaderHeight"
-      },
-      "text": {
-        "id": "choice_info",
-        "position": "relative",
-        "left": "1@countryChoiceInterval",
-        "text": "#mainmenu/firstChoiseBonusNotice"
-      },
-      "div": {
-        "id": "first_choices_block",
-        "width": "pw"
-      },
-      "navBar": {
-        "class": "relative",
-        "isTransparent": "yes",
-        "navLeft": {
-          "margin-left": "1@countryChoiceInterval",
-          "Button_text": {
-            "id": "back_button",
-            "text": "#mainmenu/btnBack",
-            "on_click": "onBack",
-            "display": "hide",
-            "enable": "no",
-            "btnName": "B",
-            "ButtonImg": {}
+      {
+        "max-width": "1@rw",
+        "max-height": "1@rh",
+        "pos": "50%pw-50%w, 50%ph-50%h",
+        "position": "absolute",
+        "flow": "vertical",
+        "css-hier-invalidate": "yes",
+        "tdiv": [
+          {
+            "id": "usernick_place",
+            "position": "relative",
+            "left": "50%pw-50%w",
+            "margin-bottom": "2.5@blockInterval"
+          },
+          {
+            "position": "relative",
+            "css-hier-invalidate": "yes",
+            "tdiv": [
+              {
+                "width": "3@unitChoiceImageWidth + 3@countryChoiceInterval",
+                "flow": "vertical",
+                "tdiv": [
+                  {
+                    "id": "countries",
+                    "behaviour": "posNavigator",
+                    "position": "relative",
+                    "width": "pw",
+                    "flow": "h-flow",
+                    "flow-align": "center",
+                    "navigatorShortcuts": "yes",
+                    "total-input-transparent": "yes",
+                    "css-hier-invalidate": "yes",
+                    "on_select": "onClickCountry"
+                  },
+                  {
+                    "size": "pw - 1@countryChoiceInterval, 1@unitChoiceImageHeight",
+                    "bgcolor": "#CC12161C",
+                    "tdiv": {
+                      "flow": "vertical",
+                      "pos": "pw/2-w/2, ph/2-h/2",
+                      "position": "absolute",
+                      "textAreaCentered": [
+                        {
+                          "overlayTextColor": "active",
+                          "position": "relative",
+                          "left": "50%pw-50%w",
+                          "margin-bottom": "1@blockInterval",
+                          "text": "#mainmenu/firstCountryChoiceNoticePremium"
+                        },
+                        {
+                          "id": "not_available_countries",
+                          "overlayTextColor": "active",
+                          "position": "relative",
+                          "left": "50%pw-50%w",
+                          "display": "hide"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "country_info_div",
+                "position": "relative",
+                "width": "442@sf/@pf",
+                "css-hier-invalidate": "yes",
+                "background-color": "#CC12161C",
+                "textAreaCentered": {
+                  "id": "choose_country_info",
+                  "position": "absolute",
+                  "overlayTextColor": "active",
+                  "width": "0.75pw",
+                  "halign": "center",
+                  "valign": "center",
+                  "text": "#mainmenu/choose_country"
+                },
+                "tdiv": {
+                  "id": "country_info",
+                  "position": "absolute",
+                  "size": "pw, ph",
+                  "flow": "vertical",
+                  "display": "hide",
+                  "padding": "1@blockInterval",
+                  "textareaNoTab": [
+                    {
+                      "id": "country_info_title",
+                      "margin-bottom": "1@blockInterval",
+                      "overlayTextColor": "active",
+                      "normalBoldFont": "yes"
+                    },
+                    {
+                      "id": "country_info_description",
+                      "width": "pw",
+                      "margin-bottom": "2@blockInterval",
+                      "overlayTextColor": "active",
+                      "smallFont": "yes"
+                    }
+                  ],
+                  "tdiv": {
+                    "id": "slots",
+                    "flow": "vertical",
+                    "textareaNoTab": [
+                      {
+                        "id": "starting_vehicles",
+                        "margin-bottom": "1@blockInterval",
+                        "smallFont": "yes"
+                      },
+                      {
+                        "margin-bottom": "1@blockInterval",
+                        "smallFont": "yes",
+                        "text": "#firstChoiceCountry/late_unlock"
+                      }
+                    ],
+                    "tdiv": [
+                      {
+                        "id": "starting_slots",
+                        "margin-bottom": "2@blockInterval",
+                        "tooltipLink": [
+                          {
+                            "id": "starting_unit1",
+                            "margin-right": "3@blockInterval"
+                          },
+                          {
+                            "id": "starting_unit2"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "late_unlock_slots",
+                        "tooltipLink": [
+                          {
+                            "id": "lateUnlock_unit1",
+                            "margin-right": "3@blockInterval"
+                          },
+                          {
+                            "id": "lateUnlock_unit2"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "Button_text": {
+                    "id": "btn_battle",
+                    "position": "absolute",
+                    "pos": "pw/2-w/2, ph-h-2@blockInterval",
+                    "class": "battle",
+                    "navButtonFont": "yes",
+                    "_on_click": "onToBattleClick",
+                    "css-hier-invalidate": "yes",
+                    "isCancel": "no",
+                    "btnName": "X",
+                    "pattern": {},
+                    "buttonWink": {
+                      "_transp-timer": "0"
+                    },
+                    "buttonGlance": {},
+                    "ButtonImg": {},
+                    "textarea": {
+                      "class": "buttonText",
+                      "text": "#mainmenu/toBattle"
+                    }
+                  }
+                }
+              }
+            ]
           }
+        ],
+        "textareaNoTab": {
+          "overlayTextColor": "active",
+          "bigBoldFont": "yes",
+          "position": "relative",
+          "left": "50%pw-50%w",
+          "margin-bottom": "5@blockInterval",
+          "font": "@fontBigBold",
+          "text": "#mainmenu/firstCountry"
         }
       }
-    }
+    ]
   }
 }

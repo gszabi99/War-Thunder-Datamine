@@ -32,6 +32,34 @@ const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutor
 
 dagui_propid_add_name_id("userInputType")
 
+
+function sendTutorialChoiceStatisticOnce(action, idx, missionName, input) {
+  if (loadLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, false))
+    return
+
+  let skipMask = loadLocalByAccount(skipTutorialBitmaskId, 0)
+  let info = { action, missionName, input,
+    reminder = stdMath.is_bit_set(skipMask, idx) ? "off" : "on"
+  }
+  sendBqEvent("CLIENT_GAMEPLAY_1", "new_player_tutorial_choice", info)
+  saveLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, true)
+}
+
+let setLaunchedTutorialQuestions = @(idx)
+  setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.get() | (1 << idx))
+
+function prepareStartTutorial(idx, mission, input) {
+  sendTutorialChoiceStatisticOnce("start", idx, mission.name, input)
+  saveTutorialToCheckReward(mission)
+  saveLocalByAccount($"firstRunTutorial_{mission.name}", true)
+  setLaunchedTutorialQuestions(idx)
+  destroySessionScripted("on start tutorial")
+  set_game_mode(GM_TRAINING)
+  select_mission(mission, true)
+  currentCampaignMission.set(mission.name)
+  save_profile(false)
+}
+
 local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/nextTutorial.blk"
@@ -84,39 +112,19 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onStart(obj = null) {
-    this.sendTutorialChoiceStatisticOnce("start", obj)
-    saveTutorialToCheckReward(this.tutorialMission)
-    saveLocalByAccount($"firstRunTutorial_{this.tutorialMission.name}", true)
-    this.setLaunchedTutorialQuestions()
-    destroySessionScripted("on start tutorial")
-
-    set_game_mode(GM_TRAINING)
-    select_mission(this.tutorialMission, true)
-    currentCampaignMission.set(this.tutorialMission.name)
+    let input = obj == null ? "" : this.getObjectUserInputType(obj)
+    prepareStartTutorial(this.checkIdx, this.tutorialMission, input)
     this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight); })
-    save_profile(false)
   }
 
   function onClose(obj = null) {
-    if (! this.canSkipTutorial)
-      return;
-    this.sendTutorialChoiceStatisticOnce("close", obj)
-    this.setLaunchedTutorialQuestions()
-    this.goBack()
-  }
-
-  function sendTutorialChoiceStatisticOnce(action, obj = null) {
-    if (loadLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, false))
+    if (!this.canSkipTutorial)
       return
-    let info = {
-                  action = action,
-                  reminder = stdMath.is_bit_set(loadLocalByAccount(skipTutorialBitmaskId, 0), this.checkIdx) ? "off" : "on"
-                  missionName = this.tutorialMission.name
-                  }
-    if (obj != null)
-      info["input"] <- this.getObjectUserInputType(obj)
-    sendBqEvent("CLIENT_GAMEPLAY_1", "new_player_tutorial_choice", info)
-    saveLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, true)
+
+    let input = obj == null ? "" : this.getObjectUserInputType(obj)
+    sendTutorialChoiceStatisticOnce("close", this.checkIdx, this.tutorialMission.name, input)
+    setLaunchedTutorialQuestions(this.checkIdx)
+    this.goBack()
   }
 
   function onSkipTutorial(obj) {
@@ -135,48 +143,62 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return userInputType
     return "invalid"
   }
-
-  setLaunchedTutorialQuestions = @() setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.get() | (1 << this.checkIdx))
 }
 
 gui_handlers.NextTutorialHandler <- NextTutorialHandler
 
-function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
-  if ((checkSkip && hasFeature("BattleAutoStart")) || !(topMenuHandler.get()?.isSceneActive() ?? false))
-    return false
 
+function autoRunTutorial(idx, mission) {
+  prepareStartTutorial(idx, mission, "autostart")
+  guiStartFlight()
+}
+
+let cantRunNextTutorial = @(checkSkip = true) (checkSkip && hasFeature("BattleAutoStart"))
+  || !(topMenuHandler.get()?.isSceneActive() ?? false)
+
+function getSuitableTutorialData(checkId, checkSkip = true) {
   local idx = -1
   local mData = null
   foreach (i, item in checkTutorialsList)
     if (item.id == checkId) {
       if (("requiresFeature" in item) && !hasFeature(item.requiresFeature))
-        return false
-
-      mData = getUncompletedTutorialData(item.tutorial)
-      if (!mData)
-        return false
+        break
 
       if ((launchedTutorialQuestionsPeerSession.get() & (1 << i)) && checkSkip)
-        return false
+        break
+
+      mData = getUncompletedTutorialData(item.tutorial)
+      if (mData == null)
+        break
 
       idx = i
       break
     }
+  return { idx, mData }
+}
 
-  if (!mData)
+let isTutorialIdxSkiped = @(idx, checkSkip = true)
+  checkSkip ? stdMath.is_bit_set(loadLocalByAccount(skipTutorialBitmaskId, 0), idx) : false
+
+function tryOpenNextTutorialHandler(checkId, checkSkip = true, hasDialog = true) {
+  if (cantRunNextTutorial())
     return false
 
-  if (checkSkip) {
-    let skipTutorial = loadLocalByAccount(skipTutorialBitmaskId, 0)
-    if (stdMath.is_bit_set(skipTutorial, idx))
-      return false
-  }
+  let { idx = -1, mData = null } = getSuitableTutorialData(checkId, checkSkip)
+  if (mData == null)
+    return false
 
-  handlersManager.loadHandler(NextTutorialHandler, {
-    tutorialMission = mData.mission
-    rewardMarkup = getTutorialRewardMarkup(mData)
-    checkIdx = idx
-  })
+  if (isTutorialIdxSkiped(idx, checkSkip))
+    return false
+
+  if (hasDialog)
+    handlersManager.loadHandler(NextTutorialHandler, {
+      tutorialMission = mData.mission
+      rewardMarkup = getTutorialRewardMarkup(mData)
+      checkIdx = idx
+    })
+  else
+    autoRunTutorial(idx, mData.mission)
 
   return true
 }
@@ -249,5 +271,5 @@ addPromoButtonConfig({
 })
 
 return {
-  tryOpenNextTutorialHandler = tryOpenNextTutorialHandler
+  tryOpenNextTutorialHandler
 }

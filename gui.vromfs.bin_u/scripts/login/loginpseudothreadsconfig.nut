@@ -14,7 +14,7 @@ let { isPlatformSony, isPlatformXbox
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { hasLoginState } = require("%scripts/login/loginStates.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
+let { saveVersion, needShowTutorial, reqFirstCountryChoice, isTutorialBeforeCountrySelect } = require("%scripts/user/newbieTutorialDisplay.nut")
 let { updateConsoleClientDownloadStatus } = require("%scripts/clientState/contentState.nut")
 let checkUnlocksByAbTest = require("%scripts/unlocks/checkUnlocksByAbTest.nut")
 let { getProfileInfo, updatePlayerRankByCountries } = require("%scripts/user/userInfoStats.nut")
@@ -26,7 +26,7 @@ let { shownUserlogNotifications, collectOldNotifications, collectUserlogItemdefs
 } = require("%scripts/userLog/userlogUtils.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
-let { isNeedFirstCountryChoice, clearUnlockedCountries, checkUnlockedCountries,
+let { reqFirstUnitTypeChoice, clearUnlockedCountries, checkUnlockedCountries,
   checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd, localAgreedEulaVersion } = require("%scripts/eulaWnd.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings,
@@ -41,8 +41,15 @@ let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
+let { isGpuBenchmarkRunning } = require("gpuBenchmark")
+let { needShowGpuBenchmark } = require("%scripts/options/gpuBenchmarkUtils.nut")
+
 
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null })
+
+local isFirstLoginOnSystem = false
+
+let needShowFirstCountryChoice = @() !isTutorialBeforeCountrySelect() && !needShowTutorial("unitTypeChoice", 1) && reqFirstCountryChoice()
 
 function initLoginPseudoThreadsConfig(cb) {
   broadcastEvent("AuthorizeComplete")
@@ -109,20 +116,22 @@ function initLoginPseudoThreadsConfig(cb) {
       checkUnlockedCountries()
       checkUnlockedCountriesByAirs()
 
-      if (isNeedFirstCountryChoice())
+      if (reqFirstUnitTypeChoice())
         broadcastEvent("AccountReset")
     }
     function() {
       checkUnlocksByAbTest()
     }
     function() {
+      let localSharedAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0)
+      isFirstLoginOnSystem = localSharedAgreedEulaVersion == 0
       if (disableNetwork)
         return
       let currentEulaVersion = getEulaVersion()
       let agreedEulaVersion = getAgreedEulaVersion()
 
       if (agreedEulaVersion >= currentEulaVersion) {
-        if (loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) < currentEulaVersion)
+        if (localSharedAgreedEulaVersion < currentEulaVersion)
           saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
       } else {
         if ((isPlatformSony || isPlatformXbox || steam_is_running())
@@ -153,25 +162,44 @@ function initLoginPseudoThreadsConfig(cb) {
       return null
     }
     function() {
-      if (isNeedFirstCountryChoice()) {
+      if (isFirstLoginOnSystem && needShowGpuBenchmark())
+        loadHandler(gui_handlers.FirstGpuBenchmarkWnd)
+    }
+    function() {
+      if (isGpuBenchmarkRunning())
+        return PT_STEP_STATUS.SUSPEND
+      return null
+    }
+    function() {
+      if (reqFirstUnitTypeChoice()) {
         disableMarkSeenAllResourcesForNewUser()
         saveLocalAccountSettings(NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED, false)
         forceUpdateGameModes()
-        loadHandler(gui_handlers.CountryChoiceHandler)
+        loadHandler(gui_handlers.UnitTypeChoiceHandler)
         gui_handlers.FontChoiceWnd.markSeen()
-        tutorialModule.saveVersion()
+        saveVersion()
 
         if(havePlayerTag("steamlogin"))
           saveLocalAccountSettings("disabledReloginSteamAccount", true)
       }
       else
-        tutorialModule.saveVersion(0)
+        saveVersion(0)
     }
     function() {
-      if (isNeedFirstCountryChoice())
+      if (reqFirstUnitTypeChoice())
         return PT_STEP_STATUS.SUSPEND
       return null
     }
+    function() {
+      if (needShowFirstCountryChoice())
+        loadHandler(gui_handlers.CountryChoiceHandler)
+    }
+    function() {
+      if (needShowFirstCountryChoice())
+        return PT_STEP_STATUS.SUSPEND
+      return null
+    }
+
     function() {
       loginWTState.initOptionsPseudoThread = null
       cb()

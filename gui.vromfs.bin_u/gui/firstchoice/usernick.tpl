@@ -5,7 +5,7 @@ tdiv {
   padding:t='1@countryChoiceInterval, 0'
   cardImg{
     position:t='relative'
-    background-image:t = '<<userIcon>>'
+    background-image:t = '#ui/images/avatars/<<userIcon>>.avif'
   }
   textarea {
     caption:t='yes'

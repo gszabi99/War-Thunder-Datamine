@@ -687,7 +687,8 @@ function buildCommonUnitSlot(id, unit, params) {
     missionRules = null, bottomLineText = null, isSlotbarItem = false, isInTable = true,
     showInService = false, hasExtraInfoBlock = false, hasExtraInfoBlockTop = false,
     toBattle = false, toBattleButtonAction = "onSlotBattle", hasCrewHint = false,
-    showAdditionExtraInfo = false, showCrewUnseenIcon = false, showCrewInfoTranslucent = false
+    showAdditionExtraInfo = false, showCrewUnseenIcon = false, showCrewInfoTranslucent = false,
+    hasLockedIcon = false, isItemLocked = null, translucentText = false
   } = params
   local { inactive = false, status = DEFAULT_STATUS, tooltipParams = null } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
@@ -980,7 +981,7 @@ function buildCommonUnitSlot(id, unit, params) {
     isElite             = (isLocalState && isOwn && isUnitElite(unit)) || (!isOwn && special)
     unitRankText        = getUnitSlotRankText(unit, crew, showBR, curEdiff)
     bottomLineText
-    isItemLocked        = isLocalState && !isUsable && !special && !isSquadronVehicle && !isMarketableVehicle && !isUnitsEraUnlocked(unit)
+    isItemLocked        = isItemLocked ?? (isLocalState && !isUsable && !special && !isSquadronVehicle && !isMarketableVehicle && !isUnitsEraUnlocked(unit))
     hasTalismanIcon     = isLocalState && (special || shopIsModificationEnabled(unit.name, "premExpMul"))
     itemButtons         = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", itemButtonsView)
     tooltipId           = getTooltipType("UNIT").getTooltipId(unit.name, tooltipParams)
@@ -991,6 +992,8 @@ function buildCommonUnitSlot(id, unit, params) {
     crewNumWithTitle    = hasCrewInfo ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : ""
     crewInfoTranslucent = showCrewInfoTranslucent ? "yes" : "no"
     hasContextCursor    = hasActions
+    translucentText
+    hasLockedIcon
   })
 
   return handyman.renderCached("%gui/slotbar/slotbarSlotSingle.tpl", resView)
