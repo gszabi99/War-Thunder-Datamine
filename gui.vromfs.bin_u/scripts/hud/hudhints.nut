@@ -1221,7 +1221,7 @@ enums.addTypes(g_hud_hints, {
 
       let playerTeam = getLocalTeamForMpStats()
       foreach (participant in participantList) {
-        let  participantPlayer = "player" in participant
+        let participantPlayer = "player" in participant
             ? participant.player
           : (participant?.participantId ?? -1) >= 0
             ? get_mplayer_by_id(participant.participantId)
@@ -1246,11 +1246,13 @@ enums.addTypes(g_hud_hints, {
       let freeSlotIconName = "#ui/gameuiskin#btn_help.svg"
       let freeSlotIconColor = "@minorTextColor"
       let freeSlotIconStr = this.makeSmallImageStr(freeSlotIconName, freeSlotIconColor, "small")
-      for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountA; ++i)
-        participantsAStr = "".concat(participantsAStr, freeSlotIconStr, " ")
+      if (participantsAStr.len() > 0)
+        for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountA; ++i)
+          participantsAStr = "".concat(participantsAStr, freeSlotIconStr, " ")
 
-      for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountB; ++i)
-        participantsBStr = $" {freeSlotIconStr}{participantsBStr}"
+      if (participantsBStr.len() > 0)
+        for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountB; ++i)
+          participantsBStr = $" {freeSlotIconStr}{participantsBStr}"
 
       if (participantsAStr.len() > 0 && participantsBStr.len() > 0)
         res = "".concat(participantsAStr, spaceStr,

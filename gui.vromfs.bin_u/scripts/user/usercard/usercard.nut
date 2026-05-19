@@ -13,7 +13,7 @@ let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXbox,
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let psnSocial = require("sony.social")
-let { fillProfileSummary, getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
+let { fillProfileSummary, getPlayerStatsFromBlk, getPlayerSummary } = require("%scripts/user/userInfoStats.nut")
 let { APP_ID } = require("app")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
@@ -364,7 +364,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.curMode = value
     this.setCurrentWndDifficulty(this.curMode)
     this.updateCurrentStatsMode(this.curMode)
-    fillProfileSummary(this.scene.findObject("stats_table"), this.player.summary, this.curMode)
+    fillProfileSummary(this.scene.findObject("stats_table"), getPlayerSummary(this.player), this.curMode)
   }
 
   setCurrentWndDifficulty = @(value) setCurrentWndDifficulty(value)

@@ -60,7 +60,7 @@ function getFlagAndEliteData(terseInfo, _playerStats) {
       let countryShortName = shortCountryNames?[unit.shopCountry]
       if (acedUnits?[unit.unitType.name][countryShortName] == null)
         continue
-      if (unit.isBought())
+      if (unit.isBought() && unit.isInShop && unit.isVisibleInShop())
         totalSelectedCount = totalSelectedCount + 1
     }
   } else

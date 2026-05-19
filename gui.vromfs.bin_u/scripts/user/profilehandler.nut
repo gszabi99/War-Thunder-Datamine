@@ -27,7 +27,7 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { fillProfileSummary, getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+let { fillProfileSummary, getProfileInfo, getPlayerSummary } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
@@ -887,7 +887,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     this.setCurrentWndDifficulty(this.curMode)
     this.updateCurrentStatsMode(this.curMode)
-    fillProfileSummary(this.scene.findObject("stats_table"), myStats.summary, this.curMode)
+    fillProfileSummary(this.scene.findObject("stats_table"), getPlayerSummary(myStats), this.curMode)
   }
 
   function onUpdate(_obj, _dt) {

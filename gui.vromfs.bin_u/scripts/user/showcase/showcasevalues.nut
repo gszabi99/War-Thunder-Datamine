@@ -8,6 +8,7 @@ let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { leaderboardsList } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { getPlayerLeaderboard } = require("%scripts/user/userInfoStats.nut")
 
 let defaultShowcaseType = "air_arcade"
 let diffNames = ["arcade", "historical", "simulation"]
@@ -20,7 +21,7 @@ function getStatsValue(params, value, scorePeriod) {
   if (valFromTerseInfo != null)
     return max(0, valFromTerseInfo)
 
-  let stats = params.stats?.leaderboard[gameType][scorePeriod]
+  let stats = getPlayerLeaderboard(params.stats)?[gameType][scorePeriod]
   let val = stats?[value.valueId][scorePeriod] ?? 0
   return val == -1 ? 0 : val
 }
@@ -49,7 +50,7 @@ function getPeacefulAtomValue(terseInfo) {
 
 function getPosInLeaderboard(params, value, scorePeriod) {
   let gameType = params?.showcaseType ?? defaultShowcaseType
-  let stats = params.stats?.leaderboard[gameType][scorePeriod]
+  let stats = getPlayerLeaderboard(params.stats)?[gameType][scorePeriod]
   let stat = stats?[value.valueId]
   if (stat == null)
     return 0

@@ -415,8 +415,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
           continue
 
         let crewIdVisible = needShowLockedSlots ? (crewInSlots.indexof(crew.id) ?? idx) : null
-        this.addCrewData(countryData.crews,
-          { crew = crew, unit = unit, isUnlocked = isUnlocked, status = status, crewIdVisible })
+        let addCrewDataConfig = { crew = crew, unit = unit, isUnlocked = isUnlocked, status = status, crewIdVisible }
+        let canSelectUnitOnMapScreen = !isRespawnScreen() && is_player_unit_alive() && get_player_unit_name() == unitName
+        if (canSelectUnitOnMapScreen)
+          addCrewDataConfig.__update({ isSelectable = true })
+        this.addCrewData(countryData.crews, addCrewDataConfig)
       }
 
       if (!needNewSlot)

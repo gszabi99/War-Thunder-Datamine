@@ -5,6 +5,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -15,6 +16,7 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
   callbackYes = null
   callbackNo = null
   onExitFunc = null
+  customButtons = null
 
   function initScreen() {
     this.scene.findObject("msgText").setValue(this.text)
@@ -25,8 +27,20 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("gc_gold").setValue(decimalFormat(gold))
     this.updateWarbonds()
     println($"GuiManager: load msgbox = {this.id}")
+
+    let buttonsHolder = this.scene.findObject("buttons_holder")
+    if (this.customButtons) {
+      local markUp = ""
+      local btnIndex = 0
+      foreach (button in this.customButtons) {
+        let buttonView = { id = $"btn_{btnIndex}", text = loc(button.text), funcName = "onCustomBtnClick" }
+        markUp = "".concat(markUp, handyman.renderCached("%gui/commonParts/button.tpl", buttonView))
+        btnIndex++
+      }
+      this.guiScene.replaceContentFromText(buttonsHolder, markUp, markUp.len(), this)
+    }
     this.guiScene.applyPendingChanges(false)
-    this.scene.findObject("buttons_holder").select()
+    buttonsHolder.select()
   }
 
   function updateWarbonds() {
@@ -54,11 +68,22 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
     base.goBack()
   }
 
+  function onCustomBtnClick(btn) {
+    let btnIndex = to_integer_safe(btn.id.split("_")[1])
+    this.customButtons[btnIndex].cb()
+    base.goBack()
+  }
+
   function onDummyA() {
     if (!this.isValid())
       return
     let buttonsHolder = this.scene.findObject("buttons_holder")
     let activeButtonindex = this.getHoveredButtonIndex() ?? buttonsHolder.getValue()
+    if (this.customButtons?[activeButtonindex] != null) {
+      this.customButtons[activeButtonindex].cb()
+      base.goBack()
+      return
+    }
     if(activeButtonindex == 0)
       this.onButtonYes()
     else

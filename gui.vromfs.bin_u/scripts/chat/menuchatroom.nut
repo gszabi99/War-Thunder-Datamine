@@ -16,7 +16,7 @@ let { clanUserTable, getContactByName } = require("%scripts/contacts/contactsLis
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
+let { isRoomClan, isRoomSquad } = require("%scripts/chat/chatRooms.nut")
 let { filterMessageText, filterNameFromHtmlCodes } = require("%scripts/chat/chatUtils.nut")
 let { getUserReputation, hasChatReputationFilter, getReputationBlockMessage
 } = require("%scripts/user/usersReputation.nut")
@@ -210,11 +210,16 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
 
 function newRoom(id, customScene = null, ownerHandler = null) {
   let rType = g_chat_room_type.getRoomType(id)
+  let canBeClosedInitial = rType.canBeClosed(id)
   local r = {
     id = id
     type = rType
     forceCanBeClosed = null
-    canBeClosed = @() this.forceCanBeClosed != null ? this.forceCanBeClosed : rType.canBeClosed(id)
+    canBeClosed = function() {
+      if (isRoomSquad(id) || isRoomClan(id))
+        return this.forceCanBeClosed != null ? this.forceCanBeClosed : canBeClosedInitial
+      return rType.canBeClosed(id)
+    }
     havePlayersList = rType.havePlayersList
     hasCustomViewHandler = rType.hasCustomViewHandler
 

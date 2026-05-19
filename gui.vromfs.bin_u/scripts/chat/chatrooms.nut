@@ -23,6 +23,12 @@ function getRoomById(id) {
   return u.search(chatRooms, function (room) { return room.id == id })
 }
 
+function isNotUsersClanRoom(roomId) {
+  if (!isRoomClan(roomId))
+    return false
+  return g_chat_room_type.CLAN.canBeClosed(roomId)
+}
+
 function isRoomJoined(roomId) {
   let room = getRoomById(roomId)
   return room != null && room.joined
@@ -113,5 +119,6 @@ return {
   generateInviteMenu
   isRoomSquad
   isRoomClan
+  isNotUsersClanRoom
   isImRoomOwner
 }

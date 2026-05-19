@@ -72,7 +72,8 @@ let { ceil } = require("%sqstd/math.nut")
 let { lastChatSceneShow, chatPrevScenes, addChatScene, clearChatScenes,
 menuChatHandler, chatActiveSceneParam, hideChatHandlerScene } = require("%scripts/chat/chatHandler.nut")
 let { openChatRoom } = require("%scripts/chat/openChat.nut")
-let { joinThread, getRoomById, addRoom, isRoomSquad, isRoomClan } = require("%scripts/chat/chatRooms.nut")
+let { joinThread, getRoomById, addRoom, isRoomSquad, isRoomClan, isNotUsersClanRoom
+} = require("%scripts/chat/chatRooms.nut")
 let { getThreadInfo } = require("%scripts/chat/chatStorage.nut")
 let { updateUserReputationData } = require("%scripts/user/usersReputation.nut")
 
@@ -295,7 +296,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkChatAvailableInRoom(roomId, callback) {
     let room = getRoomById(roomId)
-    if (room == null || room.hasCustomViewHandler) {
+    if (room == null || room.hasCustomViewHandler || isNotUsersClanRoom(roomId)) {
       callback?(false)
       return
     }
@@ -1514,6 +1515,10 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       privateMsg = (db.type == "chat") || !this.roomRegexp.match(roomId)
       let isSystemMessage = g_chat.isSystemUserName(user)
 
+      
+      if (!!roomId && isNotUsersClanRoom(roomId))
+        return
+
       if (!isSystemMessage && !isCrossNetworkMessageAllowed(user))
         return
 
@@ -1766,12 +1771,19 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventClanInfoUpdate(_p) {
     local haveChanges = false
-    foreach (room in g_chat.rooms)
-      if (isRoomClan(room.id)
-          && (room.canBeClosed() != (room.id != g_chat.getMyClanRoomId()))) {
+    let myClanRoomId = g_chat.getMyClanRoomId()
+    foreach (room in g_chat.rooms) {
+      if (!isRoomClan(room.id))
+        continue
+      let shouldBeClosable = room.id != myClanRoomId
+      if (room.canBeClosed() != shouldBeClosable) {
         haveChanges = true
         room.forceCanBeClosed = !room.canBeClosed()
+
+        if ((this.curRoom.id == room.id))
+          this.sceneChanged = true
       }
+    }
     if (haveChanges)
       this.updateRoomsList()
   }

@@ -106,11 +106,15 @@ function buyUnit(unit, silent = false) {
       { unitName = unitName, cost = unitPrice }),
     unitCost)
 
-  scene_msg_box("need_money", null, msgText, [
-    ["no", @() null],
-    ["order_and_choose_crew/later", @() impl_buyUnit(unit, false)],
-    ["order_and_choose_crew", @() impl_buyUnit(unit)],
-  ], "order_and_choose_crew", { cancel_fn = @() null })
+  let customButtons = [
+    { text = "msgbox/btn_no", cb = @() null }
+    { text = "msgbox/btn_order_and_choose_crew/later", cb = @() impl_buyUnit(unit, false) }
+    { text = "msgbox/btn_order_and_choose_crew", cb = @() impl_buyUnit(unit) }
+  ]
+
+  loadHandler(gui_handlers.purchaseConfirmationHandler,
+    { id = "need_money", text = msgText, customButtons }
+  )
   return true
 }
 

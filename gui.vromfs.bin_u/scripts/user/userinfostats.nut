@@ -402,9 +402,11 @@ function getPlayerStatsFromBlk(blk) {
     countryStats = {}
 
     
-    summary = isDataBlock(blk?.summary) ? convertBlk(blk.summary) : {}
+    _statsBlk = blk
+    
+    summary = null
+    leaderboard = null
     userstat = blk?.userstat ? getAirsStatsFromBlk(blk.userstat) : {}
-    leaderboard = isDataBlock(blk?.leaderboard) ? convertBlk(blk.leaderboard) : {}
   }
 
   if (blk?.userid != null)
@@ -496,10 +498,34 @@ function getProfileInfo() {
   return currentUserProfile
 }
 
+function releaseStatsBlkIfFullyConverted(player) {
+  const lazyStatsFields = ["summary", "leaderboard"]
+  if (lazyStatsFields.findvalue(@(f) player[f] == null) == null)
+    player._statsBlk = null
+}
+
+function getLazyPlayerStats(player, field) {
+  if (player == null)
+    return {}
+  if (player[field] == null) {
+    let blk = player._statsBlk
+    player[field] = blk?[field] && isDataBlock(blk[field])
+      ? convertBlk(blk[field])
+      : {}
+    releaseStatsBlkIfFullyConverted(player)
+  }
+  return player[field]
+}
+
+let getPlayerSummary = @(player) getLazyPlayerStats(player, "summary")
+let getPlayerLeaderboard = @(player) getLazyPlayerStats(player, "leaderboard")
+
 return {
   fillProfileSummary
   getCountryMedals
   getPlayerStatsFromBlk
+  getPlayerSummary
+  getPlayerLeaderboard
   airStatsListConfig
   getProfileInfo
   getPlayerRankByCountry

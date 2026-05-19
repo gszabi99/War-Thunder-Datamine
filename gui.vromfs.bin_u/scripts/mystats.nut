@@ -14,7 +14,7 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
+let { getPlayerStatsFromBlk, getPlayerSummary } = require("%scripts/user/userInfoStats.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { get_time_msec } = require("dagor.time")
@@ -182,7 +182,7 @@ function getStats() {
 
 function getSummary(summaryName, filter = {}) {
   local res = 0
-  let pvpSummary = getTblValue(summaryName, getTblValue("summary", myStats))
+  let pvpSummary = getTblValue(summaryName, getPlayerSummary(myStats))
   if (!pvpSummary)
     return res
 
@@ -369,7 +369,7 @@ function getUserstat(paramName) {
 
 function getTotalTimePlayedSec() {
   local sec = 0
-  foreach (modeBlock in myStats?.summary ?? {})
+  foreach (modeBlock in getPlayerSummary(myStats))
     foreach (diffBlock in modeBlock)
       foreach (unitTypeBlock in diffBlock)
         sec += (unitTypeBlock?.timePlayed ?? 0)
@@ -427,7 +427,7 @@ function getMissionsComplete(summaryArray = summaryNameArray) {
   local res = 0
   let stasts = getStats()
   foreach (summaryName in summaryArray) {
-    let summary = stasts?.summary?[summaryName] ?? {}
+    let summary = getPlayerSummary(stasts)?[summaryName] ?? {}
     foreach (diffData in summary)
       res += diffData?.missionsComplete ?? 0
   }

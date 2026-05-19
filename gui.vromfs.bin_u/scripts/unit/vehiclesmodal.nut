@@ -20,7 +20,7 @@ let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 
                                                     
 
-let vehicleStatuses = ["researched", "purchased"]
+let vehicleStatuses = ["researched", "not_researched", "purchased"]
 
 local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
@@ -195,15 +195,18 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.extendedFilters) {
       let isShowOnlyResearched = params["unitstatus"]?.researched ?? false
+      let isShowOnlyNotResearched = params["unitstatus"]?.not_researched ?? false
       let isShowOnlyPurchased = params["unitstatus"]?.purchased ?? false
+      if (!isShowOnlyResearched && !isShowOnlyNotResearched && !isShowOnlyPurchased)
+        return true
 
-      if (isShowOnlyResearched && isShowOnlyPurchased) {
-        if (!isClanUnitResearched(unit) && !unit.isBought())
-          return false
-      }
-      else if (isShowOnlyResearched && !isClanUnitResearched(unit))
-        return false
-      else if (isShowOnlyPurchased && !unit.isBought())
+      let isUnitBought = unit.isBought()
+      let isUnitResearched = isClanUnitResearched(unit)
+
+      let isShowAsResearched = isShowOnlyResearched && isUnitResearched && !isUnitBought
+      let isShowAsNotResearched = isShowOnlyNotResearched && !isUnitResearched && !isUnitBought
+      let isShowAsPurchased = isShowOnlyPurchased && isUnitBought
+      if (!isShowAsResearched && !isShowAsNotResearched && !isShowAsPurchased)
         return false
     }
     return true

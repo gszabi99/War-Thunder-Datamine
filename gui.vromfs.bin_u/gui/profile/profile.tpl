@@ -137,11 +137,6 @@ root {
           }
         }
       }
-      chatPopupNest {
-        id:t='chatPopupNest'
-        position:t='absolute'
-        pos:t='pw-w, ph'
-      }
       frameSeparator {
         position:t='absolute'
         top:t='ph-h+1@sf/@pf'
@@ -411,6 +406,12 @@ root {
           left:t='(pw-w)/2'
         }
       }
+    }
+
+    chatPopupNest {
+      id:t='chatPopupNest'
+      position:t='absolute'
+      pos:t='pw-w, 1@topBarHeight + 1@buttonHeight'
     }
 
     navBar {
