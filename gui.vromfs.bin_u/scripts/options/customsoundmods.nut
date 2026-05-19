@@ -1,12 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { is_sound_mods_banks_check_failed = null } = require("soundModCheck")
 
 local onLoadValue = null
 
 const ENABLE_MOD_PARAMETR_NAME = "sound/enable_mod"
 
-let isEnabledCustomSoundMods = @() getSystemConfigOption(ENABLE_MOD_PARAMETR_NAME, false) && (is_sound_mods_banks_check_failed == null || !is_sound_mods_banks_check_failed())
+let isEnabledCustomSoundMods = @() getSystemConfigOption(ENABLE_MOD_PARAMETR_NAME, false)
 
 function isUsedCustomSoundMods() {
   if(onLoadValue == null)

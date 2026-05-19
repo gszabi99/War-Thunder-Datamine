@@ -13,7 +13,7 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options,
-  get_supported_generated_frames, is_dx11_supported, is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api,
+  get_supported_generated_frames, is_dx11_supported = @() true, is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api,
   is_intel_gpu, getVideoModes, getDgsTexQuality } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")

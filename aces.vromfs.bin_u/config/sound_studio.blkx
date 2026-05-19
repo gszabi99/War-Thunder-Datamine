@@ -8,6 +8,7 @@
   "fmodEnableSpatialSound": false,
   "rejectFarOneshots": true,
   "forceDisableMods": true,
+  "blockModsOnAssert": true,
   "dspBufferLengthPS4": 2048,
   "dspNumBuffersPS4": 4,
   "memoryPc": 210,
@@ -87,6 +88,12 @@
   "missionInfantryEventsPath": "infantry/vo/narrator/",
   "volumeVersion": 2,
   "menuMusicVolumeVersion": 0,
+  "masterBanks": {
+    "name": [
+      "masterbank",
+      "masterbank.strings"
+    ]
+  },
   "banks": {
     "folder": "sound",
     "extension": ".bank",
@@ -282,35 +289,43 @@
         },
         "dialogs": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "dialogs.assets": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "crew_dialogs_common": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "crew_dialogs_common.assets": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "football": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "football.assets": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "event": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "event.assets": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         }
       },
       "infantry": {
