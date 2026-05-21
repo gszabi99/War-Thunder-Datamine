@@ -384,7 +384,7 @@ function getCountryMedals(countryId, profileData = null) {
 
 function getPlayerStatsFromBlk(blk) {
   let player = {
-    name = blk?.nick
+    name = blk?.nick ?? ""
     lastDay = blk?.lastDay
     registerDay = blk?.registerDay
     title = blk?.title ?? ""
