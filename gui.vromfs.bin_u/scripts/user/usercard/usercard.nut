@@ -140,12 +140,10 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let frame = this.scene.findObject("wnd_frame")
     frame.needShortSeparators = needShortSeparators ? "yes" : "no"
 
-    this.player = {}
+    this.player = getPlayerStatsFromBlk(this.info)
     foreach (pName in ["name", "uid", "id"])
       if (pName in this.info && this.info[pName] != "")
         this.player[pName] <- this.info[pName]
-    if (!("name" in this.player))
-      this.player.name <- ""
 
     let customNick = getCustomNick(this.player)
     let profileName = customNick == null
