@@ -377,7 +377,7 @@ def render_AnimFifo3QueueParam(paramId : int; var graph : AnimationGraph; var st
     imgui::Text("Current time: {gtime:.2f}")
     imgui::Text("Morph time 1 to 2: {queue.morphTime[0]}")
     imgui::Text("Morph time 2 to 3: {queue.morphTime[1]}")
-    let fifoBlendWeight = saturate((gtime - queue.t0) / queue.morphTime[0])
+    let fifoBlendWeight = saturate(safediv((gtime - queue.t0), queue.morphTime[0]))
 
     for idx in range(3)
       var childNode = *queue |> AnimFifo3Queue_get_node(idx)
