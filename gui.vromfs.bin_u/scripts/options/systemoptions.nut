@@ -1075,6 +1075,9 @@ mShared = {
   rayTracingClick = function(silent = false) {
     let rt = getGuiValue("rayTracing", "off")
     if (silent || rt == "off" || prevRtMode != "off") {
+      if (rt == "off") {
+        setGuiValue("rayReconstruction", false)
+      }
       mShared.rayTracingPresetHandler(rt)
       enableGuiOption("ssaa", true)
       mShared.ssaaClick()
