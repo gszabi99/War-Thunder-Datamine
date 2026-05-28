@@ -904,11 +904,14 @@
             },
             {
               "isHumanDrone": {}
-            },
-            {
-              "hasOpticFPSGunner": {}
             }
-          ]
+          ],
+          "or": {
+            "not": {
+              "hasOpticFPSGunner": {}
+            },
+            "hasGunnerFpsBlock": {}
+          }
         },
         "not": {
           "isFlightModel": {}
