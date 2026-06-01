@@ -68,7 +68,7 @@ function initNewbieInfo() {
 
     let list = blk % unitType.lowerName
     foreach (ev in list) {
-      if (!ev.event)
+      if (!ev?.event)
         continue
 
       unitTypeByNewbieEventId[ev.event] <- unitType.esUnitType
@@ -78,6 +78,7 @@ function initNewbieInfo() {
         kills       = kills
         timePlayed  = ev?.timePlayed ?? 0
         unitRank    = ev?.unitRank ?? 0
+        abTest      = ev?.abTest ?? false
       })
       data.minKills = max(data.minKills, kills)
     }

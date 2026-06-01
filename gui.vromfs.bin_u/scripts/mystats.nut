@@ -21,7 +21,7 @@ let { get_time_msec } = require("dagor.time")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarStateData.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
@@ -50,6 +50,8 @@ local summaryNameArray = [
   "other_played"
   "single_played"
 ]
+
+let isUserGoToTestModes = @() (userIdInt64.get() % 2) == 0
 
 const UPDATE_DELAY = 3600000 
 let newbieByUnitType = {}
@@ -322,7 +324,8 @@ function checkRecountNewbie() {
   newbieNextEvent.clear()
 
   foreach (unitType, config in newPlayersBattles) {
-    local event = null
+    local chosenEvent = null
+    local regularEvent = null
     local kills = getKillsOnUnitType(unitType)
     local timePlayed = getTimePlayedOnUnitType(unitType)
     let additionalUnitTypes = config?.additionalUnitTypes ?? []
@@ -330,19 +333,27 @@ function checkRecountNewbie() {
       kills += getKillsOnUnitType(getUnitTypeByText(addEsUnitType))
       timePlayed += getTimePlayedOnUnitType(getUnitTypeByText(addEsUnitType))
     }
+    let isGoToTestModes = isUserGoToTestModes()
     foreach (evData in config.battles) {
+      if (!isGoToTestModes && evData.abTest)
+        continue
       if (kills >= evData.kills)
         continue
       if (timePlayed >= evData.timePlayed)
         continue
       if (evData.unitRank && checkUnitInSlot(evData.unitRank, unitType))
         continue
-      event = events.getEvent(evData.event)
-      if (event)
+      let event = events.getEvent(evData.event)
+      if (!event)
+        continue
+      if (isGoToTestModes && evData.abTest) {
+        chosenEvent = event
         break
+      }
+      regularEvent = regularEvent ?? event
     }
-    if (event)
-      newbieNextEvent[unitType] <- event
+    if (chosenEvent || regularEvent)
+      newbieNextEvent[unitType] <- chosenEvent ?? regularEvent
   }
 }
 
