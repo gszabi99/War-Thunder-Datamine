@@ -348,6 +348,7 @@ function getSoundOptions() {
       [USEROPT_SOUND_SPEAKERS_MODE, "combobox", isPC],
       [USEROPT_VOICE_MESSAGE_VOICE, "spinner"],
       [USEROPT_SPEECH_TYPE, "spinner", ! isInFlight()],
+      [USEROPT_USE_SPECIAL_SPEECH_LANGUAGE, "switchbox", ! isInFlight()],
       ["options/volume_master"],
       [USEROPT_VOLUME_MASTER, "slider"],
       [USEROPT_VOLUME_MUSIC, "slider"],

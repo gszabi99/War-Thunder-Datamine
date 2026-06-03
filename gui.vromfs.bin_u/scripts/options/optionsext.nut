@@ -786,6 +786,12 @@ let optionsMap = {
     descr.values = [0, 1, 2]
     descr.value = u.find_in_array(descr.values, get_option_speech_country_type())
   },
+  [USEROPT_USE_SPECIAL_SPEECH_LANGUAGE] = function(_optionId, descr, _context) {
+    descr.id = "use_special_speech_language"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.value = get_option_use_special_speech_language()
+  },
   [USEROPT_INSTRUCTOR_GROUND_AVOIDANCE] = function(_optionId, descr, _context) {
     fillBoolOption(descr, "instructorGroundAvoidance", OPTION_INSTRUCTOR_GROUND_AVOIDANCE)
   },
@@ -4391,6 +4397,7 @@ let optionsSetMap = {
   [USEROPT_VOLUME_RWR] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_RWR, value / 100.0, true),
   [USEROPT_VOLUME_TINNITUS] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_TINNITUS, value / 100.0, true),
   [USEROPT_HANGAR_SOUND] = @(value, _descr, _optionId) set_option_hangar_sound(value),
+  [USEROPT_USE_SPECIAL_SPEECH_LANGUAGE] = @(value, _descr, _optionId) set_option_use_special_speech_language(value),
   [USEROPT_VOLUME_VOICE_IN] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_VOICE_IN, value / 100.0, true),
   [USEROPT_VOLUME_VOICE_OUT] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_VOICE_OUT, value / 100.0, true),
   [USEROPT_COUNTRY] = @(value, descr, _optionId) switchProfileCountry(descr.values[value]),
