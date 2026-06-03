@@ -44,6 +44,9 @@ let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
+let soundOptionsModule = require("soundOptions")
+let getOptionUseSpecialSpeechLanguage = soundOptionsModule?["get_option_use_special_speech_language"] ?? @() false
+let setOptionUseSpecialSpeechLanguage = soundOptionsModule?["set_option_use_special_speech_language"] ?? @(_v) null
 let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -790,7 +793,7 @@ let optionsMap = {
     descr.id = "use_special_speech_language"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.value = get_option_use_special_speech_language()
+    descr.value = getOptionUseSpecialSpeechLanguage()
   },
   [USEROPT_INSTRUCTOR_GROUND_AVOIDANCE] = function(_optionId, descr, _context) {
     fillBoolOption(descr, "instructorGroundAvoidance", OPTION_INSTRUCTOR_GROUND_AVOIDANCE)
@@ -4397,7 +4400,7 @@ let optionsSetMap = {
   [USEROPT_VOLUME_RWR] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_RWR, value / 100.0, true),
   [USEROPT_VOLUME_TINNITUS] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_TINNITUS, value / 100.0, true),
   [USEROPT_HANGAR_SOUND] = @(value, _descr, _optionId) set_option_hangar_sound(value),
-  [USEROPT_USE_SPECIAL_SPEECH_LANGUAGE] = @(value, _descr, _optionId) set_option_use_special_speech_language(value),
+  [USEROPT_USE_SPECIAL_SPEECH_LANGUAGE] = @(value, _descr, _optionId) setOptionUseSpecialSpeechLanguage(value),
   [USEROPT_VOLUME_VOICE_IN] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_VOICE_IN, value / 100.0, true),
   [USEROPT_VOLUME_VOICE_OUT] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_VOICE_OUT, value / 100.0, true),
   [USEROPT_COUNTRY] = @(value, descr, _optionId) switchProfileCountry(descr.values[value]),
