@@ -5118,6 +5118,50 @@
       }
     },
     {
+      "id": "2026_06_05_ca_armed_forces_day_decals",
+      "locId": "unlocks/group/ca_armed_forces_day",
+      "locDescId": "gift_decals_trophy/desc",
+      "userLogId": "2026_06_05_ca_armed_forces_day_decals_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "ca_armed_forces_day",
+      "costGold": 199,
+      "visibleDaysAfter": 1.0,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "chardType": "char_static_progress",
+        "num": 3000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_britain"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft",
+            "inSession": true
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-06-04 13:00:00",
+            "endDate": "2026-06-08 13:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "decor_dakimakura_anime_usagi_b_gift",
       "locId": "attachables/decor_dakimakura_anime_usagi_b",
       "locDescId": "gift_decor_trophy/desc",
@@ -5211,7 +5255,7 @@
       "group": "swedish_home_guard",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
