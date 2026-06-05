@@ -5118,6 +5118,49 @@
       }
     },
     {
+      "id": "2026_06_05_d_day_2026_decal",
+      "locId": "decals/d_day_2026_decal",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2026_06_05_d_day_2026_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "d_day",
+      "costGold": 199,
+      "visibleDaysAfter": 1.0,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "chardType": "char_static_progress",
+        "num": 3000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": [
+              "country_britain",
+              "country_usa",
+              "country_france"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-06-05 11:00:00",
+            "endDate": "2026-06-08 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_06_05_ca_armed_forces_day_decals",
       "locId": "unlocks/group/ca_armed_forces_day",
       "locDescId": "gift_decals_trophy/desc",
@@ -5149,13 +5192,8 @@
             "country": "country_britain"
           },
           {
-            "type": "playerType",
-            "unitType": "aircraft",
-            "inSession": true
-          },
-          {
             "type": "timeRange",
-            "beginDate": "2026-06-04 13:00:00",
+            "beginDate": "2026-06-05 13:00:00",
             "endDate": "2026-06-08 13:30:00"
           }
         ]
@@ -20552,6 +20590,74 @@
       "hidden": true
     },
     {
+      "id": "2026_05_vk_drops_34_inventory",
+      "type": "inventory",
+      "userLogId": "200184",
+      "loggingEnabled": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2026_05_vk_drops_34_store"
+      }
+    },
+    {
+      "id": "2026_05_vk_drops_34_store",
+      "type": "challenge",
+      "hidden": true
+    },
+    {
+      "id": "2026_05_vk_drops_35_inventory",
+      "type": "inventory",
+      "userLogId": "740033",
+      "loggingEnabled": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2026_05_vk_drops_35_store"
+      }
+    },
+    {
+      "id": "2026_05_vk_drops_35_store",
+      "type": "challenge",
+      "hidden": true
+    },
+    {
+      "id": "2026_05_vk_drops_36_inventory",
+      "type": "inventory",
+      "userLogId": "20454",
+      "loggingEnabled": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2026_05_vk_drops_36_store"
+      }
+    },
+    {
+      "id": "2026_05_vk_drops_36_store",
+      "type": "challenge",
+      "hidden": true
+    },
+    {
+      "id": "2026_05_vk_drops_37_inventory",
+      "type": "inventory",
+      "userLogId": "40386",
+      "loggingEnabled": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2026_05_vk_drops_37_store"
+      }
+    },
+    {
+      "id": "2026_05_vk_drops_37_store",
+      "type": "challenge",
+      "hidden": true
+    },
+    {
       "id": "loading_screen_sturmmorser_sturmtiger",
       "type": "award",
       "hidden": false
@@ -24053,6 +24159,18 @@
     },
     {
       "id": "title_desert_predator",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_maverick",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_never_pass_a_fault",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -143396,8 +143514,8 @@
       "chapter": "2026_05_ship",
       "icon": "!https://static-ggc.gaijin.net/units/fr_trident_class_glaive_p671.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 6,
@@ -143420,8 +143538,8 @@
       "group": "coupon_upgrade",
       "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 2147483646,
@@ -143475,8 +143593,8 @@
       "amount_trophies": 1,
       "chapter": "2026_05_ship",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 1,
@@ -143501,7 +143619,7 @@
       "chapter": "2026_05_ship",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 2,
@@ -143524,8 +143642,8 @@
       "amount_trophies": 1,
       "chapter": "2026_05_ship",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 3,
@@ -143550,7 +143668,7 @@
       "chapter": "2026_05_ship",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 4,
@@ -143574,7 +143692,7 @@
       "chapter": "2026_05_ship",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 5,
@@ -143592,6 +143710,7 @@
       "id": "30_05_2026_ship_stage",
       "locId": "marathon_ship_stage_6/name",
       "chapter": "2026_05_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -143650,6 +143769,7 @@
       "id": "28_05_2026_ship_stage",
       "locId": "marathon_ship_stage_5/name",
       "chapter": "2026_05_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -143708,6 +143828,7 @@
       "id": "26_05_2026_ship_stage",
       "locId": "marathon_ship_stage_4/name",
       "chapter": "2026_05_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -143766,6 +143887,7 @@
       "id": "24_05_2026_ship_stage",
       "locId": "marathon_ship_stage_3/name",
       "chapter": "2026_05_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -143824,6 +143946,7 @@
       "id": "22_05_2026_ship_stage",
       "locId": "marathon_ship_stage_2/name",
       "chapter": "2026_05_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -143882,6 +144005,7 @@
       "id": "20_05_2026_ship_stage",
       "locId": "marathon_ship_stage_1/name",
       "chapter": "2026_05_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
