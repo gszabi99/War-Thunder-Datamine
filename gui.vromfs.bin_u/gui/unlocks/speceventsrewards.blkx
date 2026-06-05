@@ -1,0 +1,178 @@
+{
+  "position": "relative",
+  "height": "@rewardSlotHeight",
+  "tdiv": [
+    {
+      "position": "relative",
+      "size": "@dp, ph",
+      "flow": "vertical",
+      "tdiv": [
+        {
+          "position": "relative",
+          "size": "pw, fh",
+          "background-color": "#2D3841"
+        },
+        {
+          "position": "relative",
+          "size": "pw, 0.5@progressHeight",
+          "background-color": "@white"
+        },
+        {
+          "position": "relative",
+          "size": "pw, @buttonHeight + 10@sf/@pf"
+        }
+      ]
+    },
+    {
+      "id": "reward_container",
+      "position": "relative",
+      "width": "@rewardSlotWidth",
+      "height": "ph",
+      "padding": "@dp, 0",
+      "flow": "vertical",
+      "tdiv": [
+        {
+          "flow": "vertical",
+          "size": "pw, fh",
+          "tdiv": [
+            {
+              "id": "bg_image",
+              "position": "absolute",
+              "size": "pw, ph",
+              "background-color": "@white",
+              "background-image": "#ui/gameuiskin#bg_rare_blue"
+            },
+            {
+              "id": "achivment_ico_nest",
+              "size": "pw, fh",
+              "position": "relative",
+              "tooltip": "",
+              "total-input-transparent": "yes",
+              "not-input-transparent": "yes",
+              "layeredIconContainer": {
+                "id": "achivment_ico",
+                "position": "relative",
+                "pos": "(pw-w)/2, (ph-h)/2",
+                "size": "@rewardImgSize, @rewardImgSize"
+              }
+            },
+            {
+              "margin-top": "@blockInterval",
+              "size": "pw, @cIco",
+              "position": "relative",
+              "tdiv": {
+                "id": "progress_nest",
+                "position": "absolute",
+                "flow": "horizontal",
+                "pos": "(pw-w)/2, (ph-h)/2",
+                "tooltip": "",
+                "total-input-transparent": "yes",
+                "not-input-transparent": "yes",
+                "textareaNoTab": {
+                  "id": "progress_value",
+                  "margin-right": "@blockInterval",
+                  "position": "relative",
+                  "overlayTextColor": "",
+                  "text": "",
+                  "smallFont": "yes"
+                },
+                "iconLayer": {
+                  "id": "progress_icon",
+                  "size": "@sIco, @sIco",
+                  "position": "relative",
+                  "background-image": "#ui/gameuiskin#default_locked.avif",
+                  "background-svg-size": "@mIco, @mIco"
+                }
+              },
+              "hoverButton": {
+                "id": "preview_prize_btn",
+                "position": "relative",
+                "pos": "pw-w-2@blockInterval, (ph-h)/2",
+                "unlockId": "",
+                "on_click": "onPrizePreview",
+                "tooltip": "#mainmenu/btnPreview",
+                "hasTransparentBG": "yes",
+                "icon": {
+                  "background-image": "#ui/gameuiskin#btn_preview.svg"
+                }
+              }
+            }
+          ],
+          "challengeDescriptionProgress": {
+            "id": "progress_bar",
+            "value": "0",
+            "hasParentWidth": "yes"
+          }
+        },
+        {
+          "position": "relative",
+          "margin-top": "10@sf/@pf",
+          "width": "pw",
+          "height": "@buttonHeight",
+          "Button_text": {
+            "id": "manual_open_button",
+            "position": "absolute",
+            "width": "pw",
+            "visualStyle": "purchase",
+            "parentWidth": "yes",
+            "noMargin": "yes",
+            "on_click": "onManualOpenUnlock",
+            "unlockId": "",
+            "buttonWink": {},
+            "ButtonImg": {
+              "showOnSelect": "yes"
+            },
+            "text": {
+              "text": "#items/getRewardVeryShort",
+              "position": "relative",
+              "left": "(pw-w)/2"
+            }
+          },
+          "statusImg": [
+            {
+              "id": "complete_img",
+              "position": "absolute",
+              "pos": "(pw-w)/2, (ph-h)/2",
+              "size": "@sIco, @sIco",
+              "background-image": "#ui/gameuiskin#reward_check.svg",
+              "background-svg-size": "@sIco, @sIco",
+              "bgcolor": "@green"
+            },
+            {
+              "id": "locked_sign",
+              "position": "absolute",
+              "pos": "(pw-w)/2, (ph-h)/2",
+              "size": "@sIco, @sIco",
+              "background-image": "#ui/gameuiskin#locked.svg",
+              "background-svg-size": "@sIco, @sIco",
+              "background-color": "#2D3841"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "last_vertical_line",
+      "position": "relative",
+      "size": "@dp, ph",
+      "flow": "vertical",
+      "display": "hide",
+      "tdiv": [
+        {
+          "position": "relative",
+          "size": "pw, fh",
+          "background-color": "#2D3841"
+        },
+        {
+          "position": "relative",
+          "size": "pw, 0.5@progressHeight",
+          "background-color": "@white"
+        },
+        {
+          "position": "relative",
+          "size": "pw, @buttonHeight + 10@sf/@pf"
+        }
+      ]
+    }
+  ]
+}

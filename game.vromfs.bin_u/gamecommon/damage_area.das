@@ -10,7 +10,7 @@ require WTDamageModel
 require WTFx
 require DmDebug
 require DagorSystem
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require %game.utils.utils_common
 
 

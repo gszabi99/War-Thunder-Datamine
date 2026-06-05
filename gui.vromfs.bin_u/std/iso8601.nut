@@ -38,7 +38,7 @@ function parse_duration(str) {
       continue
     }
 
-    if (numbers.indexof(c) == null)
+    if (!numbers.contains(c))
       return res
     numberList.append(c)
   }

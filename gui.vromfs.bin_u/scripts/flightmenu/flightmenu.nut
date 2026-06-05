@@ -43,6 +43,7 @@ let { get_current_mission_info_cached } = require("blkGetters")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 let { getBriefingOptions } = require("%scripts/briefing.nut")
+let ludeo = require_optional("acesludeo")
 
 function gui_start_briefing_restart(_ = {}) {
   log("gui_start_briefing_restart")
@@ -244,7 +245,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onQuitMission(_obj) {
-    if (is_offline_version())
+    if (is_offline_version() && !ludeo?.is_running())
       return restart_mission()
 
     if (is_replay_playing()) {

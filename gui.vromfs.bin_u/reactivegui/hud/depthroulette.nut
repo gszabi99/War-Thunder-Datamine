@@ -5,6 +5,7 @@ let { depthLevel, waterDist, wishDist, periscopeCanBeEnabled } = require("%rGui/
 let { isAimCamera } = require("%rGui/shellState.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
 let DataBlock = require("DataBlock")
+let { tryLoadBlk } = require("blkLoad")
 let { BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
 let { Point4 } = require("dagor.math")
 let { tacticalMapStates, unitType, isUnitAlive } = require("%rGui/hudState.nut")
@@ -325,7 +326,7 @@ function shipExSettingsUpd(blk_name) {
 
   let blk = DataBlock()
   let fileName = $"gameData/units/{blk_name}.blk"
-  if (!blk.tryLoad(fileName))
+  if (!tryLoadBlk(blk, fileName))
     return
 
   let blkMaxDepth = blk.getBlockByName("maxDepth")

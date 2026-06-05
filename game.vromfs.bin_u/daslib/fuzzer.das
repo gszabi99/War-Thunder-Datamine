@@ -21,7 +21,7 @@ var private total_fuzz_count : int = 1000
 def public fuzz(blk : block) {
     
     
-    for (i in range(total_fuzz_count)) {
+    for (_i in range(total_fuzz_count)) {
         try {
             invoke(blk)
         } recover {
@@ -33,7 +33,7 @@ def public fuzz(blk : block) {
 def public fuzz(fuzz_count : int; blk : block) {
     
     
-    for (i in range(fuzz_count)) {
+    for (_i in range(fuzz_count)) {
         try {
             invoke(blk)
         } recover {
@@ -46,7 +46,7 @@ def public fuzz_debug(blk : block) {
     
     
     
-    for (i in range(total_fuzz_count)) {
+    for (_i in range(total_fuzz_count)) {
         invoke(blk)
     }
 }
@@ -55,7 +55,7 @@ def public fuzz_debug(fuzz_count : int; blk : block) {
     
     
     
-    for (i in range(fuzz_count)) {
+    for (_i in range(fuzz_count)) {
         invoke(blk)
     }
 }

@@ -4,12 +4,14 @@ let { playerUnitName, isUnitAlive } = require("%rGui/hudState.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 let { getAAComplexMenuConfigPath, canEnterAAComplexMenu } = require("guiRadar")
+let { showAAComplexMenu } = require("controls")
+let { defaultFilters } = require("%rGui/radarFiltersConfig.nut")
 let DataBlock = require("DataBlock")
+let { tryLoadBlk } = require("blkLoad")
 
-let onAAComplexMenuRequest = @(evt) isAAComplexMenuActive.set(evt.show)
-let hideAAComplexMenu = @() isAAComplexMenuActive.set(false)
+let hideAAComplexMenu = @() showAAComplexMenu(false)
 
-eventbus_subscribe("on_aa_complex_menu_request", onAAComplexMenuRequest)
+eventbus_subscribe("on_aa_complex_menu_request", @(evt) isAAComplexMenuActive.set(evt.show))
 
 isInFlight.subscribe(@(v) !v ? hideAAComplexMenu() : null)
 isUnitAlive.subscribe(@(v) !v ? hideAAComplexMenu() : null)
@@ -21,7 +23,7 @@ let aaMenuCfgDefaults = {
   verticalViewMaxAltitude = 12.0
 
   hasTargetList = true
-  targetList = {}
+  targetList = defaultFilters
 }
 local aaMenuCfg = Watched(clone aaMenuCfgDefaults)
 
@@ -29,7 +31,7 @@ function updateCfg(){
   aaMenuCfg.mutate(function(cfg) {
     let blk = DataBlock()
     let path = getAAComplexMenuConfigPath()
-    if (path && blk.tryLoad(path)) {
+    if (path && tryLoadBlk(blk, path)) {
       let cfgBlk = blk.getBlockByNameEx("antiAirComplexMenu")
 
       cfg["hasTurretView"] = cfgBlk.getBool("hasTurretView", aaMenuCfgDefaults.hasTurretView)
@@ -38,7 +40,7 @@ function updateCfg(){
 
       cfg["hasTargetList"] = cfgBlk.getBool("hasTargetList", aaMenuCfgDefaults.hasTargetList)
 
-      let targetList = {}
+      let targetList = defaultFilters
       let targetListCfg = cfgBlk.getBlockByNameEx("targetList")
       for (local i = 0; i < targetListCfg.paramCount(); i++) {
         let val = targetListCfg.getParamValue(i)

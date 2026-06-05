@@ -198,7 +198,7 @@ function getTemplateCompsDescs(templ, addedTempls, addedComps, valueComps) {
 
 
 let categories = {}
-let getCategoryTemplates = function(category) {
+function getCategoryTemplates(category) {
   if (categories?[category] != null)
     return categories[category]
 
@@ -360,7 +360,7 @@ function mkTemplateTooltip(templName, sceneText="") {
   let descTexts = []
   local gotDescs = false
   local wasComps = false
-  templInfo.descs.map(function(desc) {
+  templInfo.descs.each(function(desc) {
     if (desc.type == "template") {
       if (wasComps) {
         wasComps = false

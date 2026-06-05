@@ -100,9 +100,16 @@
     <<#onOptHoverFnName>>
     on_hover:t='<<onOptHoverFnName>>'
     <</onOptHoverFnName>>
+    <<#tooltipOnHold>>
+    tooltipId:t='<<tooltipId>>'
+    <</tooltipOnHold>>
   }
   <</options>>
-
+  <<#tooltipOnHold>>
+  on_pushed:t='::gcb.delayedTooltipListPush'
+  on_hold_start:t='::gcb.delayedTooltipListHoldStart'
+  on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+  <</tooltipOnHold>>
 <<#controlTag>>
 }
 <</controlTag>>

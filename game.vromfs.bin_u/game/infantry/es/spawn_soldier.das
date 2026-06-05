@@ -7,9 +7,6 @@ require AnimV20
 require CollRes
 require %appGame.infantry.es.spawn_soldier_common
 
-def get_sync_time() 
-  return float(get_app().usefulTotalTime)
-
 require GeomNodeTree
 require DagorMath
 def get_seat_attach_tm(seat_eid : EntityId;

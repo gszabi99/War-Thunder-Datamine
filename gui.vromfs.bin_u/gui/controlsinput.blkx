@@ -4,62 +4,128 @@
   "background-color": "@shadeBackgroundColor",
   "border": "no",
   "id": "controls_input_root",
-  "behaviour": "ControlsInput",
-  "on_end_edit": "onButtonEntered",
-  "on_cancel_edit": "onCancelButtonInput",
-  "on_change_value": "onButtonAdded",
-  "shortcutCancel": "Esc | J:Start",
-  "check_analog": "0",
-  "device0": "",
-  "button0": "",
-  "device1": "",
-  "button1": "",
-  "device2": "",
-  "button2": "",
-  "device3": "",
-  "button3": "",
   "img": {
     "position": "absolute",
     "size": "3sw - 3sw*@isInVr, sh/3+1",
     "pos": "-sw,sh-h-1@bh",
     "background-image": "#ui/gameuiskin#optionlist_background_down"
   },
-  "options_container": {
-    "position": "absolute",
-    "center": "0,0",
-    "input-transparent": "yes",
-    "padding": "20",
-    "size": "sw, 0.4*@scrn_tgt",
-    "tdiv": {
-      "pos": "50%pw-50%w, 50%ph-50%h",
+  "tdiv": [
+    {
+      "id": "controls_input_step",
       "position": "absolute",
-      "activeText": [
-        {
-          "id": "press_key",
-          "left": "(sw)/2",
-          "style": "font:@fontMedium;",
-          "text": "#hotkeys/msg/press_a_key"
-        },
-        {
-          "id": "txt_current_button",
-          "left": "50%pw-50%w",
-          "position": "relative",
-          "style": "font:@fontMedium;",
-          "text": "?"
+      "size": "pw, ph",
+      "behaviour": "ControlsInput",
+      "on_end_edit": "onButtonEntered",
+      "on_cancel_edit": "onCancelButtonInput",
+      "on_change_value": "onButtonAdded",
+      "shortcutCancel": "Esc | J:Start",
+      "check_analog": "0",
+      "device0": "",
+      "button0": "",
+      "device1": "",
+      "button1": "",
+      "device2": "",
+      "button2": "",
+      "device3": "",
+      "button3": "",
+      "options_container": {
+        "position": "absolute",
+        "center": "0,0",
+        "input-transparent": "yes",
+        "padding": "20",
+        "size": "sw, 0.4*@scrn_tgt",
+        "tdiv": {
+          "pos": "50%pw-50%w, 50%ph-50%h",
+          "position": "absolute",
+          "activeText": [
+            {
+              "id": "press_key",
+              "left": "(sw)/2",
+              "mediumFont": "yes",
+              "text": "#hotkeys/msg/press_a_key"
+            },
+            {
+              "id": "txt_current_button",
+              "left": "50%pw-50%w",
+              "position": "relative",
+              "mediumFont": "yes",
+              "text": "?"
+            }
+          ],
+          "_newline": {}
         }
-      ],
-      "_newline": {}
+      }
+    },
+    {
+      "id": "select_activation_type_step",
+      "width": "pw",
+      "position": "absolute",
+      "top": "50%ph-50%h",
+      "flow": "vertical",
+      "textareaNoTab": {
+        "id": "shortcut_name",
+        "width": "pw",
+        "position": "relative",
+        "text-align": "center",
+        "margin-bottom": "30@sf/@pf",
+        "overlayTextColor": "active",
+        "mediumFont": "yes"
+      },
+      "combinationPlace": {
+        "id": "combination_markup",
+        "position": "relative",
+        "left": "50%pw-50%w",
+        "margin-bottom": "30@sf/@pf"
+      },
+      "tdiv": {
+        "position": "relative",
+        "left": "50%pw-50%w",
+        "activeText": {
+          "position": "relative",
+          "margin-right": "12@sf/@pf",
+          "mediumFont": "yes",
+          "text": "#controls/activationType/name"
+        },
+        "RadioButtonList": {
+          "id": "choose_activation_type",
+          "position": "relative",
+          "navigatorShortcuts": "yes",
+          "highlightAlways": "yes",
+          "verticalFlow": "yes",
+          "mediumFont": "yes",
+          "on_select": "onChangeActivationType"
+        }
+      }
     }
-  },
+  ],
   "navBar": {
     "navRight": {
-      "Button_text": {
-        "id": "btn_cancel",
-        "text": "#msgbox/btn_cancel",
-        "_on_click": "onCancelButtonInput",
-        "btnName": "start",
-        "ButtonImg": {}
-      }
+      "Button_text": [
+        {
+          "id": "btn_cancel",
+          "text": "#msgbox/btn_cancel",
+          "_on_click": "onCancelButtonInput",
+          "btnName": "start",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_back",
+          "text": "#mainmenu/btnBack",
+          "on_click": "onBackToPrevStep",
+          "btnName": "B",
+          "display": "hide",
+          "ButtonImg": {}
+        },
+        {
+          "id": "btn_apply",
+          "text": "#mainmenu/btnApply",
+          "_on_click": "onApply",
+          "btnName": "A",
+          "display": "hide",
+          "ButtonImg": {}
+        }
+      ]
     }
   }
 }

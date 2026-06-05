@@ -113,7 +113,7 @@ let isComponentsAssignedToSingleInputItem = @(axesId)
 
 let getTextMarkup = @(symbol) symbol == "" ? ""
   : "".concat("textareaNoTab {text:t='<color=@axisSymbolColor>", symbol,
-    "</color>'; position:t='relative'; top:t='0.45@kbh-0.5h'}")
+    "</color>'; position:t='relative'; top:t='0.5ph-0.5h'}")
 
 function getInputsMarkup(inputs) {
   local res = ""
@@ -137,7 +137,7 @@ function getShortcutData(shortcuts, shortcutId, cantBeEmpty = true, preset = nul
     let sc = shortcuts[shortcutId][i]
 
     for (local j = 0; j < sc.dev.len(); j++)
-      buttons.append(Button(sc.dev[j], sc.btn[j], preset))
+      buttons.append(Button(sc.dev[j], sc.btn[j], sc.activationType, preset))
 
     if (buttons.len() > 1)
       inputs.append(Combination(buttons))

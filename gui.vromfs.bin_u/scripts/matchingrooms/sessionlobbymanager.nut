@@ -33,7 +33,7 @@ let { SessionLobbyState, sessionLobbyStatus, getSessionLobbyGameMode, isInSessio
   getSessionLobbyMissionData, updateSessionLobbyPlayersInfo, isMeSessionLobbyRoomOwner, isInSessionLobbyEventRoom,
   resetSessionLobbyPlayersInfo, isInJoiningGame, hasSessionInLobby, getSessionLobbyMyState, isWaitForQueueRoom,
   getSessionLobbyChatRoomPassword, canJoinSession, isRoomInSession, isSessionStartedInRoom, getMembersCount,
-  isMemberHost, isUserMission, getSessionLobbyPublicParam, getSessionLobbyPassword
+  isMemberHost, isUserMission, getSessionLobbyPublicParam, getSessionLobbyPassword, isSessionCreatedByPlayer
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { haveLobby, getAvailableTeamOfRoom, getRoomTeamData,
   canSetReadyInLobby, canChangeTeamInLobby, canBeSpectator, getRoomUnitTypesMask, getRoomEvent,
@@ -548,7 +548,8 @@ function setSettings(v_settings, notify = false, checkEqual = true) {
 
   updateCrsSettings()
   updatePlayersInfo()
-  updateOverrideSlotbar(getSessionLobbyMissionName(true))
+  updateOverrideSlotbar(getSessionLobbyMissionName(true),
+    isSessionCreatedByPlayer() ? null : { mission_decl = getSessionLobbyMissionData() })
 
   SessionLobbyState.curEdiff = calcEdiff(SessionLobbyState.settings)
 

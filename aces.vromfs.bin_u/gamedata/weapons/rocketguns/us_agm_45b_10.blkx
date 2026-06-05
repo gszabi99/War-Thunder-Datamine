@@ -106,16 +106,23 @@
       "workTime": 100.0,
       "uncageBeforeLaunch": true,
       "lockAfterLaunch": false,
-      "useTargetVel": true,
+      "useTargetVel": false,
       "lockTimeOut": 0.0,
       "disableTOFInHud": true,
       "breakLockMaxTime": 150.0,
       "radarSeeker": {
         "groundVehiclesAsTarget": true,
-        "aircraftAsTarget": true,
+        "aircraftAsTarget": false,
         "groundClutter": false,
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
+        "active": false,
+        "multipathEffect": [
+          0.0,
+          1.0,
+          0.5,
+          0.0
+        ],
         "band": [
           4,
           5,
@@ -123,15 +130,8 @@
           7,
           8
         ],
-        "active": false,
         "useTargetId": true,
         "sideLobesAttenuation": -20.0,
-        "multipathEffect": [
-          0.0,
-          1.0,
-          0.5,
-          0.0
-        ],
         "lockAngleMax": 10.0,
         "angleMax": 40.0,
         "rateMax": 10.0,
@@ -146,7 +146,7 @@
           }
         },
         "receiver": {
-          "rcs": 0.1,
+          "rcs": 0.01,
           "range": 100000.0,
           "rangeMax": 200000.0,
           "timeGainControl": false,

@@ -11,6 +11,8 @@ require DngHuman
 require Dacoll
 require PhysMat
 require RendInst
+require Unit
+require walkerai
 require daslib/match
 require strings
 
@@ -465,8 +467,38 @@ def trace_human_context_command_order_pos(var out_pos : float3&; human_eid : Ent
 
   return res
 
+def private trace_human_context_command_aircraft_eid(trace_pos : float3; trace_dir : float3; var out_dist : float&)
+  let ignoreFlyingSpeed = 900.0
+  let shootAirPrepTime = 5.0
+  let minDistSq = square(20.0)
+  let maxDistSq = square(2000.0)
+  let maxVelSq = square(ignoreFlyingSpeed)
+  let searchAngle = 3.0
+  let searchAngleCos = cos(deg_to_rad(searchAngle))
+  var foundEid = INVALID_ENTITY_ID
+  query() <| $ [es(REQUIRE=unit_tag__aircraft)] (eid : EntityId;
+                                                 transform : float3x4;
+                                                 ai_target : Target
+)
+    if !ai_target.isAlive
+      return
+    if length_sq(ai_target.velocity) > maxVelSq
+      return
+    let predictedTargetPos = transform[3] + ai_target.velocity * shootAirPrepTime
+    let distSq = distance_sq(predictedTargetPos, trace_pos)
+    if distSq < minDistSq || distSq > maxDistSq
+      return
+    
+    
+    
+    
+    if dot(normalize(predictedTargetPos - trace_pos), trace_dir) > searchAngleCos
+      foundEid = eid
+      out_dist = distance(trace_pos, transform[3])
+      return
+  return foundEid
 
-def trace_human_context_command_first_ahead_object_eid(human_eid : EntityId; trace_pos : float3; trace_dir : float3; var out_dist : float&)
+def trace_human_context_command_first_ahead_object_eid(human_eid : EntityId; trace_pos : float3; trace_dir : float3; var out_dist : float&) 
   var maxLen : float; var rayMat : int
   if !get_human_context_order_trace_params(human_eid, maxLen, rayMat)
     return INVALID_ENTITY_ID
@@ -506,6 +538,10 @@ def trace_human_context_command_first_ahead_object_eid(trace_pos : float3; trace
           let riEid = find_ri_extra_eid(handle)
           if riEid != INVALID_ENTITY_ID && riEid != ignore_eid
             retEid = riEid
+  if retEid == INVALID_ENTITY_ID
+    let aircraftEid = trace_human_context_command_aircraft_eid(trace_pos, trace_dir, retDist)
+    if aircraftEid != INVALID_ENTITY_ID
+      retEid = aircraftEid
   out_dist = retDist
   return retEid
 

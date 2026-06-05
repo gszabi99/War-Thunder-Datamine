@@ -140,6 +140,7 @@ let screenHmdLayout = @() {
   worldOffset   = Point3(0.0, 0.0, 50.0 * HmdFovMult.get() * screenAspectRatio)
   worldSize     = Point2(100 * screenAspectRatio, 100)
   canvasSize    = IPoint2(sw(100), sh(100))
+  renderAfterAA = true
 
   worldCanBePointedAt = false
   worldBrightness = 200. * HmdBrightnessMult.get()

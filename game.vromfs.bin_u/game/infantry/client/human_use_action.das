@@ -24,6 +24,7 @@ def human_use_action_es(info : ParallelUpdateFrameDelayed;
                         human_use_object__selectedObject : EntityId;
                         human_breath__isUnderWater = false;
                         isAlive = true;
+                        isInVehicle = false;
                         var useActionAvailable : int&;
                         var useActionEid : EntityId&;
                         var lookAtEid : EntityId&;
@@ -66,7 +67,7 @@ def human_use_action_es(info : ParallelUpdateFrameDelayed;
       if attachedGunEid != INVALID_ENTITY_ID
         pass
       elif has(selectedObjectEid, "vehicle_seats__seats") && get_bool(selectedObjectEid, "isAlive") ?? false
-        useActionAvailable = int(HumanAction.ACTION_USE)
+        useActionAvailable = isInVehicle ? int(HumanAction.ACTION_NONE) : int(HumanAction.ACTION_USE)
       elif has(selectedObjectEid, "lootable") && !has(selectedObjectEid, "lootableGunOnly") && !(get_bool(selectedObjectEid, "isAlive") ?? true)
         useActionAvailable = int(HumanAction.ACTION_LOOT_BODY)
       elif has(selectedObjectEid, "squad_member__squad") && has(selectedObjectEid, "human")
@@ -219,3 +220,47 @@ def grenade_rethrow_tip_show_es(evt : Event;
           hud_notify_script("hint:human_throw_back:show", eventData)
     else
       hud_notify_script("hint:human_throw_back:hide", eventData)
+
+def notify_take_driver_seat_tip(can_take_driver_seat : bool)
+  using() <| $(var eventData : DataBlock)
+    if can_take_driver_seat
+      hud_notify_script("hint:human_take_driver_seat:show", eventData)
+    else
+      hud_notify_script("hint:human_take_driver_seat:hide", eventData)
+
+
+[es(tag=gameClient, REQUIRE=hero, REQUIRE_NOT=isReplayObserved, on_appear, track=(human_vehicle__occupiedSeatEid, isAlive))]
+def human_take_driver_seat_tip_show_es(evt : Event;
+                                       isAlive aka human_isAlive : bool;
+                                       human_vehicle__occupiedSeatEid : EntityId;
+                                       human_anim__vehicleSelected : EntityId)
+  var canTakeDriverSeat = false
+  if human_isAlive && !!human_vehicle__occupiedSeatEid && !!human_anim__vehicleSelected
+    var isDriverSeatOccupied = false
+    query(human_vehicle__occupiedSeatEid) <| $ [es] (seat__isDriver : bool)
+      isDriverSeatOccupied = seat__isDriver
+    if !isDriverSeatOccupied
+      query(human_anim__vehicleSelected) <| $ [es] (vehicle__controlledByDriver : EntityId;
+                                                    isAlive aka vehicle_isAlive : bool = true)
+        canTakeDriverSeat = vehicle_isAlive && !vehicle__controlledByDriver
+  notify_take_driver_seat_tip(canTakeDriverSeat)
+
+
+[es(tag=gameClient, REQUIRE=(vehicle__controlledByDriver, heroVehicle), on_appear, track=(vehicle__controlledByDriver, isAlive))]
+def vehicle_driver_seat_show_tip_es(evt : Event;
+                                    vehicle__controlledByDriver : EntityId;
+                                    vehicle_seats__seatEids : EidList;
+                                    isAlive aka vehicle_isAlive : bool = true)
+  if !vehicle_isAlive || !!vehicle__controlledByDriver
+    notify_take_driver_seat_tip(false)
+    return
+  for seatEid in vehicle_seats__seatEids
+    var ownerEid = INVALID_ENTITY_ID
+    query(seatEid) <| $ [es] (seat__ownerEid : EntityId)
+      ownerEid = seat__ownerEid
+    var notified = false
+    query(ownerEid) <| $ [es(REQUIRE=hero, REQUIRE_NOT=isReplayObserved)] (isAlive aka human_isAlive : bool)
+      notify_take_driver_seat_tip(human_isAlive)
+      notified = true
+    if notified
+      return

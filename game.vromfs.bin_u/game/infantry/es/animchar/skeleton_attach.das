@@ -34,6 +34,14 @@ def remove_skeleton_attach(eid : EntityId;
   removeSubTemplate(eid, "base_skeleton_attach")
 
 
+
+[es(tag=gameClient, on_appear, track=animchar_attach__attachedTo, before=skeleton_attach_clear_attach_es)]
+def skeleton_attach_derive_attached_es(evt : Event;
+                                       animchar_attach__attachedTo : EntityId;
+                                       var skeleton_attach__attached : bool&)
+  skeleton_attach__attached = !!animchar_attach__attachedTo
+
+
 [es(tag=gameClient, on_appear, track=skeleton_attach__attached, REQUIRE=skeleton_attach__skeletonRemap, before=animchar_skeleton_attach_destroy_attach_es)]
 def skeleton_attach_clear_attach_es(evt : Event;
                                     eid : EntityId;

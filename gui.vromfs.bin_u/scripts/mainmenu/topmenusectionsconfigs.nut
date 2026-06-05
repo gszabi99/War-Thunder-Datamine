@@ -65,6 +65,7 @@ addTopMenuLeftSideSections([
         buttonsList.LEADERBOARDS
         buttonsList.CLANS
         buttonsList.REPLAY
+        buttonsList.SPEC_EVENTS
         buttonsList.VIRAL_AQUISITION
         buttonsList.WT_ASSISTANT
         buttonsList.TSS
@@ -112,7 +113,7 @@ addTopMenuRightSideSections([
         buttonsList.WINDOW_HELP
         buttonsList.ENCYCLOPEDIA
         buttonsList.CHANGE_LOG
-        buttonsList.CREDITS
+        buttonsList.LICENSE
         buttonsList.EULA
         buttonsList.WIKI
         buttonsList.FAQ

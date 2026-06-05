@@ -1,7 +1,7 @@
 {
   "clips": {
     "default_animation_mask": "soldier_full_body_nodemask",
-    "default_tags": "full_body_movement,turn_in_move",
+    "default_tags": "full_body_movement,turn_in_move,default_weapon,pistol_weapon",
     "run_all_body_0_mm_mc": {
       "play_speed_multiplier_range": [
         0.5,
@@ -26,6 +26,105 @@
       "nextClip": "run_all_body_315_mm_mc",
       "use_foot_ik_locker": {}
     },
+    "run_all_body_onehanded_0_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "play_speed_multiplier_range": [
+        0.5,
+        2.0
+      ],
+      "nextClip": "run_all_body_onehanded_0_mm_mc",
+      "use_foot_ik_locker": {},
+      "set_anim_tree_timer": {
+        "timer_name": ":run_timer",
+        "timer_cycle": 0.66
+      }
+    },
+    "run_all_body_onehanded_45_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "play_speed_multiplier_range": [
+        0.5,
+        2.0
+      ],
+      "nextClip": "run_all_body_onehanded_45_mm_mc",
+      "use_foot_ik_locker": {},
+      "set_anim_tree_timer": {
+        "timer_name": ":run_timer",
+        "timer_cycle": 0.66
+      }
+    },
+    "run_all_body_onehanded_315_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "play_speed_multiplier_range": [
+        0.5,
+        2.0
+      ],
+      "nextClip": "run_all_body_onehanded_315_mm_mc",
+      "use_foot_ik_locker": {},
+      "set_anim_tree_timer": {
+        "timer_name": ":run_timer",
+        "timer_cycle": 0.66
+      }
+    },
+    "run_all_body_onehanded_0_circle_right_80_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "nextClip": "run_all_body_onehanded_0_circle_right_80_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_onehanded_0_circle_right_160_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "nextClip": "run_all_body_onehanded_0_circle_right_160_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_onehanded_0_circle_right_240_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "nextClip": "run_all_body_onehanded_0_circle_right_240_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_onehanded_0_circle_left_160_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "nextClip": "run_all_body_onehanded_0_circle_left_160_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_onehanded_0_circle_left_80_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "nextClip": "run_all_body_onehanded_0_circle_left_80_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_onehanded_0_circle_left_240_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "nextClip": "run_all_body_onehanded_0_circle_left_240_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_0_circle_right_80_mm_mc": {
+      "tags": "+default_weapon,+pistol_weapon,-melee_weapon",
+      "nextClip": "run_all_body_0_circle_right_80_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_0_circle_right_160_mm_mc": {
+      "tags": "+default_weapon,+pistol_weapon,-melee_weapon",
+      "nextClip": "run_all_body_0_circle_right_160_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_0_circle_right_240_mm_mc": {
+      "tags": "+default_weapon,+pistol_weapon,-melee_weapon",
+      "nextClip": "run_all_body_0_circle_right_240_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_0_circle_left_80_mm_mc": {
+      "tags": "+default_weapon,+pistol_weapon,-melee_weapon",
+      "nextClip": "run_all_body_0_circle_left_80_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_0_circle_left_160_mm_mc": {
+      "tags": "+default_weapon,+pistol_weapon,-melee_weapon",
+      "nextClip": "run_all_body_0_circle_left_160_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "run_all_body_0_circle_left_240_mm_mc": {
+      "tags": "+default_weapon,+pistol_weapon,-melee_weapon",
+      "nextClip": "run_all_body_0_circle_left_240_mm_mc",
+      "use_foot_ik_locker": {}
+    },
     "walk_all_body_0_mm_mc": {
       "play_speed_multiplier_range": [
         0.5,
@@ -35,6 +134,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_all_body_45_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -43,6 +143,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_all_body_90_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -51,6 +152,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_all_body_135_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -59,6 +161,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_all_body_180_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -67,6 +170,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_all_body_225_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -75,6 +179,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_all_body_270_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -83,6 +188,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_all_body_315_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -91,6 +197,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_fast_all_body_90_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -99,6 +206,7 @@
       "use_foot_ik_locker": {}
     },
     "walk_fast_all_body_180_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
@@ -107,11 +215,21 @@
       "use_foot_ik_locker": {}
     },
     "walk_fast_all_body_270_mm_mc": {
+      "tags": "+melee_weapon",
       "play_speed_multiplier_range": [
         0.5,
         2.0
       ],
       "nextClip": "walk_fast_all_body_270_mm_mc",
+      "use_foot_ik_locker": {}
+    },
+    "walk_all_body_onehanded_0_mm_mc": {
+      "tags": "-default_weapon,-pistol_weapon,+melee_weapon",
+      "play_speed_multiplier_range": [
+        0.5,
+        2.0
+      ],
+      "nextClip": "walk_all_body_onehanded_0_mm_mc",
       "use_foot_ik_locker": {}
     }
   }

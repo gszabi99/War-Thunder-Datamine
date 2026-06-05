@@ -17,10 +17,10 @@ let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { APP_ID } = require("app")
-let { isCollectionPrize } = require("%scripts/collections/collections.nut")
-let { hasAvailableCollections } = require("%scripts/collections/collectionsHandler.nut")
+let { isCollectionPrize, hasAvailableCollections } = require("%scripts/collections/collections.nut")
 let { getDecorator, getDecoratorByResource
 } = require("%scripts/customization/decoratorGetters.nut")
+let { setDecoratorPreviewer } = require("%scripts/customization/decorator.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -132,7 +132,9 @@ function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   showedUnit.set(unit)
   let startFunc = function() {
     gui_start_decals({
-      previewMode = isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
+      previewMode = unit.isUsableSlaveUnit()
+        ? PREVIEW_MODE.NONE
+        : (isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN)
       needForceShowUnitInfoPanel = isUnitPreview && isUnitSpecial(unit)
       previewParams = {
         unitName = unitId
@@ -220,6 +222,8 @@ function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
     }
   }
 }
+
+setDecoratorPreviewer(showResource)
 
 function liveSkinPreview(params) {
   if (!hasFeature("EnableLiveSkins"))

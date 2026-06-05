@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let results = require("%scripts/dmViewer/protectionAnalysisHintResults.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { round } = require("math")
+let { round, sqrt, atan2, PI } = require("math")
 
 let { set_protection_analysis_editing } = require("hangarEventCommand")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -17,6 +17,7 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
 
   cursorObj = null
   hintObj   = null
+  sightLineObj = null
   lastHintParams = null
   cursorRadius = 0
 
@@ -94,6 +95,7 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hintObj = this.scene.findObject("dmviewer_hint")
     this.hintObj.setUserData(this)
 
+    this.sightLineObj = this.scene.findObject("torpedo_sight_line")
     this.cursorRadius = this.cursorObj.getSize()[0] / 2
   }
 
@@ -130,12 +132,15 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
     let getValue = this.getValueByResultCfg
     let printValue = this.printValueByParam
     let title = colorize(resultCfg.color, loc(resultCfg.loc))
-    local desc = resultCfg.params.map(function(id) {
-      let gFunc = getValue?[id]
-      let val = gFunc ? gFunc(params, id, resultCfg) : 0
-      let pFunc = printValue?[id]
-      return pFunc ? pFunc(val) : ""
-    })
+    let needAngle = params?.needAngle ?? true
+    local desc = resultCfg.params
+      .filter(@(id) needAngle || id != "angle")
+      .map(function(id) {
+        let gFunc = getValue?[id]
+        let val = gFunc ? gFunc(params, id, resultCfg) : 0
+        let pFunc = printValue?[id]
+        return pFunc ? pFunc(val) : ""
+      })
 
     this.hintObj.findObject("dmviewer_title").setValue(title)
     let data = handyman.renderCached("%gui/dmViewer/dmViewerHintDescItem.tpl", { items = desc.map(@(v) { value = v }) })
@@ -148,6 +153,31 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
     let cursorPos = get_dagui_mouse_cursor_pos_RC()
     obj.left = cursorPos[0] - this.cursorRadius
     obj.top  = cursorPos[1] - this.cursorRadius
+
+    if (!checkObj(this.sightLineObj))
+      return
+    let p = this.lastHintParams
+    let active = this.getCursorIsActive() && p?.sightX0 != null
+    if (!active) {
+      this.sightLineObj.show(false)
+      return
+    }
+    let dx = p.sightX1 - p.sightX0
+    let dy = p.sightY1 - p.sightY0
+    let length = sqrt(dx * dx + dy * dy)
+    if (length < 1) {
+      this.sightLineObj.show(false)
+      return
+    }
+    let thickness = 2
+    let cx = (p.sightX0 + p.sightX1) * 0.5
+    let cy = (p.sightY0 + p.sightY1) * 0.5
+    this.sightLineObj.width = length.tointeger()
+    this.sightLineObj.height = thickness
+    this.sightLineObj.left = (cx - length * 0.5).tointeger()
+    this.sightLineObj.top = (cy - thickness * 0.5).tointeger()
+    this.sightLineObj.rotation = (atan2(dy, dx) * 180.0 / PI).tointeger()
+    this.sightLineObj.show(true)
   }
 
   function onDMViewerHintTimer(obj, _dt) {

@@ -54,8 +54,8 @@
     0.35,
     0.85
   ],
+  "boilerSplashDamageType": "explosion",
   "defaultCaliberToArmorForGuiPenetrationTable": 1.25,
-  "secondaryShattersCountLimitForTest": 30,
   "simpleCriticalDamageTester": true,
   "massKineticRange": 7.0,
   "massKineticHitPowerK": 0.00001,
@@ -475,10 +475,11 @@
     "thicknessMapResolution": 32,
     "thicknessMapMinVoxelSize": 0.1,
     "thicknessMapRelLimits": [
-      0.35,
+      0.1,
       6.0
     ],
     "thicknessMapMinObstacleSize": 0.02,
+    "thicknessMapFaceNormalMinCosine": 0.1,
     "pushOutCenter": true,
     "underwaterPenetrationScale": 1.25,
     "underwaterDamageScale": 1.5,
@@ -557,6 +558,70 @@
   },
   "secondaryShatterDamage": {
     "damageType": "secondaryShatter"
+  },
+  "throttleToBoilerPressure": {
+    "p0": [
+      0.0,
+      0.0
+    ],
+    "p1": [
+      1.0,
+      0.1
+    ],
+    "p2": [
+      2.0,
+      0.3
+    ],
+    "p3": [
+      3.0,
+      0.5
+    ],
+    "p4": [
+      4.0,
+      0.8
+    ],
+    "p5": [
+      5.0,
+      1.0
+    ]
+  },
+  "boilerPressureToSplashParams": {
+    "p0": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "p1": [
+      1000.0,
+      2.0,
+      1.0,
+      1000.0
+    ],
+    "p2": [
+      3000.0,
+      2.5,
+      5.0,
+      2000.0
+    ],
+    "p3": [
+      5000.0,
+      5.0,
+      12.0,
+      4000.0
+    ],
+    "p4": [
+      8000.0,
+      7.5,
+      26.0,
+      5000.0
+    ],
+    "p5": [
+      10000.0,
+      10.0,
+      26.0,
+      6000.0
+    ]
   },
   "ricochetPresets": {
     "default": {
@@ -4683,6 +4748,13 @@
       "partRepairHp": 1.0,
       "hpForRepair": 0.7
     },
+    "power_system_01_dm": {
+      "speed": 1.2,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
+    },
     "driver_controls_dm": {
       "speed": 1.9,
       "completely": true,
@@ -8681,7 +8753,7 @@
   },
   "bulletDecals": {
     "ap": {
-      "bullets": "ap, ac_shell_tank, apbc_tank, apbc_usa_tank, apds_tank, apds_early_tank, apds_autocannon, apds_l15_tank , apc_tank, aphe_tank, aphebc_tank, apcbc_tank, ap_tank,ap_large_caliber_tank, tp_tank, practice_tank, shrapnel_tank, ahead_tank, ahead, napalm_tank, ap_i, ap_i_ball, ap_i_ball_M8, ap_i_t_ball, ap_i_t_ball_M20, ap_i_t, apc_t, ap_t_ball, ap_ball, ap_ball_M2, apc_solid_medium_caliber_tank, apcbc_solid_medium_caliber_tank,aphe, aphe_t, sap_hei_tank, sap_hei, sap_hei_t, sap_tank, sapi, sapbc_tank, common_tank, special_common_tank, sapcbc_tank, sapbc_flat_nose_tank, apcr_i_ball_bs41, ap_t, ke_bomb, ball, ball_M2, ball_shell, ball_t_shell, slap, slap_t, apt_ball, apds_he_i_ball, pele_t, tphv_tank",
+      "bullets": "ap, ac_shell_tank, apbc_tank, apbc_usa_tank, apds_tank, apds_early_tank, apds_autocannon, apds_l15_tank , apc_tank, aphe_tank, aphebc_tank, apcbc_tank, ap_tank,ap_large_caliber_tank, tp_tank, practice_tank, shrapnel_tank, ahead_tank, ahead, ap_i, ap_i_ball, ap_i_ball_M8, ap_i_t_ball, ap_i_t_ball_M20, ap_i_t, apc_t, ap_t_ball, ap_ball, ap_ball_M2, apc_solid_medium_caliber_tank, apcbc_solid_medium_caliber_tank,aphe, aphe_t, sap_hei_tank, sap_hei, sap_hei_t, sap_tank, sapi, sapbc_tank, common_tank, special_common_tank, sapcbc_tank, sapbc_flat_nose_tank, apcr_i_ball_bs41, ap_t, ke_bomb, ball, ball_M2, ball_shell, ball_t_shell, slap, slap_t, apt_ball, apds_he_i_ball, pele_t, tphv_tank",
       "pierce": "kinetic_penetration",
       "stop": "kinetic_non_penetration",
       "ricochet": "kinetic_ricochet"
@@ -8753,6 +8825,10 @@
       "ricochet": "kinetic_ricochet",
       "pierceAngled": "explosive_penetration_angled",
       "stopAngled": "explosive_non_penetration_angled"
+    },
+    "napalm": {
+      "bullets": "napalm_tank",
+      "disabled": true
     }
   },
   "externalFuelMassToSplashParams": {

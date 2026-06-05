@@ -23,7 +23,7 @@
       0.1,
       0.1
     ],
-    "CxK": 1.55,
+    "CxK": 1.85,
     "wingAreaMult": 2.75,
     "finsAoaHor": 0.2,
     "finsAoaVer": 0.2,
@@ -42,14 +42,16 @@
     "machMax": 0.9,
     "maxSpeed": 280.0,
     "endSpeed": 0.0,
-    "maxDistance": 15000.0,
+    "maxDistance": 17000.0,
     "minDistance": 30.0,
-    "operatedDist": 15000.0,
+    "operatedDist": 17000.0,
     "guaranteedRange": 14500.0,
-    "rangeMax": 15000.0,
+    "rangeMax": 17000.0,
     "loadFactorMax": 8.0,
     "guidanceType": "optical",
     "guidanceSfx": "alarm_con_scan",
+    "rollStabilization": true,
+    "rollStabilizationDelay": 0.5,
     "maxDeltaAngle": 0.02,
     "explosiveType": "tgaf_5m",
     "explosiveMass": 12.0,
@@ -113,7 +115,13 @@
       "inertialNavigation": true,
       "inertialNavigationDriftSpeed": 0.0,
       "indicateOnHud": false,
-      "designationError": 10.0,
+      "designationError": 7.0,
+      "reacquireTarget": true,
+      "lockMode": "LOAL+LOBL",
+      "timeTableCorrection": [
+        0.904,
+        0.976
+      ],
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
@@ -124,24 +132,34 @@
         "fov": 0.1,
         "gateWidth": 0.1,
         "minAngleToSun": 1.0,
-        "lockAngleMax": 45.0,
-        "angleMax": 45.0,
-        "rateMax": 6.0,
+        "lockAngleMax": 30.0,
+        "angleMax": 30.0,
+        "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": "camera",
-        "constantDesignationSourceTypeMask": 0,
+        "constantDesignationSourceType": "",
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
         "targetRadiusMin": 1.5
       },
       "guidanceAutopilot": {
-        "timeOut": 0.5,
-        "loftEnabled": true,
-        "loftElevation": 20.0,
-        "loftTargetElevation": -25.0,
-        "loftAngleToAccelMult": 10.0,
-        "loftTargetOmegaMax": 3.95,
+        "altitudeHoldEnabled": true,
+        "timeToHitToAltitude0": [
+          1.0,
+          600.0
+        ],
+        "altitudeHoldTargetElevation": -22.5,
+        "altitudeHoldTargetOmegaMax": 3.5,
+        "altitudeDiffToClimb": 0.2,
+        "altitudeRateRateToClimb": 0.15,
+        "climbDiffToAccelMult": 0.025,
+        "altitudeHoldAngleLimith": [
+          -5.0,
+          12.75
+        ],
+        "courseErrorAngleToAccelMult": 1.5,
+        "courseErrorFinalAngleCorrection": 1.25,
         "baseIndSpeed": 1800.0,
         "omegaToAccelMult": 4.0,
         "reqAccelMax": 8.0,
@@ -149,6 +167,44 @@
         "accelControlIntg": 0.042,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0008
+      },
+      "table0": {
+        "altitude": 100.0,
+        "fighterMach": [
+          0.1,
+          0.3
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          253.081,
+          570.834,
+          570.834,
+          596.973
+        ],
+        "rangeMax": [
+          14834.6,
+          16177.4,
+          16177.4,
+          17111.2
+        ],
+        "rangeMaxAltDiff": [
+          0.0,
+          0.0
+        ],
+        "timeMax": [
+          65.0,
+          65.0,
+          65.0,
+          65.0
+        ],
+        "timeMaxAltDiff": [
+          300.0,
+          -1.5
+        ]
       }
     },
     "pressureDamage": {
@@ -798,6 +854,26 @@
         "hasTracerTrail": true,
         "inactiveAtStage1": true
       }
-    ]
+    ],
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -15.0,
+        15.0
+      ],
+      "verLimit": [
+        -30.0,
+        10.0
+      ],
+      "zoomMinMax": [
+        12.0,
+        2.9
+      ],
+      "rateMax": [
+        5.0,
+        5.0
+      ]
+    }
   }
 }

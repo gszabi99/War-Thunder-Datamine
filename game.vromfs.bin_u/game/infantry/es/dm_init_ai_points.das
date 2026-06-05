@@ -178,7 +178,7 @@ def dm_init_ai_points(evt : Event;
     if collNode == null
       continue
 
-    let bbox = collNode.modelBBox
+    let bbox = collres_get_node_bbox(*collres, collNodeId)
     let localPos = bbox.center
 
     var nodeTm : float3x4
@@ -221,7 +221,7 @@ def dm_init_ai_points(evt : Event;
           if collNodeId >= 0
             let collNode = *collres |> collres_get_node(collNodeId)
             if collNode != null
-              let bbox = collNode.modelBBox
+              let bbox = collres_get_node_bbox(*collres, collNodeId)
               let offs = float3(bbox.width.x * 0.3, 0.0, 0.0)
               dm_ai__points |> push(avgPos + offs)
               dm_ai__pointsInfo |> push(int2(localPartId, ftype))

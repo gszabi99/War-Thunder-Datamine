@@ -43,13 +43,16 @@ let HasOperatedShell = Watched(false)
 let TriggerPulled = Watched(false)
 let LaunchImpossible = Watched(false)
 let SlotCount = Watched(0)
-
-
-
-
-
-
-
+let ShellFPVModeEnabled = Watched(false)
+let ShellFPVModeValid = Watched(false)
+let ShellFPVTargetX = Watched(0)
+let ShellFPVTargetY = Watched(0)
+let ShellFPVHasTarget = Watched(0)
+let ShellFPVCameraLimX = Watched(0)
+let ShellFPVCameraLimY = Watched(0)
+let ShellFPVMaxZoom = Watched(0)
+let ShellFPVAnglesLocked = Watched(false)
+let ShellFPVTimeOfFlight = Watched(-1)
 
 let planeState = {
   OpticAtgmSightVisible,
@@ -92,13 +95,16 @@ let planeState = {
   TriggerPulled,
   LaunchImpossible,
   SlotCount,
-
-
-
-
-
-
-
+  ShellFPVModeEnabled,
+  ShellFPVModeValid,
+  ShellFPVTargetX,
+  ShellFPVTargetY,
+  ShellFPVHasTarget,
+  ShellFPVCameraLimX,
+  ShellFPVCameraLimY,
+  ShellFPVMaxZoom,
+  ShellFPVAnglesLocked,
+  ShellFPVTimeOfFlight
 }
 
 interop.updateLaserPoint <- function(x, y) {

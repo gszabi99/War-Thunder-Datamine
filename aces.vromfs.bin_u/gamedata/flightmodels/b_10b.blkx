@@ -2408,87 +2408,10 @@
     "gun": "gun_a20"
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunBrowning30_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare1",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 600,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -100.0,
-            100.0
-          ],
-          "pitch": [
-            -36.0,
-            80.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunBrowning30_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun2",
-        "flash": "flare2",
-        "dm": "gunner2_dm",
-        "gunnerDm": "gunner2_dm",
-        "gunDm": "gun2_dm",
-        "partsDP": "gun2_dm",
-        "bullets": 600,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun2"
-        },
-        "limits": {
-          "yaw": [
-            -65.0,
-            65.0
-          ],
-          "pitch": [
-            0.0,
-            70.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning30_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun3",
-        "flash": "flare3",
-        "dm": "gunner3_dm",
-        "gunnerDm": "gunner3_dm",
-        "gunDm": "gun3_dm",
-        "partsDP": "gun3_dm",
-        "bullets": 600,
-        "turret": {
-          "head": "turret3",
-          "gun": "gun3",
-          "gunner": "gunner3"
-        },
-        "limits": {
-          "yaw": [
-            -25.0,
-            25.0
-          ],
-          "pitch": [
-            -65.0,
-            0.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2498,18 +2421,349 @@
       },
       {
         "name": "b_10b_500lb",
-        "blk": "gameData/FlightModels/weaponPresets/b_10b_500lb.blk",
-        "reqModification": "b-17_sbc"
+        "blk": "gameData/FlightModels/weaponPresets/b_10b_500lb.blk"
       },
       {
         "name": "b_10b_1000lb",
-        "blk": "gameData/FlightModels/weaponPresets/b_10b_1000lb.blk",
-        "reqModification": "b-17_mbc"
+        "blk": "gameData/FlightModels/weaponPresets/b_10b_1000lb.blk"
       },
       {
         "name": "b_10b_2000lb",
-        "blk": "gameData/FlightModels/weaponPresets/b_10b_2000lb.blk",
-        "reqModification": "b-17_lbc"
+        "blk": "gameData/FlightModels/weaponPresets/b_10b_2000lb.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 2050.0,
+    "maxloadMassLeftConsoles": 1000.0,
+    "maxloadMassRightConsoles": 1000.0,
+    "maxDisbalance": 1000.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_bomb3",
+        "pylon_bomb4"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunBrowning30_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare1",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 600,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -100.0,
+                  100.0
+                ],
+                "pitch": [
+                  -36.0,
+                  80.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunBrowning30_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun2",
+              "flash": "flare2",
+              "dm": "gunner2_dm",
+              "gunnerDm": "gunner2_dm",
+              "gunDm": "gun2_dm",
+              "partsDP": "gun2_dm",
+              "bullets": 600,
+              "turret": {
+                "head": "turret2",
+                "gun": "gun2"
+              },
+              "limits": {
+                "yaw": [
+                  -65.0,
+                  65.0
+                ],
+                "pitch": [
+                  0.0,
+                  70.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "blk": "gameData/Weapons/gunBrowning30_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun3",
+              "flash": "flare3",
+              "dm": "gunner3_dm",
+              "gunnerDm": "gunner3_dm",
+              "gunDm": "gun3_dm",
+              "partsDP": "gun3_dm",
+              "bullets": 600,
+              "turret": {
+                "head": "turret3",
+                "gun": "gun3",
+                "gunner": "gunner3"
+              },
+              "limits": {
+                "yaw": [
+                  -25.0,
+                  25.0
+                ],
+                "pitch": [
+                  -65.0,
+                  0.0
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_slot1",
+            "reqModification": "b-17_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_1000_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "1000lb_slot1",
+            "reqModification": "b-17_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "bomb_1000_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "2000lb_slot1",
+            "reqModification": "b-17_lbc",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+              "emitter": "bomb_2000_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "250lb_slot2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "emitter": "bomb_250_1",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "emitter": "bomb_250_2",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "emitter": "bomb_250_3",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "emitter": "bomb_250_4",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "emitter": "bomb_250_5",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "emitter": "bomb_250_6",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_slot2",
+            "reqModification": "b-17_sbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb_250_4",
+                "emitterOffset": [
+                  0.0,
+                  -0.2,
+                  -0.2
+                ],
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb_500_2",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb_500_1",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_special_group",
+            "name": "1000lb_slot2",
+            "reqModification": "b-17_mbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb_500_1",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb_500_2",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_slot3",
+            "reqModification": "b-17_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_1000_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "1000lb_slot3",
+            "reqModification": "b-17_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "bomb_1000_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "2000lb_slot3",
+            "reqModification": "b-17_lbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+              "emitter": "bomb_2000_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
       }
     ]
   },
@@ -2532,194 +2786,6 @@
     ],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
-  },
-  "wiki": {
-    "general": {
-      "length": 17.63,
-      "wingspan": 27.9,
-      "wingArea": 89.094,
-      "emptyWeight": 7490.69,
-      "normalWeight": 9970.83,
-      "maxTakeoffWeight": 12552.0,
-      "powerPlantType": 1,
-      "powerMaxWep": 1030.0,
-      "powerMaxMil": 860.0
-    },
-    "performance": {
-      "table": {
-        "rpmWep": 2200.0,
-        "manifoldPressureWep": 1.34,
-        "airSpeedWep0": [
-          0.0,
-          338.0
-        ],
-        "airSpeedWep1": [
-          1100.0,
-          356.0
-        ],
-        "airSpeedWep2": [
-          2900.0,
-          374.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          5.0
-        ],
-        "climbRateWep1": [
-          1100.0,
-          5.2
-        ],
-        "climbRateWep2": [
-          2800.0,
-          4.8
-        ],
-        "climbTimeWep0": [
-          2000.0,
-          261.722
-        ],
-        "climbTimeWep1": [
-          4000.0,
-          547.946
-        ],
-        "climbTimeWep2": [
-          6000.0,
-          997.024
-        ],
-        "climbTimeWep3": [
-          8000.0,
-          2038.38
-        ],
-        "turnTimeWep": [
-          1000.0,
-          21.0
-        ],
-        "rpmMil": 2100.0,
-        "manifoldPressureMil": 1.27,
-        "airSpeedMil0": [
-          0.0,
-          316.0
-        ],
-        "airSpeedMil1": [
-          1200.0,
-          332.0
-        ],
-        "airSpeedMil2": [
-          3000.0,
-          349.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          3.2
-        ],
-        "climbRateMil1": [
-          1100.0,
-          3.4
-        ],
-        "climbRateMil2": [
-          2900.0,
-          3.1
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          338.659
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          712.34
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          1349.82
-        ],
-        "turnTimeMil": [
-          1000.0,
-          22.8
-        ],
-        "takeoffDistance": 495.5,
-        "ceiling": 7900.0,
-        "rollRate": 20.0,
-        "wingLoading": 112.0,
-        "powerToWeightRatio": 0.1
-      },
-      "plot": {
-        "airSpeedWep0": [
-          0.0,
-          338.0
-        ],
-        "airSpeedWep1": [
-          2900.0,
-          374.0
-        ],
-        "airSpeedWep2": [
-          5500.0,
-          353.0
-        ],
-        "airSpeedWep3": [
-          7900.0,
-          312.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          5.0
-        ],
-        "climbRateWep1": [
-          1100.0,
-          5.2
-        ],
-        "climbRateWep2": [
-          1400.0,
-          4.8
-        ],
-        "climbRateWep3": [
-          2700.0,
-          4.8
-        ],
-        "climbRateWep4": [
-          7900.0,
-          -1.5
-        ],
-        "airSpeedMil0": [
-          0.0,
-          316.0
-        ],
-        "airSpeedMil1": [
-          3000.0,
-          349.0
-        ],
-        "airSpeedMil2": [
-          5300.0,
-          328.0
-        ],
-        "airSpeedMil3": [
-          7000.0,
-          298.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          3.2
-        ],
-        "climbRateMil1": [
-          1100.0,
-          3.4
-        ],
-        "climbRateMil2": [
-          1500.0,
-          3.1
-        ],
-        "climbRateMil3": [
-          1700.0,
-          3.3
-        ],
-        "climbRateMil4": [
-          2900.0,
-          3.1
-        ],
-        "climbRateMil5": [
-          7000.0,
-          -1.5
-        ]
-      }
-    }
   },
   "balanceData": {
     "accSpd": 0.946715,

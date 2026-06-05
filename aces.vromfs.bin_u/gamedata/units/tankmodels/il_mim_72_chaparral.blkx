@@ -23,12 +23,12 @@
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
   "subclass": "heavyVehicle",
-  "onRadarAs": "tracked",
+  "onRadarAs": "sam",
   "radarAnimVar": "radar_drive",
   "radarDeployTime": 0.0,
   "radarAntenaSpeed": 720.0,
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
+  "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
@@ -42,6 +42,9 @@
   "mass": 5500.0,
   "type": "typeSPAA",
   "radarCanLockTargetFromTPV": false,
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "drowningCheckHeightMultiplier": 0.7,
   "ikGunner": [
     {
@@ -770,6 +773,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -3720,10 +3727,7 @@
       "DelayAfterShoot": 2.0,
       "fireConeAngle": 2.5,
       "targetAngularRateMax": 20.0,
-      "AttackMaxDistance": 10000.0,
       "AttackMaxRadius": 10000.0,
-      "AttackMaxHeight": 4000.0,
-      "AttackMinHeight": 0.0,
       "accuracyAir": 1.5,
       "accuracyGnd": 0.0,
       "errMeasureVel": 0.0,
@@ -3743,6 +3747,8 @@
         120.0,
         600.0
       ],
+      "targetPriorityDefault": 0,
+      "targetPriorityMin": 1,
       "turret": {
         "head": "bone_turret",
         "gun": "bone_gun",
@@ -3767,7 +3773,69 @@
           -9.0,
           90.0
         ]
-      }
+      },
+      "targetPriority": [
+        {
+          "isUnit": true,
+          "velRange": [
+            200.0,
+            2000.0
+          ],
+          "groundRangeRange": [
+            0.0,
+            3000.0
+          ],
+          "altRange": [
+            5.0,
+            5000.0
+          ],
+          "distRange": [
+            0.0,
+            15000.0
+          ],
+          "priority": 50
+        },
+        {
+          "isUnit": true,
+          "velRange": [
+            0.0,
+            2000.0
+          ],
+          "altRange": [
+            5.0,
+            10000.0
+          ],
+          "distRange": [
+            0.0,
+            15000.0
+          ],
+          "priority": 10
+        },
+        {
+          "isUnit": false,
+          "velRange": [
+            180.0,
+            500.0
+          ],
+          "massRange": [
+            80.0,
+            1500.0
+          ],
+          "groundRangeRange": [
+            0.0,
+            10.0
+          ],
+          "altRange": [
+            5.0,
+            15000.0
+          ],
+          "distRange": [
+            0.0,
+            25000.0
+          ],
+          "priority": 400
+        }
+      ]
     }
   },
   "modifications": {

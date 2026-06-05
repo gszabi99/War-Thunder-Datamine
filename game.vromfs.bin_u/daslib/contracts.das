@@ -21,7 +21,7 @@ module contracts shared private
 
 
 
-require ast
+require daslib/ast
 require daslib/ast_boost
 
 def public isYetAnotherVectorTemplate(td : TypeDeclPtr) {

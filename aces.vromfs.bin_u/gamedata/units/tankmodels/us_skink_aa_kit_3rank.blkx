@@ -25,7 +25,7 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
+  "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
@@ -37,13 +37,12 @@
   "minDistBetween": 10.0,
   "expClass": "exp_SPAA",
   "mass": 31800.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -384,6 +383,10 @@
         "armorThrough": 3.0
       },
       "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
       }
@@ -1769,7 +1772,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "targetMsl": true,
         "shellGroundRangeMax": 500.0,
@@ -1845,7 +1847,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "targetMsl": true,
         "shellGroundRangeMax": 500.0,
@@ -1899,7 +1900,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "targetMsl": true,
         "shellGroundRangeMax": 500.0,
@@ -1953,7 +1953,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "targetMsl": true,
         "shellGroundRangeMax": 500.0,
@@ -1983,7 +1982,7 @@
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
-        "emitter": "bone_mg_body_mask_sphere",
+        "emitter": "bone_mg_body",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_05_dm",
         "defaultYaw": 0.0,
@@ -2006,10 +2005,9 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
-          "head": "bone_mg_body_mask_sphere",
-          "gun": "bone_mg_body_mask_sphere",
+          "head": "bone_mg_body",
+          "gun": "bone_mg_body",
           "gunnerDm": "gunner_dm"
         },
         "limits": {

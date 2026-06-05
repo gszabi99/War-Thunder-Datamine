@@ -1,10 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock  = require("DataBlock")
+let { search } = require("%sqStdLibs/helpers/u.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { wwGetArmyGroupsInfo, wwGetBattlesInfo, wwGetOperationId } = require("worldwar")
-let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
-let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
 let { get_current_mission_desc } = require("guiMission")
 
@@ -18,6 +18,8 @@ let baseWWState = {
   isDebugMode = false
 }
 
+local WwArmyGroupClass = null
+local WwBattleClass = null
 
 local armyManagersNames = {}
 local currentOperationID = 0
@@ -61,6 +63,10 @@ function updateManagers() {
 
 
 function updateArmyGroups() {
+  if (WwArmyGroupClass == null) {
+    logerr("[worldWarState] missing WwArmyGroupClass")
+    return
+  }
   if (baseWWState.isArmyGroupsValid)
     return
 
@@ -74,7 +80,7 @@ function updateArmyGroups() {
 
   for (local i = 0; i < blk.armyGroups.blockCount(); i++) {
     let itemBlk = blk.armyGroups.getBlock(i)
-    let group   = WwArmyGroup(itemBlk)
+    let group   = WwArmyGroupClass(itemBlk)
     if (group.isValid())
       armyGroups.append(group)
   }
@@ -100,6 +106,10 @@ function getArmyGroupsBySide(side, filterFunc = null) {
 
 
 function updateBattles(forced = false) {
+  if (WwArmyGroupClass == null) {
+    logerr("[worldWarState] missing WwBattleClass")
+    return
+  }
   if (baseWWState.isBattlesValid && !forced)
     return
 
@@ -114,7 +124,7 @@ function updateBattles(forced = false) {
   let itemCount = blk.battles.blockCount()
   for (local i = 0; i < itemCount; i++) {
     let itemBlk = blk.battles.getBlock(i)
-    let battle   = WwBattle(itemBlk)
+    let battle   = WwBattleClass(itemBlk)
 
     if (battle.isValid())
       battles.append(battle)
@@ -128,7 +138,7 @@ function getBattles(filterFunc = null, forced = false) {
 
 
 function getBattleById(battleId) {
-  return getBattles(@(checkedBattle) checkedBattle.id == battleId)?[0] ?? WwBattle()
+  return getBattles(@(checkedBattle) checkedBattle.id == battleId)?[0] ?? WwBattleClass()
 }
 
 
@@ -144,6 +154,30 @@ function getCurMissionWWBattleName() {
 }
 
 
+function getArmyGroupByArmy(army) {
+  return search(getArmyGroups(),
+     function (group) {
+      return group.isMyArmy(army)
+    }
+  )
+}
+
+function getMyArmyGroup() {
+  return search(getArmyGroups(),
+      function(group) {
+        return isInArray(userIdInt64.get(), group.observerUids)
+      }
+    )
+}
+
+function getBattleForArmy(army, _playerSide = SIDE_NONE) {
+  if (!army)
+    return null
+
+  return search(getBattles(), @(battle)
+    !battle.isFinished() && battle.isArmyJoined(army.name))
+}
+
 return {
   baseWWState
   armyGroups
@@ -154,4 +188,9 @@ return {
   getBattles
   getBattleById
   getCurMissionWWBattleName
+  getArmyGroupByArmy
+  getMyArmyGroup
+  getBattleForArmy
+  registerWwArmyGroupClass = @(armyGroupClass) WwArmyGroupClass = armyGroupClass
+  registerWwBattleClass = @(battleClass) WwBattleClass = battleClass
 }

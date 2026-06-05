@@ -46,16 +46,15 @@ function getKillerCardView(messageData, userInfo) {
     return null
 
   let showCustomItem = weaponEcsTemplateName != ""
-
   let killedByArtillery = killerProjectileName == "artillery" && action == "artillery"
   let unitImg = killedByArtillery ? "#ui/gameuiskin#artillery_fire"
     : showCustomItem ? genUnitTooltipWeaponIcon(weaponEcsTemplateName)
     : getUnitTooltipImage(unit)
 
   let weaponEcsTemplateNameCutted = cutPostfix(weaponEcsTemplateName, "_gun", "")
-  local customItemLocName = ""
-  if (showCustomItem)
-    customItemLocName = doesLocTextExist(weaponEcsTemplateNameCutted) ? weaponEcsTemplateNameCutted
+  let murderWeaponLocId = !showCustomItem ? aircraft
+    : killedByArtillery ? "actionBarItem/artillery_target"
+    : doesLocTextExist(weaponEcsTemplateNameCutted) ? weaponEcsTemplateNameCutted
     : $"{weaponEcsTemplateNameCutted}_shop"
 
   let rank = get_roman_numeral(unit.rank)
@@ -64,9 +63,8 @@ function getKillerCardView(messageData, userInfo) {
   let battleRating = unit.getBattleRating(events.getCurBattleEdiff())
   let battleRatingText = loc("ui/colon")
     .concat(loc("shop/battle_rating"), colorize("@white", format("%.1f", battleRating)))
-  let shellNameLoc = showCustomItem ? loc(customItemLocName)
-    : killerProjectileName != "" ? getProjectileNameLoc(killerProjectileName, true, unit)
-    : ""
+  let shellNameLoc = killerProjectileName == "" || killedByArtillery ? ""
+    : getProjectileNameLoc(killerProjectileName, true, unit)
 
   let shellIconLayers = getProjectileIconLayers(killerProjectileName)
 
@@ -76,7 +74,6 @@ function getKillerCardView(messageData, userInfo) {
   })
 
   let needShowXrayDoll = offenderHp >= 0 && offenderArmorSegmentsInfo != ""
-
   return {
     cardCaption = "".concat(utf8Capitalize(loc("NET_UNIT_KILLED_BY_PLAYER")), loc("ui/colon"))
     pilotIcon = $"#ui/images/avatars/{getAvatarIconIdByUserInfo(userInfo)}.avif"
@@ -93,16 +90,14 @@ function getKillerCardView(messageData, userInfo) {
     unitImg
     countryFlagImg = killedByArtillery ? ""
       : getCountryFlagForUnitTooltip(unit.getOperatorCountry())
-    unitName =  loc(aircraft)
+    murderWeapon = loc(murderWeaponLocId)
     unitTypeText = getUnitRoleIconAndTypeCaption(unit)
     rankAndbattleRatingText = " ".concat(rankText, battleRatingText)
     hasShellInfo = shellNameLoc != ""
     shellNameLoc
     hasShellIcon = shellIconLayers.len() > 0
     shellIconLayers
-    shellHeader = showCustomItem || killedByArtillery ? loc("hotkeys/ID_HUMAN_FIRE_HEADER")
-      : loc("logs/ammunition")
-
+    shellHeader = killedByArtillery ? "" : loc("logs/ammunition")
     hasKillerHitsInfo = needShowXrayDoll
     offenderHits = offenderHitsArray
 

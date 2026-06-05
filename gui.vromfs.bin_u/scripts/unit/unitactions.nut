@@ -1,9 +1,9 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, shop_set_researchable_unit, shop_get_researchable_unit_name, clan_get_researching_unit, char_send_blk, char_send_action_and_load_profile, shop_purchase_aircraft
+from "%scripts/dagui_natives.nut" import clan_get_exp, shop_set_researchable_unit, shop_get_researchable_unit_name, clan_get_researching_unit, char_send_blk, char_send_action_and_load_profile
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -21,41 +21,55 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { PRICE } = require("%scripts/utils/configs.nut")
 
 enum CheckFeatureLockAction {
   BUY,
   RESEARCH
 }
 
-function impl_buyUnit(unit, needSelectCrew = true) {
+function impl_buyUnit(unit, needSelectCrew, params) {
   if (!unit)
     return false
   if (unit.isBought())
     return false
 
+  let { successCb = null, errorCb = null } = params
   let canBuyNotResearchedUnit = canBuyNotResearched(unit)
   let unitCost = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
+
   if (!checkBalanceMsgBox(unitCost))
     return false
 
   let unitName = unit.name
   local taskId = null
+  let blk = DataBlock()
   if (canBuyNotResearchedUnit) {
-    let blk = DataBlock()
-    blk["unit"] = unit.name
+    blk["unit"] = unitName
     blk["cost"] = unitCost.wp
     blk["costGold"] = unitCost.gold
-
     taskId = char_send_blk("cln_buy_not_researched_clans_unit", blk)
   }
-  else
-    taskId = shop_purchase_aircraft(unitName)
+  else {
+    blk["name"] = unitName
+    blk["cost"] = unitCost.wp
+    blk["costGold"] = unitCost.gold
+    taskId = char_send_blk("cln_buy_aircraft", blk)
+  }
 
-  let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase"), null, null)
-  addBgTaskCb(taskId, function() {
-    destroyMsgBox(progressBox)
-    broadcastEvent("UnitBought", { unitName = unit.name, needSelectCrew })
+  let options = {
+    showProgressBox = true
+    progressBoxText = loc("charServer/purchase")
+  }
+
+  addTask(taskId, options, function() {
+    broadcastEvent("UnitBought", { unitName, needSelectCrew })
+    successCb?()
+  }, function() {
+    if (!PRICE.isActual())
+      PRICE.update(null, null, true)
+    errorCb?()
   })
   return true
 }
@@ -75,14 +89,14 @@ function checkFeatureLock(unit, lockAction) {
 
 function showCantBuyOrResearchUnitMsgbox(unit) {
   let reason = getCantBuyUnitReason(unit)
-  if (u.isEmpty(reason))
+  if (isEmpty(reason))
     return true
 
   scene_msg_box("need_buy_prev", null, reason, [["ok", function () {}]], "ok")
   return false
 }
 
-function buyUnit(unit, silent = false) {
+function buyUnit(unit, silent = false, params = {}) {
   if (!checkFeatureLock(unit, CheckFeatureLockAction.BUY))
     return false
 
@@ -97,8 +111,16 @@ function buyUnit(unit, silent = false) {
     return false
   }
 
+  let desiredCost = params?.desiredCost
+  if (desiredCost != null && !isEqual(desiredCost, unitCost)) {
+    let unitName = colorize("userlogColoredText", getUnitName(unit, true))
+    let msgText = warningIfGold(loc("mainmenu/limitBuyWnd/unitBuyError", { unitName, cost = desiredCost }), desiredCost)
+    scene_msg_box("buyUnit", null, msgText, [["ok", @() broadcastEvent("PriceUpdated")]], "ok")
+    return false
+  }
+
   if (silent)
-    return impl_buyUnit(unit)
+    return impl_buyUnit(unit, true, params)
 
   let unitName  = colorize("userlogColoredText", getUnitName(unit, true))
   let unitPrice = unitCost.getTextAccordingToBalance()
@@ -108,13 +130,12 @@ function buyUnit(unit, silent = false) {
 
   let customButtons = [
     { text = "msgbox/btn_no", cb = @() null }
-    { text = "msgbox/btn_order_and_choose_crew/later", cb = @() impl_buyUnit(unit, false) }
-    { text = "msgbox/btn_order_and_choose_crew", cb = @() impl_buyUnit(unit) }
+    { text = "msgbox/btn_order_and_choose_crew/later", cb = @() impl_buyUnit(unit, false, params) }
+    { text = "msgbox/btn_order_and_choose_crew", cb = @() impl_buyUnit(unit, true, params) }
   ]
 
-  loadHandler(gui_handlers.purchaseConfirmationHandler,
-    { id = "need_money", text = msgText, customButtons }
-  )
+  purchaseConfirmation({ id = "need_money", text = msgText, customButtons })
+
   return true
 }
 
@@ -158,9 +179,9 @@ function repairWithMsgBox(unit, onSuccessCb = null) {
   if (price.isZero())
     return onSuccessCb && onSuccessCb()
 
-  let msgText = loc("msgbox/question_repair", { unitName = loc(getUnitName(unit)), cost = price.tostring() })
+  let text = loc("msgbox/question_repair", { unitName = loc(getUnitName(unit)), cost = price.tostring() })
   let callbackYes = @() repairNoMsgBox(unit, onSuccessCb)
-  purchaseConfirmation("question_repair", msgText, callbackYes)
+  purchaseConfirmation({ id = "question_repair", text, callbackYes }, price)
 }
 
 function showFlushSquadronExpMsgBox(unit, onDoneCb, onCancelCb) {

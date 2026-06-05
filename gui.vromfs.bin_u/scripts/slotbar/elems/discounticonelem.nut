@@ -11,6 +11,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getSortedDiscountUnits, prepareForTooltip, createMoreText } = require("%scripts/markers/markerTooltipUtils.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { haveAnyUnitDiscount, getUnitsDiscounts } = require("%scripts/discounts/discountsState.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function getMaxDiscount(countryId) {
   return getUnitsDiscounts(countryId).reduce(function(res, val) {
@@ -59,7 +60,7 @@ addTooltipTypes({
       if (obj.getParent()?["stacked"] == "yes")
         return false
 
-      let { countryId = "", armyId = "" } = params
+      let { countryId = "", armyId = "", hasOpenHint = true } = params
       let discountUnits = getSortedDiscountUnits(getUnitsDiscounts(countryId, armyId))
       let { tooltipUnits, tooltipUnitsCount } = prepareForTooltip(discountUnits)
       let blocks = tooltipUnits.map(function(block, index, arr) {
@@ -86,6 +87,8 @@ addTooltipTypes({
         blocks
         hasMoreVehicles = tooltipUnitsCount < discountUnits.len()
         moreVehicles = createMoreText(discountUnits.len() - tooltipUnitsCount)
+        hasOpenHint
+        isPC = !showConsoleButtons.get()
       }
       let data = handyman.renderCached("%gui/markers/markersTooltip.tpl", view)
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)

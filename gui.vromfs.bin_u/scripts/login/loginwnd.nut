@@ -4,7 +4,7 @@ from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUT
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 from "chard" import save_profile
 
-let { platformId } = require("%sqstd/platform.nut")
+let { platformId, is_gdk, is_pc } = require("%sqstd/platform.nut")
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { get_disable_autorelogin_once, set_disable_autorelogin_once } = require("loginState.nut")
 let { getLocalLanguage } = require("language")
@@ -35,7 +35,7 @@ let { saveLocalSharedSettings, loadLocalSharedSettings
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getGameLocalizationInfo, setGameLocalization, canSwitchGameLocalization, getCurLangShortName
 } = require("%scripts/langUtils/language.nut")
-let { get_network_block } = require("blkGetters")
+let { get_network_block, get_common_local_settings_blk } = require("blkGetters")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running } = require("steam")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
@@ -47,10 +47,15 @@ let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { set_autologin_enabled, is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
+let { frnd } = require("dagor.random")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
 const MIGRATION_URL = "migration.warthunder.com"
+const LAST_LOGIN_TYPE_SAVE_ID = "lastLoginType"
+
+let transparentTimerPid = dagui_propid_add_name_id("_transp-timer")
+let sizeTimerPid = dagui_propid_add_name_id("_size-timer")
 
 let validateNickRegexp = regexp2(@"[^_0-9a-zA-Z]")
 
@@ -117,6 +122,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   defaultSaveLoginFlagVal = false
   defaultSavePasswordFlagVal = false
   defaultSaveAutologinFlagVal = false
+  isExistingAccountPanelOpened = false
 
   tabFocusArray = [
     "loginbox_username",
@@ -131,7 +137,6 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     this.initLanguageSwitch()
     this.checkShardingCircuits()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
-
     enable_keyboard_layout_change_tracking(true)
     enable_keyboard_locks_change_tracking(true)
 
@@ -212,6 +217,41 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
+
+    let runCount = get_common_local_settings_blk()?.runCount ?? 0
+    let isFirstLogin = type(runCount) != "integer" || runCount <= 0
+    if (!isFirstLogin) {
+      let lastLoginIsGuest = loadLocalSharedSettings(LAST_LOGIN_TYPE_SAVE_ID, null) == "guest"
+      if (lastLoginIsGuest) {
+        let guestBtn = this.scene.findObject("guest_login_action_button")
+        let loginBtn = this.scene.findObject("login_action_button")
+        guestBtn["class"] = "battle"
+        guestBtn["navButtonFont"] = "yes"
+        loginBtn["class"] = ""
+        loginBtn["navButtonFont"] = "no"
+      }
+      return
+    }
+
+    let canShowNewDesign = is_pc && !is_gdk && !steam_is_running()
+    if (!canShowNewDesign)
+      return
+
+    let newLoginWndStyle = frnd() > 0.5
+    bqSendNoAuthWeb(newLoginWndStyle ? "login_style:new" : "login_style:old")
+
+    if (newLoginWndStyle)
+      this.setNewVisual()
+  }
+
+  function setNewVisual() {
+    this.scene.findObject("main_panel_frame")["padding-top"] = "1@framePadding + 1@blockInterval + 1@navBarBattleButtonHeight"
+    this.scene.findObject("existing_account_label").show(true)
+    this.scene.findObject("usual_login_btn").show(true)
+
+    let existingAccountObj = this.scene.findObject("existing_account_block")
+    existingAccountObj.height = "1"
+    existingAccountObj.show(false)
   }
 
   function onDestroy() {
@@ -548,6 +588,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     if (result == YU2_OK) {
       if (steam_is_running())
         saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
+
+      let loginType = this.isGuestLogin ? "guest" : "nonguest"
+      saveLocalSharedSettings(LAST_LOGIN_TYPE_SAVE_ID, loginType)
       this.continueLogin(no_dump_login)
     }
 
@@ -755,6 +798,20 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
         this.guestProceedAuthorization(guestLoginId, nick)
       }
     })
+  }
+
+  function openExistingAccountPanel() {
+    if (this.isExistingAccountPanelOpened)
+      return
+    this.isExistingAccountPanelOpened = true
+    let block = this.scene.findObject("existing_account_block")
+    block.show(true)
+    block.setFloatProp(sizeTimerPid, 0)
+
+    let btn = this.scene.findObject("usual_login_btn")
+    btn.setFloatProp(transparentTimerPid, 0)
+    btn.selfRemoveOnFinish = "1"
+    btn["transp-end"] = 0
   }
 }
 

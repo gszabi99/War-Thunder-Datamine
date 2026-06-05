@@ -173,7 +173,7 @@ let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScrip
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { MIS_PROGRESS } = require("%scripts/missions/missionProgress.nut")
 let { getBackFromReplaysFn, setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
-let { needShowTutorial, isTutorialBeforeCountrySelect } = require("%scripts/user/newbieTutorialDisplay.nut")
+let { needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
@@ -364,7 +364,7 @@ function gui_start_debriefing(_) {
     return
   }
 
-  if (isTutorialBeforeCountrySelect() && needShowTutorial("takeUnit", 1)) {
+  if (needShowTutorial("takeUnit", 1)) {
     let unlockGained = getDebriefingUserLogsList({
       show = [EULT_NEW_UNLOCK]
       unlocks = [UNLOCKABLE_AIRCRAFT]

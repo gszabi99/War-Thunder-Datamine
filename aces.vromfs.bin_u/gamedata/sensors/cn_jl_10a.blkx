@@ -561,6 +561,36 @@
             "sourceType": "radarSs"
           }
         },
+        "setSeaStandbyMode": {
+          "setSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaSearch"
+          },
+          "setModeName": {
+            "name": "SEA standby"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
+          }
+        },
+        "setSeaSearchMode": {
+          "setSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaSearch"
+          },
+          "setModeName": {
+            "name": "SEA search"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
+          }
+        },
         "setGtmTwsBvrLockModeCommon": {
           "setBvrLockModeCommon": {},
           "setFsmActive": {
@@ -649,6 +679,72 @@
             "name": "TWS GTM acquisition"
           }
         },
+        "setSeaBvrLockMode": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "bvrLock",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaTrack"
+          },
+          "setScanPattern": {
+            "scanPattern": "bvrLockSearch"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setModeName": {
+            "name": "SEA acquisition"
+          }
+        },
+        "setSeaBvrTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "track"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setModeName": {
+            "name": "SEA track"
+          },
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaTrack"
+          }
+        },
         "setSeaTwsStandbyMode": {
           "setSearchStandbyModeCommon": {},
           "setTransiver": {
@@ -714,41 +810,6 @@
           },
           "setModeName": {
             "name": "TWS SEA acquisition"
-          }
-        },
-        "setSeaBvrTrackMode": {
-          "setEnabled": {
-            "value": true
-          },
-          "setScanPatternSet": {},
-          "setScanPattern": {
-            "scanPattern": "track"
-          },
-          "addTargetOfInterest": {},
-          "setLastTargetOfInterestActive": {},
-          "updateActiveTargetOfInterest": {},
-          "setCenterAzimuth": {
-            "source": "activeTargetOfInterest"
-          },
-          "setCenterElevation": {
-            "source": "activeTargetOfInterest"
-          },
-          "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setModeName": {
-            "name": "SEA track"
-          },
-          "setFsmActive": {
-            "fsm": "gtmTrack",
-            "active": true
-          },
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "seaTrack"
           }
         }
       },
@@ -2965,6 +3026,7 @@
       "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
+      "track": true,
       "distance": {
         "presents": true,
         "minValue": 500.0,

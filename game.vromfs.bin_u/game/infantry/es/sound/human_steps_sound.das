@@ -6,7 +6,7 @@ require soundEvent
 require sound_utils.modules.sound_player_common
 require sound_utils.modules.sound_control_common
 require sound_utils.modules.sound_physmat_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 require common_sounds.modules.common_sounds_events
 require human_sounds.modules.human_steps_sound_common
 require DngHuman
@@ -210,8 +210,8 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                                              var human_steps_sound__physStates : int&;
                                              var human_steps_sound__lastTimeOnGround : float&;
 
-                                             var human_sound_landmesh_queries_vars__speedSq : float&;
-                                             var human_sound_landmesh_queries_vars__isOnGround : bool&;
+                                             var sound_biome_puddle_queries_vars__speedSq : float&;
+                                             var sound_biome_puddle_queries_vars__isOnGround : bool&;
 
                                              var human_steps_sound_generator__lastStepAt_cooldown : float2&;
                                              human_steps_sound_generator__walkRunSprint_stand_intervals : float3;
@@ -219,16 +219,18 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                                              human_steps_sound_generator__enableForVisible : bool;
                                              human_steps_sound_generator__enableForInvisible : bool;
                                              human_steps_sound_generator__enableAlways : bool;
+
                                              managed_sound__isStealed : bool = false;
                                              var managed_sound__pos : float3&)
+
     managed_sound__pos = transform[3]
 
     if !have_sound(sound_control__state) || is_faraway_step(is_watched_sound, transform[3], human_steps_sound__farawayThresholdSq, listenerPos) || managed_sound__isStealed
       if managed_sound__isStealed
         abandon(human_step_sound_grains__event)
         human_step_sound_grains__ttl = 0.
-      human_sound_landmesh_queries_vars__speedSq = 0.
-      human_sound_landmesh_queries_vars__isOnGround = true
+      sound_biome_puddle_queries_vars__speedSq = 0.
+      sound_biome_puddle_queries_vars__isOnGround = true
       human_steps_sound__physStates = human_net_phys__states
       human_steps_sound__irqObjIdx = INVALID_IRQ_OBJ_IDX
       return
@@ -275,8 +277,8 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
     
 
     human_steps_sound__irqObjIdx = INVALID_IRQ_OBJ_IDX
-    human_sound_landmesh_queries_vars__speedSq = human_net_phys != null ? length_sq((*human_net_phys).phys.currentState.velocity.xz) : 0.
-    human_sound_landmesh_queries_vars__isOnGround = read_state(StateFlag.ST_ON_GROUND, human_net_phys__states)
+    sound_biome_puddle_queries_vars__speedSq = human_net_phys != null ? length_sq((*human_net_phys).phys.currentState.velocity.xz) : 0.
+    sound_biome_puddle_queries_vars__isOnGround = read_state(StateFlag.ST_ON_GROUND, human_net_phys__states)
 
     let descId = human_steps_sound_update_states(info.curTime,
                                                  human_net_phys__states,
@@ -305,8 +307,8 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                           var human_steps_sound__smid : int&;
                           var human_steps_sound__stepIdx : uint&;
 
-                          human_sound_landmesh_queries__biomeId : int;
-                          human_sound_landmesh_queries__puddleDepth : float)
+                          sound_biome_puddle_queries__biomeId : int;
+                          sound_biome_puddle_queries__puddleDepth : float)
       if !sound_preset__isLoaded
         return
 
@@ -347,8 +349,8 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                       shouldTraceEnemy,
                       is_watched_sound,
                       human_steps_sound__traceStepOffsetLen,
-                      human_sound_landmesh_queries__biomeId,
-                      human_sound_landmesh_queries__puddleDepth,
+                      sound_biome_puddle_queries__biomeId,
+                      sound_biome_puddle_queries__puddleDepth,
                       human_steps_sound__smid,
                       human_steps_sound__waterDepth,
                       human_net_phys,
@@ -365,8 +367,8 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                       shouldTraceEnemy,
                       is_watched_sound,
                       human_steps_sound__traceStepOffsetLen,
-                      human_sound_landmesh_queries__biomeId,
-                      human_sound_landmesh_queries__puddleDepth,
+                      sound_biome_puddle_queries__biomeId,
+                      sound_biome_puddle_queries__puddleDepth,
                       human_steps_sound__smid,
                       human_steps_sound__waterDepth,
                       human_net_phys,

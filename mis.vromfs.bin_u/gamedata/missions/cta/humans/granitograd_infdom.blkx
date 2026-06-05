@@ -191,7 +191,7 @@
                 "country": "ussr"
               },
               {
-                "name": "asm_val",
+                "name": "ak_15",
                 "weight": 1.0,
                 "country": "ussr"
               }
@@ -296,6 +296,7 @@
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": [
               "t1_spawns_1",
               "t1_spawns_2",
@@ -313,6 +314,7 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_1",
             "team": "A",
             "isIndividual": true,
@@ -324,6 +326,7 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_2",
             "team": "A",
             "isIndividual": true,
@@ -335,6 +338,7 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_3",
             "team": "A",
             "isIndividual": true,
@@ -346,6 +350,7 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_4",
             "team": "A",
             "isIndividual": true,
@@ -357,6 +362,7 @@
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": [
               "t2_spawns_1",
               "t2_spawns_2",
@@ -374,6 +380,7 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_1",
             "team": "B",
             "isIndividual": true,
@@ -385,6 +392,7 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_2",
             "team": "B",
             "isIndividual": true,
@@ -396,6 +404,7 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_3",
             "team": "B",
             "isIndividual": true,
@@ -407,6 +416,7 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_4",
             "team": "B",
             "isIndividual": true,
@@ -417,6 +427,7 @@
           {
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": [
               "t1_spawns_tanks_1",
               "t1_spawns_tanks_2"
@@ -431,6 +442,7 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_tanks_1",
             "team": "A",
             "isIndividual": true,
@@ -442,6 +454,7 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_tanks_2",
             "team": "A",
             "isIndividual": true,
@@ -453,6 +466,7 @@
           {
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": [
               "t2_spawns_tanks_1",
               "t2_spawns_tanks_2"
@@ -467,6 +481,7 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_tanks_1",
             "team": "B",
             "isIndividual": true,
@@ -478,6 +493,7 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_tanks_2",
             "team": "B",
             "isIndividual": true,
@@ -567,10 +583,36 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "target": "t1_helipad",
+            "team": "A",
+            "isAirfield": true,
+            "object": "t1_helipad",
+            "tags": {
+              "helicopter": true,
+              "type_attack_helicopter": true,
+              "type_utility_helicopter": true
+            }
+          },
+          {
+            "loc_name": "",
+            "radius": -1.0,
             "target": "t1_helipad_farspawn",
             "team": "A",
             "isAirfield": true,
             "object": "t1_helipad_farspawn",
+            "tags": {
+              "helicopter": true,
+              "type_attack_helicopter": true,
+              "type_utility_helicopter": true
+            }
+          },
+          {
+            "loc_name": "",
+            "radius": -1.0,
+            "target": "t2_helipad",
+            "team": "B",
+            "isAirfield": true,
+            "object": "t2_helipad",
             "tags": {
               "helicopter": true,
               "type_attack_helicopter": true,
@@ -612,31 +654,6 @@
               "helicopter": false,
               "type_attack_helicopter": false,
               "type_utility_helicopter": false
-            }
-          }
-        ],
-        "__missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "",
-            "radius": -1.0,
-            "target": "t1_helicopter_spawn_01",
-            "team": "A",
-            "isAirfield": false,
-            "tags": {
-              "human": false,
-              "type_attack_helicopter": true,
-              "type_utility_helicopter": true
-            }
-          },
-          {
-            "loc_name": "",
-            "radius": -1.0,
-            "target": "t2_helicopter_spawn_01",
-            "team": "B",
-            "tags": {
-              "human": false,
-              "type_attack_helicopter": true,
-              "type_utility_helicopter": true
             }
           }
         ],
@@ -3702,60 +3719,60 @@
         ],
         [
           369.973,
-          12.027,
-          -522.4
+          10.15,
+          -511.821
         ]
       ],
-      "topY": 82.0396,
+      "topY": 80.1626,
       "polygonPoint": [
         [
           -48.2538,
-          18.8841,
+          17.0071,
           -352.011
         ],
         [
           121.703,
-          17.8982,
+          16.0212,
           -314.666
         ],
         [
-          176.537,
-          17.423,
-          -351.112
+          188.35,
+          15.546,
+          -340.8
         ],
         [
           298.795,
-          16.617,
+          14.74,
           -386.279
         ],
         [
           396.688,
-          13.4567,
+          11.5797,
           -367.127
         ],
         [
           514.905,
-          15.0236,
+          13.1466,
           -360.646
         ],
         [
           741.724,
-          14.0184,
+          12.1414,
           -316.718
         ],
         [
           806.198,
-          16.0525,
+          14.1755,
           -652.468
         ],
         [
           470.848,
-          12.027,
+          10.15,
           -708.976
         ],
         [
           -66.2523,
-          16.4451,
+          14.5681,
           -644.051
         ]
       ],
@@ -3889,61 +3906,61 @@
           1.0
         ],
         [
-          322.775,
-          12.8,
-          -0.650002
+          299.467,
+          2.25,
+          -29.6155
         ]
       ],
-      "topY": 52.8,
+      "topY": 49.5199,
       "polygonPoint": [
         [
           553.911,
-          16.55,
+          13.2699,
           -182.697
         ],
         [
           380.155,
-          14.05,
+          10.7699,
           -221.479
         ],
         [
           301.15,
-          14.75,
+          11.4699,
           -195.5
         ],
         [
           192.85,
-          14.55,
+          11.2699,
           -138.9
         ],
         [
           90.8445,
-          14.6501,
+          11.37,
           -250.255
         ],
         [
           -146.192,
-          17.0001,
+          13.72,
           -278.431
         ],
         [
           -202.3,
-          15.0,
+          11.7199,
           3.15
         ],
         [
           701.15,
-          12.8,
+          9.51986,
           219.2
         ],
         [
           801.235,
-          5.53014,
+          2.25,
           -199.968
         ],
         [
           570.827,
-          15.2045,
+          11.9244,
           -250.034
         ]
       ],
@@ -4119,7 +4136,7 @@
           1.0
         ],
         [
-          349.267,
+          360.926,
           9.54285,
           -279.175
         ]
@@ -4137,9 +4154,9 @@
           80.7573
         ],
         [
-          659.79,
-          11.6156,
-          -183.783
+          634.85,
+          11.6157,
+          -210.05
         ],
         [
           692.678,
@@ -4157,9 +4174,9 @@
           -638.204
         ],
         [
-          29.174,
+          38.6,
           10.4004,
-          -161.311
+          -165.15
         ]
       ],
       "objLayer": 0,
@@ -4238,9 +4255,9 @@
           0.0333548
         ],
         [
-          284.631,
-          13.2162,
-          20.6773
+          256.9,
+          17.15,
+          -27.7
         ]
       ],
       "objLayer": 0,

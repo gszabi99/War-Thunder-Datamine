@@ -21,6 +21,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_current_mission_info_cached, get_user_skins_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
+let { Decorator } = require("%scripts/customization/decorator.nut")
 let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId, approversUnitToPreviewLiveResource
 } = require("%scripts/customization/skinUtils.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -32,6 +33,7 @@ let { floor, round, abs } = require("%sqstd/math.nut")
 let { unitNameForWeapons  } = require("%scripts/weaponry/unitForWeapons.nut")
 let { getSessionLobbyRoomId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { getPrioritySkin } = require("%scripts/customization/prioritySkins.nut")
 
 let previewedLiveSkinIds = []
 
@@ -72,16 +74,25 @@ function getBestSkinsList(unitName, isLockedAllowed) {
     if (decorator?.isUnlocked())
       skinsList.append(skin.name)
   }
-  return skinLocations.getBestSkinsList(skinsList, unitName, level, decoratorTypes.SKINS)
+  return skinLocations.getBestSkinsList(skinsList, unitName, level)
 }
 
 
 function getAutoSkin(unitName) {
+  local isPrioritySkinAvailable = false
+
+  let prioritySkin = getPrioritySkin(unitName)
+  if (prioritySkin != null) {
+    let decorator = getDecorator(getSkinId(unitName, prioritySkin), decoratorTypes.SKINS)
+    isPrioritySkinAvailable = isPrioritySkinAvailable || (decorator && decorator.isUnlocked())
+  }
+
   local list = getBestSkinsList(unitName, false)
     .filter(@(s) !isSkinBanned($"{unitName}/{s}"))
   if (list.len() == 0)
-    return DEFAULT_SKIN_NAME
-  
+    return isPrioritySkinAvailable ? prioritySkin : DEFAULT_SKIN_NAME
+  else if(isPrioritySkinAvailable && list.contains(prioritySkin))
+    return prioritySkin
 
   let couponSkins = list.filter(
     function(skin) {
@@ -99,7 +110,7 @@ function getAutoSkin(unitName) {
   foreach (skin in technicsSkins) {
     let locationTypeBit = skinLocations.getLocationTypeId(skin)
     foreach (unitSkin in list) {
-      let skinLocationsMask = skinLocations.getSkinLocationsMask(unitSkin, unitName, decoratorTypes.SKINS)
+      let skinLocationsMask = skinLocations.getSkinLocationsMask(unitSkin, unitName)
       if ((skinLocationsMask & locationTypeBit) != 0)
         return unitSkin
     }
@@ -226,7 +237,8 @@ function getSkinsOption(unitName, params = {}) {
   if (!unit)
     return descr
 
-  let needIcon = unit.esUnitType == ES_UNIT_TYPE_TANK
+  let needIcon = unit.esUnitType == ES_UNIT_TYPE_TANK ||
+    unit.esUnitType == ES_UNIT_TYPE_HUMAN
 
   local skins = unit.getSkins()
   if (showDownloadable)
@@ -251,7 +263,7 @@ function getSkinsOption(unitName, params = {}) {
     local decorator = getDecorator(skinBlockName, decoratorTypes.SKINS)
     if (!decorator) {
       if (isPreviewedLiveSkin)
-        decorator = ::Decorator(skinBlockName, decoratorTypes.SKINS)
+        decorator = Decorator(skinBlockName, decoratorTypes.SKINS)
       else
         continue
     }

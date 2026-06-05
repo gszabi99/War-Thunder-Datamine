@@ -55,8 +55,6 @@ def update_holster_equip_time_on_weapon_slot_change_es(evt : Event;
 [es]
 def update_weapon_equip_state(evt : CmdPostPhysUpdate; eid : EntityId;
                               human_weap__gunMatId : int;
-                              human_weap__gunCheckOffsetUp : float = 1.4;
-                              human_weap__gunCheckOffsetRight : float = 0.1;
                               human_weap__gunBackoffVisc : float = 0.1;
                               human_weap__gunTraceTime : float = 0.2;
                               human_weap__gunMaxBackoff : float = 0.0;
@@ -64,6 +62,7 @@ def update_weapon_equip_state(evt : CmdPostPhysUpdate; eid : EntityId;
                               human_weap__gunBackupDistFactor : float = 0.5;
                               var human_weap__gunBackupLastTime : float&;
                               human_weap__gunBackupOptTime : float = 0.5;
+                              human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
                               human_net_phys__isSimplifiedPhys : bool = false;
                               beh_tree__enabled : bool = false;
                               var human_net_phys : HumanActor&)
@@ -78,8 +77,15 @@ def update_weapon_equip_state(evt : CmdPostPhysUpdate; eid : EntityId;
 
   var humanTm : float3x4
   currentState.location |> location_toTM(humanTm)
+  
+  var dynamicOffset = float3(0)
+  query(human_weap__currentGunEid) <| $ [es] (gun_dynamic_position__offset : float3 = float3())
+    dynamicOffset = gun_dynamic_position__offset
+  let savedGunOffset = phys.gunOffset
+  phys.gunOffset -= dynamicOffset
   var gunTm : float3x4
   human_phys_calcGunTm(phys, PrecomputedPresetMode.TPV, humanTm, currentState.gunAngles.y, currentState.leanPosition, currentState.height, gunTm)
+  phys.gunOffset = savedGunOffset
 
   if weapEquipState.curState == HUWeaponEquipState.EES_EQUIPED || weapEquipState.curState == HUWeaponEquipState.EES_DOWN
     if appliedCT.chosenWeapon != weapEquipState.curSlot && weaponParams[int(appliedCT.chosenWeapon)].exists && phys.canSwitchWeapon
@@ -93,7 +99,7 @@ def update_weapon_equip_state(evt : CmdPostPhysUpdate; eid : EntityId;
       let curTime = float(evt.tick) * evt.dt
       let doOpt = curTime - human_weap__gunBackupLastTime > human_weap__gunBackupOptTime
       let fastCheckIdx = doOpt ? evt.tick % 4 : -1
-      let intersects = check_gun_trace(phys, gunTm, human_weap__gunCheckOffsetUp, human_weap__gunCheckOffsetRight, -1., human_weap__gunMatId, human_weap__gunMaxBackoff, backoff, human_weap__gunMinBackupDist, human_weap__gunBackupDistFactor, fastCheckIdx)
+      let intersects = check_gun_trace(phys, gunTm, -1., human_weap__gunMatId, human_weap__gunMaxBackoff, backoff, human_weap__gunMinBackupDist, human_weap__gunBackupDistFactor, fastCheckIdx)
       if intersects || human_phys_state_get_forceWeaponDown(currentState) || human_phys_state_get_isClimbing(currentState)
         currentState.gunTraceTimer = 0.
         weapEquipState.curState = HUWeaponEquipState.EES_DOWN
@@ -133,7 +139,7 @@ def update_weapon_equip_state(evt : CmdPostPhysUpdate; eid : EntityId;
       wearOff = true
     elif !isGunDownByState
       if !beh_tree__enabled && !human_net_phys__isSimplifiedPhys
-        if !check_gun_trace(phys, gunTm, human_weap__gunCheckOffsetUp, human_weap__gunCheckOffsetRight, -1., human_weap__gunMatId, human_weap__gunMaxBackoff, backoff, human_weap__gunMinBackupDist, human_weap__gunBackupDistFactor)
+        if !check_gun_trace(phys, gunTm, -1., human_weap__gunMatId, human_weap__gunMaxBackoff, backoff, human_weap__gunMinBackupDist, human_weap__gunBackupDistFactor)
           wearOff = true
       elif !check_ai_gun_trace(eid, phys)
         wearOff = true

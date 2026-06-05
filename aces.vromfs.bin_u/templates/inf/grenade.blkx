@@ -52,6 +52,7 @@
     "_use": [
       "projectile_phys_with_shell",
       "vog_25m_grenade_shell",
+      "frag_grenade_disorientated_effects",
       "block_rethrow_shell",
       "shell_launch_sound"
     ],
@@ -103,14 +104,20 @@
     "ammo_holder__templateName": "vog_25m_grenade_item",
     "ammo_holder__ammoCount": 1
   },
+  "m433_grenade_shell": {
+    "animchar__res": "m320_projectile_char",
+    "collres__res": "m320_projectile_collision",
+    "shell_explosion_fx__infoTemplate": "effect_group_grenade_explosion",
+    "shell_contact_fx__infoTemplate": "effect_group_grenade_contact"
+  },
   "m433_grenade_phys": {
     "_use": [
       "projectile_phys_with_shell",
+      "m433_grenade_shell",
+      "frag_grenade_disorientated_effects",
       "block_rethrow_shell",
       "shell_launch_sound"
     ],
-    "animchar__res": "m320_projectile_char",
-    "collres__res": "m320_projectile_collision",
     "havePairCollision": false,
     "start_omega": [
       0.0,
@@ -124,8 +131,6 @@
     "shell__launchTime": -1.0,
     "shell__cleanupTime": 30.0,
     "shell__fuseTime": 0.125,
-    "shell_explosion_fx__infoTemplate": "effect_group_grenade_explosion",
-    "shell_contact_fx__infoTemplate": "effect_group_grenade_contact",
     "shell__waterImpactFx": "hit_water_medium_effect",
     "shell__kineticEnergyToDamageMult": 0.008,
     "shell__concussionMaxRadius:r": {
@@ -199,12 +204,12 @@
     "grenade_thrower__selectedGrenadeVarId": -1,
     "grenade_thrower__shootNode": "weapon",
     "grenade_thrower__shootNodeId": -1,
-    "grenade_throw__drawTime": 0.3,
-    "grenade_throw__throwTime": 0.4,
+    "grenade_throw__drawTime": 0.5,
+    "grenade_throw__throwTime": 0.5,
     "grenade_throw__cookProgressTime": 0.5,
-    "grenade_throw__throwProgressTime": 0.6,
+    "grenade_throw__throwProgressTime": 0.52,
     "grenade_throw__fastThrowCookProgressTime": 0.3,
-    "grenade_throw__fastThrowProgressTime": 0.6,
+    "grenade_throw__fastThrowProgressTime": 0.52,
     "shell__autoThrowCountdown": 0.0,
     "item__id:i": {
       "value": 0,
@@ -756,12 +761,6 @@
     "shell_explosion_fx__infoTemplate": "effect_group_grenade_explosion",
     "shell_contact_fx__infoTemplate": "effect_group_grenade_contact"
   },
-  "m24_grenade_base": {
-    "_use": [
-      "m24_shell",
-      "grenade_base"
-    ]
-  },
   "geballte_ladung_grenade_base": {
     "_use": [
       "geballte_ladung_shell",
@@ -792,10 +791,95 @@
     },
     "gun_attach__holsterSlotsIds:list<i>": {}
   },
+  "frag_grenade_disorientated_effects": {
+    "disorientated__tinnitusRad": [
+      4.0,
+      12.0
+    ],
+    "disorientated__tinnitusPower": [
+      2.0,
+      1.01
+    ],
+    "disorientated__tinnitusDistExp": 0.1,
+    "greenade_stunning_assist_radius": 8.0,
+    "_group": {
+      "_tags": "server",
+      "shell__concussionLookSensMult": 0.2,
+      "shell__concussionLookInertia": 0.1,
+      "shell__concussionMoveInertia": 0.1,
+      "flash_shell__concussionIntensityByDistSq:list<p2>": {
+        "p": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            20.25,
+            0.9
+          ],
+          [
+            64.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    "shell__concussionBlocksSprint:tag": {}
+  },
+  "flash_grenade_disorientated_effects": {
+    "disorientated__tinnitusRad": [
+      4.0,
+      12.0
+    ],
+    "disorientated__flashRad": [
+      4.0,
+      30.0
+    ],
+    "disorientated__tinnitusPower": [
+      2.0,
+      1.01
+    ],
+    "disorientated__flashPower": [
+      150.0,
+      12.0
+    ],
+    "disorientated__flashDistExp": 1.0,
+    "disorientated__tinnitusDistExp": 0.1,
+    "greenade_stunning_assist_radius": 10.0,
+    "explosion_flash__template": "flash_grenade_explosion_flash",
+    "_group": {
+      "_tags": "server",
+      "shell__concussionLookSensMult": 0.5,
+      "shell__concussionLookInertia": 0.9,
+      "shell__concussionMoveInertia": 0.9,
+      "flash_shell__concussionIntensityByDistSq:list<p2>": {
+        "p": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.25,
+            0.7
+          ],
+          [
+            1.0,
+            0.3
+          ],
+          [
+            1.75,
+            0.0
+          ]
+        ]
+      }
+    },
+    "shell__concussionBlocksSprint:tag": {}
+  },
   "m24_grenade": {
     "_use": [
       "projectile_with_shell",
-      "m24_grenade_base"
+      "grenade_base",
+      "m24_shell"
     ],
     "item__name": "items/m24_grenade",
     "gun_attach__slot": "l_hand",
@@ -956,13 +1040,8 @@
     "shell__explNodeIdx": -1,
     "shell__explTime": 0.0,
     "explTimeAdd": 3.0,
-    "shell__tracerIgnitionTime": 0.0,
     "shell__kineticEnergyToDamageMult": 0.0031,
-    "shell__explodeOnContact:tag": {},
-    "shellSmokeTracerId:i": {
-      "_tags": "render",
-      "value": -1
-    }
+    "shell__explodeOnContact:tag": {}
   },
   "fins_animation": {
     "fins_animation__finsProgressVarId": -1,
@@ -976,9 +1055,9 @@
   "client_side": {
     "clientSide:tag": {}
   },
-  "m24_grenade_phys": {
+  "grenade_phys_base": {
     "_use": [
-      "m24_grenade_base",
+      "grenade_base",
       "projectile_phys_with_shell",
       "grenade_throw_sound",
       "grenade_phys_collision_sound",
@@ -991,15 +1070,13 @@
       0.0,
       3.0
     ],
-    "collres__res": "grenade_m24_collision",
     "active": false,
-    "phys_obj_net_phys__blk": "gameData/weapons/m24.blk",
     "_tracked": "active",
     "explosion_flash__template": "default_explosion_flash",
     "ai_target_node__node": "weaponRoot",
     "shell__waterImpactFx": "hit_water_medium_effect",
     "shell__concussionMaxRadius:r": {
-      "value": 2.6,
+      "value": 8.0,
       "_tags": "server"
     },
     "ai_target_node__nodeId:i": {
@@ -1007,6 +1084,34 @@
       "_tags": "server"
     },
     "retardable:tag": {}
+  },
+  "flash_grenade_phys_base": {
+    "_use": [
+      "grenade_phys_base",
+      "flash_grenade_aware_phrase"
+    ],
+    "active": false,
+    "_tracked": "active",
+    "gun__wasVisible": false,
+    "_group": [
+      {
+        "_tags": "sound",
+        "shell_appear_sound__hero": "infantry/player/weapon/grenade_flash/throw",
+        "shell_appear_sound__enemy": "infantry/enemy/weapon/grenade_flash/throw"
+      },
+      {
+        "_tags": "sound",
+        "phys_obj_collision_sound__name": "player/weapon/grenade_flash/drop"
+      }
+    ]
+  },
+  "m24_grenade_phys": {
+    "_use": [
+      "grenade_phys_base",
+      "m24_shell"
+    ],
+    "collres__res": "grenade_m24_collision",
+    "phys_obj_net_phys__blk": "gameData/weapons/m24.blk"
   },
   "geballte_ladung_grenade_phys": {
     "_use": [

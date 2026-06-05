@@ -54,6 +54,10 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
   let elevationSectorSize = float2(size.x * 1.0, size.y * 0.85)
   draw_rectangle_radar(ctx, data, elevationSectorPos, elevationSectorSize)
 
+  let zoomDisplayPos = pos + float2(-size.x * 0.08, size.y * 0.66)
+  let zoomDisplaySize = float2(size.x * 0.25, size.y * 0.25)
+  draw_zoom_display(ctx, data, zoomDisplayPos, zoomDisplaySize)
+
 let allyColor = green
 let enemyColor = red
 
@@ -384,3 +388,77 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
     draw_targets_hei(ctx, data, ownShipPos, plotSize)
 
     ctx |> restore_viewport()
+
+def draw_zoom_display(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
+  let radius = size.y * 2.0
+  let shapeRadius = size * 0.1
+  let vectorLenMax = radius * 0.2
+  let center = origin + size * 0.5
+
+  var targetOfInterestPos = float2(0.0, 0.0)
+  var hasSelectedTargetOfIterest = false
+
+  let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
+
+  Radar`foreach_visible_target() <| $(var target)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET) && target.isSelectedTargetOfInterest && get_radar_hud_has_azimuth_scale() && target.losSpeed < 30000.0
+      var distanceRel = 0.9
+      var radialWidthRel = 0.05
+      if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
+        distanceRel = target.distanceRel
+        radialWidthRel = max(target.distanceWidthRel, 0.05)
+
+      var angle = -PI * 0.5
+      if get_radar_hud_has_azimuth_scale()
+        angle = get_radar_hud_azimuth_min() + azimuthRange * target.azimuthRel - PI * 0.5
+
+      let lockColor = get_radar_hud_is_irst() ? YELLOW : WHITE
+      let sina = sin(angle)
+      let cosa = cos(angle)
+      let pos = float2(cosa * distanceRel * radius, sina * distanceRel * radius)
+      hasSelectedTargetOfIterest = true
+      targetOfInterestPos = pos
+
+  if !hasSelectedTargetOfIterest
+    return
+
+  ctx |> set_viewport(origin.x, origin.y, origin.x + size.x, origin.y + size.y)
+
+  Radar`foreach_visible_target() <| $(var target)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
+      var distanceRel = 0.9
+      var radialWidthRel = 0.05
+      if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
+        distanceRel = target.distanceRel
+        radialWidthRel = max(target.distanceWidthRel, 0.05)
+
+      var angle = -PI * 0.5
+      if get_radar_hud_has_azimuth_scale()
+        angle = get_radar_hud_azimuth_min() + azimuthRange * target.azimuthRel - PI * 0.5
+
+      let targetColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : enemyColor))
+      ctx |> set_color(targetColor)
+
+      let sina = sin(angle)
+      let cosa = cos(angle)
+      let pos = center + float2(cosa * distanceRel * radius, sina * distanceRel * radius) - targetOfInterestPos
+      if target.isSelected && get_radar_hud_has_azimuth_scale() && target.losSpeed < 30000.0
+        let losAngle = atan2(target.losHorSpeed, -target.losSpeed)
+        ctx |> setRotViewTm(pos.x, pos.y, losAngle, 0., false)
+
+        let los = sqrt(target.losSpeed * target.losSpeed + target.losHorSpeed * target.losHorSpeed) * speedMaxInv * vectorLenMax
+        let spd <- to_array_move(fixed_array<float2>(pos, pos + float2(0., los)))
+        ctx |> render_line_aa(spd, false, data.lineWidth, float2(0, 0), targetColor)
+
+        if target.isEnemy
+          let shape <- to_array_move(fixed_array<float2>(pos + float2(-shapeRadius.x, -shapeRadius.y), pos, pos + float2(shapeRadius.x, -shapeRadius.y)))
+          if target.isDetected || target.isTracked
+            ctx |> render_poly(shape, targetColor)
+          else
+            ctx |> render_line_aa(shape, false, data.lineWidth, float2(0, 0), targetColor)
+        else
+          ctx |> render_sector_aa(pos + float2(0.0, -shapeRadius.y), shapeRadius, float2(0, PI), 1., targetColor, target.isDetected || target.isTracked ? targetColor : transparentColor)
+        ctx |> resetViewTm()
+      else
+        ctx |> render_ellipse_aa(pos, float2(shapeRadius.y), 1., targetColor, target.isDetected || target.isTracked ? targetColor : transparentColor)
+  ctx |> restore_viewport()

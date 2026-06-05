@@ -22,11 +22,11 @@ let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
 let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
-let { hasCustomSoundMods, isEnabledCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
+let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 let { getDevFeaturesList } = require("%scripts/features/devFeatures.nut")
-let { getIsConsoleModeForceEnabled } = require("%scripts/options/consoleMode.nut")
+let { getIsConsoleModeForceEnabled, showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -242,6 +242,7 @@ let getMainOptions = function() {
       [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
       [USEROPT_SHOW_HIT_ICONS_SHIP, "button", IS_SHIP_HIT_NOTIFICATIONS_VISIBLE],
+      [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_SHIPS, "spinner"],
 
       ["options/header/interface"],
       [USEROPT_HUD_SCREEN_SAFE_AREA, "spinner", safeAreaHud.canChangeValue()],
@@ -265,6 +266,9 @@ let getMainOptions = function() {
       [USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, "switchbox"],
       [USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, "switchbox"],
       [USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG, "switchbox"],
+
+
+
       [USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, "switchbox"],
       [USEROPT_HUD_VISIBLE_STREAKS, "switchbox"],
       [USEROPT_HUD_VISIBLE_CHAT_PLACE, "switchbox"],
@@ -279,6 +283,7 @@ let getMainOptions = function() {
       [USEROPT_MEASUREUNITS_WING_LOADING, "spinner", hasFeature("CardAirplaneWingLoadingParameter")],
       [USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, "spinner", hasFeature("CardAirplanePowerParameter")],
       [USEROPT_MEASUREUNITS_RADIAL_SPEED, "spinner"],
+      [USEROPT_MEASUREUNITS_DIST_SHORT, "spinner"],
 
       ["options/header/playersMarkers"],
       [USEROPT_SHOW_INDICATORS, "spinner"],
@@ -306,6 +311,8 @@ let getMainOptions = function() {
       [USEROPT_GAMEPAD_ENGINE_DEADZONE, "spinner"],
       [USEROPT_GAMEPAD_GYRO_TILT_CORRECTION, "spinner", isPlatformSony],
       [USEROPT_USE_CONTROLLER_LIGHT, "spinner", isPlatformSony && hasFeature("ControllerLight")],
+
+
 
       ["options/header/replaysAndSpectatorMode", null, hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
       [USEROPT_AUTOSAVE_REPLAYS, "spinner", !isInFlight() && hasFeature("ClientReplay")],
@@ -341,8 +348,8 @@ function getSoundOptions() {
     options = [
       ["options/sound"],
       [USEROPT_SOUND_ENABLE, "switchbox", isPC],
-      [USEROPT_SOUND_SPEAKERS_WIDE_SNAPSHOT, "combobox", !isEnabledCustomSoundMods()],
-      [USEROPT_SOUND_TEST_HEADPHONES, "button", !isEnabledCustomSoundMods()],
+      [USEROPT_SOUND_SPEAKERS_WIDE_SNAPSHOT, "combobox"],
+      [USEROPT_SOUND_TEST_HEADPHONES, "button"],
       [USEROPT_CUSTOM_SOUND_MODS, "switchbox", isPC && hasCustomSoundMods()],
       [USEROPT_SOUND_DEVICE_OUT, "combobox", isPC && soundDevice.get_out_devices().len() > 0],
       [USEROPT_SOUND_SPEAKERS_MODE, "combobox", isPC],

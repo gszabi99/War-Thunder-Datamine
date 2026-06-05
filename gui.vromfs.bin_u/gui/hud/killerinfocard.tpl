@@ -148,7 +148,7 @@ hudFrame {
         flow:t='vertical'
 
         textareaNoTab {
-          text:t='<<unitName>>'
+          text:t='<<murderWeapon>>'
           overlayTextColor:t='active'
           font-pixht:t='12/720@shHud'
         }

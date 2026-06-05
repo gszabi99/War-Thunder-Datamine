@@ -1,4 +1,5 @@
 require ecs
+require net
 require DagorSystem
 require %appGame.infantry.es.concussion_common
 require %appGame.infantry.es.hitpoints_common
@@ -46,6 +47,8 @@ def gun_backblast_create_on_launch_es(evt : CmdLaunchProjectile;
                            backblast__reflectedTraceLen : float;
                            backblast__reflectedTraceSpreadAngle : float;
                            backblast__reflectedNumTraces : int;
+                           backblast__tinnitusMaxPower : float;
+                           backblast__reflectedTinnitusMaxPower : float;
                            gun__backblastOffset : float = 0.85)
     let shootDir = normalize(launchTm[0])
     let coneVertexPos = launchTm[3] - shootDir * gun__backblastOffset
@@ -92,8 +95,11 @@ def gun_backblast_create_on_launch_es(evt : CmdLaunchProjectile;
             closestDist = len
             break
         if closestDist >= 0.0
-          let intens      = cvt(closestDist, 0.0, backblast__coneHeight, backblast__maxConcussionIntensity, 0.0)
-          let damageVal   = cvt(closestDist, 0.0, backblast__coneHeight, backblast__maxDamage, 0.0)
+          let intens        = cvt(closestDist, 0.0, backblast__coneHeight, backblast__maxConcussionIntensity, 0.0)
+          let damageVal     = cvt(closestDist, 0.0, backblast__coneHeight, backblast__maxDamage, 0.0)
+          let tinnitusPower = cvt(closestDist, 0.0, backblast__coneHeight, backblast__tinnitusMaxPower, 0.0)
+          if tinnitusPower > 0.0
+            send_net_event(human_eid, CmdHumanBackblastTinnitus(position = coneVertexPos, power = tinnitusPower))
           enable_concussion_affect([
                 owner_eid=human_eid,
                 duration=backblast__concussionDuration,
@@ -121,7 +127,8 @@ def gun_backblast_create_on_launch_es(evt : CmdLaunchProjectile;
         backblast__reflectedNumTraces,
         backblast__reflectedRadius,
         backblast__reflectedMaxConcussionIntensity,
-        backblast__reflectedConcussionDuration)
+        backblast__reflectedConcussionDuration,
+        backblast__reflectedTinnitusMaxPower)
 
 
 def private apply_reflected_backblast(cone_vertex_pos : float3;
@@ -131,7 +138,8 @@ def private apply_reflected_backblast(cone_vertex_pos : float3;
                                       num_traces : int;
                                       radius : float;
                                       max_intensity : float;
-                                      concussion_duration : float)
+                                      concussion_duration : float;
+                                      tinnitus_max_power : float)
   let ref_up = abs(dot(cone_dir, float3(0.0, 1.0, 0.0))) > 0.99 ? float3(1.0, 0.0, 0.0) : float3(0.0, 1.0, 0.0)
   let right = normalize(cross(cone_dir, ref_up))
   let local_up = cross(right, cone_dir)
@@ -219,6 +227,9 @@ def private apply_reflected_backblast(cone_vertex_pos : float3;
         return
       let dist_factor = 1.0 - (closestDist / radius)
       let intens = max_intensity * dist_factor
+      let tinnitusPower = tinnitus_max_power * dist_factor
+      if tinnitusPower > 0.0
+        send_net_event(human_eid, CmdHumanBackblastTinnitus(position = center, power = tinnitusPower))
       if dbg_frames > 0
         let rootPos = *animchar.nodeTree |> geomtree_getNodeWpos(0)
         draw_debug_text_mark_buffered(rootPos, "concussion for soldier {human_eid}: int={intens} dur={concussion_duration}", dbg_frames, E3DCOLOR(0xFFFF00FF))
@@ -230,3 +241,9 @@ def private apply_reflected_backblast(cone_vertex_pos : float3;
         look_sens_mult = 1.0,
         look_inertia = 0.0,
         move_inertia = 0.0])
+
+
+[es(tag=gameClient, REQUIRE=controlledHero)]
+def on_human_backblast_tinnitus(evt : CmdHumanBackblastTinnitus;
+                                eid : EntityId)
+  sendEvent(eid, CmdStartTinnitusSfx(pos = evt.position, power = evt.power))

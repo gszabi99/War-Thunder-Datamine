@@ -16,6 +16,7 @@
   "isBwOpticSight": true,
   "laserDesignator": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "ilsKai24p": true,
   "mfdCamShkval": true,
   "mfdCamLineScale": 0.5,
@@ -3479,251 +3480,9 @@
               "metricUnits": false
             },
             {
-              "type": "devices",
-              "speed": {
-                "texture": "su_mfd_speed",
-                "position": [
-                  150.0,
-                  80.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.91,
-                  0.89
-                ],
-                "size": [
-                  120.0,
-                  120.0
-                ],
-                "color": [
-                  0,
-                  255,
-                  255,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "ranges": {
-                  "limits": [
-                    [
-                      0.0,
-                      50.0,
-                      -0.5,
-                      -0.46
-                    ],
-                    [
-                      50.0,
-                      100.0,
-                      -0.46,
-                      -0.26
-                    ],
-                    [
-                      100.0,
-                      150.0,
-                      -0.26,
-                      0.0
-                    ],
-                    [
-                      150.0,
-                      250.0,
-                      0.0,
-                      0.5
-                    ],
-                    [
-                      250.0,
-                      450.0,
-                      0.5,
-                      1.38
-                    ]
-                  ]
-                }
-              },
-              "vario": {
-                "texture": "su_mfd_vario",
-                "position": [
-                  360.0,
-                  80.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "size": [
-                  120.0,
-                  120.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "ranges": {
-                  "limits": [
-                    [
-                      -20.0,
-                      -10.0,
-                      0.25,
-                      0.5
-                    ],
-                    [
-                      -10.0,
-                      10.0,
-                      0.5,
-                      1.5
-                    ],
-                    [
-                      10.0,
-                      20.0,
-                      1.5,
-                      1.75
-                    ]
-                  ]
-                }
-              },
-              "altitude_hour": {
-                "texture": "su_mfd_altitude",
-                "position": [
-                  250.0,
-                  420.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.47,
-                  0.92,
-                  0.86,
-                  1.0
-                ],
-                "size": [
-                  120.0,
-                  120.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    10.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "altitude_min": {
-                "texture": "su_mfd_altitude",
-                "position": [
-                  250.0,
-                  420.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "size": [
-                  120.0,
-                  120.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    1000.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "aviahorizon_pitch": {
-                "texture": "su_mfd_ahorizon",
-                "arrowTex": "su_mfd_ahorizon_scale",
-                "position": [
-                  250.0,
-                  230.0
-                ],
-                "backgroundTexCoord": [
-                  0.11,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.4,
-                  1.0,
-                  0.6
-                ],
-                "size": [
-                  200.0,
-                  200.0
-                ],
-                "ranges": {
-                  "limits": [
-                    -90.0,
-                    90.0,
-                    0.35,
-                    -0.35
-                  ]
-                }
-              },
-              "aviahorizon_roll": {
-                "texture": "su_mfd_ahorizon",
-                "position": [
-                  250.0,
-                  230.0
-                ],
-                "arrowTexCoord": [
-                  0.2,
-                  0.9,
-                  0.8,
-                  1.0
-                ],
-                "size": [
-                  200.0,
-                  200.0
-                ],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    -180.0,
-                    180.0,
-                    -1.0,
-                    1.0
-                  ]
-                }
-              }
+              "type": "custom",
+              "pageName": "mfdMig29Horizont",
+              "scale": 0.9
             }
           ]
         },
@@ -3953,6 +3712,10 @@
         "blk": "gameData/FlightModels/weaponPresets/su_25sm3_kab_500kr.blk"
       },
       {
+        "name": "su_25sm3_kab_500s",
+        "blk": "gameData/FlightModels/weaponPresets/su_25sm3_kab_500s.blk"
+      },
+      {
         "name": "su_25sm3_b8m",
         "blk": "gameData/FlightModels/weaponPresets/su_25sm3_b8m.blk"
       },
@@ -3983,6 +3746,10 @@
       {
         "name": "su_25sm3_kf_29te",
         "blk": "gameData/FlightModels/weaponPresets/su_25sm3_kf_29te.blk"
+      },
+      {
+        "name": "su_25sm3_kf_58ush",
+        "blk": "gameData/FlightModels/weaponPresets/su_25sm3_kf_58ush.blk"
       },
       {
         "name": "su_25sm3_sppu_22",
@@ -4404,7 +4171,6 @@
           {
             "iconType": "nar_he_special",
             "name": "c13_slot2",
-            "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
@@ -4416,7 +4182,6 @@
           {
             "iconType": "rockets_he_middle",
             "name": "s_24b_slot2",
-            "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b001"
             },
@@ -4433,7 +4198,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_1_slot2",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_1_holder",
@@ -4457,7 +4221,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_1_slot2",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_1_holder",
@@ -4481,7 +4244,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_1_slot2",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_1_holder",
@@ -4519,7 +4281,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250_slot2",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_1_holder"
             },
@@ -4535,7 +4296,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500_slot2",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_1_holder"
             },
@@ -4551,7 +4311,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "fab_250sh_slot2",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_1_holder"
             },
@@ -4567,7 +4326,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot2",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_1_holder"
             },
@@ -4583,7 +4341,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot2",
-            "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_1_holder"
             },
@@ -4621,7 +4378,6 @@
           {
             "iconType": "nar_he_special",
             "name": "c13_slot3",
-            "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
@@ -4633,7 +4389,6 @@
           {
             "iconType": "rockets_he_middle",
             "name": "s_24b_slot3",
-            "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b002"
             },
@@ -4650,7 +4405,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_2_slot3",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_2_holder",
@@ -4674,7 +4428,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_2_slot3",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_2_holder",
@@ -4698,7 +4451,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_2_slot3",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_2_holder",
@@ -4722,7 +4474,7 @@
           {
             "iconType": "rockets_he_large_special_laser",
             "name": "s25l_1_slot3",
-            "reqModification": "su_17_s25",
+            "reqModification": "su_s25l",
             "ShowNodes": {
               "node": [
                 "pylon_a_2_holder",
@@ -4760,7 +4512,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250_slot3",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_2_holder"
             },
@@ -4776,7 +4527,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500_slot3",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_2_holder"
             },
@@ -4792,7 +4542,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "fab_250sh_slot3",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_2_holder"
             },
@@ -4808,7 +4557,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot3",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_2_holder"
             },
@@ -4824,7 +4572,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot3",
-            "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_2_holder"
             },
@@ -4834,6 +4581,23 @@
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "kab_500s",
+            "reqModification": "su_kab_500s",
+            "ShowNodes": {
+              "node": "pylon_2_holder"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "emitter": "fab_500m_62_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -4915,7 +4679,6 @@
           {
             "iconType": "nar_he_special",
             "name": "c13_slot4",
-            "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
@@ -4927,7 +4690,6 @@
           {
             "iconType": "rockets_he_middle",
             "name": "s_24b_slot4",
-            "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b003"
             },
@@ -4944,7 +4706,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_3_slot4",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_3_holder",
@@ -4968,7 +4729,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_3_slot4",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_3_holder",
@@ -4992,7 +4752,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_3_slot4",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_3_holder",
@@ -5016,7 +4775,7 @@
           {
             "iconType": "rockets_he_large_special_laser",
             "name": "s25l_2_slot4",
-            "reqModification": "su_17_s25",
+            "reqModification": "su_s25l",
             "ShowNodes": {
               "node": [
                 "pylon_a_3_holder",
@@ -5055,7 +4814,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_3_holder"
             },
@@ -5072,7 +4830,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_3_holder"
             },
@@ -5089,7 +4846,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "fab_250sh",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_3_holder"
             },
@@ -5106,7 +4862,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_3_holder"
             },
@@ -5123,7 +4878,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500",
-            "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_3_holder"
             },
@@ -5147,6 +4901,23 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/bombguns/su_kab_500kr_e.blk",
+              "emitter": "fab_500m_62_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "kab_500s",
+            "reqModification": "su_kab_500s",
+            "ShowNodes": {
+              "node": "pylon_3_holder"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
               "emitter": "fab_500m_62_003",
               "bullets": 1,
               "external": true,
@@ -5290,7 +5061,6 @@
           {
             "iconType": "nar_he_special",
             "name": "c13_slot5",
-            "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
@@ -5302,7 +5072,6 @@
           {
             "iconType": "rockets_he_middle",
             "name": "s_24b_slot5",
-            "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b004"
             },
@@ -5319,7 +5088,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_4_slot5",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_4_holder",
@@ -5343,7 +5111,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_4_slot5",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_4_holder",
@@ -5367,7 +5134,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_4_slot5",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_4_holder",
@@ -5406,7 +5172,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_4_holder"
             },
@@ -5423,7 +5188,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_4_holder"
             },
@@ -5440,7 +5204,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "fab_250sh",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_4_holder"
             },
@@ -5457,7 +5220,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_4_holder"
             },
@@ -5474,7 +5236,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500",
-            "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_4_holder"
             },
@@ -5553,6 +5314,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "arm_type_s",
+            "name": "kh_58ush_slot5",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "aku_58_b001",
+                "aku_58_fin1_b001",
+                "aku_58_fin2_b001",
+                "aku_58_fin3_b001",
+                "aku_58_fin4_b001",
+                "aku_58_fin5_b001",
+                "aku_58_fin6_b001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_58ush.blk",
+              "emitter": "aku_58_kh_29l_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -5681,7 +5466,6 @@
           {
             "iconType": "nar_he_special",
             "name": "c13_slot6",
-            "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
@@ -5693,7 +5477,6 @@
           {
             "iconType": "rockets_he_middle",
             "name": "s_24b_slot6",
-            "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b005"
             },
@@ -5710,7 +5493,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_5_slot6",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_5_holder",
@@ -5734,7 +5516,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_5_slot6",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_5_holder",
@@ -5758,7 +5539,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_5_slot6",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_5_holder",
@@ -5797,7 +5577,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_5_holder"
             },
@@ -5814,7 +5593,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_5_holder"
             },
@@ -5831,7 +5609,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "fab_250sh",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_5_holder"
             },
@@ -5848,7 +5625,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_5_holder"
             },
@@ -5865,7 +5641,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500",
-            "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_5_holder"
             },
@@ -5944,6 +5719,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "arm_type_s",
+            "name": "kh_58ush_slot6",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "aku_58_b002",
+                "aku_58_fin1_b002",
+                "aku_58_fin2_b002",
+                "aku_58_fin3_b002",
+                "aku_58_fin4_b002",
+                "aku_58_fin5_b002",
+                "aku_58_fin6_b002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_58ush.blk",
+              "emitter": "aku_58_kh_29l_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -6072,7 +5871,6 @@
           {
             "iconType": "nar_he_special",
             "name": "c13_slot7",
-            "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
@@ -6084,7 +5882,6 @@
           {
             "iconType": "rockets_he_middle",
             "name": "s_24b_slot7",
-            "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b006"
             },
@@ -6101,7 +5898,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_6_slot7",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_6_holder",
@@ -6125,7 +5921,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_6_slot7",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_6_holder",
@@ -6149,7 +5944,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_6_slot7",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_6_holder",
@@ -6173,7 +5967,7 @@
           {
             "iconType": "rockets_he_large_special_laser",
             "name": "s25l_3_slot7",
-            "reqModification": "su_17_s25",
+            "reqModification": "su_s25l",
             "ShowNodes": {
               "node": [
                 "pylon_a_6_holder",
@@ -6212,7 +6006,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_6_holder"
             },
@@ -6229,7 +6022,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_6_holder"
             },
@@ -6246,7 +6038,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "fab_250sh",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_6_holder"
             },
@@ -6263,7 +6054,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_6_holder"
             },
@@ -6280,7 +6070,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500",
-            "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_6_holder"
             },
@@ -6304,6 +6093,23 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/bombguns/su_kab_500kr_e.blk",
+              "emitter": "fab_500m_62_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "kab_500s",
+            "reqModification": "su_kab_500s",
+            "ShowNodes": {
+              "node": "pylon_6_holder"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
               "emitter": "fab_500m_62_006",
               "bullets": 1,
               "external": true,
@@ -6447,7 +6253,6 @@
           {
             "iconType": "nar_he_special",
             "name": "c13_slot8",
-            "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
@@ -6459,7 +6264,6 @@
           {
             "iconType": "rockets_he_middle",
             "name": "s_24b_slot8",
-            "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b007"
             },
@@ -6476,7 +6280,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_7_slot8",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_7_holder",
@@ -6500,7 +6303,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_7_slot8",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_7_holder",
@@ -6524,7 +6326,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_7_slot8",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_7_holder",
@@ -6548,7 +6349,7 @@
           {
             "iconType": "rockets_he_large_special_laser",
             "name": "s25l_4_slot8",
-            "reqModification": "su_17_s25",
+            "reqModification": "su_s25l",
             "ShowNodes": {
               "node": [
                 "pylon_a_7_holder",
@@ -6586,7 +6387,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250_slot8",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_7_holder"
             },
@@ -6602,7 +6402,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500_slot8",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_7_holder"
             },
@@ -6618,7 +6417,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "fab_250sh_slot8",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_7_holder"
             },
@@ -6634,7 +6432,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot8",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_7_holder"
             },
@@ -6650,7 +6447,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot8",
-            "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_7_holder"
             },
@@ -6660,6 +6456,23 @@
               "emitter": "fab_500m_62_007",
               "bullets": 1,
               "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "kab_500s",
+            "reqModification": "su_kab_500s",
+            "ShowNodes": {
+              "node": "pylon_7_holder"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "emitter": "fab_500m_62_007",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -6756,7 +6569,6 @@
           {
             "iconType": "nar_he_special",
             "name": "c13_slot9",
-            "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
@@ -6768,7 +6580,6 @@
           {
             "iconType": "rockets_he_middle",
             "name": "s_24b_slot9",
-            "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b008"
             },
@@ -6785,7 +6596,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_8_slot9",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_8_holder",
@@ -6809,7 +6619,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_8_slot9",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_8_holder",
@@ -6833,7 +6642,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_8_slot9",
-            "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
                 "pylon_a_8_holder",
@@ -6871,7 +6679,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250_slot9",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_8_holder"
             },
@@ -6887,7 +6694,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500_slot9",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_8_holder"
             },
@@ -6903,7 +6709,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "fab_250sh_slot9",
-            "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_8_holder"
             },
@@ -6919,7 +6724,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot9",
-            "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_8_holder"
             },
@@ -6935,7 +6739,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot9",
-            "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_8_holder"
             },
@@ -8054,98 +7857,6 @@
       }
     ]
   },
-  "wiki": {
-    "general": {
-      "length": 19.96,
-      "wingspan": 19.51,
-      "wingArea": 88.8,
-      "emptyWeight": 10300.0,
-      "normalWeight": 15340.0,
-      "maxTakeoffWeight": 20865.0,
-      "powerPlantType": 2,
-      "thrustMaxMil": 52000.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 7800.0,
-        "airSpeedMil0": [
-          0.0,
-          854.0
-        ],
-        "airSpeedMil1": [
-          3000.0,
-          880.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          20.0
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          71.717
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          147.402
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          231.172
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          339.877
-        ],
-        "turnTimeMil": [
-          1000.0,
-          26.0
-        ],
-        "takeoffDistance": 648.446,
-        "ceiling": 12400.0,
-        "rollRate": 69.0,
-        "wingLoading": 173.0,
-        "thrustToWeightRatio": 0.37
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          854.0
-        ],
-        "airSpeedMil1": [
-          1400.0,
-          878.0
-        ],
-        "airSpeedMil2": [
-          5700.0,
-          866.0
-        ],
-        "airSpeedMil3": [
-          12400.0,
-          791.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          20.0
-        ],
-        "climbRateMil1": [
-          3000.0,
-          18.0
-        ],
-        "climbRateMil2": [
-          6100.0,
-          13.8
-        ],
-        "climbRateMil3": [
-          9100.0,
-          1.5
-        ],
-        "climbRateMil4": [
-          12400.0,
-          -2.1
-        ]
-      }
-    }
-  },
   "balanceData": {
     "accSpd": 4.03451,
     "climbSpeed": 20.0,
@@ -8261,64 +7972,48 @@
       "reqModification": "su_17_sppu_22_gunpod",
       "tier": 4
     },
-    "zb_500": {
+    "su_kab_500s": {
       "modClass": "weapon",
       "tier": 1
-    },
-    "mi_24_fab_250": {
-      "prevModification": "zb_500",
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "mi_24_fab_500": {
-      "modClass": "weapon",
-      "reqModification": "mi_24_fab_250",
-      "tier": 3
     },
     "mig_27_kab_500": {
       "modClass": "weapon",
-      "reqModification": "mi_24_fab_500",
-      "tier": 4
-    },
-    "su_17_x25": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "su_17_x29l": {
-      "reqModification": "su_17_x25",
-      "modClass": "weapon",
+      "prevModification": "su_kab_500s",
       "tier": 2
+    },
+    "su_arm": {
+      "modClass": "weapon",
+      "prevModification": "mig_27_kab_500",
+      "tier": 4
     },
     "su_25_x29te": {
       "modClass": "weapon",
       "reqModification": "su_17_x29l",
       "tier": 3
     },
-    "su_25_x38ml": {
+    "su_25_x38mt": {
       "modClass": "weapon",
-      "reqModification": "su_25_x29te",
+      "reqModification": "su_25_x38ml",
       "tier": 4
     },
-    "il_28sh_s24": {
+    "su_s25l": {
+      "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 1
     },
-    "su_17_s25": {
-      "reqModification": "il_28sh_s24",
-      "deactivationIsAllowed": false,
+    "su_17_x25": {
+      "prevModification": "su_s25l",
       "modClass": "weapon",
       "tier": 2
     },
-    "mi_28_C13": {
-      "reqModification": "su_17_s25",
-      "deactivationIsAllowed": false,
+    "su_17_x29l": {
+      "reqModification": "su_17_x25",
       "modClass": "weapon",
       "tier": 3
     },
-    "su_25_x38mt": {
+    "su_25_x38ml": {
       "modClass": "weapon",
-      "prevModification": "mi_28_C13",
-      "reqModification": "su_25_x38ml",
+      "reqModification": "su_17_x29l",
       "tier": 4
     }
   },

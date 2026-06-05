@@ -1,0 +1,217 @@
+{
+  "strongpoint": {
+    "_use": [
+      "replicating",
+      "units_spawn_on_init"
+    ],
+    "strongpoint__radius": 100.0,
+    "_replicated": "team",
+    "_group": {
+      "_tags": "server",
+      "strongpoint__ticketsByCapture": 50
+    }
+  },
+  "strongpoint_1980": {
+    "_use": "strongpoint",
+    "_group": {
+      "_tags": "server",
+      "units_spawn_on_init__unitSettingsTeam1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_t_80b",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 3,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "ussr_bmp_2",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 2,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "ussr_9a33bm3",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {},
+            "bulletsCount:list<i>": {
+              "c": 6
+            }
+          }
+        ]
+      },
+      "units_spawn_on_init__unitSettingsTeam2:array": {
+        "unit:object": [
+          {
+            "name": "us_m1a1_abrams",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 3,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "us_m3_bradley",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 2,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "germ_flarakpz_1",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "163mm_roland_3_aam"
+            },
+            "bulletsCount:list<i>": {
+              "c": 10
+            }
+          }
+        ]
+      }
+    }
+  },
+  "strongpoint_2018": {
+    "_use": "strongpoint",
+    "_group": {
+      "_tags": "server",
+      "units_spawn_on_init__unitSettingsTeam1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_t_80bvm",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 3,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "USSR_APDS_FS"
+            }
+          },
+          {
+            "name": "ussr_bmp_3",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 2,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "30mm_2a72_AP"
+            }
+          },
+          {
+            "name": "ussr_zprk_2s6",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher",
+                "2s6_upgrade_modification"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": [
+                "30mm_2a38_HE",
+                ""
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": [
+                0,
+                8
+              ]
+            }
+          }
+        ]
+      },
+      "units_spawn_on_init__unitSettingsTeam2:array": {
+        "unit:object": [
+          {
+            "name": "us_m1a2_sep2_abrams",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 3,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "NATO_APDS_FS"
+            }
+          },
+          {
+            "name": "us_m3a3_bradley",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 2,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "sw_crotale_ng",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": 8
+            }
+          }
+        ]
+      }
+    }
+  }
+}

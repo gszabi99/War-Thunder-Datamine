@@ -42,6 +42,7 @@
     -50.0,
     50.0
   ],
+  "rwrIndicator": "AN/APR-39 MFD Ah-1Z",
   "gearSinkRangeLR": 0.216,
   "gearSinkRangeC": 0.165,
   "tpsCameraTargetOffsetAtZoom": [
@@ -1339,7 +1340,6 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
       1.21,
       1.49,
@@ -1351,25 +1351,54 @@
       0.0
     ],
     "lightPos": [
-      1.794,
-      0.981,
-      0.0
+      1.727,
+      0.915,
+      0.403
     ],
     "lightColor": [
       0.1,
       0.6,
       0.1
     ],
-    "lightRadius": 0.5,
+    "lightRadius": 0.25,
+    "lightPos1": [
+      1.727,
+      0.915,
+      -0.403
+    ],
+    "lightColor1": [
+      0.1,
+      0.6,
+      0.1
+    ],
+    "lightRadius1": 0.25,
+    "lightPos2": [
+      1.921,
+      1.083,
+      0.191
+    ],
+    "lightColor2": [
+      0.1,
+      0.6,
+      0.1
+    ],
+    "lightRadius2": 0.3,
+    "lightPos3": [
+      1.921,
+      1.083,
+      -0.191
+    ],
+    "lightColor3": [
+      0.1,
+      0.6,
+      0.1
+    ],
+    "lightRadius3": 0.3,
     "zoomOutFov": 18.0,
     "zoomInFov": 0.9,
     "sightFov": 0.01,
     "sightInFov": 0.9,
     "sightOutFov": 18.0,
-    "mfdTextureSize": [
-      1024,
-      1024
-    ],
     "hmdEnabledByDefault": true,
     "devices": {
       "speed": [
@@ -1531,9 +1560,9 @@
         {
           "textureArea": [
             0.0,
+            0.0,
             0.5,
-            0.5,
-            1.0
+            0.5
           ],
           "page": [
             {
@@ -1617,332 +1646,66 @@
               "metricUnits": false
             },
             {
-              "type": "rwr"
+              "type": "rwr",
+              "scale": 0.65,
+              "grid": {
+                "scale": 1.3,
+                "lineWidthScale": 0.8,
+                "fontScale": 0.8
+              },
+              "object": {
+                "scale": 0.8,
+                "lineWidthScale": 0.4,
+                "fontScale": 0.4
+              }
             },
             {
-              "type": "devices",
-              "speed": {
-                "texture": "us_mfd_speed",
-                "position": [
-                  120.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.91,
-                  0.89
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  0,
-                  255,
-                  255,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "valueMul": 0.539957,
-                "ranges": {
-                  "limits": [
-                    [
-                      50.0,
-                      100.0,
-                      -0.24,
-                      0.3
-                    ],
-                    [
-                      100.0,
-                      150.0,
-                      0.3,
-                      0.69
-                    ],
-                    [
-                      150.0,
-                      200.0,
-                      0.69,
-                      1.0
-                    ],
-                    [
-                      200.0,
-                      250.0,
-                      1.0,
-                      1.32
-                    ]
-                  ]
-                }
-              },
-              "vario": {
-                "texture": "us_mfd_vario",
-                "position": [
-                  552.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "valueMul": 0.19685,
-                "ranges": {
-                  "limits": [
-                    [
-                      -6.0,
-                      -4.0,
-                      0.05,
-                      0.22
-                    ],
-                    [
-                      -4.0,
-                      -2.0,
-                      0.22,
-                      0.56
-                    ],
-                    [
-                      -2.0,
-                      -1.0,
-                      0.56,
-                      0.72
-                    ],
-                    [
-                      -1.0,
-                      1.0,
-                      0.72,
-                      1.28
-                    ],
-                    [
-                      1.0,
-                      2.0,
-                      1.28,
-                      1.44
-                    ],
-                    [
-                      2.0,
-                      4.0,
-                      1.44,
-                      1.78
-                    ],
-                    [
-                      4.0,
-                      6.0,
-                      1.78,
-                      1.95
-                    ]
-                  ]
-                }
-              },
-              "altitude_hour": {
-                "texture": "us_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.47,
-                  0.92,
-                  0.86,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    10.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "altitude_min": {
-                "texture": "us_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    1000.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "compass": {
-                "texture": "us_mfd_compass",
-                "position": [
-                  130.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.5,
-                  1.0
-                ],
-                "arrowTexCoord": [
-                  0.5,
-                  0.0,
-                  1.0,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "arrowSize": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    360.0,
-                    0.0,
-                    -2.0
-                  ]
-                }
-              },
-              "aviahorizon_pitch": {
-                "arrowTex": "us_mfd_ahorizon_scale",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.4,
-                  1.0,
-                  0.6
-                ],
-                "size": [
-                  180.0,
-                  180.0
-                ],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    -90.0,
-                    90.0,
-                    0.35,
-                    -0.35
-                  ]
-                }
-              },
-              "aviahorizon_roll": [
-                {
-                  "texture": "us_mfd_ahorizon_body",
-                  "position": [
-                    340.0,
-                    256.0
-                  ],
-                  "backgroundTexCoord": [
-                    0.11,
-                    0.0,
-                    0.89,
-                    0.89
-                  ],
-                  "size": [
-                    180.0,
-                    180.0
-                  ],
-                  "ranges": {
-                    "limits": [
-                      -180.0,
-                      180.0,
-                      -1.0,
-                      1.0
-                    ]
-                  }
-                },
-                {
-                  "texture": "us_mfd_ahorizon",
-                  "position": [
-                    340.0,
-                    256.0
-                  ],
-                  "arrowTexCoord": [
-                    0.2,
-                    0.9,
-                    0.8,
-                    1.0
-                  ],
-                  "size": [
-                    180.0,
-                    180.0
-                  ],
-                  "notDrawBackground": true,
-                  "ranges": {
-                    "limits": [
-                      -180.0,
-                      180.0,
-                      -1.0,
-                      1.0
-                    ]
-                  }
-                }
-              ]
+              "type": "custom",
+              "pageName": "z19Eng"
+            },
+            {
+              "type": "custom",
+              "pageName": "z19Pfd"
             }
           ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "page": [
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "custom",
+              "pageName": "z19Eng"
+            },
+            {
+              "type": "custom",
+              "pageName": "z19Pfd"
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": {
+            "type": "custom",
+            "pageName": "europeanAviaHorizont"
+          }
         },
         {
           "textureArea": [
@@ -1951,362 +1714,8 @@
             1.0,
             1.0
           ],
-          "page": [
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "devices",
-              "speed": {
-                "texture": "us_mfd_speed",
-                "position": [
-                  120.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.91,
-                  0.89
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  0,
-                  255,
-                  255,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "valueMul": 0.539957,
-                "ranges": {
-                  "limits": [
-                    [
-                      50.0,
-                      100.0,
-                      -0.24,
-                      0.3
-                    ],
-                    [
-                      100.0,
-                      150.0,
-                      0.3,
-                      0.69
-                    ],
-                    [
-                      150.0,
-                      200.0,
-                      0.69,
-                      1.0
-                    ],
-                    [
-                      200.0,
-                      250.0,
-                      1.0,
-                      1.32
-                    ]
-                  ]
-                }
-              },
-              "vario": {
-                "texture": "us_mfd_vario",
-                "position": [
-                  552.0,
-                  110.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "valueMul": 0.19685,
-                "ranges": {
-                  "limits": [
-                    [
-                      -6.0,
-                      -4.0,
-                      0.05,
-                      0.22
-                    ],
-                    [
-                      -4.0,
-                      -2.0,
-                      0.22,
-                      0.56
-                    ],
-                    [
-                      -2.0,
-                      -1.0,
-                      0.56,
-                      0.72
-                    ],
-                    [
-                      -1.0,
-                      1.0,
-                      0.72,
-                      1.28
-                    ],
-                    [
-                      1.0,
-                      2.0,
-                      1.28,
-                      1.44
-                    ],
-                    [
-                      2.0,
-                      4.0,
-                      1.44,
-                      1.78
-                    ],
-                    [
-                      4.0,
-                      6.0,
-                      1.78,
-                      1.95
-                    ]
-                  ]
-                }
-              },
-              "altitude_hour": {
-                "texture": "us_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.47,
-                  0.92,
-                  0.86,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    10.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "altitude_min": {
-                "texture": "us_mfd_altitude",
-                "position": [
-                  552.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    1000.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "compass": {
-                "texture": "us_mfd_compass",
-                "position": [
-                  130.0,
-                  402.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.5,
-                  1.0
-                ],
-                "arrowTexCoord": [
-                  0.5,
-                  0.0,
-                  1.0,
-                  1.0
-                ],
-                "size": [
-                  192.0,
-                  192.0
-                ],
-                "arrowSize": [
-                  192.0,
-                  192.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    360.0,
-                    0.0,
-                    -2.0
-                  ]
-                }
-              },
-              "aviahorizon_pitch": {
-                "arrowTex": "us_mfd_ahorizon_scale",
-                "position": [
-                  340.0,
-                  256.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.4,
-                  1.0,
-                  0.6
-                ],
-                "size": [
-                  180.0,
-                  180.0
-                ],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    -90.0,
-                    90.0,
-                    0.35,
-                    -0.35
-                  ]
-                }
-              },
-              "aviahorizon_roll": [
-                {
-                  "texture": "us_mfd_ahorizon_body",
-                  "position": [
-                    340.0,
-                    256.0
-                  ],
-                  "backgroundTexCoord": [
-                    0.11,
-                    0.0,
-                    0.89,
-                    0.89
-                  ],
-                  "size": [
-                    180.0,
-                    180.0
-                  ],
-                  "ranges": {
-                    "limits": [
-                      -180.0,
-                      180.0,
-                      -1.0,
-                      1.0
-                    ]
-                  }
-                },
-                {
-                  "texture": "us_mfd_ahorizon",
-                  "position": [
-                    340.0,
-                    256.0
-                  ],
-                  "arrowTexCoord": [
-                    0.2,
-                    0.9,
-                    0.8,
-                    1.0
-                  ],
-                  "size": [
-                    180.0,
-                    180.0
-                  ],
-                  "notDrawBackground": true,
-                  "ranges": {
-                    "limits": [
-                      -180.0,
-                      180.0,
-                      -1.0,
-                      1.0
-                    ]
-                  }
-                }
-              ]
-            },
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            }
-          ]
-        },
-        {
-          "textureArea": [
-            0.0,
-            0.0,
-            0.8,
-            0.8
-          ],
           "page": {
-            "type": "plane_ils",
-            "ilsNode": "ils",
-            "ilsSize": [
-              0.2,
-              0.2
-            ],
-            "ilsOffsetForce": 0.2,
-            "brightnessMult": 3.5,
-            "ilsColor": [
-              10,
-              30,
-              202,
-              120
-            ]
+            "type": "map"
           }
         }
       ]
@@ -3804,6 +3213,13 @@
       "lightMult": 10.0,
       "ghosting": 0.7,
       "noiseFactor": 0.15
+    },
+    "fpvShellThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04
     }
   },
   "modifications": {
@@ -3937,6 +3353,13 @@
             "noiseFactor": 0.15
           },
           "sightThermal": {
+            "resolution": [
+              800,
+              600
+            ],
+            "noiseFactor": 0.04
+          },
+          "fpvShellThermal": {
             "resolution": [
               800,
               600

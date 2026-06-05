@@ -6,6 +6,9 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { get_game_params_blk } = require("blkGetters")
+
+local confirmationWpEdge = -1
 
 local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -106,8 +109,33 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.purchaseConfirmationHandler <- purchaseConfirmationHandler
 
-function purchaseConfirmation(id, text, callbackYes, callbackNo = null, onExitFunc = null, warbond = null) {
-  handlersManager.loadHandler(purchaseConfirmationHandler, { id, text, callbackYes, callbackNo, onExitFunc, warbond })
+
+function needPurchaseConfirmation(cost) {
+  if (cost?.isZero())
+    return false
+  let wpCost = cost?.wp ?? 0
+  if (wpCost == 0)
+    return true
+
+  let currentWp = get_balance().wp
+  if (confirmationWpEdge < 0) {
+    let gameParams = get_game_params_blk()
+    confirmationWpEdge = gameParams?.purchaseConfirmationWpEdge ?? 0
+  }
+  if (wpCost < currentWp * confirmationWpEdge)
+    return false
+  return true
 }
 
-return purchaseConfirmation
+function purchaseConfirmation(params, cost = null) {
+  if (cost && !needPurchaseConfirmation(cost)) {
+    params?.callbackYes()
+    return
+  }
+  handlersManager.loadHandler(purchaseConfirmationHandler, params)
+}
+
+return {
+  needPurchaseConfirmation
+  purchaseConfirmation
+}

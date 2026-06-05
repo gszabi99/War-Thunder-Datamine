@@ -25,7 +25,7 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
+  "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
@@ -37,13 +37,12 @@
   "minDistBetween": 10.0,
   "expClass": "exp_tank_destroyer",
   "mass": 31800.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -53,19 +52,19 @@
         "armorThickness": 38.1
       },
       "superstructure_front_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 35.0
       },
       "superstructure_side_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 30.0
       },
       "superstructure_top_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 20.0
       },
       "body_side_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 30.0
       },
       "superstructure_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 18.0
       },
       "body_bottom_dm": {
         "armorThickness": 20.0
@@ -74,7 +73,7 @@
         "armorThickness": 25.0
       },
       "superstructure_back_dm": {
-        "armorThickness": 35.0
+        "armorThickness": 25.0
       },
       "turret_01_bottom_dm": {
         "armorThickness": 30.0
@@ -86,10 +85,10 @@
         "armorThickness": 38.1
       },
       "turret_01_top_dm": {
-        "armorThickness": 38.0
+        "armorThickness": 30.0
       },
       "turret_02_top_dm": {
-        "armorThickness": 34.0
+        "armorThickness": 35.0
       },
       "turret_back_dm": {
         "armorThickness": 38.0
@@ -117,12 +116,11 @@
         "armorThickness": 8.0,
         "armorClass": "tank_structural_steel"
       },
-      "turret_01_back_dm": {
-        "armorThickness": 10.0,
-        "armorClass": "RHA_tank"
-      },
       "turret_01_front_dm": {
-        "armorThickness": 34.0
+        "armorThickness": 25.0
+      },
+      "turret_04_front_dm": {
+        "armorThickness": 30.0
       }
     },
     "side_skirts": {
@@ -131,6 +129,10 @@
       "turret_02_front_dm": {
         "armorThickness": 10.0,
         "armorClass": "CHA_tank"
+      },
+      "turret_01_back_dm": {
+        "armorThickness": 10.0,
+        "armorClass": "RHA_tank"
       },
       "turret_01_side_dm": {
         "armorThickness": 25.0
@@ -181,7 +183,7 @@
     "hull_CHA": {
       "armorClass": "CHA_tank",
       "body_front_dm": {
-        "armorThickness": 34.0
+        "armorThickness": 40.0
       },
       "ex_armor_body_01_dm": {
         "armorThickness": 50.0
@@ -498,6 +500,10 @@
         "armorThrough": 3.0
       },
       "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
       }
@@ -1812,9 +1818,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1823,7 +1827,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
@@ -1863,9 +1866,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1874,7 +1875,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret_02",
           "gun": "bone_gun_02",

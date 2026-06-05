@@ -1,0 +1,104 @@
+"@override:video" {
+  resolution:t="3840x2160"
+  antialiasing_mode:t="tsr"
+  antialiasing_upscaling:t="native"
+}
+
+"@override:graphics" {
+  fxQuality:t="xb1"
+  tireTracksQuality:i=3
+  foamQuality:t="high"
+  rendinstDistMul:r=1.8
+  grassRadiusMul:r=1.35
+  shadowQuality:t="high"
+  multislicedImpostors:b=yes
+  clipmapScaleFor4K:i = 6
+  clipmapExtraScale:i = 1
+  cloudsQuality:i=1
+  waterChopDetailWavesAllowed:b=no
+}
+
+"@override:texStreaming" {
+  forceMemQuotaKB:i=5120000  // 5000M
+}
+
+"@delete:dx12" {}
+dx12{
+  debug {
+    loadPixCapturer:b=no
+  }
+  onlyPreallocatedHeaps:b=no
+  preallocHeap { sizeMB:i=1024; }
+  preallocHeap { sizeMB:i=32;   cpuCached:b=yes; }
+  preallocHeap { sizeMB:i=4;    gpuExec:b=yes; }
+  renderMemoryLimitMb:i=7151
+}
+
+"@delete:console_presets" {}
+console_presets {
+  xboxOneX {
+    performance {
+      video {
+        antialiasing_mode:t="tsr"
+        antialiasing_upscaling:t="ultra_quality"
+      }
+      graphics {
+        forceDisableDof:b=yes
+        grassRadiusMul:r=0
+        anisotropy:i=4
+        disableHangarPlanarReflections:b=yes
+        waterQuality:t="medium"
+        fxQuality:t="low"
+        fxDensityMul:r=0.5 // deprecated
+      }
+      render {
+        ssrInHangar:b=no
+        ssaoQuality:i=1
+      }
+    }
+    quality {
+      video {
+        antialiasing_mode:t="tsr"
+        antialiasing_upscaling:t="native"
+      }
+      graphics {
+        forceDisableDof:b=no
+        grassRadiusMul:r=1.35
+        anisotropy:i=4
+        disableHangarPlanarReflections:b=no
+        waterQuality:t="high"
+        fxDensityMul:r=1
+      }
+      render {
+        ssrInHangar:b=yes
+        ssaoQuality:i=2
+      }
+    }
+  }
+}
+
+"@override:gi"
+{
+  "@override:low"
+  {
+    "@override:hangar"
+    {
+      "@override:dagiQuality":i = -1 //off
+    }
+  }
+}
+
+"@override:volfog"
+{
+  "@override:low"
+  {
+    "@override:infantry"
+    {
+      "@override:enabled":b = false
+    }
+    "@override:hangar"
+    {
+      "@override:enabled":b = false
+    }
+  }
+}

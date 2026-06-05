@@ -530,11 +530,11 @@ function getSubUnlockLocName(config) {
 
 
 function getSubunlockOrUnlockName(id) {
-  let unlockBlk = getUnlockById(id)
-  if (unlockBlk?.useSubUnlockName)
-    return getSubUnlockLocName(unlockBlk)
-  if (unlockBlk?.locId)
-    return getUnlockLocName(unlockBlk)
+  let unlockCfg = buildConditionsConfig(getUnlockById(id))
+  if (unlockCfg?.useSubUnlockName)
+    return getSubUnlockLocName(unlockCfg)
+  if (unlockCfg?.locId)
+    return getUnlockLocName(unlockCfg)
   return loc($"{id}/name")
 }
 
@@ -1083,16 +1083,20 @@ function addCustomConditionsTextData(groupsList, condition) {
 }
 
 
-function getUnlockCondsDesc(conditions, params = {}) {
+function getUnlockCondsDesc(conditions, params = {}, excludeTypes = []) {
   let descByLocGroups = {}
   let customDataByLocGroups = {}
-  foreach (condition in conditions)
+  foreach (condition in conditions) {
+    if (isInArray(condition.type, excludeTypes))
+      continue
+
     if (!isInArray(condition.type, customLocTypes)) {
       if (!addUniqConditionsText(descByLocGroups, condition))
         addUsualConditionsText(descByLocGroups, condition)
     }
     else
       addCustomConditionsTextData(customDataByLocGroups, condition)
+  }
 
   let condTextsList = []
   foreach (group in conditionsOrder) {
@@ -1119,11 +1123,9 @@ function getUnlockCondsDesc(conditions, params = {}) {
   return "\n".join(condTextsList, true)
 }
 
-
-function getUnlockCondsDescByCfg(cfg) {
-  if (!cfg?.conditions)
-    return ""
-  return getUnlockCondsDesc(cfg.conditions, cfg)
+function getUnlockCondsDescByCfg(cfg, excludeTypes = []) {
+  let { conditions = null } = cfg
+  return conditions == null ? "" : getUnlockCondsDesc(conditions, cfg, excludeTypes)
 }
 
 

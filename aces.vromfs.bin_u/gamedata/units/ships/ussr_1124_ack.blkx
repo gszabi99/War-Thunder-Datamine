@@ -893,6 +893,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
+      "mulReaction": 0.6,
       "rudder": [
         {
           "pos": [
@@ -955,9 +956,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_small",
+            "name": "ship_smoke_medium",
             "emitter": "emtr_fire_engine_02",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 15.0
           },
           {
             "name": "ship_fire_small",
@@ -969,29 +971,53 @@
       {
         "name": "compartment_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "superstructure_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "turret_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "fuel_tank_fire",
@@ -2549,7 +2575,6 @@
         "errMeasureVelFwdShift": 0.3,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "speedYaw": 25.0,
         "speedPitch": 4.0,
         "bullets": 192,
@@ -2608,7 +2633,6 @@
         "errMeasureVelFwdShift": 0.3,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "speedYaw": 25.0,
         "speedPitch": 4.0,
         "bullets": 192,
@@ -2670,7 +2694,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -2724,7 +2747,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -2778,7 +2800,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01",
@@ -2823,7 +2844,9 @@
       "prevModification": "new_ship_screw"
     },
     "ship_tool_kit": {},
-    "manual_ship_extinguisher": {},
+    "manual_ship_extinguisher": {
+      "disableModEffects": {}
+    },
     "ship_smoke_screen_system_mod": {},
     "new_ship_pumps": {},
     "76mm_ussr_navy_HE": {},
@@ -2850,6 +2873,10 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
+      "shareDelay": 10,
+      "shareTime": 6,
+      "shareCount": 1,
+      "shareDuration": 120,
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
@@ -2861,29 +2888,33 @@
       }
     },
     "ammo2": {
-      "weaponTrigger": [
-        "gunner1",
-        "gunner3"
-      ],
+      "weaponTrigger": "gunner1",
+      "shareDelay": 10,
+      "shareTime": 6,
+      "shareCount": 1,
+      "shareDuration": 120,
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
         "explosionEvent": "ammo_explosion_2",
         "fireEvent": "ammo_fire_2",
         "ammunition_storage_02_dm": {
-          "count": 2192
+          "count": 192
         }
       }
     },
     "ammo3": {
-      "weaponTrigger": "gunner2",
+      "weaponTrigger": [
+        "gunner3",
+        "gunner2"
+      ],
       "shells": {
         "fatalFire": false,
         "fatalExplosion": true,
         "explosionEvent": "ammo_explosion_3",
         "fireEvent": "ammo_fire_3",
         "ammunition_storage_03_dm": {
-          "count": 4000
+          "count": 6000
         }
       }
     }

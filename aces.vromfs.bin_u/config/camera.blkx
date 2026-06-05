@@ -1015,6 +1015,36 @@
       }
     }
   },
+  "follow_rocket_fps": {
+    "type": "TurretFpsCamera",
+    "fov": 30.0,
+    "zoomFov": 5.0,
+    "cameraControlSmoothX": 0.0,
+    "cameraControlSmoothY": 0.0,
+    "cameraControlViewRadius": 14.0,
+    "subtype": "shell_fpv",
+    "horLimit": [
+      -1.0,
+      1.0
+    ],
+    "verLimit": [
+      -1.0,
+      1.0
+    ],
+    "verticalLimit": 10.0,
+    "useOffset": true,
+    "cameraOffset": [
+      14.0,
+      0.0,
+      0.0
+    ],
+    "clipType": "none",
+    "cameraShakeMultiplier": 0.025,
+    "transitionFadeInTime": 0.0,
+    "transitionFadeOutTime": 0.002,
+    "viscosity": 0.002,
+    "hookToShell": true
+  },
   "replay_spectator": {
     "type": "SpectatorCamera",
     "fov": 80.0,
@@ -1313,6 +1343,18 @@
     "maxDistance": 4500.0,
     "fov": 45.0
   },
+  "human_vehicle": {
+    "type": "HumanCamera",
+    "FPS": false,
+    "condition": {
+      "and": {
+        "not": {
+          "isHuman": {}
+        },
+        "isHumanControlledVehicle": {}
+      }
+    }
+  },
   "tps_ground": {
     "type": "TurretCamera",
     "fov": 80.0,
@@ -1600,6 +1642,51 @@
         "not": {
           "haveWeaponCtrl": {}
         }
+      }
+    }
+  },
+  "fps_technic": {
+    "type": "TurretCamera",
+    "fov": 85.0,
+    "zoomFov": 30.0,
+    "gunFov": 10.0,
+    "targetOffset": [
+      500.0,
+      0.0,
+      0.0
+    ],
+    "cameraOffset": [
+      0.0,
+      1.6,
+      -0.3
+    ],
+    "cameraOffsetZoomed": [
+      0.0,
+      1.6,
+      -0.3
+    ],
+    "useOffset": true,
+    "offsetByHero": true,
+    "cameraControlViewRadius": 0.0,
+    "cameraUpOffset": 0.0,
+    "clipType": "none",
+    "isMouseView": true,
+    "isAimCamera": true,
+    "trackGunDirection": false,
+    "cameraOffsetSmoothing": 0.0,
+    "cameraUpSmoothing": 0.0,
+    "cameraFovSmoothing": 0.0,
+    "cameraTpsSmoothing": 0.0,
+    "cameraTpsAngleAccelaration": 0.0,
+    "viscosity": 0.0,
+    "cameraShakeMultiplier": 0.0,
+    "cameraShakeMultiplierOnShooting": 0.0,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.05,
+    "condition": {
+      "and": {
+        "isHuman": {},
+        "haveWeaponCtrl": {}
       }
     }
   },
@@ -4956,6 +5043,7 @@
     },
     "ground_model": {
       "camName": [
+        "human_vehicle",
         "tps_walker",
         "fps_suit",
         "tps_ground",
@@ -4976,6 +5064,7 @@
     "specialCamerasList": {
       "camName": [
         "follow_object_camera",
+        "follow_rocket_fps",
         "artillery_crosshair",
         "camera_binoculars",
         "driver_ground",
@@ -5006,6 +5095,7 @@
     "human": {
       "camName": [
         "human",
+        "fps_technic",
         "tps_ground",
         "aim_ground"
       ]

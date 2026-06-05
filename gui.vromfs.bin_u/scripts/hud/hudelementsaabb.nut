@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -72,12 +71,7 @@ function getTwsRadarAabb() {
 }
 
 function getDamagePannelAabb() {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
-  if (!handler)
-    return null
-  let hudType = handler.getHudType()
-  return hudType == HUD_TYPE.SHIP || hudType == HUD_TYPE.TANK ? dmPanelStatesAabb.get()
-    : getDaguiObjAabb(handler.getDamagePannelObj())
+  return dmPanelStatesAabb.get()
 }
 
 function getAircraftInstrumentsAabb() {
@@ -121,7 +115,7 @@ let aabbList = {
   hitCamera = @() getHitCameraAABB()
   multiplayerScore = @() getAabbObjFromHud("getMultiplayerScoreObj")
   dmPanel = getDamagePannelAabb
-  tankDebuffs = @() dmPanelStatesAabb.get()
+  tankDebuffs = getDamagePannelAabb
   aircraftInstruments = getAircraftInstrumentsAabb
   actionBarItem = getActionBarItemAabb
   verticalSpeed = @() getHelicopterHudAabb("verticalSpeed")

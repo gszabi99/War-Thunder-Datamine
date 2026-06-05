@@ -1,0 +1,730 @@
+{
+  "vehicle_seats_owner_components": {
+    "ownedByPlayer:eid": {},
+    "vehicle_seats_hide_owner:list<b>": {}
+  },
+  "human_vehicle_components": {
+    "human_controlled_vehicle:tag": {}
+  },
+  "vehicle_acceleration": {
+    "vehicle_acceleration__tick": 0,
+    "vehicle_acceleration__velocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "vehicle_acceleration__acceleration": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "vehicle_acceleration__viscAcceleration": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "vehicle_acceleration__counterAccel": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "vehicle_acceleration__accelVisc": 0.3,
+    "vehicle_acceleration__counterAccelVisc": 0.5
+  },
+  "hummer_h1": {
+    "_use": [
+      "tank",
+      "base_vehicle_seats",
+      "vehicle_seats_owner_components",
+      "vehicle_acceleration",
+      "human_vehicle_components"
+    ],
+    "isAlive": true,
+    "_replicated": "isAlive",
+    "_tracked": "isAlive",
+    "vehicle_seats__effectors:array": {},
+    "vehicle_seats__seats:shared:array": {
+      "seats:object": [
+        {
+          "name": "driver",
+          "locName": "vehicle_seats/driver",
+          "seatOwnsEntityControl": true,
+          "attachNode": "root",
+          "ignoreAttachNodeRotation": true,
+          "attachTm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.06,
+              0.83,
+              0.72
+            ]
+          ],
+          "seatComponent": "isDriver",
+          "nextSeat": "main_gunner",
+          "shouldHideOwner": false,
+          "seatAnimUpper": "drive_passenger",
+          "seatAnimLower": "drive_passenger",
+          "cameraType": "commander",
+          "cameraOffset": [
+            -0.6,
+            0.1,
+            0.0
+          ],
+          "isHoldGunModeAllowed": false,
+          "effectors:object": {
+            "l.hand:object": {
+              "rel_tm": [
+                [
+                  -0.00271123,
+                  0.851076,
+                  -0.525036
+                ],
+                [
+                  -0.0255526,
+                  -0.524925,
+                  -0.850765
+                ],
+                [
+                  -0.999671,
+                  0.0111094,
+                  0.0231704
+                ],
+                [
+                  -0.0593593,
+                  0.104237,
+                  0.131058
+                ]
+              ],
+              "node": "bone_roll_driver"
+            },
+            "r.hand:object": {
+              "rel_tm": [
+                [
+                  0.2073,
+                  0.797808,
+                  -0.566153
+                ],
+                [
+                  -0.345883,
+                  -0.481572,
+                  -0.805266
+                ],
+                [
+                  -0.915091,
+                  0.362754,
+                  0.176118
+                ],
+                [
+                  0.121189,
+                  0.0721741,
+                  0.127106
+                ]
+              ],
+              "node": "bone_roll_driver"
+            },
+            "l.foot:object": {
+              "rel_tm": [
+                [
+                  0.73799,
+                  0.129388,
+                  -0.662292
+                ],
+                [
+                  0.644466,
+                  0.155874,
+                  0.748578
+                ],
+                [
+                  0.200091,
+                  -0.979265,
+                  0.0316474
+                ],
+                [
+                  0.852867,
+                  0.821327,
+                  0.683476
+                ]
+              ],
+              "node": "root"
+            },
+            "r.foot:object": {
+              "rel_tm": [
+                [
+                  0.747986,
+                  -0.0154003,
+                  -0.663537
+                ],
+                [
+                  0.651972,
+                  -0.170183,
+                  0.7389
+                ],
+                [
+                  -0.124302,
+                  -0.985292,
+                  -0.117254
+                ],
+                [
+                  0.819878,
+                  0.564647,
+                  0.696878
+                ]
+              ],
+              "node": "root"
+            }
+          }
+        },
+        {
+          "name": "passenger1",
+          "locName": "vehicle_seats/shooter",
+          "attachNode": "root",
+          "attachTm": [
+            [
+              1.00032,
+              0.0,
+              -0.0
+            ],
+            [
+              -0.0,
+              -3.42273e-8,
+              -0.999965
+            ],
+            [
+              0.0,
+              0.999969,
+              -3.42275e-8
+            ],
+            [
+              0.06,
+              -0.72,
+              -0.83
+            ]
+          ],
+          "seatComponent": "isPassenger",
+          "canPlaceManually": true,
+          "isHoldGunModeAllowed": false,
+          "shouldHideOwner": false
+        },
+        {
+          "name": "passenger2",
+          "locName": "vehicle_seats/shooter",
+          "attachNode": "root",
+          "attachTm": [
+            [
+              0.997501,
+              0.0,
+              -0.0
+            ],
+            [
+              -0.0,
+              -3.4136e-8,
+              -0.997297
+            ],
+            [
+              0.0,
+              1.0,
+              -3.42286e-8
+            ],
+            [
+              -0.88,
+              0.72,
+              -0.83
+            ]
+          ],
+          "seatComponent": "isPassenger",
+          "canPlaceManually": true,
+          "seatEnum": "left_seat",
+          "isHoldGunModeAllowed": false,
+          "shouldHideOwner": false
+        },
+        {
+          "name": "passenger3",
+          "locName": "vehicle_seats/shooter",
+          "attachNode": "root",
+          "attachTm": [
+            [
+              0.997563,
+              0.0,
+              -0.0
+            ],
+            [
+              -0.0,
+              -3.41361e-8,
+              -0.997299
+            ],
+            [
+              0.0,
+              1.0,
+              -3.42286e-8
+            ],
+            [
+              -0.88,
+              -0.72,
+              -0.83
+            ]
+          ],
+          "seatComponent": "isPassenger",
+          "canPlaceManually": true,
+          "isHoldGunModeAllowed": false,
+          "shouldHideOwner": false
+        },
+        {
+          "name": "passenger4",
+          "attachNode": "root",
+          "locName": "vehicle_seats/shooter",
+          "ignoreAttachNodeRotation": true,
+          "attachTm": [
+            [
+              -3.08057e-8,
+              0.0,
+              -0.900002
+            ],
+            [
+              0.0,
+              0.900372,
+              0.0
+            ],
+            [
+              0.900002,
+              0.0,
+              -3.08057e-8
+            ],
+            [
+              -1.42002,
+              1.32,
+              0.9899
+            ]
+          ],
+          "seatComponent": "isPassenger",
+          "shouldHideOwner": false,
+          "canPlaceManually": true,
+          "seatEnum": "stool_seat",
+          "holdingGunPassengerVertLookLimit": [
+            -10.0,
+            85.0
+          ],
+          "effectors:object": {
+            "l.hand:object": {
+              "rel_tm": [
+                [
+                  0.406898,
+                  -0.668542,
+                  0.622485
+                ],
+                [
+                  0.380031,
+                  -0.495784,
+                  -0.780881
+                ],
+                [
+                  0.830671,
+                  0.554303,
+                  0.0523327
+                ],
+                [
+                  -1.11612,
+                  0.493707,
+                  1.80967
+                ]
+              ],
+              "node": "root"
+            },
+            "r.hand:object": {
+              "rel_tm": [
+                [
+                  -0.244381,
+                  -0.969664,
+                  0.00549955
+                ],
+                [
+                  0.407596,
+                  -0.107868,
+                  -0.906768
+                ],
+                [
+                  0.879854,
+                  -0.219356,
+                  0.421593
+                ],
+                [
+                  -1.56831,
+                  0.596426,
+                  1.47708
+                ]
+              ],
+              "node": "root"
+            },
+            "l.foot:object": {
+              "rel_tm": [
+                [
+                  0.126419,
+                  0.00859611,
+                  -0.991941
+                ],
+                [
+                  0.0182709,
+                  -0.999815,
+                  -0.00633579
+                ],
+                [
+                  -0.991808,
+                  -0.0173227,
+                  -0.126552
+                ],
+                [
+                  -1.24787,
+                  0.420681,
+                  1.03193
+                ]
+              ],
+              "node": "root"
+            },
+            "r.foot:object": {
+              "rel_tm": [
+                [
+                  -0.12186,
+                  -0.0429531,
+                  -0.991618
+                ],
+                [
+                  -0.141754,
+                  -0.98807,
+                  0.0602196
+                ],
+                [
+                  -0.982374,
+                  0.147904,
+                  0.114318
+                ],
+                [
+                  -1.55307,
+                  0.505777,
+                  1.01357
+                ]
+              ],
+              "node": "root"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "base_vehicle_seats": {
+    "vehicle_seats__enumVarId": -1,
+    "vehicle_seats__enumVarName": "gaz_67",
+    "vehicle_seats_camera_nodes__defaultNode": "bone_camera_driver",
+    "vehicle_seats_switch_time__totalSwitchTime": 0.2,
+    "vehicle_seats__exitTime": 0.4,
+    "vehicle_seats__enterTime": 0.4,
+    "_replicated": [
+      "vehicle_seats__seatEids",
+      "vehicle_seats__changeSeatCooldownUntilTime",
+      "vehicle__controlledByDriver",
+      "vehicle__controlledByPlayer"
+    ],
+    "vehicle_seats__changeSeatCooldown": 1.0,
+    "vehicle_seats__changeSeatCooldownUntilTime": -1.0,
+    "_tracked": [
+      "vehicle_seats__changeSeatCooldownUntilTime",
+      "vehicle__controlledByDriver",
+      "vehicle__controlledByPlayer"
+    ],
+    "enter_vehicle__moveThreshold": 1.5,
+    "enter_vehicle__moveRelativeThreshold": -1.0,
+    "vehicle_seats_camera_nodes__defaultNodeId:i": {},
+    "vehicle_seats__seatEids:list<eid>": {},
+    "vehicle__controlledByDriver:eid": {},
+    "vehicle__controlledByPlayer:eid": {},
+    "vehicle_seats__seatPriorities:list<t>": {
+      "name": [
+        "commander",
+        "main_gunner",
+        "driver"
+      ]
+    },
+    "enter_vehicle__vehicleMoveThreshold:r": {
+      "_tags": "server",
+      "value": 1.0
+    },
+    "vehicle_seats__seatTemplates:shared:object": {
+      "default": "vehicle_seat_default",
+      "driver": "vehicle_seat_driver"
+    },
+    "_group": {
+      "_tags": "server",
+      "dependent_templates:ecs::TemplatesListToInstantiate": {},
+      "dependent_templates_list_shared:shared:list<t>": {
+        "template_name": [
+          "vehicle_seat_default",
+          "vehicle_seat_driver"
+        ]
+      }
+    }
+  },
+  "base_vehicle_seat": {
+    "_use": "replicating",
+    "seat__enumVarId": -1,
+    "seat__directTurretControl": false,
+    "_tracked": [
+      "seat__isPlayer",
+      "seat__ownerEid",
+      "seat__squadEid",
+      "seat__playerEid",
+      "seat__isOwnerAlive",
+      "seat__limitedVisibility",
+      "seat__canControlTurrets",
+      "seat__isInHatch",
+      "seats_order__canPlaceManually",
+      "seat__isLocked"
+    ],
+    "_replicated": [
+      "seats_switch_time__time",
+      "seats_switch_time__newSeatNo",
+      "seat__isDriver",
+      "seat__isGunner",
+      "seat__isPassenger",
+      "seat__isPlayer",
+      "seat__ownerEid",
+      "seat__squadEid",
+      "seat__playerEid",
+      "seat__isOwnerAlive",
+      "seat__isInHatch",
+      "seat__isLocked"
+    ],
+    "seat__id": -1,
+    "seat__roomSpace": -1,
+    "seat__entranceNodeId": -1,
+    "seat__component": 0,
+    "seatOwnsEntityControl": false,
+    "seat__isDriver": false,
+    "seat__isGunner": false,
+    "seat__isPassenger": false,
+    "seat__isPlayer": false,
+    "seat__orderNo": -1,
+    "seat__nextSeatNo": -1,
+    "seat__cameraType": 0,
+    "seat__cameraNodeNo": -1,
+    "seat__cameraOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "seat__cameraPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "seat__adjacentSeat": -1,
+    "seat__isLocked": false,
+    "seat__limitedVisibility": 0,
+    "seat__canControlTurrets": true,
+    "seat__isInHatch": false,
+    "seat_anim__upper": "",
+    "seat_anim__lower": "",
+    "seat_anim__fireReadyUpper": "upper_fireready",
+    "seat_anim__fireReadyLower": "drive_fireready",
+    "seats_switch_time__time": -1.0,
+    "seats_switch_time__newSeatNo": -1,
+    "seats_attach_nodes__ignoreAttachNodeRotation": false,
+    "seats_attach_nodes__nodeId": -1,
+    "seats_attach_nodes__collNodeId": -1,
+    "seats_attach_nodes__initialTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "seats_attach_nodes__attachTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "seats_attach_nodes__nodeItm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "seats_order__seatNo": -1,
+    "seats_order__canPlaceOnlyOwner": false,
+    "seats_order__canPlaceManually": false,
+    "seat__isOwnerAlive": false,
+    "seat__allowSmokeScreen": true,
+    "seat__isHoldGunModeAllowed": true,
+    "vehicle_seats_auto_effectors__initAtTime": -1.0,
+    "vehicle_seats_auto_effectors__inited": false,
+    "vehicle_seat__springPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "vehicle_seat__springVelocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "vehicle_seat__springConst": [
+      50.0,
+      100.0,
+      40.0
+    ],
+    "vehicle_seat__springDump": [
+      5.0,
+      3.0,
+      3.5
+    ],
+    "vehicle_seats_auto_effectors__effectorNames:list<t>": {
+      "node": [
+        "r.hand",
+        "l.hand",
+        "r.foot",
+        "l.foot"
+      ]
+    },
+    "vehicle_seats_auto_effectors__vehicleAttachNodes:list<t>": {
+      "node": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "vehicle_seats_auto_effectors__humanNodes:list<t>": {
+      "node": [
+        "Bip01 R Hand",
+        "Bip01 L Hand",
+        "Bip01 R Foot",
+        "Bip01 L Foot"
+      ]
+    },
+    "seat__lockSeats:list<i>": {
+      "_tags": "server"
+    },
+    "seats_attach_nodes__initialLookAngles:p2": {
+      "_tags": "gameClient",
+      "value": [
+        0.0,
+        -11.0
+      ]
+    },
+    "seat__loaderTurretIds:list<i>": {
+      "_tags": "server"
+    },
+    "seat__canLoadInHatch:b": {
+      "_tags": "server",
+      "value": false
+    },
+    "seat__commonTurretControlMask:u32": {
+      "value": 0
+    },
+    "seat__vehicleEid:eid": {},
+    "seat__ownerEid:eid": {},
+    "seat__squadEid:eid": {},
+    "seat__playerEid:eid": {},
+    "_group": {
+      "_tags": "input",
+      "seat__holdingGunPassengerVertLookLimit": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "vehicle_seat_default": {
+    "_use": "base_vehicle_seat",
+    "seat_anim__upper": "drive_passenger",
+    "seat_anim__lower": "drive_passenger"
+  },
+  "vehicle_seat_driver": {
+    "_use": "base_vehicle_seat",
+    "seats_order__canPlaceManually": true,
+    "seat_anim__upper": "drive_driver",
+    "seat_anim__lower": "drive_driver",
+    "vehicle_seats_auto_effectors__effectorNames:list<t>": {
+      "node": [
+        "r.hand",
+        "l.hand",
+        "r.foot",
+        "l.foot"
+      ]
+    },
+    "vehicle_seats_auto_effectors__vehicleAttachNodes:list<t>": {
+      "node": [
+        "bone_roll_driver",
+        "bone_roll_driver",
+        "",
+        ""
+      ]
+    },
+    "vehicle_seats_auto_effectors__humanNodes:list<t>": {
+      "node": [
+        "Bip01 R Hand",
+        "Bip01 L Hand",
+        "Bip01 R Foot",
+        "Bip01 L Foot"
+      ]
+    }
+  }
+}

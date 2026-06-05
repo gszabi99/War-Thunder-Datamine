@@ -296,11 +296,12 @@ def init_demonstrated_shells_impl(blk : DataBlock&;
     return
 
   let angleStep = blk |> datablock_getReal("shellsAngleStep", 10.8) * DEG_TO_RAD
+  let airWeaponOffset = blk |> datablock_getReal("airWeaponCircleOffset", 5.)
 
   let minRad = is_need_extend_radius(groundWeapon) ? 12. : 7.
   let awCnt = min(length(airWeapon), maxCnt)
   let groundWeaponDist = max(minRad, unit.boundingBox.boxMax.x * 1.1) 
-  let airWeaponDist = length(groundWeapon) > 0 ? (max(minRad, unit.boundingBox.boxMax.x * 1.1) + 5.) : groundWeaponDist
+  let airWeaponDist = length(groundWeapon) > 0 ? (max(minRad, unit.boundingBox.boxMax.x * 1.1) + airWeaponOffset) : groundWeaponDist
   for shell, i in airWeapon, range(0, length(airWeapon))
     set_shell_on_pos(shell, unit.unitTm, i, awCnt, airWeaponDist, angleStep)
   let gwCnt = min(length(groundWeapon), maxCnt)

@@ -24,25 +24,24 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
-  "maxRevSpeed": 10.0,
-  "maxAngSpeed": 30.0,
-  "maxAccel": 4.0,
-  "maxDecel": 8.0,
-  "maxAngAccel0": 20.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 40.0,
+  "maxFwdSpeed": 75.0,
+  "maxRevSpeed": 30.0,
+  "maxAngSpeed": 50.0,
+  "maxAccel": 40.0,
+  "maxDecel": 40.0,
+  "maxAngAccel0": 4.0,
+  "maxAngAccelV": 3.0,
+  "maxAngAccel": 100.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_tank",
   "mass": 5500.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "waterBreakerAnimVar": "btr_3e1_break_water_action",
@@ -533,6 +532,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1709,7 +1712,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ]
     }
   },
   "MetaParts": {
@@ -1795,9 +1801,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1806,12 +1810,12 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
             "fire_control_system_dm",
@@ -1843,19 +1847,19 @@
             -180.0,
             -158.0,
             -1.0,
-            45.0
+            60.0
           ],
           "lim2": [
             -158.0,
             160.0,
-            -5.0,
-            45.0
+            -4.0,
+            60.0
           ],
           "lim5": [
             160.0,
             180.0,
             -1.0,
-            45.0
+            60.0
           ]
         },
         "gunStabilizer": {
@@ -1910,7 +1914,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_twin_01",
           "gun": "bone_mg_twin_01",
@@ -1918,13 +1921,18 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -1969,9 +1977,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1980,13 +1986,17 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_gun_01",
           "gun": "bone_gun_01",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "verDriveDm": "fire_control_system_01_dm",
+          "horDriveDm": "fire_control_system_01_dm"
         },
         "limits": {
           "yaw": [
@@ -2026,14 +2036,18 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_twin_02",
           "gun": "bone_mg_twin_02",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "shootingDmPart": "fire_control_system_dm",
-          "rotatedTurret": "bone_turret"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "rotatedTurret": "bone_turret",
+          "verDriveDm": "fire_control_system_01_dm",
+          "horDriveDm": "fire_control_system_01_dm"
         },
         "limits": {
           "yaw": [
@@ -3891,20 +3905,13 @@
       "effects": {
         "nightVision": {
           "nightVisionDmPart": "fire_control_system_dm",
-          "gunnerThermal": {
+          "gunnerIr": {
             "resolution": [
               800,
               600
             ],
-            "noiseFactor": 0.04
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.6,
+            "lightMult": 8.0,
+            "ghosting": 0.75,
             "noiseFactor": 0.2
           }
         }
@@ -3940,9 +3947,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3951,12 +3956,12 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
+                "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
                   "fire_control_system_dm",
@@ -3988,19 +3993,19 @@
                   -180.0,
                   -158.0,
                   -1.0,
-                  45.0
+                  60.0
                 ],
                 "lim2": [
                   -158.0,
                   160.0,
-                  -5.0,
-                  45.0
+                  -4.0,
+                  60.0
                 ],
                 "lim5": [
                   160.0,
                   180.0,
                   -1.0,
-                  45.0
+                  60.0
                 ]
               },
               "gunStabilizer": {
@@ -4055,7 +4060,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_twin_01",
                 "gun": "bone_mg_twin_01",
@@ -4063,13 +4067,18 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4114,9 +4123,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4125,13 +4132,17 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_gun_01",
                 "gun": "bone_gun_01",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "verDriveDm": "fire_control_system_01_dm",
+                "horDriveDm": "fire_control_system_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -4171,14 +4182,18 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_twin_02",
                 "gun": "bone_mg_twin_02",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "shootingDmPart": "fire_control_system_dm",
-                "rotatedTurret": "bone_turret"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "rotatedTurret": "bone_turret",
+                "verDriveDm": "fire_control_system_01_dm",
+                "horDriveDm": "fire_control_system_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -4245,9 +4260,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 1000.0,
               "AttackMaxRadius": 1000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4256,7 +4269,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_grenade",
                 "gun": "bone_grenade"
@@ -4279,14 +4291,17 @@
     "tank_engine_smoke_screen_system": {}
   },
   "nightVision": {
-    "nightVisionDmPart": "fire_control_system_dm",
-    "gunnerIr": {
+    "nightVisionDmPart": [
+      "fire_control_system_dm",
+      "fire_control_system_01_dm"
+    ],
+    "driverIr": {
       "resolution": [
         800,
         600
       ],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
+      "lightMult": 5.0,
+      "ghosting": 0.7,
       "noiseFactor": 0.2
     }
   },

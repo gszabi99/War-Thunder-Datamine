@@ -16,7 +16,8 @@ let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
+let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText
+} = require("%scripts/slotbar/slotbarView.nut")
 let { getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot } = require("%scripts/slotbar/slotbarStateData.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
@@ -26,6 +27,10 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
+
+
+const CREWS_COUNT_TO_USE_REPLACE_HINT = 3
 
 function getObjPosInSafeArea(obj) {
   let pos = obj.getPosRC()
@@ -35,6 +40,9 @@ function getObjPosInSafeArea(obj) {
   local border = safeArea.map(@(value, idx) (screen[idx] * (1.0 - value) / 2).tointeger())
   return pos.map(@(val, idx) clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
+
+let useNewUnitSetLogic = @() userIdInt64.get() % 2 != 0
+
 
 gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -47,7 +55,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   afterCloseFunc = null
   afterSuccessFunc = null
 
-  useTutorial = false
+  useFirstSelectTutorial = false
 
   restrictCancel = false
 
@@ -125,12 +133,11 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     this.createSlotbar(
       slotbarBaseCfg.__merge({
         crewId = crew?.id
-        shouldSelectCrewRecruit =  this.takeCrewIdInCountry > 0 && !crew
+        shouldSelectCrewRecruit = this.takeCrewIdInCountry > 0 && !crew
         singleCountry = this.country
         unitForSpecType = this.unit
         selectOnHover = this.dragAndDropMode && this.canSetCurUnit
         highlightSelected = this.dragAndDropMode && !this.canSetCurUnit
-
         applySlotSelectionOverride = @(_, __) this.onChangeUnit()
         onSlotDblClick = Callback(this.onApplyCrew, this)
         onSlotActivate = Callback(this.onApplyCrew, this)
@@ -164,7 +171,9 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(true, true)
 
     this.updateObjectsPositions(tdClone, textObj)
-    this.checkUseTutorial()
+
+    if (this.useFirstSelectTutorial)
+      this.startFirstSelectTutorial()
   }
 
   createSlotbarHandler = @(params) this.isSelectByGroups
@@ -214,7 +223,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.takeCrewIdInCountry >= 0)
       return
 
-    this.takeCrewIdInCountry = getFirstEmptyCrewSlot()
+    this.takeCrewIdInCountry = this.getCrewSlotToReplace() ?? getFirstEmptyCrewSlot()
     if (this.takeCrewIdInCountry >= 0)
       return
 
@@ -275,12 +284,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateSelectedCrewPriceText()
   }
 
-  function checkUseTutorial() {
-    if (this.useTutorial)
-      this.startTutorial()
-  }
-
-  function startTutorial() {
+  function startFirstSelectTutorial() {
     let playerBalance = Cost()
     let playerInfo = getProfileInfo()
     playerBalance.wp = playerInfo.balance
@@ -290,25 +294,71 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_set_cancel", !this.restrictCancel, this.scene)
 
     this.guiScene.applyPendingChanges(false)
-    let steps = [
-      {
-        obj = this.getSlotbar() && this.getSlotbar().getBoxOfUnits()
-        text = loc("help/takeAircraft", { unitName = getUnitName(this.unit) })
-        nextActionShortcut = "help/NEXT_ACTION"
-        actionType = tutorAction.ANY_CLICK
-        haveArrow = false
-        shortcut = GAMEPAD_ENTER_SHORTCUT
-      },
-      {
-        obj = "btn_set_air"
-        text = loc("help/pressOnReady")
-        nextActionShortcut = "help/NEXT_ACTION"
-        actionType = tutorAction.ANY_CLICK
-        shortcut = GAMEPAD_ENTER_SHORTCUT
-      }
-    ]
-
+    let steps = useNewUnitSetLogic()
+      ? [
+          {
+            obj = this.getSlotbar().getCurrentCrewSlot()
+            text = loc("hints/tutorial/selectCrew/choose", {
+              unitName = colorize("activeTextColor", getUnitName(this.unit))
+            })
+            actionType = tutorAction.OBJ_CLICK
+            shortcut = GAMEPAD_ENTER_SHORTCUT
+            haveArrow = true
+          },
+          {
+            obj = "btn_set_air"
+            text = loc("hints/tutorial/selectCrew/confirm")
+            actionType = tutorAction.OBJ_CLICK
+            shortcut = GAMEPAD_ENTER_SHORTCUT
+            haveArrow = true
+            cb = Callback(@() this.onApplyCrew(this.getCurCrew()), this)
+          }
+        ]
+      : [
+          {
+            obj = this.getSlotbar() && this.getSlotbar().getBoxOfUnits()
+            text = loc("help/takeAircraft", { unitName = getUnitName(this.unit) })
+            nextActionShortcut = "help/NEXT_ACTION"
+            actionType = tutorAction.ANY_CLICK
+            haveArrow = false
+            shortcut = GAMEPAD_ENTER_SHORTCUT
+          },
+          {
+            obj = "btn_set_air"
+            text = loc("help/pressOnReady")
+            nextActionShortcut = "help/NEXT_ACTION"
+            actionType = tutorAction.ANY_CLICK
+            shortcut = GAMEPAD_ENTER_SHORTCUT
+          }
+        ]
     gui_modal_tutor(steps, this)
+  }
+
+  function getCrewSlotToReplace() {
+    if (this.useFirstSelectTutorial || !useNewUnitSetLogic() || this.getCurCrew() != null)
+      return null
+
+    let countryCrews = getCrewsListByCountry(this.country)
+    if (countryCrews.len() == CREWS_COUNT_TO_USE_REPLACE_HINT)
+      return null
+
+    let curEdiff = this.getCurrentEdiff()
+    let curUnitBR = this.unit.getBattleRating(curEdiff)
+    let crewData = { idInCountry = -1, unitBR = 0 }
+    foreach (crew in countryCrews) {
+      let { idInCountry, aircraft = null } = crew
+      if (aircraft == null)
+        return idInCountry
+
+      let unitBR = getAircraftByName(aircraft).getBattleRating(curEdiff)
+      if (unitBR > curUnitBR)
+        continue
+
+      if (crewData.unitBR == 0 || crewData.unitBR > unitBR)
+        crewData.__update({ unitBR, idInCountry })
+    }
+
+    return crewData.idInCountry >= 0 ? crewData.idInCountry : null
   }
 
   function onApply() {

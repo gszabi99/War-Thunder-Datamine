@@ -26,7 +26,7 @@ let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
@@ -389,14 +389,17 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let cost = getUnlockCost(unlockId)
 
-    let title = warningIfGold(
+    let text = warningIfGold(
       loc("onlineShop/needMoneyQuestion", { purchase = colorize("unlockHeaderColor",
         getUnlockNameText(-1, unlockId)),
         cost = cost.getTextAccordingToBalance()
       }), cost)
-    purchaseConfirmation("question_buy_unlock", title, @() buyUnlock(unlockId,
+    let callbackYes = @() buyUnlock(
+      unlockId,
       Callback(@() this.updateUnlockBlock(unlockId), this),
-      Callback(@() this.onAchievementsCategorySelect(this.selectedCategory), this)))
+      Callback(@() this.onAchievementsCategorySelect(this.selectedCategory), this)
+    )
+    purchaseConfirmation({ id = "question_buy_unlock", text, callbackYes })
   }
 
   function updateUnlockBlock(unlockData) {

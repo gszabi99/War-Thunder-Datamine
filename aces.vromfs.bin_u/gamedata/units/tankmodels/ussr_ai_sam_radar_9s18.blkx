@@ -26,8 +26,8 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "radar",
   "moveType": "vehicle",
-  "maxFwdSpeed": 70.0,
-  "maxRevSpeed": 20.0,
+  "maxFwdSpeed": 75.0,
+  "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
   "maxDecel": 8.0,
@@ -38,15 +38,14 @@
   "minDistBetween": 10.0,
   "expClass": "exp_SPAA",
   "mass": 40400.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "killIfFlipped": true,
   "radarCanLockTargetFromTPV": false,
   "type": "typeSPAA",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -309,6 +308,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {

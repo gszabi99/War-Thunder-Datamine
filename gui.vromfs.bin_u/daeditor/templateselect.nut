@@ -31,7 +31,7 @@ addEntityCreatedCallback(@(_eid) set_kb_focus(null))
 
 function scrollByName(text) {
   scrollHandler.scrollToChildren(function(desc) {
-    return ("tpl_name" in desc) && desc.tpl_name.indexof(text)!=null
+    return ("tpl_name" in desc) && desc.tpl_name.contains(text)
   }, 2, false, true)
 }
 
@@ -63,6 +63,7 @@ let filter = nameFilter(filterText, {
   }
   onEscape = @() set_kb_focus(null)
   onReturn = @() set_kb_focus(null)
+  onAttach = @(elem) set_kb_focus(elem)
   onClear = function() {
     filterText.set("")
     set_kb_focus(null)
@@ -194,7 +195,7 @@ allModifiableScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   allSceneTexts.get().append(noSceneSelected)
   local scene = entity_editor?.get_instance().getTargetScene()
   let sceneText = (scene != null && ("loadType" in scene) && ("id" in scene)) ? sceneToComboboxEntry(scene) : null
-  if (sceneText != null && allSceneTexts.get().indexof(sceneText) != null) {
+  if (sceneText != null && allSceneTexts.get().contains(sceneText)) {
     selectedScene.set(sceneText)
   } else {
     selectedScene.set(noSceneSelected)
@@ -215,22 +216,19 @@ function dialogRoot() {
   let sceneInfo = selectedSceneIndex != null ? scenes[selectedSceneIndex] : null
   let sceneTitleStyle = { fontSize = hdpx(17), color=Color(150,150,150,120) }
   let sceneInfoStyle = { fontSize = hdpx(17), color=Color(180,180,180,120) }
-  let sceneTooltip = function() {
-    return {
-      rendObj = ROBJ_BOX
-      fillColor = Color(30, 30, 30, 220)
-      borderColor = Color(50, 50, 50, 110)
-      size = SIZE_TO_CONTENT
-      borderWidth = hdpx(1)
-      padding = fsh(1)
-      flow = FLOW_VERTICAL
-      children = [
-        txt("Select target scene to create entity in", sceneTitleStyle)
-        txt(selectedScene.get(), sceneInfoStyle)
-        sceneInfo != null ? txt($"{sceneInfo.path}", sceneInfoStyle) : null
-      ]
-
-    }
+  let sceneTooltip = @() {
+    rendObj = ROBJ_BOX
+    fillColor = Color(30, 30, 30, 220)
+    borderColor = Color(50, 50, 50, 110)
+    size = SIZE_TO_CONTENT
+    borderWidth = hdpx(1)
+    padding = fsh(1)
+    flow = FLOW_VERTICAL
+    children = [
+      txt("Select target scene to create entity in", sceneTitleStyle)
+      txt(selectedScene.get(), sceneInfoStyle)
+      sceneInfo != null ? txt($"{sceneInfo.path}", sceneInfoStyle) : null
+    ]
   }
 
   function listContent() {

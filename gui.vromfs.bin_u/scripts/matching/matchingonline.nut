@@ -9,6 +9,7 @@ let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { eventbus_subscribe } = require("eventbus")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 let { isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
+let { is_console } = require("%sqstd/platform.nut")
 
 const MATCHING_CONNECT_TIMEOUT = 30
 
@@ -87,19 +88,26 @@ function doLogout() {
 function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false) {
   onFailToReconnect()
 
-  local needExit = forceExit
-  if (!needExit) { 
-    let handler = handlersManager.getActiveBaseHandler()
-    if (("isDelayedLogoutOnDisconnect" not in handler)
-        || !handler.isDelayedLogoutOnDisconnect())
-      needExit = !doLogout()
+  let buttons = []
+  local btnName = ""
+  local msgCb = null 
+
+  if (!is_console || !forceExit) {
+    local needExit = forceExit
+    if (!needExit) { 
+      let handler = handlersManager.getActiveBaseHandler()
+      if (("isDelayedLogoutOnDisconnect" not in handler)
+          || !handler.isDelayedLogoutOnDisconnect())
+        needExit = !doLogout()
+    }
+
+    btnName = needExit ? "exit" : "ok"
+    msgCb = needExit ? exitGamePlatform : @() null
+    buttons.append([ btnName, msgCb])
   }
 
-  let btnName = needExit ? "exit" : "ok"
-  let msgCb = needExit ? exitGamePlatform : @() null
-
   showErrorMessageBox("yn1/connect_error", reason,
-    [[ btnName, msgCb]], btnName,
+    buttons, btnName,
     { saved = true, cancel_fn = msgCb }, message)
 }
 
@@ -113,11 +121,15 @@ eventbus_subscribe("on_online_available", function on_online_available(...) {
   onMatchingConnect()
 })
 
-eventbus_subscribe("logout_with_msgbox", @(params)
-  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false))
+eventbus_subscribe("logout_with_msgbox", function(params) {
+  logMC("logout_with_msgbox")
+  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false)
+})
 
-eventbus_subscribe("exit_with_msgbox", @(params)
-  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true))
+eventbus_subscribe("exit_with_msgbox", function(params) {
+  logMC("exit_with_msgbox")
+  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true)
+})
 
 return {
   isMatchingOnline

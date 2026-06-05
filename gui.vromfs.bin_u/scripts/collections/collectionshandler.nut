@@ -306,5 +306,4 @@ gui_handlers.CollectionsHandler <- CollectionsHandler
 
 return {
   openCollectionsPage = @(params = {}) handlersManager.loadHandler(CollectionsHandler, params)
-  hasAvailableCollections = @() hasFeature("Collection") && getCollectionsList().len() > 0
 }

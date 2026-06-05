@@ -5,7 +5,7 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let stdMath = require("%sqstd/math.nut")
 let { ceil } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -555,10 +555,18 @@ function getCrewStatus(crew, unit) {
 }
 
 function gui_modal_crew(params = {}) {
-  if (hasFeature("CrewSkills"))
-    loadHandler(hasFeature("FullScreenCrewWindow") ? gui_handlers.CrewHandler : gui_handlers.CrewModalHandler, params)
-  else
+  if (!hasFeature("CrewSkills")) {
     showInfoMsgBox(loc("msgbox/notAvailbleYet"))
+    return
+  }
+  
+  if (!hasFeature("FullScreenCrewWindow")) {
+    loadHandler(gui_handlers.CrewModalHandler, params)
+    return
+  }
+  let curHandler = handlersManager.getActiveBaseHandler()
+  let needModal = curHandler != null && (curHandler instanceof gui_handlers.MPLobby)
+  loadHandler(needModal ? gui_handlers.CrewWndModal : gui_handlers.CrewHandler, params)
 }
 
 addListenersWithoutEnv({

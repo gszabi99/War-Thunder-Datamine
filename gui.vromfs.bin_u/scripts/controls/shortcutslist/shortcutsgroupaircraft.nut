@@ -538,6 +538,47 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
+  {
+    id = "ID_AIM_MEM_POINT_SEL_NEXT"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_AIM_MEM_POINT_SEL_PREV"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_AIM_MEM_POINT_ADD"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_AIM_MEM_POINT_DEL"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_AIM_MEM_POINT_EDIT_SEL_TOGGLE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_AIM_MEM_POINT_LINK_WEAPON"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_AIM_MEM_POINT_UNLINK_WEAPON"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_AIM_MEM_POINT_SALVO_FIRE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+
 
   {
     id = "ID_SENSORS_HEADER"
@@ -567,6 +608,11 @@ return [
     id = "sensor_cue_z"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_MODES_SWITCH"
+    checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_SWITCH"
@@ -721,13 +767,11 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  
-
-
-
-
-
-
+  {
+    id = "ID_CAMERA_SHELL_FPV"
+    checkAssign = false
+    needShowInHelp = true
+  }
   {
     id = "ID_TARGET_CAMERA"
     checkAssign = false
@@ -1203,6 +1247,16 @@ return [
   }
   {
     id = "ID_TOGGLE_6_ENGINE_CONTROL"
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
+    checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_7_ENGINE_CONTROL"
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
+    checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_8_ENGINE_CONTROL"
     filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }

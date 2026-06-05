@@ -73,6 +73,39 @@
               "ignoreChance": {
                 "chance": 0.1
               },
+              "success": {
+                "sequencer": {
+                  "not": {
+                    "checkAtTime": {
+                      "timeParam": "rememberEnemyTime",
+                      "range": [
+                        0.0,
+                        15.0
+                      ]
+                    }
+                  },
+                  "findTacticalTarget": {
+                    "outTargetPosParam": "tryShootEnemyPos",
+                    "outTargetEidParam": "tryShootEnemy",
+                    "maxActualTime": 10.0
+                  },
+                  "copyPoint3Var": {
+                    "to": "rememberEnemyPos",
+                    "from": "tryShootEnemyPos"
+                  },
+                  "copyIntVar": {
+                    "to": "rememberEnemy",
+                    "from": "tryShootEnemy"
+                  },
+                  "getTime": {
+                    "to": "rememberEnemyTime",
+                    "addRange": [
+                      -2.0,
+                      -5.0
+                    ]
+                  }
+                }
+              },
               "not": [
                 {
                   "isVarsIntEqual": {
@@ -388,13 +421,6 @@
                   "continue": {}
                 }
               ],
-              "initPeriodicTimer": {
-                "timeParam": "onChangeLeaderFollowPos",
-                "timePeriod": [
-                  0.0,
-                  0.0
-                ]
-              },
               "wait": {
                 "range": [
                   0.2,

@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 
-from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")

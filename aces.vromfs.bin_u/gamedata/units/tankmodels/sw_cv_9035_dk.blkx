@@ -38,13 +38,12 @@
   "minDistBetween": 10.0,
   "expClass": "exp_tank",
   "mass": 47000.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "DamageParts": {
@@ -622,6 +621,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -2130,9 +2133,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -2141,7 +2142,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
@@ -2235,10 +2235,10 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_39_Strv_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
-        "barrelDP": "gun_barrel_01_dm",
+        "barrelDP": "gun_barrel_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 34.9,
@@ -2259,7 +2259,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_gun_twin",
           "gun": "bone_mg_gun_twin",
@@ -3468,9 +3467,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3479,7 +3476,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
@@ -3573,10 +3569,10 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_39_Strv_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
-              "barrelDP": "gun_barrel_01_dm",
+              "barrelDP": "gun_barrel_02_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 34.9,
@@ -3597,7 +3593,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_gun_twin",
                 "gun": "bone_mg_gun_twin",
@@ -3704,9 +3699,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 1000.0,
               "AttackMaxRadius": 1000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3715,7 +3708,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_grenade",
                 "gun": "bone_grenade"

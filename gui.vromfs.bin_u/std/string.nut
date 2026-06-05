@@ -262,7 +262,7 @@ function tostring_any(input, tostringfunc=null, compact=true) {
   else if (typ == "userdata"){
     return "#USERDATA#"
   }
-  else if (typ == "weakreference"){
+  else if (typ == "weakref"){
     return "#WEAKREF#"
   }
   if (typ=="thread") {
@@ -313,7 +313,7 @@ function tostring_r(inp, params=defTostringParams) {
     if (typ == "array" && val.len() == 0)
       return [true, "[]"]
     if (typ == "instance") {
-      let str = val?.tostring()
+      let str = type(val?.tostring) == "function" ? val.tostring() : null
       return [str != null && str.indexof("(instance : 0x") != 0, str]
     }
     return [false, null]
@@ -391,7 +391,8 @@ function tostring_r(inp, params=defTostringParams) {
         stream.writestring(newline)
         stream.writestring(indent)
         if (!arrayElem) {
-          stream.writestring(tostring_any(key,null, compact)," = ")
+          stream.writestring(tostring_any(key,null, compact))
+          stream.writestring(" = ")
         }
         stream.writestring(brOp)
         write_to_string(value, $"{indent}{indentOnNewline}", curdeeplevel+1)
@@ -646,8 +647,8 @@ function [pure] isStringFloat(str, separator=".") {
   if (numListLen == 2 && numList[1] == "")
     numList[1] = "0"
   local lastSeg = numList[numListLen - 1]
-  local expMark = lastSeg.indexof("e") != null ? "e"
-    : lastSeg.indexof("E") != null ? "E"
+  local expMark = lastSeg.contains("e") ? "e"
+    : lastSeg.contains("E") ? "E"
     : null
   if (expMark) {
     local eList = split(lastSeg, expMark)
@@ -900,19 +901,19 @@ function validateEmail(no_dump_email) {
   if (quotes && quotes != 0)
     return false 
 
-  if (quotes == null && locpart.indexof("@")!=null)
+  if (quotes == null && locpart.contains("@"))
     return false 
 
-  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) 
+  if (!dompart.contains(".") || dompart.indexof(".") > dompart.len() - 3) 
     return false  
 
   return true
 }
 
 function clearBorderSymbols(value, symList = [" "]) {
-  while(value != "" && symList.indexof(value.slice(0,1)) != null)
+  while(value != "" && symList.contains(value.slice(0,1)))
     value = value.slice(1)
-  while(value!="" && symList.indexof(value.slice(-1)) != null)
+  while(value!="" && symList.contains(value.slice(-1)))
     value = value.slice(0, -1)
   return value
 }

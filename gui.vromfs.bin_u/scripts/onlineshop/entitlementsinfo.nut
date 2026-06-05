@@ -13,7 +13,7 @@ let bundlesShopInfo = Watched(null)
 let lists = {}
 
 function updateBundlesShopInfo() {
-  if (!isLoggedIn.get() || bundlesShopInfo.get() || !isPlatformPC)
+  if (!isLoggedIn.get() || !isPlatformPC)
     return
 
   lists.guidsList <- []
@@ -53,6 +53,8 @@ function resetCache() {
 addListenersWithoutEnv({
   SignOut = @(_p) resetCache()
   LoginComplete = @(_p) resetCache()
+  PriceUpdated = @(_p) updateBundlesShopInfo()
+  EntitlementsPriceUpdated = @(_p) updateBundlesShopInfo()
 }, g_listener_priority.CONFIG_VALIDATION)
 
 return {

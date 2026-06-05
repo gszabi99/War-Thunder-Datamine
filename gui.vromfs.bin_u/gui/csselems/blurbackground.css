@@ -51,3 +51,26 @@ blur_foreground[isRoot=yes] {
   size: 1@swOrRwInVr, 1@shOrRhInVr;
   pos: 1@bwInVr, 1@bhInVr;
 }
+
+smoke_bg_image {
+  position: root;
+  size: sw, 392@sf/@pf;
+  max-width: @maxProfileFrameWidth;
+  pos: (sw-w)/2, sh-h;
+  background-image: !ui/images/profile/smoke_bg;
+  background-color: @white;
+}
+
+hover_dark_border {
+  position: absolute;
+  size: pw-2@sf/@pf, ph-2@sf/@pf;
+  pos: @dp, @dp;
+  input-transparent: yes;
+  border: yes;
+  border-color: #2D3841;
+  display: hide;
+}
+
+:hover > hover_dark_border {
+  display: show;
+}

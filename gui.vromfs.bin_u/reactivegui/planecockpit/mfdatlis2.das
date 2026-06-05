@@ -1,5 +1,5 @@
-require %dasGameLibs.math
-require %dasGameLibs.math.base
+require %gameLibs.das.math
+require %gameLibs.das.math.base
 require %daslib/safe_addr
 require %rGui.utils.avionics_common
 require %rGui.utils.canvas_common

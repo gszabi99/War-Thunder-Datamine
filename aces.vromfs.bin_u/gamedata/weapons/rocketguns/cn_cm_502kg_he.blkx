@@ -22,18 +22,18 @@
       0.1,
       0.1
     ],
-    "CxK": 1.25,
-    "wingAreaMult": 1.75,
+    "CxK": 1.35,
+    "wingAreaMult": 1.85,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.025,
+    "distFromCmToStab": 0.05,
     "mass": 40.0,
-    "massEnd": 36.4,
-    "massEnd1": 32.7,
+    "massEnd": 36.5,
+    "massEnd1": 32.0,
     "timeFire": 2.0,
-    "timeFire1": 43.0,
+    "timeFire1": 90.0,
     "force": 3960.0,
-    "force1": 189.3,
+    "force1": 117.5,
     "timeLife": 150.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
@@ -43,11 +43,13 @@
     "maxDistance": 25000.0,
     "minDistance": 30.0,
     "operatedDist": 25000.0,
-    "guaranteedRange": 16000.0,
+    "guaranteedRange": 20000.0,
     "rangeMax": 25000.0,
     "loadFactorMax": 4.0,
     "guidanceType": "optical",
     "guidanceSfx": "alarm_con_scan",
+    "rollStabilization": true,
+    "rollStabilizationDelay": 0.5,
     "maxDeltaAngle": 0.02,
     "explosiveType": "hexal",
     "explosiveMass": 4.52,
@@ -103,6 +105,12 @@
       "inertialNavigationDriftSpeed": 0.0,
       "indicateOnHud": false,
       "designationError": 10.0,
+      "reacquireTarget": true,
+      "lockMode": "LOAL+LOBL",
+      "timeTableCorrection": [
+        0.136,
+        0.866
+      ],
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
@@ -113,30 +121,79 @@
         "fov": 0.1,
         "gateWidth": 0.1,
         "minAngleToSun": 1.0,
-        "lockAngleMax": 45.0,
-        "angleMax": 45.0,
-        "rateMax": 6.0,
+        "lockAngleMax": 30.0,
+        "angleMax": 30.0,
+        "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": "camera",
-        "constantDesignationSourceTypeMask": 0,
+        "constantDesignationSourceType": "",
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
         "targetRadiusMin": 1.5
       },
       "guidanceAutopilot": {
-        "loftEnabled": true,
-        "loftElevation": 10.0,
-        "loftTargetElevation": -35.0,
-        "loftAngleToAccelMult": 1.25,
-        "loftTargetOmegaMax": 0.775,
+        "altitudeHoldEnabled": true,
+        "timeToHitToAltitude0": [
+          1.0,
+          800.0
+        ],
+        "altitudeHoldTargetElevation": -20.0,
+        "altitudeHoldTargetOmegaMax": 2.5,
+        "altitudeDiffToClimb": 0.2,
+        "altitudeRateRateToClimb": 0.15,
+        "climbDiffToAccelMult": 0.025,
+        "altitudeHoldAngleLimith": [
+          -5.0,
+          8.5
+        ],
+        "courseErrorAngleToAccelMult": 1.5,
+        "courseErrorFinalAngleCorrection": 1.25,
         "baseIndSpeed": 1800.0,
         "omegaToAccelMult": 4.0,
         "reqAccelMax": 4.0,
-        "accelControlProp": 0.0071,
-        "accelControlIntg": 0.0401,
+        "accelControlProp": 0.027138,
+        "accelControlIntg": 0.082305,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0024
+        "accelControlDiff": 0.002215
+      },
+      "table0": {
+        "altitude": 100.0,
+        "fighterMach": [
+          0.1,
+          0.3
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          837.661,
+          1091.85,
+          1091.85,
+          2100.21
+        ],
+        "rangeMax": [
+          14630.1,
+          16784.7,
+          16784.7,
+          18304.4
+        ],
+        "rangeMaxAltDiff": [
+          0.0,
+          0.0
+        ],
+        "timeMax": [
+          90.0,
+          90.0,
+          90.0,
+          90.0
+        ],
+        "timeMaxAltDiff": [
+          300.0,
+          -2.3
+        ]
       }
     },
     "pressureDamage": {
@@ -715,6 +772,26 @@
         "hasTracerTrail": true,
         "inactiveAtStage1": true
       }
-    ]
+    ],
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -15.0,
+        15.0
+      ],
+      "verLimit": [
+        -30.0,
+        10.0
+      ],
+      "zoomMinMax": [
+        4.0,
+        4.0
+      ],
+      "rateMax": [
+        5.0,
+        5.0
+      ]
+    }
   }
 }

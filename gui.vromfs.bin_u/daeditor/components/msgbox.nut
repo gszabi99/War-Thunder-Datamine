@@ -117,7 +117,7 @@ function getCurMsgbox(){
 
 function addWidget(w) {
   widgets.append(w)
-  defer(@() msgboxGeneration.set(msgboxGeneration.get()+1))
+  defer(@() msgboxGeneration.modify(@(v) v + 1))
 }
 
 function removeWidget(w, uid=null) {
@@ -125,12 +125,12 @@ function removeWidget(w, uid=null) {
   if (idx == null)
     return
   widgets.remove(idx)
-  msgboxGeneration.set(msgboxGeneration.get()+1)
+  msgboxGeneration.modify(@(v) v + 1)
 }
 
 function removeAllMsgboxes() {
   widgets.clear()
-  msgboxGeneration.set(msgboxGeneration.get()+1)
+  msgboxGeneration.modify(@(v) v + 1)
 }
 
 function updateWidget(w, uid){
@@ -148,7 +148,7 @@ function removeMsgboxByUid(uid) {
   if (idx == null)
     return false
   widgets.remove(idx)
-  msgboxGeneration.set(msgboxGeneration.get()+1)
+  msgboxGeneration.modify(@(v) v + 1)
   return true
 }
 

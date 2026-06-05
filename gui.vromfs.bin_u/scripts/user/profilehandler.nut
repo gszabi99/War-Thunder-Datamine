@@ -59,7 +59,8 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 let { selectUnitWndFilters } = require("%scripts/user/showcase/showcaseValues.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 let { gui_choose_image } = require("%scripts/chooseImage.nut")
-let { openCollectionsPage, hasAvailableCollections } = require("%scripts/collections/collectionsHandler.nut")
+let { openCollectionsPage } = require("%scripts/collections/collectionsHandler.nut")
+let { hasAvailableCollections } = require("%scripts/collections/collections.nut")
 let { openSkinsPage } = require("%scripts/user/skins/skinsHandler.nut")
 let { openDecalsPage } = require("%scripts/user/decals/decalsHandler.nut")
 let { openAchievementsPage } = require("%scripts/user/achievements/achievementsHandler.nut")
@@ -69,7 +70,7 @@ let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 let { Cost } = require("%scripts/money.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let gfn = require_optional("gfn")
 
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
@@ -1165,8 +1166,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       )
       return
     }
-    if (this.itemsCanBuy.len() && checkBalanceMsgBox(Cost(0, this.purchaseCostGoldTotal))) {
-      purchaseConfirmation("hasItemsCanBuy", this.getCanBuyItemsList(), onPurchase, @() null)
+    let cost = Cost(0, this.purchaseCostGoldTotal)
+    if (this.itemsCanBuy.len() && checkBalanceMsgBox(cost)) {
+      let text = this.getCanBuyItemsList()
+      purchaseConfirmation({ id = "hasItemsCanBuy", text, callbackYes = onPurchase }, cost)
       return
     }
   }
@@ -1183,15 +1186,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       )
       return
     }
-    if (this.itemsCanBuy.len() && checkBalanceMsgBox(Cost(0, this.purchaseCostGoldTotal))) {
-      purchaseConfirmation(
-        "needBuyItemsBefore",
-        this.getCanBuyItemsList(),
-        Callback(@() this.purchaseChosenItems(this.profileEditApplyImpl), this),
-        @() null
-      )
+    let cost = Cost(0, this.purchaseCostGoldTotal)
+    if (!(this.itemsCanBuy.len() && checkBalanceMsgBox(cost)))
       return
-    }
+    let text = this.getCanBuyItemsList()
+    let callbackYes = Callback(@() this.purchaseChosenItems(this.profileEditApplyImpl), this)
+    purchaseConfirmation({ id = "needBuyItemsBefore", text, callbackYes }, cost)
   }
 
   function clearUnpurchasedItems() {

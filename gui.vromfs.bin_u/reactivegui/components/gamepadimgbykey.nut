@@ -70,8 +70,12 @@ let dargJKeysToImage = {
   "J:R.Thumb.h"     : "r_stick_to_left_n_right",
   "J:R.Thumb.v"     : "r_stick_to_up_n_down",
 
-  "J:R.Thumb.hv"     : "r_stick_4",
-  "J:L.Thumb.hv"     : "l_stick_4",
+  "J:R.Thumb.hv"    : "r_stick_4",
+  "J:L.Thumb.hv"    : "l_stick_4",
+
+  "J:SensorX"       : "sensor_x",
+  "J:SensorZ"       : "sensor_z",
+  "J:SensorY"       : "sensor_y",
 }
 
 const PRESSED_POSTFIX = "_pressed"

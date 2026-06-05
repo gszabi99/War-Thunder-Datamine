@@ -26,27 +26,166 @@
   "waterBreakerAnimVar": "lav_ad_break_water_action",
   "waterBreakerToggleTime": 4.0,
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
-  "maxRevSpeed": 10.0,
-  "maxAngSpeed": 30.0,
-  "maxAccel": 4.0,
-  "maxDecel": 8.0,
-  "maxAngAccel0": 20.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 40.0,
+  "maxFwdSpeed": 75.0,
+  "maxRevSpeed": 30.0,
+  "maxAngSpeed": 50.0,
+  "maxAccel": 40.0,
+  "maxDecel": 40.0,
+  "maxAngAccel0": 4.0,
+  "maxAngAccelV": 3.0,
+  "maxAngAccel": 100.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_tank",
   "mass": 5500.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "controlDevices": {
+    "device": [
+      {
+        "type": "turretTurnH",
+        "turnSpeed": 0.6,
+        "node": "bone_roll_turret_h",
+        "node_handle": "bone_roll_turret_h_handle"
+      },
+      {
+        "type": "turretTurnV",
+        "turnSpeed": -1.0,
+        "node": "bone_roll_turret_v",
+        "node_handle": "bone_roll_turret_v_handle"
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -3.0,
+        "node": "bone_roll_driver",
+        "absoluteValue": true
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_01"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_02"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_03"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": -1.7,
+        "node": "body_shutter_l",
+        "absoluteValue": true,
+        "progressive": true
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": 1.7,
+        "node": "body_shutter_r",
+        "absoluteValue": true,
+        "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_05",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_06",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_07",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_08",
+        "absoluteValue": true
+      }
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHAHH_tank",
@@ -643,6 +782,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -2042,9 +2185,7 @@
         "bullets": 400,
         "ChainfireTime": 2.5,
         "DelayAfterShoot": 2.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1500.0,
         "accuracyAir": 1.5,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -2163,9 +2304,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -2174,7 +2313,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_grenade",
           "gun": "bone_gun_01",
@@ -2230,7 +2368,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_gun_twin",
           "gun": "bone_mg_gun_twin",
@@ -2276,9 +2413,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -2287,7 +2422,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "emtr_mortar_flame_07",
           "gun": "emtr_mortar_flame_07"
@@ -2587,13 +2721,22 @@
     }
   },
   "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)$",
+    "find": "bone_suspension_(\\w)_(\\d+)$",
     "points": {
-      "suspension": {
-        "name": "bone_suspension_$1"
+      "lever": {
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2"
       },
-      "wheel": {
-        "name": "bone_wheel_$1",
+      "suspension_01_01": {
         "limitMin": [
           -1.0,
           -1.0,
@@ -2603,14 +2746,40 @@
           1.0,
           1.0,
           0.0
-        ]
+        ],
+        "name": "bone_suspension_$1_$2_01"
+      },
+      "wheel": {
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "find": "bone_wheel_",
+          "parent": "lever"
+        }
       }
     },
     "constraints": {
-      "edge": {
-        "from": "suspension",
-        "to": "wheel"
-      }
+      "edge": [
+        {
+          "to": "wheel",
+          "from": "lever",
+          "moveNodes": false
+        },
+        {
+          "to": "wheel",
+          "from": "suspension_01_01",
+          "moveNodes": false
+        }
+      ]
     }
   },
   "chainIK": {
@@ -3907,28 +4076,28 @@
       "fatalExplosion": false,
       "shells": {
         "wreckedPartId": 0,
-        "ammo_turret_12_dm": {
-          "count": 50
-        },
-        "ammo_turret_11_dm": {
-          "count": 50
-        },
-        "ammo_turret_10_dm": {
-          "count": 50
-        },
-        "ammo_turret_09_dm": {
-          "count": 50
-        },
-        "ammo_turret_08_dm": {
-          "count": 50
-        },
-        "ammo_turret_07_dm": {
+        "ammo_turret_05_dm": {
           "count": 50
         },
         "ammo_turret_06_dm": {
           "count": 50
         },
-        "ammo_turret_05_dm": {
+        "ammo_turret_07_dm": {
+          "count": 50
+        },
+        "ammo_turret_08_dm": {
+          "count": 50
+        },
+        "ammo_turret_09_dm": {
+          "count": 50
+        },
+        "ammo_turret_10_dm": {
+          "count": 50
+        },
+        "ammo_turret_11_dm": {
+          "count": 50
+        },
+        "ammo_turret_12_dm": {
           "count": 50
         }
       }
@@ -4090,9 +4259,7 @@
               "bullets": 400,
               "ChainfireTime": 2.5,
               "DelayAfterShoot": 2.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1500.0,
               "accuracyAir": 1.5,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4211,9 +4378,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4222,7 +4387,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_grenade",
                 "gun": "bone_gun_01",
@@ -4278,7 +4442,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_gun_twin",
                 "gun": "bone_mg_gun_twin",
@@ -4324,9 +4487,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4335,7 +4496,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "emtr_mortar_flame_07",
                 "gun": "emtr_mortar_flame_07"
@@ -4507,9 +4667,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 1000.0,
               "AttackMaxRadius": 1000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4518,7 +4676,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_grenade",
                 "gun": "bone_grenade"
@@ -4764,6 +4921,18 @@
       "mesh": "grenade_L8",
       "reactionTime": 0.3,
       "targets": {
+        "fpv": {
+          "speed": [
+            2.0,
+            200.0
+          ],
+          "size": [
+            0.1,
+            4.0
+          ],
+          "self": false,
+          "ally": false
+        },
         "lowspeed": {
           "speed": [
             70.0,
@@ -4784,78 +4953,37 @@
         "damage": {
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.505,
-            "realShattersSplicing": 0.5,
+            "countPortion": 1.0,
             "segment": [
               {
-                "radiusScale": 0.75,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  0.0,
-                  20.0
-                ],
-                "countPortion": 0.0375
-              },
-              {
-                "radiusScale": 0.33,
+                "radiusScale": 1.0,
                 "penetrationScale": 1.0,
                 "damageScale": 1.0,
                 "angles": [
-                  20.0,
-                  60.0
+                  30.0,
+                  150.0
                 ],
-                "countPortion": 0.075
-              },
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  60.0,
-                  80.0
-                ],
-                "countPortion": 0.1
+                "countPortion": 1.5
               },
               {
                 "radiusScale": 1.0,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  75.0,
-                  100.0
-                ],
-                "countPortion": 0.6
-              },
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  100.0,
-                  120.0
-                ],
-                "countPortion": 0.1
-              },
-              {
-                "radiusScale": 0.33,
                 "penetrationScale": 1.0,
                 "damageScale": 1.0,
                 "angles": [
-                  120.0,
-                  160.0
-                ],
-                "countPortion": 0.075
-              },
-              {
-                "radiusScale": 0.3,
-                "penetrationScale": 1.0,
-                "damageScale": 0.8,
-                "angles": [
-                  160.0,
+                  150.0,
                   180.0
                 ],
-                "countPortion": 0.0125
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  30.0
+                ],
+                "countPortion": 1.5
               }
             ]
           },
@@ -4904,6 +5032,18 @@
       "mesh": "grenade_L8",
       "reactionTime": 0.3,
       "targets": {
+        "fpv": {
+          "speed": [
+            2.0,
+            200.0
+          ],
+          "size": [
+            0.1,
+            4.0
+          ],
+          "self": false,
+          "ally": false
+        },
         "lowspeed": {
           "speed": [
             70.0,
@@ -4924,78 +5064,37 @@
         "damage": {
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.505,
-            "realShattersSplicing": 0.5,
+            "countPortion": 1.0,
             "segment": [
               {
-                "radiusScale": 0.75,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  0.0,
-                  20.0
-                ],
-                "countPortion": 0.0375
-              },
-              {
-                "radiusScale": 0.33,
+                "radiusScale": 1.0,
                 "penetrationScale": 1.0,
                 "damageScale": 1.0,
                 "angles": [
-                  20.0,
-                  60.0
+                  30.0,
+                  150.0
                 ],
-                "countPortion": 0.075
-              },
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  60.0,
-                  80.0
-                ],
-                "countPortion": 0.1
+                "countPortion": 1.5
               },
               {
                 "radiusScale": 1.0,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  75.0,
-                  100.0
-                ],
-                "countPortion": 0.6
-              },
-              {
-                "radiusScale": 0.5,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  100.0,
-                  120.0
-                ],
-                "countPortion": 0.1
-              },
-              {
-                "radiusScale": 0.33,
                 "penetrationScale": 1.0,
                 "damageScale": 1.0,
                 "angles": [
-                  120.0,
-                  160.0
-                ],
-                "countPortion": 0.075
-              },
-              {
-                "radiusScale": 0.3,
-                "penetrationScale": 1.0,
-                "damageScale": 0.8,
-                "angles": [
-                  160.0,
+                  150.0,
                   180.0
                 ],
-                "countPortion": 0.0125
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  30.0
+                ],
+                "countPortion": 1.5
               }
             ]
           },

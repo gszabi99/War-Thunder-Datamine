@@ -1,5 +1,5 @@
 import "gdk.user" as user
-from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
+from "eventbus" import eventbus_subscribe_onehit
 function init_default_user(callback) {
   let eventName = "xbox_user_init_default_user"
   eventbus_subscribe_onehit(eventName, function(result) {
@@ -10,33 +10,12 @@ function init_default_user(callback) {
 }
 
 
-function init_user_with_ui(callback) {
-  let eventName = "xbox_user_init_user_with_ui_event"
-  eventbus_subscribe_onehit(eventName, function(result) {
-    let xuid = result?.xuid ?? 0
-    callback?(xuid)
-  })
-  user.init_user_with_ui(eventName)
-}
-
-
 function shutdown_user(callback) {
   let eventName = "xbox_user_shutdown_user_event"
   eventbus_subscribe_onehit(eventName, function(_) {
     callback?()
   })
   user.shutdown_user(eventName)
-}
-
-
-function try_switch_user_to(xbox_user_id, callback) {
-  let eventName = "xbox_user_try_to_switch_to_event"
-  eventbus_subscribe_onehit(eventName, function(result) {
-    let success = result?.success ?? false
-    let xuid = result?.xuid ?? 0
-    callback?(success, xuid)
-  })
-  user.try_switch_user_to(xbox_user_id, eventName)
 }
 
 
@@ -59,23 +38,10 @@ function show_profile_card(xuid, callback) {
 }
 
 
-function register_for_user_change_event(callback) {
-  user.install_user_change_event_handler()
-  eventbus_subscribe(user.user_change_event_name, function(result) {
-    callback?(result?.event)
-  })
-}
-
-
 return freeze({
-  EventType = user.EventType
-
   init_default_user
-  init_user_with_ui
-  try_switch_user_to
   retrieve_auth_token
   shutdown_user
-  register_for_user_change_event
 
   show_profile_card
   get_xuid = user.get_xuid

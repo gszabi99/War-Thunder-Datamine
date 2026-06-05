@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
+let { tryLoadBlk } = require("blkLoad")
 let { floor } = require("math")
 let extWatched = require("%rGui/globals/extWatched.nut")
 let { parseZones, getZoneSize } = require("%rGui/wwMap/wwMapZonesData.nut")
@@ -81,7 +82,7 @@ function loadOperationData() {
   if(mapsDirName == null)
     return
   let mapBlkName = $"{mapsDirName}/{mapName}.blk"
-  let loadRes = operationBlk.tryLoad(mapBlkName)
+  let loadRes = tryLoadBlk(operationBlk, mapBlkName)
   if(loadRes) {
     parseZones(operationBlk.zones)
     clearArmyGroupsInfo()

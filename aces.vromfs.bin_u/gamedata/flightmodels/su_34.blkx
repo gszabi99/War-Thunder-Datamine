@@ -12,6 +12,7 @@
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "laserDesignator": true,
   "isBwOpticSight": true,
   "haveOpticTurret": true,
@@ -179,6 +180,24 @@
     "dural5": {
       "radar_dm": {
         "hp": 35.0
+      },
+      "cockpit_control1_dm": {
+        "hp": 60.0
+      },
+      "electronic_block1_dm": {
+        "hp": 60.0
+      },
+      "electronic_block2_dm": {
+        "hp": 60.0
+      },
+      "electronic_block3_dm": {
+        "hp": 60.0
+      },
+      "optic_block1_dm": {
+        "hp": 60.0
+      },
+      "apu1_dm": {
+        "hp": 60.0
       }
     },
     "protected_controls": {
@@ -1035,6 +1054,156 @@
       },
       {
         "name": "pilot_dm"
+      },
+      {
+        "name": "cockpit_control1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "electronic_block1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "electronic_block2_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "electronic_block3_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "optic_block1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "apu1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "radar_dm",
@@ -1938,7 +2107,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1949,7 +2118,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1960,7 +2129,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1971,7 +2140,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1982,7 +2151,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2054,7 +2223,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2065,7 +2234,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2076,7 +2245,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2087,7 +2256,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2098,7 +2267,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2170,7 +2339,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2181,7 +2350,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2192,7 +2361,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2203,7 +2372,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2214,7 +2383,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2286,7 +2455,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2297,7 +2466,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2308,7 +2477,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2319,7 +2488,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2330,7 +2499,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -3432,7 +3601,7 @@
   "gunnerOpticFps": {
     "Target": {
       "pos": [
-        0.5,
+        1.2,
         -0.45,
         0.0
       ],
@@ -3502,6 +3671,24 @@
       "opticType": "tv",
       "turretNo": 1,
       "name": "KAB500KR_1500KR"
+    },
+    "TV4": {
+      "pos": [
+        8.3,
+        -0.2,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -35.0,
+        35.0,
+        -60.0,
+        20.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1,
+      "name": "KH-59"
     }
   },
   "sensors": {
@@ -3585,6 +3772,28 @@
       {
         "name": "su_34_rocket_kh29l",
         "blk": "gameData/FlightModels/weaponPresets/su_34_rocket_kh29l.blk"
+      },
+      {
+        "name": "su_34_kh_59m",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_kh_59m.blk"
+      },
+      {
+        "name": "su_34_kh_59mk",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_kh_59mk.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "su_34_kh_31pd",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_kh_31pd.blk"
+      },
+      {
+        "name": "su_34_kh_31a",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_kh_31a.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       },
       {
         "name": "su_34_rocket_grom_2",
@@ -3675,6 +3884,8 @@
     "maxDisbalance": 1500.0,
     "HideNodes": {
       "node": [
+        "apk_9_pod",
+        "apk_9_pod_1",
         "ecm_pod_l",
         "ecm_pod_r",
         "pylon_1_aku_170_launcher",
@@ -4495,7 +4706,6 @@
           {
             "iconType": "nar_he_special",
             "name": "s13_slot3",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4514,7 +4724,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_1_slot3",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4540,7 +4749,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_1_slot3",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4566,7 +4774,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_1_slot3",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4592,7 +4799,6 @@
           {
             "iconType": "rockets_he_large_special_laser",
             "name": "s_25l_slot3",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4665,7 +4871,7 @@
           {
             "iconType": "guided_bomb_red",
             "name": "kh_29te_slot3",
-            "reqModification": "su_27sm_x29td",
+            "reqModification": "su_x29td_x59m",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4686,6 +4892,81 @@
               "separate": true,
               "order": 7,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_c",
+            "name": "kh_31pd_slot3",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_aku_58",
+                "pylon_3_aku_58_fin1",
+                "pylon_3_aku_58_fin2",
+                "pylon_3_aku_58_fin3",
+                "pylon_3_aku_58_fin4",
+                "pylon_3_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31pd.blk",
+              "emitter": "pylon_3_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_kh31",
+            "name": "kh_31a_slot3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_aku_58",
+                "pylon_3_aku_58_fin1",
+                "pylon_3_aku_58_fin2",
+                "pylon_3_aku_58_fin3",
+                "pylon_3_aku_58_fin4",
+                "pylon_3_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31ad.blk",
+              "emitter": "pylon_3_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_x59",
+            "name": "kh_59mk_slot3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_aku_58",
+                "pylon_3_aku_58_fin1",
+                "pylon_3_aku_58_fin2",
+                "pylon_3_aku_58_fin3",
+                "pylon_3_aku_58_fin4",
+                "pylon_3_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_59mk.blk",
+              "emitter": "pylon_3_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
             }
           },
           {
@@ -4790,7 +5071,6 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot3",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4812,7 +5092,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot3",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4834,7 +5113,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot3",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4856,7 +5134,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot3",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4878,7 +5155,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot3",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4900,7 +5176,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot3",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4922,7 +5197,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "kab_500kr_slot3",
-            "reqModification": "mig_27_kab_500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4944,7 +5219,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "kab_250lg_slot3",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4966,7 +5241,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "kab_500lg_slot3",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4988,7 +5263,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "upab_500b_slot3",
-            "reqModification": "su_fab_500_upab_500b",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -5046,7 +5321,6 @@
           {
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot3_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5083,7 +5357,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot3_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5120,7 +5393,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot3_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5157,7 +5429,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot3_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5194,7 +5465,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot3_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5231,7 +5501,6 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "zb_500_slot3_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5298,7 +5567,6 @@
           {
             "iconType": "nar_he_special_group",
             "name": "s13_slot3_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5329,7 +5597,6 @@
           {
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25o_1_slot3_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5376,7 +5643,6 @@
           {
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25of_1_slot3_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5423,7 +5689,6 @@
           {
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25ofm_1_slot3_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5470,7 +5735,6 @@
           {
             "iconType": "rockets_he_large_special_laser_group_x2",
             "name": "s_25l_slot3_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_3"
             },
@@ -5662,7 +5926,6 @@
           {
             "iconType": "nar_he_special",
             "name": "s13_slot4",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5680,7 +5943,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_1_slot4",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5705,7 +5967,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_1_slot4",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5730,7 +5991,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_1_slot4",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5755,7 +6015,6 @@
           {
             "iconType": "rockets_he_large_special_laser",
             "name": "s_25l_slot4",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5825,7 +6084,7 @@
           {
             "iconType": "guided_bomb_red",
             "name": "kh_29te_slot4",
-            "reqModification": "su_27sm_x29td",
+            "reqModification": "su_x29td_x59m",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5845,6 +6104,107 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "guided_bomb_green_x59",
+            "name": "kh_59m_slot4",
+            "reqModification": "su_x29td_x59m",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_aku_58",
+                "pylon_11_aku_58_fin1",
+                "pylon_11_aku_58_fin2",
+                "pylon_11_aku_58_fin3",
+                "pylon_11_aku_58_fin4",
+                "pylon_11_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_59m.blk",
+              "emitter": "pylon_11_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_c",
+            "name": "kh_31pd_slot4",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_aku_58",
+                "pylon_11_aku_58_fin1",
+                "pylon_11_aku_58_fin2",
+                "pylon_11_aku_58_fin3",
+                "pylon_11_aku_58_fin4",
+                "pylon_11_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31pd.blk",
+              "emitter": "pylon_11_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_kh31",
+            "name": "kh_31a_slot4",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_aku_58",
+                "pylon_11_aku_58_fin1",
+                "pylon_11_aku_58_fin2",
+                "pylon_11_aku_58_fin3",
+                "pylon_11_aku_58_fin4",
+                "pylon_11_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31ad.blk",
+              "emitter": "pylon_11_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_x59",
+            "name": "kh_59mk_slot4",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_aku_58",
+                "pylon_11_aku_58_fin1",
+                "pylon_11_aku_58_fin2",
+                "pylon_11_aku_58_fin3",
+                "pylon_11_aku_58_fin4",
+                "pylon_11_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_59mk.blk",
+              "emitter": "pylon_11_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -5944,7 +6304,6 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5965,7 +6324,6 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5983,7 +6341,6 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6001,7 +6358,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6022,7 +6378,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6043,7 +6398,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6064,7 +6418,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6085,7 +6438,6 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "fab_1500_slot4",
-            "reqModification": "su_fab_1500_upab_1500",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6106,7 +6458,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6127,7 +6478,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "kab_500kr_slot4",
-            "reqModification": "mig_27_kab_500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6148,7 +6499,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "kab_250lg_slot4",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6169,7 +6520,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "kab_500lg_slot4",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6190,7 +6541,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "upab_500b_slot4",
-            "reqModification": "su_fab_500_upab_500b",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6211,7 +6562,7 @@
           {
             "iconType": "guided_bomb_black",
             "name": "kab_1500kr_slot4",
-            "reqModification": "su_27_kab_1500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6232,7 +6583,7 @@
           {
             "iconType": "guided_bomb_heavy_laser",
             "name": "kab_1500lg_slot4",
-            "reqModification": "su_kab_1500l",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6253,7 +6604,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "upab_1500b_slot4",
-            "reqModification": "su_fab_1500_upab_1500",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -6389,7 +6740,7 @@
           {
             "iconType": "guided_bomb_red",
             "name": "kh_29te_slot5",
-            "reqModification": "su_27sm_x29td",
+            "reqModification": "su_x29td_x59m",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6409,6 +6760,54 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_c",
+            "name": "kh_31pd_slot5",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "pylon_9_aku_58",
+                "pylon_9_aku_58_fin1",
+                "pylon_9_aku_58_fin2",
+                "pylon_9_aku_58_fin3",
+                "pylon_9_aku_58_fin4",
+                "pylon_9_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31pd.blk",
+              "emitter": "pylon_9_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_kh31",
+            "name": "kh_31a_slot5",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "pylon_9_aku_58",
+                "pylon_9_aku_58_fin1",
+                "pylon_9_aku_58_fin2",
+                "pylon_9_aku_58_fin3",
+                "pylon_9_aku_58_fin4",
+                "pylon_9_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31ad.blk",
+              "emitter": "pylon_9_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -6508,7 +6907,6 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot5",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6529,7 +6927,6 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot5",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6547,7 +6944,6 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot5",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6565,7 +6961,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot5",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6586,7 +6981,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot5",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6607,7 +7001,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot5",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6628,7 +7021,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot5",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6649,7 +7041,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot5",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6670,7 +7061,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "kab_500kr_slot5",
-            "reqModification": "mig_27_kab_500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6691,7 +7082,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "kab_250lg_slot5",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6712,7 +7103,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "kab_500lg_slot5",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6733,7 +7124,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "upab_500b_slot5",
-            "reqModification": "su_fab_500_upab_500b",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6759,6 +7150,22 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
+            "iconType": "rls",
+            "name": "apk_9_slot6",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "apk_9_pod_1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/su_apk_9.blk",
+              "emitter": "apk_9_pod_1",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_small_group",
             "name": "ofab_100_x3_slot6",
             "ShowNodes": {
@@ -6780,7 +7187,6 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot6",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6800,7 +7206,6 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot6",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6859,7 +7264,6 @@
           {
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot6_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6899,7 +7303,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot6_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6939,7 +7342,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot6_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6979,7 +7381,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot6_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7019,7 +7420,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot6_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7067,7 +7467,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "kab_500lg_slot7",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7089,7 +7489,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "upab_500b_slot7",
-            "reqModification": "su_fab_500_upab_500b",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7111,7 +7511,7 @@
           {
             "iconType": "guided_bomb_black",
             "name": "kab_1500kr_slot7",
-            "reqModification": "su_27_kab_1500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7133,7 +7533,7 @@
           {
             "iconType": "guided_bomb_heavy_laser",
             "name": "kab_1500lg_slot7",
-            "reqModification": "su_kab_1500l",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7155,7 +7555,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "upab_1500b_slot7",
-            "reqModification": "su_fab_1500_upab_1500",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7177,7 +7577,7 @@
           {
             "iconType": "glide_bombs_heavy",
             "name": "umpk_3000_slot7",
-            "reqModification": "su_fab_3000_umpk_3000",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7223,6 +7623,60 @@
             }
           },
           {
+            "iconType": "guided_bomb_green_x59",
+            "name": "kh_59m_slot7",
+            "reqModification": "su_x29td_x59m",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_aku_58",
+                "pylon_1_aku_58_fin1",
+                "pylon_1_aku_58_fin2",
+                "pylon_1_aku_58_fin3",
+                "pylon_1_aku_58_fin4",
+                "pylon_1_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_59m.blk",
+              "emitter": "pylon_1_aku_58_grom_e1_missile",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_x59",
+            "name": "kh_59mk_slot7",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_aku_58",
+                "pylon_1_aku_58_fin1",
+                "pylon_1_aku_58_fin2",
+                "pylon_1_aku_58_fin3",
+                "pylon_1_aku_58_fin4",
+                "pylon_1_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_59mk.blk",
+              "emitter": "pylon_1_aku_58_grom_e1_missile",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5
+            }
+          },
+          {
             "iconType": "bombs_small_group",
             "name": "ofab_100_x3_slot7",
             "ShowNodes": {
@@ -7240,7 +7694,6 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot7",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -7256,7 +7709,6 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot7",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -7272,7 +7724,6 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "fab_1500_slot7",
-            "reqModification": "su_fab_1500_upab_1500",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7294,7 +7745,6 @@
           {
             "iconType": "bombs_heavy",
             "name": "fab_3000_slot7",
-            "reqModification": "su_fab_3000_umpk_3000",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7351,7 +7801,6 @@
           {
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot7_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7387,7 +7836,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot7_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7423,7 +7871,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot7_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7459,7 +7906,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot7_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7495,7 +7941,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot7_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7531,7 +7976,6 @@
           {
             "iconType": "bombs_large_group_x4",
             "name": "fab_500m_62_slot7_x4",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -7699,7 +8143,7 @@
           {
             "iconType": "guided_bomb_red",
             "name": "kh_29te_slot8",
-            "reqModification": "su_27sm_x29td",
+            "reqModification": "su_x29td_x59m",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7719,6 +8163,54 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_c",
+            "name": "kh_31pd_slot8",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "pylon_10_aku_58",
+                "pylon_10_aku_58_fin1",
+                "pylon_10_aku_58_fin2",
+                "pylon_10_aku_58_fin3",
+                "pylon_10_aku_58_fin4",
+                "pylon_10_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31pd.blk",
+              "emitter": "pylon_10_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_kh31",
+            "name": "kh_31a_slot8",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "pylon_10_aku_58",
+                "pylon_10_aku_58_fin1",
+                "pylon_10_aku_58_fin2",
+                "pylon_10_aku_58_fin3",
+                "pylon_10_aku_58_fin4",
+                "pylon_10_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31ad.blk",
+              "emitter": "pylon_10_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -7818,7 +8310,6 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot8",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7839,7 +8330,6 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot8",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7857,7 +8347,6 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot8",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7875,7 +8364,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot8",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7896,7 +8384,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot8",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7917,7 +8404,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot8",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7938,7 +8424,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot8",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7959,7 +8444,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot8",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7980,7 +8464,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "kab_500kr_slot8",
-            "reqModification": "mig_27_kab_500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -8001,7 +8485,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "kab_250lg_slot8",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -8022,7 +8506,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "kab_500lg_slot8",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -8043,7 +8527,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "upab_500b_slot8",
-            "reqModification": "su_fab_500_upab_500b",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -8183,7 +8667,6 @@
           {
             "iconType": "nar_he_special",
             "name": "s13_slot9",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8201,7 +8684,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_1_slot9",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8226,7 +8708,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_1_slot9",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8251,7 +8732,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_1_slot9",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8276,7 +8756,6 @@
           {
             "iconType": "rockets_he_large_special_laser",
             "name": "s_25l_slot9",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8346,7 +8825,7 @@
           {
             "iconType": "guided_bomb_red",
             "name": "kh_29te_slot9",
-            "reqModification": "su_27sm_x29td",
+            "reqModification": "su_x29td_x59m",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8366,6 +8845,107 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "guided_bomb_green_x59",
+            "name": "kh_59m_slot9",
+            "reqModification": "su_x29td_x59m",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_aku_58",
+                "pylon_12_aku_58_fin1",
+                "pylon_12_aku_58_fin2",
+                "pylon_12_aku_58_fin3",
+                "pylon_12_aku_58_fin4",
+                "pylon_12_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_59m.blk",
+              "emitter": "pylon_12_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "apk_9"
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_c",
+            "name": "kh_31pd_slot9",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_aku_58",
+                "pylon_12_aku_58_fin1",
+                "pylon_12_aku_58_fin2",
+                "pylon_12_aku_58_fin3",
+                "pylon_12_aku_58_fin4",
+                "pylon_12_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31pd.blk",
+              "emitter": "pylon_12_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_kh31",
+            "name": "kh_31a_slot9",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_aku_58",
+                "pylon_12_aku_58_fin1",
+                "pylon_12_aku_58_fin2",
+                "pylon_12_aku_58_fin3",
+                "pylon_12_aku_58_fin4",
+                "pylon_12_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31ad.blk",
+              "emitter": "pylon_12_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_x59",
+            "name": "kh_59mk_slot9",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_aku_58",
+                "pylon_12_aku_58_fin1",
+                "pylon_12_aku_58_fin2",
+                "pylon_12_aku_58_fin3",
+                "pylon_12_aku_58_fin4",
+                "pylon_12_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_59mk.blk",
+              "emitter": "pylon_12_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -8465,7 +9045,6 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot9",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8486,7 +9065,6 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot9",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8504,7 +9082,6 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot9",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8522,7 +9099,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot9",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8543,7 +9119,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot9",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8564,7 +9139,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot9",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8585,7 +9159,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot9",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8606,7 +9179,6 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "fab_1500_slot9",
-            "reqModification": "su_fab_1500_upab_1500",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8627,7 +9199,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot9",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8648,7 +9219,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "kab_500kr_slot9",
-            "reqModification": "mig_27_kab_500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8669,7 +9240,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "kab_250lg_slot9",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8690,7 +9261,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "kab_500lg_slot9",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8711,7 +9282,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "upab_500b_slot9",
-            "reqModification": "su_fab_500_upab_500b",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8732,7 +9303,7 @@
           {
             "iconType": "guided_bomb_black",
             "name": "kab_1500kr_slot9",
-            "reqModification": "su_27_kab_1500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8753,7 +9324,7 @@
           {
             "iconType": "guided_bomb_heavy_laser",
             "name": "kab_1500lg_slot9",
-            "reqModification": "su_kab_1500l",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8774,7 +9345,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "upab_1500b_slot9",
-            "reqModification": "su_fab_1500_upab_1500",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -8939,7 +9510,6 @@
           {
             "iconType": "nar_he_special",
             "name": "s13_slot10",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8958,7 +9528,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25o_1_slot10",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8984,7 +9553,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25of_1_slot10",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9010,7 +9578,6 @@
           {
             "iconType": "rockets_he_large_special",
             "name": "s_25ofm_1_slot10",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9036,7 +9603,6 @@
           {
             "iconType": "rockets_he_large_special_laser",
             "name": "s_25l_slot10",
-            "reqModification": "su_s25_s13",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9109,7 +9675,7 @@
           {
             "iconType": "guided_bomb_red",
             "name": "kh_29te_slot10",
-            "reqModification": "su_27sm_x29td",
+            "reqModification": "su_x29td_x59m",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9130,6 +9696,81 @@
               "separate": true,
               "order": 8,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_c",
+            "name": "kh_31pd_slot10",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_aku_58",
+                "pylon_4_aku_58_fin1",
+                "pylon_4_aku_58_fin2",
+                "pylon_4_aku_58_fin3",
+                "pylon_4_aku_58_fin4",
+                "pylon_4_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31pd.blk",
+              "emitter": "pylon_4_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_kh31",
+            "name": "kh_31a_slot10",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_aku_58",
+                "pylon_4_aku_58_fin1",
+                "pylon_4_aku_58_fin2",
+                "pylon_4_aku_58_fin3",
+                "pylon_4_aku_58_fin4",
+                "pylon_4_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_31ad.blk",
+              "emitter": "pylon_4_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large_x59",
+            "name": "kh_59mk_slot10",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_aku_58",
+                "pylon_4_aku_58_fin1",
+                "pylon_4_aku_58_fin2",
+                "pylon_4_aku_58_fin3",
+                "pylon_4_aku_58_fin4",
+                "pylon_4_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_59mk.blk",
+              "emitter": "pylon_4_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
             }
           },
           {
@@ -9234,7 +9875,6 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot10",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9256,7 +9896,6 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot10",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9278,7 +9917,6 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot10",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9300,7 +9938,6 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot10",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9322,7 +9959,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot10",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9344,7 +9980,6 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot10",
-            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9366,7 +10001,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "kab_500kr_slot10",
-            "reqModification": "mig_27_kab_500",
+            "reqModification": "su_kab_tv",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9388,7 +10023,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "kab_250lg_slot10",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9410,7 +10045,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "kab_500lg_slot10",
-            "reqModification": "su_kab_500lg",
+            "reqModification": "su_kab_laser",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9432,7 +10067,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "upab_500b_slot10",
-            "reqModification": "su_fab_500_upab_500b",
+            "reqModification": "su_kab_gps",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -9490,7 +10125,6 @@
           {
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot10_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9527,7 +10161,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot10_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9564,7 +10197,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot10_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9601,7 +10233,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot10_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9638,7 +10269,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot10_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9675,7 +10305,6 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "zb_500_slot10_x2",
-            "reqModification": "su_fab_500_upab_500b",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9742,7 +10371,6 @@
           {
             "iconType": "nar_he_special_group",
             "name": "s13_slot10_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9773,7 +10401,6 @@
           {
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25o_1_slot10_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9820,7 +10447,6 @@
           {
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25of_1_slot10_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9867,7 +10493,6 @@
           {
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25ofm_1_slot10_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -9914,7 +10539,6 @@
           {
             "iconType": "rockets_he_large_special_laser_group_x2",
             "name": "s_25l_slot10_x2",
-            "reqModification": "su_s25_s13",
             "HideNodes": {
               "node": "pylon_4"
             },
@@ -10169,288 +10793,860 @@
   "damagePartsToAvionicsPartsMap": {
     "avionics": [
       {
-        "avionics": "indicators",
+        "avionics": "guidance",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "cockpit_control1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "cockpit_control1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
+          ]
+        }
+      },
+      {
+        "avionics": "weaponControls",
+        "health": {
+          "dm": "cockpit_control1_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "cockpit_control1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
         }
       },
       {
         "avionics": "indicators",
         "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
+          "dm": "cockpit_control1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "cockpit_control1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
+          ]
         }
       },
       {
-        "avionics": "optics",
+        "avionics": "indicators",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "electronic_block2_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "cockpit_control2_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
-        }
-      },
-      {
-        "avionics": "optics",
-        "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
+          ]
         }
       },
       {
         "avionics": "guidance",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "electronic_block1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
+          "dm": "electronic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
         }
       },
       {
-        "avionics": "guidance",
+        "avionics": "sensors",
         "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
+          "dm": "electronic_block3_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
+          "dm": "electronic_block3_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "rwr",
+        "health": {
+          "dm": "electronic_block3_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "electronic_block3_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
         }
       },
       {
         "avionics": "radar",
         "health": {
           "dm": "radar_dm",
-          "killHp": 0.0
+          "killHp": 0.01
         },
         "damage": {
           "dm": "radar_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
-        }
-      },
-      {
-        "avionics": "sensors",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
-        }
-      },
-      {
-        "avionics": "sensors",
-        "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
-        }
-      },
-      {
-        "avionics": "counterMeasures",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
+          ]
         }
       },
       {
-        "avionics": "counterMeasures",
+        "avionics": "laserDesignator",
         "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
+          "dm": "electronic_block1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "electronic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
+          ]
         }
       },
       {
-        "avionics": "rwr",
+        "avionics": "weaponControls",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "electronic_block1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "electronic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
+          ]
         }
       },
       {
-        "avionics": "rwr",
+        "avionics": "optics",
         "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
+          "dm": "optic_block1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "optic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
-        }
-      },
-      {
-        "avionics": "nightVision",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
-        }
-      },
-      {
-        "avionics": "nightVision",
-        "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
+          ]
         }
       }
     ]
@@ -10470,74 +11666,6 @@
   "arcadeOverride": {
     "maxSpeedMultiplier": 1.3,
     "wepOverspeed": 1.3
-  },
-  "wiki": {
-    "general": {
-      "length": 11.264,
-      "wingspan": 9.6,
-      "wingArea": 22.6,
-      "emptyWeight": 3868.0,
-      "normalWeight": 5131.0,
-      "maxTakeoffWeight": 5485.0,
-      "powerPlantType": 2,
-      "thrustMaxMil": 22200.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 11600.0,
-        "airSpeedMil0": [
-          2000.0,
-          1124.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          50.0
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          42.2878
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          91.2983
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          148.373
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          217.313
-        ],
-        "turnTimeMil": [
-          1000.0,
-          21.5
-        ],
-        "takeoffDistance": 648.638,
-        "ceiling": 11100.0,
-        "rollRate": 114.0,
-        "wingLoading": 227.0,
-        "thrustToWeightRatio": 0.48
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          1124.0
-        ],
-        "airSpeedMil1": [
-          11100.0,
-          1028.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          50.0
-        ],
-        "climbRateMil1": [
-          11100.0,
-          16.4
-        ]
-      }
-    }
   },
   "balanceData": {
     "accSpd": 6.41902,
@@ -10711,106 +11839,85 @@
       "invertEnableLogic": false,
       "group": "mi-24_EVU"
     },
-    "su_27sm_r_27t_r_27et": {
-      "prevModification": "countermeasures_belt_pack",
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "mig_29_r_73": {
-      "reqModification": "su_27sm_r_27t_r_27et",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "su_27sm_r_27r_r_27er": {
-      "reqModification": "mig_29_r_73",
-      "modClass": "weapon",
-      "tier": 4
-    },
-    "su_fab_500_upab_500b": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "su_kab_500lg": {
-      "modClass": "weapon",
-      "reqModification": "su_fab_500_upab_500b",
-      "tier": 2
-    },
-    "mig_27_kab_500": {
-      "modClass": "weapon",
-      "reqModification": "su_kab_500lg",
-      "tier": 3
-    },
-    "yak_141_r_77": {
-      "prevModification": "GSh_301_belt_pack",
-      "reqModification": "su_27sm_r_27r_r_27er",
-      "modClass": "weapon",
-      "tier": 4
-    },
-    "su_fab_1500_upab_1500": {
-      "modClass": "weapon",
-      "reqModification": "su_fab_500_upab_500b",
-      "tier": 1
-    },
-    "su_kab_1500l": {
-      "modClass": "weapon",
-      "prevModification": "su_fab_1500_upab_1500",
-      "reqModification": "su_kab_500lg",
-      "tier": 2
-    },
-    "su_27_kab_1500": {
-      "modClass": "weapon",
-      "prevModification": "su_kab_1500l",
-      "reqModification": "mig_27_kab_500",
-      "tier": 3
-    },
-    "su_fab_3000_umpk_3000": {
-      "modClass": "weapon",
-      "prevModification": "su_27_kab_1500",
-      "tier": 4
-    },
-    "su_x25l_29l": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "su_27sm_x29td": {
-      "modClass": "weapon",
-      "reqModification": "su_x25l_29l",
-      "tier": 2
-    },
-    "su_grom": {
-      "modClass": "weapon",
-      "reqModification": "su_27sm_x29td",
-      "tier": 3
-    },
-    "su_25_x38ml": {
-      "modClass": "weapon",
-      "reqModification": "su_grom",
-      "tier": 4
-    },
     "GSh_301_universal": {},
     "GSh_301_ground_targets": {},
     "GSh_301_air_targets": {},
     "GSh_301_stealth": {},
     "GSh_301_belt_pack": {
-      "tier": 1,
+      "prevModification": "countermeasures_belt_pack",
+      "tier": 2,
       "modClass": "weapon"
     },
     "GSh_301_new_gun": {
       "reqModification": "GSh_301_belt_pack",
-      "tier": 2,
+      "tier": 3,
       "modClass": "weapon"
     },
-    "su_s25_s13": {
-      "prevModification": "GSh_301_new_gun",
-      "deactivationIsAllowed": false,
+    "su_arm": {
       "modClass": "weapon",
+      "prevModification": "GSh_301_new_gun",
+      "tier": 4
+    },
+    "su_27sm_r_27t_r_27et": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "mig_29_r_73": {
+      "reqModification": "su_27sm_r_27t_r_27et",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "su_27sm_r_27r_r_27er": {
+      "reqModification": "mig_29_r_73",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "yak_141_r_77": {
+      "reqModification": "su_27sm_r_27r_r_27er",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "su_kab_gps": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "su_kab_laser": {
+      "modClass": "weapon",
+      "prevModification": "su_kab_gps",
+      "tier": 2
+    },
+    "su_kab_tv": {
+      "modClass": "weapon",
+      "prevModification": "su_kab_laser",
+      "tier": 3
+    },
+    "su_x25l_29l": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "su_x29td_x59m": {
+      "modClass": "weapon",
+      "prevModification": "su_x25l_29l",
+      "tier": 2
+    },
+    "su_25_x38ml": {
+      "modClass": "weapon",
+      "prevModification": "su_x29td_x59m",
       "tier": 3
     },
     "su_25_x38mt": {
       "modClass": "weapon",
-      "prevModification": "su_s25_s13",
-      "reqModification": "su_25_x38ml",
+      "prevModification": "su_25_x38ml",
       "tier": 4
+    },
+    "asm": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "su_grom": {
+      "modClass": "weapon",
+      "prevModification": "asm",
+      "tier": 3
     }
   },
   "user_skin": {

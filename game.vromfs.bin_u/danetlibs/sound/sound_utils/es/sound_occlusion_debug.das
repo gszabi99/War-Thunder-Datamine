@@ -46,9 +46,7 @@ def trace_ri(var intersection_out : float3&; var bestT : float&; var sel_ri_name
         if (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
           valid = true
           if node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH
-            get_collnode_geom(node) <| $(indices; vertices)
-              numFaces += length(indices) / 3
-              numFaces += length(vertices) * 0
+            numFaces += collres_get_node_face_count(*collres, int(node.nodeIndex))
 
       if valid
         intersection_out = cameraPos + cameraDir * bestT
@@ -270,7 +268,7 @@ def draw_occluders(name : string; value : float;
               var nodeTm : float3x4
               collres_get_collision_node_tm(*collres, i, tm, null, nodeTm)
 
-              assume nodeBox = node.modelBBox
+              let nodeBox = collres_get_node_bbox(*collres, i)
               if is_sel
                 begin_draw_cached_debug_lines(false, false, false)
                 set_cached_debug_lines_wtm(nodeTm)
@@ -294,24 +292,17 @@ def draw_occluders(name : string; value : float;
                 let inside = bbox3f_test_pt_inside(box3f, pt) != 0
 
                 if node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH
-                  get_collnode_geom(node) <| $(indices; vertices)
-                    let numFaces = length(indices) / 3
-                    let drawFaces = min(numFaces, maxFaces)
-                    if drawFaces <= 0
-                      return
+                  let numFaces = collres_get_node_face_count(*collres, int(node.nodeIndex))
+                  let drawFaces = min(numFaces, maxFaces)
+                  if drawFaces > 0
                     maxFaces -= drawFaces
                     clear(verts)
                     reserve(verts, drawFaces)
-                    var idx = 0
 
                     begin_draw_cached_debug_lines(is_sel ? false : true, false, false)
                     set_cached_debug_lines_wtm(nodeTm)
 
-                    while idx < numFaces
-                      let v0 = vertices[int(indices[idx * 3 + 0])].xyz
-                      let v1 = vertices[int(indices[idx * 3 + 1])].xyz
-                      let v2 = vertices[int(indices[idx * 3 + 2])].xyz
-
+                    collres_node_iterate_face_verts(*collres, int(node.nodeIndex)) <| $ [unused_argument(idx)] (idx : int; v0, v1, v2 : float3)
                       if is_sel
                         draw_cached_debug_line(v0, v1, color)
                         draw_cached_debug_line(v1, v2, color)
@@ -321,7 +312,6 @@ def draw_occluders(name : string; value : float;
                       push(verts, v0 + norm)
                       push(verts, v1 + norm)
                       push(verts, v2 + norm)
-                      ++idx
 
                     if !inside
                       draw_cached_debug_trilist(verts, color)

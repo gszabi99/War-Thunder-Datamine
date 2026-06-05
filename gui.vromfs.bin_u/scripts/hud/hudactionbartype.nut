@@ -8,6 +8,7 @@ let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nu
 let time = require("%scripts/time.nut")
 let { getActionDesc, curHeroTemplates } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { NONE_FUSE_MODE, CONTACT_FUSE_MODE, NON_CONTACT_FUSE_MODE, DISTANCE_FUSE_MODE } = require("weaponUtils")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { getActionShortcutIndexByType, getActionBarUnitName, getOwnerUnitName, getActionDataByType, isHeroHumanDrone } = require("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
@@ -28,7 +29,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_THRUST_VECTORING_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89,
   EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_HOVER_MODE, EII_FBW_MODE,
   EII_MOUSE_AIM_OVERRIDE_ROLL, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS, EII_AIR_RADAR_GUI_CONTROL_MODE, EII_RADAR_SWITCH_TARGET, EII_SENSORS_GROUP_MODE,
-  EII_RADAR_GUI_NAVIGATION, EII_SHIP_SONAR, EII_HUMAN_ORDERS_MENU, EII_SUB_HYDROPHONE
+  EII_RADAR_GUI_NAVIGATION, EII_SHIP_SONAR, EII_HUMAN_ORDERS_MENU, EII_SUB_HYDROPHONE, EII_FUSE_MODE, EII_FPV_SHELL_ACTIVATE
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -86,6 +87,21 @@ let autoTurretIcon = {
   [AI_GUNNERS_AIR_TARGETS]         = "#ui/gameuiskin#autogun_state_air_targets",
   [AI_GUNNERS_GROUND_TARGETS]      = "#ui/gameuiskin#ship_gunner_state_naval_targets.svg",
   [AI_GUNNERS_SHELL]               = "#ui/gameuiskin#autogun_state_rocket_targets",
+}
+
+
+let fuseModeIcons = {
+  [NONE_FUSE_MODE]        = "#ui/gameuiskin#explosion_big",
+  [CONTACT_FUSE_MODE]     = "#ui/gameuiskin#he_frag_base_fuse_tank",
+  [NON_CONTACT_FUSE_MODE] = "#ui/gameuiskin#he_frag_proxi_fuze_ship",
+  [DISTANCE_FUSE_MODE]    = "#ui/gameuiskin#he_frag_dist_fuse_ship",
+}
+
+let fuseModeRocketIcons = {
+  [NONE_FUSE_MODE]        = "#ui/gameuiskin#explosion_big",
+  [CONTACT_FUSE_MODE]     = "#ui/gameuiskin#he_frag_base_fuse_tank",
+  [NON_CONTACT_FUSE_MODE] = "#ui/gameuiskin#he_frag_proxi_fuze_ship",
+  [DISTANCE_FUSE_MODE]    = "#ui/gameuiskin#he_frag_dist_fuse_ship",
 }
 
 let g_hud_action_bar_type = {
@@ -1505,6 +1521,40 @@ enumsAddTypes(g_hud_action_bar_type, {
     getTitle = @(actionItem, _killStreakTag = null) loc($"hotkeys/{this.getShortcut(actionItem)}")
     getTooltipText = @(actionItem = null) this.getTitle(actionItem)
   }
+
+  FPV_SHELL_ACTIVATE = {
+    code = EII_FPV_SHELL_ACTIVATE
+    _name = "fpv_shell_activate"
+    _title = loc("hotkeys/ID_CAMERA_SHELL_FPV")
+    _icon = "#ui/gameuiskin#thermal_sight.avif"
+    getShortcut = @(_actionItem, hudUnitType = null) hudUnitType == HUD_UNIT_TYPE.HELICOPTER
+      ? "ID_CAMERA_SHELL_FPV_HELICOPTER"
+      : "ID_CAMERA_SHELL_FPV"
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   HUMAN_WEAPON = {
     code = EII_HUMAN_WEAPON

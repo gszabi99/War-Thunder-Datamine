@@ -14,7 +14,7 @@ require FlightControl
 require FlightModelWrap
 require HeroManager
 require math
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require RadarHud
 require Plane
 require Sensors

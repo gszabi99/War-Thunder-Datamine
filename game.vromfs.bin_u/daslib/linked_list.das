@@ -63,7 +63,7 @@ class %ListClass {
     }
     def each : iterator<%Foo?> {
         
-        return <- generator <%Foo?> () <| $() {
+        return <- generator <%Foo?> {
             var node = head
             while (node != null) {
                 yield node.data

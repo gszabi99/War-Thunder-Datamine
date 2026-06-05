@@ -13,6 +13,7 @@ require WTCamera
 require hud
 require DagorTexture3D
 require Mission
+require Localization
 
 let black = E3DCOLOR(Color4(float4(0, 0, 0, 1)))
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))

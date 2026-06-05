@@ -18,8 +18,10 @@ let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { setIsScriptsIsUnloaded } = require("%sqDagui/guiBhv/bhvUpdateByWatched.nut")
 
 function reload_dagui() {
+  setIsScriptsIsUnloaded()
   get_cur_gui_scene()?.resetGamepadMouseTarget()
   reload_main_script_module()
   update_objects_under_windows_state(get_cur_gui_scene())

@@ -19,6 +19,51 @@
   "maxAngAccel": 180.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
+  "standState": {
+    "walkSpeed": 2.0,
+    "runSpeed": 2.0,
+    "sprintSpeed": 5.0,
+    "rotateAngles": [
+      -60.0,
+      60.0
+    ],
+    "rotateSpeed": 120.0,
+    "collisionCenterPos": [
+      0.1,
+      0.0,
+      0.0
+    ],
+    "collisionLinks": {
+      "offset": [
+        0.1,
+        0.7,
+        0.0
+      ],
+      "haveCollision": false,
+      "body": {
+        "offset": [
+          0.0,
+          0.6,
+          0.0
+        ],
+        "haveCollision": true
+      },
+      "weapon": {
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.5,
+          0.0,
+          0.0
+        ],
+        "capsuleRadiusScale": 0.8,
+        "haveCollision": false
+      }
+    }
+  },
   "weapons": {
     "primary": {
       "blk": "gameData/weapons/gun_PPSH.blk",
@@ -58,15 +103,15 @@
         0.45,
         -0.05
       ],
-      "walkMoveMagnitude": 0.004,
-      "predictTime": 0.1,
-      "targetSpdVisc": 0.4,
-      "gunSpdVisc": 0.25,
+      "walkMoveMagnitude": 0.0,
+      "predictTime": 0.001,
+      "targetSpdVisc": 0.001,
+      "gunSpdVisc": 0.001,
       "gunSpdDeltaMult": 1.0,
-      "maxGunSpd": 4.5,
-      "moveToSpd": 1.5,
-      "vertOffsetRestoreVisc": 0.4,
-      "vertOffsetMoveDownVisc": 0.5
+      "maxGunSpd": 10000.0,
+      "moveToSpd": 10000.0,
+      "vertOffsetRestoreVisc": 0.001,
+      "vertOffsetMoveDownVisc": 0.001
     },
     "secondary": {
       "blk": "gameData/weapons/gun_Mosina_1891_30.blk",
@@ -106,15 +151,15 @@
         0.45,
         -0.05
       ],
-      "walkMoveMagnitude": 0.006,
-      "predictTime": 0.1,
-      "targetSpdVisc": 0.8,
-      "gunSpdVisc": 0.75,
+      "walkMoveMagnitude": 0.0,
+      "predictTime": 0.001,
+      "targetSpdVisc": 0.001,
+      "gunSpdVisc": 0.001,
       "gunSpdDeltaMult": 1.0,
-      "maxGunSpd": 2.0,
-      "moveToSpd": 1.0,
-      "vertOffsetRestoreVisc": 0.4,
-      "vertOffsetMoveDownVisc": 0.5
+      "maxGunSpd": 10000.0,
+      "moveToSpd": 10000.0,
+      "vertOffsetRestoreVisc": 0.001,
+      "vertOffsetMoveDownVisc": 0.001
     },
     "tertiary": {
       "blk": "gameData/weapons/gun_pistol_tt.blk",
@@ -155,10 +200,10 @@
         0.45,
         -0.05
       ],
-      "targetSpdVisc": 0.2,
-      "gunSpdVisc": 0.15,
-      "maxGunSpd": 4.5,
-      "moveToSpd": 2.0
+      "targetSpdVisc": 0.001,
+      "gunSpdVisc": 0.001,
+      "maxGunSpd": 10000.0,
+      "moveToSpd": 10000.0
     },
     "grenade": {
       "blk": "gameData/weapons/grenade_sd10.blk",

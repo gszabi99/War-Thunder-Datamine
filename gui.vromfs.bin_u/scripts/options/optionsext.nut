@@ -44,9 +44,6 @@ let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
-let soundOptionsModule = require("soundOptions")
-let getOptionUseSpecialSpeechLanguage = soundOptionsModule?["get_option_use_special_speech_language"] ?? @() false
-let setOptionUseSpecialSpeechLanguage = soundOptionsModule?["set_option_use_special_speech_language"] ?? @(_v) null
 let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -793,7 +790,7 @@ let optionsMap = {
     descr.id = "use_special_speech_language"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.value = getOptionUseSpecialSpeechLanguage()
+    descr.value = get_option_use_special_speech_language()
   },
   [USEROPT_INSTRUCTOR_GROUND_AVOIDANCE] = function(_optionId, descr, _context) {
     fillBoolOption(descr, "instructorGroundAvoidance", OPTION_INSTRUCTOR_GROUND_AVOIDANCE)
@@ -856,6 +853,7 @@ let optionsMap = {
     descr.text <- loc("options/playTestHeadphones")
     descr.hint = loc("guiHints/playTestHeadphones")
     descr.showTitle <- false
+    descr.enabled <- !isEnabledCustomSoundMods()
   },
   [USEROPT_COMMANDER_CAMERA_IN_VIEWS] = function(_optionId, descr, _context) {
     descr.id = "commander_camera_in_views"
@@ -1097,6 +1095,7 @@ let optionsMap = {
     }
     descr.value = u.find_in_array(descr.values, g_font.getCurrent(), 0)
     descr.enabled <- descr.values.len() > 1
+    descr.fontsSavePath <- g_font.getFontsSavePath()
     let fontSizeMultiplier = g_font.getCurrent()?.sizeMultiplier ?? 1
     descr.trParams <- fontSizeMultiplier == 0.5 ? "optionHeight:t='doubleAndHalf'"
       : fontSizeMultiplier <= 0.75 ? "optionHeight:t='double'"
@@ -1115,6 +1114,15 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
   },
+
+
+
+
+
+
+
+
+
   [USEROPT_GAMEPAD_ENGINE_DEADZONE] = function(_optionId, descr, _context) {
     descr.id = "gamepadEngDeadZone"
     descr.controlType = optionControlType.CHECKBOX
@@ -1443,12 +1451,13 @@ let optionsMap = {
   [USEROPT_SOUND_SPEAKERS_WIDE_SNAPSHOT] = function(_optionId, descr, _context) {
     descr.id = "headphonesSnapshotWide"
     descr.title = loc("options/headphonesSnapshotWide")
-    descr.hint = loc("guiHints/headphonesSnapshotWide")
+    descr.hint = "".concat(loc("guiHints/headphonesSnapshotWide"), "\n\n", colorize("warningTextColor", loc("guiHints/headphonesSnapshotWideSoundModsWarning")))
     descr.values = [-2,-1, 0, 1, 2, 3, 4, 5]
     descr.items  = ["#controls/off", "#controls/on", "#options/headphones_1", "#options/headphones_2", "#options/headphones_3", "#options/headphones_4", "#options/headphones_5", "#options/headphones_6"]
     descr.value = u.find_in_array(descr.values, get_option_int(OPTION_SOUND_SPEAKERS_WIDE_SNAPSHOT), -2)
     descr.defaultValue = -2
     descr.optionCb = "onHeadphonesPresetChanged"
+    descr.enabled <- !isEnabledCustomSoundMods()
   },
   [USEROPT_CUSTOM_SOUND_MODS] = function(_optionId, descr, _context) {
     descr.id = "customSoundMods"
@@ -1479,6 +1488,7 @@ let optionsMap = {
   [USEROPT_MEASUREUNITS_WING_LOADING] = useropt_measureunits_speed,
   [USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO] = useropt_measureunits_speed,
   [USEROPT_MEASUREUNITS_RADIAL_SPEED] = useropt_measureunits_speed,
+  [USEROPT_MEASUREUNITS_DIST_SHORT] = useropt_measureunits_speed,
   [USEROPT_VIBRATION] = function(_optionId, descr, _context) {
     descr.id = "vibration"
     descr.controlType = optionControlType.CHECKBOX
@@ -2087,6 +2097,14 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
   },
+
+
+
+
+
+
+
+
   [USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG] = function(_optionId, descr, _context) {
     descr.id = "hud_show_death_reason_in_ship_killlog"
     descr.controlType = optionControlType.CHECKBOX
@@ -2237,6 +2255,9 @@ let optionsMap = {
   },
   [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_TANKS] = function(_optionId, descr, _context) {
     fillBoolOption(descr, "useRectangularRadarIndicatorForTanks", OPTION_USE_RECTANGULAR_RADAR_INDICATOR_FOR_TANKS)
+  },
+  [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_SHIPS] = function(_optionId, descr, _context) {
+    fillBoolOption(descr, "useRectangularRadarIndicatorForShips", OPTION_USE_RECTANGULAR_RADAR_INDICATOR_FOR_SHIPS)
   },
   [USEROPT_RADAR_TARGET_CYCLING] = function(_optionId, descr, _context) {
     descr.id = "radar_target_cycling"
@@ -4129,6 +4150,8 @@ function set_useropt_measureunits_speed(value, descr, optionId) {
       unitType = 6
     else if (optionId == USEROPT_MEASUREUNITS_RADIAL_SPEED)
       unitType = 7
+    else if (optionId == USEROPT_MEASUREUNITS_DIST_SHORT)
+      unitType = 8
 
     setMeasureUnitOptionType(unitType, descr.values[value])
 
@@ -4364,6 +4387,7 @@ let optionsSetMap = {
   [USEROPT_MEASUREUNITS_WING_LOADING] = set_useropt_measureunits_speed,
   [USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO] = set_useropt_measureunits_speed,
   [USEROPT_MEASUREUNITS_RADIAL_SPEED] = set_useropt_measureunits_speed,
+  [USEROPT_MEASUREUNITS_DIST_SHORT] = set_useropt_measureunits_speed,
   [USEROPT_VIBRATION] = @(value, _descr, _optionId) setOptionVibration(value ? 1 : 0),
   [USEROPT_GRASS_IN_TANK_VISION] = @(value, _descr, _optionId) set_option_grass_in_tank_vision(value ? 1 : 0),
   [USEROPT_GAME_HUD] = @(value, descr, _optionId) set_option_hud(descr.values[value]),
@@ -4400,7 +4424,7 @@ let optionsSetMap = {
   [USEROPT_VOLUME_RWR] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_RWR, value / 100.0, true),
   [USEROPT_VOLUME_TINNITUS] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_TINNITUS, value / 100.0, true),
   [USEROPT_HANGAR_SOUND] = @(value, _descr, _optionId) set_option_hangar_sound(value),
-  [USEROPT_USE_SPECIAL_SPEECH_LANGUAGE] = @(value, _descr, _optionId) setOptionUseSpecialSpeechLanguage(value),
+  [USEROPT_USE_SPECIAL_SPEECH_LANGUAGE] = @(value, _descr, _optionId) set_option_use_special_speech_language(value),
   [USEROPT_VOLUME_VOICE_IN] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_VOICE_IN, value / 100.0, true),
   [USEROPT_VOLUME_VOICE_OUT] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_VOICE_OUT, value / 100.0, true),
   [USEROPT_COUNTRY] = @(value, descr, _optionId) switchProfileCountry(descr.values[value]),
@@ -4496,6 +4520,10 @@ let optionsSetMap = {
   },
   [USEROPT_SAVE_ZOOM_CAMERA] = @(value, _descr, _optionId) set_option_save_zoom_camera(value),
   [USEROPT_FONTS_CSS] = function(value, descr, _optionId) {
+    let hasStereoModeChanged = !!descr?.fontsSavePath
+      && descr.fontsSavePath != g_font.getFontsSavePath()
+    if (hasStereoModeChanged)  
+      return
     let selFont = getTblValue(value, descr.values)
     if (selFont && g_font.setCurrent(selFont))
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
@@ -4639,6 +4667,7 @@ let optionsSetMap = {
   [USEROPT_FIX_GUN_IN_MOUSE_LOOK] = set_useropt_instructor_ground_avoidance,
   [USEROPT_ENABLE_SOUND_SPEED] = set_useropt_instructor_ground_avoidance,
   [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_TANKS] = set_useropt_instructor_ground_avoidance,
+  [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_SHIPS] = set_useropt_instructor_ground_avoidance,
   [USEROPT_VWS_ONLY_IN_COCKPIT] = function(value, descr, _optionId) {
     let optionIdx = getTblValue("boolOptionIdx", descr, -1)
     if (optionIdx >= 0 && u.isBool(value))
@@ -4771,6 +4800,9 @@ let optionsSetMap = {
   [USEROPT_GAMEPAD_VIBRATION_ENGINE] = set_useropt_landing_mode,
   [USEROPT_GAMEPAD_ENGINE_DEADZONE] = set_useropt_landing_mode,
   [USEROPT_GAMEPAD_GYRO_TILT_CORRECTION] = set_useropt_landing_mode,
+
+
+
   [USEROPT_FOLLOW_BULLET_CAMERA] = set_useropt_landing_mode,
   [USEROPT_BULLET_FALL_SPOT_SHIP] = set_useropt_landing_mode,
   [USEROPT_AUTO_AIMLOCK_ON_SHOOT] = set_useropt_landing_mode,
@@ -4787,6 +4819,9 @@ let optionsSetMap = {
   [USEROPT_HUD_SHOW_NAMES_IN_KILLLOG] = set_useropt_landing_mode,
   [USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG] = def_set_gui_option,
   [USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG] = def_set_gui_option,
+
+
+
   [USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG] = def_set_gui_option,
   [USEROPT_HUD_VISIBLE_CHAT_PLACE] = set_useropt_landing_mode,
   [USEROPT_SHOW_MESSAGE_MISSILE_EVADE] = def_set_gui_option,
@@ -4913,7 +4948,6 @@ function set_option(optionId, value, descr = null) {
   else {
     let optionName = userOptionNameByIdx?[optionId] ?? ""
     assert(false, $"[ERROR] Options: Set: Unsupported type {optionId} ({optionName}) - {value}")
-    return true
   }
   return true
 }

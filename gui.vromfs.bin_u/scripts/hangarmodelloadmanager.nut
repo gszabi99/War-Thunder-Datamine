@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hangar_load_model, hangar_get_current_unit_name, hangar_get_loaded_unit_name,
-  hangar_is_model_loaded, hangar_is_squad_loaded
+  hangar_is_model_loaded, hangar_is_squad_loaded, set_master_unit_name
 } = require("hangar")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 
@@ -37,6 +37,9 @@ function loadModel(modelName) {
     return
   isLoading.set(true)
   let unit = getAircraftByName(modelName)
+  let hasSlaves = unit?.slaveUnits
+  let masterUnitName = hasSlaves ? modelName : unit?.masterUnit ?? ""
+  set_master_unit_name(masterUnitName)
   hangar_load_model(modelName, isUnitSpecial(unit) || unit.marketplaceItemdefId, false)
   broadcastEvent("HangarModelLoading", { modelName })
 }

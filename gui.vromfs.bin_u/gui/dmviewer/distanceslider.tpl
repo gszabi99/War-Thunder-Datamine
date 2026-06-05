@@ -1,6 +1,6 @@
 slider {
   id:t='<<id>>'
-  style:t='width:@sliderWidth - 2@sliderButtonSquareHeight - 1@sliderThumbWidth - 2@blockInterval;'
+  style:t='width:<<sliderWidth>> - 2@sliderButtonSquareHeight - 1@sliderThumbWidth - 2@blockInterval;'
   pos:t='0, ph/2-h/2'
   position:t='relative'
   margin:t='1@sliderButtonSquareHeight + 0.5@sliderThumbWidth + 1@blockInterval, 0'
@@ -16,7 +16,7 @@ slider {
     <<#containerId>>
     id:t=<<containerId>>
     <</containerId>>
-    width:t='@sliderWidth'
+    width:t='<<sliderWidth>>'
     pos:t='50%pw-50%w, 50%ph-50%h'
     position:t='absolute'
     total-input-transparent:t='yes'

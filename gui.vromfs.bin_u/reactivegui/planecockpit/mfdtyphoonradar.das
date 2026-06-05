@@ -8,10 +8,11 @@ require HeroManager
 require app
 require Unit
 require math
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require %rGui.utils.constants_common
 require %rGui.utils.helpers_common
 require %rGui.utils.radar_common
+require Localization
 
 let gridColor = E3DCOLOR(0xFF0000FF)
 let whiteColor = E3DCOLOR(0xFFFFFFFF)

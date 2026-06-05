@@ -33,13 +33,17 @@ def private init_ammo_set(ammo_set__shellIds : IntList; gun__shell_prop_ids : Pr
 
 def private gun_launch(ld : LaunchDesc; gun_eid : EntityId;  offender_eid : EntityId)
   sendEventImmediate(gun_eid, CmdGuidanceLockSwitch(on = false))
+  let isGrenadeThrower = has(gun_eid, "grenade_thrower")
+  if isGrenadeThrower && !is_dedicated()
+    let cookEid = get_Eid(gun_eid, "grenade_thrower__projectileEntity") ?? INVALID_ENTITY_ID
+    if cookEid == INVALID_ENTITY_ID || !doesEntityExist(cookEid)
+      return false
   var ok = false
   shell_entity_get_props(ld.shellId) <| $(entProps : ShellEntityTypeProps)
     let physTemplName = entProps.physTemplName
     if !empty(physTemplName)
       ok = true
       
-      let isGrenadeThrower = has(gun_eid, "grenade_thrower")
       if !is_dedicated() || !isGrenadeThrower
         sendEventImmediate(offender_eid, CmdLaunchShell(launchDesc = ld, gunEid = gun_eid))
       if !is_server() && isGrenadeThrower

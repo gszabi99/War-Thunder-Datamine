@@ -37,13 +37,12 @@
   "minDistBetween": 10.0,
   "expClass": "exp_tank",
   "mass": 47000.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "DamageParts": {
@@ -492,6 +491,10 @@
         "armorThrough": 3.0
       },
       "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
       }
@@ -1842,9 +1845,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1853,7 +1854,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
@@ -1960,7 +1960,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_gun_twin",
           "gun": "bone_mg_gun_twin",
@@ -1974,6 +1973,47 @@
           "pitch": [
             -0.0,
             0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner4",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "emitter": "bone_mg_aa_v_01",
+        "flash": "emtr_mg_aa_flame_01",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_02_dm",
+        "parkInDeadzone": false,
+        "speedYaw": 90.0,
+        "speedPitch": 90.0,
+        "bullets": 3000,
+        "fireConeAngle": 5.0,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "forestallTime": 0.1,
+        "turret": {
+          "head": "bone_mg_aa_h_01",
+          "gun": "bone_mg_aa_v_01",
+          "gunnerDm": "commander_dm"
+        },
+        "limits": {
+          "yaw": [
+            -60.0,
+            60.0
+          ],
+          "pitch": [
+            -10.0,
+            70.0
           ]
         }
       },
@@ -3037,9 +3077,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3048,7 +3086,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
@@ -3155,7 +3192,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_gun_twin",
                 "gun": "bone_mg_gun_twin",
@@ -3169,6 +3205,47 @@
                 "pitch": [
                   -0.0,
                   0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+              "emitter": "bone_mg_aa_v_01",
+              "flash": "emtr_mg_aa_flame_01",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "barrelDP": "gun_barrel_02_dm",
+              "parkInDeadzone": false,
+              "speedYaw": 90.0,
+              "speedPitch": 90.0,
+              "bullets": 3000,
+              "fireConeAngle": 5.0,
+              "ChainfireTime": 0.5,
+              "DelayAfterShoot": 2.0,
+              "accuracyAir": 1.5,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 1.5,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "forestallTime": 0.1,
+              "turret": {
+                "head": "bone_mg_aa_h_01",
+                "gun": "bone_mg_aa_v_01",
+                "gunnerDm": "commander_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -60.0,
+                  60.0
+                ],
+                "pitch": [
+                  -10.0,
+                  70.0
                 ]
               }
             },
@@ -3226,9 +3303,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3237,7 +3312,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_grenade",
                 "gun": "bone_grenade"

@@ -8,7 +8,7 @@ require vehicle
 require soundEvent
 require vehicleSoundProps
 require sound_utils.modules.sound_player_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 
 
 [es(tag=sound, after=sound_begin_update_es, before=(vehicle_tracks_sound, sound_end_update_es))]
@@ -22,7 +22,8 @@ def ground_vehicle_suspension_sound(info : ParallelUpdateFrameDelayed;
                                     @shared_comp ground_vehicle_suspension_sound__path : Object;
                                     sound_tags : Object;
                                     isAlive : bool;
-                                    transform : float3x4)
+                                    transform : float3x4;
+                                    vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
   var total = 0.
   if isAlive
     for idx in range(int(vehicle_net_phys.phys.currentState.wheelCount))
@@ -30,4 +31,7 @@ def ground_vehicle_suspension_sound(info : ParallelUpdateFrameDelayed;
       if wheel != null
         total += cvt(abs((*wheel).velocity), ground_vehicle_suspension_sound__hitToVar.x, ground_vehicle_suspension_sound__hitToVar.y, 0., 1.)
     total *= vehicle_sound_phys_state__noiseReduction
-  sound_player_common::play_parameterized(ground_vehicle_suspension_sound__event, total, ground_vehicle_suspension_sound__hitForce, "force", transform[3], ground_vehicle_suspension_sound__path, sound_tags, true, info.curTime, ground_vehicle_suspension_sound__hitTime)
+  let isValid = is_valid_handle_value(ground_vehicle_suspension_sound__event)
+  play_parameterized(ground_vehicle_suspension_sound__event, total, ground_vehicle_suspension_sound__hitForce, "force", transform[3], ground_vehicle_suspension_sound__path, sound_tags, true, info.curTime, ground_vehicle_suspension_sound__hitTime)
+  if !isValid && is_valid_handle_value(ground_vehicle_suspension_sound__event)
+    attach_to_blob(ground_vehicle_suspension_sound__event, vehicle_sound_occlusion__blob)

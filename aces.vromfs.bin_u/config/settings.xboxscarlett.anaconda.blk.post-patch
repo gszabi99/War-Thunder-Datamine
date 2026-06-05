@@ -1,0 +1,139 @@
+"@override:video" {
+  resolution:t="3840x2160"
+  upscaleQualityFor4k:t="ultra_quality"
+}
+
+"@override:graphics" {
+  fxQuality:t="xbs_quality"
+  tireTracksQuality:i=3
+  foamQuality:t="high"
+  rendinstDistMul:r=1.8
+  grassRadiusMul:r=1.35
+  shadowQuality:t="high"
+  multislicedImpostors:b=yes
+  clipmapScaleFor4K:i = 6
+  clipmapExtraScale:i = 1
+  waterChopDetailWavesAllowed:b=no
+  contactShadowsQuality:i=1
+}
+
+"@override:texStreaming" {
+  forceMemQuotaKB:i=5120000  // 5000M
+}
+
+"@delete:dx12" {}
+dx12{
+  debug {
+    loadPixCapturer:b=no
+  }
+  onlyPreallocatedHeaps:b=no
+  preallocHeap { sizeMB:i=1024; }
+  preallocHeap { sizeMB:i=32;   cpuCached:b=yes; }
+  preallocHeap { sizeMB:i=4;    gpuExec:b=yes; }
+  renderMemoryLimitMb:i=9006
+  additionalAsanSystemMemoryMb:i=4096
+}
+
+"@delete:console_presets" {}
+console_presets {
+  xboxSeriesX {
+    performance {
+      video {
+        antialiasing_mode:t="tsr"
+        antialiasing_upscaling:t="ultra_quality"
+        dynamicResolution {
+          targetFPS:i=120
+        }
+      }
+      graphics {
+        bvhMode:t="off"
+        giQuality:t="low"
+        forceDisableDof:b=yes
+        grassRadiusMul:r=0
+        anisotropy:i=4
+        disableHangarPlanarReflections:b=yes
+        waterQuality:t="medium"
+        fxQuality:t="xbs_performance"
+        fxDensityMul:r=0.5 // deprecated
+      }
+      render {
+        ssrInHangar:b=no
+        ssrQuality:i=0
+        ssaoQuality:i=1
+      }
+    }
+
+    quality {
+      video {
+        antialiasing_mode:t="tsr"
+        antialiasing_upscaling:t="native"
+        dynamicResolution {
+          targetFPS:i=60
+        }
+      }
+      graphics {
+        bvhMode:t="off"
+        giQuality:t="medium"
+        forceDisableDof:b=no
+        grassRadiusMul:r=1.35
+        anisotropy:i=16
+        disableHangarPlanarReflections:b=no
+        waterQuality:t="high"
+        fxQuality:t="xbs_quality"
+        fxDensityMul:r=0.95 // deprecated
+      }
+      render {
+        ssrInHangar:b=yes
+        ssrQuality:i=0
+        ssaoQuality:i=2
+      }
+    }
+
+    raytraced {
+      video {
+        antialiasing_mode:t="tsr"
+        antialiasing_upscaling:t="balanced"
+        dynamicResolution {
+          targetFPS:i=30
+        }
+      }
+      graphics {
+        bvhMode:t="custom"
+        enableBVH:b=yes
+        bvhRiGenRange:i=2000
+        RTAOQuality:t="low"
+        RTRQuality:t="low"
+        RTSMQuality:t="low"
+        RTRRes:t="half"
+        enableRTSM:t="sun"
+        RTRWater:b=yes
+        RTRWaterRes:t="half"
+        RTRTranslucent:t="off"
+        giQuality:t="medium"
+        forceDisableDof:b=no
+        grassRadiusMul:r=1.35
+        anisotropy:i=16
+        disableHangarPlanarReflections:b=no
+        waterQuality:t="high"
+        fxQuality:t="xbs_performance"
+        fxDensityMul:r=0.95 // deprecated
+      }
+      render {
+        ssrInHangar:b=yes
+        ssrQuality:i=0
+        ssaoQuality:i=2
+      }
+    }
+  }
+}
+
+"@override:gi"
+{
+  "@override:low"
+  {
+    "@override:hangar"
+    {
+      "@override:dagiQuality":i = -1 //off
+    }
+  }
+}

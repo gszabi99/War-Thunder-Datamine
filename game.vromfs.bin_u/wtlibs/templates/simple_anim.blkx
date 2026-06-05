@@ -1,0 +1,53 @@
+{
+  "simple_anim_base": {
+    "simple_anim__enabled": true,
+    "simple_anim__baseTransform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "simple_anim__baseTime": 0.0
+  },
+  "simple_anim_client_only": {
+    "_tags": "dedicated",
+    "simple_anim__disableOnServer:tag": {}
+  },
+  "simple_anim_spin": {
+    "_use": "simple_anim_base",
+    "simple_anim_spin__rotationAxis": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "simple_anim_spin__speed": 10.0,
+    "simple_anim_spin__sector": [
+      0.0,
+      0.0
+    ]
+  },
+  "simple_anim_cull": {
+    "simple_anim_cull__cullingDistRangeSq": [
+      2500.0,
+      100000000.0
+    ],
+    "simple_anim_cull__relScreenSizeThreshold": 0.01,
+    "simple_anim_cull__cullObjectRadius": 1.0
+  }
+}

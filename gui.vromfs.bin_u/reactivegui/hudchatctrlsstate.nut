@@ -18,7 +18,6 @@ let ctrlsState = keepref(Computed(function() {
     return CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
       | CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
       | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
-      | CtrlsInGui.CTRL_ALLOW_MP_CHAT
       | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
       | CtrlsInGui.CTRL_ALLOW_ARTILLERY
       | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU

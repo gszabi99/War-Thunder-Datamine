@@ -59,6 +59,146 @@ def setup_ammo_cluster_add(cluster_id : int; var num_ammo : int&; ammo_type : in
     ammo_stowage_add_ammo_to_slot_partial(cluster_id, slot_id, num_ammo, ammo_type, v)
   return num_ammo_before - num_ammo
 
+[with_bundle(v)]
+def setup_ammo_cluster_subtract_amount(cluster_id : int; var num_ammo : int&;
+                                       v : tuple<
+                                         ammo_clusters__slotsRange : IPoint2List;
+                                         ammo_slots__numAmmo : IPoint2List -const
+                                         >) : int
+  let num_ammo_before = num_ammo
+  let slots_range = v.ammo_clusters__slotsRange[cluster_id]
+  for slot_id in slots_range.x..slots_range.y
+    if num_ammo == 0
+      break
+    var slot_ammo = v.ammo_slots__numAmmo[slot_id]
+    let removed = min(slot_ammo.x, num_ammo)
+    slot_ammo.x -= removed
+    num_ammo -= removed
+    v.ammo_slots__numAmmo[slot_id] = slot_ammo
+  return num_ammo_before - num_ammo
+
+def setup_ammo_get_weapon_stored_count(weapon : Weapon?; remove_loaded_ammo : bool; can_load_to_breech : bool) : int
+  if weapon == null
+    return 0
+  let gun = weapon |> as_gun()
+  if gun != null
+    var count = 0
+    for bullet_set in gun.properties.bulletSets
+      count += max(0, bullet_set.bulletsCount)
+    if remove_loaded_ammo && can_load_to_breech
+      count -= int(gun.currentLoadedAmmoCount)
+    return max(0, count)
+  var count = max(0, int(weapon.countBullets))
+  if remove_loaded_ammo && can_load_to_breech && count > 0
+    count--
+  return count
+
+[with_bundle(v)]
+def setup_ammo_get_weapon_ammo_type(unit : Unit?; stowage_id : int; weapon_idx : int;
+                                    v : tuple<
+                                      ammo_stowage__ammoTypeRemap : IPoint4List;
+                                      ammo_stowage__weaponsIds : IntList
+                                      >) : int
+  var result = -1
+  let weapon = unit.weap.Weapons |> get_weapon(weapon_idx)
+  let gun = weapon |> as_gun()
+  for ammo_type in 0..length(v.ammo_stowage__ammoTypeRemap)
+    let ammo_type_remap = v.ammo_stowage__ammoTypeRemap[ammo_type]
+    if ammo_type_remap.x != stowage_id
+      continue
+    for weapon_i in ammo_type_remap.y..ammo_type_remap.z
+      if v.ammo_stowage__weaponsIds[weapon_i] != weapon_idx
+        continue
+      if result < 0
+        result = ammo_type
+      if gun != null && ammo_type_remap.w == int(gun.chosenBulletType)
+        return ammo_type
+  return max(0, result)
+
+[with_bundle(v)]
+def setup_ammo_add_to_weapon_clusters(stowage_id : int; trigger_id : int; cluster_stage : int; cluster_type : int;
+                                      var num_ammo : int&; ammo_type : int;
+                                      v : tuple<
+                                        ammo_stowage__ammoTypeToMask : UInt32List;
+                                        ammo_stowages__weaponTriggersRange : IPoint2List;
+                                        ammo_stowage__weaponTriggers : IntList;
+                                        ammo_stowages__clustersRange : IPoint2List;
+                                        ammo_clusters__typeAndStage : UInt16List;
+                                        ammo_clusters__state : UInt32List;
+                                        ammo_clusters__slotsRange : IPoint2List;
+                                        ammo_clusters__weaponTriggersRange : IPoint2List;
+                                        ammo_cluster__weaponTriggers : IntList;
+                                        ammo_slots__state : UInt32List -const;
+                                        ammo_slots__numAmmo : IPoint2List -const;
+                                        ammo_slots__ammoMaskAndType : UInt32List -const
+                                        >) : int
+  let num_ammo_before = num_ammo
+  if ammo_type < 0 || ammo_type >= length(v.ammo_stowage__ammoTypeToMask)
+    return 0
+  let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
+  for cluster_id in clusters_range.x..clusters_range.y
+    if num_ammo == 0
+      break
+    if get_ammo_cluster_stage(cluster_id, v) != cluster_stage
+      continue
+    if get_ammo_cluster_type(cluster_id, v) != cluster_type
+      continue
+    if !ammo_cluster_has_weapon_trigger(stowage_id, cluster_id, trigger_id, v)
+      continue
+    setup_ammo_cluster_add(cluster_id, num_ammo, ammo_type, v)
+  return num_ammo_before - num_ammo
+
+[with_bundle(v)]
+def setup_ammo_subtract_from_weapon_clusters(stowage_id : int; trigger_id : int; cluster_stage : int; cluster_type : int;
+                                             var num_ammo : int&;
+                                             v : tuple<
+                                               ammo_stowages__weaponTriggersRange : IPoint2List;
+                                               ammo_stowage__weaponTriggers : IntList;
+                                               ammo_stowages__clustersRange : IPoint2List;
+                                               ammo_clusters__typeAndStage : UInt16List;
+                                               ammo_clusters__slotsRange : IPoint2List;
+                                               ammo_clusters__weaponTriggersRange : IPoint2List;
+                                               ammo_cluster__weaponTriggers : IntList;
+                                               ammo_slots__numAmmo : IPoint2List -const
+                                               >) : int
+  let num_ammo_before = num_ammo
+  let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
+  for cluster_id in clusters_range.x..clusters_range.y
+    if num_ammo == 0
+      break
+    if get_ammo_cluster_stage(cluster_id, v) != cluster_stage
+      continue
+    if get_ammo_cluster_type(cluster_id, v) != cluster_type
+      continue
+    if !ammo_cluster_has_weapon_trigger(stowage_id, cluster_id, trigger_id, v)
+      continue
+    setup_ammo_cluster_subtract_amount(cluster_id, num_ammo, v)
+  return num_ammo_before - num_ammo
+
+[with_bundle(v)]
+def setup_ammo_stowage_has_cluster_type(stowage_id : int; cluster_type : int;
+                                        v : tuple<
+                                          ammo_stowages__clustersRange : IPoint2List;
+                                          ammo_clusters__typeAndStage : UInt16List
+                                          >) : bool
+  let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
+  for cluster_id in clusters_range.x..clusters_range.y
+    if get_ammo_cluster_type(cluster_id, v) == cluster_type
+      return true
+  return false
+
+[with_bundle(v)]
+def setup_ammo_stowage_has_cluster_stage(stowage_id : int; cluster_stage : int;
+                                         v : tuple<
+                                           ammo_stowages__clustersRange : IPoint2List;
+                                           ammo_clusters__typeAndStage : UInt16List
+                                           >) : bool
+  let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
+  for cluster_id in clusters_range.x..clusters_range.y
+    if get_ammo_cluster_stage(cluster_id, v) == cluster_stage
+      return true
+  return false
+
 
 [with_bundle(v)]
 def ammo_stowage_debug_print_all_clusters(v : tuple<
@@ -83,21 +223,29 @@ def ammo_stowage_debug_print_all_clusters(v : tuple<
 
 
 
-[with_bundle(v), unused_argument(init_num)]
+[with_bundle(v)]
 def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : bool;
                               v : tuple<
                                 ammo_stowage__ammoState : uint;
                                 ammo_stowage__ammoLost : int -const;
                                 ammo_stowage__ammoTypeToMask : UInt32List;
+                                ammo_stowage__ammoTypeRemap : IPoint4List;
+                                ammo_stowage__weaponsIds : IntList;
 
                                 ammo_stowages__state : UInt32List -const;
                                 ammo_stowages__clustersRange : IPoint2List;
                                 ammo_stowages__weaponTriggersRange : IPoint2List;
                                 ammo_stowage__weaponTriggers : IntList;
+                                ammo_stowages__weaponAmmoRange : IPoint2List;
+                                ammo_stowage__weaponAmmoIds : IntList;
+                                ammo_stowage__weaponAmmoTriggers : IntList;
+                                ammo_stowage__weaponAmmoCount : IntList -const;
 
                                 ammo_clusters__typeAndStage : UInt16List;
                                 ammo_clusters__state : UInt32List -const;
                                 ammo_clusters__slotsRange : IPoint2List;
+                                ammo_clusters__weaponTriggersRange : IPoint2List;
+                                ammo_cluster__weaponTriggers : IntList;
                                 ammo_slots__state : UInt32List -const;
                                 ammo_slots__partId : PartIdList;
                                 ammo_slots__numAmmo : IPoint2List -const;
@@ -109,120 +257,122 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
   let eid = unit.eid
   let weapon_controller = unit.weap
   var is_sync_required = false
+  let full_refill = init_num || is_refill
 
   
   for slot_state, slot_num_ammo in v.ammo_slots__state, v.ammo_slots__numAmmo
     if !get_flag(slot_state, AmmoSlotState.ENABLED)
       slot_num_ammo.x = 0
 
+  if full_refill
+    for slot_num_ammo in v.ammo_slots__numAmmo
+      is_sync_required = is_sync_required || slot_num_ammo.x != 0
+      slot_num_ammo.x = 0
+
   assert(int(AmmoClusterType.NUM_TYPES) == 2)
-  var stowage_ammo_arr : array<int2[2]> 
-  stowage_ammo_arr |> reserve(8)
 
-  ammo_stowage_iter_all_stowages_and_bullets(weapon_controller, v) <| $(stowage_id : int; ammo_info_arr : array<WeaponAndAmmoInfo>)
+  for stowage_id in iter_range(v.ammo_stowages__state)
     let stowage_state = v.ammo_stowages__state[stowage_id]
-    let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
+    let remove_loaded_ammo = get_flag(stowage_state, AmmoStowageState.REMOVE_LOADED_AMMO)
+    let has_charges = setup_ammo_stowage_has_cluster_type(stowage_id, int(AmmoClusterType.CHARGES), v)
 
-    
-    stowage_ammo_arr |> resize(length(ammo_info_arr))
-    for stowage_ammo in stowage_ammo_arr
-      for cnt in stowage_ammo
-        cnt = int2(0, 0)
-    var total_ammo_to_add = 0
+    if full_refill
+      var total_ammo_to_add = 0
+      ammo_stowage_iter_all_weapons_and_bullet_sets(weapon_controller, v) <| $(ammo_info : WeaponAndAmmoInfo)
+        if ammo_info.stowage_id != stowage_id || ammo_info.ammo_type >= length(v.ammo_stowage__ammoTypeToMask)
+          return
+        var ammo_to_add = ammo_info.count
+        if remove_loaded_ammo && can_load_to_breech
+          ammo_to_add -= ammo_info.loaded_count
+        ammo_to_add = max(0, ammo_to_add)
+        total_ammo_to_add += ammo_to_add
 
-    for ammo_info, stowage_ammo in ammo_info_arr, stowage_ammo_arr
-      
-      if ammo_info.ammo_type >= length(v.ammo_stowage__ammoTypeToMask)
-        continue
-      var total_ammo_count = ammo_info.count
-      if get_flag(stowage_state, AmmoStowageState.REMOVE_LOADED_AMMO) && can_load_to_breech
-        total_ammo_count -= ammo_info.loaded_count
+        let weapon_ammo_range = v.ammo_stowages__weaponAmmoRange[stowage_id]
+        var trigger_id = -1
+        for weapon_ammo_idx in weapon_ammo_range.x..weapon_ammo_range.y
+          if v.ammo_stowage__weaponAmmoIds[weapon_ammo_idx] == ammo_info.first_weapon_idx
+            trigger_id = v.ammo_stowage__weaponAmmoTriggers[weapon_ammo_idx]
+            break
+        if trigger_id < 0
+          return
 
-      assert(int(AmmoClusterType.NUM_TYPES) == 2)
-      var num_ammo_in_stowage : int[2]
-      var num_ammo_loaded : int[2]
-      for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
-        num_ammo_in_stowage[cluster_type] = total_ammo_count
-        num_ammo_loaded[cluster_type] = ammo_info.loaded_count
-
-      
-      if true
-        var cluster_id = clusters_range.y - 1
-        for _ in clusters_range.x..clusters_range.y
-          let cluster_type = get_ammo_cluster_type(cluster_id, v)
-          var subtracted = 0
-          if get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage.LOADED_IN_GUN)
-            subtracted = setup_ammo_cluster_subtract(cluster_id, num_ammo_loaded[cluster_type], ammo_info.ammo_type, v)
-          else
-            subtracted = setup_ammo_cluster_subtract(cluster_id, num_ammo_in_stowage[cluster_type], ammo_info.ammo_type, v)
-          is_sync_required = is_sync_required || subtracted != 0
-          
-          cluster_id--
-
-      for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
-        
-        stowage_ammo[cluster_type].x = total_ammo_count - num_ammo_in_stowage[cluster_type]
-        stowage_ammo[cluster_type].y = num_ammo_in_stowage[cluster_type]
-        total_ammo_to_add += stowage_ammo[cluster_type].y
-
-      
-      for cluster_id in clusters_range.x..clusters_range.y
-        let cluster_type = get_ammo_cluster_type(cluster_id, v)
-        if get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage.LOADED_IN_GUN)
-          let added = setup_ammo_cluster_add(cluster_id, num_ammo_loaded[cluster_type], ammo_info.ammo_type, v)
-          is_sync_required = is_sync_required || added != 0
-
-    
-    if total_ammo_to_add > 0 || is_refill
-      v.ammo_stowage__ammoLost = 0
-
-    
-    for cluster_id in clusters_range.x..clusters_range.y
-      if total_ammo_to_add == 0
-        break
-      let cluster_type = get_ammo_cluster_type(cluster_id, v)
-      if get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage.LOADED_IN_GUN)
-        continue
-
-      
-      var free_slots_volume = 0
-      let slots_range = v.ammo_clusters__slotsRange[cluster_id]
-      for slot_id in slots_range.x..slots_range.y
-        let slot_ammo = v.ammo_slots__numAmmo[slot_id]
-        free_slots_volume += slot_ammo.y - slot_ammo.x
-
-      var any_added = true
-      while any_added
-        any_added = false
-        var remaining_ammo_type_count = 0
-        for stowage_ammo in stowage_ammo_arr
-          if stowage_ammo[cluster_type].y > 0
-            remaining_ammo_type_count++
-        if remaining_ammo_type_count == 0
-          break
-        let ammo_to_add_per_iter = max(1, free_slots_volume / remaining_ammo_type_count)
-        
-        for ammo_info, stowage_ammo in ammo_info_arr, stowage_ammo_arr
-          if stowage_ammo[cluster_type].y == 0
+        for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
+          if cluster_type == int(AmmoClusterType.CHARGES) && !has_charges
             continue
-          var ammo_to_add = min(ammo_to_add_per_iter, stowage_ammo[cluster_type].y)
-          let added_ammo = setup_ammo_cluster_add(cluster_id, ammo_to_add, ammo_info.ammo_type, v)
-          if added_ammo > 0
-            stowage_ammo[cluster_type].y -= added_ammo
-            total_ammo_to_add -= added_ammo
-            free_slots_volume -= added_ammo
-            any_added = true
-            is_sync_required = true
-            
+          var typed_ammo_to_add = ammo_to_add
+          setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.FIRST_STAGE), cluster_type, typed_ammo_to_add, ammo_info.ammo_type, v)
+          setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.SECOND_STAGE), cluster_type, typed_ammo_to_add, ammo_info.ammo_type, v)
+          is_sync_required = is_sync_required || typed_ammo_to_add != ammo_to_add
+          if init_num && typed_ammo_to_add > 0 && cluster_type == int(AmmoClusterType.SHELLS)
+            logwarn("{unit.props.fileName}: failed to distribute ammo slots, excess={typed_ammo_to_add}, ammo_info={ammo_info}")
 
-    if init_num
-      var any_excess = false
-      for stowage_ammo in stowage_ammo_arr
-        if stowage_ammo[int(AmmoClusterType.SHELLS)].y > 0 && stowage_ammo[int(AmmoClusterType.SHELLS)].x > 0
-          any_excess = true
-      if any_excess
-        
-        logwarn("{unit.props.fileName}: failed to distribute ammo slots, distributed/excess={stowage_ammo_arr}, ammo_info={ammo_info_arr}")
+      if total_ammo_to_add > 0 || is_refill
+        v.ammo_stowage__ammoLost = 0
+    else
+      let weapon_ammo_range = v.ammo_stowages__weaponAmmoRange[stowage_id]
+      for weapon_ammo_idx in weapon_ammo_range.x..weapon_ammo_range.y
+        let weapon_idx = v.ammo_stowage__weaponAmmoIds[weapon_ammo_idx]
+        let trigger_id = v.ammo_stowage__weaponAmmoTriggers[weapon_ammo_idx]
+        let weapon = weapon_controller.Weapons |> get_weapon(weapon_idx)
+        let current_ammo = setup_ammo_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
+        let prev_ammo = v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx]
+        let delta_ammo = current_ammo - prev_ammo
+        if delta_ammo < 0
+          for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
+            if cluster_type == int(AmmoClusterType.CHARGES) && !has_charges
+              continue
+            var ammo_to_subtract = -delta_ammo
+            setup_ammo_subtract_from_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.FIRST_STAGE), cluster_type, ammo_to_subtract, v)
+            setup_ammo_subtract_from_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.SECOND_STAGE), cluster_type, ammo_to_subtract, v)
+            is_sync_required = is_sync_required || ammo_to_subtract != -delta_ammo
+          set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.NEED_SYNC_BULLET_COUNT, true)
+        elif delta_ammo > 0
+          let ammo_type = setup_ammo_get_weapon_ammo_type(unit, stowage_id, weapon_idx, v)
+          for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
+            if cluster_type == int(AmmoClusterType.CHARGES) && !has_charges
+              continue
+            var ammo_to_add = delta_ammo
+            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.SECOND_STAGE), cluster_type, ammo_to_add, ammo_type, v)
+            is_sync_required = is_sync_required || ammo_to_add != delta_ammo
+        v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] = current_ammo
+
+    if remove_loaded_ammo && can_load_to_breech && setup_ammo_stowage_has_cluster_stage(stowage_id, int(AmmoClusterStage.LOADED_IN_GUN), v)
+      let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
+      for cluster_id in clusters_range.x..clusters_range.y
+        if get_ammo_cluster_stage(cluster_id, v) != int(AmmoClusterStage.LOADED_IN_GUN)
+          continue
+        let slots_range = v.ammo_clusters__slotsRange[cluster_id]
+        for slot_id in slots_range.x..slots_range.y
+          is_sync_required = is_sync_required || v.ammo_slots__numAmmo[slot_id].x != 0
+          v.ammo_slots__numAmmo[slot_id].x = 0
+
+      ammo_stowage_iter_all_weapons_and_bullet_sets(weapon_controller, v) <| $(ammo_info : WeaponAndAmmoInfo)
+        if ammo_info.stowage_id != stowage_id || ammo_info.loaded_count == 0 || ammo_info.ammo_type >= length(v.ammo_stowage__ammoTypeToMask)
+          return
+        let weapon_ammo_range = v.ammo_stowages__weaponAmmoRange[stowage_id]
+        var trigger_id = -1
+        for weapon_ammo_idx in weapon_ammo_range.x..weapon_ammo_range.y
+          if v.ammo_stowage__weaponAmmoIds[weapon_ammo_idx] == ammo_info.first_weapon_idx
+            trigger_id = v.ammo_stowage__weaponAmmoTriggers[weapon_ammo_idx]
+            break
+        if trigger_id < 0
+          return
+        for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
+          if cluster_type == int(AmmoClusterType.CHARGES) && !has_charges
+            continue
+          var loaded_ammo_to_add = ammo_info.loaded_count
+          setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.LOADED_IN_GUN), cluster_type, loaded_ammo_to_add, ammo_info.ammo_type, v)
+          is_sync_required = is_sync_required || loaded_ammo_to_add != ammo_info.loaded_count
+
+  if full_refill
+    for stowage_id in iter_range(v.ammo_stowages__state)
+      let stowage_state = v.ammo_stowages__state[stowage_id]
+      let remove_loaded_ammo = get_flag(stowage_state, AmmoStowageState.REMOVE_LOADED_AMMO)
+      let weapon_ammo_range = v.ammo_stowages__weaponAmmoRange[stowage_id]
+      for weapon_ammo_idx in weapon_ammo_range.x..weapon_ammo_range.y
+        let weapon_idx = v.ammo_stowage__weaponAmmoIds[weapon_ammo_idx]
+        let weapon = weapon_controller.Weapons |> get_weapon(weapon_idx)
+        v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] = setup_ammo_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
 
   
   for cluster_id in iter_range(v.ammo_clusters__state)
@@ -262,14 +412,22 @@ def ammo_stowage_setup_stowage_es(evt : EventAmmoStowageSetup; eid : EntityId; v
                                     ammo_stowage__ammoState : uint;
                                     ammo_stowage__ammoLost : int -const;
                                     ammo_stowage__ammoTypeToMask : UInt32List;
+                                    ammo_stowage__ammoTypeRemap : IPoint4List;
+                                    ammo_stowage__weaponsIds : IntList;
                                     ammo_stowages__state : UInt32List -const;
                                     ammo_stowages__replenishmentStartEnd : Point2List;
                                     ammo_stowages__clustersRange : IPoint2List;
                                     ammo_stowages__weaponTriggersRange : IPoint2List;
                                     ammo_stowage__weaponTriggers : IntList;
+                                    ammo_stowages__weaponAmmoRange : IPoint2List;
+                                    ammo_stowage__weaponAmmoIds : IntList;
+                                    ammo_stowage__weaponAmmoTriggers : IntList;
+                                    ammo_stowage__weaponAmmoCount : IntList -const;
                                     ammo_clusters__typeAndStage : UInt16List;
                                     ammo_clusters__state : UInt32List -const;
                                     ammo_clusters__slotsRange : IPoint2List;
+                                    ammo_clusters__weaponTriggersRange : IPoint2List;
+                                    ammo_cluster__weaponTriggers : IntList;
                                     ammo_slots__state : UInt32List -const;
                                     ammo_slots__partId : PartIdList;
                                     ammo_slots__numAmmo : IPoint2List -const;
@@ -289,14 +447,22 @@ def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; eid 
                                              ammo_stowage__ammoState : uint;
                                              ammo_stowage__ammoLost : int -const;
                                              ammo_stowage__ammoTypeToMask : UInt32List;
+                                             ammo_stowage__ammoTypeRemap : IPoint4List;
+                                             ammo_stowage__weaponsIds : IntList;
                                              ammo_stowages__state : UInt32List -const;
                                              ammo_stowages__replenishmentStartEnd : Point2List;
                                              ammo_stowages__clustersRange : IPoint2List;
                                              ammo_stowages__weaponTriggersRange : IPoint2List;
                                              ammo_stowage__weaponTriggers : IntList;
+                                             ammo_stowages__weaponAmmoRange : IPoint2List;
+                                             ammo_stowage__weaponAmmoIds : IntList;
+                                             ammo_stowage__weaponAmmoTriggers : IntList;
+                                             ammo_stowage__weaponAmmoCount : IntList -const;
                                              ammo_clusters__typeAndStage : UInt16List;
                                              ammo_clusters__state : UInt32List -const;
                                              ammo_clusters__slotsRange : IPoint2List;
+                                             ammo_clusters__weaponTriggersRange : IPoint2List;
+                                             ammo_cluster__weaponTriggers : IntList;
                                              ammo_slots__state : UInt32List -const;
                                              ammo_slots__partId : PartIdList;
                                              ammo_slots__numAmmo : IPoint2List -const;

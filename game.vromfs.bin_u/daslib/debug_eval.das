@@ -17,8 +17,8 @@ require daslib/match
 require daslib/math_bits
 require daslib/ast_boost
 
-require rtti public
-require debugapi
+require daslib/rtti public
+require daslib/debugger
 
 variant Token {
     number : int64
@@ -29,7 +29,7 @@ variant Token {
 }
 
 def each_token(st : string) {
-    return <- generator<Token>() <| $() {
+    return <- generator<Token> {
         var tst := st
         var chars <- unsafe(each(tst))
         var ahead = ' '
@@ -277,7 +277,7 @@ def expr_value(var st : TokenStream) : Result {
     return st |> error("unexpected token {token}, expecting number or (")
 }
 
-def getStructFieldOffset(var st : TokenStream; ident : string; var result : Result) : tuple<int; TypeInfo> {
+def getStructFieldOffset(var st : TokenStream; ident : string; var result : Result) : tuple<offset : int; tinfo : TypeInfo> {
     var size = 0
     for (field in *result.tinfo.structType) {
         var tinfo : TypeInfo?
@@ -285,52 +285,52 @@ def getStructFieldOffset(var st : TokenStream; ident : string; var result : Resu
             tinfo = reinterpret<TypeInfo?>(unsafe(addr(field)))
         }
         if (field.name == ident) {
-            return (size, *tinfo)
+            return (offset = size, tinfo = *tinfo)
         }
         let al = get_type_align(tinfo) - 1
         size = (size + al) & ~al
         size += get_type_size(tinfo)
     }
-    return (-1, TypeInfo(uninitialized))
+    return (offset = -1, tinfo = TypeInfo(uninitialized))
 }
 
-def getTupleFieldOffset(var st : TokenStream; ident : string; var result : Result) : tuple<int; TypeInfo> {
+def getTupleFieldOffset(var st : TokenStream; ident : string; var result : Result) : tuple<offset : int; tinfo : TypeInfo> {
     var size = 0
     for (cnt in range(result.tinfo.argCount)) {
         let tinfo = unsafe(result.tinfo.argTypes[cnt])
         if (ident == "_{cnt}") {
-            return (size, *tinfo)
+            return (offset = size, tinfo = *tinfo)
         }
         let al = get_type_align(tinfo) - 1
         size = (size + al) & ~al
         size += get_type_size(tinfo)
     }
-    return (-1, TypeInfo(uninitialized))
+    return (offset = -1, tinfo = TypeInfo(uninitialized))
 }
 
-def getVectorOffset(var st : TokenStream; ident : string; var result : Result) : tuple<int; TypeInfo> {
+def getVectorOffset(var st : TokenStream; ident : string; var result : Result) : tuple<offset : int; tinfo : TypeInfo> {
     let ofs = getVectorOffset(result.tinfo.basicType, ident)
-    return (-1, TypeInfo(uninitialized)) if (ofs < 0)
+    return (offset = -1, tinfo = TypeInfo(uninitialized)) if (ofs < 0)
     let fieldSize = getVectorElementSize(result.tinfo.basicType)
     let tinfo = TypeInfo(
         basicType = getVectorElementType(result.tinfo.basicType),
         size = uint(fieldSize)
     )
-    return (ofs * fieldSize, tinfo)
+    return (offset = ofs * fieldSize, tinfo = tinfo)
 }
 
-def getHandleFieldOffset(var st : TokenStream; ident : string; var result : Result) : tuple<int; TypeInfo> {
+def getHandleFieldOffset(var st : TokenStream; ident : string; var result : Result) : tuple<offset : int; tinfo : TypeInfo> {
     unsafe {
-        var ann <- unsafe(reinterpret<smart_ptr<TypeAnnotation>> result.tinfo.annotation)
+        var ann = unsafe(reinterpret<TypeAnnotation?> result.tinfo.annotation)
         if (ann == null) {
-            return (-1, TypeInfo(uninitialized))
+            return (offset = -1, tinfo = TypeInfo(uninitialized))
         }
         let ofs  = int(get_handled_type_field_offset(ann, ident))
         if (ofs == -1) {
-            return (-1, TypeInfo(uninitialized))
+            return (offset = -1, tinfo = TypeInfo(uninitialized))
         }
         let tinfo = get_handled_type_field_type(ann, ident)
-        return (ofs, *tinfo)
+        return (offset = ofs, tinfo = *tinfo)
     }
 }
 
@@ -399,7 +399,7 @@ def opDimString(var st : TokenStream; index : int64; var result : Result) {
     if (index >= int64(len)) {
         return st |> error("index out of range {index} of {len} (string too short)")
     }
-    return Result(int64(character_at(str, int(index))))
+    return Result(int64(character_at(str, int(index)))) 
 }
 
 def opArray(var st : TokenStream; index : int64; var result : Result) {

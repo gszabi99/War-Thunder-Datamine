@@ -12,7 +12,7 @@
     "laser_decal_manager__is_compatible": true,
     "laser_decal_reproj_max_correction": 1.0,
     "laser_decals_manager:LaserDecalManager": {},
-    "laser_screen_spot_buffer:UniqueBufHolder": {}
+    "laser_screen_spot_buffer:UniqueBufWithShaderVar": {}
   },
   "laser_sight": {
     "laserBeamStartOffset": [
@@ -25,7 +25,13 @@
       0.0,
       0.0
     ],
+    "laserBeamDotColor": [
+      1.0,
+      0.0,
+      0.0
+    ],
     "laserBeamMaxLength": 75.0,
+    "laserBeamFadeDistPercentage": 0.2,
     "laserStartSize": 0.02,
     "laserMaxSize": 0.2,
     "laserCrownAngle": 5.0,
@@ -33,6 +39,7 @@
     "laserStartIntensity": 1.0,
     "laserMaxIntensity": 1.0,
     "laserActive": false,
+    "laserVisible": true,
     "laserScrollingSpeed": 5.0,
     "laser__fxNodeName": "laser_fx",
     "laser__fxNodeIdx": -1,
@@ -42,7 +49,8 @@
     ],
     "_tracked": [
       "laserActive",
-      "laserAvailable"
+      "laserAvailable",
+      "laserVisible"
     ],
     "laserAvailable": true,
     "laser_data__rayHit": [
@@ -62,8 +70,10 @@
     ],
     "laser_data__laserLen": 1.0,
     "laser_data__intesity": 1.0,
+    "laser_data__dotIntensity": 1.0,
     "laser_data__crownSize": 0.5,
     "laser_sight__is_compatible": true,
+    "laser_sight__is_infrared": false,
     "laserBeamTracerId:i": {
       "_tags": "render",
       "value": -1

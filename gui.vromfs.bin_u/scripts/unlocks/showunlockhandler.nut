@@ -205,7 +205,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       unitObj = this.scene.findObject(unitToTake.name)
       isNewUnit = true
       cellClass = "slotbarClone"
-      useTutorial = this.needShowUnitTutorial
+      useFirstSelectTutorial = this.needShowUnitTutorial
       afterSuccessFunc = this.goBack.bindenv(this)
     })
     this.needShowUnitTutorial = false

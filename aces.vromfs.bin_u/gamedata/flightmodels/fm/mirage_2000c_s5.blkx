@@ -783,13 +783,13 @@
       ],
       "AnglesMultiplierPitch2D12": [
         600.0,
-        0.3,
+        0.35,
         0.0,
         0.75
       ],
       "AnglesMultiplierPitch2D13": [
         800.0,
-        0.2,
+        0.27,
         -0.0,
         0.45
       ],
@@ -2160,12 +2160,12 @@
       "RateMax0": [
         500.0,
         -50.0,
-        50.0
+        60.0
       ],
       "RateMax1": [
         1000.0,
-        -35.0,
-        35.0
+        -30.0,
+        40.0
       ],
       "AngleMax": [
         -50.0,
@@ -2189,11 +2189,11 @@
       "ClimbAngleToLoadFactor": 0.7,
       "RateMaxLoadFactorMax": [
         -4.0,
-        10.0
+        12.0
       ],
       "AoaLimits": [
         -12.0,
-        25.0
+        22.0
       ],
       "AoaLimitsMult0": [
         0.0,
@@ -2215,7 +2215,7 @@
         0.5,
         0.5
       ],
-      "AoaLimitsMargin": 8.0,
+      "AoaLimitsMargin": 15.0,
       "AoaLimiterPushBackRateMult": [
         -0.9,
         -0.9
@@ -2223,11 +2223,11 @@
       "AoAAntiHangRateDecline": -286.0,
       "UseAoAGLimits": true,
       "LoadFactorFilterSmoothCoeff": 0.8,
-      "LoadFactorLimiterStrengthMax": 1.0,
+      "LoadFactorLimiterStrengthMax": 0.5,
       "RatePID": {
-        "Kp": 3.0,
-        "Ki": 4.0,
-        "Imax": 0.2,
+        "Kp": 2.5,
+        "Ki": 0.5,
+        "Imax": 0.01,
         "Kd": 0.002,
         "RateMult": 1.0,
         "Lim": [
@@ -2293,8 +2293,8 @@
     },
     "Yaw": {
       "RateMax": [
-        -30.0,
-        30.0
+        -60.0,
+        60.0
       ],
       "LateralLoadFactorTimeMult": 1.0,
       "AosTimeMult": 2.0,
@@ -2307,8 +2307,8 @@
         ]
       },
       "RatePID": {
-        "Kp": 3.2,
-        "Ki": 0.5,
+        "Kp": 2.5,
+        "Ki": 0.0,
         "Imax": 0.1,
         "Kd": 0.002,
         "RateMult": 0.5,

@@ -25,6 +25,7 @@ let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { get_time_msec } = require("dagor.time")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
@@ -314,7 +315,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
             if (handler)
               afterCloseShop.call(handler)
           }
-        ::launchOnlineShop(handler, chapter, closeFunc, metric)
+        launchOnlineShop(handler, chapter, closeFunc, metric)
       }, false, true)
   }
 
@@ -510,21 +511,6 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onOpenActionsList(obj) {
     this.openUnitActionsList(obj.getParent().getParent(), true)
-  }
-
-  function getSlotbarPresetsList() {
-    return this.rootHandlerWeak ? this.rootHandlerWeak.presetsListWeak : this.presetsListWeak
-  }
-
-  function setSlotbarPresetsListAvailable(isAvailable) {
-    if (isAvailable) {
-      if (this.presetsListWeak)
-        this.presetsListWeak.update()
-      else
-        this.presetsListWeak = ::SlotbarPresetsList(this).weakref()
-    }
-    else if (this.presetsListWeak)
-      this.presetsListWeak.destroy()
   }
 
   function slotOpCb(id, tType, result) {
@@ -899,6 +885,16 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onModalInfoButtonClick(obj) {
     doAction(obj, this.getCurrentEdiff?() ?? -1)
+  }
+
+  function onMarkerClick(obj) {
+    let params = { startPage = obj.type }
+
+    if (this.guiScene?.isInAct()) {
+      defer(@() loadHandler(gui_handlers.LimitBuyUnitsHandler, params))
+      return
+    }
+    loadHandler(gui_handlers.LimitBuyUnitsHandler, params)
   }
 }
 

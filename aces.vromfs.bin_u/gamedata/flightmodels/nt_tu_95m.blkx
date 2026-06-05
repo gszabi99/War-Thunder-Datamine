@@ -3379,37 +3379,29 @@
     ],
     "lightRadius2": 0.52,
     "devices": {
+      "trimmer_indicator": [
+        -1.0,
+        1.0
+      ],
       "speed": [
-        27.777,
-        291.666
-      ],
-      "rpm": [
         0.0,
-        15000.0
+        333.333
       ],
-      "rpm1": [
+      "mach": [
         0.0,
-        15000.0
+        1.0
       ],
-      "water_temperature": [
+      "mach1": [
         0.0,
-        900.0
-      ],
-      "water_temperature1": [
-        0.0,
-        900.0
-      ],
-      "bank": [
-        -8.0,
-        8.0
-      ],
-      "turn": [
-        -0.23562,
-        0.23562
+        1.0
       ],
       "vario": [
         -30.0,
         30.0
+      ],
+      "altitude_10k": [
+        0.0,
+        100000.0
       ],
       "altitude_hour": [
         0.0,
@@ -3419,10 +3411,34 @@
         0.0,
         1000.0
       ],
+      "altitude1_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude3_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude2_10k": [
+        0.0,
+        100000.0
+      ],
+      "altitude2_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude3_10k": [
+        0.0,
+        100000.0
+      ],
+      "radio_altitude": [
+        0.0,
+        1000.0
+      ],
       "altitude_koef": 1.0,
       "aviahorizon_pitch": [
-        -45.0,
-        45.0
+        -80.0,
+        80.0
       ],
       "aviahorizon_roll": [
         -180.0,
@@ -3432,49 +3448,37 @@
         0.0,
         360.0
       ],
-      "fuel": [
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "bank1": [
+        -8.0,
+        8.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
+      "aoa": [
+        -5.0,
+        30.0
+      ],
+      "g_meter": [
+        -2.0,
+        12.0
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
         0.0,
         60.0
       ],
-      "manifold_pressure": [
-        0.395,
-        2.105
-      ],
-      "manifold_pressure1": [
-        0.395,
-        2.105
-      ],
-      "head_temperature": [
+      "clock_sec": [
         0.0,
-        350.0
-      ],
-      "head_temperature1": [
-        0.0,
-        350.0
-      ],
-      "oil_temperature": [
-        0.0,
-        125.0
-      ],
-      "oil_temperature1": [
-        0.0,
-        125.0
-      ],
-      "fuel_pressure": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure1": [
-        0.0,
-        15.0
-      ],
-      "oil_pressure": [
-        0.0,
-        100.0
-      ],
-      "oil_pressure1": [
-        0.0,
-        100.0
+        60.0
       ]
     },
     "parts_holes_dmg": {
@@ -3536,78 +3540,6 @@
     "wingOverloadCoeff": -1.0,
     "wingStrainLimitDown": 1.0,
     "wingStaticRadius": 2.0
-  },
-  "wiki": {
-    "general": {
-      "length": 17.65,
-      "wingspan": 21.45,
-      "wingArea": 60.78,
-      "emptyWeight": 13170.0,
-      "normalWeight": 20071.0,
-      "maxTakeoffWeight": 23200.0,
-      "powerPlantType": 2,
-      "thrustMaxMil": 44400.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 11600.0,
-        "airSpeedMil0": [
-          0.0,
-          861.0
-        ],
-        "airSpeedMil1": [
-          4500.0,
-          905.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          20.0
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          123.92
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          276.635
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          467.947
-        ],
-        "turnTimeMil": [
-          1000.0,
-          48.0
-        ],
-        "takeoffDistance": 1717.14,
-        "ceiling": 7500.0,
-        "rollRate": 59.0,
-        "wingLoading": 330.0,
-        "thrustToWeightRatio": 0.27
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          861.0
-        ],
-        "airSpeedMil1": [
-          3700.0,
-          904.0
-        ],
-        "airSpeedMil2": [
-          7500.0,
-          883.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          20.0
-        ],
-        "climbRateMil1": [
-          7500.0,
-          9.9
-        ]
-      }
-    }
   },
   "balanceData": {
     "accSpd": 4.03451,
@@ -3765,7 +3697,7 @@
         "gunnerDm": "gunner2_dm",
         "gunDm": "gun1_dm",
         "partsDP": "gun1_dm",
-        "bullets": 350,
+        "bullets": 600,
         "traceOffset": 2,
         "turret": {
           "head": "turret1",
@@ -3777,6 +3709,26 @@
             180.0
           ],
           "pitch": [
+            -3.0,
+            90.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -7.0,
+            -3.0,
+            87.0
+          ],
+          "lim2": [
+            -7.0,
+            7.0,
+            25.0,
+            87.0
+          ],
+          "lim3": [
+            7.0,
+            180.0,
             -3.0,
             87.0
           ]
@@ -3790,7 +3742,7 @@
         "dm": "gunner2_dm",
         "gunnerDm": "gunner2_dm",
         "gunDm": "gun1_dm",
-        "bullets": 350,
+        "bullets": 600,
         "turret": {
           "head": "turret1",
           "gun": "gun1"
@@ -3801,6 +3753,26 @@
             180.0
           ],
           "pitch": [
+            -3.0,
+            90.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -7.0,
+            -3.0,
+            87.0
+          ],
+          "lim2": [
+            -7.0,
+            7.0,
+            25.0,
+            87.0
+          ],
+          "lim3": [
+            7.0,
+            180.0,
             -3.0,
             87.0
           ]
@@ -3815,7 +3787,7 @@
         "gunnerDm": "gunner5_dm",
         "gunDm": "gun2_dm",
         "partsDP": "gun2_dm",
-        "bullets": 400,
+        "bullets": 600,
         "turret": {
           "head": "turret2",
           "gun": "gun2"
@@ -3826,8 +3798,8 @@
             180.0
           ],
           "pitch": [
-            -88.0,
-            2.0
+            -90.0,
+            0.5
           ]
         }
       },
@@ -3839,7 +3811,8 @@
         "dm": "gunner5_dm",
         "gunnerDm": "gunner5_dm",
         "gunDm": "gun2_dm",
-        "bullets": 400,
+        "partsDP": "gun2_dm",
+        "bullets": 600,
         "turret": {
           "head": "turret2",
           "gun": "gun2"
@@ -3850,8 +3823,8 @@
             180.0
           ],
           "pitch": [
-            -88.0,
-            2.0
+            -90.0,
+            0.5
           ]
         }
       },
@@ -3871,12 +3844,12 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
-            60.0
+            -68.0,
+            68.0
           ],
           "pitch": [
-            -40.0,
-            60.0
+            -68.0,
+            68.0
           ]
         }
       },
@@ -3895,12 +3868,12 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
-            60.0
+            -68.0,
+            68.0
           ],
           "pitch": [
-            -40.0,
-            60.0
+            -68.0,
+            68.0
           ]
         }
       },

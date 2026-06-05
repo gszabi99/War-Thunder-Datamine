@@ -5,6 +5,11 @@ itemDiv {
   <</itemIndex>>
   smallFont:t='yes';
   class:t='smallFont'
+
+  <<#fullSizeImage>>
+  fullSizeImage:t='yes'
+  <</fullSizeImage>>
+
   total-input-transparent:t='yes'
   css-hier-invalidate:t='all'
   <<#active>>

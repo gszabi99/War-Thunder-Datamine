@@ -14,7 +14,7 @@ let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSkillsNotAffectedBySpecDesc
 let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -41,15 +41,13 @@ function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
     return
   }
 
-  let msgText = warningIfGold(format(loc("shop/needMoneyQuestion_retraining"),
+  let text = warningIfGold(format(loc("shop/needMoneyQuestion_retraining"),
     cost.getTextAccordingToBalance()), cost)
-  scene_msg_box("train_crew_unit", null, msgText,
-    [ ["ok", function() {
-        if (checkBalanceMsgBox(cost))
-          onTrainCrew()
-      }],
-      ["cancel", @() null ]
-   ], "ok")
+  let callbackYes =  @() checkBalanceMsgBox(cost)
+    ? onTrainCrew()
+    : null
+
+  purchaseConfirmation({ id = "train_crew_unit", text, callbackYes }, cost)
 }
 
 
@@ -138,28 +136,19 @@ function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = 
   let notes = getSkillsNotAffectedBySpecDesc(crewUnitType, "commonTextColor")
   let bonusesText = nextSpecType.getFullBonusesText(crewUnitType, curSpecType.code, notes != "", false)
   let bonuses = "\n\n".join([bonusesText, notes], true)
-  let msgText = warningIfGold(
+  let text = warningIfGold(
     "".concat(loc(msgLocId, msgLocParams), "\n\n",
       loc("shop/crewQualifyBonuses", {
         qualification = colorize("userlogColoredText", nextSpecType.getName())
         bonuses }),
       "\n", unitTypeSkillsMsg),
     cost)
-  scene_msg_box("purchase_ask", null, msgText,
-    [
-      ["yes", function() {
-                 if (checkBalanceMsgBox(cost))
-                   upgradeUnitSpecImpl(crew, unit, upgradesAmount)
-               }
-      ],
-      ["no", function() {}]
-    ],
-    "yes",
-    {
-      cancel_fn = function() {}
-      font = "fontNormal"
-    }
-  )
+
+  let callbackYes = @() checkBalanceMsgBox(cost)
+    ? upgradeUnitSpecImpl(crew, unit, upgradesAmount)
+    : null
+
+  purchaseConfirmation({ id = "purchase_ask", text, callbackYes }, cost)
 }
 
 return {

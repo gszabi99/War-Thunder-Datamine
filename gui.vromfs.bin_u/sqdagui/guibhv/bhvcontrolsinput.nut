@@ -205,4 +205,17 @@ let ControlsInput = class {
 
 replace_script_gui_behaviour("ControlsInput", ControlsInput)
 
-return {ControlsInput}
+function clearControlsInputBhvBindings(obj) {
+  for (local i = 0; i < TOTAL_DEVICES; i++) {
+    let deviceId = $"device{i}"
+    if (obj?[deviceId] == null)
+      return
+    obj[deviceId] = ""
+    obj[$"button{i}"] = ""
+  }
+}
+
+return {
+  ControlsInput
+  clearControlsInputBhvBindings
+}

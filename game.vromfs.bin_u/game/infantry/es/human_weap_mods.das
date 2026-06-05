@@ -238,17 +238,10 @@ def human_weap_change_zoom_to_next(evt : NextVariableZoomGunScope;
                                 var gunmod__previousCamShiftMin : float&;
                                 var gunmod__previousCamShiftMax : float&;
                                 var gunmod__currentZoomIndex : int&;
-                                var gunmod__zoomAnimationTime : float&;
-                                var gunmod__crosshairs : Array?)
+                                var gunmod__zoomAnimationTime : float&)
     gunmod__previousZoomFactor = gunmod__zoomFactor
     gunmod__previousCamShiftMin = gunmod__camShiftMin
     gunmod__previousCamShiftMax = gunmod__camShiftMax
-    if gunmod__crosshairs != null
-      for i in range(length(*gunmod__crosshairs))
-        var crosshair = getRW_ecs_object((*gunmod__crosshairs)[i])
-        if crosshair != null
-          let cur = crosshair?.currentZoomFactor ?? 1.0
-          *crosshair |> set("previousZoomFactor", cur)
     gunmod__currentZoomIndex = (gunmod__currentZoomIndex + 1) % length(gunmod__variableZoomOptions)
     send_net_event(gunScopeEid, ChangeGunModZoomIndex(zoomIndex = gunmod__currentZoomIndex))
     gunmod__zoomAnimationTime = 0.0
@@ -269,8 +262,7 @@ def human_weap_zoom_animation(info : UpdateStageInfoAct;
                               var gunmod__zoomAnimationTime : float&;
                               var gunmod__zoomFactor : float&;
                               var gunmod__camShiftMin : float&;
-                              var gunmod__camShiftMax : float&;
-                              var gunmod__crosshairs : Array?)
+                              var gunmod__camShiftMax : float&)
   let zoomOptions = gunmod__variableZoomOptions?[gunmod__currentZoomIndex] ?as Object
   let targetZoomFactor = zoomOptions?.gunmod__zoomFactor ?? gunmod__previousZoomFactor
   let targetCamShiftMin = zoomOptions?.gunmod__camShiftMin ?? gunmod__previousCamShiftMin
@@ -281,17 +273,6 @@ def human_weap_zoom_animation(info : UpdateStageInfoAct;
   gunmod__camShiftMin = approach(gunmod__previousCamShiftMin, targetCamShiftMin, gunmod__zoomAnimationTime, gunmod__zoomAnimationViscocity)
   gunmod__camShiftMax = approach(gunmod__previousCamShiftMax, targetCamShiftMax, gunmod__zoomAnimationTime, gunmod__zoomAnimationViscocity)
 
-  if gunmod__crosshairs != null
-    for i in range(length(*gunmod__crosshairs))
-      var crosshair = getRW_ecs_object((*gunmod__crosshairs)[i])
-      if crosshair != null
-        let zoomFactors = get_ecs_FloatList((*crosshair)["crosshair_zoom_factor"])
-        var target = 1.0
-        if zoomFactors != null && length(*zoomFactors) > 0
-          let idx = min(gunmod__currentZoomIndex, length(*zoomFactors) - 1)
-          target = (*zoomFactors)[idx]
-        let prev = crosshair?.previousZoomFactor ?? target
-        *crosshair |> set("currentZoomFactor", approach(prev, target, gunmod__zoomAnimationTime, gunmod__zoomAnimationViscocity))
 
 [es(tag=server)]
 def toogle_laser_es(evt : LaserToggle;

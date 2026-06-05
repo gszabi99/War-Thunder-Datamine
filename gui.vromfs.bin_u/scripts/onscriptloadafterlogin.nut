@@ -70,7 +70,6 @@ foreach (fn in [
   "%scripts/weaponry/weaponryPresetsRepair.nut"
   "%scripts/slotbar/slotbarWidget.nut"
   "%scripts/slotbar/selectCrew.nut"
-  "%scripts/slotbar/slotbarPresetsList.nut"
 
   "%scripts/user/presenceType.nut"
   "%scripts/squads/squadManager.nut"
@@ -138,7 +137,6 @@ foreach (fn in [
   "%scripts/replays/replayPlayer.nut"
 
   "%scripts/customization/checkDecoratorTypes.nut"
-  "%scripts/customization/decorator.nut"
   "%scripts/customization/customizationWnd.nut"
   "%scripts/customization/infantryCamouflageWnd.nut"
 
@@ -277,6 +275,7 @@ foreach (fn in [
   "%scripts/gamepadSceneSettings.nut"
 
   "%scripts/user/profileOpener.nut"
+  "%scripts/limitBuyUnits/limitBuyUnitsHandler.nut"
 ]) {
   require(fn)
 }
@@ -327,6 +326,7 @@ require("%scripts/items/listPopupWnd/modUpgradeApplyWnd.nut")
 require("%scripts/items/roulette/itemsRoulette.nut")
 require("%scripts/matchingRooms/joiningGameWaitBox.nut")
 require("%scripts/matching/serviceNotifications/mroomsNotifications.nut")
+require("%scripts/hangar/backgroundModelActions.nut")
 
 require("%scripts/debugTools/dbgCheckContent.nut")
 require("%scripts/debugTools/dbgUnlocks.nut")
@@ -347,6 +347,7 @@ require("%scripts/countries/chooseCountryView.nut")
 require("%scripts/hud/antiAirComplexMenuState.nut")
 require("%scripts/options/tankSightMigrate.nut")
 require("%scripts/hangar/initHangarSceneOption.nut")
+require("%scripts/weaponry/graphCompareBullets/missileTrajectoryWnd.nut")
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")

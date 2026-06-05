@@ -20,6 +20,7 @@ def human_collision_scrape_sound_update(evt : Event;
                                         var sound_event_group : SoundEventGroup&;
                                         sound_tags : Object;
                                         is_watched_sound : bool;
+                                        human_sound__prefix : string = "";
                                         transform : float3x4)
   var handle = get_sound(sound_event_group, sound_hash("collisionScrape"))
   if !is_valid_handle_value(handle) && sound_preset__isLoaded
@@ -27,7 +28,7 @@ def human_collision_scrape_sound_update(evt : Event;
     if human_collision_scrape_sound__descIdx >= 0 && length_sq(human_net_phys__velocity) > square(human_collision_scrape_sound__speedToForce.x) && isMoving
       let desc = human_collision_scrape_sound__descs[human_collision_scrape_sound__descIdx] as Object
       if desc != null
-        handle = sound_player_common::play_path(*desc, sound_tags, is_watched_sound, transform[3], sound_hash("collisionScrape"), sound_event_group)
+        handle = sound_player_common::play_path(*desc, sound_tags, is_watched_sound, transform[3], sound_hash("collisionScrape"), sound_event_group, 0., human_sound__prefix)
   if is_playing(handle)
     let force = cvt(length(human_net_phys__velocity), human_collision_scrape_sound__speedToForce.x, human_collision_scrape_sound__speedToForce.y, human_collision_scrape_sound__speedToForce.z, human_collision_scrape_sound__speedToForce.w)
     set_var_optional(handle, "force", force)

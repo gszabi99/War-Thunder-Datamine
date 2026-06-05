@@ -1,0 +1,212 @@
+{
+  "sam_site_unit": {
+    "_use": [
+      "aimer_custom_setting",
+      "unit_death_substract_team_tickets"
+    ],
+    "physical_tracks__dontCreateTracks": true,
+    "_group": {
+      "_tags": "server",
+      "sam_site__owner:eid": {}
+    }
+  },
+  "sam_site": {
+    "_use": "units_spawn_on_init",
+    "_group": {
+      "_tags": "server",
+      "sam_site__units_pending": 0,
+      "sam_site__missile_channels_max": 1,
+      "sam_site__target_channels_max": 1,
+      "sam_site__attackers_group_idx": 0,
+      "sam_site__max_attackers_per_target": 0,
+      "sam_site__unitSettings:array": {},
+      "sam_site__launchers:list<eid>": {},
+      "sam_site__trackers:list<eid>": {},
+      "sam_site__detectors:list<eid>": {}
+    }
+  },
+  "sam_site_s75": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "ussr_ai_sam_launcher_s_75",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "count": 6
+          },
+          {
+            "name": "ussr_ai_sam_radar_snr_75",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "count": 1
+          },
+          {
+            "name": "ussr_ai_sam_radar_p_12",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "detector_radar",
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  "sam_site_buk": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "ussr_ai_sam_launcher_9a310",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "count": 2
+          },
+          {
+            "name": "ussr_ai_sam_radar_9s18",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "detector_radar",
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  "sam_site_buk_m3": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__target_channels_max": 18,
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "ussr_buk_m3_launcher",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "count": 3,
+            "dontCreateChar": true
+          },
+          {
+            "name": "ussr_buk_m3_fcs",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  "sam_site_s300": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__target_channels_max": 6,
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "ussr_ai_sam_launcher_5p85se",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "count": 4
+          },
+          {
+            "name": "ussr_ai_sam_radar_5n63s",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "count": 1
+          },
+          {
+            "name": "ussr_ai_sam_radar_5n64s",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "detector_radar",
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  "sam_site_hawk": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "us_ai_sam_launcher_m192",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "count": 6
+          },
+          {
+            "name": "us_ai_sam_radar_an_mpq_46",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "count": 2
+          },
+          {
+            "name": "us_ai_sam_radar_cwar",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "detector_radar",
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  "sam_site_patriot": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__target_channels_max": 8,
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "us_ai_sam_launcher_m901",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "count": 4
+          },
+          {
+            "name": "us_ai_sam_radar_an_mpq_53",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "count": 1
+          },
+          {
+            "name": "us_ai_sam_radar_cwar",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "detector_radar",
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  "sam_site_sampt": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__target_channels_max": 16,
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "it_samp_t_launcher",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "count": 3,
+            "dontCreateChar": true
+          },
+          {
+            "name": "it_samp_t_fcs",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "count": 1
+          }
+        ]
+      }
+    }
+  }
+}

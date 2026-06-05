@@ -1,7 +1,9 @@
 from "%scripts/dagui_library.nut" import *
+from "controls" import ActivationCondition
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let { getLocalizedControlName, getShortLocalizedControlName} = require("%scripts/controls/controlsVisual.nut")
+let { getLocalizedControlName, getShortLocalizedControlName, getActivationTypeImg
+} = require("%scripts/controls/controlsVisual.nut")
 let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { hasXInputDevice } = require("controls")
@@ -9,24 +11,32 @@ let { hasXInputDevice } = require("controls")
 let Button = class (InputBase) {
   deviceId = -1
   buttonId = -1
+  activationType = ActivationCondition.DEFAULT
 
   preset = null
 
-  constructor(dev, btn, presetV = null) {
+  constructor(dev, btn, activationType = ActivationCondition.DEFAULT, presetV = null) {
     this.deviceId = dev
     this.buttonId = btn
+    this.activationType = activationType
     this.preset = presetV || getCurControlsPreset()
   }
 
-  function getMarkup(hasHoldButtonSign = false) {
-    let data = this.getMarkupData(hasHoldButtonSign)
+  function getMarkup() {
+    let data = this.getMarkupData()
     return handyman.renderCached(data.template, data.view)
   }
 
-  function getMarkupData(hasHoldButtonSign) {
+  function getMarkupWithoutActivationType() {
+    let data = this.getMarkupData()
+    data.view.activationTypeImg = null
+    return handyman.renderCached(data.template, data.view)
+  }
+
+  function getMarkupData() {
     let data = {
       template = ""
-      view = { hasHoldButtonSign }
+      view = { activationTypeImg = getActivationTypeImg(this.activationType) }
     }
 
     if (this.deviceId == JOYSTICK_DEVICE_0_ID && hasXInputDevice() && gamepadIcons.hasTextureByButtonIdx(this.buttonId)) {
@@ -77,9 +87,16 @@ let Button = class (InputBase) {
   function getConfig() {
     return {
       inputName = "button"
+      activationTypeImg = getActivationTypeImg(this.activationType)
       buttonImage = this.getImage()
       text = this.getText()
     }
+  }
+
+  function getConfigWithoutActivationType() {
+    let data = this.getConfig()
+    data.activationTypeImg = null
+    return data
   }
 }
 return {Button}

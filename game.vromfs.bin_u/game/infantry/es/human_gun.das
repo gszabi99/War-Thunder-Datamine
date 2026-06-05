@@ -303,19 +303,30 @@ def human_gun_phys_vars_es(info : ParallelUpdateFrameDelayed;
     phys_vars |> approach_var(gun_offset__upId, gun_anim_var__defGunOffsetUp, info.dt, gun_offset__tau)
 
 
-[es]
-def human_gun_collision_links_update(info : ParallelUpdateFrameDelayed;
-                                     bipod__enabled : bool;
-                                     human_net_phys__isAiming : bool;
-                                     var human_net_phys : HumanActor&)
+def private update_gun_collision_links(var human_net_phys : HumanActor&;
+                                       bipod__enabled : bool;
+                                       human_net_phys__isAiming : bool)
   assume phys = human_net_phys.phys
   let activateCollisionLinks = human_net_phys__isAiming && !bipod__enabled
-
   let stands = [HUStandState ESS_STAND, HUStandState ESS_CROUCH]
   for i in range(length(stands))
     phys |> human_phys_getCollisionLinkData(stands[i], "weapon") <| $(var link : CollisionLinkData&)
       link.haveCollision = activateCollisionLinks
       return true
+
+[es(tag=gameClient, on_appear, track=(bipod__enabled, human_net_phys__isAiming), REQUIRE=hero)]
+def human_gun_collision_links_update(evt : Event;
+                                     bipod__enabled : bool;
+                                     human_net_phys__isAiming : bool;
+                                     var human_net_phys : HumanActor&)
+  update_gun_collision_links(human_net_phys, bipod__enabled, human_net_phys__isAiming)
+
+[es(tag=server, on_appear, track=(bipod__enabled, human_net_phys__isAiming))]
+def human_gun_collision_links_update_server(evt : Event;
+                                            bipod__enabled : bool;
+                                            human_net_phys__isAiming : bool;
+                                            var human_net_phys : HumanActor&)
+  update_gun_collision_links(human_net_phys, bipod__enabled, human_net_phys__isAiming)
 
 
 [es(tag=(gameClient, net), track=gun__firingModeIndex)]

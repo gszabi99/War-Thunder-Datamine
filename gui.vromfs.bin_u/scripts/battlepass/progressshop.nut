@@ -25,7 +25,7 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
@@ -242,7 +242,7 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let msgText = warningIfGold(
+    let text = warningIfGold(
       loc("onlineShop/needMoneyQuestion", {
           purchase = $"{goodsConfig.name} {goodsConfig.valueText}",
           cost = goodsConfig.cost.getTextAccordingToBalance() }),
@@ -254,8 +254,8 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
           this.disableBattlePassRows()
       }
     }, this)
-    let onCancel = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curGoodsIdx), this)
-    purchaseConfirmation("purchase_ask", msgText, callbackYes, onCancel)
+    let callbackNo = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curGoodsIdx), this)
+    purchaseConfirmation({id = "purchase_ask", text, callbackYes, callbackNo}, goodsConfig.cost)
   }
 
   function onRowBuy(_obj) {

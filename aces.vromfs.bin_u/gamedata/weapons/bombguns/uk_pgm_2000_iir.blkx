@@ -13,26 +13,22 @@
   "sound": "weapon.rocketgun_132",
   "tags": {},
   "rocket": {
-    "gunnerOpticsName": "PGM500_2000",
+    "gunnerOpticsName": "PGM500_2000_IR",
     "statType": "hydra",
     "caliber": 0.457,
     "length": 4.623,
     "WdK": [
-      0.1,
-      0.1,
-      0.1
+      2.5,
+      2.5,
+      2.5
     ],
     "CxK": 1.75,
-    "wingAreaMult": 1.65,
-    "finsAoaHor": 0.1,
+    "wingAreaMult": 4.25,
+    "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.05,
+    "distFromCmToStab": 0.6,
     "mass": 1060.0,
-    "massEnd": 1021.0,
-    "timeFire": 25.0,
-    "force": 3200.0,
-    "fireDelay": 2.5,
-    "timeLife": 200.0,
+    "timeLife": 220.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 1.0,
@@ -98,6 +94,14 @@
       -0.25,
       0.0
     ],
+    "propulsion0": {
+      "fireDelay": 0.5,
+      "impulse0": {
+        "time": 50.0,
+        "force": 2300.0,
+        "massLost": 50.0
+      }
+    },
     "arcadeProp": {
       "finsAoaHor": 0.18,
       "finsAoaVer": 0.18
@@ -112,19 +116,21 @@
       "uncageBeforeLaunch": true,
       "inertialNavigation": true,
       "indicateOnHud": false,
+      "reacquireTarget": true,
+      "lockMode": "LOAL+LOBL",
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
-        "rangeMax": 40000.0,
-        "rangeSurface": 40000.0,
+        "rangeMax": 60000.0,
+        "rangeSurface": 60000.0,
         "fov": 0.1,
         "gateWidth": 0.1,
         "minAngleToSun": 1.0,
         "lockAngleMax": 40.0,
-        "angleMax": 54.0,
-        "rateMax": 2.5,
+        "angleMax": 45.0,
+        "rateMax": 10.0,
         "prolongationTimeMax": 1.0,
-        "constantDesignationSourceTypeMask": 0,
+        "constantDesignationSourceType": "",
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
@@ -134,19 +140,35 @@
         "designationSourceType": "camera"
       },
       "guidanceAutopilot": {
-        "timeOut": 0.75,
-        "loftEnabled": true,
-        "loftElevation": 7.0,
-        "loftTargetElevation": -20.0,
-        "loftAngleToAccelMult": 10.0,
-        "loftTargetOmegaMax": 0.35,
+        "altitudeHoldEnabled": true,
+        "timeToHitToAltitude0": [
+          0.0,
+          800.0
+        ],
+        "altitudeHoldTargetElevation": -11.0,
+        "altitudeHoldTargetOmegaMax": 1.5,
+        "altitudeDiffToClimb": 0.2,
+        "altitudeRateRateToClimb": 0.15,
+        "climbDiffToAccelMult": 0.025,
+        "altitudeHoldAngleLimith": [
+          -10.0,
+          17.0
+        ],
+        "courseErrorAngleToAccelMult": 1.5,
+        "courseErrorFinalAngleCorrection": 1.25,
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 2.5,
-        "accelControlProp": 0.0175,
-        "accelControlIntg": 0.0345,
+        "accelControlProp": 0.091084,
+        "accelControlIntg": 0.24417,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0065
+        "accelControlDiff": 0.002668
+      },
+      "propulsionAutopilot": {
+        "propulsion0": {
+          "startTimeMin": 2.5,
+          "velocityMin": 210.0
+        }
       }
     },
     "stabilityRicochetModifier": {
@@ -537,6 +559,26 @@
       "stone_snow": {
         "fx": "hit_12_14mm_snow_ap"
       }
+    },
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -35.0,
+        35.0
+      ],
+      "verLimit": [
+        -45.0,
+        25.0
+      ],
+      "zoomMinMax": [
+        10.0,
+        3.0
+      ],
+      "rateMax": [
+        10.0,
+        10.0
+      ]
     }
   }
 }

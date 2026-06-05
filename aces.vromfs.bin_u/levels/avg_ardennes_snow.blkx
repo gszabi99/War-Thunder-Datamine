@@ -1,10 +1,12 @@
 {
-  "enableApex": true,
+  "enableApex": false,
   "apexWorkScale": 0.5,
   "z_far": 50000.0,
   "mandatoryLandquality": 1,
   "hmapLodCount": 4,
   "hmapDistanceMul": 4.5,
+  "customLevelMap": "avg_ardennes_snow_map*",
+  "customLevelTankMap": "avg_ardennes_snow_tankmap*",
   "mapCoord0": [
     -16384.0,
     -16384.0
@@ -63,56 +65,55 @@
   "numBorderCellsXNeg": 32,
   "numBorderCellsZPos": 32,
   "numBorderCellsZNeg": 32,
-  "dirt_type": "snow",
-  "heli_ground_effect": "snow",
-  "soundAmbientPath": "sounds/ambient",
-  "soundAmbientPathStudio": "aircraft/ambient",
-  "soundAmbientEvent": "global_amb_winter",
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
-  "weatherTypes": "gameData/environments/weather_types_winter_ground.blk",
-  "addWhiteTemp": 1300.0,
+  "weatherTypes": "gameData/environments/weather_types.blk",
   "lastclip_horizon": true,
   "water_level": 0.0,
   "average_ground_level": 300.0,
   "levelMapAltOffset": 400.0,
+  "land_translucency": "grassy",
   "puddlesPowerScale": 0.0,
   "puddlesSpread": 0.5,
-  "terraform": {
-    "diffuseTex": "underground_snow_soil_a_tex_d",
-    "diffuseAboveTex": "",
-    "detailRTex": "underground_snow_soil_a_tex_r",
-    "normalsTex": "underground_snow_soil_a_tex_n",
-    "digGroundAlpha": 6.1,
-    "digRoughness": 0.31
-  },
   "micro_details": {
     "micro_detail": [
       "microdetail_stone_a_tex_n*",
-      "microdetail_sand_c_tex_n*",
+      "microdetail_snow_a_tex_n*",
       "microdetail_sand_a_tex_n*",
       "microdetail_snow_a_tex_n*",
-      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
       "microdetail_grass_a_tex_n*",
       "microdetail_forest_floor_a_tex_n*",
-      "microdetail_fabric_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
       "microdetail_wood_b_tex_n*",
       "microdetail_metal_a_tex_n*",
       "microdetail_snow_a_tex_n*",
       "microdetail_generic_granules_a_tex_n*"
     ],
-    "land_micro_details_uv_scale": 1.11,
-    "microdetail_soil_a_tex_n*": {
-      "coloring": 0.9
+    "land_micro_details_uv_scale": 1.51,
+    "microdetail_sand_a_tex_n": {
+      "sparkles": 1.0
     },
-    "microdetail_sand_c_tex_n*": {
-      "coloring": 0.9
+    "microdetail_snow_a_tex_n": {
+      "sparkles": 1.0
+    },
+    "microdetail_snow_b_tex_n": {
+      "sparkles": 1.0
     }
+  },
+  "stars": {
+    "latitude": 50.0,
+    "longitude": 6.0,
+    "year": 1945,
+    "month": 1,
+    "day": 13
   },
   "shader_vars": {
     "ice_color_tex_scale": 1100.0,
-    "parallax_shadow_strength": 7.0,
+    "parallax_shadow_strength": 5.0,
     "parallax_shadow_length": 2.0,
-    "land_bump_scale": -0.71,
+    "ssao_affect_on_landmesh": 0.2,
+    "ssao_affect_on_objects": 0.35,
+    "land_bump_scale": 0.3,
     "land_smoothness_detect_color": [
       0.42,
       0.4,
@@ -129,7 +130,7 @@
     ],
     "min_land_height": 0.3,
     "envi_cover": true,
-    "envi_cover_intensity_map": "ardeness_snow_mask",
+    "envi_cover_intensity_map": "avg_ardennes_snow_mask",
     "envi_cover_intensity_map_left_top_right_bottom": [
       0.0,
       4096.0,
@@ -148,14 +149,445 @@
       0.941,
       0.0
     ],
-    "ssao_affect_on_landmesh": 0.35
+    "decal_transparency_on_biomes": [
+      60,
+      61,
+      62,
+      63
+    ],
+    "decal_transparency_on_biomes_sharpness": 1.0
   },
-  "stars": {
-    "latitude": 38.0,
-    "longitude": 4.0,
-    "year": 1942,
-    "month": 2,
-    "day": 1
+  "randomGrass": {
+    "density": 3.1,
+    "maxRadius": 160.0,
+    "sowPerlinFreq": 0.1,
+    "fadeDelta": 100.0,
+    "lodFadeDelta": 20.0,
+    "minLodDensity": 0.35,
+    "blendToLandDelta": 100.0,
+    "texSize": 1024,
+    "noise_first_rnd": 23.140692,
+    "noise_first_val_mul": 1.0,
+    "noise_first_val_add": 0.0,
+    "noise_second_rnd": 0.05,
+    "noise_second_val_mul": 1.0,
+    "noise_second_val_add": 0.0,
+    "directWindMul": 1.0,
+    "noiseWindMul": 1.0,
+    "windPerlinFreq": 50000.0,
+    "directWindFreq": 1.0,
+    "directWindModulationFreq": 1.0,
+    "windWaveLength": 100.0,
+    "windToColor": 0.2,
+    "helicopterHorMul": 2.0,
+    "helicopterVerMul": 1.0,
+    "helicopterToDirectWindMul": 2.0,
+    "helicopterFalloff": 0.001,
+    "useGrassMaskBiomes": true,
+    "grassMaskRedBiomeId": 8,
+    "grassMaskGreenBiomeId": 2,
+    "grassMaskBlueBiomeId": 4,
+    "netherlands_detailed_fields": "netherlands_detailed_fields_tex_m",
+    "normandy_forest_a": "netherlands_detailed_fields_tex_m",
+    "small_grass": {
+      "grass_grid_size": 0.1875,
+      "grass_distance": 100.0,
+      "hor_size_mul": 1.0,
+      "alphaSuffix": "_a",
+      "grass_types": {
+        "generic_grass_tall_a": {
+          "diffuse": "grass_generic_grass_tall_a_tex_d",
+          "normal": "grass_generic_grass_tall_a_tex_n",
+          "height": 0.2,
+          "ht_rnd_add": 0.35,
+          "hor_size": 0.35,
+          "hor_size_rnd_add": 0.2,
+          "color_mask_r_from": [
+            57,
+            81,
+            91,
+            255
+          ],
+          "color_mask_r_to": [
+            86,
+            104,
+            111,
+            255
+          ],
+          "color_mask_g_from": [
+            18,
+            38,
+            53,
+            255
+          ],
+          "color_mask_g_to": [
+            45,
+            77,
+            101,
+            255
+          ],
+          "color_mask_b_from": [
+            99,
+            112,
+            118,
+            255
+          ],
+          "color_mask_b_to": [
+            89,
+            102,
+            119,
+            255
+          ],
+          "density_from_weight_mul": 1.0,
+          "density_from_weight_add": 0.2,
+          "vertical_angle_add": -0.1,
+          "vertical_angle_mul": 0.1,
+          "tiffness": 0.05
+        },
+        "generic_grass_tall_b": {
+          "diffuse": "grass_generic_grass_tall_b_tex_d",
+          "normal": "grass_generic_grass_tall_b_tex_n",
+          "height": 0.25,
+          "ht_rnd_add": 0.2,
+          "hor_size": 0.25,
+          "hor_size_rnd_add": 0.05,
+          "color_mask_r_from": [
+            57,
+            81,
+            91,
+            255
+          ],
+          "color_mask_r_to": [
+            86,
+            104,
+            111,
+            255
+          ],
+          "color_mask_g_from": [
+            18,
+            38,
+            53,
+            255
+          ],
+          "color_mask_g_to": [
+            45,
+            77,
+            101,
+            255
+          ],
+          "color_mask_b_from": [
+            99,
+            112,
+            118,
+            255
+          ],
+          "color_mask_b_to": [
+            89,
+            102,
+            119,
+            255
+          ],
+          "density_from_weight_mul": 0.35,
+          "density_from_weight_add": 0.2,
+          "vertical_angle_add": -0.1,
+          "vertical_angle_mul": 0.1,
+          "tiffness": 0.05
+        },
+        "grass_wheat_dead_a": {
+          "diffuse": "grass_wheat_dead_tex_d",
+          "normal": "grass_wheat_dead_tex_n",
+          "height": 0.5,
+          "ht_rnd_add": 0.15,
+          "hor_size": 0.6,
+          "hor_size_rnd_add": 0.05,
+          "color_mask_r_from": [
+            60,
+            80,
+            94,
+            127
+          ],
+          "color_mask_r_to": [
+            83,
+            93,
+            99,
+            127
+          ],
+          "color_mask_g_from": [
+            51,
+            73,
+            88,
+            127
+          ],
+          "color_mask_g_to": [
+            36,
+            71,
+            97,
+            127
+          ],
+          "color_mask_b_from": [
+            78,
+            100,
+            113,
+            127
+          ],
+          "color_mask_b_to": [
+            67,
+            80,
+            89,
+            127
+          ],
+          "density_from_weight_mul": 0.3,
+          "density_from_weight_add": 0.3,
+          "vertical_angle_add": 0.0,
+          "vertical_angle_mul": 0.75,
+          "stiffness": 0.05
+        },
+        "generic_grass_low_a": {
+          "diffuse": "grass_generic_grass_tall_a_tex_d",
+          "normal": "grass_generic_grass_tall_a_tex_n",
+          "height": 0.25,
+          "size_lod_mul": 1.0,
+          "size_lod_wide_mul": 1.0,
+          "ht_rnd_add": 0.25,
+          "hor_size": 0.2,
+          "hor_size_rnd_add": 0.2,
+          "height_from_weight_mul": 0.95,
+          "height_from_weight_add": 0.05,
+          "density_from_weight_mul": 0.95,
+          "density_from_weight_add": 0.09,
+          "vertical_angle_add": 0.5,
+          "vertical_angle_mul": 0.1,
+          "color_mask_r_from": [
+            0,
+            0,
+            0,
+            65
+          ],
+          "color_mask_r_to": [
+            0,
+            0,
+            0,
+            90
+          ],
+          "color_mask_g_from": [
+            59,
+            67,
+            79,
+            90
+          ],
+          "color_mask_g_to": [
+            22,
+            54,
+            62,
+            90
+          ],
+          "color_mask_b_from": [
+            0,
+            0,
+            0,
+            79
+          ],
+          "color_mask_b_to": [
+            0,
+            0,
+            0,
+            73
+          ],
+          "tile_tc_x": 0.5,
+          "stiffness": 0.15,
+          "horizontal": false,
+          "underwater": false
+        }
+      },
+      "decals": {
+        "forest_a": {
+          "id": 10,
+          "generic_grass_low_a": 2.0,
+          "generic_grass_tall_b": 1.0,
+          "grass_wheat_dead_a": 1.0,
+          "generic_grass_tall_a": 1.0
+        },
+        "picea_forest_a": {
+          "id": 14,
+          "generic_grass_low_a": 2.0,
+          "generic_grass_tall_b": 1.0,
+          "grass_wheat_dead_a": 1.0,
+          "generic_grass_tall_a": 1.0
+        },
+        "courtyard_a": {
+          "id": 21,
+          "generic_grass_low_a": 2.0,
+          "generic_grass_tall_b": 1.0,
+          "grass_wheat_dead_a": 1.0,
+          "generic_grass_tall_a": 1.0
+        },
+        "roads_contour": {
+          "id": 42,
+          "generic_grass_low_a": 2.0,
+          "generic_grass_tall_b": 1.0,
+          "grass_wheat_dead_a": 1.0,
+          "generic_grass_tall_a": 1.0
+        }
+      }
+    },
+    "layer": [
+      {
+        "id": [
+          10,
+          14,
+          21,
+          42
+        ],
+        "res": "grass_wheat_a",
+        "density": 1.0,
+        "horScale": 0.7,
+        "horMinScale": 0.5,
+        "verScale": 0.5,
+        "verMinScale": 0.3,
+        "windMul": 0.001,
+        "radiusMul": 1.5,
+        "color_mask_r_from": [
+          58,
+          70,
+          72,
+          216
+        ],
+        "color_mask_r_to": [
+          75,
+          81,
+          92,
+          216
+        ],
+        "color_mask_g_from": [
+          51,
+          63,
+          71,
+          216
+        ],
+        "color_mask_g_to": [
+          55,
+          71,
+          85,
+          216
+        ],
+        "color_mask_b_from": [
+          86,
+          96,
+          105,
+          216
+        ],
+        "color_mask_b_to": [
+          53,
+          63,
+          71,
+          216
+        ]
+      },
+      {
+        "id": [
+          10,
+          14,
+          21,
+          42
+        ],
+        "res": "grass_fill_a",
+        "density": 2.5,
+        "horScale": 1.0,
+        "horMinScale": 0.7,
+        "verScale": 1.0,
+        "verMinScale": 0.7,
+        "windMul": 0.001,
+        "radiusMul": 2.0,
+        "color_mask_r_from": [
+          36,
+          52,
+          72,
+          235
+        ],
+        "color_mask_r_to": [
+          47,
+          72,
+          104,
+          235
+        ],
+        "color_mask_g_from": [
+          50,
+          62,
+          71,
+          255
+        ],
+        "color_mask_g_to": [
+          45,
+          65,
+          78,
+          255
+        ],
+        "color_mask_b_from": [
+          87,
+          108,
+          119,
+          255
+        ],
+        "color_mask_b_to": [
+          84,
+          102,
+          123,
+          255
+        ]
+      },
+      {
+        "id": [
+          10,
+          14,
+          21,
+          42
+        ],
+        "res": "grass_sedge_a",
+        "density": 1.0,
+        "horScale": 0.4,
+        "horMinScale": 0.3,
+        "verScale": 0.4,
+        "verMinScale": 0.3,
+        "windMul": 0.001,
+        "radiusMul": 2.0,
+        "color_mask_r_from": [
+          25,
+          55,
+          77,
+          235
+        ],
+        "color_mask_r_to": [
+          39,
+          67,
+          86,
+          235
+        ],
+        "color_mask_g_from": [
+          56,
+          67,
+          78,
+          255
+        ],
+        "color_mask_g_to": [
+          41,
+          53,
+          60,
+          255
+        ],
+        "color_mask_b_from": [
+          74,
+          91,
+          101,
+          255
+        ],
+        "color_mask_b_to": [
+          62,
+          75,
+          91,
+          255
+        ]
+      }
+    ]
   },
   "technicsSkins": {
     "groundSkin": [
@@ -164,8 +596,179 @@
     ]
   },
   "replaceRiDestrVfx": {
+    "ad_wood_big": {
+      "to": "ad_dust_snow"
+    },
     "ad_wood_small": {
-      "to": "ad_wood_snow_small"
+      "to": "ad_dust_snow"
+    },
+    "ad_haystack": {
+      "to": "ad_dust_snow"
+    },
+    "ad_dust_stucco": {
+      "to": "ad_dust_snow"
+    },
+    "ad_sand": {
+      "to": "ad_dust_snow"
+    },
+    "hit_12_14mm_red_brick_ap": {
+      "to": "hit_12_14mm_snow_ap"
+    },
+    "hit_12_14mm_red_brick_he": {
+      "to": "hit_12_14mm_snow_he"
     }
+  },
+  "overrideRiLodRange": {
+    "piano_a": {
+      "lod0": 35.0,
+      "lod1": 500.0
+    },
+    "bookcase": {
+      "lod0": 35.0,
+      "lod1": 500.0
+    },
+    "cabinet_a": {
+      "lod0": 35.0,
+      "lod1": 500.0
+    },
+    "bath_a": {
+      "lod0": 25.0,
+      "lod1": 500.0
+    },
+    "bed_a": {
+      "lod0": 35.0,
+      "lod1": 500.0
+    },
+    "table_writing_a": {
+      "lod0": 35.0,
+      "lod1": 500.0
+    },
+    "snowdrift_snow_lumps_a": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_snow_lumps_b": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_snow_lumps_c": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_a": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_b": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_c": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_d": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_f": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_g": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "snowdrift_h": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "stz_snowdrift_small_a": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "stz_snowdrift_small_b": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "stz_snowdrift_small_c": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "stz_snowdrift_small_d": {
+      "lod0": 100.0,
+      "lod1": 200.0,
+      "lod2": 400.0
+    },
+    "sunflower_rich_field_f": {
+      "lod0": 100.0,
+      "lod1": 4000.0
+    },
+    "sunflower_rich_field_g": {
+      "lod0": 100.0,
+      "lod1": 4000.0
+    },
+    "stone_fence_a": {
+      "lod0": 100.0,
+      "lod1": 400.0,
+      "lod2": 1500.0
+    },
+    "damaged_stone_fence_a": {
+      "lod0": 100.0,
+      "lod1": 400.0,
+      "lod2": 1500.0
+    },
+    "damaged_stone_fence_b": {
+      "lod0": 100.0,
+      "lod1": 400.0,
+      "lod2": 1500.0
+    },
+    "damaged_stone_fence_c": {
+      "lod0": 100.0,
+      "lod1": 400.0,
+      "lod2": 1500.0
+    }
+  },
+  "forceTexMQ": {
+    "tex": [
+      "piano_a_tex_n*",
+      "roof_inside_a_tex_n*",
+      "bookcase_a_tex_n*",
+      "cabinet_a_tex_n*",
+      "bath_a_tex_n*",
+      "bed_a_tex_n*",
+      "table_writing_a_tex_n*",
+      "stone_fences_atlas_a_tex_n*",
+      "tree_quercus_acutissima_bark_b_tex_d*",
+      "tree_picea_pungens_bark_a_snow_tex_d*",
+      "langer_21cm_morser_a_ammo_tex_n*",
+      "langer_21cm_morser_a_ammo_tex_d*"
+    ]
+  },
+  "forceTexLQ": {
+    "tex": [
+      "metal_bare_a_tex_d*",
+      "metal_bare_a_tex_n*",
+      "metal_painted_burned_a_tex_d*",
+      "metal_painted_burned_a_tex_n*",
+      "icicles_b_tex_n*",
+      "planks_n_beams_tex_d*",
+      "planks_n_beams_tex_n*",
+      "metal_sheet_b_tex_d*",
+      "metal_sheet_b_tex_n*"
+    ]
   }
 }

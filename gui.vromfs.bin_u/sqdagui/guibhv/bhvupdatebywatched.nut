@@ -13,6 +13,9 @@ local assertOnce = function(_uniqId, errorText) {
   throw(errorText)
 }
 
+local isScriptsIsUnloaded = false
+let isValidScripts = @() !isScriptsIsUnloaded
+
 let bhvUpdateByWatched = class {
   eventMask    = EV_ON_CMD
   valuePID     = dagui_propid_add_name_id("value")
@@ -38,8 +41,11 @@ let bhvUpdateByWatched = class {
     if ((subscriptions?.len() ?? 0) == 0)
       return
 
-    foreach (subscription in subscriptions)
-      subscription.watch.unsubscribe(subscription.updateObjectFunc)
+    foreach (subscription in subscriptions) {
+      let { watch, updateObjectFunc, isValid } = subscription
+      if (isValid())
+        watch.unsubscribe(updateObjectFunc)
+    }
   }
 
   function updateSubscriptions(obj, value) {
@@ -68,6 +74,7 @@ let bhvUpdateByWatched = class {
       subscriptions.append({
         watch = watch
         updateObjectFunc = updateObjectFunc
+        isValid = isValidScripts
       })
     }
 
@@ -79,4 +86,5 @@ replace_script_gui_behaviour("bhvUpdateByWatched", bhvUpdateByWatched)
 
 return {
   setAssertFunction = @(func) assertOnce = func  
+  setIsScriptsIsUnloaded = @() isScriptsIsUnloaded = true
 }

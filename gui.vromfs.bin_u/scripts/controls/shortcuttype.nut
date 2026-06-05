@@ -8,7 +8,7 @@ let { isAxisBoundToMouse, getComplexAxesId, isComponentsAssignedToSingleInputIte
   isShortcutMapped, isAxisMappedOnMouse, getMouseAxis } = require("%scripts/controls/shortcutsUtils.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { endsWith } = require("%sqstd/string.nut")
-let { isXInputDevice } = require("controls")
+let { isXInputDevice, getShortcutButtonName } = require("controls")
 let { CONTROL_TYPE, AXIS_MODIFIERS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let { NullInput } = require("%scripts/controls/input/nullInput.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
@@ -21,13 +21,10 @@ let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/contro
 let { getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
 let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { isPC } = require("%sqstd/platform.nut")
+let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
-function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {
-  let nullInput = NullInput()
-  nullInput.shortcutId = shortcutId
-  nullInput.showPlaceholder = showShortcutsNameIfNotAssign
-  return nullInput
-}
+let getNullInput = @(shortcutId, showShortcutsNameIfNotAssign)
+  NullInput(shortcutId, showShortcutsNameIfNotAssign)
 
 let imageRe = regexp2(@"^#[\w/_]*#[\w\d_]+")
 
@@ -153,6 +150,16 @@ g_shortcut_type._getDeviceAxisDescription <- function _getDeviceAxisDescription(
   return result
 }
 
+function getAccessKeyByInput(input) {
+  if (input?.deviceId == null)
+    return ""
+  if (input.deviceId == STD_KEYBOARD_DEVICE_ID)
+    return getShortcutButtonName(input.deviceId, input.buttonId)
+  if (input.deviceId == JOYSTICK_DEVICE_0_ID)
+    return gamepadIcons.getAccessKeyByIdx(input.buttonId)
+  return ""
+}
+
 g_shortcut_type.template <- {
   isMe = function (_shortcutId) { return false }
   isAssigned = function (_shortcutId, _preset = null) { return false }
@@ -205,6 +212,25 @@ g_shortcut_type.template <- {
     return bestInput
   }
 
+  getGuiAccessKeys = function(shortcutId) {
+    let inputs = this.getInputs({shortcutId})
+    if (inputs.len() == 0)
+      return ""
+
+    let keys = []
+    foreach (input in inputs) {
+      if (input?.elements) {
+        let innerKeys = []
+        foreach (button in input.elements)
+          innerKeys.append(getAccessKeyByInput(button))
+        keys.append(" ".join(innerKeys))
+        continue
+      }
+      keys.append(getAccessKeyByInput(input))
+    }
+    return " | ".join(keys)
+  }
+
 }
 
 enumsAddTypes(g_shortcut_type, {
@@ -231,7 +257,7 @@ enumsAddTypes(g_shortcut_type, {
       foreach (strokeData in rawShortcutData) {
         let buttons = []
         for (local i = 0; i < strokeData.btn.len(); ++i)
-          buttons.append(Button(strokeData.dev[i], strokeData.btn[i], preset))
+          buttons.append(Button(strokeData.dev[i], strokeData.btn[i], strokeData.activationType, preset))
 
         if (buttons.len() > 1)
           inputs.append(Combination(buttons))
@@ -266,7 +292,7 @@ enumsAddTypes(g_shortcut_type, {
           continue
 
         for (local i = 0; i < activeAxis[0].btn.len(); ++i)
-          buttons.append(Button(activeAxis[0].dev[i], activeAxis[0].btn[i], preset))
+          buttons.append(Button(activeAxis[0].dev[i], activeAxis[0].btn[i], activeAxis[0].activationType, preset))
 
         if (buttons.len() > 0)
           break

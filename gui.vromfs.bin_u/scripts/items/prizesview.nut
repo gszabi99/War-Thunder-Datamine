@@ -510,7 +510,7 @@ function getFilteredListsData(prizesList, isFitFunction) {
   }
 }
 
-function findAndStackPrizeItem(prize, stackList, stackLevel) {
+function findAndStackPrizeItem(prize, stackList, stackLevel) { 
   let item = findItemById(prize?.item)
   if (!item)
     return true

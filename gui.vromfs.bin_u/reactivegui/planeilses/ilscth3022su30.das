@@ -21,6 +21,7 @@ require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
 require %rGui.utils.helpers_common
 require %rGui.utils.weaponslots_common
+require Localization
 
 // Adjust this value for each ILS to keep zero line on the horizon when pitching
 let hudFovDeg = float2(33)

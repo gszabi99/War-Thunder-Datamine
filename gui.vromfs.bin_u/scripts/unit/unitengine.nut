@@ -17,18 +17,16 @@ function getUnitTags(unitName) {
 
 function addOnceToCache(unitName, dmPart, unitBlk, unitTags) {
   let info = getInfoBlk(dmPart, unitTags, unitBlk)
-  let { manufacturer = "", model = ""} = info
-  let key = $"{manufacturer} {model}"
+  let { model = "" } = info
 
-  let data = unitEngineCache[unitName].findvalue(@(val) val.key == key)
+  let data = unitEngineCache[unitName].findvalue(@(val) val.key == model)
   if (data != null)
     data.count++
   else
     unitEngineCache[unitName].append({
-      key
+      key = model
       dmPart
       count = 1
-      manufacturer
       model
     })
 }
@@ -57,12 +55,11 @@ function findAirEngine(unitName) {
 function getUnitEngineMarkup(unitName) {
   dmViewer.updateUnitInfo(unitName)
   let engines = findAirEngine(unitName).map(function(data) {
-    let { dmPart, count, manufacturer, model } = data
+    let { dmPart, count, model } = data
     let info = dmViewer.getPartTooltipInfo(null, { name = dmPart, viewMode = DM_VIEWER_XRAY, isAddEngineName = false })
 
     let itemName = " ".join([
         count > 1 ? $"{count}x " : ""
-        manufacturer != "" ? loc($"engine_manufacturer/{manufacturer}") : ""
         model != "" ? loc($"engine_model/{model}") : ""
       ], true)
 

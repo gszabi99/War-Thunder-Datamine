@@ -1,18 +1,24 @@
 @const shortcutImageHeight: 0.04@shHud;
 
-holdButtonSign {
-  position:relative;
-  size: 1@sIco, 1@sIco;
-  pos: 0, ph/2 - h/2;
-  background-color:@white;
-  background-image:#ui/gameuiskin#hold_sign.svg;
-  background-svg-size: 1@sIco, 1@sIco;
+combinationBackground {
+  padding:0;
+  background-color:@transparent;
+  background-position:6;
+  background-repeat:expand;
 }
 
-holdButtonSign[isCombination=yes] {
-  size: 1@cIco, 1@cIco;
-  background-svg-size: 1@cIco, 1@cIco;
-  margin-right: 5*@sf/@pf;
+combination[hasActivationTypeImg=yes] > combinationBackground {
+  background-image:#ui/gameuiskin#hotkey_combo_bg_hud.svg;
+  background-color:@white;
+  padding:0.1@shortcutImageHeight;
+}
+
+activationTypeImg {
+  position:relative;
+  size: 0.8@shortcutImageHeight, 0.8@shortcutImageHeight;
+  top: ph/2 - h/2;
+  background-color:@white;
+  background-svg-size: w, h;
 }
 
 keyboardButton {
@@ -25,6 +31,11 @@ keyboardButton {
   background-position:13, 0;
   background-repeat:expand;
   padding:13, 0;
+  margin:2@dp, 0;
+}
+
+combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  height:0.8@shortcutImageHeight;
 }
 
 keyboardButtonText {
@@ -35,26 +46,33 @@ keyboardButtonText {
 
 gamepadButton {
   size: 1@shortcutImageHeight, 1@shortcutImageHeight;
-  background-svg-size: 1@shortcutImageHeight, 1@shortcutImageHeight;
+  background-svg-size: w, h;
   background-color:@white;
   background-repeat:aspect-ratio;
 }
 
 .fastshortcut gamepadButton {
   size: 1@cIco, 1@cIco;
-  background-svg-size: 1@cIco, 1@cIco;
 }
 
 
 shortcutAxis {
   size: 0.06@shHud, 0.06@shHud;
-  background-svg-size: 0.06@shHud, 0.06@shHud;
+  background-svg-size: w, h;
   background-color:@white;
+}
+
+combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis {
+  size: 0.048@shHud, 0.048@shHud;
 }
 
 hudHint[hasGamepadButtonSize=yes] shortcutAxis {
   size: 1@shortcutImageHeight, 1@shortcutImageHeight;
-  background-svg-size: 1@shortcutImageHeight, 1@shortcutImageHeight;
+}
+
+combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+hudHint[hasGamepadButtonSize=yes] combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis {
+  size: 0.8@shortcutImageHeight, 0.8@shortcutImageHeight;
 }
 
 loadingHint keyboardButton,
@@ -63,6 +81,11 @@ subtitlesHint keyboardButton {
   height:1@cIco;
   background-position:6, 0;
   padding: 6@dp, 0;
+}
+
+loadingHint combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton,
+subtitlesHint combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  height:0.8@cIco;
 }
 
 loadingHint keyboardButtonText,
@@ -79,6 +102,11 @@ loadingHint[smallFont=yes] keyboardButton {
   padding: 6@dp, 0;
 }
 
+chatHint combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton,
+loadingHint[smallFont=yes] combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  height:0.8@sIco;
+}
+
 chatHint gamepadButton,
 chatHint shortcutAxis,
 loadingHint gamepadButton,
@@ -86,13 +114,40 @@ loadingHint shortcutAxis,
 subtitlesHint gamepadButton,
 subtitlesHint shortcutAxis {
   size: 1@cIco, 1@cIco;
-  background-svg-size: 1@cIco, 1@cIco;
+}
+
+chatHint combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+chatHint combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis,
+loadingHint combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+loadingHint combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis,
+subtitlesHint combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+subtitlesHint combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis,
+loadingHint activationTypeImg,
+subtitlesHint activationTypeImg {
+  size: 0.8@cIco, 0.8@cIco;
+}
+
+chatHint combination[hasActivationTypeImg=yes] > combinationBackground,
+loadingHint combination[hasActivationTypeImg=yes] > combinationBackground,
+subtitlesHint combination[hasActivationTypeImg=yes] > combinationBackground {
+  background-image:#ui/gameuiskin#hotkey_combo_bg.svg;
+  padding:0.1@cIco;
 }
 
 loadingHint[smallFont=yes] gamepadButton,
 loadingHint[smallFont=yes] shortcutAxis {
   size: 1@sIco, 1@sIco;
-  background-svg-size: 1@sIco, 1@sIco;
+}
+
+loadingHint[smallFont=yes] combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+loadingHint[smallFont=yes] combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis,
+chatHint activationTypeImg,
+loadingHint[smallFont=yes] activationTypeImg {
+  size: 0.8@sIco, 0.8@sIco;
+}
+
+loadingHint[smallFont=yes] combination[hasActivationTypeImg=yes] > combinationBackground {
+  padding:0.1@sIco;
 }
 
 chatHint keyboardButtonText,
@@ -108,6 +163,10 @@ action_item_content keyboardButton {
   padding: 5, 0;
 }
 
+action_item_content combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  height:0.016@shHud;
+}
+
 action_item_content keyboardButtonText {
   font: @fontHudTiny;
   pos:pw/2 - w/2, ph/2 - h/2;
@@ -118,5 +177,18 @@ second_action_shortcuts shortcutAxis,
 action_item_content gamepadButton,
 action_item_content shortcutAxis {
   size: 0.03@shHud, 0.03@shHud;
-  background-svg-size: 0.03@shHud, 0.03@shHud;
+}
+
+second_action_shortcuts combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+second_action_shortcuts combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis,
+action_item_content combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+action_item_content combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis,
+action_item_content activationTypeImg,
+second_action_shortcuts activationTypeImg {
+  size: 0.024@shHud, 0.024@shHud;
+}
+
+second_action_shortcuts combination[hasActivationTypeImg=yes] > combinationBackground,
+action_item_content combination[hasActivationTypeImg=yes] > combinationBackground {
+  padding:0.003@shHud;
 }

@@ -237,7 +237,10 @@ function getGameModeIdsByEconomicNameWithoutTags(economicName, tagsToEcxlude) {
       continue
 
     let tag = gm?.tag ?? ""
-    tagsToEcxlude.each(@(t) !startswith(tag, t) ? res.append(id) : null)
+    tagsToEcxlude.each(function(t) {
+      if (!startswith(tag, t))
+        res.append(id)
+    })
   }
   return res
 }

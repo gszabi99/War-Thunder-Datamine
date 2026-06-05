@@ -280,12 +280,7 @@ function mkTankCrewMemberDesc(partType, params, commonData) {
 
 let AFTERBURNER_CHAMBER = 3
 
-function getEngineModelName(infoBlk) {
-  return " ".join([
-    infoBlk?.manufacturer ? loc($"engine_manufacturer/{infoBlk.manufacturer}") : ""
-    infoBlk?.model ? loc($"engine_model/{infoBlk.model}") : ""
-  ], true)
-}
+let getEngineModelName = @(infoBlk) infoBlk?.model ? loc($"engine_model/{infoBlk.model}") : ""
 
 function mkEngineDesc(_partType, params, commonData) {
   let { unitBlk, getUnitFmBlk, simUnitType, findAnyModEffectValueBlk,
@@ -487,13 +482,9 @@ function mkTransmissionDesc(_partType, _params, commonData) {
   let desc = []
   let info = unitBlk?.VehiclePhys.mechanics
   if (info != null) {
-    let manufacturer = info?.manufacturer
-      ? loc($"transmission_manufacturer/{info.manufacturer}",
-        loc($"engine_manufacturer/{info.manufacturer}", ""))
-      : ""
     let model = info?.model ? loc($"transmission_model/{info.model}", "") : ""
     let props = info?.type ? utf8ToLower(loc($"transmission_type/{info.type}", "")) : ""
-    desc.append("".concat(" ".join([ manufacturer, model ], true),
+    desc.append("".concat(model,
       props == "" ? "" : loc("ui/parentheses/space", { text = props })))
 
     let maxSpeed = getProp_maxSpeed(commonData)
@@ -756,11 +747,9 @@ function mkAircraftFuelTankDesc(partType, params, commonData) {
   let { getAircraftFuelTankPartInfo } = commonData
   let partName = params.name
   let desc = []
-  local partLocId = partType
+  let partLocId = partType
   let tankInfoTable = getAircraftFuelTankPartInfo(commonData, partName)
   if (tankInfoTable != null) {
-    if (tankInfoTable?.manufacturer)
-      partLocId = tankInfoTable.manufacturer
     let tankInfo = []
     if ("protected" in tankInfoTable)
       tankInfo.append(loc(tankInfoTable.protected ? "fuelTank/selfsealing" : "fuelTank/not_selfsealing"))

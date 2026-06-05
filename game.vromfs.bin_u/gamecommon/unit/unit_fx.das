@@ -1,7 +1,6 @@
 require ecs
 require Unit
 require UnitFx
-require DmFire
 require WTDamageModel
 require %game.utils.utils_common
 require %game.dm.fire_system_events

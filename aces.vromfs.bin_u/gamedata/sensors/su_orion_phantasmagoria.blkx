@@ -108,10 +108,11 @@
   },
   "signals": {
     "search": {
-      "aircraftAsTarget": false,
+      "aircraftAsTarget": true,
       "groundVehiclesAsTarget": true,
       "shipsAsTarget": true,
       "detectWeapon": false,
+      "targetId": true,
       "groundClutter": false,
       "rangeFinder": false,
       "friendFoeId": true,
@@ -119,15 +120,18 @@
       "showCScope": true
     },
     "track": {
-      "aircraftAsTarget": false,
+      "aircraftAsTarget": true,
       "groundVehiclesAsTarget": true,
       "shipsAsTarget": true,
       "detectWeapon": false,
+      "targetId": [
+        true,
+        true
+      ],
       "groundClutter": false,
       "rangeFinder": false,
       "track": true,
-      "angularAccuracy": 0.06,
-      "targetId": true
+      "angularAccuracy": 0.06
     }
   },
   "scanPatternSets": {

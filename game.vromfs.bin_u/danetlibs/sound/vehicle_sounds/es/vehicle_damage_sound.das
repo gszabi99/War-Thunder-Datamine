@@ -13,10 +13,12 @@ def vehicle_damage_sound_explosion_fatal(evt : Event;
                                          @shared_comp vehicle_damage_sound__paths : Object;
                                          sound_tags : Object;
                                          is_watched_sound : bool;
-                                         transform : float3x4)
+                                         transform : float3x4;
+                                         vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
   if sound_preset__isLoaded
-    sound_player_common::play_path("destroy", vehicle_damage_sound__paths, sound_tags, is_watched_sound, transform[3])
-
+    var handle = play_path("destroy", vehicle_damage_sound__paths, sound_tags, is_watched_sound, transform[3], false)
+    attach_to_blob(handle, vehicle_sound_occlusion__blob)
+    abandon(handle)
 
 [es(tag=sound, track=isExploded, REQUIRE=vehicleSound)]
 def vehicle_damage_sound_explode(evt : Event; eid : EntityId;

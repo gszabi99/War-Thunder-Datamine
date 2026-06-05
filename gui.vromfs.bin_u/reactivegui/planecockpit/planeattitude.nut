@@ -1,5 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 let DataBlock = require("DataBlock")
+let { tryLoadBlk } = require("blkLoad")
 let { BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
@@ -8,7 +9,7 @@ function planeAttitude(pos, size) {
 
   let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
   let fmBlk = DataBlock()
-  fmBlk.tryLoad(fileName) 
+  tryLoadBlk(fmBlk, fileName)
 
   let mfdBlk = fmBlk.getBlockByName("cockpit")?.getBlockByName("multifunctionDisplays")
   if (mfdBlk !=  null) {

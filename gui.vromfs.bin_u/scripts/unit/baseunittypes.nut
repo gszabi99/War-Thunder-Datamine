@@ -55,6 +55,7 @@ return {
     canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     wheelmenuAxis = [ "wheelmenu_x", "wheelmenu_y" ]
     demonstratedShellOption = USEROPT_SHOW_DEMONSTRATED_SHELL
+    hasGraphicsPreset = true
   }
 
   TANK = {
@@ -86,6 +87,7 @@ return {
     canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     wheelmenuAxis = [ "gm_wheelmenu_x", "gm_wheelmenu_y" ]
     demonstratedShellOption = USEROPT_SHOW_DEMONSTRATED_SHELL_TANK
+    hasGraphicsPreset = true
   }
 
   SHIP = {
@@ -118,6 +120,7 @@ return {
     canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     bulletSetsQuantity = BULLETS_SETS_QUANTITY
     wheelmenuAxis = [ "ship_wheelmenu_x", "ship_wheelmenu_y" ]
+    hasGraphicsPreset = true
   }
 
   HELICOPTER = {
@@ -202,5 +205,6 @@ return {
     modClassOrder = ["weapon", "equipment_grenade", "equipment_special", "equipment_common"]
     wheelmenuAxis = [ "human_wheelmenu_x", "human_wheelmenu_y" ]
     isDmViewerHidden = true
+    hasGraphicsPreset = true
   }
 }

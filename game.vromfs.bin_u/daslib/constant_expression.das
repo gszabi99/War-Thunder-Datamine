@@ -12,7 +12,7 @@ module constant_expression shared private
 
 
 
-require ast
+require daslib/ast
 require daslib/ast_boost
 require daslib/strings_boost
 require daslib/templates_boost
@@ -31,7 +31,7 @@ class ConstExprAnnotation : AstFunctionAnnotation {
     
     
     
-    def override verifyCall(var call : smart_ptr<ExprCallFunc>; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
+    def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         for (aa in args) {
             if (aa.basicType == Type.tBool) {
                 for (ca, ce in call.func.arguments, call.arguments) {
@@ -49,7 +49,7 @@ class ConstExprAnnotation : AstFunctionAnnotation {
 }
 
 [macro_function]
-def public isConstantExpression(expr : ExpressionPtr) : bool {
+def public isConstantExpression(expr : Expression?) : bool {
     
     if (expr is ExprRef2Value) {
         return isConstantExpression((expr as ExprRef2Value).subexpr)
@@ -70,7 +70,7 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
     
     
     
-    def override transform(var expr : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
+    def override transform(var expr : ExprCallFunc?; var errors : das_string) : Expression? {
         macro_verify(expr.func != null, compiling_program(), expr.at, "expecting inferred function")
         var argi : array<int>
         var anni = -1
@@ -85,7 +85,7 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
                                 if (arg.bValue) {
                                     compiling_program() |> macro_error(expr.at, "function {expr.func.name} argument {arg.name} is not a compilation time constant")
                                 }
-                                return <- default<ExpressionPtr>
+                                return null
                             }
                             argi |> push(fidx)
                         }
@@ -97,21 +97,23 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
         argi |> sort_unique
         argi |> reverse
         if (empty(argi)) {
-            return <- default<ExpressionPtr>
+            return null
         }
-        var inscope func_copy <- clone_function(expr.func)
-        var func_name = "{func_copy.name}`constant_expression"
-        for (i in argi) {
-            let fhash = hash(describe(expr.arguments[i]))
-            func_name += "`{fhash}"
+        var func_copy = clone_function(expr.func)
+        let func_name = build_string() $(var w) {
+            w |> write("{func_copy.name}`constant_expression")
+            for (i in argi) {
+                let fhash = hash(describe(expr.arguments[i]))
+                w |> write("`{fhash}")
+            }
         }
         func_copy.name := func_name
         if (expr.func.fromGeneric != null) {
             func_copy.body := null
             func_copy.result := null
             unsafe {
-                func_copy.body <- clone_expression(expr.func.fromGeneric.body)
-                func_copy.result <- clone_type(expr.func.fromGeneric.result)
+                func_copy.body = clone_expression(expr.func.fromGeneric.body)
+                func_copy.result = clone_type(expr.func.fromGeneric.result)
             }
         }
 
@@ -127,12 +129,12 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
         func_copy.flags |= FunctionFlags.generated
         func_copy.annotations |> erase(anni)
         compiling_module() |> add_function(func_copy)
-        var inscope new_call <- clone_expression(expr)
+        var new_call = clone_expression(expr)
         var ncall = new_call as ExprCall
         ncall.name := func_name
         for (i in argi) {
             ncall.arguments |> erase(i)
         }
-        return <- new_call
+        return new_call
     }
 }

@@ -20,6 +20,7 @@ require %appGame.wt_events
 require %appGame.infantry.es.human_weap_common
 require %appGame.infantry.es.human_use_object_common
 require %appGame.infantry.es.camera_common
+require %appGame.infantry.es.vehicle.vehicle_events
 require Unit
 require DagorSystem
 require DagorDataBlock
@@ -569,6 +570,7 @@ def human_input_es(info : UpdateStageUpdateInput;
                    human_input__aimingSensMult : float = 1.0f;
                    human_input__concussionSensMult : float = 1.0;
                    human_input__crawlingReject : bool = true;
+                   isInVehicle : bool = false;
                    camera_input__disabled : bool = false;
                    human_input__resetSprintMovementThreshold : float = DEFAULT_RESET_SPRINT_MOVEMENT_THRESHOLD;
                    human_input__resetSprintMoveThreshold : float = DEFAULT_RESET_SPRINT_MOVE_THRESHOLD;
@@ -642,6 +644,10 @@ def human_input_es(info : UpdateStageUpdateInput;
 
   var shouldUpdateWalkDir = true
 
+  if isInVehicle
+    shouldUpdateWalkDir = false
+    phys.producedCT |> human_control_state_set_walk_dir(float2(0, 0))
+
   let isAimBlockedByGun = !(get_bool(human_weap__currentGunEid, "gun__canAim") ?? true)
   var aim = (is_shortcut_down(ShortcutEventId.ID_HUMAN_AIM) || human_input__forceAim) && !isAimBlockedByGun
 
@@ -702,6 +708,8 @@ def human_input_es(info : UpdateStageUpdateInput;
   let isSprinting = isSprintAction && isSprintingMove || isDoubleSprintAction
 
   var sprint = isSprinting && !aim && !human_input__sprintHoldReset
+  if isInVehicle
+    sprint = false
 
   let mainAttackIsMelee = get_bool(human_weap__currentGunEid, "gun__melee") ?? false
   if is_shortcut_down(ShortcutEventId.ID_HUMAN_SHOOT) && human_input__canShoot
@@ -916,6 +924,15 @@ def human_crew__vehicle_input_es(evt : EventOnKeyDown; eid : EntityId; ownedByPl
           print("ENTER VEHICLE {eid}->{isect.eid}")
           break
 
+[es(tag=input, REQUIRE=hero)]
+def human_take_driver_seat_input_es(evt : EventOnKeyDown;
+                                    eid : EntityId;
+                                    human_anim__vehicleSelected : EntityId)
+  if evt.eventId != int(ShortcutEventId.ID_HUMAN_DRIVER_SEAT)
+    return
+  if human_anim__vehicleSelected == INVALID_ENTITY_ID
+    return
+  sendEvent(human_anim__vehicleSelected, CmdVehiclePlaceDriverSeat(eid = eid))
 
 def private hud_show_message(text : string; addKey : string = ""; addValue : auto(TT) = -1)
   using() <| $(var eventData : DataBlock)

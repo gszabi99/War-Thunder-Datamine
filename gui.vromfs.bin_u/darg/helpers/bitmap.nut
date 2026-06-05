@@ -2,7 +2,9 @@ from "%darg/ui_imports.nut" import *
 from "base64" import encodeBlob
 from "iostream" import blob
 
-function mkBitmapPicture(w, h, fillcb, prefix="") {
+function mkBitmapPicture(width: number, height: number, fillcb: function|null, prefix: string = "") {
+  let w = width.tointeger()
+  let h = height.tointeger()
   const HEADER_SIZE = 18
   let BITMAP_SIZE = w*h*4
 
@@ -58,7 +60,9 @@ let cache = {}
 local maxCachedSize = sw(15) * sh(15)
 local isScriptsLoading = false
 
-function mkBitmapPictureLazy(w, h, fillCb, prefix = "") {
+function mkBitmapPictureLazy(width: number, height: number, fillCb: function|null, prefix: string = "") {
+  let w = width.tointeger()
+  let h = height.tointeger()
   if (w * h > maxCachedSize)
     logerr($"Queued mkBitmapPictureLazy has size = {w}*{h} = {w*h} bigger than sw(15) * sh(15) = {maxCachedSize}")
   return function() {

@@ -22,8 +22,6 @@
   "support_unit_class": "structures/ussr_122mm_m30",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
-  "trailerModelName": "tankModels/uk_a_22f_mk_7_churchill_crocodile_trailer",
-  "hookName": "bone_hook",
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -39,13 +37,12 @@
   "minDistBetween": 10.0,
   "expClass": "exp_heavy_tank",
   "mass": 50000.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "DamageParts": {
@@ -127,7 +124,20 @@
       },
       "ex_decor_01_dm": {
         "armorThickness": 12.7
-      }
+      },
+      "turret_05_front_dm": {
+        "armorThickness": 8.0
+      },
+      "turret_04_top_dm": {
+        "armorThickness": 8.0
+      },
+      "turret_05_back_dm": {},
+      "turret_03_bottom_dm": {},
+      "turret_04_bottom_dm": {},
+      "turret_05_side_dm": {},
+      "turret_03_front_dm": {},
+      "turret_03_back_dm": {},
+      "ex_armor_01_dm": {}
     },
     "mask": {
       "armorClass": "CHA_tank",
@@ -508,6 +518,10 @@
         "armorThrough": 3.0
       },
       "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
       }
@@ -1837,9 +1851,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1848,7 +1860,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
@@ -1935,7 +1946,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_gun_twin",
           "gun": "bone_mg_gun_twin",
@@ -1954,7 +1964,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "special",
         "blk": "gameData/Weapons/groundModels_weapons/churchill_flamethrower.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_02",
@@ -1969,9 +1979,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1980,7 +1988,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_h_01",
           "gun": "bone_mg_v_01",
@@ -2224,6 +2231,8 @@
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.35,
       "wheel_l_drive": 0.35,
+      "wheel_r_12": 0.45,
+      "wheel_l_12": 0.45,
       "offsets": {
         "wheel_l_01": [
           0.0,
@@ -2244,6 +2253,86 @@
           0.0,
           0.0,
           0.04
+        ]
+      },
+      "wheels": {
+        "wheel_r_12": true,
+        "wheel_l_12": true
+      }
+    },
+    "SubVehicles": {
+      "trailer": {
+        "nodeName": "root_01",
+        "Mass": {
+          "Empty": 5500.0,
+          "Fuel": 500.0,
+          "TakeOff": 6000.0,
+          "momentOfInertia": [
+            2.0,
+            2.0,
+            5.0
+          ],
+          "CenterOfGravity": [
+            0.2,
+            0.4,
+            0.0
+          ],
+          "CenterOfGravityClampY": [
+            0.0,
+            0.7
+          ],
+          "AdvancedMass": false,
+          "trackMass": 40.0,
+          "engineInertialMass": 400.0
+        },
+        "collisionProps": {
+          "cls_turret_03": "convex_hull"
+        }
+      },
+      "hook": {
+        "nodeName": "bone_hook",
+        "tracked": false,
+        "Mass": {
+          "Empty": 550.0,
+          "Fuel": 50.0,
+          "TakeOff": 6000.0,
+          "momentOfInertia": [
+            2.0,
+            2.0,
+            5.0
+          ],
+          "CenterOfGravity": [
+            -0.02,
+            0.0,
+            0.0
+          ],
+          "AdvancedMass": false,
+          "trackMass": 0.0,
+          "engineInertialMass": 0.0
+        }
+      }
+    },
+    "Fastenings": {
+      "fastening_main_and_hook": {
+        "nodeName": "bone_hook",
+        "partB": "hook",
+        "minAngle": 100.0,
+        "angLimitPushBack": 0.0015,
+        "freeAxisA": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "fastening_hook_and_trailer": {
+        "nodeName": "bone_hook_02",
+        "partA": "hook",
+        "partB": "trailer",
+        "minAngle": 100.0,
+        "freeAxisA": [
+          0.0,
+          0.0,
+          1.0
         ]
       }
     }
@@ -3152,11 +3241,13 @@
     "tank_medical_kit_expendable": {
       "image": "!#ui/gameuiskin#tank_reinforcement_uk.avif"
     },
-    "75mm_britain_APCBC": {},
-    "75mm_britain_HE": {},
-    "75mm_britain_APCBC_ammo_pack": {},
     "75mm_us_M89_Smoke": {},
-    "75mm_us_M89_Smoke_ammo_pack": {},
+    "75mm_britain_HE": {},
+    "75mm_britain_APCBC": {},
+    "75mm_us_M89_Smoke_ammo_pack": {
+      "tier": 1
+    },
+    "75mm_britain_APCBC_ammo_pack": {},
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "modClass": "protection",
@@ -3179,9 +3270,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3190,7 +3279,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
@@ -3277,7 +3365,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_gun_twin",
                 "gun": "bone_mg_gun_twin",
@@ -3296,7 +3383,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "machinegun",
+              "triggerGroup": "special",
               "blk": "gameData/Weapons/groundModels_weapons/churchill_flamethrower.blk",
               "emitter": "bone_mg_v_01",
               "flash": "emtr_mg_flame_02",
@@ -3311,9 +3398,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3322,7 +3407,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_h_01",
                 "gun": "bone_mg_v_01",
@@ -3363,9 +3447,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3374,7 +3456,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_grenade",
                 "gun": "bone_grenade"

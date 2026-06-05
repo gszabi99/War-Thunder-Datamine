@@ -2,7 +2,7 @@ require ecs
 require soundEvent
 require sound_utils.modules.sound_player_common
 require sound_utils.modules.sound_control_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 require HumanPhys
 require DagorSystem
 

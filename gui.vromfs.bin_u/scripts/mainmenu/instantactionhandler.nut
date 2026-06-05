@@ -89,7 +89,7 @@ let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd
 let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { isTutorialBeforeCountrySelect, needShowTutorial, reqFirstCountryChoice,
+let { needShowTutorial, reqFirstCountryChoice,
   saveShowedTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 
@@ -1006,10 +1006,9 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function canRunNoviceTutor() {
     return getPvpRespawns() == 0
-      || (isTutorialBeforeCountrySelect()
-            && !needShowTutorial("unitTypeChoice", 1)
-            && !needShowTutorial("countryChoice", 1)
-            && !needShowTutorial("takeUnit", 1))
+      || (!needShowTutorial("unitTypeChoice", 1)
+          && !needShowTutorial("countryChoice", 1)
+          && !needShowTutorial("takeUnit", 1))
   }
 
   function checkNoviceTutor() {

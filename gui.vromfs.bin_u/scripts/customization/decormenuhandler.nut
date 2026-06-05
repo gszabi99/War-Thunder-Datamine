@@ -21,6 +21,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
+let { FAVORITE_CATEGORY_ID } = require("%scripts/customization/decoratorFavoritesStorage.nut")
 
 let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -54,6 +55,18 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
     this.currentSeenListId = this.curDecorType.name == "DECALS" ? SEEN.DECALS : SEEN.DECORATORS
     this.currentSeenList = seenList.get(this.currentSeenListId)
     this.hideUnlockInfoList = hideUnlockInfoIds
+  }
+
+  function getFavoriteDecorators() {
+    let favoritesIds = this.curDecorType.getFavorites()
+    let list = []
+    foreach (decorId in favoritesIds) {
+      let decorator = getDecorator(decorId, this.curDecorType)
+      if (decorator == null)
+        continue
+      list.append(decorator)
+    }
+    return list
   }
 
   function prepareDecoratorsCache(decorCache) {
@@ -109,6 +122,13 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
         unseenIcon = bhvUnseen.makeConfigStr(this.currentSeenListId, subListId)
       })
     }
+    categories.append({
+      id = $"category_{FAVORITE_CATEGORY_ID}"
+      headerText = $"#decor/category/{FAVORITE_CATEGORY_ID}"
+      categoryId = FAVORITE_CATEGORY_ID
+      groupId = "other"
+      hasGroups = false
+    })
 
     let data = handyman.renderCached(this.categoryTpl, { categories })
     let listObj = this.scene.findObject("categories_list")
@@ -130,6 +150,8 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let data = this.generateDecalCategoryContent(categoryObj.categoryId, categoryObj.groupId)
     this.guiScene.replaceContentFromText(decorListObj, data, data.len(), this)
+    if (decorListObj.childrenCount() == 0)
+      return
     decorListObj.getChild(decorListObj.getValue()).selected = "yes"
   }
 
@@ -231,7 +253,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
       return null
 
     let idx = listObj.getValue()
-    if (idx == -1)
+    if ((idx == -1) || (listObj.childrenCount() == 0))
       return null
 
     return listObj.getChild(idx)
@@ -262,7 +284,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
 
     if (!isGroupList) {
       let decorId = this.preSelectDecorId ?? this.curSlotDecorId
-      let decor = getDecorator(decorId, this.curDecorType)
+      let decor = getDecorator(decorId, this.curDecorType, this.curUnit?.unitType.tag)
       let index = (decor && decor.category == categoryId) ? decor.catIndex : 0
       contentListObj.setValue(index)
     }
@@ -285,6 +307,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
     let unit = this.curUnit
     let currentListId = this.currentSeenListId
     let list = this.hideUnlockInfoList
+    let curDecorType = this.curDecorType
     return {
       isTooltipByHold = showConsoleButtons.get()
       buttons = decors.map(@(decorator) getDecorButtonView(decorator, unit, {
@@ -296,12 +319,18 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
           : null
         unseenIcon = decorator.canUse(unit) ? bhvUnseen.makeConfigStr(currentListId, decorator.id) : ""
         hideUnlockInfo = list.contains(decorator.id)
+      }).__update({
+        favoriteBtn = true,
+        isFavorite = curDecorType.isInFavorites(decorator.id)
       }))
     }
   }
 
   function generateDecalCategoryContent(categoryId, groupId) {
-    let decors = this.getDecorCache().catToGroups?[categoryId][groupId]
+    let isFavorites = categoryId == FAVORITE_CATEGORY_ID
+    let decors = isFavorites
+      ? this.getFavoriteDecorators()
+      : this.getDecorCache().catToGroups?[categoryId][groupId]
     if (!decors || decors.len() == 0)
       return ""
 
@@ -481,6 +510,43 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
   function switchPanels(currentPanel) {
     let panels = this.scene.findObject("panels")
     panels.currentPanel = currentPanel
+  }
+
+  function onAddToFavoriteBtn(btn) {
+    if (btn == null)
+      return
+    let decorId = btn.getParent().decoratorId
+    let isFavorite = this.curDecorType.isInFavorites(decorId)
+    btn.getParent().isFavorite = isFavorite ? "no" : "yes"
+    btn.tooltip = isFavorite ? loc("mainmenu/btnFavorite") : loc("mainmenu/btnFavoriteUnmark")
+    this.guiScene.updateTooltip(btn)
+    if (isFavorite)
+      this.curDecorType.removeFromFavorites(decorId)
+    else
+      this.curDecorType.addToFavorites(decorId)
+  }
+
+  function onAddToFavoriteConsoleBtn() {
+    let listObj = this.getOpenedDecorListObj()
+    let decalObj = this.getSelectedObj(listObj)
+    if (decalObj == null)
+      return
+    let favBtnObj = decalObj.findObject("favorite_btn")
+    if (favBtnObj == null)
+      return
+    this.onAddToFavoriteBtn(favBtnObj)
+  }
+
+  function onEventUpdateFavoriteDecorators(eventData) {
+    if (!this.isOpened)
+      return
+    if (eventData?[this.curDecorType.resourceType] == null)
+      return
+    let categoryObj = this.getSelectedCategoryObj()
+    if (!categoryObj?.isValid() || this.hasGroupsList(categoryObj))
+      return
+    if (categoryObj.categoryId == FAVORITE_CATEGORY_ID)
+      this.updateSelectedCategory(null)
   }
 }
 

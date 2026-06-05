@@ -67,7 +67,7 @@ function wrap(elems, params=wrapParams) {
   let paddingTop=params?.paddingTop
   let paddingBottom=params?.paddingBottom
   let flow = params?.flow ?? FLOW_HORIZONTAL
-  assert([FLOW_HORIZONTAL, FLOW_VERTICAL].indexof(flow)!=null, "flow should be FLOW_VERTICAL or FLOW_HORIZONTAL")
+  assert([FLOW_HORIZONTAL, FLOW_VERTICAL].contains(flow), "flow should be FLOW_VERTICAL or FLOW_HORIZONTAL")
   let isFlowHor = flow==FLOW_HORIZONTAL
   let height = params?.height ?? SIZE_TO_CONTENT
   let width = params?.width ?? SIZE_TO_CONTENT

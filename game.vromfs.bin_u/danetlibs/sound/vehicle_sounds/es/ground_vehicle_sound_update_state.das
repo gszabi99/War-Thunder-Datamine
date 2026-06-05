@@ -6,7 +6,7 @@ require Dacoll
 require PhysMat
 require vehicle
 require vehicleSoundProps
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 require vehicle_sounds.modules.vehicle_sounds_common
 
 

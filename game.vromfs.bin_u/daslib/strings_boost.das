@@ -40,7 +40,7 @@ def join(it; separator : string implicit) {
                 } else {
                     write(writer, separator)
                 }
-                if (typeinfo is_string(it)) {
+                static_if (typeinfo is_string(it)) {
                     write_char(writer, elem)
                 } else {
                     write(writer, elem)
@@ -61,7 +61,7 @@ def join(var it : iterator<auto(TT)>; separator : string implicit) {
             } else {
                 write(writer, separator)
             }
-            if (typeinfo is_string(it)) {
+            static_if (typeinfo is_numeric(type<TT>)) {
                 write_char(writer, elem)
             } else {
                 write(writer, elem)
@@ -107,7 +107,6 @@ def split(text, delim : string implicit; blk : block< (arg : array<string>#) >) 
     builtin_string_split(text, delim, blk)
 }
 
-[skip_lock_check]
 def split(text, delim : string implicit) : array<string> {
     
     var res : array<string>
@@ -122,7 +121,6 @@ def split_by_chars(text, delim : string implicit; blk : block< (arg : array<stri
     builtin_string_split_by_char(text, delim, blk)
 }
 
-[skip_lock_check]
 def split_by_chars(text, delim : string implicit) : array<string> {
     
     var res : array<string>
@@ -333,7 +331,7 @@ def public capitalize(str : string) : string {
     if (str |> empty()) {
         return str
     }
-    let first = character_at(str, 0)
+    let first = first_character(str)
     if (first >= 'a' && first <= 'z') {
         return build_string() $(writer) {
             writer |> write_char(first - 'a' + 'A')
@@ -350,10 +348,64 @@ def public is_null_or_whitespace(str : string) : bool {
     if (str |> empty()) {
         return true
     }
-    for (i in range(str |> length())) {
-        if (!is_white_space(character_at(str, i))) {
-            return false
+    var result = true
+    peek_data(str) $(data) {
+        for (i in range(length(data))) {
+            if (!is_white_space(int(data[i]))) {
+                result = false
+                return
+            }
         }
     }
-    return true
+    return result
 }
+
+def public glob_match(pattern, text : string) : bool {
+    
+    
+    
+    
+    if (empty(pattern)) {
+        return empty(text)
+    }
+    if (empty(text)) {
+        
+        unsafe {
+            var pp = reinterpret<uint8?> pattern
+            while (*pp == uint8('*')) {
+                pp++
+            }
+            return *pp == 0u8
+        }
+    }
+    unsafe {
+        var pp = reinterpret<uint8?> pattern
+        var tp = reinterpret<uint8?> text
+        var star_pp : uint8?
+        var star_tp : uint8?
+        while (*tp != 0u8) {
+            if (*pp == uint8('?')) {
+                pp++
+                tp++
+            } elif (*pp == uint8('*')) {
+                star_pp = pp
+                star_tp = tp
+                pp++
+            } elif (*pp == *tp) {
+                pp++
+                tp++
+            } elif (star_pp != null) {
+                pp = star_pp + 1
+                star_tp++
+                tp = star_tp
+            } else {
+                return false
+            }
+        }
+        while (*pp == uint8('*')) {
+            pp++
+        }
+        return *pp == 0u8
+    }
+}
+

@@ -9,43 +9,78 @@ require DagorMath
 require DagorMathUtils
 require AnimV20
 require app
+require WTInput
 require %game.events
 require %appGame.infantry.es.human_weap_common
 
-[es(after=after_net_phys_sync, REQUIRE=watchedHero, REQUIRE_NOT=deadEntity)]
+[es(after=after_net_phys_sync)]
 def human_look_dir_camera_es(info : ParallelUpdateFrameDelayed;
-                             
-                             human_net_phys : HumanActor;
-                             camera__gunAimOffset : float2;
-                             var camera__shootOffset : float2&;
-                             var camera__prevLookDir : float3&;
-                             var camera__lookDir : float3&;
-                             camera__shootOffsetTau : float = 0.05f)
+                             camera__active : bool;
+                             camera__target : EntityId)
+  if !camera__active
+    return
+  query(camera__target) <| $ [es(REQUIRE_NOT=deadEntity)] (human_net_phys : HumanActor;
+                                                           camera__gunAimOffset : float2;
+                                                           var camera__shootOffset : float2&;
+                                                           var camera__prevLookDir : float3&;
+                                                           var camera__lookDir : float3&;
+                                                           camera__shootOffsetTau : float = 0.05f;
+                                                           isInVehicle : bool = false)
+    if isInVehicle
+      return
+    camera__prevLookDir = camera__lookDir
 
-  
-  
+    assume ct = human_net_phys.phys.producedCT
+    let interpK = get_phys_interpk_clamped(human_net_phys.phys, info.curTime)
 
-  camera__prevLookDir = camera__lookDir
+    var ang : float2
+    if (int(human_net_phys.role) & int(NetRole.URF_LOCAL_CONTROL)) != 0
+      ang = dir_to_angles(ct.wishLookDir)
+    else
+      
+      
+      ang = dir_to_angles(human_net_phys.phys.currentState.gunDir)
 
-  assume ct = human_net_phys.phys.producedCT
-  let interpK = get_phys_interpk_clamped(human_net_phys.phys, info.curTime)
+    var aimOffs = lerp(human_net_phys.phys.previousState.gunAimOffset, human_net_phys.phys.currentState.gunAimOffset, float2(interpK))
+    aimOffs += camera__gunAimOffset
 
-  var ang : float2
-  if (int(human_net_phys.role) & int(NetRole.URF_LOCAL_CONTROL)) != 0
-    ang = dir_to_angles(ct.wishLookDir)
-  else
-    
-    
-    ang = dir_to_angles(human_net_phys.phys.currentState.gunDir)
+    camera__shootOffset = approach(camera__shootOffset, aimOffs, info.dt, camera__shootOffsetTau)
+    ang += camera__shootOffset
 
-  var aimOffs = lerp(human_net_phys.phys.previousState.gunAimOffset, human_net_phys.phys.currentState.gunAimOffset, float2(interpK))
-  aimOffs += camera__gunAimOffset
+    ang.y = clamp(ang.y, -SAFE_HALF_PI, SAFE_HALF_PI)
+    camera__lookDir = angles_to_dir(ang)
 
-  camera__shootOffset = approach(camera__shootOffset, aimOffs, info.dt, camera__shootOffsetTau)
-  ang += camera__shootOffset
 
-  ang.y = clamp(ang.y, -SAFE_HALF_PI, SAFE_HALF_PI)
-  camera__lookDir = angles_to_dir(ang)
+[es(after=human_look_dir_camera_es)]
+def vehicle_passenger_freelook_camera_es(info : ParallelUpdateFrameDelayed;
+                                         camera__active : bool;
+                                         camera__target : EntityId;
+                                         var vehicle_passenger_camera__relAngle : float2&)
+  if !camera__active
+    return
+  var mouseAngles = get_mouse_axes_delta()
+  mouseAngles.y *= 0.5
+  query(camera__target) <| $ [es(REQUIRE_NOT=deadEntity)] (var camera__lookDir : float3&;
+                                                           vehicle__globalSeatTm : float3x4;
+                                                           isInVehicle : bool = false;
+                                                           vehicle_passenger_camera__maxAngleDeg : float2 = float2(90.0, 60.0))
+    if !isInVehicle
+      vehicle_passenger_camera__relAngle = float2(0., 0.)
+      return
+    let maxAngleRad = deg_to_rad(vehicle_passenger_camera__maxAngleDeg)
+    vehicle_passenger_camera__relAngle.x = clamp(vehicle_passenger_camera__relAngle.x + mouseAngles.x, -maxAngleRad.x, maxAngleRad.x)
+    vehicle_passenger_camera__relAngle.y = clamp(vehicle_passenger_camera__relAngle.y + mouseAngles.y, -maxAngleRad.y, maxAngleRad.y)
+    let seatAngles = dir_to_angles(vehicle__globalSeatTm[0])
+    var worldAng = seatAngles + vehicle_passenger_camera__relAngle
+    worldAng.y = clamp(worldAng.y, -SAFE_HALF_PI, SAFE_HALF_PI)
+    camera__lookDir = angles_to_dir(worldAng)
+
+
+[es(tag=gameClient, track=isInVehicle, on_appear)]
+def vehicle_passenger_disable_camera_stabilization_es(evt : Event;
+                                                      isInVehicle : bool;
+                                                      var camera__isStabilized : bool&)
+  camera__isStabilized = !isInVehicle
 
 
 [es(after=human_look_dir_camera_es, REQUIRE=watchedHero, REQUIRE=deadEntity)]

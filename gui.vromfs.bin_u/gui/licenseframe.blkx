@@ -1,0 +1,39 @@
+{
+  "root": {
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "size": "0.75sw, 1@maxWindowHeight",
+      "max-width": "1@maxWindowWidth",
+      "class": "wndNav",
+      "flow": "vertical",
+      "isCenteredUnderLogo": "yes",
+      "frame_header": {
+        "HorizontalListBox": {
+          "id": "license_tabs",
+          "height": "1@frameHeaderHeight",
+          "position": "relative",
+          "class": "header",
+          "normalFont": "yes",
+          "activeAccesskeys": "RS",
+          "on_select": "onTabChange"
+        },
+        "Button_close": {}
+      },
+      "textarea": {
+        "id": "license_text",
+        "width": "pw",
+        "height": "fh",
+        "position": "relative",
+        "padding": "0.01@sf",
+        "overflow-y": "auto",
+        "text-align": "left"
+      },
+      "navBar": {
+        "navMiddle": {
+          "id": "paginator_place"
+        }
+      }
+    }
+  }
+}

@@ -30,7 +30,7 @@ let Axis = class (InputBase) {
     this.preset = v_preset || getCurControlsPreset()
   }
 
-  function getMarkup(_hasHoldButtonSign = false) {
+  function getMarkup() {
     let data = this.getMarkupData()
     return handyman.renderCached(data.template, data.view)
   }

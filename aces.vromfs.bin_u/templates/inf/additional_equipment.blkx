@@ -238,6 +238,22 @@
       }
     }
   },
+  "attachable_wear_facemask_white_item": {
+    "_use": [
+      "attachable_face_mask",
+      "attachable_wear_facemask_item"
+    ],
+    "camouflage_override:array": {
+      "material:object": {
+        "solid_fill_color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  },
   "attachable_cape": {
     "_use": "attachable_wear",
     "item__equipToSlots:array": {
@@ -317,7 +333,7 @@
     "animchar__res": "alligator_sniper_cape_stripes_char",
     "collres__res": "alligator_sniper_cape_stripes_collision",
     "animchar_fast_phys__res": "alligator_sniper_cape_stripes_fastphys",
-    "animchar_node_collapser__camThreshold": 0.2,
+    "animchar_node_collapser__camThreshold": 0.25,
     "animchar_fast_phys": {
       "_tags": "gameClient"
     },
@@ -338,6 +354,60 @@
         "holster_on_leg",
         "belt"
       ]
+    }
+  },
+  "attachable_wear_alligator_sniper_cape_stripes_msalpine_item": {
+    "_use": "attachable_wear_alligator_sniper_cape_stripes_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "multicam_alpine_tex_d*",
+      "sniper_stripes_mcam_tex_d*": "sniper_stripes_msalpine_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.6,
+          0.6,
+          0.62,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_alligator_sniper_cape_stripes_dsnail_winter_item": {
+    "_use": "attachable_wear_alligator_sniper_cape_stripes_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "digital_snail_winter_tex_d*",
+      "sniper_stripes_mcam_tex_d*": "sniper_stripes_dsnail_winter_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.6,
+          0.6,
+          0.62,
+          1.0
+        ]
+      }
     }
   },
   "attachable_wear_alligator_sniper_cape_stripes_mcamblack_item": {
@@ -365,6 +435,13 @@
           1.0
         ]
       }
+    }
+  },
+  "attachable_wear_alligator_sniper_cape_stripes_woodland_green_item": {
+    "_use": "attachable_wear_alligator_sniper_cape_stripes_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_green_tex_d*",
+      "sniper_stripes_mcam_tex_d*": "sniper_stripes_woodland_tex_d*"
     }
   },
   "attachable_wear_viper_sniper_cape_item": {
@@ -481,7 +558,7 @@
     "animchar__res": "viper_sniper_cape_grass_char",
     "collres__res": "viper_sniper_cape_grass_collision",
     "animchar_fast_phys__res": "viper_sniper_cape_grass_fastphys",
-    "animchar_node_collapser__camThreshold": 0.2,
+    "animchar_node_collapser__camThreshold": 0.25,
     "animchar_fast_phys": {
       "_tags": "gameClient"
     },

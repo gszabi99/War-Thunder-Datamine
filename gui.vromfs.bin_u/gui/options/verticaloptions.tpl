@@ -26,19 +26,34 @@ tr{
     optiontext {
       text:t ='<<name>>'
       padding-top:t='4@dp'
+      <<#hasValueInHeader>>
+      fullWidth:t='yes'
+      <</hasValueInHeader>>
     }
+
+    <<#hasValueInHeader>>
+    optionValueText {
+      id:t='value_<<id>>'
+      width:t='<<valueWidth>>'
+      text:t='<<valueText>>'
+    }
+    <</hasValueInHeader>>
   }
 
+  <<#option>>
   td {
     cellType:t='bottom'
     <<@option>>
 
+    <<^hasValueInHeader>>
     optionValueText {
       id:t='value_<<id>>'
       <<#valueWidth>>width:t='<<valueWidth>>'<</valueWidth>>
       <<#valueText>>text:t='<<valueText>>'<</valueText>>
     }
+    <</hasValueInHeader>>
   }
+  <</option>>
 
   <<#infoRows>>
   td {

@@ -10,8 +10,6 @@ require %appGame.infantry.es.human_weap_common
 
 def binary_search_height(var phys : HumanPhys;
                          tm : float3x4;
-                         check_offset_up : float;
-                         check_offset_right : float;
                          var bad_ht : float;
                          var good_ht : float;
                          iter : int;
@@ -24,7 +22,7 @@ def binary_search_height(var phys : HumanPhys;
     var midGunTm : float3x4
     human_phys_calcGunTm(phys, PrecomputedPresetMode.TPV, tm, gun_angles, lean, midHt, midGunTm)
     var backoff : float
-    if !check_gun_trace(phys, midGunTm, check_offset_up, check_offset_right, 1., gun_mat_id, max_backoff, backoff)
+    if !check_gun_trace(phys, midGunTm, 1., gun_mat_id, max_backoff, backoff)
       good_ht = midHt
     else
       bad_ht = midHt
@@ -33,8 +31,6 @@ def binary_search_height(var phys : HumanPhys;
 
 def check_height(var phys : HumanPhys;
                  tm : float3x4;
-                 check_offset_up : float;
-                 check_offset_right : float;
                  gun_angles : float;
                  lean : float;
                  ht : float;
@@ -48,15 +44,13 @@ def check_height(var phys : HumanPhys;
   var gunTm : float3x4
   human_phys_calcGunTm(phys, PrecomputedPresetMode.TPV, tm, gun_angles, lean, saturate(ht), gunTm)
   var backoff : float
-  if check_gun_trace(phys, gunTm, check_offset_up, check_offset_right, 1., gun_mat_id, max_backoff, backoff)
+  if check_gun_trace(phys, gunTm, 1., gun_mat_id, max_backoff, backoff)
     return false
-  res_ht = binary_search_height(phys, tm, check_offset_up, check_offset_right, saturate(prev_ht), saturate(ht), iter, lean, gun_mat_id, max_backoff, gun_angles)
+  res_ht = binary_search_height(phys, tm, saturate(prev_ht), saturate(ht), iter, lean, gun_mat_id, max_backoff, gun_angles)
   return true
 
 def binary_search_lean(var phys : HumanPhys;
                        tm : float3x4;
-                       check_offset_up : float;
-                       check_offset_right : float;
                        var bad_lean : float;
                        var good_lean : float;
                        iter : int;
@@ -69,7 +63,7 @@ def binary_search_lean(var phys : HumanPhys;
     var midGunTm : float3x4
     human_phys_calcGunTm(phys, PrecomputedPresetMode.TPV, tm, gun_angles, midLean, height, midGunTm)
     var backoff : float
-    if !check_gun_trace(phys, midGunTm, check_offset_up, check_offset_right, 1., gun_mat_id, max_backoff, backoff)
+    if !check_gun_trace(phys, midGunTm, 1., gun_mat_id, max_backoff, backoff)
       good_lean = midLean
     else
       bad_lean = midLean
@@ -80,8 +74,6 @@ def clamp_lean(val, limit : float)
 
 def check_lean(var phys : HumanPhys;
                tm : float3x4;
-               check_offset_up : float;
-               check_offset_right : float;
                gun_angles : float;
                ht : float;
                lean : float;
@@ -95,16 +87,14 @@ def check_lean(var phys : HumanPhys;
   var gunTm : float3x4
   human_phys_calcGunTm(phys, PrecomputedPresetMode.TPV, tm, gun_angles, clamp_lean(lean, phys.leanDegrees), ht, gunTm)
   var backoff : float
-  if check_gun_trace(phys, gunTm, check_offset_up, check_offset_right, 1., gun_mat_id, max_backoff, backoff)
+  if check_gun_trace(phys, gunTm, 1., gun_mat_id, max_backoff, backoff)
     return false
-  res_lean = binary_search_lean(phys, tm, check_offset_up, check_offset_right, clamp_lean(prev_lean, phys.leanDegrees),
+  res_lean = binary_search_lean(phys, tm, clamp_lean(prev_lean, phys.leanDegrees),
                                 clamp_lean(lean, phys.leanDegrees), iter, ht, gun_mat_id, max_backoff, gun_angles)
   return true
 
 def find_better_height(var phys : HumanPhys;
                        tm : float3x4;
-                       check_offset_up : float;
-                       check_offset_right : float;
                        wish_height : float;
                        wish_lean : float;
                        gun_mat_id : int;
@@ -116,15 +106,13 @@ def find_better_height(var phys : HumanPhys;
     let height = cvt(float(h + 1), 0., float(heightCount - 1), 0., 1.)
     let prevHeight = cvt(float(h), 0., float(heightCount - 1), 0., 1.)
     let gunAngles = phys.currentState.gunAngles
-    if (check_height(phys, tm, check_offset_up, check_offset_right, gunAngles.y, wish_lean, wish_height - height, wish_height - prevHeight, binaryIter, gun_mat_id, max_backoff, res_height) ||
-        check_height(phys, tm, check_offset_up, check_offset_right, gunAngles.y, wish_lean, wish_height + height, wish_height + prevHeight, binaryIter, gun_mat_id, max_backoff, res_height))
+    if (check_height(phys, tm, gunAngles.y, wish_lean, wish_height - height, wish_height - prevHeight, binaryIter, gun_mat_id, max_backoff, res_height) ||
+        check_height(phys, tm, gunAngles.y, wish_lean, wish_height + height, wish_height + prevHeight, binaryIter, gun_mat_id, max_backoff, res_height))
       return true
   return false
 
 def find_better_lean(var phys : HumanPhys;
                      tm : float3x4;
-                     check_offset_up : float;
-                     check_offset_right : float;
                      wish_height : float;
                      wish_lean : float;
                      gun_mat_id : int;
@@ -136,15 +124,14 @@ def find_better_lean(var phys : HumanPhys;
     let lean = cvt(float(l + 1), 0., float(leanCount - 1), 0., 1.) * phys.leanDegrees
     let prevLean = cvt(float(l), 0., float(leanCount - 1), 0., 1.) * phys.leanDegrees
     let gunAngles = phys.currentState.gunAngles
-    if (check_lean(phys, tm, check_offset_up, check_offset_right, gunAngles.y, wish_height, wish_lean + lean, wish_lean + prevLean, binaryIter, gun_mat_id, max_backoff, res_lean) ||
-        check_lean(phys, tm, check_offset_up, check_offset_right, gunAngles.y, wish_height, wish_lean - lean, wish_lean - prevLean, binaryIter, gun_mat_id, max_backoff, res_lean))
+    if (check_lean(phys, tm, gunAngles.y, wish_height, wish_lean + lean, wish_lean + prevLean, binaryIter, gun_mat_id, max_backoff, res_lean) ||
+        check_lean(phys, tm, gunAngles.y, wish_height, wish_lean - lean, wish_lean - prevLean, binaryIter, gun_mat_id, max_backoff, res_lean))
       return true
   return false
 
 
 [es(REQUIRE_NOT=deadEntity, after=human_lean_controls, before=human_lean_apply)]
 def human_weap_auto_height_lean(evt : CmdPostPhysUpdate;
-                                human_weap__currentGunEid : EntityId;
                                 human_weap__gunMatId : int;
                                 human_weap__gunMaxBackoff : float = 0.0;
                                 human_weap__gunEquipAIForce  : bool = false;
@@ -184,23 +171,18 @@ def human_weap_auto_height_lean(evt : CmdPostPhysUpdate;
 
   var resLean = wishLean
   var resHeight = wishHeight
-  var checkOffsetUp = 0.f
-  var checkOffsetRight = 0.f
-  query(human_weap__currentGunEid) <| $ [es] (human_weap__gunCheckOffsetUp : float; human_weap__gunCheckOffsetRight : float)
-    checkOffsetUp = human_weap__gunCheckOffsetUp
-    checkOffsetRight = human_weap__gunCheckOffsetRight
 
   var backoff : float
-  if check_gun_trace(phys, gunTm, checkOffsetUp, checkOffsetRight, 1., human_weap__gunMatId, human_weap__gunMaxBackoff, backoff)
+  if check_gun_trace(phys, gunTm, 1., human_weap__gunMatId, human_weap__gunMaxBackoff, backoff)
     
     
     var betterHeight = resHeight
-    if find_better_height(phys, tm, checkOffsetUp, checkOffsetRight, wishHeight, wishLean, human_weap__gunMatId, human_weap__gunMaxBackoff, betterHeight)
+    if find_better_height(phys, tm, wishHeight, wishLean, human_weap__gunMatId, human_weap__gunMaxBackoff, betterHeight)
       human_phys_state_set_forceWeaponUp(currentState, true)
 
     
     var betterLean = resLean
-    if updateLean && find_better_lean(phys, tm, checkOffsetUp, checkOffsetRight, wishHeight, wishLean, human_weap__gunMatId, human_weap__gunMaxBackoff, betterLean)
+    if updateLean && find_better_lean(phys, tm, wishHeight, wishLean, human_weap__gunMatId, human_weap__gunMaxBackoff, betterLean)
       human_phys_state_set_forceWeaponUp(currentState, true)
 
     let htIsBetter = abs(betterHeight - resHeight) < abs(betterLean - resLean) * safeinv(phys.leanDegrees)

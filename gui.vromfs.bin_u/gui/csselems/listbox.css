@@ -66,7 +66,7 @@ HorizontalListBox {
 
 HorizontalListBox.header {
   move-only-hover:yes;
-  navigatorShortcuts:yes;
+  navigatorShortcuts:horizontal;
 }
 
 shopFilter {
@@ -381,6 +381,10 @@ HorizontalListBox[fullTransparent=yes] {
 
 .header > shopFilter {
   foreground-position:0, h, 0, 0;
+}
+
+.header[isTopSelectLine=yes] > shopFilter {
+  foreground-position:0, 0, 0, h;
 }
 
 .header > shopFilter:hover,.tabs > shopFilter:hover {

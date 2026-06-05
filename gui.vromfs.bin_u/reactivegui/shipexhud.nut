@@ -3,11 +3,13 @@ let cross_call = require("%rGui/globals/cross_call.nut")
 
 let string = require("string")
 let { floor } = require("math")
-let activeOrder = require("%rGui/activeOrder.nut")
+let { activeOrderComps }= require("%rGui/activeOrder.nut")
 let shipStateModule = require("%rGui/shipStateModule.nut")
 let hudLogs = require("%rGui/hudLogs.nut")
 let fireControl = require("%rGui/submarineFireControl.nut")
-let { sonarComponent } = require("%rGui/shipHudComponents.nut")
+
+
+
 let { missionProgressHeight } = require("%rGui/hudState.nut")
 let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
@@ -142,7 +144,7 @@ let shipHud = @() {
   gap = scrn_tgt(0.005)
   children = [
     voiceChat
-    activeOrder
+    activeOrderComps
     hudLogs
     shipStateModule
   ]
@@ -164,7 +166,9 @@ return {
     fireControl
     depthRoulette
     ShipShellState
-    sonarComponent
+
+
+
     aimHud
     shipObstacleRf
   ]

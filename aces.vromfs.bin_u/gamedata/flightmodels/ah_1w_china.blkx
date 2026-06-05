@@ -1122,7 +1122,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1133,7 +1133,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1144,7 +1144,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1155,7 +1155,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1166,7 +1166,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1238,7 +1238,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1249,7 +1249,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1260,7 +1260,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1271,7 +1271,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1282,7 +1282,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1902,12 +1902,24 @@
         "blk": "gameData/flightModels/weaponPresets/ah_1w_aim_9.blk"
       },
       {
+        "name": "ah_1w_agm_122",
+        "blk": "gameData/flightModels/weaponPresets/ah_1w_agm_122.blk"
+      },
+      {
         "name": "ah_1w_rocket",
         "blk": "gameData/flightModels/weaponPresets/ah_1w_rocket.blk"
       },
       {
         "name": "ah_1w_rocket_zuni",
         "blk": "gameData/flightModels/weaponPresets/ah_1w_rocket_zuni.blk"
+      },
+      {
+        "name": "ah_1w_apkws_m151",
+        "blk": "gameData/flightModels/weaponPresets/ah_1w_apkws_m151.blk"
+      },
+      {
+        "name": "ah_1w_apkws_m282",
+        "blk": "gameData/flightModels/weaponPresets/ah_1w_apkws_m282.blk"
       },
       {
         "name": "ah_1w_rocket_4xTOW",
@@ -2340,6 +2352,32 @@
             }
           },
           {
+            "iconType": "nar_he_small",
+            "name": "apkws_m151",
+            "reqModification": "us_apkws",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m151.blk",
+              "emitter": "aero_7_l_b001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "apkws_m282",
+            "reqModification": "us_apkws",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m282.blk",
+              "emitter": "aero_7_l_b001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "atgm_type2_x2_late",
             "name": "tow2_x2",
             "remotelyGuidedWeaponsMax": 1,
@@ -2402,10 +2440,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "external": [
-                true,
-                true
-              ],
+              "external": true,
               "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
               "emitter": "aim_9_001",
               "bullets": 1,
@@ -2442,6 +2477,25 @@
               "counterIndex": 1,
               "external": true,
               "rotationAnimScale": "gun_rotate_01:CRS"
+            }
+          },
+          {
+            "iconType": "arm_type_f",
+            "name": "agm_122",
+            "reqModification": "anti_radiation_missile_agm_122",
+            "ShowNodes": {
+              "node": [
+                "adu_299_001",
+                "lau_7a_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_122.blk",
+              "emitter": "aim_9_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           }
         ]
@@ -2489,6 +2543,32 @@
               "mass": 0.01,
               "dragCx": 0.01,
               "jettisonable": false
+            }
+          },
+          {
+            "iconType": "nar_he_small",
+            "name": "apkws_m151",
+            "reqModification": "us_apkws",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m151.blk",
+              "emitter": "aero_7_l_b002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "apkws_m282",
+            "reqModification": "us_apkws",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m282.blk",
+              "emitter": "aero_7_l_b002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -2589,6 +2669,32 @@
             }
           },
           {
+            "iconType": "nar_he_small",
+            "name": "apkws_m151",
+            "reqModification": "us_apkws",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m151.blk",
+              "emitter": "aero_7_l_b003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "apkws_m282",
+            "reqModification": "us_apkws",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m282.blk",
+              "emitter": "aero_7_l_b003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "multibarrel_box_cannon",
             "name": "gpu_2a_3",
             "reqModification": "us_gpu_2a",
@@ -2686,6 +2792,32 @@
             }
           },
           {
+            "iconType": "nar_he_small",
+            "name": "apkws_m151",
+            "reqModification": "us_apkws",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m151.blk",
+              "emitter": "aero_7_l_b004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_small",
+            "name": "apkws_m282",
+            "reqModification": "us_apkws",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m282.blk",
+              "emitter": "aero_7_l_b004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "atgm_type2_x2_late",
             "name": "tow2_x2",
             "remotelyGuidedWeaponsMax": 1,
@@ -2748,10 +2880,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "external": [
-                true,
-                true
-              ],
+              "external": true,
               "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
               "emitter": "aim_9_002",
               "bullets": 1,
@@ -2788,6 +2917,25 @@
               "counterIndex": 1,
               "external": true,
               "rotationAnimScale": "gun_rotate_01:CRS"
+            }
+          },
+          {
+            "iconType": "arm_type_f",
+            "name": "agm_122",
+            "reqModification": "anti_radiation_missile_agm_122",
+            "ShowNodes": {
+              "node": [
+                "adu_299_002",
+                "lau_7a_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_122.blk",
+              "emitter": "aim_9_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           }
         ]
@@ -3899,6 +4047,36 @@
         ]
       },
       {
+        "dm": "wing1_l_dm",
+        "dp": [
+          "wingcontrol_l_dm",
+          "elevon1_l_dm",
+          "flaperon_l_dm"
+        ]
+      },
+      {
+        "dm": "wing1_r_dm",
+        "dp": [
+          "wingcontrol_r_dm",
+          "elevon1_r_dm",
+          "flaperon_r_dm"
+        ]
+      },
+      {
+        "dm": "wing2_l_dm",
+        "dp": [
+          "elevon_l_dm",
+          "flaperon1_l_dm"
+        ]
+      },
+      {
+        "dm": "wing2_r_dm",
+        "dp": [
+          "elevon_r_dm",
+          "flaperon1_r_dm"
+        ]
+      },
+      {
         "dm": "wing_l_dm",
         "dp": [
           "us_xm_18_l",
@@ -4118,7 +4296,13 @@
       "tier": 4,
       "modClass": "weapon"
     },
+    "us_apkws": {
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 2
+    },
     "f4c_zuni": {
+      "prevModification": "us_apkws",
       "tier": 3,
       "modClass": "weapon"
     },
@@ -4143,6 +4327,10 @@
       "reqModification": "ah_1_AGM_114_8",
       "modClass": "weapon",
       "tier": 4
+    },
+    "anti_radiation_missile_agm_122": {
+      "modClass": "weapon",
+      "tier": 3
     }
   },
   "default_skin": {

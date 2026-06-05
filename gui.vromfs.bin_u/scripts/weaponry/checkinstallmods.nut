@@ -12,7 +12,7 @@ let needReqModInstall = @(unit, weapon) getWeaponDisabledMods(unit, weapon).len(
 function installMods(unit, disabledMods) {
   let onSuccess = function() {
     disabledMods.each(@(modName) updateUnitAfterSwitchMod(unit, modName))
-    broadcastEvent("ModificationChanged")
+    broadcastEvent("ModificationChanged", { mods = disabledMods })
   }
   let taskId = enable_modifications(unit.name, disabledMods, true)
   addTask(taskId, { showProgressBox = true }, onSuccess)

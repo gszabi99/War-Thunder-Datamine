@@ -1,14 +1,15 @@
 {
-  "model": "b_29",
-  "fmFile": "fm/b-29.blk",
+  "model": "washington_b1",
+  "fmFile": "fm/washington_b1.blk",
   "tpsCameraOffset": [
     -7.0,
     3.0,
     0.0
   ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_bomber_metaparts.blk",
+  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_night_only_start_fx_common.blk",
   "gearSinkRangeLR": 0.25,
-  "gearSinkRangeC": 0.16,
+  "gearSinkRangeC": 0.01,
   "noEffectsDist": 8.0,
   "gyroSight": false,
   "type": [
@@ -32,10 +33,9 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "600kph",
   "fightAiBehaviour": "bomber",
-  "isNuclearBomber": true,
-  "customClassIco": "!#ui/gameuiskin#b-29_ico.svg",
-  "customImage": "!#ui/unitskin#b-29.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/b-29.avif",
+  "customClassIco": "!#ui/gameuiskin#washington_b1_ico.svg",
+  "customImage": "!#ui/unitskin#washington_b1.ddsx",
+  "customTooltipImage": "!#ui/aircrafts/washington_b1.avif",
   "extinguisherNum": 1,
   "DamageParts": {
     "armor10": {
@@ -202,6 +202,11 @@
       },
       "cover9_dm": {
         "hp": 19.5
+      }
+    },
+    "dural5": {
+      "radar1_dm": {
+        "hp": 35.0
       }
     },
     "dural100": {
@@ -3263,158 +3268,6 @@
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
   },
-  "wiki": {
-    "general": {
-      "length": 30.172,
-      "wingspan": 43.0276,
-      "wingArea": 161.7,
-      "emptyWeight": 32978.0,
-      "normalWeight": 45811.6,
-      "maxTakeoffWeight": 63502.0,
-      "powerPlantType": 1,
-      "powerMaxWep": 2200.0,
-      "powerMaxMil": 2000.0
-    },
-    "performance": {
-      "table": {
-        "rpmWep": 2600.0,
-        "manifoldPressureWep": 1.64,
-        "airSpeedWep0": [
-          0.0,
-          484.0
-        ],
-        "airSpeedWep1": [
-          9500.0,
-          649.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          6.5
-        ],
-        "climbRateWep1": [
-          8400.0,
-          4.8
-        ],
-        "climbTimeWep0": [
-          2000.0,
-          247.202
-        ],
-        "climbTimeWep1": [
-          4000.0,
-          504.122
-        ],
-        "climbTimeWep2": [
-          6000.0,
-          774.171
-        ],
-        "climbTimeWep3": [
-          8000.0,
-          1062.54
-        ],
-        "turnTimeWep": [
-          1000.0,
-          32.0
-        ],
-        "rpmMil": 2400.0,
-        "manifoldPressureMil": 1.59,
-        "airSpeedMil0": [
-          0.0,
-          470.0
-        ],
-        "airSpeedMil1": [
-          9200.0,
-          621.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          5.5
-        ],
-        "climbRateMil1": [
-          8200.0,
-          3.8
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          281.828
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          577.407
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          891.645
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          1225.77
-        ],
-        "turnTimeMil": [
-          1000.0,
-          33.4
-        ],
-        "takeoffDistance": 1213.13,
-        "ceiling": 11500.0,
-        "rollRate": 15.0,
-        "wingLoading": 283.0,
-        "powerToWeightRatio": 0.05
-      },
-      "plot": {
-        "airSpeedWep0": [
-          0.0,
-          484.0
-        ],
-        "airSpeedWep1": [
-          9300.0,
-          646.0
-        ],
-        "airSpeedWep2": [
-          11500.0,
-          590.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          6.5
-        ],
-        "climbRateWep1": [
-          8300.0,
-          5.0
-        ],
-        "climbRateWep2": [
-          11500.0,
-          -0.6
-        ],
-        "airSpeedMil0": [
-          0.0,
-          470.0
-        ],
-        "airSpeedMil1": [
-          9000.0,
-          618.0
-        ],
-        "airSpeedMil2": [
-          10900.0,
-          569.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          5.5
-        ],
-        "climbRateMil1": [
-          7500.0,
-          4.3
-        ],
-        "climbRateMil2": [
-          7900.0,
-          4.2
-        ],
-        "climbRateMil3": [
-          10900.0,
-          -0.6
-        ]
-      }
-    }
-  },
   "Aircraft": {
     "gunnersCount": 4
   },
@@ -3495,6 +3348,17 @@
       "tier": 4,
       "reqModification": "b-29_lbc"
     }
+  },
+  "user_skin": {
+    "name": "washington_b1",
+    "replace_tex": [
+      {
+        "from": "washington_b1_c*"
+      },
+      {
+        "from": "washington_b1_n*"
+      }
+    ]
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [
@@ -3602,29 +3466,5 @@
         "free": true
       }
     }
-  },
-  "default_skin": {
-    "name": "b_29_uk_killstreak",
-    "replace_tex": [
-      {
-        "from": "b_29_c*",
-        "to": "b_29_killstreak_c*"
-      },
-      {
-        "from": "b_29_n*",
-        "to": "b_29_killstreak_n*"
-      }
-    ]
-  },
-  "user_skin": {
-    "name": "b_29_uk_killstreak",
-    "replace_tex": [
-      {
-        "from": "b_29_killstreak_c*"
-      },
-      {
-        "from": "b_29_killstreak_n*"
-      }
-    ]
   }
 }

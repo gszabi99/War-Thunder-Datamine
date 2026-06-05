@@ -388,4 +388,5 @@ return {
   getSessionLobbyPlayerInfoByUid
   getSessionLobbyPlayersInfo
   getExternalSessionId
+  isSessionCreatedByPlayer = @() getSessionLobbyPublicParam("creator", null) != null
 }

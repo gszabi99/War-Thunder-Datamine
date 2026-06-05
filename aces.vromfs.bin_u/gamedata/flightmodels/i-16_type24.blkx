@@ -3,6 +3,8 @@
   "fmFile": "fm/i-16_type24.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gearSinkRangeLR": 0.15,
+  "gearSinkRangeC": 0.13,
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -1157,7 +1159,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1168,7 +1170,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1179,7 +1181,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1190,7 +1192,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1201,7 +1203,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1273,7 +1275,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1284,7 +1286,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1295,7 +1297,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1306,7 +1308,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1317,7 +1319,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1389,7 +1391,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1400,7 +1402,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1411,7 +1413,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1422,7 +1424,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1433,7 +1435,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1505,7 +1507,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1516,7 +1518,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1527,7 +1529,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1538,7 +1540,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1549,7 +1551,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2037,218 +2039,6 @@
     ],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
-  },
-  "wiki": {
-    "general": {
-      "length": 6.13,
-      "wingspan": 9.0,
-      "wingArea": 14.54,
-      "emptyWeight": 1548.0,
-      "normalWeight": 1858.0,
-      "maxTakeoffWeight": 1882.0,
-      "powerPlantType": 1,
-      "powerMaxWep": 1120.0,
-      "powerMaxMil": 940.0
-    },
-    "performance": {
-      "table": {
-        "rpmWep": 2300.0,
-        "manifoldPressureWep": 1.24,
-        "airSpeedWep0": [
-          0.0,
-          404.0
-        ],
-        "airSpeedWep1": [
-          1800.0,
-          432.0
-        ],
-        "airSpeedWep2": [
-          4200.0,
-          460.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          18.5
-        ],
-        "climbRateWep1": [
-          1300.0,
-          18.1
-        ],
-        "climbRateWep2": [
-          3600.0,
-          16.0
-        ],
-        "climbTimeWep0": [
-          2000.0,
-          86.4929
-        ],
-        "climbTimeWep1": [
-          4000.0,
-          182.584
-        ],
-        "climbTimeWep2": [
-          6000.0,
-          299.975
-        ],
-        "climbTimeWep3": [
-          8000.0,
-          476.355
-        ],
-        "turnTimeWep": [
-          1000.0,
-          16.5
-        ],
-        "rpmMil": 2200.0,
-        "manifoldPressureMil": 1.18,
-        "airSpeedMil0": [
-          0.0,
-          383.0
-        ],
-        "airSpeedMil1": [
-          2000.0,
-          412.0
-        ],
-        "airSpeedMil2": [
-          4300.0,
-          438.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          14.3
-        ],
-        "climbRateMil1": [
-          1500.0,
-          13.7
-        ],
-        "climbRateMil2": [
-          3900.0,
-          10.9
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          105.386
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          226.159
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          371.155
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          589.819
-        ],
-        "turnTimeMil": [
-          1000.0,
-          17.8
-        ],
-        "takeoffDistance": 434.962,
-        "ceiling": 11500.0,
-        "rollRate": 181.0,
-        "wingLoading": 128.0,
-        "powerToWeightRatio": 0.59
-      },
-      "plot": {
-        "airSpeedWep0": [
-          0.0,
-          404.0
-        ],
-        "airSpeedWep1": [
-          1700.0,
-          434.0
-        ],
-        "airSpeedWep2": [
-          2900.0,
-          433.0
-        ],
-        "airSpeedWep3": [
-          4100.0,
-          461.0
-        ],
-        "airSpeedWep4": [
-          6300.0,
-          455.0
-        ],
-        "airSpeedWep5": [
-          9000.0,
-          430.0
-        ],
-        "airSpeedWep6": [
-          11500.0,
-          379.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          18.5
-        ],
-        "climbRateWep1": [
-          1300.0,
-          18.1
-        ],
-        "climbRateWep2": [
-          2300.0,
-          15.4
-        ],
-        "climbRateWep3": [
-          3700.0,
-          16.0
-        ],
-        "climbRateWep4": [
-          6400.0,
-          7.8
-        ],
-        "climbRateWep5": [
-          11500.0,
-          -4.0
-        ],
-        "airSpeedMil0": [
-          0.0,
-          383.0
-        ],
-        "airSpeedMil1": [
-          2000.0,
-          412.0
-        ],
-        "airSpeedMil2": [
-          2900.0,
-          405.0
-        ],
-        "airSpeedMil3": [
-          4300.0,
-          438.0
-        ],
-        "airSpeedMil4": [
-          7100.0,
-          423.0
-        ],
-        "airSpeedMil5": [
-          10700.0,
-          366.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          14.3
-        ],
-        "climbRateMil1": [
-          1500.0,
-          13.7
-        ],
-        "climbRateMil2": [
-          2500.0,
-          11.5
-        ],
-        "climbRateMil3": [
-          3900.0,
-          10.9
-        ],
-        "climbRateMil4": [
-          10700.0,
-          -3.9
-        ]
-      }
-    }
   },
   "balanceData": {
     "accSpd": 1.58363,

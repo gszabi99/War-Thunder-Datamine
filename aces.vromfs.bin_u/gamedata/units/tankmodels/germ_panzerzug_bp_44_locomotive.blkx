@@ -24,7 +24,7 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
+  "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
@@ -36,15 +36,14 @@
   "minDistBetween": 10.0,
   "expClass": "exp_zero",
   "mass": 300000.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": false,
   "destroysTrees": false,
   "isDynamicObstacle": true,
   "isConstantlyWinchable": true,
   "type": "typeLightTank",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "DamageParts": {
     "formatVersion": 2,
     "armorThickness": 10.0,
@@ -196,6 +195,10 @@
         "armorThrough": 3.0
       },
       "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
       }

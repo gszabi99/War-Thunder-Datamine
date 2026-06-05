@@ -238,6 +238,12 @@
         "event": "tank_new_players_battle_coop",
         "kills": 20,
         "timePlayed": 2400
+      },
+      {
+        "event": "tank_new_players_battle_coop_ab_test",
+        "abTest": true,
+        "kills": 20,
+        "timePlayed": 2400
       }
     ],
     "ship": [
@@ -2144,7 +2150,7 @@
         "wt_infantry_cbt_event_invite_access",
         "wt_infantry_cbt_developer_access"
       ],
-      "platform_lock": "linux64"
+      "platform_lock": "linux64;win32"
     },
     "HumanEventAccess": {
       "condition": [
@@ -2155,7 +2161,7 @@
         "wt_infantry_cbt_event_invite_access",
         "wt_infantry_cbt_developer_access"
       ],
-      "platform_lock": "ps4;ps5;xboxOne;xboxScarlett;linux64"
+      "platform_lock": "ps4;ps5;xboxOne;xboxScarlett;linux64;win32"
     },
     "HumanOfllineMissions": {
       "condition": [
@@ -3457,12 +3463,6 @@
     "HolesInAircraftHull": {
       "condition": ""
     },
-    "reactivGuiForAircraft": {
-      "condition": ""
-    },
-    "reactivGuiForArbiter": {
-      "condition": ""
-    },
     "allowShowGyroSightDeflection": {
       "condition": [
         "role_GAIJIN",
@@ -3501,6 +3501,14 @@
     },
     "shellDemonstration": {
       "condition": ""
+    },
+    "crashDeformation": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "perm_feature.debug"
+      ]
     },
     "DamageControl": {
       "condition": ""
@@ -3580,6 +3588,8 @@
     "optionRTScarlett": {
       "condition": [
         "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
         "perm_feature.dev_debug"
       ],
       "platform_unlock": "xboxScarlett"

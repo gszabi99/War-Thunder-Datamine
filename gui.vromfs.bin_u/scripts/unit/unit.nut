@@ -28,8 +28,7 @@ let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeap
   getWeaponImage
 } = require("%scripts/unit/initUnitWeapons.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
-let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
+let { isPromUnit } = require("%scripts/unit/remainingTimeUnit.nut")
 let { get_skins_for_unit } = require("unitCustomization")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { get_charserver_time_sec } = require("chard")
@@ -75,6 +74,7 @@ local Unit = class {
    gift = null 
    giftParam = null 
    event = null 
+   shopEvent = null 
    premPackAir = false
    repairCost = 0
    repairTimeHrsArcade = 0
@@ -95,6 +95,7 @@ local Unit = class {
    group = null 
    fakeReqUnits = null 
    showOnlyWhenBought = false
+   showOnlyWhenAvailableForPurchase = false
    showOnlyWhenResearch = false
    showOnlyIfPlayerHasUnlock = null 
    hideForLangs = null 
@@ -275,6 +276,8 @@ local Unit = class {
         addUnitEventId(unitGroupName, null, shopUnitBlk.eventLabelId)
     }
 
+    this.shopEvent = shopUnitBlk?.event
+
     if (shopUnitBlk?.slaveUnit)
       this.slaveUnits = [shopUnitBlk?.slaveUnit]
 
@@ -283,6 +286,8 @@ local Unit = class {
     this.group = unitGroupName
     if ("fakeReqUnitType" in shopUnitBlk)
       this.fakeReqUnits = shopUnitBlk % "fakeReqUnitType"
+
+    this.showOnlyWhenAvailableForPurchase = shopUnitBlk?.showOnlyWhenAvailableForPurchase ?? false
 
     let isVisibleUnbought = !shopUnitBlk?.showOnlyWhenBought
       && this.hasPlatformFromBlkStr(shopUnitBlk, "showByPlatform", true)
@@ -441,8 +446,9 @@ local Unit = class {
       return false
     if (isUnitGift(this) && !canSpendRealMoney() && !hasUnitEvent(this.name))
       return false
-    if (shopPromoteUnits.get()?[this.name] != null && !promoteUnits.get()?[this.name].isActive)
-      return false
+    if (this.showOnlyWhenAvailableForPurchase)
+      return isPromUnit(this.name)
+
     return true
   }
 

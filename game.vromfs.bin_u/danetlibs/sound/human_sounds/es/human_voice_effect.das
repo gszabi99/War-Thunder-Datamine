@@ -27,12 +27,13 @@ def human_voice_effect_on_watched(evt : Event;
                                   @shared_comp human_voice_sound__path : Object;
                                   @shared_comp human_voice_sound__descs : Object;
                                   var human_voice_effect__event : SoundEvent&;
+                                  human_speech__locale = "";
                                   sound_tags : Object;
                                   transform : float3x4)
   if have_sound(sound_control__state) && is_playing(human_voice_effect__event) && !is_oneshot(human_voice_effect__event)
     release(human_voice_effect__event)
     let pos = get_human_voice_3d_pos(is_watched_sound, transform, human_sound_geomtree_nodes__headNodeId, animchar)
-    human_voice_effect__event |> reset(play(human_voice_effect__type, human_voice_sound__path, human_voice_sound__descs, sound_tags, is_watched_sound, pos, false))
+    human_voice_effect__event |> reset(play_voice(human_voice_effect__type, human_voice_sound__path, human_voice_sound__descs, sound_tags, is_watched_sound, pos, human_speech__locale, false))
 
 
 def abandon_or_release(var human_voice_effect__event : SoundEvent&; _abandon : bool)
@@ -56,6 +57,8 @@ def human_voice_effect_on_change(evt : Event;
                                  @shared_comp human_voice_effect__allOrderedEffects : StringList;
                                  @shared_comp human_voice_sound__path : Object;
                                  @shared_comp human_voice_sound__descs : Object;
+
+                                 human_speech__locale = "";
 
                                  sound_control__state : int = default_sound_control_state();
                                  is_watched_sound = false;
@@ -88,7 +91,8 @@ def human_voice_effect_on_change(evt : Event;
       abandon_or_release(human_voice_effect__event, newDesc?.abandoner != null)
       if newDesc != null
         let pos = get_human_voice_3d_pos(is_watched_sound, transform, human_sound_geomtree_nodes__headNodeId, animchar)
-        human_voice_effect__event |> reset(play_desc(*newDesc, human_voice_sound__path, sound_tags, is_watched_sound, pos, false))
+        let locPath = get_voice_loc_path(human_voice_sound__path, human_speech__locale)
+        human_voice_effect__event |> reset(play_desc(*newDesc, locPath != null ? *locPath : human_voice_sound__path, sound_tags, is_watched_sound, pos, false))
 
     human_voice_effect__isInited = true
 
@@ -133,14 +137,15 @@ def play_oneshot_effect(phrase : string;
                         human_voice_sound__descs : Object;
                         human_voice_effect__type : string;
                         var human_voice_effect__oneshotType : das_string&;
-                        human_speech__isSpeaking : bool;
+                        human_speech__curPhraseIdx : int;
+                        human_speech__locale : string;
                         is_watched_sound : bool;
                         human_sound_geomtree_nodes__headNodeId : int;
                         animchar : AnimcharBaseComponent const?;
                         sound_tags : Object;
                         transform : float3x4)
 
-  if human_speech__isSpeaking
+  if human_speech__curPhraseIdx != -1
     return
 
   if !ignore_disabled_sound_control && !have_sound(sound_control__state)
@@ -165,9 +170,12 @@ def play_oneshot_effect(phrase : string;
       return
 
   let pos = get_human_voice_3d_pos(is_watched_sound, transform, human_sound_geomtree_nodes__headNodeId, animchar)
-  human_voice_effect__oneshotEvent |> reset(play(phrase, human_voice_sound__path, human_voice_sound__descs, sound_tags, is_watched_sound, pos, false))
+  human_voice_effect__oneshotEvent |> reset(play_voice(phrase, human_voice_sound__path, human_voice_sound__descs, sound_tags, is_watched_sound, pos, human_speech__locale, false))
   human_voice_effect__oneshotType := phrase
   
+  if is_valid_handle_value(human_voice_effect__oneshotEvent) && !is_oneshot(human_voice_effect__oneshotEvent)
+    abandon(human_voice_effect__oneshotEvent, 1.)
+    sound_debug("warn: started non-oneshot phrase '{phrase}' as oneshot")
 
 
 [es(tag=sound)]
@@ -178,7 +186,8 @@ def human_voice_effect_on_net_cmd(evt : CmdNetHumanVoiceEffect;
                                   @shared_comp human_voice_sound__descs : Object;
                                   human_voice_effect__type : string;
                                   var human_voice_effect__oneshotType : das_string&;
-                                  human_speech__isSpeaking : bool = false;
+                                  human_speech__curPhraseIdx : int = -1;
+                                  human_speech__locale = "";
                                   is_watched_sound : bool = false;
                                   human_sound_geomtree_nodes__headNodeId = -1;
                                   animchar : AnimcharBaseComponent const?;
@@ -194,7 +203,8 @@ def human_voice_effect_on_net_cmd(evt : CmdNetHumanVoiceEffect;
                         human_voice_sound__descs,
                         human_voice_effect__type,
                         human_voice_effect__oneshotType,
-                        human_speech__isSpeaking,
+                        human_speech__curPhraseIdx,
+                        human_speech__locale,
                         is_watched_sound,
                         human_sound_geomtree_nodes__headNodeId,
                         animchar,
@@ -210,7 +220,8 @@ def human_voice_effect_on_cmd(evt : CmdHumanVoiceEffect;
                               @shared_comp human_voice_sound__descs : Object;
                               human_voice_effect__type : string;
                               var human_voice_effect__oneshotType : das_string&;
-                              human_speech__isSpeaking : bool = false;
+                              human_speech__curPhraseIdx : int = -1;
+                              human_speech__locale = "";
                               is_watched_sound : bool = false;
                               human_sound_geomtree_nodes__headNodeId = -1;
                               animchar : AnimcharBaseComponent const?;
@@ -224,7 +235,8 @@ def human_voice_effect_on_cmd(evt : CmdHumanVoiceEffect;
                       human_voice_sound__descs,
                       human_voice_effect__type,
                       human_voice_effect__oneshotType,
-                      human_speech__isSpeaking,
+                      human_speech__curPhraseIdx,
+                      human_speech__locale,
                       is_watched_sound,
                       human_sound_geomtree_nodes__headNodeId,
                       animchar,

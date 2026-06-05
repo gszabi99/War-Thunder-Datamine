@@ -1728,7 +1728,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1739,7 +1739,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1750,7 +1750,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1761,7 +1761,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1772,7 +1772,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1844,7 +1844,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1855,7 +1855,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1866,7 +1866,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1877,7 +1877,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1888,7 +1888,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1960,7 +1960,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1971,7 +1971,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1982,7 +1982,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1993,7 +1993,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2004,7 +2004,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2076,7 +2076,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2087,7 +2087,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2098,7 +2098,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2109,7 +2109,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2120,7 +2120,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -3437,6 +3437,36 @@
         ]
       },
       {
+        "dm": "wing1_l_dm",
+        "dp": [
+          "wingcontrol_l_dm",
+          "elevon1_l_dm",
+          "flaperon_l_dm"
+        ]
+      },
+      {
+        "dm": "wing1_r_dm",
+        "dp": [
+          "wingcontrol_r_dm",
+          "elevon1_r_dm",
+          "flaperon_r_dm"
+        ]
+      },
+      {
+        "dm": "wing2_l_dm",
+        "dp": [
+          "elevon_l_dm",
+          "flaperon1_l_dm"
+        ]
+      },
+      {
+        "dm": "wing2_r_dm",
+        "dp": [
+          "elevon_r_dm",
+          "flaperon1_r_dm"
+        ]
+      },
+      {
         "dm": "tail_dm",
         "dp": "jet_flame"
       }
@@ -3457,78 +3487,6 @@
   "arcadeOverride": {
     "maxSpeedMultiplier": 1.01,
     "wepOverspeed": 1.05
-  },
-  "wiki": {
-    "general": {
-      "length": 11.3,
-      "wingspan": 11.2,
-      "wingArea": 24.2,
-      "emptyWeight": 4810.0,
-      "normalWeight": 6370.25,
-      "maxTakeoffWeight": 8935.0,
-      "powerPlantType": 2,
-      "thrustMaxMil": 14500.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 7700.0,
-        "airSpeedMil0": [
-          1524.0,
-          952.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          22.0
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          102.234
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          215.658
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          358.922
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          552.068
-        ],
-        "turnTimeMil": [
-          1000.0,
-          31.0
-        ],
-        "takeoffDistance": 20000.0,
-        "ceiling": 9500.0,
-        "rollRate": 184.0,
-        "wingLoading": 263.0,
-        "thrustToWeightRatio": 0.25
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          952.0
-        ],
-        "airSpeedMil1": [
-          9500.0,
-          871.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          22.0
-        ],
-        "climbRateMil1": [
-          3000.0,
-          19.5
-        ],
-        "climbRateMil2": [
-          9500.0,
-          7.8
-        ]
-      }
-    }
   },
   "balanceData": {
     "accSpd": 2.97924,

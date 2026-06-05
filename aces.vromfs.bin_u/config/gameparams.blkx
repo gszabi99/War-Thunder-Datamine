@@ -72,6 +72,7 @@
   "bombingZoneHpToTntEquivalentTons": 0.000125,
   "maxDistForWatchXRayInSpectator": 50.0,
   "isDmgIndicatorShowDamaged": true,
+  "forceShowDmgIndicatorForArbiter": true,
   "killZoneVisibilityDistance": 50.0,
   "detectionZoneVisibilityDistance": 100.0,
   "showEnemyAtKillZone": true,
@@ -107,6 +108,7 @@
   "detectIndicatorTreeTransparencyThreshold": 0.01,
   "drawShipsInShipSensorView": true,
   "drawSubsInShipSensorView": true,
+  "sonarViewNearRenderDist": 200.0,
   "squadTargetIndicatorRandomRange": [
     15.0,
     500.0
@@ -267,6 +269,9 @@
   ],
   "numAircraftThreads": 6,
   "lastMissionName": "reichstagassault",
+  "visualDetectDistanceFor0mBboxDiagTarget": 4000.0,
+  "visualDetectDistanceCoefficientFor1mBboxDiagTarget": 400.0,
+  "visualDetectDistanceMaxForBboxDiagTarget": 30000.0,
   "mp_defaultPlayersModel": "dummy_plane",
   "mp_defaultPlayersWeapons": "",
   "criticalOffenderCriteriaMinLoadFactorReduce": 0.7,
@@ -281,6 +286,7 @@
   "criticalOffenderMetricsDiffMin": 0.3,
   "lightWeightClientCriticalDamageDetector": true,
   "leaveKillerSearchDistanceMax": 3000.0,
+  "crashKillerSearchDistanceMax": 3000.0,
   "airfieldSafeLeaveZoneRadius": -1.0,
   "enableAircraftSevereDamage": true,
   "enableShipSevereDamage": true,
@@ -446,7 +452,8 @@
     7.0,
     3.0
   ],
-  "arrestorHookTouchAirfieldFx": "sparks_deck_hook",
+  "arrestorHookTouchAirfieldFx": "smoke_hook_collision_deck",
+  "arrestorHookTouchGroundFx": "smoke_hook_collision_ground",
   "enableFlightModelDamageTexture": false,
   "maxDistanceForUpdateWithShipPhys": 800.0,
   "maxDistanceForDetailedUpdateShipPhys": 400.0,
@@ -10689,6 +10696,7 @@
       "ignoreReplenishment": false,
       "aircraftFriendlyFireForBanOnly": true,
       "enableLeaveKills": true,
+      "enableCrashKills": true,
       "rocketSpotting": true,
       "airToAirMissileDetection": false,
       "missileEvasionMessage": true,
@@ -10766,6 +10774,7 @@
       "ignoreReplenishment": false,
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
+      "enableCrashKills": true,
       "rocketSpotting": true,
       "airToAirMissileDetection": false,
       "missileEvasionMessage": true,
@@ -10842,6 +10851,7 @@
       "ignoreReplenishment": false,
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
+      "enableCrashKills": true,
       "airToAirMissileDetection": false,
       "missileEvasionMessage": false,
       "rocketSpotting": false,
@@ -10919,6 +10929,7 @@
       "ignoreReplenishment": false,
       "aircraftFriendlyFireForBanOnly": true,
       "enableLeaveKills": true,
+      "enableCrashKills": true,
       "rocketSpotting": true,
       "airToAirMissileDetection": false,
       "missileEvasionMessage": true,
@@ -10997,6 +11008,7 @@
       "ignoreReplenishment": false,
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
+      "enableCrashKills": true,
       "rocketSpotting": false,
       "airToAirMissileDetection": false,
       "missileEvasionMessage": true,
@@ -11074,6 +11086,7 @@
       "ignoreReplenishment": false,
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
+      "enableCrashKills": true,
       "airToAirMissileDetection": false,
       "missileEvasionMessage": false,
       "rocketSpotting": false,
@@ -11150,6 +11163,7 @@
       "ignoreReplenishment": false,
       "aircraftFriendlyFireForBanOnly": true,
       "enableLeaveKills": true,
+      "enableCrashKills": true,
       "rocketSpotting": true,
       "airToAirMissileDetection": false,
       "missileEvasionMessage": true,
@@ -11228,6 +11242,7 @@
       "ignoreReplenishment": false,
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
+      "enableCrashKills": true,
       "rocketSpotting": false,
       "airToAirMissileDetection": false,
       "missileEvasionMessage": true,
@@ -12891,6 +12906,14 @@
         "enableLeaveKills": true
       }
     },
+    "enableCrashKills": {
+      "off": {
+        "enableCrashKills": false
+      },
+      "on": {
+        "enableCrashKills": true
+      }
+    },
     "airToAirMissileDetection": {
       "off": {
         "airToAirMissileDetection": false
@@ -14281,7 +14304,7 @@
     "tpsGroundVertClampAngle": 18.0,
     "defaultAspectRatioMin": 1.0,
     "isDiscreteThrottleShip": true,
-    "activationLongPressTime": 0.5,
+    "activationLongPressTime": 0.2,
     "activationDoubleClickTime": 0.3
   },
   "mp_respawn_time": {
@@ -19037,6 +19060,17 @@
     ],
     "armorFixedColorCount": 16,
     "armorFixedColorThreshold": 1.0,
+    "sonarOutlineScale": 0.025,
+    "sonarOutlinePower": 4.0,
+    "sonarOutlineSpeed": 2.0,
+    "sonarOutlineRenderDelay": 1.0,
+    "sonarOutlinePeriod": 3.0,
+    "sonarOutlineColor": [
+      128,
+      255,
+      0,
+      255
+    ],
     "attachObstructPartOutlineColor": [
       0.8,
       0.0,
@@ -19097,7 +19131,7 @@
         "ex_aps_launcher_",
         "ex_era_turret_",
         "bow",
-        "compartment",
+        "compartment_",
         "mid",
         "stern",
         "deckhouse",
@@ -20956,6 +20990,15 @@
             75,
             255
           ]
+        },
+        {
+          "name": "sweep_wing",
+          "xrayColor": [
+            192,
+            152,
+            162,
+            255
+          ]
         }
       ]
     },
@@ -21126,6 +21169,9 @@
         },
         {
           "name": "apu"
+        },
+        {
+          "name": "sweep_wing"
         },
         {
           "name": "air_balloon"
@@ -21482,6 +21528,41 @@
     "minBoundRadForMode2": 3.0,
     "hideForMode2re": {
       "incRE": [
+        "railroad_bridge_support_debris_a",
+        "railroad_bridge_support_debris_b",
+        "railroad_bridge_support_debris_c",
+        "railroad_bridge_support_fragment_a",
+        "railroad_bridge_support_fragment_b",
+        "barbedwire_a",
+        "barbedwire_b",
+        "barbedwire_c",
+        "barbedwire_a_dmg",
+        "barbedwire_b_dmg",
+        "barbedwire_c_dmg",
+        "wooden_stake_b",
+        "wooden_stake_c",
+        "bridge_railroad_service_ladder_a_a",
+        "bridge_railroad_service_ladder_a_b",
+        "bridge_railroad_service_ladder_a_c",
+        "bridge_railroad_metal_debris_a",
+        "bridge_railroad_metal_debris_b",
+        "bridge_railroad_metal_debris_c",
+        "bridge_railroad_metal_debris_d",
+        "debris_concrete_deckslab_a",
+        "debris_concrete_deckslab_b",
+        "debris_concrete_deckslab_c",
+        "log_crossing_a",
+        "log_crossing_b",
+        "log_crossing_c",
+        "log_crossing_dry_a",
+        "log_crossing_dry_b",
+        "log_crossing_dry_c",
+        "tree_fraxinus_excelsior_fallen_a_stump",
+        "tree_picea_sitchensis_fallen_b_stump",
+        "tree_picea_sitchensis_stump_a",
+        "bridge_railroad_rails_a",
+        "bridge_railroad_rails_b",
+        "bridge_railroad_rails_c",
         "backyard_fence_a_w1500",
         "backyard_fence_b",
         "american_lamp_post_high_a_dmg",
@@ -22281,11 +22362,54 @@
         "african_mud_hut_window_frame_c",
         "african_village_house_door_frame_c",
         "african_village_house_door_frame_a",
-        "african_village_house_door_frame_b"
+        "african_village_house_door_frame_b",
+        "ussr_freight_car_ruined_dp_a",
+        "ussr_freight_car_ruined_dp_b",
+        "ussr_freight_car_ruined_dp_b",
+        "ussr_freight_car_ruined_dp_b",
+        "universal_airfield_table_a",
+        "air_box_pile_b",
+        "air_pallet_cardboard_a_pile_a",
+        "universal_airfield_fuel_tank_a"
       ]
     },
     "hideForMode0re": {
       "incRE": [
+        "railroad_bridge_support_debris_a",
+        "railroad_bridge_support_debris_b",
+        "railroad_bridge_support_debris_c",
+        "railroad_bridge_support_fragment_a",
+        "railroad_bridge_support_fragment_b",
+        "barbedwire_a",
+        "barbedwire_b",
+        "barbedwire_c",
+        "barbedwire_a_dmg",
+        "barbedwire_b_dmg",
+        "barbedwire_c_dmg",
+        "wooden_stake_b",
+        "wooden_stake_c",
+        "bridge_railroad_service_ladder_a_a",
+        "bridge_railroad_service_ladder_a_b",
+        "bridge_railroad_service_ladder_a_c",
+        "bridge_railroad_metal_debris_a",
+        "bridge_railroad_metal_debris_b",
+        "bridge_railroad_metal_debris_c",
+        "bridge_railroad_metal_debris_d",
+        "debris_concrete_deckslab_a",
+        "debris_concrete_deckslab_b",
+        "debris_concrete_deckslab_c",
+        "log_crossing_a",
+        "log_crossing_b",
+        "log_crossing_c",
+        "log_crossing_dry_a",
+        "log_crossing_dry_b",
+        "log_crossing_dry_c",
+        "tree_fraxinus_excelsior_fallen_a_stump",
+        "tree_picea_sitchensis_fallen_b_stump",
+        "tree_picea_sitchensis_stump_a",
+        "bridge_railroad_rails_a",
+        "bridge_railroad_rails_b",
+        "bridge_railroad_rails_c",
         "backyard_fence_a_w1500",
         "backyard_fence_b",
         "american_lamp_post_high_a_dmg",
@@ -23151,6 +23275,14 @@
         "african_village_house_door_frame_c",
         "african_village_house_door_frame_a",
         "african_village_house_door_frame_b",
+        "ussr_freight_car_ruined_dp_a",
+        "ussr_freight_car_ruined_dp_b",
+        "ussr_freight_car_ruined_dp_b",
+        "ussr_freight_car_ruined_dp_b",
+        "universal_airfield_table_a",
+        "air_box_pile_b",
+        "air_pallet_cardboard_a_pile_a",
+        "universal_airfield_fuel_tank_a",
         "japan_i_400_dmg_dp_01",
         "japan_i_400_dmg_dp_02",
         "japan_i_400_dmg_dp_03",
@@ -26980,17 +27112,13 @@
     "node": [
       "main_caliber_turret",
       "aux_caliber_turret",
-      "aa_turret",
-      "bridge",
-      "funnel",
-      "fire_director",
-      "rangefinder",
       "superstructure",
       "superstructure_front",
       "superstructure_bottom",
       "superstructure_side",
       "superstructure_back",
-      "superstructure_top"
+      "superstructure_top",
+      "elevator"
     ]
   },
   "cfdWind": {
@@ -27151,5 +27279,14 @@
         ]
       ]
     }
+  },
+  "shipWakeFx": {
+    "foam_main_mv_scale": 0.0,
+    "foam_head_mv_scale": 0.0,
+    "foam_turbo_mv_scale": 0.0,
+    "foam_trail_mv_scale": 0.0
+  },
+  "hangarGlobal": {
+    "doNotRotateCamInEditMode": true
   }
 }

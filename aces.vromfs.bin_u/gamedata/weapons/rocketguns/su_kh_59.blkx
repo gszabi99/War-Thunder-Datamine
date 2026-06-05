@@ -20,7 +20,7 @@
       0.1,
       0.1
     ],
-    "CxK": 2.3,
+    "CxK": 1.85,
     "brakeTime": [
       5.0,
       5.05
@@ -30,15 +30,8 @@
     "wingAreaMult": 5.75,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.25,
+    "distFromCmToStab": 0.5,
     "mass": 790.0,
-    "massEnd": 697.0,
-    "massEnd1": 522.0,
-    "timeFire": 4.4,
-    "timeFire1": 250.0,
-    "fireDelay": 0.6,
-    "force": 27500.0,
-    "force1": 2800.0,
     "timeLife": 250.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
@@ -48,8 +41,8 @@
     "minDistance": 2000.0,
     "rangeMax": 120000.0,
     "opticSightFov": [
-      12.0,
-      2.9
+      16.0,
+      2.8
     ],
     "loadFactorMax": 5.0,
     "gunnerOpticsName": "KH-59",
@@ -74,14 +67,14 @@
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
     "explosiveType": "tgaf_5m",
-    "explosiveMass": 119.0,
+    "explosiveMass": 52.0,
+    "warheadMass": 140.0,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.025,
     "shellCollision": true,
     "distanceFuse": false,
-    "hitPowerMult": 400.0,
-    "fuseDelayDist": 0.1,
-    "explodeTreshold": 0.1,
+    "fuseDelayDist": 5.0,
+    "explodeTreshold": 0.5,
     "price": 3000.0,
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni_large",
@@ -100,9 +93,42 @@
       0.0,
       0.0
     ],
+    "propulsion0": {
+      "fireDelay": 0.6,
+      "impulse0": {
+        "time": 4.4,
+        "force": 27500.0,
+        "massLost": 55.0
+      },
+      "impulse1": {
+        "time": 0.0,
+        "force": 0.0,
+        "massLost": 39.0
+      }
+    },
     "arcadeProp": {
       "finsAoaHor": 0.18,
       "finsAoaVer": 0.18
+    },
+    "fpvModeSettings": {
+      "hasNightVision": false,
+      "hasFPVMode": true,
+      "horLimit": [
+        -35.0,
+        35.0
+      ],
+      "verLimit": [
+        -60.0,
+        20.0
+      ],
+      "zoomMinMax": [
+        16.0,
+        2.8
+      ],
+      "rateMax": [
+        5.0,
+        5.0
+      ]
     },
     "guidance": {
       "warmUpTime": 1.0,
@@ -114,6 +140,8 @@
       "inertialNavigation": true,
       "inertialNavigationDriftSpeed": 0.05,
       "indicateOnHud": false,
+      "reacquireTarget": true,
+      "lockMode": "LOAL+LOBL",
       "designationError": 7.0,
       "breakLockMaxTime": 600.0,
       "opticalSeeker": {
@@ -128,7 +156,7 @@
         "rateMax": 7.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": "camera",
-        "constantDesignationSourceTypeMask": 0,
+        "constantDesignationSourceType": "",
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
@@ -146,8 +174,8 @@
         "altitudeRateRateToClimb": 0.15,
         "climbDiffToAccelMult": 0.025,
         "altitudeHoldAngleLimith": [
-          -23.0,
-          23.0
+          -20.0,
+          15.0
         ],
         "courseErrorAngleToAccelMult": 1.5,
         "courseErrorFinalAngleCorrection": 1.25,
@@ -155,10 +183,48 @@
         "propNavMult": 4.0,
         "reqAccelMax": 5.0,
         "baseIndSpeed": 1800.0,
-        "accelControlProp": 0.0091,
-        "accelControlIntg": 0.006,
-        "accelControlDiff": 0.0006,
+        "accelControlProp": 0.024021,
+        "accelControlIntg": 0.060014,
+        "accelControlDiff": 0.001964,
         "accelControlIntgLim": 1.0
+      },
+      "table0": {
+        "altitude": 500.0,
+        "fighterMach": [
+          0.4,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          5000.0,
+          5000.0,
+          5000.0,
+          5000.0
+        ],
+        "rangeMax": [
+          120000.0,
+          120000.0,
+          120000.0,
+          120000.0
+        ],
+        "rangeMaxAltDiff": [
+          500.0,
+          0.0
+        ],
+        "timeMax": [
+          400.0,
+          400.0,
+          400.0,
+          400.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          0.0
+        ]
       }
     },
     "pressureDamage": {
@@ -249,6 +315,20 @@
           }
         ]
       }
+    },
+    "armorpower": {
+      "ArmorPower0m": [
+        60.0,
+        10.0
+      ],
+      "ArmorPower30000m": [
+        60.0,
+        5000.0
+      ],
+      "ArmorPower35000m": [
+        60.0,
+        7000.0
+      ]
     },
     "collisions": {
       "default": {
@@ -550,6 +630,13 @@
         "fx": "hit_12_14mm_snow_ap"
       }
     },
+    "propulsion1": {
+      "impulse0": {
+        "time": 250.0,
+        "force": 2800.0,
+        "massLost": 175.0
+      }
+    },
     "tracerTrail": [
       {
         "fireEffect": "fires_exhaust_jet_mach_discs_big",
@@ -566,14 +653,14 @@
         "inactiveAtStage2": true
       },
       {
-        "fireEffect": "",
-        "smokeEffect": "trail_jet",
+        "fireEffect": "fires_exhaust_jet_early_tiny",
+        "smokeEffect": "smoke_rocket_tail_short_small_noise_transparent",
         "smokeEffect2": "",
-        "hazeEffect": "haze_jet",
+        "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
         "effectOffset": [
-          -0.5,
-          -0.5,
+          -2.6,
+          0.0,
           0.0
         ],
         "hasTracerTrail": true,

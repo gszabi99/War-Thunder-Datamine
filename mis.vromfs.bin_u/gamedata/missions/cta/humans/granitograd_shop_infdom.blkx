@@ -191,7 +191,7 @@
                 "country": "ussr"
               },
               {
-                "name": "asm_val",
+                "name": "ak_15",
                 "weight": 1.0,
                 "country": "ussr"
               }
@@ -303,6 +303,7 @@
             ],
             "team": "A",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -314,6 +315,7 @@
             "target": "t1_spawns_1",
             "team": "A",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -325,6 +327,7 @@
             "target": "t1_spawns_2",
             "team": "A",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -340,6 +343,7 @@
             ],
             "team": "B",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -351,6 +355,7 @@
             "target": "t2_spawns_1",
             "team": "B",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -362,6 +367,7 @@
             "target": "t2_spawns_2",
             "team": "B",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -373,6 +379,7 @@
             "target": "t2_spawns_3",
             "team": "B",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -383,6 +390,7 @@
             "target": "t1_spawns_tanks_2",
             "team": "A",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -394,6 +402,7 @@
             "target": "t1_spawns_tanks_2",
             "team": "A",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -405,6 +414,7 @@
             "target": "t2_spawns_tanks_2",
             "team": "B",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -416,6 +426,7 @@
             "target": "t2_spawns_tanks_2",
             "team": "B",
             "isIndividual": true,
+            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -492,10 +503,36 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "target": "t1_helipad",
+            "team": "A",
+            "isAirfield": true,
+            "object": "t1_helipad",
+            "tags": {
+              "helicopter": true,
+              "type_attack_helicopter": true,
+              "type_utility_helicopter": true
+            }
+          },
+          {
+            "loc_name": "",
+            "radius": -1.0,
             "target": "t1_helipad_farspawn",
             "team": "A",
             "isAirfield": true,
             "object": "t1_helipad_farspawn",
+            "tags": {
+              "helicopter": true,
+              "type_attack_helicopter": true,
+              "type_utility_helicopter": true
+            }
+          },
+          {
+            "loc_name": "",
+            "radius": -1.0,
+            "target": "t2_helipad",
+            "team": "B",
+            "isAirfield": true,
+            "object": "t2_helipad",
             "tags": {
               "helicopter": true,
               "type_attack_helicopter": true,
@@ -537,31 +574,6 @@
               "helicopter": false,
               "type_attack_helicopter": false,
               "type_utility_helicopter": false
-            }
-          }
-        ],
-        "__missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "",
-            "radius": -1.0,
-            "target": "t1_helicopter_spawn_01",
-            "team": "A",
-            "isAirfield": false,
-            "tags": {
-              "human": false,
-              "type_attack_helicopter": true,
-              "type_utility_helicopter": true
-            }
-          },
-          {
-            "loc_name": "",
-            "radius": -1.0,
-            "target": "t2_helicopter_spawn_01",
-            "team": "B",
-            "tags": {
-              "human": false,
-              "type_attack_helicopter": true,
-              "type_utility_helicopter": true
             }
           }
         ],

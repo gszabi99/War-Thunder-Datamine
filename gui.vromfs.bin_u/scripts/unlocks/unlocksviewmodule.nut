@@ -114,16 +114,18 @@ let canPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.canPre
 let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPreview()
 
 
-function getUnlockIconConfig(config, isForTooltip = false) {
-  let iconStyle = config?.iconStyle ?? ""
-  let ratio = (("descrImage" in config) && ("descrImageRatio" in config))
-    ? config.descrImageRatio : 1.0
-  let iconParams = config?.iconParams
-  let iconConfig = config?.iconConfig
-  local image = config?.descrImage ?? ""
-  if (isForTooltip)
-    image = config?.tooltipImage ?? image
-  return { iconStyle, image, ratio, iconParams, iconConfig }
+function getUnlockIconConfig(unlock, isForTooltip = false) {
+  let {
+    descrImage = null, iconParams = null, iconConfig = null, iconStyle = "",
+    descrImageRatio = 1.0, tooltipImage = null, unlockCfg = null
+  } = unlock
+  let ratio = (descrImage != null) ? descrImageRatio : 1.0
+  let image = unlockCfg?.image ?? descrImage ?? ""
+  return {
+    iconStyle = unlockCfg == null ? iconStyle : (unlockCfg?.iconStyle ?? "")
+    image = isForTooltip ? (tooltipImage ?? image) : image
+    ratio, iconParams, iconConfig
+  }
 }
 
 
@@ -446,6 +448,26 @@ function fillUnlockImage(unlockConfig, unlockObj) {
   )
 }
 
+function getProgressBarViewData(unlockConfig) {
+  let unlockBlk = getUnlockById(unlockConfig.id)
+  let discountTooltip = []
+  let markers = []
+  for (local i = 0; $"costGoldDiscountProgress{i}" in unlockBlk; ++i) {
+    markers.append({
+      markerText = roman_numerals[i + 1],
+      markerPosition = unlockBlk[$"costGoldDiscountProgress{i}"] / unlockConfig.maxVal / 1000.0
+    })
+    discountTooltip.append(loc("mainmenu/unlockDiscount", {
+      romanNumeral = roman_numerals[i + 1],
+      discountProgress = unlockBlk[$"costGoldDiscountProgress{i}"] / 1000
+      maxProgress = unlockConfig.maxVal
+      cost = Cost(0, unlockBlk.costGold - unlockBlk[$"costGoldDiscountValue{i}"] * unlockBlk.costGold / 100.0)
+    }))
+  }
+  return { markers, tooltip = "\n".join(discountTooltip) }
+}
+
+
 function fillUnlockProgressBar(unlockConfig, unlockObj) {
   let obj = unlockObj.findObject("progress_bar")
   let data = unlockConfig.getProgressBarData()
@@ -459,27 +481,11 @@ function fillUnlockProgressBar(unlockConfig, unlockObj) {
   if (!markersNestObj?.isValid())
     return
 
-  let discountTooltip = []
-  let unlockBlk = getUnlockById(unlockConfig.id)
-  let view = { markers = [] }
-  for (local i = 0; $"costGoldDiscountProgress{i}" in unlockBlk; ++i) {
-    view.markers.append({
-      markerText = roman_numerals[i + 1],
-      markerPosition = unlockBlk[$"costGoldDiscountProgress{i}"] / unlockConfig.maxVal / 1000.0
-    })
-
-    discountTooltip.append(loc("mainmenu/unlockDiscount", {
-      romanNumeral = roman_numerals[i + 1],
-      discountProgress = unlockBlk[$"costGoldDiscountProgress{i}"] / 1000
-      maxProgress = unlockConfig.maxVal
-      cost = Cost(0, unlockBlk.costGold - unlockBlk[$"costGoldDiscountValue{i}"] * unlockBlk.costGold / 100.0)
-    }))
-  }
-
-  if (view.markers.len() > 0) {
+  let { markers, tooltip } = getProgressBarViewData(unlockConfig)
+  if (markers.len() > 0) {
     markersNestObj.show(true)
-    markersNestObj.tooltip = "\n".join(discountTooltip)
-    let markup = handyman.renderCached("%gui/unlocks/unlockProgressMarkers.tpl", view)
+    markersNestObj.tooltip = tooltip
+    let markup = handyman.renderCached("%gui/unlocks/unlockProgressMarkers.tpl", { markers })
     obj.getScene().replaceContentFromText(markersNestObj, markup, markup.len(), this)
     obj.hasMarkers = "yes"
   } else {
@@ -788,7 +794,9 @@ function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
 }
 
 function fillUnlockBlock(obj, config, isForTooltip = false) {
-  let { iconStyle, image, ratio, iconParams, iconConfig } = getUnlockIconConfig(config, isForTooltip)
+  let {
+    iconStyle, image, ratio, iconParams, iconConfig
+  } = getUnlockIconConfig(config, isForTooltip)
   let hasImage = iconConfig != null || iconStyle != "" || image != ""
   obj.findObject("award_image_sizer").show(hasImage)
   if (hasImage) {
@@ -1032,6 +1040,7 @@ return {
   updateLockStatus
   getUnlockImageConfig
   fillUnlockImage
+  getProgressBarViewData
   fillUnlockProgressBar
   doPreviewUnlockPrize
   fillUnlockDescription
@@ -1050,4 +1059,5 @@ return {
   fillSimplifiedUnlockInfo
   fillUnlockBlock
   buildUnlockTooltipByConfig
+  canPreviewUnlockPrize
 }

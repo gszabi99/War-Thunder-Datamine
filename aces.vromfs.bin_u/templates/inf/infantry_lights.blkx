@@ -175,7 +175,7 @@
   },
   "light_bunker_wall": {
     "_use": "omni_light",
-    "light__max_radius": 2.0,
+    "light__max_radius": 5.0,
     "light__offset": [
       0.0,
       0.0,
@@ -187,8 +187,10 @@
       255,
       255
     ],
-    "light__brightness": 1.0,
-    "light__nightly": false
+    "light__brightness": 0.05,
+    "light__radius_scale": 5.0,
+    "light__nightly": false,
+    "light__enable_lens_flares": true
   },
   "light_bunker_wall_b": {
     "_use": "omni_light",
@@ -216,8 +218,8 @@
       255,
       255
     ],
-    "light__brightness": 0.75,
-    "light__radius_scale": 3.0,
+    "light__brightness": 0.5,
+    "light__radius_scale": 5.0,
     "light__enable_lens_flares": true,
     "light__nightly": false,
     "_group": {
@@ -229,6 +231,31 @@
       "spot_light__shadow_near_far_planes": [
         0.5,
         0.0
+      ]
+    }
+  },
+  "spot_light_ring_tripod_stand_cold_a": {
+    "_use": "spot_light",
+    "light__max_radius": 10.0,
+    "light__color": [
+      200,
+      230,
+      255,
+      255
+    ],
+    "light__brightness": 0.25,
+    "light__radius_scale": 5.0,
+    "light__enable_lens_flares": true,
+    "light__nightly": false,
+    "_group": {
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__inner_attenuation": 0.8,
+      "spot_light__cone_angle": 150.0,
+      "spot_light__shadow_cone_angle": 120.0,
+      "spot_light__shadow_near_far_planes": [
+        0.0,
+        6.0
       ]
     }
   },
@@ -284,7 +311,7 @@
   },
   "light_chandelier_big": {
     "_use": "omni_light",
-    "light__max_radius": 6.0,
+    "light__max_radius": 8.0,
     "light__offset": [
       0.0,
       0.0,
@@ -296,8 +323,19 @@
       255,
       255
     ],
-    "light__brightness": 4.0,
-    "light__nightly": false
+    "light__brightness": 0.5,
+    "light__radius_scale": 5.0,
+    "light__nightly": false,
+    "light__enable_lens_flares": true,
+    "_group": {
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadow_near_far_planes": [
+        0.42,
+        0.0
+      ],
+      "omni_light__shadows": true
+    }
   },
   "light_chandelier_big_far": {
     "_use": "omni_light",
@@ -727,9 +765,9 @@
       224,
       255
     ],
-    "light__brightness": 0.75,
+    "light__brightness": 0.25,
     "light__nightly": false,
-    "light__radius_scale": 3.0,
+    "light__radius_scale": 7.0,
     "light__enable_lens_flares": true,
     "_group": {
       "spot_light__cone_angle": 160.0,
@@ -817,12 +855,18 @@
       10,
       255
     ],
-    "light__brightness": 2.0,
+    "light__brightness": 0.6,
+    "light__radius_scale": 5.0,
     "light__nightly": false,
     "_group": {
       "spot_light__shadows": true,
+      "spot_light__cone_angle": 150.0,
       "spot_light__dynamic_obj_shadows": false,
-      "spot_light__inner_attenuation": 0.5
+      "spot_light__shadow_near_far_planes": [
+        0.0,
+        4.0
+      ],
+      "spot_light__inner_attenuation": 0.9
     }
   },
   "spot_light_warm_r10_b6_soft": {
@@ -843,6 +887,27 @@
       "spot_light__shadows": true,
       "spot_light__dynamic_obj_shadows": false,
       "spot_light__shadow_shrink": 1
+    }
+  },
+  "spot_light_warm_wall_bunker_a": {
+    "_use": "spot_light",
+    "light__max_radius": 10.0,
+    "light__color": [
+      70,
+      152,
+      255,
+      255
+    ],
+    "light__brightness": 0.7,
+    "light__radius_scale": 5.0,
+    "light__nightly": false,
+    "light__enable_lens_flares": true,
+    "_group": {
+      "spot_light__cone_angle": 140.0,
+      "spot_light__inner_attenuation": 0.25,
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadow_shrink": 0
     }
   },
   "spot_light_warm_r7_b4": {
@@ -984,12 +1049,11 @@
       255,
       255
     ],
-    "light__brightness": 0.5,
+    "light__brightness": 0.075,
     "light__contact_shadows": false,
-    "light__texture_name": "ies_ribbed_a",
     "light__use_box": false,
-    "light__max_radius": 5.0,
-    "light__radius_scale": 3.0,
+    "light__max_radius": 7.0,
+    "light__radius_scale": 7.0,
     "light__nightly": false,
     "_group": {
       "_track": true,
@@ -1034,13 +1098,14 @@
     ],
     "light__brightness": 0.1,
     "light__radius_scale": 5.0,
-    "light__texture_name": "",
+    "light__enable_lens_flares": true,
     "light__direction": [
       0.0,
       0.0,
       1.0
     ],
     "light__use_box": false,
+    "light__use_clip": false,
     "light__nightly": false,
     "_group": {
       "omni_light__shadows": true,
@@ -1053,7 +1118,7 @@
   },
   "sovmod_lamp_fluorescent_a_type_a_6m_cold_light": {
     "_use": "omni_light",
-    "light__max_radius": 6.0,
+    "light__max_radius": 8.0,
     "light__color": [
       220,
       255,
@@ -2688,7 +2753,7 @@
   },
   "sovmod_lamp_fluorescent_a_type_b_6m_cold_light": {
     "_use": "omni_light",
-    "light__max_radius": 6.0,
+    "light__max_radius": 8.0,
     "light__color": [
       210,
       255,
@@ -2816,7 +2881,11 @@
     "_group": {
       "omni_light__shadows": true,
       "omni_light__shadow_shrink": 1,
-      "omni_light__shadow_quality": 0
+      "omni_light__shadow_quality": 0,
+      "omni_light__shadow_near_far_planes": [
+        0.1,
+        0.0
+      ]
     }
   },
   "omni_light_torch_b": {
@@ -2842,7 +2911,11 @@
     "_group": {
       "omni_light__shadows": true,
       "omni_light__shadow_shrink": 1,
-      "omni_light__shadow_quality": 0
+      "omni_light__shadow_quality": 0,
+      "omni_light__shadow_near_far_planes": [
+        0.15,
+        0.0
+      ]
     }
   }
 }

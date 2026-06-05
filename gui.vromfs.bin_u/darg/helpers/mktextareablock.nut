@@ -131,7 +131,7 @@ function mkTextareaBlock(fullText, textareaProps, replaceTable) {
   }
   let mkTextarea = @(text) textareaProps.__merge({ text })
   let mkInlineText = @(text) inlineTextProps.__merge({ text })
-  if (fullText.indexof("\r") != null)
+  if (fullText.contains("\r"))
     fullText = fullText.replace("\r\n", "\n")
   let parts = splitTextToParts(fullText, replaceTable)
   let totalParts = parts.len()
@@ -170,7 +170,7 @@ function mkTextareaBlock(fullText, textareaProps, replaceTable) {
         let curElem = parts[ii]
         let isElemText = isString(curElem)
         local isProcessed = false
-        let canTryFitInline = !isElemText || curElem.indexof("\n") == null
+        let canTryFitInline = !isElemText || !curElem.contains("\n")
         if (canTryFitInline) {
           
           let comp = isElemText ? mkInlineText(curElem) : curElem

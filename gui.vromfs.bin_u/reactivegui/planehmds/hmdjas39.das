@@ -12,6 +12,7 @@ require Sensors
 require RadarHud
 require app
 require hud
+require Localization
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 let mpsToKnots = 1.94384

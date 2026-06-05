@@ -55,6 +55,17 @@ def squadmates_spawn_trace_check_init(evt : Event;
                                       dynamic_respawn__traceNodeName = "Bip01 Head")
   dynamic_respawn__traceNodeId = geomtree_findNodeIndex(*animchar.nodeTree, dynamic_respawn__traceNodeName)
 
+[es(track=dynamic_respawn__spawnOnUnitEid, on_appear)]
+def set_prev_positions_on_spawn_on_unit(evt : Event;
+                                        dynamic_respawn__spawnOnUnitEid : EntityId;
+                                        var dynamic_respawn__prevPositions aka spawn_dynamic_respawn__prevPositions : Point3List&;
+                                        var dynamic_respawn__curIterIdx aka spawn_dynamic_respawn__curIterIdx : int&)
+  if !!dynamic_respawn__spawnOnUnitEid
+    query(dynamic_respawn__spawnOnUnitEid) <| $ [es] (dynamic_respawn__prevPositions aka on_dynamic_respawn__prevPositions : Point3List;
+                                                      dynamic_respawn__curIterIdx aka on_dynamic_respawn__curIterIdx : int)
+      spawn_dynamic_respawn__prevPositions := on_dynamic_respawn__prevPositions
+      spawn_dynamic_respawn__curIterIdx = on_dynamic_respawn__curIterIdx
+
 [es(REQUIRE=squad_dynamic_respawn, on_event=ParallelUpdateFrameDelayed)]
 def save_dynamic_respawn_positions(evt : Event)
   query() <| $ [es] (unit__ref : UnitRef;
@@ -249,6 +260,10 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
                                             dynamic_respawn__vehicleFallbackOffset : float3;
                                             dynamic_respawn__fallbackMinDistToUnitSq : float = 225.)
   let spawnOnEid = evt.spawnOnEid
+
+  if !has(spawnOnEid, "unit__ref")
+    return
+
   evt.verified = false
 
   if !get_mission_spawn_on_squad_mode()

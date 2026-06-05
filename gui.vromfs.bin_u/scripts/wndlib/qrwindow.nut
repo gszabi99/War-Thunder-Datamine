@@ -24,8 +24,11 @@ local class qrWindow (BaseGuiHandler) {
   qrSize = null
   buttons = null
   onEscapeCb = null
+  onQrClosed = null
+  assistantMapSessionQr = false
   needUrlWithQrRedirect = false
   needShowUrlLink = true
+  autoRefreshAuthenticatedUrl = true
 
   getSceneTplView = @() {
     headerText = this.headerText
@@ -39,9 +42,13 @@ local class qrWindow (BaseGuiHandler) {
       this.goBack()
       return
     }
-    this.updateAuthenticatedUrl()
-
-    this.scene.findObject("wnd_update").setUserData(this)
+    let wndTimer = this.scene.findObject("wnd_update")
+    if (this.autoRefreshAuthenticatedUrl) {
+      this.updateAuthenticatedUrl()
+      wndTimer.setUserData(this)
+    } else {
+      wndTimer.enable = "no"
+    }
 
     if (!is_mouse_last_time_used()) {
       let firstBtn = this.scene.findObject("btnLink_0")
@@ -111,12 +118,18 @@ local class qrWindow (BaseGuiHandler) {
   }
 
   function onUpdate(_obj, _dt) {
+    if (!this.autoRefreshAuthenticatedUrl)
+      return
     this.updateAuthenticatedUrl()
   }
 
   function goBack() {
     this.onEscapeCb?()
     base.goBack()
+  }
+
+  function afterModalDestroy() {
+    this.onQrClosed?()
   }
 }
 

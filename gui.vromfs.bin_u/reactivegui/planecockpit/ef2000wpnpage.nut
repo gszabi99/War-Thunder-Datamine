@@ -795,6 +795,20 @@ let weapons = function() {
       continue
     }
     
+    if (weaponSlotName.contains("agm_88") && weaponSlotCnt > 0) {
+      if (weaponSlotTotalCnt == 1 && weaponSlotCnt == 1)
+        weaponsChildren.append(mraam(posWeapons[weaponSlot], selected))
+      else if (weaponSlotTotalCnt > 1) {
+        weaponsChildren.append(mraamDual(
+          posWeapons[weaponSlot],
+          weaponSlotCnt,
+          selected,
+        ))
+      }
+      weaponsLabels.append(label("HARM", posLabels[weaponSlot]))
+      continue
+    }
+    
     if (weaponSlotName.contains("aim9") && weaponSlotCnt > 0) {
       if (weaponSlotTotalCnt == 1 && weaponSlotCnt == 1)
         weaponsChildren.append(sraam(posWeapons[weaponSlot], selected))

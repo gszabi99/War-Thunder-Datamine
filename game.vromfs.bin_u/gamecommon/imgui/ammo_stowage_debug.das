@@ -2,7 +2,7 @@ options no_aot
 require ecs
 require imgui
 require daslib/enum_trait
-require %danetlibs.imgui_daeditor.imgui.imgui_common
+require %gameLibs.imgui_daeditor.imgui.imgui_common
 require %game.utils.component_bundle_macro
 
 require app

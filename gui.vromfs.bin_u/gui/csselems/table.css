@@ -595,6 +595,12 @@ td[cellType=top] > optiontext {
   color:@grayOptionColor;
   font:@fontSmall;
 }
+
+td[cellType=top] > optiontext[fullWidth=yes] {
+  min-width:fw;
+  width:fw;
+}
+
 td[cellType=info] > optiontext {
   min-width:0;
 }
@@ -922,6 +928,9 @@ tr[optContainer=yes][headerRow=yes] > td {
 
 tr[optContainer=yes] > td[cellType=left] {
   padding-right:@optCellSeparatorMargin;
+}
+tr[optContainer=yes][hasLockedSign=yes] > td[cellType=left] {
+  padding-right:2.5@optCellSeparatorMargin;
 }
 
 tr[optContainer=yes] > td > cellSeparator  {

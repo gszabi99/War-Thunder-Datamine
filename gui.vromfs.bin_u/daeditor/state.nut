@@ -38,7 +38,7 @@ de4workMode.subscribe(function(v) {
   save_settings?()
 })
 
-let initWorkModes = function(modes, defMode=null) {
+function initWorkModes(modes, defMode=null) {
   de4workModes.set(modes ?? [""])
   let good_mode = modes.contains(defMode) ? defMode : modes?[0] ?? ""
   let last_mode = get_setting_by_blk_path?(SETTING_EDITOR_WORKMODE) ?? good_mode
@@ -46,7 +46,7 @@ let initWorkModes = function(modes, defMode=null) {
   de4workMode.set(mode_to_set)
 }
 
-let canChangeGizmoBasisType = function() {
+function canChangeGizmoBasisType() {
   local m = getEditMode()
   return m == DE4_MODE_MOVE || m == DE4_MODE_MOVE_SURF || m == DE4_MODE_ROTATE || m == DE4_MODE_SCALE
 }
@@ -66,7 +66,7 @@ gizmoCenterType.subscribe(function(v) {
   setGizmoCenterType(v)
 })
 
-let proceedWithSavingUnsavedChanges = function(showMsgbox, callback, unsavedText=null, proceedText=null) {
+function proceedWithSavingUnsavedChanges(showMsgbox, callback, unsavedText=null, proceedText=null) {
   if (unsavedText == true) { unsavedText = null; proceedText = true; }
   local hasUnsavedChanges = (get_instance() != null && (get_instance().hasUnsavedChanges() ?? false))
   if (!hasUnsavedChanges && proceedText==null) { callback(); return }

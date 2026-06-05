@@ -23,7 +23,7 @@
       0.1,
       0.1
     ],
-    "CxK": 1.325,
+    "CxK": 1.125,
     "wingAreaMult": 1.15,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
@@ -87,14 +87,11 @@
     "rendinstDamageRadius": 20.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_short_doubleside",
-    "smokeEffect": "smoke_rocket_tail_medlength_med",
-    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
+    "hasTracerTrail": true,
     "effectOffset": [
-      -1.35,
-      -0.2,
+      -1.2,
+      -0.16,
       0.0
     ],
     "arcadeProp": {
@@ -106,7 +103,8 @@
       "workTime": 100.0,
       "uncageBeforeLaunch": true,
       "lockAfterLaunch": false,
-      "useTargetVel": true,
+      "reacquireTarget": true,
+      "useTargetVel": false,
       "lockTimeOut": 0.0,
       "disableTOFInHud": true,
       "timeTableCorrection": [
@@ -116,20 +114,20 @@
       "breakLockMaxTime": 90.0,
       "radarSeeker": {
         "groundVehiclesAsTarget": true,
-        "aircraftAsTarget": true,
+        "aircraftAsTarget": false,
         "groundClutter": false,
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
-        "band": 8,
         "active": false,
-        "useTargetId": true,
-        "sideLobesAttenuation": -20.0,
         "multipathEffect": [
           0.0,
           1.0,
           0.5,
           0.0
         ],
+        "band": 8,
+        "useTargetId": true,
+        "sideLobesAttenuation": -20.0,
         "lockAngleMax": 8.0,
         "angleMax": 40.0,
         "rateMax": 8.0,
@@ -144,8 +142,8 @@
           }
         },
         "receiver": {
-          "rcs": 0.1,
-          "range": 40000.0,
+          "rcs": 0.001,
+          "range": 100000.0,
           "rangeMax": 70000.0,
           "timeGainControl": false,
           "antenna": {
@@ -159,13 +157,13 @@
         "loftEnabled": true,
         "loftElevation": 27.0,
         "loftTargetElevation": -27.0,
-        "loftAngleToAccelMult": 2.0,
-        "loftTargetOmegaMax": 0.9,
+        "loftAngleToAccelMult": 1.25,
+        "loftTargetOmegaMax": 1.2,
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 10.0,
-        "accelControlProp": 0.0091,
-        "accelControlIntg": 0.041,
+        "accelControlProp": 0.0071,
+        "accelControlIntg": 0.028,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0025
       },
@@ -596,6 +594,40 @@
       "stone_snow": {
         "fx": "hit_12_14mm_snow_ap"
       }
-    }
+    },
+    "tracerTrail": [
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_1",
+        "fireEffect": "fires_exhaust_jet_early_small",
+        "smokeEffect": "smoke_rocket_tail_short_small_noise",
+        "smokeEffect2": "",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_2",
+        "fireEffect": "fires_exhaust_jet_early_small",
+        "smokeEffect": "smoke_rocket_tail_short_small_noise",
+        "smokeEffect2": "",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_3",
+        "fireEffect": "fires_exhaust_jet_early_small",
+        "smokeEffect": "smoke_rocket_tail_short_small_noise",
+        "smokeEffect2": "",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_4",
+        "fireEffect": "fires_exhaust_jet_early_small",
+        "smokeEffect": "smoke_rocket_tail_short_small_noise",
+        "smokeEffect2": "",
+        "endSmokeViscosity": 0.05
+      }
+    ]
   }
 }

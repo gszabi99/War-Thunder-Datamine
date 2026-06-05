@@ -80,7 +80,11 @@ enumsAddTypes(g_hud_reward_message, {
     code = EXP_EVENT_KILL
     locId = "exp_reasons/kill"
     locFn = function (expClass, messageModifier) {
+      if (["kill_ucav", "kill_ucav_by_crash"].contains(messageModifier))
+        return $"exp_reasons/{messageModifier}"
       local locId = (expClass == "exp_helicopter") ? "exp_reasons/kill_helicopter" : "exp_reasons/kill"
+      if (messageModifier == "crash")
+        return $"{locId}_by_crash"
       if (["finishing_other", "from_severe_damage"].contains(messageModifier))
         locId = $"{locId}_{messageModifier}"
       return locId

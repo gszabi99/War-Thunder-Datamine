@@ -22,6 +22,7 @@ let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 let { showWaitScreen, closeWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
 let { is_xbox } = require("%sqstd/platform.nut")
 
+const AUTOLOGIN_DISABLED = true
 
 gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -42,7 +43,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     let haveAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) > 0
-    this.needAutoLogin = !get_disable_autorelogin_once() && haveAgreedEulaVersion
+    this.needAutoLogin = !get_disable_autorelogin_once() && haveAgreedEulaVersion && !AUTOLOGIN_DISABLED
 
     this.scene.findObject("user_notify_text").setValue(loc("xbox/reqInstantConnection"))
 

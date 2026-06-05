@@ -40,7 +40,7 @@ let getAircraftByName = @(name) getAllUnits()?[name]
 
 function is_numeric(value) {
   let t = type(value)
-  return t == "integer" || t == "float" || t == "int64"
+  return t == "integer" || t == "float"
 }
 
 function to_integer_safe(value, defValue = 0, needAssert = true) {

@@ -113,13 +113,6 @@
       "attachable_scaled_item"
     ],
     "animchar_hider__camThreshold": 0.01,
-    "torn_wounds__name_list:list<t>": {
-      "name": [
-        "right_hand_tunic",
-        "left_hand_tunic",
-        "chest"
-      ]
-    },
     "item__equipToSlots:array": {
       "slot": "tunic"
     },
@@ -154,6 +147,58 @@
     "item__uniqueName": "attachable_wear_g3_jacket_item",
     "animchar__res": "g3_jacket_char",
     "collres__res": "g3_jacket_collision"
+  },
+  "attachable_wear_g3_jacket_multisnail_alpine_item": {
+    "_use": "attachable_wear_g3_jacket_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "multicam_alpine_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_g3_jacket_digital_snail_winter_item": {
+    "_use": "attachable_wear_g3_jacket_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "digital_snail_winter_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      }
+    }
   },
   "attachable_wear_g3_jacket_olive_item": {
     "_use": "attachable_wear_g3_jacket_item",

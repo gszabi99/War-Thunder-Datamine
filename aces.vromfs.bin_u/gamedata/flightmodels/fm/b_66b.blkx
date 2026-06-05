@@ -1,6 +1,6 @@
 {
   "AileronEffectiveSpeed": 700.504,
-  "RudderEffectiveSpeed": 580.505,
+  "RudderEffectiveSpeed": 700.505,
   "ElevatorsEffectiveSpeed": [
     1050.006,
     1050.006
@@ -115,15 +115,15 @@
     0.0,
     1.0
   ],
-  "AileronMaxDv": 3.0,
-  "ElevatorMaxDv": 3.0,
-  "RudderMaxDv": 3.0,
+  "AileronMaxDv": 2.0,
+  "ElevatorMaxDv": 2.0,
+  "RudderMaxDv": 2.5,
   "VneControl": 990.0,
   "CockpitOpenedDoorBreakSpeed": -1.0,
   "MomentOfInertia": [
-    85000.0,
-    190000.0,
-    110000.0
+    105000.0,
+    250000.0,
+    140000.0
   ],
   "DisableRendinstCollision": false,
   "SpawnSpeed": 609.42,
@@ -161,7 +161,28 @@
       "Auto": false
     }
   },
-  "FlyByWire": {},
+  "FlyByWire": {
+    "ModePreset0": {
+      "Mode": "Separate",
+      "AileronsMode": "Manual",
+      "ElevatorMode": "Manual",
+      "RudderMode": "Manual",
+      "ThrottleMode": "Manual",
+      "PropulsorMode": "Manual",
+      "VtolMode": "Manual",
+      "allowOverrideByForcedStabilization": true
+    },
+    "ModePreset1": {
+      "Mode": "Separate",
+      "AileronsMode": "Manual",
+      "ElevatorMode": "Manual",
+      "RudderMode": "Rate",
+      "ThrottleMode": "Manual",
+      "PropulsorMode": "Manual",
+      "VtolMode": "Manual",
+      "allowOverrideByForcedStabilization": true
+    }
+  },
   "Aerodynamics": {
     "GearCd": 0.022,
     "GearCentralCd": 0.0,
@@ -3785,8 +3806,12 @@
       }
     },
     "Yaw": {
-      "LateralLoadFactorTimeMult": 1.0,
-      "AosTimeMult": 1.0,
+      "RateMax": [
+        -40.0,
+        40.0
+      ],
+      "LateralLoadFactorTimeMult": 1.1,
+      "AosTimeMult": 2.0,
       "Trim": {
         "Source": "",
         "PropTorqueAxis": [
@@ -3796,10 +3821,10 @@
         ]
       },
       "RatePID": {
-        "Kp": 0.0,
-        "Ki": 0.0,
-        "Imax": 0.0,
-        "Kd": 0.0,
+        "Kp": 0.8,
+        "Ki": 0.002,
+        "Imax": 1.0,
+        "Kd": 0.005,
         "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
@@ -3807,14 +3832,14 @@
         ]
       },
       "AnglePID": {
-        "Kp": 0.0,
+        "Kp": 0.5,
         "Ki": 0.0,
-        "Imax": 0.0,
-        "Kd": 0.0,
+        "Imax": 1.0,
+        "Kd": 0.005,
         "RateMult": 1.0,
         "Lim": [
-          -2147440000.0,
-          2147440000.0
+          -100.0,
+          100.0
         ]
       },
       "LoadFactorPidMult": {
@@ -3829,14 +3854,14 @@
         ]
       },
       "AosPidMult": {
-        "Kp": 0.0,
-        "Ki": 0.0,
-        "Imax": 0.0,
-        "Kd": 0.0,
-        "RateMult": 1.0,
+        "Kp": 0.5,
+        "Ki": 0.5,
+        "Imax": 2.0,
+        "Kd": 0.5,
+        "RateMult": 0.992064,
         "Lim": [
-          -2147440000.0,
-          2147440000.0
+          -1.0,
+          1.0
         ]
       }
     },

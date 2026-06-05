@@ -41,7 +41,7 @@
   },
   "base_human_steps_sound": {
     "_use": [
-      "human_sound_landmesh_queries",
+      "sound_biome_puddle_queries",
       "base_human_steps_sound_generator"
     ],
     "_group": {
@@ -62,8 +62,8 @@
       "human_steps_sound__distanceToVolumeFriendly": [
         0.0,
         0.0,
-        0.3,
-        0.3
+        0.6,
+        0.6
       ],
       "human_steps_sound__distanceToVolumeEnemy": [
         0.0,
@@ -102,7 +102,8 @@
       "human_step_sound_grains",
       "managed_sound_human_steps",
       "human_bleeding_sound",
-      "wt_enemy_reverb_sound"
+      "wt_enemy_reverb_sound",
+      "base_human_collision_scrape_sound"
     ],
     "human_voice_effect__allOrderedEffects:shared:list<t>": {
       "_tags": "sound",
@@ -180,8 +181,10 @@
     }
   },
   "human_voice_effect_hold_breath": {
-    "humanVoiceEffectHoldBreath:tag": {
-      "_tags": "sound"
+    "_group": {
+      "_tags": "sound",
+      "human_voice_effect_hold_breath__effect": "holdBreath",
+      "human_voice_effect_hold_breath__endEffect": "holdBreathEnd"
     }
   },
   "human_voice_effect_fallcry": {
@@ -1119,11 +1122,56 @@
       }
     }
   },
+  "base_human_collision_scrape_sound": {
+    "human_collision_scrape_sound__descIdx": -1,
+    "_replicated": "human_collision_scrape_sound__descIdx",
+    "_group": [
+      {
+        "_tags": "server",
+        "human_collision_scrape_net_sound__physmatIds:list<i>": {},
+        "human_collision_scrape_net_sound__physmatNames:shared:list<t>": {
+          "name": [
+            "bushes",
+            "bushes_fall",
+            "bushes_palm",
+            "bushes_dead",
+            "bushes_snow"
+          ]
+        }
+      },
+      {
+        "_tags": "sound",
+        "human_collision_scrape_sound__speedToForce": [
+          0.04,
+          3.0,
+          0.0,
+          1.0
+        ],
+        "human_collision_scrape_sound__descs:shared:array": {
+          "bush:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          },
+          "bushesFall:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          },
+          "bushesPalm:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          },
+          "bushesDead:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          },
+          "bushesSnow:object": {
+            "path": "/walker/ww2_soldier/collision/bush"
+          }
+        }
+      }
+    ]
+  },
   "mannequin_sound_operations": {
     "_group": {
       "_tags": "sound",
-      "state_mannequin_sound__downPath": "infantry/env_effects/object_crash/mannequin_down",
-      "state_mannequin_sound__upPath": "infantry/env_effects/object_crash/mannequin_up"
+      "state_mannequin_sound__downPath": "infantry/object_crash/mannequin_down",
+      "state_mannequin_sound__upPath": "infantry/object_crash/mannequin_up"
     }
   },
   "human_bleeding_sound": {
@@ -1148,13 +1196,17 @@
     "_use": "managed_sound",
     "humanSteps:tag": {}
   },
+  "managed_sound_human_gun": {
+    "_use": "managed_sound",
+    "managed_sound_human_gun__team": -1,
+    "humanGun:tag": {}
+  },
   "managed_sound_group": {
     "_group": {
       "_tags": "sound",
       "managed_sound_group__type": "",
       "managed_sound_group__isEnemy": false,
       "managed_sound_group__maxRadiusSq": 0.0,
-      "managed_sound_group__updateTimer": 0.0,
       "managed_sound_group__debugCloseLodCount": 0,
       "managed_sound_group__debugSectorCounts": [
         0,
@@ -1165,6 +1217,14 @@
       "managed_sound_group__debugEnabled": false,
       "managed_sound_group__lodRadiusSq:list<r>": {},
       "managed_sound_group__lodMaxSounds:list<i>": {}
+    }
+  },
+  "managed_sound_group_processing": {
+    "_singleton": true,
+    "_group": {
+      "_tags": "sound",
+      "managed_sound_group__updateTimer": 0.0,
+      "managed_sound_group_processing__list:list<eid>": {}
     }
   }
 }

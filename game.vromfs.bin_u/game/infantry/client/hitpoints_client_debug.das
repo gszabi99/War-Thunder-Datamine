@@ -52,7 +52,7 @@ def debug_draw_hitpoints_hp_es(evt : UpdateStageInfoAct;
       if distSq > hitpoints__debugDrawDistSq
         return
       let markPos = hitpoints_transform[3] + float3(0.0, 1.0, 0.0)
-      add_debug_text_mark(markPos, "hp:{format("%.2f", hitpoints__hp)}/{format("%.2f", hitpoints__maxHp)}", -1, 0.0, E3DCOLOR(0xFFFFFFFF))
+      add_debug_text_mark(markPos, "hp:{fmt(":.2f", hitpoints__hp)}/{fmt(":.2f", hitpoints__maxHp)}", -1, 0.0, E3DCOLOR(0xFFFFFFFF))
       let offsetDelta = 1.5
       var offset = offsetDelta
       for armorEid in dm_parts__armorItemEids
@@ -66,6 +66,6 @@ def debug_draw_hitpoints_hp_es(evt : UpdateStageInfoAct;
                                             item__armorDurabilityAmount : float;
                                             item__armorHudDmPart : string)
             let armorTemplate = split_template(getEntityTemplateName(armorSegmentEid))[0]
-            add_debug_text_mark(markPos, "{item__armorHudDmPart}: {armorTemplate}: {format("%.2f", item__armorDurabilityAmount)}/{format("%.2f", item__armorDurabilityMaxAmount)}", -1, offset, E3DCOLOR(0xFFFFFFFF))
+            add_debug_text_mark(markPos, "{item__armorHudDmPart}: {armorTemplate}: {fmt(":.2f", item__armorDurabilityAmount)}/{fmt(":.2f", item__armorDurabilityMaxAmount)}", -1, offset, E3DCOLOR(0xFFFFFFFF))
             offset += offsetDelta
     return true

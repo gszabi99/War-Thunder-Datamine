@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
 let { get_player_unit_name, get_cur_unit_weapon_preset } = require("unit")
+let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -11,7 +12,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { get_game_type, get_cur_game_mode_name } = require("mission")
+let { get_game_type, get_cur_game_mode_name, get_game_mode } = require("mission")
 let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active,
   is_aircraft_player, set_tactical_screen_player, get_player_group, get_current_mission_desc,
   is_allow_to_choose_hud_icon_preset,
@@ -29,6 +30,8 @@ let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjecti
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { hudHintsManagerInit, hudHintsManagerReinit } = require("%scripts/hud/hudHintsManager.nut")
 let DataBlock = require("DataBlock")
+let { fillSwitchMapTypeBtn } = require("%scripts/tacticalMapUtils.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 function gui_start_tactical_map(params = {}) {
   let { forceTacticalControl = false } = params
@@ -68,6 +71,9 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     function initScreen() {
       this.scene.findObject("update_timer").setUserData(this)
+
+      let switchHudTypeDiv = this.scene.findObject("btn_set_hud_type")
+      fillSwitchMapTypeBtn(switchHudTypeDiv, this)
 
       this.registerSubHandler(gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   false, 1 << OBJECTIVE_TYPE_PRIMARY))
       this.registerSubHandler(gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), false, 1 << OBJECTIVE_TYPE_SECONDARY))
@@ -142,7 +148,6 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
       if (isShowSetHudTypeBtn) {
         let buttonImg = setHudTypeObj.findObject("hud_type_img")
         buttonImg["background-image"] = isAircraft ? "#ui/gameuiskin#objective_tank.svg" : "#ui/gameuiskin#objective_fighter.svg"
-        showObjById("hint_btn_set_hud_type", !showConsoleButtons.get(), setHudTypeObj)
       }
 
       let presets = getHudIconsPresetsList()
@@ -197,9 +202,6 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
           updateGamercards()
         })
       }
-
-      let tacticalMapObj = this.scene.findObject("tactical-map")
-      tacticalMapObj.cursor =  isAllowedMoveCenter() ? "moveArrowCursor" : isPointSettingMode() ? "pointOfInterest" : "normal"
 
       let { customMapBackColor } = getLevelMapBackgroundColors(this.missionBlk?.level ?? "")
       let tacticalMapBgObj = this.scene.findObject("tactical-map-bg")
@@ -356,15 +358,34 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
           obj.scrollToView()
       }
 
-      let obj = this.scene.findObject("pilot_aircraft")
-      if (obj) {
-        let fm = get_player_unit_name()
-        let unit = getAircraftByName(fm)
-        local text = getUnitName(fm)
-        if (unit?.isAir() || unit?.isHelicopter?())
-          text = "".concat(text, loc("ui/colon"), getWeaponShortTypeFromWpName(get_cur_unit_weapon_preset(), fm))
-        obj.setValue(text)
+      let fm = get_player_unit_name()
+      let unit = getAircraftByName(fm)
+
+      let showUnitCard = get_game_mode() == GM_TEST_FLIGHT
+      if (showUnitCard) {
+        this.updateUnitCard(unit)
+        return
       }
+
+      let unitNameObj = showObjById("pilot_aircraft", true, this.scene)
+      if (!unitNameObj?.isValid())
+        return
+
+      local text = getUnitName(fm)
+      if (unit?.isAir() || unit?.isHelicopter?())
+        text = "".concat(text, loc("ui/colon"), getWeaponShortTypeFromWpName(get_cur_unit_weapon_preset(), fm))
+      unitNameObj.setValue(text)
+    }
+
+    function updateUnitCard(unit) {
+      let itemObj = showObjById("unit_card_holder", true, this.scene)
+
+      let params = {
+        getEdiffFunc  = @() get_mission_mode()
+      }
+
+      let unitBlk = buildUnitSlot("unit_item", unit, params)
+      this.guiScene.replaceContentFromText(itemObj, unitBlk, unitBlk.len(), this)
     }
 
     function onFocusDown(_obj) {
@@ -474,6 +495,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
       setAllowMoveCenter(!isAllowedMoveCenter())
       let tacticalMapObj = this.scene.findObject("tactical-map")
       tacticalMapObj.cursor =  isAllowedMoveCenter() ? "moveArrowCursor" : "normal"
+      tacticalMapObj.permanentMapTool =  isAllowedMoveCenter() ? "PanZoomMap" : "";
    }
 
    function onForcedSetHudType(obj) {
@@ -497,17 +519,19 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
   function onSetPointOfInterest(obj) {
     setAllowMoveCenter(false)
     let buttonImg = obj.findObject("hud_poi_img");
+    let tacticalMapObj = this.scene.findObject("tactical-map")
+    tacticalMapObj.permanentMapTool =  "PointOfInterest";
     if (isPointOfInterestSet()) {
       resetPointOfInterest()
       buttonImg["background-image"] = "#ui/gameuiskin#map_interestpoint.svg"
       setPointSettingMode(false)
       showObjById("POI_resetter", false, this.scene)
+      tacticalMapObj.permanentMapTool =  "";
       return
     }
     let isPointSettingModeOn = !isPointSettingMode()
     setPointSettingMode(isPointSettingModeOn)
     buttonImg["background-image"] = isPointSettingModeOn ? "#ui/gameuiskin#map_interestpoint_delete.svg" : "#ui/gameuiskin#map_interestpoint.svg"
-    let tacticalMapObj = this.scene.findObject("tactical-map")
     tacticalMapObj.cursor =  isPointSettingModeOn ? "pointOfInterest" : "normal"
     showObjById("POI_resetter", isPointSettingModeOn, this.scene)
   }

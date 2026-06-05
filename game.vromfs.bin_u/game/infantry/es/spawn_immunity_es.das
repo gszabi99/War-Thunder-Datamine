@@ -28,7 +28,7 @@ def spawn_immunity_es(info : ParallelUpdateFrameDelayed;
     hitpoints__dmgMult = 1.0f
     spawn_immunity__timer = -1.f
 
-[es(on_event=(EventUnitRespawn, EventUnitSpawned), after=human_init_tm)]
+[es(on_event=(EventUnitRespawn, EventUnitSpawned))]
 def spawn_immunity_init_es(evt : Event;
                            dynamic_respawn__spawnOnUnitEid : EntityId;
                            var spawn_immunity__initialPos : float3&;

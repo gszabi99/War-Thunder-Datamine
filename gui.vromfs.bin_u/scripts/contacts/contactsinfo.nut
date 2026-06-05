@@ -2,8 +2,16 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import EPLX_PS4_FRIENDS
 let { contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 
+
+
+
+
 function getPlayerFullName(name, clanTag = "", addInfo = "") {
-  return nbsp.join([hasFeature("Clans") ? clanTag : "", utf8(name), addInfo], true)
+  local needClan = hasFeature("Clans")
+
+
+
+  return nbsp.join([needClan ? clanTag : "", utf8(name), addInfo], true)
 }
 
 let missed_contacts_data = {}

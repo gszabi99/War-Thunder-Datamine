@@ -1,11 +1,10 @@
 {
   "import": [
-    "%danetlibs/route_prober/templates/route_prober.blk",
-    "%danetlibs/assets_import/templates/assets_import.blk",
-    "%danetlibs/renderer/templates/fast_grass.template.blk",
+    "lib_entities.blk",
     "%wtlibs/templates/essentials.blk",
     "%wtlibs/templates/net.blk",
     "%wtlibs/templates/rendinst.blk",
+    "%wtlibs/templates/simple_anim.blk",
     "%wtlibs/templates/animchar.blk",
     "%wtlibs/templates/mission.blk",
     "%wtlibs/templates/units.blk",
@@ -31,12 +30,12 @@
     "%wtlibs/templates/envi_cover.blk",
     "rendinsts_hangars.blk",
     "explosion_fx.blk",
+    "location_fx.blk",
     "contact_fx.blk",
     "inf/*.blk",
     "inf/render/*.blk",
     "infantry_skins/*.blk",
     "%wtlibs/templates/net.blk",
-    "%danetlibs/motion_matching/templates/motion_matching.template.blk",
     "%danetlibs/sound/door_sounds/templates/door_sounds.template.blk",
     "%danetlibs/sound/sound_utils/templates/sound_utils.template.blk",
     "%danetlibs/sound/common_sounds/templates/common_sounds.template.blk",
@@ -46,10 +45,10 @@
     "render/ssss.blk",
     "render/local_tone_mapping.blk",
     "render/vhs_camera.blk",
-    "render/chromatic_aberration.blk",
-    "%gameLibs/render/collimatorMoaCore/templates/collimator_moa_core.template.blk",
+    "render/lens_distortion.blk",
+    "render/screen_droplets.blk",
     "%gameLibs/render/beamTracer/templates/beam_tracers.template.blk",
-    "nuclear_escalation.blk",
+    "nuclear_escalation/*.blk",
     "mission_custom_logic.blk"
   ],
   "delayed_action": {
@@ -462,6 +461,11 @@
       255
     ],
     "light__contact_shadows": false
+  },
+  "fire_torch": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "fire_torch_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
   },
   "field_light_green_extralarge": {
     "_use": [
@@ -1173,43 +1177,6 @@
   "torpedo_gun": {
     "_use": "weapon"
   },
-  "background_model": {
-    "background_model__model": "",
-    "background_model__skin": "",
-    "background_model__unitName": "",
-    "background_model__weapon": "",
-    "background_model__isPlane": false,
-    "background_model__tm": [
-      [
-        1.0,
-        0.0,
-        0.0
-      ],
-      [
-        0.0,
-        1.0,
-        0.0
-      ],
-      [
-        0.0,
-        0.0,
-        1.0
-      ],
-      [
-        0.0,
-        0.0,
-        0.0
-      ]
-    ],
-    "background_model__canOutline": false,
-    "background_model__needRemoveForPrem": false,
-    "background_model__hangarPlace": "",
-    "background_model_res": {
-      "_tags": "gameClient"
-    },
-    "background_model__bullets:list<t>": {},
-    "background_model__spawnEid:eid": {}
-  },
   "destructed_model": {
     "_use": "replicating",
     "destructed_model__fx": "fire_tank_destructed",
@@ -1883,7 +1850,7 @@
         0.0
       ],
       "camera_effect__distance": 3.0,
-      "effect__name": "camera_rain_light_cmps_fx"
+      "effect__name": "location_water_rain_light_cmps_fx"
     }
   },
   "event_snowball_unit": {
@@ -1899,14 +1866,14 @@
         0.0
       ],
       "camera_effect__distance": 3.0,
-      "effect__name": "camera_rain_heavy_cmps_fx"
+      "effect__name": "location_water_rain_light_cmps_fx"
     }
   },
   "camera_rain_drop_splashes_effect": {
     "_use": "camera_bound_rain_effect_template",
     "_group": {
       "_tags": "render",
-      "effect__name": "camera_rain_drops_cmps_fx",
+      "effect__name": "location_water_rain_drops_cmps_fx",
       "is_ground_effect": true
     }
   },
@@ -1920,10 +1887,9 @@
         0.0
       ],
       "camera_effect__distance": 3.0,
-      "effect__name": "camera_snow_light_cmps_fx"
+      "effect__name": "location_snow_pieces_fall_cmps_fx"
     }
   },
-  "unit_init_params_ext": {},
   "base_unit_ext": {},
   "aircraft_ext": {},
   "barrage_ballon_ext": {},
@@ -1955,7 +1921,6 @@
   "simple_ground_unit_ext": {},
   "simple_ship_ext": {},
   "simple_tank_ext": {},
-  "trailer_ext": {},
   "human_ext": {},
   "light_vehicle_ext": {
     "_use": "gm_engine_sound"
@@ -2090,16 +2055,11 @@
     "slave_unit_preview__collObjOffset": 0.5
   },
   "ammo_box": {
-    "_use": [
-      "replicating",
-      "rendinst_owned"
-    ],
+    "_use": "rendinst_owned",
     "ammo_box__triggerGroupNo": 0,
     "ammo_box__bulletCount": 0,
     "ammo_box__rearmRadius": 10.0,
-    "ri_extra__destructable": true,
-    "ri_extra__allyDontDamage": true,
-    "ammo_box__owner:eid": {}
+    "ri_extra__allyDontDamage": true
   },
   "ammo_box_primary": {
     "_use": "ammo_box",
@@ -2115,6 +2075,34 @@
     "_use": "ammo_box",
     "ri_extra__name": "ammunition_box_construction_99x50x27_static",
     "ammo_box__triggerGroupNo": 4
+  },
+  "simple_dynmodel": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_tracked": "transform",
+    "simpleObject__resName": "",
+    "simpleObject__visible": true,
+    "simpleObject__model_res": {}
   },
   "demonstrated_shell": {
     "transform": [
@@ -2822,7 +2810,7 @@
           "cartTemplate": "shell_stand_vertical_atgm",
           "calibers": [
             0.0,
-            0.18
+            0.25
           ],
           "length": [
             0.0,
@@ -2833,12 +2821,12 @@
         {
           "cartTemplate": "shell_stand_vertical_sam",
           "calibers": [
-            0.181,
-            0.7
+            0.25,
+            0.72
           ],
           "length": [
             0.0,
-            7.5
+            8.5
           ],
           "isVertical": true
         },
@@ -2938,6 +2926,14 @@
     "simpleObject__model_res": {},
     "demonstrated_shell:tag": {}
   },
+  "bullet_target_hefrag_200mm_hole": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "hefrag_target_200mm_hole_dynmodel"
+  },
+  "bullet_target_hefrag_300mm_hole": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "hefrag_target_300mm_hole_dynmodel"
+  },
   "bullet_target_he_5mm": {
     "_use": "bullet_target",
     "simpleObject__resName": "he_target_5mm_dynmodel"
@@ -2957,6 +2953,30 @@
   "bullet_target_he_40mm_big_caliber": {
     "_use": "bullet_target",
     "simpleObject__resName": "he_target_40mm_dynmodel"
+  },
+  "hesh_target_75mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "hesh_target_75mm_dynmodel"
+  },
+  "hesh_target_100mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "hesh_target_100mm_dynmodel"
+  },
+  "hesh_target_130mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "hesh_target_130mm_dynmodel"
+  },
+  "hesh_target_150mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "hesh_target_150mm_dynmodel"
+  },
+  "hesh_target_200mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "hesh_target_200mm_dynmodel"
+  },
+  "hesh_target_230mm": {
+    "_use": "bullet_target",
+    "simpleObject__resName": "hesh_target_230mm_dynmodel"
   },
   "bullet_target_apdsfs_50mm": {
     "_use": "bullet_target",
@@ -3215,7 +3235,6 @@
               "he_frag_base_fuse_tank",
               "he_at",
               "he_at_grenade",
-              "hesh_tank",
               "shrapnel_tank",
               "frag_i",
               "frag_i_t",
@@ -3232,10 +3251,42 @@
             ]
           },
           "targets:array": {
+            "hefrag_200mm_hole:object": {
+              "targetTemplate": "bullet_target_hefrag_200mm_hole",
+              "penetration": [
+                1.0,
+                7.0
+              ],
+              "calibers": [
+                0.019,
+                0.03
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "hefrag_300mm_hole:object": {
+              "targetTemplate": "bullet_target_hefrag_300mm_hole",
+              "penetration": [
+                6.0,
+                12.0
+              ],
+              "calibers": [
+                0.025,
+                0.041
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
             "he_5mm:object": {
               "targetTemplate": "bullet_target_he_5mm",
               "penetration": [
-                2.0,
+                7.0,
                 12.0
               ],
               "targetOffset": [
@@ -3285,6 +3336,85 @@
               "penetration": [
                 80.0,
                 250.0
+              ],
+              "targetOffset": [
+                -0.75,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "bullet_type:list<t>": {
+            "type": "hesh_tank"
+          },
+          "targets:array": {
+            "hesh_target_75mm:object": {
+              "targetTemplate": "hesh_target_75mm",
+              "penetration": [
+                50.0,
+                100.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "hesh_target_100mm:object": {
+              "targetTemplate": "hesh_target_100mm",
+              "penetration": [
+                101.0,
+                130.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "hesh_target_130mm:object": {
+              "targetTemplate": "hesh_target_130mm",
+              "penetration": [
+                131.0,
+                150.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "hesh_target_150mm:object": {
+              "targetTemplate": "hesh_target_150mm",
+              "penetration": [
+                151.0,
+                200.0
+              ],
+              "targetOffset": [
+                -0.5,
+                0.0,
+                0.0
+              ]
+            },
+            "hesh_target_200mm:object": {
+              "targetTemplate": "hesh_target_200mm",
+              "penetration": [
+                201.0,
+                230.0
+              ],
+              "targetOffset": [
+                -0.75,
+                0.0,
+                0.0
+              ]
+            },
+            "hesh_target_230mm:object": {
+              "targetTemplate": "hesh_target_230mm",
+              "penetration": [
+                231.0,
+                500.0
               ],
               "targetOffset": [
                 -0.75,
@@ -3666,7 +3796,7 @@
                 45.0
               ],
               "calibers": [
-                0.13,
+                0.099,
                 0.151
               ],
               "targetOffset": [
@@ -4061,7 +4191,7 @@
               "targetTemplate": "bullet_target_apcr_150mm",
               "penetration": [
                 181.0,
-                250.0
+                230.0
               ],
               "targetOffset": [
                 -0.5,
@@ -4072,8 +4202,8 @@
             "bullet_target_apcr_200mm:object": {
               "targetTemplate": "bullet_target_apcr_200mm",
               "penetration": [
-                251.0,
-                400.0
+                231.0,
+                300.0
               ],
               "targetOffset": [
                 -0.5,
@@ -4084,7 +4214,7 @@
             "bullet_target_apcr_350mm:object": {
               "targetTemplate": "bullet_target_apcr_350mm",
               "penetration": [
-                400.0,
+                301.0,
                 550.0
               ],
               "targetOffset": [
@@ -4326,7 +4456,8 @@
     "is_local": false,
     "_tracked": "is_local",
     "player:tag": {},
-    "player__support_units_status_notification_mgr": {}
+    "player__support_units_status_notification_mgr": {},
+    "player__aiming_mem_points": {}
   },
   "item_spawner": {
     "transform": [
@@ -4386,62 +4517,42 @@
   },
   "location_camera_dust_many_15m_static": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_dust_many_15m_static_cmps_fx",
+    "ecs_fx__res": "location_dust_pieces_15m_static_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_camera_dust_many_15m": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_dust_many_15m_cmps_fx",
+    "ecs_fx__res": "location_dust_pieces_15m_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_camera_papers_30m": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_papers_30m_cmps_fx",
+    "ecs_fx__res": "location_debris_papers_30m_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_camera_leaves": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_leaves_cmps_fx",
+    "ecs_fx__res": "location_plant_leaves_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_camera_distortion_15m": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_distortion_15m_cmps_fx",
+    "ecs_fx__res": "location_distortion_15m_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_camera_burned_ground": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_burned_ground_smoke_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_ground_1m_nosmoke": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_ground_1m_nosmoke_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_ground_2m_nosmoke": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_ground_2m_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_ground_5m_nosmoke": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_ground_5m_nosmoke_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_ground_5m_nosmoke_small": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_ground_5m_small_cmps_fx",
+    "ecs_fx__res": "location_fire_ground_burned_smoke_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_fire_ground_black": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "fire_ground_black_cmps_fx",
+    "ecs_fx__res": "location_fire_black_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_fire_ground_building_background": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "fire_ground_building_background_long_cmps_fx",
+    "ecs_fx__res": "location_smoke_background_building_big_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_water_flow_stream_big": {
@@ -4491,7 +4602,7 @@
   },
   "location_misc_flies_gray": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_flying_stuff_flies_cmps_fx",
+    "ecs_fx__res": "location_debris_flies_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_sparks_burst_big": {
@@ -4512,17 +4623,17 @@
   },
   "location_camera_ground_sparks_1m": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_ground_sparks_1m_cmps_fx",
+    "ecs_fx__res": "location_sparks_ground_1m_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_camera_ground_sparks_2m": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_ground_sparks_2m_cmps_fx",
+    "ecs_fx__res": "location_sparks_ground_2m_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_camera_ground_sparks_5m": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_ground_sparks_5m_cmps_fx",
+    "ecs_fx__res": "location_sparks_ground_5m_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_fire_big": {
@@ -4552,42 +4663,12 @@
   },
   "location_dust_floating": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_dust_floating_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_window_horizontally_big": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_window_horizontally_big_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_window_horizontally_med": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_window_horizontally_med_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_window_horizontally_small": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_window_horizontally_small_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_window_vertically_big": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_window_vertically_big_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_window_vertically_med": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_window_vertically_med_cmps_fx",
-    "destroyable_with_rendinst:tag": {}
-  },
-  "location_fire_window_vertically_small": {
-    "_use": "ecs_fx",
-    "ecs_fx__res": "fire_window_vertically_small_cmps_fx",
+    "ecs_fx__res": "location_dust_pieces_floating_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_misc_floating_ashes": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_ashes_cmps_fx",
+    "ecs_fx__res": "location_fire_ashes_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "location_tank_fire_small": {
@@ -4602,12 +4683,12 @@
   },
   "location_misc_floating_leaves_5m": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "location_camera_leaves_cmps_fx",
+    "ecs_fx__res": "location_plant_leaves_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
-  "fire_ground_building_background_long_cmps_fx": {
+  "location_smoke_background_building_big_cmps_fx": {
     "_use": "ecs_fx",
-    "ecs_fx__res": "fire_ground_building_background_long_cmps_fx",
+    "ecs_fx__res": "location_smoke_background_building_big_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
   "smoke_ground_static_dark_medium": {
@@ -4699,7 +4780,7 @@
     "capsules_ao__max_units_per_cell": 4,
     "_singleton": true,
     "capsules_ao": {
-      "_tags": "render"
+      "_tags": "render, noCompatibility"
     }
   },
   "wt_fast_grass_settings": {
@@ -4712,5 +4793,36 @@
       "fast_grass__tracks_height_mul": 0.2,
       "fast_grass__tracks_map_mul": 2.5
     }
+  },
+  "cloth_wind": {
+    "_tags": "render",
+    "cloth_wind_velocity_current": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "cloth_wind_velocity_previous": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "cloth_wind_noise_offset": [
+      0.0,
+      0.0
+    ],
+    "cloth_wind_velocity_exp_smooth": 1.0,
+    "cloth_wind_velocity_multiplier": 1.0,
+    "cloth_wind_explosion_speed_curve": [
+      50.0,
+      150.0,
+      50.0,
+      70.0
+    ],
+    "cloth_wind_shot_speed_curve": [
+      2.0,
+      130.0,
+      300.0,
+      130.0
+    ]
   }
 }

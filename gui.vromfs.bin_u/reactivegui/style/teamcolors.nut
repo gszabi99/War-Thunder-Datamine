@@ -39,6 +39,7 @@ local teamColors = Watched({
   streakTextColor       = colors.menu.streakTextColor
   silver                = colors.menu.silver
   chatInfoColor         = 0xFFF2E003
+  white                 = colors.white
 
   forcedTeamColors      = {}
 })

@@ -1,3 +1,5 @@
+options no_aliasing = false
+
 require %rGui.utils.canvas_common
 require %rGui.utils.helpers_common
 require %rGui.utils.weaponslots_common
@@ -17,6 +19,7 @@ require Plane
 require strings
 require Unit
 require Weapon
+require Localization
 
 
 def loc_wpn(str : string) : string

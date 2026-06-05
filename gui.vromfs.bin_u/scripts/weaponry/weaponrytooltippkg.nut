@@ -25,9 +25,9 @@ let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorP
   checkBulletParamsBeforeRender
 } = require("%scripts/weaponry/bulletsVisual.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWeaponsList, isWeaponEnabled,
-  addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath
+  addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeaponType, isGuidedBomb
 } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, makeWeaponInfoData
+let { getWeaponInfoText, getModItemName, getReqModElements, getFullItemCostText, makeWeaponInfoData
 } = require("weaponryDescription.nut")
 let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
 let { getUnitArmorData, getArmorIconViewData } = require("%scripts/weaponry/infantryArmor.nut")
@@ -139,7 +139,7 @@ function reqEffectsGeneration(unit) {
 
 function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
   
-  let { showOnlyNamesAndSpecs = false } = params
+  let { showOnlyNamesAndSpecs = false, addShellTrajectoryBtn = false } = params
   let presetsWeapons = []
   let presetsNames = {
     names = []
@@ -147,7 +147,10 @@ function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
   foreach(weaponBlockSet in (weaponInfoData?.resultWeaponBlocks ?? [])) {
     foreach(weapon in weaponBlockSet) {
       let weaponName = weapon.weaponName
+      let addShellTrajectoryBtnForMissile = addShellTrajectoryBtn &&
+        (isMissileWeaponType(weapon?.weaponType) || isGuidedBomb(weapon?.weaponType))
       local presetName = loc($"weapons/{weaponName}")
+      let ammoName = weapon?.bulletName ?? weapon?.weaponName ?? ""
       if ([WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNON].contains(weapon.weaponType)) {
         if (weapon.num > 1)
           presetName = " ".concat(presetName, format(loc("weapons/counter/right/short"), weapon.num))
@@ -158,14 +161,20 @@ function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
         presetName = "".concat(presetName, " ", format(loc("weapons/counter/right/short"), weapon.ammo))
 
       if (showOnlyNamesAndSpecs) {
-        presetsNames.names.append({ presetName })
+        let presetDesc = { presetName }
+        if (addShellTrajectoryBtnForMissile)
+          presetDesc.ammoNameForShellTrajectoryBtn <- ammoName
+        presetsNames.names.append(presetDesc)
         continue
       }
       let presetParams = getWeaponExtendedInfo(weapon, unit, {
         weaponType = weapon.weaponType
         ediff = params?.curEdiff
       })
-      presetsWeapons.append({ presetName, presetParams })
+      let presetDesc = { presetName, presetParams}
+      if (addShellTrajectoryBtnForMissile)
+        presetDesc.ammoNameForShellTrajectoryBtn <- ammoName
+      presetsWeapons.append(presetDesc)
     }
   }
   return { presetsWeapons, presetsNames }
@@ -511,7 +520,8 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   let statusTbl = getItemStatusTbl(unit, item)
   local currentPrice = statusTbl.showPrice ? getFullItemCostText(unit, item) : ""
 
-  let { isBulletCard = false, hasPlayerInfo = true, isPurchaseInfoHidden = false } = params
+  let { isBulletCard = false, hasPlayerInfo = true, isPurchaseInfoHidden = false,
+    alwaysShowReqMod = false } = params
 
   if (hasPlayerInfo
     && !isWeaponTierAvailable(unit, curTier) && curTier > 1
@@ -773,14 +783,21 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
             reqText = reqText != "" ? "\n".concat(reqText, tip) : tip
         }
       }
-      if (!statusTbl.unlocked) {
+      if (alwaysShowReqMod || !statusTbl.unlocked) {
+        reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
         if (isPurchaseInfoHidden)
           reqText = $"<color=@badTextColor>{loc("msgbox/notAvailbleMod")}</color>"
         else {
-          let reqMods = getReqModsText(unit, item)
-          if (reqMods != "")
-            reqText = "\n".join([reqText, reqMods], true)
-          reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
+          let reqMods = getReqModElements(unit, item, alwaysShowReqMod)
+          if (reqMods.len() > 0) {
+            local reqModsText = ""
+            foreach (el in reqMods) {
+              let textColor = el.isOwn ? "@goodTextColor" : "@badTextColor"
+              reqModsText = (reqModsText != "" ? "\n" : "").concat(
+                reqModsText, $"<color={textColor}>{el.reqTitle}</color>")
+            }
+            reqText = "\n".join([reqText, reqModsText], true)
+          }
         }
       }
       if (isBulletItem && !isBulletsGroupActiveByMod(unit, item) && !isInFlight()) {

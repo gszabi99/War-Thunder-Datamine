@@ -2,6 +2,7 @@ module squad_order_combat_common shared
 
 require ecs
 require net
+require math.base
 require math.random
 require pathfinder
 require PropsManager
@@ -9,6 +10,7 @@ require BallisticsProps
 require DaWeaponProps
 require HumanPhys
 require Unit
+require Dacoll
 
 require %appGame.wt_events
 require %appGame.infantry.es.squad_order_common
@@ -21,15 +23,18 @@ def find_attack_vehicle_squad_candidates(squad__allMembers : EidList;
                                          squad__leader : EntityId;
                                          is_ground_vehicle : bool;
                                          is_air_vehicle : bool;
-                                         var candidates : array<EntityId>&)
+                                         var candidates : array<EntityId>&;
+                                         allow_leader : bool = false)
   var primaryCandidates : array<EntityId>
   var secondaryCandidates : array<EntityId>
+  var leaderCanAttack = false
   let numMembers = length(squad__allMembers)
   primaryCandidates |> reserve(numMembers)
   secondaryCandidates |> reserve(numMembers)
 
   for memberEid in squad__allMembers
-    if memberEid == squad__leader
+    let isLeader = memberEid == squad__leader
+    if isLeader && !allow_leader
       continue
     query(memberEid) <| $ [es] (isAlive : bool;
                                 isDowned : bool;
@@ -45,19 +50,23 @@ def find_attack_vehicle_squad_candidates(squad__allMembers : EidList;
       query(gunEid) <| $ [es] (gun__ammo : int; gun__maxAmmo : int)
         isGunReloaded = gun__ammo == gun__maxAmmo
       if is_ground_vehicle && squad_member__canAttackGroundVehicle || is_air_vehicle && squad_member__canAttackAirVehicle
-        if isGunReloaded
+        if isLeader
+          leaderCanAttack = true
+        elif isGunReloaded
           primaryCandidates |> push(memberEid)
         else
           secondaryCandidates |> push(memberEid)
 
   let lenPrimary = length(primaryCandidates)
   let lenSecondary = length(secondaryCandidates)
-  if lenPrimary > 0 || lenSecondary > 0
-    candidates |> reserve(lenPrimary + lenSecondary)
+  if lenPrimary > 0 || lenSecondary > 0 || leaderCanAttack
+    candidates |> reserve(lenPrimary + lenSecondary + (leaderCanAttack ? 1 : 0))
     if lenPrimary > 0
       candidates |> push(primaryCandidates)
     if lenSecondary > 0
       candidates |> push(secondaryCandidates)
+    if leaderCanAttack && empty(candidates)
+      candidates |> push(squad__leader)
     return true
 
   return false
@@ -77,10 +86,12 @@ def find_attack_vehilce_executor_and_positions(candidates : array<EntityId>;
                                 human_weap__gunEids : EidList)
       let gunEid = human_weap__gunEids[int(HUWeaponSlots.EWS_TERTIARY)]
       var traceParams = TracePierceShotParams()
+      var runShootGuided = false
       query(gunEid) <| $ [es] (gun__curShellId : PropsId;
                                combatBallisticCoef : float = 0.0;
                                specialAIWeaponType : int = 0)
-        let runShootGuided = specialAIWeaponType == int(SpecialAIWeaponType.ATGM_MPADS_LAUNCHERS)
+        runShootGuided = specialAIWeaponType == int(SpecialAIWeaponType.ATGM_MPADS_LAUNCHERS)
+        traceParams.shellVel = 50.0
         if !runShootGuided
           shell_start_get_props(gun__curShellId) <| $(shellStartProps : ShellStartProps)
             if shellStartProps.speed > 0.0
@@ -92,19 +103,31 @@ def find_attack_vehilce_executor_and_positions(candidates : array<EntityId>;
         traceParams.shellId = gun__curShellId
         traceParams.ballisticCoef = combatBallisticCoef
 
-      let randOffset = float2(0.35, 0.15)
-      var targetDMAIPoints : array<TargetDMAIPoint>
-      pick_target_dm_ai_points(targetDMAIPoints, 5, transform[3], vehicle_eid, false, randOffset,  false, 0.25)
-      for dmPoint in targetDMAIPoints
-        let innerRadius = 1.0
-        let outerRadius = 6.0
+      let innerRadius = 1.0
+      let outerRadius = 6.0
+      if runShootGuided
+        let targetTm = get_TMatrix(vehicle_eid, "transform") ?? IDENT_TM
+        let targetPos = targetTm[3]
+        let shootPos = transform[3] + float3(0, 1.45, 0)
         var outShootPos : float3
-        if check_shoot_positions_in_radius(transform[3], dmPoint.worldPos, innerRadius, outerRadius, vehicle_eid, traceParams, outShootPos)
+        if check_shoot_positions_in_radius(transform[3], targetPos, innerRadius, outerRadius, vehicle_eid, traceParams, true, outShootPos)
           executorEid = memberEid
-          shootPosFrom = outShootPos
-          shootPosTo = dmPoint.worldPos
+          shootPosFrom = shootPos
+          shootPosTo = targetPos
           found = true
           return
+      else
+        let randOffset = float2(0.35, 0.15)
+        var targetDMAIPoints : array<TargetDMAIPoint>
+        pick_target_dm_ai_points(targetDMAIPoints, 5, transform[3], vehicle_eid, false, randOffset,  false, 0.25)
+        for dmPoint in targetDMAIPoints
+          var outShootPos : float3
+          if check_shoot_positions_in_radius(transform[3], dmPoint.worldPos, innerRadius, outerRadius, vehicle_eid, traceParams, false, outShootPos)
+            executorEid = memberEid
+            shootPosFrom = outShootPos
+            shootPosTo = dmPoint.worldPos
+            found = true
+            return
     if found
       break
 
@@ -115,17 +138,31 @@ def find_attack_vehilce_executor_and_positions(candidates : array<EntityId>;
     return true
   return false
 
+def check_shot(var aim_shoot_hit_pos : float3&;
+               shoot_pos : float3;
+               target_pos : float3;
+               target_eid : EntityId;
+               trace_params : TracePierceShotParams;
+               check_trace_quick : bool)
+  if check_trace_quick
+    let dir = normalize(target_pos - shoot_pos)
+    let dist = min(length(target_pos - shoot_pos), 100.0)
+    return !rayhit_normalized(shoot_pos, dir, dist, ETF_DEFAULT, -1)
+
+  return trace_pierce_shot(aim_shoot_hit_pos, shoot_pos, target_pos, target_eid, trace_params)
+
 def check_shoot_positions_in_radius(soldier_pos : float3;
                                     target_pos : float3;
                                     inner_radius : float;
                                     outer_radius : float;
                                     target_eid : EntityId;
-                                    trace_params : TracePierceShotParams,
+                                    trace_params : TracePierceShotParams;
+                                    check_trace_quick : bool = false;
                                     var out_run_shoot_pos : float3&)
   let heightOffset = 1.45
   var aimShootHitPos : float3
   
-  if trace_pierce_shot(aimShootHitPos, soldier_pos + float3(0, heightOffset, 0), target_pos, target_eid, trace_params)
+  if check_shot(aimShootHitPos, soldier_pos + float3(0, heightOffset, 0), target_pos, target_eid, trace_params, check_trace_quick)
     out_run_shoot_pos = soldier_pos
     return true
 
@@ -159,7 +196,7 @@ def check_shoot_positions_in_radius(soldier_pos : float3;
       continue
 
     let shootPos = memberPos + float3(0, heightOffset, 0)
-    if trace_pierce_shot(aimShootHitPos, shootPos, target_pos, target_eid, trace_params)
+    if check_shot(aimShootHitPos, shootPos, target_pos, target_eid, trace_params, check_trace_quick)
       out_run_shoot_pos = memberPos
       found = true
       break

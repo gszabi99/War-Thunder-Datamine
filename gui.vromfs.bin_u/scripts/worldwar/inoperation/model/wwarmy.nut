@@ -22,6 +22,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 let { ArmyFlags } = require("worldwarConst")
 let { getIcon } = require("%scripts/worldWar/wwArmyIconOverride.nut")
 let { getArtilleryUnits, getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarCfgState.nut")
+let { getArmyGroupByArmy, getBattleForArmy } = require("%scripts/worldWar/worldWarState.nut")
 
 let fullWidthColunsCount = 4
 let partialWidthColunsCount = 3
@@ -543,7 +544,7 @@ let WwFormation = class {
 
   function getArmyGroup() {
     if (!this.armyGroup)
-      this.armyGroup = ::g_world_war.getArmyGroupByArmy(this)
+      this.armyGroup = getArmyGroupByArmy(this)
     return this.armyGroup
   }
 
@@ -624,7 +625,7 @@ let WwFormation = class {
   }
 
   function isInBattle() {
-    return ::g_world_war.getBattleForArmy(this) != null
+    return getBattleForArmy(this) != null
   }
 
   function isMove() {

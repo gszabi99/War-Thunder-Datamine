@@ -12,6 +12,10 @@ RadioButtonList {
   move-only-hover:yes;
 }
 
+RadioButtonList[verticalFlow=yes] {
+  flow:vertical;
+}
+
 RadioButton {
   re-type:9rect;
   min-width: @checkboxSize;
@@ -23,7 +27,16 @@ RadioButton {
   text-align:left;
 }
 
+RadioButtonList[mediumFont=yes] > RadioButton {
+  font:@fontMedium;
+  height:1.2@checkboxSize;
+}
+
 RadioButtonList[highlightSelected=yes] > RadioButton[selected=yes] {
+  color:@activeTextColor;
+}
+
+RadioButtonList[highlightAlways=yes] > RadioButton {
   color:@activeTextColor;
 }
 
@@ -36,6 +49,10 @@ RadioButtonImg {
   background-repeat:expand;
   background-color:@white;
   input-transparent:yes;
+}
+
+RadioButtonList[mediumFont=yes] > RadioButton > RadioButtonImg {
+  top:0.5ph-0.5h;
 }
 
 RadioButton:hover >            RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_unchecked_hover.svg; }

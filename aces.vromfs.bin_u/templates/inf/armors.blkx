@@ -1,11 +1,22 @@
 {
+  "armor_neck_collapser": {
+    "equipment__scaleAttaches:object": {
+      "tunic:object": {
+        "Bip01 Neck:object": {
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "recalc": false
+        }
+      }
+    }
+  },
   "attachable_chest_armor": {
     "_use": "attachable_wear",
     "item__equipToSlots:array": {
       "slot": "chest_armor"
-    },
-    "torn_wounds__name_list:list<t>": {
-      "name": "chest"
     },
     "hideFlags:array": {
       "hideFlag": "chest_armor"
@@ -922,6 +933,70 @@
       }
     }
   },
+  "attachable_wear_sns_plate_frame_woodland_brown_item": {
+    "_use": "attachable_wear_sns_plate_frame_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_brown_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          0.7,
+          0.7,
+          0.0,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.634,
+          0.62,
+          0.44,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.63,
+          0.62,
+          0.44,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.43,
+          0.42,
+          0.24,
+          1.0
+        ]
+      },
+      "material5:object": [
+        {
+          "material_id": 5,
+          "solid_fill_color": [
+            0.43,
+            0.42,
+            0.24,
+            1.0
+          ]
+        },
+        {
+          "material_id": 5,
+          "solid_fill_color": [
+            0.4,
+            0.4,
+            0.4,
+            1.0
+          ]
+        }
+      ]
+    }
+  },
   "attachable_wear_sns_plate_frame_black_item": {
     "_use": "attachable_wear_sns_plate_frame_item",
     "camouflage_override:array": {
@@ -1342,6 +1417,86 @@
       "_tags": "render",
       "animchar_node_collapser__nodes:object": {
         "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_iotv_gen3_full_w_pouches_woodland_brown_item": {
+    "_use": "attachable_wear_iotv_gen3_full_w_pouches_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_brown_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          0.7,
+          0.7,
+          0.0,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.24,
+          0.24,
+          0.26,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
+      },
+      "material10:object": {
+        "material_id": 10,
+        "camouflage_scale_and_offset": [
+          0.7,
+          0.7,
+          0.0,
+          0.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "solid_fill_color": [
+          0.2,
+          0.2,
+          0.2,
+          1.0
+        ]
+      },
+      "material12:object": {
+        "material_id": 12,
+        "solid_fill_color": [
+          0.4,
+          0.4,
+          0.4,
+          1.0
+        ]
       }
     }
   },
@@ -2255,6 +2410,30 @@
           1.0
         ]
       }
+    }
+  },
+  "attachable_wear_lba_armor_base_item": {
+    "_use": "attachable_chest_armor",
+    "item__uniqueName": "attachable_wear_lba_armor_base_item",
+    "animchar__res": "lba_armor_base_char",
+    "collres__res": "lba_armor_base_collision",
+    "animchar_fast_phys__res": "lba_armor_base_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_lba_armor_heavy_item": {
+    "_use": [
+      "attachable_chest_armor",
+      "armor_neck_collapser",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_lba_armor_heavy_item",
+    "animchar__res": "lba_armor_heavy_char",
+    "collres__res": "lba_armor_heavy_collision",
+    "animchar_fast_phys__res": "lba_armor_heavy_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
     }
   }
 }

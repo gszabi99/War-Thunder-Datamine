@@ -17,7 +17,6 @@ function updateDiscountUnitsBundles(bundlesShopInfoV) {
     discountUnitsBundles.set({})
     return
   }
-
   let curTime = get_charserver_time_sec()
   let res = {}
   local minTimeLeft = null
@@ -41,7 +40,7 @@ function updateDiscountUnitsBundles(bundlesShopInfoV) {
       let unit = getAircraftByName(unitName)
       if (unit == null || !isAvailableBuyUnitOnline(unit) || !unit.isVisibleInShop() || unit.isBought())
         continue
-      res[unitName] <- calcPercent(1 - discount_mul)
+      res[unitName] <- { discount = calcPercent(1 - discount_mul), bundle }
     }
   }
   if (minTimeLeft != null) {

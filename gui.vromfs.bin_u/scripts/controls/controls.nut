@@ -82,7 +82,7 @@ function getAxisActivationShortcutData(shortcuts, item, preset) {
   for (local i = 0; i < scArr.len(); i++) {
     let sc = scArr[i]
     for (local j = 0; j < sc.dev.len(); j++)
-      buttons.append(Button(sc.dev[j], sc.btn[j], preset))
+      buttons.append(Button(sc.dev[j], sc.btn[j], sc.activationType, preset))
 
     if (buttons.len() > 1)
       inputs.append(Combination(buttons))
@@ -974,20 +974,20 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function openShortcutInputBox() {
-    assignButtonWindow(this, this.onAssignButton)
+    assignButtonWindow(this, this.onAssignButton, this.getCurItem()?.id ?? "")
   }
 
-  function onAssignButton(dev, btn) {
+  function onAssignButton(dev, btn, activationType) {
     if (dev.len() > 0 && dev.len() == btn.len()) {
       let item = this.getCurItem()
       if (item)
-        this.bindShortcut(dev, btn, item.shortcutId)
+        this.bindShortcut(dev, btn, activationType, item.shortcutId)
     }
   }
 
-  function doBind(devs, btns, shortcutId) {
+  function doBind(devs, btns, activationType, shortcutId) {
     let event = this.shortcuts[shortcutId]
-    event.append({ dev = devs, btn = btns })
+    event.append({ dev = devs, btn = btns, activationType })
     if (event.len() > MAX_SHORTCUTS)
       event.remove(0)
 
@@ -1010,13 +1010,13 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       this.updateAxisShortcuts(item)
   }
 
-  function bindShortcut(devs, btns, shortcutId) {
+  function bindShortcut(devs, btns, activationType, shortcutId) {
     if (!(shortcutId in this.shortcuts))
       return false
 
-    let curBinding = this.findButtons(devs, btns, shortcutId)
+    let curBinding = this.findButtons(devs, btns, activationType, shortcutId)
     if (!curBinding || curBinding.len() == 0) {
-      this.doBind(devs, btns, shortcutId)
+      this.doBind(devs, btns, activationType, shortcutId)
       return false
     }
 
@@ -1031,7 +1031,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       )
     })
     this.msgBox("controls_bind_existing_shortcut", msg, [
-      ["add", @() this.doBind(devs, btns, shortcutId)],
+      ["add", @() this.doBind(devs, btns, activationType, shortcutId)],
       ["replace", function() {
         for (local i = curBinding.len() - 1; i >= 0; i--) {
           let binding = curBinding[i]
@@ -1041,14 +1041,14 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           this.shortcuts[binding[0]].remove(binding[1])
           this.updateShortcutText(binding[0])
         }
-        this.doBind(devs, btns, shortcutId)
+        this.doBind(devs, btns, activationType, shortcutId)
       }],
       ["cancel", function() { }],
     ], "cancel")
     return true
   }
 
-  function findButtons(devs, btns, shortcutId) {
+  function findButtons(devs, btns, activationType, shortcutId) {
     let visibilityMap = this.getShortcutsVisibilityMap()
 
     if (u.find_in_array(this.dontCheckControlsDupes, this.shortcutNames[shortcutId]) >= 0)
@@ -1068,7 +1068,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           local numEqual = 0
           for (local i = 0; i < button.dev.len(); i++)
             for (local j = 0; j < devs.len(); j++)
-              if ((button.dev[i] == devs[j]) && (button.btn[i] == btns[j]))
+              if ((button.dev[i] == devs[j]) && (button.btn[i] == btns[j]) && button.activationType == activationType)
                 numEqual++
 
           if (numEqual == btns.len() && u.find_in_array(this.dontCheckControlsDupes, this.shortcutNames[index]) < 0)

@@ -2,7 +2,7 @@ require %rGui.planeIlses.ilsRafale_common
 require %rGui.utils.canvas_common
 require %rGui.utils.helpers_common
 
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require app
 require DagorMath
 require DagorStdGuiRender
@@ -15,6 +15,7 @@ require strings
 require Unit
 require Weapon
 require WTVr
+require Localization
 
 struct PropStorage
   fontId : int

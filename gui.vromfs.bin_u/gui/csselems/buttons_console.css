@@ -88,6 +88,8 @@
 @const trashButtonHeight: 28@sf/@pf;
 @const trashButtonHeight: 1@cIco;
 
+@const keyboardHintButtonHeight: 1@buttonHeight - 4@sf/@pf;
+
 ButtonImg
 {
   re-type:9rect;
@@ -2530,8 +2532,11 @@ authorizationBlock > Button_text {
   width: pw;
   height: 1@navBarBattleButtonHeight;
   margin:0;
-  position:relative;
-  pos:50%pw-50%w, 0;
+  left:50%pw-50%w;
+}
+
+.authorization > Button_text[position=absolute] {
+  width:pw - 2@framePadding;
 }
 
 Button_text[scaleble=yes] {
@@ -2930,4 +2935,70 @@ Button_text.modalInfo > btnText {
   margin-left: 1@blockInterval;
   valign: center;
   text-align: left;
+}
+
+Button_text.shortcut {
+  flow:horizontal;
+  padding:0;
+  padding-left:0;
+  min-width:1@buttonHeight;
+}
+
+[show_console_buttons=no] Button_text.shortcut {
+  padding:0;
+  padding-right:0;
+  padding-left:0;
+}
+
+[show_console_buttons=yes] Button_text.shortcut:hover shortcutMask,
+[show_console_buttons=yes] Button_text.shortcut:hover ButtonImg {
+  display:show;
+}
+
+Button_text.shortcut:hover shortcutMask {
+  background-color: @buttonColorHover;
+}
+
+Button_text.shortcut:pushed shortcutMask {
+  background-color: #FF020509;
+}
+
+Button_text.shortcut:hover > img,
+Button_text.shortcut:hover > shortcutContent > img {
+  bgcolor:#181818;
+}
+
+Button_text.shortcut:pushed > img,
+Button_text.shortcut:pushed > shortcutContent > img {
+  bgcolor:#908f8f;
+}
+
+Button_text.shortcut hint > hintRow,
+Button_text.shortcut hint > hintRow > combination,
+Button_text.shortcut hint {
+  height:ph;
+}
+
+Button_text.shortcut hint > hintRow > gamepadButton,
+Button_text.shortcut hint > hintRow > combination > gamepadButton {
+  size:ph, ph;
+  top:0;
+}
+
+Button_text.shortcut hint > hintRow > keyboardButton > keyboardButtonText,
+Button_text.shortcut hint > hintRow > combination > keyboardButton > keyboardButtonText {
+  font: @fontHudTiny;
+}
+
+Button_text.shortcut hint > hintRow > keyboardButton,
+Button_text.shortcut hint > hintRow > combination > keyboardButton {
+  height:1@keyboardHintButtonHeight;
+  width:1@keyboardHintButtonHeight;
+  min-width:1@keyboardHintButtonHeight;
+  margin:1@sf/@pf, 0;
+  top:(ph-h)/2;
+}
+
+Button_text.shortcut hint > hintRow > combination > textareaNoTab {
+  margin:2@sf/@pf, 0;
 }

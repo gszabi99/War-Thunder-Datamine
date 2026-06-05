@@ -68,8 +68,7 @@ def hit_reaction_init(evt : Event;
         hit_reaction__repeatNodeIdxs[i] = -1
 
     for i in range(0, nodesCount)
-      let collNode = collres |> collres_get_node(i)
-      let collNodeName = collNode |> collnode_get_name()
+      let collNodeName = collres_get_node_name(collres, i)
       let animGroup = hit_reaction__anims |> get_ecs_object(collNodeName)
       if animGroup != null
         for dir in range(0, animDirsCount)
@@ -152,7 +151,7 @@ def hit_reaction_impl(eid : EntityId;
         if !(*fifoNode |> anim_blend_ctrl_fifo3_isEnqueued(*animState, node))
           *node |> anim_blend_node_resume(*animState, true)
         *fifoNode |> anim_blend_ctrl_fifo3_enqueueState(
-          *animState, node, 0.05, 0.0)
+          *animState, node, 0.05, FifoMorphType.MT_LINEAR)
 
 
 [es(tag=gameClient, REQUIRE_NOT=hero)]

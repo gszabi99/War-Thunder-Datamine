@@ -119,7 +119,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
       }
 
       afterUpdateAirModificators(air, callBack)
-    })
+    }, null)
     return false
   }
 
@@ -143,7 +143,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
           air.modificatorsBase = air.modificators
       }
       afterUpdateAirModificators(air, callBack)
-    })
+    }, null)
     return false
   }
 
@@ -167,7 +167,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
         air.modificators = effect.max
     }
     afterUpdateAirModificators(air, callBack)
-  })
+  }, null)
   return false
 }
 
@@ -202,7 +202,7 @@ function checkSecondaryWeaponModsRecount(unit, callback = null) {
         secondaryMods.callback()
         secondaryMods.callback = null
       }
-    })
+    }, null)
     return false
   }
 
@@ -216,7 +216,7 @@ function checkSecondaryWeaponModsRecount(unit, callback = null) {
       if (callback)
         callback()
       broadcastEvent("SecondWeaponModsUpdated", { unit = unit })
-    })
+    }, null)
     return false
   }
   return true

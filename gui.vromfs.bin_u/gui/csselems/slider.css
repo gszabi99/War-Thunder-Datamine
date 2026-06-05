@@ -124,8 +124,16 @@ invisSlider:disabled > sliderButton > img {
   width:@optContainerControlWidth-32@sf/@pf;
 }
 
+slider[fullWidth=yes] {
+  width:fw;
+}
+
 [optContainer=yes] slider[fullWidth=yes] {
   width:@optContainerControlWidth;
+}
+
+slider[small=yes] {
+  height:5@sf/@pf + 2@sliderIncHeight;
 }
 
 [optContainer=yes] slider.systemOption {

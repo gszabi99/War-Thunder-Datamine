@@ -64,7 +64,7 @@ let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
 let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { hasUnitEvent, getUnitEventId } = require("%scripts/unit/unitEvents.nut")
+let { hasUnitEvent, getUnitEventId, isUnitOnlyFromEvent } = require("%scripts/unit/unitEvents.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getSkinsSeenList } = require("%scripts/customization/infantryCamouflageStorage.nut")
 
@@ -257,7 +257,9 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
                         : isSpecial || canBuyNotResearchedUnit ? "#ui/gameuiskin#shop_warpoints_premium.svg"
                             : "#ui/gameuiskin#shop_warpoints.svg"
 
-      showAction = inMenu && !isSlaveUnit && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton) && !hasUnitEvent(unit.name)
+      showAction = inMenu && !isSlaveUnit && !unit.isCrossPromo
+        && (canBuyIngame || canBuyOnline || forceShowBuyButton)
+        && !isUnitOnlyFromEvent(unit)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
         actionFunc = @() showUnitGoods(unit.name, "unit_context_menu")

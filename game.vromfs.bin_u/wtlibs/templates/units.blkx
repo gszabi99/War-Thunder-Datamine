@@ -113,11 +113,17 @@
     "ammo_stowages__floodedAmmoReloadMult:list<r>": {},
     "ammo_stowages__clustersRange:list<ip2>": {},
     "ammo_stowages__weaponTriggersRange:list<ip2>": {},
+    "ammo_stowages__weaponAmmoRange:list<ip2>": {},
     "ammo_stowages__cachedAmmoHash:list<u32>": {},
+    "ammo_stowages__restoreTimers:list<p4>": {},
     "ammo_per_type_data__numAmmoFsSync:list<i>": {},
     "ammo_stowages__replenishmentStartEndSync:list<p2>": {},
     "ammo_stowages__replenishmentTimeSync:list<p2>": {},
     "ammo_stowage__weaponTriggers:list<i>": {},
+    "ammo_stowage__weaponAmmoIds:list<i>": {},
+    "ammo_stowage__weaponAmmoTriggers:list<i>": {},
+    "ammo_stowage__weaponAmmoCount:list<i>": {},
+    "ammo_cluster__weaponTriggers:list<i>": {},
     "ammo_clusters__typeAndStage:list<u16>": {},
     "ammo_clusters__state:list<u32>": {},
     "ammo_clusters__fireEvtId:list<i>": {},
@@ -133,6 +139,8 @@
     "ammo_clusters__slotsRange:list<ip2>": {},
     "ammo_clusters__wreckageRange:list<ip2>": {},
     "ammo_clusters__relatedPartsRange:list<ip2>": {},
+    "ammo_clusters__weaponTriggersRange:list<ip2>": {},
+    "ammo_clusters__ammoShare:list<ip4>": {},
     "ammo_stowage__wreckageIds:list<i>": {},
     "ammo_stowage__relatedPartsIds": {},
     "ammo_slots__state:list<u32>": {},
@@ -177,6 +185,7 @@
     }
   },
   "tank_phys_tracks": {
+    "physical_tracks__dontCreateTracks": false,
     "physical_tracks_enabled": true,
     "physical_tracks__meshName": "",
     "physical_tracks__nonSymmetric": false,
@@ -351,6 +360,9 @@
     "watchedHero:tag": {},
     "watchedByPlr:eid": {}
   },
+  "heroVehicle": {
+    "heroVehicle:tag": {}
+  },
   "watched_by_player_item": {
     "watchedPlayerItem:tag": {}
   },
@@ -366,20 +378,58 @@
     }
   },
   "unit_init_params": {
-    "_use": "unit_init_params_ext",
     "_tags": "server",
-    "unit_params__skinName": "",
-    "unit_params__isDelayed": false,
     "unit_params__isPlayersOwnedUnit": false,
     "unit_params__supportUnitIdx": -1,
     "unit_params__initUnitVersion": 0,
     "unit_params__fireType": -1,
-    "unit_params__cloneCount": 1,
     "unit_params__behTreeName": "",
-    "unit_params__rearmOnFieldTime": -1.0,
+    "unit_params__rearmTimeOnField": -1.0,
+    "setting__isDelayed": false,
+    "setting__skin": "",
+    "setting__crewSkillK": -1.0,
+    "setting__weapons": "",
+    "setting__isPhysPredictionEnabled": false,
+    "setting__forcePlayerPhysics": false,
+    "setting__loadAnim": false,
+    "setting__applyAllMods": false,
+    "setting__closed_waypoints": false,
+    "setting__isDead": false,
+    "setting__ignoreCollisions": false,
+    "setting__shouldDrawSmallIndForMissTarget": true,
+    "setting__uniqueName": "",
+    "setting__attack_type": "",
+    "setting__stealthRadius": -1.0,
+    "setting__supportUnitType": 0,
+    "setting__targetAir": true,
+    "setting__targetGnd": true,
+    "setting__targetAAA": true,
+    "setting__accuracy": 1.0,
+    "setting__maxDeviationAngle": 0.0,
+    "setting__moveSysTraceRI": false,
+    "setting__effShootingRate": 1.0,
+    "setting__lightlyArmored": false,
+    "setting__avoidObstacles": false,
+    "setting__targetableByAi": true,
+    "setting__isImmortal": false,
+    "setting__calmDetection": false,
+    "setting__aiEnabled": true,
+    "setting__aiReloadMult": 1.0,
+    "setting__speed": 0.0,
+    "setting__name": "",
+    "setting__flags": 0,
+    "setting__routeName": "",
+    "setting__cannotMove": false,
+    "setting__toGround": false,
+    "setting__toGroundOffset": 0.0,
+    "setting__forcePos": true,
+    "setting__loadSound": true,
+    "setting__canControlInHangar": false,
+    "setting__dontCreateChar": false,
+    "unit_init_params:tag": {},
     "unit_params__modList:list<t>": {},
-    "unit_params__bulletNames:list<t>": {},
-    "unit_params__bulletsCount:list<i>": {}
+    "setting__bullets:list<t>": {},
+    "setting__bulletsCount:list<i>": {}
   },
   "buffered_hud_data": {
     "_replicate": true,
@@ -399,21 +449,17 @@
       "name": [
         "unit__isAlwaysReplicated",
         "killerEid",
-        "canChangeUnit",
+        "unit__canChangeUnitInHangar",
         "unit_target_list",
         "unit_current_route__routeEid",
         "unit_current_route__curWayPoint",
-        "on_death_substract_team_tickets_num",
         "loot_carrier__rage"
       ]
     },
     "unit_transferred_data__subTemplatesList:list<t>": {
       "name": [
         "unit_current_route",
-        "unit_target_list",
-        "unit_fire_and_change_pos",
-        "unit_death_substract_team_tickets_5",
-        "unit_death_substract_team_tickets_30"
+        "unit_target_list"
       ]
     }
   },
@@ -423,13 +469,13 @@
       "replicating",
       "base_unit_ext",
       "ecs_no_debug",
-      "unit_init_params",
       "unit_proximity_damage",
       "unit_unlock_data",
       "buffered_hud_data"
     ],
     "uid": -1,
     "unit__ownsUnitId": false,
+    "unit__verifyEcsTemplate": true,
     "transform": [
       [
         1.0,
@@ -457,7 +503,7 @@
     "is_local": false,
     "unitVersion": 0,
     "unitType": -1,
-    "canChangeUnit": false,
+    "unit__canChangeUnitInHangar": false,
     "unit__missionName": "",
     "team": -1,
     "_replicated": [
@@ -481,6 +527,7 @@
     "unit__ref": {},
     "ownedByPlr:eid": {},
     "supportForPlr:eid": {},
+    "unit__changedFromEid:eid": {},
     "killerEid:eid": {},
     "replicate_custom:tag": {}
   },
@@ -643,7 +690,9 @@
     "aimer_custom_setting__checkVisibilityTarget": true,
     "aimer_custom_setting__ignoreStopForFire": false,
     "aimer_custom_setting__targetAAA": true,
-    "aimer_custom_setting__moveSpeedKAtShooting": 1.0
+    "aimer_custom_setting__moveSpeedKAtShooting": 1.0,
+    "aimer_custom_setting__maxNumAttackersPerTargetGroupIdx": 0,
+    "aimer_custom_setting__maxNumAttackersPerTarget": 0
   },
   "custom_gun_properties": {
     "custom_gun_properties__aimMinDist": -1.0,
@@ -794,26 +843,6 @@
     "unit_tag__ship:tag": {},
     "unit_tag__gm:tag": {}
   },
-  "trailer": {
-    "_use": [
-      "simple_ground_unit",
-      "trailer_ext",
-      "vehicle_grid_obj"
-    ],
-    "unit__reCreateOnRespawn": true,
-    "unit__shouldKeepDeadUnit": true,
-    "track_sound": {
-      "_tags": "sound"
-    },
-    "unit_storage__tank": {},
-    "vehicle_net_phys": {},
-    "unit_tag__tank:tag": {},
-    "unit_tag__tank_trailer:tag": {},
-    "unit_tag__gm:tag": {}
-  },
-  "simple_trailer": {
-    "_use": "trailer"
-  },
   "human": {
     "_use": [
       "base_unit",
@@ -877,14 +906,100 @@
     "delayed_destroy_dead_unit__time": 30.0,
     "entity_destroyer__destroyAtTime": -1.0
   },
-  "object_group_spawn_units": {
-    "object_group_spawn_units__names:list<t>": {},
-    "object_group_spawn_units__positions:list<m>": {}
+  "units_spawn_on_init": {
+    "team": 0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_tracked": "team",
+    "_group": {
+      "_tags": "server",
+      "units_spawn_on_init__unitSettings:array": {},
+      "units_spawn_on_init__unitSettingsTeam1:array": {},
+      "units_spawn_on_init__unitSettingsTeam2:array": {},
+      "units_spawn_on_init__positions:list<m>": {},
+      "units_spawn_on_init__positionNames:list<t>": {},
+      "units_spawn_on_init__units:list<eid>": {}
+    }
   },
-  "unit_death_substract_team_tickets_5": {
-    "on_death_substract_team_tickets_num": 5
+  "unit_death_substract_team_tickets": {
+    "_group": {
+      "_tags": "server",
+      "on_death_substract_team_tickets_num": 0
+    }
   },
-  "unit_death_substract_team_tickets_30": {
-    "on_death_substract_team_tickets_num": 30
+  "restore_unit_by_timer": {
+    "_group": {
+      "_tags": "server",
+      "restore_unit_by_timer__restoreTime": 720.0,
+      "restore_unit_by_timer__restoreAtTime": -1.0
+    }
+  },
+  "background_model": {
+    "background_model__model": "",
+    "background_model__skin": "",
+    "background_model__unitName": "",
+    "background_model__weapon": "",
+    "background_model__isPlane": false,
+    "background_model__tm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "background_model__canOutline": false,
+    "background_model__needRemoveForPrem": false,
+    "background_model__hangarPlace": "",
+    "background_model__placingType": "pivot",
+    "background_model__placingRad": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "background_model__bboxWidth": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "background_model__need_box_collision": false,
+    "background_model_res": {
+      "_tags": "gameClient"
+    },
+    "background_model__spawnEid:eid": {}
   }
 }

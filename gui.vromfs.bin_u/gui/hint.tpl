@@ -10,6 +10,16 @@ hint {
   animation:t='<<animation>>'
   <</animation>>
 
+  <<#hasBackdrop>>
+  tdiv {
+    position:t='absolute'
+    pos:t='pw/2-w/2, ph/2-h/2'
+    size:t='pw+0.3@shHud, ph+0.2@shHud'
+    background-image:t='#ui/gameuiskin#circle_gradient_white'
+    background-color:t='@hudTextBgShade'
+  }
+  <</hasBackdrop>>
+
   <<#topImages>>
   hintImagesRow {
     halign:t='center'

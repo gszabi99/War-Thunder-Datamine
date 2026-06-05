@@ -108,7 +108,7 @@
     "heat_source__overheatGunCoeff": 0.0625,
     "heat_source__overheatGunNonThermalCoeff": 0.0625,
     "heat_source_decals__node:dafg::NodeHandle": {},
-    "heat_source_decals__buffer:UniqueBufHolder": {}
+    "heat_source_decals__buffer:UniqueBufWithShaderVar": {}
   },
   "technic_heating_base_params": {
     "heat_source__dead_technic_fadeout_coeff": 2.5,
@@ -395,6 +395,7 @@
   "human_gun_heat_sources": {
     "_tags": "render",
     "_use": "weapon_heating_params_base",
+    "heat_source__gunFxNodeId": -1,
     "heat_source__humanGunEid:eid": {}
   },
   "weapon_heating_params_base": {

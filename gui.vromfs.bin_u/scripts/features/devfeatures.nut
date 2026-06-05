@@ -21,6 +21,15 @@ let devFeatures = {
   CompareBulletsGraphs = {
     title = "Enable of button for open compare shells window"
   }
+  AssistantMap = {
+    title = "Enable tactical map assistant (QR session)"
+  }
+  HasSpecialEventWindow = {
+    title = "Enable special events moved from achievements"
+  }
+  HasTabsInGraphicsOption = {
+    title = "Enable unit types tabs in graphics option groups"
+  }
 }
 
 let hasDevFeature = @(name) name in devFeatures

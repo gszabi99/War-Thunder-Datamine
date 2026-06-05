@@ -17,7 +17,7 @@ let shkvalKa52 = require("%rGui/planeCockpit/mfdShkvalKa52.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
 let agmAim = require("%rGui/agmAim.nut")
 let { isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
-let { radarHud } = require("%rGui/radar.nut")
+let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let { IsTwsDamaged } = require("%rGui/twsState.nut")
 let { twsElement } = require("%rGui/airHudComponents.nut")
 let legacySight = require("%rGui/targetingPodSightLegacy.nut")
@@ -126,10 +126,10 @@ function commonSight(width, height) {
     bh.get() + 0.5 * rh.get() - radarSize[1] * 0.5
   ])
 
-  let twsSize = sh(20)
+  let twsSize = [sh(28), sh(50)]
   let twsPos= Computed(@() [
       bw.get() + 0.02 * rw.get(),
-      bh.get() + 0.5 * rh.get() - twsSize * 0.5
+      bh.get() + 0.5 * (rh.get() - twsSize[1])
     ])
 
   return @() {
@@ -152,6 +152,7 @@ function commonSight(width, height) {
       !isCollapsedRadarInReplay.get()
         ? radarHud(radarSize[0], radarSize[1], radarPos.get()[0], radarPos.get()[1], baseColor, {}, true): null
       !IsMfdEnabled.get() ? twsElement(IsTwsDamaged.get() ? AlertColorHigh : baseColor, twsPos, twsSize) : null
+      radarIndication(baseColor)
     ]
   }
 }

@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 require("%rGui/radarZoom.nut")
 let { hudFontHgt } = require("%rGui/style/airHudStyle.nut")
-let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, IsCScopeVisible, IsBScopeVisible,
+let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, IsCScopeVisible, IsBScopeVisible, IsEsm,
   ViewMode } = require("%rGui/radarState.nut")
 let { IPoint3 } = require("dagor.math")
 let { getLangId } = require("dagor.localize")
@@ -20,6 +20,8 @@ let radarOffsets = Computed(function() {
     return [0, 0]
   if (IsBScopeVisible.get() && ViewMode.get() == RadarViewMode.B_SCOPE_ROUND)
     return [hdpx(21), hdpx(-20)]
+  if (IsEsm.get())
+    return [0, 0]
   if (IsCScopeVisible.get())
     return [hdpx(-3), hdpx(-30)]
   return [0, 0]
@@ -121,6 +123,7 @@ let customPages = {
   su30Radar = "%rGui/planeCockpit/mfdSu30Radar.das"
   fa18cRadarATTK = "%rGui/planeCockpit/mfdfa18cRadarATTK.das"
   f106Radar = "%rGui/planeCockpit/F106Radar.das"
+  f4Radar = "%rGui/planeCockpit/mfdF4Radar.das"
   mig25Radar = "%rGui/planeCockpit/mfdMig25Radar.das"
 }
 
@@ -160,6 +163,7 @@ let radarSettings = Watched({
     radarModeNameLangId = -1
     stretchFull = false
     cScopeIndicatorHeightMult = 1.0
+    vignettePath = ""
   })
 
 function radarSettingsUpd(page_blk) {
@@ -202,6 +206,7 @@ function radarSettingsUpd(page_blk) {
     radarModeNameLangId = getLangId(page_blk.getStr("radarModeNameLangId", ""))
     stretchFull = page_blk.getBool("stretchFull", false)
     cScopeIndicatorHeightMult = page_blk.getReal("cScopeIndicatorHeightMult", 1.0)
+    vignettePath = page_blk.getStr("vignettePath", "")
   })
 }
 
@@ -210,7 +215,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
     backgroundColor, textColor, radarBackgroundColor, radarScanColor, beamShape, netRowCnt, netColor, hideWeaponIndication,
     cueHeights, fontSize, showScanAzimuth, scriptPath, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
-    radarModeNameLangId, stretchFull, cScopeIndicatorHeightMult } = radarSettings.get()
+    radarModeNameLangId, stretchFull, cScopeIndicatorHeightMult, vignettePath } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.get().w, pos_and_size.get().h]
@@ -257,6 +262,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     radarModeNameLangId
     stretchFull
     cScopeIndicatorHeightMult
+    vignette = vignettePath != "" ? Picture(vignettePath) : null
   }
 }
 

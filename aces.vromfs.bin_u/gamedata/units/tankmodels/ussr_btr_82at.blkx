@@ -26,25 +26,24 @@
   "waterBreakerAnimVar": "btr_82at_break_water_action",
   "waterBreakerToggleTime": 4.0,
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
-  "maxRevSpeed": 10.0,
-  "maxAngSpeed": 30.0,
-  "maxAccel": 4.0,
-  "maxDecel": 8.0,
-  "maxAngAccel0": 20.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 40.0,
+  "maxFwdSpeed": 75.0,
+  "maxRevSpeed": 30.0,
+  "maxAngSpeed": 50.0,
+  "maxAccel": 40.0,
+  "maxDecel": 40.0,
+  "maxAngAccel0": 4.0,
+  "maxAngAccelV": 3.0,
+  "maxAngAccel": 100.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_tank",
   "mass": 5500.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "radarCanLockTargetFromTPV": false,
@@ -275,9 +274,6 @@
       "turret_04_side_dm": {
         "armorThickness": 10.0
       },
-      "turret_07_side_dm": {
-        "armorThickness": 15.0
-      },
       "turret_02_bottom_dm": {
         "armorThickness": 13.0
       },
@@ -351,7 +347,11 @@
       "ex_armor_r_07_dm": {},
       "ex_armor_body_01_dm": {},
       "ex_armor_body_02_dm": {},
-      "ex_armor_body_03_dm": {}
+      "ex_armor_body_03_dm": {},
+      "turret_07_back_dm": {},
+      "turret_07_bottom_dm": {},
+      "turret_07_side_dm": {},
+      "turret_07_top_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -690,6 +690,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -2305,9 +2309,7 @@
         "bullets": 300,
         "ChainfireTime": 2.5,
         "DelayAfterShoot": 2.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1500.0,
         "accuracyAir": 1.5,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -2411,7 +2413,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_twin",
           "gun": "emtr_mg_flame_01",
@@ -2454,9 +2455,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -2465,7 +2464,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret_01",
           "gun": "bone_gun_01",
@@ -4364,9 +4362,7 @@
               "bullets": 300,
               "ChainfireTime": 2.5,
               "DelayAfterShoot": 2.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1500.0,
               "accuracyAir": 1.5,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4470,7 +4466,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_twin",
                 "gun": "emtr_mg_flame_01",
@@ -4513,9 +4508,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4524,7 +4517,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_turret_01",
                 "gun": "bone_gun_01",
@@ -4595,9 +4587,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 1000.0,
               "AttackMaxRadius": 1000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -4606,7 +4596,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_grenade",
                 "gun": "bone_grenade"
@@ -4705,6 +4694,10 @@
             "ex_armor_l_17",
             "ex_armor_l_18",
             "ex_armor_l_19",
+            "turret_07_top",
+            "turret_07_side",
+            "turret_07_bottom",
+            "turret_07_back",
             "ex_armor_body_r_01",
             "ex_armor_body_r_03",
             "ex_armor_body_r_04",

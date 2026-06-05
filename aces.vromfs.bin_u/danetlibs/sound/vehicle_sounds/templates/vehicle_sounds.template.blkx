@@ -908,6 +908,11 @@
       {
         "_tags": "sound",
         "vehicle_gun_sounds_preload:SoundEventsPreload": {}
+      },
+      {
+        "_tags": "sound",
+        "vehicle_sound_occlusion__radius": 1.0,
+        "vehicle_sound_occlusion__blob:SoundOcclusionBlob": {}
       }
     ]
   },
@@ -919,6 +924,18 @@
       "vehicle_engine_sound_subtemplate",
       "ground_vehicle_gear_sound_subtemplate"
     ]
+  },
+  "small_vehicle_sound_occlusion_setup": {
+    "_group": {
+      "_tags": "sound",
+      "vehicle_sound_occlusion__radius": 0.5
+    }
+  },
+  "large_vehicle_sound_occlusion_setup": {
+    "_group": {
+      "_tags": "sound",
+      "vehicle_sound_occlusion__radius": 1.5
+    }
   },
   "car_vehicle_sound_subtemplate": {
     "_use": [
@@ -974,7 +991,8 @@
     "_use": [
       "base_ground_vehicle_sound_subtemplate",
       "ground_vehicle_brakes_sound_subtemplate",
-      "vehicle_horn_sound_subtemplate"
+      "vehicle_horn_sound_subtemplate",
+      "large_vehicle_sound_occlusion_setup"
     ]
   },
   "truck_vehicle_sound_setup": {
@@ -1028,7 +1046,10 @@
     }
   },
   "tank_vehicle_sound_subtemplate": {
-    "_use": "base_ground_vehicle_sound_subtemplate"
+    "_use": [
+      "base_ground_vehicle_sound_subtemplate",
+      "large_vehicle_sound_occlusion_setup"
+    ]
   },
   "tank_vehicle_sound_setup": {
     "_use": [
@@ -1056,7 +1077,8 @@
     "_use": [
       "base_ground_vehicle_sound_subtemplate",
       "ground_vehicle_brakes_sound_subtemplate",
-      "vehicle_horn_sound_subtemplate"
+      "vehicle_horn_sound_subtemplate",
+      "large_vehicle_sound_occlusion_setup"
     ]
   },
   "apc_with_wheels_vehicle_sound_setup": {
@@ -1084,7 +1106,8 @@
   "apc_vehicle_sound_subtemplate": {
     "_use": [
       "base_ground_vehicle_sound_subtemplate",
-      "vehicle_horn_sound_subtemplate"
+      "vehicle_horn_sound_subtemplate",
+      "large_vehicle_sound_occlusion_setup"
     ]
   },
   "apc_vehicle_sound_setup": {
@@ -1111,7 +1134,10 @@
     }
   },
   "btr_vehicle_sound_subtemplate": {
-    "_use": "base_ground_vehicle_sound_subtemplate"
+    "_use": [
+      "base_ground_vehicle_sound_subtemplate",
+      "large_vehicle_sound_occlusion_setup"
+    ]
   },
   "btr_vehicle_sound_setup": {
     "_use": [
@@ -1132,7 +1158,8 @@
     "_use": [
       "base_ground_vehicle_sound_subtemplate",
       "ground_vehicle_brakes_sound_subtemplate",
-      "vehicle_horn_sound_subtemplate"
+      "vehicle_horn_sound_subtemplate",
+      "small_vehicle_sound_occlusion_setup"
     ]
   },
   "motorcycle_vehicle_sound_setup": {

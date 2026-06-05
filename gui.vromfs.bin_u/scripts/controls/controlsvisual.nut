@@ -1,13 +1,24 @@
 from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
-
+from "controls" import ActivationCondition
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
+let imageByActivationType = {
+  [ActivationCondition.TAPPED_TWICE] = "dbl_click_sign.svg",
+  [ActivationCondition.LONG_PRESS] = "hold_sign.svg",
+}
+
+let customShortcutLocId = { 
+  ID_INTERNET_RADIO          = "options/internet_radio_shortcut"
+  ID_INTERNET_RADIO_PREV     = "options/internet_radio_prev_shortcut"
+  ID_INTERNET_RADIO_NEXT     = "options/internet_radio_next_shortcut"
+}
+
 function getLocalizedShortcutName(shortcutId) {
-  return loc($"hotkeys/{shortcutId}")
+  return loc(customShortcutLocId?[shortcutId] ?? $"hotkeys/{shortcutId}")
 }
 
 let axisModifiers = ["_rangeMin", "_rangeMax"]
@@ -171,4 +182,5 @@ return {
   getShortcutText
   addHotkeyTxt
   hackTextAssignmentForR2buttonOnPS4
+  getActivationTypeImg = @(activationType) imageByActivationType?[activationType]
 }

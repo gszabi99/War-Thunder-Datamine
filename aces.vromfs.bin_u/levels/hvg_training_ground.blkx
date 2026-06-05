@@ -1,52 +1,38 @@
 {
-  "rendinst::tmInst12x32bit": true,
-  "groundProximityInfantryMode": true,
-  "occlusionFromCollision": true,
-  "useInfantryCharacterMicrodetails": true,
-  "disableRT": true,
-  "disableConsoleRT": true,
-  "targetUpscaleForBigResolution": true,
   "mandatoryLandquality": 1,
-  "z_far": 50000.0,
+  "groundProximityInfantryMode": true,
+  "trackDirt": false,
   "hmapLodCount": 5,
+  "z_far": 50000.0,
   "numBorderCellsXPos": 8,
   "numBorderCellsXNeg": 8,
   "numBorderCellsZPos": 8,
   "numBorderCellsZNeg": 8,
+  "lastClip": true,
+  "lastclip_horizon": true,
+  "occlusionFromCollision": true,
+  "forcedRiDepthPrepass": true,
+  "useInfantryCharacterMicrodetails": true,
+  "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
+  "weatherTypes": "gamedata/environments/hvg_weather_types.blk",
+  "layeredFogThicknessScale100": 12.0,
+  "layeredFogHeightOffset": 7.0,
+  "layeredFogDensityMul": 1.0,
   "water_level": 0.0,
-  "water__flowmap_tex": "hvg_al_massa_det_water_flowmap",
-  "water__flowmap_area": [
-    -2048.0,
-    2048.0,
-    2048.0,
-    -2048.0
-  ],
-  "water__flowmap_prebaked_speed": 3.0,
-  "foamfx__tile_uv_scale": 0.4,
-  "foamfx__distortion_scale": 0.6,
-  "foamfx__normal_scale": 0.05,
-  "foamfx__pattern_gamma": 1.0,
-  "foamfx__mask_gamma": 1.0,
-  "foamfx__gradient_gamma": 1.0,
-  "foamfx__underfoam_threshold": 0.3,
-  "foamfx__overfoam_threshold": 0.1,
-  "foamfx__underfoam_weight": 0.9,
-  "foamfx__overfoam_weight": 1.0,
-  "foamfx__underfoam_color": [
-    0.0,
-    0.0,
-    0.0
-  ],
-  "foamfx__overfoam_color": [
-    2.0,
-    2.0,
-    2.0
-  ],
-  "foamfx__reflectivity": 0.2,
-  "foamfx__tile_tex": "foam_generator_a_tile_tex_n",
-  "foamfx__gradient_tex": "foam_generator_a_gradient_tex_n",
-  "trackDirt": false,
+  "disableRT": true,
+  "disableConsoleRT": true,
+  "targetUpscaleForBigResolution": true,
+  "rendinst::tmInst12x32bit": true,
+  "textures_size": 2500.0,
+  "textures_count": 2200,
+  "weatherPreset": "gamedata/environments/hvg_weather_preset_al_massa.blk",
+  "soundAmbientPath": "sounds/ambient",
+  "soundAmbientPathStudio": "aircraft/ambient",
+  "soundAmbientEvent": "global_amb_europe",
   "forceMusic": "infantry_suspense",
+  "customLevelMap": "hvg_training_ground_tankmap*",
+  "customLevelTankMap": "hvg_training_ground_tankmap*",
+  "customLevelInfantryMap": "hvg_training_ground_tankmap*",
   "aiMapCoord0": [
     -32768.0,
     -32768.0
@@ -112,22 +98,136 @@
     1024.0
   ],
   "infantryMapDefaultZoom": 4.5,
-  "customLevelMap": "hvg_training_ground_tankmap*",
-  "customLevelTankMap": "hvg_training_ground_tankmap*",
-  "customLevelInfantryMap": "hvg_training_ground_tankmap*",
-  "weatherPreset": "gamedata/environments/hvg_weather_preset.blk",
-  "weatherTypes": "gamedata/environments/hvg_weather_types.blk",
-  "lastClip": true,
-  "lastclip_horizon": true,
-  "soundAmbientPath": "sounds/ambient",
-  "soundAmbientPathStudio": "aircraft/ambient",
-  "soundAmbientEvent": "global_amb_europe",
-  "layeredFogThicknessScale100": 12.0,
-  "layeredFogHeightOffset": 7.0,
-  "layeredFogDensityMul": 1.0,
-  "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
-  "textures_size": 2500.0,
-  "textures_count": 2200,
+  "water__flowmap_tex": "hvg_al_massa_det_water_flowmap",
+  "water__flowmap_area": [
+    -2048.0,
+    2048.0,
+    2048.0,
+    -2048.0
+  ],
+  "water__flowmap_prebaked_speed": 3.0,
+  "foamfx__tile_uv_scale": 0.4,
+  "foamfx__distortion_scale": 0.6,
+  "foamfx__normal_scale": 0.05,
+  "foamfx__pattern_gamma": 1.0,
+  "foamfx__mask_gamma": 1.0,
+  "foamfx__gradient_gamma": 1.0,
+  "foamfx__underfoam_threshold": 0.3,
+  "foamfx__overfoam_threshold": 0.1,
+  "foamfx__underfoam_weight": 0.9,
+  "foamfx__overfoam_weight": 1.0,
+  "foamfx__underfoam_color": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "foamfx__overfoam_color": [
+    2.0,
+    2.0,
+    2.0
+  ],
+  "foamfx__reflectivity": 0.2,
+  "foamfx__tile_tex": "foam_generator_a_tile_tex_n",
+  "foamfx__gradient_tex": "foam_generator_a_gradient_tex_n",
+  "clipmap": {
+    "texelSize": 0.0078125
+  },
+  "shader_vars": {
+    "hmap_displacement_up": 0.1,
+    "hmap_displacement_down": -0.1,
+    "min_land_height": 0.3,
+    "foliage_translucent_color_mul": [
+      1.25,
+      1.1,
+      1.05,
+      0.0
+    ],
+    "dynamic_lights_ao_effect": 0.8,
+    "gtao_apply_strength": 1.5,
+    "gtao_cutoff_radius_mul": 3.5,
+    "gtao_cutoff_smoothness": 0.95,
+    "gtao_world_radius": 0.7,
+    "gtao_screen_radius": 0.05,
+    "gtao_max_pixel_radius": 72.0,
+    "ssao_affect_on_objects": 1.0,
+    "ssao_apply_strength": 1.5,
+    "ssao_radius_factor": 60.0,
+    "ssao_ambient_cutoff": 1.85,
+    "ssao_blur_weights": [
+      0.9,
+      0.75,
+      0.5,
+      0.25
+    ],
+    "ssao_depth_limits": [
+      0.92,
+      1.35,
+      0.0,
+      0.0
+    ],
+    "ssao_blur_depth_near": 0.008,
+    "ssao_blur_depth_far": 0.0015,
+    "envi_color_gi_boost": [
+      0.003,
+      0.003,
+      0.0005,
+      0.0005
+    ],
+    "ocean_density": 0.7,
+    "river_density": 1.2,
+    "max_river_width": 50.0,
+    "water_color_noise_size": 221.0,
+    "ocean1": [
+      100,
+      50,
+      40,
+      0
+    ],
+    "ocean0": [
+      55,
+      55,
+      30,
+      0
+    ],
+    "river1": [
+      37,
+      89,
+      68,
+      0
+    ],
+    "river0": [
+      17,
+      100,
+      126,
+      0
+    ],
+    "paint_details_tex": "african_building_colors_tex_palette*",
+    "puddle_hardness": 18.0,
+    "puddle_increase": 0.01,
+    "puddle_flat_noise_normal_effect": 0.015,
+    "puddle_flat_normal_hardness": 25.0,
+    "puddle_flat_hmap_reduce": -0.2,
+    "puddle_flat_noise_height_reduce": 0.09,
+    "puddle_scales": [
+      0.17,
+      0.07,
+      0.01,
+      2.0
+    ]
+  },
+  "graphics": {
+    "allowAnimatedDay": false
+  },
+  "unitedVdata.rendInst": {
+    "IB": 114688,
+    "VB1": 65536,
+    "VB2": 65536,
+    "VB3": 65536,
+    "VB4": 65536,
+    "VB5": 65536,
+    "VB6": 65536,
+    "VB7": 0
+  },
   "riExtraTiledScenes": {
     "dynamicTileSize": 64.0,
     "scnCount": 3,
@@ -138,18 +238,14 @@
     "scn2.maxSize": 32.0,
     "scn3.tileSize": 128.0
   },
-  "graphics": {
-    "allowAnimatedDay": false
-  },
-  "clipmap": {
-    "texelSize": 0.0078125
-  },
   "stars": {
     "latitude": -2.0,
     "longtitude": 30.0,
     "year": 2023,
     "month": 9,
-    "day": 10
+    "day": 10,
+    "weatherSeed": -1,
+    "skyIsUnreachable": false
   },
   "technicsSkins": {
     "groundSkin": [
@@ -241,61 +337,6 @@
       "coloring": 0.0,
       "porosity": 0.0
     }
-  },
-  "shader_vars": {
-    "ocean_density": 0.7,
-    "river_density": 1.2,
-    "max_river_width": 50.0,
-    "water_color_noise_size": 221.0,
-    "ocean1": [
-      100,
-      50,
-      40,
-      0
-    ],
-    "ocean0": [
-      55,
-      55,
-      30,
-      0
-    ],
-    "river1": [
-      37,
-      89,
-      68,
-      0
-    ],
-    "river0": [
-      17,
-      100,
-      126,
-      0
-    ],
-    "foliage_translucent_color_mul": [
-      1.25,
-      1.1,
-      1.05,
-      0.0
-    ],
-    "paint_details_tex": "african_building_colors_tex_palette*",
-    "hmap_displacement_up": 0.1,
-    "hmap_displacement_down": -0.1,
-    "min_land_height": 0.3,
-    "puddle_increase": [
-      -0.5,
-      0.01
-    ],
-    "puddle_hardness": 18.0,
-    "puddle_flat_noise_normal_effect": 0.015,
-    "puddle_flat_normal_hardness": 25.0,
-    "puddle_flat_hmap_reduce": -0.2,
-    "puddle_flat_noise_height_reduce": 0.09,
-    "puddle_scales": [
-      0.17,
-      0.07,
-      0.01,
-      2.0
-    ]
   },
   "randomGrass": {
     "density": 0.75,
@@ -1500,15 +1541,5 @@
         }
       }
     }
-  },
-  "unitedVdata.rendInst": {
-    "IB": 114688,
-    "VB1": 65536,
-    "VB2": 65536,
-    "VB3": 65536,
-    "VB4": 65536,
-    "VB5": 65536,
-    "VB6": 65536,
-    "VB7": 0
   }
 }

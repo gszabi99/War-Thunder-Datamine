@@ -142,10 +142,10 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
       $"es {name} registered with rw components with specified default value"
     )
     assert(
-      comps_rw.indexof("eid")==null, "eid can't be writable component"
+      !comps_rw.contains("eid"), "eid can't be writable component"
     )
     assert(
-      comps?.comps_no.indexof("eid")==null, "eid can't be set as 'no' component"
+      !comps?.comps_no.contains("eid"), "eid can't be set as 'no' component"
     )
     if (params?.track.contains(".") ) {
       println($"dots in es '{name}': {params?.track}")

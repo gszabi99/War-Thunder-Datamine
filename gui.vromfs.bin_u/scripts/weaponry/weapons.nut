@@ -30,7 +30,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut
 let { getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusTbl,
   isCanBeDisabled, isModInResearch, getBundleCurItem, canResearchItem
 } = require("%scripts/weaponry/itemInfo.nut")
-let { getModItemName, getReqModsText, getBulletsListHeader
+let { getModItemName, getReqModElements, getBulletsListHeader
 } = require("%scripts/weaponry/weaponryDescription.nut")
 let { updateModItem, createModItem, createModBundle, createModItemLayout
 } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -73,6 +73,7 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { needShowUnseenModTutorialForUnitMod, markSeenModTutorial,
   startModTutorialMission } = require("%scripts/missions/modificationTutorial.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -438,7 +439,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.needHideSlotbar)
       this.guiScene.performDelayed(this, function() {
         this.destroySlotbar()
-        this.getSlotbarPresetsList()?.destroy()
+        getSlotbarPresetsList(this)?.destroy()
       })
   }
 
@@ -573,13 +574,6 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         actionType = tutorAction.OBJ_CLICK
         shortcut = GAMEPAD_ENTER_SHORTCUT
         cb = @() this.setModificatonOnResearch(this.items[newIdx], @() this.updateAllItems())
-      },
-      {
-        obj = ["available_free_exp_text"]
-        text = loc("help/FreeExp")
-        nextActionShortcut = "help/NEXT_ACTION"
-        actionType = tutorAction.ANY_CLICK
-        shortcut = GAMEPAD_ENTER_SHORTCUT
       }
     ]
 
@@ -1680,7 +1674,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if ("tier" in item)
         reqTierMods = getNextTierModsCount(this.air, item.tier - 1)
       if ("reqModification" in item)
-        reqMods = getReqModsText(this.air, item)
+        reqMods = "\n".join(getReqModElements(this.air, item).reduce(
+          @(res, el) el.isOwn ? res : res.append(el.reqTitle), []))
 
       if (reqTierMods > 0)
         reason = format(loc("weaponry/action_not_allowed"),
@@ -2079,25 +2074,37 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let unit = this.air
     let taskSuccessCallback = function() {
       updateUnitAfterSwitchMod(unit, item.name)
-      broadcastEvent("ModificationChanged")
+      broadcastEvent("ModificationChanged", {mods = [item]})
     }
 
     let taskId = enable_modifications(this.airName, [item.name], !equipped)
     addTask(taskId, { showProgressBox = true }, taskSuccessCallback)
   }
 
-  function onEventModificationChanged(_p) {
+  function onEventModificationChanged(params) {
     let appliedArmorName = getAppliedArmorForUnit(this.air)?.name ?? ""
     let armorItem = this.items.findvalue(@(i) i.type == weaponsItem.infantryArmor && i.name == appliedArmorName)
     if (armorItem)
       this.updateSelectedItemInBundle(armorItem)
 
-    this.doWhenActiveOnce("updateAllItems")
-    this.doWhenActiveOnce("unstickCurBundle")
+    if (params?.mods) {
+      foreach (mod in params.mods) {
+        if (mod?.isPrimaryWeapon) {
+          this.forceCloseDropDownBackdrop()
+          this.doWhenActiveOnce("initMainParams")
+          this.doWhenActiveOnce("unstickCurBundle")
+          return
+        }
+      }
+    }
 
     let curWeapon = validateLastWeapon(this.airName)
     if (curWeapon != this.lastWeapon)
       this.doWhenActiveOnce("onEventUnitWeaponChanged")
+    else
+      this.doWhenActiveOnce("updateAllItems")
+
+    this.doWhenActiveOnce("unstickCurBundle")
   }
 
   function checkSaveBulletsAndDo(func) {

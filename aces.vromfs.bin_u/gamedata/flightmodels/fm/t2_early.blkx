@@ -2169,8 +2169,8 @@
   },
   "Instructor": {
     "critMult": [
-      -1.0,
-      -1.0
+      0.85,
+      0.85
     ],
     "limitOverload": true,
     "overloadMult": [
@@ -2183,7 +2183,7 @@
       0.9,
       1.0
     ],
-    "overloadTimeRate": 0.45,
+    "overloadTimeRate": 0.045,
     "limitLoadfactor": false,
     "loadFactorLimit": [
       -5.0,
@@ -2239,8 +2239,8 @@
         140.0
       ],
       "AngleMax": [
-        -60.0,
-        60.0
+        90.0,
+        90.0
       ],
       "VelMax": [
         0.0,
@@ -2255,8 +2255,8 @@
       "AutoAngleToAutoRateMult": 3.0,
       "RatePID": {
         "Kp": 1.0,
-        "Ki": 0.2,
-        "Imax": 1.0,
+        "Ki": 0.0,
+        "Imax": 0.01,
         "Kd": 0.005,
         "RateMult": 0.172414,
         "Lim": [
@@ -2311,8 +2311,8 @@
     },
     "Pitch": {
       "RateMax": [
-        -60.0,
-        60.0
+        -50.0,
+        50.0
       ],
       "AngleMax": [
         -50.0,
@@ -2325,7 +2325,7 @@
       "AngleLim": 190.0,
       "BalanceLoadFactor": false,
       "MaxAoaFactorMult": 0.95,
-      "LoadFactorTimeMult": 0.9,
+      "LoadFactorTimeMult": 0.93,
       "AoaTimeMult": 2.0,
       "AoaDiffMax": 2147440000.0,
       "AoaDiffSpeedMax": 2147440000.0,
@@ -2333,28 +2333,44 @@
         0.0,
         0.0
       ],
-      "ClimbAngleToLoadFactor": 0.7,
+      "ClimbAngleToLoadFactor": 0.8,
       "RateMaxLoadFactorMax": [
-        -2147440000.0,
-        2147440000.0
+        -5.0,
+        12.0
       ],
       "AoaLimits": [
-        -2147440000.0,
-        2147440000.0
+        -14.0,
+        20.0
       ],
-      "AoaLimitsMult": [
+      "AoaLimitsMult0": [
+        0.0,
         1.0,
         1.0
       ],
-      "AoaLimitsMargin": 5.0,
-      "AoaLimiterPushBackRateMult": [
-        0.0,
-        0.0
+      "AoaLimitsMult1": [
+        0.6,
+        1.0,
+        1.0
       ],
-      "AoAAntiHangRateDecline": -10.0,
-      "UseAoAGLimits": false,
+      "AoaLimitsMult2": [
+        0.7,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMult3": [
+        0.95,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMargin": 10.0,
+      "AoaLimiterPushBackRateMult": [
+        -0.9,
+        -0.9
+      ],
+      "AoAAntiHangRateDecline": -100.0,
+      "UseAoAGLimits": true,
       "LoadFactorFilterSmoothCoeff": 0.0,
-      "LoadFactorLimiterStrengthMax": 1.0,
+      "LoadFactorLimiterStrengthMax": 0.5,
       "RatePID": {
         "Kp": 1.0,
         "Ki": 0.0,
@@ -2440,7 +2456,7 @@
       "RatePID": {
         "Kp": 1.0,
         "Ki": 0.0,
-        "Imax": 1.0,
+        "Imax": 0.01,
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [

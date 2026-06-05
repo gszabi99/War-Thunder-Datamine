@@ -84,6 +84,12 @@
     "agent_dangers__bulletReactionTime": 0.4,
     "agent_dangers__lastBulletReactionOffenderEid:eid": {}
   },
+  "behtree_shared_default_params": {
+    "_singleton": true,
+    "beh_tree_MoveToPos_walkSpeedSmoothVisc": 0.2,
+    "beh_tree_MoveToPos_rotateFactorSmoothVisc": 0.2,
+    "ai_shared_default_params:tag": {}
+  },
   "modern_soldier_ai_behtree": {
     "beh_tree__node": "soldier",
     "beh_tree__role": "",
@@ -624,6 +630,24 @@
     "recon__backtrackMaxTime": 12.0,
     "recon__backTrackLast": 0,
     "recon__backTrackLen": 0,
+    "recon__runReconLast": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "recon__runReconLastAgentPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "recon__runReconLastScanTime": 0.0,
+    "recon__runReconLastLookTime": 0.0,
+    "recon__runReconLastLookPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
     "recon__teamEid:eid": {},
     "recon__stoppers:list<p4>": {},
     "recon__buckets:list<i>": {},
@@ -631,7 +655,11 @@
     "recon__elemData2:list<p4>": {},
     "recon__elemData3:list<p4>": {},
     "recon__elemData4:list<p4>": {},
-    "recon__backTrackPosTime:list<p4>": {}
+    "recon__backTrackPosTime:list<p4>": {},
+    "recon__runReconPts:list<p3>": {},
+    "recon__runReconPos:list<p3>": {},
+    "recon__runReconDir1:list<p3>": {},
+    "recon__runReconDir2:list<p3>": {}
   },
   "modern_team_ai_recons": {
     "recon_team__id": 0,
@@ -930,6 +958,27 @@
     "dangers_attack_debug__analyzeAgents:list<i>": {},
     "dangers_attack_debug__analyzeDangers:list<i>": {},
     "dangers_attack_debug__doneDangers:list<ip2>": {}
+  },
+  "ai_debug_aim_ray": {
+    "_use": "replicating",
+    "_replicated": [
+      "ai_debug_aim_ray__pos1",
+      "ai_debug_aim_ray__pos2",
+      "ai_debug_aim_ray__trace",
+      "ai_debug_aim_ray__opacity"
+    ],
+    "ai_debug_aim_ray__pos1": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "ai_debug_aim_ray__pos2": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "ai_debug_aim_ray__trace": 0,
+    "ai_debug_aim_ray__opacity": 0.0
   },
   "offline_ai_respawner": {
     "_tags": "server",

@@ -1,8 +1,4 @@
 {
-  "fireParamsPreset": [
-    "500kph",
-    "600kph"
-  ],
   "model": "yak_2_kabb",
   "fmFile": "fm/yak-2_kabb.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
@@ -29,33 +25,11 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fightAiBehaviour": "assault",
-  "fireParams": [
-    {
-      "engineExtinguishFireSpeed": [
-        82.0,
-        166.0
-      ],
-      "engineExtinguishFireSpeedChance": [
-        0.01,
-        0.1
-      ],
-      "fireDamagePowerRel": 0.05,
-      "nonExtinguishFireTime": 5.0
-    },
-    {
-      "engineExtinguishFireSpeed": [
-        82.0,
-        194.0
-      ],
-      "engineExtinguishFireSpeedChance": [
-        0.01,
-        0.1
-      ],
-      "fireDamagePowerRel": 0.05,
-      "nonExtinguishFireTime": 5.0
-    }
+  "fireParamsPreset": [
+    "600kph",
+    "500kph"
   ],
+  "fightAiBehaviour": "assault",
   "ikPilot": {
     "model": "pilot_su_char",
     "maxHeadHorAngle": 60.0,
@@ -156,128 +130,23 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
-  "wiki": {
-    "general": {
-      "length": 8.5,
-      "wingspan": 9.74,
-      "wingArea": 17.15,
-      "emptyWeight": 2350.0,
-      "normalWeight": 2878.0,
-      "maxTakeoffWeight": 3100.0,
-      "powerPlantType": 0,
-      "powerMaxMil": 1260.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 2700.0,
-        "manifoldPressureMil": 1.38,
-        "airSpeedMil0": [
-          0.0,
-          519.0
-        ],
-        "airSpeedMil1": [
-          1700.0,
-          569.0
-        ],
-        "airSpeedMil2": [
-          4000.0,
-          592.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          15.1
-        ],
-        "climbRateMil1": [
-          900.0,
-          16.0
-        ],
-        "climbRateMil2": [
-          3100.0,
-          13.8
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          109.048
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          230.841
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          393.877
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          656.048
-        ],
-        "turnTimeMil": [
-          1000.0,
-          18.5
-        ],
-        "takeoffDistance": 509.542,
-        "ceiling": 10400.0,
-        "rollRate": 138.0,
-        "wingLoading": 168.0,
-        "powerToWeightRatio": 0.42
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          519.0
-        ],
-        "airSpeedMil1": [
-          1600.0,
-          567.0
-        ],
-        "airSpeedMil2": [
-          3000.0,
-          563.0
-        ],
-        "airSpeedMil3": [
-          4100.0,
-          598.0
-        ],
-        "airSpeedMil4": [
-          7400.0,
-          561.0
-        ],
-        "airSpeedMil5": [
-          10400.0,
-          486.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          15.1
-        ],
-        "climbRateMil1": [
-          900.0,
-          16.0
-        ],
-        "climbRateMil2": [
-          2000.0,
-          13.2
-        ],
-        "climbRateMil3": [
-          3100.0,
-          13.8
-        ],
-        "climbRateMil4": [
-          6600.0,
-          5.3
-        ],
-        "climbRateMil5": [
-          10400.0,
-          -2.1
-        ]
-      }
-    }
-  },
   "balanceData": {
     "accSpd": 2.0043,
     "climbSpeed": 16.0,
     "maxSpeed": 164.4,
     "turnTime": 18.5
+  },
+  "fireParams": {
+    "engineExtinguishFireSpeed": [
+      82.0,
+      166.0
+    ],
+    "engineExtinguishFireSpeedChance": [
+      0.01,
+      0.1
+    ],
+    "fireDamagePowerRel": 0.05,
+    "nonExtinguishFireTime": 5.0
   },
   "DamageParts": {
     "armor10": {

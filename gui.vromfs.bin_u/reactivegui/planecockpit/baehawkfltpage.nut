@@ -249,7 +249,7 @@ function generatePitchLine(num) {
       {
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * (num == 0 ? 1.0 : 0.5)
+        lineWidth = baseLineWidth
         color = Color(128, 64, 48)
         padding = const [0, 10]
         commands = [
@@ -262,7 +262,7 @@ function generatePitchLine(num) {
       {
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * 2.0 * (num == 0 ? 1.0 : 0.5)
+        lineWidth = baseLineWidth
         color = newNum > 0 ? Color(0, 128, 255) : Color(128, 64, 48)
         commands = [
           [VECTOR_LINE, 10, 18, 90, 18],

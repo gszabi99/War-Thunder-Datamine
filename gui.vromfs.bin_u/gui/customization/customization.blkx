@@ -190,16 +190,29 @@
                           }
                         }
                       ],
-                      "Button_text": {
-                        "id": "btn_ban_autoselect",
-                        "position": "relative",
-                        "left": "50%pw-50%w",
-                        "width": "pw-2@buttonMargin",
-                        "text": "#customization/skin/exclude_from_autoselect",
-                        "on_click": "onBtnBan",
-                        "showButtonImageOnConsole": "no",
-                        "ButtonImg": {}
-                      }
+                      "Button_text": [
+                        {
+                          "id": "btn_ban_autoselect",
+                          "position": "relative",
+                          "left": "50%pw-50%w",
+                          "width": "pw-2@buttonMargin",
+                          "text": "#customization/skin/exclude_from_autoselect",
+                          "on_click": "onBtnBan",
+                          "showButtonImageOnConsole": "no",
+                          "ButtonImg": {}
+                        },
+                        {
+                          "id": "btn_use_as_priority",
+                          "position": "relative",
+                          "left": "50%pw-50%w",
+                          "margin-top": "0.5@blockInterval",
+                          "width": "pw-2@buttonMargin",
+                          "text": "#customization/skin/use_as_default",
+                          "on_click": "onUseAsPriority",
+                          "showButtonImageOnConsole": "no",
+                          "ButtonImg": {}
+                        }
+                      ]
                     },
                     {
                       "id": "tank_skin_settings",
@@ -595,6 +608,24 @@
             }
           ],
           "Button_text": [
+            {
+              "id": "btn_add_favorite",
+              "visualStyle": "secondary",
+              "btnName": "L3",
+              "_on_click": "onAddToFavoriteConsoleBtn",
+              "text": "#mainmenu/btnFavorite",
+              "ButtonImg": {},
+              "buttonWink": {}
+            },
+            {
+              "id": "btn_remove_favorite",
+              "visualStyle": "secondary",
+              "btnName": "L3",
+              "_on_click": "onAddToFavoriteConsoleBtn",
+              "text": "#mainmenu/btnFavoriteUnmark",
+              "ButtonImg": {},
+              "buttonWink": {}
+            },
             {
               "id": "btn_toggle_mirror",
               "tooltip": "#decals/flip",

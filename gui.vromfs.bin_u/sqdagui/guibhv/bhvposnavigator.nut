@@ -545,7 +545,7 @@ let posNavigator = class {
     return { hoveredObj, hoveredIdx }
   }
 
-  function onGamepadMouseFinishMove(obj) {
+  function onGamepadMouseFinishMove(obj) { 
     if (this.isOnlyHover(obj))
       return true;
     let { hoveredObj, hoveredIdx } = this.getHoveredChild(obj)

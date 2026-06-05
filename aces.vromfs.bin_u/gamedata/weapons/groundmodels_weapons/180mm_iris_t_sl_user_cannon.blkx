@@ -189,7 +189,12 @@
         "orientationAutopilot": {
           "timeOut": 0.15,
           "controlTime": 2.0,
-          "elevationAdd": 5.0,
+          "rangeToElevationAdd": [
+            5000.0,
+            2.5,
+            30000.0,
+            55.0
+          ],
           "elevationToHeadingMult": [
             10.0,
             10.0,
@@ -230,7 +235,12 @@
         },
         "guidanceAutopilot": {
           "loftEnabled": true,
-          "loftElevation": 55.0,
+          "rangeToLoftElevation": [
+            5000.0,
+            2.5,
+            55000.0,
+            55.0
+          ],
           "loftTargetElevation": -5.0,
           "loftAngleToAccelMult": 2.0,
           "loftTargetOmegaMax": 1.25,
@@ -1023,7 +1033,12 @@
           "orientationAutopilot": {
             "timeOut": 0.15,
             "controlTime": 2.0,
-            "elevationAdd": 5.0,
+            "rangeToElevationAdd": [
+              5000.0,
+              2.5,
+              30000.0,
+              55.0
+            ],
             "elevationToHeadingMult": [
               10.0,
               10.0,
@@ -1064,7 +1079,12 @@
           },
           "guidanceAutopilot": {
             "loftEnabled": true,
-            "loftElevation": 55.0,
+            "rangeToLoftElevation": [
+              5000.0,
+              2.5,
+              55000.0,
+              55.0
+            ],
             "loftTargetElevation": -5.0,
             "loftAngleToAccelMult": 2.0,
             "loftTargetOmegaMax": 1.25,

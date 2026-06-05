@@ -2,6 +2,7 @@ require ecs
 require app
 require net
 require dm
+require CollRes
 require DagorRandom
 require DagorMath
 require Unit
@@ -120,12 +121,13 @@ def fire_damage_process_start_burn_event(eid : EntityId;
   if fire_params == null || fire_params.damage <= 0.0f
     return -1
 
-  let radius : tuple<radius : float; final_radius : float> = fire_system_calc_burn_radius(*fire_params, coll_node.boundingSphere, unit.collisionData.boundingSphere.r)
+  let coll_node_bsph = collres_get_node_bsphere(*dm.collisionResource, int(coll_node.nodeIndex))
+  let radius = fire_system_calc_burn_radius(*fire_params, coll_node_bsph, unit.boundingSphere.r)
   var offset : float3
   if pos != float4(0.0f) && unit.collNodeTree != null && (fire_params.allowMultipleFires || fire_params.allowMultipleFx)
-    offset = fire_system_calc_burn_offset(*fire_params, coll_node.boundingSphere, *unit.collNodeTree, geom_node_id, float3(pos.x, pos.y, pos.z))
+    offset = fire_system_calc_burn_offset(*fire_params, coll_node_bsph, *unit.collNodeTree, geom_node_id, float3(pos.x, pos.y, pos.z))
   else
-    offset = coll_node.boundingSphere.c
+    offset = coll_node_bsph.c
 
   let at_time = float(get_app().usefulTotalTime)
   let fire_id = fire_system_start_single_burn(eid, StartSingleBurnDesc(
@@ -134,7 +136,7 @@ def fire_damage_process_start_burn_event(eid : EntityId;
     fireParamsId = fire_params_id,
     fireFxId = fire_fx_id,
     offset = offset,
-    centerDmgPart = coll_node.tm * coll_node.modelBBox.center,
+    centerDmgPart = collres_get_node_tm(*dm.collisionResource, int(coll_node.nodeIndex)) * collres_get_node_bbox(*dm.collisionResource, int(coll_node.nodeIndex)).center,
     radius = radius.radius,
     finalRadius = radius.final_radius,
     atTime = at_time,
@@ -329,7 +331,7 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
     let packed_part_id = uint((*evt.data)[i * 3])
     let fire_params_id = (*evt.data)[i * 3 + 1]
     let fx_id = (*evt.data)[i * 3 + 2]
-    burning_parts |> push((packed_part_id, fire_params_id, fx_id, false))
+    burning_parts |> push((packed_part_id = packed_part_id, fire_params_id = fire_params_id, fx_id = fx_id, already_burning = false))
 
   for fire_id, packed_part_id in iter_range(v.fire_data__packedPartId), v.fire_data__packedPartId
     var fire_found = false

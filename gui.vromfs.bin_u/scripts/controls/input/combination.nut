@@ -1,7 +1,8 @@
 from "%scripts/dagui_library.nut" import *
-
+from "controls" import ActivationCondition
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { InputBase } = require("%scripts/controls/input/inputBase.nut")
+let { getActivationTypeImg } = require("%scripts/controls/controlsVisual.nut")
 
 
 
@@ -12,28 +13,31 @@ let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let Combination = class (InputBase) {
   elements = null
 
-
   constructor(v_elements = []) {
     this.elements = v_elements
   }
 
-  function getMarkup(hasHoldButtonSign = false) {
-    let data = this.getMarkupData(hasHoldButtonSign)
+  function getMarkup() {
+    let data = this.getMarkupData()
     return handyman.renderCached(data.template, data.view)
   }
 
-  function getMarkupData(hasHoldButtonSign) {
+  function getMarkupData() {
     let data = {
       template = "%gui/combination.tpl"
       view = {
-        elements = this.elements.map(@(element) { element = element.getMarkup() })
-        hasHoldButtonSign
+        elements = this.elements.map(@(element) {
+          element = element?.getMarkupWithoutActivationType() ?? element.getMarkup()
+        })
+        activationTypeImg = getActivationTypeImg(this.getActivationType())
       }
     }
 
     data.view.elements.top().last <- true
     return data
   }
+
+  getActivationType = @() this.elements?[0].activationType ?? ActivationCondition.DEFAULT
 
   function getText() {
     let text = []
@@ -77,8 +81,9 @@ let Combination = class (InputBase) {
   function getConfig() {
     return {
       inputName = "combination"
+      activationTypeImg = getActivationTypeImg(this.getActivationType())
       text = this.getText()
-      elements = this.elements.map(@(element) element.getConfig())
+      elements = this.elements.map(@(element) element?.getConfigWithoutActivationType() ?? element.getConfig())
     }
   }
 

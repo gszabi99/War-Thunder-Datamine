@@ -112,10 +112,10 @@ class WeaponSlots
           checkedTrigger = int(WeaponTriggerType.BOMBS_TRIGGER)
         else
           checkedTrigger = int(WeaponTriggerType.GUIDED_BOMBS_TRIGGER)
-        for i in 0 .. wc.Weapons[checkedTrigger].length()
-          if (wc.Weapons[checkedTrigger][i] != null
-            && *wc.Weapons[checkedTrigger][i] |> haveBullets(true))
-            selectedWeapon = wc.Weapons[checkedTrigger][i]
+        let weapons = get_weapons_by_trigger(wc.Weapons, checkedTrigger)
+        for i in 0 .. weapons.length()
+          if (weapons[i] != null && *weapons[i] |> haveBullets(true))
+            selectedWeapon = weapons[i]
             break
 
 
@@ -136,7 +136,7 @@ class WeaponSlots
         nextWeaponTrigger = int(WeaponTriggerType.BOMBS_TRIGGER)
 
       if (nextWeaponTrigger >= 0)
-        let triggerWeapons = wc.Weapons[nextWeaponTrigger]
+        let triggerWeapons = get_weapons_by_trigger(wc.Weapons, nextWeaponTrigger)
         for i in 0 .. triggerWeapons.length()
           let nextWeapon = triggerWeapons[i]
           if (*nextWeapon |> haveBullets(true))
@@ -170,9 +170,9 @@ class WeaponSlots
     if hero.slotIdByWeaponId.length() > 0 && wc.Weapons.haveSecondaryWeap
       var nts : Weapon const? = null
       if isWeaponSelectorOn && secondaryWeapons.length() > 0
-        nts = *wc->getNextGun(secondaryWeapons[0].trigger_no, true, true)
-      elif selectedWeapon != null && wc.Weapons[selectedWeapon.trigger_no].length() > 0
-        nts = *wc->getNextGun(selectedWeapon.trigger_no, true, true)
+        nts = *wc->getNextGun(secondaryWeapons[0].trigger_no, true)
+      elif selectedWeapon != null && get_weapons_by_trigger(wc.Weapons, selectedWeapon.trigger_no).length() > 0
+        nts = *wc->getNextGun(selectedWeapon.trigger_no, true)
       selectedWeapSlot = nts != null && nts.weaponIdx < hero.slotIdByWeaponId.length() ? hero.slotIdByWeaponId[nts.weaponIdx] : -1
 def private empty(self : WeaponsConstSpan&) : bool
   return self.length() <= 0

@@ -10,7 +10,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { get_time_msec } = require("dagor.time")
 let { get_charserver_time_sec } = require("chard")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let DataBlock  = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -545,13 +545,13 @@ let BaseItem = class {
     let msgTextLocKey = numItems == 1
       ? "onlineShop/needMoneyQuestion"
       : "onlineShop/needMoneyQuestion/multiPurchase"
-    let msgText = warningIfGold(
+    let text = warningIfGold(
       loc(msgTextLocKey, { purchase = name, cost = price, amount = numItems }),
       cost)
-    local item = this
     params["cost"] <- cost.wp
     params["costGold"] <- cost.gold
-    purchaseConfirmation("need_money", msgText, @() item._buy(cb, params))
+    let callbackYes = Callback(@() this._buy(cb, params), this)
+    purchaseConfirmation({ id = "need_money", text, callbackYes }, cost)
   }
 
   function getBuyText(colored, short, locIdBuyText = "mainmenu/btnBuy", cost = null) {

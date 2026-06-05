@@ -2,7 +2,8 @@ from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, wp_get_
 from "guiRespawn" import fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
   setSelectedUnitInfo, getRespawnBaseTimeLeftById, getSquadmateRespawnBase, selectSquadmateRespawnBase, getBestSquadmateRespawnId,
   selectRespawnBase, highlightRespawnBase, highlightSquadmateRespawnBase, getRespawnBase, doRespawnPlayer,
-  requestAircraftAndWeaponWithSpare, isRespawnScreen
+  requestAircraftAndWeaponWithSpare, isRespawnScreen, getSpawnDelayTimesRecvTime, selectZoneRespawnBase, getZoneRespawnBase,
+  highlightZoneRespawnBase, getFullRespawnBasesList, is_respawnbase_selectable, getSavedRespawnBaseForSlot
 from "gameplayBinding" import closeIngameGui, disableFlightMenu
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 from "%scripts/dagui_library.nut" import *
@@ -120,6 +121,7 @@ let { isGroundAndAirMission, g_mission_type, isShipBattle } = require("%scripts/
 let { clearStreaks } =  require("%scripts/streaks.nut")
 let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { guiStartAssistantMapQrWindow, isAssistantMapEnabled, isAssistantMapAvailable } = require("%scripts/assistantMapQr.nut")
 let { isGameModeWithSpendableWeapons } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isMissionWithBadWeatherConditions, getBadWeatherTooltipText, getLevelMapBackgroundColors
 } = require("%scripts/missions/missionsUtils.nut")
@@ -135,6 +137,7 @@ let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
+let { fillSwitchMapTypeBtn } = require("%scripts/tacticalMapUtils.nut")
 let { speedGrades } = require("%appGlobals/config/infantryCfg.nut")
 let { yieldLimitFromStage } = require("%appGlobals/missions/nuclearEscalationCfg.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
@@ -150,6 +153,14 @@ let currentSquadSpawnsDataQuery = ecs.SqQuery("currentSquadSpawnsDataQuery", {
 
 let currentSquadSpawnModeQuery = ecs.SqQuery("currentSquadSpawnModeQuery", {
   comps_rq=[["squad_dynamic_respawn"]]
+})
+
+let currentZoneSpawnsDataQuery = ecs.SqQuery("currentZoneSpawnsDataQuery", {
+  comps_ro=[["capture_zone__zoneId", ecs.TYPE_INT],
+            ["infantry_spawn__owningTeam", ecs.TYPE_INT],
+            ["capzone__hasEnemyInside", ecs.TYPE_BOOL],
+            ["infantry_spawn__zoneName", ecs.TYPE_STRING],
+            ["dynamic_respawn__prevPositions", ecs.TYPE_POINT3_LIST]]
 })
 
 let totalNuclearYieldCache = {}
@@ -262,7 +273,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   showButtons = true
   sessionWpBalance = 0
 
-  slotDelayDataByCrewIdx = {}
+  slotDelayDataCached = {}
 
   
   needCheckSlotReady = true 
@@ -296,6 +307,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   hasSquadRespawnBasesList = false
   curRespawnBase = null
   curSquadRespawnBase = null
+  curZoneRespawnBase = null
   isNoRespawns = false
   isRespawn = false 
   needRefreshSlotbarOnReinit = false
@@ -370,6 +382,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   curMapSpawnHintIcon = null
 
   overridedUnitSkins = null
+  fullListBases = null
 
   static mainButtonsId = ["btn_select", "btn_select_no_enter"]
 
@@ -383,6 +396,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     }
     showObjById("tactical-map-box", true, this.scene)
     showObjById("tactical-map", true, this.scene)
+
+    let switchHudTypeDiv = this.scene.findObject("btn_set_hud_type")
+    fillSwitchMapTypeBtn(switchHudTypeDiv, this)
+
     let { customMapBackColor } = getLevelMapBackgroundColors(this.missionBlk?.level ?? "")
     let tacticalMapBgObj = this.scene.findObject("tactical-map-bg")
     tacticalMapBgObj.show(true)
@@ -394,7 +411,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       selectRespawnBase(this.curRespawnBase.id)
 
     this.missionRules = getCurMissionRules()
-
+    this.fullListBases = this.missionRules.isSpawnDelayEnabled ? getFullRespawnBasesList()
+      : []
     this.checkFirstInit()
 
     disableFlightMenu(true)
@@ -775,6 +793,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function updateRespawnWhenChangedMissionRespawnBasesStatus() {
+    if (this.missionRules.isSpawnDelayEnabled)
+      this.fullListBases = getFullRespawnBasesList()
     let isStayOnrespScreenChanged = this.recountStayOnRespScreen()
     let isNoRespawnsChanged = this.updateRespawnBasesStatus()
     if (!this.stayOnRespScreen  && !this.isNoRespawns
@@ -813,6 +833,20 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           @(s) s.isSquadRespawnBase && s.id == nearestId)
         optionObj.setValue(nearestIdx ?? 0)
       }
+    }
+    this.updateButtons()
+    this.updateApplyText()
+    this.checkReady()
+  }
+
+  function onEventZoneSpawnsChanged(_p = null) {
+    let hadZone = this.curZoneRespawnBase != null
+    this.updateRespawnBases()
+    if (hadZone && this.curZoneRespawnBase == null) {
+      selectZoneRespawnBase(-1)
+      let optionObj = this.scene.findObject("respawn_base")
+      if (checkObj(optionObj))
+        optionObj.setValue(0)
     }
     this.updateButtons()
     this.updateApplyText()
@@ -869,6 +903,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       hasSquadRespawnBasesList = this.hasSquadRespawnBasesList
       curRespawnBase = this.curRespawnBase
       curSquadRespawnBase = this.curSquadRespawnBase
+      curZoneRespawnBase = this.curZoneRespawnBase
       haveRespawnBases = this.haveRespawnBases
       location = unit?.isHuman() ? convertLevelNameToLocation(this.missionTable.level) : null
       overridedUnitSkin = this.overridedUnitSkins?[unit?.name]
@@ -1252,6 +1287,29 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!spawn)
       return
 
+    if (!spawn.canSelect) {
+      let prevBaseId = this.curRespawnBase.id
+      local prevBaseIdx = null
+      local savedBase = null
+      foreach (idx, rb in this.respawnBasesList) {
+        if (rb.isSavedForSlot)
+          savedBase = rb
+        if (rb.id == prevBaseId)
+          prevBaseIdx = idx
+        if (savedBase != null && prevBaseIdx != null)
+          break
+      }
+      if (prevBaseIdx != null && prevBaseIdx < obj.childrenCount()) {
+        obj.setValue(prevBaseIdx)
+        let unit = this.getCurSlotUnit()
+        showInfoMsgBox(loc("multiplayer/unitOnAnotherBase", {
+          unitName = unit != null ? getUnitName(unit) : ""
+          baseName = savedBase?.getTitle() ?? ""
+        }))
+        return
+      }
+    }
+
     let unit = this.getCurSlotUnit()
     if (spawn.isSquadRespawnBase) {
       if (!unit?.isHuman())
@@ -1260,8 +1318,20 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         respawnBases.saveSelectedBase(spawn, this.getSaveSpawnForMissionValue())
       selectRespawnBase(-1)
       selectSquadmateRespawnBase(spawn.id)
+      selectZoneRespawnBase(-1)
       respawnBases.selectedSquadmateBasePlayerId = spawn.id
       this.curSquadRespawnBase = spawn
+      this.curZoneRespawnBase = null
+    }
+    else if (spawn.isZoneRespawnBase) {
+      if (!unit?.isHuman())
+        return
+      selectRespawnBase(-1)
+      selectSquadmateRespawnBase(-1)
+      selectZoneRespawnBase(spawn.id)
+      respawnBases.selectedSquadmateBasePlayerId = -1
+      this.curSquadRespawnBase = null
+      this.curZoneRespawnBase = spawn
     }
     else {
       if (this.curRespawnBase != spawn) {
@@ -1270,10 +1340,14 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         respawnBases.selectBase(unit, spawn)
       }
       selectSquadmateRespawnBase(-1)
+      selectZoneRespawnBase(-1)
       respawnBases.selectedSquadmateBasePlayerId = -1
       selectRespawnBase(spawn.id)
       this.curSquadRespawnBase = null
+      this.curZoneRespawnBase = null
       this.curRespawnBase = spawn
+      if (this.missionRules.isSpawnDelayEnabled)
+        this.updateSlotDelays(true)
       this.updateRespawnBaseTimerText()
       this.updateRespawnOptionsWeatherWarning()
     }
@@ -1287,6 +1361,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
      : "#ui/gameuiskin#mouse_left"
     local highlightSpawnMapId = -1
     local highlightSquadSpawnPlayerId = -1
+    local highlightZoneId = -1
     if (!this.isRespawn) {
       hint = isAllowedMoveCenter() ? colorize("activeTextColor", loc("hints/move_map_hint"))
                                    : colorize("activeTextColor", loc("voice_message_attention_to_point_2"))
@@ -1316,9 +1391,15 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         }
         else {
           let respawnPlayerId = getSquadmateRespawnBase(coords[0], coords[1])
+          let zoneId = respawnPlayerId == -1 ? getZoneRespawnBase(coords[0], coords[1]) : -1
           foreach (spawn in this.respawnBasesList) {
             if (spawn.isSquadRespawnBase && spawn.id == respawnPlayerId) {
               highlightSquadSpawnPlayerId = respawnPlayerId
+              hint = colorize("activeTextColor", spawn.name)
+              break
+            }
+            else if (spawn.isZoneRespawnBase && spawn.id == zoneId) {
+              highlightZoneId = zoneId
               hint = colorize("activeTextColor", spawn.name)
               break
             }
@@ -1334,6 +1415,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     highlightRespawnBase(highlightSpawnMapId)
     highlightSquadmateRespawnBase(highlightSquadSpawnPlayerId)
+    highlightZoneRespawnBase(highlightZoneId)
     if (this.curMapSpawnHint != hint) {
       this.tmapHintObj.setValue(hint)
       this.curMapSpawnHint = hint
@@ -1367,13 +1449,22 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     }
 
     let respawnPlayerId = getSquadmateRespawnBase(coords[0], coords[1])
-    if (respawnPlayerId == -1)
+    if (respawnPlayerId != -1) {
+      let spawnIdx = this.respawnBasesList
+        .findindex(@(v) v.isSquadRespawnBase && v.id == respawnPlayerId)
+      if (spawnIdx != null && optionObj.getValue() != spawnIdx)
+        optionObj.setValue(spawnIdx)
+      return
+    }
+
+    let zoneId = getZoneRespawnBase(coords[0], coords[1])
+    if (zoneId == -1)
       return
 
-    let spawnIdx = this.respawnBasesList
-      .findindex(@(v) v.isSquadRespawnBase && v.id == respawnPlayerId)
-    if (spawnIdx != null && optionObj.getValue() != spawnIdx)
-      optionObj.setValue(spawnIdx)
+    let zoneIdx = this.respawnBasesList
+      .findindex(@(v) v.isZoneRespawnBase && v.id == zoneId)
+    if (zoneIdx != null && optionObj.getValue() != zoneIdx)
+      optionObj.setValue(zoneIdx)
   }
 
   function onOtherOptionUpdate(obj) {
@@ -1428,9 +1519,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       this.canChooseRespawnBase = false
     }
 
-    if (!unit.isHuman() || !(currentSquadSpawnModeQuery(@(...) true) ?? false)) {
+    if (!unit.isHuman()) {
       selectSquadmateRespawnBase(-1)
+      selectZoneRespawnBase(-1)
       this.curSquadRespawnBase = null
+      this.curZoneRespawnBase = null
       this.hasSquadRespawnBasesList = false
       let hasListChanged = !u.isEqual(this.respawnBasesList, currBasesList)
       if (hasListChanged)
@@ -1441,8 +1534,39 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return hasListChanged
     }
 
+    let localTeam = this?.mplayerTable.team ?? 1
+    let respawnZoneBases = []
+    currentZoneSpawnsDataQuery(function(_, comp) {
+      if (comp.dynamic_respawn__prevPositions.getAll().len() == 0)
+        return
+      let zoneBase = RespawnBase(comp.capture_zone__zoneId, false, false, true)
+      zoneBase.fillRespawnBaseData({
+        name = comp.infantry_spawn__zoneName
+        isAvailable = comp.infantry_spawn__owningTeam == localTeam && !comp.capzone__hasEnemyInside
+      })
+      respawnZoneBases.append(zoneBase)
+    })
+    this.respawnBasesList.extend(respawnZoneBases)
+    let curZoneBase = this.curZoneRespawnBase
+    if (curZoneBase != null) {
+      let matched = respawnZoneBases.findvalue(@(z) z.id == curZoneBase.id)
+      this.curZoneRespawnBase = matched
+      if (matched == null)
+        selectZoneRespawnBase(-1)
+    }
+
+    if (!(currentSquadSpawnModeQuery(@(...) true) ?? false)) {
+      selectSquadmateRespawnBase(-1)
+      this.curSquadRespawnBase = null
+      this.hasSquadRespawnBasesList = false
+      let hasListChanged = !u.isEqual(this.respawnBasesList, currBasesList)
+      if (hasListChanged)
+        this.updateOptions(RespawnOptUpdBit.RESPAWN_BASES)
+      return hasListChanged
+    }
+
     let respawnSquadBases = []
-    let team = this?.mplayerTable.team ?? 1
+    let team = localTeam
     foreach (player in get_mplayers_list(team, true)) {
       let { id, name, isLocal, isInHeroSquad } = player
       if (!isLocal && isInHeroSquad) {
@@ -1452,7 +1576,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
             isAvailable = comp.dynamic_respawn__active && !comp.dynamic_respawn__blocked
         })
         let playerRespawnBase = RespawnBase(id, false, true)
-        playerRespawnBase.fillSquadRespawnBase({ name = getPlayerName(name), isAvailable })
+        playerRespawnBase.fillRespawnBaseData({ name = getPlayerName(name), isAvailable })
         respawnSquadBases.append(playerRespawnBase)
       }
     }
@@ -1493,12 +1617,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   onEventSquadDataUpdated = @(_p) this.updateRespawnBases()
-
-  function showRespawnTr(show) {
-    let obj = this.scene.findObject("respawn_base_tr")
-    if (checkObj(obj))
-      obj.show(show)
-  }
 
   hasAirfieldSpawnPoint = @()
     this.respawnBasesList.findvalue(@(spawn) spawn.isSpawnIsAirfiled()) != null
@@ -1632,7 +1750,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     setTacticalMapHudType(hudType)
     let buttonImg = this.scene.findObject("hud_type_img");
-    buttonImg["background-image"] = getZoomIconByUnitType(this.getNextType(hudType))
+    if (buttonImg != null)
+      buttonImg["background-image"] = getZoomIconByUnitType(this.getNextType(hudType))
   }
 
   function onDestroy() {
@@ -1752,6 +1871,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       idInCountry = crew.idInCountry
       spareUid = this.universalSpareUidForRespawn
       squadmateRespawnPlayerId = this.curSquadRespawnBase?.id ?? -1
+      spawnOnZoneId = this.curZoneRespawnBase?.id ?? -1
     }
 
     if (air.isHuman()) {
@@ -1826,6 +1946,13 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     return res
   }
 
+  function getInterpolatedSlotDelay(idInCountry, respawnBaseId) {
+    let slotDelayData = this.slotDelayDataCached?[$"{idInCountry}_{respawnBaseId}"]
+    if (slotDelayData == null || slotDelayData.slotDelay < 0)
+      return -1
+    return max(0, slotDelayData.slotDelay - ((get_time_msec() - slotDelayData.updateTime) / 1000).tointeger())
+  }
+
   function getCantSpawnReason(crew, silent = true) {
     let unit = getCrewUnit(crew)
     if (unit == null)
@@ -1848,6 +1975,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!(this.curSquadRespawnBase?.isAvailable ?? true))
       return { text = loc("multiplayer/squadRespawnUnavailable"), id = "squad_respawn_unavaliable" }
 
+    if (!(this.curZoneRespawnBase?.isAvailable ?? true))
+      return { text = loc("multiplayer/zoneRespawnUnavailable"), id = "zone_respawn_unavailable" }
+
     if (this.missionRules.isWarpointsRespawnEnabled && this.isRespawn) {
       let respawnPrice = this.getRespawnWpTotalCost()
       if (respawnPrice > 0 && respawnPrice > this.sessionWpBalance)
@@ -1866,7 +1996,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return { text = loc("multiplayer/lowEscalationStage"), id = "low_escalation_stage" }
 
     if (this.missionRules.isSpawnDelayEnabled && this.isRespawn) {
-      let slotDelay = get_slot_delay(unit.name)
+      let slotDelay = this.getInterpolatedSlotDelay(crew.idInCountry, this.curRespawnBase.id)
       if (slotDelay > 0) {
         let text = loc("multiplayer/slotDelay", { time = time.secondsToString(slotDelay) })
         return { text = text, id = "wait_for_slot_delay" }
@@ -2092,7 +2222,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let unit = this.getCurSlotUnit()
     let crew = this.getCurCrew()
     local isAvailResp = this.haveRespawnBases || this.isGTCooperative
-    local isRespaMenuVisible = this.haveRespawnBases || this.isGTCooperative
     local tooltipText = ""
     local tooltipEndText = ""
     let infoTextsArr = []
@@ -2117,7 +2246,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           let curScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name),
             getUnitLastBullets(unit), true, true)
           isAvailResp = isAvailResp && (curScore <= this.curSpawnScore)
-          isRespaMenuVisible = isRespaMenuVisible && (curScore <= this.curSpawnScore)
           if (curScore > 0)
             costTextArr.append(loc("shop/spawnScore", { cost = curScore }))
         }
@@ -2125,13 +2253,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         if (this.missionRules.isWarpointsRespawnEnabled && unit) {
           let wpToSpawn = this.getRespawnUnitWpTotalCost(unit)
           isAvailResp = isAvailResp && (wpToSpawn <= this.sessionWpBalance)
-          isRespaMenuVisible = isRespaMenuVisible && (wpToSpawn <= this.sessionWpBalance)
         }
 
         let reqUnitSpawnRageTokens = unit != null ? this.missionRules.getUnitSpawnRageTokens(unit) : 0
         if (reqUnitSpawnRageTokens > 0) {
           isAvailResp = isAvailResp && reqUnitSpawnRageTokens <= this.curSpawnRageTokens
-          isRespaMenuVisible = isRespaMenuVisible && reqUnitSpawnRageTokens <= this.curSpawnRageTokens
           costTextArr.append(loc("shop/spawnScore", { cost = reqUnitSpawnRageTokens }))
         }
 
@@ -2140,21 +2266,23 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           costTextArr.append(loc("respawn/squadSpawnBlocked"))
         }
 
+        if (!(this.curZoneRespawnBase?.isAvailable ?? true)) {
+          isAvailResp = false
+          costTextArr.append(loc("respawn/zoneRespawnBlocked"))
+        }
+
         if (this.leftRespawns > 0)
           infoTextsArr.append(loc("respawn/leftRespawns", { num = this.leftRespawns.tostring() }))
 
         infoTextsArr.append(this.missionRules.getRespawnInfoTextForUnit(unit))
         let isRulesRespAvailable = this.missionRules.isRespawnAvailable(unit)
-        isAvailResp = isAvailResp && isRulesRespAvailable
-        isRespaMenuVisible = isRespaMenuVisible && isRulesRespAvailable
-
-        isAvailResp = isAvailResp && !this.isLowNuclearEscalationStage()
+        isAvailResp = isAvailResp && isRulesRespAvailable && !this.isLowNuclearEscalationStage()
       }
     }
 
     local isCrewDelayed = false
     if (this.missionRules.isSpawnDelayEnabled && unit) {
-      let slotDelay = get_slot_delay(unit.name)
+      let slotDelay = get_slot_delay(unit.name, this.curRespawnBase?.id ?? 0)
       isCrewDelayed = slotDelay > 0
     }
 
@@ -2199,8 +2327,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       if (shortCostText.len() && !this.isApplyPressed)
         slotBtnObj["visualStyle"] = "purchase"
     }
-
-    this.showRespawnTr(isRespaMenuVisible && !isCrewDelayed)
   }
 
   function setApplyPressed() {
@@ -2458,25 +2584,37 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     return true
   }
 
-  function updateSlotDelays() {
+  function updateSlotDelays(forceUpdate = false) {
     if (!checkObj(this.scene))
       return
 
     let crews = getCrewsListByCountry(get_local_player_country())
     let currentIdInCountry = this.getCurCrew()?.idInCountry
+    let respawnBaseId = this.curRespawnBase?.id ?? 0
+    let syncRecvTime = getSpawnDelayTimesRecvTime()
     foreach (crew in crews) {
       let idInCountry = crew.idInCountry
-      if (!(idInCountry in this.slotDelayDataByCrewIdx))
-        this.slotDelayDataByCrewIdx[idInCountry] <- { slotDelay = -1, updateTime = 0 }
-      let slotDelayData = this.slotDelayDataByCrewIdx[idInCountry]
-
-      let prevSlotDelay = getTblValue("slotDelay", slotDelayData, -1)
-      let curSlotDelay = get_slot_delay_by_slot(idInCountry)
-      if (prevSlotDelay != curSlotDelay) {
-        slotDelayData.slotDelay = curSlotDelay
-        slotDelayData.updateTime = get_time_msec()
+      let cacheKey = $"{idInCountry}_{respawnBaseId}"
+      let curSlotDelay = get_slot_delay_by_slot(idInCountry, respawnBaseId)
+      local slotDelayChanged = false
+      if (!(cacheKey in this.slotDelayDataCached)) {
+        this.slotDelayDataCached[cacheKey] <- {
+          slotDelay = curSlotDelay
+          updateTime = curSlotDelay >= 0 ? syncRecvTime : 0
+        }
+        slotDelayChanged = curSlotDelay >= 0
       }
-      else if (curSlotDelay < 0)
+      else {
+        let slotDelayData = this.slotDelayDataCached[cacheKey]
+        if (slotDelayData.slotDelay != curSlotDelay) {
+          slotDelayData.slotDelay = curSlotDelay
+          slotDelayData.updateTime = syncRecvTime
+          slotDelayChanged = true
+        }
+      }
+
+      let slotDelayData = this.slotDelayDataCached[cacheKey]
+      if (slotDelayData.slotDelay < 0 && !slotDelayChanged && !forceUpdate)
         continue
 
       if (currentIdInCountry == idInCountry)
@@ -2499,13 +2637,15 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!slotObj)
       return
 
+    let spawnDelay = this.getInterpolatedSlotDelay(idInCountry, this.curRespawnBase?.id ?? 0)
     let params = this.getSlotbarParams().__update({
       crew
       curSlotIdInCountry = idInCountry
       curSlotCountryId = countryId
       unlocked = isUnitUnlockedInSlotbar(unit, crew, get_local_player_country(), this.missionRules)
       weaponPrice = this.getWeaponPrice(unit.name, getLastWeapon(unit.name))
-      slotDelayData = this.slotDelayDataByCrewIdx?[idInCountry]
+      spawnDelay
+      hasAlternativeBase = false
     })
 
     let priceTextObj = slotObj.findObject("extraInfoPriceText")
@@ -2518,8 +2658,25 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         priceTextObj.setValue(priceText)
 
       let priceTextHintObj = showObjById("extraInfoPriceTextHint", hasPriceText, slotObj)
-      if (hasPriceText && priceTextHintObj?.isValid())
+      if (hasPriceText && priceTextHintObj?.isValid()) {
+        if (params.haveSpawnDelay && spawnDelay > 0) {
+          let localTeam = get_mp_local_team()
+          let savedBaseForSlot = getSavedRespawnBaseForSlot(idInCountry)
+          let hasSavedBase = this.fullListBases.findvalue(@(rb) rb.id == savedBaseForSlot) != null
+          foreach (rb in this.fullListBases) {
+            let { id, team } = rb
+            if (team != localTeam || !is_respawnbase_selectable(id) || id == this.curRespawnBase?.id)
+              continue
+            let isSavedForSlot = id == savedBaseForSlot
+            let canSelect = !hasSavedBase || isSavedForSlot
+            if (canSelect && get_slot_delay(unit.name, id) <= 0) {
+              params.hasAlternativeBase = true
+              break
+            }
+          }
+        }
         priceTextHintObj.setValue(getUnitSlotPriceHintText(unit, params))
+      }
 
       this.getSlotbar().updateTopExtraInfoBlock(slotObj)
     }
@@ -2573,6 +2730,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       btn_back =            this.showButtons && useTouchscreen && !this.isRespawn
       btn_activateorder =   this.showButtons && this.isRespawn && showActivateOrderButton() && (!this.isSpectate || !showConsoleButtons.get())
       btn_personal_tasks =  this.showButtons && this.isRespawn && canUseUnlocks
+      btn_assistant_map_qr = this.showButtons && this.isRespawn && isAssistantMapEnabled() && isAssistantMapAvailable()
 
       
       hint_attention_to_map = !showConsoleButtons.get()
@@ -2586,10 +2744,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (isShowPOiButton)
       showObjById("hint_btn_set_point_of_interest", !showConsoleButtons.get(), setPointOfInterestObj)
 
-    let isShowSetHudTypeBtn = isGroundAndAirMission()
-    let setHudTypeObj = showObjById("btn_set_hud_type", isShowSetHudTypeBtn, this.scene)
-    if (isShowSetHudTypeBtn)
-      showObjById("hint_btn_set_hud_type", !showConsoleButtons.get(), setHudTypeObj)
+    showObjById("btn_set_hud_type", isGroundAndAirMission(), this.scene)
 
     let presets = getHudIconsPresetsList()
     let isShowIconPresets = is_allow_to_choose_hud_icon_preset() && presets != null && presets.len() > 1
@@ -2969,6 +3124,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   onPersonalTasksOpen = @() openPersonalTasks()
+  onAssistantMapQrCode = @() guiStartAssistantMapQrWindow()
 
   function goBack() {
     if (!this.isRespawn)
@@ -3270,6 +3426,15 @@ ecs.register_es("squad_spawner_block_", {
 }, {
   comps_ro = [["dynamic_respawn__playerId", ecs.TYPE_INT]],
   comps_track = [["dynamic_respawn__active", ecs.TYPE_BOOL], ["dynamic_respawn__blocked", ecs.TYPE_BOOL]]
+})
+
+ecs.register_es("zone_spawner_block_", {
+  [["onChange"]] = function(_eid, _comp) {
+    broadcastEvent("ZoneSpawnsChanged")
+  }
+}, {
+  comps_ro = [["infantry_spawn__zoneName", ecs.TYPE_STRING]],
+  comps_track = [["infantry_spawn__owningTeam", ecs.TYPE_INT], ["capzone__hasEnemyInside", ecs.TYPE_BOOL]]
 })
 
 ecs.register_es("selected_human_weight_es", {

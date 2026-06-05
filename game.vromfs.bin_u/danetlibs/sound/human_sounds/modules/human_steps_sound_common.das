@@ -131,7 +131,8 @@ def play_footstep(desc : Object;
                   var step_material_id : int&;
                   var step_water_depth : float&;
                   var human_net_phys : HumanActor?;
-                  prefix : string = "")
+                  prefix : string = "";
+                  abandon_handle = true)
 
   let normalizedUp = normalize(up)
 
@@ -162,7 +163,10 @@ def play_footstep(desc : Object;
         set_var(handle, "armored", 1.)
       set_volume(handle, volume)
       set_var(handle, "mat", float(step_material_id))
-      abandon(handle)
+      if abandon_handle
+        abandon(handle)
+      return handle
+  return invalid_sound_event_handle()
 
 
 def get_desc_id_from_human_state(move_state : int; stand_state : HUStandState; irqs : Array) : int

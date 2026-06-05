@@ -590,12 +590,15 @@
       1.48353
     ],
     "human_weap__crawlClampVertAngleRad": [
-      -0.698132,
+      -1.48353,
       1.48353
     ],
+    "human_weap__crawlClampVertAngleRadBase": [
+      -1.48353,
+      1.48353
+    ],
+    "human_weap__crawlClampVertAngleTraceIndex": 0,
     "human_weap__gunMatId": -1,
-    "human_weap__gunCheckOffsetUp": 1.4,
-    "human_weap__gunCheckOffsetRight": 0.1,
     "human_weap__gunMaxBackoff": 0.25,
     "human_weap__gunMinBackupDist": 0.45,
     "human_weap__gunBackupDistFactor": 0.8,
@@ -2585,13 +2588,76 @@
     "_tracked": [
       "possessedByPlr",
       "isInVehicle",
+      "human_vehicle__occupiedSeatEid",
+      "human_vehicle__isInHatch",
+      "enter_vehicle__atTime",
+      "exit_vehicle__atTime",
+      "isInVehicleHiddenLocal",
       "human_use_object__selectedBuilding"
     ],
     "_replicated": [
       "possessedByPlr",
-      "isInVehicle"
+      "isInVehicle",
+      "human_vehicle__occupiedSeatEid",
+      "human_vehicle__isInHatch",
+      "isInVehicleHidden"
     ],
     "isInVehicle": false,
+    "vehicle__localSeatTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "vehicle__globalSeatTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "human_vehicle__isInHatch": false,
+    "disable_collision": false,
+    "maxVehicleVelocityCanReEnter": -1.0,
+    "human_vehicle_anim__upperId": -1,
+    "human_vehicle_anim__lowerId": -1,
+    "human_vehicle_anim__maxStandHeight": 1.0,
+    "enter_vehicle__atTime": -1.0,
+    "enter_vehicle__isInitDataSaved": false,
+    "exit_vehicle__atTime": -1.0,
+    "isInVehicleHidden": false,
+    "isInVehicleHiddenLocal": false,
     "dmgzone_fire_resistance__maxTicks": 4,
     "dmgzone_fire_resistance__underwaterTicks": -30,
     "dmgzone_fire_resistance__wetDelaySec": 1.0,
@@ -2611,15 +2677,15 @@
     },
     "collres": {},
     "possessedByPlr:eid": {},
+    "human_vehicle__occupiedSeatEid:eid": {},
+    "enter_vehicle__vehicleEid:eid": {},
     "_group": [
       {
         "_tags": "gameClient",
         "_track": true,
         "human__visible": true,
         "human_attached_gun__isHideHuman": false,
-        "human_binocular__isHideHuman": false,
-        "isInVehicleHidden": false,
-        "isInVehicleHiddenLocal": false
+        "human_binocular__isHideHuman": false
       },
       {
         "_replicate": true,

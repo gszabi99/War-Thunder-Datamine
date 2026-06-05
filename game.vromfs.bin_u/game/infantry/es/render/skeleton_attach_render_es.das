@@ -6,6 +6,7 @@ require DagorMath
 require GeomNodeTree
 require %game.events
 require %appGame.infantry.es.animchar.attach_common
+require %appGame.infantry.es.vehicle.vehicle_events
 
 
 def copy_nodes_with_remap(var node_tree : GeomNodeTree&; att_node_tree : GeomNodeTree; skeleton_remap : UInt16List; base_eid, att_eid : EntityId)
@@ -80,8 +81,7 @@ def skeleton_attached_to(base_eid : EntityId;
         animchar_forcePostRecalcWtm(animchar, dt)
 
       animchar_copy_nodes(animchar, animchar_node_wtm, animchar_render__root_pos)
-      animchar_bsph_precalculated = animchar_render_prepareSphere(animchar_render, animchar_node_wtm)
-      animchar_bbox_precalculated = animchar_render_calcWorldBox(animchar_render, animchar_node_wtm, true)
+      animchar_bsph_precalculated = animchar_render_prepareSphereAndCalcBox(animchar_render, animchar_node_wtm, animchar_bbox_precalculated)
       
 
       if attaches_list != null
@@ -117,10 +117,66 @@ def skeleton_attach_es(info : ParallelUpdateFrameDelayed;
 
   animchar__usePrecalculatedData = true
 
-  animchar_bsph_precalculated = animchar_render_prepareSphere(animchar_render, animchar_node_wtm)
-  animchar_bbox_precalculated = animchar_render_calcWorldBox(animchar_render, animchar_node_wtm, true)
+  animchar_bsph_precalculated = animchar_render_prepareSphereAndCalcBox(animchar_render, animchar_node_wtm, animchar_bbox_precalculated)
   
   skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, info.dt, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated)
+
+[es(tag=gameClient, REQUIRE_NOT=attachedToParent, parallel_for=4, after=seated_human_bake_post_pausable_animchar_es)]
+def seated_human_bake_post_pausable_attach_es(act : UpdateStageInfoAct;
+                                              isInVehicle : bool;
+                                              eid : EntityId;
+                                              animchar : AnimcharBaseComponent&;
+                                              animchar__visible : bool;
+                                              animchar_bbox : bbox3f;
+                                              attaches_list : EidList;
+                                              human_anim__vehicleSelected : EntityId;
+                                              var animchar_bsph_precalculated : vec4f&;
+                                              var animchar_bbox_precalculated : BBox3&;
+                                              var animchar_attaches_bbox_precalculated : bbox3f?;
+                                              var animchar__usePrecalculatedData : bool&;
+                                              animchar_render : AnimcharRendComponent;
+                                              animchar_node_wtm : AnimcharNodesMat44;
+                                              animchar__updateAttachesWhenNotUpdatable : Tag const?;
+                                              animchar__updatable = true)
+  if !animchar__visible || !isInVehicle
+    return
+  if has(human_anim__vehicleSelected, "watchedByPlr")
+    return
+  if !animchar__updatable && animchar__updateAttachesWhenNotUpdatable == null
+    return
+
+  animchar__usePrecalculatedData = true
+
+  animchar_bsph_precalculated = animchar_render_prepareSphereAndCalcBox(animchar_render, animchar_node_wtm, animchar_bbox_precalculated)
+  skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, act.dt, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated)
+
+
+
+[es(tag=gameClient, REQUIRE=isInVehicle, REQUIRE_NOT=attachedToParent,
+    after=human_seat_bake_animchar_es)]
+def human_seat_bake_attach_es(evt : CmdHumanSeatBake;
+                              eid : EntityId;
+                              animchar : AnimcharBaseComponent&;
+                              animchar__visible : bool;
+                              animchar_bbox : bbox3f;
+                              attaches_list : EidList;
+                              var animchar_bsph_precalculated : vec4f&;
+                              var animchar_bbox_precalculated : BBox3&;
+                              var animchar_attaches_bbox_precalculated : bbox3f?;
+                              var animchar__usePrecalculatedData : bool&;
+                              animchar_render : AnimcharRendComponent;
+                              animchar_node_wtm : AnimcharNodesMat44;
+                              animchar__updateAttachesWhenNotUpdatable : Tag const?;
+                              animchar__updatable = true)
+  if !animchar__visible
+    return
+  if !animchar__updatable && animchar__updateAttachesWhenNotUpdatable == null
+    return
+
+  animchar__usePrecalculatedData = true
+
+  animchar_bsph_precalculated = animchar_render_prepareSphereAndCalcBox(animchar_render, animchar_node_wtm, animchar_bbox_precalculated)
+  skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, evt.dt, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated)
 
 
 
@@ -141,8 +197,7 @@ def skeleton_attach_not_updatable(evt : Event;
                                   animchar_node_wtm : AnimcharNodesMat44)
   animchar__usePrecalculatedData = true
 
-  animchar_bsph_precalculated = animchar_render_prepareSphere(animchar_render, animchar_node_wtm)
-  animchar_bbox_precalculated = animchar_render_calcWorldBox(animchar_render, animchar_node_wtm, true)
+  animchar_bsph_precalculated = animchar_render_prepareSphereAndCalcBox(animchar_render, animchar_node_wtm, animchar_bbox_precalculated)
   
   skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, 0.0, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated)
 

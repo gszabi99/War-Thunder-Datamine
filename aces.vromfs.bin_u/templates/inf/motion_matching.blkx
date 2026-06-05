@@ -24,6 +24,7 @@
         "gameData/motion_matching/soldier_run_anim_list.blk",
         "gameData/motion_matching/soldier_run_turn_anim_list.blk",
         "gameData/motion_matching/soldier_walk_anim_list.blk",
+        "gameData/motion_matching/soldier_walk_stop_anim_list.blk",
         "gameData/motion_matching/soldier_crouchmove_anim_list.blk",
         "gameData/motion_matching/soldier_crouch_anim_list.blk",
         "gameData/motion_matching/soldier_stand_anim_list.blk",
@@ -46,9 +47,24 @@
         "turn_in_move",
         "1st_person_view",
         "3rd_person_view",
-        "full_body_movement"
+        "full_body_movement",
+        "default_weapon",
+        "melee_weapon",
+        "pistol_weapon"
       ]
-    }
+    },
+    "motion_matching__weaponToTag:object": {
+      "knife": "melee_weapon",
+      "rajah_2_knife": "melee_weapon",
+      "drone_controller": "pistol_weapon",
+      "makarov": "pistol_weapon",
+      "m45a1_cqbp": "pistol_weapon",
+      "beretta_m9": "pistol_weapon",
+      "mp_443": "pistol_weapon",
+      "aps": "pistol_weapon"
+    },
+    "motion_matching__weaponEnumVars:list<i>": {},
+    "motion_matching__weaponTags:list<i>": {}
   },
   "soldier_mm_component": {
     "_use": "motion_matching_animchar_component",
@@ -72,8 +88,12 @@
     "motion_matching__alignVelocityParamId": -1,
     "motion_matching__alignVelocityParamName": "align_mm_velocity_angle",
     "motion_matching__alignVelocitySpeed": 0.0,
+    "motion_matching__allowProceduralStepParam": "procedural_step_to_stand_pose",
+    "motion_matching__allowProceduralStepParamId": -1,
+    "motion_matching__allowProceduralStepTimer": 0.0,
     "motion_matching__prevLowerAnimState": -1,
     "motion_matching__prevControlState": -1,
+    "motion_matching__weaponTagIdx": -1,
     "mm_trajectory__customUpdate:tag": {}
   }
 }

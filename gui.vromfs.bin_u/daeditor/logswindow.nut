@@ -78,7 +78,7 @@ function listRow(msg, idx) {
       color
       behavior = Behaviors.Button
       onClick = function(){
-        selectedLogIndex.set(selectedLogIndex.get() != idx ? idx : -1)
+        selectedLogIndex.modify(@(v) v != idx ? idx : -1)
       }
       children = {
         rendObj = ROBJ_TEXT

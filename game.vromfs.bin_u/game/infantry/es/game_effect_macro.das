@@ -52,17 +52,17 @@ class GameEffectAnnotation : AstFunctionAnnotation
     let esAnn = find_annotation("ecs", "es")
     assert(esAnn != null)
 
-    var inscope blk <- get_game_effect_block(invert, fieldName)
+    var blk = get_game_effect_block(invert, fieldName)
     blk |> force_at(func.body.at)
     blk |> force_generated(true)
 
     apply_template(func.at, blk) <| $(rules)
       rules |> replaceAnnotationArgument("marker") <| @(var ann)
-        ann.annotation := unsafe(reinterpret<smart_ptr<Annotation>> esAnn)
+        ann.annotation = unsafe(reinterpret<Annotation?>(esAnn))
         ann.arguments |> clear()
         ann.arguments |> add_annotation_argument("REQUIRE", tagName)
 
-    func.body |> move() <| blk
+    func.body = blk
 
     func.arguments |> emplace_new <| new Variable(name := "evt", at = func.at, flags = VariableFlags.generated,
       _type <- typeinfo ast_typedecl(type<GameEffectStateChanged const>)
@@ -71,7 +71,7 @@ class GameEffectAnnotation : AstFunctionAnnotation
       _type <- typeinfo ast_typedecl(type<EntityId const>)
     )
 
-    let require_val =  ("REQUIRE", RttiValue(tString = tagName))
+    let require_val =  (argname = "REQUIRE", argvalue = RttiValue(tString = tagName))
     func |> append_annotation("ecs", "es", [ require_val ])
 
     return true

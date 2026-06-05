@@ -14,8 +14,9 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_gui_option } = require("guiOptions")
 let optionsListModule = require("%scripts/options/optionsList.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
-let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient,
-  onSystemOptionControlHover } = require("%scripts/options/systemOptions.nut")
+let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged,
+  onRestartClient, onSystemOptionControlHover, updateGuiOptionsGroup
+} = require("%scripts/options/systemOptions.nut")
 let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
@@ -42,6 +43,7 @@ let { openShipHitIconsMenu } = require("%scripts/options/handlers/shipHitIconsMe
 let { getShortcutText, hackTextAssignmentForR2buttonOnPS4 } = require("%scripts/controls/controlsVisual.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { initOptions } = require("%scripts/options/initOptions.nut")
+let { guiStartAssistantMapQrWindow, isAssistantMapEnabled, isAssistantMapAvailable } = require("%scripts/assistantMapQr.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -125,7 +127,9 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     groupsObj.setValue(curOption)
 
     let showWebUI = isPC && isInFlight() && ::WebUI.get_port() != 0
+    let showAssistantMapQr = isAssistantMapEnabled() && isAssistantMapAvailable()
     showObjById("web_ui_button", showWebUI, this.scene)
+    showObjById("assistant_map_qr_button", showAssistantMapQr, this.scene)
     this.selectOptionOnInit()
   }
 
@@ -347,12 +351,12 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     return data == "" ? "---" : data
 }
 
-  function bindShortcutButton(devs, btns, shortcut_id_name, shortcut_object_name) {
+  function bindShortcutButton(devs, btns, activationType, shortcut_id_name, shortcut_object_name) {
     let shortcut = getShortcuts([shortcut_id_name]);
 
     let event = shortcut[0];
 
-    event.append({ dev = devs, btn = btns });
+    event.append({ dev = devs, btn = btns, activationType })
     if (event.len() > 1)
       event.remove(0);
 
@@ -375,28 +379,28 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onAssignInternetRadioButton() {
-    assignButtonWindow(this, this.bindInternetRadioButton);
+    assignButtonWindow(this, this.bindInternetRadioButton, "ID_INTERNET_RADIO")
   }
-  function bindInternetRadioButton(devs, btns) {
-    this.bindShortcutButton(devs, btns, "ID_INTERNET_RADIO", "internet_radio_shortcut");
+  function bindInternetRadioButton(devs, btns, activationType) {
+    this.bindShortcutButton(devs, btns, activationType, "ID_INTERNET_RADIO", "internet_radio_shortcut")
   }
   function onClearInternetRadioButton() {
     this.onClearShortcutButton("ID_INTERNET_RADIO", "internet_radio_shortcut");
   }
   function onAssignInternetRadioPrevButton() {
-    assignButtonWindow(this, this.bindInternetRadioPrevButton);
+    assignButtonWindow(this, this.bindInternetRadioPrevButton, "ID_INTERNET_RADIO_PREV")
   }
-  function bindInternetRadioPrevButton(devs, btns) {
-    this.bindShortcutButton(devs, btns, "ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut");
+  function bindInternetRadioPrevButton(devs, btns, activationType) {
+    this.bindShortcutButton(devs, btns, activationType, "ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut")
   }
   function onClearInternetRadioPrevButton() {
     this.onClearShortcutButton("ID_INTERNET_RADIO_PREV", "internet_radio_prev_shortcut");
   }
   function onAssignInternetRadioNextButton() {
-    assignButtonWindow(this, this.bindInternetRadioNextButton);
+    assignButtonWindow(this, this.bindInternetRadioNextButton, "ID_INTERNET_RADIO_NEXT")
   }
-  function bindInternetRadioNextButton(devs, btns) {
-    this.bindShortcutButton(devs, btns, "ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut");
+  function bindInternetRadioNextButton(devs, btns, activationType) {
+    this.bindShortcutButton(devs, btns, activationType, "ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut")
   }
   function onClearInternetRadioNextButton() {
     this.onClearShortcutButton("ID_INTERNET_RADIO_NEXT", "internet_radio_next_shortcut");
@@ -437,15 +441,15 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onAssignVoiceButton() {
-    assignButtonWindow(this, this.bindVoiceButton);
+    assignButtonWindow(this, this.bindVoiceButton, "ID_PTT")
   }
 
-  function bindVoiceButton(devs, btns) {
+  function bindVoiceButton(devs, btns, activationType) {
     let ptt_shortcut = getShortcuts(["ID_PTT"]);
 
     let event = ptt_shortcut[0];
 
-    event.append({ dev = devs, btn = btns });
+    event.append({ dev = devs, btn = btns, activationType })
     if (event.len() > 1)
       event.remove(0);
 
@@ -492,6 +496,17 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   function onSystemOptionsReset(_obj) {
     resetSystemGuiOptions()
+  }
+
+  function onUnitTypeOptionSelect(obj) {
+    let groupIdx = to_integer_safe(obj?.sectionIdx, null, false)
+    let tabIdx = obj?.getValue()
+    if (groupIdx == null || tabIdx == null)
+      return
+
+    updateGuiOptionsGroup(groupIdx, tabIdx == 0)
+    
+    
   }
 
   function passValueToParent(obj) {
@@ -627,6 +642,10 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       return
 
     ::WebUI.launch_browser()
+  }
+
+  function onAssistantMapQrCode() {
+    guiStartAssistantMapQrWindow()
   }
 
   function fullReloadScene() {

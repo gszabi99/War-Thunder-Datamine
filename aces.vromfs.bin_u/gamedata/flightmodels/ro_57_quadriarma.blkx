@@ -2237,7 +2237,10 @@
       },
       {
         "name": "ro_57_2x160kg_ap",
-        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x160kg_ap.blk"
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x160kg_ap.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       },
       {
         "name": "ro_57_250kg_gp",
@@ -2246,11 +2249,22 @@
       {
         "name": "ro_57_500kg",
         "blk": "gameData/FlightModels/weaponPresets/ro_57_500kg.blk"
+      },
+      {
+        "name": "ro_57_800kg",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_800kg.blk"
+      },
+      {
+        "name": "ro_57_630kg",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_630kg.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 570.0,
+    "maxloadMass": 850.0,
     "maxloadMassLeftConsoles": 285.0,
     "maxloadMassRightConsoles": 285.0,
     "maxDisbalance": 190.0,
@@ -2363,9 +2377,9 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bombs_middle_high_drag",
             "name": "160kg",
-            "reqModification": "it250_mod",
+            "reqModification": "it160_mod",
             "ShowNodes": {
               "node": "pylon_bomb1"
             },
@@ -2387,7 +2401,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bombs_special",
             "name": "250kg",
             "reqModification": "it250_mod",
             "ShowNodes": {
@@ -2407,7 +2421,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bombs_heavy_middle",
             "name": "500kg",
             "reqModification": "it500_mod",
             "ShowNodes": {
@@ -2419,6 +2433,42 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/weapons/bombguns/it_500kg_gp_stuka.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "launcher": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "800kg",
+            "reqModification": "it800_mod",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/weapons/bombguns/it_800kg_gp.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "630kg",
+            "reqModification": "it630_ap_mod",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb4",
+                "bomb_launcher1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_630kg_ap.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
@@ -2482,9 +2532,9 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bombs_middle_high_drag",
             "name": "160kg",
-            "reqModification": "it250_mod",
+            "reqModification": "it160_mod",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
@@ -2556,218 +2606,6 @@
     ],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
-  },
-  "wiki": {
-    "general": {
-      "length": 7.06,
-      "wingspan": 9.75,
-      "wingArea": 24.15,
-      "emptyWeight": 1480.0,
-      "normalWeight": 2008.28,
-      "maxTakeoffWeight": 2500.0,
-      "powerPlantType": 1,
-      "powerMaxWep": 930.0,
-      "powerMaxMil": 840.0
-    },
-    "performance": {
-      "table": {
-        "rpmWep": 2200.0,
-        "manifoldPressureWep": 1.25,
-        "airSpeedWep0": [
-          0.0,
-          382.0
-        ],
-        "airSpeedWep1": [
-          1300.0,
-          412.0
-        ],
-        "airSpeedWep2": [
-          4000.0,
-          435.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          14.9
-        ],
-        "climbRateWep1": [
-          1000.0,
-          16.0
-        ],
-        "climbRateWep2": [
-          3700.0,
-          13.6
-        ],
-        "climbTimeWep0": [
-          2000.0,
-          122.884
-        ],
-        "climbTimeWep1": [
-          4000.0,
-          263.812
-        ],
-        "climbTimeWep2": [
-          6000.0,
-          438.144
-        ],
-        "climbTimeWep3": [
-          8000.0,
-          736.473
-        ],
-        "turnTimeWep": [
-          1000.0,
-          15.0
-        ],
-        "rpmMil": 2100.0,
-        "manifoldPressureMil": 1.15,
-        "airSpeedMil0": [
-          0.0,
-          369.0
-        ],
-        "airSpeedMil1": [
-          1700.0,
-          405.0
-        ],
-        "airSpeedMil2": [
-          4400.0,
-          426.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          13.0
-        ],
-        "climbRateMil1": [
-          1400.0,
-          14.3
-        ],
-        "climbRateMil2": [
-          4100.0,
-          11.7
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          136.145
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          293.85
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          483.325
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          816.994
-        ],
-        "turnTimeMil": [
-          1000.0,
-          15.8
-        ],
-        "takeoffDistance": 253.076,
-        "ceiling": 9800.0,
-        "rollRate": 128.0,
-        "wingLoading": 83.0,
-        "powerToWeightRatio": 0.45
-      },
-      "plot": {
-        "airSpeedWep0": [
-          0.0,
-          382.0
-        ],
-        "airSpeedWep1": [
-          1200.0,
-          413.0
-        ],
-        "airSpeedWep2": [
-          2800.0,
-          409.0
-        ],
-        "airSpeedWep3": [
-          4100.0,
-          436.0
-        ],
-        "airSpeedWep4": [
-          5500.0,
-          432.0
-        ],
-        "airSpeedWep5": [
-          8200.0,
-          399.0
-        ],
-        "airSpeedWep6": [
-          9800.0,
-          357.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          14.9
-        ],
-        "climbRateWep1": [
-          1000.0,
-          16.0
-        ],
-        "climbRateWep2": [
-          2500.0,
-          12.6
-        ],
-        "climbRateWep3": [
-          3700.0,
-          13.6
-        ],
-        "climbRateWep4": [
-          9800.0,
-          0.1
-        ],
-        "airSpeedMil0": [
-          0.0,
-          369.0
-        ],
-        "airSpeedMil1": [
-          1600.0,
-          405.0
-        ],
-        "airSpeedMil2": [
-          2900.0,
-          400.0
-        ],
-        "airSpeedMil3": [
-          4300.0,
-          426.0
-        ],
-        "airSpeedMil4": [
-          6100.0,
-          417.0
-        ],
-        "airSpeedMil5": [
-          8100.0,
-          390.0
-        ],
-        "airSpeedMil6": [
-          9600.0,
-          354.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          13.0
-        ],
-        "climbRateMil1": [
-          1400.0,
-          14.3
-        ],
-        "climbRateMil2": [
-          2800.0,
-          11.1
-        ],
-        "climbRateMil3": [
-          4100.0,
-          11.7
-        ],
-        "climbRateMil4": [
-          9600.0,
-          0.0
-        ]
-      }
-    }
   },
   "balanceData": {
     "accSpd": 1.85287,
@@ -2846,14 +2684,28 @@
       "reqModification": "it50_mod",
       "tier": 2
     },
-    "it250_mod": {
+    "it160_mod": {
       "reqModification": "it100_mod",
       "modClass": "weapon",
       "tier": 3
     },
+    "it250_mod": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "it500_mod": {
       "modClass": "weapon",
       "reqModification": "it250_mod",
+      "tier": 2
+    },
+    "it630_ap_mod": {
+      "modClass": "weapon",
+      "reqModification": "it500_mod",
+      "tier": 3
+    },
+    "it800_mod": {
+      "modClass": "weapon",
+      "reqModification": "it630_ap_mod",
       "tier": 4
     }
   },

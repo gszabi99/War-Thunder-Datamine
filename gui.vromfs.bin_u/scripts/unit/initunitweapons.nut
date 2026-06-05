@@ -54,6 +54,7 @@ function initPresetParams(weapon, blk = null) {
   weapon.frontGun <- (weaponmask & WeaponMask.MACHINE_GUN_MASK) != 0
   weapon.rocket <- (weaponmask & WeaponMask.ALL_ROCKETS_MASK) != 0
   weapon.bombsNbr <- blk?.totalBombCount ?? 0
+  weapon.hideInGui <- blk?.hideInGui ?? false
   foreach (p in weaponWpCostProperties)
     weapon[p] <- weapon?[p] ?? blk?[p]
 }

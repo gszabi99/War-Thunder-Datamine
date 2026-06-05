@@ -1,13 +1,17 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let activeOrder = require("%rGui/activeOrder.nut")
-let shipStateModule = require("%rGui/shipStateModule.nut")
+let { activeOrderComps }= require("%rGui/activeOrder.nut")
+let shipMainPanel = require("%rGui/shipStateModule.nut")
 let hudLogs = require("%rGui/hudLogs.nut")
 let voiceChat = require("%rGui/chat/voiceChat.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let fireControl = require("%rGui/shipFireControl.nut")
 let { missionProgressHeight, isSpectatorMode, isPlayingReplay } = require("%rGui/hudState.nut")
-let { radarComponent, sonarComponent } = require("%rGui/shipHudComponents.nut")
+let shipHudComponents = require("%rGui/shipHudComponents.nut")
+let { radarComponent } = shipHudComponents
+
+
+
 let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
 let shipObstacleRf = require("%rGui/shipObstacleRangefinder.nut")
 let aamAim = require("%rGui/rocketAamAim.nut")
@@ -24,15 +28,15 @@ let shipHud = @() {
   size = FLEX_V
   padding = [0, 0, missionProgressHeight.get(), 0]
   margin = safeAreaSizeHud.get().borders
-  flow = FLOW_VERTICAL
+  flow = isSpectatorMode.get() ? FLOW_HORIZONTAL : FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
   gap = scrn_tgt(0.005)
-  children = isSpectatorMode.get() ? null : [
+  children = isSpectatorMode.get() ? [hudLogs, shipMainPanel] : [
     voiceChat
-    activeOrder
+    activeOrderComps
     hudLogs
-    shipStateModule
+    shipMainPanel
   ]
 }
 
@@ -41,13 +45,16 @@ return @(){
   watch = isPlayingReplay
   children = isPlayingReplay.get() ? [
     sensorViewIndicators
+    shipHud
   ] :
   [
     shipHud
     actionBarTopPanel
     fireControl
     radarComponent
-    sonarComponent
+
+
+
     hitNotifications
     aamAim(colorWacthed, colorAlertWatched)
     shipObstacleRf

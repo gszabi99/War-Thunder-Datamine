@@ -53,11 +53,17 @@ def human_context_command_ui_update_soldier_state(evt : Event;
   else
     let gun_eid = human_weap__gunEids[int(HUWeaponSlots.EWS_TERTIARY)]
     query(gun_eid) <| $ [es] (gun__wishAmmoItemType : int;
-                              specialAIWeaponType : int = 0)
-      if specialAIWeaponType == int(SpecialAIWeaponType.ATGM_MPADS_LAUNCHERS) || specialAIWeaponType == int(SpecialAIWeaponType.ROCKET_LAUNCHERS)
-        let totalAmmo = get_total_ammo_count(itemContainer, gun__wishAmmoItemType, gun_eid)
-        if totalAmmo > 0
+                              specialAIWeaponType : int = 0;
+                              combatFiringLowAircrafts : bool = false)
+      let totalAmmo = get_total_ammo_count(itemContainer, gun__wishAmmoItemType, gun_eid)
+      if totalAmmo <= 0
+        return
+      if specialAIWeaponType == int(SpecialAIWeaponType.ATGM_MPADS_LAUNCHERS)
+        squad_member__canAttackAirVehicle = true
+        if combatFiringLowAircrafts
           squad_member__canAttackGroundVehicle = true
+      elif specialAIWeaponType == int(SpecialAIWeaponType.ROCKET_LAUNCHERS)
+        squad_member__canAttackGroundVehicle = true
 
   if !is_server()
     let hero_eid = get_controlled_hero_eid()

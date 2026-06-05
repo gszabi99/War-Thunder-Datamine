@@ -192,7 +192,8 @@ def updateState(eid : EntityId;
                         human_anim__comboStateFastClimb : int;
                         human_anim__comboStateFullBodyWalk : int;
                         human_anim__comboStateFullBodyRun : int;
-                        human_anim__comboStateDead : int)
+                        human_anim__comboStateDead : int;
+                        human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID)
 
     if (state_flags & uint(HumanAnimStateFlags.Dead)) != 0u
       res.upper = human_anim__comboStateDead
@@ -222,13 +223,14 @@ def updateState(eid : EntityId;
     var upperStateIdx = -1
     var lowerStateIdx = -1
     var comboStateIdx = -1
+    let useTacticalPhone = has(human_weap__currentGunEid, "tactical_phone")
 
     if state_pos == HumanStatePos.E_STAND
       if state_move == HumanStateMove.E_STILL
         lowerStateIdx = human_anim__lowerStateStand
       elif state_move == HumanStateMove.E_MOVE
         lowerStateIdx = human_anim__lowerStateWalk
-        if (!is_fpv &&
+        if (!is_fpv && !useTacticalPhone &&
             state_upper_body != HumanStateUpperBody.E_CHANGE &&
             state_upper_body != HumanStateUpperBody.E_RELOAD &&
             state_upper_body != HumanStateUpperBody.E_THROW &&
@@ -237,7 +239,7 @@ def updateState(eid : EntityId;
           comboStateIdx = human_anim__comboStateFullBodyWalk
       elif state_move == HumanStateMove.E_RUN
         lowerStateIdx = human_anim__lowerStateRun
-        if (!is_fpv &&
+        if (!is_fpv && !useTacticalPhone &&
             state_upper_body != HumanStateUpperBody.E_CHANGE &&
             state_upper_body != HumanStateUpperBody.E_RELOAD &&
             state_upper_body != HumanStateUpperBody.E_THROW &&
@@ -772,8 +774,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   var human_anim__standInPlaceTimer : float&;
                   human_anim__standInPlaceWaitTime : float = 0.5;
                   human_anim__rootRotateViscosity : float = 0.05;
-                  human_anim__rootRotateBackViscosity : float = 0.9;
-                  human_anim__rootRotateToSideViscosity : float = 0.9;
+                  human_anim__rootRotateToSideViscosityFpv : float = 0.9;
                   human_anim__localWalkDirClampAngle : float = 170.0;
                   human_anim__localWalkDirDeltaThresholdAngle : float = 180.0;
                   human_anim__isIdling : bool = false;
@@ -904,19 +905,24 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
 
   if abs(prevLocalWalkDir - localWalkDir) > human_anim__localWalkDirDeltaThresholdAngle
     localWalkDir = sign(localWalkDir) * human_anim__localWalkDirClampAngle
+  
+  if isInVehicle
+    localWalkDir = 0.0
   phys_vars |> setVar(human_anim__localWalkDirVarId, localWalkDir)
 
   let prevRootRotate = phys_vars |> getVar(human_anim__rootRotateVarId)
   if statePos == HumanStatePos.E_CRAWL
     let rootRotate = standingInPlace ? localWalkDirFrom : approach(prevRootRotate, 0.0, dt, human_anim__rootRotateViscosity)
     phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
-  else
-    let rootRotateVisc = standingInPlace ? human_anim__rootRotateToSideViscosity : human_anim__rootRotateBackViscosity
-    let rootRotate = approach(prevRootRotate, standingInPlace ? localWalkDirFrom : 0.0, dt, rootRotateVisc)
+  elif human_anim__isFpv
+    let rootRotate = approach(prevRootRotate, standingInPlace ? localWalkDirFrom : 0.0, dt, human_anim__rootRotateToSideViscosityFpv)
     phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
+  
+  if isInVehicle
+    phys_vars |> setVar(human_anim__rootRotateVarId, 0.0)
 
-  var gunLengthCompensationValue = 0.0
   if human_anim__gunLengthCompensationVarId != -1
+    var gunLengthCompensationValue = 0.0
     query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
                                                 gun_anim_length_compensation__lHandNodeId : int;
                                                 gun_anim_length_compensation__rHandNodeId : int;
@@ -931,9 +937,9 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
         let rightP = *animchar.nodeTree |> geomtree_getNodeWpos(gun_anim_length_compensation__rHandNodeId)
         let projectedLength = dot(phys.currentState.gunDir, leftP - rightP) 
         let compensation = cvt(projectedLength, gun_anim_length_compensation__handDistanceMin, gun_anim_length_compensation__handDistanceMax, gun_anim_length_compensation__spineRotationMin, gun_anim_length_compensation__spineRotationMax)
-        let bodyAngleCoeff = cvt(bodyAngles.x, 0.0, -deg_to_rad(60.0), 0.0, 1.0)
+        let bodyAngleCoeff = cvt(abs(bodyAngles.x), 0.0, deg_to_rad(60.0), 0.0, 1.0)
         gunLengthCompensationValue = compensation * (1.0 - lean01) * (1.0 - bodyAngleCoeff)
-  phys_vars |> setVar(human_anim__gunLengthCompensationVarId, gunLengthCompensationValue)
+    phys_vars |> setVar(human_anim__gunLengthCompensationVarId, gunLengthCompensationValue)
 
   var stateUpperBody = HumanStateUpperBody.E_READY
   let effectiveCurSlot = phys.currentState.weapEquipState.effectiveCurSlot
@@ -1048,7 +1054,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   let prevVertSpeedVar = phys_vars |> getVar(human_anim__vertSpeedVarId)
   let newVertSpeedVar = approach(prevVertSpeedVar, vertSpeed, dt, human_anim__vertVelVisc)
   phys_vars |> setVar(human_anim__vertSpeedVarId, newVertSpeedVar)
-  let stateJump = (jumpFromStand || inLongJump) ? StateJump.E_FROM_STAND : inJumping ? StateJump.E_NOT_JUMP : StateJump.E_NOT_JUMP
+  let stateJump = (jumpFromStand || inLongJump) ? StateJump.E_FROM_STAND : StateJump.E_NOT_JUMP
 
   let prevHorzSpeedVar = phys_vars |> getVar(human_anim__horizontalSpeedVarId)
   let newHorzSpeedVar = approach(prevHorzSpeedVar, length(float3(phys.currentState.velocity.x, 0.0, phys.currentState.velocity.z)), dt, human_anim__horizontalVelocityViscosity)

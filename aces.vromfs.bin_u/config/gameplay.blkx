@@ -72,6 +72,7 @@
   "smoothGuidedMissilesResyncRelativeTargetTimeConst": 0.5,
   "resyncRemotelyControlleMissileGuidance": false,
   "missileMaxDistanceToShadowForGuidanceSimulation": 5000.0,
+  "missileTrajectoryGuidanceLockWarmupSteps": 30000,
   "postArretTimeOut": 0.5,
   "lockResetMinAcquisitionTime": 5.0,
   "weaponLockDeadUnits": true,
@@ -187,7 +188,7 @@
           "spawnScoreToUse": 2500,
           "rankRange": [
             25,
-            50
+            30
           ],
           "killStreakTagName": "bomber_nuclear",
           "country_usa": {
@@ -8463,7 +8464,8 @@
       "ins": 3,
       "crosshair": 4,
       "helmet": 5,
-      "radarSs": 6
+      "radarSs": 6,
+      "esm": 7
     }
   },
   "opticalSeeker": {
@@ -8475,18 +8477,74 @@
     "targetSearchBeamWidthMult": 1.0
   },
   "targetSignature": {
-    "ecmSourceMask": [
-      4,
-      8
-    ]
+    "Radar": {
+      "ecmSourceMask": [
+        4,
+        8
+      ]
+    }
   },
   "radarCommon": {
     "singleTargetDetectionSensitivityMult": 0.5,
     "directionWithinMainLobe": true,
     "angleFinderZoneToMainBeamWidth": 2.0,
     "useRefWidthForTargets": false,
+    "mainLobeMultipathDistance": 0.0,
+    "mainLobeMultipathMultiplier": 0.0,
+    "mainLobeMultipathHeightRange": [
+      0.0,
+      0.0
+    ],
     "chaffLineOfSight": false,
     "chaffAttenuationPower": 0.35
+  },
+  "radarFilterTypes": {
+    "default": "JET",
+    "entry": [
+      {
+        "targetTypeIdStr": "hud/helicopter",
+        "type": "HELI"
+      },
+      {
+        "targetTypeIdStr": "hud/rocket",
+        "type": "ROCKET"
+      },
+      {
+        "targetTypeIdStr": "hud/small",
+        "type": "SMALL"
+      },
+      {
+        "targetTypeIdStr": "hud/medium",
+        "type": "MEDIUM"
+      },
+      {
+        "targetTypeIdStr": "hud/large",
+        "type": "LARGE"
+      },
+      {
+        "type": "SHORT_RANGE_SPAA",
+        "targetTypeIdStr": [
+          "hud/zsu23",
+          "hud/2s6",
+          "hud/tor",
+          "hud/gepard",
+          "hud/roland",
+          "hud/adats"
+        ]
+      },
+      {
+        "type": "MEDIUM_RANGE_SPAA"
+      },
+      {
+        "type": "LONG_RANGE_SPAA",
+        "targetTypeIdStr": [
+          "hud/buk",
+          "hud/hawk",
+          "hud/patriot",
+          "hud/s300"
+        ]
+      }
+    ]
   },
   "radar": {
     "scanInScanZoneOnly": true,

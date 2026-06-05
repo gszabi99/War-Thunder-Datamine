@@ -181,7 +181,7 @@ let class ModsSetupHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let taskSuccessCallback = function() {
       updateUnitAfterSwitchMod(unit, mod.name)
-      broadcastEvent("ModificationChanged")
+      broadcastEvent("ModificationChanged", { mods = [mod] })
       showObjById("mod_wait_screen", false)
     }
 

@@ -13,6 +13,7 @@ require FlightModelWrap
 require %rGui.utils.constants_common
 require DagorSystem
 require %rGui.utils.radar_common
+require Localization
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 let allyColor = E3DCOLOR(0xFF0000FF)

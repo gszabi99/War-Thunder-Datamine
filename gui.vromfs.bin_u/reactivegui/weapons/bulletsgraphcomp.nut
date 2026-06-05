@@ -1,6 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 let fontsState = require("%rGui/style/fontsState.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/components/tooltip.nut")
+let { graphPlayerParams } = require("%rGui/weapons/bulletsGraphState.nut")
+let { get_time_msec } = require("dagor.time")
+let { secondsToMilliseconds } = require("%sqstd/time.nut")
+let { lerp } = require("%sqstd/math.nut")
 
 const MARK_COUNT_Y = 9
 const MARK_COUNT_X = 35
@@ -40,7 +44,7 @@ function mkGraphPoint(pointPosX, pointPosY, graphColor, tooltipContent) {
     key
     watch = stateFlag
     pos
-    size = [graphPointFullSize, graphPointFullSize]
+    size = graphPointFullSize
     skipDirPadNav = true
     behavior = Behaviors.Button
     onElemState = withTooltip(stateFlag, key, @() {
@@ -56,6 +60,40 @@ function mkGraphPoint(pointPosX, pointPosY, graphColor, tooltipContent) {
   }
 }
 
+function getCurPlayFlightTime(playerParams) {
+  let { startPlayingTimeMs, curPlayTimeMs, maxPlayTimeMs } = playerParams
+  return startPlayingTimeMs != 0 ? get_time_msec() - startPlayingTimeMs
+    : curPlayTimeMs == 0 ? maxPlayTimeMs
+    : curPlayTimeMs
+}
+
+function isVisibleByTime(flightTimeMs, playerParams) {
+  let curFlightTimeMs = getCurPlayFlightTime(playerParams)
+  return flightTimeMs <= curFlightTimeMs
+}
+
+function mkGraphPointByTime(pointPosX, pointPosY, graphColor, tooltipContent, playerParams, graphPoint) {
+  let key = {}
+  let graphPointComp = mkGraphPoint(0, 0, graphColor, tooltipContent)
+  let flightTimeMs = secondsToMilliseconds(graphPoint.flightTime).tointeger()
+  let isVisible = Watched(false)
+  let updateIsVisible = @(playerParamsValue) isVisible.set(isVisibleByTime(flightTimeMs, playerParamsValue))
+  return @() {
+    key
+    watch = isVisible
+    pos = [pointPosX, pointPosY]
+    size = [graphPointFullSize, graphPointFullSize]
+    behavior = Behaviors.RtPropUpdate
+    function update() {
+      if (!isVisible.get())
+        updateIsVisible(playerParams.get())
+    }
+    onAttach = @() playerParams.subscribe(updateIsVisible)
+    onDetach = @() playerParams.unsubscribe(updateIsVisible)
+    children = isVisible.get() ? graphPointComp : null
+  }
+}
+
 let mkGraphLine = @(commands, graphColor, lineWidth = graphLineThickness) {
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
@@ -63,6 +101,44 @@ let mkGraphLine = @(commands, graphColor, lineWidth = graphLineThickness) {
   color = graphColor
   fillColor = graphColor
   commands
+}
+
+function makeLineCommandByTime(lineCommand, graphPoints, curFlightTimeMs) {
+  let nextIdx = graphPoints.findindex(
+    @(point) secondsToMilliseconds(point.flightTime).tointeger() > curFlightTimeMs)
+  if (nextIdx == null)
+    return lineCommand
+
+  if (nextIdx == 0)
+    return []
+
+  let fullLineIdx = (nextIdx - 1) * 2 + 1
+  let nextLineIdx = fullLineIdx + 2
+  let fullLine = (clone lineCommand).resize(fullLineIdx + 2)
+  let lastPointFlightTime = secondsToMilliseconds(graphPoints[nextIdx - 1].flightTime).tointeger()
+  let nextPointFlightTime = secondsToMilliseconds(graphPoints[nextIdx].flightTime).tointeger()
+  let posX = lerp(lastPointFlightTime, nextPointFlightTime,
+    lineCommand[fullLineIdx], lineCommand[nextLineIdx], curFlightTimeMs)
+  let posY = lerp(lastPointFlightTime, nextPointFlightTime,
+    lineCommand[fullLineIdx + 1], lineCommand[nextLineIdx + 1], curFlightTimeMs)
+  return fullLine.append(posX, posY)
+}
+
+function mkGraphLineByTime(lineCommand, graphColor, playerParams, graphPoints) {
+  return {
+    size = flex()
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = graphLineThickness
+    color = graphColor
+    fillColor = graphColor
+    commands = []
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      commands = [
+        makeLineCommandByTime(lineCommand, graphPoints, getCurPlayFlightTime(playerParams.get()))
+      ]
+    }
+  }
 }
 
 function mkGraph(graphWidth, graphHeight, children) {
@@ -158,49 +234,60 @@ function mkGraphGrid(graphWidth, graphHeight, maxValueX, maxValueY, measureLocTe
 let roundedStepValues = [5000, 4500, 4000, 3500, 3000, 2500, 2000, 1500, 1000, 500, 250, 100, 50, 25, 10, 5, 2]
 
 function roundingValueDivisionByMarksCount(value, marksCount) {
-  local step = (value + 0.5).tointeger() / marksCount + 1
-  step = roundedStepValues.findvalue(@(v, idx) step <= v && step > (roundedStepValues?[idx + 1] ?? 1)) ?? 1
-  return marksCount * step
+  let notRoundStep = (value + 0.5).tointeger() / marksCount + 1
+  let roundStep = notRoundStep > roundedStepValues[0] ? ((notRoundStep / 1000) + 1) * 1000
+    : roundedStepValues.findvalue(@(v, idx) notRoundStep <= v && notRoundStep > (roundedStepValues?[idx + 1] ?? 1)) ?? 1
+  return marksCount * roundStep
 }
 
-function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getValueX, getValueY, getPointsCount, mkTooltipText) {
+function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, keyX, keyY, mkTooltipText, playerParams) {
   local maxValueX = 0
   local maxValueY = 0
   foreach (bullet in bulletsConfig) {
-    let pointsCount = getPointsCount(bullet)
+    let { graphData } = bullet
+    let pointsCount = graphData.len()
     for (local i = 0; i < pointsCount; i++) {
-      maxValueX = max(maxValueX, getValueX(bullet, i))
-      maxValueY = max(maxValueY, getValueY(bullet, i))
+      let graphPoint = graphData[i]
+      maxValueX = max(maxValueX, graphPoint[keyX])
+      maxValueY = max(maxValueY, graphPoint[keyY])
     }
   }
 
+  let hasPlayerParams = playerParams != null
   maxValueX = roundingValueDivisionByMarksCount(maxValueX, MARK_COUNT_X)
   maxValueY = roundingValueDivisionByMarksCount(maxValueY, MARK_COUNT_Y)
-
   let graphPoints = []
   let graphLines = []
   foreach (bullet in bulletsConfig) {
-    let { graphColor } = bullet
-    let pointsCount = getPointsCount(bullet)
+    let { graphColor, graphData } = bullet
+    let pointsCount = graphData.len()
     if (pointsCount <= 1) 
       continue
 
     let haveTooManyPoints = pointsCount > MAX_POINTS_COUNT_WITH_TOOLTIP
     let lineCommand = [VECTOR_LINE]
     for (local i = 0; i < pointsCount; i++) {
-      let valueX = getValueX(bullet, i)
-      let valueY = getValueY(bullet, i)
+      let graphPoint = graphData[i]
+      let valueX = graphPoint[keyX]
+      let valueY = graphPoint[keyY]
       let pointPosX = maxValueX == 0 ? 0 : valueX.tofloat() / maxValueX
       let pointPosY = maxValueY == 0 ? 0
         : valueY == 0 ? 1
         : clamp(1 - valueY / maxValueY, 0, 1) 
                                                 
       if (!haveTooManyPoints || (i % 2) == 0 || i == (pointsCount - 1))
-        graphPoints.append(mkGraphPoint(pointPosX * graphWidth, pointPosY * graphHeight,
-          graphColor, mkTooltipText(bullet, i)))
+        if (hasPlayerParams)
+          graphPoints.append(mkGraphPointByTime(pointPosX * graphWidth, pointPosY * graphHeight,
+            graphColor, mkTooltipText(graphPoint), playerParams, graphPoint))
+        else
+          graphPoints.append(mkGraphPoint(pointPosX * graphWidth, pointPosY * graphHeight,
+            graphColor, mkTooltipText(graphPoint)))
       lineCommand.append(pointPosX * 100, pointPosY * 100)
     }
-    graphLines.append(mkGraphLine([lineCommand], graphColor))
+    let graphLineComp = !hasPlayerParams ? mkGraphLine([lineCommand], graphColor)
+      : mkGraphLineByTime(lineCommand, graphColor, playerParams, graphData)
+
+    graphLines.append(graphLineComp)
   }
   return {
     maxValueX
@@ -209,39 +296,37 @@ function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getValueX, ge
   }
 }
 
-let mkTextValue = @(titleLocId, value, measureLocId) loc("ui/space").concat(
-  $"{loc(titleLocId)}{loc("ui/colon")}", (value + 0.5).tointeger(), loc(measureLocId))
-
 let roundingSizeDivisionByMarksCount = @(size, marksCount) size - (size % marksCount)
 
-let getBulletPenetrationValueX = @(bullet, idx) bullet.armorPiercingDist[idx]
-let getBulletPenetrationValueY = @(bullet, idx) bullet.armorPiercing[idx]
-let getBulletPenetrationPointsCount = @(bullet) bullet.armorPiercingDist.len()
-let getBulletPenetrationTooltip = @(bullet, idx) "\n".concat(
-  mkTextValue("bullet_properties/armorPiercing", bullet.armorPiercing[idx], "measureUnits/mm"),
-  mkTextValue("options/measure_units_dist", bullet.armorPiercingDist[idx], "measureUnits/meters_alt")
-)
-
-function mkBulletsArmorPiercingGraph(bulletsConfig, size) {
+function mkGridAndGraphComp(graphConfig, size, keyX, keyY, measureText, getTooltipText, playerParams = null) {
   let graphHeight = roundingSizeDivisionByMarksCount(size[1] - graphGridBottomIndent, MARK_COUNT_Y)
   let graphWidth = roundingSizeDivisionByMarksCount(size[0] - leftGraphPadding, MARK_COUNT_X)
   let { maxValueX, maxValueY, bulletsGraphComp
-  } = calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getBulletPenetrationValueX,
-    getBulletPenetrationValueY, getBulletPenetrationPointsCount, getBulletPenetrationTooltip)
+  } = calcGraphLineComp(graphConfig, graphWidth, graphHeight, keyX, keyY, getTooltipText, playerParams)
   return {
     size = flex()
     children = [
-      mkGraphGrid(graphWidth, graphHeight, maxValueX, maxValueY, loc("measureUnits/mm"))
+      mkGraphGrid(graphWidth, graphHeight, maxValueX, maxValueY, measureText)
       bulletsGraphComp
     ]
   }
 }
 
-let getBulletBallisticValueX = @(bullet, idx) bullet.ballisticsData[idx].distance
-let getBulletBallisticValueY = @(bullet, idx) bullet.ballisticsData[idx].altitude
-let getBulletBallisticPointsCount = @(bullet) bullet.ballisticsData.len()
-function getBulletBallisticTooltip(bullet, idx) {
-  let { distance, altitude, speed, flightDistance, flightTime } = bullet.ballisticsData[idx]
+
+let mkTextValue = @(titleLocId, value, measureLocId) loc("ui/space").concat(
+  $"{loc(titleLocId)}{loc("ui/colon")}", (value + 0.5).tointeger(), loc(measureLocId))
+
+let getBulletPenetrationTooltip = @(graphPoint) "\n".concat(
+  mkTextValue("bullet_properties/armorPiercing", graphPoint.penetration, "measureUnits/mm"),
+  mkTextValue("options/measure_units_dist", graphPoint.distance, "measureUnits/meters_alt")
+)
+
+let mkBulletsArmorPiercingGraph = @(bulletsConfig, size)
+  mkGridAndGraphComp(bulletsConfig, size, "distance", "penetration",
+    loc("measureUnits/mm"), getBulletPenetrationTooltip)
+
+function getBulletBallisticTooltip(graphPoint) {
+  let { distance, altitude, speed, flightDistance, flightTime } = graphPoint
   return "\n".concat(
     mkTextValue("options/measure_units_dist", distance, "measureUnits/meters_alt"),
     mkTextValue("options/measure_units_alt", altitude, "measureUnits/meters_alt"),
@@ -251,22 +336,26 @@ function getBulletBallisticTooltip(bullet, idx) {
   )
 }
 
-function mkBulletsBallisticTrajectoryGraph(bulletsConfig, size) {
-  let graphHeight = roundingSizeDivisionByMarksCount(size[1] - graphGridBottomIndent, MARK_COUNT_Y)
-  let graphWidth = roundingSizeDivisionByMarksCount(size[0] - leftGraphPadding, MARK_COUNT_X)
-  let { maxValueX, maxValueY, bulletsGraphComp
-  } = calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, getBulletBallisticValueX,
-    getBulletBallisticValueY, getBulletBallisticPointsCount, getBulletBallisticTooltip)
-  return {
-    size = flex()
-    children = [
-      mkGraphGrid(graphWidth, graphHeight, maxValueX, maxValueY, loc("measureUnits/meters_alt"))
-      bulletsGraphComp
-    ]
-  }
-}
+let mkBulletsBallisticTrajectoryGraph = @(bulletsConfig, size)
+  mkGridAndGraphComp(bulletsConfig, size, "distance", "altitude",
+    loc("measureUnits/meters_alt"), getBulletBallisticTooltip)
+
+let mkMissileTrajectoryGraph = @(bulletsConfig, size)
+  mkGridAndGraphComp(bulletsConfig, size, "distance", "altitude",
+    loc("measureUnits/meters_alt"), getBulletBallisticTooltip, graphPlayerParams)
+
+let mkMissileTelemetryDistanceGraph = @(bulletsConfig, size)
+  mkGridAndGraphComp(bulletsConfig, size, "flightTime", "distance",
+    loc("measureUnits/meters_alt"), getBulletBallisticTooltip)
+
+let mkMissileTelemetrySpeedGraph = @(bulletsConfig, size)
+  mkGridAndGraphComp(bulletsConfig, size, "flightTime", "speed",
+    loc("measureUnits/metersPerSecond_climbSpeed"), getBulletBallisticTooltip)
 
 return {
   mkBulletsArmorPiercingGraph
   mkBulletsBallisticTrajectoryGraph
+  mkMissileTelemetryDistanceGraph
+  mkMissileTelemetrySpeedGraph
+  mkMissileTrajectoryGraph
 }

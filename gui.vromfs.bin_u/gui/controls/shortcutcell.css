@@ -20,31 +20,55 @@ shortcutCell {
 }
 
 shortcutCell gamepadButton,
-shortcutCell shortcutAxis {
+shortcutCell shortcutAxis,
+combinationPlace gamepadButton,
+combinationPlace shortcutAxis {
   size:0.9@kbh, 0.9@kbh;
-  background-svg-size:0.9@kbh, 0.9@kbh;
 }
 
-shortcutCell keyboardButton {
+shortcutCell combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+shortcutCell combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis,
+combinationPlace combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+combinationPlace combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis {
+  size: 0.72@kbh, 0.72@kbh;
+}
+
+shortcutCell keyboardButton,
+combinationPlace keyboardButton {
   min-width:0.7@kbh;
   height:0.7@kbh;
-  top:0.1@kbh;
+  top:0.5ph-0.5h;
   position:relative;
 }
 
-[hasHoldButtonSign=yes] keyboardButton {
-  top:0.5ph - 0.5h;
+shortcutCell combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton,
+combinationPlace combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  min-width:0.56@kbh;
+  height:0.56@kbh;
+}
+
+shortcutCell combination[hasActivationTypeImg=yes] > combinationBackground,
+combinationPlace combination[hasActivationTypeImg=yes] > combinationBackground {
+  background-image:#ui/gameuiskin#hotkey_combo_bg.svg;
+  padding:0.07@kbh;
+}
+
+shortcutCell activationTypeImg,
+combinationPlace activationTypeImg {
+  size: 0.63@kbh, 0.63@kbh;
 }
 
 shortcutCell keyboardButtonText {
   font:@fontHudSmall;
 }
 
-[optContainer=yes] shortcutCell keyboardButtonText {
+[optContainer=yes] shortcutCell keyboardButtonText,
+combinationPlace keyboardButtonText {
   font:@fontNormal;
 }
 
-shortcutCell combination > textareaNoTab {
+shortcutCell combination > combinationBackground > textareaNoTab,
+combinationPlace combination > combinationBackground > textareaNoTab {
   font:@fontMedium;
 }
 
@@ -53,6 +77,8 @@ shortcutCell combination > textareaNoTab {
   margin-left:1@comboOptionPadding;
 }
 
-[optContainer=yes] shortcutCell tdiv, [optContainer=yes] shortcutCell textarea {
+[optContainer=yes] shortcutCell tdiv,
+[optContainer=yes] shortcutCell textarea,
+combinationPlace textarea {
   valign:center;
 }

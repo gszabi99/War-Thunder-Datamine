@@ -442,7 +442,7 @@ def trench_cover_init(var spawner_id_eid_map : table<int, EntityId>;
       if trench_cover__spawnerId != trench_bot_spawner__id
         return
       let shift = dot(trench_bot_spawner__coverIdAssignmentDir, cover_transform[3])
-      push(coverEidShiftMap, (eid, shift))
+      push(coverEidShiftMap, (eid = eid, shift = shift))
     sort(coverEidShiftMap) <| $(a, b)
       return a.shift < b.shift
     for elem, i in coverEidShiftMap, iter_range(coverEidShiftMap)
@@ -544,7 +544,7 @@ def update_moving_nav_areas(info : UpdateStageInfoAct;
         return
       let distSq = distance_sq(walker_agent.pos, transform[3])
       if distSq < square(moving_nav_area_reaction__checkRadiusVehicle)
-        push(vehicles, (distSq, objEid))
+        push(vehicles, (distSq = distSq, eid = objEid))
   sort(vehicles) <| $(a, b)
     return a.distSq < b.distSq
   for vehicle in vehicles

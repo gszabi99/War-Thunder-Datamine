@@ -1,3 +1,5 @@
+options no_aliasing = false
+
 require %rGui.utils.canvas_common
 require %rGui.utils.helpers_common
 require %rGui.utils.weaponslots_common
@@ -15,6 +17,7 @@ require strings
 require Unit
 require Weapon
 require WTCamera
+require Localization
 
 
 struct Colors
@@ -33,7 +36,7 @@ def deg_to_rad(deg : float)
   return deg * PI / 180.0
 
 def calc_box_points(pos : float2; size : float2) : tuple<lt : float2, rb : float2>
-  return size * -0.5 + pos, size * 0.5 + pos
+  return (lt = size * -0.5 + pos, rb = size * 0.5 + pos)
 
 
 def loc_wpn(str : string) : string

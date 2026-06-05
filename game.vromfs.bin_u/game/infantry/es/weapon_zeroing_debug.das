@@ -81,7 +81,7 @@ def draw_gun_sight_angle(evt : UpdateStageInfoRenderDebug)
         let angleDeg = calc_sight_shoot_angle(animchar, weapon_frontsight_node__nodeIdx,
           weapon_rearsight_node__nodeIdx, barrelDir) * (180.0 / PI)
         let textPos = rearPos + sightDir * lineLen
-        add_debug_text_mark(textPos, "sight angle: {format("%.3f", double(angleDeg))} deg", -1, 0.0, E3DCOLOR(0xFFFFFFFF))
+        add_debug_text_mark(textPos, "sight angle: {fmt(":.3f", double(angleDeg))} deg", -1, 0.0, E3DCOLOR(0xFFFFFFFF))
 
 
 [console_cmd(name="gun.calc_zeroing_correction", hint="<distance> Calculate zeroing angle correction for sight-shoot misalignment")]
@@ -118,9 +118,9 @@ def gun_calc_zeroing_correction(distance : float)
         var hasRocket = false
         get_props_RocketProperties(shellId) <| $(rocketProps : RocketProperties)
           hasRocket = true
-          zeroingAngle = calc_zeroing_angle_rocket(distance, float(speed), shellBallistics, rocketProps)
+          zeroingAngle = calc_zeroing_angle_rocket(distance, 0.0, float(speed), shellBallistics, rocketProps)
         if !hasRocket
-          zeroingAngle = calc_zeroing_angle(distance, float(speed), shellBallistics)
+          zeroingAngle = calc_zeroing_angle(distance, 0.0, float(speed), shellBallistics)
       if !hasShellBallistics
         console_print("No shell ballistics properties found")
         return
@@ -140,7 +140,7 @@ def gun_calc_zeroing_correction(distance : float)
 
       let correction = zeroingAngle - sightAngle
       let toDeg = 180.0 / PI
-      console_print("Distance: {format("%.1f", double(distance))}m, shell speed: {format("%.1f", double(speed))}m/s")
-      console_print("Zeroing angle:     {format("%.3f", double(zeroingAngle * toDeg))} deg ({format("%.5f", double(zeroingAngle))} rad)")
-      console_print("Sight-shoot angle: {format("%.3f", double(sightAngle * toDeg))} deg ({format("%.5f", double(sightAngle))} rad)")
-      console_print("Correction needed: {format("%.3f", double(correction * toDeg))} deg ({format("%.5f", double(correction))} rad)")
+      console_print("Distance: {fmt(":.1f", double(distance))}m, shell speed: {fmt(":.1f", double(speed))}m/s")
+      console_print("Zeroing angle:     {fmt(":.3f", double(zeroingAngle * toDeg))} deg ({fmt(":.5f", double(zeroingAngle))} rad)")
+      console_print("Sight-shoot angle: {fmt(":.3f", double(sightAngle * toDeg))} deg ({fmt(":.5f", double(sightAngle))} rad)")
+      console_print("Correction needed: {fmt(":.3f", double(correction * toDeg))} deg ({fmt(":.5f", double(correction))} rad)")

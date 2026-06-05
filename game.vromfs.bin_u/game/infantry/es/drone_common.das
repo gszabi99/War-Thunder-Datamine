@@ -39,3 +39,20 @@ def refill_drone_launches(soldierEid : EntityId)
       if refilled
         break
   return refilled
+
+
+def calc_drone_ew_state(drone_pos : float3; drone_team : int) : tuple<zoneT : float; maxControlLoss : float>
+  var zoneT = 0.0
+  var maxControlLoss = 0.0
+  query() <| $ [es(REQUIRE=fakeEwZone)] (transform aka zone_transform : float3x4;
+                                         fake_ew_zone__areaSq : float2;
+                                         fake_ew_zone__maxControlLoss : float;
+                                         team aka zone_team : int)
+    if zone_team == drone_team
+      return
+    let dSq = distance_sq(drone_pos, zone_transform[3])
+    let t = cvt(dSq, fake_ew_zone__areaSq.y, fake_ew_zone__areaSq.x, 0.0, 1.0)
+    if t > zoneT
+      zoneT = t
+      maxControlLoss = fake_ew_zone__maxControlLoss
+  return (zoneT = zoneT, maxControlLoss = maxControlLoss)

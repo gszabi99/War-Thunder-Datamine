@@ -41,10 +41,6 @@ def is_repair_needed(unit : Unit const?; repair_state : uint; speed_multiplier :
         elif with_mods
           if repair_with_mods_available
             return true
-    if with_mods && repair_with_mods_available
-      var trailer = get_unit_by_eid(unit.trailerEid)
-      if trailer != null && !trailer.isAlive
-        return true
   return false
 
 
@@ -89,7 +85,7 @@ def get_part_current_hp(dmData : DamageModelData; part_id : PartId; part_state :
 def calc_time_to_repair(unit : Unit const?; speed_multiplier : float; repair_system_repair_hp_multiplier : float;
                         repair_system_parts_id : PartIdList; repair_system_parts_state : UInt32List;
                         var repair_system_parts_hp : Point4List&; repair_system_parts_speed_mult : FloatList;
-                        repair_with_mods_available : bool; repair_trailer_time : float; repair_trailer_progress : float)
+                        repair_with_mods_available : bool)
   var total_normal_time_to_repair = 0.0f
   var total_serial_time_to_repair = 0.0f
   assume dmData = unit.dmData
@@ -102,7 +98,4 @@ def calc_time_to_repair(unit : Unit const?; speed_multiplier : float; repair_sys
         total_serial_time_to_repair += time
       else
         total_normal_time_to_repair = max(total_normal_time_to_repair, time)
-  var trailer = get_unit_by_eid(unit.trailerEid)
-  if trailer != null && !trailer.isAlive
-    total_normal_time_to_repair = max(total_normal_time_to_repair, (1.0 - repair_trailer_progress) * repair_trailer_time * get_difficulty_config().tankRepairSpeedK / speed_multiplier)
   return max(total_normal_time_to_repair, total_serial_time_to_repair)

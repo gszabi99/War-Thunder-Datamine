@@ -20,6 +20,7 @@ enum CollresDrawAllMode
   DEFAULT
   NORMALS
   BBOX
+  FLAGS
   MODES_COUNT
 
 
@@ -36,7 +37,7 @@ struct collres_draw_all_debug
   drawCollisionResourceDist : float
 
 
-[console_cmd(name="collres.draw_all", hint="draws collision geometry near camera, 0 - NONE, 1 - COLLIDERS, 2 - COLLIDERS and NORMALS, 3 - BBOX")]
+[console_cmd(name="collres.draw_all", hint="draws collision geometry near camera, 0 - NONE, 1 - COLLIDERS, 2 - COLLIDERS and NORMALS, 3 - BBOX, 4 - COLLIDERS COLORED BY FLAGS")]
 def console_draw_coll_res(mode : int = 1;
                           dist : float = 16.0)
   if mode < 0 || mode >= int(CollresDrawAllMode.MODES_COUNT)
@@ -62,71 +63,88 @@ def console_draw_coll_res(mode : int = 1;
 def draw_node_names(collres : CollisionResource;
                     transform : float3x4;
                     animchar : AnimcharBaseComponent const?;
-                    color : E3DCOLOR)
+                    color : E3DCOLOR;
+                    show_flags : bool)
   let numNodes = collres_get_nodesCount(collres)
   for i in range(numNodes)
-    let node = collres_get_node(collres, i)
     var nodeTm : float3x4
+    let node = collres_get_node(collres, i)
     collres_get_collision_node_tm(collres, i, transform, animchar != null ? animchar.nodeTree : null, nodeTm)
-    let name = node |> collnode_get_name()
-    add_debug_text_mark(nodeTm[3], name, -1, 0f, color)
+    let name = collres_get_node_name(collres, i)
+    let text = show_flags ? "{name}:{int(node.behaviorFlags)}" : string(name)
+    add_debug_text_mark(nodeTm[3], text, -1, 0f, color)
+
+
+
+
+
+
+
 
 def draw_node_collision_geometry(collres : CollisionResource;
                                  transform : float3x4;
                                  animchar : AnimcharBaseComponent const?;
                                  color : E3DCOLOR;
                                  cam_dir : float3;
-                                 draw_normals : bool = false)
+                                 draw_normals : bool = false;
+                                 color_by_flags : bool = false)
   let numNodes = collres_get_nodesCount(collres)
   for i in range(numNodes)
     let node = collres_get_node(collres, i)
+    var nodeColor = color
+    if color_by_flags
+      let isTraceable = (uint(node.behaviorFlags) & uint(BehaviorFlag.TRACEABLE)) != 0u
+      let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
+      nodeColor = (!isTraceable && !isCollidable ? E3DCOLOR(0xFFFF0000) :
+                    isTraceable && !isCollidable ? E3DCOLOR(0xFFFFFF00) :
+                   !isTraceable &&  isCollidable ? E3DCOLOR(0xFF00FF00) :
+                                                   E3DCOLOR(0xFF00FFFF))
     var nodeTm : float3x4
     collres_get_collision_node_tm(collres, i, transform, animchar != null ? animchar.nodeTree : null, nodeTm)
     set_cached_debug_lines_wtm(transform)
     if node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH
       let camDirNodeSpace = draw_normals ? rotate(inverse(nodeTm), cam_dir) : float3()
       set_cached_debug_lines_wtm(nodeTm)
-      get_collnode_geom(node) <| $(indices; vertices)
-        for idx in range(length(indices) / 3)
-          let v0 = vertices[int(indices[idx * 3 + 0])].xyz
-          let v1 = vertices[int(indices[idx * 3 + 1])].xyz
-          let v2 = vertices[int(indices[idx * 3 + 2])].xyz
-          draw_cached_debug_line(v0, v1, color)
-          draw_cached_debug_line(v1, v2, color)
-          draw_cached_debug_line(v2, v0, color)
+      collres_node_iterate_face_verts(collres, int(node.nodeIndex)) <| $ [unused_argument(idx)] (idx : int; v0, v1, v2 : float3)
+        draw_cached_debug_line(v0, v1, nodeColor)
+        draw_cached_debug_line(v1, v2, nodeColor)
+        draw_cached_debug_line(v2, v0, nodeColor)
 
-          if draw_normals
-            let normalVec = cross(v1 - v0, v2 - v0)
-            let normalVecLenSq = length_sq(normalVec)
-            if normalVecLenSq > FLT_EPSILON
-              let midPoint = (v0 + v1 + v2) / 3.0
-              let normal = normalVec / sqrt(normalVecLenSq)
-              let tangent = get_normal(normal)
-              let bitangent = cross(normal, tangent)
-              let arrowRad = 0.005
-              let normalDrawLen = 0.2
-              let arrowLen = normalDrawLen * 0.1
-              let normalPoint = midPoint + normal * normalDrawLen
+        if draw_normals
+          let normalVec = cross(v1 - v0, v2 - v0)
+          let normalVecLenSq = length_sq(normalVec)
+          if normalVecLenSq > FLT_EPSILON
+            let midPoint = (v0 + v1 + v2) / 3.0
+            let normal = normalVec / sqrt(normalVecLenSq)
+            let tangent = get_normal(normal)
+            let bitangent = cross(normal, tangent)
+            let arrowRad = 0.005
+            let normalDrawLen = 0.2
+            let arrowLen = normalDrawLen * 0.1
+            let normalPoint = midPoint + normal * normalDrawLen
 
-              let arrowPoint0 = normalPoint + tangent * arrowRad - normal * arrowLen
-              let arrowPoint1 = normalPoint - tangent * arrowRad - normal * arrowLen
-              let arrowPoint2 = normalPoint + bitangent * arrowRad - normal * arrowLen
-              let arrowPoint3 = normalPoint - bitangent * arrowRad - normal * arrowLen
+            let arrowPoint0 = normalPoint + tangent * arrowRad - normal * arrowLen
+            let arrowPoint1 = normalPoint - tangent * arrowRad - normal * arrowLen
+            let arrowPoint2 = normalPoint + bitangent * arrowRad - normal * arrowLen
+            let arrowPoint3 = normalPoint - bitangent * arrowRad - normal * arrowLen
 
-              let normalColor = dot(camDirNodeSpace, normal) < 0.0 ? E3DCOLOR(0xD51C77FF) : E3DCOLOR(0x44FF0C0C)
+            let normalColor = dot(camDirNodeSpace, normal) < 0.0 ? E3DCOLOR(0xD51C77FF) : E3DCOLOR(0x44FF0C0C)
 
-              draw_cached_debug_line(midPoint, normalPoint, normalColor)
-              draw_cached_debug_line(normalPoint, arrowPoint0, normalColor)
-              draw_cached_debug_line(normalPoint, arrowPoint1, normalColor)
-              draw_cached_debug_line(normalPoint, arrowPoint2, normalColor)
-              draw_cached_debug_line(normalPoint, arrowPoint3, normalColor)
+            draw_cached_debug_line(midPoint, normalPoint, normalColor)
+            draw_cached_debug_line(normalPoint, arrowPoint0, normalColor)
+            draw_cached_debug_line(normalPoint, arrowPoint1, normalColor)
+            draw_cached_debug_line(normalPoint, arrowPoint2, normalColor)
+            draw_cached_debug_line(normalPoint, arrowPoint3, normalColor)
 
     elif node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX
-      draw_cached_debug_box(node.modelBBox, color)
+      draw_cached_debug_box(collres_get_node_bbox(collres, i), nodeColor)
     elif node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE
-      draw_cached_debug_sphere(node.boundingSphere.c, node.boundingSphere.r, color, 12)
+      let bsph = collres_get_node_bsphere(collres, i)
+      draw_cached_debug_sphere(bsph.c, bsph.r, nodeColor, 12)
     elif node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE
-      draw_cached_debug_capsule_w(node.capsule, color)
+      var cap : Capsule
+      if collres_get_node_capsule(collres, i, cap)
+        draw_cached_debug_capsule_w(cap, nodeColor)
 
 
 def for_each_collres_near_camera(func_cb; cam_dist : float = 16.0)
@@ -171,7 +189,8 @@ def debug_dynamic_collision(info : UpdateStageInfoRenderDebug;
         set_cached_debug_lines_wtm(IDENT_TM)
       else
         let drawNormals = (drawCollisionResourceMode == int(CollresDrawAllMode.NORMALS))
-        draw_node_collision_geometry(collres, tm, animchar, color, camera_transform[2], drawNormals)
+        let colorByFlags = (drawCollisionResourceMode == int(CollresDrawAllMode.FLAGS))
+        draw_node_collision_geometry(collres, tm, animchar, color, camera_transform[2], drawNormals, colorByFlags)
     for_each_collres_near_camera(drawNodeCollisionGeometry, drawCollisionResourceDist)
     return true
 
@@ -179,19 +198,25 @@ def debug_dynamic_collision(info : UpdateStageInfoRenderDebug;
 [ecs_template]
 struct collres_names_debug
   drawCollresNames : bool
+  drawCollresNamesShowFlags : bool
 
-[console_cmd(name="collres.draw_names", hint="draws collres node names and positions near camera")]
-def toggle_draw_coll_res_names()
-  var exists = false
-  query() <| $ [es(REQUIRE=drawCollresNames)] (eid : EntityId)
-    destroyEntity(eid)
-    exists = true
-  if !exists
-    createEntity("collres_names_debug")
+[console_cmd(name="collres.draw_names", hint="draws collres node names near camera; pass 1 to also append :behaviorFlags")]
+def toggle_draw_coll_res_names(show_flags : bool = false)
+  let found = find_query() <| $ [es(REQUIRE=drawCollresNames)] (eid : EntityId; var drawCollresNamesShowFlags : bool&)
+    if drawCollresNamesShowFlags == show_flags
+      destroyEntity(eid)
+    else
+      drawCollresNamesShowFlags = show_flags
+    return true
+  if !found
+    createEntity("collres_names_debug") <| $(var init : ComponentsInitializer)
+      init |> set("drawCollresNamesShowFlags", show_flags)
 
 [es(tag=(render, dev), REQUIRE=drawCollresNames, no_order)]
-def draw_collres_node_names(info : UpdateStageInfoRenderDebug)
-  for_each_collres_near_camera(@@draw_node_names)
+def draw_collres_node_names(info : UpdateStageInfoRenderDebug; drawCollresNamesShowFlags : bool = false)
+  let drawer <- $ <| (collres : CollisionResource; tm : float3x4; animchar : AnimcharBaseComponent const ?; color : E3DCOLOR)
+    draw_node_names(collres, tm, animchar, color, drawCollresNamesShowFlags)
+  for_each_collres_near_camera(drawer)
 
 
 [ecs_template]
@@ -242,15 +267,14 @@ def format_scale(tm : float3x4)
       flags = abs(len0sq - 1.f) < 1e-3f ? uint8(CollisionNodeFlag.ORTHONORMALIZED) : uint8(CollisionNodeFlag.ORTHOUNIFORM)
   return format_scale(flags, tm)
 
-def get_node_info(node) : string
+def get_node_info(collres : CollisionResource; node) : string
   var geomInfo = "; type: {get_node_type_name(node.nodeType)}"
   if node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH || node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX
-    get_collnode_geom(node) <| $ [unused_argument(vertices)] (indices; vertices)
-      geomInfo += " ({length(indices) / 3} trs)"
+    geomInfo += " ({collres_get_node_face_count(collres, int(node.nodeIndex))} trs)"
   if node.geomNodeId != -1
     geomInfo += "; geomNodeId: {node.geomNodeId}"
   else
-    geomInfo += "; " + format_scale(node.flags, node.tm)
+    geomInfo += "; " + format_scale(node.flags, collres_get_node_tm(collres, int(node.nodeIndex)))
 
   var behFlags = ""
   if (uint(node.behaviorFlags) & uint(BehaviorFlag.TRACEABLE)) != 0u
@@ -260,7 +284,7 @@ def get_node_info(node) : string
   if behFlags != ""
     geomInfo += "; beh: {behFlags}"
 
-  return "node {node.nodeIndex}: {node |> collnode_get_name()}" + geomInfo
+  return "node {node.nodeIndex}: {collres_get_node_name(collres, int(node.nodeIndex))}" + geomInfo
 
 def get_grid_info(collres : CollisionResource; flag : uint8)
   var width : int3
@@ -278,7 +302,7 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
   var ntm : float3x4
   collres |> collres_get_collision_node_tm(int(node.nodeIndex), transform, nodeTree, ntm)
   set_cached_debug_lines_wtm(ntm)
-  draw_cached_debug_box(node.modelBBox, E3DCOLOR(0xFFBF00FF))
+  draw_cached_debug_box(collres_get_node_bbox(collres, best_node_idx), E3DCOLOR(0xFFBF00FF))
   set_cached_debug_lines_wtm(transform)
   draw_cached_debug_sphere(collres.boundingSphereCenter, collres.boundingSphereRad, E3DCOLOR(0xFFBBBB00), 24)
   set_cached_debug_lines_wtm(IDENT_TM)
@@ -306,12 +330,11 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
         if noteType <= 2 && int(inode.nodeIndex) != best_node_idx
           noteType = 2
           noteId = int(inode.nodeIndex)
-      get_collnode_geom(inode) <| $ [unused_argument(vertices)] (indices; vertices)
-        let tri = length(indices) / 3
-        if isTraceable
-          traceableTriCnt += tri
-        if isCollidable
-          collidableTriCnt += tri
+      let tri = collres_get_node_face_count(collres, int(inode.nodeIndex))
+      if isTraceable
+        traceableTriCnt += tri
+      if isCollidable
+        collidableTriCnt += tri
     if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_POINTS
       ptCnt++
     if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX
@@ -356,10 +379,10 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
     nodesText += "; geom_attached: {geomCnt}"
   add_debug_text_mark(markPos, name, -1, 0.0, E3DCOLOR(0xFF8FFF8F))
   add_debug_text_mark(markPos, "dist {dist:.2f}m; bsph_rad: {collres.boundingSphereRad:.3f}; node_mat: {node.physMatId} ({get_material_name(get_material(int(node.physMatId)))}); tm " + format_scale(transform), -1, 1.2, E3DCOLOR(0xFF8FFF8F))
-  add_debug_text_mark(markPos, "Selected " + get_node_info(node), -1, 2.4, E3DCOLOR(0xFF8FFF8F))
+  add_debug_text_mark(markPos, "Selected " + get_node_info(collres, node), -1, 2.4, E3DCOLOR(0xFF8FFF8F))
   add_debug_text_mark(markPos, nodesText, -1, 3.6, E3DCOLOR(0xFF8FFF8F))
   if noteType != 0
-    add_debug_text_mark(markPos, "Last scaled " + get_node_info(collres |> collres_get_node(noteId)), -1, 4.8, E3DCOLOR(0xFF8FFF8F))
+    add_debug_text_mark(markPos, "Last scaled " + get_node_info(collres, collres |> collres_get_node(noteId)), -1, 4.8, E3DCOLOR(0xFF8FFF8F))
   add_debug_text_mark(markPos, "Grids: trace={get_grid_info(collres, uint8(BehaviorFlag.TRACEABLE))} coll={get_grid_info(collres, uint8(BehaviorFlag.PHYS_COLLIDABLE))}", -1, noteType != 0 ? 6.0 : 4.8, E3DCOLOR(0xFF8FFF8F))
 
 [es(tag=(render, dev), no_order, REQUIRE=collisionRulerDebug)]
@@ -456,11 +479,10 @@ def collres_dump_vertices(ri_name : string = "")
         let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
         if !isCollidable
           continue
-        df_write(file, "# Node '{node |> collnode_get_name()}'\n")
-        get_collnode_geom(node) <| $ [unused_argument(indices)] (indices; vertices)
-          if file != null
-            for v in vertices
-              df_write(file, "v {v.x} {v.y} {v.z}\n")
+        df_write(file, "# Node '{collres_get_node_name(*riCollres, nodeIdx)}'\n")
+        if file != null
+          collres_node_iterate_verts(*riCollres, int(node.nodeIndex)) <| $ [unused_argument(vi)] (vi : int; v : float3)
+            df_write(file, "v {v.x} {v.y} {v.z}\n")
       df_write(file, "\n### Indices ###\n")
       var indexOffset = 1
       for nodeIdx in range(nodeCount)
@@ -468,10 +490,9 @@ def collres_dump_vertices(ri_name : string = "")
         let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
         if !isCollidable
           continue
-        df_write(file, "# Node '{node |> collnode_get_name()}' Offset +{indexOffset}\n")
-        get_collnode_geom(node) <| $(indices; vertices)
-          if file != null
-            for i in range(length(indices) / 3)
-              df_write(file, "f {int(indices[i*3+0]) + indexOffset} {int(indices[i*3+1]) + indexOffset} {int(indices[i*3+2]) + indexOffset}\n")
-          indexOffset += length(vertices)
+        df_write(file, "# Node '{collres_get_node_name(*riCollres, nodeIdx)}' Offset +{indexOffset}\n")
+        if file != null
+          collres_node_iterate_faces(*riCollres, int(node.nodeIndex)) <| $ [unused_argument(fi)] (fi : int; i0, i1, i2 : int)
+            df_write(file, "f {i0 + indexOffset} {i1 + indexOffset} {i2 + indexOffset}\n")
+        indexOffset += collres_get_node_vert_count(*riCollres, int(node.nodeIndex))
     console_print("Dumped to {fileName} (Wavefront obj format)")

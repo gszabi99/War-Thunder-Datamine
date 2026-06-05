@@ -19,11 +19,11 @@ function crosshair(width, _height) {
     color = isInVr ? Color(202, 30, 10, 120) : Color(202, 30, 10, 100)
     lineWidth = baseLineWidth * IlsLineScale.get()
     fillColor = Color(0, 0, 0, 0)
-    commands =
-      HmdSensorDesignation.get() ||
-      (HmdDesignation.get() &&
-      GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING && CurWeaponGidanceType.get() == GuidanceType.TYPE_OPTICAL ?
-        [
+    commands = HmdSensorDesignation.get()
+      || (HmdDesignation.get()
+        && GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING
+        && CurWeaponGidanceType.get() == GuidanceType.TYPE_OPTICAL)
+      ? [
           [VECTOR_ELLIPSE, 0, 0, 30, 30],
           [VECTOR_ELLIPSE, 0, 0, 50, 50],
           [VECTOR_LINE, 0, -15, 0, -65],
@@ -31,8 +31,9 @@ function crosshair(width, _height) {
           [VECTOR_LINE, -15, 0, -65, 0],
           [VECTOR_LINE,  15, 0,  65, 0]
         ]
-      : (GuidanceLockState.get() >= GuidanceLockResult.RESULT_WARMING_UP && CurWeaponGidanceType.get() == GuidanceType.TYPE_OPTICAL ?
-        [
+      : GuidanceLockState.get() >= GuidanceLockResult.RESULT_WARMING_UP
+        && CurWeaponGidanceType.get() == GuidanceType.TYPE_OPTICAL
+      ? [
           [VECTOR_SECTOR, 0, 0, 50, 50, 5, 85],
           [VECTOR_SECTOR, 0, 0, 50, 50, 95, 175],
           [VECTOR_SECTOR, 0, 0, 50, 50, 185, 270],
@@ -45,7 +46,7 @@ function crosshair(width, _height) {
       : [
           [VECTOR_ELLIPSE, 0, 0, 30, 30],
           [VECTOR_ELLIPSE, 0, 0, 50, 50]
-        ]))
+        ]
     animations = [
       { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, play = GuidanceLockState.get() >= GuidanceLockResult.RESULT_WARMING_UP && GuidanceLockState.get() < GuidanceLockResult.RESULT_TRACKING, loop = true, trigger = "RESULT_WARMING_UP" }
     ]

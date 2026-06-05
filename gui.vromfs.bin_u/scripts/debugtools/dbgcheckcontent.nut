@@ -21,7 +21,6 @@ let { utf8ToLower, startsWith, lastIndexOf, replace } = require("%sqstd/string.n
 let { get_decals_blk, get_current_mission_info_cached } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { isInFlight } = require("gameplayBinding")
 let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
 let { image_for_air } = require("%scripts/unit/unitInfo.nut")
@@ -472,7 +471,7 @@ function debug_all_skins_without_location_mask() {
       foreach (skin in unit.getSkins()) {
         if (skin.name == "")
           continue
-        local mask = skinLocations.getSkinLocationsMask(skin.name, unit.name, decoratorTypes.SKINS)
+        local mask = skinLocations.getSkinLocationsMask(skin.name, unit.name)
         if (!mask)
           u.appendOnce(skin.name, totalList)
       }

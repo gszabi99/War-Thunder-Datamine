@@ -15,7 +15,7 @@ let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getItemCost, getAllModsCost, getItemStatusTbl, getItemUnlockCost
 } = require("%scripts/weaponry/itemInfo.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -147,7 +147,7 @@ local class WeaponsPurchaseProcess {
     let repairCost = this.checkRepair ? this.unit.getRepairCost() : Cost()
     let price = this.cost + repairCost
     this.msgLocParams.cost <- price.getTextAccordingToBalance()
-    let performAction = Callback(function() {
+    let callbackYes = Callback(function() {
       if (repairCost.isZero())
         this.mainFunc(amount)
       else
@@ -155,9 +155,9 @@ local class WeaponsPurchaseProcess {
           Callback(@() this.execute(amount, completeOnCancel), this))
     }, this)
     if (this.silent)
-      return performAction()
+      return callbackYes()
 
-    let cancelAction = Callback(function() {
+    let callbackNo = Callback(function() {
       if (completeOnCancel)
         this.complete()
     }, this)
@@ -167,7 +167,10 @@ local class WeaponsPurchaseProcess {
         this.msgLocParams
       ), price)
 
-    purchaseConfirmation("mechanic_execute_msg", text, performAction, cancelAction, cancelAction)
+    purchaseConfirmation(
+      { id = "mechanic_execute_msg", text, callbackYes, callbackNo, onExitFunc = callbackNo },
+      price
+    )
   }
 
   function repair(afterSuccessFunc = null, afterBalanceRefillFunc = null) {

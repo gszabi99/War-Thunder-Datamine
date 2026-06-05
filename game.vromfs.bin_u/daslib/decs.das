@@ -92,9 +92,30 @@ struct EcsRequestPos {
     line : uint             
 }
 
+def private normalize_file_name(name : string) : string {
+    
+    
+    
+    let s = replace(name, "\\", "/")
+    var lastSlash = -1
+    var pos = 0
+    while (true) {
+        let idx = find(s, "/", pos)
+        if (idx < 0) {
+            break
+        }
+        lastSlash = idx
+        pos = idx + 1
+    }
+    if (lastSlash >= 0) {
+        return slice(s, lastSlash + 1)
+    }
+    return s
+}
+
 def EcsRequestPos(at : rtti::LineInfo) : EcsRequestPos {
     
-    return EcsRequestPos(file = at.fileInfo != null ? string(at.fileInfo.name) : "", line = at.line)
+    return EcsRequestPos(file = at.fileInfo != null ? normalize_file_name(string(at.fileInfo.name)) : "", line = at.line)
 }
 
 struct public EcsRequest {
@@ -166,7 +187,7 @@ def public operator .(var cmp : ComponentMap; name : string) : ComponentValue& {
 
 def public set(var cv : ComponentValue; val : auto) {
     
-    var cval = make_component(cv.name, val)
+    let cval = make_component(cv.name, val)
     assert(cv.info.hash == 0ul || cv.info.hash == cval.info.hash)
     cv = cval
 }
@@ -393,7 +414,7 @@ def private new_entity_id() {
         decsState.entityFreeList |> pop
     } else {
         eid.id = uint(length(decsState.entityLookup))
-        decsState.entityLookup |> push((0, 0ul, 0))
+        decsState.entityLookup |> push((generation = 0, archetype = ComponentHash(0ul), index = 0))
     }
     eid.generation ++
     return eid
@@ -433,29 +454,41 @@ def public after_gc {
     }
 }
 
-def public debug_dump {
+def public debug_dump_string : string {
+    
+    return build_string() $(var writer) {
+        debug_dump_writer(writer)
+    }
+}
+
+def public debug_dump_writer(var writer : StringBuilderWriter) {
     
     for (arch in decsState.allArchetypes) {
-        to_log(LOG_DEBUG, "archtype {arch.hash} : {arch.size}\n")
+        writer |> write("archetype {arch.hash} : {arch.size}\n")
         for (index in range(arch.size)) {
-            to_log(LOG_DEBUG, "\tentity[{index}]\n")
+            writer |> write("\tentity[{index}]\n")
             for (c in arch.components) {
                 if (c.info.dumper != null) {
                     let offset = index * c.stride
                     unsafe {
                         let dump = invoke(c.info.dumper, addr(c.data[offset]))
-                        to_log(LOG_DEBUG, "\t\t{c.name} : {describe(c.info)} = {dump}\n")
+                        writer |> write("\t\t{c.name} : {describe(c.info)} = {dump}\n")
                     }
                 } else {
-                    to_log(LOG_DEBUG, "\t\t{c.name} : {describe(c.info)}\n")
+                    writer |> write("\t\t{c.name} : {describe(c.info)}\n")
                 }
             }
         }
     }
     for (erq in decsState.ecsQueries) {
-        to_log(LOG_DEBUG, "query {erq.hash}\n")
-        to_log(LOG_DEBUG, "\treq = {erq.req}\n\treqn = {erq.reqn}\n\tarchetypes = {erq.archetypes}\nat = {erq.at.file}:{int(erq.at.line)}\n")
+        writer |> write("query {erq.hash}\n")
+        writer |> write("\treq = {erq.req}\n\treqn = {erq.reqn}\n\tarchetypes = {erq.archetypes}\n\tat = {erq.at.file}:{int(erq.at.line)}\n")
     }
+}
+
+def public debug_dump {
+    
+    to_log(LOG_DEBUG, debug_dump_string())
 }
 
 def private with_archetype(hash : ComponentHash; blk : block<(var arch : Archetype; idx : int; isNew : bool) : void>) {
@@ -527,7 +560,7 @@ def private remove_entity(var arch : Archetype; di : int) {
     
     arch.size --
     if (di != arch.size) {
-        var eid_last_id = get_eid(arch, arch.size).id
+        let eid_last_id = get_eid(arch, arch.size).id
         decsState.entityLookup[eid_last_id].index = di
         for (c in arch.components) {
             unsafe {
@@ -585,14 +618,14 @@ def private can_process_request(var erq : EcsRequest; var arch : Archetype) {
 def public verify_request(var erq : EcsRequest) : tuple<ok : bool; error : string> {
     
     if (erq.hash == 0ul || (empty(erq.req) && empty(erq.reqn))) {
-        return (true, "")     
+        return (ok = true, error = "")     
     }
     for (N in erq.reqn) {
         if (erq.req |> binary_search(N)) {
-            return (false, "duplicate req and neq {N}")
+            return (ok = false, error = "duplicate req and neq {N}")
         }
     }
-    return (true, "")
+    return (ok = true, error = "")
 }
 
 def public compile_request(var erq : EcsRequest) {
@@ -635,7 +668,7 @@ def public for_each_archetype(var erq : EcsRequest; blk : block<(arch : Archetyp
 def public for_eid_archetype(eid : EntityId implicit; hash : ComponentHash; var erq : function<() : EcsRequest>; blk : block<(arch : Archetype; index : int) : void>) {
     
     
-    var lookup = decsState.entityLookup[eid.id]
+    let lookup = decsState.entityLookup[eid.id]
     if (lookup.generation != eid.generation) {
         return false
     }
@@ -831,7 +864,7 @@ def public get_optional(arch : Archetype; name : string; value : auto(TT)?) : it
 }
 
 def private update_entity_imm(eid : EntityId; blk : lambda<(eid : EntityId; var cmp : ComponentMap) : void>) {
-    var lookup = decsState.entityLookup[eid.id]
+    let lookup = decsState.entityLookup[eid.id]
     if (lookup.generation != eid.generation) {
         return
     }
@@ -839,7 +872,7 @@ def private update_entity_imm(eid : EntityId; blk : lambda<(eid : EntityId; var 
     let arch_index = unsafe(decsState.archetypeLookup[lookup.archetype]) - 1
     let eidx = decsState.entityLookup[eid.id].index
     var old_ahash = 0ul
-    if (true) {
+    {
         var arch & = unsafe(decsState.allArchetypes[arch_index])
         cmp |> reserve(length(arch.components))
         for (c in arch.components) {
@@ -853,7 +886,7 @@ def private update_entity_imm(eid : EntityId; blk : lambda<(eid : EntityId; var 
     }
     invoke(blk, eid, cmp)
     cmp |> set("eid", eid)  
-    var new_ahash = cmp_archetype_hash(cmp)
+    let new_ahash = cmp_archetype_hash(cmp)
     if (old_ahash == new_ahash) {
         for (c, comp in decsState.allArchetypes[arch_index].components, cmp) {
             unsafe {
@@ -867,7 +900,7 @@ def private update_entity_imm(eid : EntityId; blk : lambda<(eid : EntityId; var 
                 narch |> create_archetype(cmp, idx)
             }
             let neidx = narch |> create_entity(eid, cmp)
-            decsState.entityLookup[eid.id] =  (eid.generation, new_ahash, neidx)
+            decsState.entityLookup[eid.id] = (generation = eid.generation, archetype = new_ahash, index = neidx)
         }
     }
     delete cmp
@@ -878,19 +911,19 @@ def private create_entity_imm(eid : EntityId; blk : lambda<(eid : EntityId; var 
     cmp |> push <| make_component("eid", eid)
     invoke(blk, eid, cmp)
     cmp |> set("eid", eid)       
-    var ahash = cmp_archetype_hash(cmp)
+    let ahash = cmp_archetype_hash(cmp)
     with_archetype(ahash) $(var arch; idx; isNew) {
         if (isNew) {
             arch |> create_archetype(cmp, idx)
         }
         let eidx = arch |> create_entity(eid, cmp)
-        decsState.entityLookup[eid.id] =  (eid.generation, ahash, eidx)
+        decsState.entityLookup[eid.id] = (generation = eid.generation, archetype = ahash, index = eidx)
     }
     delete cmp
 }
 
 def private delete_entity_imm(eid : EntityId) {
-    var lookup = decsState.entityLookup[eid.id]
+    let lookup = decsState.entityLookup[eid.id]
     if (lookup.generation == eid.generation) {
         let di = decsState.entityLookup[eid.id].index
         decsState.entityLookup[eid.id].generation = 0
@@ -912,9 +945,111 @@ def public create_entity(var blk : lambda<(eid : EntityId; var cmp : ComponentMa
     var deval <- @  capture(<- blk) (var act : DeferAction) {
         create_entity_imm(act.eid, blk)
     }
-    var eid = new_entity_id()
+    let eid = new_entity_id()
     deferActions |> emplace(DeferAction(action <- deval, eid = eid))
     return eid
+}
+
+def public create_entities(count : int; blk : block<(eid : EntityId; i : int; var cmp : ComponentMap) : void>) {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    if (count <= 0) {
+        return
+    }
+    if (insideQuery != 0) {
+        panic("decs: can't call `create_entities` from inside query")
+    }
+    
+    var cmp : ComponentMap
+    var first_eid = new_entity_id()
+    cmp |> push <| make_component("eid", first_eid)
+    invoke(blk, first_eid, 0, cmp)
+    cmp |> set("eid", first_eid)
+    let ahash = cmp_archetype_hash(cmp)
+    with_archetype(ahash) $(var arch; arch_idx; isNew) {
+        if (isNew) {
+            arch |> create_archetype(cmp, arch_idx)
+        }
+        
+        let base = arch.size
+        for (c in arch.components) {
+            c.data |> resize(length(c.data) + c.stride * count)
+        }
+        
+        for (c, comp in arch.components, cmp) {
+            unsafe {
+                memcpy(addr(c.data[base * c.stride]), addr(comp.data), c.stride)
+            }
+        }
+        decsState.entityLookup[first_eid.id] = (generation = first_eid.generation, archetype = ahash, index = base)
+        
+        for (i in range(1, count)) {
+            var eid = new_entity_id()
+            cmp |> set("eid", eid)
+            invoke(blk, eid, i, cmp)
+            cmp |> set("eid", eid)
+            if (cmp_archetype_hash(cmp) != ahash) {
+                panic("decs: create_entities — all entities must have the same components (entity {i} differs from entity 0)")
+            }
+            let eidx = base + i
+            for (c, comp in arch.components, cmp) {
+                unsafe {
+                    memcpy(addr(c.data[eidx * c.stride]), addr(comp.data), c.stride)
+                }
+            }
+            decsState.entityLookup[eid.id] = (generation = eid.generation, archetype = ahash, index = eidx)
+        }
+        arch.size += count
+    }
+    delete cmp
+}
+
+def public create_entities_from_cmp(count : int; var cmp : ComponentMap;
+                                    fill_blk : block<(var arch : Archetype; eidx : int; eid : EntityId; i : int) : void>) {
+    
+    
+    
+    
+    
+    
+    if (count <= 0) {
+        return
+    }
+    if (insideQuery != 0) {
+        panic("decs: can't call `create_entities_from_cmp` from inside query")
+    }
+    
+    cmp |> set("eid", INVALID_ENTITY_ID)
+    let ahash = cmp_archetype_hash(cmp)
+    with_archetype(ahash) $(var arch; arch_idx; isNew) {
+        if (isNew) {
+            arch |> create_archetype(cmp, arch_idx)
+        }
+        let base = arch.size
+        for (c in arch.components) {
+            c.data |> resize(length(c.data) + c.stride * count)
+        }
+        let id_base = uint(length(decsState.entityLookup))
+        decsState.entityLookup |> resize(int(id_base) + count)
+        for (i in range(count)) {
+            let eid = EntityId(id = id_base + uint(i), generation = 1)
+            let eidx = base + i
+            invoke(fill_blk, arch, eidx, eid, i)
+            decsState.entityLookup[eid.id] = (generation = eid.generation, archetype = ahash, index = eidx)
+        }
+        arch.size += count
+    }
 }
 
 def public delete_entity(entityid : EntityId implicit) {
@@ -966,7 +1101,7 @@ def public get_component(eid : EntityId; name : string; defval : auto(TT)) : TT 
     if (!is_alive(eid)) {
         return defval
     }
-    var lookup = decsState.entityLookup[eid.id]
+    let lookup = decsState.entityLookup[eid.id]
     let arch_index = unsafe(decsState.archetypeLookup[lookup.archetype]) - 1
     var arch & = unsafe(decsState.allArchetypes[arch_index])
     let cidx = arch.components |> lower_bound(Component(name = name)) <| $(x, y) => x.name < y.name
@@ -1047,12 +1182,11 @@ def private make_callbacks(var cv : ComponentValue; value : auto(TT)) {
             unsafe {
                 _builtin_make_temp_array(gc_dummy, addr(src[0]), size)
             }
-            var lmb <- @  capture(<- gc_dummy) {
+            return <- @  capture(<- gc_dummy) {
                 pass
             } finally {
                 memzero(gc_dummy)
             }
-            return <- lmb
         } else {
             var gc_dummy : array<TT -const -& -#>
             let stride = typeinfo sizeof(type<TT -const -& -#>)
@@ -1060,12 +1194,11 @@ def private make_callbacks(var cv : ComponentValue; value : auto(TT)) {
             unsafe {
                 _builtin_make_temp_array(gc_dummy, addr(src[0]), size)
             }
-            var lmb <- @  capture(<- gc_dummy) {
+            return <- @  capture(<- gc_dummy) {
                 pass
             } finally {
                 memzero(gc_dummy)
             }
-            return <- lmb
         }
     }
     cv.info.clonner = @@(var dst : array<uint8>; src : array<uint8>) {
@@ -1221,6 +1354,33 @@ def public set(var cmp : ComponentMap; name : string; value : auto(TT)) {
     } else {
         cmp |> push(cv, idx)    
     }
+}
+
+def public find_component_index(arch : Archetype; name : string) : int {
+    
+    
+    for (i in range(length(arch.components))) {
+        if (arch.components[i].name == name) {
+            return i
+        }
+    }
+    panic("decs: find_component_index — component '{name}' not found in archetype")
+    return -1
+}
+
+def public set_direct_at(var arch : Archetype; comp_idx : int; eidx : int; value : auto(TT)) {
+    
+    
+    unsafe {
+        memcpy(addr(arch.components[comp_idx].data[eidx * arch.components[comp_idx].stride]), addr(value), typeinfo sizeof(value))
+    }
+}
+
+def public set_direct(var arch : Archetype; name : string; eidx : int; value : auto(TT)) {
+    
+    
+    
+    set_direct_at(arch, find_component_index(arch, name), eidx, value)
 }
 
 def public has(var cmp : ComponentMap; name : string) {

@@ -14,7 +14,7 @@ let { isPlatformSony, isPlatformXbox
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { hasLoginState } = require("%scripts/login/loginStates.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { saveVersion, needShowTutorial, reqFirstCountryChoice, isTutorialBeforeCountrySelect } = require("%scripts/user/newbieTutorialDisplay.nut")
+let { saveVersion } = require("%scripts/user/newbieTutorialDisplay.nut")
 let { updateConsoleClientDownloadStatus } = require("%scripts/clientState/contentState.nut")
 let checkUnlocksByAbTest = require("%scripts/unlocks/checkUnlocksByAbTest.nut")
 let { getProfileInfo, updatePlayerRankByCountries } = require("%scripts/user/userInfoStats.nut")
@@ -44,12 +44,9 @@ let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut"
 let { isGpuBenchmarkRunning } = require("gpuBenchmark")
 let { needShowGpuBenchmark } = require("%scripts/options/gpuBenchmarkUtils.nut")
 
-
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null })
 
 local isFirstLoginOnSystem = false
-
-let needShowFirstCountryChoice = @() !isTutorialBeforeCountrySelect() && !needShowTutorial("unitTypeChoice", 1) && reqFirstCountryChoice()
 
 function initLoginPseudoThreadsConfig(cb) {
   broadcastEvent("AuthorizeComplete")
@@ -190,16 +187,6 @@ function initLoginPseudoThreadsConfig(cb) {
         return PT_STEP_STATUS.SUSPEND
       return null
     }
-    function() {
-      if (needShowFirstCountryChoice())
-        loadHandler(gui_handlers.CountryChoiceHandler)
-    }
-    function() {
-      if (needShowFirstCountryChoice())
-        return PT_STEP_STATUS.SUSPEND
-      return null
-    }
-
     function() {
       loginWTState.initOptionsPseudoThread = null
       cb()

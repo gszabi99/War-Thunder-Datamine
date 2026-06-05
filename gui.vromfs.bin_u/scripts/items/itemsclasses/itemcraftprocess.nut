@@ -32,7 +32,7 @@ let CraftProcess = class (ItemExternal) {
   getDescRecipeListHeader = @(...) loc("items/craft_process/using") 
   getMarketablePropDesc = @() ""
 
-  function cancelCrafting(_cb = null, params = null) {
+  function cancelCrafting(_cb = null, params = null) { 
     if (this.uids.len() > 0) {
       let parentItem = params?.parentItem
       let item = this

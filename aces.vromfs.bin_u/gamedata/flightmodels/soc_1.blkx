@@ -2201,6 +2201,50 @@
       },
       {
         "dm": "wing1_l_dm",
+        "dp": [
+          "wingcontrol_l_dm",
+          "elevon1_l_dm",
+          "flaperon_l_dm"
+        ]
+      },
+      {
+        "dm": "wing1_r_dm",
+        "dp": [
+          "wingcontrol_r_dm",
+          "elevon1_r_dm",
+          "flaperon_r_dm"
+        ]
+      },
+      {
+        "dm": "wing2_l_dm",
+        "dp": [
+          "elevon_l_dm",
+          "flaperon1_l_dm"
+        ]
+      },
+      {
+        "dm": "wing2_r_dm",
+        "dp": [
+          "elevon_r_dm",
+          "flaperon1_r_dm"
+        ]
+      },
+      {
+        "dm": "tail_dm",
+        "separateDm": false,
+        "overwriteLinks": true,
+        "dp": [
+          "antenna",
+          "wire_lc",
+          "wire_rc",
+          "wire_c",
+          "aerial_c",
+          "aerial_l",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "wing1_l_dm",
         "dp": "aerial_l"
       },
       {
@@ -2208,136 +2252,25 @@
         "dp": "aerial_r"
       },
       {
-        "dm": "tail_dm",
+        "dm": "wing2_l_dm",
+        "overwriteLinks": true,
         "dp": [
-          "aerial_l",
-          "aerial_r"
+          "elevon_l_dm",
+          "flaperon1_l_dm"
+        ]
+      },
+      {
+        "dm": "wing2_r_dm",
+        "overwriteLinks": true,
+        "dp": [
+          "elevon_r_dm",
+          "flaperon1_r_dm"
         ]
       }
     ]
   },
   "smokeScreenExhaustEmitters": {
     "emitter": "tail_dm"
-  },
-  "wiki": {
-    "general": {
-      "length": 10.31,
-      "wingspan": 10.94,
-      "wingArea": 25.7,
-      "emptyWeight": 1937.0,
-      "normalWeight": 2529.57,
-      "maxTakeoffWeight": 2540.0,
-      "powerPlantType": 1,
-      "powerMaxWep": 450.0,
-      "powerMaxMil": 400.0
-    },
-    "performance": {
-      "table": {
-        "rpmWep": 2300.0,
-        "manifoldPressureWep": 1.23,
-        "airSpeedWep0": [
-          0.0,
-          289.0
-        ],
-        "airSpeedWep1": [
-          1400.0,
-          297.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          6.8
-        ],
-        "climbRateWep1": [
-          1200.0,
-          6.4
-        ],
-        "climbTimeWep0": [
-          2000.0,
-          694.82
-        ],
-        "turnTimeWep": [
-          1000.0,
-          33.1
-        ],
-        "rpmMil": 2200.0,
-        "manifoldPressureMil": 1.16,
-        "airSpeedMil0": [
-          0.0,
-          274.0
-        ],
-        "airSpeedMil1": [
-          1600.0,
-          284.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          6.0
-        ],
-        "climbRateMil1": [
-          1500.0,
-          5.5
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          943.644
-        ],
-        "turnTimeMil": [
-          1000.0,
-          38.2
-        ],
-        "takeoffDistance": 498.681,
-        "ceiling": 3800.0,
-        "rollRate": 75.0,
-        "wingLoading": 98.0,
-        "powerToWeightRatio": 0.18
-      },
-      "plot": {
-        "airSpeedWep0": [
-          0.0,
-          289.0
-        ],
-        "airSpeedWep1": [
-          1800.0,
-          299.0
-        ],
-        "airSpeedWep2": [
-          3800.0,
-          288.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          6.8
-        ],
-        "climbRateWep1": [
-          1300.0,
-          6.4
-        ],
-        "climbRateWep2": [
-          3800.0,
-          4.6
-        ],
-        "airSpeedMil0": [
-          0.0,
-          274.0
-        ],
-        "airSpeedMil1": [
-          1600.0,
-          284.0
-        ],
-        "airSpeedMil2": [
-          3000.0,
-          279.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          6.0
-        ],
-        "climbRateMil1": [
-          3000.0,
-          4.6
-        ]
-      }
-    }
   },
   "balanceData": {
     "accSpd": -2.85511,

@@ -78,6 +78,19 @@
       "sound_control_disable_timer__duration": 60.0
     }
   },
+  "limit_max_instances_under_sound_control": {
+    "_group": [
+      {
+        "_tags": "sound",
+        "limit_max_instances_under_sound_control__maxInstances": 8,
+        "limit_max_instances_under_sound_control__path": ""
+      },
+      {
+        "_tags": "sound",
+        "sound_control__allowSound": false
+      }
+    ]
+  },
   "managed_sound_control": {
     "_use": "replicating",
     "_singleton": true,
@@ -171,6 +184,9 @@
   },
   "sound_irqs": {
     "sound_irqs:shared:object": {
+      "_tags": "sound"
+    },
+    "sound_irqs__cooldown:object": {
       "_tags": "sound"
     }
   },
@@ -268,6 +284,43 @@
       "sound_debug_positioning__speed": 1.0,
       "sound_debug_positioning__radius": 30.0,
       "sound_debug_positioning__event:SoundEvent": {}
+    }
+  },
+  "sound_biome_puddle_queries": {
+    "_group": {
+      "_tags": "sound",
+      "sound_biome_puddle_queries__lastQueryTime": -1.0,
+      "sound_biome_puddle_queries__biomeId": -1,
+      "sound_biome_puddle_queries__biomeQueryId": -1,
+      "sound_biome_puddle_queries__puddleDepth": 0.0,
+      "sound_biome_puddle_queries__puddleQueryId": -1,
+      "sound_biome_puddle_queries_vars__speedSq": 0.0,
+      "sound_biome_puddle_queries_vars__isOnGround": true,
+      "sound_biome_puddle_queries__farawayThreshold": 15.0,
+      "sound_biome_puddle_queries__zeroSpeedThreshold": 0.01,
+      "sound_biome_puddle_queries__heroSpeedToQueryInterval": [
+        0.0,
+        4.0,
+        1.0,
+        0.2
+      ],
+      "sound_biome_puddle_queries__enemySpeedToQueryInterval": [
+        0.0,
+        4.0,
+        1.5,
+        0.5
+      ],
+      "sound_biome_puddle_queries__heroEnemyInAirInterval": [
+        0.1,
+        0.5
+      ],
+      "sound_biome_puddle_queries__lmeshDiff": 2.0,
+      "sound_biome_puddle_queries__puddleQueryToDepth": [
+        0.1,
+        0.4,
+        0.0,
+        0.05
+      ]
     }
   }
 }

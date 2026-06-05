@@ -4,6 +4,7 @@ options unsafe_table_lookup = false
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
 options strict_smart_pointers = true
+options threadlock_context
 
 module profiler shared private
 
@@ -14,13 +15,12 @@ module profiler shared private
 
 
 
-require debugapi
-require fio
+require daslib/debugger
+require daslib/fio
 require strings
 require uriparser
-require ast
+require daslib/ast
 
-[skip_field_lock_check]
 struct PerfNode {
     
     fun : SimFunction?
@@ -43,23 +43,141 @@ struct PerfEvent {
     stringHeapBytes : uint64
 }
 
-[skip_field_lock_check]
 struct PerfContext {
     
     events : array<PerfEvent>
     enabled : bool
+    silent : bool = false
 }
 
-var @do_not_delete g_d_agent : ProfilerDebugAgent?
-
-def public set_enable_profiler(var ctxId : uint64; enabled : bool) {
+struct FlatEntry {
     
-    if (g_d_agent != null) {
-        g_d_agent->enable_profiler(ctxId, enabled)
+    fun : SimFunction? = null
+    count : uint64 = 0ul
+    own_heap : int64 = 0l
+    own_string_heap : int64 = 0l
+}
+
+struct ProfilerConfig {
+    
+    log_file : string = ""
+    manual : bool = false
+    report_memory : bool = false
+    time_unit : string = "ns"
+    use_thread_local : bool = true
+    track_leaks : bool = false
+}
+
+var map_time_units : table<string; int64> <- {"ns" => 1l, "us" => 1_000l, "ms" => 1_000_000l, "s" => 1_000_000_000l}
+
+def is_time_unit_correct(unit : string) {
+    return key_exists(map_time_units, unit)
+}
+
+def convert_ns_to_unit(time : int64; to : string) {
+    return time / map_time_units[to]
+}
+
+def parse_profiler_args() : ProfilerConfig {
+    
+    
+    
+    
+    
+    
+    
+    var cfg = default<ProfilerConfig>
+    var force_thread_local = -1
+    var args <- get_command_line_arguments()
+    for (argv, i in args, count()) {
+        if (argv == "--das-profiler-log-file" && empty(cfg.log_file) && ((i + 1) < length(args))) {
+            cfg.log_file = args[i + 1]
+        } elif (argv == "--das-profiler-manual") {
+            cfg.manual = true
+        } elif (argv == "--das-profiler-memory") {
+            cfg.report_memory = true
+        } elif (argv == "--das-profiler-thread-local") {
+            force_thread_local = 1
+        } elif (argv == "--das-profiler-global") {
+            force_thread_local = 0
+        } elif (argv == "--das-profiler-leaks") {
+            cfg.track_leaks = true
+        } elif (argv == "--das-profiler-time-unit" && ((i + 1) < length(args))) {
+            let unit = args[i + 1]
+            if (!is_time_unit_correct(unit)) {
+                to_log(LOG_ERROR, "Time unit '{unit}' is not defined!")
+            } else {
+                cfg.time_unit = unit
+            }
+        }
+    }
+    if (cfg.track_leaks) {
+        cfg.use_thread_local = false   
+    } else {
+        cfg.use_thread_local = force_thread_local == -1 ? !cfg.report_memory : (force_thread_local == 1)
+    }
+    return <- cfg
+}
+
+def profiler_category(cfg : ProfilerConfig) : string {
+    if (cfg.track_leaks) {
+        return "memleaks"
+    }
+    return cfg.use_thread_local ? "" : "profiler"
+}
+
+def public set_enable_profiler(ctxId : uint64, enabled : bool) {
+    
+    let cfg <- parse_profiler_args()
+    if (cfg.track_leaks) {
+        return
+    }
+    unsafe {
+        invoke_debug_agent_method(profiler_category(cfg), "enable_profiler", ctxId, enabled)
     }
 }
 
-class ProfilerDebugAgent : DapiDebugAgent {
+def public set_enable_profiler_log(ctxId : uint64, enabled : bool) {
+    
+    let cfg <- parse_profiler_args()
+    if (cfg.track_leaks) {
+        return
+    }
+    unsafe {
+        invoke_debug_agent_method(profiler_category(cfg), "enable_profiler_log", ctxId, enabled)
+    }
+}
+
+class ProfilerBaseAgent : DapiDebugAgent {
+    
+    
+    
+    
+    
+    
+    
+    use_thread_local : bool = true
+    instrumented : table<uint64>
+
+    def isProfileable(var ctx : Context) {
+        return !(ctx.category.debug_context || ctx.category.macro_context || ctx.category.folding_context ||
+            ctx.category.debugger_tick || ctx.category.debugger_attached)
+    }
+
+    def ensure_instrumented(var ctx : Context) {
+        if (!(instrumented |> key_exists(ctx.getCodeAllocatorId))) {
+            instrumented |> insert(ctx.getCodeAllocatorId)
+            if (use_thread_local) {
+                instrument_all_functions_thread_local(ctx)
+            } else {
+                instrument_all_functions(ctx)
+            }
+        }
+    }
+}
+
+class PerformanceProfilerAgent : ProfilerBaseAgent {
+    
     
     us0 : int64 = 0l
     events : table<uint64; PerfContext>
@@ -67,46 +185,24 @@ class ProfilerDebugAgent : DapiDebugAgent {
     firstRecord : bool = true
     manual : bool = false
     report_memory : bool = false
-    instrumented : table<uint64>
-    map_time_units : table<string; int64> <- {"ns" => 1l, "us" => 1_000l, "ms" => 1_000_000l, "s" => 1_000_000_000l}
     time_unit : string = "ns"
-
-    def dependency {
-        return @@set_enable_profiler
-    }
-
-    def is_time_unit_correct(unit : string) {
-        return key_exists(map_time_units, unit)
-    }
-
-    def convert_ns_to_unit(time : int64; to : string) {
-        return time / map_time_units[to]
-    }
 
     def override onInstall(agent : DebugAgent?) : void {
         this_context().name := "__PROFILER__"
-        var args <- get_command_line_arguments()
-        for (argv, i in args, count()) {
-            if (argv == "--das-profiler-log-file" && out == null && ((i + 1) < length(args))) {
-                out = fopen(args[i + 1], "wb")
-            } elif (argv == "--das-profiler-manual") {
-                manual = true
-            } elif (argv == "--das-profiler-memory") {
-                report_memory = true
-                unsafe {
-                    self.onInstrumentFunction = reinterpret<function<(var agent : DapiDebugAgent; var ctx : Context; fn : SimFunction?; entering : bool; userData : uint64) : void>> self.onInstrumentFunctionWithMemory
-                }
-            } elif (argv == "--das-profiler-time-unit" && ((i + 1) < length(args))) {
-                let unit = args[i + 1]
-                if (!is_time_unit_correct(unit)) {
-                    to_log(LOG_ERROR, "Time unit '{unit}' is not defined!")
-                } else {
-                    time_unit = unit
-                }
+        let cfg <- parse_profiler_args()
+        if (!empty(cfg.log_file)) {
+            out = fopen(cfg.log_file, "wb")
+        }
+        manual = cfg.manual
+        report_memory = cfg.report_memory
+        use_thread_local = cfg.use_thread_local
+        time_unit = cfg.time_unit
+        if (report_memory) {
+            unsafe {
+                self.onInstrumentFunction = reinterpret<function<(var agent : DapiDebugAgent; var ctx : Context; fn : SimFunction?; entering : bool; userData : uint64) : void>> self.onInstrumentFunctionWithMemory
             }
         }
         write("[")
-        g_d_agent = unsafe(addr(self))
         us0 = ref_time_ticks()
     }
     def override onUninstall(agent : DebugAgent?) : void {
@@ -116,20 +212,22 @@ class ProfilerDebugAgent : DapiDebugAgent {
             out = null
         }
     }
-    def isProfileable(var ctx : Context) {
-        return !(ctx.category.debug_context || ctx.category.macro_context || ctx.category.folding_context ||
-            ctx.category.debugger_tick || ctx.category.debugger_attached)
-    }
     def override onCreateContext(var ctx : Context) : void {
-        if (!isProfileable(ctx) || (instrumented |> key_exists(ctx.getCodeAllocatorId))) {
+        if (!isProfileable(ctx)) {
             return
         }
-        instrumented |> insert(ctx.getCodeAllocatorId)
-        events[intptr(unsafe(addr(ctx)))].enabled = !manual
-        instrument_all_functions_thread_local(ctx)
+        let tid = intptr(unsafe(addr(ctx)))
+        events[tid].enabled = !manual
+        
+        
+        
+        ensure_instrumented(ctx)
     }
     def enable_profiler(ctxId : uint64; enabled : bool) : void {
         events[ctxId].enabled = enabled
+    }
+    def enable_profiler_log(ctxId : uint64; enabled : bool) : void {
+        events[ctxId].silent = !enabled
     }
     def override onDestroyContext(var ctx : Context) : void {
         if (!isProfileable(ctx)) {
@@ -137,7 +235,9 @@ class ProfilerDebugAgent : DapiDebugAgent {
         }
         let tid = intptr(unsafe(addr(ctx)))
         if (events |> key_exists(tid)) {
-            dump_context(ctx, tid)
+            if (!events[tid].silent) {
+                dump_context(ctx, tid)
+            }
             delete events[tid]
         }
         instrumented |> erase(ctx.getCodeAllocatorId)
@@ -192,8 +292,10 @@ class ProfilerDebugAgent : DapiDebugAgent {
         if (node == null) {
             return
         }
+        if (report_memory && node.fun != null && node.total_heap_bytes == 0ul && node.total_string_heap_bytes == 0ul) {
+            return
+        }
         if (node.fun != null) {
-            let total_time = convert_ns_to_unit(node.total_time, time_unit)
             let tabs = repeat("  ", tab)
             if (report_memory) {
                 var hb = node.total_heap_bytes
@@ -202,13 +304,79 @@ class ProfilerDebugAgent : DapiDebugAgent {
                     hb -= ch.total_heap_bytes
                     shb -= ch.total_string_heap_bytes
                 }
-                to_log(LOG_INFO, "{tabs}{node.fun.mangledName} {int64(node.count)} {total_time}{time_unit} heap={int64(hb)} string_heap={int64(shb)}\n")
+                to_log(LOG_INFO, "{tabs}{node.fun.mangledName} {int64(node.count)} heap={int64(hb)} string_heap={int64(shb)}\n")
             } else {
+                let total_time = convert_ns_to_unit(node.total_time, time_unit)
                 to_log(LOG_INFO, "{tabs}{node.fun.mangledName} {int64(node.count)} {total_time}{time_unit}\n")
             }
         }
         for (ch in values(node.children)) {
             dump_node(ch, tab + 1)
+        }
+    }
+    def collect_flat(var node : PerfNode?; var flat : table<SimFunction?; FlatEntry>) {
+        if (node == null) {
+            return
+        }
+        if (node.fun != null) {
+            var own_hb = int64(node.total_heap_bytes)
+            var own_shb = int64(node.total_string_heap_bytes)
+            for (ch in values(node.children)) {
+                own_hb -= int64(ch.total_heap_bytes)
+                own_shb -= int64(ch.total_string_heap_bytes)
+            }
+            unsafe {
+                var e & = flat[node.fun]
+                e.fun = node.fun
+                e.own_heap += own_hb
+                e.own_string_heap += own_shb
+                e.count += node.count
+            }
+        }
+        for (ch in values(node.children)) {
+            collect_flat(ch, flat)
+        }
+    }
+    def dump_top_heap_offenders(var flat : table<SimFunction?; FlatEntry>) {
+        var entries : array<FlatEntry>
+        for (e in values(flat)) {
+            if (e.own_heap > 0l) {
+                entries |> push(e)
+            }
+        }
+        if (empty(entries)) {
+            return
+        }
+        entries |> sort() <| $(a, b) => a.own_heap > b.own_heap
+        to_log(LOG_INFO, "\nTop heap offenders (own allocations):\n")
+        var shown = 0
+        for (e in entries) {
+            if (shown >= 10) {
+                break
+            }
+            shown ++
+            to_log(LOG_INFO, "  {e.fun.mangledName} heap={int64(e.own_heap)} count={int64(e.count)}\n")
+        }
+    }
+    def dump_top_string_heap_offenders(var flat : table<SimFunction?; FlatEntry>) {
+        var entries : array<FlatEntry>
+        for (e in values(flat)) {
+            if (e.own_string_heap > 0l) {
+                entries |> push(e)
+            }
+        }
+        if (empty(entries)) {
+            return
+        }
+        entries |> sort() <| $(a, b) => a.own_string_heap > b.own_string_heap
+        to_log(LOG_INFO, "\nTop string-heap offenders (own allocations):\n")
+        var shown = 0
+        for (e in entries) {
+            if (shown >= 10) {
+                break
+            }
+            shown ++
+            to_log(LOG_INFO, "  {e.fun.mangledName} string_heap={int64(e.own_string_heap)} count={int64(e.count)}\n")
         }
     }
     def dump_context_stack(tid : uint64) {
@@ -241,6 +409,12 @@ class ProfilerDebugAgent : DapiDebugAgent {
             }
         }
         dump_node(root)
+        if (report_memory) {
+            var flat : table<SimFunction?; FlatEntry>
+            collect_flat(root, flat)
+            dump_top_heap_offenders(flat)
+            dump_top_string_heap_offenders(flat)
+        }
         unsafe {
             delete root
         }
@@ -263,21 +437,187 @@ class ProfilerDebugAgent : DapiDebugAgent {
         dump_context_stack(tid)
         dump_meta(ctx, tid)
         dump_events(tid)
-        delete events[tid].events
+        unsafe {
+            delete events[tid].events
+        }
         events |> erase(tid)
     }
 }
 
+struct AllocationRecord {
+    
+    
+    
+    size : uint64 = 0ul
+    stack : array<SimFunction?>
+}
 
+struct LeakContext {
+    
+    shadow_stack : array<SimFunction?>
+    allocations : table<uint64; AllocationRecord>
+}
+
+class MemoryLeakProfilerAgent : ProfilerBaseAgent {
+    
+    
+    
+    
+    ctxs : table<uint64; LeakContext>
+    out : FILE const?
+
+    def override onInstall(agent : DebugAgent?) : void {
+        this_context().name := "__MEMLEAK__"
+        let cfg <- parse_profiler_args()
+        if (!empty(cfg.log_file)) {
+            out = fopen(cfg.log_file, "wb")
+        }
+        use_thread_local = false   
+    }
+    def override onUninstall(agent : DebugAgent?) : void {
+        if (out != null) {
+            out |> fclose()
+            out = null
+        }
+    }
+    def override onCreateContext(var ctx : Context) : void {
+        if (!isProfileable(ctx)) {
+            return
+        }
+        let tid = intptr(unsafe(addr(ctx)))
+        unsafe {
+            var lc & = ctxs[tid]
+            lc.shadow_stack |> clear()
+        }
+        ensure_instrumented(ctx)
+        instrument_context_allocations(ctx, true)
+    }
+    def override onDestroyContext(var ctx : Context) : void {
+        if (!isProfileable(ctx)) {
+            return
+        }
+        let tid = intptr(unsafe(addr(ctx)))
+        instrument_context_allocations(ctx, false)
+        if (ctxs |> key_exists(tid)) {
+            dump_leaks(ctx, tid)
+            delete ctxs[tid]
+        }
+        
+    }
+    def override onInstrumentFunction(var ctx : Context; var fun : SimFunction?; entering : bool; userData : uint64) : void {
+        unsafe {
+            let tid = intptr(addr(ctx))
+            if (!(ctxs |> key_exists(tid))) {
+                return
+            }
+            var lc & = ctxs[tid]
+            if (entering) {
+                lc.shadow_stack |> push(fun)
+            } elif (length(lc.shadow_stack) > 0) {
+                lc.shadow_stack |> pop()
+            }
+        }
+    }
+    def override onAllocate(var ctx : Context; data : void?; size : uint64; at : LineInfo) : void {
+        unsafe {
+            let tid = intptr(addr(ctx))
+            if (!(ctxs |> key_exists(tid))) {
+                return
+            }
+            var lc & = ctxs[tid]
+            var rec & = lc.allocations[intptr(data)]
+            rec.size = size
+            rec.stack := lc.shadow_stack
+        }
+    }
+    def override onFree(var ctx : Context; data : void?; at : LineInfo) : void {
+        unsafe {
+            let tid = intptr(addr(ctx))
+            if (!(ctxs |> key_exists(tid))) {
+                return
+            }
+            var lc & = ctxs[tid]
+            lc.allocations |> erase(intptr(data))
+        }
+    }
+    def override onReallocate(var ctx : Context; data : void?; size : uint64; newData : void?; newSize : uint64; at : LineInfo) : void {
+        unsafe {
+            let tid = intptr(addr(ctx))
+            if (!(ctxs |> key_exists(tid))) {
+                return
+            }
+            var lc & = ctxs[tid]
+            lc.allocations |> erase(intptr(data))
+            var rec & = lc.allocations[intptr(newData)]
+            rec.size = newSize
+            rec.stack := lc.shadow_stack
+        }
+    }
+    def emit_line(text : string) {
+        if (out != null) {
+            out |> fprint("{text}\n")
+        } else {
+            to_log(LOG_INFO, "{text}\n")
+        }
+    }
+    def format_frame(fn : SimFunction?) : string {
+        if (fn == null) {
+            return "  at ?"
+        }
+        let fname = fn.name
+        let li = fn.lineInfo
+        if (li != null && li.fileInfo != null && !empty(li.fileInfo.name)) {
+            return "  at {fname} {li.fileInfo.name}:{int(li.line)}"
+        }
+        return "  at {fname}"
+    }
+    def dump_leaks(var ctx : Context; tid : uint64) {
+        unsafe {
+            var lc & = ctxs[tid]
+            if (empty(lc.allocations)) {
+                return
+            }
+            var sorted : array<tuple<uint64; uint64>>   
+            var totalBytes = 0ul
+            for (k, v in keys(lc.allocations), values(lc.allocations)) {
+                sorted |> push((v.size, k))
+                totalBytes += v.size
+            }
+            sorted |> sort() <| $(a, b) => a._0 > b._0
+            var ctxName = "<unnamed>"
+            if (!empty(ctx.name)) {
+                ctxName = "{ctx.name}"
+            }
+            emit_line("=== Memory leaks in context '{ctxName}' ({int(length(sorted))} allocations, {totalBytes} bytes) ===")
+            for (e in sorted) {
+                var rec & = lc.allocations[e._1]
+                emit_line("[leak] size={rec.size} bytes")
+                
+                let stackLen = length(rec.stack)
+                for (i in range(stackLen)) {
+                    let idx = stackLen - 1 - i
+                    emit_line(format_frame(rec.stack[idx]))
+                }
+            }
+        }
+    }
+}
 
 def debug_agent(ctx : Context) {
     assert(this_context().category.debug_context)
-    install_new_thread_local_debug_agent(new ProfilerDebugAgent())
+    let cfg <- parse_profiler_args()
+    if (cfg.track_leaks) {
+        install_new_debug_agent(new MemoryLeakProfilerAgent(), "memleaks")
+    } elif (cfg.use_thread_local) {
+        install_new_thread_local_debug_agent(new PerformanceProfilerAgent())
+    } else {
+        install_new_debug_agent(new PerformanceProfilerAgent(), "profiler")
+    }
 }
 
 [_macro]
 def installing {
-    if (is_compiling_macros_in_module("profiler") && !is_in_completion()) {
+    if (is_compiling_macros_in_module("profiler") && !is_in_completion() && !is_in_lint_check()) {
         if (!is_in_debug_agent_creation()) {
             if (!has_debug_agent_context("profiler")) {
                 fork_debug_agent_context(@@debug_agent)

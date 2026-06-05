@@ -167,7 +167,7 @@ def on_shot_grain(launch_pos : float3;
     shot_loop_timeout = time_between_shots / 3.
 
 
-  reset_wt_shooting_ambient_timer()
+  reset_wt_shooting_ambient_timer(is_watched ? INVALID_ENTITY_ID : gun__owner)
 
 [es(tag=sound, on_event=(EventStopShoot, EventNetStopShoot), REQUIRE=gunSound)]
 def gun_sound_on_stop_shot(evt : Event;
@@ -262,9 +262,12 @@ def gun_sound_on_net_shot(evt : CmdNetShot;
                           turret__owner = INVALID_ENTITY_ID;
                           @shared_comp gun_sound__shotPath : Object;
                           sound_tags : Object;
-                          gun_sound__prefix = "")
+                          gun_sound__prefix = "";
+                          managed_sound__isStealed : bool = false)
 
   let isWatched = is_watched_gun_sound(gun__owner)
+  if managed_sound__isStealed && !isWatched
+    return
   if !isWatched
     let delay = get_sound_speed_delay(evt.tm[3])
     if delay > 0.1f
@@ -314,8 +317,11 @@ def gun_sound_on_shot_evt(evt : EventShot;
                           turret__owner = INVALID_ENTITY_ID;
                           @shared_comp gun_sound__shotPath : Object;
                           sound_tags : Object;
-                          gun_sound__prefix = "")
+                          gun_sound__prefix = "";
+                          managed_sound__isStealed : bool = false)
   let isWatched = is_watched_gun_sound(gun__owner)
+  if managed_sound__isStealed && !isWatched
+    return
   if !isWatched
     let delay = get_sound_speed_delay(evt.launchDesc.tm[3])
     if delay > 0.1f
@@ -370,7 +376,8 @@ def gun_sound_update(info : ParallelUpdateFrameDelayed;
                      var gun_sound__event : SoundEvent&;
                      var gun_sound__grainTTL : float&;
                      gun__overheat : float = 0.;
-                     turret__owner = INVALID_ENTITY_ID)
+                     turret__owner = INVALID_ENTITY_ID;
+                     managed_sound__isStealed : bool = false)
   if !sound_banks_is_master_preset_loaded()
     return
 
@@ -379,26 +386,27 @@ def gun_sound_update(info : ParallelUpdateFrameDelayed;
     let lastEvent = gun_sound__shootHistory[0]
     if lastEvent.x <= info.curTime
       gun_sound__shootHistory |> erase(0)
-      gun_sound_on_shot(float3(lastEvent.y, lastEvent.z, lastEvent.w),
-                        uint(gun_sound__lastFiringMode),
-                        gun,
-                        gun__timeBetweenShots,
-                        false, 
-                        gun_sound__hasGrain,
-                        gun_sound__forceOneshot,
-                        gun_sound__forceOneshotEnemy,
-                        gun_sound__startLoopWithNOneshots,
-                        gun_sound__numShotsInLoop,
-                        gun_sound__numShots,
-                        gun_sound__event,
-                        gun_sound__playerTimeBetweenShotsMad,
-                        gun_sound__shotLoopTimeout,
-                        gun_sound__grainTTL,
-                        gun__owner,
-                        turret__owner,
-                        gun_sound__shotPath,
-                        sound_tags,
-                        gun_sound__prefix)
+      if !managed_sound__isStealed
+        gun_sound_on_shot(float3(lastEvent.y, lastEvent.z, lastEvent.w),
+                          uint(gun_sound__lastFiringMode),
+                          gun,
+                          gun__timeBetweenShots,
+                          false, 
+                          gun_sound__hasGrain,
+                          gun_sound__forceOneshot,
+                          gun_sound__forceOneshotEnemy,
+                          gun_sound__startLoopWithNOneshots,
+                          gun_sound__numShotsInLoop,
+                          gun_sound__numShots,
+                          gun_sound__event,
+                          gun_sound__playerTimeBetweenShotsMad,
+                          gun_sound__shotLoopTimeout,
+                          gun_sound__grainTTL,
+                          gun__owner,
+                          turret__owner,
+                          gun_sound__shotPath,
+                          sound_tags,
+                          gun_sound__prefix)
 
 
 

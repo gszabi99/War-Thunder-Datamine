@@ -6,6 +6,7 @@ let colors = require("%rGui/style/colors.nut")
 let teamColors = require("%rGui/style/teamColors.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 let { isOrderStatusVisible } = require("%rGui/hud/hudPartVisibleState.nut")
+let { makeVertScroll } = require("%rGui/components/scrollbarBase.nut")
 
 let isOrderVisible = Computed(@() isOrderStatusVisible.get() && showOrder.get())
 let isCollapsed = Watched(false)
@@ -158,7 +159,7 @@ let orderStatus = @() {
   colorTable = teamColors.get()
 }.__update(shadow, lineSpacing)
 
-let order = {
+let activeOrder = {
   flow = FLOW_VERTICAL
   size = [scrn_tgt(0.4), SIZE_TO_CONTENT]
   margin = const [0, 0, 0, hdpx(4)]
@@ -172,13 +173,13 @@ let order = {
 
 let undateOrderState = @() eventbus_send("active_order_request_update")
 
-return function() {
+function activeOrderComps() {
   local children = null
   if (isOrderVisible.get())
     children = (cursorVisible.get() && isCollapsed.get()) ? [collapseButton, collapsedOrder]
-      : cursorVisible.get() ? [collapseButton, order]
+      : cursorVisible.get() ? [collapseButton, activeOrder]
       : isCollapsed.get() ? null
-      : order
+      : activeOrder
 
   return {
     watch = [isOrderVisible, cursorVisible, isCollapsed]
@@ -194,4 +195,24 @@ return function() {
     }
     onDetach = @(_) gui_scene.clearTimer(undateOrderState)
   }
+}
+
+let activeOrderLogContentInner = {
+  rendObj = ROBJ_SOLID
+  size = const [flex(), SIZE_TO_CONTENT]
+  minHeight = hdpx(158)
+  padding = [scrn_tgt(0.005), scrn_tgt(0.005)]
+  valign = ALIGN_TOP
+  color = colors.hud.hudLogBgColor
+  children = activeOrder
+}
+
+let activeOrderLogContent = makeVertScroll(activeOrderLogContentInner, {
+  size = [flex(), hdpx(158)]
+  needReservePlace = false
+})
+
+return {
+  activeOrderComps
+  activeOrderLogContent
 }

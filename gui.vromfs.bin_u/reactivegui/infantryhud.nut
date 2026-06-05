@@ -17,7 +17,7 @@ let { isHuman } = require("%rGui/hudUnitType.nut")
 let { eventbus_subscribe } = require("eventbus")
 
 
-let activeOrder = require("%rGui/activeOrder.nut")
+let { activeOrderComps }= require("%rGui/activeOrder.nut")
 let voiceChat = require("%rGui/chat/voiceChat.nut")
 let hudLogs = require("%rGui/hudLogs.nut")
 
@@ -55,7 +55,7 @@ let leftPanel = {
       gap = smallPadding
       children = !isSpectatorMode.get() ? [
         voiceChat
-        activeOrder
+        activeOrderComps
         hudLogs
       ] : null
     }

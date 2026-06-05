@@ -10,7 +10,6 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "gyroSight": false,
   "type": "typeBomber",
-  "paratrooper": "usa_para",
   "bombingDelay": 2.2,
   "bayDoorSpeedCoef": 0.5,
   "standardExhaustFxType": "jet_exhaust",
@@ -30,6 +29,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1000kph",
   "fightAiBehaviour": "bomber",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3801,82 +3801,6 @@
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
   },
-  "wiki": {
-    "general": {
-      "length": 19.96,
-      "wingspan": 19.51,
-      "wingArea": 88.8,
-      "emptyWeight": 13350.0,
-      "normalWeight": 20462.0,
-      "maxTakeoffWeight": 25854.0,
-      "powerPlantType": 2,
-      "thrustMaxMil": 63200.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 8300.0,
-        "airSpeedMil0": [
-          0.0,
-          952.0
-        ],
-        "airSpeedMil1": [
-          762.0,
-          967.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          28.5
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          74.6652
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          159.94
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          265.367
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          397.271
-        ],
-        "turnTimeMil": [
-          1000.0,
-          55.0
-        ],
-        "takeoffDistance": 1229.61,
-        "ceiling": 8200.0,
-        "rollRate": 66.0,
-        "wingLoading": 230.0,
-        "thrustToWeightRatio": 0.32
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          952.0
-        ],
-        "airSpeedMil1": [
-          2500.0,
-          965.0
-        ],
-        "airSpeedMil2": [
-          8200.0,
-          918.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          28.5
-        ],
-        "climbRateMil1": [
-          8200.0,
-          13.4
-        ]
-      }
-    }
-  },
   "Aircraft": {
     "gunnersCount": 0
   },
@@ -4012,6 +3936,37 @@
       "from": "b_57b_black_c*",
       "to": "b_57b_black_c_tomoe*"
     }
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": [
+      "seat_01",
+      "seat_02",
+      "blister2",
+      "blister3"
+    ],
+    "seat": [
+      "seat_01",
+      "seat_02"
+    ],
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

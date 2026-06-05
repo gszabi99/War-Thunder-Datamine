@@ -29,6 +29,7 @@ require math.base
 require math.random
 require DagorMathUtils
 require DagorMath
+require DagorDebug3D
 require BehNodes
 require Grid
 require pathfinder
@@ -361,6 +362,7 @@ class UpdateGoalCapzone : BehNodeAdapter
   outEnemyParam : int = -1
 
   MAX_DIST_ENEMY_AROUND = 100.0
+  ENEMY_NEAR_DISTANCE = 70.0
 
   def override loadFromBlk(var data : DataBlock) : void
     outZoneEidParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outZoneEidParam", ""), 0)
@@ -394,6 +396,7 @@ class UpdateGoalCapzone : BehNodeAdapter
 
     let enemyAround = enemyAroundParam < 0 ? false : (owner.blackBoard |> datablock_getInt(enemyAroundParam) > 0)
     let maxEnemyAroundDistSq = enemyAround ? square(MAX_DIST_ENEMY_AROUND) : 0.0
+    let enemyNearDistSq = square(ENEMY_NEAR_DISTANCE)
 
     var bestToCaptureEid = INVALID_ENTITY_ID
     var bestToCaptureCrowd = 0
@@ -421,13 +424,17 @@ class UpdateGoalCapzone : BehNodeAdapter
       if enemyAround && distSq > maxEnemyAroundDistSq
         return
 
+      var enemySquadsNear = 0
       var teamSquadsToZone = 0
       query() <| $ [es] (eid aka squad_eid : EntityId; squad__leader : EntityId)
         if squad_eid != agentSquad
-          query(squad__leader) <| $ [es] (beh_tree__capzoneOfInterest : EntityId; team : int)
+          query(squad__leader) <| $ [es] (beh_tree__capzoneOfInterest : EntityId; team : int; transform : float3x4)
             if team == agentTeam
               if beh_tree__capzoneOfInterest == capzone_eid
                 ++teamSquadsToZone
+            elif !is_teams_friendly(team, agentTeam)
+              if distance_sq(transform[3], capzone_transform[3]) < enemyNearDistSq
+                ++enemySquadsNear
 
       var teamMatesInZone = 0
       var teamSquadsInZone = 0
@@ -456,37 +463,49 @@ class UpdateGoalCapzone : BehNodeAdapter
         enemyMatesInZone = length(*enTeamInZone)
 
       if capzone__owningTeam == agentTeam || is_teams_friendly(capzone__owningTeam, agentTeam)
-        var score = 100 - teamSquadsToZone * 10
+        var score = max(0, int((float(1 + max(0, 10 - teamMatesInZone)) * 100.0 * (square(100.0) * safeinv(max(distSq, square(60.0)))))))
         if capzone__capTeam != capzone__owningTeam
-          score += 50 + int(100.0 * capzone__progress)
-        elif mySquadInZone
-          score += 50
-        score -= teamSquadsInZone * 50
-        score += min(0, 300 - enemyMatesInZone * 100)
-        score += max(0, int((float(2 - teamMatesInZone) * 50.0 * (square(100.0) * safeinv(distSq)))))
+          if teamMatesInZone <= 0
+            score += 5000
+          let captured = int(100.0 * capzone__progress)
+          if captured > 0
+            score += (captured < 50) ? captured : (100 - captured)
+        if enemySquadsNear >= teamMatesInZone
+          score += mySquadInZone ? 15000 : teamSquadsToZone == 0 ? 10000 : 1500
+        else
+          score += (mySquadInZone && teamSquadsInZone == 0) ? 5000 : (teamSquadsToZone == 0) ? 5000 : 0
+        if teamMatesInZone <= 1 && teamSquadsToZone <= 0
+          score += 50000
+        
+        
+
+        
 
         if !bestToDefendEid || score > bestToDefendScore || (score == bestToDefendScore && distSq < bestToDefendDistSq)
           bestToDefendEid = capzone_eid
-          bestToDefendCrowd = mySquadInZone ? (teamSquadsInZone + 1) : 0
+          bestToDefendCrowd = teamSquadsInZone
           bestToDefendEnemy = enemyMatesInZone
           bestToDefendDistSq = distSq
           bestToDefendScore = score
       else
-        var score = 100 - teamSquadsToZone * 50
-        if capzone__capTeam != agentTeam
-          score += max(0, int((float(2 - enemyMatesInZone) * 150.0 * (square(100.0) * safeinv(distSq)))))
-          score += int(100.0 * (1.0 - capzone__progress))
-        else
-          score += int(100.0 * capzone__progress)
+        var score = max(0, int((float(1 + max(0, 10 - enemyMatesInZone)) * 5000.0 * (square(100.0) * safeinv(max(distSq, square(60.0)))))))
+        score += int(100.0 * (1.0 - capzone__progress))
+        if enemySquadsNear <= 1 || enemyMatesInZone <= 0
+          score += 15000
+          if teamSquadsToZone >= 1
+            score -= 10000
+        elif (teamSquadsInZone + teamSquadsToZone) >= 2
+          score -= 25000
         if mySquadInZone
           score += 500
-
         if agentCapzoneOfInterest == capzone_eid
           score = (score * 37) / 20
 
+        
+
         if !bestToCaptureEid || score > bestToCaptureScore || (score == bestToCaptureScore && distSq < bestToCaptureDistSq)
           bestToCaptureEid = capzone_eid
-          bestToCaptureCrowd = mySquadInZone ? (teamSquadsInZone + 1) : 0
+          bestToCaptureCrowd = teamSquadsInZone
           bestToCaptureEnemy = enemyMatesInZone
           bestToCaptureDistSq = distSq
           bestToCaptureScore = score
@@ -505,7 +524,7 @@ class UpdateGoalCapzone : BehNodeAdapter
 
     owner.blackBoard |> set(outZoneEidParam, int(uint(resultEid)))
     if outCrowdedParam >= 0
-      owner.blackBoard |> set(outCrowdedParam, resultCrowd >= 2 ? 1 : 0)
+      owner.blackBoard |> set(outCrowdedParam, resultCrowd)
     if outEnemyParam >= 0
       owner.blackBoard |> set(outEnemyParam, resultEnemy > 0 ? 1 : 0)
     return resultEid != INVALID_ENTITY_ID ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
@@ -3134,7 +3153,7 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
 
       let tooFarSearchDist = 150.0
       let tooFar = distance_sq(fromPos, destPos) > square(tooFarSearchDist)
-      let stepSize = 1.0
+      let stepSize = 1.5
       let pathSlope = 0.1
       let maxPartial = !tooFar ? 2 : 1
       let reachDist = !tooFar ? 0.5 : (distance(fromPos, destPos) - tooFarSearchDist)
@@ -3203,7 +3222,7 @@ class GetValidatedSquadPathAction : BehNodeAdapter
   outActionPosToParam : int = -1
   checkTimeout : bool = true
 
-  REACH_POS_DISTANCE = 10.0
+  REACH_POS_DISTANCE = 5.0
   REACH_POS_MAXDIST = 100.0
 
   DEF_LOOK_DIST = 100.0
@@ -3292,6 +3311,31 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
     if datablock_find_param(data, "useReconsParam") >= 0
       useReconsParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "useReconsParam", ""), 0)
 
+  MAX_SAFETY = 3
+
+  def get_safety_at(pos : float3; team : int; var covers : CoversComponent&; var loose_counter : int&)
+    if !is_point_safe(pos, team)
+      if is_pos_indoor(pos)
+        return -3
+      return -5
+    if !is_pos_indoor(pos)
+      ++loose_counter
+      if loose_counter >= 3
+        loose_counter = 0
+        var box : bbox3f
+        let NEARBY_DIST = 3.5
+        box.bmin.xyz = pos - float3(NEARBY_DIST, 0.5f, NEARBY_DIST)
+        box.bmax.xyz = pos + float3(NEARBY_DIST, 1.5f, NEARBY_DIST)
+        var numCovers = 0
+        covers_box_cull(covers, box) <| $ [unused_argument(id, tm)] (id : int; tm : mat44f#)
+          if tm.col3.xyz == float3() 
+            return
+          ++numCovers
+        return min(1, -5 + (numCovers + 3) / 5)
+      else
+        return -1
+    return 3
+
   def override update(dt : float) : EBehResult
     let agentEid = beh_tree_eid(owner)
     var agentPos = float3()
@@ -3373,65 +3417,92 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
         prevPos = atPos
         atPos = nextPos
 
-      if found && !is_point_safe(foundPos, agentTeam)
-        var distFromStart = 0.0
-        for i in range(1, foundIdx + 1)
-          distFromStart += distance(path[i - 1], path[i])
+      if found
+        
+        
 
-        let searchDist = 30.0
-        let minDistFromStart = 15.0
-        let maxBackwardsPossible = max(0.0, distFromStart - minDistFromStart)
-        let searchBackwardsDist = min(searchDist, maxBackwardsPossible)
-        var foundSafe = false
-        var backwardDist = 0.0
-        var bIdx = foundIdx
+        query() <| $ [es] (var covers : CoversComponent&)
+          var numCheckSafety = 1
+          var looseCounter = 0
+          var bestSafety = get_safety_at(foundPos, agentTeam, covers, looseCounter)
 
-        while !foundSafe && bIdx > 0 && backwardDist < searchBackwardsDist
-          let p0 = path[bIdx]
-          let p1 = path[bIdx - 1]
-          let segLen = distance(p0, p1)
-          if backwardDist + segLen > searchBackwardsDist
-            let remain = searchBackwardsDist - backwardDist
-            let pos = lerp(p0, p1, safediv(remain, segLen))
-            backwardDist = searchBackwardsDist
-            if is_point_safe(pos, agentTeam)
-              foundSafe = true
-              foundIdx = bIdx
-              foundPos = pos
-              break
-          else
-            backwardDist += segLen
-            if is_point_safe(p1, agentTeam)
-              foundSafe = true
-              foundIdx = bIdx
-              foundPos = p1
-              break
-          bIdx -= 1
+          var distFromStart = 0.0
+          for i in range(1, foundIdx + 1)
+            distFromStart += distance(path[i - 1], path[i])
 
-        if !foundSafe
-          var fIdx = foundIdx
-          var forwardDist = 0.0
-          while !foundSafe && fIdx < len - 1 && forwardDist < searchDist
-            let p0 = path[fIdx]
-            let p1 = path[fIdx + 1]
+          let searchDist = 30.0
+          let minDistFromStart = 15.0
+          let maxBackwardsPossible = max(0.0, distFromStart - minDistFromStart)
+          let searchBackwardsDist = min(searchDist, maxBackwardsPossible)
+          var backwardDist = 0.0
+          var bIdx = foundIdx
+
+          var wasCut = false
+          while bIdx > 0 && backwardDist < searchBackwardsDist
+            let p0 = path[bIdx]
+            let p1 = path[bIdx - 1]
             let segLen = distance(p0, p1)
-            if forwardDist + segLen > searchDist
-              let remain = searchDist - forwardDist
+            if backwardDist + segLen > searchBackwardsDist
+              let remain = searchBackwardsDist - backwardDist
               let pos = lerp(p0, p1, safediv(remain, segLen))
-              forwardDist = searchDist
-              if is_point_safe(pos, agentTeam)
-                foundSafe = true
-                foundIdx = fIdx
+              backwardDist = searchBackwardsDist
+              ++numCheckSafety
+              let safety = get_safety_at(pos, agentTeam, covers, looseCounter)
+              if safety > bestSafety
+                bestSafety = safety
+                foundIdx = bIdx
                 foundPos = pos
-                break
+                wasCut = true
             else
-              forwardDist += segLen
-              if is_point_safe(p1, agentTeam)
-                foundSafe = true
+              backwardDist += segLen
+              ++numCheckSafety
+              let safety = get_safety_at(p1, agentTeam, covers, looseCounter)
+              if safety > bestSafety
+                bestSafety = safety
+                foundIdx = bIdx
                 foundPos = p1
-                foundIdx = fIdx
-                break
-            fIdx += 1
+                wasCut = true
+            bIdx -= 1
+
+          if !wasCut && bestSafety < MAX_SAFETY && !foundBlocked
+            var fIdx = foundIdx
+            var forwardDist = 0.0
+            while fIdx < len - 1 && forwardDist < searchDist
+              let p0 = path[fIdx]
+              let p1 = path[fIdx + 1]
+              let segLen = distance(p0, p1)
+              if forwardDist + segLen > searchDist
+                let remain = searchDist - forwardDist
+                let pos = lerp(p0, p1, safediv(remain, segLen))
+                forwardDist = searchDist
+                ++numCheckSafety
+                let safety = get_safety_at(pos, agentTeam, covers, looseCounter)
+                if safety > bestSafety
+                  bestSafety = safety
+                  foundIdx = fIdx
+                  foundPos = pos
+              else
+                forwardDist += segLen
+                ++numCheckSafety
+                let safety = get_safety_at(p1, agentTeam, covers, looseCounter)
+                if safety > bestSafety
+                  bestSafety = safety
+                  foundPos = p1
+                  foundIdx = fIdx
+              fIdx += 1
+
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
 
       if !found
         return
@@ -3449,8 +3520,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
 
       path |> erase(0, foundIdx)
       if length(path) < 2
-        found = false
-        return
+        path |> clear()
 
       found = false
       query(agentSquad) <| $ [es] (var squadAI_tactical__actionType : int&;
@@ -3491,43 +3561,6 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
 
     return found ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
 
-  def walk_seg_intersects_recon_danger_zone(prev_pos : float3; next_pos : float3;
-                                            min_radius_sq : float; max_radius_sq : float;
-                                            pos : float3; dir1 : float3; dir2 : float3;
-                                            var out_look_dir : float3&)
-    let MAX_HEIGHT_DOWN = 3.5
-    if prev_pos.y < pos.y - MAX_HEIGHT_DOWN && next_pos.y < pos.y - MAX_HEIGHT_DOWN
-      return false
-    let MAX_HEIGHT_UP = 3.5
-    if prev_pos.y > pos.y + MAX_HEIGHT_UP && next_pos.y > pos.y + MAX_HEIGHT_UP
-      return false
-
-    let MIN_DIST_SQ = min_radius_sq
-    let MAX_DIST_SQ = max_radius_sq
-    let distSq1 = distance_sq(prev_pos, pos)
-    let distSq2 = distance_sq(next_pos, pos)
-    if distSq1 < MIN_DIST_SQ || distSq2 < MIN_DIST_SQ
-      return false
-    if distSq1 > MAX_DIST_SQ && distSq2 > MAX_DIST_SQ
-      return false
-
-    let nx1 = -dir1.z; let nz1 = dir1.x; let add1 = -(nx1 * pos.x + nz1 * pos.z)
-    let nx2 = dir2.z; let nz2 = -dir2.x; let add2 = -(nx2 * pos.x + nz2 * pos.z)
-    let was1 = nx1 * prev_pos.x + nz1 * prev_pos.z + add1 > 0.0
-    let was2 = nx2 * prev_pos.x + nz2 * prev_pos.z + add2 > 0.0
-    if was1 == was2
-      return false
-    if was1
-      let now2 = nx2 * next_pos.x + nz2 * next_pos.z + add2 > 0.0
-      if now2
-        out_look_dir = dir2
-        return true
-      return false
-    let now1 = nx1 * next_pos.x + nz1 * next_pos.z + add1 > 0.0
-    if now1
-      out_look_dir = dir1
-      return true
-    return false
 
   def check_corner_action(agent_pos : float3; var path : Point3List&;
                           max_idx : int; total_num_idx : int;
@@ -3537,14 +3570,15 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
       return false
 
     let MIN_RADIUS = cvt(float(total_num_idx), 25.0, 75.0, 0.5, 3.0)
-    let MAX_RADIUS = 50.0
+    let MAX_RADIUS = cvt(float(total_num_idx), 25.0, 75.0, 10.0, 25.0)
+    let OVER_RADIUS = 12.0
     let CLOSE_RADIUS = 3.5
 
     let pathStart = path[0]
     let pathTo = path[max_idx]
     let pathEnd = path[length(path) - 1]
     let pathCenter = (pathStart + pathTo) * 0.5
-    let scanRadius = distance(pathCenter, pathStart) + MAX_RADIUS
+    let scanRadius = distance(pathCenter, pathStart) + OVER_RADIUS
 
     var dangerPos : array<float3>
     query() <| $ [es] (squad__leader : EntityId)
@@ -3570,6 +3604,8 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
     var stopDir = float3()
     var limitIdx = min(MAX_STEPS_AHEAD, max_idx)
     var fullRecons = MAX_RECONS_AROUND
+    var stopAtDist = 0.0
+    let MIN_STOP_DIST = 12.0
     scan_recons_corners(pathCenter, scanRadius) <| $(pos : float3; dir1 : float3; dir2 : float3)
       if fullRecons > 0
         --fullRecons
@@ -3579,8 +3615,9 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
       while idx < limitIdx
         let nextPos = path[idx]
         var lookDir = float3()
+        var alongDir = float3()
         if distance_sq(agent_pos, nextPos) > MIN_RADIUS_SQ && (fullRecons > 0 || distance_sq(nextPos, pos) < CLOSE_RADIUS_SQ)
-          if walk_seg_intersects_recon_danger_zone(prevPos, nextPos, MIN_RADIUS_SQ, MAX_RADIUS_SQ, pos, dir1, dir2, lookDir)
+          if walk_seg_intersects_recon_danger_zone(prevPos, nextPos, MIN_RADIUS_SQ, MAX_RADIUS_SQ, pos, dir1, dir2, lookDir, alongDir)
             let forwCoef = dot(normalize(pathTo - prevPos), lookDir)
             if forwCoef < COS_18
               if forwCoef > COS_60 || dot(normalize(pathEnd - prevPos), lookDir) > COS_18
@@ -3592,7 +3629,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
                     if dot(normalize(dangerPt - prevPos), lookDir) > COS_30
                       anyGood = true
                       break
-                if anyGood
+                if anyGood && (stopAtDist > MIN_STOP_DIST || idx == limitIdx - 1)
                   let fromPos = nextPos + float3(0.0, 1.5, 0.0)
                   let tracePos = pos - (dir1 * 0.1 + dir2 * 0.1) + float3(0.0, 1.5, 0.0)
                   let traceDir = normalize(tracePos - fromPos)
@@ -3607,6 +3644,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
                       stopDir = lookDir
                       limitIdx = min(limitIdx, idx + 2)
                     break
+        stopAtDist += distance(prevPos, nextPos)
         prevPos = nextPos
         if idx + 1 < limitIdx && idx + NUM_STEPS_ADVANCE >= limitIdx
           idx = limitIdx - 1
@@ -3996,6 +4034,7 @@ class FindAttackVehicleTargetForOrder : BehNodeAdapter
   outExecutorEidParam : int = -1
   outShootPosFromParam : int = -1
   outShootPosToParam : int = -1
+  outIsSelfExecutorParam : int = -1
 
   def override loadFromBlk(var data : DataBlock) : void
     if datablock_find_param(data, "outTargetVehicleEidParam") >= 0
@@ -4006,6 +4045,8 @@ class FindAttackVehicleTargetForOrder : BehNodeAdapter
       outShootPosFromParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outShootPosFromParam", ""), float3())
     if datablock_find_param(data, "outShootPosToParam") >= 0
       outShootPosToParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outShootPosToParam", ""), float3())
+    if datablock_find_param(data, "outIsSelfExecutorParam") >= 0
+      outIsSelfExecutorParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outIsSelfExecutorParam", ""), 0)
 
   def override update(dt : float) : EBehResult
     let agentEid = beh_tree_eid(owner)
@@ -4016,7 +4057,7 @@ class FindAttackVehicleTargetForOrder : BehNodeAdapter
     query(agentEid) <| $ [es] (transform aka agent_transform : float3x4; squad_member__squad : EntityId)
       query(squad_member__squad) <| $ [es] (squadAI_tactical__vehicleTargetsEids : EidList; squad__allMembers : EidList; squad__leader : EntityId)
         var candidates : array<EntityId>
-        if !find_attack_vehicle_squad_candidates(squad__allMembers, squad__leader, true, false, candidates)
+        if !find_attack_vehicle_squad_candidates(squad__allMembers, squad__leader, true, false, candidates, true)
           return
 
         var bestDistSq = FLT_MAX
@@ -4039,6 +4080,8 @@ class FindAttackVehicleTargetForOrder : BehNodeAdapter
             owner.blackBoard |> set(outShootPosFromParam, shootPosFrom)
           if outShootPosToParam >= 0
             owner.blackBoard |> set(outShootPosToParam, shootPosTo)
+          if outIsSelfExecutorParam >= 0
+            owner.blackBoard |> set(outIsSelfExecutorParam, executorEid == agentEid ? 1 : 0)
           foundTarget = true
 
     return foundTarget ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED

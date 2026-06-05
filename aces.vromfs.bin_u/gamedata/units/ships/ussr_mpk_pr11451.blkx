@@ -1812,7 +1812,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -1924,7 +1923,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -1995,7 +1993,9 @@
       "prevModification": "new_ship_screw"
     },
     "ship_tool_kit": {},
-    "manual_ship_extinguisher": {},
+    "manual_ship_extinguisher": {
+      "disableModEffects": {}
+    },
     "ship_smoke_screen_system_mod": {},
     "new_ship_pumps": {},
     "76mm_ussr_ak726_navy_HE": {},
@@ -2046,9 +2046,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_medium",
+            "name": "ship_smoke_big",
             "emitter": "emtr_fire_engine_02",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 15.0
           },
           {
             "name": "ship_fire_medium",
@@ -2056,9 +2057,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_medium",
+            "name": "ship_smoke_medium",
             "emitter": "emtr_fire_engine_04",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 20.0
           },
           {
             "name": "ship_fire_medium",
@@ -2066,9 +2068,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_medium",
+            "name": "ship_smoke_medium",
             "emitter": "emtr_fire_engine_06",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 30.0
           },
           {
             "name": "ship_fire_medium",
@@ -2080,8 +2083,9 @@
             "emitter": "emtr_smoke_engine_01"
           },
           {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_engine_02"
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_engine_02",
+            "postDelay": 15.0
           },
           {
             "name": "ship_smoke_medium",
@@ -2089,7 +2093,8 @@
           },
           {
             "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_engine_04"
+            "emitter": "emtr_smoke_engine_04",
+            "postDelay": 20.0
           },
           {
             "name": "ship_smoke_medium",
@@ -2097,7 +2102,8 @@
           },
           {
             "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_engine_06"
+            "emitter": "emtr_smoke_engine_06",
+            "postDelay": 30.0
           },
           {
             "name": "ship_smoke_medium",
@@ -2132,29 +2138,53 @@
       {
         "name": "compartment_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_big",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_big",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_big",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "superstructure_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_big",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_big",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_big",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "turret_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_medium",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_big",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "turret_aux_fire",
@@ -3111,6 +3141,25 @@
         "fx": {
           "name": "smoke_after_hit_small",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "steam_leak",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "explosion_steam_leak"
+        }
+      },
+      {
+        "name": "steam_explosion_medium",
+        "fx": {
+          "name": "explosion_steam_medium"
+        }
+      },
+      {
+        "name": "steam_explosion_big",
+        "fx": {
+          "name": "explosion_steam_big"
         }
       },
       {

@@ -18,6 +18,7 @@
   "haveCCRPForGun": true,
   "haveOpticTurret": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "isBwOpticSight": true,
   "laserDesignator": true,
   "ilsTornado": true,
@@ -2144,7 +2145,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2155,7 +2156,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2166,7 +2167,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2177,7 +2178,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2188,7 +2189,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2260,7 +2261,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2271,7 +2272,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2282,7 +2283,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2293,7 +2294,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2304,7 +2305,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2376,7 +2377,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2387,7 +2388,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2398,7 +2399,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2409,7 +2410,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2420,7 +2421,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2492,7 +2493,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2503,7 +2504,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2514,7 +2515,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2525,7 +2526,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2536,7 +2537,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -3324,6 +3325,13 @@
       "noiseFactor": 0.04,
       "index": 2
     },
+    "fpvShellThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05
+    },
     "gunnerIr": {
       "resolution": [
         1600,
@@ -3378,7 +3386,8 @@
       ],
       "opticType": "tv",
       "turretNo": 0,
-      "name": "PGM500_2000"
+      "nvIndex": 2,
+      "name": "PGM500_2000_IR"
     },
     "Target": {
       "pos": [
@@ -3483,6 +3492,22 @@
         "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_gbu_24.blk"
       },
       {
+        "name": "tornado_gr4_mk82",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_mk82.blk"
+      },
+      {
+        "name": "tornado_gr4_mk82_tsc",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_mk82_tsc.blk"
+      },
+      {
+        "name": "tornado_gr4_mk82_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_mk82_snakeye.blk"
+      },
+      {
+        "name": "tornado_gr4_mk82_snakeye_tsc",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_mk82_snakeye_tsc.blk"
+      },
+      {
         "name": "tornado_gr4_1000lb_mk13",
         "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_1000lb_mk13.blk"
       },
@@ -3513,6 +3538,13 @@
       {
         "name": "tornado_gr4_pgm_2000",
         "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_pgm_2000.blk"
+      },
+      {
+        "name": "tornado_gr4_alarm",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_alarm.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_GROUND"
+        }
       }
     ]
   },
@@ -3555,7 +3587,14 @@
         "terma_mcp1",
         "terma_mcp2",
         "bol_304a_container_1",
-        "bol_304a_container_2"
+        "bol_304a_container_2",
+        "adapter_alarm_launcher001",
+        "adapter_alarm_launcher002",
+        "adapter_alarm_launcher003",
+        "tornado_gr4_pylon_001",
+        "tornado_gr4_pylon_002",
+        "tornado_gr4_pylon_003",
+        "tornado_gr4_pylon_004"
       ]
     },
     "HideDmParts": {
@@ -3833,6 +3872,26 @@
                 "reqModification": "us_aim_9m"
               }
             ]
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "alarm_slot2",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "tornado_gr4_pylon_002",
+                "uk_alarm_launcher_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/uk_alarm_launcher.blk",
+              "emitter": "uk_alarm_launcher_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -3841,6 +3900,74 @@
         "tier": 9,
         "order": 5,
         "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "pylon_bomb2_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb1_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lbs_mk82_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_x2.blk",
+              "emitter": "pylon_tsc_1"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_mk82_snakeye",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "pylon_bomb2_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb1_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "500lbs_mk82_snakeye_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_snakeye_x2.blk",
+              "emitter": "pylon_tsc_1"
+            }
+          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs",
@@ -4076,6 +4203,22 @@
               "slot": 9,
               "preset": "ptb_2"
             }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "alarm_slot3",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/uk_alarm_launcher.blk",
+              "emitter": "uk_alarm_launcher_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -4104,6 +4247,68 @@
               "emitter": "litening_2_pod",
               "bullets": 1,
               "order": 7
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_mk82",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb3_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lbs_mk82_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_x2.blk",
+              "emitter": "pylon_tsc_3"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_mk82_snakeye",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb3_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "500lbs_mk82_snakeye_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_snakeye_x2.blk",
+              "emitter": "pylon_tsc_3"
             }
           },
           {
@@ -4272,6 +4477,22 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_x2_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -4292,6 +4513,96 @@
               "order": 7
             },
             "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_n117_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_n117_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_default_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_500_fuse2"
+              }
+            ]
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "alarm_slot4",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb3",
+                "adapter_alarm_launcher001",
+                "uk_alarm_launcher_007"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/uk_alarm_launcher.blk",
+              "emitter": "uk_alarm_launcher_007",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
               {
                 "slot": 5,
                 "preset": "1000lbs_x2_n117_fuse2"
@@ -4337,6 +4648,68 @@
         "tier": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_mk82",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb5_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lbs_mk82_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_x2.blk",
+              "emitter": "pylon_tsc_5"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_mk82_snakeye",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb5_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "500lbs_mk82_snakeye_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_snakeye_x2.blk",
+              "emitter": "pylon_tsc_5"
+            }
+          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs_fuse2",
@@ -4579,6 +4952,210 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
+            "iconType": "bombs_middle",
+            "name": "500lbs_mk82_fuse_centr",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb7",
+              "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "1000lbs_x2_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_x2_n117_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_mk83_x2_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_2000_fuse1"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_n117_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2_fuse2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_n117_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2_fuse3"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_n117_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_x2_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "us_2000lb_gbu_24_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_500_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_mk82_snakeye_fuse_centr",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb7",
+              "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "1000lbs_x2_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_x2_n117_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_mk83_x2_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_2000_fuse1"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_n117_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2_fuse2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_n117_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2_fuse3"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_n117_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_x2_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "us_2000lb_gbu_24_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_500_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2"
+              }
+            ]
+          },
+          {
             "iconType": "bombs_large",
             "name": "1000lbs_fuse_centr",
             "reqModification": "sea_hawk_2x1000lb",
@@ -4662,6 +5239,38 @@
               {
                 "slot": 8,
                 "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -4749,6 +5358,38 @@
               {
                 "slot": 8,
                 "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -4836,6 +5477,38 @@
               {
                 "slot": 8,
                 "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -4927,6 +5600,38 @@
               {
                 "slot": 8,
                 "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -5018,6 +5723,38 @@
               {
                 "slot": 8,
                 "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -5108,6 +5845,164 @@
               {
                 "slot": 8,
                 "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2"
+              }
+            ]
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "alarm_slot6",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb4",
+                "adapter_alarm_launcher003",
+                "uk_alarm_launcher_009"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/uk_alarm_launcher.blk",
+              "emitter": "uk_alarm_launcher_009",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "litening"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_x2_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_x2_n117_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_mk83_x2_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_fuse1"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_2000_fuse1"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_n117_fuse2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2_fuse2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_n117_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2_fuse3"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_n117_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_x2_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "us_2000lb_gbu_24_fuse4"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_500_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           }
@@ -5118,6 +6013,68 @@
         "tier": 5,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_mk82",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb6_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lbs_mk82_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_x2.blk",
+              "emitter": "pylon_tsc_6"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_mk82_snakeye",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb6_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "500lbs_mk82_snakeye_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_snakeye_x2.blk",
+              "emitter": "pylon_tsc_6"
+            }
+          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs_fuse3",
@@ -5367,6 +6324,64 @@
                 "preset": "us_2000lb_gbu_24_fuse4"
               }
             ]
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "alarm_slot7",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb5",
+                "adapter_alarm_launcher002",
+                "uk_alarm_launcher_008"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/uk_alarm_launcher.blk",
+              "emitter": "uk_alarm_launcher_008",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "litening"
+              },
+              {
+                "slot": 6,
+                "preset": "1000lbs_fuse_centr"
+              },
+              {
+                "slot": 6,
+                "preset": "1000lbs_fuse_centr_n117"
+              },
+              {
+                "slot": 6,
+                "preset": "1000lbs_mk83_fuse_centr"
+              },
+              {
+                "slot": 6,
+                "preset": "fr_mk13_fuse_centr"
+              },
+              {
+                "slot": 6,
+                "preset": "epv2_fuse_centr"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_500_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "us_2000lb_gbu_24_fuse4"
+              }
+            ]
           }
         ]
       },
@@ -5375,6 +6390,68 @@
         "tier": 4,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_mk82",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb4_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lbs_mk82_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_x2.blk",
+              "emitter": "pylon_tsc_4"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_mk82_snakeye",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb4_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "500lbs_mk82_snakeye_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_snakeye_x2.blk",
+              "emitter": "pylon_tsc_4"
+            }
+          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs_fuse4",
@@ -5589,6 +6666,22 @@
               {
                 "slot": 4,
                 "preset": "pgm_2000_fuse1"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -5644,6 +6737,22 @@
               {
                 "slot": 4,
                 "preset": "pgm_2000_fuse1"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -5696,6 +6805,22 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_x2_n117_fuse3"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_mk82_snakeye_x2"
               }
             ]
           },
@@ -5772,6 +6897,74 @@
         "tier": 3,
         "order": 6,
         "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb6",
+                "pylon_bomb6_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb2_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lbs_mk82_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_x2.blk",
+              "emitter": "pylon_tsc_2"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_mk82_snakeye",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb6",
+                "pylon_bomb6_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb2_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "500lbs_mk82_snakeye_x2",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "machLimit": 1.01,
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_snakeye_x2.blk",
+              "emitter": "pylon_tsc_2"
+            }
+          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs",
@@ -6007,6 +7200,22 @@
               "slot": 3,
               "preset": "ptb_1"
             }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "alarm_slot9",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/uk_alarm_launcher.blk",
+              "emitter": "uk_alarm_launcher_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -6142,6 +7351,26 @@
                 "reqModification": "us_aim_9m"
               }
             ]
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "alarm_slot10",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb6",
+                "tornado_gr4_pylon_003",
+                "uk_alarm_launcher_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/uk_alarm_launcher.blk",
+              "emitter": "uk_alarm_launcher_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -6565,194 +7794,6 @@
     "maxSpeedMultiplier": 1.3,
     "wepOverspeed": 1.3
   },
-  "wiki": {
-    "general": {
-      "length": 8.8138,
-      "wingspan": 11.582,
-      "wingArea": 24.15,
-      "emptyWeight": 2925.0,
-      "normalWeight": 3426.78,
-      "maxTakeoffWeight": 3792.0,
-      "powerPlantType": 1,
-      "powerMaxWep": 1210.0,
-      "powerMaxMil": 1100.0
-    },
-    "performance": {
-      "table": {
-        "rpmWep": 2700.0,
-        "manifoldPressureWep": 1.67,
-        "airSpeedWep0": [
-          0.0,
-          452.0
-        ],
-        "airSpeedWep1": [
-          6100.0,
-          523.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          15.1
-        ],
-        "climbRateWep1": [
-          5800.0,
-          11.2
-        ],
-        "climbTimeWep0": [
-          2000.0,
-          159.193
-        ],
-        "climbTimeWep1": [
-          4000.0,
-          344.802
-        ],
-        "climbTimeWep2": [
-          6000.0,
-          538.096
-        ],
-        "climbTimeWep3": [
-          8000.0,
-          813.135
-        ],
-        "turnTimeWep": [
-          1000.0,
-          18.9
-        ],
-        "rpmMil": 2500.0,
-        "manifoldPressureMil": 1.46,
-        "airSpeedMil0": [
-          0.0,
-          440.0
-        ],
-        "airSpeedMil1": [
-          6800.0,
-          517.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          14.1
-        ],
-        "climbRateMil1": [
-          6400.0,
-          9.8
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          165.436
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          368.04
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          584.696
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          858.949
-        ],
-        "turnTimeMil": [
-          1000.0,
-          19.4
-        ],
-        "takeoffDistance": 469.31,
-        "ceiling": 10300.0,
-        "rollRate": 76.0,
-        "wingLoading": 142.0,
-        "powerToWeightRatio": 0.34
-      },
-      "plot": {
-        "airSpeedWep0": [
-          0.0,
-          452.0
-        ],
-        "airSpeedWep1": [
-          2500.0,
-          455.0
-        ],
-        "airSpeedWep2": [
-          6100.0,
-          523.0
-        ],
-        "airSpeedWep3": [
-          8500.0,
-          488.0
-        ],
-        "airSpeedWep4": [
-          10200.0,
-          434.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          15.1
-        ],
-        "climbRateWep1": [
-          2300.0,
-          11.9
-        ],
-        "climbRateWep2": [
-          5200.0,
-          11.5
-        ],
-        "climbRateWep3": [
-          5800.0,
-          11.2
-        ],
-        "climbRateWep4": [
-          10200.0,
-          2.3
-        ],
-        "airSpeedMil0": [
-          0.0,
-          440.0
-        ],
-        "airSpeedMil1": [
-          900.0,
-          455.0
-        ],
-        "airSpeedMil2": [
-          2800.0,
-          454.0
-        ],
-        "airSpeedMil3": [
-          6300.0,
-          512.0
-        ],
-        "airSpeedMil4": [
-          6900.0,
-          517.0
-        ],
-        "airSpeedMil5": [
-          8500.0,
-          495.0
-        ],
-        "airSpeedMil6": [
-          10300.0,
-          439.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          14.1
-        ],
-        "climbRateMil1": [
-          2900.0,
-          10.8
-        ],
-        "climbRateMil2": [
-          5700.0,
-          10.2
-        ],
-        "climbRateMil3": [
-          6500.0,
-          9.7
-        ],
-        "climbRateMil4": [
-          10300.0,
-          2.3
-        ]
-      }
-    }
-  },
   "flexWing": {
     "wingStrainCoeff": 0.35,
     "wingOverloadCoeff": 1.0,
@@ -6816,6 +7857,11 @@
     },
     "bk_27_new_gun": {
       "reqModification": "bk_27_belt_pack",
+      "tier": 2
+    },
+    "us_arm": {
+      "prevModification": "bk_27_new_gun",
+      "modClass": "weapon",
       "tier": 3
     },
     "sea_hawk_2x1000lb": {
@@ -7129,7 +8175,7 @@
     "emtr_break_wing2_l_to": [
       -0.69921,
       0.174075,
-      5.84719
+      4.84719
     ],
     "_emtr_break_wing0_r_from": [
       -0.69921,
@@ -7159,7 +8205,7 @@
     "emtr_break_wing2_r_to": [
       -0.69921,
       0.174075,
-      -5.84719
+      -4.84719
     ],
     "emtr_break_wing_tail": [
       -3.01848,

@@ -9,7 +9,7 @@ let { getRequirementsMarkup, getRequirementsText, tryUseRecipes
 } = require("%scripts/items/exchangeRecipes.nut")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
@@ -275,7 +275,8 @@ let Chest = class (ItemExternal) {
     let text = warningIfGold(
       loc("item/openForGold/needMoneyQuestion", { itemName = this.getName(), cost = cost.getTextAccordingToBalance() }),
       cost)
-    purchaseConfirmation("open_ches_for_gold", text, @() openForGoldRecipe.buyAllRequiredComponets(item))
+    let callbackYes = @() openForGoldRecipe.buyAllRequiredComponets(item)
+    purchaseConfirmation({ id = "open_ches_for_gold", text, callbackYes }, cost)
     return true
   }
 

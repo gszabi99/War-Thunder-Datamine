@@ -25,7 +25,7 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
+  "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
@@ -37,13 +37,12 @@
   "minDistBetween": 10.0,
   "expClass": "exp_tank",
   "mass": 18400.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "DamageParts": {
@@ -384,6 +383,10 @@
         "armorThrough": 3.0
       },
       "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
       }
@@ -1724,9 +1727,7 @@
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 2000.0,
         "AttackMaxRadius": 2000.0,
-        "AttackMaxHeight": 1000.0,
         "accuracyAir": 0.0,
         "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
@@ -1735,7 +1736,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
@@ -1803,7 +1803,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "turret": {
           "head": "bone_mg_gun_twin",
           "gun": "bone_mg_gun_twin",
@@ -1845,7 +1844,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "turret": {
           "head": "bone_mg_aa_h_01",
@@ -1892,23 +1890,6 @@
       ],
       "AdvancedMass": true,
       "trackMass": 700.0
-    },
-    "tracks": {
-      "animationMultiplier": 0.68,
-      "height": 0.05,
-      "width": 0.406,
-      "tracksTensionK": [
-        11.0,
-        10.0,
-        5.0
-      ],
-      "trackMesh": "us_t72_phys_track_line",
-      "trackLen": 0.139,
-      "trackCount": 75,
-      "trackFadeTime": 1.1,
-      "trackStartOffset": 0.07,
-      "trackMaxHeight": 1.2,
-      "trackMaxSinking": 0.1
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1962,6 +1943,24 @@
       "frontBackGearRadius": 0.29,
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15
+    },
+    "tracks": {
+      "animationMultiplier": 0.68,
+      "height": 0.05,
+      "width": 0.406,
+      "tracksTensionK": [
+        11.0,
+        10.0,
+        5.0
+      ],
+      "trackMesh": "se_m24_dk_phys_track_line",
+      "trackLen": 0.139,
+      "trackCount": 76,
+      "trackConnector": true,
+      "trackFadeTime": 1.1,
+      "trackStartOffset": 0.05,
+      "trackMaxHeight": 1.2,
+      "trackMaxSinking": 0.1
     }
   },
   "PhysSys": {
@@ -2957,9 +2956,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -2968,7 +2965,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
@@ -3036,7 +3032,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_mg_gun_twin",
                 "gun": "bone_mg_gun_twin",
@@ -3078,7 +3073,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "forestallTime": 0.1,
               "turret": {
                 "head": "bone_mg_aa_h_01",
@@ -3120,9 +3114,7 @@
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 2000.0,
               "AttackMaxRadius": 2000.0,
-              "AttackMaxHeight": 1000.0,
               "accuracyAir": 0.0,
               "accuracyGnd": 1.5,
               "errMeasureVel": 0.0,
@@ -3131,7 +3123,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "errExplTime": 0.0,
               "turret": {
                 "head": "bone_grenade",
                 "gun": "bone_grenade"

@@ -15,6 +15,7 @@ let { upgradeClanMembers, editClan, disbandClan } = require("%scripts/clans/clan
 let { get_clan_info_table, getFilteredClanData } = require("%scripts/clans/clanInfoTable.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler) {
   owner = null
@@ -159,12 +160,12 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     if (cost <= zero_money)
       this.editClanInfo()
     else if (checkBalanceMsgBox(cost)) {
-      let text = changedPrimary && this.newClanType.getPrimaryInfoChangeCost() > zero_money
+      let loctext = changedPrimary && this.newClanType.getPrimaryInfoChangeCost() > zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
-      let msgText = warningIfGold(format(loc(text), cost.getTextAccordingToBalance()), cost)
-      this.msgBox("need_money", msgText, [["ok", function() { this.editClanInfo() }],
-        ["cancel"]], "ok")
+      let text = warningIfGold(format(loc(loctext), cost.getTextAccordingToBalance()), cost)
+      let callbackYes = Callback(@() this.editClanInfo() , this)
+      purchaseConfirmation({ id = "need_money", text, callbackYes }, cost)
     }
   }
 
@@ -206,13 +207,13 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     let cost = clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
     if (checkBalanceMsgBox(cost)) {
       let step = this.clanData.clanType.getMembersUpgradeStep()
-      let msgText = warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
+      let text = warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
           { step = step,
             cost = cost.getTextAccordingToBalance()
           }),
         cost)
-      this.msgBox("need_money", msgText, [["ok", function() { this.upgradeMembers() } ],
-        ["cancel"]], "ok")
+      let callbackYes = Callback(@() this.upgradeMembers() , this)
+      purchaseConfirmation({ id = "need_money", text, callbackYes }, cost)
     }
   }
 

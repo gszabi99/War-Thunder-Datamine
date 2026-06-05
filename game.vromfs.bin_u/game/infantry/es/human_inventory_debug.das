@@ -2,7 +2,7 @@ options no_aot
 require ecs
 require ecs.safe
 require daslib/strings_boost
-require danetlibs.console_commands.main.console_common
+require gameLibs.console_commands.main.console_common
 require %appGame.infantry.es.human_weap_common
 require %appGame.infantry.es.console_debug_common
 require strings
@@ -196,16 +196,28 @@ def inventory_remove_weap_mod_debug_processor(args : array<string>;
             hints |> add_hint("{cmd} {gunAttachable__slotName}", 0, 2, "(mod: {getEntityTemplateName(eid)})")
   return false
 
-[net_console_cmd(name="inventory.remove_weap_mod", hint="Remove a mod from weapon's slot")]
-def inventory_remove_weap_mod_debug_cmd(slot : string;
+[net_console_cmd(name="inventory.remove_weap_mod", hint="Remove a mod from weapon's slot. No slot arg = remove all mods")]
+def inventory_remove_weap_mod_debug_cmd(slot : string = "";
                                         gun_slot_id : int = -1;
                                         @net_hero hero_eid : EntityId)
 
   query(hero_eid) <| $ [es] (human_weap__currentGunSlot : int;
-                             human_weap__gunEids : EidList)
+                             human_weap__gunEids : EidList;
+                             human_weap__gunMods : Array)
     let wishGunSlot = gun_slot_id >= 0 ? gun_slot_id : human_weap__currentGunSlot
     if wishGunSlot < 0 || wishGunSlot > length(human_weap__gunEids) - 1
       console_print("Invalid gun slot id {wishGunSlot}")
       return
 
-    remove_item_from_weap_impl(hero_eid, wishGunSlot, slot, false )
+    if slot == ""
+      let gunMods = human_weap__gunMods[wishGunSlot] |> get_ecs_EidList()
+      if gunMods == null
+        return
+      var slotNames : array<string>
+      for modEid in *gunMods
+        query(modEid) <| $ [es] (gunAttachable__gunSlotName : string)
+          slotNames |> push(gunAttachable__gunSlotName)
+      for slotName in slotNames
+        remove_item_from_weap_impl(hero_eid, wishGunSlot, slotName, false )
+    else
+      remove_item_from_weap_impl(hero_eid, wishGunSlot, slot, false )

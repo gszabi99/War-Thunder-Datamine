@@ -979,7 +979,7 @@ function riGroupUpdate(v) {
 }
 let riGroupCombo = combobox({value=riGroup, changeVarOnListUpdate=false, update=riGroupUpdate}, riGroups)
 
-let riSelectWindow = function() {
+function riSelectWindow() {
   let mkRI = mkSelectLine({
     selected = riSelectValue
     onSelect = @(v) riSelectChange(v)

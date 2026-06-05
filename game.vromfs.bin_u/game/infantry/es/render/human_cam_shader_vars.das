@@ -17,7 +17,7 @@ def human_camera_shader_vars_update(info : UpdateStageInfoAct;
     return
   assume fcm = app.flightControlMode
 
-  DagorShaders::set_color4(fcm.outEdgeColorVarId, 0.4f, 0.f, 0.f, visual_hit__edgeColorVal)
+  DagorShaders::set_float4(fcm.outEdgeColorVarId, 0.4f, 0.f, 0.f, visual_hit__edgeColorVal)
   DagorShaders::set_int(fcm.redOutBlackOutVarId, visual_hit__edgeColorVal > 0.f ? 1 : 0)
   DagorShaders::set_int(fcm.hasMobileBlackoutVarId, visual_hit__edgeColorVal > 0.f ? 1 : 0)
   visual_hit__edgeColorVal = clamp(visual_hit__edgeColorVal - visual_hit__edgeColorValDecrease * info.dt, 0., visual_hit__edgeColorValMax)

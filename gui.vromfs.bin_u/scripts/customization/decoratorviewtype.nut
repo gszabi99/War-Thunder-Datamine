@@ -4,7 +4,7 @@ let guidParser = require("%scripts/guidParser.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
+let { getDecorTypeBlk } = require("%scripts/customization/decoratorTypeUtils.nut")
 let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
@@ -53,8 +53,8 @@ addEnumDecoratorViewTypes({
     unlockedItemType = UNLOCKABLE_SHIP_FLAG
     resourceType = "ship_flag"
     categoryPathPrefix = "flags/category/"
-    getLocName = @(decoratorName, ...) loc(getDecorator(decoratorName, this)?.blk.nameLocId ?? "")
-    getLocDesc = @(decoratorName) loc(getDecorator(decoratorName, this)?.blk.descLocId ?? "")
+    getLocName = @(decoratorName, ...) loc(getDecorTypeBlk(this.name)?[decoratorName]?.nameLocId ?? "")
+    getLocDesc = @(decoratorName) loc(getDecorTypeBlk(this.name)?[decoratorName]?.descLocId ?? "")
     getImage = @(decorator) decorator ? $"@!{decorator.blk.texture}" : ""
     getImageSize = @(_decorator) "256@sf/@pf, 204@sf/@pf"
     getRatio = @(decorator) decorator?.aspect_ratio ?? 0.8
@@ -141,7 +141,7 @@ addEnumDecoratorViewTypes({
     getSmallIcon = function(decorator) {
       if (!decorator)
         return ""
-      return $"#ui/gameuiskin#icon_skin_{skinLocations.getIconTypeByMask(skinLocations.getSkinLocationsMaskBySkinId(decorator.id, this))}.svg"
+      return $"#ui/gameuiskin#icon_skin_{skinLocations.getIconTypeByMask(skinLocations.getSkinLocationsMaskBySkinId(decorator.id))}.svg"
     }
     getImage = function(decorator) {
       if (!decorator)
@@ -152,7 +152,7 @@ addEnumDecoratorViewTypes({
       if (itemIconName != "")
         return itemIconName
 
-      let mask = skinLocations.getSkinLocationsMaskBySkinId(decorator.id, this)
+      let mask = skinLocations.getSkinLocationsMaskBySkinId(decorator.id)
       let iconType = skinLocations.getIconTypeByMask(mask)
       let suffix =  iconType == "forest" ? "" : $"_{iconType}"
       return $"#ui/gameuiskin/item_skin{suffix}"

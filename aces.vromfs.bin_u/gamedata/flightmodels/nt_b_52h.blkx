@@ -8,6 +8,7 @@
   "hasPointOfInterestMemory": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
+  "mfdCamB52hEvs": true,
   "tpsCameraOffset": [
     -7.0,
     -1.0,
@@ -3625,6 +3626,13 @@
     "nozzleAngleThreshold": 0.05
   },
   "cockpit": {
+    "targetingPodFov": [
+      15.0,
+      5.0
+    ],
+    "sightInFov": 5.0,
+    "sightOutFov": 15.0,
+    "sightFov": 1.0,
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
       17.217,
@@ -4048,6 +4056,46 @@
         1.0
       ]
     },
+    "multifunctionDisplays": {
+      "display": [
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
+        }
+      ]
+    },
     "parts_holes_dmg": {
       "part": "fuse"
     },
@@ -4113,8 +4161,8 @@
       "angularLimits": [
         -45.0,
         45.0,
-        -70.0,
-        19.0
+        -45.0,
+        15.0
       ],
       "opticType": "",
       "turretNo": 0,
@@ -4150,74 +4198,6 @@
     "wingOverloadCoeff": -1.0,
     "wingStrainLimitDown": 1.0,
     "wingStaticRadius": 2.0
-  },
-  "wiki": {
-    "general": {
-      "length": 70.0,
-      "wingspan": 70.0,
-      "wingArea": 370.0,
-      "emptyWeight": 80000.0,
-      "normalWeight": 220000.0,
-      "maxTakeoffWeight": 255000.0,
-      "powerPlantType": 2,
-      "thrustMaxMil": 63200.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 8300.0,
-        "airSpeedMil0": [
-          0.0,
-          946.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          32.0
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          61.9305
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          131.81
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          216.365
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          318.964
-        ],
-        "turnTimeMil": [
-          1000.0,
-          58.0
-        ],
-        "takeoffDistance": 1048.4,
-        "ceiling": 9200.0,
-        "rollRate": 66.0,
-        "wingLoading": 204.0,
-        "thrustToWeightRatio": 0.36
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          946.0
-        ],
-        "airSpeedMil1": [
-          9200.0,
-          883.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          32.0
-        ],
-        "climbRateMil1": [
-          9200.0,
-          13.8
-        ]
-      }
-    }
   },
   "Aircraft": {
     "gunnersCount": 1

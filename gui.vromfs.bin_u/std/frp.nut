@@ -131,7 +131,7 @@ function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
         eidToUpdate.clear()
         triggerableObservable.unsubscribe(update)
       }
-    let destroyEid = function (eid) {
+    function destroyEid(eid) {
       if (eid not in storage)
         return
       eidToUpdate[eid] <- TO_DELETE

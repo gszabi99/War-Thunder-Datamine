@@ -3,7 +3,6 @@ require ecs
 require dm
 require DagorMath
 require WTDamageModel
-require DmFire
 
 
 [cpp_event(unicast)]

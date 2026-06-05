@@ -21,7 +21,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { updateTopSquadScore, isShowSquad,
   getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { is_replay_playing } = require("replays")
-let { get_game_mode, get_mp_local_team } = require("mission")
+let { get_game_mode, get_mp_local_team, get_game_type } = require("mission")
 let { get_mission_difficulty_int, get_mp_session_info, get_player_army_for_hud } = require("guiMission")
 let { stripTags } = require("%sqstd/string.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
@@ -43,7 +43,7 @@ require("%scripts/statistics/mpStatisticsPlayerTooltip.nut")
 let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { getCurMissionWWBattleName } = require("%scripts/worldWar/worldWarState.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
 
 const ICON_SKIP_BG_COLORING = "image_in_progress_ico.svg"
 
@@ -823,6 +823,60 @@ function countWidthForMpTable(objTbl, markup) {
   }
 }
 
+const TEAMMATE_STATS_FIELDS = ["humanKills", "navalKills", "groundKills", "kills", "deaths"]
+const MAX_TEAMMATE_STATS_ROWS = 3
+
+let teammateStatIconMarkup = @(iconLocId, isLeftSide)
+@"textareaNoTab {
+  size:t='ph, ph'
+  text:t='#icon/mpstats/{0}'
+  margin:t='{1}'
+  tinyFont:t='yes'
+  text-align:t='center'
+}".subst(iconLocId, isLeftSide ? "0,0,3@sf/@pf,0" : "3@sf/@pf,0,0,0")
+
+let teammateStatValueMarkup = @(iconLocId, isLeftSide)
+@"textareaNoTab {
+  id:t='{0}'
+  text:t='0'
+  tinyFont:t='yes'
+  text-align:t='{1}'
+}".subst(iconLocId, isLeftSide ? "left" : "right")
+
+function getSpectatorTeammateStatsMarkup(isLeftSide) {
+  let statsRows = []
+  let misObjectives = g_mission_type.getCurrentObjectives()
+  let gt = get_game_type()
+  let gm = get_game_mode()
+  local emptyRowsLeft = MAX_TEAMMATE_STATS_ROWS
+  foreach (statId in TEAMMATE_STATS_FIELDS) {
+    if (!g_mplayer_param_type.getTypeById(statId).isVisible(misObjectives, gt, gm)
+      || (emptyRowsLeft == 1 && statId != "deaths") 
+    )
+      continue
+
+    let iconMarkup = teammateStatIconMarkup(statId, isLeftSide)
+    let valueMarkup = teammateStatValueMarkup(statId, isLeftSide)
+    statsRows.append({
+      col1 = isLeftSide ? iconMarkup : valueMarkup
+      col2 = isLeftSide ? valueMarkup : iconMarkup
+    })
+
+    emptyRowsLeft -= 1
+    if (emptyRowsLeft == 0)
+      break
+  }
+  return statsRows
+}
+
+function getSpectatorTeammateStats(player) {
+  let res = {}
+  foreach (statId in TEAMMATE_STATS_FIELDS)
+    res[statId] <- g_mplayer_param_type.getTypeById(statId).printFunc(player?[statId], player)
+
+  return res
+}
+
 register_command(hud_show_in_battle_time_to_kick_timer, "debug.hud.show_in_battle_time_to_kick_timer")
 register_command(hud_show_in_battle_time_to_kick_alert, "debug.hud.show_in_battle_time_to_kick_alert")
 register_command(hud_reset_in_battle_time_to_kick, "debug.hud.reset_in_battle_time_to_kick")
@@ -843,4 +897,7 @@ return {
   updateTeamCssLabel
   countWidthForMpTable
   getMpKickCountdown
+  getSpectatorTeammateStatsMarkup
+  getSpectatorTeammateStats
+  TEAMMATE_STATS_FIELDS
 }

@@ -3,6 +3,9 @@
     "aim_data__lensNodeId": -1,
     "aim_data__lensCollisionNodeId": -1,
     "aim_data__lensBoundingSphereRadius": 1.0,
+    "aim_data__crosshairNodeId": -1,
+    "aim_data__crosshairFfpNodeId": -1,
+    "aim_data__firstFocalPlaneZoomFactor": 1.0,
     "aim_data__isAiming": false,
     "aim_data__isAimingThroughScope": false,
     "aim_data__nightVision": false,
@@ -14,7 +17,6 @@
     "aim_data__aimingTime": 0.0,
     "aim_data__legacyScopeWeaponLensZoomFactor": 1.0,
     "aim_data__scopeWeaponLensZoomFactor": 1.0,
-    "aim_data__crosshairs:array": {},
     "aim_data__entityWithScopeLensEid:eid": {},
     "aim_data__gunEid:eid": {},
     "aim_data__scopeLensCockpitEntities:list<eid>": {}
@@ -325,7 +327,11 @@
     ]
   },
   "soldier_cam_perlin": {
-    "_use": "shooter_cam_perlin"
+    "_use": "shooter_cam_perlin",
+    "vehicle_passenger_camera__relAngle": [
+      0.0,
+      0.0
+    ]
   },
   "hangar_cam_weapon": {
     "hangar_cam_weapon__start_animation_offset": [

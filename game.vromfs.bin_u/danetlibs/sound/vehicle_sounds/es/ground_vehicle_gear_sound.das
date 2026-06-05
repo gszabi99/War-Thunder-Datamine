@@ -1,5 +1,6 @@
 require ecs
 require vehicle
+require soundEvent
 require sound_utils.modules.sound_player_common
 
 
@@ -10,7 +11,10 @@ def ground_vehicle_gear_sound(evt : Event;
                               @shared_comp ground_vehicle_gear_sound__path : Object;
                               is_watched_sound : bool;
                               sound_tags : Object;
-                              transform : float3x4)
+                              transform : float3x4;
+                              vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
   if ground_vehicle_gear_sound__gear != int(vehicle_net_phys.phys.currentState.currentGear) && ground_vehicle_gear_sound__gear >= 0
-    sound_player_common::play_path(ground_vehicle_gear_sound__path, sound_tags, is_watched_sound, transform[3])
+    var handle = play_path(ground_vehicle_gear_sound__path, sound_tags, is_watched_sound, transform[3], false)
+    attach_to_blob(handle, vehicle_sound_occlusion__blob)
+    abandon(handle)
   ground_vehicle_gear_sound__gear = int(vehicle_net_phys.phys.currentState.currentGear)

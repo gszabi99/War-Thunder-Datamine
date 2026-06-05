@@ -17,7 +17,7 @@ module regex_boost shared private
 
 
 
-require ast
+require daslib/ast
 require strings
 require daslib/ast_boost
 require daslib/regex public
@@ -41,7 +41,7 @@ class RegexReader : AstReaderMacro {
             return true
         }
     }
-    def override visit(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprReader>) : ExpressionPtr {
+    def override visit(prog : ProgramPtr; mod : Module?; expr : ExprReader?) : ExpressionPtr {
         
         var pattern = "{expr.sequence}"
         var ci = false
@@ -71,12 +71,12 @@ class RegexReader : AstReaderMacro {
                 delete regex
             }
             macro_error(prog, expr.at, "regular expression did not compile {pattern}")
-            return <- default<ExpressionPtr>
+            return null
         }
         
-        var inscope re_data <- convert_to_expression(regex, expr.at)
+        var re_data = convert_to_expression(regex, expr.at)
         delete regex
-        var inscope creg <- new ExprCall(at = expr.at, name := "regex::regex_compile")
+        var creg = new ExprCall(at = expr.at, name := "regex::regex_compile")
         emplace(creg.arguments, re_data)
         return <- creg
     }

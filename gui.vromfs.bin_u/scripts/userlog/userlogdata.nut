@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_logs_count, warbonds_has_active_battle_task,
   get_user_log_blk_body
-from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
+from "%scripts/items/itemsConsts.nut" import itemType
 let { USERLOG_POPUP } = require("%scripts/userLog/userlogConsts.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -13,8 +13,6 @@ let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
-let workshop = require("%scripts/items/workshop/workshop.nut")
-let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
 let { disableSeenUserlogs, shownUserlogNotifications, checkPopupUserLog,
   getLogNameByType
 } = require("%scripts/userLog/userlogUtils.nut")
@@ -38,7 +36,6 @@ let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.n
 let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
 let { findItemByUid, findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { guiStartModTierResearched } = require("%scripts/modificationsTierResearched.nut")
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
@@ -193,13 +190,27 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
         if (!onStartAwards && (!blk?.body.popupInDebriefing
           || !isHandlerInScene(gui_handlers.DebriefingModal))) {
           if (unlockType == UNLOCKABLE_TITLE
-            || unlockType == UNLOCKABLE_DECAL
-            || unlockType == UNLOCKABLE_SKIN
-            || unlockType == UNLOCKABLE_ATTACHABLE
-            || unlockType == UNLOCKABLE_PILOT) {
-              unlocksRewards[blk.body.unlockId] <- true
-              seenIdsArray.append(blk?.id)
+              || unlockType == UNLOCKABLE_DECAL
+              || unlockType == UNLOCKABLE_SKIN
+              || unlockType == UNLOCKABLE_ATTACHABLE
+              || unlockType == UNLOCKABLE_PILOT) {
+            unlocksRewards[blk.body.unlockId] <- true
+            seenIdsArray.append(blk?.id)
+          }
+
+          if (unlockType == UNLOCKABLE_INVENTORY) {
+            let itemIdToCheck = blk?.body.displayId
+            if (itemIdToCheck != null) {
+              let itemToCheck = findItemById(to_integer_safe(itemIdToCheck))
+              if (itemToCheck != null
+                  && !itemToCheck.shouldAutoConsume
+                  && !itemToCheck.isHiddenItem()
+              ) {
+                unlocksRewards[blk.body.unlockId] <- true
+                seenIdsArray.append(blk?.id)
+              }
             }
+          }
 
           
           
@@ -333,32 +344,8 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
       let itemDefId = blk.body?.itemDefId
       let item = getInventoryItemById(itemDefId)
       if (item && !item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false)) {
-        let logTypeName = getLogNameByType(blk.type)
-        let locId = $"userlog/{logTypeName}"
-        let numItems = blk.body?.quantity ?? blk.body?.amount ?? 1
-        let name = loc(locId, {
-          numItemsColored = numItems
-          numItems = numItems
-          numItemsAdd = numItems
-          itemName = ""
-        })
-
-        local button = null
-        let wSet = workshop.getSetByItemId(item.id)
-        if (wSet && wSet.isVisible())
-          button = [{
-            id = "workshop_button",
-            text = loc("items/workshop"),
-            func = @() wSet.needShowPreview() ? workshopPreview.open(wSet)
-              : gui_start_items_list(itemsTab.WORKSHOP, {
-                  curSheet = { id = wSet.getShopTabId() },
-                  initSubsetId = wSet.getSubsetIdByItemId(item.id)
-                })
-          }]
-
-        addPopup(name, item && item.getName() ? item.getName() : "",
-          null, button, null, logTypeName)
-        markDisabled = true
+        
+        
       }
       else if (itemDefId != null) {
         let receipeItem = getItemOrRecipeBundleById(itemDefId)

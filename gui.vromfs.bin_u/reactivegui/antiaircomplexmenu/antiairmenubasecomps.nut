@@ -16,6 +16,7 @@ let shortcutButtonHeight = antiAirMenuShortcutHeight + 2*shortcutButtonPadding
 let frameBorderColor = 0xFF37454D
 let frameBackgroundColor = 0xFF182029
 let buttonBorderColor = 0xFF2A373B
+let hoverFillColor = 0xFF3A474F
 
 let mkText = @(ovr) {
   rendObj = ROBJ_TEXT
@@ -58,7 +59,7 @@ let isActive = @(sf) (sf & S_ACTIVE) != 0
 
 let getShortcutButtonColor = @(sf)
   isActive(sf) ? 0x99020509
-    : (sf & S_HOVER) ? 0xFF3A474F
+    : (sf & S_HOVER) ? hoverFillColor
     : 0
 
 function mkShortcutButtonContinued(shortcutId, content, ovr = {}) {
@@ -196,4 +197,5 @@ return {
   targetSortFunctionWatched
   frameBorderColor
   frameBackgroundColor
+  hoverFillColor
 }

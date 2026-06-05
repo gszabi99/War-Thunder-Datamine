@@ -1,27 +1,58 @@
 {
-  "rendinst::tmInst12x32bit": true,
+  "mandatoryLandquality": 1,
   "groundProximityInfantryMode": true,
+  "trackDirt": false,
+  "hmapLodCount": 5,
+  "z_far": 50000.0,
+  "numBorderCellsXPos": 8,
+  "numBorderCellsXNeg": 8,
+  "numBorderCellsZPos": 8,
+  "numBorderCellsZNeg": 8,
+  "lastClip": true,
+  "lastclip_horizon": true,
   "occlusionFromCollision": true,
+  "forcedRiDepthPrepass": true,
   "useInfantryCharacterMicrodetails": true,
+  "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
+  "weatherTypes": "gamedata/environments/hvg_weather_types.blk",
+  "layeredFogThicknessScale100": 12.0,
+  "layeredFogHeightOffset": 7.0,
+  "layeredFogDensityMul": 1.0,
+  "water_level": 0.0,
   "disableRT": true,
   "disableConsoleRT": true,
   "targetUpscaleForBigResolution": true,
-  "mandatoryLandquality": 1,
-  "z_far": 50000.0,
-  "hmapLodCount": 5,
-  "mapCoord0": [
-    -32768.0,
-    -32768.0
-  ],
-  "mapCoord1": [
-    32768.0,
-    32768.0
-  ],
+  "rendinst::tmInst12x32bit": true,
+  "textures_size": 2500.0,
+  "textures_count": 2200,
+  "weatherPreset": "gameData/environments/hvg_weather_preset_granitograd.blk",
+  "soundAmbientPathStudio": "infantry/ambient",
+  "soundAmbientEvent": "mc_city_battle",
+  "forceMusic": "infantry_action",
+  "customLevelMap": "hvg_granitograd_airmap*",
+  "customLevelTankMap": "hvg_granitograd_tankmap*",
+  "customLevelInfantryMap": "hvg_granitograd_tankmap*",
   "aiMapCoord0": [
     -32768.0,
     -32768.0
   ],
   "aiMapCoord1": [
+    32768.0,
+    32768.0
+  ],
+  "aiTanksMapCoord0": [
+    -1024.0,
+    -1024.0
+  ],
+  "aiTanksMapCoord1": [
+    1024.0,
+    1024.0
+  ],
+  "mapCoord0": [
+    -32768.0,
+    -32768.0
+  ],
+  "mapCoord1": [
     32768.0,
     32768.0
   ],
@@ -32,14 +63,6 @@
   "gridSteps": [
     2048.0,
     2048.0
-  ],
-  "aiTanksMapCoord0": [
-    -1024.0,
-    -1024.0
-  ],
-  "aiTanksMapCoord1": [
-    1024.0,
-    1024.0
   ],
   "tankMapCoord0": [
     -185.0,
@@ -74,24 +97,10 @@
     1024.0
   ],
   "infantryMapDefaultZoom": 1.0,
-  "numBorderCellsXPos": 8,
-  "numBorderCellsXNeg": 8,
-  "numBorderCellsZPos": 8,
-  "numBorderCellsZNeg": 8,
-  "forceMusic": "infantry_action",
-  "customLevelMap": "hvg_granitograd_airmap*",
-  "customLevelTankMap": "hvg_granitograd_tankmap*",
-  "customLevelInfantryMap": "hvg_granitograd_tankmap*",
-  "weatherPreset": "gameData/environments/hvg_weather_preset_granitograd.blk",
-  "weatherTypes": "gameData/environments/hvg_weather_types.blk",
-  "lastClip": true,
-  "lastclip_horizon": true,
-  "soundAmbientPathStudio": "infantry/ambient",
-  "soundAmbientEvent": "mc_city_battle",
-  "layeredFogThicknessScale100": 12.0,
-  "layeredFogHeightOffset": 7.0,
-  "layeredFogDensityMul": 1.0,
-  "water__level": 0.0,
+  "puddlesPowerScale": 1.0,
+  "puddlesSpread": 1.0,
+  "puddlesSeed": 1.0,
+  "puddlesAircraftMul": 0.7,
   "water__wind_strength": 0.2,
   "water__flowmap": true,
   "water__flowmap_slope": 1.2,
@@ -153,15 +162,98 @@
   "foamfx__reflectivity": 0.2,
   "foamfx__tile_tex": "foam_generator_a_tile_tex_n",
   "foamfx__gradient_tex": "foam_generator_a_gradient_tex_n",
-  "trackDirt": false,
-  "forcedRiDepthPrepass": true,
-  "puddlesPowerScale": 1.0,
-  "puddlesSpread": 1.0,
-  "puddlesSeed": 1.0,
-  "puddlesAircraftMul": 0.7,
-  "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
-  "textures_size": 2500.0,
-  "textures_count": 2200,
+  "clipmap": {
+    "texelSize": 0.00625
+  },
+  "shader_vars": {
+    "hmap_displacement_up": 0.1,
+    "hmap_displacement_down": -0.1,
+    "min_land_height": 0.3,
+    "foliage_translucent_color_mul": [
+      1.25,
+      1.1,
+      1.05,
+      0.0
+    ],
+    "dynamic_lights_ao_effect": 0.8,
+    "gtao_apply_strength": 1.5,
+    "gtao_cutoff_radius_mul": 3.5,
+    "gtao_cutoff_smoothness": 0.95,
+    "gtao_world_radius": 0.7,
+    "gtao_screen_radius": 0.05,
+    "gtao_max_pixel_radius": 72.0,
+    "ssao_affect_on_objects": 1.0,
+    "ssao_apply_strength": 1.5,
+    "ssao_radius_factor": 60.0,
+    "ssao_ambient_cutoff": 1.85,
+    "ssao_blur_weights": [
+      0.9,
+      0.75,
+      0.5,
+      0.25
+    ],
+    "ssao_depth_limits": [
+      0.92,
+      1.35,
+      0.0,
+      0.0
+    ],
+    "ssao_blur_depth_near": 0.008,
+    "ssao_blur_depth_far": 0.0015,
+    "envi_color_gi_boost": [
+      0.003,
+      0.003,
+      0.0005,
+      0.0005
+    ],
+    "ocean1": [
+      86,
+      109,
+      97,
+      0
+    ],
+    "ocean0": [
+      61,
+      73,
+      56,
+      0
+    ],
+    "ocean_density": 1.0,
+    "river1": [
+      86,
+      109,
+      97,
+      0
+    ],
+    "river0": [
+      61,
+      73,
+      56,
+      0
+    ],
+    "river_density": 2.0,
+    "water_color_noise_size": 71.0,
+    "paint_details_tex": "sovmod_building_colors_tex_palette*",
+    "puddle_scales": [
+      0.01,
+      0.007,
+      0.02,
+      0.0
+    ]
+  },
+  "graphics": {
+    "allowAnimatedDay": false
+  },
+  "unitedVdata.rendInst": {
+    "IB": 114688,
+    "VB1": 65536,
+    "VB2": 65536,
+    "VB3": 65536,
+    "VB4": 65536,
+    "VB5": 65536,
+    "VB6": 65536,
+    "VB7": 0
+  },
   "riExtraTiledScenes": {
     "dynamicTileSize": 64.0,
     "scnCount": 3,
@@ -172,18 +264,14 @@
     "scn2.maxSize": 32.0,
     "scn3.tileSize": 128.0
   },
-  "graphics": {
-    "allowAnimatedDay": false
-  },
   "stars": {
     "year": 2005,
     "month": 7,
     "day": 10,
     "latitude": 45.0,
-    "longtitude": 27.0
-  },
-  "clipmap": {
-    "texelSize": 0.00625
+    "longtitude": 27.0,
+    "weatherSeed": -1,
+    "skyIsUnreachable": false
   },
   "micro_details": {
     "micro_detail": [
@@ -269,65 +357,6 @@
       "coloring": 0.9,
       "porosity": 0.12
     }
-  },
-  "shader_vars": {
-    "hmap_displacement_up": 0.1,
-    "hmap_displacement_down": -0.1,
-    "ocean1": [
-      86,
-      109,
-      97,
-      0
-    ],
-    "ocean0": [
-      61,
-      73,
-      56,
-      0
-    ],
-    "ocean_density": 1.0,
-    "river1": [
-      86,
-      109,
-      97,
-      0
-    ],
-    "river0": [
-      61,
-      73,
-      56,
-      0
-    ],
-    "river_density": 2.0,
-    "water_color_noise_size": 71.0,
-    "foliage_translucent_color_mul": [
-      1.25,
-      1.1,
-      1.05,
-      0.0
-    ],
-    "paint_details_tex": "sovmod_building_colors_tex_palette*",
-    "puddle_scales": [
-      0.01,
-      0.007,
-      0.02,
-      0.0
-    ],
-    "gtao_cutoff_radius_mul": 2.8,
-    "gtao_cutoff_smoothness": 0.4,
-    "gtao_world_radius": 0.4,
-    "gtao_screen_radius": 0.08,
-    "ssao_radius_factor": 165.0,
-    "ssao_ambient_cutoff": 1.0,
-    "ssao_depth_limits": [
-      0.8,
-      1.1,
-      0.0,
-      0.0
-    ],
-    "ssao_blur_depth_near": 0.01,
-    "ssao_blur_depth_far": 0.0005,
-    "ssao_affect_on_objects": 1.5
   },
   "randomGrass": {
     "density": 0.75,
@@ -1943,6 +1972,19 @@
         }
       },
       "decals": {
+        "yard_a": {
+          "id": 23,
+          "nograss": 4.0,
+          "generic_grass_low_a": 5.0,
+          "bush_a": 3.0
+        },
+        "yard_b": {
+          "id": 27,
+          "nograss": 4.0,
+          "generic_grass_low_b": 5.0,
+          "bush_trunks_dead_a": 2.0,
+          "bush_dead_a": 2.0
+        },
         "garden_a": {
           "id": 45,
           "generic_grass_low_a": 1.0,
@@ -1975,31 +2017,8 @@
           "id": 49,
           "generic_grass_low_a": 2.0,
           "generic_grass_low_b": 1.0
-        },
-        "yard_a": {
-          "id": 23,
-          "nograss": 4.0,
-          "generic_grass_low_a": 5.0,
-          "bush_a": 3.0
-        },
-        "yard_b": {
-          "id": 27,
-          "nograss": 4.0,
-          "generic_grass_low_b": 5.0,
-          "bush_trunks_dead_a": 2.0,
-          "bush_dead_a": 2.0
         }
       }
     }
-  },
-  "unitedVdata.rendInst": {
-    "IB": 114688,
-    "VB1": 65536,
-    "VB2": 65536,
-    "VB3": 65536,
-    "VB4": 65536,
-    "VB5": 65536,
-    "VB6": 65536,
-    "VB7": 0
   }
 }

@@ -13,6 +13,7 @@ let DataBlock = require("DataBlock")
 let time = require("%scripts/time.nut")
 let { topMenuHandler, topMenuShopActive, unitToShowInShop } = require("%scripts/mainmenu/topMenuStates.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
@@ -540,7 +541,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
           msgId = "hint_my_crews"
         })
 
-      let presetsList = this.getSlotbarPresetsList()
+      let presetsList = getSlotbarPresetsList(this)
       let listObj = presetsList.getListObj()
       let presetsObjList = ["btn_slotbar_presets"]
 

@@ -8,6 +8,7 @@ require Plane
 require FlightModelWrap
 require DagorMath
 require Sound
+require Mission
 
 require %appGame.wt_events
 require %game.events
@@ -54,6 +55,22 @@ def drone_destroy_on_unit_collision_es(evt : EventUnitToUnitCollision; eid : Ent
 [es(tag=server, REQUIRE=isDrone)]
 def drone_destroy_on_crash_es(evt : EventAicraftCrash; eid : EntityId)
   sendEventImmediate(eid, CmdDestroyDrone())
+
+
+[es(tag=server, no_order, REQUIRE=isDrone)]
+def drone_ew_control_loss_server_es(info : UpdateStageInfoAct;
+                                    isAlive : bool;
+                                    team aka drone_team : int;
+                                    transform aka drone_transform : float3x4;
+                                    var drone__ewIntensity : float&;
+                                    var drone__ewControlLoss : float&)
+  if !isAlive
+    drone__ewIntensity = 0.0
+    drone__ewControlLoss = 0.0
+    return
+  let ew = calc_drone_ew_state(drone_transform[3], drone_team)
+  drone__ewIntensity = ew.zoneT
+  drone__ewControlLoss = min(ew.zoneT, ew.maxControlLoss)
 
 
 [es(tag=sound, before=sound_update_system_es, REQUIRE=(isDrone, controlledHero))]
@@ -197,3 +214,42 @@ def update_drone_monitoring(info : ParallelUpdateFrameDelayed;
     return
   query(drone__owner) <| $ [es] (human_weap__currentGunEid : EntityId)
     (*fmw).isWirelesslyMonitored = has(human_weap__currentGunEid, "tactical_phone")
+
+
+[es(on_appear, REQUIRE=drone_type__recon)]
+def drone_apply_recon_coverage_area_override(evt : Event;
+                                             var drone__coverageArea : float2&)
+  let coverage = get_mission_drone_recon_coverage_area()
+  if coverage.x >= 0.0 && coverage.y >= 0.0
+    drone__coverageArea = coverage
+
+
+[es(on_appear, REQUIRE=drone_type__kamikaze)]
+def drone_apply_kamikaze_coverage_area_override(evt : Event;
+                                                var drone__coverageArea : float2&)
+  let coverage = get_mission_drone_kamikaze_coverage_area()
+  if coverage.x >= 0.0 && coverage.y >= 0.0
+    drone__coverageArea = coverage
+
+
+def private apply_drone_max_fuel_mass(fuelMass : float; var unit__ref : UnitRef&)
+  if fuelMass < 0.0
+    return
+  var fmw = as_fmw(unit__ref.unit)
+  if fmw == null
+    return
+  flight_model_set_fuel_tank_capacity(fmw, 0, fuelMass)
+  flight_model_set_fuel_system_max_fuel(fmw, 0, fuelMass)
+  flight_model_set_fuel_internal(fmw, 0, fuelMass)
+
+
+[es(on_appear, REQUIRE=drone_type__recon)]
+def drone_apply_recon_max_fuel_mass_override(evt : Event;
+                                             var unit__ref : UnitRef&)
+  apply_drone_max_fuel_mass(get_mission_drone_recon_max_fuel_mass(), unit__ref)
+
+
+[es(on_appear, REQUIRE=drone_type__kamikaze)]
+def drone_apply_kamikaze_max_fuel_mass_override(evt : Event;
+                                                var unit__ref : UnitRef&)
+  apply_drone_max_fuel_mass(get_mission_drone_kamikaze_max_fuel_mass(), unit__ref)

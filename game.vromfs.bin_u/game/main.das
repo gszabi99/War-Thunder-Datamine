@@ -1,11 +1,8 @@
 options no_aot = true
 require ecs
 require app
-require %dasGameLibs.ecs.fs
-require %danetlibs.route_prober.route_prober_init
-require %danetlibs.assets_import.assets_import_init
-require %danetlibs.imgui_daeditor.imgui_daeditor_init
-require %danetlibs.motion_matching.motion_matching_init
+require %gameLibs.das.ecs.fs
+require %gameLibs.route_prober.route_prober_init
 require %danetlibs.sound.door_sounds.door_sounds_init
 require %danetlibs.sound.human_sounds.human_sounds_init
 require %danetlibs.sound.sound_utils.sound_utils_init
@@ -14,6 +11,7 @@ require danetlibs.sound.human_speech.human_speech_init
 require DagorSystem
 require ECSGlobalTags
 require %game.wt_scripts_init
+require %appGame/libs_init
 
 
 
@@ -28,6 +26,7 @@ def load
   
   
 
+  ok = load_libs() && ok
   ok = load_wt_scripts("%game") && ok
   ok = load_client("%game/client") && ok
   ok = load_folder("%appGame/es") && ok
@@ -50,14 +49,11 @@ def load
     ok = load_sound_utils("%danetlibs/sound/sound_utils") && ok
     ok = load_human_speech("%danetlibs/sound/human_speech") && ok
     ok = load_human_net_speech("%danetlibs/sound/human_net_speech") && ok
-  ok = load_route_prober("%danetlibs/route_prober") && ok
-  ok = load_assets_import("%danetlibs/assets_import") && ok
-  ok = load_imgui_daeditor("%danetlibs/imgui_daeditor") && ok
 
   ok = load_optional_folder("%appGame/infantry/es") && ok
   ok = load_optional_folder("%appGame/infantry/es/animchar") && ok
+  ok = load_optional_folder("%appGame/infantry/es/vehicle") && ok
   ok = load_client("%appGame/infantry/client") && ok
-  ok = load_motion_matching("%danetlibs/motion_matching") && ok
   ok = load_optional_folder("%appGame/infantry/es/sound_net") && ok
   ok = load_optional_folder("%appGame/infantry/ai") && ok
 

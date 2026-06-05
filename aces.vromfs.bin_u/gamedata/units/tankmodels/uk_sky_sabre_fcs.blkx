@@ -26,25 +26,24 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
-  "maxRevSpeed": 10.0,
-  "maxAngSpeed": 30.0,
-  "maxAccel": 4.0,
-  "maxDecel": 8.0,
-  "maxAngAccel0": 20.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 40.0,
+  "maxFwdSpeed": 75.0,
+  "maxRevSpeed": 30.0,
+  "maxAngSpeed": 50.0,
+  "maxAccel": 40.0,
+  "maxDecel": 40.0,
+  "maxAngAccel0": 4.0,
+  "maxAngAccelV": 3.0,
+  "maxAngAccel": 100.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_SPAA",
   "mass": 5500.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "radarCanLockTargetFromTPV": false,
   "sensorTargetTurretTrack": false,
   "ikGunner": [
@@ -602,6 +601,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -3799,25 +3802,48 @@
     }
   },
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/sw_giraffe_amb.blk",
-      "turretIndex": -1,
-      "designationFromBody": true,
-      "designationTurretIndex": -1,
-      "dmPart": [
-        "antenna_target_location_dm",
-        "electronic_equipment_dm"
-      ],
-      "radarParkingAzimuth": 0.0,
-      "parkRadarByVelocity": {
-        "highVelSpeed": 2.3,
-        "highVelLagTime": 0.75,
-        "lowVelLagTime": 0.75
+    "sensor": [
+      {
+        "blk": "gameData/sensors/sw_giraffe_amb.blk",
+        "turretIndex": -1,
+        "designationFromBody": true,
+        "designationTurretIndex": -1,
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ],
+        "radarParkingAzimuth": 0.0,
+        "ai": false,
+        "parkRadarByVelocity": {
+          "highVelSpeed": 2.3,
+          "highVelLagTime": 0.75,
+          "lowVelLagTime": 0.75
+        },
+        "checkRadarUnparkingArea": {
+          "freeAreaCheckTracesId": "radarFreeBox"
+        }
       },
-      "checkRadarUnparkingArea": {
-        "freeAreaCheckTracesId": "radarFreeBox"
+      {
+        "blk": "gameData/sensors/sw_giraffe_amb_ai.blk",
+        "turretIndex": -1,
+        "designationFromBody": true,
+        "designationTurretIndex": -1,
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ],
+        "radarParkingAzimuth": 0.0,
+        "human": false,
+        "parkRadarByVelocity": {
+          "highVelSpeed": 2.3,
+          "highVelLagTime": 0.75,
+          "lowVelLagTime": 0.75
+        },
+        "checkRadarUnparkingArea": {
+          "freeAreaCheckTracesId": "radarFreeBox"
+        }
       }
-    }
+    ]
   },
   "freeAreaCheckTraces": {
     "traceBoxArea": {

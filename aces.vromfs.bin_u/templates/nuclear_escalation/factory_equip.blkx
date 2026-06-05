@@ -1,0 +1,291 @@
+{
+  "equip_storage": {
+    "_use": [
+      "unit_death_substract_team_tickets",
+      "nuclear_escalation_target"
+    ],
+    "equip_storage__capacity": 1200.0,
+    "equip_storage__current": 0.0,
+    "equip_storage__repairTime": 600.0,
+    "equip_storage__repairTimer": -1.0,
+    "_replicated": [
+      "equip_storage__current",
+      "equip_storage__repairTimer"
+    ],
+    "_group": {
+      "_tags": "server",
+      "on_death_substract_team_tickets_num": 30,
+      "equip_storage__ticketsByCapture": 150
+    }
+  },
+  "equip_factory": {
+    "_use": [
+      "equip_storage",
+      "units_spawn_on_init"
+    ],
+    "_group": {
+      "_tags": "server",
+      "equip_factory__productionRate": 2.0,
+      "equip_factory__equipForSendColumn": 600.0,
+      "equip_factory__maxUnitsCount": 10,
+      "equip_factory__columnUnits:list<eid>": {},
+      "equip_factory__currentColumnTarget:eid": {}
+    }
+  },
+  "fuel_factory_1980": {
+    "_use": [
+      "equip_factory",
+      "factory_air_defence_preset_1980"
+    ],
+    "fuel_factory:tag": {},
+    "_group": {
+      "_tags": "server",
+      "equip_factory__columnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_9a33bm3",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {},
+            "bulletsCount:list<i>": {
+              "c": 6
+            }
+          },
+          {
+            "name": "wheeled_vehicles/ussr_kamaz_4310_fuel_carrier",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      },
+      "equip_factory__columnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "germ_flarakpz_1",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "163mm_roland_3_aam"
+            },
+            "bulletsCount:list<i>": {
+              "c": 10
+            }
+          },
+          {
+            "name": "wheeled_vehicles/us_m978_fuel_carrier",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      }
+    }
+  },
+  "ammo_factory_1980": {
+    "_use": [
+      "equip_factory",
+      "factory_air_defence_preset_1980"
+    ],
+    "ammo_factory:tag": {},
+    "unit_fx": {},
+    "_group": {
+      "_tags": "server",
+      "equip_factory__columnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_9a33bm3",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {},
+            "bulletsCount:list<i>": {
+              "c": 6
+            }
+          },
+          {
+            "name": "wheeled_vehicles/ussr_kamaz_4310_awning",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      },
+      "equip_factory__columnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "germ_flarakpz_1",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "163mm_roland_3_aam"
+            },
+            "bulletsCount:list<i>": {
+              "c": 10
+            }
+          },
+          {
+            "name": "wheeled_vehicles/us_m939_awning",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      }
+    }
+  },
+  "fuel_factory_2018": {
+    "_use": [
+      "equip_factory",
+      "factory_air_defence_preset_2018"
+    ],
+    "fuel_factory:tag": {},
+    "_group": {
+      "_tags": "server",
+      "equip_factory__columnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_zprk_2s6",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher",
+                "2s6_upgrade_modification"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": [
+                "30mm_2a38_HE",
+                ""
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": [
+                0,
+                8
+              ]
+            }
+          },
+          {
+            "name": "wheeled_vehicles/ussr_kamaz_4310_fuel_carrier",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      },
+      "equip_factory__columnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "sw_crotale_ng",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {},
+            "bulletsCount:list<i>": {
+              "c": 8
+            }
+          },
+          {
+            "name": "wheeled_vehicles/us_m978_fuel_carrier",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      }
+    }
+  },
+  "ammo_factory_2018": {
+    "_use": [
+      "equip_factory",
+      "factory_air_defence_preset_2018"
+    ],
+    "ammo_factory:tag": {},
+    "unit_fx": {},
+    "_group": {
+      "_tags": "server",
+      "equip_factory__columnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_zprk_2s6",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher",
+                "2s6_upgrade_modification"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": [
+                "30mm_2a38_HE",
+                ""
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": [
+                0,
+                8
+              ]
+            }
+          },
+          {
+            "name": "wheeled_vehicles/ussr_kamaz_4310_awning",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      },
+      "equip_factory__columnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "sw_crotale_ng",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {},
+            "bulletsCount:list<i>": {
+              "c": 8
+            }
+          },
+          {
+            "name": "wheeled_vehicles/us_m939_awning",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      }
+    }
+  }
+}

@@ -73,7 +73,7 @@ def operator [] ^^=(var b : auto(TT)&, i : int, v : bool) {
 def each_bit(b) : iterator<bool> {
     
     let bits = uint64(b)
-    return <- generator<bool>() <| $() {
+    return <- generator<bool> {
         var mask = 1ul
         for (i in range(typeinfo sizeof(b) << 3)) {
             yield ((bits & mask) != 0ul)

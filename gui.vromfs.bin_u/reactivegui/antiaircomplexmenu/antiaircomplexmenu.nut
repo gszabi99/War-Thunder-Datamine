@@ -20,10 +20,12 @@ let { setRenderCameraToHudTexture } = require("hudState")
 let { logerr } = require("dagor.debug")
 let { mkFrame, shortcutButtonPadding, frameHeaderHeight, borderWidth,
   makeTargetStatusEllementFactory, targetsSortFunction, targetSortFunctionWatched,
-  frameBorderColor, frameBackgroundColor } = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
+  frameBorderColor, frameBackgroundColor, hoverFillColor
+} = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
 let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
 let { actionBarSize, isActionBarVisible, isActionBarCollapsed, actionBarActionsCount
 } = require("%rGui/hud/actionBarState.nut")
+let { EII_SLAVE_UNIT_STATUS } = require("hudActionBarConst")
 let { actionBarTopPanelMarginBottom, actionBarTopPanelHeight
 } = require("%rGui/hud/actionBarTopPanel.nut")
 let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
@@ -38,8 +40,19 @@ let { mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwi
 let { mkFilterTargetsBtn } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuTargetsList.nut")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 let { radarCanvas } = require("%rGui/radar.nut")
-let { dmgIndicatorPos } = require("%rGui/hud/tankDmgIndicatorState.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
+let { dmgIndicatorPos } = require("%rGui/hud/dmgIndicatorState.nut")
+let { showAAComplexMenu } = require("controls")
+let { closeScreenHelp, openScreenHelp, screenHelpItems
+} = require("%rGui/screenHelpOverlay/screenHelpOverlayState.nut")
+let { screenHelpOverlay } = require("%rGui/screenHelpOverlay/screenHelpOverlay.nut")
+
+const HELP_BTN_ICON_SIZE = hdpxi(24)
+const HELP_BTN_BG_COLOR = 0x80182029
+
+const AA_CIRCULAR_VIEW_KEY = {}
+const AA_TARGET_LIST_KEY = {}
+const AA_SIGHT_VIEW_KEY = {}
+const AA_VERTICAL_VIEW_KEY = {}
 
 local tooltipTimer = null
 
@@ -158,7 +171,9 @@ function mkVerticalViewIndicatorFrame() {
   return @() {
     watch = [verticalViewIndicatorPos, contentScale]
     pos = [0, verticalViewIndicatorPos.get()]
-    children = mkFrame(mkVerticalViewIndicator(), { text = loc("hud/elevation_azimuth_indicator"), scale = contentScale.get() })
+    children = mkFrame(mkVerticalViewIndicator(),
+      { text = loc("hud/elevation_azimuth_indicator"), scale = contentScale.get() },
+      { key = AA_VERTICAL_VIEW_KEY })
   }
 }
 
@@ -249,7 +264,7 @@ let mkCentralBlock = @() @() {
   gap = panelsGap
   children = [
     mkFrame(circularRadar,{ text = loc("hud/plan_position_indicator"), scale = contentScale.get() },
-      { opacity = 0.8 })
+      { key = AA_CIRCULAR_VIEW_KEY, opacity = 0.8 })
     {
       flow = FLOW_HORIZONTAL
       gap = panelsGap
@@ -582,13 +597,72 @@ function fakeActionBar() {
   })
 }
 
-let closeAAComplexMenu = @() deferOnce(@() isAAComplexMenuActive.set(false))
+let closeAAComplexMenu = @() deferOnce(@() showAAComplexMenu(false))
+let onAAComplexMenuEscape = @() screenHelpItems.get() != null ? closeScreenHelp() : closeAAComplexMenu()
+
+let aaHelpItems = [
+  {
+    targetKey = AA_CIRCULAR_VIEW_KEY
+    hintPos = [sw(50), sh(70)]
+    textMaxWidth = hdpx(500)
+    text = loc("hud/AAComplexMenu/circularView/hint")
+    halign = ALIGN_CENTER
+  }
+  {
+    targetKey = AA_TARGET_LIST_KEY
+    hintPos = [sw(70), sh(70)]
+    text = loc("hud/AAComplexMenu/targetList/hint")
+  }
+  {
+    targetKey = AA_SIGHT_VIEW_KEY
+    hintPos = [sw(3), sh(70)]
+    text = loc("hud/AAComplexMenu/sightView/hint")
+  }
+  {
+    targetKey = AA_VERTICAL_VIEW_KEY
+    hintPos = [sw(3), sh(83)]
+    text = loc("hud/AAComplexMenu/verticalView/hint")
+  }
+  {
+    actionType = EII_SLAVE_UNIT_STATUS
+    text = loc("hud/AAComplexMenu/slaveUnitStatus/hint")
+    hintPos = [sw(70), sh(88)]
+    halign = ALIGN_LEFT
+    valign = ALIGN_BOTTOM
+  }
+]
+
+let openAAHelp = @() openScreenHelp(aaHelpItems, safeAreaSizeHud.get())
+
+let helpBtn = watchElemState(@(sf) {
+  watch = safeAreaSizeHud
+  size = hdpx(36)
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_TOP
+  margin = safeAreaSizeHud.get().borders
+  rendObj = ROBJ_BOX
+  fillColor = (sf & S_HOVER) ? hoverFillColor : HELP_BTN_BG_COLOR
+  borderColor = frameBorderColor
+  borderWidth
+  behavior = Behaviors.Button
+  onClick = openAAHelp
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = {
+    size = HELP_BTN_ICON_SIZE
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#btn_help.svg:{HELP_BTN_ICON_SIZE}:P")
+  }
+})
 
 let aaComplexMenu = {
   size = flex()
   rendObj = ROBJ_SOLID
   color = 0xDD101010
-  hotkeys = [["^Esc | J:Start", closeAAComplexMenu]]
+  hotkeys = [
+    ["^Esc | J:Start", onAAComplexMenuEscape],
+    ["@ID_HELP", openAAHelp]
+  ]
   children = [
     @() {
       watch = [safeAreaSizeHud, aaMenuCfg, contentScale]
@@ -604,19 +678,22 @@ let aaComplexMenu = {
           ? mkFrame(targetListMain,
             { text = loc("hud/target_list"), scale = contentScale.get(),
               rightBlock = mkFilterTargetsBtn(contentScale.get()) },
-            { hplace = ALIGN_RIGHT })
+            { key = AA_TARGET_LIST_KEY, hplace = ALIGN_RIGHT })
           : null
         aaMenuCfg.get()?["hasTurretView"]
           ? mkFrame(mkCameraRender(), {
               text = loc("hud/sight_view"),
               scale = contentScale.get(),
               rightBlock = mkNightVisionBtn(contentScale.get())
-            })
+            },
+            { key = AA_SIGHT_VIEW_KEY })
           : null
         fakeActionBar
       ]
     }
+    helpBtn
     mkTooltipHeader
+    screenHelpOverlay
   ]
 }
 

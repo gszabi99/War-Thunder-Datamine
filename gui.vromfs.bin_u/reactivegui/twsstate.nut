@@ -3,8 +3,6 @@ from "%rGui/globals/ui_library.nut" import *
 let interopGen = require("%rGui/interopGen.nut")
 let { interop } = require("%rGui/globals/interop.nut")
 
-let u = require("%sqStdLibs/helpers/u.nut")
-
 let rwrSetting = require("%rGui/rwrSetting.nut")
 
 let warningSystemState = {
@@ -38,9 +36,6 @@ let warningSystemState = {
   RwrSignalHoldTimeInv = Watched(0.0),
   RwrNewTargetHoldTimeInv = Watched(1000000.0),
   IsRwrHudVisible = Watched(false)
-  rwrTargetsUsed = [],
-  rwrTargetsUnused = [],
-  rwrLastTargetsBlinkTick = 0
 }
 
 interop.clearMlwsTargets <- function() {
@@ -170,10 +165,9 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
   }
   if (index >= warningSystemState.rwrTargets.len())
     warningSystemState.rwrTargets.resize(index + 1)
-  let rwrTarget = warningSystemState.rwrTargets[index]
   warningSystemState.rwrTargets[index] = {
     valid = showDirection,
-    show = rwrTarget != null ? rwrTarget.show : true,
+    show = true,
     x = x,
     y = y,
     age0 = age0,
@@ -188,7 +182,6 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
     elev = elev
   }
 
-  warningSystemState.rwrTargetsTriggers.trigger()
   if (track)
     warningSystemState.rwrTrackingTargetAgeMin.set(min(warningSystemState.rwrTrackingTargetAgeMin.get(), age))
   if (launch)
@@ -217,17 +210,13 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
   }
 }
 
-function sqr(val) { return val * val }
+interop.updateRwrTargetShow <- function(arr) {
+  let rwrTargets = warningSystemState.rwrTargets
+  for (local i = 0; i < arr.len() && i < rwrTargets.len(); ++i)
+    if (rwrTargets[i] != null)
+      rwrTargets[i].show = arr[i]
+  warningSystemState.rwrTargetsTriggers.trigger()
 
-let distSqMax = sqr(0.34)
-
-interop.postUpdateRwrTargets <- function () {
-  if (!rwrSetting.get().targetTracking) {
-    warningSystemState.rwrTargetsTriggers.trigger()
-    return
-  }
-
-  local rwrTargets = warningSystemState.rwrTargets
   local rwrTargetsOrder = warningSystemState.rwrTargetsOrder
   rwrTargetsOrder.resize(rwrTargets.len())
   for (local i = 0; i < rwrTargetsOrder.len(); ++i)
@@ -235,117 +224,6 @@ interop.postUpdateRwrTargets <- function () {
   rwrTargetsOrder.sort(@(left, right)
     rwrTargets[left].priority <=> rwrTargets[right].priority || rwrTargets[left].launch <=> rwrTargets[right].launch ||
     rwrTargets[left].track  <=> rwrTargets[right].track  || rwrTargets[right].rangeRel <=> rwrTargets[left].rangeRel)
-
-  let tick = (warningSystemState.CurrentTime.get() * 2.0).tointeger()
-  if (tick == warningSystemState.rwrLastTargetsBlinkTick) {
-    warningSystemState.rwrTargetsTriggers.trigger()
-    return
-  }
-  warningSystemState.rwrLastTargetsBlinkTick = tick
-
-  local used = warningSystemState.rwrTargetsUsed
-  local unused = warningSystemState.rwrTargetsUnused
-
-  for (local i = 0; i < used.len(); ++i)
-    rwrTargets[used[i]].show = false
-
-  if (unused.len() + used.len() == 0) {
-    unused.resize(rwrTargets.len())
-    for (local i = 0; i < rwrTargets.len(); ++i)
-      unused[i] = i
-  }
-  else if (unused.len() + used.len() < rwrTargets.len())
-    
-    for (local i = 0; i < rwrTargets.len(); ++i)
-      if (unused.indexof(i) == null && used.indexof(i) == null)
-        unused.append(i)
-
-  local free = u.copy(unused)
-  local nulledUnusedCnt = 0
-  for (local i = 0; i < free.len(); ++i) {
-    local index = free[i]
-    if (index == null)
-      continue
-    local rwrTarget = rwrTargets[index]
-    if (!rwrTarget.valid)
-      continue
-    rwrTarget.show = true
-    free[i] = null
-    unused[i] = null
-    ++nulledUnusedCnt
-    used.append(index)
-    if (rwrTarget.sector < 2.0) {
-      for (local j = i + 1; j < free.len(); ++j) {
-        let index2 = free[j]
-        if (index2 == null)
-          continue
-        local rwrTarget2 = rwrTargets[index2]
-        if (rwrTarget2.valid &&
-            (rwrTarget.groupId >= 0 || rwrTarget2.groupId >= 0) &&
-            sqr(rwrTarget.x - rwrTarget2.x) + sqr(rwrTarget.y - rwrTarget2.y) < distSqMax) {
-          rwrTarget2.show = false
-          free[j] = null
-        }
-      }
-    }
-  }
-
-  if (nulledUnusedCnt == unused.len())
-    unused.clear()
-  else {
-    local i = 0
-    while (i < unused.len()) {
-      if (unused[i] == null)
-        unused.remove(i)
-      else
-        ++i
-    }
-  }
-
-  local i = 0
-  while (i < used.len()) {
-    local rwrTarget = rwrTargets[used[i]]
-    if (!rwrTarget.valid) {
-      ++i
-      continue
-    }
-    if (!rwrTarget.track && !rwrTarget.launch) {
-      local collision = false
-      for (local j = i + 1; j < used.len(); ++j) {
-        local rwrTarget2 = rwrTargets[used[j]]
-        if (rwrTarget2.valid &&
-            (rwrTarget2.track || rwrTarget2.launch) &&
-            (rwrTarget.groupId >= 0 || rwrTarget2.groupId >= 0) &&
-            sqr(rwrTarget.x - rwrTarget2.x) + sqr(rwrTarget.y - rwrTarget2.y) < distSqMax) {
-          collision = true
-          break
-        }
-      }
-      if (collision) {
-        ++i
-        continue
-      }
-    }
-    local collision = false
-    if (rwrTarget.sector < 2.0)
-      for (local j = 0; j < unused.len(); ++j) {
-        local rwrTarget2 = rwrTargets[unused[j]]
-        if (rwrTarget2.valid &&
-            (rwrTarget.groupId >= 0 || rwrTarget2.groupId >= 0) &&
-            sqr(rwrTarget.x - rwrTarget2.x) + sqr(rwrTarget.y - rwrTarget2.y) < distSqMax) {
-          collision = true
-          break
-        }
-      }
-    if (collision) {
-      ++i
-      continue
-    }
-    unused.append(used[i])
-    used.remove(i)
-  }
-
-  warningSystemState.rwrTargetsTriggers.trigger()
 }
 
 return warningSystemState

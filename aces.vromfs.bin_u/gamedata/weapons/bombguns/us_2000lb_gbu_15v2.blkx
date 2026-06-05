@@ -148,6 +148,8 @@
       "applyExtraDifficultyParameters": true,
       "breakLockMaxTime": 120.0,
       "uncageBeforeLaunch": true,
+      "reacquireTarget": true,
+      "lockMode": "LOAL+LOBL",
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
@@ -160,7 +162,7 @@
         "angleMax": 54.0,
         "rateMax": 2.5,
         "prolongationTimeMax": 1.0,
-        "constantDesignationSourceTypeMask": 0,
+        "constantDesignationSourceType": "",
         "aircraftAsTarget": false,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
@@ -541,6 +543,26 @@
           }
         ]
       }
+    },
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -42.0,
+        42.0
+      ],
+      "verLimit": [
+        -54.0,
+        30.0
+      ],
+      "zoomMinMax": [
+        3.0,
+        1.5
+      ],
+      "rateMax": [
+        2.5,
+        2.5
+      ]
     }
   }
 }

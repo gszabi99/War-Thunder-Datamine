@@ -13,11 +13,12 @@ let rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
 let rwrPicDamaged = Picture("!ui/gameuiskin#rwr_stby_icon")
 let collapseIconSize = sh(3)
 let collapsePicUp = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{collapseIconSize}:{collapseIconSize}")
+
 function mkCollapseButton(position, direction){
   return  @(){
     watch = direction
     pos = position
-    size = sh(3)
+    size = collapseIconSize
     rendObj = ROBJ_IMAGE
     flipY = !direction.get()
     image = collapsePicUp
@@ -44,27 +45,34 @@ let twsElement = @(colorWatch, posWatched, size) function() {
     }
   }
   if (IsTwsActivated.get() || !CollapsedIcon.get()) {
-    let picPos = [posWatched.get()[0] + size + bw.get(), rh.get() - sh(2)]
+    let picPos = [posWatched.get()[0] + size[0] - collapseIconSize, posWatched.get()[1] + size[1] - collapseIconSize]
     return res.__update({
       children = (!IsMlwsLwsHudVisible.get() && !IsRwrHudVisible.get()) ? null :
         [
           twsDas({
             colorWatched = colorWatch,
             posWatched = posWatched,
-            sizeWatched = Watched([size, size]),
+            sizeWatched = Watched(size),
           }),
+          
+          
+          
+          
+          
+          
           isPlayingReplay.get() ? mkCollapseButton(picPos, CollapsedIcon) : null
         ]
     })
   }
   if (IsMlwsLwsHudVisible.get() || IsRwrHudVisible.get()) {
+    let picPos = [posWatched.get()[0] + size[0] - sh(5) - collapseIconSize, posWatched.get()[1] + size[1] - sh(5)]
     return res.__update({
-      pos = isPlayingReplay.get() ? [posWatched.get()[0], bh.get() + 0.95 * rh.get()] : [bw.get() + 0.75 * rw.get(), bh.get() + 0.03 * rh.get()]
+      pos = isPlayingReplay.get() ? picPos : [bw.get() + 0.75 * rw.get(), bh.get() + 0.03 * rh.get()]
       size = sh(5)
       rendObj = ROBJ_IMAGE
       image = !IsTwsDamaged.get() ? rwrPic : rwrPicDamaged
       color = colorWatch.get()
-      children = isPlayingReplay.get() ? mkCollapseButton([sh(5), sh(2)], CollapsedIcon) : null
+      children = isPlayingReplay.get() ? mkCollapseButton([pw(100), sh(5) - collapseIconSize], CollapsedIcon) : null
     })
   }
   return res

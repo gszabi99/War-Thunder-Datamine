@@ -14,7 +14,7 @@ let { get_mission_time, get_mplayer_by_id, get_local_mplayer } = require("missio
 let { get_player_army_for_hud } = require("guiMission")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG,
   USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG,
-  USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG
+  USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, USEROPT_HUD_VISIBLE_KILLLOG
 } = require("%scripts/options/optionsExtNames.nut")
 let { userName, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isShipBattle, isHumanMission
@@ -25,8 +25,26 @@ let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 let { getProjectileNameLoc } = require("%scripts/weaponry/bulletsInfo.nut")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 
 let getOwnerUnit = @() getAircraftByName(getOwnerUnitName())
+
+let hiddenCrashUnitTags = {
+  type_drone = true
+}
+
+function isCrashMsgHidden(unitName) {
+  let unit = getAircraftByName(unitName)
+  if (unit == null)
+    return false
+
+  foreach (unitTag in unit.tags)
+    if (unitTag in hiddenCrashUnitTags)
+      return true
+
+  return false
+}
 
 enum BATTLE_LOG_FILTER {
   HERO      = 0x0001
@@ -69,9 +87,41 @@ function getActionColor(isKill, isLoss) {
   return isLoss ? "hudColorDarkRed" : "hudColorDarkBlue"
 }
 
-let supportedMsgTypes = {
+let battleLogTypes = {
   [HUD_MSG_MULTIPLAYER_DMG] = true,
   [HUD_MSG_STREAK_EX] = true,
+}
+
+let hudHeroMessages = {
+  [HUD_MSG_DAMAGE] = true, 
+  [HUD_MSG_ENEMY_DAMAGE] = true, 
+  [HUD_MSG_ENEMY_CRITICAL_DAMAGE] = true, 
+  [HUD_MSG_ENEMY_FATAL_DAMAGE] = true, 
+  [HUD_MSG_DEATH_REASON] = true, 
+  [HUD_MSG_EVENT] = true, 
+}
+
+const historyLogCustomMsgType = -200
+let spectatorMsgTypes = {
+  [HUD_MSG_MULTIPLAYER_DMG] = true,
+  [HUD_MSG_STREAK_EX] = true,
+  [HUD_MSG_STREAK] = true,
+  [HUD_MSG_OBJECTIVE] = true,
+  [HUD_MSG_DIALOG] = true,
+  [HUD_MSG_DAMAGE] = true,
+  [HUD_MSG_ENEMY_DAMAGE] = true,
+  [HUD_MSG_ENEMY_CRITICAL_DAMAGE] = true,
+  [HUD_MSG_ENEMY_FATAL_DAMAGE] = true,
+  [HUD_MSG_DEATH_REASON] = true,
+  [HUD_MSG_EVENT] = true,
+  [historyLogCustomMsgType] = true 
+}
+
+let killLogMsgTypes = {
+  [HUD_MSG_MULTIPLAYER_DMG] = true,
+  [HUD_MSG_ENEMY_DAMAGE] = true,
+  [HUD_MSG_ENEMY_CRITICAL_DAMAGE] = true,
+  [HUD_MSG_ENEMY_FATAL_DAMAGE] = true
 }
 
 let battleLog = persist("battleLog", @() [])
@@ -286,6 +336,20 @@ function buildPlayerUnitName(player, unitNameLoc = "") {
   return colorize(get_mplayer_color(player), unitNameLoc)
 }
 
+function msgEscapeCodesToCssColors(sequence) {
+  local ret = ""
+  foreach (w in split_by_chars(sequence, "\x1B")) {
+    if (w.len() >= 3 && rePatternNumeric.match(w.slice(0, 3))) {
+      let color = getTblValue(w.slice(0, 3).tointeger(), escapeCodeToCssColor)
+      let value = w.slice(3)
+      ret = "".concat(ret, color ? colorize(color, value) : value)
+    }
+    else
+      ret = "".concat(ret, w)
+  }
+  return ret
+}
+
 function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0) {
   filter = filter == 0 ? BATTLE_LOG_FILTER.ALL : filter
   let lines = []
@@ -398,7 +462,37 @@ function msgStreakToText(msg, forceThirdPerson = false) {
   return isLocal ? what : format("%s %s", getUnitNameEx(playerId), what)
 }
 
+function isValidKillLogMsg(msg) {
+  if (msg.type not in killLogMsgTypes)
+    return false
+
+  let isKill = msg?.isKill ?? true
+  if (msg?.action == "crash" && isCrashMsgHidden(msg?.victimUnitName))
+    return false
+
+  let { maxRespawns } = get_mission_settings()
+  if (msg.type == HUD_MSG_MULTIPLAYER_DMG && !isKill && maxRespawns != 1)
+    return false
+  if (!get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
+    return false
+  return true
+}
+
+function getKillLogMsgText(msg) {
+  if (msg.type == HUD_MSG_MULTIPLAYER_DMG)
+    return msgMultiplayerDmgToText(msg, true)
+  else if (msg.type == HUD_MSG_ENEMY_CRITICAL_DAMAGE)
+    return colorize("orange", msg.text)
+  else if (msg.type == HUD_MSG_ENEMY_FATAL_DAMAGE)
+    return colorize("red", msg.text)
+
+  return colorize("silver", msg.text)
+}
+
 function onHudMessage(msg) {
+  let now = get_mission_time()
+  let isSpectator = isPlayerDedicatedSpectator() || is_replay_playing()
+  let supportedMsgTypes = isSpectator ? spectatorMsgTypes : battleLogTypes
   if (msg.type not in supportedMsgTypes)
     return
 
@@ -407,7 +501,6 @@ function onHudMessage(msg) {
   if (!("text" in msg))
     msg.text <- ""
 
-  let now = get_mission_time()
   if (msg.id != -1)
     foreach (logEntry in battleLog)
       if (logEntry.msg.id == msg.id)
@@ -415,7 +508,7 @@ function onHudMessage(msg) {
   if (msg.id == -1 && msg.text != "") {
     let skipDupTime = now - skipDuplicatesSec
     for (local i = battleLog.len() - 1; i >= 0; i--) {
-      if (battleLog[i].time < skipDupTime)
+      if (battleLog[i].time < skipDupTime && battleLog[i].msg.type != HUD_MSG_DEATH_REASON)
         break
       if (battleLog[i].msg.text == msg.text)
         return
@@ -424,6 +517,19 @@ function onHudMessage(msg) {
   let timestamp = $"{time.secondsToString(now, false)} "
   local message = ""
   local filters = 0
+
+  if (isSpectator && isValidKillLogMsg(msg)) {
+    local killogText = getKillLogMsgText(msg)
+    killogText = $"{timestamp}{colorize("userlogColoredText", killogText)}"
+    let killLogEntry = {
+      msg = msg
+      time = now
+      message = killogText
+      filters = null
+    }
+    eventbus_send("pushKillLogEntry", killLogEntry)
+  }
+
   if (msg.type == HUD_MSG_MULTIPLAYER_DMG) { 
     let p1 = get_mplayer_by_id(msg?.playerId ?? userIdInt64.get())
     let p2 = get_mplayer_by_id(msg?.victimPlayerId ?? userIdInt64.get())
@@ -459,9 +565,26 @@ function onHudMessage(msg) {
       filters = filters | BATTLE_LOG_FILTER.OTHER
 
     if (msg.type == HUD_MSG_STREAK_EX) { 
-      let text = msgStreakToText(msg)
-      message = "".concat(timestamp,
-        colorize("streakTextColor", "".concat(loc("unlocks/streak"), loc("ui/colon"), text)))
+      let text = msgStreakToText(msg, isSpectator)
+      message = "".concat(timestamp, colorize("streakTextColor", loc("ui/colon").concat(loc("unlocks/streak"), text)))
+    }
+
+    
+    if (msg.type == HUD_MSG_OBJECTIVE) { 
+      let text = msgEscapeCodesToCssColors(msg.text)
+      message =  "".concat(timestamp, colorize("white", loc("ui/colon").concat(loc("sm_objective"), text)))
+    }
+
+    
+    if (msg.type == HUD_MSG_DIALOG) { 
+      let text = msgEscapeCodesToCssColors(msg.text)
+      message =  "".concat(timestamp, text)
+    }
+
+    
+    if (msg.type in hudHeroMessages || msg.type == historyLogCustomMsgType) { 
+      let text = msgEscapeCodesToCssColors(msg.text)
+      message =  "".concat(timestamp, text)
     }
   }
 
@@ -471,30 +594,14 @@ function onHudMessage(msg) {
     message = message
     filters = filters
   }
-
+  eventbus_send("pushBattleLogEntry", logEntry)
   if (battleLog.len() == logMaxLen)
     battleLog.remove(0)
   battleLog.append(logEntry)
-  eventbus_send("pushBattleLogEntry", logEntry)
   broadcastEvent("BattleLogMessage", logEntry)
 }
 
-function msgEscapeCodesToCssColors(sequence) {
-  local ret = ""
-  foreach (w in split_by_chars(sequence, "\x1B")) {
-    if (w.len() >= 3 && rePatternNumeric.match(w.slice(0, 3))) {
-      let color = getTblValue(w.slice(0, 3).tointeger(), escapeCodeToCssColor)
-      let value = w.slice(3)
-      ret = "".concat(ret, color ? colorize(color, value) : value)
-    }
-    else
-      ret = "".concat(ret, w)
-  }
-  return ret
-}
-
 let HudBattleLog = {
-
   battleLog
   skipDuplicatesSec
   logMaxLen
@@ -502,9 +609,6 @@ let HudBattleLog = {
   actionVerbs
   utToEsUnitType
   escapeCodeToCssColor
-  rePatternNumeric
-
-
   reset
   onHudMessage
 
@@ -526,7 +630,7 @@ let HudBattleLog = {
   getActionTextIconic
   msgMultiplayerDmgToText
   msgStreakToText
-  msgEscapeCodesToCssColors
+  historyLogCustomMsgType
 }
 
 let setBattleLog = @(bLog) HudBattleLog.battleLog = (bLog ?? [])
@@ -534,4 +638,6 @@ let setBattleLog = @(bLog) HudBattleLog.battleLog = (bLog ?? [])
 return {
   HudBattleLog
   setBattleLog
+  isValidKillLogMsg
+  getKillLogMsgText
 }

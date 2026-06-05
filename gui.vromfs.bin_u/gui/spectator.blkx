@@ -47,8 +47,7 @@
               "selfFocusBorder": "yes",
               "on_click": "onPlayerClick",
               "on_r_click": "onPlayerRClick",
-              "on_activate": "onSelectPlayer",
-              "on_set_focus": "onChangeFocusTable"
+              "on_activate": "onSelectPlayer"
             }
           },
           "dyncampresult": {
@@ -93,8 +92,7 @@
               "selfFocusBorder": "yes",
               "on_click": "onPlayerClick",
               "on_r_click": "onPlayerRClick",
-              "on_activate": "onSelectPlayer",
-              "on_set_focus": "onChangeFocusTable"
+              "on_activate": "onSelectPlayer"
             }
           },
           "dyncampresult": {
@@ -126,12 +124,6 @@
             "flow": "horizontal",
             "margin-top": "@mIco"
           }
-        },
-        {
-          "id": "spectator_hud_damage",
-          "size": "0.15@shHud, 0.15@shHud",
-          "position": "absolute",
-          "pos": "1@spectatorTableWidth +0.01@shHud, ph-h"
         },
         {
           "pos": "pw/2-w/2, ph-h - 0.06@shHud - 1@sIco",
@@ -351,60 +343,6 @@
         "position": "absolute"
       },
       "spectatorFrame": [
-        {
-          "id": "log_div",
-          "css-hier-invalidate": "yes",
-          "position": "absolute",
-          "pos": "-1@spectatorBw -4@dp, ph-h",
-          "min-height": "2@sIco",
-          "padding-left": "1@spectatorBw",
-          "flow": "vertical",
-          "tdiv": {
-            "id": "content",
-            "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
-            "flow": "vertical",
-            "HorizontalListBox": {
-              "id": "tabs",
-              "width": "pw",
-              "class": "tabs",
-              "smallFont": "yes",
-              "navigatorShortcuts": "yes",
-              "on_select": "onBtnLogTabSwitch"
-            },
-            "tdiv": {
-              "size": "pw, fh",
-              "tdiv": [
-                {
-                  "id": "history_container",
-                  "position": "absolute",
-                  "size": "pw, ph",
-                  "display": "show",
-                  "overflow-y": "auto",
-                  "scroll-align": "left",
-                  "auto-scroll": "yes",
-                  "css-hier-invalidate": "yes",
-                  "historyLog": {
-                    "id": "history_log",
-                    "width": "pw",
-                    "punctuation-exception": "-.,'\"():/\\@[]=^+",
-                    "text": ""
-                  }
-                },
-                {
-                  "id": "order_status",
-                  "position": "absolute",
-                  "size": "pw, ph"
-                }
-              ],
-              "chatPlaceSpectator": {
-                "id": "chat_container",
-                "position": "absolute",
-                "size": "pw, ph",
-                "display": "hide"
-              }
-            }
-          }
-        },
         {
           "id": "map_div",
           "css-hier-invalidate": "yes",
@@ -755,16 +693,6 @@
           "toggled": "yes",
           "toggleObj": "stats_right",
           "pos": "pw-w +4@dp, 1@spectatorTopOffset - h",
-          "position": "absolute",
-          "icon": {}
-        },
-        {
-          "id": "btnToggleLog",
-          "on_click": "onToggleButtonClick",
-          "attachSide": "left",
-          "toggled": "yes",
-          "toggleObj": "log_div",
-          "pos": "-4@dp, ph-h - 1@spectatorTableWidth -16@sf/@pf",
           "position": "absolute",
           "icon": {}
         },

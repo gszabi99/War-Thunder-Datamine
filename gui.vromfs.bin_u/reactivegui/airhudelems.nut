@@ -890,7 +890,6 @@ let textParamsMapMain = {
     valueComputed = Computed(@() getIRCMCaption(IRCMState.get()))
     alertStateCaptionComputed = WatchedRo(HudColorState.ACTIV)
     alertValueStateComputed = WatchedRo(HudColorState.ACTIV)
-    valuesWatched = IRCMState
   },
 }
 
@@ -1022,15 +1021,18 @@ let textParamsMapTertiary = {
   }
 }
 
+let textParamsMapMainKeys = textParamsMapMain.keys().sort()
+let textParamsMapSecondaryKeys = textParamsMapSecondary.keys().sort()
+
 function generateParamsTable(mainMask, secondaryMask, tertiaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, font_size = HudStyle.hudFontHgt) {
   function getChildren(colorWatch, style, isBomberView) {
     let createParamOptions = { needCaption, forIls, font_size, isBomberView, isHelicopter = hudUnitType.isHelicopter() }
     let children = []
     let vertIndent = { size = const [0, hdpx(12)] }
 
-    foreach (key, param in textParamsMapMain) {
+    foreach (key in textParamsMapMainKeys) {
       if ((1 << key) & mainMask.get())
-        children.append(createParam(param, width, height, style, colorWatch, createParamOptions))
+        children.append(createParam(textParamsMapMain[key], width, height, style, colorWatch, createParamOptions))
       if (key == AirParamsMain.RADAR_ALTITUDE && is_aircraft)
         children.append(vertIndent)
 
@@ -1048,9 +1050,9 @@ function generateParamsTable(mainMask, secondaryMask, tertiaryMask, width, heigh
       children.append(vertIndent)
 
     local secondaryMaskValue = secondaryMask.get()
-    foreach (key, param in textParamsMapSecondary) {
+    foreach (key in textParamsMapSecondaryKeys) {
       if ((1 << key) & secondaryMaskValue)
-        children.append(createParam(param, width, height, style, colorWatch, createParamOptions))
+        children.append(createParam(textParamsMapSecondary[key], width, height, style, colorWatch, createParamOptions))
     }
 
     if (is_aircraft) {

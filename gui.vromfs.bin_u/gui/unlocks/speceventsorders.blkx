@@ -1,0 +1,97 @@
+{
+  "hasTwoColumns": "yes",
+  "height": "155@sf/@pf",
+  "padding": "@blockInterval, @blockInterval",
+  "css-hier-invalidate": "yes",
+  "tooltip": "",
+  "tdiv": {
+    "position": "relative",
+    "size": "pw, ph",
+    "padding": "1@blockInterval, @blockInterval",
+    "layeredIconContainer": {
+      "id": "achivment_ico",
+      "size": "1.5@mIco, 1.5@mIco",
+      "position": "relative"
+    },
+    "tdiv": {
+      "position": "relative",
+      "size": "pw, ph",
+      "flow": "vertical",
+      "margin-left": "2@blockInterval",
+      "textareaNoTab": [
+        {
+          "id": "status_text",
+          "position": "relative",
+          "text": ""
+        },
+        {
+          "id": "main_cond_text",
+          "position": "relative",
+          "text": ""
+        }
+      ],
+      "tdiv": {
+        "size": "pw, 10@sf/@pf",
+        "challengeDescriptionProgress": {
+          "id": "progress_bar",
+          "position": "relative",
+          "value": "",
+          "display": "hide",
+          "isProfileUnlockProgress": "yes",
+          "hasNoMarkersSpace": "yes",
+          "tdiv": {
+            "id": "progress_markers_nest",
+            "size": "pw, ph + 4@blockInterval",
+            "pos": "0, -4@blockInterval",
+            "position": "relative",
+            "display": "hide"
+          }
+        }
+      },
+      "hiddenDiv": {
+        "position": "absolute",
+        "top": "ph-h",
+        "width": "pw",
+        "flow": "horizontal",
+        "Button_text": [
+          {
+            "id": "checkbox_favorites",
+            "position": "relative",
+            "margin-right": "1@blockInterval",
+            "text": "#mainmenu/UnlockAchievementsToFavorite",
+            "tooltip": "",
+            "on_click": "unlockToFavorites",
+            "not-input-transparent": "yes",
+            "unlockId": "",
+            "btnName": "LT",
+            "visualStyle": "secondary",
+            "noMargin": "yes",
+            "isChecked": "no",
+            "skip-navigation": "yes",
+            "ButtonImg": {},
+            "buttonWink": {}
+          },
+          {
+            "id": "purchase_button",
+            "hideText": "yes",
+            "visualStyle": "purchase",
+            "on_click": "onBuyUnlock",
+            "not-input-transparent": "yes",
+            "tooltip": "#mainmenu/btnBuyInstantly/tooltip",
+            "unlockId": "",
+            "btnName": "Y",
+            "noMargin": "yes",
+            "skip-navigation": "yes",
+            "buttonWink": {},
+            "ButtonImg": {},
+            "textarea": {
+              "id": "purchase_button_text",
+              "class": "buttonText"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "focus_border": {}
+}

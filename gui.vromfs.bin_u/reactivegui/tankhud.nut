@@ -1,7 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { round } = require("math")
-let { eventbus_send } = require("eventbus")
 let { mkRadar } = require("%rGui/radarComponent.nut")
 let aamAim = require("%rGui/rocketAamAim.nut")
 let agmAim = require("%rGui/agmAim.nut")
@@ -27,12 +26,12 @@ let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 
 
-let activeOrder = require("%rGui/activeOrder.nut")
+let { activeOrderComps }= require("%rGui/activeOrder.nut")
 let voiceChat = require("%rGui/chat/voiceChat.nut")
 let hudLogs = require("%rGui/hudLogs.nut")
 let { mkScreenHitMark } = require("%rGui/hud/hitMarks.nut")
 let { tankDebuffs } = require("%rGui/hud/tankHudDebuffs.nut")
-let { dmgIndicatorWidth, updateDmgIndicatorPos } = require("%rGui/hud/tankDmgIndicatorState.nut")
+let { dmgIndicatorWidth, updateDmgIndicatorElement } = require("%rGui/hud/dmgIndicatorState.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 let redColor = Color(255, 35, 30, 255)
@@ -93,18 +92,7 @@ function tankDmgIndicator() {
     image = Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorWidth.get()}:{dmgIndicatorWidth.get()}")
     children
     behavior = Behaviors.RecalcHandler
-    function onRecalcLayout(_initial, elem) {
-      if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-        eventbus_send("update_damage_panel_state", {
-          pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-          size = [elem.getWidth(), elem.getHeight()]
-          visible = needShowDmgIndicator.get()
-        })
-        updateDmgIndicatorPos([elem.getScreenPosX(), elem.getScreenPosY()])
-      }
-      else
-        eventbus_send("update_damage_panel_state", {})
-    }
+    onRecalcLayout = updateDmgIndicatorElement
   }
 }
 
@@ -121,12 +109,12 @@ let leftPanel = @() {
   size = FLEX_V
   watch = [bw, bh, isSpectatorMode, isAAComplexMenuActive]
   margin = [bh.get(), 0, bh.get(), bw.get()]
-  flow = FLOW_VERTICAL
+  flow = isSpectatorMode.get() ? FLOW_HORIZONTAL : FLOW_VERTICAL
   vplace = ALIGN_TOP
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
   gap = hdpx(10)
-  children = isSpectatorMode.get() ? null
+  children = isSpectatorMode.get() ? [hudLogs, tankDmgIndicator]
     : isAAComplexMenuActive.get() ? [
         voiceChat
         tankDmgIndicator
@@ -134,7 +122,7 @@ let leftPanel = @() {
       ]
     : [
         voiceChat
-        activeOrder
+        activeOrderComps
         hudLogs
         tankDmgIndicator
         missionProgressPanel

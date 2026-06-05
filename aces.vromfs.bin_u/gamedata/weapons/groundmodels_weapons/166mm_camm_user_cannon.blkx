@@ -504,7 +504,7 @@
         }
       },
       "orientationEngineFX": {
-        "effectName": "fires_exhaust_jet_early_small",
+        "effectName": "fires_orientation_jet_med",
         "nodeName": "emtr_steering_0",
         "timeout": 3.0,
         "pwmRangeMin": 0.0,
@@ -1365,7 +1365,7 @@
           }
         },
         "orientationEngineFX": {
-          "effectName": "fires_exhaust_jet_early_small",
+          "effectName": "fires_orientation_jet_med",
           "nodeName": "emtr_steering_0",
           "timeout": 3.0,
           "pwmRangeMin": 0.0,
@@ -1880,6 +1880,7 @@
           0.0,
           0.0
         ],
+        "bombCart": "shell_stand_vertical_sam",
         "massEnd1": 85.0,
         "force1": 3675.0,
         "timeFire1": 10.0,
@@ -1971,6 +1972,12 @@
           },
           "guidanceAutopilot": {
             "loftEnabled": true,
+            "rangeToLoftElevation": [
+              5000.0,
+              0.0,
+              45000.0,
+              65.0
+            ],
             "loftElevation": 10.0,
             "loftTargetElevation": -20.0,
             "loftAngleToAccelMult": 3.0,
@@ -1999,7 +2006,12 @@
           "orientationAutopilot": {
             "timeOut": 0.2,
             "controlTime": 1.5,
-            "elevationAdd": 5.0,
+            "rangeToElevationAdd": [
+              5000.0,
+              5.0,
+              45000.0,
+              70.0
+            ],
             "elevationToHeadingMult": [
               10.0,
               10.0,
@@ -2230,7 +2242,7 @@
           }
         },
         "orientationEngineFX": {
-          "effectName": "fires_exhaust_jet_early_small",
+          "effectName": "fires_orientation_jet_med",
           "nodeName": "emtr_steering_0",
           "timeout": 3.0,
           "pwmRangeMin": 0.0,

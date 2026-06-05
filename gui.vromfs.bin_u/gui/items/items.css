@@ -78,6 +78,13 @@
 @const ingameCurrencyShopItemHeight: (230@sf/@pf) \ 1;
 @const ingameCurrencyShopItemMargin: (24@sf/@pf) \ 1;
 
+@const eventSlotWidth: 300@sf/@pf + 1@eSItemMargin;
+@const rewardSlotWidth: 135@sf/@pf;
+@const rewardBigSlotWidth: 270@sf/@pf;
+@const rewardImgSize: 90@sf/@pf;
+@const rewardSlotHeight: 230@sf/@pf;
+
+
 itemDiv {
   re-type:9rect;
   height:1@itemHeight;
@@ -155,6 +162,12 @@ craftTreeScrollDiv[itemsSize = small] > craftBranchBody > itemBlock {
 itemDiv[trophyRewardSize=yes] {
   width:1@chestRewardWidth;
   height:1@chestRewardHeight;
+}
+
+itemDiv[fullSizeImage=yes] {
+  width:p.p.w;
+  height:p.p.h;
+  padding:0;
 }
 
 itemDiv[ticketBuyWindow=yes] {

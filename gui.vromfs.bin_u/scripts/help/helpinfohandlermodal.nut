@@ -6,6 +6,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
 let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
+let { findPlaceForHintByRect } = require("%globalScripts/guiGeom/hintPlacement.nut")
 
 
 
@@ -34,51 +35,14 @@ function updateHintPosition( mainScene, helpScene, params) {
   }
 }
 
-let isIntersectRect = @( a, b ) ( a.y < b.y + b.h && a.y + a.h > b.y && a.x < b.x + b.w && a.x + a.w > b.x)
-let isRectAInRectB = @( a, b ) ( a.y > b.y && a.y + a.h < b.y + b.h && a.x > b.x && a.x + a.w < b.x + b.w)
-
-function hasFreePlace (rectsArr, rect, safeAreaRect = null) {
-  if (safeAreaRect && !isRectAInRectB( rect, safeAreaRect))
-    return false
-
-  foreach ( r in rectsArr) {
-    if (isIntersectRect(r, rect))
-      return false
-  }
-  return true
-}
-
 function findPlaceForHint(itemObj, rects, hintSizes, safeAreaRect) {
   if (!itemObj?.isValid())
     return null
-
-  let itemPos = itemObj.getPos()
-  let itemSize = itemObj.getSize()
-  let itemRect = {x = itemPos[0], y = itemPos[1], w = itemSize[0], h = itemSize[1]}
-  if (!hasFreePlace(rects, itemRect))
-    return null
-
-  let padding = hintSizes.padding
-  let hintHeight = hintSizes.hintHeight
-  let hintWidth = hintSizes.hintWidth
-
-  let rectsForTest = [
-    { x = itemPos[0] + itemSize[0] + padding, y = itemPos[1], w = hintWidth, h = hintHeight}
-    { x = itemPos[0] + itemSize[0] + padding, y = itemPos[1] + itemSize[1] - hintHeight, w = hintWidth, h = hintHeight}
-    { x = itemPos[0], y = itemPos[1] + itemSize[1] + padding, w = hintWidth, h = hintHeight}
-    { x = itemPos[0], y = itemPos[1] - padding - hintHeight, w = hintWidth, h = hintHeight}
-    { x = itemPos[0] + itemSize[0] - hintWidth, y = itemPos[1] + itemSize[1] + padding, w = hintWidth, h = hintHeight}
-    { x = itemPos[0] + itemSize[0] - hintWidth, y = itemPos[1] - padding - hintHeight, w = hintWidth, h = hintHeight}
-  ]
-
-  foreach (hintRect in rectsForTest) {
-    if (hasFreePlace(rects, hintRect, safeAreaRect)) {
-      rects.append(itemRect)
-      rects.append(hintRect)
-      return hintRect
-    }
-  }
-  return null
+  let [ x, y ] = itemObj.getPos()
+  let [ w, h ] = itemObj.getSize()
+  let itemRect = { x, y, w, h }
+  let hintSize = { w = hintSizes.hintWidth, h = hintSizes.hintHeight }
+  return findPlaceForHintByRect(itemRect, rects, hintSize, hintSizes.padding, safeAreaRect)
 }
 
 gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {

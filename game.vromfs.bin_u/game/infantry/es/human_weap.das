@@ -68,7 +68,9 @@ def server_recreate_guns(eid : EntityId;
                          flags : int;
                          var human_weap__gunEids : EidList;
                          var human_weap__gunMods : Array;
-                         var human_weap__weapInitialComponents : Array)
+                         var human_weap__weapInitialComponents : Array;
+                         human__gunObjTexReplace : Object;
+                         human__gunObjTexSet : Object)
   human_weap__gunEids |> resize(int(HUWeaponSlots.EWS_NUM))
   var currentGunSlot = -1
   for slotId in range(int(HUWeaponSlots.EWS_NUM))
@@ -93,6 +95,8 @@ def server_recreate_guns(eid : EntityId;
                                                                                                    var ci : ComponentsInitializer)
       set(ci, "gun__initialSlotId", slotId)
       set(ci, "gun__initialFlags", flags)
+      set(ci, "animchar__objTexReplace", human__gunObjTexReplace)
+      set(ci, "animchar__objTexSet", human__gunObjTexSet)
       if is_dedicated()
         
         let newEid = createEntitySync(n, ci)
@@ -294,10 +298,39 @@ def human_init_weapon_preset_es(evt : CmdInitComponent;
                 set(inventory__itemCreateTemplates, inventoryItemTemplate, inventoryItemNum)
 
 
+[es(tag=server, REQUIRE=(unit__ref, human))]
+def human_init_gun_skin_es(evt : CmdInitComponent;
+                           var human__gunObjTexReplace : Object;
+                           var human__gunObjTexSet : Object)
+  human__gunObjTexReplace |> clear()
+  human__gunObjTexSet |> clear()
+  let skinName = evt.data.unitSkin != "" ? string(evt.data.unitSkin) : ""
+  if empty(skinName) || skinName == "default"
+    return
+  datablock_for_each_block(evt.data.modelBlk, "skin") <| $(skinBlk)
+    if datablock_getStr(skinBlk, "name", "") != skinName
+      return
+    datablock_for_each_block(skinBlk, "replace_tex") <| $(rb)
+      let from = datablock_getStr(rb, "from", "")
+      let to = datablock_getStr(rb, "to", "")
+      if !empty(from) && !empty(to)
+        human__gunObjTexReplace |> set(from, to)
+    datablock_for_each_block(skinBlk, "set_tex") <| $(sb)
+      let from = datablock_getStr(sb, "from", "")
+      let to = datablock_getStr(sb, "to", "")
+      let param = datablock_getStr(sb, "param", "")
+      if !empty(from) && !empty(to) && !empty(param)
+        using() <| $(var inner : Object)
+          inner |> set(to, param)
+          human__gunObjTexSet |> set(from, inner)
+
+
 [es(tag=server, on_appear, after=unit_init_completed_es, REQUIRE=inventory_created)]
 def human_weap_created_server_es(evt : Event;
                                  eid : EntityId;
                                  human_weap__weapTemplates : Object;
+                                 human__gunObjTexReplace : Object;
+                                 human__gunObjTexSet : Object;
                                  var human_weap__gunEids : EidList;
                                  var human_weap__gunMods : Array;
                                  var human_weap__weapInitialComponents : Array;
@@ -305,7 +338,8 @@ def human_weap_created_server_es(evt : Event;
                                  var human_net_phys : HumanActor?)
   human_weap__currentGunSlot = server_recreate_guns(eid, human_weap__weapTemplates,
                                                     int(RecreateGunsFlags.Attach) | int(RecreateGunsFlags.ParentLoaded),
-                                                    human_weap__gunEids, human_weap__gunMods, human_weap__weapInitialComponents)
+                                                    human_weap__gunEids, human_weap__gunMods, human_weap__weapInitialComponents,
+                                                    human__gunObjTexReplace, human__gunObjTexSet)
 
   if human_net_phys != null
     setup_human_actor_weapon_slot(human_weap__gunEids, human_weap__currentGunSlot, *human_net_phys)
@@ -850,6 +884,8 @@ def human_weap_update_total_count_wish_ammo_item_type_es(evt : Event;
 def human_weap_reinit_guns_es(evt : CmdReinitWeapons;
                               eid : EntityId;
                               human_weap__weapTemplates : Object;
+                              human__gunObjTexReplace : Object;
+                              human__gunObjTexSet : Object;
                               var human_weap__currentGunSlot : int&;
                               var human_weap__gunEids : EidList;
                               var human_weap__gunMods : Array;
@@ -857,7 +893,8 @@ def human_weap_reinit_guns_es(evt : CmdReinitWeapons;
   human_weap__currentGunSlot = server_recreate_guns(eid, human_weap__weapTemplates,
                                                     int(RecreateGunsFlags Attach),
                                                     human_weap__gunEids, human_weap__gunMods,
-                                                    human_weap__weapInitialComponents)
+                                                    human_weap__weapInitialComponents,
+                                                    human__gunObjTexReplace, human__gunObjTexSet)
 
 
 [es(tag=server, on_appear)]

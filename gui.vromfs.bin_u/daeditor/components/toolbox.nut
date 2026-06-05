@@ -65,7 +65,7 @@ function mkOption(opt, opt_near, trig, tb_state) {
   }))
 }
 
-let mkToolboxTooltip = function(tt_obj, tt_text, dx, tb_state) {
+function mkToolboxTooltip(tt_obj, tt_text, dx, tb_state) {
   if (typeof tt_text != "string")
     return null
   return @() {

@@ -20,9 +20,11 @@ let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let { isHeliPilotHudDisabled } = require("%rGui/options/options.nut")
 let { planeHmdElem }  = require("%rGui/planeHmd.nut")
 let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
-let { IsMlwsLwsHudVisible, IsTwsDamaged } = require("%rGui/twsState.nut")
+let { IsTwsDamaged } = require("%rGui/twsState.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { helicopterTargetingPodSight } = require("%rGui/targetingPodSight.nut")
+let { ShellFPVModeEnabled } = require("%rGui/planeState/planeWeaponState.nut")
+let fpvShellHud = require("%rGui/fpvShellHud.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 let compassPos = [sw(50) - 0.5 * compassSize[0], sh(15)]
@@ -41,14 +43,14 @@ let radarPosWatched = Computed(@() isPlayingReplay.get() ? [
   ]
 )
 
-let twsSize = sh(20)
+let twsSize = [sh(28), sh(50)]
 let twsPosComputed = Computed(@() isPlayingReplay.get() ?
   [
-    scrn_tgt(0.24) + fpx(45) + scrn_tgt(0.005) + fpx(16) + 6 + bw.get() + (IsMlwsLwsHudVisible.get() ? 0.3 * twsSize : 0),
-    bh.get() + rh.get() - twsSize * (IsMlwsLwsHudVisible.get() ? 1.3 : 1.0)
+    scrn_tgt(0.24) + fpx(45) + scrn_tgt(0.005) + fpx(16) + 6 + bw.get(),
+    bh.get() + rh.get() - twsSize[1]
   ] : [
-    bw.get() + 0.965 * rw.get() - twsSize,
-    bh.get() + 0.5 * rh.get()
+    bw.get() + 0.985 * rw.get() - twsSize[0],
+    bh.get() + 0.5 * (rh.get() * 0.98 - twsSize[0])
   ])
 
 let helicopterArbiterParamsTablePos = Computed(@() [max(bw.get(), sw(17.5)), sh(12)])
@@ -161,9 +163,11 @@ let indicatorsCtor = @() {
     : null
 }
 
-let helicopterHud = {
+let helicopterHud = @() {
+  watch = ShellFPVModeEnabled
   size = const [sw(100), sh(100)]
-  children = [
+  children = ShellFPVModeEnabled.get() ? fpvShellHud :
+  [
     leftPanel
     actionBarTopPanel
     indicatorsCtor

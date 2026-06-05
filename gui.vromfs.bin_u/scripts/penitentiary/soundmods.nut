@@ -23,12 +23,11 @@ function showMsgboxIfSoundModsForceDisabled() {
     [
       ["ok", function() {}]
     ], null)
-  return false
 }
 
 function showMsgboxIfSoundModsBanksCheckFailed() {
   if (get_sound_mods_error_type == null)
-    return false
+    return
   let errorType = get_sound_mods_error_type()
   if (errorType == SOUND_MODS_FILES_INTEGRITY)
     scene_msg_box("sound_mods_banks_check_failed", null, loc("sound_mods_banks_check_failed"),
@@ -40,7 +39,6 @@ function showMsgboxIfSoundModsBanksCheckFailed() {
     [
       ["ok", function() {}]
     ], null)
-  return false
 }
 
 return {

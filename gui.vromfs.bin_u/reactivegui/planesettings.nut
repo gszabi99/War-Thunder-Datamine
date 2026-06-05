@@ -2,6 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
 let DataBlock = require("DataBlock")
+let { tryLoadBlk } = require("blkLoad")
 let { hsdSettingsUpd }  = require("%rGui/planeCockpit/hsd.nut")
 let { devicesSettingUpd } = require("%rGui/planeCockpit/digitalDevices.nut")
 let { rwrSettingUpd } = require("%rGui/planeRwr.nut")
@@ -37,7 +38,7 @@ function updateSettings(blk_name) {
     return
   let blk = DataBlock()
   let fileName = $"gameData/flightModels/{blk_name}.blk"
-  if (!blk.tryLoad(fileName))
+  if (!tryLoadBlk(blk, fileName))
     return
 
   ilsSettingsUpd(blk)

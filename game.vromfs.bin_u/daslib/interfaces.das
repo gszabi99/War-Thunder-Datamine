@@ -27,10 +27,11 @@ module interfaces shared private
 
 require daslib/ast_boost
 require daslib/templates_boost
+require daslib/strings_boost
 require daslib/defer
 require daslib/generic_return
 require strings
-require ast
+require daslib/ast
 
 [structure_macro(name="interface")]
 class InterfaceMacro : AstStructureAnnotation {
@@ -89,7 +90,7 @@ class ImplementsMacro : AstStructureAnnotation {
         let iface_get_name = "get`{iface_name}"
         let iface_get_name_func = "{st.name}`{iface_get_name}"
         
-        var inscope cls <- make_class(iface_class_name, parent, st._module)
+        var cls <- make_class(iface_class_name, parent, st._module)
         cls.flags |= StructureFlags.privateStructure
         var iface_index = -1
         for (ann, ii in cls.annotations, count()) {
@@ -104,10 +105,10 @@ class ImplementsMacro : AstStructureAnnotation {
         }
         cls.annotations |> erase(iface_index)
         
-        var inscope iface_ptr <- qmacro_type(type<$t(parent)?>)
+        var iface_ptr = qmacro_type(type<$t(parent)?>)
         st |> add_structure_field(iface_var_name, clone_type(iface_ptr), default<ExpressionPtr>)
         
-        var inscope fn_get_i <- qmacro_method(iface_get_name_func, st) $(var self : $t(st)) : $t(iface_ptr) {
+        var fn_get_i = qmacro_method(iface_get_name_func, st) $(var self : $t(st) ==const) : $t(iface_ptr) {
             if (self.$f(iface_var_name) == null) {
                 self.$f(iface_var_name) = new <$t(cls)>(unsafe(addr(self)))
             }
@@ -115,15 +116,27 @@ class ImplementsMacro : AstStructureAnnotation {
         }
         add_function(st._module, fn_get_i)
         
-        var inscope st_ptr <- qmacro_type(type<$t(st)?>)
+        
+        if (is_const_interface(parent)) {
+            var fn_get_i_const = qmacro_method(iface_get_name_func, st) $(self : $t(st) ==const) : $t(iface_ptr) {
+                var pS = unsafe(reinterpret<$t(st)? -const>(addr(self)))
+                if (pS.$f(iface_var_name) == null) {
+                    pS.$f(iface_var_name) = new <$t(cls)>(pS)
+                }
+                return pS.$f(iface_var_name)
+            }
+            add_function(st._module, fn_get_i_const)
+        }
+        
+        var st_ptr = qmacro_type(type<$t(st)?>)
         let fi = cls |> add_structure_field("_self", clone_type(st_ptr), default<ExpressionPtr>)
         cls.fields[fi].annotation |> add_annotation_argument("do_not_delete", true)
         cls.fields[fi].flags |= FieldDeclarationFlags.doNotDelete | FieldDeclarationFlags.privateField
         
-        var inscope ctor <- qmacro_function("{iface_class_name}`{iface_class_name}") $(s : $t(st_ptr)) {
+        var ctor = qmacro_function("{iface_class_name}`{iface_class_name}") $(s : $t(st_ptr)) {
             _self = s
         }
-        var inscope ctor_fun <- make_class_constructor(cls, ctor)
+        var ctor_fun = make_class_constructor(cls, ctor)
         modify_to_class_member(cls, ctor, false, false)
         add_function(st._module, ctor)
         add_function(st._module, ctor_fun)
@@ -131,7 +144,7 @@ class ImplementsMacro : AstStructureAnnotation {
         st |> add_structure_field(
             iface_get_name,
             qmacro_type(type<function<(var self : $t(st)) : $t(iface_ptr)>>),
-            qmacro(@@$i(iface_get_name_func))
+            qmacro(@@ < (var self : $t(st)) : $t(iface_ptr) > $i(iface_get_name_func))
         )
         
         
@@ -148,7 +161,7 @@ class ImplementsMacro : AstStructureAnnotation {
                 
                 var already_exists = false
                 for (efld in st.fields) {
-                    if (string(efld.name) == anc_get_name) {
+                    if (efld.name == anc_get_name) {
                         already_exists = true
                         break
                     }
@@ -159,13 +172,20 @@ class ImplementsMacro : AstStructureAnnotation {
                     var anc_struct <- compiling_program() |> find_unique_structure(anc_name)
                     if (anc_struct != null) {
                         let anc_get_func = "{st.name}`{anc_get_name}"
-                        var inscope anc_ptr <- qmacro_type(type<$t(anc_struct)?>)
+                        var anc_ptr = qmacro_type(type<$t(anc_struct)?>)
                         
                         
-                        var inscope fn_anc <- qmacro_method(anc_get_func, st) $(var self : $t(st)) : $t(anc_ptr) {
+                        var fn_anc = qmacro_method(anc_get_func, st) $(var self : $t(st)) : $t(anc_ptr) {
                             return $c(iface_get_name_func)(self)
                         }
                         add_function(st._module, fn_anc)
+                        
+                        if (is_const_interface(anc_struct)) {
+                            var fn_anc_const = qmacro_method(anc_get_func, st) $(self : $t(st)) : $t(anc_ptr) {
+                                return $c(iface_get_name_func)(self)
+                            }
+                            add_function(st._module, fn_anc_const)
+                        }
                         st |> add_structure_field(
                             anc_get_name,
                             qmacro_type(type<function<(var self : $t(st)) : $t(anc_ptr)>>),
@@ -179,47 +199,54 @@ class ImplementsMacro : AstStructureAnnotation {
         
         let skipl = length(iface_name) + 1
         for (fld in st.fields) {
-            if (string(fld.name) |> starts_with("{iface_name}`")) {
-                let method_name = string(fld.name) |> slice(skipl)
+            var fld_starts_with_iface = false
+            var method_name : string
+            peek(fld.name) $(fld_name) {
+                fld_starts_with_iface = fld_name |> starts_with("{iface_name}`")
+                if (fld_starts_with_iface) {
+                    method_name = fld_name |> slice(skipl)
+                }
+            }
+            if (fld_starts_with_iface) {
                 var found = false
                 for (cm in cls.fields) {
                     if (cm.name == method_name) {
                         found = true
                         let fmethod_name = "{iface_class_name}`{method_name}"
-                        var inscope fmethod_args : array<VariablePtr>
-                        var inscope fcall_args : array<ExpressionPtr>
-                        var inscope ret_type : TypeDeclPtr
+                        var fmethod_args : array<VariablePtr>
+                        var fcall_args : array<ExpressionPtr>
+                        var ret_type : TypeDeclPtr
                         if (cm._type.isFunction) {
                             
-                            cm.init |> move_new <| qmacro(cast<$t(cm._type)>(@@$i(fmethod_name)))
+                            cm.init = qmacro(cast<$t(cm._type)>(@@$i(fmethod_name)))
                             for (n, t in cm._type.argNames, cm._type.argTypes) {
                                 if (n != "self") {
-                                    fcall_args |> emplace_new <| qmacro($i(n))
-                                    fmethod_args |> emplace_new <| new Variable(name := n, _type <- clone_type(t))
+                                    fcall_args |> push(qmacro($i(n)))
+                                    fmethod_args |> emplace_new <| new Variable(name := n, _type = clone_type(t))
                                 }
                             }
-                            ret_type |> move_new <| clone_type(cm._type.firstType)
+                            ret_type  = clone_type(cm._type.firstType)
                         } else {
                             
                             
                             
                             let iface_func_name = "{iface_name}`{method_name}"
-                            var inscope ifn <- find_unique_function(parent._module, iface_func_name, true)
+                            var ifn = find_unique_function(parent._module, iface_func_name, true)
                             if (ifn == null) {
                                 errors := "cannot find default method function {iface_func_name}"
                                 return false
                             }
-                            cm.init |> move_new <| qmacro(@@$i(fmethod_name))
+                            cm.init = qmacro(@@$i(fmethod_name))
                             for (arg in ifn.arguments) {
                                 let arg_name = string(arg.name)
                                 if (arg_name != "self") {
-                                    fcall_args |> emplace_new <| qmacro($i(arg.name))
-                                    fmethod_args |> emplace_new <| new Variable(name := arg_name, _type <- clone_type(arg._type))
+                                    fcall_args |> push(qmacro($i(arg.name)))
+                                    fmethod_args |> emplace_new <| new Variable(name := arg_name, _type = clone_type(arg._type))
                                 }
                             }
-                            ret_type |> move_new <| clone_type(ifn.result)
+                            ret_type  = clone_type(ifn.result)
                         }
-                        var inscope fmethod <- qmacro_method(fmethod_name, cls) $(var self : $t(cls); $a(fmethod_args)) : $t(ret_type) {
+                        var fmethod = qmacro_method(fmethod_name, cls) $(var self : $t(cls); $a(fmethod_args)) : $t(ret_type) {
                             generic_return(invoke(self._self.$f(fld.name), *self._self, $a(fcall_args)))
                         }
                         add_function(st._module, fmethod)
@@ -256,31 +283,32 @@ class ImplementsMacro : AstStructureAnnotation {
             return true  
         }
         
-        var missing : string
-        for (ifld in iface.fields) {
-            let ifld_name = string(ifld.name)
-            
-            if (ifld_name == "__rtti" || ifld_name == "__finalize") {
-                continue
-            }
-            if (!ifld._type.isFunction) {
-                continue
-            }
-            
-            if (ifld.init != null) {
-                continue
-            }
-            
-            let expected = "{iface_name}`{ifld_name}"
-            var found = false
-            for (sfld in st.fields) {
-                if (string(sfld.name) == expected) {
-                    found = true
-                    break
+        let missing = build_string() $(var w) {
+            for (ifld in iface.fields) {
+                let ifld_name = string(ifld.name)
+                
+                if (ifld_name == "__rtti" || ifld_name == "__finalize") {
+                    continue
                 }
-            }
-            if (!found) {
-                missing = "{missing}{st.name} does not implement {iface_name}.{ifld_name}\n"
+                if (!ifld._type.isFunction) {
+                    continue
+                }
+                
+                if (ifld.init != null) {
+                    continue
+                }
+                
+                let expected = "{iface_name}`{ifld_name}"
+                var found = false
+                for (sfld in st.fields) {
+                    if (string(sfld.name) == expected) {
+                        found = true
+                        break
+                    }
+                }
+                if (!found) {
+                    w |> write("{st.name} does not implement {iface_name}.{ifld_name}\n")
+                }
             }
         }
         if (length(missing) > 0) {
@@ -289,6 +317,34 @@ class ImplementsMacro : AstStructureAnnotation {
         }
         return true
     }
+}
+
+
+
+def private is_const_interface(st : Structure?) : bool {
+    
+    
+    if (st == null) {
+        return false
+    }
+    for (fld in st.fields) {
+        let fn = string(fld.name)
+        if (fn == "__rtti" || fn == "__finalize") {
+            continue
+        }
+        if (!fld._type.isFunction) {
+            continue
+        }
+        
+        
+        if (length(fld._type.argTypes) == 0) {
+            continue
+        }
+        if (!fld._type.argTypes[0].isConst) {
+            return false
+        }
+    }
+    return true
 }
 
 
@@ -348,14 +404,14 @@ class InterfaceAsIs : AstVariantMacro {
     
     
     
-    def override visitExprIsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprIsVariant>) : ExpressionPtr {
+    def override visitExprIsVariant(prog : ProgramPtr; mod : Module?; expr : ExprIsVariant?) : ExpressionPtr {
         
         
         
         
         assume vtype = expr.value._type
         if (!(vtype.isPointer && vtype.firstType != null && vtype.firstType.isStructure)) {
-            return <- default<ExpressionPtr>
+            return null
         }
         
         
@@ -364,7 +420,7 @@ class InterfaceAsIs : AstVariantMacro {
         let iname = string(expr.name)
         var tgt = prog |> find_unique_structure(iname)
         if (tgt == null || !is_interface_struct(tgt)) {
-            return <- default<ExpressionPtr>
+            return null
         }
         
         
@@ -373,7 +429,7 @@ class InterfaceAsIs : AstVariantMacro {
         let getter_field = "get`{iname}"
         var st = vtype.firstType.structType
         for (fld in st.fields) {
-            if (string(fld.name) == getter_field) {
+            if (fld.name == getter_field) {
                 
                 
                 return <- quote(true)
@@ -392,22 +448,22 @@ class InterfaceAsIs : AstVariantMacro {
     
     
     
-    def override visitExprAsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprAsVariant>) : ExpressionPtr {
+    def override visitExprAsVariant(prog : ProgramPtr; mod : Module?; expr : ExprAsVariant?) : ExpressionPtr {
         
         assume vtype = expr.value._type
         if (!(vtype.isPointer && vtype.firstType != null && vtype.firstType.isStructure)) {
-            return <- default<ExpressionPtr>
+            return null
         }
         let iname = string(expr.name)
         var tgt = prog |> find_unique_structure(iname)
         if (tgt == null || !is_interface_struct(tgt)) {
-            return <- default<ExpressionPtr>
+            return null
         }
         
         let getter_field = "get`{iname}"
         var st = vtype.firstType.structType
         for (fld in st.fields) {
-            if (string(fld.name) == getter_field) {
+            if (fld.name == getter_field) {
                 
                 
                 let func_name = "{st.name}`get`{iname}"
@@ -419,7 +475,7 @@ class InterfaceAsIs : AstVariantMacro {
         }
         
         
-        return <- default<ExpressionPtr>
+        return null
     }
 
     
@@ -431,34 +487,34 @@ class InterfaceAsIs : AstVariantMacro {
     
     
     
-    def override visitExprSafeAsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprSafeAsVariant>) : ExpressionPtr {
+    def override visitExprSafeAsVariant(prog : ProgramPtr; mod : Module?; expr : ExprSafeAsVariant?) : ExpressionPtr {
         
         assume vtype = expr.value._type
         if (!(vtype.isPointer && vtype.firstType != null && vtype.firstType.isStructure)) {
-            return <- default<ExpressionPtr>
+            return null
         }
         let iname = string(expr.name)
         var tgt = prog |> find_unique_structure(iname)
         if (tgt == null || !is_interface_struct(tgt)) {
-            return <- default<ExpressionPtr>
+            return null
         }
         
         let getter_field = "get`{iname}"
         var st = vtype.firstType.structType
         for (fld in st.fields) {
-            if (string(fld.name) == getter_field) {
+            if (fld.name == getter_field) {
                 
                 let func_name = "{st.name}`get`{iname}"
                 
                 
                 
                 
-                var inscope val <- clone_expression(expr.value)
+                var val = clone_expression(expr.value)
                 
                 return <- qmacro($e(val) != null ? $c(func_name)(*$e(expr.value)) : null)
             }
         }
-        return <- default<ExpressionPtr>
+        return null
     }
 }
 

@@ -52,8 +52,7 @@ def aim_assist_target_nodes_on_appear(evt : Event;
                                       aim_assist_target__skipNodeNames : StringList;
                                       var aim_assist_target__nodeIds : IntList)
   for nodeId in range(0, collres_get_nodesCount(collres))
-    let node = collres_get_node(collres, nodeId)
-    let nodeName = collnode_get_name(node)
+    let nodeName = collres_get_node_name(collres, nodeId)
     if find_index(aim_assist_target__skipNodeNames, nodeName) < 0
       push(aim_assist_target__nodeIds, nodeId)
 

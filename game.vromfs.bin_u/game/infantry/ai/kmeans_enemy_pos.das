@@ -41,7 +41,7 @@ def kmeans_enemy_pos(act : UpdateStageInfoAct)
       return
     var closest = -1
     var bestDist = FLT_MAX
-    enemyPoints |> emplace((team, transform[3]))
+    enemyPoints |> emplace((team = team, offset = transform[3]))
     for pos, i in posCache, iter_range(posCache)
       if pos.team != TEAM_UNASSIGNED && team != pos.team
         continue

@@ -111,44 +111,29 @@ def apply_human_los_bots_data(info : UpdateStageInfoAct;
         nodes_los__considerMapVisibleToTime = info.curTime + nodes_los__considerMapAsVisibleTime
 
 
-[es(tag=render, REQUIRE=watchedByPlr)]
-def nodes_los_track_sprint_active(info : ParallelUpdateFrameDelayed;
-                                  team : int)
-  let heroTeam = team
-  let curTime = info.curTime
-  query() <| $ [es(REQUIRE_NOT=deadEntity)] (team : int;
-                                             human_net_phys__curMoveState : int;
-                                             var nodes_los__enemyLastActive : float&;
-                                             animchar__mainVisible : bool = true)
-    if !animchar__mainVisible || is_teams_friendly(team, heroTeam)
-      return
-    if human_net_phys__curMoveState == int(HUMoveState.EMS_SPRINT)
-      nodes_los__enemyLastActive = curTime
-
-
 [es(tag=render, on_event=(EventShot, CmdNetShot))]
-def nodes_los_track_shot_active(evt : Event;
-                                gun__owner : EntityId)
+def nodes_los_track_shot_shooting(evt : Event;
+                                  gun__owner : EntityId)
   let heroTeam = get_int(get_local_player_eid(), "team") ?? TEAM_UNASSIGNED
   query(gun__owner) <| $ [es] (team : int;
-                               var nodes_los__enemyLastActive : float&;
+                               var nodes_los__enemyLastShot : float&;
                                animchar__mainVisible : bool = true)
     if !animchar__mainVisible || is_teams_friendly(team, heroTeam)
       return
-    nodes_los__enemyLastActive = get_sync_time()
+    nodes_los__enemyLastShot = get_sync_time()
 
 
 [es(tag=render, no_order, REQUIRE=watchedByPlr)]
-def nodes_los_update_is_active_enemy(info : UpdateStageInfoAct;
-                                     team : int)
+def nodes_los_update_is_shooting_enemy(info : UpdateStageInfoAct;
+                                       team : int)
   let heroTeam = team
   let curTime = info.curTime
   query() <| $ [es(REQUIRE_NOT=deadEntity)] (team : int;
-                                             nodes_los__enemyLastActive : float;
-                                             nodes_los__enemyActiveTime : float;
-                                             var nodes_los__isActiveEnemy : bool&;
+                                             nodes_los__enemyLastShot : float;
+                                             nodes_los__enemyShootingTime : float;
+                                             var nodes_los__isShootingEnemy : bool&;
                                              animchar__mainVisible : bool = true)
     if !animchar__mainVisible || is_teams_friendly(team, heroTeam)
-      nodes_los__isActiveEnemy = false
+      nodes_los__isShootingEnemy = false
       return
-    nodes_los__isActiveEnemy = (nodes_los__enemyLastActive + nodes_los__enemyActiveTime > curTime)
+    nodes_los__isShootingEnemy = (nodes_los__enemyLastShot + nodes_los__enemyShootingTime > curTime)

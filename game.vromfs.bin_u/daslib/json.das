@@ -177,7 +177,7 @@ def private next(var text : iterator<int>; var character, line, row : int&) : bo
 
 def private _lexer(var stext : string implicit) {
     
-    return <- generator<TokenAt>() <| $() {
+    return <- generator<TokenAt> {
         var tin : iterator<int>
         unsafe {
             tin <- each(stext)
@@ -255,7 +255,7 @@ def private _lexer(var stext : string implicit) {
                                     push(str, uint8('\\'))
                                     push(str, uint8('u'))
                                     for (b in hex_str) {
-                                        push(str, b)
+                                        push(str, b) 
                                     }
                                     if (!valid_hex) {
                                         push(str, uint8(ahead))

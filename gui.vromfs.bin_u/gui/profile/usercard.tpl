@@ -94,14 +94,7 @@ root {
         flow:t='vertical'
         input-transparent:t='yes'
 
-        tdiv {
-          position:t='root'
-          size:t='sw, 392@sf/@pf'
-          max-width:t='1@maxProfileFrameWidth'
-          pos:t='(sw-w)/2, sh - h'
-          background-image:t='!ui/images/profile/smoke_bg'
-          background-color:t='#FFFFFF'
-        }
+        smoke_bg_image {}
 
         tdiv {
           id:t='usercard-container'

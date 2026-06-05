@@ -733,8 +733,6 @@ return freeze({
   ww_update_popuped_armies_name = r["ww_update_popuped_armies_name"]
   ww_zoom_map = r["ww_zoom_map"]
   xbox_complete_login = r["xbox_complete_login"]
-  xbox_link_email = r["xbox_link_email"]
-  xbox_on_login = r["xbox_on_login"]
   yuplay2_buy_entitlement = r["yuplay2_buy_entitlement"]
 
   ps4_find_friends = r?["ps4_find_friends"] ?? @(...) null

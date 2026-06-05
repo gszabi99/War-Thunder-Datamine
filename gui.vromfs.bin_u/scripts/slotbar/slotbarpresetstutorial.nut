@@ -18,6 +18,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
 let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
+let { getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
 let { slotbarPresetsByCountry, slotbarPresetsSeletected } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 let SlotbarPresetsTutorial = class {
@@ -76,7 +77,7 @@ let SlotbarPresetsTutorial = class {
         return this.startOpenGameModeSelectStep()
       else
         return this.startUnitSelectStep()
-    this.presetsList = this.currentHandler.getSlotbarPresetsList()
+    this.presetsList = getSlotbarPresetsList(this.currentHandler)
     if (this.presetsList == null)
       return false
     let presetObj = this.presetsList.getListChildByPresetIdx(this.validPresetIndex)

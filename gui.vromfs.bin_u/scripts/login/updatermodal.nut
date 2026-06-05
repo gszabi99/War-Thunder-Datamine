@@ -191,7 +191,7 @@ gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
             desc = loc("updater/dspeed/mb");
           else {
             meas = dspeed / 1024.0; 
-            desc = meas > 0.5 ? loc("updater/dspeed/kb") : loc("updater/dspeed/b");
+            desc = meas > 0.5 ? loc("updater/dspeed/kb") : loc("updater/dspeed/b"); 
           }
         }
         textSub.append(time.secondsToString(etaSec), format(" ( %.1f%s )", meas, desc))

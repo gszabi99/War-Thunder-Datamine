@@ -13,12 +13,14 @@ def vehicle_engine_sound_toggle(evt : Event;
                                 var vehicle_engine_sound__event : SoundEvent&;
                                 @shared_comp vehicle_engine_sound__path : Object;
                                 sound_tags : Object;
-                                transform : float3x4)
+                                transform : float3x4;
+                                vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
   assume event = vehicle_engine_sound__event
   abandon(event)
   event.enabled = vehicle_engine_sound_state__isStarted
   if event.enabled
-    event |> reset(sound_player_common::play_path(vehicle_engine_sound__path, sound_tags, is_watched_sound, transform[3], false))
+    event |> reset(play_path(vehicle_engine_sound__path, sound_tags, is_watched_sound, transform[3], false))
+    attach_to_blob(event, vehicle_sound_occlusion__blob)
 
 
 [es(tag=sound)]
@@ -28,11 +30,16 @@ def vehicle_engine_sound_startstop_oneshot(evt : EventVehicleEngineSoundStarted;
                                            @shared_comp vehicle_engine_sound__stopPath : Object;
                                            var sound_event_group : SoundEventGroup&;
                                            sound_tags : Object;
-                                           transform : float3x4)
+                                           transform : float3x4;
+                                           vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
   if evt.started
-    sound_player_common::play_path(vehicle_engine_sound__startPath, sound_tags, is_watched_sound, transform[3], sound_hash("startstop"), sound_event_group)
+    play_path(vehicle_engine_sound__startPath, sound_tags, is_watched_sound, transform[3], sound_hash("startstop"), sound_event_group)
   else
-    sound_player_common::play_path(vehicle_engine_sound__stopPath, sound_tags, is_watched_sound, transform[3], sound_hash("startstop"), sound_event_group)
+    play_path(vehicle_engine_sound__stopPath, sound_tags, is_watched_sound, transform[3], sound_hash("startstop"), sound_event_group)
+  let handle = get_sound(sound_event_group, sound_hash("startstop"))
+  if is_valid_handle_value(handle)
+    attach_to_blob(handle, vehicle_sound_occlusion__blob)
+
 
 [es(tag=sound, on_event=ParallelUpdateFrameDelayed, after=sound_begin_update_es, before=sound_end_update_es)]
 def vehicle_engine_sound_update(evt : Event;

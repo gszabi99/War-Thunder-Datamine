@@ -14,7 +14,7 @@ let { getTotalPresetsCount, canLoadSlotbarPreset, loadSlotbarPreset
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
-::SlotbarPresetsList <- class {
+let SlotbarPresetsList = class {
   scene = null
   ownerWeak = null
   maxPresets = 0
@@ -273,4 +273,25 @@ let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelp
       return childObj
     return null
   }
+}
+
+function getSlotbarPresetsList(handler) {
+  return handler.rootHandlerWeak ? handler.rootHandlerWeak.presetsListWeak : handler.presetsListWeak
+}
+
+function setSlotbarPresetsListAvailable(handler, isAvailable) {
+  if (isAvailable) {
+    if (handler.presetsListWeak)
+      handler.presetsListWeak.update()
+    else
+      handler.presetsListWeak = SlotbarPresetsList(handler).weakref()
+  }
+  else if (handler.presetsListWeak)
+    handler.presetsListWeak.destroy()
+}
+
+return {
+  SlotbarPresetsList
+  getSlotbarPresetsList
+  setSlotbarPresetsListAvailable
 }

@@ -2,7 +2,7 @@ require ecs
 require app 
 require vehicle_sounds_net.modules.vehicle_sounds_net_events
 require vehicle_sounds_net.modules.vehicle_net_horn_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 require vehicle
 require DngNet
 

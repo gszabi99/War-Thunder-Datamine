@@ -7,7 +7,7 @@
   "sampleRate": 48000,
   "fmodEnableSpatialSound": false,
   "rejectFarOneshots": true,
-  "forceDisableMods": true,
+  "forceDisableMods": false,
   "blockModsOnAssert": true,
   "dspBufferLengthPS4": 2048,
   "dspNumBuffersPS4": 4,
@@ -428,6 +428,16 @@
           "async": true,
           "preload": false,
           "optional": true
+        },
+        "infantry_vehicles": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "infantry_vehicles.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
         }
       },
       "dialogs": {
@@ -792,8 +802,8 @@
       "Thailand": "th",
       "Switzerland": "de",
       "NyEvent": "gl",
-      "SmElsa": "sm_ru",
-      "SmMaria": "sm_de",
+      "SmElsa": "sm_de",
+      "SmMaria": "sm_ru",
       "SmKate": "sm_us",
       "SmEmily": "sm_uk",
       "SmLing": "sm_zh",
@@ -1689,6 +1699,30 @@
       "lod_1": {
         "radius": 50.0,
         "maxSounds": 8
+      }
+    }
+  },
+  "human_gun": {
+    "lods": {
+      "lod_0": {
+        "radius": 30.0,
+        "maxSounds": 4
+      },
+      "lod_1": {
+        "radius": 300.0,
+        "maxSounds": 4
+      }
+    }
+  },
+  "human_gun_enemy": {
+    "lods": {
+      "lod_0": {
+        "radius": 30.0,
+        "maxSounds": 4
+      },
+      "lod_1": {
+        "radius": 300.0,
+        "maxSounds": 4
       }
     }
   },
@@ -26376,5 +26410,11 @@
       "value": 7.0,
       "name": "wood"
     }
+  },
+  "fmodErrorsAsWarningsFilter": {
+    "name": [
+      "HTTP Error ",
+      "sceNetRecv failed"
+    ]
   }
 }

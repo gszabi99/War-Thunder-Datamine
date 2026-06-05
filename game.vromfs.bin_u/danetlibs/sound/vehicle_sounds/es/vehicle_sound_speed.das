@@ -3,7 +3,7 @@ require DagorMath
 require math.base
 require math.ang
 require vehicle
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 
 
 

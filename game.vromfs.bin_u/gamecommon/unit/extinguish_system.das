@@ -7,7 +7,6 @@ require DagorDataBlock
 require DagorRandom
 require IGroundModel
 require dm
-require DmFire
 require WTDamageModel
 require WarShipModel
 require %game.utils.component_bundle_macro

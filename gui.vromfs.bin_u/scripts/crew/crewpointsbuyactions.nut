@@ -7,6 +7,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 function buyPackImpl(crew, packsList, onSuccess) {
   let pack = packsList.remove(0)
@@ -37,17 +38,14 @@ function buySkillPointsPack(crew, packsList, onSuccess = null, onCancel = @() nu
     cost = cost.getTextAccordingToBalance()
   }
 
-  let msgText = warningIfGold(loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
-  scene_msg_box("purchase_ask", null, msgText,
-    [
-      ["yes", function() {
-        if (checkBalanceMsgBox(cost))
-          buyPackImpl(crew, packsList, onSuccess)
-      }],
-      ["no", onCancel]
-    ],
-    "yes",
-    { cancel_fn = onCancel }
+  let text = warningIfGold(loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
+  let callbackYes =  @() checkBalanceMsgBox(cost)
+    ? buyPackImpl(crew, packsList, onSuccess)
+    : null
+
+  purchaseConfirmation(
+    { id = "purchase_ask", text, callbackYes, callbackNo = onCancel, onExitFunc = onCancel },
+    cost
   )
 }
 

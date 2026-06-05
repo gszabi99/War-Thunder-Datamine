@@ -42,6 +42,334 @@
       }
     },
     "build": {
+      "physObj": {
+        "ragdoll": {
+          "def_density": 1050.0,
+          "def_massType": "box",
+          "def_collType": "capsule",
+          "name_full": {},
+          "name_tail": {
+            " Pelvis": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -30.0,
+                  30.0,
+                  30.0
+                ],
+                "maxLimit": [
+                  30.0,
+                  30.0,
+                  30.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0
+              }
+            },
+            " Spine1": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -10.0,
+                  20.0,
+                  20.0
+                ],
+                "maxLimit": [
+                  10.0,
+                  20.0,
+                  20.0
+                ],
+                "damping": 50.0,
+                "twistDamping": 50.0
+              }
+            },
+            " R Thigh": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -10.0,
+                  10.0,
+                  30.0
+                ],
+                "maxLimit": [
+                  30.0,
+                  30.0,
+                  30.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0
+              }
+            },
+            " L Thigh": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -10.0,
+                  10.0,
+                  30.0
+                ],
+                "maxLimit": [
+                  30.0,
+                  30.0,
+                  30.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0,
+                "swapLimZ": true
+              }
+            },
+            " R Calf": {
+              "joint": {
+                "type": "hinge",
+                "minLimit": [
+                  -60.0,
+                  0.0,
+                  0.0
+                ],
+                "damping": 15.0
+              }
+            },
+            " L Calf": {
+              "joint": {
+                "type": "hinge",
+                "minLimit": [
+                  -60.0,
+                  0.0,
+                  0.0
+                ],
+                "damping": 15.0
+              }
+            },
+            " R Foot": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -10.0,
+                  10.0,
+                  10.0
+                ],
+                "maxLimit": [
+                  10.0,
+                  5.0,
+                  10.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0
+              }
+            },
+            " L Foot": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -10.0,
+                  10.0,
+                  10.0
+                ],
+                "maxLimit": [
+                  10.0,
+                  5.0,
+                  10.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0,
+                "swapLimZ": true
+              }
+            },
+            " Neck": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -40.0,
+                  45.0,
+                  50.0
+                ],
+                "maxLimit": [
+                  40.0,
+                  55.0,
+                  50.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0
+              }
+            },
+            " Head": {
+              "ref": "Bip01 Neck",
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "maxLimit": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0
+              }
+            },
+            " R Clavicle": {
+              "collType": "none",
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -5.0,
+                  5.0,
+                  5.0
+                ],
+                "maxLimit": [
+                  5.0,
+                  5.0,
+                  5.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0,
+                "exclParent": " Neck"
+              }
+            },
+            " L Clavicle": {
+              "collType": "none",
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -5.0,
+                  5.0,
+                  5.0
+                ],
+                "maxLimit": [
+                  5.0,
+                  5.0,
+                  5.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0,
+                "exclParent": " Neck",
+                "swapLimZ": true
+              }
+            },
+            " R UpperArm": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -20.0,
+                  -10.0,
+                  -10.0
+                ],
+                "maxLimit": [
+                  20.0,
+                  15.0,
+                  30.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0,
+                "exclParent": " Neck"
+              }
+            },
+            " L UpperArm": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -20.0,
+                  -10.0,
+                  -10.0
+                ],
+                "maxLimit": [
+                  20.0,
+                  15.0,
+                  30.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0,
+                "exclParent": " Neck",
+                "swapLimZ": true
+              }
+            },
+            " R Forearm": {
+              "joint": {
+                "type": "hinge",
+                "minLimit": [
+                  -90.0,
+                  0.0,
+                  0.0
+                ],
+                "damping": 0.5
+              }
+            },
+            " L Forearm": {
+              "joint": {
+                "type": "hinge",
+                "minLimit": [
+                  -90.0,
+                  0.0,
+                  0.0
+                ],
+                "damping": 0.5
+              }
+            },
+            " R Hand": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -30.0,
+                  15.0,
+                  15.0
+                ],
+                "maxLimit": [
+                  30.0,
+                  15.0,
+                  15.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0
+              }
+            },
+            " L Hand": {
+              "joint": {
+                "type": "rag_ball",
+                "minLimit": [
+                  -30.0,
+                  15.0,
+                  15.0
+                ],
+                "maxLimit": [
+                  30.0,
+                  15.0,
+                  15.0
+                ],
+                "damping": 20.0,
+                "twistDamping": 20.0,
+                "swapLimZ": true
+              }
+            }
+          },
+          "def_helper": {
+            "physObj": false,
+            "animated_node": true
+          },
+          "twist_ctrl": [
+            {
+              "node0": "Bip01 L Forearm",
+              "node1": "Bip01 L Hand",
+              "twistNode": [
+                "Bip01e L Twist",
+                "Bip01e L Twist1"
+              ],
+              "angDiff": -90.0
+            },
+            {
+              "node0": "Bip01 R Forearm",
+              "node1": "Bip01 R Hand",
+              "twistNode": [
+                "Bip01e R Twist",
+                "Bip01e R Twist1"
+              ],
+              "angDiff": 90.0
+            }
+          ]
+        }
+      },
       "rendInst": {
         "ignoreMappingInPrepareBillboardMesh": true,
         "descListOutPath": "riDesc",

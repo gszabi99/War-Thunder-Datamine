@@ -10,6 +10,7 @@
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "hasPointOfInterestMemory": true,
   "laserDesignator": true,
   "isBwOpticSight": true,
@@ -65,7 +66,6 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -118,6 +118,18 @@
       "fin2_dm": {
         "hp": 30.5
       },
+      "flap1_l_dm": {
+        "hp": 30.5
+      },
+      "flap1_r_dm": {
+        "hp": 30.5
+      },
+      "flap_l_dm": {
+        "hp": 30.5
+      },
+      "flap_r_dm": {
+        "hp": 30.5
+      },
       "flaperon_l_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
@@ -164,11 +176,11 @@
       },
       "wing2_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 80.5
+        "hp": 77.5
       },
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 80.5
+        "hp": 77.5
       },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
@@ -636,6 +648,170 @@
             "damage": 50.0,
             "cut": 1.0,
             "nothing": 0.0
+          }
+        ]
+      },
+      {
+        "name": "flap1_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flap1_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flap_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flap_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
           }
         ]
       },
@@ -1721,7 +1897,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1732,7 +1908,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1743,7 +1919,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1754,7 +1930,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1765,7 +1941,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1837,7 +2013,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1848,7 +2024,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1859,7 +2035,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1870,7 +2046,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1881,7 +2057,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1953,7 +2129,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1964,7 +2140,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1975,7 +2151,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1986,7 +2162,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1997,7 +2173,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2069,7 +2245,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2080,7 +2256,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2091,7 +2267,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2102,7 +2278,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2113,7 +2289,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -3058,6 +3234,13 @@
       ],
       "noiseFactor": 0.04,
       "index": 2
+    },
+    "fpvShellThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04
     }
   },
   "gunnerOpticFps": {
@@ -3202,6 +3385,26 @@
         }
       },
       {
+        "name": "j_15t_yj91_111",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_yj91_111.blk"
+      },
+      {
+        "name": "j_15t_yj91_112",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_yj91_112.blk"
+      },
+      {
+        "name": "j_15t_yj91_113",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_yj91_113.blk"
+      },
+      {
+        "name": "j_15t_cm_102",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_cm_102.blk"
+      },
+      {
+        "name": "j_15t_ld10",
+        "blk": "gameData/FlightModels/weaponPresets/j_15t_ld10.blk"
+      },
+      {
         "name": "j_15t_250_3",
         "blk": "gameData/FlightModels/weaponPresets/j_15t_250_3.blk"
       },
@@ -3269,18 +3472,39 @@
         "bomb_adapter_long",
         "pylon_3_pl12_launcher",
         "pylon_3_for_yj_83k_missile",
+        "ch_df_4_launcher_001",
+        "ch_df_4_launcher_fin1_001",
+        "ch_df_4_launcher_fin2_001",
+        "ch_df_4_launcher_fin3_001",
+        "ch_df_4_launcher_fin4_001",
+        "ch_df_4_launcher_fin5_001",
+        "ch_df_4_launcher_fin6_001",
         "pylon_11",
         "pylon_11_bomb",
         "pylon_11_pfx10x",
         "pylon_11_bomb_adapter_long",
         "pylon_11_pl12_launcher",
         "pylon_11_for_yj_83k_missile",
+        "ch_df_4_launcher_002",
+        "ch_df_4_launcher_fin1_002",
+        "ch_df_4_launcher_fin2_002",
+        "ch_df_4_launcher_fin3_002",
+        "ch_df_4_launcher_fin4_002",
+        "ch_df_4_launcher_fin5_002",
+        "ch_df_4_launcher_fin6_002",
         "pylon_10",
         "pylon_10_bomb",
         "pylon_10_pfx10",
         "pylon_10_gdj_ii36",
         "pylon_10_bomb_adapter_long",
         "pylon_10_pl12_launcher",
+        "ch_df_4_launcher_003",
+        "ch_df_4_launcher_fin1_003",
+        "ch_df_4_launcher_fin2_003",
+        "ch_df_4_launcher_fin3_003",
+        "ch_df_4_launcher_fin4_003",
+        "ch_df_4_launcher_fin5_003",
+        "ch_df_4_launcher_fin6_003",
         "pylon_1_pf10x",
         "pylon_1_bomb",
         "pylon_1_bomb_holder",
@@ -3299,12 +3523,26 @@
         "ch_jdc03a",
         "pylon_9_bomb_adapter_long",
         "pylon_9_pl12_launcher",
+        "ch_df_4_launcher_004",
+        "ch_df_4_launcher_fin1_004",
+        "ch_df_4_launcher_fin2_004",
+        "ch_df_4_launcher_fin3_004",
+        "ch_df_4_launcher_fin4_004",
+        "ch_df_4_launcher_fin5_004",
+        "ch_df_4_launcher_fin6_004",
         "pylon_12",
         "pylon_12_bomb",
         "pylon_12_pfx10x",
         "pylon_12_bomb_adapter_long",
         "pylon_12_pl12_launcher",
         "pylon_12_for_yj_83k_missile",
+        "ch_df_4_launcher_005",
+        "ch_df_4_launcher_fin1_005",
+        "ch_df_4_launcher_fin2_005",
+        "ch_df_4_launcher_fin3_005",
+        "ch_df_4_launcher_fin4_005",
+        "ch_df_4_launcher_fin5_005",
+        "ch_df_4_launcher_fin6_005",
         "pylon_4",
         "pylon_4_bomb",
         "pylon_4_pfx10x",
@@ -3318,6 +3556,13 @@
         "pylon_4_bomb_adapter_long",
         "pylon_4_pl12_launcher",
         "pylon_4_for_yj_83k_missile",
+        "ch_df_4_launcher_006",
+        "ch_df_4_launcher_fin1_006",
+        "ch_df_4_launcher_fin2_006",
+        "ch_df_4_launcher_fin3_006",
+        "ch_df_4_launcher_fin4_006",
+        "ch_df_4_launcher_fin5_006",
+        "ch_df_4_launcher_fin6_006",
         "pylon_6_bomb",
         "pylon_6_gdj_1a",
         "pylon_6_pfx10",
@@ -3591,6 +3836,26 @@
             }
           },
           {
+            "iconType": "arm_r27_type_s",
+            "name": "ld10_slot3",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+              "emitter": "pylon_3_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
+            }
+          },
+          {
             "iconType": "missile_type_b_air_to_air_midrange_group",
             "name": "pl12_x2_slot3",
             "reqModification": "cn_pl12",
@@ -3655,6 +3920,38 @@
             ]
           },
           {
+            "iconType": "arm_r27_type_s_group",
+            "name": "ld10_x2_slot3",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3_twin_pylon",
+                "pylon_3_pl12_launcher_001",
+                "pylon_3_pl12_launcher_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+                "emitter": "pylon_3_pl_12_missile_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 7
+              },
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+                "emitter": "pylon_3_pl_12_missile_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 9
+              }
+            ]
+          },
+          {
             "iconType": "nar_large_group",
             "name": "type_90_1_slot3",
             "ShowNodes": {
@@ -3709,16 +4006,103 @@
             ]
           },
           {
+            "iconType": "arm_kh31_type_s",
+            "name": "yj91_111_slot3",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_001",
+                "ch_df_4_launcher_fin1_001",
+                "ch_df_4_launcher_fin2_001",
+                "ch_df_4_launcher_fin3_001",
+                "ch_df_4_launcher_fin4_001",
+                "ch_df_4_launcher_fin5_001",
+                "ch_df_4_launcher_fin6_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_111.blk",
+              "emitter": "ch_kd_88_missile_tv_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_b",
+            "name": "yj91_112_slot3",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_001",
+                "ch_df_4_launcher_fin1_001",
+                "ch_df_4_launcher_fin2_001",
+                "ch_df_4_launcher_fin3_001",
+                "ch_df_4_launcher_fin4_001",
+                "ch_df_4_launcher_fin5_001",
+                "ch_df_4_launcher_fin6_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_112.blk",
+              "emitter": "ch_kd_88_missile_tv_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_f",
+            "name": "yj91_113_slot3",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_001",
+                "ch_df_4_launcher_fin1_001",
+                "ch_df_4_launcher_fin2_001",
+                "ch_df_4_launcher_fin3_001",
+                "ch_df_4_launcher_fin4_001",
+                "ch_df_4_launcher_fin5_001",
+                "ch_df_4_launcher_fin6_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_113.blk",
+              "emitter": "ch_kd_88_missile_tv_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
             "iconType": "guided_bomb_green_x59",
             "name": "kd_88_tv_slot3",
             "reqModification": "ch_kd_88",
             "ShowNodes": {
-              "node": "pylon_3_for_yj_83k_missile"
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_001",
+                "ch_df_4_launcher_fin1_001",
+                "ch_df_4_launcher_fin2_001",
+                "ch_df_4_launcher_fin3_001",
+                "ch_df_4_launcher_fin4_001",
+                "ch_df_4_launcher_fin5_001",
+                "ch_df_4_launcher_fin6_001"
+              ]
             },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_tv.blk",
-              "emitter": "pylon_3_ch_yj_83k_missile_na",
+              "emitter": "ch_kd_88_missile_tv_001",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -3731,12 +4115,21 @@
             "name": "kd_88_ir_slot3",
             "reqModification": "ch_kd_88a",
             "ShowNodes": {
-              "node": "pylon_3_for_yj_83k_missile"
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_001",
+                "ch_df_4_launcher_fin1_001",
+                "ch_df_4_launcher_fin2_001",
+                "ch_df_4_launcher_fin3_001",
+                "ch_df_4_launcher_fin4_001",
+                "ch_df_4_launcher_fin5_001",
+                "ch_df_4_launcher_fin6_001"
+              ]
             },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_ir.blk",
-              "emitter": "pylon_3_ch_yj_83k_missile_na",
+              "emitter": "ch_kd_88_missile_tv_001",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -3747,7 +4140,7 @@
           {
             "iconType": "missile_air_to_uni_large_x59",
             "name": "yj_83k_slot3",
-            "reqModification": "ch_yj_83k",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_3_for_yj_83k_missile"
             },
@@ -3760,6 +4153,23 @@
               "separate": true,
               "order": 9,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "cm_102_slot3",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": "pylon_3_bomb"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketguns/cn_cm_102.blk",
+              "emitter": "pylon_3_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
             }
           },
           {
@@ -4082,16 +4492,123 @@
             }
           },
           {
+            "iconType": "arm_r27_type_s",
+            "name": "ld10_slot4",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+              "emitter": "pylon_11_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_s",
+            "name": "yj91_111_slot4",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "ch_df_4_launcher_002",
+                "ch_df_4_launcher_fin1_002",
+                "ch_df_4_launcher_fin2_002",
+                "ch_df_4_launcher_fin3_002",
+                "ch_df_4_launcher_fin4_002",
+                "ch_df_4_launcher_fin5_002",
+                "ch_df_4_launcher_fin6_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_111.blk",
+              "emitter": "ch_kd_88_missile_tv_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_b",
+            "name": "yj91_112_slot4",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "ch_df_4_launcher_002",
+                "ch_df_4_launcher_fin1_002",
+                "ch_df_4_launcher_fin2_002",
+                "ch_df_4_launcher_fin3_002",
+                "ch_df_4_launcher_fin4_002",
+                "ch_df_4_launcher_fin5_002",
+                "ch_df_4_launcher_fin6_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_112.blk",
+              "emitter": "ch_kd_88_missile_tv_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_f",
+            "name": "yj91_113_slot4",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "ch_df_4_launcher_002",
+                "ch_df_4_launcher_fin1_002",
+                "ch_df_4_launcher_fin2_002",
+                "ch_df_4_launcher_fin3_002",
+                "ch_df_4_launcher_fin4_002",
+                "ch_df_4_launcher_fin5_002",
+                "ch_df_4_launcher_fin6_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_113.blk",
+              "emitter": "ch_kd_88_missile_tv_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5
+            }
+          },
+          {
             "iconType": "guided_bomb_green_x59",
             "name": "kd_88_tv_slot4",
             "reqModification": "ch_kd_88",
             "ShowNodes": {
-              "node": "pylon_11_for_yj_83k_missile"
+              "node": [
+                "pylon_11",
+                "ch_df_4_launcher_002",
+                "ch_df_4_launcher_fin1_002",
+                "ch_df_4_launcher_fin2_002",
+                "ch_df_4_launcher_fin3_002",
+                "ch_df_4_launcher_fin4_002",
+                "ch_df_4_launcher_fin5_002",
+                "ch_df_4_launcher_fin6_002"
+              ]
             },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_tv.blk",
-              "emitter": "pylon_11_ch_yj_83k_missile_na",
+              "emitter": "ch_kd_88_missile_tv_002",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -4104,12 +4621,21 @@
             "name": "kd_88_ir_slot4",
             "reqModification": "ch_kd_88a",
             "ShowNodes": {
-              "node": "pylon_11_for_yj_83k_missile"
+              "node": [
+                "pylon_11",
+                "ch_df_4_launcher_002",
+                "ch_df_4_launcher_fin1_002",
+                "ch_df_4_launcher_fin2_002",
+                "ch_df_4_launcher_fin3_002",
+                "ch_df_4_launcher_fin4_002",
+                "ch_df_4_launcher_fin5_002",
+                "ch_df_4_launcher_fin6_002"
+              ]
             },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_ir.blk",
-              "emitter": "pylon_11_ch_yj_83k_missile_na",
+              "emitter": "ch_kd_88_missile_tv_002",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -4120,7 +4646,7 @@
           {
             "iconType": "missile_air_to_uni_large_x59",
             "name": "yj_83k_slot4",
-            "reqModification": "ch_yj_83k",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_11_for_yj_83k_missile"
             },
@@ -4133,6 +4659,23 @@
               "separate": true,
               "order": 6,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "cm_102_slot4",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": "pylon_11_bomb"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketguns/cn_cm_102.blk",
+              "emitter": "pylon_11_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 6
             }
           },
           {
@@ -4196,6 +4739,26 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
+              "emitter": "pylon_10_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "ld10_slot5",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "pylon_10_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
               "emitter": "pylon_10_pl_12",
               "bullets": 1,
               "external": true,
@@ -4340,6 +4903,101 @@
               "machLimit": 1.01,
               "order": 15
             }
+          },
+          {
+            "iconType": "arm_kh31_type_s",
+            "name": "yj91_111_slot5",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "ch_df_4_launcher_003",
+                "ch_df_4_launcher_fin1_003",
+                "ch_df_4_launcher_fin2_003",
+                "ch_df_4_launcher_fin3_003",
+                "ch_df_4_launcher_fin4_003",
+                "ch_df_4_launcher_fin5_003",
+                "ch_df_4_launcher_fin6_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_111.blk",
+              "emitter": "ch_kd_88_missile_tv_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_b",
+            "name": "yj91_112_slot5",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "ch_df_4_launcher_003",
+                "ch_df_4_launcher_fin1_003",
+                "ch_df_4_launcher_fin2_003",
+                "ch_df_4_launcher_fin3_003",
+                "ch_df_4_launcher_fin4_003",
+                "ch_df_4_launcher_fin5_003",
+                "ch_df_4_launcher_fin6_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_112.blk",
+              "emitter": "ch_kd_88_missile_tv_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_f",
+            "name": "yj91_113_slot5",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "ch_df_4_launcher_003",
+                "ch_df_4_launcher_fin1_003",
+                "ch_df_4_launcher_fin2_003",
+                "ch_df_4_launcher_fin3_003",
+                "ch_df_4_launcher_fin4_003",
+                "ch_df_4_launcher_fin5_003",
+                "ch_df_4_launcher_fin6_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_113.blk",
+              "emitter": "ch_kd_88_missile_tv_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "cm_102_slot5",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": "pylon_10_bomb"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketguns/cn_cm_102.blk",
+              "emitter": "pylon_10_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
+            }
           }
         ]
       },
@@ -4384,6 +5042,47 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
               "emitter": "pylon_8_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 1
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "ld10_slot6",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_7",
+                "pylon_2_bomb",
+                "pylon_2_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+              "emitter": "pylon_8_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 1
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "cm_102_slot6",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_2_bomb",
+                "pylon_2_bomb_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketguns/cn_cm_102.blk",
+              "emitter": "pylon_8_ch_lgb_tg250",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -4616,6 +5315,44 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/cn_pl12a.blk",
               "emitter": "pylon_1_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "ld10_slot7",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_7",
+                "pylon_1_bomb",
+                "pylon_1_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+              "emitter": "pylon_1_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "cm_102_slot7",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": "pylon_1_bomb"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketguns/cn_cm_102.blk",
+              "emitter": "pylon_1_ch_lgb_tg250",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -4880,6 +5617,26 @@
             }
           },
           {
+            "iconType": "arm_r27_type_s",
+            "name": "ld10_slot8",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "pylon_9_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+              "emitter": "pylon_9_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 16
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "250_3_slot8",
             "ShowNodes": {
@@ -5016,6 +5773,101 @@
               "machLimit": 1.01,
               "order": 2
             }
+          },
+          {
+            "iconType": "arm_kh31_type_s",
+            "name": "yj91_111_slot8",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "ch_df_4_launcher_004",
+                "ch_df_4_launcher_fin1_004",
+                "ch_df_4_launcher_fin2_004",
+                "ch_df_4_launcher_fin3_004",
+                "ch_df_4_launcher_fin4_004",
+                "ch_df_4_launcher_fin5_004",
+                "ch_df_4_launcher_fin6_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_111.blk",
+              "emitter": "ch_kd_88_missile_tv_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_b",
+            "name": "yj91_112_slot8",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "ch_df_4_launcher_004",
+                "ch_df_4_launcher_fin1_004",
+                "ch_df_4_launcher_fin2_004",
+                "ch_df_4_launcher_fin3_004",
+                "ch_df_4_launcher_fin4_004",
+                "ch_df_4_launcher_fin5_004",
+                "ch_df_4_launcher_fin6_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_112.blk",
+              "emitter": "ch_kd_88_missile_tv_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_f",
+            "name": "yj91_113_slot8",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "ch_df_4_launcher_004",
+                "ch_df_4_launcher_fin1_004",
+                "ch_df_4_launcher_fin2_004",
+                "ch_df_4_launcher_fin3_004",
+                "ch_df_4_launcher_fin4_004",
+                "ch_df_4_launcher_fin5_004",
+                "ch_df_4_launcher_fin6_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_113.blk",
+              "emitter": "ch_kd_88_missile_tv_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "cm_102_slot8",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": "pylon_9_bomb"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketguns/cn_cm_102.blk",
+              "emitter": "pylon_9_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
           }
         ]
       },
@@ -5063,16 +5915,123 @@
             }
           },
           {
+            "iconType": "arm_r27_type_s",
+            "name": "ld10_slot9",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+              "emitter": "pylon_12_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 6
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_s",
+            "name": "yj91_111_slot9",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "ch_df_4_launcher_005",
+                "ch_df_4_launcher_fin1_005",
+                "ch_df_4_launcher_fin2_005",
+                "ch_df_4_launcher_fin3_005",
+                "ch_df_4_launcher_fin4_005",
+                "ch_df_4_launcher_fin5_005",
+                "ch_df_4_launcher_fin6_005"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_111.blk",
+              "emitter": "ch_kd_88_missile_tv_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_b",
+            "name": "yj91_112_slot9",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "ch_df_4_launcher_005",
+                "ch_df_4_launcher_fin1_005",
+                "ch_df_4_launcher_fin2_005",
+                "ch_df_4_launcher_fin3_005",
+                "ch_df_4_launcher_fin4_005",
+                "ch_df_4_launcher_fin5_005",
+                "ch_df_4_launcher_fin6_005"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_112.blk",
+              "emitter": "ch_kd_88_missile_tv_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_f",
+            "name": "yj91_113_slot9",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "ch_df_4_launcher_005",
+                "ch_df_4_launcher_fin1_005",
+                "ch_df_4_launcher_fin2_005",
+                "ch_df_4_launcher_fin3_005",
+                "ch_df_4_launcher_fin4_005",
+                "ch_df_4_launcher_fin5_005",
+                "ch_df_4_launcher_fin6_005"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_113.blk",
+              "emitter": "ch_kd_88_missile_tv_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
             "iconType": "guided_bomb_green_x59",
             "name": "kd_88_tv_slot9",
             "reqModification": "ch_kd_88",
             "ShowNodes": {
-              "node": "pylon_12_for_yj_83k_missile"
+              "node": [
+                "pylon_12",
+                "ch_df_4_launcher_005",
+                "ch_df_4_launcher_fin1_005",
+                "ch_df_4_launcher_fin2_005",
+                "ch_df_4_launcher_fin3_005",
+                "ch_df_4_launcher_fin4_005",
+                "ch_df_4_launcher_fin5_005",
+                "ch_df_4_launcher_fin6_005"
+              ]
             },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_tv.blk",
-              "emitter": "pylon_12_ch_yj_83k_missile_na",
+              "emitter": "ch_kd_88_missile_tv_005",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -5085,12 +6044,21 @@
             "name": "kd_88_ir_slot9",
             "reqModification": "ch_kd_88a",
             "ShowNodes": {
-              "node": "pylon_12_for_yj_83k_missile"
+              "node": [
+                "pylon_12",
+                "ch_df_4_launcher_005",
+                "ch_df_4_launcher_fin1_005",
+                "ch_df_4_launcher_fin2_005",
+                "ch_df_4_launcher_fin3_005",
+                "ch_df_4_launcher_fin4_005",
+                "ch_df_4_launcher_fin5_005",
+                "ch_df_4_launcher_fin6_005"
+              ]
             },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_ir.blk",
-              "emitter": "pylon_12_ch_yj_83k_missile_na",
+              "emitter": "ch_kd_88_missile_tv_005",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -5101,7 +6069,7 @@
           {
             "iconType": "missile_air_to_uni_large_x59",
             "name": "yj_83k_slot9",
-            "reqModification": "ch_yj_83k",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_12_for_yj_83k_missile"
             },
@@ -5114,6 +6082,23 @@
               "separate": true,
               "order": 6,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "cm_102_slot9",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": "pylon_12_bomb"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketguns/cn_cm_102.blk",
+              "emitter": "pylon_12_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 6
             }
           },
           {
@@ -5204,6 +6189,26 @@
             }
           },
           {
+            "iconType": "arm_r27_type_s",
+            "name": "ld10_slot10",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_pl12_launcher"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+              "emitter": "pylon_4_pl_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
+            }
+          },
+          {
             "iconType": "missile_type_b_air_to_air_midrange_group",
             "name": "pl12_x2_slot10",
             "reqModification": "cn_pl12",
@@ -5268,6 +6273,38 @@
             ]
           },
           {
+            "iconType": "arm_r27_type_s_group",
+            "name": "ld10_x2_slot10",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_4_twin_pylon",
+                "pylon_4_pl12_launcher_001",
+                "pylon_4_pl12_launcher_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+                "emitter": "pylon_4_pl_12_missile_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 8
+              },
+              {
+                "trigger": "atgm",
+                "blk": "gameData/Weapons/rocketGuns/cn_ld10.blk",
+                "emitter": "pylon_4_pl_12_missile_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "order": 10
+              }
+            ]
+          },
+          {
             "iconType": "nar_large_group",
             "name": "type_90_1_slot10",
             "ShowNodes": {
@@ -5322,16 +6359,103 @@
             ]
           },
           {
+            "iconType": "arm_kh31_type_s",
+            "name": "yj91_111_slot10",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_006",
+                "ch_df_4_launcher_fin1_006",
+                "ch_df_4_launcher_fin2_006",
+                "ch_df_4_launcher_fin3_006",
+                "ch_df_4_launcher_fin4_006",
+                "ch_df_4_launcher_fin5_006",
+                "ch_df_4_launcher_fin6_006"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_111.blk",
+              "emitter": "ch_kd_88_missile_tv_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_b",
+            "name": "yj91_112_slot10",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_006",
+                "ch_df_4_launcher_fin1_006",
+                "ch_df_4_launcher_fin2_006",
+                "ch_df_4_launcher_fin3_006",
+                "ch_df_4_launcher_fin4_006",
+                "ch_df_4_launcher_fin5_006",
+                "ch_df_4_launcher_fin6_006"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_112.blk",
+              "emitter": "ch_kd_88_missile_tv_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "arm_kh31_type_f",
+            "name": "yj91_113_slot10",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_006",
+                "ch_df_4_launcher_fin1_006",
+                "ch_df_4_launcher_fin2_006",
+                "ch_df_4_launcher_fin3_006",
+                "ch_df_4_launcher_fin4_006",
+                "ch_df_4_launcher_fin5_006",
+                "ch_df_4_launcher_fin6_006"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/cn_yj91_l_113.blk",
+              "emitter": "ch_kd_88_missile_tv_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 9
+            }
+          },
+          {
             "iconType": "guided_bomb_green_x59",
             "name": "kd_88_tv_slot10",
             "reqModification": "ch_kd_88",
             "ShowNodes": {
-              "node": "pylon_4_for_yj_83k_missile"
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_006",
+                "ch_df_4_launcher_fin1_006",
+                "ch_df_4_launcher_fin2_006",
+                "ch_df_4_launcher_fin3_006",
+                "ch_df_4_launcher_fin4_006",
+                "ch_df_4_launcher_fin5_006",
+                "ch_df_4_launcher_fin6_006"
+              ]
             },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_tv.blk",
-              "emitter": "pylon_4_ch_yj_83k_missile_na",
+              "emitter": "ch_kd_88_missile_tv_006",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -5344,12 +6468,21 @@
             "name": "kd_88_ir_slot10",
             "reqModification": "ch_kd_88a",
             "ShowNodes": {
-              "node": "pylon_4_for_yj_83k_missile"
+              "node": [
+                "pylon_3",
+                "ch_df_4_launcher_006",
+                "ch_df_4_launcher_fin1_006",
+                "ch_df_4_launcher_fin2_006",
+                "ch_df_4_launcher_fin3_006",
+                "ch_df_4_launcher_fin4_006",
+                "ch_df_4_launcher_fin5_006",
+                "ch_df_4_launcher_fin6_006"
+              ]
             },
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/ch_kd_88_missile_ir.blk",
-              "emitter": "pylon_4_ch_yj_83k_missile_na",
+              "emitter": "ch_kd_88_missile_tv_006",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -5360,7 +6493,7 @@
           {
             "iconType": "missile_air_to_uni_large_x59",
             "name": "yj_83k_slot10",
-            "reqModification": "ch_yj_83k",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_4_for_yj_83k_missile"
             },
@@ -5373,6 +6506,23 @@
               "separate": true,
               "order": 8,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "arm_r27_type_s",
+            "name": "cm_102_slot10",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": "pylon_4_bomb"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketguns/cn_cm_102.blk",
+              "emitter": "pylon_4_ch_lgb_tg250",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
             }
           },
           {
@@ -6662,172 +7812,139 @@
             }
           ]
         }
+      }
+    ]
+  },
+  "damagePartsDependencyMap": {
+    "dp": [
+      {
+        "dm": "tail_dm",
+        "separateDm": true,
+        "dp": [
+          "antenna",
+          "wire_lc",
+          "wire_rc",
+          "wire_c",
+          "aerial_c"
+        ]
       },
       {
-        "avionics": "laserDesignator",
-        "health": {
-          "dm": "electronic_block6_dm",
-          "killHp": 0.01
-        },
-        "damage": {
-          "dm": "electronic_block6_dm",
-          "damageTypeHitEffect": [
-            {
-              "damageType": "shatter",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 11.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.2
-                },
-                {
-                  "damage": 35.0,
-                  "prob": 0.4
-                }
-              ]
-            },
-            {
-              "damageType": "generic",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 12.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 40.0,
-                  "prob": 0.5
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            },
-            {
-              "damageType": "explosion",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 12.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 40.0,
-                  "prob": 0.5
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            }
-          ]
-        }
+        "dm": "spar_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
       },
       {
-        "avionics": "targetingPod",
-        "health": {
-          "dm": "electronic_block6_dm",
-          "killHp": 0.01
-        },
-        "damage": {
-          "dm": "electronic_block6_dm",
-          "damageTypeHitEffect": [
-            {
-              "damageType": "shatter",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 11.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.2
-                },
-                {
-                  "damage": 35.0,
-                  "prob": 0.4
-                }
-              ]
-            },
-            {
-              "damageType": "generic",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 12.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 40.0,
-                  "prob": 0.5
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            },
-            {
-              "damageType": "explosion",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 12.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 40.0,
-                  "prob": 0.5
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            }
-          ]
-        }
+        "dm": "spar1_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar2_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "spar1_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "spar2_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "wing1_l_dm",
+        "dp": [
+          "wingcontrol_l_dm",
+          "elevon1_l_dm",
+          "flaperon_l_dm"
+        ]
+      },
+      {
+        "dm": "wing1_r_dm",
+        "dp": [
+          "wingcontrol_r_dm",
+          "elevon1_r_dm",
+          "flaperon_r_dm"
+        ]
+      },
+      {
+        "dm": "wing2_l_dm",
+        "dp": [
+          "elevon_l_dm",
+          "flaperon1_l_dm"
+        ]
+      },
+      {
+        "dm": "wing2_r_dm",
+        "dp": [
+          "elevon_r_dm",
+          "flaperon1_r_dm"
+        ]
+      },
+      {
+        "dm": "flap1_l_dm",
+        "dp": [
+          "flap1_l",
+          "flap3_l"
+        ]
+      },
+      {
+        "dm": "flap_l_dm",
+        "dp": [
+          "flap_l",
+          "flap2_l"
+        ]
+      },
+      {
+        "dm": "flap1_r_dm",
+        "dp": [
+          "flap1_r",
+          "flap3_r"
+        ]
+      },
+      {
+        "dm": "flap_r_dm",
+        "dp": [
+          "flap_r",
+          "flap2_r"
+        ]
       }
     ]
   },
@@ -6846,74 +7963,6 @@
   "arcadeOverride": {
     "maxSpeedMultiplier": 1.3,
     "wepOverspeed": 1.3
-  },
-  "wiki": {
-    "general": {
-      "length": 11.264,
-      "wingspan": 9.6,
-      "wingArea": 22.6,
-      "emptyWeight": 3868.0,
-      "normalWeight": 5131.0,
-      "maxTakeoffWeight": 5485.0,
-      "powerPlantType": 2,
-      "thrustMaxMil": 22200.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 11600.0,
-        "airSpeedMil0": [
-          2000.0,
-          1124.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          50.0
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          42.2878
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          91.2983
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          148.373
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          217.313
-        ],
-        "turnTimeMil": [
-          1000.0,
-          21.5
-        ],
-        "takeoffDistance": 648.638,
-        "ceiling": 11100.0,
-        "rollRate": 114.0,
-        "wingLoading": 227.0,
-        "thrustToWeightRatio": 0.48
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          1124.0
-        ],
-        "airSpeedMil1": [
-          11100.0,
-          1028.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          50.0
-        ],
-        "climbRateMil1": [
-          11100.0,
-          16.4
-        ]
-      }
-    }
   },
   "balanceData": {
     "accSpd": 6.41902,
@@ -7102,10 +8151,10 @@
       "tier": 2,
       "modClass": "weapon"
     },
-    "ch_yj_83k": {
+    "su_arm": {
       "prevModification": "GSh_301_new_gun",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 4
     },
     "cn_k_adc03a": {
       "modClass": "weapon",
@@ -7126,7 +8175,12 @@
       "modClass": "weapon",
       "tier": 4
     },
+    "asm": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "cn_sns_bomb": {
+      "prevModification": "asm",
       "modClass": "weapon",
       "tier": 2
     },

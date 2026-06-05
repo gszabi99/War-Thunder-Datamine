@@ -94,9 +94,9 @@ def get_weapon_slot_from_name(name : string) : tuple<slot : HUWeaponSlots; found
   let slotIdx = get_weapon_slot_index_from_name(name)
   for slot in each(HUWeaponSlots.EWS_PRIMARY)
     if int(slot) == slotIdx
-      return (slot, true)
+      return (slot = slot, found = true)
 
-  return (HUWeaponSlots.EWS_PRIMARY, false)
+  return (slot = HUWeaponSlots.EWS_PRIMARY, found = false)
 
 
 def unload_gun_ammo(gun_eid, owner : EntityId) : void
@@ -184,8 +184,6 @@ def reset_weapon_state(var phys : HumanPhys&)
 
 def check_gun_trace(var phys : HumanPhys;
                     gun_tm : float3x4;
-                    check_offset_up : float;
-                    check_offset_right : float;
                     len_override : float;
                     gun_mat_id : int;
                     max_backoff : float;
@@ -208,18 +206,15 @@ def check_gun_trace(var phys : HumanPhys;
       weaponParams.gunLen < 0.05)
     return false
 
-  var locationTm : float3x4
-  currentState.location |> location_toTM(locationTm)
-  var tm = gun_tm
-  tm[3] = locationTm[3] + locationTm[1] * check_offset_up - locationTm[2] * check_offset_right
-
   let gunLen = len_override >= 0. ? len_override : weaponParams.gunLen
   let backupDist = min(min_backup_dist, gunLen * backup_dist_factor)
+
   let displacement = gunDir * backupDist
-  let gunStartPos = tm[3] + displacement
-  let gunAimPos = tm * weaponParams.offsAimNode + displacement
-  let leftPos = tm * weaponParams.offsCheckLeftNode + displacement
-  let rightPos = tm * weaponParams.offsCheckRightNode + displacement
+  let gunStartPos = gun_tm[3] - displacement
+  let gunAimPos = gun_tm * weaponParams.offsAimNode - displacement
+  let leftPos = gun_tm * weaponParams.offsCheckLeftNode - displacement
+  let rightPos = gun_tm * weaponParams.offsCheckRightNode - displacement
+
   var t = gunLen + backupDist
   var pmid = -1
   var norm : float3
@@ -1005,7 +1000,7 @@ def switch_to_first_weap_with_ammo(human_weap__gunEids : EidList;
                                              gun__ammo : int;
                                              gun__switchToPriority : int = 0)
       if i != int(HUWeaponSlots.EWS_GRENADE) && (gun__totalAmmo > 0 || gun__ammo > 0)
-        slots |> push((i, gun__switchToPriority))
+        slots |> push((slot = i, priority = gun__switchToPriority))
   if !empty(slots)
     sort(slots) <| $(a, b) { return a.priority == b.priority ? a.slot < b.slot : a.priority > b.priority; }
     choosenSlot = slots[0].slot

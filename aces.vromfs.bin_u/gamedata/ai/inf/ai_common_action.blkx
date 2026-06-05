@@ -44,6 +44,9 @@
           "treeName": "try.forceMove"
         },
         {
+          "treeName": "try.forcePeekLook"
+        },
+        {
           "treeName": "coverattack.checkEnd"
         }
       ],
@@ -267,7 +270,7 @@
     {
       "name": "action.botSquadPeriodical_findVehicleAndShootWithAntiTankWeapon",
       "not": {
-        "isTestPerfOrSimplifiedAI": {}
+        "isTestPerfAI": {}
       },
       "isAgentPlayerBot": {},
       "isReadyForAction": {},
@@ -474,6 +477,15 @@
                     "targetPosParam": "tryShootEnemyPos",
                     "targetEidParam": "tryShootEnemy",
                     "outMoveToPosParam": "movePos",
+                    "leanWallMaxDistParam": "persLeanMaxWallDist",
+                    "outLeanParam": "strafeAttackLean",
+                    "leanChance": 1.0,
+                    "leanDistRange": [
+                      5.0,
+                      75.0
+                    ],
+                    "distToLean": 0.3,
+                    "distCutLean": 0.2,
                     "stepLocalDir": [
                       1.0,
                       0.0,
@@ -494,28 +506,41 @@
                     "targetPosParam": "tryShootEnemyPos",
                     "posParam": "posNearTarget",
                     "radiusRange": [
-                      3.0,
-                      6.0
+                      0.0,
+                      1.0
                     ],
                     "awayMinRadius": 7.0,
                     "minDistanceFromAllies": 7.0
                   },
-                  "orderedSelector": {
-                    "isLookingToPos": {
-                      "posParam": "posNearTarget",
-                      "offAngle": 5.0
+                  "orderedSelector": [
+                    {
+                      "isLookingToPos": {
+                        "posParam": "posNearTarget",
+                        "offAngle": 5.0
+                      },
+                      "rotateToPoint": {
+                        "posParam": "posNearTarget",
+                        "aimSpeedCoef": 0.5,
+                        "maxSimAngle": [
+                          70.0,
+                          90.0
+                        ],
+                        "minSimAngle": 33.0,
+                        "minSimSpeedCoef": 0.5
+                      }
                     },
-                    "rotateToPoint": {
-                      "posParam": "posNearTarget",
-                      "aimSpeedCoef": 0.5,
-                      "maxSimAngle": [
-                        70.0,
-                        90.0
-                      ],
-                      "minSimAngle": 33.0,
-                      "minSimSpeedCoef": 0.5
+                    {
+                      "not": {
+                        "isAtStance": {
+                          "stanceParam": "crawlStance"
+                        }
+                      },
+                      "setRealVar": {
+                        "to": "strafeAttackLean",
+                        "value": 0.0
+                      }
                     }
-                  },
+                  ],
                   "acquireTacticalTarget": {
                     "targetEidParam": "tryShootEnemy"
                   },
@@ -603,73 +628,79 @@
                       }
                     },
                     {
-                      "parallel": {
-                        "moveShoot": {
-                          "posParam": "movePos",
-                          "distThreshold": 0.4,
-                          "angleThreshold": 180.0,
-                          "keepCrouch": true,
-                          "onlyAliveTarget": true,
-                          "distOfAimingFade": 7.0,
-                          "accuracyForceShot": [
-                            0.75,
-                            0.5
-                          ],
-                          "failOnNotReady": true,
-                          "forceStanceLimit": true,
-                          "incLadders": false,
-                          "chooseStance": true,
-                          "tryToSaveCurrentStance": true,
-                          "minStanceChance": 0.0,
-                          "targetUnitParam": "tryShootEnemy",
-                          "minStanceParam": "minStance",
-                          "shootCyclesRange": [
-                            1,
-                            2
-                          ],
-                          "shootTime": [
-                            1.5,
-                            2.1
-                          ],
-                          "cooldownTime": [
-                            0.1,
-                            0.1
-                          ],
-                          "minAimTime": [
-                            0.15,
-                            0.25
-                          ],
-                          "maxStanceParam": "maxStanceInAttack",
-                          "alwaysAiming": true,
-                          "cyclesSuccess": true,
-                          "lostTargetCooldownRange": [
-                            1.0,
-                            2.0
-                          ],
-                          "closeShootRange": [
-                            1.0,
-                            50.0
-                          ],
-                          "closeShootAngles": [
-                            45.0,
-                            30.0
-                          ],
-                          "criticalShotTime": 0.5,
-                          "criticalShotAngle": 60.0,
-                          "checkFriendlyFireRadius": 0.05,
-                          "ignoreLostTargetParam": "enemiesWatching50",
-                          "useTeamCustomNav": true
-                        },
-                        "wait": {
-                          "range": [
-                            1.5,
-                            2.0
-                          ],
-                          "resetable": true
-                        }
+                      "moveShoot": {
+                        "posParam": "movePos",
+                        "distThreshold": 0.15,
+                        "angleThreshold": 180.0,
+                        "keepCrouch": true,
+                        "onlyAliveTarget": false,
+                        "distOfAimingFade": 7.0,
+                        "accuracyForceShot": [
+                          0.75,
+                          0.5
+                        ],
+                        "failOnNotReady": true,
+                        "forceStanceLimit": true,
+                        "incLadders": false,
+                        "chooseStance": true,
+                        "tryToSaveCurrentStance": true,
+                        "minStanceChance": 0.0,
+                        "targetUnitParam": "tryShootEnemy",
+                        "minStanceParam": "minStance",
+                        "shootCyclesRange": [
+                          1,
+                          2
+                        ],
+                        "shootTime": [
+                          1.5,
+                          2.1
+                        ],
+                        "cooldownTime": [
+                          0.1,
+                          0.1
+                        ],
+                        "minAimTime": [
+                          0.15,
+                          0.25
+                        ],
+                        "maxStanceParam": "maxStanceInAttack",
+                        "alwaysAiming": true,
+                        "cyclesSuccess": true,
+                        "lostTargetCooldownRange": [
+                          0.1,
+                          0.2
+                        ],
+                        "closeShootRange": [
+                          1.0,
+                          50.0
+                        ],
+                        "closeShootAngles": [
+                          45.0,
+                          30.0
+                        ],
+                        "criticalShotTime": 0.5,
+                        "criticalShotAngle": 60.0,
+                        "checkFriendlyFireRadius": 0.05,
+                        "ignoreLostTargetParam": "enemiesWatching50",
+                        "useTeamCustomNav": true
                       }
                     }
-                  ]
+                  ],
+                  "changeLean": [
+                    {
+                      "leanToParam": "strafeAttackLean"
+                    },
+                    {
+                      "leanTo": 0.0
+                    }
+                  ],
+                  "wait": {
+                    "range": [
+                      0.2,
+                      0.3
+                    ],
+                    "resetable": true
+                  }
                 },
                 {
                   "checkDistance": {
@@ -744,7 +775,11 @@
                                 {
                                   "chance": 0.65
                                 }
-                              ]
+                              ],
+                              "isVarsIntEqual": {
+                                "lhs": "persHuntAround",
+                                "rhs_value": 1
+                              }
                             }
                           }
                         }
@@ -970,6 +1005,15 @@
                                       "maxAroundCoef": 1.33,
                                       "useTeamCustomNav": true
                                     },
+                                    "sequencer": {
+                                      "considerCornersAlongMovementPath": {
+                                        "outPosFromParam": "movePeekFrom",
+                                        "outPosLookParam": "movePeekLook",
+                                        "outPosMoveParam": "movePeekMove",
+                                        "outPosLeanParam": "movePeekLean"
+                                      },
+                                      "recalculateTree": {}
+                                    },
                                     "wait": {
                                       "range": [
                                         10.0,
@@ -1033,6 +1077,15 @@
                                       "strafeNearDist": 2.5,
                                       "maxAroundCoef": 1.33,
                                       "useTeamCustomNav": true
+                                    },
+                                    "sequencer": {
+                                      "considerCornersAlongMovementPath": {
+                                        "outPosFromParam": "movePeekFrom",
+                                        "outPosLookParam": "movePeekLook",
+                                        "outPosMoveParam": "movePeekMove",
+                                        "outPosLeanParam": "movePeekLean"
+                                      },
+                                      "recalculateTree": {}
                                     },
                                     "wait": {
                                       "range": [
@@ -1363,7 +1416,7 @@
                     "sequencer": {
                       "setIntVar": {
                         "to": "defReact",
-                        "value": 112
+                        "value": 212
                       },
                       "setDebugSym": [
                         {
@@ -1413,47 +1466,58 @@
                               },
                               "continue": {}
                             },
-                            "moveToPos": {
-                              "startRestTimerRange": [
-                                0.465,
-                                0.47
-                              ],
-                              "noSprintTurnDeg": 75.0,
-                              "restTimerRange": [
-                                3.0,
-                                5.0
-                              ],
-                              "posParam": "squadActionPosFrom",
-                              "sprintTimerRange": [
-                                10.0,
-                                20.0
-                              ],
-                              "minDistToSprint": 7.0,
-                              "lookVisc": 0.1,
-                              "tryClimbing": true,
-                              "minStanceParam": "minStance",
-                              "maxStanceParam": "maxStance",
-                              "stuckDirParam": "stuckDir",
-                              "incLadders": true,
-                              "strafeNearDist": 2.5,
-                              "rotateDistThreshold": 0.7,
-                              "rotateFactors": [
-                                0.7,
-                                0.5,
-                                0.5,
-                                0.25
-                              ],
-                              "rotateStartTime": 0.5,
-                              "useTeamCustomNav": true,
-                              "timeToStuck": 0.9,
-                              "incObstacles": false,
-                              "avoidAiObstacles": false,
-                              "distThreshold": 0.5,
-                              "jumpDownTraceCheck": [
-                                0.4,
-                                1.0,
-                                0.15
-                              ]
+                            "parallel": {
+                              "moveToPos": {
+                                "startRestTimerRange": [
+                                  0.465,
+                                  0.47
+                                ],
+                                "noSprintTurnDeg": 75.0,
+                                "restTimerRange": [
+                                  3.0,
+                                  5.0
+                                ],
+                                "posParam": "squadActionPosFrom",
+                                "sprintTimerRange": [
+                                  10.0,
+                                  20.0
+                                ],
+                                "minDistToSprint": 7.0,
+                                "lookVisc": 0.1,
+                                "tryClimbing": true,
+                                "minStanceParam": "minStance",
+                                "maxStanceParam": "maxStance",
+                                "stuckDirParam": "stuckDir",
+                                "incLadders": true,
+                                "strafeNearDist": 2.5,
+                                "rotateDistThreshold": 0.7,
+                                "rotateFactors": [
+                                  0.7,
+                                  0.5,
+                                  0.5,
+                                  0.25
+                                ],
+                                "rotateStartTime": 0.5,
+                                "useTeamCustomNav": true,
+                                "timeToStuck": 0.9,
+                                "incObstacles": false,
+                                "avoidAiObstacles": false,
+                                "distThreshold": 0.5,
+                                "jumpDownTraceCheck": [
+                                  0.4,
+                                  1.0,
+                                  0.15
+                                ]
+                              },
+                              "sequencer": {
+                                "considerCornersAlongMovementPath": {
+                                  "outPosFromParam": "movePeekFrom",
+                                  "outPosLookParam": "movePeekLook",
+                                  "outPosMoveParam": "movePeekMove",
+                                  "outPosLeanParam": "movePeekLean"
+                                },
+                                "recalculateTree": {}
+                              }
                             }
                           }
                         },
@@ -1519,18 +1583,28 @@
                       "act": "L31"
                     }
                   ],
+                  "not": [
+                    {
+                      "checkDistance": {
+                        "posParam": "squadActionPosFrom",
+                        "otherPosParam": "lastPlantedMinePosFrom",
+                        "radius": 2.0,
+                        "yRadius": 1.0
+                      }
+                    },
+                    {
+                      "checkAtTime": {
+                        "timeParam": "lastPlantMineTime",
+                        "range": [
+                          0.0,
+                          7.0
+                        ]
+                      }
+                    }
+                  ],
                   "isPointSafe": {
                     "posParam": "squadActionPosFrom",
                     "checkSeenByEnemyAI": true
-                  },
-                  "not": {
-                    "checkAtTime": {
-                      "timeParam": "lastPlantMineTime",
-                      "range": [
-                        0.0,
-                        7.0
-                      ]
-                    }
                   },
                   "orderedSelector": {
                     "checkSafeMove": {
@@ -1653,32 +1727,101 @@
                                 },
                                 "continue": {}
                               },
+                              "parallel": {
+                                "moveToPos": {
+                                  "startRestTimerRange": [
+                                    0.465,
+                                    0.47
+                                  ],
+                                  "noSprintTurnDeg": 75.0,
+                                  "forceNavDirTimeAfterClimb": 1.5,
+                                  "jumpClimbTime": 1.0,
+                                  "restTimerRange": [
+                                    3.0,
+                                    5.0
+                                  ],
+                                  "posParam": "squadActionPosFrom",
+                                  "sprintTimerRange": [
+                                    10.0,
+                                    20.0
+                                  ],
+                                  "minDistToSprint": 7.5,
+                                  "lookVisc": 0.1,
+                                  "tryClimbing": true,
+                                  "maxClimbWalkSpeed": 0.25,
+                                  "minStanceParam": "minStance",
+                                  "maxStanceParam": "maxStance",
+                                  "stuckDirParam": "stuckDir",
+                                  "incLadders": true,
+                                  "strafeNearDist": 2.5,
+                                  "timeToStuck": 0.9,
+                                  "incObstacles": false,
+                                  "avoidAiObstacles": false,
+                                  "distThreshold": 0.5,
+                                  "jumpDownTraceCheck": [
+                                    0.4,
+                                    1.0,
+                                    0.15
+                                  ],
+                                  "rotateDistThreshold": 0.7,
+                                  "rotateFactors": [
+                                    0.7,
+                                    0.5,
+                                    0.5,
+                                    0.25
+                                  ],
+                                  "rotateStartTime": 0.5,
+                                  "useTeamCustomNav": true,
+                                  "finalLookSetup": [
+                                    1.0,
+                                    5.0,
+                                    5.0,
+                                    0.3
+                                  ],
+                                  "finalLookPosParam": "squadActionPosLook",
+                                  "doNotStopParam": "keepMoving"
+                                },
+                                "sequencer": {
+                                  "considerCornersAlongMovementPath": {
+                                    "outPosFromParam": "movePeekFrom",
+                                    "outPosLookParam": "movePeekLook",
+                                    "outPosMoveParam": "movePeekMove",
+                                    "outPosLeanParam": "movePeekLean"
+                                  },
+                                  "recalculateTree": {}
+                                }
+                              }
+                            },
+                            "setIntVar": {
+                              "to": "keepMoving",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "callTree": {
+                              "treeName": "soldier.move_look_remember"
+                            },
+                            "parallel": {
                               "moveToPos": {
-                                "startRestTimerRange": [
-                                  0.465,
-                                  0.47
-                                ],
-                                "noSprintTurnDeg": 75.0,
-                                "forceNavDirTimeAfterClimb": 1.5,
-                                "jumpClimbTime": 1.0,
-                                "restTimerRange": [
-                                  3.0,
-                                  5.0
-                                ],
-                                "posParam": "squadActionPosFrom",
+                                "posParam": "squadActionPosTo",
                                 "sprintTimerRange": [
-                                  10.0,
-                                  20.0
+                                  25.0,
+                                  30.0
                                 ],
                                 "minDistToSprint": 7.5,
                                 "lookVisc": 0.1,
                                 "tryClimbing": true,
                                 "maxClimbWalkSpeed": 0.25,
+                                "jumpClimbTime": 1.0,
                                 "minStanceParam": "minStance",
                                 "maxStanceParam": "maxStance",
                                 "stuckDirParam": "stuckDir",
                                 "incLadders": true,
-                                "strafeNearDist": 2.5,
+                                "strafeNearDist": 10.0,
+                                "restTimerRange": [
+                                  3.0,
+                                  5.0
+                                ],
                                 "timeToStuck": 0.9,
                                 "incObstacles": false,
                                 "avoidAiObstacles": false,
@@ -1696,7 +1839,7 @@
                                   0.25
                                 ],
                                 "rotateStartTime": 0.5,
-                                "useTeamCustomNav": true,
+                                "forceNavDirTimeAfterClimb": 1.5,
                                 "finalLookSetup": [
                                   1.0,
                                   5.0,
@@ -1704,64 +1847,17 @@
                                   0.3
                                 ],
                                 "finalLookPosParam": "squadActionPosLook",
-                                "doNotStopParam": "keepMoving"
+                                "useTeamCustomNav": true
+                              },
+                              "sequencer": {
+                                "considerCornersAlongMovementPath": {
+                                  "outPosFromParam": "movePeekFrom",
+                                  "outPosLookParam": "movePeekLook",
+                                  "outPosMoveParam": "movePeekMove",
+                                  "outPosLeanParam": "movePeekLean"
+                                },
+                                "recalculateTree": {}
                               }
-                            },
-                            "setIntVar": {
-                              "to": "keepMoving",
-                              "value": 0
-                            }
-                          },
-                          {
-                            "callTree": {
-                              "treeName": "soldier.move_look_remember"
-                            },
-                            "moveToPos": {
-                              "posParam": "squadActionPosTo",
-                              "sprintTimerRange": [
-                                25.0,
-                                30.0
-                              ],
-                              "minDistToSprint": 7.5,
-                              "lookVisc": 0.1,
-                              "tryClimbing": true,
-                              "maxClimbWalkSpeed": 0.25,
-                              "jumpClimbTime": 1.0,
-                              "minStanceParam": "minStance",
-                              "maxStanceParam": "maxStance",
-                              "stuckDirParam": "stuckDir",
-                              "incLadders": true,
-                              "strafeNearDist": 10.0,
-                              "restTimerRange": [
-                                3.0,
-                                5.0
-                              ],
-                              "timeToStuck": 0.9,
-                              "incObstacles": false,
-                              "avoidAiObstacles": false,
-                              "distThreshold": 0.5,
-                              "jumpDownTraceCheck": [
-                                0.4,
-                                1.0,
-                                0.15
-                              ],
-                              "rotateDistThreshold": 0.7,
-                              "rotateFactors": [
-                                0.7,
-                                0.5,
-                                0.5,
-                                0.25
-                              ],
-                              "rotateStartTime": 0.5,
-                              "forceNavDirTimeAfterClimb": 1.5,
-                              "finalLookSetup": [
-                                1.0,
-                                5.0,
-                                5.0,
-                                0.3
-                              ],
-                              "finalLookPosParam": "squadActionPosLook",
-                              "useTeamCustomNav": true
                             }
                           }
                         ]
@@ -1990,6 +2086,33 @@
                 "value": 0
               }
             ]
+          },
+          {
+            "setDebugSym": {
+              "act": "L77"
+            },
+            "callTree": {
+              "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"
+            },
+            "checkReloadWeapon": {
+              "waitReloadFinish": false,
+              "enoughAmmoRatio": 1.0,
+              "skipEnemyNearRadius": 7.0
+            },
+            "initPeriodicTimer": {
+              "timeParam": "onChangeLeaderFollowPos",
+              "timePeriod": [
+                0.0,
+                0.0
+              ]
+            },
+            "wait": {
+              "range": [
+                0.5,
+                1.0
+              ],
+              "resetable": true
+            }
           }
         ]
       }
@@ -1998,6 +2121,28 @@
       "name": "soldier.plantDestrWallMine",
       "setDebugSym": {
         "act": "L50"
+      },
+      "orderedSelector": {
+        "setPosFromEntity": {
+          "to": "tmpPos",
+          "from": "squadActionTarget"
+        },
+        "sequencer": {
+          "initPeriodicTimer": {
+            "timeParam": "onChangeLeaderFollowPos",
+            "timePeriod": [
+              0.0,
+              1.0
+            ]
+          },
+          "success": {
+            "setSquadGoal": {
+              "resetAction": true
+            }
+          },
+          "recalculateTree": {},
+          "break": {}
+        }
       },
       "exitHandler": [
         {
@@ -2036,50 +2181,52 @@
                 "minSimSpeedCoef": 0.33
               }
             },
-            "moveToPos": {
-              "incBlocked": true,
-              "startRestTimerRange": [
-                0.465,
-                0.47
-              ],
-              "noSprintTurnDeg": 75.0,
-              "restTimerRange": [
-                3.0,
-                5.0
-              ],
-              "posParam": "squadActionPosFrom",
-              "sprintTimerRange": [
-                10.0,
-                20.0
-              ],
-              "minDistToSprint": 3.5,
-              "lookVisc": 0.1,
-              "tryClimbing": true,
-              "maxClimbWalkSpeed": 0.25,
-              "jumpClimbTime": 1.0,
-              "minStanceParam": "minStance",
-              "maxStanceParam": "maxStance",
-              "stuckDirParam": "stuckDir",
-              "incLadders": true,
-              "strafeNearDist": 2.5,
-              "rotateDistThreshold": 0.7,
-              "rotateFactors": [
-                0.7,
-                0.5,
-                0.5,
-                0.25
-              ],
-              "rotateStartTime": 0.5,
-              "useTeamCustomNav": true,
-              "timeToStuck": 0.9,
-              "incObstacles": true,
-              "avoidAiObstacles": false,
-              "distThreshold": 0.5,
-              "jumpDownTraceCheck": [
-                0.4,
-                1.0,
-                0.15
-              ]
+            "parallel": {
+              "moveToPos": {
+                "incBlocked": true,
+                "startRestTimerRange": [
+                  0.465,
+                  0.47
+                ],
+                "noSprintTurnDeg": 75.0,
+                "restTimerRange": [
+                  3.0,
+                  5.0
+                ],
+                "posParam": "squadActionPosFrom",
+                "sprintTimerRange": [
+                  10.0,
+                  20.0
+                ],
+                "minDistToSprint": 3.5,
+                "lookVisc": 0.1,
+                "tryClimbing": true,
+                "maxClimbWalkSpeed": 0.25,
+                "jumpClimbTime": 1.0,
+                "minStanceParam": "minStance",
+                "maxStanceParam": "maxStance",
+                "stuckDirParam": "stuckDir",
+                "incLadders": true,
+                "strafeNearDist": 2.5,
+                "rotateDistThreshold": 0.7,
+                "rotateFactors": [
+                  0.7,
+                  0.5,
+                  0.5,
+                  0.25
+                ],
+                "rotateStartTime": 0.5,
+                "useTeamCustomNav": true,
+                "timeToStuck": 0.9,
+                "incObstacles": true,
+                "avoidAiObstacles": false,
+                "distThreshold": 0.5,
+                "jumpDownTraceCheck": [
+                  0.4,
+                  1.0,
+                  0.15
+                ]
+              }
             }
           },
           "setIntVar": {
@@ -2181,6 +2328,14 @@
                     "getTime": {
                       "to": "lastPlantMineTime"
                     },
+                    "success": {
+                      "moveByDir": {
+                        "lookLocked": true,
+                        "endPos": "realPlantPos",
+                        "duration": 0.7,
+                        "distThreshold": 0.35
+                      }
+                    },
                     "plantWallMine": {
                       "eidParam": "squadActionTarget",
                       "posParam": "realPlantPos",
@@ -2219,6 +2374,14 @@
                     "getTime": {
                       "to": "lastPlantMineTime"
                     },
+                    "success": {
+                      "moveByDir": {
+                        "lookLocked": true,
+                        "endPos": "realPlantPos",
+                        "duration": 0.7,
+                        "distThreshold": 0.35
+                      }
+                    },
                     "plantWallMine": {
                       "eidParam": "squadActionTarget",
                       "posParam": "realPlantPos",
@@ -2228,22 +2391,205 @@
                 ]
               }
             ],
-            "success": {
-              "sequencer": {
+            "copyPoint3Var": {
+              "to": "lastPlantedMinePosFrom",
+              "from": "squadActionPosFrom"
+            },
+            "initPeriodicTimer": {
+              "timeParam": "onChangeLeaderFollowPos",
+              "timePeriod": [
+                1.0,
+                2.0
+              ]
+            },
+            "success": [
+              {
+                "setSquadGoal": {
+                  "resetAction": true
+                }
+              },
+              {
                 "sequencer": {
-                  "reaction": {
-                    "event": "regularCheck",
-                    "repeat": {
-                      "count": 1,
-                      "subTree": [
-                        {
-                          "treeName": "prep.chooseMaxStance"
-                        },
-                        {
-                          "treeName": "react.needSwimUp"
+                  "sequencer": {
+                    "reaction": {
+                      "event": "regularCheck",
+                      "repeat": {
+                        "count": 1,
+                        "subTree": [
+                          {
+                            "treeName": "prep.chooseMaxStance"
+                          },
+                          {
+                            "treeName": "react.needSwimUp"
+                          }
+                        ],
+                        "findObstaclesAlongsidePath": {},
+                        "sequencer": {
+                          "findDanger": {
+                            "paramName": "otherEnemy",
+                            "outSeeTimeParam": "otherEnemyTime",
+                            "radiusParamName": "enemyRadius",
+                            "minDanger": 0.2,
+                            "tag": "human"
+                          },
+                          "copyIntVar": {
+                            "to": "escapeEnemy",
+                            "from": "otherEnemy"
+                          }
                         }
-                      ],
-                      "findObstaclesAlongsidePath": {},
+                      }
+                    },
+                    "success": [
+                      {
+                        "moveByDir": {
+                          "lookLocked": true,
+                          "endPos": "squadActionPosFrom",
+                          "duration": 1.5,
+                          "distThreshold": 0.25
+                        }
+                      },
+                      {
+                        "moveByDir": {
+                          "lookLocked": true,
+                          "endPos": "dmgZoneEscapePos",
+                          "duration": 0.2,
+                          "distThreshold": 0.5
+                        }
+                      },
+                      {
+                        "moveShoot": {
+                          "noTargetMovement": true,
+                          "doSprint": true,
+                          "posParam": "dmgZoneEscapePos",
+                          "distThreshold": 0.4,
+                          "angleThreshold": 180.0,
+                          "keepCrouch": false,
+                          "onlyAliveTarget": false,
+                          "distOfAimingFade": 7.0,
+                          "accuracyForceShot": [
+                            0.75,
+                            0.5
+                          ],
+                          "failOnNotReady": false,
+                          "forceStanceLimit": true,
+                          "chooseStance": true,
+                          "tryToSaveCurrentStance": true,
+                          "minStanceChance": 0.0,
+                          "targetUnitParam": "escapeEnemy",
+                          "minStanceParam": "standStance",
+                          "shootCyclesRange": [
+                            1,
+                            2
+                          ],
+                          "incLadders": false,
+                          "shootTime": [
+                            1.5,
+                            2.1
+                          ],
+                          "cooldownTime": [
+                            0.1,
+                            0.1
+                          ],
+                          "minAimTime": [
+                            0.15,
+                            0.25
+                          ],
+                          "maxStanceParam": "standStance",
+                          "alwaysAiming": false,
+                          "cyclesSuccess": true,
+                          "lostTargetCooldownRange": [
+                            1.0,
+                            2.0
+                          ],
+                          "closeShootRange": [
+                            1.0,
+                            50.0
+                          ],
+                          "closeShootAngles": [
+                            45.0,
+                            30.0
+                          ],
+                          "criticalShotTime": 0.5,
+                          "criticalShotAngle": 60.0,
+                          "checkFriendlyFireRadius": 0.05,
+                          "useTeamCustomNav": true
+                        }
+                      }
+                    ],
+                    "findSafeFromGrenadePos": {
+                      "posParam": "dmgZoneEscapePos",
+                      "grenPosParam": "realPlantPos",
+                      "grenRadius": 15.0,
+                      "radius": 20.0
+                    },
+                    "setDebugSym": [
+                      {
+                        "act": "L60"
+                      },
+                      {
+                        "act": "L61"
+                      },
+                      {
+                        "act": "L62"
+                      }
+                    ],
+                    "orderedSelector": {
+                      "checkDistance": {
+                        "posParam": "dmgZoneEscapePos",
+                        "radius": 2.5,
+                        "yRadius": 1.0
+                      },
+                      "isLookingToPos": {
+                        "posParam": "dmgZoneEscapePos",
+                        "offAngle": 90.0
+                      },
+                      "parallel": {
+                        "rotateToPoint": {
+                          "posParam": "dmgZoneEscapePos",
+                          "aimSpeedCoef": 0.5,
+                          "maxSimAngle": [
+                            60.0,
+                            80.0
+                          ],
+                          "pitchRange": [
+                            -5.0,
+                            5.0
+                          ],
+                          "minSimAngle": 15.0,
+                          "minSimSpeedCoef": 0.7
+                        },
+                        "wait": {
+                          "range": [
+                            0.5,
+                            1.0
+                          ],
+                          "resetable": true
+                        }
+                      },
+                      "continue": {}
+                    }
+                  },
+                  "setDebugSym": [
+                    {
+                      "act": "L63"
+                    },
+                    {
+                      "act": "L64"
+                    },
+                    {
+                      "act": "L65"
+                    }
+                  ],
+                  "success": [
+                    {
+                      "moveByDir": {
+                        "lookLocked": true,
+                        "endPos": "dmgZoneEscapePos",
+                        "duration": 0.2,
+                        "distThreshold": 0.5
+                      }
+                    },
+                    {
                       "sequencer": {
                         "findDanger": {
                           "paramName": "otherEnemy",
@@ -2256,33 +2602,6 @@
                           "to": "escapeEnemy",
                           "from": "otherEnemy"
                         }
-                      }
-                    }
-                  },
-                  "findSafeFromGrenadePos": {
-                    "posParam": "dmgZoneEscapePos",
-                    "grenPosParam": "realPlantPos",
-                    "grenRadius": 10.0,
-                    "radius": 20.0
-                  },
-                  "setDebugSym": [
-                    {
-                      "act": "L60"
-                    },
-                    {
-                      "act": "L61"
-                    },
-                    {
-                      "act": "L62"
-                    }
-                  ],
-                  "success": [
-                    {
-                      "moveByDir": {
-                        "lookLocked": true,
-                        "endPos": "dmgZoneEscapePos",
-                        "duration": 0.2,
-                        "distThreshold": 0.5
                       }
                     },
                     {
@@ -2345,18 +2664,34 @@
                       }
                     }
                   ],
+                  "wait": [
+                    {
+                      "range": [
+                        0.2,
+                        0.3
+                      ],
+                      "resetable": true
+                    },
+                    {
+                      "range": [
+                        0.5,
+                        0.7
+                      ],
+                      "resetable": true
+                    }
+                  ],
                   "orderedSelector": {
                     "checkDistance": {
-                      "posParam": "dmgZoneEscapePos",
+                      "posParam": "squadActionPosTo",
                       "radius": 2.5,
                       "yRadius": 1.0
                     },
                     "isLookingToPos": {
-                      "posParam": "dmgZoneEscapePos",
+                      "posParam": "squadActionPosTo",
                       "offAngle": 90.0
                     },
                     "rotateToPoint": {
-                      "posParam": "dmgZoneEscapePos",
+                      "posParam": "squadActionPosTo",
                       "aimSpeedCoef": 0.25,
                       "maxSimAngle": [
                         60.0,
@@ -2367,149 +2702,12 @@
                         5.0
                       ],
                       "minSimAngle": 15.0,
-                      "minSimSpeedCoef": 0.7
-                    },
-                    "continue": {}
-                  }
-                },
-                "setDebugSym": [
-                  {
-                    "act": "L63"
-                  },
-                  {
-                    "act": "L64"
-                  },
-                  {
-                    "act": "L65"
-                  }
-                ],
-                "success": [
-                  {
-                    "moveByDir": {
-                      "lookLocked": true,
-                      "endPos": "dmgZoneEscapePos",
-                      "duration": 0.2,
-                      "distThreshold": 0.5
+                      "minSimSpeedCoef": 0.33
                     }
-                  },
-                  {
-                    "sequencer": {
-                      "findDanger": {
-                        "paramName": "otherEnemy",
-                        "outSeeTimeParam": "otherEnemyTime",
-                        "radiusParamName": "enemyRadius",
-                        "minDanger": 0.2,
-                        "tag": "human"
-                      },
-                      "copyIntVar": {
-                        "to": "escapeEnemy",
-                        "from": "otherEnemy"
-                      }
-                    }
-                  },
-                  {
-                    "moveShoot": {
-                      "noTargetMovement": true,
-                      "doSprint": true,
-                      "posParam": "dmgZoneEscapePos",
-                      "distThreshold": 0.4,
-                      "angleThreshold": 180.0,
-                      "keepCrouch": false,
-                      "onlyAliveTarget": false,
-                      "distOfAimingFade": 7.0,
-                      "accuracyForceShot": [
-                        0.75,
-                        0.5
-                      ],
-                      "failOnNotReady": false,
-                      "forceStanceLimit": true,
-                      "chooseStance": true,
-                      "tryToSaveCurrentStance": true,
-                      "minStanceChance": 0.0,
-                      "targetUnitParam": "escapeEnemy",
-                      "minStanceParam": "standStance",
-                      "shootCyclesRange": [
-                        1,
-                        2
-                      ],
-                      "incLadders": false,
-                      "shootTime": [
-                        1.5,
-                        2.1
-                      ],
-                      "cooldownTime": [
-                        0.1,
-                        0.1
-                      ],
-                      "minAimTime": [
-                        0.15,
-                        0.25
-                      ],
-                      "maxStanceParam": "standStance",
-                      "alwaysAiming": false,
-                      "cyclesSuccess": true,
-                      "lostTargetCooldownRange": [
-                        1.0,
-                        2.0
-                      ],
-                      "closeShootRange": [
-                        1.0,
-                        50.0
-                      ],
-                      "closeShootAngles": [
-                        45.0,
-                        30.0
-                      ],
-                      "criticalShotTime": 0.5,
-                      "criticalShotAngle": 60.0,
-                      "checkFriendlyFireRadius": 0.05,
-                      "useTeamCustomNav": true
-                    }
-                  }
-                ],
-                "wait": [
-                  {
-                    "range": [
-                      0.2,
-                      0.3
-                    ],
-                    "resetable": true
-                  },
-                  {
-                    "range": [
-                      0.5,
-                      0.7
-                    ],
-                    "resetable": true
-                  }
-                ],
-                "orderedSelector": {
-                  "checkDistance": {
-                    "posParam": "squadActionPosTo",
-                    "radius": 2.5,
-                    "yRadius": 1.0
-                  },
-                  "isLookingToPos": {
-                    "posParam": "squadActionPosTo",
-                    "offAngle": 90.0
-                  },
-                  "rotateToPoint": {
-                    "posParam": "squadActionPosTo",
-                    "aimSpeedCoef": 0.25,
-                    "maxSimAngle": [
-                      60.0,
-                      80.0
-                    ],
-                    "pitchRange": [
-                      -5.0,
-                      5.0
-                    ],
-                    "minSimAngle": 15.0,
-                    "minSimSpeedCoef": 0.33
                   }
                 }
               }
-            },
+            ],
             "recalculateTree": {}
           },
           "setIntVar": {
@@ -2862,16 +3060,10 @@
                       "posParam": "wishPosition",
                       "radius": 5.0
                     },
-                    "setRealVar": [
-                      {
-                        "to": "maxMoveSpeed",
-                        "value": 0.97
-                      },
-                      {
-                        "to": "minDistToSprint",
-                        "value": 1000.0
-                      }
-                    ]
+                    "setRealVar": {
+                      "to": "minDistToSprint",
+                      "value": 1000.0
+                    }
                   }
                 }
               ]
@@ -3288,18 +3480,11 @@
         "toPosParam": "shootAtLocalPos",
         "useEntityParam": "shootVehicle"
       },
-      "not": [
-        {
-          "isZeroPoint3": {
-            "var": "regroupPosition"
-          }
-        },
-        {
-          "isZeroPoint3": {
-            "var": "shootAtLocalPos"
-          }
+      "not": {
+        "isZeroPoint3": {
+          "var": "regroupPosition"
         }
-      ],
+      },
       "copyPoint3Var": {
         "to": "wishPosition",
         "from": "regroupPosition"
@@ -3682,6 +3867,15 @@
                       ],
                       "useTeamCustomNav": true
                     },
+                    "sequencer": {
+                      "considerCornersAlongMovementPath": {
+                        "outPosFromParam": "movePeekFrom",
+                        "outPosLookParam": "movePeekLook",
+                        "outPosMoveParam": "movePeekMove",
+                        "outPosLeanParam": "movePeekLean"
+                      },
+                      "recalculateTree": {}
+                    },
                     "wait": {
                       "range": [
                         2.0,
@@ -3751,10 +3945,19 @@
                   ],
                   "useTeamCustomNav": true
                 },
+                "sequencer": {
+                  "considerCornersAlongMovementPath": {
+                    "outPosFromParam": "movePeekFrom",
+                    "outPosLookParam": "movePeekLook",
+                    "outPosMoveParam": "movePeekMove",
+                    "outPosLeanParam": "movePeekLean"
+                  },
+                  "recalculateTree": {}
+                },
                 "wait": {
                   "range": [
-                    0.5,
-                    1.0
+                    2.0,
+                    3.0
                   ],
                   "resetable": true
                 }
@@ -4133,7 +4336,8 @@
       "name": "soldier.attack_vehicle",
       "setPosFromEntity": {
         "to": "shootVehiclePos",
-        "from": "shootVehicle"
+        "from": "shootVehicle",
+        "projectToNavmesh": false
       },
       "orderedSelector": {
         "isLookingToPos": {

@@ -12,77 +12,77 @@ options rtti = true
 options strict_smart_pointers = false
 
 
-require rtti
-require ast
+require daslib/rtti
+require daslib/ast
 require daslib/ast_boost
 require daslib/strings_boost
 
 class SetPrinterFlags : AstVisitor {
     
-    def override preVisitExprBlockExpression(block1 : smart_ptr<ExprBlock>; var expr : ExpressionPtr) {
+    def override preVisitExprBlockExpression(block1 : ExprBlock?; var expr : ExpressionPtr) {
         
         expr.printFlags := ExprPrintFlags.argLevel
     }
 
-    def override preVisitExprNewArgument(call : smart_ptr<ExprNew>; var expr : smart_ptr<Expression>; last : bool) {
+    def override preVisitExprNewArgument(call : ExprNew?; var expr : Expression?; last : bool) {
         
         expr.printFlags := ExprPrintFlags.argLevel
     }
 
-    def override preVisitExprCallArgument(casll : smart_ptr<ExprCall>; var expr : smart_ptr<Expression>; last : bool) {
+    def override preVisitExprCallArgument(casll : ExprCall?; var expr : Expression?; last : bool) {
         
         expr.printFlags := ExprPrintFlags.argLevel
     }
 
-    def override preVisitExprLooksLikeCallArgument(call : smart_ptr<ExprLooksLikeCall>; var expr : smart_ptr<Expression>; last : bool) {
+    def override preVisitExprLooksLikeCallArgument(call : ExprLooksLikeCall?; var expr : Expression?; last : bool) {
         
         expr.printFlags := ExprPrintFlags.argLevel
     }
 
-    def override preVisitExprIfThenElse(var expr : smart_ptr<ExprIfThenElse>) {
+    def override preVisitExprIfThenElse(var expr : ExprIfThenElse?) {
         
         expr.cond.printFlags := ExprPrintFlags.argLevel
     }
 
-    def override preVisitExprWhile(var expr : smart_ptr<ExprWhile>) {
+    def override preVisitExprWhile(var expr : ExprWhile?) {
         
         expr.cond.printFlags := ExprPrintFlags.argLevel
     }
 
-    def override preVisitExprReturn(var expr : smart_ptr<ExprReturn>) {
+    def override preVisitExprReturn(var expr : ExprReturn?) {
         
         if (expr.subexpr != null) {
             expr.subexpr.printFlags := ExprPrintFlags.argLevel
         }
     }
 
-    def override preVisitExprCopy(var expr : smart_ptr<ExprCopy>) {
+    def override preVisitExprCopy(var expr : ExprCopy?) {
         
         if (expr.printFlags.topLevel || expr.printFlags.argLevel) {
             expr.right.printFlags := ExprPrintFlags.argLevel
         }
     }
 
-    def override preVisitExprClone(var expr : smart_ptr<ExprClone>) {
+    def override preVisitExprClone(var expr : ExprClone?) {
         
         if (expr.printFlags.topLevel || expr.printFlags.argLevel) {
             expr.right.printFlags := ExprPrintFlags.argLevel
         }
     }
 
-    def override preVisitExprVar(var expr : smart_ptr<ExprVar>) {
+    def override preVisitExprVar(var expr : ExprVar?) {
         
         expr.printFlags := ExprPrintFlags.bottomLevel
     }
 
-    def override preVisitExprTypeInfo(var expr : smart_ptr<ExprTypeInfo>) {
+    def override preVisitExprTypeInfo(var expr : ExprTypeInfo?) {
         
         if (expr.subexpr != null) {
             expr.subexpr.printFlags := ExprPrintFlags.argLevel
         }
     }
 
-    def override preVisitExprArrayComprehension(var expr : smart_ptr<ExprArrayComprehension>) {
+    def override preVisitExprArrayComprehension(var expr : ExprArrayComprehension?) {
         
         expr.subexpr.printFlags = ExprPrintFlags.argLevel;
         if (expr.exprWhere != null) {

@@ -4,10 +4,12 @@ require AnimV20
 require DngHuman
 require HumanAnim
 require DngHumanAnim
+require DngWeapon
 require DagorSystem
 require MotionMatching
-require danetlibs.motion_matching.es.tags_common
+require %gameLibs.anim.motionMatching.das.tags_common
 require %game.events
+require PropsManager
 
 
 def need_enable_motion_matching(human_anim__lowerStateLowerSprint : int;
@@ -226,3 +228,69 @@ def init_mm_tags_es(evt : Event;
   mm_tag_id__1stPersonView = get_tag_index(dataBase, "1st_person_view")
   mm_tag_id__3rdPersonView = get_tag_index(dataBase, "3rd_person_view")
   mm_tag_id__fullBodyMovement = get_tag_index(dataBase, "full_body_movement")
+
+
+def get_selected_weapon_var_id(human_weap__currentGunSlot : int;
+                               human_weap__gunEids : EidList)
+  if human_weap__currentGunSlot < 0
+    return -1
+  var weaponEnumVarId = -1
+  query(human_weap__gunEids[human_weap__currentGunSlot]) <| $ [es(REQUIRE_NOT=grenade_thrower)] (gun__propsId : PropsId)
+    get_props_GunToAnimProps(gun__propsId) <| $(gunAnimProps : GunToAnimProps)
+      weaponEnumVarId = gunAnimProps.enumVarId
+  query(human_weap__gunEids[human_weap__currentGunSlot]) <| $ [es(REQUIRE=grenade_thrower)] (grenade_thrower__selectedGrenadeVarId : int)
+    weaponEnumVarId = grenade_thrower__selectedGrenadeVarId
+  return weaponEnumVarId
+
+
+[es(tag=gameClient, on_event=AnimationDataBaseLoaded)]
+def init_mm_tags_for_weapons(evt : Event;
+                             eid aka database_eid : EntityId;
+                             dataBase : AnimationDataBase;
+                             motion_matching__weaponToTag : Object;
+                             var motion_matching__weaponEnumVars : IntList;
+                             var motion_matching__weaponTags : IntList)
+  clear(motion_matching__weaponEnumVars)
+  clear(motion_matching__weaponTags)
+  for weaponTagPair in motion_matching__weaponToTag
+    let enumVarId = animV20_get_enum_value_by_name(weaponTagPair.key)
+    let mmTag = get_ecs_string(weaponTagPair.value)
+    let mmTagId = mmTag != null ? dataBase |> getTagIdx(string(*mmTag)) : -1
+    if enumVarId >= 0 && mmTagId >= 0
+      push(motion_matching__weaponEnumVars, enumVarId)
+      push(motion_matching__weaponTags, mmTagId)
+  query() <| $ [es] (motion_matching__dataBaseEid : EntityId;
+                     human_weap__currentGunSlot : int;
+                     human_weap__gunEids : EidList;
+                     var motion_matching__weaponTagIdx : int&)
+    if motion_matching__dataBaseEid != database_eid
+      return
+    let weaponEnumVarId = get_selected_weapon_var_id(human_weap__currentGunSlot, human_weap__gunEids)
+    let weaponIdx = find_index(motion_matching__weaponEnumVars, weaponEnumVarId)
+    if weaponIdx >= 0
+      motion_matching__weaponTagIdx = motion_matching__weaponTags[weaponIdx]
+    else
+      motion_matching__weaponTagIdx = dataBase |> getTagIdx("default_weapon")
+
+
+[es(tag=gameClient, on_appear, track=human_weap__currentGunSlot, on_event=AnimationDataBaseAssigned, after=init_animations_es)]
+def detect_mm_tag_from_current_weapon(evt : Event;
+                                      human_weap__currentGunSlot : int;
+                                      human_weap__gunEids : EidList;
+                                      motion_matching__dataBaseEid : EntityId;
+                                      var motion_matching__weaponTagIdx : int&;
+                                      var motion_matching__controller : MotionMatchingController)
+  let weaponEnumVarId = get_selected_weapon_var_id(human_weap__currentGunSlot, human_weap__gunEids)
+  let prevWeaponTagIdx = motion_matching__weaponTagIdx
+  query(motion_matching__dataBaseEid) <| $ [es] (motion_matching__weaponEnumVars : IntList;
+                                                 motion_matching__weaponTags : IntList)
+    let weaponIdx = find_index(motion_matching__weaponEnumVars, weaponEnumVarId)
+    if weaponIdx >= 0
+      motion_matching__weaponTagIdx = motion_matching__weaponTags[weaponIdx]
+    else
+      motion_matching__weaponTagIdx = *motion_matching__controller.dataBase |> getTagIdx("default_weapon")
+
+  if prevWeaponTagIdx >= 0 && motion_matching__controller.currentTags |> isTagRequired(uint(prevWeaponTagIdx))
+    motion_matching__controller.currentTags |> removeTag(uint(prevWeaponTagIdx))
+  if motion_matching__weaponTagIdx >= 0
+    motion_matching__controller.currentTags |> requireTag(uint(motion_matching__weaponTagIdx))

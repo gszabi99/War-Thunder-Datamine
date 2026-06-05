@@ -4,7 +4,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getCachedDataByType } = require("%scripts/customization/decoratorGetters.nut")
+let { getCachedDataByType, getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg,
@@ -26,6 +26,7 @@ let { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { FAVORITE_CATEGORY_ID } = require("%scripts/customization/decoratorFavoritesStorage.nut")
 
 const SELECTED_DECAL_SAVE_ID = "wnd/selectedDecal"
 
@@ -52,6 +53,7 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   decalNameFilter = ""
   selectedCategory = ""
   selectedDecal = ""
+  filteredFavorites = null
 
   function initScreen() {
     this.prepareDecals()
@@ -121,6 +123,26 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function getFavoriteDecalsList(filterFn) {
+    let favoritesDecals = decoratorTypes.DECALS.getFavorites()
+    let list = []
+    foreach (decalId in favoritesDecals) {
+      let decal = getDecorator(decalId, decoratorTypes.DECALS)
+      if (decal == null)
+        continue
+      let decalInList = {
+        searchId = utf8ToLower(decalId)
+        searchName = utf8ToLower(decal.getName())
+        decal
+        category = FAVORITE_CATEGORY_ID
+        group = "other"
+      }
+      if (filterFn == null || filterFn(decalInList))
+        list.append(decalInList)
+    }
+    return list
+  }
+
   function prepareDecalsTreeData() {
     let decorCache = getCachedDataByType(decoratorTypes.DECALS)
     let treeData = []
@@ -147,6 +169,16 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         })
       }
     }
+
+    treeData.append({
+      id = FAVORITE_CATEGORY_ID
+      itemTag = "campaign_item"
+      itemText = $"#decor/category/{FAVORITE_CATEGORY_ID}"
+      isCollapsable = false
+      hidden = false
+      isNoGroups = true
+    })
+
     return treeData
   }
 
@@ -167,7 +199,6 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let treeData = []
-
     foreach (decal in filteredDecals) {
       let { category, group } = decal
       if (!treeData.contains(category))
@@ -177,6 +208,10 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       if (!treeData.contains(groupId))
         treeData.append(groupId)
     }
+
+    this.filteredFavorites = this.getFavoriteDecalsList(@(decal) filterDecalsListFunc(decal, nameFilter))
+    if (this.filteredFavorites.len() > 0)
+      treeData.append(FAVORITE_CATEGORY_ID)
     this.treeHandlerWeak?.update(treeData)
   }
 
@@ -202,7 +237,9 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function getDecalsView(categoryId, groupId) {
     let nameFilter = utf8ToLower(this.decalNameFilter)
-    let decals = this.decalsCache.filter(@(v) (v.category == categoryId && v.group == groupId && filterDecalsListFunc(v, nameFilter)))
+    let decals = categoryId == FAVORITE_CATEGORY_ID
+      ? this.getFavoriteDecalsList(@(v) filterDecalsListFunc(v, nameFilter))
+      : this.decalsCache.filter(@(v) (v.category == categoryId && v.group == groupId && filterDecalsListFunc(v, nameFilter)))
     if (decals.len() == 0)
       return []
 
@@ -290,6 +327,7 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         btn_fav                        = false
         btn_preview                    = false
         btn_use_decorator              = false
+        btn_add_favorite               = false
         btn_store                      = false
         btn_marketplace_consume_coupon = false
         btn_marketplace_find_coupon    = false
@@ -322,11 +360,14 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     showObjectsByTable(this.scene, {
       btn_preview                    = isInMenu.get() && canPreview
       btn_use_decorator              = isInMenu.get() && canUse
+      btn_add_favorite               = isInMenu.get()
       btn_store                      = isInMenu.get() && canFindInStore
       btn_go_to_collection           = isInMenu.get() && isCollectionItem(decal)
       btn_marketplace_consume_coupon = canConsumeCoupon
       btn_marketplace_find_coupon    = canFindOnMarketplace
     })
+
+    this.updateAddToFavoriteBtns()
   }
 
   function getDecalObtainInfo(decor) {
@@ -410,6 +451,16 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.getCurrentDecal()?.doPreview()
   }
 
+  function addToFavoriteDecals() {
+    let decor = this.getCurrentDecal()
+    if (!decor)
+      return
+    if (decoratorTypes.DECALS.isInFavorites(decor.id))
+      decoratorTypes.DECALS.removeFromFavorites(decor.id)
+    else
+      decoratorTypes.DECALS.addToFavorites(decor.id)
+  }
+
   function onMarketplaceFindCoupon() {
     findDecoratorCouponOnMarketplace(this.getCurrentDecal())
   }
@@ -428,10 +479,41 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.initScreen()
   }
 
-  function onEventInventoryUpdate(_p) {
-      this.initScreen()
+  function updateAddToFavoriteBtns() {
+    let decor = this.getCurrentDecal()
+    if (!decor)
+      return
+    let btn_add_favorite = this.scene.findObject("btn_add_favorite")
+    let label = !decoratorTypes.DECALS.isInFavorites(decor.id)
+      ? loc("mainmenu/btnFavorite")
+      : loc("mainmenu/btnFavoriteUnmark")
+    btn_add_favorite.setValue(label)
   }
 
+  function onEventInventoryUpdate(_p) {
+    this.initScreen()
+  }
+
+  function onEventUpdateFavoriteDecorators(eventData) {
+    if (eventData?[decoratorTypes.DECALS.resourceType] == null)
+      return
+    let nameFilter = utf8ToLower(this.decalNameFilter)
+    let filteredFavoritesDecals = this.getFavoriteDecalsList(@(decal) filterDecalsListFunc(decal, nameFilter))
+    let switchFavoritesVisibility = (filteredFavoritesDecals.len() == 0 && this.filteredFavorites.len() > 0)
+      || (filteredFavoritesDecals.len() != 0 && this.filteredFavorites.len() == 0)
+    if (switchFavoritesVisibility)
+      this.updateDecalsTree()
+    if (this.selectedCategory == FAVORITE_CATEGORY_ID) {
+      let favorites = decoratorTypes.DECALS.getFavorites()
+      let decalsListObj = this.scene.findObject("decals_zone")
+      let currentSelected = decalsListObj.getValue()
+      let selectedIndex = min(currentSelected, favorites.len()-1)
+      this.selectedDecal = favorites?[selectedIndex]
+      this.onDecalsCategorySelect(this.selectedCategory)
+    } else {
+      this.updateAddToFavoriteBtns()
+    }
+  }
 }
 
 gui_handlers.DecalsHandler <- DecalsHandler

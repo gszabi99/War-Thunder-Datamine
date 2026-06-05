@@ -26,7 +26,7 @@ let { isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom
 let { isCrewLockedByPrevBattle, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isCanModifyCrew, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -158,11 +158,12 @@ let CrewTakeUnitProcess = class {
       if (!this.crew)
         locId = this.unit ? "shop/needMoneyQuestion_hireAndTrainCrew"
                      : "shop/needMoneyQuestion_purchaseCrew"
-      let msgText = warningIfGold(format(loc(locId), this.cost.getTextAccordingToBalance()), this.cost)
-      scene_msg_box("need_money", null, msgText,
-        [ ["ok", this.nextStepCb],
-          ["cancel", this.removeCb ]
-        ], "ok")
+
+      let text = warningIfGold(format(loc(locId), this.cost.getTextAccordingToBalance()), this.cost)
+      purchaseConfirmation(
+        { id = "need_money", text, callbackYes = this.nextStepCb, callbackNo = this.removeCb },
+        this.cost
+      )
     },
 
     [CTU_PROGRESS.CHECK_MONEY] = function() {

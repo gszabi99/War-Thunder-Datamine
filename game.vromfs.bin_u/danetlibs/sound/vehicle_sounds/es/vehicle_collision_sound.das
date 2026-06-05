@@ -5,7 +5,7 @@ require soundEvent
 require soundSystem
 require vehicleSoundProps
 require sound_utils.modules.sound_player_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 require sound_utils.modules.sound_utils_events
 require PhysMat
 
@@ -19,11 +19,15 @@ def update_hit(info : ParallelUpdateFrameDelayed;
                name : string;
                pos : float3;
                @shared_comp sound_paths : Object;
-               sound_tags : Object)
+               sound_tags : Object;
+               vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
   let defMaxImpulse = float2(0.75, 3.)
   let minMaxImpulse = mat_props != null ? (*mat_props).minMaxImpulse : defMaxImpulse
   let force = cvt(coll, minMaxImpulse.x, minMaxImpulse.y, 0., 1.)
-  sound_player_common::play_parameterized(sound_event, name, force, hit_force, "force", pos, sound_paths, sound_tags, true, info.curTime, hit_time)
+  let isValid = is_valid_handle_value(sound_event)
+  play_parameterized(sound_event, name, force, hit_force, "force", pos, sound_paths, sound_tags, true, info.curTime, hit_time)
+  if !isValid && is_valid_handle_value(sound_event)
+    attach_to_blob(sound_event, vehicle_sound_occlusion__blob)
 
 
 def update_scrape(info : ParallelUpdateFrameDelayed;
@@ -34,7 +38,8 @@ def update_scrape(info : ParallelUpdateFrameDelayed;
                   pos : float3;
                   is_watched_sound : bool;
                   @shared_comp sound_paths : Object;
-                  sound_tags : Object)
+                  sound_tags : Object;
+                  vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
   if is_watched_sound
     let defMaxScrape = float2(0.35, 0.5)
     let minMaxScrape = mat_props != null ? (*mat_props).minMaxScrape : defMaxScrape
@@ -42,7 +47,8 @@ def update_scrape(info : ParallelUpdateFrameDelayed;
     if scrape > 0.
       if !is_valid_event_instance(sound_event)
         release(sound_event)
-        sound_event |> reset(sound_player_common::play_path("collScrape", sound_paths, sound_tags, is_watched_sound, pos, false))
+        sound_event |> reset(play_path("collScrape", sound_paths, sound_tags, is_watched_sound, pos, false))
+        attach_to_blob(sound_event, vehicle_sound_occlusion__blob)
       set_var(sound_event, "force", scrape)
       set_pos(sound_event, pos)
       set_volume(sound_event, 1.)
@@ -93,7 +99,8 @@ def vehicle_collision_sound(info : ParallelUpdateFrameDelayed;
 
                             sound_tags : Object;
 
-                            transform : float3x4)
+                            transform : float3x4;
+                            vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
 
   let enable = (vehicle_collision_sound__enabled ?
     is_watched_sound || length_sq(transform[3] - get_listener_pos()) < square(vehicle_collision_sound__collRange.y) :
@@ -127,8 +134,8 @@ def vehicle_collision_sound(info : ParallelUpdateFrameDelayed;
   vehicle_collision_sound__entityCollSummary = 0.
   vehicle_collision_sound__entityCollMatId = PHYSMAT_DEFAULT
 
-  update_hit(info, vehicle_hit_sound_event, vehicle_collision_sound__hitTime, vehicle_collision_sound__hitForce, matProps, coll, descName, transform[3], vehicle_collision_sound__paths, sound_tags)
+  update_hit(info, vehicle_hit_sound_event, vehicle_collision_sound__hitTime, vehicle_collision_sound__hitForce, matProps, coll, descName, transform[3], vehicle_collision_sound__paths, sound_tags, vehicle_sound_occlusion__blob)
 
   let decayScrapeReduction = 10.
   let scrape = cvt(coll, vehicle_collision_sound__scrapeMinMax.x, vehicle_collision_sound__scrapeMinMax.y, 0., 1.) * min(vehicle_sound_phys_state__noiseReduction * decayScrapeReduction, 1.)
-  update_scrape(info, vehicle_scrape_sound_event, vehicle_collision_sound__scrapeTimer, matProps, scrape, transform[3], is_watched_sound, vehicle_collision_sound__paths, sound_tags)
+  update_scrape(info, vehicle_scrape_sound_event, vehicle_collision_sound__scrapeTimer, matProps, scrape, transform[3], is_watched_sound, vehicle_collision_sound__paths, sound_tags, vehicle_sound_occlusion__blob)

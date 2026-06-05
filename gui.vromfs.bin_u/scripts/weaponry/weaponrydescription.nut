@@ -73,7 +73,8 @@ function stackWeaponsData(weaponType, triggers) {
 }
 
 function updateWeaponBlocks(resultWeaponBlocks, turretsData, trigger, weaponType) {
-  foreach (weaponName, weapon in trigger.weaponBlocks) {
+  foreach (weaponName in trigger.weaponBlocks.keys().sort()) {
+    let weapon = trigger.weaponBlocks[weaponName]
     weapon.weaponType <- weaponType
     weapon.weaponName <- weaponName
 
@@ -420,16 +421,28 @@ function getModItemName(unit, item, limitedName = true) {
   return getUpgradeTypeByItem(item).getLocName(unit, item, limitedName)
 }
 
-function getReqModsText(unit, item) {
-  let reqText = []
+function getReqModElements(unit, item, alwaysShowReqMod = false) {
+  let reqModsList = []
   foreach (rp in ["reqWeapon", "reqModification"])
-      if (rp in item)
-        foreach (req in item[rp])
-          if (rp == "reqWeapon" && !shop_is_weapon_purchased(unit.name, req))
-            reqText.append("".concat(loc(rp), loc("ui/colon"), getWeaponNameText(unit.name, false, req, ", ")))
-          else if (rp == "reqModification" && !shopIsModificationPurchased(unit.name, req))
-            reqText.append("".concat(loc(rp), loc("ui/colon"), getModificationName(unit, req)))
-  return "\n".join(reqText)
+    if (rp in item)
+      foreach (req in item[rp]) {
+        local reqTitle = ""
+        local isOwn = false
+        if (rp == "reqWeapon") {
+          isOwn = !!shop_is_weapon_purchased(unit.name, req)
+          reqTitle = (!isOwn || alwaysShowReqMod)
+            ? "".concat(loc(rp), loc("ui/colon"), getWeaponNameText(unit.name, false, req, ", "))
+            : ""
+        }
+        else if (rp == "reqModification") {
+          isOwn = !!shopIsModificationPurchased(unit.name, req)
+          reqTitle = (!isOwn || alwaysShowReqMod)
+            ? "".concat(loc(rp), loc("ui/colon"), getModificationName(unit, req)) : ""
+        }
+        if (reqTitle != "")
+          reqModsList.append({ reqTitle, isOwn })
+      }
+  return reqModsList
 }
 
 function getBulletsListHeader(unit, bulletsList) {
@@ -601,7 +614,7 @@ return {
   getWeaponShortTypeFromWpName
   getDefaultBulletName
   getModItemName
-  getReqModsText
+  getReqModElements
   getBulletsListHeader
   getFullItemCostText
   makeWeaponInfoData

@@ -1,8 +1,11 @@
 require ecs
+require ecs.safe
 require DngHuman
 require math
 require DagorMath
 require %game.events
+require app
+
 
 def interpolate_table(x : float; tbl : Point2List)
   let pointCount = length(tbl)
@@ -100,3 +103,14 @@ def human_weight_non_human_phys_params_influence_client_es(evt : Event;
                                                            eid : EntityId;
                                                            human_inventory__currentWeight : float)
   update_human_phys_coefs_by_weight(eid, human_inventory__currentWeight)
+
+
+[es(on_appear)]
+def apply_human_weight_system_es(evt : Event;
+                                 eid : EntityId;
+                                 @shared_comp human_weight_influence__templatesByDifficulty : Object;
+                                 human_weight_influence__defaultTemplate : string)
+  let diffStr = get_mission_difficulty_str()
+  let subTemplate = human_weight_influence__templatesByDifficulty[diffStr] ?? human_weight_influence__defaultTemplate
+  if subTemplate != ""
+    addSubTemplate(eid, subTemplate)

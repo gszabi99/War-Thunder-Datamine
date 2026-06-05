@@ -14,7 +14,7 @@ def print_values(limit = 100; step = 10; hr = true; blk)
   if hr
     to_log(LOG_DEBUG, " y\\x ")
     while x <= limit
-      to_log(LOG_DEBUG, format("% 4d", x))
+      to_log(LOG_DEBUG, fmt(": 4d", x))
       to_log(LOG_DEBUG, x == 0 ? "  " : " ")
       x += step
       if x == 0
@@ -25,7 +25,7 @@ def print_values(limit = 100; step = 10; hr = true; blk)
   while y <= limit
     x = -limit
     if hr
-      to_log(LOG_DEBUG, format("% 4d", y))
+      to_log(LOG_DEBUG, fmt(": 4d", y))
       to_log(LOG_DEBUG, " ")
     while x <= limit
       let pos = float2(x, y)
@@ -52,7 +52,7 @@ def print_alertness_with_params(stance : int)
     let inFrustum = frustumCos >= frustumMinCos
     let agent_dangers__maxDangerDist = 90.0
     let alertness = calc_target_alertness(dist, inFrustum, frustumCos, stance, false, agent_dangers__maxDangerDist)
-    to_log(LOG_DEBUG, format("%1.2f", alertness))
+    to_log(LOG_DEBUG, fmt(":1.2f", alertness))
     to_log(LOG_DEBUG, " ")
 
 
@@ -96,5 +96,5 @@ def print_danger_or_traceable_ratio(printDanger = true)
         var dangerMeter = calc_danger(atTime, agent_dangers__maxDangerDist, danger, target, 0.25, isAi)
         if (dangerMeter < 0.73)
           dangerMeter = 0.0
-        to_log(LOG_DEBUG, format("%0.2f", printDanger ? dangerMeter : calc_traceable_ratio(atTime, dangerMeter, danger)))
+        to_log(LOG_DEBUG, fmt(":0.2f", printDanger ? dangerMeter : calc_traceable_ratio(atTime, dangerMeter, danger)))
         to_log(LOG_DEBUG, " ")

@@ -9,6 +9,44 @@ tdiv {
     margin-bottom:t='1@blockInterval'
     overlayTextColor:t='active'
   }
+  <<#hasOpenHint>>
+  <<#isPC>>
+  textareaNoTab {
+    text:t='#mainmenu/openLimitBuyWndHint'
+    smallFont:t='yes'
+    width:t='pw'
+    margin-bottom:t='1@blockInterval'
+  }
+  <</isPC>>
+  <<^isPC>>
+  tdiv {
+    width:t='pw'
+    margin-bottom:t='1@blockInterval'
+    textareaNoTab {
+      text:t='#mainmenu/openLimitBuyWndHintConsolePrefix'
+      smallFont:t='yes'
+      margin-right:t='1@blockInterval'
+      valign:t='center'
+    }
+    img{
+      background-image:t='ui/gameuiskin#xone_button_a.svg'
+      background-repeat:t='aspect-ratio'
+      bgcolor:t='#FFFFFF'
+      background-svg-size:t='1@sIco, 1@sIco'
+      size:t='1@sIco, 1@sIco'
+      input-transparent:t='yes'
+      valign:t='center'
+    }
+    textareaNoTab {
+      text:t='#mainmenu/openLimitBuyWndHintConsolePostfix'
+      smallFont:t='yes'
+      margin-bottom:t='1@blockInterval'
+      margin-left:t='1@blockInterval'
+      valign:t='center'
+    }
+  }
+  <</isPC>>
+  <</hasOpenHint>>
   <<#blocks>>
   tdiv {
     flow:t='vertical'

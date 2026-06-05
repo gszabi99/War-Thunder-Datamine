@@ -386,6 +386,11 @@ return [
     type = CONTROL_TYPE.SECTION
   }
   {
+    id = "ID_SENSOR_MODES_SWITCH_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_SENSOR_SWITCH_HELICOPTER"
     checkAssign = false
     needShowInHelp = true
@@ -474,6 +479,11 @@ return [
   }
   {
     id = "ID_UNLOCK_TARGETING_AT_POINT_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_CAMERA_SHELL_FPV_HELICOPTER"
     checkAssign = false
     needShowInHelp = true
   }

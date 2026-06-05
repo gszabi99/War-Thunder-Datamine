@@ -12,6 +12,7 @@ let { prepareUpgradeRequest } = require("%scripts/clans/clanRequests.nut")
 let { upgradeClan } = require("%scripts/clans/clanActions.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
   owner = null
@@ -62,12 +63,12 @@ gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandl
     if (upgradeCost <= zero_money)
       this.upgradeClanFn()
     else if (checkBalanceMsgBox(upgradeCost)) {
-      let msgText = warningIfGold(
+      let text = warningIfGold(
         format(loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
         upgradeCost)
-      this.msgBox("need_money", msgText, [["ok", function() { this.upgradeClanFn() }],
-        ["cancel"]], "ok")
+      let callbackYes = Callback(@() this.upgradeClanFn() , this)
+      purchaseConfirmation({ id = "need_money", text, callbackYes }, upgradeCost)
     }
   }
 

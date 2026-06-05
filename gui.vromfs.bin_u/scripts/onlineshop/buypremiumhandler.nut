@@ -15,7 +15,7 @@ let time = require("%scripts/time.nut")
 let { Cost } = require("%scripts/money.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
@@ -198,16 +198,18 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let price = Cost(0, get_entitlement_cost_gold(productId))
-    let msgText = warningIfGold(
+    let text = warningIfGold(
       loc("onlineShop/needMoneyQuestion",
         { purchase = getEntitlementName(this.product), cost = price.getTextAccordingToBalance() }),
       price)
 
-    let onCallbackYes = Callback(function() {
-      if (checkBalanceMsgBox(price))
-        this.goForwardIfPurchase(this.product)
-    }, this)
-    purchaseConfirmation("purchase_ask", msgText, onCallbackYes)
+    let callbackYes = Callback(
+      @() checkBalanceMsgBox(price)
+            ? this.goForwardIfPurchase(this.product)
+            : null,
+      this
+    )
+    purchaseConfirmation({ id = "purchase_ask", text, callbackYes }, price)
   }
 
   function goForwardIfPurchase(product) {

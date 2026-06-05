@@ -1,6 +1,6 @@
 require ecs
 require %appGame.infantry.es.sound_net.squad_member_see_danger_human_net_speech_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 require walkerai
 
 

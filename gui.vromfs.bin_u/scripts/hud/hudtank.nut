@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
-let { getUAVCameraEnabled, getShowUAVCameraToggle } = require("hudTankStates")
+let { uavCameraEnabled, canEnableUavCamera } = require("hudTankStates")
 let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
@@ -75,11 +75,11 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     hintObj.setValue("".concat("{{", getShortcutIdForSwitchTacticalMap(), "}}"))
     objMap.setValue(stashBhvValueConfig([
       {
-        watch = getShowUAVCameraToggle()
+        watch = canEnableUavCamera
         updateFunc = @(obj, value) obj.show(value)
       },
       {
-        watch = getUAVCameraEnabled()
+        watch = uavCameraEnabled
         updateFunc = updateTacticalMapSwitchingObj
       }
     ]))
@@ -91,13 +91,13 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
   }
 
   function onSwitchToTacticalMap(_) {
-    if (!getUAVCameraEnabled().get())
+    if (!uavCameraEnabled.get())
       return
     switchTacticalMapView()
   }
 
   function onSwitchToUAVCamera(_) {
-    if (getUAVCameraEnabled().get())
+    if (uavCameraEnabled.get())
       return
     switchTacticalMapView()
   }

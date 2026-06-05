@@ -351,7 +351,7 @@ function updateCardStatus(obj, _id, statusTbl) {
     discountObj.setValue("")
   else {
     discountObj.setValue($"-{discount}%")
-    discountObj.tooltip = format(loc("discount/buy/tooltip"), discount.tostring())
+    discountObj.tooltip = $"{format(loc("discount/buy/tooltip"), discount.tostring())}{"\n"}{loc("mainmenu/openLimitBuyWndHint")}"
   }
 
   let hasBonus = expMul > 1 || wpMul > 1

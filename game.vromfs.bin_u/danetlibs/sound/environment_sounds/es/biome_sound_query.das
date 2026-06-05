@@ -4,7 +4,7 @@ require DagorMath
 require soundEvent
 require soundSystem
 require gpuReadbackQuery
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 
 
 def invalid_query_id()

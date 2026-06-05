@@ -18,6 +18,8 @@ let aamAimState = {
   IlsTrackerX = Watched(0.0)
   IlsTrackerY = Watched(0.0)
   IlsTrackerVisible = Watched(false)
+  CurRocketRelPosZ = Watched(0.0)
+  LastShotTime = Watched(0.0)
 
   GuidanceLockState = Watched(-1)
   GuidanceLockSnr = Watched(0.0)

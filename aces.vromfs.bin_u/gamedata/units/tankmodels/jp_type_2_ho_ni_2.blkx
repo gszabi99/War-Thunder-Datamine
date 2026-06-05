@@ -37,14 +37,13 @@
   "minDistBetween": 10.0,
   "expClass": "exp_tank_destroyer",
   "mass": 9700.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "cruiseVelocity": 0.0,
   "type": "typeTankDestroyer",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "DamageEffects": {
     "part": [
       {
@@ -1895,34 +1894,6 @@
       }
     }
   },
-  "ammoStowages": {
-    "ammo1": {
-      "weaponTrigger": "gunner0",
-      "removeLoadedAmmo": false,
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_turret_01_dm": {
-          "count": 4
-        },
-        "ammo_turret_dm": {
-          "count": 4
-        },
-        "ammo_body_01_dm": {
-          "count": 24
-        },
-        "ammo_body_02_dm": {
-          "count": 20
-        },
-        "ammo_body_03_dm": {
-          "count": 68
-        }
-      }
-    }
-  },
   "gunConvergence": {
     "defaultDistance": 800.0,
     "vertical": true,
@@ -2304,7 +2275,8 @@
       "restrainDamage": 0.5,
       "engine_dm": {},
       "transmission_dm": {},
-      "power_system_dm": {}
+      "power_system_dm": {},
+      "power_system_01_dm": {}
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
@@ -3222,9 +3194,7 @@
       "salvoAmount": 100.0,
       "ChainfireTime": 0.0,
       "DelayAfterShoot": 5.0,
-      "AttackMaxDistance": 2000.0,
       "AttackMaxRadius": 2000.0,
-      "AttackMaxHeight": 1000.0,
       "accuracyAir": 0.0,
       "accuracyGnd": 1.5,
       "errMeasureVel": 0.0,
@@ -3233,7 +3203,6 @@
       "errMeasureVelDir": 0.0,
       "errTargettingOn100kmph": 0.0,
       "errTargetting": 3.0,
-      "errExplTime": 0.0,
       "turret": {
         "head": "bone_turret",
         "gun": "bone_gun",
@@ -3380,6 +3349,79 @@
     "105mm_jp_HE": {},
     "105mm_jp_HEAT": {},
     "105mm_jp_HEAT_ammo_pack": {}
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": true,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_01_dm": {
+          "count": 1
+        },
+        "ammo_body_02_dm": {
+          "count": 1
+        },
+        "ammo_body_03_dm": {
+          "count": 1
+        },
+        "ammo_body_04_dm": {
+          "count": 1
+        },
+        "ammo_body_05_dm": {
+          "count": 1
+        },
+        "ammo_body_06_dm": {
+          "count": 1
+        },
+        "ammo_body_07_dm": {
+          "count": 1
+        },
+        "ammo_body_08_dm": {
+          "count": 1
+        },
+        "ammo_body_09_dm": {
+          "count": 1
+        },
+        "ammo_body_10_dm": {
+          "count": 1
+        },
+        "ammo_body_11_dm": {
+          "count": 1
+        },
+        "ammo_body_12_dm": {
+          "count": 1
+        },
+        "ammo_body_13_dm": {
+          "count": 1
+        },
+        "ammo_body_14_dm": {
+          "count": 1
+        },
+        "ammo_body_15_dm": {
+          "count": 1
+        },
+        "ammo_body_16_dm": {
+          "count": 1
+        },
+        "ammo_body_17_dm": {
+          "count": 1
+        },
+        "ammo_body_18_dm": {
+          "count": 1
+        },
+        "ammo_body_19_dm": {
+          "count": 1
+        },
+        "ammo_body_20_dm": {
+          "count": 1
+        }
+      }
+    }
   },
   "cockpit": {
     "zoomOutFov": 19.5,

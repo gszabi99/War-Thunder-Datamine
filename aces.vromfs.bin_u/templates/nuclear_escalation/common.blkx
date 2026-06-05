@@ -1,0 +1,145 @@
+{
+  "nuclear_escalation_target": {
+    "_group": {
+      "_tags": "server",
+      "nuclear_escalation_target__tag": "",
+      "nuclear_escalation_target__hash:u64": {
+        "value": 0
+      }
+    }
+  },
+  "nuclear_escalation_target_hunter": {
+    "_group": {
+      "_tags": "server",
+      "nuclear_escalation_target_hunter__target_tag": "",
+      "nuclear_escalation_target_hunter__hash:u64": {
+        "value": 0
+      }
+    }
+  },
+  "nuclear_escalation_tank": {
+    "_use": [
+      "delayed_destroy_dead_unit",
+      "aimer_custom_setting",
+      "custom_gun_properties",
+      "disable_radar_on_start",
+      "unit_death_substract_team_tickets"
+    ],
+    "physical_tracks__dontCreateTracks": true
+  },
+  "nuclear_escalation_spaa_radar_on": {
+    "_use": [
+      "unit_death_substract_team_tickets",
+      "restore_unit_by_timer",
+      "nuclear_escalation_target"
+    ],
+    "physical_tracks__dontCreateTracks": true
+  },
+  "nuclear_escalation_spaa_radar_off": {
+    "_use": [
+      "nuclear_escalation_spaa_radar_on",
+      "disable_radar_on_start"
+    ]
+  },
+  "nuclear_indicator": {
+    "nuclear_indicator__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "nuclear_indicator__yield": 0.0,
+    "nuclear_indicator__startTime": 0.0,
+    "nuclear_indicator__innerRadius": 0.0,
+    "nuclear_indicator__thermalRadius": 0.0,
+    "nuclear_indicator__outerRadius": 0.0
+  },
+  "nuclear_bomb_indicator": {
+    "_use": "nuclear_indicator",
+    "nuclear_indicator__flightTime": 0.0,
+    "nuclear_indicator__fontScale": 1.0,
+    "nuclear_indicator__innerBorderColor": [
+      0,
+      0,
+      0,
+      255
+    ],
+    "nuclear_indicator__innerFillColor": [
+      21,
+      77,
+      162,
+      100
+    ],
+    "nuclear_indicator__innerDotLineLength": 1.0,
+    "nuclear_indicator__thermalBorderColor": [
+      0,
+      0,
+      0,
+      255
+    ],
+    "nuclear_indicator__thermalFillColor": [
+      21,
+      77,
+      162,
+      100
+    ],
+    "nuclear_indicator__thermalDotLineLength": 0.5,
+    "nuclear_indicator__outerBorderColor": [
+      0,
+      0,
+      0,
+      255
+    ],
+    "nuclear_indicator__outerFillColor": [
+      22,
+      120,
+      125,
+      100
+    ],
+    "nuclear_indicator__outerDotLineLength": 0.0,
+    "nuclear_indicator__bomb:tag": {}
+  },
+  "nuclear_after_explosion_indicator": {
+    "_use": "nuclear_indicator",
+    "nuclear_indicator__fadeTime": 30.0,
+    "nuclear_indicator__innerBorderColor": [
+      22,
+      159,
+      197,
+      255
+    ],
+    "nuclear_indicator__innerFillColor": [
+      36,
+      28,
+      236,
+      100
+    ],
+    "nuclear_indicator__innerDotLineLength": 1.0,
+    "nuclear_indicator__thermalBorderColor": [
+      22,
+      159,
+      197,
+      255
+    ],
+    "nuclear_indicator__thermalFillColor": [
+      0,
+      0,
+      255,
+      100
+    ],
+    "nuclear_indicator__thermalDotLineLength": 1.0,
+    "nuclear_indicator__outerBorderColor": [
+      0,
+      0,
+      0,
+      255
+    ],
+    "nuclear_indicator__outerFillColor": [
+      22,
+      120,
+      125,
+      100
+    ],
+    "nuclear_indicator__outerDotLineLength": 0.0,
+    "nuclear_indicator__explosion:tag": {}
+  }
+}

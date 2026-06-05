@@ -27,7 +27,7 @@
   "instantDetectDistance": 60.0,
   "expClass": "exp_human",
   "sprintStaminaDrain": 1.5,
-  "jumpStaminaDrain": 13.0,
+  "jumpStaminaDrain": 20.0,
   "sprintSpeed": 6.0,
   "standAimPos": [
     0.1,
@@ -52,7 +52,7 @@
   "restStaminaRestore": 5.0,
   "sprintStartStaminaLevel": 6.0,
   "sprintEndStaminaLevel": 0.0,
-  "maxClimbSpeed": 1.5,
+  "maxClimbSpeed": 2.5,
   "climbVertAccel": 9.0,
   "climbVertBrake": 35.0,
   "climbVertBrakeMaxTime": 0.2,
@@ -99,7 +99,7 @@
   "sprintJumpVertSpeed": 2.0,
   "crawlVertAimAngles": [
     -40.0,
-    50.0
+    90.0
   ],
   "maxCrawlObstacleHeight": 0.2,
   "isInertMovement": true,
@@ -163,6 +163,11 @@
   "customClassIco": "!#ui/gameuiskin#infantry_ico.svg",
   "supportUnitClass": "structures/ussr_122mm_m30",
   "supportUnitTag": "artillery",
+  "helmetProtectionTemplate": "rank3_helmet_medium_class_3a_protection",
+  "bodyProtectionTemplate": "rank3_body_armor_medium_class_3_protection",
+  "commonSkinPreset": "appearanceArmor03",
+  "armorDefaultLangId": "modification/bulletproof_vest_medium",
+  "armorDefaultIcon": "!#ui/gameuiskin#medium_armor.avif",
   "cockpit": {
     "headPos": [
       0.0,
@@ -558,9 +563,9 @@
       "moveToSpd": 20.5,
       "vertOffsetRestoreVisc": 0.65,
       "vertOffsetMoveDownVisc": 0.75,
-      "breathShakeMagnitude": 0.01,
-      "crouchBreathShakeMagnitude": 0.005,
-      "crawlBreathShakeMagnitude": 0.0005,
+      "breathShakeMagnitude": 0.02,
+      "crouchBreathShakeMagnitude": 0.012,
+      "crawlBreathShakeMagnitude": 0.007,
       "gunLen": 0.4,
       "offsCheckRightNode": [
         0.0,
@@ -599,8 +604,8 @@
         0.45,
         -0.05
       ],
-      "holsterTime": 1.0,
-      "equipTime": 0.4,
+      "holsterTime": 0.8,
+      "equipTime": 0.6,
       "walkMoveMagnitude": 0.0,
       "predictTime": 0.1,
       "targetSpdVisc": 0.1,
@@ -610,9 +615,9 @@
       "moveToSpd": 20.5,
       "vertOffsetRestoreVisc": 0.65,
       "vertOffsetMoveDownVisc": 0.75,
-      "breathShakeMagnitude": 0.01,
-      "crouchBreathShakeMagnitude": 0.005,
-      "crawlBreathShakeMagnitude": 0.0005,
+      "breathShakeMagnitude": 0.02,
+      "crouchBreathShakeMagnitude": 0.012,
+      "crawlBreathShakeMagnitude": 0.007,
       "gunLen": 0.4,
       "offsCheckRightNode": [
         0.0,
@@ -651,9 +656,9 @@
         0.45,
         -0.05
       ],
-      "equipSpeedMult": 3.0,
-      "holsterSwapSpeedMult": 2.5,
-      "holsterTime": 1.2,
+      "equipSpeedMult": 1.0,
+      "holsterSwapSpeedMult": 1.0,
+      "holsterTime": 0.8,
       "equipTime": 0.6,
       "walkMoveMagnitude": 0.0,
       "predictTime": 0.1,
@@ -664,9 +669,9 @@
       "moveToSpd": 20.5,
       "vertOffsetRestoreVisc": 0.65,
       "vertOffsetMoveDownVisc": 0.75,
-      "breathShakeMagnitude": 0.01,
-      "crouchBreathShakeMagnitude": 0.005,
-      "crawlBreathShakeMagnitude": 0.0005,
+      "breathShakeMagnitude": 0.02,
+      "crouchBreathShakeMagnitude": 0.012,
+      "crawlBreathShakeMagnitude": 0.007,
       "gunLen": 0.4
     },
     "quaternary": {
@@ -700,9 +705,9 @@
         0.45,
         -0.05
       ],
-      "equipSpeedMult": 3.0,
-      "holsterSwapSpeedMult": 2.5,
-      "holsterTime": 1.2,
+      "equipSpeedMult": 1.0,
+      "holsterSwapSpeedMult": 1.0,
+      "holsterTime": 0.8,
       "equipTime": 0.6,
       "walkMoveMagnitude": 0.0,
       "predictTime": 0.1,
@@ -713,9 +718,9 @@
       "moveToSpd": 20.5,
       "vertOffsetRestoreVisc": 0.65,
       "vertOffsetMoveDownVisc": 0.75,
-      "breathShakeMagnitude": 0.01,
-      "crouchBreathShakeMagnitude": 0.005,
-      "crawlBreathShakeMagnitude": 0.0005,
+      "breathShakeMagnitude": 0.02,
+      "crouchBreathShakeMagnitude": 0.012,
+      "crawlBreathShakeMagnitude": 0.007,
       "gunLen": 0.4
     },
     "melee": {
@@ -763,5 +768,129 @@
       "equipTime": 0.5
     }
   },
-  "modifications": {}
+  "modifications": {
+    "scope_ksvk_12_7": {},
+    "shotgun_ks_p": {},
+    "at_laucher_rpg_7": {},
+    "mpads_igla": {},
+    "strike_drone": {},
+    "fpv_drone": {},
+    "stun_grenade": {},
+    "smoke_grenade": {},
+    "explosive_charge": {},
+    "bulletproof_vest_light": {},
+    "bulletproof_vest_light_ghillie": {},
+    "sidearms_pistol_mp_443": {},
+    "human_medkit": {}
+  },
+  "WeaponSlots": {
+    "WeaponSlot": [
+      {
+        "index": 2,
+        "WeaponPreset": [
+          {
+            "name": "ussr_recon_drone",
+            "ecsTemplate": "uav_inf_recon_drone_item"
+          },
+          {
+            "name": "ussr_kamikaze_drone",
+            "ecsTemplate": "ussr_uav_inf_strike_drone_item",
+            "reqModification": "strike_drone"
+          },
+          {
+            "name": "ussr_fpv_drone",
+            "ecsTemplate": "uav_inf_fpv_strike_drone_item",
+            "reqModification": "fpv_drone"
+          },
+          {
+            "name": "ks_p",
+            "ecsTemplate": "ks_p_18_5_gun",
+            "inventoryItemEcsTemplate": "ks_p_18_5_magazine",
+            "inventoryItemNum": 5,
+            "reqModification": "shotgun_ks_p"
+          },
+          {
+            "name": "rpg_7_default",
+            "ecsTemplate": "rpg_7_default_gun",
+            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "rpg_7",
+            "ecsTemplate": "rpg_7_gun",
+            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
+            "inventoryItemNum": 4,
+            "reqModification": "at_laucher_rpg_7"
+          },
+          {
+            "name": "mpads_igla",
+            "ecsTemplate": "mpads_igla_gun",
+            "inventoryItemEcsTemplate": "9m39_missile_item",
+            "inventoryItemNum": 2,
+            "reqModification": "mpads_igla"
+          },
+          {
+            "name": "medic_box",
+            "ecsTemplate": "medic_box_item"
+          },
+          {
+            "name": "ammo_box",
+            "ecsTemplate": "ammo_box_item"
+          },
+          {
+            "name": "explosives_box_item",
+            "ecsTemplate": "explosives_box_item"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "WeaponPreset": [
+          {
+            "name": "frag_grenade",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "frag_grenade_medium",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 2
+          },
+          {
+            "name": "frag_grenade_light",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 1
+          },
+          {
+            "name": "smoke_grenade",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 2,
+            "reqModification": "smoke_grenade"
+          },
+          {
+            "name": "smoke_grenade_light",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 1,
+            "reqModification": "smoke_grenade"
+          }
+        ]
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "ksvk_12_7_default",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/ussr_class_sniper_preset_1.blk"
+      },
+      {
+        "name": "ksvk_12_7_preset_2",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/ussr_class_sniper_preset_2.blk"
+      },
+      {
+        "name": "ksvk_12_7_preset_3",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/ussr_class_sniper_preset_3.blk"
+      }
+    ]
+  }
 }

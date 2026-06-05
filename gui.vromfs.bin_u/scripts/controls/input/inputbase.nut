@@ -16,7 +16,7 @@ let InputBase = class {
   
 
 
-  function getMarkup(_hasHoldButtonSign = false) {
+  function getMarkup() {
     return ""
   }
 

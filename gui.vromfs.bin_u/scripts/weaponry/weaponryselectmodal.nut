@@ -8,11 +8,9 @@ let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj
 } = require("%sqDagui/daguiUtil.nut")
 let { ceil, sqrt } = require("math")
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultTorpedoes,
-  needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, setLastWeapon, isWeaponEnabled, isDefaultTorpedoes,
+  needSecondaryWeaponsWnd, isWeaponUnavailableInMission } = require("%scripts/weaponry/weaponryInfo.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { isInFlight } = require("gameplayBinding")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let { getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
 let { INF_VIEW_SIZE_MULTIPLIER } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -30,7 +28,6 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
   let curWeaponName = params.getLastWeapon(unit.name)
-  let hasOnlySelectable = !isInFlight() || !getCurMissionRules().isWorldWar
   let isForcedAvailable = params.isForcedAvailable
   let forceShowDefaultTorpedoes = params?.forceShowDefaultTorpedoes ?? false
   let onChangeValueCb = function(weapon) {
@@ -42,12 +39,10 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
   let lastBullets = getUnitLastBullets(unit)
   let uniqueSpawnScores = {}
   foreach (weapon in unit.getWeapons()) {
-    let needShowDefTorpedoes = forceShowDefaultTorpedoes && isDefaultTorpedoes(weapon)
-    if (!isForcedAvailable && !needShowDefTorpedoes
-        && (!isWeaponVisible(unit, weapon, hasOnlySelectable)
-          || (hasOnlySelectable && !isWeaponEnabled(unit, weapon))))
+    if (isWeaponUnavailableInMission(unit, weapon, isForcedAvailable, forceShowDefaultTorpedoes))
       continue
 
+    let needShowDefTorpedoes = forceShowDefaultTorpedoes && isDefaultTorpedoes(weapon)
     let spawnScore = shop_get_spawn_score(unit.name, weapon.name, lastBullets, true, true)
     uniqueSpawnScores[spawnScore] <- true
     list.append({

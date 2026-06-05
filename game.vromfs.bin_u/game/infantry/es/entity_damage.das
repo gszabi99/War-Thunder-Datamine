@@ -607,7 +607,7 @@ def format_segment_hit_chances(hit_chances : array<float>)
       if hitChance == -1.0
         str |> write("N/A    ")
       else
-        str |> write("{format("%.2f", hitChance)}  ")
+        str |> write("{fmt(":.2f", hitChance)}  ")
   return res
 
 
@@ -861,8 +861,7 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
       damage_debug_msg("------PROJECTILE HIT------")
       damage_debug_msg("eid: {eid}")
       damage_debug_msg("---COLLISION---")
-      let collNode = collres_get_node(collres, collNodeId)
-      let collNodeName = collNode == null ? "ERROR!" : (*collNode).name
+      let collNodeName = collres_get_node_name(collres, collNodeId)
       damage_debug_msg("node name: {collNodeName}, node idx: {collNodeId}, dmg mult: {dmgMult}, dot mult: {dotMult}, dmg type mult: {damageTypeMult}")
 
     let projectileSpeed = length(vel)
@@ -982,8 +981,7 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
       damage_debug_msg("------SHATTER HIT------")
       damage_debug_msg("eid: {hit_data.victim}")
       damage_debug_msg("---COLLISION---")
-      let collNode = collres_get_node(collres, collNodeId)
-      let collNodeName = collNode == null ? "ERROR!" : (*collNode).name
+      let collNodeName = collres_get_node_name(collres, collNodeId)
       damage_debug_msg("node name: {collNodeName}, node idx: {collNodeId}, dmg mult: {dmgMult}, dot mult: {dotMult}, dmg type mult: {damageTypeMult}")
 
     

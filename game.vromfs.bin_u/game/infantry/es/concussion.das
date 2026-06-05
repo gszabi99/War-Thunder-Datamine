@@ -3,6 +3,7 @@ require math.interpolation
 require DagorMath
 
 require %appGame.wt_events
+require %game.events
 require %appGame.infantry.es.concussion_common
 require PropsManager
 require DaWeapons
@@ -192,13 +193,22 @@ def apply_concussion_shake_mult(evt : Event;
   concussion__handsShakeMagnitude = max(0., concussion__handsShakeMagnitude * entity_mods__concussionShakeMult)
   concussion__handsShakeSpeedMult = max(0., concussion__handsShakeSpeedMult * entity_mods__concussionShakeMult)
 
-
-[es(tag=gameClient, on_appear, track=(concussion__isActive, concussion__lookSensMult))]
-def concussion_update_look_sens_mult(evt : Event;
+[es(tag=gameClient)]
+def concussion_update_look_sens_mult(info : ParallelUpdateFrameDelayed;
                                      concussion__isActive : bool;
+                                     concussion__endTime : float;
                                      concussion__lookSensMult : float;
+                                     concussion__lookSensFadeTime : float = 2.0;
                                      var human_input__concussionSensMult : float&)
-  human_input__concussionSensMult = concussion__isActive ? concussion__lookSensMult : 1.0
+  if concussion__isActive
+    let timeLeft = concussion__endTime - info.curTime
+    if concussion__lookSensFadeTime > 0.0 && timeLeft < concussion__lookSensFadeTime
+      let t = min(1.0, 1.0 - timeLeft * safeinv(concussion__lookSensFadeTime))
+      human_input__concussionSensMult = lerp(concussion__lookSensMult, 1.0, t)
+    else
+      human_input__concussionSensMult = concussion__lookSensMult
+  else
+    human_input__concussionSensMult = 1.0
 
 
 [es(tag=gameClient, on_appear, track=(concussion__isActive, concussion__lookInertia))]

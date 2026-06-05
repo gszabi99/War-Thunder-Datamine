@@ -27,6 +27,8 @@ let agmAimState = {
   LockReleaseRadiusW = Watched(0.0)
 
   MinSightFovScrSize = Watched(0.0)
+
+  AgmBlockedState = Watched(0)
 }
 
 interopGen({

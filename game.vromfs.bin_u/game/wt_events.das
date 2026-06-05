@@ -62,6 +62,11 @@ struct CmdPlayLootSound
   hash : uint
   time : float
 
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct CmdHumanBackblastTinnitus
+  position : float3
+  power : float
+
 [cpp_event(unicast)]
 struct EventAnimIrq
   irqType : int
@@ -92,6 +97,12 @@ struct RequestBipodPlacing
 [cpp_event(unicast, with_scheme)]
 struct EventToggleHydrophoneMode
 {}
+
+[cpp_event(broadcast, with_scheme)]
+struct EventOnShotImpulse
+  pos : float3
+  impulse_radius : float
+  offender_eid : EntityId
 
 [cpp_event(broadcast, with_scheme)]
 struct EventOnVisualExplosion
@@ -786,6 +797,11 @@ struct EventCalcAndVerifySpawnTm
   verified : bool
   requestPos : float3
 
+[cpp_event(broadcast)]
+struct EventGetZoneEntityById
+  zoneId : int
+  result : EntityId
+
 [event(unicast)]
 struct EventResetSpawnOnUnitEid {}
 
@@ -837,3 +853,22 @@ struct CmdRecalcMagazineWeight {}
 
 [event(unicast)]
 struct CmdRecalcHumanWeight {}
+
+[cpp_event(broadcast)]
+struct EventAirfieldActiveStateChanged
+  airfieldId : int
+  active : bool
+
+[event(unicast)]
+struct CmdUnitAttackTarget {}
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct HumanRequestReload
+  atTime : float
+  gunEid : EntityId
+  isQuick : bool
+
+[event(broadcast, routing=ROUTING_CLIENT_TO_SERVER)]
+struct CmdDebugTestAIAimRay
+  pos1 : float3
+  pos2 : float3

@@ -1122,34 +1122,39 @@
   "75mm_britain_APCBC": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 6.53,
+      "mass": 6.79,
+      "explosiveType": "exp_d",
+      "explosiveMass": 0.065,
       "caliber": 0.075,
       "speed": 618.0,
-      "Cx": 0.5,
+      "Cx": 0.379,
       "maxDistance": 10000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "groundRicochetPreset": "apbc_ground",
-      "secondaryShattersPreset": "ap_large_caliber",
+      "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apcbc_solid_medium_caliber_tank",
+      "bulletType": "apcbc_tank",
       "slopeEffectPreset": "apc",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/ap.ivf",
-      "bulletName": "75mm_m61_solid",
+      "shellAnimation": "video/shells_animations/aphe.ivf",
+      "bulletName": "75mm_m61",
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "checkIntegrityAfterExplosion": true,
+      "fuseDelayDist": 1.2,
+      "explodeTreshold": 14.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -1203,6 +1208,47 @@
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
+        }
+      },
+      "testProperties": {
+        "checkIntegrityAfterExplosion": true,
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.6,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 0.75,
+                "damageScale": 1.5,
+                "angles": [
+                  0.0,
+                  180.0
+                ],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.75,
+                "angles": [
+                  45.0,
+                  105.0
+                ],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.5,
+                "angles": [
+                  130.0,
+                  180.0
+                ],
+                "countPortion": 0.1
+              }
+            ]
+          }
         }
       },
       "visual": {

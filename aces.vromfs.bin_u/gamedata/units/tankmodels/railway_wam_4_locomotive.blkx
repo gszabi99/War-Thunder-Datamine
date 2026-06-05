@@ -26,8 +26,8 @@
     "vehicle"
   ],
   "maxFwdSpeed": [
-    60.0,
-    60.0
+    75.0,
+    75.0
   ],
   "maxRevSpeed": [
     10.0,
@@ -73,22 +73,6 @@
     60000.0,
     300000.0
   ],
-  "bulletHitFx": [
-    "ground_model_hit",
-    "ground_model_hit"
-  ],
-  "partDamageFx": [
-    "part_damage",
-    "part_damage"
-  ],
-  "explosionFx": [
-    "tank_explosion",
-    "tank_explosion"
-  ],
-  "fireFx": [
-    "ground_model_fire",
-    "ground_model_fire"
-  ],
   "destroysRendInstances": [
     false,
     true
@@ -101,6 +85,9 @@
     "typeLightTank",
     "typeLightTank"
   ],
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "onRadarAs": "tracked",
   "isDynamicObstacle": true,
   "isConstantlyWinchable": true,
@@ -284,6 +271,10 @@
         "armorThrough": 3.0
       },
       "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
       }
@@ -1011,10 +1002,7 @@
       "part": "body_dm"
     }
   },
-  "class_tags": [
-    {},
-    {}
-  ],
+  "class_tags": {},
   "unitFx": {
     "event": [
       {

@@ -1568,7 +1568,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1579,7 +1579,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1590,7 +1590,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1601,7 +1601,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1612,7 +1612,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1684,7 +1684,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1695,7 +1695,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1706,7 +1706,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1717,7 +1717,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1728,7 +1728,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1800,7 +1800,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1811,7 +1811,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1822,7 +1822,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1833,7 +1833,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1844,7 +1844,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -1916,7 +1916,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -1927,7 +1927,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -1938,7 +1938,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -1949,7 +1949,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -1960,7 +1960,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2788,6 +2788,10 @@
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7.blk"
       },
       {
+        "name": "buccaneer_s2_matra155",
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra155.blk"
+      },
+      {
         "name": "buccaneer_s2_agm_12",
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12.blk"
       },
@@ -2958,7 +2962,6 @@
           {
             "iconType": "nar_he_large",
             "name": "matra_7",
-            "reqModification": "uk_matra_7",
             "ShowNodes": {
               "node": "early_short_pylon1"
             },
@@ -2966,6 +2969,20 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "uk_matra_7_launcher1"
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "matra_155",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": "early_short_pylon1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "uk_matra_7_launcher1"
             }
           },
@@ -3068,7 +3085,6 @@
           {
             "iconType": "nar_he_large",
             "name": "matra_7",
-            "reqModification": "uk_matra_7",
             "ShowNodes": {
               "node": "early_short_pylon2"
             },
@@ -3076,6 +3092,20 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "uk_matra_7_launcher3"
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "matra_155",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": "early_short_pylon2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "uk_matra_7_launcher3"
             }
           },
@@ -3410,7 +3440,6 @@
           {
             "iconType": "nar_he_large",
             "name": "matra_7",
-            "reqModification": "uk_matra_7",
             "ShowNodes": {
               "node": "early_short_pylon3"
             },
@@ -3418,6 +3447,20 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "uk_matra_7_launcher4"
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "matra_155",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": "early_short_pylon3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "uk_matra_7_launcher4"
             }
           },
@@ -3728,7 +3771,6 @@
           {
             "iconType": "nar_he_large",
             "name": "matra_7",
-            "reqModification": "uk_matra_7",
             "ShowNodes": {
               "node": "early_short_pylon4"
             },
@@ -3736,6 +3778,20 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/matra_7.blk",
+              "emitter": "uk_matra_7_launcher2"
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "matra_155",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": "early_short_pylon4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "uk_matra_7_launcher2"
             }
           },
@@ -4151,86 +4207,6 @@
     "maxSpeedMultiplier": 1.01,
     "wepOverspeed": 1.05
   },
-  "wiki": {
-    "general": {
-      "length": 12.62,
-      "wingspan": 11.23,
-      "wingArea": 32.56,
-      "emptyWeight": 5382.6,
-      "normalWeight": 7020.07,
-      "maxTakeoffWeight": 8061.0,
-      "powerPlantType": 2,
-      "thrustMaxMil": 26800.0
-    },
-    "performance": {
-      "table": {
-        "rpmMil": 14700.0,
-        "airSpeedMil0": [
-          100.0,
-          962.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          40.2
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          51.7775
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          107.129
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          178.27
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          278.663
-        ],
-        "turnTimeMil": [
-          1000.0,
-          23.0
-        ],
-        "takeoffDistance": 678.83,
-        "ceiling": 12000.0,
-        "rollRate": 137.0,
-        "wingLoading": 216.0,
-        "thrustToWeightRatio": 0.43
-      },
-      "plot": {
-        "airSpeedMil0": [
-          0.0,
-          962.0
-        ],
-        "airSpeedMil1": [
-          12000.0,
-          864.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          40.2
-        ],
-        "climbRateMil1": [
-          3000.0,
-          37.5
-        ],
-        "climbRateMil2": [
-          7500.0,
-          18.5
-        ],
-        "climbRateMil3": [
-          9100.0,
-          12.8
-        ],
-        "climbRateMil4": [
-          12000.0,
-          10.8
-        ]
-      }
-    }
-  },
   "balanceData": {
     "accSpd": 2.97924,
     "climbSpeed": 40.2,
@@ -4262,14 +4238,31 @@
         "elevatorBooster": 0.9
       }
     },
-    "uk_matra_7": {
-      "modClass": "weapon",
-      "tier": 1
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_belt_pack": {
+      "group": "countermeasures",
+      "modClass": "armor",
+      "tier": 1,
+      "deactivationIsAllowed": false
+    },
+    "automatic_air_extinguisher": {
+      "tier": 3,
+      "modClass": "armor",
+      "invertEnableLogic": false
     },
     "uk_rp3_mk12": {
       "modClass": "weapon",
+      "tier": 1
+    },
+    "fr_matra_sneb": {
+      "modClass": "weapon",
+      "reqModification": "uk_rp3_mk12",
+      "tier": 2
+    },
+    "us_aim_9b": {
+      "prevModification": "fr_matra_sneb",
       "tier": 3,
-      "reqModification": "uk_matra_7"
+      "modClass": "weapon"
     },
     "buccaneer_540lb": {
       "tier": 1,
@@ -4284,23 +4277,6 @@
       "reqModification": "uk_mk_10_1000lb",
       "tier": 4,
       "modClass": "weapon"
-    },
-    "countermeasures_launcher_chaff_large": {},
-    "countermeasures_belt_pack": {
-      "group": "countermeasures",
-      "modClass": "weapon",
-      "tier": 1,
-      "deactivationIsAllowed": false
-    },
-    "us_aim_9b": {
-      "reqModification": "countermeasures_belt_pack",
-      "tier": 3,
-      "modClass": "weapon"
-    },
-    "automatic_air_extinguisher": {
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
     }
   },
   "parachutes": {

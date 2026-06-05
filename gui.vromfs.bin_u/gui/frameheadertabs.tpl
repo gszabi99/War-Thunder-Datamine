@@ -88,7 +88,7 @@ shopFilter {
     value:t='{"viewId": "SHOP_PAGES_REMAINING_TIME_UNIT"}'
     tooltip:t='$tooltipObj'
     tooltipObj {
-      tooltipId:t='{"id":"remainingTimeUnit", "ttype":"REMAINING_TIME_UNIT", "countryId": "<<countryId>>", "armyId": "<<armyId>>"}'
+      tooltipId:t='{"id":"remainingTimeUnit", "ttype":"REMAINING_TIME_UNIT", "countryId": "<<countryId>>", "armyId": "<<armyId>>", "hasOpenHint": false}'
       on_tooltip_open:t='onGenericTooltipOpen'
       on_tooltip_close:t='onTooltipObjClose'
       display:t='hide'
@@ -120,7 +120,7 @@ shopFilter {
     text:t='<<text>>'
     tooltip:t='$tooltipObj'
     tooltipObj {
-      tooltipId:t='{"id":"discountsMarker", "ttype":"DISCOUNTS", "countryId": "<<countryId>>", "armyId": "<<armyId>>"}'
+      tooltipId:t='{"id":"discountsMarker", "ttype":"DISCOUNTS", "countryId": "<<countryId>>", "armyId": "<<armyId>>", "hasOpenHint": false}'
       on_tooltip_open:t='onGenericTooltipOpen'
       on_tooltip_close:t='onTooltipObjClose'
       display:t='hide'

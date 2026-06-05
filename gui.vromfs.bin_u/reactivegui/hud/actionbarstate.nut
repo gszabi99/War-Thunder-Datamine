@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let { subscribe, send, eventbus_subscribe, eventbus_send} = require("eventbus")
 let { resetTimeout } = require("dagor.workcycle")
+let { getActionBarItems } = require("hudActionBar")
 let extWatched = require("%rGui/globals/extWatched.nut")
 
 let isActionBarCollapsed = Watched(false)
@@ -13,6 +14,16 @@ let actionBarSize = Watched(null)
 let actionBarActionsCount = Watched(0)
 let actionBarCollapseShText = Watched("")
 let collapseBtnPressedTime = Watched(0)
+
+let actionBarRect = Computed(function calcActionBarRect() {
+  if (!isActionBarVisible.get() || isActionBarCollapsed.get())
+    return null
+  let pos = actionBarPos.get()
+  let size = actionBarSize.get()
+  if (pos == null || size == null)
+    return null
+  return { x = pos[0], y = pos[1], w = size[0], h = size[1] }
+})
 
 const HINT_SHOW_TIME = 3
 const HIDE_BTN_PRESS_TIME = 1.5
@@ -65,6 +76,31 @@ function onCollapseShortcutPress(v) {
   }
 }
 
+function getActionBarItemRectByType(actionType) {
+  let pos = actionBarPos.get()
+  let size = actionBarSize.get()
+  if (pos == null || size == null)
+    return null
+
+  let idx = getActionBarItems().findindex(@(it) it.type == actionType)
+  if (idx == null)
+    return null
+
+  let count = actionBarActionsCount.get()
+  if (idx >= count)
+    return null
+
+  let [posX, posY] = pos
+  let [w, h] = size
+  let actionW = w / count
+  return {
+    x = posX + idx * actionW
+    y = posY
+    w = actionW
+    h
+  }
+}
+
 eventbus_subscribe("onCollapseActionBarBtn", onCollapseShortcutPress)
 subscribe("setIsActionBarVisible", @(v) isActionBarVisible.set(v))
 subscribe("setIsActionBarCollapsed", @(v) isActionBarCollapsed.set(v))
@@ -91,4 +127,6 @@ return {
   actionBarSize
   actionBarCollapseShText
   actionBarActionsCount
+  getActionBarItemRectByType
+  actionBarRect
 }

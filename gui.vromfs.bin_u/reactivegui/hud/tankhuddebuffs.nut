@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { PI, cos, sin, roundToDigits } = require("%sqstd/math.nut")
-let { dmgIndicatorWidth } = require("%rGui/hud/tankDmgIndicatorState.nut")
+let { dmgIndicatorWidth } = require("%rGui/hud/dmgIndicatorState.nut")
 let { userOptDamageIndicatorSize } = require("%rGui/options/options.nut")
 let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/components/tooltip.nut")
@@ -10,6 +10,7 @@ let { rpm, cruiseControlValue, gear, speed, hasSpeedWarning,
 let { tracksData, turretDriveData, gunData, engineData,
   engineOverheatState, fireState, reInitTankDebuffsStates } = require("%rGui/hud/tankHudDebuffsState.nut")
 let { crewState, crewGunnerState, crewDriverState, distance, reInitHudCrewStates } = require("%rGui/hud/tankHudCrewState.nut")
+let { isSpectatorMode } = require("%rGui/hudState.nut")
 
 const MIN_CREW_COUNT_FOR_WARNING = 2
 
@@ -35,7 +36,10 @@ let fontParams = {
   small = { font = Fonts.tiny_text_hud }
 }
 
-let fontParamsByScale = Computed(@() fontParams?[userOptDamageIndicatorSize.get()] ?? fontParams.small)
+let fontParamsByScale = Computed(@() (isSpectatorMode.get()
+  ? fontParams?[-2]
+  : fontParams?[userOptDamageIndicatorSize.get()]) ?? fontParams.small)
+
 let compSize = Computed(@() even(dmgIndicatorWidth.get() / 7))
 let indicatorSize = Computed(@() dmgIndicatorWidth.get())
 

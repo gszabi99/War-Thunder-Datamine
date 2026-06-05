@@ -16,7 +16,7 @@ let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) 
@@ -337,17 +337,19 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let costGold = "goldCost" in product ? get_entitlement_cost_gold(product.name) : 0
     let price = Cost(0, costGold)
-    let msgText = warningIfGold(
+    let text = warningIfGold(
       loc("onlineShop/needMoneyQuestion",
         { purchase = getEntitlementName(product), cost = price.getTextAccordingToBalance() }),
       price)
     let curIdx = this.scene.findObject("items_list").getValue()
-    let onCallbackYes = Callback(function() {
-      if (checkBalanceMsgBox(price))
-        this.goForwardIfPurchase(curIdx)
-    }, this)
-    let onCallbackNo = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
-    purchaseConfirmation("purchase_ask", msgText, onCallbackYes, onCallbackNo)
+    let callbackYes = Callback(
+      @() checkBalanceMsgBox(price)
+            ? this.goForwardIfPurchase(curIdx)
+            : null
+      , this
+    )
+    let callbackNo = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
+    purchaseConfirmation({ id = "purchase_ask", text, callbackYes, callbackNo }, price)
   }
 
   function onApply(_obj) {

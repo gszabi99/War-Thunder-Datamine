@@ -8,6 +8,7 @@ require HeroManager
 require hud
 require math
 require Plane
+require RadarHud
 require strings
 require Unit
 require Weapon
@@ -17,6 +18,7 @@ require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
 require %rGui.utils.helpers_common
 require %rGui.utils.weaponslots_common
+require Localization
 
 struct PropStorage
   fontId : int
@@ -89,7 +91,6 @@ class Component : Canvas
           aaAmmo += slot.curAmmo
           aaMaxAmmo += slot.maxAmmo
         elif (slot.trigger == int(WeaponTriggerType.AGM_TRIGGER)
-          || slot.trigger == int(WeaponTriggerType.AGM_TRIGGER)
           || slot.trigger == int(WeaponTriggerType.BOMBS_TRIGGER)
           || slot.trigger == int(WeaponTriggerType.GUIDED_BOMBS_TRIGGER)
           || slot.trigger == int(WeaponTriggerType.ROCKETS_TRIGGER))
@@ -447,7 +448,7 @@ class Component : Canvas
           drawLine(arrowStart, arrowEnd)
 
           let textPos = fast_normalize(clampedPos) * (length(clampedPos) - arrowOffset - arrowLineLength - 0.05)
-          let angleToTarget = acos(dot(tracking.dirNorm, hero.unitTm[0])) * radToDeg
+          let angleToTarget = safe_acos(dot(tracking.dirNorm, hero.unitTm[0])) * radToDeg
           let arrowText = fmt(":03d", roundi(angleToTarget))
           drawStrAnchored(textPos, arrowText, AnchorHorz.Center, AnchorVert.Center)
 
@@ -570,10 +571,39 @@ class Component : Canvas
     let aamLockState = get_aam_guidance_lock_state()
     return if aamLockState != GuidanceLockState.RESULT_TRACKING && aamLockState != GuidanceLockState.RESULT_LOCK_AFTER_LAUNCH
 
+    let distance = get_radar_hud_aam_launch_zone_dist()
+    let maxDistance = get_radar_hud_aam_launch_zone_dist_max()
+
+    if get_radar_hud_aam_launch_zone_visible() && distance > maxDistance
+      return
+
     let pos = float2(0.0, 0.2)
     setFontSize(35)
     setTextAnchorHorz(AnchorHorz.Center)
     drawStr(pos, "SHOOT")
+
+    drawBox(pos - float2(0.07, 0.04), pos + float2(0.07, 0.02))
+    drawBox(pos - float2(0.078, 0.048), pos + float2(0.078, 0.028))
+
+    let curRocketIndicatorPos = float2(0.2, 0.3)
+
+    if get_cur_rocket_hor_pos() > 0.0
+      drawStrAnchored(curRocketIndicatorPos, "L", AnchorHorz.Center, AnchorVert.Center)
+    else
+      drawStrAnchored(curRocketIndicatorPos, "R", AnchorHorz.Center, AnchorVert.Center)
+    drawCircle(curRocketIndicatorPos, 0.025)
+
+  def drawAfterShotIndicator()
+    let curTime = get_sync_time()
+    let lastShotTime = get_aam_last_shot_time()
+
+    if lastShotTime <= 0.0 || curTime - lastShotTime > 5.0
+      return
+
+    let pos = float2(0.0, 0.3)
+    setFontSize(35)
+    setTextAnchorHorz(AnchorHorz.Center)
+    drawStr(pos, "BREAK")
 
 
   def drawCcrpMark()
@@ -661,6 +691,7 @@ class Component : Canvas
     draw_closure_rate(state, self, /*pos*/ float2(0.12, 0.1), /*ft_sz*/ 35, isMetricUnits)
     draw_dynamic_launch_zone(state, self, /*pos*/ float2(0.25, 0.115), /*size*/ float2(0.04, 0.25), /*ft_sz*/ 35, isMetricUnits)
     drawShootIndicator()
+    drawAfterShotIndicator()
     drawCriticalSpeedWarning()
     drawOutOfAmmo()
     drawAttackImpossible()

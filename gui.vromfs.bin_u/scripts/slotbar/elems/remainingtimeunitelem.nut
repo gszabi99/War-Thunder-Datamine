@@ -15,6 +15,7 @@ let { getSortedUnits, createMoreText
   maxElementsInSimpleTooltip } = require("%scripts/markers/markerTooltipUtils.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { buildTimeTextValue } = require("%scripts/markers/markerUtils.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 elemModelType.addTypes({
   REMAINING_TIME_UNIT = {
@@ -130,7 +131,7 @@ elemViewType.addTypes({
       let isVisible = isActive && showMarker
       obj.show(isVisible)
       if (isVisible)
-        obj.tooltip = loc("mainmenu/promoteUnit")
+        obj.tooltip = $"{loc("mainmenu/promoteUnit")}{"\n"}{loc("mainmenu/openLimitBuyWndHint")}"
     }
   }
 })
@@ -154,7 +155,7 @@ addTooltipTypes({
       if (obj.getParent()?["stacked"] == "yes")
         return false
       local idCounter = 0
-      let { countryId = "", armyId = "" } = params
+      let { countryId = "", armyId = "", hasOpenHint = true } = params
       let units = getSortedUnits(promoteUnits.get().filter(@(u) u.isActive).values())
       local remainingUnits = countryId == "" ? units : units.filter(@(val) val.unit.shopCountry == countryId)
       remainingUnits = armyId == "" ? remainingUnits : remainingUnits.filter(@(val) val.unit.unitType.armyId == armyId)
@@ -187,6 +188,8 @@ addTooltipTypes({
         isTooltipWide = true
         needTimer = true
         unitsCount
+        hasOpenHint
+        isPC = !showConsoleButtons.get()
       })
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       obj.findObject("timeLeftTimer").setUserData(this)

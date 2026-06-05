@@ -5,7 +5,7 @@ require vehicle
 require soundEvent
 require soundHash
 require sound_utils.modules.sound_player_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 
 
 [es(tag=sound, after=sound_begin_update_es, before=sound_end_update_es)]
@@ -19,7 +19,8 @@ def ground_vehicle_brakes_sound(info : ParallelUpdateFrameDelayed;
                                 is_watched_sound : bool;
                                 @shared_comp ground_vehicle_brakes_sound__path : Object;
                                 sound_tags : Object;
-                                transform : float3x4)
+                                transform : float3x4;
+                                vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
 
   assume currentState = vehicle_net_phys.phys.currentState
   assume event = ground_vehicle_brakes_sound__event
@@ -35,5 +36,5 @@ def ground_vehicle_brakes_sound(info : ParallelUpdateFrameDelayed;
 
   var path = ""
   if !shouldPlay || get_option_path(ground_vehicle_brakes_sound__path, sound_tags, is_watched_sound, path)
-    if event |> play_or_abandon(path, transform[3], shouldPlay)
+    if event |> play_or_abandon(path, transform[3], shouldPlay, vehicle_sound_occlusion__blob)
       set_var(event, "brakes", ground_vehicle_brakes_sound__brakes)

@@ -17,16 +17,15 @@ holdWaitIconBg, holdWaitIcon {
   size:44@sf/@pf, 44@sf/@pf;
   background-svg-size:44@sf/@pf, 44@sf/@pf;
   input-transparent:yes;
-
-  background-color:#20808080;
-  background-image:#ui/gameuiskin#circular_progress_1.svg;
+  background-color:@white;
+  background-image:#ui/gameuiskin#circular_progress_bg.svg;
 }
 
 holdWaitIcon {
   re-type:sector;
-  background-color:@white;
   behavior:increment;
   inc-target:sector-angle-2;
   sector-angle-1:0;
   inc-factor:514;
+  background-image:#ui/gameuiskin#circular_progress_fg.svg;
 }

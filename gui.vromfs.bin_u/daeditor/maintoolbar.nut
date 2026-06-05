@@ -92,7 +92,7 @@ function toggleCreateEntityMode() {
     mode = DE4_MODE_SELECT
   daEditor.setEditMode(mode)
 }
-let togglePropPanel = function() {
+function togglePropPanel() {
   propPanelClosed.set(propPanelVisible.get() && !showHelp.get())
   propPanelVisible.modify(invert)
 }
@@ -102,11 +102,8 @@ let isVisibleLogsWnd = mkIsWindowVisible(LogsWindowId)
 
 const saveScenesWindowUID = "save_scenes_modal_window"
 
-let showMessageboxSaveScenes = function(modifiedSceneIds) {
-  let close = function() {
-    removeModalWindow(saveScenesWindowUID)
-  }
-
+function showMessageboxSaveScenes(modifiedSceneIds) {
+  let close = @() removeModalWindow(saveScenesWindowUID)
   let selectionsState = Watched([])
   selectionsState.get().resize(modifiedSceneIds.len(), false)
 
@@ -241,7 +238,7 @@ function mainToolbar() {
     let scene = sceneIdMap?.get()[id]
     return scene != null && scene.importDepth == 0 && !scene.hasParent
   }
-  let save = function() {
+  function save() {
     let modifiedSceneIds = get_instance()?.getModifiedSceneIds() ?? []
     if (modifiedSceneIds.len() != 0) {
       updateAllScenes()

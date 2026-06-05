@@ -152,6 +152,14 @@ LockedImg[statusLock=limit] {
   background-svg-size:@cIco, @cIco;
 }
 
+optionsList > tr[hasLockedSign=yes] > td > LockedImg {
+  pos: -4@blockInterval, (ph-h)/2;
+  size: @sIco, @sIco;
+  background-color: @disabledTextColor;
+  background-image: #ui/gameuiskin#locked.svg;
+  background-svg-size: @sIco, @sIco;
+}
+
 LockedImg[statusLock=headerImage] {
   pos:pw-w, 0.5ph-0.5h;
 }
@@ -213,4 +221,29 @@ img[click_to_resize] > ButtonImg {
   pos:pw-w, ph-h;
   fullSizeIcons:yes;
   showOnSelect:hover;
+}
+
+favoriteBtn {
+  position:absolute;
+  size:@sIco, @sIco;
+  background-svg-size:@sIco, @sIco;
+  background-color:@gray;
+  background-image:#ui/gameuiskin#icon_star.svg;
+  input-transparent:no;
+}
+
+favoriteBtn:hover {
+  background-color:@white;
+}
+
+[isFavorite=yes] > favoriteBtn {
+  background-color:@yellow;
+}
+
+[isFavorite=yes] > favoriteBtn:hover {
+  background-color:@gold;
+}
+
+[show_console_buttons=no] favoriteBtn {
+  behavior:button;
 }

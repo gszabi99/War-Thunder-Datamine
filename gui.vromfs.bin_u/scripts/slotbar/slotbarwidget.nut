@@ -31,6 +31,7 @@ let { isCountrySlotbarHasUnits, getSelectedCrews } = require("%scripts/slotbar/s
 let { initSelectedCrews, selectCrew, isUnitUnlockedInSlotbar
 } = require("%scripts/slotbar/slotbarState.nut")
 let { setShowUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { setSlotbarPresetsListAvailable } = require("%scripts/slotbar/slotbarPresetsList.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -73,6 +74,7 @@ let { setCurrentGameModeByPreset } = require("%scripts/slotbar/slotbarPresets.nu
 let { getCountryOverride, getCountryStyle, countryDisplayStyle, isCountryOverrided } = require("%scripts/countries/countriesCustomization.nut")
 let { isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -278,7 +280,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.crewId != null)
       this.crewId = null
     if (this.ownerWeak) 
-      this.ownerWeak.setSlotbarPresetsListAvailable(this.needPresetsPanel && canChangeCrewUnits())
+      setSlotbarPresetsListAvailable(this.ownerWeak, this.needPresetsPanel && canChangeCrewUnits())
   }
 
   function getForcedCountry() { 
@@ -906,20 +908,21 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let msgText = warningIfGold(
+    let text = warningIfGold(
       format(loc("shop/needMoneyQuestion_purchaseCrew"),
         cost.getTextAccordingToBalance()),
       cost)
     this.ignoreCheckSlotbar = true
-    this.msgBox("need_money", msgText,
-      [["ok",
-        function() {
-          this.ignoreCheckSlotbar = false
-          this.purchaseNewSlot(country)
-        }
-       ],
-       ["cancel", restorePrevSelection ]
-      ], "ok")
+
+    let callbackYes = Callback(
+      function() {
+        this.ignoreCheckSlotbar = false
+        this.purchaseNewSlot(country)
+      },
+      this
+    )
+    let callbackNo = Callback(@() restorePrevSelection(), this)
+    purchaseConfirmation({ id = "need_money", text, callbackYes, callbackNo }, cost)
   }
 
   function applySlotSelection(obj, selSlot) {

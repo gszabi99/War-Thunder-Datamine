@@ -16,7 +16,7 @@ function nameFilter(watched_text, params) {
     }
   }
 
-  let canClear = function() {
+  function canClear() {
     if (params?.onClear == null)
       return false
     if (stateFlags.get() & S_KB_FOCUS)
@@ -51,6 +51,7 @@ function nameFilter(watched_text, params) {
           onChange = params?.onChange
           onEscape = params?.onEscape
           onReturn = params?.onReturn
+          onAttach = params?.onAttach
           onElemState = @(sf) stateFlags.set(sf)
 
           children = watched_text.get().len() ? null : placeholder

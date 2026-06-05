@@ -1427,6 +1427,10 @@
       {
         "name": "ab_205a_1_xm158_xm21",
         "blk": "gameData/flightModels/weaponPresets/ab_205a_1_xm158_xm21.blk"
+      },
+      {
+        "name": "ab_205a_1_xm159",
+        "blk": "gameData/flightModels/weaponPresets/ab_205a_1_xm159.blk"
       }
     ]
   },
@@ -1481,6 +1485,10 @@
         "xm21_ammo_r",
         "xm159_pylon_1",
         "xm159_pylon_2",
+        "xm159_aero_7_1",
+        "xm159_aero_7_2",
+        "xm159_aero_7_3",
+        "xm159_aero_7_4",
         "fuse2"
       ]
     },
@@ -1536,157 +1544,216 @@
         "index": 1,
         "tier": 8,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "multibarrel_box_gun",
-          "name": "m134_xm21_left",
-          "ShowNodes": {
-            "node": [
-              "xm21_barrel_1",
-              "xm21_gun_1",
-              "xm21_belt_l",
-              "xm21_us_xm_21_1",
-              "xm21_wire1_l",
-              "xm21_turret_1",
-              "uh_xm_200_1",
-              "xm21_ammo_l"
-            ]
-          },
-          "ShowDmParts": {
-            "node": "gun1_dm"
-          },
-          "Weapon": {
-            "trigger": "gunner1",
-            "blk": "gameData/Weapons/gunM134_Minigun_default.blk",
-            "breechInCockpit": true,
-            "emitter": "flare1",
-            "flash": "flare1",
-            "dm": "gunner1_dm",
-            "gunnerDm": "gunner1_dm",
-            "gunDm": "gun1_dm",
-            "partsDP": "gun1_dm",
-            "bullets": 3000,
-            "shootingCharge": 5.5,
-            "rotationAnimScale": "gun_rotate_01:CRS",
-            "useEmitter": true,
-            "mass": 182.3,
-            "turret": {
-              "head": "xm21_turret_1",
-              "gun": "xm21_gun_1",
-              "mainTurret": true,
-              "ballisticTargeting": true,
-              "playerControllable": false
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large",
+            "name": "ffar_extra",
+            "reqModification": "uh_1_xm159",
+            "ShowNodes": {
+              "node": "xm159_pylon_1"
             },
-            "limits": {
-              "yaw": [
-                -85.0,
-                10.0
-              ],
-              "pitch": [
-                -10.0,
-                70.0
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse_deafult.blk",
+              "emitter": "xm159_aero_7_1",
+              "external": true
+            }
+          },
+          {
+            "iconType": "multibarrel_box_gun",
+            "name": "m134_xm21_left",
+            "ShowNodes": {
+              "node": [
+                "xm21_barrel_1",
+                "xm21_gun_1",
+                "xm21_belt_l",
+                "xm21_us_xm_21_1",
+                "xm21_wire1_l",
+                "xm21_turret_1",
+                "uh_xm_200_1",
+                "xm21_ammo_l"
               ]
+            },
+            "ShowDmParts": {
+              "node": "gun1_dm"
+            },
+            "Weapon": {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunM134_Minigun_default.blk",
+              "breechInCockpit": true,
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 3000,
+              "shootingCharge": 5.5,
+              "rotationAnimScale": "gun_rotate_01:CRS",
+              "useEmitter": true,
+              "mass": 182.3,
+              "turret": {
+                "head": "xm21_turret_1",
+                "gun": "xm21_gun_1",
+                "mainTurret": true,
+                "ballisticTargeting": true,
+                "playerControllable": false
+              },
+              "limits": {
+                "yaw": [
+                  -85.0,
+                  10.0
+                ],
+                "pitch": [
+                  -10.0,
+                  70.0
+                ]
+              }
             }
           }
-        }
+        ]
       },
       {
         "index": 2,
         "tier": 7,
         "order": 3,
-        "WeaponPreset": {
-          "iconType": "nar_ap_small",
-          "name": "ffar",
-          "ShowNodes": {
-            "node": [
-              "xm_158_b001",
-              "uh_xm_200_1"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_small",
+            "name": "ffar_small",
+            "ShowNodes": {
+              "node": "uh_xm_200_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/us_xm_158_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "xm_158_b001",
+              "external": true
+            }
           },
-          "Weapon": {
-            "trigger": "rockets",
-            "blk": "gameData/Weapons/containers/us_xm_158_2_75_in_ffar_mighty_mouse.blk",
-            "emitter": "xm_158_b001",
-            "external": true
+          {
+            "iconType": "nar_ap_large",
+            "name": "ffar",
+            "ShowNodes": {
+              "node": "uh_xm_200_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "xm159_aero_7_2",
+              "external": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 3,
         "tier": 5,
         "order": 4,
-        "WeaponPreset": {
-          "iconType": "nar_ap_small",
-          "name": "ffar",
-          "ShowNodes": {
-            "node": [
-              "xm_158_b002",
-              "uh_xm_200_2"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_small",
+            "name": "ffar_small",
+            "ShowNodes": {
+              "node": [
+                "xm_158_b002",
+                "uh_xm_200_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/us_xm_158_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "xm_158_b002",
+              "external": true
+            }
           },
-          "Weapon": {
-            "trigger": "rockets",
-            "blk": "gameData/Weapons/containers/us_xm_158_2_75_in_ffar_mighty_mouse.blk",
-            "emitter": "xm_158_b002",
-            "external": true
+          {
+            "iconType": "nar_ap_large",
+            "name": "ffar",
+            "ShowNodes": {
+              "node": "uh_xm_200_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "xm159_aero_7_3",
+              "external": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 4,
         "tier": 4,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "multibarrel_box_gun",
-          "name": "m134_xm21_right",
-          "ShowNodes": {
-            "node": [
-              "xm21_barrel_2",
-              "xm21_gun_2",
-              "xm21_belt_r",
-              "xm21_us_xm_21_2",
-              "xm21_wire1_r",
-              "xm21_turret_2",
-              "uh_xm_200_2",
-              "xm21_ammo_r"
-            ]
-          },
-          "ShowDmParts": {
-            "node": "gun2_dm"
-          },
-          "Weapon": {
-            "trigger": "gunner2",
-            "blk": "gameData/Weapons/gunM134_Minigun_default.blk",
-            "breechInCockpit": true,
-            "emitter": "flare2",
-            "flash": "flare2",
-            "dm": "gunner1_dm",
-            "gunnerDm": "gunner1_dm",
-            "gunDm": "gun2_dm",
-            "partsDP": "gun2_dm",
-            "bullets": 3000,
-            "shootingCharge": 5.5,
-            "rotationAnimScale": "gun_rotate_01:CRS",
-            "useEmitter": true,
-            "mass": 182.3,
-            "turret": {
-              "head": "xm21_turret_2",
-              "gun": "xm21_gun_2",
-              "mainTurret": true,
-              "ballisticTargeting": true,
-              "playerControllable": false
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large",
+            "name": "ffar_extra",
+            "reqModification": "uh_1_xm159",
+            "ShowNodes": {
+              "node": "xm159_pylon_2"
             },
-            "limits": {
-              "yaw": [
-                -85.0,
-                10.0
-              ],
-              "pitch": [
-                -70.0,
-                10.0
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse_deafult.blk",
+              "emitter": "xm159_aero_7_4",
+              "external": true
+            }
+          },
+          {
+            "iconType": "multibarrel_box_gun",
+            "name": "m134_xm21_right",
+            "ShowNodes": {
+              "node": [
+                "xm21_barrel_2",
+                "xm21_gun_2",
+                "xm21_belt_r",
+                "xm21_us_xm_21_2",
+                "xm21_wire1_r",
+                "xm21_turret_2",
+                "uh_xm_200_2",
+                "xm21_ammo_r"
               ]
+            },
+            "ShowDmParts": {
+              "node": "gun2_dm"
+            },
+            "Weapon": {
+              "trigger": "gunner2",
+              "blk": "gameData/Weapons/gunM134_Minigun_default.blk",
+              "breechInCockpit": true,
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun2_dm",
+              "partsDP": "gun2_dm",
+              "bullets": 3000,
+              "shootingCharge": 5.5,
+              "rotationAnimScale": "gun_rotate_01:CRS",
+              "useEmitter": true,
+              "mass": 182.3,
+              "turret": {
+                "head": "xm21_turret_2",
+                "gun": "xm21_gun_2",
+                "mainTurret": true,
+                "ballisticTargeting": true,
+                "playerControllable": false
+              },
+              "limits": {
+                "yaw": [
+                  -85.0,
+                  10.0
+                ],
+                "pitch": [
+                  -70.0,
+                  10.0
+                ]
+              }
             }
           }
-        }
+        ]
       }
     ]
   },
@@ -2404,6 +2471,36 @@
         ]
       },
       {
+        "dm": "wing1_l_dm",
+        "dp": [
+          "wingcontrol_l_dm",
+          "elevon1_l_dm",
+          "flaperon_l_dm"
+        ]
+      },
+      {
+        "dm": "wing1_r_dm",
+        "dp": [
+          "wingcontrol_r_dm",
+          "elevon1_r_dm",
+          "flaperon_r_dm"
+        ]
+      },
+      {
+        "dm": "wing2_l_dm",
+        "dp": [
+          "elevon_l_dm",
+          "flaperon1_l_dm"
+        ]
+      },
+      {
+        "dm": "wing2_r_dm",
+        "dp": [
+          "elevon_r_dm",
+          "flaperon1_r_dm"
+        ]
+      },
+      {
         "dm": "fin_dm",
         "dp": "propeller_shaft2_dm"
       }
@@ -2432,8 +2529,15 @@
       "tier": 3,
       "invertEnableLogic": false
     },
-    "M163_Minigun_new_gun": {
+    "uh_1_xm159": {
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
       "tier": 1
+    },
+    "M163_Minigun_new_gun": {
+      "prevModification": "uh_1_xm159",
+      "modClass": "weapon",
+      "tier": 3
     }
   },
   "default_skin_tomoe": {

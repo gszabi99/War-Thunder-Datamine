@@ -54,7 +54,7 @@ addTooltipTypes({
     fillTooltipContent = function(obj, handler, id, params) {
       let contentObj = obj.findObject(getAirInfoTooltipId(id))
       if (!(contentObj?.isValid() ?? false))
-        return
+        return false
 
       let { maxHeight = null } = params
       let unitImgObj = contentObj.findObject("aircraft-image-nest")

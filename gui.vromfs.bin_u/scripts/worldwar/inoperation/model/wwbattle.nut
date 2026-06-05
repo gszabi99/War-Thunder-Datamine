@@ -39,6 +39,7 @@ let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut"
 let { getAllOperationUnitsBySide } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 let { getOppositeSide, getOperationTimeSec
 } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { registerWwBattleClass } = require("%scripts/worldWar/worldWarState.nut")
 
 
 const WW_BATTLES_SORT_TIME_STEP = 120
@@ -864,5 +865,6 @@ let WwBattle = class {
   }
 }
 
+registerWwBattleClass(WwBattle)
 
 return WwBattle

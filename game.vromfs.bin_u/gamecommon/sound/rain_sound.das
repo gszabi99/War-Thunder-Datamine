@@ -31,7 +31,8 @@ def rain_sound_update_es(act : UpdateStageInfoAct;
         rain_sound__isCockpit = unit.isCameraInCockpit
         rain_sound__isForInfantry = isInfantry
 
-      rain_sound__event |> set_var_optional("model_type", rain_sound__unitTypeToSoundType[unitType])
+      if unitType >= 0
+        rain_sound__event |> set_var_optional("model_type", rain_sound__unitTypeToSoundType[unitType])
       rain_sound__event |> set_var_optional("mat", float(human_steps_sound__smid))
   elif isPlaying
     abandon(rain_sound__event)

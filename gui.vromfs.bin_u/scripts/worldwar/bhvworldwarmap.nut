@@ -322,7 +322,7 @@ let worldWarMapControls = class {
 
   function selectArmy(obj, armyName, forceReplace = false, armyType = mapObjectSelect.ARMY) {
     if (!checkObj(obj))
-      return
+      return false
 
     wwEvent("SelectLogArmyByName", { name = armyName })
 

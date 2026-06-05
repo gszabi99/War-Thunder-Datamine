@@ -1,11 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
-let { get_current_mission_name } = require("mission")
+let { get_current_mission_name, get_mp_local_team } = require("mission")
 let { eventbus_subscribe } = require("eventbus")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getAvailableRespawnBases } = require("guiRespawn")
+let { getFullRespawnBasesList, is_respawnbase_selectable, getSavedRespawnBaseForSlot
+} = require("guiRespawn")
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
 let { isInFlight } = require("gameplayBinding")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
@@ -32,19 +33,27 @@ local respawnBases = {
       selBase = null
     }
 
-    let rbs = getAvailableRespawnBases(unit.tags)
+    let rbs = getFullRespawnBasesList()
     if (!rbs.len())
       return res
 
-    res.hasRespawnBases = true
-    res.canChooseRespawnBase = true
     let lastSelectedBase = this.getSelectedBase()
-    let needToSelectAirfield = isBadWeather && ES_UNIT_TYPE_AIRCRAFT == unit.esUnitType && !isShipBattle()
+    let localTeam = get_mp_local_team()
+    let savedBaseForSlot = getSavedRespawnBaseForSlot(-1)
+    let hasSavedBase = rbs.findvalue(@(rb) rb.id == savedBaseForSlot) != null
     local defaultBase = null
     local airfiled = null
-    foreach (_idx, id in rbs) {
+    foreach (rbConfig in rbs) {
+      let { id, team } = rbConfig
+      if (team != localTeam || !is_respawnbase_selectable(id))
+        continue
       let rb = RespawnBase(id)
+      let isSavedForSlot = id == savedBaseForSlot
+      let canSelect = !hasSavedBase || isSavedForSlot
+      rb.fillRespawnBaseData({ isSavedForSlot, canSelect })
       res.basesList.append(rb)
+      if (!canSelect)
+        continue
       if (rb.isEqual(lastSelectedBase))
         res.selBase = rb
       if (!defaultBase || (rb.isDefault <=> defaultBase.isDefault) > 0)
@@ -53,6 +62,12 @@ local respawnBases = {
         airfiled = rb
     }
 
+    if (res.basesList.len() == 0)
+      return res
+
+    res.hasRespawnBases = true
+    res.canChooseRespawnBase = true
+    let needToSelectAirfield = isBadWeather && ES_UNIT_TYPE_AIRCRAFT == unit.esUnitType && !isShipBattle()
     if (needToSelectAirfield && airfiled)
       defaultBase = airfiled
     let autoSelectedBase = RespawnBase(defaultBase.id, true)

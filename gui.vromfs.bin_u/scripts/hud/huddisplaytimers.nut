@@ -83,6 +83,11 @@ let timersList = [
     icon = "#ui/gameuiskin#icon_rocket_in_progress.svg"
   },
   {
+    id = "moving_ammo_between_stowages_status"
+    color = "@white"
+    icon = "#ui/gameuiskin#icon_ammo_relocation_in_progress.svg"
+  },
+  {
     id = "driver_status"
     color = "@crewTransferColor"
     icon = function () {
@@ -548,6 +553,26 @@ function onRepair(debuffs_data) {
 
   g_time_bar.setPeriod(timebarObj, totalTime)
   g_time_bar.setCurrentTime(timebarObj, totalTime - time)
+}
+
+function onMovingAmmo(debuffs_data) {
+  if (!scene?.isValid())
+    return
+  let objId = "moving_ammo_between_stowages_status"
+  let placeObj = scene.findObject(objId)
+  if (!checkObj(placeObj))
+    return
+
+  placeObj.animation = debuffs_data.time > 0 ? "show" : "hide"
+  placeObj.show(true)
+
+  let timebarObj = placeObj.findObject("timer")
+  let iconObj = placeObj.findObject("icon")
+  iconObj.wink = "no"
+
+  g_time_bar.setDirectionBackward(timebarObj)
+  g_time_bar.setPeriod(timebarObj, debuffs_data.time)
+  g_time_bar.setCurrentTime(timebarObj, 0)
 }
 
 function onMoveCooldown(debuffs_data) {
@@ -1054,6 +1079,7 @@ function hudDisplayTimersInit(nest, v_unitType) {
 
   g_hud_event_manager.subscribe("ShipDebuffs:Rearm", onRearm, scene)
   g_hud_event_manager.subscribe("ShipDebuffs:Repair", onRepair, scene)
+  g_hud_event_manager.subscribe("ShipDebuffs:MovingAmmo", onMovingAmmo, scene)
   g_hud_event_manager.subscribe("ShipDebuffs:Cooldown", onMoveCooldown, scene)
   g_hud_event_manager.subscribe("ShipDebuffs:RepairBreaches", onRepairBreaches, scene)
   g_hud_event_manager.subscribe("ShipDebuffs:Extinguish", onExtinguish, scene)

@@ -1,16 +1,29 @@
 {
-  "tdiv": {
-    "id": "target_cursor",
-    "behavior": "Timer",
-    "timer_handler_func": "onTargetingCursorTimer",
-    "size": "48@sf/@pf, 48@sf/@pf",
-    "left": "sw/2-w/2",
-    "top": "sh/2-h/2",
-    "position": "root",
-    "background-image": "#ui/gameuiskin#protection_analysis_target.svg",
-    "background-svg-size": "48@sf/@pf, 48@sf/@pf",
-    "background-color": "@minorTextColor"
-  },
+  "tdiv": [
+    {
+      "id": "target_cursor",
+      "behavior": "Timer",
+      "timer_handler_func": "onTargetingCursorTimer",
+      "size": "48@sf/@pf, 48@sf/@pf",
+      "left": "sw/2-w/2",
+      "top": "sh/2-h/2",
+      "position": "root",
+      "background-image": "#ui/gameuiskin#protection_analysis_target.svg",
+      "background-svg-size": "48@sf/@pf, 48@sf/@pf",
+      "background-color": "@minorTextColor"
+    },
+    {
+      "id": "torpedo_sight_line",
+      "width": "1",
+      "height": "2",
+      "left": "0",
+      "top": "0",
+      "position": "root",
+      "background-color": "@torpedoSightColor",
+      "display": "hide",
+      "input-transparent": "yes"
+    }
+  ],
   "tooltipObj": {
     "position": "root",
     "pos": "sw/2-w/2, 70%sh-h/2",

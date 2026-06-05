@@ -236,7 +236,7 @@
     "gun__wasVisible": false,
     "slot_attach__visible": false,
     "animchar_render__enabled": false,
-    "weap__sprintLerpFactor": 1.5,
+    "weap__sprintLerpFactor": 1.0,
     "human_gun_attached": false,
     "melee_weapon__nodeId": -1,
     "melee_weapon__attackAt": -1.0,
@@ -271,6 +271,8 @@
     "gun_anim__singleReloadProgress": -1.0,
     "gun_anim__singleReloadState": 0,
     "gun__canAim": false,
+    "weapon__holsterTime": 0.5,
+    "weapon__equipTime": 1.0,
     "gun__propsId": {},
     "melee_weapon__propsId:props::PropsId": {},
     "melee_weapon__basePropsId:props::PropsId": {},
@@ -599,6 +601,7 @@
       "gun_sound_with_animchar",
       "gun_with_additional_head_angles",
       "gun_anim",
+      "managed_sound_human_gun",
       "gun_reload",
       "gun_length_spine_compensation"
     ],
@@ -684,7 +687,10 @@
       10.0
     ],
     "gun_shell_ejection__speed": 4.5,
-    "gun_shell_ejection__expireTime": 1.0
+    "gun_shell_ejection__expireTime": 1.0,
+    "gun_shell_ejection__restitution": 0.3,
+    "gun_shell_ejection__linearDamping": 0.3,
+    "gun_shell_ejection__angularDamping": 0.3
   },
   "mg_ww2_fireready_deviation": {
     "gun__deviationInFireReady": 5.0
@@ -735,6 +741,8 @@
     "gun__magnification": 2.0
   },
   "main_weap_slots": {
+    "animchar__objTexReplace:object": {},
+    "animchar__objTexSet:object": {},
     "item__weapSlots:array": {
       "slot": "primary"
     }
@@ -1402,7 +1410,6 @@
     "gun__recoilControlMult": 0.9,
     "gun__recoilOffsMult": 0.1,
     "gun_attach__slot": "weapon",
-    "weap__sprintLerpFactor": 0.5,
     "meleeSoundType": "rifle",
     "gun_anim_var__fpsGunOffsetAlong": 0.24,
     "gun_anim_var__fpsGunOffsetAcross": 0.035,
@@ -1908,7 +1915,6 @@
     "gun__recoilOffsMult": 0.1,
     "gun__crawlRecoilMult": 0.6,
     "gun_attach__slot": "weapon",
-    "weap__sprintLerpFactor": 0.75,
     "gun__adsSpeedMult": 0.65,
     "meleeSoundType": "rifle",
     "gun__rotationSpringMult": [

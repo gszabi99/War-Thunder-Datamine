@@ -1,6 +1,7 @@
 module blk_utils_common shared
 
 require DagorDataBlock
+require DagorMath
 require ecs
 require math.base
 
@@ -28,7 +29,7 @@ def datablock_to_object(data_block : DataBlock | #; var object : Object&)
     elif paramType == int(DataBlockParamType.TYPE_BOOL)
       object |> set(paramName, datablock_getBool(data_block, paramName, false))
     elif paramType == int(DataBlockParamType.TYPE_E3DCOLOR)
-      object |> set(paramName, datablock_getE3dcolor(data_block, paramName, E3DCOLOR()))
+      object |> set(paramName, datablock_getE3dcolor(data_block, paramName, E3DCOLOR(0xffffffff)))
     elif paramType == int(DataBlockParamType.TYPE_MATRIX)
       object |> set(paramName, datablock_getTm(data_block, paramName, IDENT_TM))
     elif paramType == int(DataBlockParamType.TYPE_INT64)

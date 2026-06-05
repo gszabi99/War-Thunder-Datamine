@@ -172,7 +172,7 @@ def multiple_guns_slot_switch_start(evt : Event;
 
   reset_weapon_state(human_net_phys.phys)
 
-[es(tag=gameClient, no_order)]
+[es(tag=gameClient, no_order, REQUIRE=controlledHero)]
 def multiple_guns_slot_switch_progress(info : ParallelUpdateFrameDelayed;
                                        eid aka human_eid : EntityId;
                                        human_weap__currentGunEid : EntityId;
@@ -229,7 +229,7 @@ def multiple_guns_slot_contain_any_hidden_gun_in_slots(evt : Event;
   if multiple_guns_slots__hiddenGunInAnySlot
     multiple_guns_slots__hiddenGunDontHideUntil = get_sync_time() + multiple_guns_slots__hiddenGunHideDelay
 
-[es(tag=gameClient, after=multiple_guns_slot_contain_any_hidden_gun_in_slots)]
+[es(tag=gameClient, after=multiple_guns_slot_contain_any_hidden_gun_in_slots, REQUIRE=controlledHero)]
 def multiple_guns_slot_hide_hidden_guns_when_not_in_hands(info : UpdateStageInfoAct;
                                                           eid aka human_eid : EntityId;
                                                           human_net_phys : HumanActor;

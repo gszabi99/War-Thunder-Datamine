@@ -11,6 +11,7 @@ require app
 require %rGui.utils.radar_common
 require strings
 require WTInput
+require Localization
 
 struct CanvasParams
   fontId : int = -1

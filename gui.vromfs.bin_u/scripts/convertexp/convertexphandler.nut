@@ -26,7 +26,7 @@ let { canResearchUnit, isUnitInResearch, isUnitResearched } = require("%scripts/
 let { canBuyUnit, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { get_balance, get_gui_balance } = require("%scripts/user/balance.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
@@ -609,14 +609,16 @@ let ConvertExpHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let curExp = this.getCurExpValue()
     let cost = Cost(0, curGold)
-    let msgText = warningIfGold(loc("exp/convert/needMoneyQuestion",
+    let text = warningIfGold(loc("exp/convert/needMoneyQuestion",
         { exp = Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance() }),
       cost)
-    let callbackYes = Callback(function() {
-      if (checkBalanceMsgBox(cost))
-        this.buyExp(curExp)
-    }, this)
-    purchaseConfirmation("need_money", msgText, callbackYes)
+    let callbackYes = Callback(
+      @() checkBalanceMsgBox(cost)
+           ? this.buyExp(curExp)
+           : null,
+      this
+    )
+    purchaseConfirmation({ id = "need_money", text, callbackYes })
   }
 
   function buyExp(amount) {

@@ -19,16 +19,16 @@ def enable_confusion_effect(watchedEid : EntityId)
                           confusion__intensity : float;
                           confusion__speed : float)
     if game_effect__attachedTo == watchedEid
-      DagorShaders::set_real(confusion_effect_time_startVarId, get_shader_global_time_phase(0.0, 0.0))
-      DagorShaders::set_real(confusion_effect_durationVarId, confusion__duration)
-      DagorShaders::set_real(confusion_effect_intensityVarId, confusion__intensity)
-      DagorShaders::set_real(confusion_effect_speedVarId, confusion__speed)
+      DagorShaders::set_float(confusion_effect_time_startVarId, get_shader_global_time_phase(0.0, 0.0))
+      DagorShaders::set_float(confusion_effect_durationVarId, confusion__duration)
+      DagorShaders::set_float(confusion_effect_intensityVarId, confusion__intensity)
+      DagorShaders::set_float(confusion_effect_speedVarId, confusion__speed)
       return true
     return false
 
 
 def disable_confusion_effect()
-  DagorShaders::set_real(confusion_effect_time_startVarId, -1000.0)
+  DagorShaders::set_float(confusion_effect_time_startVarId, -1000.0)
 
 
 [es_game_effect(bool_flag=human__confusionScreenEffect, tag=confusionScreenEffect)]

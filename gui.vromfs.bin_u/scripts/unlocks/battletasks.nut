@@ -293,7 +293,7 @@ eventbus_subscribe("on_sign_out", @(...) resetBattleTasks())
 
 function loadSeenTasksData(forceLoad = false) {
   if (seenTasksInited && !forceLoad)
-    return true
+    return
 
   seenTasks.clear()
   let blk = loadLocalByAccount(SEEN_SAVE_ID)
@@ -306,7 +306,6 @@ function loadSeenTasksData(forceLoad = false) {
     }
 
   seenTasksInited = true
-  return true
 }
 
 function isBattleTaskNew(generationId) {

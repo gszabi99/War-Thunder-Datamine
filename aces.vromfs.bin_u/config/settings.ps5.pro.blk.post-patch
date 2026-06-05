@@ -1,0 +1,33 @@
+"@override:ps5"{
+  "@override:mem_direct_size_mb":i=7856
+  "@override:defrag_threshold":i=92
+  garlic_blocks:i=131072
+
+  rt_page_size_mb:i=64
+  reserve_rt_pages:i=24
+  reserve_rt_compaction_pages:i=1
+}
+
+"@override:debug"{
+  disableMultithreadUI:b=no
+}
+
+"@override:graphics"
+{
+  forcePanoramaInHangar:b=yes
+}
+
+"@override:video" {
+  upscaleQualityFor4k:t=""
+}
+
+"@override:gi"
+{
+  "@override:low"
+  {
+    "@override:hangar"
+    {
+      "@override:dagiQuality":i = -1 //off
+    }
+  }
+}

@@ -7,7 +7,12 @@ let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let NullInput = class (InputBase) {
   showPlaceholder = false
 
-  function getMarkup(_hasHoldButtonSign = false) {
+  constructor(shortcutId, showPlaceholder) {
+    this.shortcutId = shortcutId
+    this.showPlaceholder = showPlaceholder
+  }
+
+  function getMarkup() {
     return this.showPlaceholder
       ? handyman.renderCached("%gui/controls/input/nullInput.tpl", { text = this.getText() })
       : null

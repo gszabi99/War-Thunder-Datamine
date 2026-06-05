@@ -1,482 +1,237 @@
 {
   "model": "bombtarget_oil_storage_07_a",
   "locName": "structures/oil_storage_tank",
-  "expClass": [
-    "exp_bombtarget_building",
-    "exp_bombtarget_building"
-  ],
-  "subclass": [
-    "fortification",
-    "fortification"
-  ],
-  "hasExpl": [
-    true,
-    true
-  ],
-  "hasDmg": [
-    false,
-    false
-  ],
-  "hasDmg2": [
-    true,
-    true
-  ],
-  "hasDmg2Collision": [
-    true,
-    true
-  ],
+  "expClass": "exp_bombtarget_building",
+  "subclass": "fortification",
+  "hasExpl": true,
+  "hasDmg": false,
+  "hasDmg2": true,
+  "hasDmg2Collision": true,
+  "partDamageFx": "part_damage",
   "explosionFx": [
-    "ad_explosion_huge",
-    "ad_explosion_huge"
+    "tank_explosion",
+    "explosion_barrel_medium"
   ],
   "fireFx": [
-    "fire_ground_med_oil",
-    "fire_ground_med_oil"
+    "ground_model_fire",
+    "fire_ground_big_oil"
   ],
-  "timeToFire": [
-    30.0,
-    30.0
-  ],
-  "timeToSmoke": [
-    30.0,
-    30.0
-  ],
-  "DamageParts": [
-    {
-      "formatVersion": 2,
-      "body": {
-        "armorClass": "RHA_tank",
-        "body_dm": {
-          "hp": 600.0,
-          "armorThickness": 15.0,
-          "genericDamageMult": 0.0,
-          "secondaryShatterDamageMult": 0.0,
-          "shatterDamageMult": 0.0,
-          "napalmDamageMult": 1.0
-        }
-      }
-    },
-    {
-      "formatVersion": 2,
-      "body": {
-        "armorClass": "RHA_tank",
-        "body_dm": {
-          "hp": 600.0,
-          "armorThickness": 15.0,
-          "genericDamageMult": 0.0,
-          "secondaryShatterDamageMult": 0.0,
-          "shatterDamageMult": 0.0,
-          "napalmDamageMult": 1.0
-        }
+  "timeToFire": 90.0,
+  "timeToSmoke": 90.0,
+  "DamageParts": {
+    "formatVersion": 2,
+    "body": {
+      "armorClass": "RHA_tank",
+      "body_dm": {
+        "hp": 1000.0,
+        "armorThickness": 15.0,
+        "genericDamageMult": 0.0,
+        "secondaryShatterDamageMult": 0.0,
+        "shatterDamageMult": 0.0,
+        "napalmDamageMult": 1.0
       }
     }
-  ],
-  "unitFx": [
-    {
-      "event": [
-        {
-          "lifetime": 120.0,
-          "name": "engine_fire",
-          "fx": [
-            {
-              "name": "tank_engine_fire",
-              "emitter": "emtr_fire_engine"
-            },
-            {
-              "name": "tank_engine_fire",
-              "emitter": "emtr_fire_engine_01"
-            },
-            {
-              "name": "tank_engine_fire",
-              "emitter": "emtr_fire_engine_02"
-            }
-          ]
-        },
-        {
-          "name": "total_smoke",
-          "lifetime": 60.0,
-          "fx": [
-            {
-              "name": "tank_smoke_big",
-              "emitter": "emtr_smoke_dmg"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_01"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_02"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_03"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_04"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_05"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_06"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_07"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_08"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_09"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_10"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_11"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_12"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_13"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_14"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_15"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_16"
-            }
-          ]
-        },
-        {
-          "name": "total_fire",
-          "lifetime": 40.0,
-          "fx": [
-            {
-              "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_01"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_02"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_03"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_04"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_05"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_06"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_07"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_08"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_09"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_10"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_11"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_12"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_13"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_14"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_15"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_16"
-            }
-          ]
-        },
-        {
-          "name": "fuel_exterior",
-          "lifetime": 15.0,
-          "fx": {
-            "name": "tank_ex_fuel_explosion",
-            "centerDmgPart": true
+  },
+  "unitFx": {
+    "event": [
+      {
+        "lifetime": 120.0,
+        "name": "engine_fire",
+        "fx": [
+          {
+            "name": "tank_engine_fire",
+            "emitter": "emtr_fire_engine"
+          },
+          {
+            "name": "tank_engine_fire",
+            "emitter": "emtr_fire_engine_01"
+          },
+          {
+            "name": "tank_engine_fire",
+            "emitter": "emtr_fire_engine_02"
           }
-        },
-        {
-          "name": "fuel_internal",
-          "lifetime": 15.0,
-          "fx": {
-            "name": "tank_ex_fuel_explosion",
-            "centerDmgPart": true
+        ]
+      },
+      {
+        "name": "total_smoke",
+        "lifetime": 60.0,
+        "fx": [
+          {
+            "name": "tank_smoke_big",
+            "emitter": "emtr_smoke_dmg"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "tank_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_16"
           }
+        ]
+      },
+      {
+        "name": "total_fire",
+        "lifetime": 40.0,
+        "fx": [
+          {
+            "name": "tank_fire_big",
+            "emitter": "emtr_fire_dmg"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_01"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_02"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_03"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_04"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_05"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_06"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_07"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_08"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_09"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_10"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_11"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_12"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_13"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_14"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_15"
+          },
+          {
+            "name": "tank_fire_small",
+            "emitter": "emtr_fire_small_dmg_16"
+          }
+        ]
+      },
+      {
+        "name": "fuel_exterior",
+        "lifetime": 15.0,
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
         }
-      ]
-    },
-    {
-      "event": [
-        {
-          "lifetime": 120.0,
-          "name": "engine_fire",
-          "fx": [
-            {
-              "name": "tank_engine_fire",
-              "emitter": "emtr_fire_engine"
-            },
-            {
-              "name": "tank_engine_fire",
-              "emitter": "emtr_fire_engine_01"
-            },
-            {
-              "name": "tank_engine_fire",
-              "emitter": "emtr_fire_engine_02"
-            }
-          ]
-        },
-        {
-          "name": "total_smoke",
-          "lifetime": 60.0,
-          "fx": [
-            {
-              "name": "tank_smoke_big",
-              "emitter": "emtr_smoke_dmg"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_01"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_02"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_03"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_04"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_05"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_06"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_07"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_08"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_09"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_10"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_11"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_12"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_13"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_14"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_15"
-            },
-            {
-              "name": "tank_smoke_small",
-              "emitter": "emtr_smoke_small_dmg_16"
-            }
-          ]
-        },
-        {
-          "name": "total_fire",
-          "lifetime": 40.0,
-          "fx": [
-            {
-              "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_01"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_02"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_03"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_04"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_05"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_06"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_07"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_08"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_09"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_10"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_11"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_12"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_13"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_14"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_15"
-            },
-            {
-              "name": "tank_fire_small",
-              "emitter": "emtr_fire_small_dmg_16"
-            }
-          ]
-        },
-        {
-          "name": "fuel_exterior",
-          "lifetime": 15.0,
-          "fx": {
-            "name": "tank_ex_fuel_explosion",
-            "centerDmgPart": true
-          }
-        },
-        {
-          "name": "fuel_internal",
-          "lifetime": 15.0,
-          "fx": {
-            "name": "tank_ex_fuel_explosion",
-            "centerDmgPart": true
-          }
-        }
-      ]
-    }
-  ],
-  "DamageEffects": [
-    {
-      "part": {
-        "name": "body_dm",
-        "onKill": {
-          "expl": 1.0,
-          "fire": 1.0,
-          "action": {
-            "type": "fxEvent",
-            "fxEventName": "total_fire"
-          }
-        },
-        "onHit": {
-          "fire": 0.1
+      },
+      {
+        "name": "fuel_internal",
+        "lifetime": 15.0,
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
         }
       }
-    },
-    {
-      "part": {
-        "name": "body_dm",
-        "onKill": {
-          "expl": 1.0,
-          "fire": 1.0,
-          "action": {
-            "type": "fxEvent",
-            "fxEventName": "total_fire"
-          }
-        },
-        "onHit": {
-          "fire": 0.1
+    ]
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onKill": {
+        "expl": 1.0,
+        "fire": 1.0,
+        "action": {
+          "type": "fxEvent",
+          "fxEventName": "total_fire"
         }
+      },
+      "onHit": {
+        "fire": 0.1
       }
     }
-  ]
+  }
 }

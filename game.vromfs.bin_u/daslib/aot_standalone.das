@@ -1,8 +1,8 @@
 options gen2
 
 module aot_standalone private
-require fio
-require rtti
+require daslib/fio
+require daslib/rtti
 require strings
 
 require daslib/match
@@ -61,6 +61,7 @@ def writeStandaloneContextMethods(var prog : ProgramPtr; var logs : StringBuilde
         write(logs, "auto {prefix}{aotFunctionName(string(fn.origin != null ? fn.origin.name : fn.name))} ( ");
     
         var vars : array<string>
+        vars |> reserve(length(fn.arguments))
         for (variable in fn.arguments) {
             if (variable._type.baseType == Type.tStructure && declare_only) {
                 
@@ -95,18 +96,16 @@ def writeStandaloneContextMethods(var prog : ProgramPtr; var logs : StringBuilde
 }
 
 def writeStandaloneCtor(cfg : StandaloneContextCfg; initFunctions : string; var tw : StringBuilderWriter, program : ProgramPtr) {
-    let disableInit = program._options |> find_arg("no_init") ?as tBool ?? program.policies.no_init;
     var lookupVariableTable : array<Variable?>;
     if (program.totalVariables > 0) {
         program.get_ptr() |> for_each_module_no_order($(pm) {
             pm |> for_each_global($(pvar) {
-                if (!pvar.flags.used)
-                    return
+                if (!pvar.flags.used) return
                 if (pvar.index < 0) {
                     panic("Internal compiler errors. Simulating variable which is not used{pvar.name}");
                     return
                 }
-                lookupVariableTable.push(pvar.get_ptr());
+                lookupVariableTable.push(pvar);
             });
         });
     }
@@ -122,6 +121,7 @@ def writeStandaloneCtor(cfg : StandaloneContextCfg; initFunctions : string; var 
     write(tw, "    policies.persistent_heap = {program._options |> find_arg("persistent_heap") ?as tBool ?? program.policies.persistent_heap};\n");
     write(tw, "    policies.heap_size_hint = {program._options |> find_arg("heap_size_hint") ?as tUInt ?? program.policies.heap_size_hint :d};\n");
     write(tw, "    policies.string_heap_size_hint = {program._options |> find_arg("string_heap_size_hint") ?as tUInt ?? program.policies.string_heap_size_hint :d};\n");
+    write(tw, "    policies.track_allocations = {program._options |> find_arg("track_allocations") ?as tBool ?? program.policies.track_allocations};\n");
     write(tw, "    context.setup({program.totalVariables}/*totalVariables*/, {program.globalStringHeapSize:d} /*globalStringHeapSize*/, policies, \{\});\n");
 
     write(tw, "     // start totalVariables\n");
@@ -234,20 +234,18 @@ class StandaloneContextGen : CppAot {
             pm |> for_each_global($(pvar) {
                 if (pvar.index < 0 || !pvar.flags.used) return ;
                 if (pvar._module == prog.getThisModule) return ;
-                globals.push(pvar.get_ptr());
+                globals.push(pvar);
             });
         });
 
         for (variable in globals) {
-            assume smart_var_ptr = unsafe(reinterpret<VariablePtr>(variable));
-            preVisitGlobalLetVariable(smart_var_ptr, false);
+            preVisitGlobalLetVariable(variable, false);
             if (variable.init != null) {
-                preVisitGlobalLetVariableInit(smart_var_ptr, variable.init);
+                preVisitGlobalLetVariableInit(variable, variable.init);
                 visit_expression(variable.init, adapter);
-
-                variable.init := visitGlobalLetVariableInit(smart_var_ptr, variable.init);
+                variable.init := visitGlobalLetVariableInit(variable, variable.init);
             }
-            let varn <- visitGlobalLetVariable(smart_var_ptr, false);
+            let varn <- visitGlobalLetVariable(variable, false);
         }
 
         tab --;
@@ -264,7 +262,7 @@ class StandaloneContextGen : CppAot {
         for (pfun in fnn) {
             let needInline = that == pfun._module;
             if (needInline) {
-                inline_fns.push(describeCppFunc(unsafe(reinterpret<FunctionPtr>(pfun)), collector, true, needInline));
+                inline_fns.push(describeCppFunc(pfun, collector, true, needInline));
                 used_functions.insert(aotFuncName(pfun));
             }
         }
@@ -314,7 +312,8 @@ def GetFunctionInfo(pfun : Function?, info : string) {
 
 def addFunctionInfo(disableInit : bool; rtti : bool, fnn : array<Function?>, var helper : AotDebugInfoHelper?) {
     helper.helper.rtti = rtti;
-    var lookupFunctionTable : array<tuple<Function?, FuncInfo?>>;
+    var lookupFunctionTable : array<tuple<Function?, FuncInfo?>>
+    lookupFunctionTable |> reserve(length(fnn))
     for (pfun in fnn) {
         let info = helper.helper |> make_function_debug_info(pfun);
         lookupFunctionTable.push((pfun, info));
@@ -335,9 +334,10 @@ def genStandaloneSrc(var program : ProgramPtr;
     let ctx_generated = build_string() $(tw) {
         let deps = build_string() $(tmp_writer) {
             var cpp_aot = new CppAot(program := program, collector = coll, ss = unsafe(addr(tmp_writer)), cross_platform = cfg.cross_platform);
-            var inscope aot_adapter <- make_visitor(*cpp_aot)
-            cpp_aot.adapter := aot_adapter
-            dumpDependencies(program, cpp_aot);
+            make_visitor(*cpp_aot) $(aot_adapter) {
+                cpp_aot.adapter := aot_adapter
+                dumpDependencies(program, cpp_aot);
+            }
             unsafe {
                 delete cpp_aot
             }
@@ -345,9 +345,10 @@ def genStandaloneSrc(var program : ProgramPtr;
         write(tw, deps);
         build_string() $(tmp_writer) {
             var gen = new StandaloneContextGen(program, unsafe(addr(tmp_writer)), coll, cfg.cross_platform);
-            var inscope adapter <- make_visitor(*gen)
-            gen.adapter := adapter
-            program |> visit_module(adapter, program.getThisModule);
+            make_visitor(*gen) $(adapter) {
+                gen.adapter := adapter
+                program |> visit_module(adapter, program.getThisModule);
+            }
 
             initFunctions = addFunctionInfo(program._options |> find_arg("no_init") ?as tBool ?? program.policies.no_init,
                                             program._options |> find_arg("rtti") ?as tBool ?? program.policies.rtti,
@@ -373,19 +374,22 @@ def public runStandaloneVisitor(var program : ProgramPtr, modules : array<string
 
     
     var pmarker = new PrologueMarker();
-    var inscope adapter_p <- make_visitor(*pmarker)
-    visit(program, adapter_p)
+    make_visitor(*pmarker) $(adapter_p) {
+        visit(program, adapter_p)
+    }
 
     setAotHashes(program, context);
 
     
     var flags = new SetPrinterFlags();
-    var inscope flags_adapter <- make_visitor(*flags)
-    visit(program, flags_adapter)
+    make_visitor(*flags) $(flags_adapter) {
+        visit(program, flags_adapter)
+    }
 
     var coll = new BlockVariableCollector();
-    var inscope adapter_coll <- make_visitor(*coll)
-    visit(program, adapter_coll)
+    make_visitor(*coll) $(adapter_coll) {
+        visit(program, adapter_coll)
+    }
 
     let mod = program.getThisModule;
     
@@ -442,7 +446,7 @@ def public runStandaloneVisitor(var program : ProgramPtr, modules : array<string
 }
 
 [export]
-def public standalone_aot(input : string; output_dir : string; cross_platform : bool, paranoid_validation : bool; cop : CodeOfPolicies) : string {
+def public standalone_aot(input : string; output_dir : string; cross_platform : bool, paranoid_validation : bool; cop : CodeOfPolicies) {
     
     let file_name = input |> split_by_chars("/\\") |> back()
     let ctx_name = (file_name |> split("."))[0]
@@ -450,23 +454,19 @@ def public standalone_aot(input : string; output_dir : string; cross_platform : 
                                    class_name = "Standalone",
                                    cpp_output_dir = output_dir,
                                    cross_platform = cross_platform)
-    var result = "";
     using() $(var mg : ModuleGroup) {
         var inscope access <- make_file_access("")
         compile_and_simulate(input, access, unsafe(addr(mg)), cop) $(var program : ProgramPtr; var pctx : smart_ptr<Context>) {
-            result = build_string() $(writer) {
-                
-                var modules_str : array<string>
-                let (modules_str, noAotModule) = getRequiredModulesFor(program)
-                if (program._options |> find_arg("no_aot") ?as tBool ?? false) {
-                    panic("Standalone context called on non aot module {input}")
-                } elif (noAotModule) {
-                    panic("Standalone context called on non aot module {input}")
-                } else {
-                    runStandaloneVisitor(program, modules_str, pctx, cfg)
-                }
+            
+            let (modules_str, noAotModule) = getRequiredModulesFor(program)
+            if (program._options |> find_arg("no_aot") ?as tBool ?? false) {
+                panic("Standalone context called on non aot module {input}")
+            } elif (noAotModule) {
+                panic("Standalone context called on non aot module {input}")
+            } else {
+                runStandaloneVisitor(program, modules_str, pctx, cfg)
             }
         }
     }
-    return result
+    return true
 }

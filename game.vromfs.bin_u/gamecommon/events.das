@@ -22,6 +22,7 @@ require PropsManager
 struct ParallelUpdateFrameDelayed
   curTime : float
   dt : float
+  curTimeD : double
 
 [cpp_event(broadcast)]
 struct ActUpdateAlways
@@ -165,10 +166,6 @@ struct CmdHeroRespawn
 
 [cpp_event(broadcast)]
 struct CmdLockHangarMusic
-{}
-
-[cpp_event(unicast, with_scheme)]
-struct EventOnTrailerDead
 {}
 
 [cpp_event(broadcast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]

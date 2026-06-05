@@ -23,7 +23,7 @@ let { getUnlockCost, findUnusableUnitForManualUnlock } = require("%scripts/unloc
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { deferOnce } = require("dagor.workcycle")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { hasNightGameModes } = require("%scripts/events/eventInfo.nut")
@@ -196,13 +196,14 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
 
     let cost = getUnlockCost(unlockId)
 
-    let title = warningIfGold(
+    let text = warningIfGold(
       loc("onlineShop/needMoneyQuestion", { purchase = colorize("unlockHeaderColor",
         getUnlockNameText(-1, unlockId)),
         cost = cost.getTextAccordingToBalance()
       }), cost)
-    purchaseConfirmation("question_buy_unlock", title, @() buyUnlock(unlockId,
-      Callback(@() this.updateUnlockBlock(unlockId), this)))
+    let callbackYes = @() buyUnlock(unlockId,
+      Callback(@() this.updateUnlockBlock(unlockId), this))
+    purchaseConfirmation({ id = "question_buy_unlock", text, callbackYes }, cost)
   }
 
   function unlockToFavorites(obj) {

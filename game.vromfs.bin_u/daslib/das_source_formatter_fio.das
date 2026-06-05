@@ -11,7 +11,7 @@ module das_source_formatter_fio shared private
 
 
 
-require fio
+require daslib/fio
 require strings
 require daslib/defer
 require daslib/das_source_formatter

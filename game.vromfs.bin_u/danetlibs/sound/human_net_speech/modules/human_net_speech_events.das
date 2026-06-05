@@ -21,6 +21,7 @@ struct CmdRequestHumanSpeechAbout
 [event(unicast)] 
 struct CmdClientHumanSpeech
   phrase : string
+  prefferred_language : string
 
 [event(unicast)] 
 struct EventOnHumanSpeak {}

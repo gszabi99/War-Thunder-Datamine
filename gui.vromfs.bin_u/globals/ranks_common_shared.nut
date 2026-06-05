@@ -16,6 +16,7 @@ const DS_UT_AIRCRAFT = "Air"
 const DS_UT_TANK = "Tank"
 const DS_UT_SHIP = "Ship"
 const DS_UT_HUMAN = "Human"
+const DS_UT_TRANSPORT = "Transport"
 const DS_UT_INVALID = "Invalid"
 
 let ds_unit_type_names = {
@@ -24,7 +25,8 @@ let ds_unit_type_names = {
   [ES_UNIT_TYPE_BOAT] = DS_UT_SHIP,
   [ES_UNIT_TYPE_SHIP] = DS_UT_SHIP,
   [ES_UNIT_TYPE_HELICOPTER] = DS_UT_AIRCRAFT,
-  [ES_UNIT_TYPE_HUMAN] = DS_UT_HUMAN
+  [ES_UNIT_TYPE_HUMAN] = DS_UT_HUMAN,
+  [ES_UNIT_TYPE_TRANSPORT] = DS_UT_TRANSPORT
 }
 
 let mapWpUnitClassToWpUnitType = {
@@ -45,6 +47,7 @@ let mapWpUnitClassToWpUnitType = {
   exp_naval_ferry_barge = DS_UT_SHIP
   exp_helicopter = DS_UT_AIRCRAFT
   exp_human = DS_UT_HUMAN
+  exp_transport = DS_UT_TRANSPORT
 }
 
 enum EDifficulties {
@@ -690,5 +693,6 @@ return {
   DS_UT_AIRCRAFT
   DS_UT_TANK
   DS_UT_SHIP
+  DS_UT_TRANSPORT
   DS_UT_INVALID
 }

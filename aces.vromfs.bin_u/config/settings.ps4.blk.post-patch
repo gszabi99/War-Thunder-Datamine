@@ -1,0 +1,67 @@
+"@override:graphics"
+{
+  waterChopDetailWavesAllowed:b=no
+  "@override:waterQuality":t="medium"
+  "@override:loadFarRiGenForOpticalZoom":b=no
+}
+
+"@override:cfdWind"
+{
+  "@override:particleInfluenceThresholdMin":r=15.0
+  "@override:particleInfluenceThresholdMax":r=15.0
+}
+
+"@override:network"
+{
+  httpClientPollInThread:b=yes
+}
+
+"@override:graphics"
+{
+  fxQuality:t="ps4"
+  forcePanoramaInHangar:b=yes
+  "@override:supportsIndoorProbes":b=no
+}
+
+"@override:texStreaming"{
+  memReservePromille:i=93
+}
+
+"@override:gi" {
+  "@override:dagiAlgorithm":r = 0
+}
+
+"@override:shadows" {
+  "@override:voxelShadows" {
+    cascadeCount:i = 0
+  }
+  "@override:dynamicLightsShadows" {
+    "@override:dynamicShadowsMaxUpdatePerFrame":i = 1
+  }
+}
+
+"@override:gi"
+{
+  "@override:low"
+  {
+    "@override:hangar"
+    {
+      "@override:dagiQuality":i = -1 //off
+    }
+  }
+}
+
+"@override:volfog"
+{
+  "@override:low"
+  {
+    "@override:infantry"
+     {
+      "@override:enabled":b = false
+     }
+    "@override:hangar"
+     {
+      "@override:enabled":b = false
+     }
+  }
+}

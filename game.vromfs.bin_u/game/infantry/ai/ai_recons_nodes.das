@@ -8,11 +8,14 @@ require DngWalkerai
 require DagorDataBlock
 require DagorSystem
 require math.random
+require math.linear
 require math.base
 require math.ang
 require Dacoll
+require Grid
 require DagorMath
 require DagorRandom
+require DagorDebug3D
 require %appGame.infantry.ai.ai_recons_common
 require %appGame.infantry.es.walker_common
 require %appGame.infantry.es.team_common
@@ -654,7 +657,6 @@ class SetNextReconFocusDist : BehNodeAdapter
         dist = dists.x
     return EBehResult.ER_SUCCESS
 
-
 [beh_node(name="decrementNonZeroIntVar")]
 class DecrementNonZeroIntVar : BehNodeAdapter
   param : int = -1
@@ -668,7 +670,443 @@ class DecrementNonZeroIntVar : BehNodeAdapter
     return EBehResult.ER_SUCCESS
 
 
+[beh_node(name="considerCornersAlongMovementPath")]
+class ConsiderCornersAlongMovementPath : BehNodeAdapter
+  enemyTimeParam : int = -1
+  outPosFromParam : int = -1
+  outPosMoveParam : int = -1
+  outPosLookParam : int = -1
+  outPosLeanParam : int = -1
 
+  ENEMY_TIME_MAX : float = 10.0
+  ENEMY_TIME_COS1 = -0.5
+  ENEMY_TIME_COS2 = -0.2
 
+  checkTimer : float = 0.0
+  checkTime : float = 0.25
+  checkDist : float = 5.0
 
+  maxPtsAhead : int = 16
+  maxLenAhead : float = 16.0
+  maxScanRecons : int = 32
+  minScanRadius : float = 5.0
 
+  MIN_DIST_TO_RESCAN = 3.0
+  MIN_TIME_TO_RESCAN = 1.0
+
+  enemiesCalced : bool = false
+  enemiesNearby : bool = false
+  enemiesNearbyAvgPos : float3 = float3()
+  ENEMIES_RADIUS : float = 100.0
+
+  def override loadFromBlk(var data : DataBlock) : void
+    if datablock_find_param(data, "enemyTimeParam") >= 0
+      enemyTimeParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "enemyTimeParam", ""), 0.0)
+    outPosFromParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outPosFromParam", ""), float3())
+    outPosMoveParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outPosMoveParam", ""), float3())
+    outPosLookParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outPosLookParam", ""), float3())
+    outPosLeanParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outPosLeanParam", ""), 0.0)
+    checkTimer = rnd_float(0.0, checkTime)
+
+  def calc_enemies_avg(agent_eid : EntityId)
+    if enemiesCalced
+      return
+    enemiesNearby = false
+    query(agent_eid) <| $ [es] (agent_dangers : AgentDangers; transform aka agent_transform : float3x4)
+      let DIST_TO_ENEMY = 35.0
+      let DIST_TO_ENEMY_FAR = 150.0
+      let DIST_TO_ENEMY_SQ = square(DIST_TO_ENEMY)
+      let DIST_TO_ENEMY_FAR_SQ = square(DIST_TO_ENEMY_FAR)
+      var numEnemies = 0
+      for danger in agent_dangers.dangers
+        query(danger.eid) <| $ [es] (transform aka danger_transform : float3x4)
+          let distSq = distance_sq(danger_transform[3], agent_transform[3])
+          if distSq < DIST_TO_ENEMY_SQ
+            enemiesNearby = true
+          elif distSq < DIST_TO_ENEMY_FAR_SQ
+            ++numEnemies
+            enemiesNearbyAvgPos += danger_transform[3]
+      enemiesNearbyAvgPos /= float(numEnemies)
+      enemiesCalced = true
+
+  def is_good_dir(pos : float3; dir : float3)
+    if enemiesNearby
+      return true
+    let ENEMY_SECTOR_COS = 0.33
+    if dot(normalize(enemiesNearbyAvgPos - pos), dir) > ENEMY_SECTOR_COS
+      return true
+    var capResult = false
+    let MIN_DIST_TO_CAPZONE = 10.0
+    let MIN_DIST_TO_CAPZONE_SQ = square(MIN_DIST_TO_CAPZONE)
+    query() <| $ [es(REQUIRE=capzone__progress)] (active : bool; transform : float3x4)
+      if active
+        let capDir = transform[3] - pos
+        if length_sq(capDir) > MIN_DIST_TO_CAPZONE_SQ && dot(capDir, dir) > ENEMY_SECTOR_COS
+          capResult = true
+    return capResult
+
+  def override init()
+    enemiesCalced = false
+
+  def override update(dt : float) : EBehResult
+    checkTimer -= dt
+    if checkTimer > 0.0
+      return EBehResult.ER_RUNNING
+    checkTimer = checkTime
+
+    
+    
+    
+
+    var enemyTime = ENEMY_TIME_MAX
+    let curTime = get_sync_time()
+    if enemyTimeParam >= 0
+      enemyTime = curTime - owner.blackBoard |> datablock_getReal(enemyTimeParam)
+      if enemyTime < 0.0
+        enemyTime = ENEMY_TIME_MAX
+
+    var resultLean = false
+    var resultLeanPos1 = float3()
+    var resultLeanPos2 = float3()
+    var resultLeanLook = float3()
+    var resultLeanVal = 0.0
+
+    owner.blackBoard |> set(outPosFromParam, float3())
+    owner.blackBoard |> set(outPosMoveParam, float3())
+    owner.blackBoard |> set(outPosLookParam, float3())
+    owner.blackBoard |> set(outPosLeanParam, 0.0)
+
+    let agentEid = beh_tree_eid(owner)
+    query(agentEid) <| $ [es] (transform : float3x4;
+                               team aka agent_team : int = 0;
+                               var walker_agent : EntityAgent&;
+                               var recon__runReconLast : float4&;
+                               var recon__runReconPts : Point3List&;
+                               var recon__runReconPos : Point3List&;
+                               var recon__runReconDir1 : Point3List&;
+                               var recon__runReconDir2 : Point3List&;
+                               var recon__runReconLastAgentPos : float3&;
+                               var recon__runReconLastScanTime : float&;
+                               var recon__runReconLastLookTime : float&;
+                               var recon__runReconLastLookPos : float3&)
+      let curDir = transform[0]
+      let curPos = transform[3]
+      let pathLen = get_agent_pathLen(walker_agent)
+
+      var hasLast = recon__runReconLast.w > 0.0
+      assume lastCenter = recon__runReconLast.xyz
+      assume lastRadius = recon__runReconLast.w
+
+      var doRescan = false
+      let movedOut = distance_sq(recon__runReconLastAgentPos, curPos) > square(MIN_DIST_TO_RESCAN) && distance_sq(curPos, lastCenter) > square(lastRadius)
+      if !hasLast || movedOut || curTime > recon__runReconLastScanTime + MIN_TIME_TO_RESCAN
+        doRescan = true
+        hasLast = false
+        recon__runReconLast.w = 0.0
+
+      if doRescan && (pathLen > 1 || hasLast)
+        if !team_bots_tick_limiter_check(agent_team, TB_LIMITER_USING_RECONS, 1)
+          checkTimer = 0.0
+          
+          return
+
+        
+        
+
+        recon__runReconLastAgentPos = curPos
+        recon__runReconLastScanTime = curTime
+        var prevPos = curPos
+        var lenAccum = 0.0
+        assume pathPts = recon__runReconPts
+        let checkPts = min(pathLen, maxPtsAhead)
+        pathPts |> reserve(maxPtsAhead + 1)
+        pathPts |> clear()
+        pathPts |> push(curPos)
+        lastCenter = curPos
+        for i in range(checkPts)
+          var pathPos = float3()
+          if !get_agent_pathPos(walker_agent, i, pathPos)
+            return
+          let dist = distance(pathPos, prevPos)
+          if lenAccum + dist > maxLenAhead
+            pathPos = prevPos + normalize(pathPos - prevPos) * (maxLenAhead - lenAccum)
+            
+            pathPts |> push(pathPos)
+            lastCenter += pathPos
+            lenAccum = maxLenAhead
+            break
+          lenAccum += dist
+          
+          pathPts |> push(pathPos)
+          lastCenter += pathPos
+          prevPos = pathPos
+
+        let numPathPts = length(pathPts)
+        if numPathPts <= 1
+          return
+        lastCenter /= float(numPathPts)
+
+        lastRadius = 0.0
+        for i in range(numPathPts)
+          lastRadius = max(lastRadius, distance(lastCenter, pathPts[i]))
+        let EXTRA_RADIUS = 0.5
+        lastRadius += EXTRA_RADIUS
+
+        recon__runReconPos |> clear()
+        recon__runReconDir1 |> clear()
+        recon__runReconDir2 |> clear()
+        
+
+        let MIN_RADIUS_TO_SCAN = 3.5
+        if lastRadius > MIN_RADIUS_TO_SCAN
+          var left = maxScanRecons
+          let MAX_DIST_FROM_PATH = 5.0
+          let MAX_DH_FROM_PATH = 1.5
+          let EXTRA_RADIUS_FOR_COVERS = 8.0
+          let scanRadius = max(minScanRadius, lastRadius + EXTRA_RADIUS_FOR_COVERS)
+          
+          
+          
+          scan_recons_corners_packed(lastCenter, scanRadius) <| $(pos : float3; info : int)
+            
+            if left <= 0
+              return
+
+            var minDist = MAX_DIST_FROM_PATH
+            var minDH = MAX_DH_FROM_PATH
+            let pos2d = x0z(pos)
+            for j in range(numPathPts - 1)
+              let pt1 = x0z(pathPts[j])
+              let pt2 = x0z(pathPts[j + 1])
+              let dist = distance_sq_to_seg(pos2d, pt1, pt2)
+              if dist < minDist
+                minDist = dist
+                minDH = min(minDH, abs(pathPts[j + 1].y - pos.y))
+            if minDist >= MAX_DIST_FROM_PATH || minDH >= MAX_DH_FROM_PATH
+              
+              return
+
+            let dir1 = recon_ang_to_dir(recon_arg1(info))
+            let dir2 = recon_ang_to_dir(recon_arg2(info))
+
+            
+            recon__runReconPos |> push(pos)
+            recon__runReconDir1 |> push(dir1)
+            recon__runReconDir2 |> push(dir2)
+            --left
+
+            
+            
+            
+          
+          
+
+        
+        
+
+        
+        
+        
+        
+
+      let MIN_TIME_BETWEEN_LOOKS = 0.5
+      if curTime < recon__runReconLastLookTime + MIN_TIME_BETWEEN_LOOKS
+        return
+      if curTime < walker_agent.tryLookTime
+        return
+
+      var lenAccum = 0.0
+      var fromPos = curPos
+      var nextPos = curPos
+      for i in range(pathLen)
+        var pathPos = float3()
+        if !get_agent_pathPos(walker_agent, i, pathPos)
+          return
+        fromPos = nextPos
+        nextPos = pathPos
+        let dist = distance(pathPos, fromPos)
+        if lenAccum + dist > checkDist
+          nextPos = fromPos + normalize(nextPos - fromPos) * (checkDist - lenAccum)
+          break
+        lenAccum += dist
+
+      
+      
+
+      
+      
+      
+      
+
+      let numRecons = length(recon__runReconPos)
+      if numRecons > 8
+        if !team_bots_tick_limiter_check(agent_team, TB_LIMITER_USING_RECONS, 1)
+          checkTimer = 0.0
+          
+          return
+
+      calc_enemies_avg(agentEid)
+
+      let LOOK_OFFS = float3(0.0, 1.5, 0.0)
+      let LOOK_TIME_BACK = 3.5
+      let LOOK_TIME_FORW = 2.5
+      let LOOK_DIST = 15.0
+      let MIN_DIST_TO_RECON = 0.1
+      let MIN_RADIUS_SQ = square(0.0)
+      let MAX_RADIUS_SQ = square(maxLenAhead)
+      let minDistToReconSq = square(MIN_DIST_TO_RECON)
+      var resultSum = 0.0
+      var resultAtPos = float3()
+      var resultLookPos = float3()
+      var resultLookTime = 0.0
+      var resultLastDir = float3()
+      var resultOnce = false
+      var checkedMates = false
+
+      for i in range(numRecons)
+        let reconPos = recon__runReconPos[i]
+        let reconDir1 = recon__runReconDir1[i]
+        let reconDir2 = recon__runReconDir2[i]
+        var lookDir = float3()
+        var alongDir = float3()
+        
+        if walk_seg_intersects_recon_danger_zone(curPos, nextPos, MIN_RADIUS_SQ, MAX_RADIUS_SQ, reconPos, reconDir1, reconDir2, lookDir, alongDir)
+          
+          let MIN_DIST_TO_PREV_LOOK_POINT = 5.0
+          if distance_sq(reconPos, recon__runReconLastLookPos) > square(MIN_DIST_TO_PREV_LOOK_POINT)
+            if !is_good_dir(reconPos, lookDir)
+              
+              
+              continue
+            let dotLooks = dot(curDir, lookDir)
+            let reconDistSq = distance_sq(curPos, reconPos)
+            if reconDistSq > minDistToReconSq
+              
+              let rayFrom = curPos + float3(0.0, 1.0, 0.0)
+              let rayDir = normalize(reconPos - curPos)
+              let rayDist = 2.5
+              if !rayhit_normalized(rayFrom, rayDir, rayDist, ETF_DEFAULT, -1)
+                
+
+                
+                if enemyTime >= ENEMY_TIME_MAX
+                  let leanRight = alongDir == reconDir1
+                  let perpDir = leanRight ? float3(-alongDir.z, 0.0, alongDir.x) : float3(alongDir.z, 0.0, -alongDir.x)
+                  let basePos = reconPos + perpDir * 0.7
+                  let rayFrom1 = basePos + float3(0.0, 1.5, 0.0) + alongDir * 0.7
+                  let movePos = basePos + float3(0.0, 1.5, 0.0)
+                  if distance_sq(rayFrom1, curPos) < distance_sq(movePos, curPos)
+                    let rayTo1 = reconPos + float3(0.0, 1.5, 0.0) + lookDir * 7.5
+                    if dot(nextPos - curPos, rayTo1 - rayFrom1) > 0.0
+                      let rayDir1 = lookDir
+                      let rayFrom2 = rayFrom1 + alongDir * 0.1
+                      let rayFrom3 = movePos - alongDir * 0.5
+                      let rayDist1 = 1.0
+                      let rayDist2 = 10.0
+                      if rayhit_normalized(rayFrom1, rayDir1, rayDist1, ETF_DEFAULT, -1)
+                        if rayhit_normalized(rayFrom2, rayDir1, rayDist1, ETF_DEFAULT, -1)
+                          if !rayhit_normalized(rayFrom3, rayDir1, rayDist2, ETF_DEFAULT, -1)
+                            var hasMateThere = false
+                            let checkMatesPos = rayFrom3 + rayDir1 * 2.0
+                            let checkMatesRad = 3.0
+                            if !checkedMates
+                              for_each_entity_in_grid(ecs_hash("humans"), BSphere3(checkMatesPos, checkMatesRad), GridEntCheck.BOUNDING) <| $(that_eid : EntityId; that_pos : float3)
+                                checkedMates = true
+                                if that_eid != agentEid && distance_sq(checkMatesPos, that_pos) < square(checkMatesRad)
+                                  query(that_eid) <| $ [es] (team aka that_team : int; isAlive : bool)
+                                    if that_team == agent_team && isAlive
+                                      hasMateThere = true
+                                      
+                            if !hasMateThere
+                              resultLean = true
+                              resultLeanPos1 = basePos + alongDir * 0.7
+                              resultLeanPos2 = basePos - alongDir * 0.5
+                              resultLeanLook = basePos + float3(0.0, 1.5, 0.0) + lookDir * LOOK_DIST
+                              resultLeanVal = leanRight ? 1.0 : -1.0
+                              let MIN_TIME_BETWEEN_LEANS = 3.5
+                              recon__runReconLastLookTime = curTime + MIN_TIME_BETWEEN_LEANS
+                              walker_agent.tryLookTime = 0.0
+
+                              
+                              
+                              
+                              return
+
+                let lookPos = reconPos + LOOK_OFFS + lookDir * LOOK_DIST
+                
+                
+                
+                
+                
+                
+
+                
+                  
+                  
+                  
+                
+
+                var sameDir = dot(resultLastDir, lookDir) >= -0.1
+                if !resultOnce && resultSum > 0.0 && !sameDir && is_good_dir(curPos, lookDir) && (!is_good_dir(curPos, resultLastDir) || rnd_float(0.0, 1.0) < 0.5)
+                  resultSum = 0.0
+                  resultLookPos = float3()
+                  resultLastDir = float3()
+                  resultOnce = true
+                  sameDir = true
+                if resultSum <= 0.0 || sameDir
+                  let lookTime = curTime + cvt(dotLooks, -1.0, 1.0, LOOK_TIME_BACK, LOOK_TIME_FORW)
+                  let sumWeight = safeinv(reconDistSq)
+                  resultSum += sumWeight
+                  resultAtPos = reconPos
+                  resultLookPos += lookPos * sumWeight
+                  resultLookTime = max(resultLookTime, lookTime)
+                  resultLastDir += lookDir
+                  resultLastDir = normalize(resultLastDir)
+
+                  
+                  
+
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+
+      if resultSum > 0.0
+        let lookPos = resultLookPos / resultSum
+        recon__runReconLastLookPos = lookPos
+        recon__runReconLastLookTime = curTime
+        walker_agent.tryLookTime = resultLookTime
+        walker_agent.tryLookCoef = 0.75
+        walker_agent.tryLookPos = lookPos
+        walker_agent.tryLookCosMin = cvt(enemyTime, ENEMY_TIME_MAX, 0.0, ENEMY_TIME_COS1, ENEMY_TIME_COS2)
+
+        
+        
+        
+        
+        
+
+      
+      
+      
+      
+
+      
+      
+      
+
+    if resultLean && resultLeanVal != 0.0
+      owner.blackBoard |> set(outPosFromParam, resultLeanPos1)
+      owner.blackBoard |> set(outPosMoveParam, resultLeanPos2)
+      owner.blackBoard |> set(outPosLookParam, resultLeanLook)
+      owner.blackBoard |> set(outPosLeanParam, resultLeanVal)
+      return EBehResult.ER_SUCCESS
+
+    return EBehResult.ER_RUNNING

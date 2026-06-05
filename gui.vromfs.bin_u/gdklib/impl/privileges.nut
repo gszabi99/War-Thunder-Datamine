@@ -1,8 +1,9 @@
 import "gdk.privileges" as priv
 from "eventbus" import eventbus_subscribe_onehit
 
+
 function retrieve_current_state(privilege, callback) {
-  let eventName = "xbox_privilege_get_current_state"
+  let eventName = $"xbox_privilege_get_current_state_{privilege}"
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let state = result?.state
@@ -13,7 +14,7 @@ function retrieve_current_state(privilege, callback) {
 
 
 function resolve_with_ui(privilege, callback) {
-  let eventName = "xbox_privilege_resolve_with_ui"
+  let eventName = $"xbox_privilege_resolve_with_ui_{privilege}"
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let state = result?.state

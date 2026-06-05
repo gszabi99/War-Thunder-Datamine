@@ -23,25 +23,24 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
-  "maxRevSpeed": 10.0,
-  "maxAngSpeed": 30.0,
-  "maxAccel": 4.0,
-  "maxDecel": 8.0,
-  "maxAngAccel0": 20.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 40.0,
+  "maxFwdSpeed": 75.0,
+  "maxRevSpeed": 30.0,
+  "maxAngSpeed": 50.0,
+  "maxAccel": 40.0,
+  "maxDecel": 40.0,
+  "maxAngAccel0": 4.0,
+  "maxAngAccelV": 3.0,
+  "maxAngAccel": 100.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_SPAA",
   "mass": 5500.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "radarDeployTime": 3.0,
   "drowningCheckHeightMultiplier": 0.6,
   "aimPointOffset": [
@@ -568,6 +567,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -900,21 +903,18 @@
     "fuel_tank_exterior_l_01_dm": true,
     "ex_decor_04_dm": true
   },
-  "xray_viewer_data": [
-    {
-      "armorArrayHull": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm",
-            "xrayTextThickness": 5.0
-          }
+  "xray_viewer_data": {
+    "armorArrayHull": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "titleLoc": "RHA_tank_modern",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm",
+          "xrayTextThickness": 5.0
         }
       }
-    },
-    {}
-  ],
+    }
+  },
   "DamageEffects": {
     "part": [
       {
@@ -1875,7 +1875,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "targetMsl": true,
         "shellGroundRangeMax": 500.0,
@@ -1988,7 +1987,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "targetMsl": true,
         "shellGroundRangeMax": 500.0,
@@ -2102,7 +2100,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "targetMsl": true,
         "shellGroundRangeMax": 500.0,
@@ -2216,7 +2213,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "targetMsl": true,
         "shellGroundRangeMax": 500.0,
@@ -2338,10 +2334,7 @@
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 2.0,
         "targetAngularRateMax": 15.0,
-        "AttackMaxDistance": 20000.0,
         "AttackMaxRadius": 20000.0,
-        "AttackMaxHeight": 15000.0,
-        "AttackMinHeight": 0.0,
         "accuracyAir": 1.5,
         "accuracyGnd": 0.0,
         "errMeasureVel": 0.0,
@@ -2352,15 +2345,17 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "targetMsl": true,
-        "shellGroundRangeMax": 1200.0,
+        "shellGroundRangeMax": 1500.0,
         "shellMassRange": [
           30.0,
-          875.0
+          1500.0
         ],
         "shellSpeedRange": [
           120.0,
-          600.0
+          1200.0
         ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun_03",
@@ -2380,7 +2375,145 @@
             -0.0,
             85.0
           ]
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       }
     ],
     "animatedBones": {
@@ -4243,7 +4376,20 @@
         "dmPart": [
           "antenna_target_location_dm",
           "electronic_equipment_dm"
-        ]
+        ],
+        "ai": false
+      },
+      {
+        "blk": "gameData/sensors/su_1rs1_ai.blk",
+        "turretIndex": 0,
+        "designationFromBody": true,
+        "designationTurretIndex": 0,
+        "radarParkingAzimuth": 0.0,
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ],
+        "human": false
       },
       {
         "blk": "gameData/sensors/su_1rs2.blk",
@@ -4252,7 +4398,18 @@
           "antenna_target_tagging_dm",
           "electronic_equipment_dm"
         ],
-        "powerButtonIdx": -1
+        "powerButtonIdx": -1,
+        "ai": false
+      },
+      {
+        "blk": "gameData/sensors/su_1rs2_ai.blk",
+        "turretIndex": 0,
+        "dmPart": [
+          "antenna_target_tagging_dm",
+          "electronic_equipment_dm"
+        ],
+        "powerButtonIdx": -1,
+        "human": false
       }
     ]
   },

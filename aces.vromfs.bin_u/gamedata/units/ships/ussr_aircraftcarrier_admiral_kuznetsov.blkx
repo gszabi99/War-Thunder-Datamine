@@ -1097,6 +1097,51 @@
       },
       {
         "name": [
+          "engine_room_01_dm",
+          "engine_room_02_dm",
+          "engine_room_03_dm",
+          "engine_room_04_dm",
+          "engine_room_05_dm",
+          "engine_room_06_dm"
+        ],
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "damage": 200.0,
+            "action": {
+              "type": "fxEvent",
+              "fxEventName": "steam_leak"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 300.0,
+            "action": {
+              "type": "fxEvent",
+              "fxEventName": "steam_leak"
+            }
+          },
+          {
+            "damageType": "shatter",
+            "damage": 10.0,
+            "action": {
+              "type": "fxEvent",
+              "fxEventName": "steam_leak"
+            }
+          }
+        ],
+        "onKill": {
+          "expl": 1.0,
+          "fHitCritical": false,
+          "action": {
+            "type": "fxEvent",
+            "probability": 1.0,
+            "fxEventName": "steam_explosion_big"
+          }
+        }
+      },
+      {
+        "name": [
           "compartment_01_dm",
           "compartment_02_dm",
           "compartment_03_dm",
@@ -1686,7 +1731,59 @@
   "shipDamageControl": {
     "shipDamageControlEnabled": true
   },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/naval/su_mr_750_fregat_ma.blk",
+        "designationFromBody": true,
+        "dmPart": "antenna_target_location_02_dm"
+      },
+      {
+        "blk": "gameData/sensors/naval/su_mr_360_podkat.blk",
+        "designationFromBody": true,
+        "dmPart": [
+          "antenna_target_location_01_dm",
+          "antenna_target_location_03_dm"
+        ]
+      },
+      {
+        "blk": "gameData/sensors/naval/su_3r95.blk",
+        "dmPart": [
+          "antenna_target_tagging_01_dm",
+          "antenna_target_tagging_02_dm",
+          "antenna_target_tagging_02_dm",
+          "antenna_target_tagging_02_dm"
+        ]
+      }
+    ]
+  },
+  "radarAnimations": {
+    "anim": [
+      {
+        "radarAnimVar": "radar_target_yaw_rotate",
+        "animatedRadarIdx": 0
+      },
+      {
+        "radarAnimVar": "target_tagging_yaw_rotate",
+        "radarAntenaSpeed": 50.0,
+        "animatedRadarIdx": 1,
+        "radarAnimPitchVar": "target_tagging_pitch_rotate"
+      }
+    ]
+  },
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 8,
+    "animatedBones": {
+      "node": [
+        "antenna_target_location_01",
+        "antenna_target_location_02",
+        "antenna_target_location_03",
+        "antenna_target_tagging_01",
+        "antenna_target_tagging_02",
+        "antenna_target_tagging_03",
+        "antenna_target_tagging_04"
+      ]
+    },
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1705,8 +1802,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -1717,7 +1814,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -1804,8 +1910,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -1816,7 +1922,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -1879,8 +1994,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -1891,7 +2006,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "main_caliber_turret_03",
           "gun": "main_caliber_gun_03",
@@ -1972,8 +2096,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -1984,7 +2108,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "main_caliber_turret_04",
           "gun": "main_caliber_gun_04",
@@ -2041,8 +2174,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2053,7 +2186,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "main_caliber_turret_05",
           "gun": "main_caliber_gun_05",
@@ -2110,8 +2252,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2122,7 +2264,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "main_caliber_turret_06",
           "gun": "main_caliber_gun_06",
@@ -2179,8 +2330,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2191,7 +2342,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01",
@@ -2221,14 +2381,14 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            -35.0,
-            25.0,
+            -47.0,
+            20.0,
             80.0
           ],
           "lim2": [
-            -35.0,
+            -47.0,
             90.0,
-            10.0,
+            -5.0,
             80.0
           ]
         },
@@ -2259,8 +2419,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2271,7 +2431,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_02",
@@ -2290,14 +2459,14 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            -35.0,
-            25.0,
+            -47.0,
+            20.0,
             80.0
           ],
           "lim2": [
-            -35.0,
+            -47.0,
             90.0,
-            10.0,
+            -5.0,
             80.0
           ]
         },
@@ -2328,8 +2497,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2340,7 +2509,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
           "gun": "auxiliary_caliber_gun_03",
@@ -2370,18 +2548,18 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            -45.0,
+            -35.0,
             25.0,
             80.0
           ],
           "lim2": [
-            -45.0,
-            35.0,
-            10.0,
+            -35.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim3": [
-            35.0,
+            55.0,
             90.0,
             25.0,
             80.0
@@ -2414,8 +2592,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2426,7 +2604,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
           "gun": "auxiliary_caliber_gun_04",
@@ -2445,18 +2632,18 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            -45.0,
+            -35.0,
             25.0,
             80.0
           ],
           "lim2": [
-            -45.0,
-            35.0,
-            10.0,
+            -35.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim3": [
-            35.0,
+            55.0,
             90.0,
             25.0,
             80.0
@@ -2489,8 +2676,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2501,7 +2688,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_03",
           "gun": "auxiliary_caliber_gun_05",
@@ -2531,14 +2727,14 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            50.0,
-            15.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim2": [
-            50.0,
+            55.0,
             90.0,
-            25.0,
+            20.0,
             80.0
           ]
         },
@@ -2569,8 +2765,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2581,7 +2777,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_03",
           "gun": "auxiliary_caliber_gun_06",
@@ -2600,14 +2805,14 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            50.0,
-            15.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim2": [
-            50.0,
+            55.0,
             90.0,
-            25.0,
+            20.0,
             80.0
           ]
         },
@@ -2638,8 +2843,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2650,7 +2855,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_04",
           "gun": "auxiliary_caliber_gun_07",
@@ -2680,18 +2894,18 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            -45.0,
-            25.0,
+            -55.0,
+            20.0,
             80.0
           ],
           "lim2": [
-            -45.0,
-            75.0,
-            15.0,
+            -55.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim3": [
-            75.0,
+            55.0,
             90.0,
             25.0,
             80.0
@@ -2724,8 +2938,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2736,7 +2950,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_04",
           "gun": "auxiliary_caliber_gun_08",
@@ -2755,18 +2978,18 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            -45.0,
-            25.0,
+            -55.0,
+            20.0,
             80.0
           ],
           "lim2": [
-            -45.0,
-            75.0,
-            15.0,
+            -55.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim3": [
-            75.0,
+            55.0,
             90.0,
             25.0,
             80.0
@@ -2799,8 +3022,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2811,7 +3034,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_05",
           "gun": "auxiliary_caliber_gun_09",
@@ -2847,12 +3079,12 @@
           ],
           "lim2": [
             -45.0,
-            45.0,
-            10.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim3": [
-            45.0,
+            55.0,
             90.0,
             15.0,
             80.0
@@ -2885,8 +3117,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2897,7 +3129,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_05",
           "gun": "auxiliary_caliber_gun_10",
@@ -2922,12 +3163,12 @@
           ],
           "lim2": [
             -45.0,
-            45.0,
-            10.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim3": [
-            45.0,
+            55.0,
             90.0,
             15.0,
             80.0
@@ -2960,8 +3201,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -2972,7 +3213,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_06",
           "gun": "auxiliary_caliber_gun_11",
@@ -3002,14 +3252,14 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            45.0,
-            10.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim2": [
-            45.0,
+            55.0,
             90.0,
-            20.0,
+            15.0,
             80.0
           ]
         },
@@ -3040,8 +3290,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -3052,7 +3302,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_06",
           "gun": "auxiliary_caliber_gun_12",
@@ -3071,14 +3330,14 @@
         "limitsTable": {
           "lim1": [
             -90.0,
-            45.0,
-            10.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim2": [
-            45.0,
+            55.0,
             90.0,
-            20.0,
+            15.0,
             80.0
           ]
         },
@@ -3109,8 +3368,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -3121,7 +3380,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_07",
           "gun": "auxiliary_caliber_gun_13",
@@ -3163,12 +3431,12 @@
           ],
           "lim3": [
             -45.0,
-            45.0,
-            10.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim4": [
-            45.0,
+            55.0,
             90.0,
             20.0,
             80.0
@@ -3201,8 +3469,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -3213,7 +3481,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_07",
           "gun": "auxiliary_caliber_gun_14",
@@ -3244,12 +3521,12 @@
           ],
           "lim3": [
             -45.0,
-            45.0,
-            10.0,
+            55.0,
+            -5.0,
             80.0
           ],
           "lim4": [
-            45.0,
+            55.0,
             90.0,
             20.0,
             80.0
@@ -3282,8 +3559,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -3294,7 +3571,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_08",
           "gun": "auxiliary_caliber_gun_15",
@@ -3328,16 +3614,10 @@
             20.0,
             80.0
           ],
-          "lim2": [
-            -55.0,
-            -45.0,
-            15.0,
-            80.0
-          ],
           "lim3": [
-            -45.0,
+            -55.0,
             90.0,
-            10.0,
+            -5.0,
             80.0
           ]
         },
@@ -3368,8 +3648,8 @@
         "bullets": 12000,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
         "accuracyAir": 0.78,
@@ -3380,7 +3660,16 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          600.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
         "turret": {
           "head": "auxiliary_caliber_turret_08",
           "gun": "auxiliary_caliber_gun_16",
@@ -3403,16 +3692,10 @@
             20.0,
             80.0
           ],
-          "lim2": [
-            -55.0,
-            -45.0,
-            15.0,
-            80.0
-          ],
           "lim3": [
-            -45.0,
+            -55.0,
             90.0,
-            10.0,
+            -5.0,
             80.0
           ]
         },
@@ -3425,6 +3708,1796 @@
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
         }
+      },
+      {
+        "trigger": "gunner14",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "bone_rocket_01",
+        "emitterGenRange": [
+          1,
+          8
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "auxiliary_caliber_gun_02_dm",
+        "breechDP": "auxiliary_caliber_gun_02_dm",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 70.0,
+        "speedPitch": 50.0,
+        "isBulletBelt": true,
+        "fireConeAngle": [
+          1.0,
+          1.0
+        ],
+        "bullets": 32,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "targetAngularRateMax": 15.0,
+        "AttackMaxRadius": 10000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellGroundRangeMax": 1500.0,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          1200.0
+        ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_01",
+          "gun": "auxiliary_caliber_gun_02",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm"
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -5.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -90.0,
+            -47.0,
+            20.0,
+            80.0
+          ],
+          "lim2": [
+            -47.0,
+            90.0,
+            -5.0,
+            80.0
+          ]
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
+      },
+      {
+        "trigger": "gunner15",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "bone_rocket_09",
+        "emitterGenRange": [
+          9,
+          16
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "auxiliary_caliber_gun_03_dm",
+        "breechDP": "auxiliary_caliber_gun_03_dm",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 70.0,
+        "speedPitch": 50.0,
+        "isBulletBelt": true,
+        "fireConeAngle": [
+          1.0,
+          1.0
+        ],
+        "bullets": 32,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "targetAngularRateMax": 15.0,
+        "AttackMaxRadius": 10000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellGroundRangeMax": 1500.0,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          1200.0
+        ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_02",
+          "gun": "auxiliary_caliber_gun_03",
+          "gunnerDm": "auxiliary_caliber_turret_02_dm"
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -5.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -90.0,
+            -35.0,
+            25.0,
+            80.0
+          ],
+          "lim2": [
+            -35.0,
+            55.0,
+            -5.0,
+            80.0
+          ],
+          "lim3": [
+            55.0,
+            90.0,
+            25.0,
+            80.0
+          ]
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
+      },
+      {
+        "trigger": "gunner16",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "bone_rocket_17",
+        "emitterGenRange": [
+          17,
+          24
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "auxiliary_caliber_gun_05_dm",
+        "breechDP": "auxiliary_caliber_gun_05_dm",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 70.0,
+        "speedPitch": 50.0,
+        "isBulletBelt": true,
+        "fireConeAngle": [
+          1.0,
+          1.0
+        ],
+        "bullets": 32,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "targetAngularRateMax": 15.0,
+        "AttackMaxRadius": 10000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellGroundRangeMax": 1500.0,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          1200.0
+        ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_03",
+          "gun": "auxiliary_caliber_gun_05",
+          "gunnerDm": "auxiliary_caliber_turret_03_dm"
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -5.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -90.0,
+            55.0,
+            -5.0,
+            80.0
+          ],
+          "lim2": [
+            55.0,
+            90.0,
+            20.0,
+            80.0
+          ]
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
+      },
+      {
+        "trigger": "gunner17",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "bone_rocket_25",
+        "emitterGenRange": [
+          25,
+          32
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "auxiliary_caliber_gun_07_dm",
+        "breechDP": "auxiliary_caliber_gun_07_dm",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 70.0,
+        "speedPitch": 50.0,
+        "isBulletBelt": true,
+        "fireConeAngle": [
+          1.0,
+          1.0
+        ],
+        "bullets": 32,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "targetAngularRateMax": 15.0,
+        "AttackMaxRadius": 10000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellGroundRangeMax": 1500.0,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          1200.0
+        ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_04",
+          "gun": "auxiliary_caliber_gun_07",
+          "gunnerDm": "auxiliary_caliber_turret_04_dm"
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -5.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -90.0,
+            -55.0,
+            20.0,
+            80.0
+          ],
+          "lim2": [
+            -55.0,
+            55.0,
+            -5.0,
+            80.0
+          ],
+          "lim3": [
+            55.0,
+            90.0,
+            25.0,
+            80.0
+          ]
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
+      },
+      {
+        "trigger": "gunner18",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "bone_rocket_33",
+        "emitterGenRange": [
+          33,
+          40
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "auxiliary_caliber_gun_09_dm",
+        "breechDP": "auxiliary_caliber_gun_09_dm",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 70.0,
+        "speedPitch": 50.0,
+        "isBulletBelt": true,
+        "fireConeAngle": [
+          1.0,
+          1.0
+        ],
+        "bullets": 32,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "targetAngularRateMax": 15.0,
+        "AttackMaxRadius": 10000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellGroundRangeMax": 1500.0,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          1200.0
+        ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_05",
+          "gun": "auxiliary_caliber_gun_09",
+          "gunnerDm": "auxiliary_caliber_turret_05_dm"
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -5.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -90.0,
+            -45.0,
+            25.0,
+            80.0
+          ],
+          "lim2": [
+            -45.0,
+            55.0,
+            -5.0,
+            80.0
+          ],
+          "lim3": [
+            55.0,
+            90.0,
+            15.0,
+            80.0
+          ]
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
+      },
+      {
+        "trigger": "gunner19",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "bone_rocket_41",
+        "emitterGenRange": [
+          41,
+          48
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "auxiliary_caliber_gun_11_dm",
+        "breechDP": "auxiliary_caliber_gun_11_dm",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 70.0,
+        "speedPitch": 50.0,
+        "isBulletBelt": true,
+        "fireConeAngle": [
+          1.0,
+          1.0
+        ],
+        "bullets": 32,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "targetAngularRateMax": 15.0,
+        "AttackMaxRadius": 10000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellGroundRangeMax": 1500.0,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          1200.0
+        ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_06",
+          "gun": "auxiliary_caliber_gun_11",
+          "gunnerDm": "auxiliary_caliber_turret_06_dm"
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -5.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -90.0,
+            55.0,
+            -5.0,
+            80.0
+          ],
+          "lim2": [
+            55.0,
+            90.0,
+            15.0,
+            80.0
+          ]
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
+      },
+      {
+        "trigger": "gunner20",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "bone_rocket_49",
+        "emitterGenRange": [
+          49,
+          56
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "auxiliary_caliber_gun_13_dm",
+        "breechDP": "auxiliary_caliber_gun_13_dm",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 70.0,
+        "speedPitch": 50.0,
+        "isBulletBelt": true,
+        "fireConeAngle": [
+          1.0,
+          1.0
+        ],
+        "bullets": 32,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "targetAngularRateMax": 15.0,
+        "AttackMaxRadius": 10000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellGroundRangeMax": 1500.0,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          1200.0
+        ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_07",
+          "gun": "auxiliary_caliber_gun_13",
+          "gunnerDm": "auxiliary_caliber_turret_07_dm"
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -5.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -90.0,
+            -80.0,
+            20.0,
+            80.0
+          ],
+          "lim2": [
+            -80.0,
+            -45.0,
+            15.0,
+            80.0
+          ],
+          "lim3": [
+            -45.0,
+            55.0,
+            -5.0,
+            80.0
+          ],
+          "lim4": [
+            55.0,
+            90.0,
+            20.0,
+            80.0
+          ]
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
+      },
+      {
+        "trigger": "gunner21",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_rocket_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "bone_rocket_57",
+        "emitterGenRange": [
+          57,
+          64
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "auxiliary_caliber_gun_15_dm",
+        "breechDP": "auxiliary_caliber_gun_15_dm",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 70.0,
+        "speedPitch": 50.0,
+        "isBulletBelt": true,
+        "fireConeAngle": [
+          1.0,
+          1.0
+        ],
+        "bullets": 32,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "targetAngularRateMax": 15.0,
+        "AttackMaxRadius": 10000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "targetMsl": true,
+        "shellGroundRangeMax": 1500.0,
+        "shellMassRange": [
+          30.0,
+          1500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          1200.0
+        ],
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_08",
+          "gun": "auxiliary_caliber_gun_15",
+          "gunnerDm": "auxiliary_caliber_turret_08_dm"
+        },
+        "limits": {
+          "yaw": [
+            -90.0,
+            90.0
+          ],
+          "pitch": [
+            -5.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -90.0,
+            -55.0,
+            20.0,
+            80.0
+          ],
+          "lim3": [
+            -55.0,
+            90.0,
+            -5.0,
+            80.0
+          ]
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              10.0
+            ],
+            "altRange": [
+              5.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       }
     ]
   },
@@ -3469,9 +5542,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_smoke_massive",
             "emitter": "emtr_fire_engine_02",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 15.0
           },
           {
             "name": "ship_fire_big",
@@ -3479,9 +5553,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_smoke_big",
             "emitter": "emtr_fire_engine_04",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 20.0
           },
           {
             "name": "ship_fire_big",
@@ -3489,9 +5564,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_big",
+            "name": "ship_smoke_big",
             "emitter": "emtr_fire_engine_06",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 30.0
           },
           {
             "name": "ship_fire_big",
@@ -3503,8 +5579,9 @@
             "emitter": "emtr_smoke_engine_01"
           },
           {
-            "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_engine_02"
+            "name": "ship_smoke_massive",
+            "emitter": "emtr_smoke_engine_02",
+            "postDelay": 15.0
           },
           {
             "name": "ship_smoke_medium",
@@ -3512,7 +5589,8 @@
           },
           {
             "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_engine_04"
+            "emitter": "emtr_smoke_engine_04",
+            "postDelay": 20.0
           },
           {
             "name": "ship_smoke_medium",
@@ -3520,7 +5598,8 @@
           },
           {
             "name": "ship_smoke_medium",
-            "emitter": "emtr_smoke_engine_06"
+            "emitter": "emtr_smoke_engine_06",
+            "postDelay": 30.0
           },
           {
             "name": "ship_smoke_medium",
@@ -3555,29 +5634,53 @@
       {
         "name": "compartment_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_big",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_big",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_massive",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "superstructure_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_huge",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_huge",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_massive",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "turret_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_big",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_big",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_massive",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "turret_aux_fire",
@@ -4857,6 +6960,41 @@
     ],
     "explodeHitPower": 50.0
   },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": [
+        "gunner0",
+        "gunner1",
+        "gunner2",
+        "gunner3",
+        "gunner4",
+        "gunner5",
+        "gunner6",
+        "gunner7",
+        "gunner8",
+        "gunner9",
+        "gunner10",
+        "gunner11",
+        "gunner12",
+        "gunner13"
+      ],
+      "explosionEvent": "ammo_explosion_1",
+      "fireEvent": "ammo_fire_1",
+      "fireParamsPreset": "ship_ammo_fire",
+      "dstrElevatorDisablesShooting": false,
+      "fatalFire": false,
+      "fatalExplosion": false,
+      "splashRadiusConstraint": 20.0,
+      "splashDamageConstraint": 2000.0,
+      "splashPenetrationConstraint": 15.0,
+      "shells": {
+        "damageEffect": "ammunition_storage_aux",
+        "ammunition_storage_aux_01_dm": {
+          "count": 264000
+        }
+      }
+    }
+  },
   "breaches": {
     "repairSpeed": 22.0,
     "waterMassVel": -100000.0,
@@ -5070,15 +7208,6 @@
         "deviation": 0.6,
         "rotation": 2.1,
         "collisionNode": "ex_decor_13_dm"
-      },
-      {
-        "node": "ex_decor_03",
-        "idx": 8,
-        "mass": 900.0,
-        "cutDamage": 350.0,
-        "deviation": 0.6,
-        "rotation": 2.1,
-        "collisionNode": "ex_decor_03_dm"
       }
     ]
   },

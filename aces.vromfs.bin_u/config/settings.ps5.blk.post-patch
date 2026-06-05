@@ -1,0 +1,30 @@
+"@override:graphics"
+{
+  forcePanoramaInHangar:b=yes
+  waterChopDetailWavesAllowed:b=no
+  "@override:waterQuality":t="medium"
+}
+
+"@override:network"
+{
+  httpClientPollInThread:b=yes
+}
+
+"@override:gi" {
+  "@override:dagiAlgorithm":r = 0.4
+}
+
+"@override:video" {
+  upscaleQualityFor4k:t="ultra_quality"
+}
+
+"@override:gi"
+{
+  "@override:low"
+  {
+    "@override:hangar"
+    {
+      "@override:dagiQuality":i = -1 //off
+    }
+  }
+}

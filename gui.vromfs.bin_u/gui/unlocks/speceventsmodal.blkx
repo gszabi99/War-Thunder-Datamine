@@ -1,0 +1,146 @@
+{
+  "root": {
+    "bgrStyle": "fullScreenWnd",
+    "blur_foreground": {
+      "filledDark": "yes"
+    },
+    "smoke_bg_image": {},
+    "frame": {
+      "id": "wndSpecEvents",
+      "size": "@rw, @rh",
+      "pos": "0.5pw - 0.5w, 0.5ph - 0.5h",
+      "position": "absolute",
+      "class": "wndNav",
+      "fullScreenSize": "yes",
+      "frame_header": {
+        "Breadcrumb": {
+          "Button_text": {
+            "_on_click": "goBack",
+            "visualStyle": "noBgr",
+            "img": {},
+            "btnText": {
+              "id": "back_scene_name"
+            }
+          }
+        },
+        "Button_close": {
+          "id": "btn_back"
+        }
+      },
+      "tdiv": [
+        {
+          "id": "eventsBlock",
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+          "position": "absolute",
+          "height": "454@sf/@pf",
+          "overflow": "hidden",
+          "tdiv": [
+            {
+              "id": "eventsContainer",
+              "position": "relative",
+              "height": "ph",
+              "flow": "horizontal"
+            },
+            {
+              "id": "eventsButtons",
+              "position": "absolute",
+              "size": "pw, ph",
+              "tdiv": [
+                {
+                  "position": "absolute",
+                  "size": "0.5@eventSlotWidth, ph",
+                  "tdiv": [
+                    {
+                      "size": "0.3@eventSlotWidth, ph",
+                      "bgcolor": "#FF111821"
+                    },
+                    {
+                      "size": "0.2@eventSlotWidth, ph",
+                      "background-image": "#ui/gameuiskin#fade_to_dark.svg",
+                      "background-svg-size": "0.2@eventSlotWidth, ph",
+                      "bgcolor": "@white"
+                    }
+                  ]
+                },
+                {
+                  "position": "absolute",
+                  "left": "pw-w",
+                  "size": "0.5@eventSlotWidth, ph",
+                  "tdiv": [
+                    {
+                      "size": "0.2@eventSlotWidth, ph",
+                      "background-image": "#ui/gameuiskin#fade_to_dark.svg",
+                      "background-svg-size": "0.2@eventSlotWidth, ph",
+                      "bgcolor": "@white",
+                      "rotation": "180"
+                    },
+                    {
+                      "size": "0.3@eventSlotWidth, ph",
+                      "bgcolor": "#FF111821"
+                    }
+                  ]
+                }
+              ],
+              "hoverButton": [
+                {
+                  "id": "prevEventBtn",
+                  "position": "absolute",
+                  "pos": "0, (ph-h)/2",
+                  "size": "90@sf/@pf, 90@sf/@pf",
+                  "behavior": "button",
+                  "on_click": "onMovePrevEvent",
+                  "hasTransparentBG": "yes",
+                  "hasDoubleSize": "yes",
+                  "icon": {
+                    "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
+                    "rotation": "270"
+                  }
+                },
+                {
+                  "id": "nextEventBtn",
+                  "position": "absolute",
+                  "pos": "pw-w, (ph-h)/2",
+                  "size": "90@sf/@pf, 90@sf/@pf",
+                  "behavior": "button",
+                  "on_click": "onMoveNextEvent",
+                  "hasTransparentBG": "yes",
+                  "hasDoubleSize": "yes",
+                  "icon": {
+                    "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
+                    "rotation": "90"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rewardsContainer",
+          "position": "relative",
+          "left": "0.5pw-0.5w",
+          "width": "11(@rewardSlotWidth+@sf/@pf)",
+          "margin": "0, 3@blockInterval, 0, 5@blockInterval"
+        }
+      ],
+      "listbox": {
+        "id": "ordersContainer",
+        "size": "11(@rewardSlotWidth+@sf/@pf) + 4@blockInterval + @scrollBarSize, fh",
+        "pos": "0.5pw-0.5w+0.5@scrollBarSize, 0",
+        "position": "relative",
+        "flow": "h-flow",
+        "on_select": "onOrderSelect",
+        "isSpecEventsList": "yes"
+      }
+    }
+  },
+  "DummyButton": [
+    {
+      "btnName": "LT",
+      "on_click": "onTryMarkAsFavorites"
+    },
+    {
+      "btnName": "Y",
+      "on_click": "onTryBuyUnlock"
+    }
+  ]
+}

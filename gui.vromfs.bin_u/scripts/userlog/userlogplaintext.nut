@@ -66,7 +66,7 @@ function formatCell(text, width) {
   let spacesCount = width - utf8(text).charCount()
   if(spacesCount == 0)
     return text
-  let spaces = "".join([].resize(spacesCount, " "))
+  let spaces = "".join(array(spacesCount, " "))
   return "".concat(text, spaces)
 }
 
@@ -97,7 +97,7 @@ function formatText(text, frm) {
   let spacesCount = width - utf8(text).charCount()
   if(spacesCount == 0)
     return text
-  let spaces = "".join([].resize(spacesCount, " "))
+  let spaces = "".join(array(spacesCount, " "))
   return align == "left" ? "".concat(text, spaces) : "".concat(spaces, text)
 }
 

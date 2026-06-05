@@ -11,10 +11,9 @@ require hud
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
 require %rGui.utils.helpers_common
+require Localization
 
-let indicatorRadius = 0.7
-let trackRadarsRadius = 0.04
-let azimuthMarkLength = 0.5 * 3.0 * trackRadarsRadius
+let innerCircleSizeMult = 0.75
 let radarLineOpacity = 0.42
 
 let centralMarkRadius = 0.1
@@ -39,7 +38,16 @@ class Component : Canvas
   targetsOpacityMult : float = 1.0
   maximumTargetOpacity : float = 0.0
   blinkFade : float = 1.0
-  stateYPos : float = -0.575
+
+  isMlwsLwsVisible : bool = false
+  originAbsPos : float2 = float2(0.0)
+
+  outerCircleRadiusAbs : float = -1.0
+  outerCircleSectorWidth : float = -1.0
+  outerCircleSectorRadius : float = -1.0
+
+  stateAbsPos : float2 = float2(0.0)
+  presenceAbsPos : float2 = float2(0.0)
 
   hud : Hud? = null
 
@@ -57,8 +65,16 @@ class Component : Canvas
     targetsOpacityMult = floor(sin(get_sync_time() * 10.0) + 0.5)
     blinkFade = (int(get_sync_time() * 4.0) % 2) == 0 ? 0.0 : 1.0
 
-    let isMlwsLwsVisible = is_tws_hud_visible() || is_tws_hud_for_mfd_visible()
-    stateYPos = isMlwsLwsVisible ? -0.785 : -0.585
+    isMlwsLwsVisible = is_tws_hud_visible() || is_tws_hud_for_mfd_visible()
+    originAbsPos = canvasPos + canvasSize * 0.5
+
+    outerCircleRadiusAbs = min(rdata.size.x, rdata.size.y) * 0.5
+    outerCircleSectorWidth = outerCircleRadiusAbs * (1.0 - innerCircleSizeMult) - hdpx(7.0)
+    outerCircleSectorRadius = (0.5 + 0.5 * innerCircleSizeMult) * 0.5
+
+    let centerElementTotalSize = hdpx(15.0) + (isMlwsLwsVisible ? outerCircleRadiusAbs : outerCircleRadiusAbs * innerCircleSizeMult)
+    stateAbsPos = originAbsPos - float2(0.0, centerElementTotalSize)
+    presenceAbsPos = originAbsPos + float2(0.0, centerElementTotalSize)
 
     setColor(props.color)
     setLineWidth(props.lineWidth)
@@ -78,13 +94,15 @@ class Component : Canvas
 
     isValid = true
 
-  def drawBackground(scaleFactor : float; needBackground : bool)
+  def drawBackground(needBackground : bool)
     var clr = float4(Color4(props.color))
     if props.isForTank
       clr *= targetsOpacityMult
     setColor(E3DCOLOR(Color4(clr)))
     setFillColor(needBackground ? props.backgroundColor : TRANSPARENT)
-    drawEllipse(float2(0.0), float2(indicatorRadius * scaleFactor))
+
+    let radius = 0.5
+    drawCircle(float2(0.0), radius)
 
     clr *= radarLineOpacity
     setColor(E3DCOLOR(Color4(clr)))
@@ -97,7 +115,8 @@ class Component : Canvas
       var dirSin, dirCos : float
       sincos(angle, dirSin, dirCos)
       let dir = float2(dirCos, dirSin)
-      drawLine(dir * indicatorRadius * scaleFactor, dir * (indicatorRadius - azimuthMarkLength) * scaleFactor)
+      let azimuthMarkLength = 0.04
+      drawLine(dir * radius, dir * (radius - azimuthMarkLength))
     setLineWidth(savedLineWidth)
 
 
@@ -106,7 +125,7 @@ class Component : Canvas
 
     let fadedColor = color_mult4(props.color, maximumTargetOpacity)
     setColor(fadedColor)
-    drawEllipse(float2(0.0), float2(indicatorRadius * centralMarkRadius))
+    drawEllipse(float2(0.0), float2(innerCircleSizeMult * centralMarkRadius))
 
     var clr = float4(Color4(props.color))
     clr *= radarLineOpacity
@@ -127,13 +146,13 @@ class Component : Canvas
         showMult = 0.2
     let targetOpacity = showMult * ageFade * launchFade
     let priorityTargetOpacityMult = target.priority ? 2.0 : 1.0
-    let fadedColor = color_mult4(props.color, targetOpacity)
+    let fadedColor = color_mult4(props.textColor, targetOpacity)
 
     let elementsSizeMult = 0.43
 
     let maxTargetHalfSize = (toRelY(hdpx(sectorLineWidth * 0.5)))
     let minDisplayRange = 0.13
-    let maxDisplayRange = 0.5 - maxTargetHalfSize
+    let maxDisplayRange = 0.5 - maxTargetHalfSize - toRelY(hdpx(3.0))
     let displayRange = cvt(target.rangeRel, 0.0, 1.0, minDisplayRange, maxDisplayRange)
     let targetDir = float2(target.dirX, target.dirY)
     let targetPos = targetDir * displayRange
@@ -209,7 +228,7 @@ class Component : Canvas
       let dashLen = toRelY(hdpx(5.0))
       let spaceLen = toRelY(hdpx(3.0))
 
-      let startDistance = indicatorRadius * centralMarkRadius
+      let startDistance = innerCircleSizeMult * centralMarkRadius
       var endDistance = displayRange
       if isNewTarget || isTargetMapped
         endDistance -= newTargetRadius
@@ -219,7 +238,7 @@ class Component : Canvas
     if target.priority
       let elevationPos = float2(0.0)
       let elevationLineWidth = hdpx(3.2)
-      let elevRadius = float2(indicatorRadius * centralMarkRadius - toRelY(elevationLineWidth * 0.5 + hdpx(1.0)))
+      let elevRadius = float2(innerCircleSizeMult * centralMarkRadius - toRelY(elevationLineWidth * 0.5 + hdpx(1.0)))
 
       setLineWidth(elevationLineWidth)
       let elevationColor = color_mult4(fadedColor, targetOpacity) // double fade ported from darg
@@ -242,10 +261,9 @@ class Component : Canvas
     let ageFade = target_opacity(target.age, mlwsSignalHoldTimeInv) * targetsOpacityMult
     if ageFade <= 0.0
       return
-    let fadedColor = color_mult4(props.color, ageFade)
+    let fadedColor = color_mult4(props.textColor, ageFade)
 
-    let radiusScale = 1.2
-    let displayRange = (target.rangeRel * 0.4 + 0.1) * radiusScale
+    let displayRange = outerCircleSectorRadius
     let targetDir = float2(target.dirX, target.dirY)
     let targetPos = targetDir * displayRange
 
@@ -256,7 +274,7 @@ class Component : Canvas
     let iconAngle = atan2(targetDir.y, targetDir.x) + PI_2
     setRotation(targetPos, iconAngle)
 
-    let scale = 0.002
+    let scale = 0.0015
     pushLocalAxes(targetPos, float2(scale))
 
     // Laser mark
@@ -283,15 +301,13 @@ class Component : Canvas
 
     // sector
     if target.sector > 2.0
-      let lwsSectorLineWidth = 30.0
-      setLineWidth(lwsSectorLineWidth)
+      setLineWidthHdpx(outerCircleSectorWidth)
       let sectorOpacityMult = 0.25
       let sectorColor = color_mult4(fadedColor, sectorOpacityMult)
       setColor(sectorColor)
       let targetAngle = atan2(target.dirY, target.dirX)
       let sectorHalf = target.sector * degToRad
-      let displayOffset = toRelY(hdpx(3.0))
-      drawSector(float2(0.0), float2(displayRange + displayOffset), float2(targetAngle - sectorHalf, targetAngle + sectorHalf))
+      drawSector(float2(0.0), float2(outerCircleSectorRadius), float2(targetAngle - sectorHalf, targetAngle + sectorHalf))
       setLineWidth(1.0)
       setColor(fadedColor)
 
@@ -303,9 +319,11 @@ class Component : Canvas
     if stateOpacity <= 0.0
       return
 
-    let statePos = float2(-0.5, stateYPos)
+    let statePos = float2(-0.5, toRelPos(stateAbsPos).y)
     let text = loc("hud/lws_laser")
 
+    let fxColor = color_mult4(props.fontFxColor, stateOpacity)
+    *ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, fxColor, props.fontFxFactor)
     setColor(color_mult4(props.color, stateOpacity))
     let strBox = drawStrAnchored(statePos, text, AnchorHorz.Center, AnchorVert.Bottom)
 
@@ -325,10 +343,9 @@ class Component : Canvas
     let ageFade = target_opacity(target.age, mlwsSignalHoldTimeInv) * targetsOpacityMult
     if ageFade <= 0.0
       return
-    let fadedColor = color_mult4(props.color, ageFade)
+    let fadedColor = color_mult4(props.textColor, ageFade)
 
-    let radiusScale = 1.2
-    let displayRange = (target.rangeRel * 0.4 + 0.1) * radiusScale
+    let displayRange = cvt(target.rangeRel, 0.0, 1.0, 0.1, 0.45)
     let targetDir = float2(target.dirX, target.dirY)
     let targetPos = targetDir * displayRange
 
@@ -339,7 +356,7 @@ class Component : Canvas
     let rocketAngle = atan2(targetDir.y, targetDir.x) + PI_2
     setRotation(targetPos, rocketAngle)
 
-    let scale = 0.002
+    let scale = 0.0015
     pushLocalAxes(targetPos, float2(scale))
 
     // right stab
@@ -380,12 +397,12 @@ class Component : Canvas
 
     // sector
     if target.sector > 2.0
-      setLineWidth(sectorLineWidth)
+      setLineWidthHdpx(outerCircleSectorWidth)
       let sectorColor = color_mult4(fadedColor, 0.25)
       setColor(sectorColor)
       let targetAngle = atan2(target.dirY, target.dirX)
       let sectorHalf = target.sector * degToRad
-      drawSector(float2(0.0), float2(displayRange), float2(targetAngle - sectorHalf, targetAngle + sectorHalf))
+      drawSector(float2(0.0), float2(outerCircleSectorRadius), float2(targetAngle - sectorHalf, targetAngle + sectorHalf))
       setLineWidth(1.0)
       setColor(fadedColor)
 
@@ -399,9 +416,11 @@ class Component : Canvas
     if stateOpacity <= 0.01
       return
 
-    let statePos = float2(0.5, stateYPos)
+    let statePos = float2(0.5, toRelPos(stateAbsPos).y)
     let text = loc("hud/mlws_missile")
 
+    let fxColor = color_mult4(props.fontFxColor, stateOpacity)
+    *ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, fxColor, props.fontFxFactor)
     setColor(color_mult4(props.color, stateOpacity))
     let strBox = drawStrAnchored(statePos, text, AnchorHorz.Center, AnchorVert.Bottom)
 
@@ -413,21 +432,20 @@ class Component : Canvas
     drawBBoxPadded(strBox, padding)
 
   def drawRwrTargetsPresence()
-    let presenceCount = length(hud.rwrTargetsPresence)
+    assume presenceMap = hud.rwrHudProperties.presenceMap
+    let presenceCount = min(length(hud.rwrTargetsPresence), length(presenceMap.presences))
     if presenceCount == 0
       return
 
     let rwrSignalHoldTimeInv = get_rwr_signal_hold_time_inv()
-    let isMlwsLwsVisible = is_tws_hud_visible() || is_tws_hud_for_mfd_visible()
     let colsMax = 3
 
-    let anchorPos = float2(0.0, indicatorRadius * (isMlwsLwsVisible ? 1.05 : 0.75) + toRelY(hdpx(7.0)))
+    let anchorPos = toRelPos(presenceAbsPos)
 
-    let boxHalfSize = float2(0.2, 0.09)
-    let boxPadding = float2(0.025, 0.05)
+    let boxHalfSize = float2(0.17, 0.09)
+    let boxPadding = float2(0.025, 0.04)
     let cellStep = boxHalfSize * 2.0 + boxPadding
 
-    assume presenceMap = hud.rwrHudProperties.presenceMap
     for i in range(presenceCount)
       assume tp = hud.rwrTargetsPresence[i]
       var targetOpacity = 0.1
@@ -444,10 +462,13 @@ class Component : Canvas
 
       let priorityLineWidth = tp.priority ? 4.0 : 2.0
       setLineWidth(priorityLineWidth)
-      setColor(color_mult4(props.color, targetOpacity))
+      setColor(color_mult4(props.textColor, targetOpacity))
       setFillColor(TRANSPARENT)
 
       let text = presenceMap.presences[i].text
+
+      let fxColor = color_mult4(props.fontFxColor, targetOpacity)
+      *ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, fxColor, props.fontFxFactor)
       drawStrAnchored(presencePos, text, AnchorHorz.Center, AnchorVert.Center)
       drawBox(presencePos - boxHalfSize, presencePos + boxHalfSize)
 
@@ -470,7 +491,9 @@ class Component : Canvas
     if stateOpacity <= 0.01
       return
 
-    let statePos = float2(0.0, stateYPos)
+    let fxColor = color_mult4(props.fontFxColor, stateOpacity)
+    *ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, fxColor, props.fontFxFactor)
+    let statePos = float2(0.0, toRelPos(stateAbsPos).y)
     let text = isLaunching ? loc("hud/rwr_launch") : loc("hud/rwr_track")
 
     setColor(color_mult4(props.color, stateOpacity))
@@ -483,31 +506,41 @@ class Component : Canvas
     let padding = float2(toRelX(hdpx(4.0)), toRelY(hdpx(9.0)))
     drawBBoxPadded(strBox, padding)
 
+  def drawCenterElement()
+    pushAxes(originAbsPos, float2(outerCircleRadiusAbs * 2.0))
+
+    var needRwrBack = true
+    if isMlwsLwsVisible
+      drawBackground(true)
+      needRwrBack = false
+
+    drawLwsTargets()
+    drawMlwsTargets()
+
+    pushLocalAxes(float2(0.0), float2(innerCircleSizeMult))
+
+    if is_rwr_hud_visible() || is_rwr_for_mfd_hud_visible()
+      drawBackground(needRwrBack)
+
+    drawRwrTargets()
+
+    drawCentralMark()
+
+    popAxes()
+    popAxes()
+
   def draw()
     return if !isValid
 
-    // this realy needs a refactor. All values where ported from darg
-    // rwr targets take 100% of canvase
-    // rwr background is slightly larger, it takes up ~105% of canvas
-    // tws background is even larger, taking up ~140%!!!
-    var needRwrBack = true
-    if is_tws_hud_visible() || is_tws_hud_for_mfd_visible()
-      drawBackground(1.0, true)
-      needRwrBack = false
-    if is_rwr_hud_visible() || is_rwr_for_mfd_hud_visible()
-      drawBackground(0.75, needRwrBack)
-    drawCentralMark()
+    drawCenterElement()
 
-    drawRwrTargets()
+    pushAxes(originAbsPos, float2(outerCircleRadiusAbs * innerCircleSizeMult * 2.0))
+
     drawRwrTargetsState()
-    drawRwrTargetsPresence()
-
-    drawLwsTargets()
     drawLwsTargetsState()
-
-    drawMlwsTargets()
     drawMlwsTargetsState()
 
+    drawRwrTargetsPresence()
 
 [export, unused_argument(rstate)]
 def draw_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : PropStorage&)

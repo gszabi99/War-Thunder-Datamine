@@ -49,6 +49,15 @@ let _isVisible = @(p) p.unit != null
 let _isNeedUpdateByTrigger = @(trigger) this.isAvailableInMission() && (trigger & this.triggerUpdateBitMask) != 0
 let _isNeedUpdContentByTrigger = @(trigger, _p) (trigger & this.triggerUpdContentBitMask) != 0
 
+function _changeLabelByTrigger(scene, unit) {
+  let obj = scene.findObject($"{this.id}_tr_label")
+  if (!obj?.isValid())
+    return
+  let idSuffix = unit.isHuman() ? "_inf" : ""
+  let locId = loc($"options/{this.id}{idSuffix}")
+  obj.setValue(locId)
+}
+
 function hasRadarOptions(name, weapName) {
   let radarModesCount = get_radar_mode_names(name, weapName).len()
   return hasFeature("allowRadarModeOptions") && radarModesCount > 0
@@ -97,6 +106,9 @@ function _update(p, trigger, isAlreadyFilled) {
         isFilled = true
         if (this.needCallCbOnContentUpdate)
           p.handler?[this.cb].call(p.handler, obj)
+
+        if (p?.unit != null)
+          this.changeLabelByTrigger(p.handler.scene, p.unit)
       }
       if (this.needCheckValueWhenOptionUpdate && objOptionValue != opt.value)
         obj.setValue(opt.value)
@@ -122,6 +134,7 @@ options.template <- {
   id = "" 
   sortId = 0
   getLabelText = @() loc($"options/{this.id}")
+  changeLabelByTrigger = @(_scene, _unit) null
   userOption = -1
   triggerUpdateBitMask = 0
   triggerUpdContentBitMask = 0
@@ -179,6 +192,7 @@ options.addTypes({
       )
       return skinsOpt
     }
+    changeLabelByTrigger = _changeLabelByTrigger
   }
   infantry_skin = {
     sortIdx = idx++
@@ -220,6 +234,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isAvailableInMission = @() hasFeature("UserSkins")
     isShowForUnit = @(_p) true
+    changeLabelByTrigger = _changeLabelByTrigger
   }
   gun_target_dist = {
     sortIdx = idx++
@@ -331,8 +346,8 @@ options.addTypes({
   respawn_base = {
     sortIdx = idx++
     userOption = -1
-    triggerUpdateBitMask = RespawnOptUpdBit.RESPAWN_BASES
-    triggerUpdContentBitMask = RespawnOptUpdBit.RESPAWN_BASES
+    triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.RESPAWN_BASES
+    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.RESPAWN_BASES
     cb = "onRespawnbaseOptionUpdate"
     needCallCbOnContentUpdate = true
     isShowForUnit = @(p) p.haveRespawnBases
@@ -341,6 +356,9 @@ options.addTypes({
       if (p.unit?.isHuman() && p.curSquadRespawnBase != null)
         value = p.respawnBasesList.findindex(
           @(s) s.isSquadRespawnBase && s.id == p.curSquadRespawnBase.id) ?? -1
+      if (value == -1 && p.unit?.isHuman() && p.curZoneRespawnBase != null)
+        value = p.respawnBasesList.findindex(
+          @(s) s.isZoneRespawnBase && s.id == p.curZoneRespawnBase.id) ?? -1
       if (value == -1) {
         value = p.respawnBasesList.indexof(p.curRespawnBase) ?? -1
         let savedSpawnType = p.unit?.isAir() ? respawnBases.getSavedBaseType() : null
@@ -352,7 +370,7 @@ options.addTypes({
           let res = { text = spawn.getTitle() }
           if (p?.isBadWeatherForAircraft && spawn.isSpawnIsAirfiled())
             res.image <- "#ui/gameuiskin#weather_cloud_lightning.svg"
-          if (!spawn.isAvailable)
+          if (!spawn.isAvailable || !spawn.canSelect)
             res.inactive <- "yes"
           return res
         })

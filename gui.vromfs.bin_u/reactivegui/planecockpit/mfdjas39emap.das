@@ -9,7 +9,7 @@ require FlightModelWrap
 require HeroManager
 require Unit
 require math
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require GamePhys
 require %rGui.utils.radar_common
 

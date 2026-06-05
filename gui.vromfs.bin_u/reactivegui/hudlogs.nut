@@ -2,17 +2,26 @@ from "%rGui/globals/ui_library.nut" import *
 
 let chat = require("%rGui/hudChat.nut")
 let battleLog = require("%rGui/hudBattleLog.nut")
+let killLog = require("%rGui/hudKillLog.nut")
 let tabs = require("%rGui/components/tabs.nut")
 let { get_option_auto_show_chat } = require("chat")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { canWriteToChat, hudLog, lastInputTime } = require("%rGui/hudChatState.nut")
 let { isMultiplayer } = require("%rGui/networkState.nut")
 let { isChatPlaceVisible, isVisualWeaponSelectorVisible } = require("%rGui/hud/hudPartVisibleState.nut")
+let { isActionBarVisible, actionBarPos } = require("%rGui/hud/actionBarState.nut")
+let { dmgIndicatorWidth } = require("%rGui/hud/dmgIndicatorState.nut")
+let { isSpectatorMode } = require("%rGui/hudState.nut")
+let { bw } = require("%rGui/style/screenState.nut")
+let { activeOrderLogContent } = require("%rGui/activeOrder.nut")
 
 let tabsList = [
   { id = "Chat", text = loc("mainmenu/chat"), content = chat }
   { id = "BattleLog", text = loc("options/_Bttl"), content = battleLog }
+  { id = "KillLog", text = loc("battlelog/asInBattle"), content = killLog }
+  { id = "Orders", text = loc("itemTypes/orders"), content = activeOrderLogContent }
 ]
+let tabsVisibleInSpectatorOnly = ["KillLog", "Orders"]
 let initialTabId = tabsList[0].id
 
 let isEnabled = Computed(@() isChatPlaceVisible.get() && isMultiplayer.get())
@@ -20,8 +29,8 @@ let isInteractive = Computed(@() canWriteToChat.get() || (cursorVisible.get() &&
 let isNewMessage = Watched(false)
 let isFadingOut = Watched(false)
 let isInited = Watched(false)
-let isVisible = Computed(@() isEnabled.get() && isInited.get()
-  && (isInteractive.get() || isFadingOut.get() || isNewMessage.get()))
+let isVisible = Computed(@() isSpectatorMode.get() || (isEnabled.get() && isInited.get()
+  && (isInteractive.get() || isFadingOut.get() || isNewMessage.get())))
 
 let currentTab = mkWatched(persist, "currentTab", initialTabId)
 let currentLog = Computed(function(prev) {
@@ -104,12 +113,12 @@ isInteractive.subscribe(function(value) {
 })
 
 let logsHeader = @() {
-  watch = [cursorVisible, currentTab]
+  watch = [cursorVisible, currentTab, isSpectatorMode]
   size = FLEX_H
   opacity = cursorVisible.get() ? 1 : 0
   children = [
     tabs({
-      tabs = tabsList
+      tabs = isSpectatorMode.get() ? tabsList : tabsList.filter(@(a) !tabsVisibleInSpectatorOnly.contains(a.id))
       currentTab = currentTab.get()
       onChange = @(tab) currentTab.set(tab.id)
     })
@@ -128,10 +137,14 @@ function init() {
   isInited.set(true)
 }
 
+let hudLogsWidth = Computed(@() (isActionBarVisible.get() && isSpectatorMode.get())
+  ? min((actionBarPos.get()?[0] ?? sw(100)) - dmgIndicatorWidth.get() - bw.get() - hdpx(20), min(sw(20), shHud(45)))
+  : min(sw(20), shHud(45)))
+
 return @() {
-  size = [min(sw(30), shHud(45)), SIZE_TO_CONTENT]
+  size = [hudLogsWidth.get(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
-  watch = isVisible
+  watch = [isVisible, hudLogsWidth]
   children = isVisible.get() ? [logsHeader, logsContainer] : []
   onAttach = function() {
     

@@ -11,13 +11,12 @@ let { updateModItem, createModItemLayout, updateItemBulletsSlider
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil } = require("math")
 let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible,
-  isDefaultTorpedoes, getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
+  isDefaultTorpedoes, getOverrideBullets, isWeaponUnavailableInMission } = require("%scripts/weaponry/weaponryInfo.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isInFlight } = require("gameplayBinding")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
@@ -52,6 +51,8 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   getCurrentEdiff = null
 
   enableLoneFightersMode = null
+
+  fixedSizeForItem = false
 
   function initScreen() {
     this.bulletsManager = UnitBulletsManager(this.unit, { isForcedAvailable = this.isForcedAvailable })
@@ -107,7 +108,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    columnsConfig.sizeMultiplier <- this.unit.isHuman() ? 1.2 : 1
+    columnsConfig.sizeMultiplier <- this.unit.isHuman() && !this.fixedSizeForItem ? 1.2 : 1
 
     this.fillWeaponryByColumnsConfig(columnsConfig)
     this.updateAllItems()
@@ -452,12 +453,10 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function hasWeaponsToChooseFrom() {
     local count = 0
-    let hasOnlySelectable = !isInFlight() || !getCurMissionRules().isWorldWar
     foreach (weapon in this.unit.getWeapons()) {
-      if (!this.isForcedAvailable
-          && (!this.forceShowDefaultTorpedoes || !isDefaultTorpedoes(weapon))
-          && !isWeaponVisible(this.unit, weapon, hasOnlySelectable))
-        continue
+      if (isWeaponUnavailableInMission(this.unit, weapon, this.isForcedAvailable,
+        this.forceShowDefaultTorpedoes))
+          continue
 
       count++
       if (count > 1)

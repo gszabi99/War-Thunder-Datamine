@@ -991,12 +991,12 @@
     "attachmentUpdate:tag": {}
   },
   "scope_xm8_red_dot_base": {
-    "animchar__res": "xm_8_scope_char",
-    "collres__res": "xm_8_scope_collision",
+    "animchar__res": "xm8_scope_char",
+    "collres__res": "xm8_scope_collision",
     "item__template": "scope_xm8_red_dot_item",
     "item__proto": "scope_xm8_red_dot",
     "item__locDetails": "",
-    "item__weight": 0.6,
+    "item__weight": 0.3,
     "item__volume": 0.6,
     "item__name": "items/scope_xm8_red_dot",
     "gunAttachable__slotName": "scope",
@@ -1032,7 +1032,13 @@
       0.0,
       0.0
     ],
-    "laserMaxSize": 0.15,
+    "laserBeamDotColor": [
+      9.6,
+      0.0,
+      0.0
+    ],
+    "laserMaxSize": 0.05,
+    "laser_data__dotIntensity": 0.01,
     "gun_attachable_mod_params__adderNames:list<t>": {
       "name": [
         "gun_anim_var__fpsGunOffsetUp",
@@ -1043,9 +1049,9 @@
     },
     "gun_attachable_mod_params__adderValues:list<r>": {
       "val": [
-        -0.03,
-        0.6,
-        0.6,
+        -0.01,
+        0.3,
+        0.3,
         0.6
       ]
     },
@@ -1361,6 +1367,42 @@
     "animchar__res": "pso_1_akm_char",
     "collres__res": "pso_1_akm_collision"
   },
+  "scope_1p78_kashtan_3x_base": {
+    "animchar__res": "1p78_sight_char",
+    "collres__res": "1p78_sight_collision",
+    "item__template": "scope_1p78_kashtan_3x_item",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_1p78_kashtan_3x",
+    "gunmod__deviationMult": 0.3,
+    "gunmod__zoomFactor": 2.8,
+    "gunmod__camShiftMin": 0.16,
+    "gunmod__camShiftMax": 0.16,
+    "gunmod__farLensShadingParams": [
+      0.0,
+      0.94,
+      8.0
+    ],
+    "item__proto": "scope_1p78_kashtan_3x",
+    "item__locDetails": "",
+    "item__weight": 0.3,
+    "item__volume": 0.5,
+    "item__name": "items/scope_1p78_kashtan_3x",
+    "gunmod__type": "optics_small_ratio",
+    "gunAttachable:tag": {}
+  },
+  "scope_1p78_kashtan_3x_item": {
+    "_use": [
+      "item_scope",
+      "scope_1p78_kashtan_3x_base"
+    ]
+  },
+  "scope_1p78_kashtan_3x": {
+    "_use": [
+      "scope_optical_gunmod",
+      "scope_1p78_kashtan_3x_base"
+    ]
+  },
   "scope_scp_t4iecdq_item": {
     "_use": "item_scope",
     "animchar__res": "scp_t4iecdq_sight_char",
@@ -1569,7 +1611,7 @@
     "item__locDetails": "",
     "gunAttachable__slotName": "scope",
     "gunAttachable__gunSlotName": "scope",
-    "gunAttachable__slotTag": "scope_leupold_mark_4",
+    "gunAttachable__slotTag": "scope_leupold_mark_4_variable",
     "item__weight": 0.3,
     "item__volume": 0.5,
     "gunAttachable:tag": {}

@@ -27,7 +27,7 @@ def degToRad(rad : float)
 
 
 def boxCalcPoints(pos : float2; size : float2) : tuple<lt : float2, rb : float2>
-  return size * -0.5 + pos, size * 0.5 + pos
+  return (lt = size * -0.5 + pos, rb = size * 0.5 + pos)
 
 
 struct PropStorage

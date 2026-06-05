@@ -12,6 +12,10 @@ let { reqUnlockByClient, isUnlockOpened } = require("%scripts/unlocks/unlocksMod
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { enable_scene_camera, disable_scene_camera } = require("hangar")
 let { resetTimeout } = require("dagor.workcycle")
+let { select_training_mission, get_meta_mission_info_by_gm_and_name } = require("guiMission")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { currentCampaignMission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 function startGameMode(params) {
   if(handlersManager.findHandlerClassInScene(gui_handlers.MainMenu) == null)
@@ -100,6 +104,37 @@ function clickToReqUnlock(params) {
 
   reqUnlockByClient(unlockName)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 addListenersWithoutEnv({
   SignOut = @(_) clickCountByUnlock.clear()

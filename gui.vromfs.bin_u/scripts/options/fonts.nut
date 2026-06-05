@@ -1,8 +1,7 @@
 from "%scripts/dagui_natives.nut" import is_steam_big_picture, display_scale
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByScreenSize,
-  clearLocalByScreenSize
+let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -20,7 +19,10 @@ let { eventbus_subscribe } = require("eventbus")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
+const FONTS_SAVE_PATH_VR = "fonts_css_vr"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
+
+let getFontsSavePath = @() is_stereo_mode() ? FONTS_SAVE_PATH_VR : FONTS_SAVE_PATH
 
 enum FONT_SAVE_ID {
   TINY = "tiny"
@@ -248,19 +250,12 @@ g_font.getCurrent <- function getCurrent() {
       || getDefault())
   }
 
-  local fontSaveId = loadLocalAccountSettings(FONTS_SAVE_PATH)
-  local res = getAvailableFontBySaveId(fontSaveId)
-  if (!res) { 
-    fontSaveId = loadLocalByScreenSize(FONTS_SAVE_PATH)
-    if (fontSaveId) {
-      res = getAvailableFontBySaveId(fontSaveId)
-      if (res)
-        saveLocalAccountSettings(FONTS_SAVE_PATH, fontSaveId)
-      clearLocalByScreenSize(FONTS_SAVE_PATH)
-    }
-  }
+  let fontSaveId = loadLocalAccountSettings(getFontsSavePath())
+  let res = getAvailableFontBySaveId(fontSaveId)
   return update_font_heights(res || getDefault())
 }
+
+g_font.getFontsSavePath <- getFontsSavePath
 
 function saveFontToConfig(font) {
   if (getSystemConfigOption(FONTS_SAVE_PATH_CONFIG) != font.saveId)
@@ -272,10 +267,11 @@ g_font.setCurrent <- function setCurrent(font) {
   if (!canChange())
     return false
 
-  let fontSaveId = loadLocalAccountSettings(FONTS_SAVE_PATH)
+  let savePath = getFontsSavePath()
+  let fontSaveId = loadLocalAccountSettings(savePath)
   let isChanged = font.saveId != fontSaveId
   if (isChanged)
-    saveLocalAccountSettings(FONTS_SAVE_PATH, font.saveId)
+    saveLocalAccountSettings(savePath, font.saveId)
 
   saveFontToConfig(font)
   update_font_heights(font)

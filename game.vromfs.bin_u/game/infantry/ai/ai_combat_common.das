@@ -119,12 +119,12 @@ def trace_pierce_shot(var out_pos : float3&; shoot_pos, target_pos, shell_vel, s
   using() <| $(var testParams : CriticalDamageTesterParams#)
     testParams.speed = hitVel
     testParams.distance = deltaLen
-    testParams.ray.start = shoot_pos
-    testParams.ray.dir = dir
-    testParams.ray.length = deltaLen
+    testParams.rayStart = shoot_pos
+    testParams.rayDir = dir
+    testParams.rayLength = deltaLen
     testParams.testSecondaryShatters = false
-    testParams.testExplosion = true
-    testParams.volumetricShell = true
+    testParams.testExplosion = false
+    testParams.volumetricShell = false
 
     res = critical_damage_test(target_eid, shell_id, testParams)
 

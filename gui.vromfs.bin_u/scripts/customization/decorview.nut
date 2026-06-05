@@ -36,6 +36,7 @@ function getDecorButtonView(decorator, unit, params = null) {
   let lockCountryImg = statusLock == "country" ? getCountryIcon(getUnitCountry(unit)) : null
   return {
     id = $"decal_{decorator.id}"
+    decoratorId = decorator.id
     onClick = params?.onClick
     onDblClick = params?.onDblClick
     highlighted = params?.needHighlight ?? false

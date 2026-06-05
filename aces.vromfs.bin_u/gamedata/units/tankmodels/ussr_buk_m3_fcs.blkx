@@ -28,8 +28,8 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 70.0,
-  "maxRevSpeed": 20.0,
+  "maxFwdSpeed": 75.0,
+  "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
   "maxDecel": 8.0,
@@ -40,15 +40,14 @@
   "minDistBetween": 10.0,
   "expClass": "exp_SPAA",
   "mass": 40400.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "radarCanLockTargetFromTPV": false,
   "sensorTargetTurretTrack": false,
   "type": "typeSPAA",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
@@ -324,6 +323,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1733,17 +1736,32 @@
     }
   },
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/su_9s18m3.blk",
-      "turretIndex": -1,
-      "designationFromBody": true,
-      "designationTurretIndex": 1,
-      "dmPart": [
-        "antenna_target_location_dm",
-        "electronic_equipment_dm"
-      ],
-      "radarParkingAzimuth": 180.0
-    }
+    "sensor": [
+      {
+        "blk": "gameData/sensors/su_9s18m3.blk",
+        "turretIndex": -1,
+        "designationFromBody": true,
+        "designationTurretIndex": 1,
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ],
+        "radarParkingAzimuth": 180.0,
+        "ai": false
+      },
+      {
+        "blk": "gameData/sensors/su_9s18m3_ai.blk",
+        "turretIndex": -1,
+        "designationFromBody": true,
+        "designationTurretIndex": 1,
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ],
+        "radarParkingAzimuth": 180.0,
+        "human": false
+      }
+    ]
   },
   "antiAirComplexMenu": {
     "isVerticalViewAvailable": true,

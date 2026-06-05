@@ -518,6 +518,36 @@
         "signalWidthMin": 2.5,
         "width": 0.0
       }
+    },
+    "seaSearch": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": false,
+      "shipsAsTarget": true,
+      "targetRadiusMin": 10.0,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 200000.0,
+        "width": 15.0
+      }
+    },
+    "seaTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": false,
+      "shipsAsTarget": true,
+      "targetRadiusMin": 10.0,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 200000.0,
+        "width": 15.0
+      }
     }
   },
   "scanPatternSets": {
@@ -1443,6 +1473,36 @@
             "sourceType": "radarSs"
           }
         },
+        "setSeaStandbyMode": {
+          "setRadarSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaSearch"
+          },
+          "setModeName": {
+            "name": "SEA standby"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
+          }
+        },
+        "setSeaSearchMode": {
+          "setRadarSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaSearch"
+          },
+          "setModeName": {
+            "name": "SEA search"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
+          }
+        },
         "setGtmTwsBvrLockModeCommon": {
           "setBvrLockModeCommon": {},
           "setFsmActive": {
@@ -1523,6 +1583,72 @@
           "setGtmTwsBvrLockModeCommon": {},
           "setModeName": {
             "name": "GTM acquisition"
+          }
+        },
+        "setSeaBvrLockMode": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "radarBvrLock",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaTrack"
+          },
+          "setScanPattern": {
+            "scanPattern": "radarBvrLock"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setModeName": {
+            "name": "SEA acquisition"
+          }
+        },
+        "setSeaBvrTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "radarTrack"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setModeName": {
+            "name": "SEA track"
+          },
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaTrack"
           }
         }
       },
@@ -2644,6 +2770,65 @@
               "active": true
             }
           ]
+        },
+        "setSea": {
+          "setMprfTargetDesignationRange": {},
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setStandbyMode",
+              "actionTemplateName": "setSeaStandbyMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setSearchMode",
+              "actionTemplateName": "setSeaSearchMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrLockMode",
+              "actionTemplateName": "setSeaBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrLockMode",
+              "actionTemplateName": "resetGtmBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "designateTarget",
+              "actionTemplateName": "designatedTargetSearch"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrTrackMode",
+              "actionTemplateName": "setSeaBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrTrackMode",
+              "actionTemplateName": "resetGtmBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetSearchMode",
+              "actionTemplateName": "resetSearchMode"
+            }
+          ],
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "resetSearchMode"
+          },
+          "setFsmActive": [
+            {
+              "fsm": "main",
+              "active": false
+            },
+            {
+              "fsm": "main",
+              "active": true
+            }
+          ]
         }
       },
       "transitions": {
@@ -2712,8 +2897,21 @@
             }
           }
         },
-        "gtmToMprf": {
+        "gtmToSea": {
           "stateFrom": "gtm",
+          "command": "modeSwitch",
+          "stateTo": "sea",
+          "actions": {
+            "setSea": {},
+            "setCustomActionTemplate": {
+              "fsm": "radarSearchModes",
+              "name": "restore",
+              "actionTemplateName": "setSea"
+            }
+          }
+        },
+        "seaToMprf": {
+          "stateFrom": "sea",
           "command": "modeSwitch",
           "stateTo": "mprf",
           "actions": {

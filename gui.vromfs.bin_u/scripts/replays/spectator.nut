@@ -6,11 +6,9 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/mainConsts.nut" import global_max_players_versus
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
-let { g_chat } = require("%scripts/chat/chat.nut")
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isSensorViewMode, setSensorViewFilter, getSensorViewFilter,
   SVF_HERO, SVF_SQUAD, SVF_ALLY, SVF_ENEMY, SVF_GROUND, SVF_AIR, SVF_WEAPON_OTHER, SVF_WEAPON_HERO, SVF_WEAPON_ATTACK_HERO,
@@ -25,7 +23,6 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { CHAT_MODE_ALL, chat_set_mode, toggle_ingame_chat } = require("chat")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
@@ -35,11 +32,11 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getHudUnitType, is_replay_markers_enabled } = require("hudState")
-let { guiStartMPStatScreen
-} = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { guiStartMPStatScreen, getSpectatorTeammateStatsMarkup, getSpectatorTeammateStats,
+  TEAMMATE_STATS_FIELDS } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getWeaponTypeIcoByWeapon
 } = require("%scripts/statistics/mpStatisticsInfo.nut")
-let { onSpectatorMode, switchSpectatorTargetById,
+let { onSpectatorMode, switchSpectatorTargetById, isArbiterMode
   getSpectatorTargetId, getSpectatorTargetName
 } = require("guiSpectator")
 let { get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchors,
@@ -57,9 +54,7 @@ let { isInFlight } = require("gameplayBinding")
 let { updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_tactical_map } = require("%scripts/tacticalMap.nut")
-let { showOrdersContainer } = require("%scripts/items/orders.nut")
 let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
-let { loadGameChatToObj } = require("%scripts/chat/mpChat.nut")
 let { register_command } = require("console")
 let { replaySystemWindowOpen, replaySystemWindowClose } = require("%scripts/replays/replaySystemWindow.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
@@ -88,12 +83,6 @@ enum SPECTATOR_MODE {
   REPLAY      
 }
 
-enum SPECTATOR_CHAT_TAB {
-  HISTORY  = "btn_tab_history"
-  CHAT     = "btn_tab_chat"
-  ORDERS   = "btn_tab_orders"
-}
-
 let weaponIconsReloadBits = {
   bomb = BMS_OUT_OF_BOMBS
   rocket = BMS_OUT_OF_ROCKETS
@@ -111,30 +100,6 @@ let playerStateToStringMap = {
   [PLAYER_READY_TO_START] = "PLAYER_READY_TO_START",
   [PLAYER_IN_FLIGHT] = "PLAYER_IN_FLIGHT",
   [PLAYER_IN_RESPAWN] = "PLAYER_IN_RESPAWN"
-}
-
-let hudHeroMessages = {
-  [HUD_MSG_DAMAGE] = true, 
-  [HUD_MSG_ENEMY_DAMAGE] = true, 
-  [HUD_MSG_ENEMY_CRITICAL_DAMAGE] = true, 
-  [HUD_MSG_ENEMY_FATAL_DAMAGE] = true, 
-  [HUD_MSG_DEATH_REASON] = true, 
-  [HUD_MSG_EVENT] = true, 
-}
-
-let supportedMsgTypes = {
-  [HUD_MSG_MULTIPLAYER_DMG] = true,
-  [HUD_MSG_STREAK_EX] = true,
-  [HUD_MSG_STREAK] = true,
-  [HUD_MSG_OBJECTIVE] = true,
-  [HUD_MSG_DIALOG] = true,
-  [HUD_MSG_DAMAGE] = true,
-  [HUD_MSG_ENEMY_DAMAGE] = true,
-  [HUD_MSG_ENEMY_CRITICAL_DAMAGE] = true,
-  [HUD_MSG_ENEMY_FATAL_DAMAGE] = true,
-  [HUD_MSG_DEATH_REASON] = true,
-  [HUD_MSG_EVENT] = true,
-  [-200] = true 
 }
 
 let sensorFiltersTable = {
@@ -244,7 +209,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   canControlCameras   = false
   canSeeMissionTimer  = false
   canSeeOppositeTeam  = false
-  canSendChatMessages = false
 
   cameraRotationByMouse = null
 
@@ -268,7 +232,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     id   = -1
     team = -1
   }
-  lastSelectedTableId = ""
   lastHudUnitType = ""
   lastFriendlyTeam = 0
   statSelPlayerId = [ null, null ]
@@ -292,31 +255,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     "isInHeroSquad",
   ]
 
-  historyMaxLen = g_chat.MAX_ROOM_MSGS_FOR_MODERATOR
-  historySkipDuplicatesSec = 10
-  historyLogCustomMsgType = -200
-  historyLog = null
-  chatData = null
   actionBarWeak = null
-
-  curTabId = ""
-  tabsList = [
-    {
-      id = SPECTATOR_CHAT_TAB.HISTORY
-      locId = "options/_Bttl"
-      containerId = "history_container"
-    }
-    {
-      id = SPECTATOR_CHAT_TAB.CHAT
-      locId = "mainmenu/chat"
-      containerId = "chat_container"
-    }
-    {
-      id = SPECTATOR_CHAT_TAB.ORDERS
-      locId = "itemTypes/orders"
-      containerId = "orders_container"
-    }
-  ]
 
   function initScreen() {
     this.gameType = get_game_type()
@@ -345,15 +284,10 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     this.canControlCameras   = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
     this.canSeeMissionTimer  = !this.canControlTimeline && this.mode == SPECTATOR_MODE.SKIRMISH
     this.canSeeOppositeTeam  = this.mode != SPECTATOR_MODE.RESPAWN
-    this.canSendChatMessages = this.mode != SPECTATOR_MODE.REPLAY
     let canRewind = this.canControlTimeline && hasFeature("replayRewind")
     let anchors = get_replay_anchors()
     let curAnchorIdx = this.getCurAnchorIdx(anchors)
 
-    this.fillTabs()
-    this.historyLog = []
-
-    this.loadGameChat()
     if (!this.isMultiplayer)
       showObjectsByTable(this.scene, {
           btn_tab_chat  = false
@@ -426,7 +360,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
           ID_REPLAY_CAMERA_WING       = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
           ID_REPLAY_CAMERA_GUN        = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
           ID_REPLAY_CAMERA_RANDOMIZE  = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
-          ID_REPLAY_CAMERA_FREE       = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
+          ID_REPLAY_CAMERA_FREE       = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
           ID_REPLAY_CAMERA_FREE_PARENTED = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
           ID_REPLAY_CAMERA_FREE_ATTACHED = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
       })
@@ -453,11 +387,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     let actionBar = ActionBar(this.scene.findObject("spectator_hud_action_bar"))
     this.actionBarWeak = actionBar.weakref()
     this.actionBarWeak?.reinit()
-    this.reinitDmgIndicator()
-
-    g_hud_event_manager.subscribe("HudMessage", function(eventData) {
-        this.onHudMessage(eventData)
-      }, this)
 
     this.onUpdate()
     this.scene.findObject("update_timer").setUserData(this)
@@ -525,51 +454,9 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 
 
   function reinitScreen() {
-    this.updateHistoryLog(true)
-    this.loadGameChat()
-
     g_hud_live_stats.update()
     this.actionBarWeak?.reinit()
-    this.reinitDmgIndicator()
     this.updateTarget(true)
-  }
-
-  function fillTabs() {
-    let view = {
-      tabs = []
-    }
-    foreach (tab in this.tabsList)
-      view.tabs.append({
-        tabName = loc(tab.locId)
-        id = tab.id
-        alert = "no"
-        cornerImg = "#ui/gameuiskin#new_icon.svg"
-        cornerImgId = "new_msgs"
-        cornerImgTiny = true
-      })
-
-    let tabsObj = showObjById("tabs", true, this.scene)
-    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
-    this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
-    tabsObj.setValue(0)
-  }
-
-  function loadGameChat() {
-    if (this.isMultiplayer) {
-      this.chatData = loadGameChatToObj(this.scene.findObject("chat_container"), "%gui/chat/gameChatSpectator.blk", this,
-                                     { selfHideInput = true, hiddenInput = !this.canSendChatMessages })
-
-      let objGameChat = this.scene.findObject("gamechat")
-      showObjectsByTable(objGameChat, {
-          chat_input_div         = this.canSendChatMessages
-          chat_input_placeholder = this.canSendChatMessages
-      })
-      let objChatLogDiv = objGameChat.findObject("chat_log_tdiv")
-      objChatLogDiv.size = this.canSendChatMessages ? objChatLogDiv.sizeWithInput : objChatLogDiv.sizeWithoutInput
-
-      if (this.mode == SPECTATOR_MODE.SKIRMISH || this.mode == SPECTATOR_MODE.SUPERVISOR)
-        chat_set_mode(CHAT_MODE_ALL, "")
-    }
   }
 
   function onShowHud(_show = true, _needApplyPending = false) {
@@ -613,7 +500,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     if (friendlyTeamSwitched || isTargetSwitched) {
       g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
       broadcastEvent("WatchedHeroSwitched")
-      this.updateHistoryLog()
     }
 
     this.updateControls(isTargetSwitched)
@@ -769,7 +655,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 
     g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
     updateActionBar()
-    this.reinitDmgIndicator()
 
     this.setTargetInfo(player)
     return isFocused
@@ -850,16 +735,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
           ID_REPLAY_CAMERA_HOVER      = isValid && !isAircraft
       })
     }
-  }
-
-  function reinitDmgIndicator() {
-    let obj = this.scene.findObject("spectator_hud_damage")
-    if (obj?.isValid())
-      eventbus_send("updateDmgIndicatorStates", {
-        isVisible = this.getTargetPlayer() != null && hasFeature("SpectatorUnitDmgIndicator")
-        size = obj.getSize()
-        pos = obj.getPosRC()
-      })
   }
 
   function statTblGetSelectedPlayer(obj) {
@@ -958,10 +833,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     this.selectPlayer(player, obj)
   }
 
-  function onChangeFocusTable(obj) {
-    this.lastSelectedTableId = obj.id
-  }
-
   function onBtnMpStatScreen(_obj) {
     if (this.isMultiplayer)
       guiStartMPStatScreen()
@@ -1004,7 +875,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 
     eventbus_send("updateSpectatorMapStates", { isVisible = toggle })
 
-    this.updateHistoryLog(true)
     this.updateClientHudOffset()
   }
 
@@ -1077,12 +947,18 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     let isTeamplay = isPvP && isModeWithTeams(this.gameType)
 
     if (isTeamplay || !this.canSeeOppositeTeam) {
-      let localTeam = get_mp_local_team() != 2 ? 1 : 2
+      let isArbiter = isArbiterMode()
+      let localTeam = isArbiter
+        ? Team.A
+        : get_mp_local_team() != Team.B ? Team.A : Team.B
       let isMyTeamFriendly = localTeam == get_player_army_for_hud()
 
       for (local i = 0; i < 2; i++) {
         let teamId = ((i == 0) == (localTeam == 1)) ? Team.A : Team.B
-        let color = ((i == 0) == isMyTeamFriendly) ? "blue" : "red"
+        local color = ((i == 0) == isMyTeamFriendly) ? "blue" : "red"
+        if (isArbiter)
+          color = (i == 0) ? "blue" : "red"
+
         let players = this.getTeamPlayers(teamId)
 
         _teams[i] = {
@@ -1171,9 +1047,11 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     if (newRows <= 0)
       return totalRows
 
-    let view = { rows = array(newRows, 1)
-                   iconLeft = teamInfo.index == 0
-                 }
+    let iconLeft = teamInfo.index == 0
+    let view = {
+      rows = array(newRows, { statsRows = getSpectatorTeammateStatsMarkup(iconLeft) })
+      iconLeft
+    }
     let data = handyman.renderCached(("%gui/hud/spectatorTeamRow.tpl"), view)
     this.guiScene.appendWithBlk(objTbl, data, this)
     return totalRows
@@ -1282,6 +1160,13 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
                                                                 ""
       obj.findObject("battle-state-ico")["class"] = battleStateIconClass
 
+      let teammateStats = getSpectatorTeammateStats(player)
+      foreach (statId in TEAMMATE_STATS_FIELDS) {
+        let statObj = obj.findObject(statId)
+        if (statObj?.isValid() && teammateStats?[statId] != null)
+          statObj.setValue(teammateStats[statId])
+      }
+
       if (player.id == selPlayerId)
         selIndex = i
     }
@@ -1326,71 +1211,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     spectator_air_hud_offset_x = (checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
   }
 
-  function onBtnLogTabSwitch(obj) {
-    if (!checkObj(obj))
-      return
-
-    let tabIdx = obj.getValue()
-    if (tabIdx < 0 || tabIdx >= obj.childrenCount())
-      return
-
-    let tabObj = obj.getChild(tabIdx)
-    let newTabId = tabObj?.id
-    if (!newTabId || newTabId == this.curTabId)
-      return
-
-    foreach (tab in this.tabsList) {
-      let objContainer = this.scene.findObject(tab.containerId)
-      if (!checkObj(objContainer))
-        continue
-
-      objContainer.show(tab.id == newTabId)
-    }
-    this.curTabId = newTabId
-    tabObj.findObject("new_msgs").show(false)
-
-    showOrdersContainer(this.curTabId == SPECTATOR_CHAT_TAB.ORDERS)
-
-    if (this.curTabId == SPECTATOR_CHAT_TAB.CHAT)
-      this.loadGameChat()
-    this.updateHistoryLog(true)
-  }
-
-  function updateNewMsgImg(tabId) {
-    if (!this.scene.isValid() || tabId == this.curTabId)
-      return
-    let obj = this.scene.findObject(tabId)
-    if (checkObj(obj))
-      obj.findObject("new_msgs").show(true)
-  }
-
-  function onEventMpChatLogUpdated(_params) {
-    this.updateNewMsgImg(SPECTATOR_CHAT_TAB.CHAT)
-  }
-
-  function onEventActiveOrderChanged(_params) {
-    this.updateNewMsgImg(SPECTATOR_CHAT_TAB.ORDERS)
-  }
-
-  function onEventMpChatInputRequested(params) {
-    if (!checkObj(this.scene))
-      return
-    if (!this.canSendChatMessages)
-      return
-
-    local obj = this.scene.findObject("btnToggleLog")
-    if (checkObj(obj) && obj?.toggled != "yes")
-      this.onToggleButtonClick(obj)
-
-    obj = this.scene.findObject("tabs")
-    let chatTabId = SPECTATOR_CHAT_TAB.CHAT
-    if (checkObj(obj) && this.curTabId != chatTabId)
-      obj.setValue(this.tabsList.findindex(@(t) t.id == chatTabId) ?? -1)
-
-    if (params?.activate ?? false)
-      toggle_ingame_chat(true)
-  }
-
   function onEventReplayWait(event) {
     let replayPausedBlockObj = this.scene.findObject("replay_paused_block")
     if (!replayPausedBlockObj?.isValid())
@@ -1419,111 +1239,12 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     this.addHistroyLogMessage(colorize(color, loc("artillery_strike/called_by_player", { player =  this.getPlayerNick(player, true) })))
   }
 
-  function onHudMessage(msg) {
-    if (msg.type not in supportedMsgTypes)
-      return
-
-    if (!("id" in msg))
-      msg.id <- -1
-    if (!("text" in msg))
-      msg.text <- ""
-
-    msg.time <- get_mission_time()
-
-    this.historyLog = this.historyLog ?? []
-    if (msg.id != -1)
-      foreach (m in this.historyLog)
-        if (m.id == msg.id)
-          return
-    if (msg.id == -1 && msg.text != "") {
-      let skipDupTime = msg.time - this.historySkipDuplicatesSec
-      for (local i = this.historyLog.len() - 1; i >= 0; i--) {
-        if (this.historyLog[i].time < skipDupTime && msg.type != HUD_MSG_DEATH_REASON)
-          break
-        if (this.historyLog[i].text == msg.text)
-          return
-      }
-    }
-
-    msg.message <- this.buildHistoryLogMessage(msg)
-    if (msg.message == "")
-      return
-
-    if (this.historyLog.len() == this.historyMaxLen)
-      this.historyLog.remove(0)
-    this.historyLog.append(msg)
-
-    this.updateHistoryLog()
-  }
-
   function addHistroyLogMessage(text) {
-    this.onHudMessage({
+    HudBattleLog.onHudMessage({
       id   = -1
       text = text
-      type = this.historyLogCustomMsgType
+      type = HudBattleLog.historyLogCustomMsgType
     })
-  }
-
-  function clearHistoryLog() {
-    if (!this.historyLog)
-      return
-    this.historyLog.clear()
-    this.updateHistoryLog()
-  }
-
-  function updateHistoryLog(updateVisibility = false) {
-    if (!(this.scene?.isValid() ?? false))
-      return
-
-    let obj = this.scene.findObject("history_log")
-    if (!(obj?.isValid() ?? false))
-      return
-
-    if (updateVisibility)
-      this.guiScene.setUpdatesEnabled(true, true)
-
-    this.historyLog = this.historyLog ?? []
-    if (!obj.isVisible() || this.historyLog.len() == 0) {
-      obj.setValue("")
-      return
-    }
-
-    let historyLogMessages = this.historyLog.map(@(msg) msg.message)
-    obj.setValue("\n".join(historyLogMessages, true))
-  }
-
-  function buildHistoryLogMessage(msg) {
-    let timestamp = "".concat(time.secondsToString(msg.time, false), " ")
-    
-    if (msg.type == HUD_MSG_MULTIPLAYER_DMG) { 
-      let text = HudBattleLog.msgMultiplayerDmgToText(msg)
-      let icon = HudBattleLog.getActionTextIconic(msg)
-      return "".concat(timestamp, colorize("userlogColoredText", $"{icon} {text}"))
-    }
-
-    if (msg.type == HUD_MSG_STREAK_EX) { 
-      let text = HudBattleLog.msgStreakToText(msg, true)
-      return "".concat(timestamp, colorize("streakTextColor", loc("ui/colon").concat(loc("unlocks/streak"), text)))
-    }
-
-    
-    if (msg.type == HUD_MSG_OBJECTIVE) { 
-      let text = HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-      return "".concat(timestamp, colorize("white", loc("ui/colon").concat(loc("sm_objective"), text)))
-    }
-
-    
-    if (msg.type == HUD_MSG_DIALOG) { 
-      let text = HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-      return "".concat(timestamp, colorize("commonTextColor", text))
-    }
-
-    
-    if (msg.type in hudHeroMessages || msg.type == this.historyLogCustomMsgType) { 
-      let text = HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-      return "".concat(timestamp, colorize("commonTextColor", text))
-    }
-    return ""
   }
 
   function setHotkeysToObjTooltips(scanObj, objects) {

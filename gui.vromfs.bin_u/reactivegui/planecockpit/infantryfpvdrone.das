@@ -10,7 +10,7 @@ require darg
 require FlightModelWrap
 require HeroManager
 require math
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require Plane
 require strings
 require Unit
@@ -160,7 +160,7 @@ class Component : Canvas
     let fuelRemainingTimeS = floori(get_remaining_fuel_time())
 
     let pos = float2(-0.362, 0.15)
-    drawStrAnchored(pos, "{format("%02d", fuelRemainingTimeS / 60)} : {format("%02d", fuelRemainingTimeS % 60)}",  AnchorHorz.Center, AnchorVert.Center)
+    drawStrAnchored(pos, "{fmt(":02d", fuelRemainingTimeS / 60)} : {fmt(":02d", fuelRemainingTimeS % 60)}",  AnchorHorz.Center, AnchorVert.Center)
 
 
   def drawFuelVoltage()
@@ -172,7 +172,7 @@ class Component : Canvas
     let minVoltage = 18.0
     let curVoltage = lerp(minVoltage, maxVoltage, fuelRemaining)
 
-    drawStrAnchored(pos, "{format("%.2f", curVoltage)} V",  AnchorHorz.Left, AnchorVert.Bottom)
+    drawStrAnchored(pos, "{fmt(":.2f", curVoltage)} V",  AnchorHorz.Left, AnchorVert.Bottom)
 
 
   def drawFuelBattery()
@@ -205,7 +205,7 @@ class Component : Canvas
 
     let pos = float2(0.39, 0.15)
 
-    drawStrAnchored(pos, "ALT  {format("%3d", floori(alt))}",  AnchorHorz.Left, AnchorVert.Center)
+    drawStrAnchored(pos, "ALT  {fmt(":3d", floori(alt))}",  AnchorHorz.Left, AnchorVert.Center)
     drawStrAnchored(pos + float2(0.1, 0.00), "M",  AnchorHorz.Left, AnchorVert.Center)
 
   def drawVelocity()
@@ -213,7 +213,7 @@ class Component : Canvas
 
     let pos = float2(0.39, 0.18)
 
-    drawStrAnchored(pos, "VEL  {format("%3d", floori(vel))}",  AnchorHorz.Left, AnchorVert.Center)
+    drawStrAnchored(pos, "VEL  {fmt(":3d", floori(vel))}",  AnchorHorz.Left, AnchorVert.Center)
     drawStrAnchored(pos + float2(0.1, 0.00), "km/h",  AnchorHorz.Left, AnchorVert.Center)
 
   def drawEngineThrottle()
@@ -221,7 +221,7 @@ class Component : Canvas
 
     let pos = float2(0.39, 0.21)
 
-    drawStrAnchored(pos, "THR {format("%3d", floori(thrust * 100.0))}",  AnchorHorz.Left, AnchorVert.Center)
+    drawStrAnchored(pos, "THR {fmt(":3d", floori(thrust * 100.0))}",  AnchorHorz.Left, AnchorVert.Center)
     drawStrAnchored(pos + float2(0.1, 0.00), "%",  AnchorHorz.Left, AnchorVert.Center)
 
   def drawSignalQuality()

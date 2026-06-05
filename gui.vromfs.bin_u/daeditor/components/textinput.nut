@@ -44,9 +44,9 @@ function isStringLikelyEmail(str, _verbose=true) {
   let quotes = locpart.indexof("\"")
   if (quotes && quotes!=0)
     return false 
-  if (quotes==null && locpart.indexof("@")!=null)
+  if (quotes==null && locpart.contains("@"))
     return false 
-  if (dompart.indexof(".")==null || dompart.indexof(".")>dompart.len()-3) 
+  if (!dompart.contains(".") || dompart.indexof(".")>dompart.len()-3) 
     return false  
   return true
 }
@@ -119,7 +119,7 @@ function textInput(text_state, options={}, frameCtor=defaultFrame) {
 
   isValidResult = isValidResult ?? @(new_value) isValidStrByType(new_value, inputType)
   isValidChange = isValidChange
-    ?? @(new_value) interactiveValidTypes.indexof(inputType) == null
+    ?? @(new_value) !interactiveValidTypes.contains(inputType)
       || isValidStrByType(new_value, inputType)
 
   let stateFlags = Watched(0)

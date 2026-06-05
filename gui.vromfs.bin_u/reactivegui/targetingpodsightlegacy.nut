@@ -5,7 +5,7 @@ let { turretAngles, sight, paramsTable, targetSize, launchDistanceMax, compassEl
 let { TargetPodMask, EmptyMask, SightMask, HudColor, HudParamColor, AlertColorHigh, IsRangefinderEnabled,
   MfdColor, IsMfdEnabled } = require("%rGui/airState.nut")
 let missileSalvoTimer = require("%rGui/missileSalvoTimer.nut")
-let { radarHud } = require("%rGui/radar.nut")
+let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let { isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
 let { isPlayingReplay } = require("%rGui/hudState.nut")
 let { maxLabelWidth, maxLabelHeight } = require("%rGui/radarComponent.nut")
@@ -43,21 +43,21 @@ let aircraftSight = @(width, height) function() {
   ]
   )
 
-  let twsSize = sh(20)
+  let twsSize = [sh(28), sh(50)]
   let twsPosWatched = Computed(@()
   isPlayingReplay.get() ?
   [
     scrn_tgt(0.24) + fpx(45) + scrn_tgt(0.005) + fpx(32) + 6 + bw.get(),
-    bh.get() + rh.get() - twsSize * 1.5
+    bh.get() + rh.get() - twsSize[1]
   ] :
   (IsMlwsLwsHudVisible.get() ?
   [
     bw.get() + 0.02 * rw.get(),
-    bh.get() + 0.43 * rh.get()
+    bh.get() + 0.53 * rh.get() - twsSize[1] * 0.5
   ] :
   [
     bw.get() + 0.01 * rw.get(),
-    bh.get() + 0.38 * rh.get()
+    bh.get() + 0.5 * (rh.get() - twsSize[1])
   ])
   )
 
@@ -74,6 +74,7 @@ let aircraftSight = @(width, height) function() {
       compassElem(HudColor, compassSize, compassPos)
       !isCollapsedRadarInReplay.get() ? radarHud(sh(33), sh(33), radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {}, true) : null
       twsElement(IsTwsDamaged.get() ? AlertColorHigh : HudColor, twsPosWatched, twsSize)
+      radarIndication(HudColor)
       laserDesignatorStatusComponent(HudColor, sw(50), sh(38))
       IsRangefinderEnabled.get() ? rangeFinder(HudColor, sw(50), sh(59)) : null
       lockSight(crosshairColorOpt, hdpx(150), hdpx(100), sw(50), sh(50))
@@ -93,15 +94,15 @@ let helicopterSight = @(width, height) function() {
     ] :
     [bw.get() + hdpx(75), bh.get()])
 
-  let twsSize = sh(20)
+  let twsSize = [sh(28), sh(50)]
   let twsPosComputed = Computed(@() isPlayingReplay.get() ?
     [
-      scrn_tgt(0.24) + fpx(45) + scrn_tgt(0.005) + fpx(16) + 6 + bw.get() + (IsMlwsLwsHudVisible.get() ? 0.3 * twsSize : 0),
-      bh.get() + rh.get() - twsSize * (IsMlwsLwsHudVisible.get() ? 1.3 : 1.0)
+      scrn_tgt(0.24) + fpx(45) + scrn_tgt(0.005) + fpx(16) + 6 + bw.get(),
+      bh.get() + rh.get() - twsSize[1]
     ] :
     [
-      bw.get() + 0.965 * rw.get() - twsSize,
-      bh.get() + 0.5 * rh.get()
+      bw.get() + 0.985 * rw.get() - twsSize[0],
+      bh.get() + 0.5 * (rh.get() * 0.98 - twsSize[0])
     ])
 
   let paramsTableHeightHeli = hdpx(28)

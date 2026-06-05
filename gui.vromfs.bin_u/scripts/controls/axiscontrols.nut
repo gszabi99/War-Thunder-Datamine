@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_axis_digital, joystick_get_default
+from "%scripts/dagui_natives.nut" import joystick_get_default
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -30,7 +30,6 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
 
   setupAxisMode = null
   autodetectAxis = false
-  axisRawValues = null
   axisShortcuts = null
   dontCheckControlsDupes = null
   numAxisInList = 0
@@ -41,7 +40,6 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
   optionTableId = "axis_setup_table"
 
   function initScreen() {
-    this.axisRawValues = []
     this.axisShortcuts = []
     this.dontCheckControlsDupes = []
     this.changedShortcuts = []
@@ -87,24 +85,6 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       if (!this.autodetectAxis)
         this.updateAxisItemsPos([0, 0])
     }
-  }
-
-  function getAxisRawValues(device, idx) {
-    local res = getTblValue(idx, this.axisRawValues)
-    if (!res) {
-      if (this.axisRawValues.len() <= idx)
-        this.axisRawValues.resize(idx + 1, null)
-
-      let rawPos = device.getAxisPosRaw(idx)
-      res = {
-              def = rawPos,
-              last = rawPos,
-              stuckTime = 0.0,
-              inited = is_axis_digital(idx) || rawPos != 0
-            }
-      this.axisRawValues[idx] = res
-    }
-    return res
   }
 
   function fillAxisTable(axis) {
@@ -269,7 +249,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
 
   getScById = @(scId) shortcutsAxisListModule.types?[(scId ?? "-1").tointeger()]
 
-  function onAxisInputTimer(_obj, dt) {
+  function onAxisInputTimer(_obj, _dt) {
     if (this.scene.getModalCounter() > 0)
       return
 
@@ -282,27 +262,12 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     let totalAxes = curDevice.getNumAxes()
 
     for (local i = 0; i < totalAxes; i++) {
-      let rawValues = this.getAxisRawValues(curDevice, i)
       let rawPos = curDevice.getAxisPosRaw(i)
-      if (!rawValues.inited && rawPos != 0) {
-        rawValues.def = rawPos 
-        rawValues.inited = true
-      }
-      let dPos = rawPos - rawValues.def
 
-      if (abs(dPos) > deviation) {
+      if (abs(rawPos) > deviation) {
         foundAxis = i
-        deviation = abs(dPos)
-
-        if (fabs(rawPos - rawValues.last) < 1000) {  
-          rawValues.stuckTime += dt
-          if (rawValues.stuckTime > 3.0)
-            rawValues.def = rawPos 
-        }
-        else {
-          rawValues.last = rawPos
-          rawValues.stuckTime = 0.0
-        }
+        deviation = abs(rawPos)
+        break 
       }
     }
 
@@ -468,18 +433,18 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
   }
 
   function callAssignButton() {
-    assignButtonWindow(this, this.onAssignButton)
+    assignButtonWindow(this, this.onAssignButton, this.getCurItem()?.id ?? "")
   }
 
-  function onAssignButton(dev, btn) {
+  function onAssignButton(dev, btn, activationType) {
     if (dev.len() > 0 && dev.len() == btn.len()) {
       let item = this.getCurItem()
       if (item)
-        this.bindShortcut(dev, btn, item)
+        this.bindShortcut(dev, btn, activationType, item)
     }
   }
 
-  function findButtons(devs, btns, curItem) {
+  function findButtons(devs, btns, activationType, curItem) {
     let res = []
 
     if (u.find_in_array(this.dontCheckControlsDupes, curItem.shortcutId) < 0)
@@ -491,7 +456,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
             local numEqual = 0
             for (local i = 0; i < button.dev.len(); i++)
               for (local j = 0; j < devs.len(); j++)
-                if ((button.dev[i] == devs[j]) && (button.btn[i] == btns[j]))
+                if ((button.dev[i] == devs[j]) && (button.btn[i] == btns[j]) && button.activationType == activationType)
                   numEqual++
 
             if (numEqual == btns.len() && u.find_in_array(this.dontCheckControlsDupes, this.shortcutItems[idx].id) < 0)
@@ -518,13 +483,13 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     return reqName
   }
 
-  function bindShortcut(devs, btns, item) {
+  function bindShortcut(devs, btns, activationType, item) {
     if (!(item.shortcutId in this.shortcuts))
       return
 
-    let curBinding = this.findButtons(devs, btns, item)
+    let curBinding = this.findButtons(devs, btns, activationType, item)
     if (curBinding.len() == 0) {
-      this.doBind(devs, btns, item)
+      this.doBind(devs, btns, activationType, item)
       return
     }
 
@@ -539,7 +504,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     let msg = loc("hotkeys/msg/unbind_question", { action = ", ".join(actions) })
 
     this.msgBox("controls_axis_bind_existing_shortcut", msg, [
-      ["add", @() this.doBind(devs, btns, item)],
+      ["add", @() this.doBind(devs, btns, activationType, item)],
       ["replace", function() {
         foreach (binding in curBinding) {
           let [shortcutId, btnIdx] = binding
@@ -547,18 +512,19 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
             this.shortcuts[binding[0]].remove(binding[1])
           this.onShortcutChange(binding[0])
         }
-        this.doBind(devs, btns, item)
+        this.doBind(devs, btns, activationType, item)
       }],
       ["cancel", function() { }],
     ], "cancel")
     return
   }
 
-  function doBind(devs, btns, item) {
+  function doBind(devs, btns, activationType, item) {
     let event = this.shortcuts[item.shortcutId]
     event.append({
                    dev = devs,
-                   btn = btns
+                   btn = btns,
+                   activationType
                 })
 
     if (event.len() > MAX_SHORTCUTS)

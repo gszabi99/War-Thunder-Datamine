@@ -24,7 +24,8 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getDecorTypeBlk } = require("%scripts/customization/decoratorTypeUtils.nut")
+let { isDecorInFavorites, addDecorToFavorite, removeDecorFromFavorite, getFavoriteDecorators
+} = require("%scripts/customization/decoratorFavoritesStorage.nut")
 
 function memoizeByProfile(func, hashFunc = null) {
   
@@ -61,7 +62,7 @@ let decoratorTypes = {
 
     hasFreeSlots = @(unit, skinId = null, checkPremium = false) this.getFreeSlotIdx(unit, skinId, checkPremium) != -1
     getFreeSlotIdx = function(unit, skinId = null, checkPremium = false) {
-      skinId = skinId || get_last_skin(unit.name)
+      skinId = skinId || get_last_skin(unit.masterUnit ?? unit.name)
       let slotsCount = checkPremium ? this.getMaxSlots() : this.getAvailableSlots(unit)
       for (local i = 0; i < slotsCount; i++)
         if (this.getDecoratorNameInSlot(i, unit.name, skinId, checkPremium) == "")
@@ -102,8 +103,6 @@ let decoratorTypes = {
     }
     isPlayerHaveDecorator = function(_decoratorName) { return false }
 
-    getSpecialDecorator = function(_id) { return null }
-    getLiveDecorator = @(_id, _cache) null
     canPreviewLiveDecorator = @() true
 
     specifyEditableSlot = @(_slotIdx, _needFocus = true) null
@@ -120,6 +119,11 @@ let decoratorTypes = {
     canMirror = function() { return false }
     canToggle = function() { return false }
     updateDownloadableDecoratorsInfo = function(_decorator) {}
+
+    addToFavorites = @(decorId) addDecorToFavorite(decorId, this.resourceType)
+    removeFromFavorites = @(decorId) removeDecorFromFavorite(decorId, this.resourceType)
+    isInFavorites = @(decorId) isDecorInFavorites(decorId, this.resourceType)
+    getFavorites = @() getFavoriteDecorators(this.resourceType)
   }
 }
 
@@ -230,7 +234,8 @@ addEnumDecoratorTypes({
       if (!hasFeature("DecalsUse"))
         return
 
-      let taskId = save_decals(unitName)
+      let name = getAircraftByName(unitName)?.masterUnit ?? unitName
+      let taskId = save_decals(name)
       let taskOptions = { showProgressBox = showProgressBox }
       addTask(taskId, taskOptions)
     }
@@ -288,7 +293,8 @@ addEnumDecoratorTypes({
       if (!hasFeature("AttachablesUse"))
         return
 
-      let taskId = save_attachables(unitName)
+      let name = getAircraftByName(unitName)?.masterUnit ?? unitName
+      let taskId = save_attachables(name)
       let taskOptions = { showProgressBox = showProgressBox }
       addTask(taskId, taskOptions)
     }
@@ -335,25 +341,6 @@ addEnumDecoratorTypes({
       }
       return player_have_skin(unitName, skinName)
     })
-
-    getSpecialDecorator = function(id) {
-      if (getSkinNameBySkinId(id) == "default")
-        return ::Decorator(id, this)
-      return null
-    }
-
-    getLiveDecorator = function(id, cache) {
-      if (id in cache)
-        return cache[id]
-
-      let isLiveDownloaded = guidParser.isGuid(getSkinNameBySkinId(id))
-      let isLiveItemContent = !isLiveDownloaded && guidParser.isGuid(id)
-      if (!isLiveDownloaded && !isLiveItemContent)
-        return null
-
-      cache[id] <- ::Decorator(getDecorTypeBlk("SKINS")?[id] ?? id, this)
-      return cache[id]
-    }
 
     canPreviewLiveDecorator = @() hasFeature("EnableLiveSkins")
 

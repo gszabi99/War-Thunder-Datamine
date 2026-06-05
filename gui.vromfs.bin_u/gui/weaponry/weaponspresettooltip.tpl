@@ -27,11 +27,7 @@ tdiv {
       background-color:t='@frameHeaderBackgroundColor'
 
       <<#names>>
-        textareaNoTab {
-          max-width:t='pw'
-          fontSmall:t='yes'
-          text:t='<<presetName>>'
-        }
+      include "%gui/weaponry/weaponsPresetTooltipTitle.tpl"
       <</names>>
     }
     <</presetsNames>>
@@ -47,11 +43,7 @@ tdiv {
         padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
         background-color:t='@frameHeaderBackgroundColor'
 
-        textareaNoTab {
-          max-width:t='pw'
-          fontSmall:t='yes'
-          text:t='<<presetName>>'
-        }
+        include "%gui/weaponry/weaponsPresetTooltipTitle.tpl"
       }
       weaponPresetTooltipParams {
         width:t='pw'

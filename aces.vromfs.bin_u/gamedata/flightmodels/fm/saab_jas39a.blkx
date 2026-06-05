@@ -868,7 +868,7 @@
       ],
       "AnglesMultiplierPitch2D13": [
         1000.0,
-        0.17,
+        0.18,
         -0.0,
         0.48
       ],
@@ -907,13 +907,13 @@
         1000.0,
         0.16,
         -0.0,
-        0.32
+        0.36
       ],
       "AnglesMultiplierPitch2D24": [
         1200.0,
         0.15,
         -0.0,
-        0.29
+        0.32
       ],
       "AnglesMultiplierPitch2D25": [
         1900.0,
@@ -2174,12 +2174,12 @@
     "Pitch": {
       "RateMax0": [
         0.0,
-        -60.0,
+        -50.0,
         60.0
       ],
       "RateMax1": [
         600.0,
-        -60.0,
+        -50.0,
         60.0
       ],
       "RateMax2": [
@@ -2195,7 +2195,7 @@
       "RateMax4": [
         1300.0,
         -30.0,
-        30.0
+        40.0
       ],
       "AngleMax": [
         -50.0,
@@ -2219,11 +2219,11 @@
       "ClimbAngleToLoadFactor": 0.7,
       "RateMaxLoadFactorMax": [
         -5.0,
-        16.0
+        14.0
       ],
       "AoaLimits": [
         -15.0,
-        25.0
+        22.0
       ],
       "AoaLimitsMult0": [
         0.5,
@@ -2235,7 +2235,7 @@
         0.5,
         0.5
       ],
-      "AoaLimitsMargin": 5.0,
+      "AoaLimitsMargin": 20.0,
       "AoaLimiterPushBackRateMult": [
         -0.9,
         -0.9
@@ -2243,7 +2243,7 @@
       "AoAAntiHangRateDecline": -1000.0,
       "UseAoAGLimits": true,
       "LoadFactorFilterSmoothCoeff": 0.7,
-      "LoadFactorLimiterStrengthMax": 0.99,
+      "LoadFactorLimiterStrengthMax": 0.4,
       "AoaLimitsManeuverabilityMult0": [
         0.5,
         1.0,
@@ -2255,8 +2255,8 @@
         11.4
       ],
       "RatePID": {
-        "Kp": 3.0,
-        "Ki": 3.0,
+        "Kp": 2.5,
+        "Ki": 0.1,
         "Imax": 0.1,
         "Kd": 0.001,
         "RateMult": 1.0,
@@ -2323,8 +2323,8 @@
     },
     "Yaw": {
       "RateMax": [
-        -50.0,
-        50.0
+        -60.0,
+        60.0
       ],
       "LateralLoadFactorTimeMult": 1.1,
       "AosTimeMult": 2.0,
@@ -2337,10 +2337,10 @@
         ]
       },
       "RatePID": {
-        "Kp": 2.0,
-        "Ki": 1.0,
-        "Imax": 0.1,
-        "Kd": 0.001,
+        "Kp": 1.2,
+        "Ki": 0.0,
+        "Imax": 0.05,
+        "Kd": 0.005,
         "RateMult": 1.0,
         "Lim": [
           -2147440000.0,

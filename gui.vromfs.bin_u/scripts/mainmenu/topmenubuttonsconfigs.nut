@@ -23,13 +23,13 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
 } = require("%scripts/social/crossplay.nut")
-let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { openESportListWnd } = require("%scripts/events/eSportModal.nut")
+let { openSpecEventsWnd } = require("%scripts/unlocks/specEventsHandler.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { debug_open_url } = require("%scripts/debugTools/dbgUtils.nut")
@@ -49,7 +49,6 @@ let { gui_start_itemsShop, gui_start_inventory, gui_start_items_list
 let { guiStartSkirmish, checkAndCreateGamemodeWnd, guiStartCampaign, guiStartBenchmark,
   guiStartTutorial
 } = require("%scripts/missions/startMissionsList.nut")
-let { guiStartCredits } = require("%scripts/credits.nut")
 let { guiStartReplays } = require("%scripts/replays/replayScreen.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 let { openModalWTAssistantlDeeplink, isExternalOperator, hasExternalAssistantDeepLink } = require("%scripts/user/wtAssistantDeeplink.nut")
@@ -63,6 +62,8 @@ let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
 let { isAnyCampaignAvailable } = require("%scripts/missions/missionsUtils.nut")
 let { checkGamemodePkg } = require("%scripts/clientState/contentPacks.nut")
 let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
+let { openLicenseWindow } = require("%scripts/licenseHandler.nut")
+
 
 let list = {
   SKIRMISH = {
@@ -157,6 +158,14 @@ let list = {
       || hasMultiplayerRestritionByBalance()
     isInactiveInQueue = true
   }
+  SPEC_EVENTS = {
+    text = @() "#mainmenu/btnSpecEvents"
+    onClickFunc = function(...) {
+      openSpecEventsWnd()
+    }
+    isHidden = @(...) !hasFeature("HasSpecialEventWindow")
+    isVisualDisabled = @() false
+  }
   BENCHMARK = {
     text = @() "#mainmenu/btnBenchmark"
     onClickFunc = @(_obj, handler) handler.checkedNewFlight(guiStartBenchmark)
@@ -230,11 +239,6 @@ let list = {
     text = @() "#mainmenu/btnEncyclopedia"
     onClickFunc = @(...) encyclopedia.open()
     isHidden = @(...) !hasFeature("Encyclopedia")
-  }
-  CREDITS = {
-    text = @() "#mainmenu/btnCredits"
-    onClickFunc = @(_obj, handler) handler.checkedForward(guiStartCredits)
-    isHidden = @(handler = null) !hasFeature("Credits") || !(handler instanceof topMenuHandlerClass.getHandler())
   }
   TSS = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("topmenu/tss"))
@@ -438,6 +442,13 @@ let list = {
     isFeatured = true
     isHidden = @(...) !hasFeature("EulaInMenu") || !isInMenu.get()
   }
+
+  LICENSE = {
+    text = @() "#mainmenu/license"
+    onClickFunc = @(_obj, _handler) openLicenseWindow()
+    isHidden = @(...) !is_dev_version()
+  }
+
   DEBUG_PS4_SHOP_DATA = {
     text = @() "Debug PS4 Data" 
     onClickFunc = function(_obj, _handler) {

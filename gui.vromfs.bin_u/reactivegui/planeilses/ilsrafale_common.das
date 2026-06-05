@@ -228,7 +228,7 @@ def draw_tracking_air_target_mark(state : CommonState& const; var canvas : Canva
         canvas.drawLine(arrowStart, arrowEnd)
 
         let textPos = fast_normalize(clampedPos) * (length(clampedPos) - arrowOffset - arrowLineLength - 0.05)
-        let angleToTarget = acos(dot(state.tracking.dirNorm, hero.unitTm[0])) * radToDeg
+        let angleToTarget = safe_acos(dot(state.tracking.dirNorm, hero.unitTm[0])) * radToDeg
         let arrowText = fmt(":03d", roundi(angleToTarget))
         canvas.drawStrAnchored(textPos, arrowText, AnchorHorz.Center, AnchorVert.Center)
 

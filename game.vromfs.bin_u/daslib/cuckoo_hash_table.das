@@ -43,7 +43,7 @@ def public hash_extra(data) {
 
 
 
-[skip_field_lock_check, template_structure(KeyType, ValueType, hashFunction0Name=@@hash0, hashFunction1Name=@@hash_extra)]
+[template_structure(KeyType, ValueType, hashFunction0Name=@@hash0, hashFunction1Name=@@hash_extra)]
 struct template TCuckooHashTable {
     
     typedef KHV_TCuckooHashTable = tuple<key : KeyType; hash : uint64; value : ValueType>
@@ -204,7 +204,7 @@ struct template TCuckooHashTable {
     [class_method, unsafe_outside_of_for]
     def static keys() {
         var pself = unsafe(addr(self))
-        return <- generator<KeyType&>() <| $() {
+        return <- generator<KeyType&> {
             for (t in pself.khv) {
                 if (t.hash != 0ul) {
                     yield t.key
@@ -219,7 +219,7 @@ struct template TCuckooHashTable {
     [explicit_const_class_method, unsafe_outside_of_for]
     def static values() {
         var pself = unsafe(addr(self))
-        return <- generator<ValueType&>() <| $() {
+        return <- generator<ValueType&> {
             for (t in pself.khv) {
                 if (t.hash != 0ul) {
                     yield t.value
@@ -234,7 +234,7 @@ struct template TCuckooHashTable {
     [explicit_const_class_method, unsafe_outside_of_for]
     def static const values() {
         var pself = unsafe(addr(self))
-        return <- generator<ValueType const&>() <| $() {
+        return <- generator<ValueType const&> {
             for (t in pself.khv) {
                 if (t.hash != 0ul) {
                     yield t.value

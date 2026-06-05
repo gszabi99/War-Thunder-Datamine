@@ -4,15 +4,9 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { register_command } = require("console")
-let { needShowTutorial, reqFirstCountryChoice, isTutorialBeforeCountrySelect
-} = require("%scripts/user/newbieTutorialDisplay.nut")
+let { needShowTutorial, reqFirstCountryChoice } = require("%scripts/user/newbieTutorialDisplay.nut")
 
-
-
-
-let hasRunTutorialDialog = @() !isTutorialBeforeCountrySelect()
-  || needShowTutorial("unitTypeChoice", 1)
-  || !reqFirstCountryChoice()
+let hasRunTutorialDialog = @() needShowTutorial("unitTypeChoice", 1) || !reqFirstCountryChoice()
 
 function checkTutorialOnStart() {
   let unit = getShowedUnit()

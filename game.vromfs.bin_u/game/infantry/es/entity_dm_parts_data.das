@@ -22,7 +22,7 @@ def dm_parts_es(evt : Event;
     var dmgMult = 1.0f
     var dotMult = 0.0f
     var armor = 0.0f
-    let name = collres_get_node(collres, nodeId) |> collnode_get_name()
+    let name = collres_get_node_name(collres, nodeId)
     var part = dm_parts__parts[name] ?as Object
     var bulletTransparent = haveSpecificParts
     if part != null
@@ -78,7 +78,7 @@ def client_dm_parts_es(evt : Event;
                        dm_parts__parts : Object&;
                        var dm_parts__hitPartsAnimationId : Array&)
   for nodeId in range(0, collres_get_nodesCount(collres))
-    push(dm_parts__hitPartsAnimationId, find_anim_by_name(collres_get_node(collres, nodeId) |> collnode_get_name(), dm_parts__parts))
+    push(dm_parts__hitPartsAnimationId, find_anim_by_name(collres_get_node_name(collres, nodeId), dm_parts__parts))
 
 [es(tag=server, on_appear)]
 def on_segmented_armor_appear(evt : Event;

@@ -5,25 +5,27 @@ let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
 let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
+let { getUnitPurchasePeriod } = require("chard")
 
 let shopPromoteUnits = mkWatched(persist, "shopPromoteUnits", {})
 local countDefaultUnitsByCountry = null
 
-function fillPromoteUnitsList(blk, unit) {
-  if (blk?.beginPurchaseDate != null && blk?.endPurchaseDate != null) {
+function fillPromoteUnitsList(unit) {
+  let { beginPurchaseTime, endPurchaseTime } = getUnitPurchasePeriod(unit.name)
+  if (beginPurchaseTime > 0 && endPurchaseTime > 0) {
     shopPromoteUnits.mutate(@(v) v[unit.name] <- {
-      unit = unit
-      timeStart = getTimestampFromStringUtc(blk.beginPurchaseDate)
-      timeEnd = getTimestampFromStringUtc(blk.endPurchaseDate)
+      unit
+      timeStart = beginPurchaseTime
+      timeEnd = endPurchaseTime
       showMarker = true
     })
   }
 
-  if (blk?.endResearchDate != null) {
+  if (unit.endResearchDate != null) {
     shopPromoteUnits.mutate(@(v) v[unit.name] <- {
-      unit = unit
+      unit
       timeStart = 0
-      timeEnd = getTimestampFromStringUtc(blk.endResearchDate)
+      timeEnd = getTimestampFromStringUtc(unit.endResearchDate)
       showMarker = false
     })
   }
@@ -64,7 +66,7 @@ function generateUnitShopInfo() {
 
           if (air) {
             air.applyShopBlk(airBlk)
-            fillPromoteUnitsList(airBlk, air)
+            fillPromoteUnitsList(air)
             addSlaveData(masterSlavesData, air.name, air.slaveUnits)
           }
           else { 
@@ -76,7 +78,7 @@ function generateUnitShopInfo() {
               if (!air)
                 continue
               air.applyShopBlk(gAirBlk, groupName)
-              fillPromoteUnitsList(gAirBlk, air)
+              fillPromoteUnitsList(air)
               addSlaveData(masterSlavesData, air.name, air.slaveUnits)
             }
           }

@@ -16,7 +16,6 @@ let { round } = require("math")
 let { isInFlight } = require("gameplayBinding")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_max_spawns_unit_count, get_unit_wp_to_respawn } = require("guiMission")
-let { get_time_msec } = require("dagor.time")
 let time = require("%scripts/time.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -127,17 +126,16 @@ function getSlotUnitNameText(unit, params) {
 
 function getUnitSlotPriceText(unit, params) {
   let { isLocalState = true, haveRespawnCost = false, haveSpawnDelay = false,
-    slotDelayData = null, unlocked = true, sessionWpBalance = 0, weaponPrice = 0,
+    unlocked = true, sessionWpBalance = 0, weaponPrice = 0,
     totalSpawnScore = -1, overlayPrice = -1, showAsTrophyContent = false,
     isReceivedPrizes = false, crew = null, missionRules = null
   } = params
+  local { spawnDelay = null } = params
 
   local priceText = ""
   if ((haveRespawnCost || haveSpawnDelay || missionRules?.isRageTokensRespawnEnabled) && unlocked) {
-    let spawnDelay = slotDelayData != null
-      ? slotDelayData.slotDelay - ((get_time_msec() - slotDelayData.updateTime) / 1000).tointeger()
-      : get_slot_delay(unit.name)
-    if (haveSpawnDelay && spawnDelay > 0)
+    spawnDelay = haveSpawnDelay ? (spawnDelay ?? get_slot_delay(unit.name, 0)) : 0
+    if (spawnDelay > 0)
       priceText = $"{priceText}{time.secondsToString(spawnDelay)}"
     else {
       let txtList = []
@@ -335,37 +333,42 @@ function getSpareCountHintText(spareCount, crew, unit, missionRules) {
   if (!isSpareAllowedInMission)
     return ""
   if (crew && isRespawnWithUniversalSpare(crew, unit))
-    return $"{loc("icon/universalSpare")}{loc("ui/minus")}{loc("mission_hint/spare/universal_spawn")}"
+    return $"{loc("icon/universalSpare")} {loc("ui/minus")} {loc("mission_hint/spare/universal_spawn")}"
   if (crew && isSpareAircraftInSlot(crew.idInCountry))
     return hasSpare
-      ? $"{spareCount}{loc("icon/universalSpare")}{loc("ui/minus")}{loc("mission_hint/spare/spawn")}"
+      ? $"{spareCount}{loc("icon/universalSpare")} {loc("ui/minus")} {loc("mission_hint/spare/spawn")}"
       : loc("icon/universalSpare")
   if (hasSpare)
-    return $"{spareCount}{loc("icon/spare")}{loc("ui/minus")}{loc("mission_hint/spare")}"
+    return $"{spareCount}{loc("icon/spare")} {loc("ui/minus")} {loc("mission_hint/spare")}"
   return ""
 }
 
 function getUnitSlotPriceHintText(unit, params) {
   let { haveRespawnCost = false, haveSpawnDelay = false,
-    slotDelayData = null, unlocked = true, sessionWpBalance = 0, weaponPrice = 0,
-    totalSpawnScore = -1, crew = null
+    unlocked = true, sessionWpBalance = 0, weaponPrice = 0,
+    totalSpawnScore = -1, crew = null, hasAlternativeBase = false
   } = params
+  local { spawnDelay = null } = params
 
   if (!unlocked || !(haveRespawnCost || haveSpawnDelay))
     return ""
 
-  let spawnDelay = slotDelayData != null
-    ? slotDelayData.slotDelay - ((get_time_msec() - slotDelayData.updateTime) / 1000).tointeger()
-    : get_slot_delay(unit.name)
-  if (haveSpawnDelay && spawnDelay > 0)
-    return ""
+  spawnDelay = haveSpawnDelay ? (spawnDelay ?? get_slot_delay(unit.name, 0)) : 0
+  if (spawnDelay > 0) {
+    let delayHint = $"{time.secondsToString(spawnDelay)} {loc("ui/minus")} {loc("mission_hint/spawn_delay")}"
+    return hasAlternativeBase
+      ? $"{delayHint}\n{loc("mission_hint/spawn_delay_alternative_base")}"
+      : delayHint
+  }
+
+  local hintTexts = []
 
   local wpToRespawn = get_unit_wp_to_respawn(unit.name)
   if (wpToRespawn > 0 && crew != null && isCrewAvailableInSession(crew, unit)) {
     wpToRespawn += weaponPrice
     let wpToRespawnText = colorTextByValues(Cost(wpToRespawn).toStringWithParams({ isWpAlwaysShown = true }),
       sessionWpBalance, wpToRespawn, true, false)
-    return $"{wpToRespawnText}{loc("ui/minus")}{loc("mission_hint/cost_sl")}"
+    hintTexts.append($"{wpToRespawnText} {loc("ui/minus")} {loc("mission_hint/cost_sl")}")
   }
 
   let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit), true, true)
@@ -374,10 +377,10 @@ function getUnitSlotPriceHintText(unit, params) {
     let totalSpawnScoreText = loc("shop/spawnScore", { cost = totalSpawnScore })
     if (reqUnitSpawnScore > totalSpawnScore)
       reqSpawnScoreText = colorize("badTextColor", reqSpawnScoreText)
-    return $"{reqSpawnScoreText}{loc("ui/minus")}{loc("mission_hint/cost_sp", { current_cost_sp = totalSpawnScoreText})}"
+    hintTexts.append($"{reqSpawnScoreText} {loc("ui/minus")} {loc("mission_hint/cost_sp", { current_cost_sp = totalSpawnScoreText})}")
   }
 
-  return ""
+  return hintTexts.len() > 0 ? "\n".join(hintTexts, true) : ""
 }
 
 function getRandomUnitHintData(groupName, missionRules) {
@@ -842,10 +845,10 @@ function buildCommonUnitSlot(id, unit, params) {
   let spareHintText = hasSpareInfo ? getSpareCountHintText(spareCount, crew, unit, missionRules) : ""
   let priceHintText = hasPriceText ? getUnitSlotPriceHintText(unit, params.__merge({crew})) : ""
   let additionalHistoricalRespawnsHintText = hasAdditionalHistoricalRespawns
-    ? $"{additionalHistoricalRespawns}{loc("ui/minus")}{loc("mission_hint/spawns_per_battle", { unit_name = getUnitName(unit.name)})}"
+    ? $"{additionalHistoricalRespawns} {loc("ui/minus")} {loc("mission_hint/spawns_per_battle", { unit_name = getUnitName(unit.name)})}"
     : ""
   let additionalRespawnsHintText = hasAdditionalRespawns
-    ? $"{additionalRespawns}{loc("ui/minus")}{loc("mission_hint/spawns_per_unit", {army = armyLocName})}"
+    ? $"{additionalRespawns} {loc("ui/minus")} {loc("mission_hint/spawns_per_unit", {army = armyLocName})}"
     : ""
 
   let groupName = missionRules?.getRandomUnitsGroupName(unit.name)

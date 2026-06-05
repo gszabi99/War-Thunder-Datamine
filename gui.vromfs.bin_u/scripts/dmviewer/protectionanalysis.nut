@@ -27,7 +27,7 @@ let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nu
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { loadProtectionAnalysisOptionsHandler } = require("%scripts/dmViewer/protectionAnalysisOptionsHandler.nut")
 let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
-let { openBulletsBallisticParametersWnd } = require("%scripts/weaponry/bulletsBallisticParametersWnd.nut")
+let { openBulletsBallisticParametersWnd } = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticParametersWnd.nut")
 
 local switch_damage = false
 local allow_cutting = false

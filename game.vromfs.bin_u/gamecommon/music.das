@@ -7,7 +7,7 @@ require WTHangar
 require HeroManager
 require Music
 require app
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require MPlayer
 require %game.utils.utils_common
 require %game.events

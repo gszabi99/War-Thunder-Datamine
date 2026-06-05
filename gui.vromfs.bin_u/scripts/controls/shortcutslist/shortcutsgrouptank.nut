@@ -195,6 +195,10 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_TOGGLE_LASER_DESIGNATOR_TANK"
+    checkAssign = false
+  }
+  {
     id = "ID_TANK_NIGHT_VISION"
     checkAssign = false
   }
@@ -214,6 +218,11 @@ return [
   {
     id = "ID_SENSORS_TANK_HEADER"
     type = CONTROL_TYPE.SECTION
+  }
+  {
+    id = "ID_SENSOR_MODES_SWITCH_TANK"
+    checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_SWITCH_TANK"

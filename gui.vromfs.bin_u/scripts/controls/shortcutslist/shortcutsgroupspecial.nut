@@ -100,7 +100,6 @@ return [
   {
     id = "ID_HUMAN_HOLD_BREATH"
     checkAssign = false
-    needHoldToUse = true
   }
   {
     id = "ID_HUMAN_BIPODTOGGLE"
@@ -174,6 +173,11 @@ return [
   }
   {
     id = "ID_SENSOR_TARGET_LOCK_HUMAN"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SENSOR_MODES_SWITCH_HUMAN"
     checkAssign = false
     needShowInHelp = true
   }
@@ -366,7 +370,6 @@ return [
   }
   {
     id = "ID_HUMAN_CONTEXT_COMMAND"
-    needHoldToUse = true
     needShowInHelp = true
   }
   {
@@ -385,7 +388,6 @@ return [
   {
     id = "ID_HUMAN_USE_MEDKIT"
     checkAssign = false
-    needHoldToUse = true
   }
   {
     id = "ID_HUMAN_USE"
@@ -402,4 +404,10 @@ return [
     needShowInHelp = true
     checkAssign = false
   }
+
+
+
+
+
+
 ]

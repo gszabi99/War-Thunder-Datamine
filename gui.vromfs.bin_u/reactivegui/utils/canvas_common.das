@@ -249,6 +249,9 @@ class Canvas
     lineWidth = width
     lineWidthHdpx = hdpx(*ctx, width)
 
+  def setLineWidthHdpx(width : float)
+    lineWidth = width
+    lineWidthHdpx = width
 
   def drawDot(pos : float2)
     let absPos = toAbsPos(pos)
@@ -472,8 +475,8 @@ class Canvas
     get_font_context(fctx, font.id, 0, 0, font.size)
 
     var size = float2(0.0)
-    for char in each(str)
-      let width = get_str_bbox(format("%c", char), 1, fctx).width.x
+    for ch in each(str)
+      let width = get_str_bbox(fmt(":c", ch), 1, fctx).width.x
       if width > size.x
         size.x = width
     size.y = (float(len) * lineSpacing * get_font_line_spacing(fctx))
@@ -539,8 +542,8 @@ class Canvas
     get_font_context(fctx, font.id, 0, 0, font.size)
 
     var size = float2(0.0)
-    for char in each(str)
-      let width = get_str_bbox(format("%c", char), 1, fctx).width.x
+    for ch in each(str)
+      let width = get_str_bbox(fmt(":c", ch), 1, fctx).width.x
       if width > size.x
         size.x = width
 
@@ -558,8 +561,8 @@ class Canvas
       pos.y -= size.y + float(get_font_descent(fctx))
 
     goto_xy(*ctx, pos)
-    for char in utf8_decode(str)
-      printStrLn(string(utf8_encode(char)))
+    for ch in utf8_decode(str)
+      printStrLn(string(utf8_encode(ch)))
 
 
   def drawStr(var pos : float2; str : string; var len : int = 0)

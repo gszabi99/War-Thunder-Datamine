@@ -1,7 +1,6 @@
 module extinguish_system_common shared
 require app
 require dm
-require DmFire
 require WTDamageModel
 require IGroundModel
 

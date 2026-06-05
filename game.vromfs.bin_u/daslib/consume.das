@@ -14,14 +14,14 @@ module consume shared private
 require daslib/ast_boost
 
 [macro_function]
-def private isConsumeArgument(expr : ExpressionPtr) : bool {
+def private isConsumeArgument(expr : Expression?) : bool {
     
     if (expr is ExprCall) {
         var func = (expr as ExprCall).func
         if (func.fromGeneric != null) {
-            func = func.fromGeneric.get_ptr()
+            func = func.fromGeneric
         }
-        if (func.name == "consume_argument" && func._module.name == "$") {
+        if (func.name == "consume_argument" && func._module.name == "builtin") {
             return true
         }
     }
@@ -32,9 +32,9 @@ def private isConsumeArgument(expr : ExpressionPtr) : bool {
 class CheckConsumeArguments : AstFunctionAnnotation {
     
     
-    def override verifyCall(var call : smart_ptr<ExprCallFunc>; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
+    def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         
-        var check_args <- {for (aa in args); string(aa.name)}
+        let check_args <- {for (aa in args); string(aa.name)}
         for (ca, ce in call.func.arguments, call.arguments) {
             if (check_args.key_exists(string(ca.name))) {
                 if (!isConsumeArgument(ce)) {

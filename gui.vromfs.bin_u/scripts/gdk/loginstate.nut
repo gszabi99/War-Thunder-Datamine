@@ -1,6 +1,6 @@
-from "%scripts/dagui_natives.nut" import xbox_on_login
 from "%scripts/dagui_library.nut" import *
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_LOGIN] ")
+let {login_live} = require("auth_wt")
 let {is_any_user_active} = require("%gdkLib/impl/user.nut")
 let relationships = require("%gdkLib/impl/relationships.nut")
 let {init_crossnetwork} = require("%gdkLib/crossnetwork.nut")
@@ -38,7 +38,7 @@ function native_login(send_statsd, event_name, callback) {
     let status = data?.status ?? YU2_FAIL
     callback(status)
   })
-  xbox_on_login(send_statsd, event_name)
+  login_live(send_statsd, event_name)
 }
 
 

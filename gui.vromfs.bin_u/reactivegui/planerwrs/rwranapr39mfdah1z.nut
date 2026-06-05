@@ -49,7 +49,7 @@ function createGrid(gridStyle) {
 
 function scope(scale, style) {
   return {
-    size = [pw(scale), ph(scale)]
+    size = [ph(scale), ph(scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [

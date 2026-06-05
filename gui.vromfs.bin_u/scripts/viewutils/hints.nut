@@ -10,7 +10,6 @@ let { startsWith, cutPrefix, trim } = require("%sqstd/string.nut")
 let { get_num_attempts_left } = require("guiMission")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
 enum hintTagCheckOrder {
   EXACT_WORD 
@@ -75,7 +74,6 @@ enumsAddTypes(g_hint_tag, {
       foreach (i, expandedShortcut in expanded) {
         let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(expandedShortcut)
         let shortcutId = expandedShortcut
-        let shortcutCfg = getShortcutById(shortcutId)
         slices.append({
           shortcut = needConfig
             ? shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(),
@@ -83,7 +81,7 @@ enumsAddTypes(g_hint_tag, {
             : function() {
                 let input = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(),
                   { showShortcutsNameIfNotAssign, skipDeviceIds })
-                return input.getMarkup(shortcutCfg?.needHoldToUse ?? false)
+                return input.getMarkup()
               }
         })
         if (i < (shortcutsCount - 1))
@@ -223,6 +221,7 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {}) {
     animation = getTblValue("animation", params)
     isVerticalAlignText = params?.isVerticalAlignText ?? false
     topImages = params?.topImages
+    hasBackdrop = !!params?.hasBackdrop
     rows = []
   }
 

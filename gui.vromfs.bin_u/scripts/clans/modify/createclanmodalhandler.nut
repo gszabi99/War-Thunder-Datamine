@@ -11,6 +11,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { createClan } = require("%scripts/clans/clanActions.nut")
 let { prepareCreateRequest } = require("%scripts/clans/clanRequests.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 
 function clanTypesEnabled() {
@@ -120,11 +121,11 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
     if (createCost <= zero_money)
       this.createClanFn(createCost)
     else if (checkBalanceMsgBox(createCost)) {
-      let msgText = warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
-          createCost.getTextAccordingToBalance()),
+      let text = warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
+        createCost.getTextAccordingToBalance()),
         createCost)
-      this.msgBox("need_money", msgText, [["ok", function() { this.createClanFn(createCost) } ],
-        ["cancel"]], "ok")
+      let callbackYes = Callback(@() this.createClanFn(createCost), this)
+      purchaseConfirmation({ id = "need_money", text, callbackYes }, createCost)
     }
   }
 

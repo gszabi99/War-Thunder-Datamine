@@ -1040,6 +1040,102 @@
             "sourceType": "radarSs"
           }
         },
+        "setSeaTwsStandbyMode": {
+          "setRadarSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaSearch"
+          },
+          "setModeName": {
+            "name": "SEA standby"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
+          }
+        },
+        "setSeaTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaSearch"
+          },
+          "setModeName": {
+            "name": "TWS SEA search"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
+          }
+        },
+        "setSeaTwsBvrLockMode": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "radarBvrLock",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaTrack"
+          },
+          "setScanPattern": {
+            "scanPattern": "radarBvrLockSearch"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setModeName": {
+            "name": "TWS SEA acquisition"
+          }
+        },
+        "setSeaBvrTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "radarTrack"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setModeName": {
+            "name": "SEA track"
+          },
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "seaTrack"
+          }
+        },
         "setGtmTwsBvrLockModeCommon": {
           "setBvrLockModeCommon": {},
           "setFsmActive": {
@@ -1065,7 +1161,7 @@
             "transiver": "GTM"
           },
           "setSignal": {
-            "signal": "GTMTrack"
+            "signal": "GTMTwsTrack"
           }
         },
         "resetGtmBvrLockMode": {
@@ -1106,7 +1202,7 @@
             "transiver": "GTM"
           },
           "setSignal": {
-            "signal": "GTMTrack"
+            "signal": "GTMTwsTrack"
           }
         },
         "resetGtmBvrTrackMode": {
@@ -1127,9 +1223,19 @@
             "signal": "GTMSearch"
           }
         },
+        "setSeaTwsSearchSignal": {
+          "setSignal": {
+            "signal": "seaSearch"
+          }
+        },
         "setGtmTwsTrackSignal": {
           "setSignal": {
             "signal": "GTMTwsTrack"
+          }
+        },
+        "setSeaTwsTrackSignal": {
+          "setSignal": {
+            "signal": "seaTrack"
           }
         }
       },
@@ -2294,6 +2400,75 @@
               "active": true
             }
           ]
+        },
+        "setSeaTws": {
+          "setMprfTargetDesignationRange": {},
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setStandbyMode",
+              "actionTemplateName": "setSeaTwsStandbyMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setSearchMode",
+              "actionTemplateName": "setSeaTwsSearchMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setTwsSearchSignal",
+              "actionTemplateName": "setSeaTwsSearchSignal"
+            },
+            {
+              "fsm": "main",
+              "name": "setTwsTrackSignal",
+              "actionTemplateName": "setSeaTwsTrackSignal"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrLockMode",
+              "actionTemplateName": "setSeaTwsBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrLockMode",
+              "actionTemplateName": "resetGtmBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "designateTarget",
+              "actionTemplateName": "designatedTargetSearch"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrTrackMode",
+              "actionTemplateName": "setSeaBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetBvrTrackMode",
+              "actionTemplateName": "resetGtmBvrTrackMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetSearchMode",
+              "actionTemplateName": "resetTwsMode"
+            }
+          ],
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "resetSearchMode"
+          },
+          "setFsmActive": [
+            {
+              "fsm": "main",
+              "active": false
+            },
+            {
+              "fsm": "main",
+              "active": true
+            }
+          ]
         }
       },
       "transitions": {
@@ -2336,7 +2511,7 @@
             }
           }
         },
-        "HprfVelocityToGtmTws": {
+        "hprfVelocityToGtmTws": {
           "stateFrom": "hprfVelocity",
           "command": "modeSwitch",
           "stateTo": "gtmTws",
@@ -2349,8 +2524,21 @@
             }
           }
         },
-        "gtmTwsToMprfTws": {
+        "gtmTwsToSeaTws": {
           "stateFrom": "gtmTws",
+          "command": "modeSwitch",
+          "stateTo": "seaTws",
+          "actions": {
+            "setSeaTws": {},
+            "setCustomActionTemplate": {
+              "fsm": "radarSearchModes",
+              "name": "restore",
+              "actionTemplateName": "setSeaTws"
+            }
+          }
+        },
+        "seaTwsToMprfTws": {
+          "stateFrom": "seaTws",
           "command": "modeSwitch",
           "stateTo": "mprfTws",
           "actions": {
@@ -4103,27 +4291,34 @@
         "width": 0.0
       }
     },
-    "GTMTrack": {
+    "seaSearch": {
       "groundClutter": false,
       "aircraftAsTarget": false,
-      "groundVehiclesAsTarget": true,
+      "groundVehiclesAsTarget": false,
+      "shipsAsTarget": true,
+      "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
-      "track": true,
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 60000.0,
+        "maxValue": 150000.0,
         "width": 15.0
-      },
-      "dopplerSpeed": {
+      }
+    },
+    "seaTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": false,
+      "shipsAsTarget": true,
+      "targetRadiusMin": 10.0,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "distance": {
         "presents": true,
-        "minValue": 1.5,
-        "maxValue": 1000.0,
-        "signalWidthMin": 2.5,
-        "width": 0.0
+        "minValue": 500.0,
+        "maxValue": 150000.0,
+        "width": 15.0
       }
     }
   },
@@ -4557,10 +4752,24 @@
       ]
     },
     {
+      "name": "hud/l_39",
+      "targetType": [
+        "l_39za",
+        "l_39za_art_thailand"
+      ]
+    },
+    {
       "name": "hud/yak_38",
       "targetType": [
         "yak-38",
         "yak-38m"
+      ]
+    },
+    {
+      "name": "hud/yak_130",
+      "targetType": [
+        "yak_130_early",
+        "m_346fa"
       ]
     },
     {
@@ -4608,7 +4817,8 @@
         "j_11b",
         "su_30sm2",
         "su_30mkm",
-        "su_30mkk"
+        "su_30mkk",
+        "j_15t"
       ]
     },
     {
@@ -4629,7 +4839,8 @@
         "mig_21_bis_finland",
         "j_7_mk2",
         "j_7d",
-        "j_7e"
+        "j_7e",
+        "mig_21_2000_iaf"
       ]
     },
     {
@@ -4660,7 +4871,10 @@
         "mig_29smt_9_19",
         "mig_29smt_9_19_missile_test",
         "mig_29_9_12_sniper",
-        "mig_29n"
+        "mig_29n",
+        "mig_29_9_12",
+        "mig_29m_9_15",
+        "mig_29kr_9_41r"
       ]
     },
     {
@@ -4758,7 +4972,8 @@
       "targetType": [
         "f_14a_early",
         "f_14a_iriaf",
-        "f_14b"
+        "f_14b",
+        "f_14d"
       ]
     },
     {
@@ -4797,7 +5012,12 @@
         "f_2a",
         "f_2a_adtw",
         "f_16i_sufa",
-        "f_16a_block_15_ocu_belgium"
+        "f_16a_block_15_ocu_belgium",
+        "f_16a_block_5_netherlands",
+        "f_16a_block_10_norway",
+        "f_16c_block_52_aesa",
+        "f_16a_block_72v_china",
+        "f_16am_block_15_mlu_fs_belgium"
       ]
     },
     {
@@ -4814,7 +5034,8 @@
         "fa_18a_hug_2_raaf",
         "cf_188a_canada",
         "fa_18e_block_2",
-        "fa_18d_late_malaysia"
+        "fa_18d_late_malaysia",
+        "fa_18f_block_2_raaf"
       ]
     },
     {
@@ -4916,7 +5137,8 @@
       "targetType": [
         "jh_7",
         "jh_7a",
-        "jh_7a_prototype"
+        "jh_7a_prototype",
+        "jh_7a2"
       ]
     },
     {
@@ -5008,7 +5230,8 @@
         "saab_ja37d",
         "saab_ja37di",
         "saab_ja37di_f21",
-        "saab_ajs37"
+        "saab_ajs37",
+        "saab_ajs37_early"
       ]
     },
     {
@@ -5020,7 +5243,8 @@
         "saab_jas39c_hungary",
         "saab_jas39c_thailand",
         "saab_jas39c",
-        "saab_jas39e"
+        "saab_jas39e",
+        "saab_jas39d"
       ]
     },
     {

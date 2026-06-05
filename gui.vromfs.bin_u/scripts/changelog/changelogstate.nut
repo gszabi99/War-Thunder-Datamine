@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "frp" import this_subscriber_call_may_take_up_to_usec
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { get_base_game_version } = require("app")
@@ -311,7 +312,10 @@ function openChangelogInActiveMainMenuIfNeed() {
   deferOnce(openChangelogInActiveMainMenuImpl)
 }
 
-chosenPatchnoteContent.subscribe(@(value) eventbus_send("updateChosenPatchnoteContent", { value }))
+chosenPatchnoteContent.subscribe(function(value) {
+  this_subscriber_call_may_take_up_to_usec(20000) 
+  eventbus_send("updateChosenPatchnoteContent", { value })
+})
 versions.subscribe(@(value) eventbus_send("updateChangelogsVersions", { value }))
 isNews.subscribe(@(value) eventbus_send("updateChangelogsIsNews", { value }))
 isEvent.subscribe(@(value) eventbus_send("updateChangelogsIsEvent", { value }))

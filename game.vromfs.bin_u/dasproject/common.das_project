@@ -20,6 +20,10 @@ def module_get(req, from : string) : tuple<string; string; string> const
   if starts_with(req, "%")
     return (mod_name, path_name, "")
 
+  let aliasPath = commonAliasPath?[req] ?? ""
+  if aliasPath != ""
+    return (req, aliasPath, "")
+
   let alias_name = rs[length(rs) - 1]
   var prefix = unsafe(mountPointPrefixes?[rs[0]])
   if prefix != null

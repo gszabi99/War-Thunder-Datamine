@@ -36,24 +36,32 @@
               "size": "pw, fh",
               "flow": "vertical",
               "padding": "1@weaponFramePadding",
+              "padding-right": "0",
               "overflow-y": "auto",
-              "tdiv": {
-                "id": "options_list_nest",
-                "width": "pw",
-                "flow": "vertical"
-              },
-              "Button_text": {
-                "id": "btn_add_bullet_for_compare",
-                "position": "relative",
-                "text": "#mainmenu/addBulletForCompare",
-                "on_click": "onAddBulletForCompare",
-                "inactiveColor": "no",
-                "margin-top": "2@blockInterval",
-                "noMargin": "yes",
-                "parentWidth": "yes",
-                "btnName": "X",
-                "ButtonImg": {}
-              },
+              "tdiv": [
+                {
+                  "id": "options_list_nest",
+                  "padding-right": "1@weaponFramePadding",
+                  "width": "pw",
+                  "flow": "vertical"
+                },
+                {
+                  "width": "pw",
+                  "padding-right": "1@weaponFramePadding",
+                  "Button_text": {
+                    "id": "btn_add_bullet_for_compare",
+                    "position": "relative",
+                    "text": "#mainmenu/addBulletForCompare",
+                    "on_click": "onAddBulletForCompare",
+                    "inactiveColor": "no",
+                    "margin-top": "2@blockInterval",
+                    "noMargin": "yes",
+                    "parentWidth": "yes",
+                    "btnName": "X",
+                    "ButtonImg": {}
+                  }
+                }
+              ],
               "rowSeparator": {
                 "id": "rowSeparator",
                 "margin": "0, 2@blockInterval"
@@ -63,6 +71,7 @@
                 "width": "pw",
                 "class": "optionsMultiColumn",
                 "fullWidthOptions": "yes",
+                "padding-right": "1@weaponFramePadding",
                 "selfFocusBorder": "yes",
                 "css-hier-invalidate": "yes",
                 "moveY": "linear",
@@ -75,32 +84,134 @@
         "tdiv": {
           "size": "fw, ph",
           "flow": "vertical",
-          "tdiv": {
-            "size": "pw, 1@frameHeaderHeight",
-            "HorizontalListBox": {
-              "id": "tabs_list",
-              "size": "pw-1@buttonCloseHeight, ph",
-              "class": "header",
-              "activeAccesskeys": "RS",
-              "on_select": "onChangePage"
-            }
-          },
-          "weaponFrameBlock": {
-            "size": "pw, fh",
-            "padding": "40@sf/@pf",
-            "tdiv": {
-              "id": "graph_nest",
-              "size": "fw, fh",
-              "behaviour": "darg",
-              "textareaNoTab": {
-                "id": "empty_graph_nest_text",
-                "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                "position": "relative",
-                "text": "#mainmenu/needAddBulletForCompare",
-                "display": "hide"
+          "tdiv": [
+            {
+              "size": "pw, 1@frameHeaderHeight",
+              "HorizontalListBox": {
+                "id": "tabs_list",
+                "size": "pw-1@buttonCloseHeight, ph",
+                "class": "header",
+                "activeAccesskeys": "RS",
+                "on_select": "onChangePage"
+              }
+            },
+            {
+              "id": "sub_pages_list_nest",
+              "size": "pw, 1@frameHeaderHeight",
+              "display": "hide",
+              "HorizontalListBox": {
+                "id": "sub_pages_list",
+                "size": "pw, ph",
+                "class": "header",
+                "isTopSelectLine": "yes",
+                "on_select": "onChangeSubPage"
               }
             }
-          }
+          ],
+          "weaponFrameBlock": [
+            {
+              "size": "pw, fh",
+              "padding": "40@sf/@pf",
+              "tdiv": {
+                "id": "graph_nest",
+                "size": "fw, fh",
+                "behaviour": "darg",
+                "textareaNoTab": {
+                  "id": "empty_graph_nest_text",
+                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                  "position": "relative",
+                  "text": "#mainmenu/needAddBulletForCompare",
+                  "display": "hide"
+                }
+              }
+            },
+            {
+              "id": "player_panel",
+              "size": "pw, 1@frameHeaderHeight - 0.5@weaponFrameBlockInterval",
+              "margin-top": "0.5@weaponFrameBlockInterval",
+              "padding": "1@weaponFramePadding, 0",
+              "behaviour": "Timer",
+              "timer_handler_func": "onUpdatePlayerPanelByTimer",
+              "timer_interval_msec": "200",
+              "display": "hide",
+              "hoverButton": [
+                {
+                  "id": "btn_backward",
+                  "top": "0.5ph-0.5h",
+                  "position": "relative",
+                  "enable": "no",
+                  "on_click": "onBtnBackward",
+                  "icon": {
+                    "background-image": "#ui/gameuiskin#replay_restart.svg"
+                  }
+                },
+                {
+                  "id": "btn_play",
+                  "top": "0.5ph-0.5h",
+                  "position": "relative",
+                  "enable": "no",
+                  "on_click": "onBtnPlayToggle",
+                  "icon": {
+                    "id": "icon",
+                    "background-image": "#ui/gameuiskin#replay_play.svg"
+                  }
+                },
+                {
+                  "id": "btn_forward",
+                  "top": "0.5ph-0.5h",
+                  "position": "relative",
+                  "enable": "no",
+                  "on_click": "onBtnForward",
+                  "icon": {
+                    "background-image": "#ui/gameuiskin#replay_restart.svg",
+                    "rotation": "180"
+                  }
+                }
+              ],
+              "slider": {
+                "id": "timeline_progress",
+                "width": "fw",
+                "top": "0.5ph-0.5h",
+                "position": "relative",
+                "fullWidth": "yes",
+                "small": "yes",
+                "max": "1000",
+                "skip-navigation": "yes",
+                "enable": "no",
+                "on_change_value": "onChangeTimelineValue",
+                "sliderButton": {
+                  "display": "hide"
+                }
+              },
+              "text": [
+                {
+                  "id": "txt_replay_time_current",
+                  "width": "50@sf/@pf",
+                  "top": "0.5ph-0.5h",
+                  "position": "relative",
+                  "text-align": "right",
+                  "tinyFont": "yes",
+                  "text": "#ui/not_applicable"
+                },
+                {
+                  "top": "0.5ph-0.5h",
+                  "position": "relative",
+                  "margin": "1@blockInterval, 0",
+                  "tinyFont": "yes",
+                  "text": "#ui/slash"
+                },
+                {
+                  "id": "txt_replay_time_total",
+                  "width": "50@sf/@pf",
+                  "top": "0.5ph-0.5h",
+                  "position": "relative",
+                  "text-align": "left",
+                  "tinyFont": "yes",
+                  "text": "#ui/not_applicable"
+                }
+              ]
+            }
+          ]
         }
       },
       "weaponFrameBlock": {

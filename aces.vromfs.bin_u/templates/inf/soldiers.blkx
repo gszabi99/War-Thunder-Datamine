@@ -413,7 +413,7 @@
     "double_sprint__speedMultBase": 1.42,
     "double_sprint__speedMult": 1.42,
     "double_sprint__accelerationMult": 2.0,
-    "double_sprint__staminaDrainMult": 8.0,
+    "double_sprint__staminaDrainMult": 12.0,
     "double_sprint__staminaRegenMult": 0.16,
     "double_sprint__minStamina": 0.0,
     "double_sprint__rotationSpeed": 0.185,
@@ -718,17 +718,21 @@
     "human_input__inspectAfterTime": 0.22,
     "heal__continuousInput": true,
     "_tracked": "heal__continuousInput",
-    "human_visibility_tracer:tag": {}
+    "human_visibility_tracer:tag": {},
+    "animchar__considerAsVisible:tag": {}
   },
   "watched_human_components": {
     "_use": "human_cam"
   },
-  "human_weight_system": {
+  "human_control_vehicle": {
+    "_use": "human_cam"
+  },
+  "human_weight_system_realistic": {
     "human_weight_influence__minWeight": 15.0,
     "human_weight_influence__maxWeightJumpMult": 0.75,
     "human_weight_influence__maxWeightSpeedMult": 1.0,
     "human_weight_influence__maxWeight": 50.0,
-    "human_weight_influence__staminaDrainMult": 2.5,
+    "human_weight_influence__staminaDrainMult": 5.0,
     "human_weight_influence__maxWeightRestoreStaminaMult": 0.7,
     "human_weight_influence__maxWeightCrawlCrouchSpeedMult": 0.8,
     "human_weight_influence__maxWeightClimbingSpeedMult": 0.75,
@@ -918,6 +922,182 @@
         ],
         [
           50.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "human_weight_system_arcade": {
+    "human_weight_influence__minWeight": 15.0,
+    "human_weight_influence__maxWeightJumpMult": 0.75,
+    "human_weight_influence__maxWeightSpeedMult": 1.0,
+    "human_weight_influence__maxWeight": 40.0,
+    "human_weight_influence__staminaDrainMult": 5.0,
+    "human_weight_influence__maxWeightRestoreStaminaMult": 0.7,
+    "human_weight_influence__maxWeightCrawlCrouchSpeedMult": 0.8,
+    "human_weight_influence__maxWeightClimbingSpeedMult": 0.75,
+    "human_weight_influence__maxWeightSprintMult": 1.0,
+    "human_weight_influence__maxWeightPunchStability": 0.4,
+    "human_weight_influence__maxWeightShakeStability": 0.4,
+    "human_weight_influence__maxWeightDoubleSprintMult": 0.9,
+    "human_weight_influence__weightWalkSpeedMult": 1.0,
+    "human_weight_influence__weightWalkSpeedMultCrawlCrouch": 1.0,
+    "human_weight_influence__weightAccelerationMult": 1.0,
+    "human_weight_influence__weightRunSpeedMult": 1.0,
+    "human_weight_influence__weightSprintSpeedMult": 1.0,
+    "human_weight_influence__weightAimingMoveSpeedMult": 1.0,
+    "human_weight_influence__maxWeightAccelerationMult": 1.0,
+    "human_weight_influence__maxWeight_changePoseSpeed": 1.0,
+    "human_weight_influence__maxWeight_changePoseSpeedCrawl": 1.0,
+    "human_weight_influence__maxWeight_afterJumpDampingPoseDown": 1.0,
+    "human_weight_influence__maxWeight_afterJumpDampingPoseUp": 1.0,
+    "human_weight_influence__maxWeight_fasterChangeSpeed": 1.0,
+    "human_weight_influence__maxWeight_leapDampingFallDown": 1.0,
+    "human_weight_influence__maxWeight_leapDampingStandUp": 1.0,
+    "human_weight_influence__weightWalkSpeedMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          0.95
+        ],
+        [
+          25.0,
+          0.9
+        ],
+        [
+          40.0,
+          0.8
+        ]
+      ]
+    },
+    "human_weight_influence__weightWalkSpeedMultTableCrawlCrouch:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          0.95
+        ],
+        [
+          25.0,
+          0.9
+        ],
+        [
+          40.0,
+          0.8
+        ]
+      ]
+    },
+    "human_weight_influence__weightAccelerationMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          3.0
+        ],
+        [
+          20.0,
+          2.5
+        ],
+        [
+          25.0,
+          2.0
+        ],
+        [
+          30.0,
+          1.5
+        ],
+        [
+          40.0,
+          1.2
+        ]
+      ]
+    },
+    "human_weight_influence__weightRunSpeedMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          0.95
+        ],
+        [
+          25.0,
+          0.9
+        ],
+        [
+          30.0,
+          0.85
+        ],
+        [
+          35.0,
+          0.825
+        ],
+        [
+          40.0,
+          0.8
+        ]
+      ]
+    },
+    "human_weight_influence__weightSprintSpeedMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          0.98
+        ],
+        [
+          25.0,
+          0.95
+        ],
+        [
+          30.0,
+          0.91
+        ],
+        [
+          35.0,
+          0.88
+        ],
+        [
+          40.0,
+          0.84
+        ]
+      ]
+    },
+    "human_weight_influence__weightAimingMoveSpeedMultTable:list<p2>": {
+      "value": [
+        [
+          15.0,
+          1.0
+        ],
+        [
+          20.0,
+          1.0
+        ],
+        [
+          25.0,
+          1.0
+        ],
+        [
+          30.0,
+          1.0
+        ],
+        [
+          35.0,
+          1.0
+        ],
+        [
+          40.0,
           1.0
         ]
       ]
@@ -1203,6 +1383,34 @@
     "human_mining_wall__wallEid:eid": {},
     "human_mining_wall__reassemblingEntityId:eid": {}
   },
+  "human_vehicle": {
+    "human_vehicle__isInHatch": false,
+    "human_vehicle__canHoldWeapon": false,
+    "human_vehicle__isHoldingGunPassenger": false,
+    "human_vehicle__isHoldGunMode": false,
+    "_tracked": [
+      "human_vehicle__isInHatch",
+      "human_vehicle__canHoldWeapon",
+      "human_vehicle__isHoldGunMode",
+      "human_vehicle__isHoldingGunPassenger",
+      "human_vehicle__occupiedSeatEid",
+      "human_vehicle__isMobileSpawnDriverCloseToCapturePoint"
+    ],
+    "_replicated": [
+      "human_vehicle__isInHatch",
+      "human_vehicle__isHoldGunMode",
+      "human_vehicle__occupiedSeatEid",
+      "human_vehicle__isMobileSpawnDriverCloseToCapturePoint"
+    ],
+    "human_vehicle__isMobileSpawnDriverCloseToCapturePoint": false,
+    "_group": {
+      "_tags": "input",
+      "human_vehicle__isShootingPassenger": false
+    },
+    "human_vehicle__occupiedSeatEid:eid": {},
+    "human_vehicle__lastKnownSeatEid:eid": {},
+    "human_vehicle__requestSeatEid:eid": {}
+  },
   "human_hold_breath": {
     "human_hold_breath__isAvailable": false,
     "human_hold_breath__holdDuration": 3.0,
@@ -1237,7 +1445,8 @@
     "concussion__handsShakeSpeedMult": 6.0,
     "concussion__handsShakeFadeTime": 4.0,
     "concussion__duration": 6.0,
-    "concussion__visionIntensity": 0.02,
+    "concussion__lookSensFadeTime": 3.0,
+    "concussion__visionIntensity": 0.05,
     "_group": [
       {
         "_track": true,
@@ -1582,6 +1791,7 @@
       "base_ai_soldiers",
       "base_human_weap",
       "base_equipped_soldier_common",
+      "human_vehicle",
       "hit_footstep_group",
       "human_swimsplash_fx",
       "human_nodes_disabler",
@@ -1642,7 +1852,7 @@
     ],
     "nodes_los__maxFriendlyDistSq": 22500.0,
     "nodes_los__maxPassiveEnemyDistSq": 5625.0,
-    "nodes_los__maxActiveEnemyDistSq": 22500.0,
+    "nodes_los__maxShootingEnemyDistSq": 22500.0,
     "nodes_los__curLod": -1,
     "nodes_los__visible": false,
     "nodes_los__showMapMarker": false,
@@ -1659,11 +1869,11 @@
     "nodes_los__visiblePrecalc": false,
     "nodes_los__traceMatName": "losRay",
     "nodes_los__traceMatId": -1,
-    "nodes_los__minSmokeTraceDist": 7.0,
-    "nodes_los__traceTransparencyThreshold": 0.2,
-    "nodes_los__enemyActiveTime": 5.0,
-    "nodes_los__enemyLastActive": 0.0,
-    "nodes_los__isActiveEnemy": false,
+    "nodes_los__minSmokeTraceDist": 4.0,
+    "nodes_los__traceTransparencyThreshold": 0.05,
+    "nodes_los__enemyShootingTime": 5.0,
+    "nodes_los__enemyLastShot": 0.0,
+    "nodes_los__isShootingEnemy": false,
     "nodes_los__nodeNamesLod0:list<t>": {
       "node": [
         "Bip01 L Calf",
@@ -1780,7 +1990,6 @@
       "human_sprint_jump",
       "human_gradual_acceleration",
       "human_sprint_fov",
-      "human_weight_system",
       "human_parachute",
       "human_freefall",
       "human_breath",
@@ -1824,6 +2033,7 @@
       "human__controlledDrone",
       "human__canPickupItems"
     ],
+    "human_weight_influence__defaultTemplate": "human_weight_system_realistic",
     "dynamic_respawn__updatePeriod": 1.0,
     "dynamic_respawn_nextUpdateAtTime": -1.0,
     "dynamic_respawn__minDistToEnemy": 10.0,
@@ -1886,6 +2096,10 @@
     "human__canPickupItems": true,
     "squad_member__noBotsMaxSkinId": 5,
     "human_attached_gun__attachedGunEid:eid": {},
+    "human_weight_influence__templatesByDifficulty:shared:object": {
+      "arcade": "human_weight_system_arcade",
+      "realistic": "human_weight_system_realistic"
+    },
     "physObjAdditionalCollisionChecks:tag": {},
     "animchar__onlyServerUpdate:tag": {},
     "dynamic_respawn__spawnOnUnitEid:eid": {},
@@ -2035,7 +2249,7 @@
         "_replicate": true,
         "entity_mods__speedMult": 1.0,
         "entity_mods__staminaDrain": 1.0,
-        "entity_mods__sprintStaminaDrain": 1.0,
+        "entity_mods__sprintStaminaDrain": 2.25,
         "entity_mods__sprintSpeedMult": 1.0,
         "entity_mods__playerSquadBotsSprintSpeedMult": 1.15,
         "entity_mods__reloadMult": 1.0,
@@ -2182,6 +2396,8 @@
     "human_inventory__selectConvex:list<p4>": {},
     "human_inventory__selectTpsConvex:list<p4>": {},
     "human_gun_skin_list:array": {},
+    "human__gunObjTexReplace:object": {},
+    "human__gunObjTexSet:object": {},
     "allowOnlyPrimaryWeaponDrop:tag": {},
     "human_inventory__grenadesOnInit:list<t>": {
       "_tags": "server"

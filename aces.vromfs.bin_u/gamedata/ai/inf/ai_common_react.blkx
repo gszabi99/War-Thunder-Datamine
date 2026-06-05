@@ -715,11 +715,13 @@
         {
           "posParam": "grenadeSafePos",
           "grenTargetParam": "dangerLookAt",
+          "grenRadius": 15.0,
           "radius": 25.0
         },
         {
           "posParam": "grenadeSafePos",
           "grenTargetParam": "dangerLookAt",
+          "grenRadius": 15.0,
           "radius": 25.0
         }
       ],
@@ -1730,6 +1732,227 @@
     }
   ],
   "orderedSelector": [
+    {
+      "name": "try.forcePeekLook",
+      "isZeroPoint3": {
+        "var": "movePeekLook"
+      },
+      "sequencer": {
+        "not": {
+          "checkAtTime": {
+            "timeParam": "movePeekTime",
+            "range": [
+              0.0,
+              3.0
+            ]
+          }
+        },
+        "copyPoint3Var": {
+          "to": "lookPos",
+          "from": "movePeekLook"
+        },
+        "zeroPoint3": {
+          "var": "movePeekLook"
+        },
+        "getTime": {
+          "to": "movePeekTime"
+        },
+        "setIntVar": [
+          {
+            "to": "defReact",
+            "value": 202
+          },
+          {
+            "to": "defReact",
+            "value": 0
+          }
+        ],
+        "checkReloadWeapon": {
+          "waitReloadFinish": false,
+          "enoughAmmoRatio": 0.75
+        },
+        "moveToPos": {
+          "startRestTimerRange": [
+            0.465,
+            0.47
+          ],
+          "posParam": "movePeekFrom",
+          "sprintTimerRange": [
+            10.0,
+            20.0
+          ],
+          "minDistToSprint": 5.0,
+          "lookVisc": 0.1,
+          "tryClimbing": false,
+          "maxStanceParam": "maxStance",
+          "stuckDirParam": "stuckDir",
+          "strafeNearDist": 1.0,
+          "maxAroundCoef": 1.1,
+          "rotateDistThreshold": 0.7,
+          "rotateFactors": [
+            0.7,
+            0.5,
+            0.5,
+            0.25
+          ],
+          "rotateStartTime": 0.5,
+          "timeToStuck": 0.5,
+          "incObstacles": true,
+          "avoidAiObstacles": false,
+          "distThreshold": 1.0,
+          "jumpDownTraceCheck": [
+            0.4,
+            1.0,
+            0.15
+          ],
+          "useTeamCustomNav": true
+        },
+        "orderedSelector": {
+          "isLookingToPos": {
+            "posParam": "lookPos",
+            "offAngle": 10.0
+          },
+          "rotateToPoint": {
+            "posParam": "lookPos",
+            "aimSpeedCoef": 0.5,
+            "maxSimAngle": [
+              60.0,
+              80.0
+            ],
+            "pitchRange": [
+              -5.0,
+              5.0
+            ],
+            "minSimAngle": 30.0,
+            "minSimSpeedCoef": 0.33
+          },
+          "continue": {}
+        },
+        "success": [
+          {
+            "sequencer": {
+              "reaction": {
+                "event": "regularCheck",
+                "repeat": {
+                  "count": 1,
+                  "subTree": {
+                    "treeName": "prep.chooseMaxStance"
+                  },
+                  "findObstaclesAlongsidePath": {},
+                  "sequencer": {
+                    "findDanger": {
+                      "paramName": "otherEnemy",
+                      "outSeeTimeParam": "otherEnemyTime",
+                      "radiusParamName": "enemyRadius",
+                      "minDanger": 0.2,
+                      "tag": "human"
+                    },
+                    "copyIntVar": {
+                      "to": "shootEnemy",
+                      "from": "otherEnemy"
+                    }
+                  }
+                }
+              },
+              "setIntVar": {
+                "to": "defReact",
+                "value": 202
+              },
+              "changeLean": {
+                "leanTo": 0.0
+              },
+              "success": {
+                "sequencer": {
+                  "ignoreChance": {
+                    "chance": 0.5
+                  },
+                  "changeLean": {
+                    "leanToParam": "movePeekLean"
+                  },
+                  "wait": {
+                    "range": [
+                      0.2,
+                      0.3
+                    ],
+                    "resetable": true
+                  }
+                }
+              },
+              "checkReloadWeapon": {
+                "waitReloadFinish": true,
+                "enoughAmmoRatio": 0.75
+              },
+              "parallel": {
+                "moveToPos": {
+                  "startRestTimerRange": [
+                    0.465,
+                    0.47
+                  ],
+                  "posParam": "movePeekMove",
+                  "sprintTimerRange": [
+                    10.0,
+                    20.0
+                  ],
+                  "minDistToSprint": 5.0,
+                  "lookVisc": 0.1,
+                  "tryClimbing": false,
+                  "maxStanceParam": "maxStance",
+                  "stuckDirParam": "stuckDir",
+                  "strafeNearDist": 10.0,
+                  "keepLean": true,
+                  "rotateDistThreshold": 0.7,
+                  "rotateFactors": [
+                    0.7,
+                    0.5,
+                    0.5,
+                    0.25
+                  ],
+                  "rotateStartTime": 0.5,
+                  "timeToStuck": 0.9,
+                  "incObstacles": true,
+                  "avoidAiObstacles": false,
+                  "distThreshold": 0.15,
+                  "jumpDownTraceCheck": [
+                    0.4,
+                    1.0,
+                    0.15
+                  ],
+                  "useTeamCustomNav": true
+                },
+                "wait": {
+                  "range": [
+                    2.0,
+                    3.0
+                  ],
+                  "resetable": true
+                }
+              }
+            }
+          },
+          {
+            "sequencer": {
+              "findDanger": {
+                "paramName": "shootEnemy",
+                "radiusParamName": "enemyFarRadius",
+                "minDanger": 0.1,
+                "tag": "human"
+              },
+              "recalculateTree": {}
+            }
+          }
+        ],
+        "wait": {
+          "range": [
+            0.2,
+            0.3
+          ],
+          "resetable": true
+        },
+        "changeLean": {
+          "leanTo": 0.0
+        }
+      }
+    },
     {
       "name": "try.forceMove",
       "not": {

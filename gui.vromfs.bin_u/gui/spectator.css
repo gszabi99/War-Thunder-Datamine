@@ -1,11 +1,12 @@
 @const spectatorTopOffset: 45@sf/@pf;
 @const spectatorTableWidth: 1@nameWidth +1.5@tableIcoSize +1@tablePad +2 + 2@scrollBarSize;
+@const teammateStatWidth: 35@sf/@pf;
 @const spectatorRowWidth: 1.4@spectatorTableWidth;
 @const spectatorRowHeight: 1.4@baseTrHeight;
 @const spectatorToolbarBtnSize: 1.5@sIco;
 @const spectatorToolbarPadding: 0.25@sIco;
 @const spectatorUnitBlockWidth: 2@tableIcoSize;
-@const spectatorIconBlockWidth: 2@cIco + 1@spectatorUnitBlockWidth;
+@const spectatorIconBlockWidth: 2@cIco + 1@spectatorUnitBlockWidth + 1@teammateStatWidth + 3@sf/@pf;
 @const spectatorBw: 1@bw - 1@bwInVr;
 @const spectatorTimerProgressWidth: 240@sf/@pf;
 
@@ -142,11 +143,18 @@ td.spectatorTeamCell > icon {
   position:absolute;
   css-hier-invalidate:yes;
 }
+td.spectatorTeamCell > playerStats {
+  position:absolute;
+  height:1@spectatorRowHeight;
+}
 td.spectatorTeamCell[side=left] > icon {
   pos:1@spectatorIconBlockWidth - w, 0.5ph-0.5h;
 }
 td.spectatorTeamCell[side=right] > icon {
   pos:pw - 1@spectatorIconBlockWidth, 0.5ph-0.5h;
+}
+td.spectatorTeamCell[side=right] > playerStats {
+  pos:pw-w,0;
 }
 
 td.spectatorTeamCell > icon > unitContainer {
@@ -265,14 +273,25 @@ hoverButton > icon, toggleButton > icon
   input-transparent:yes;
 }
 
-hoverButton:hover
-{
+hoverButton[hasDoubleSize=yes] > icon {
+  size:2@sIco, 2@sIco;
+  background-svg-size:2@sIco, 2@sIco;
+}
+
+
+hoverButton:hover {
   background-color:@switchButtonOnColor;
   color:@buttonFontColorHover;
 }
-hoverButton:hover > icon
-{
+hoverButton[hasTransparentBG=yes]:hover {
+  background-color:0;
+}
+
+hoverButton:hover > icon {
   background-color:@buttonFontColorHover;
+}
+hoverButton[hasTransparentBG=yes]:hover > icon {
+  background-color:@buttonFontColorPurchase;
 }
 
 hoverButton:disabled

@@ -15,6 +15,7 @@
   "haveCCRPForGun": true,
   "gyroSight": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "hasPointOfInterestMemory": true,
   "ilsASG23": true,
   "isBwOpticSight": true,
@@ -48,7 +49,7 @@
   "autopilotImpl": "FBW",
   "paratrooper": "usa_f_111_ejection_cabin_para",
   "extinguisherNum": 1,
-  "isNuclearBomber": true,
+  "hideDefaultWeaponPresetInGui": true,
   "customClassIco": "!#ui/gameuiskin#f_111f_ico.svg",
   "customImage": "!#ui/unitskin#f_111f.ddsx",
   "customTooltipImage": "!#ui/aircrafts/f_111f.avif",
@@ -2126,7 +2127,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2137,7 +2138,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2148,7 +2149,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2159,7 +2160,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2170,7 +2171,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2242,7 +2243,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2253,7 +2254,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2264,7 +2265,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2275,7 +2276,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2286,7 +2287,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2358,7 +2359,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2369,7 +2370,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2380,7 +2381,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2391,7 +2392,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2402,7 +2403,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -2474,7 +2475,7 @@
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 1.0,
             "flame": 1.0,
             "nothing": 9.0,
@@ -2485,7 +2486,7 @@
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 5.0,
@@ -2496,7 +2497,7 @@
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 3.0,
@@ -2507,7 +2508,7 @@
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "nothing": 1.0,
@@ -2518,7 +2519,7 @@
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
+            "cut": 1.0,
             "smoke": 2.0,
             "flame": 2.0,
             "part": {
@@ -3456,6 +3457,13 @@
       "noiseFactor": 0.05,
       "index": 1
     },
+    "fpvShellThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05
+    },
     "sightTPodThermal": {
       "resolution": [
         500,
@@ -3899,194 +3907,6 @@
     "maxSpeedMultiplier": 1.01,
     "wepOverspeed": 1.05
   },
-  "wiki": {
-    "general": {
-      "length": 8.8138,
-      "wingspan": 11.582,
-      "wingArea": 24.15,
-      "f_111a_defaultWeight": 2925.0,
-      "normalWeight": 3426.78,
-      "maxTakeoffWeight": 3792.0,
-      "powerPlantType": 1,
-      "powerMaxWep": 1210.0,
-      "powerMaxMil": 1100.0
-    },
-    "performance": {
-      "table": {
-        "rpmWep": 2700.0,
-        "manifoldPressureWep": 1.67,
-        "airSpeedWep0": [
-          0.0,
-          452.0
-        ],
-        "airSpeedWep1": [
-          6100.0,
-          523.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          15.1
-        ],
-        "climbRateWep1": [
-          5800.0,
-          11.2
-        ],
-        "climbTimeWep0": [
-          2000.0,
-          159.193
-        ],
-        "climbTimeWep1": [
-          4000.0,
-          344.802
-        ],
-        "climbTimeWep2": [
-          6000.0,
-          538.096
-        ],
-        "climbTimeWep3": [
-          8000.0,
-          813.135
-        ],
-        "turnTimeWep": [
-          1000.0,
-          18.9
-        ],
-        "rpmMil": 2500.0,
-        "manifoldPressureMil": 1.46,
-        "airSpeedMil0": [
-          0.0,
-          440.0
-        ],
-        "airSpeedMil1": [
-          6800.0,
-          517.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          14.1
-        ],
-        "climbRateMil1": [
-          6400.0,
-          9.8
-        ],
-        "climbTimeMil0": [
-          2000.0,
-          165.436
-        ],
-        "climbTimeMil1": [
-          4000.0,
-          368.04
-        ],
-        "climbTimeMil2": [
-          6000.0,
-          584.696
-        ],
-        "climbTimeMil3": [
-          8000.0,
-          858.949
-        ],
-        "turnTimeMil": [
-          1000.0,
-          19.4
-        ],
-        "takeoffDistance": 469.31,
-        "ceiling": 10300.0,
-        "rollRate": 76.0,
-        "wingLoading": 142.0,
-        "powerToWeightRatio": 0.34
-      },
-      "plot": {
-        "airSpeedWep0": [
-          0.0,
-          452.0
-        ],
-        "airSpeedWep1": [
-          2500.0,
-          455.0
-        ],
-        "airSpeedWep2": [
-          6100.0,
-          523.0
-        ],
-        "airSpeedWep3": [
-          8500.0,
-          488.0
-        ],
-        "airSpeedWep4": [
-          10200.0,
-          434.0
-        ],
-        "climbRateWep0": [
-          0.0,
-          15.1
-        ],
-        "climbRateWep1": [
-          2300.0,
-          11.9
-        ],
-        "climbRateWep2": [
-          5200.0,
-          11.5
-        ],
-        "climbRateWep3": [
-          5800.0,
-          11.2
-        ],
-        "climbRateWep4": [
-          10200.0,
-          2.3
-        ],
-        "airSpeedMil0": [
-          0.0,
-          440.0
-        ],
-        "airSpeedMil1": [
-          900.0,
-          455.0
-        ],
-        "airSpeedMil2": [
-          2800.0,
-          454.0
-        ],
-        "airSpeedMil3": [
-          6300.0,
-          512.0
-        ],
-        "airSpeedMil4": [
-          6900.0,
-          517.0
-        ],
-        "airSpeedMil5": [
-          8500.0,
-          495.0
-        ],
-        "airSpeedMil6": [
-          10300.0,
-          439.0
-        ],
-        "climbRateMil0": [
-          0.0,
-          14.1
-        ],
-        "climbRateMil1": [
-          2900.0,
-          10.8
-        ],
-        "climbRateMil2": [
-          5700.0,
-          10.2
-        ],
-        "climbRateMil3": [
-          6500.0,
-          9.7
-        ],
-        "climbRateMil4": [
-          10300.0,
-          2.3
-        ]
-      }
-    }
-  },
   "balanceData": {
     "accSpd": 1.85287,
     "climbSpeed": 15.1343,
@@ -4363,7 +4183,37 @@
     ]
   },
   "commonWeapons": {
-    "hideNodes": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "ltc_common"
+    }
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "f_111f_killstreak_default",
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+      },
+      {
+        "name": "f_111f_1xb61",
+        "blk": "gameData/FlightModels/weaponPresets/f_111f_1xb61.blk"
+      },
+      {
+        "name": "f_111f_killstreak_b61_5kt_nt",
+        "blk": "gameData/FlightModels/weaponPresets/f_111f_killstreak_b61_5kt_nt.blk"
+      },
+      {
+        "name": "f_111f_killstreak_b61_30kt_nt",
+        "blk": "gameData/FlightModels/weaponPresets/f_111f_killstreak_b61_30kt_nt.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 18125.0,
+    "maxloadMassLeftConsoles": 8700.0,
+    "maxloadMassRightConsoles": 8700.0,
+    "maxDisbalance": 4100.0,
+    "HideNodes": {
       "node": [
         "pylon_fixed1",
         "pylon_fixed1_lapa",
@@ -4410,8 +4260,6 @@
         "pave_tack_pod_turret",
         "pave_tack_pod_gun",
         "pave_tack_pod_tray",
-        "hatch13",
-        "hatch14",
         "escape_pod_floats",
         "escape_pod_pad",
         "escape_pod_brakes_deployed",
@@ -4429,7 +4277,7 @@
         "escape_pod_pad"
       ]
     },
-    "hideDmParts": {
+    "HideDmParts": {
       "node": [
         "armor1_dm",
         "cannon1_dm",
@@ -4445,55 +4293,337 @@
         "tank15_dm"
       ]
     },
-    "Weapon": [
+    "WeaponSlot": [
       {
-        "trigger": "countermeasures",
-        "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
-        "emitter": "emtr_flare1",
-        "bullets": 60,
-        "bulletsCartridge": 1,
-        "external": true,
-        "separate": true
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "ltc_common",
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -38.0,
+                  38.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 60,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 60,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_with_chaff.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 30,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_with_chaff.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 30,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            }
+          ]
+        }
       },
       {
-        "trigger": "countermeasures",
-        "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
-        "emitter": "emtr_flare2",
-        "bullets": 60,
-        "bulletsCartridge": 1,
-        "external": true,
-        "separate": true
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "missile_type_b_air_to_air",
+          "name": "aim_9l_default",
+          "ShowNodes": {
+            "node": [
+              "aero_3b_1",
+              "pylon_pivot1"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+            "emitter": "aim_9_1",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "jettisonable": false
+          }
+        }
       },
       {
-        "trigger": "countermeasures",
-        "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_with_chaff.blk",
-        "emitter": "emtr_flare3",
-        "bullets": 30,
-        "bulletsCartridge": 1,
-        "external": true,
-        "separate": true
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "missile_type_b_air_to_air",
+          "name": "aim_9l",
+          "ShowNodes": {
+            "node": [
+              "aero_3b_2",
+              "pylon_pivot1"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+            "emitter": "aim_9_2",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "jettisonable": false
+          }
+        }
       },
       {
-        "trigger": "countermeasures",
-        "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_with_chaff.blk",
-        "emitter": "emtr_flare4",
-        "bullets": 30,
-        "bulletsCartridge": 1,
-        "external": true,
-        "separate": true
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_2",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": [
+              "pylon_pivot2_lapa",
+              "pylon_pivot2"
+            ]
+          },
+          "ShowDmParts": {
+            "node": "tank12_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/us_600_gal_f_111a_3.blk",
+            "emitter": "tank12",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "sweepRange": [
+              0.0,
+              0.75
+            ]
+          },
+          "DependentWeaponPreset": {
+            "slot": 5,
+            "preset": "ptb_3"
+          }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 6,
+        "order": 7,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_large_nuke",
+            "name": "b61",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_bay2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_b61.blk",
+              "emitter": "bomb10",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large_nuke",
+            "name": "b61_5kt",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_bay2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_b61_5kt.blk",
+              "emitter": "bomb10",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle_nuke",
+            "name": "b61_30kt",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_bay2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_b61_30kt.blk",
+              "emitter": "bomb10",
+              "bullets": 1,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_3",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": [
+              "pylon_pivot3_lapa",
+              "pylon_pivot3"
+            ]
+          },
+          "ShowDmParts": {
+            "node": "tank13_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/us_600_gal_f_111a_4.blk",
+            "emitter": "tank13",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "sweepRange": [
+              0.0,
+              0.75
+            ]
+          },
+          "DependentWeaponPreset": {
+            "slot": 3,
+            "preset": "ptb_2"
+          }
+        }
+      },
+      {
+        "index": 6,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "missile_type_b_air_to_air",
+          "name": "aim_9l",
+          "ShowNodes": {
+            "node": [
+              "aero_3b_7",
+              "pylon_pivot4"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+            "emitter": "aim_9_7",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "jettisonable": false
+          }
+        }
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "missile_type_b_air_to_air",
+          "name": "aim_9l_default",
+          "ShowNodes": {
+            "node": [
+              "aero_3b_8",
+              "pylon_pivot4"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+            "emitter": "aim_9_8",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "jettisonable": false
+          }
+        }
       }
     ]
   },
-  "weapon_presets": {
-    "preset": {
-      "name": "f_111f_1xb61",
-      "blk": "gameData/FlightModels/weaponPresets/f_111f_1xb61.blk",
-      "tags": {
-        "free": true
-      }
+  "modifications": {
+    "us_500lb_mk82": {
+      "tier": 1
+    },
+    "us_2000lb_mk84": {
+      "tier": 1
     }
   },
-  "modifications": {},
   "default_skin": {
     "name": "f_111f_killstreak",
     "replace_tex": {

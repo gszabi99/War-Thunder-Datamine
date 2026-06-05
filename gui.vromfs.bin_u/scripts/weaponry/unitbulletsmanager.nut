@@ -333,7 +333,9 @@ let UnitBulletsManager = class {
     
     
     
-    foreach (groupIndex, data in bulletDataByGroup) {
+    local groupIndex = 0;
+    while (bulletDataByGroup?[groupIndex] != null) {
+      let data = bulletDataByGroup[groupIndex]
       let currCounters = bullGroupsCountersByGun[data.linkedIdx]
       let isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
         && currCounters.limitedGroupCount == currCounters.groupCount)
@@ -353,6 +355,7 @@ let UnitBulletsManager = class {
         bulGroup.updateCounts()
       }
       this.bulGroups.append(bulGroup)
+      groupIndex++
     }
   }
 

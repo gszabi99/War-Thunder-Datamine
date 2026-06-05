@@ -13,9 +13,9 @@ let {
   getEntStoreUnseenIcon = @() null,
   openEntStoreTopMenuFunc = @(_obj, handler) handler.startOnlineShop(null, null, "topmenu"),
   openIngameStore = @(...) false,
-} = isPlatformSony ? require("%scripts/onlineShop/ps4Shop.nut")
-  : is_gdk ? require("%scripts/onlineShop/xboxShop.nut")
-  : epic_is_running() ? require("%scripts/onlineShop/epicShop.nut")
+} = isPlatformSony ? require("%scripts/onlineShop/ps4ShopApi.nut")
+  : is_gdk ? require("%scripts/onlineShop/xboxShopApi.nut")
+  : epic_is_running() ? require("%scripts/onlineShop/epicShopApi.nut")
   : null
 
 return {

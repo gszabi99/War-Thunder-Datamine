@@ -1,11 +1,12 @@
 from "dagor.debug" import logerr
+from "debug" import format_call_stack_string
 
 let abs = @[pure](v) v > 0 ? v.tointeger() : -v.tointeger()
 
 
 let callableTypes = ["function","table","instance"]
 function isCallable(v) {
-  return callableTypes.indexof(type(v)) != null && (v.getfuncinfos() != null)
+  return callableTypes.contains(type(v)) && (v.getfuncinfos() != null)
 }
 
 
@@ -90,7 +91,7 @@ function kwarg(func){
 
 function kwpartial(func, partparams, ...){
   assert(isCallable(func), "partial can be applied only to functions as first arguments")
-  assert(["table", "class","instance"].indexof(type(partparams))!=null, "kwpartial second argument of function can be only hashable (table, class, instance)")
+  assert(["table", "class","instance"].contains(type(partparams)), "kwpartial second argument of function can be only hashable (table, class, instance)")
   let infos = func.getfuncinfos()
   let funcargs = infos.parameters.slice(1)
 
@@ -154,8 +155,11 @@ function tryCatch(tryer, catcher=null){
     try{
       return tryer.pacall([null].extend(vargv))
     }
-    catch(e)
+    catch(e) {
+      println(format_call_stack_string())
+      errorln($"Caught error '{e}'")
       return catcher?(e)
+    }
    }
 }
 

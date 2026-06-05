@@ -12,8 +12,8 @@ options rtti = true
 options strict_smart_pointers = false
 
 
-require rtti
-require ast
+require daslib/rtti
+require daslib/ast
 require daslib/ast_boost
 require daslib/strings_boost
 
@@ -154,7 +154,7 @@ class PrintVisitor : AstVisitor {
                 
             }
         }
-        let bfa : FunctionFlags = fun.flags & function_annotation_flags;
+        
         
         
         if (fun.annotations |> length != 0) {
@@ -205,7 +205,7 @@ class PrintVisitor : AstVisitor {
         write(*writer, " = ");
     }
 
-    def override preVisitExprBlock(blk : smart_ptr<ExprBlock>) {
+    def override preVisitExprBlock(blk : ExprBlock?) {
         
         if (blk.blockFlags.isClosure) {
             if (blk.returnType != null || blk.arguments |> length != 0) {
@@ -234,7 +234,7 @@ class PrintVisitor : AstVisitor {
         }
         tab ++;
     }
-    def override visitExprBlock(var blk : smart_ptr<ExprBlock>) : ExpressionPtr {
+    def override visitExprBlock(var blk : ExprBlock?) : ExpressionPtr {
         
         tab --;
         if (printCStyle || blk.blockFlags.isClosure) {
@@ -242,16 +242,16 @@ class PrintVisitor : AstVisitor {
         }
         return <- blk;
     }
-    def override preVisitExprBlockExpression(blk : smart_ptr<ExprBlock>; expr : ExpressionPtr) {
+    def override preVisitExprBlockExpression(blk : ExprBlock?; expr : ExpressionPtr) {
         
         write(*writer, "{ident()}");
     }
-    def override visitExprBlockExpression(blk : smart_ptr<ExprBlock>; expr : ExpressionPtr) {
+    def override visitExprBlockExpression(blk : ExprBlock?; expr : ExpressionPtr) {
         
         self->newLine();
         return expr;
     }
-    def override preVisitExprBlockFinal(blk : smart_ptr<ExprBlock>) {
+    def override preVisitExprBlockFinal(blk : ExprBlock?) {
         
         if (printCStyle || blk.blockFlags.isClosure) {
             write(*writer, "{ident(tab-1)}\} finally \{\n");
@@ -259,17 +259,17 @@ class PrintVisitor : AstVisitor {
             write(*writer, "{ident(tab-1)}finally\n");
         }
     }
-    def override preVisitExprBlockFinalExpression(blk : smart_ptr<ExprBlock>; expr : ExpressionPtr) {
+    def override preVisitExprBlockFinalExpression(blk : ExprBlock?; expr : ExpressionPtr) {
         
         write(*writer, "{ident()}");
     }
-    def override visitExprBlockFinalExpression(blk : smart_ptr<ExprBlock>; expr : ExpressionPtr) {
+    def override visitExprBlockFinalExpression(blk : ExprBlock?; expr : ExpressionPtr) {
         
         self->newLine();
         return expr;
     }
 
-    def override preVisitExprLet(expr : smart_ptr<ExprLet>) {
+    def override preVisitExprLet(expr : ExprLet?) {
         
         var isLet = true;
         for (pv in expr.variables) {
@@ -280,21 +280,21 @@ class PrintVisitor : AstVisitor {
         }
         write(*writer, "{isLet ? "let" : "var"} ");
     }
-    def override preVisitExprLetVariable(expr : smart_ptr<ExprLet>; arg : VariablePtr; lastArg : bool) {
+    def override preVisitExprLetVariable(expr : ExprLet?; arg : VariablePtr; lastArg : bool) {
         
         if (arg.isAccessUnused) {
             write(*writer, " /*unused*/ ");
         }
         write(*writer, "{arg.name} : {describe([decl=arg._type,extra=extraTypeInfo])}");
     }
-    def override visitExprLetVariable(expr : smart_ptr<ExprLet>; arg : VariablePtr; lastArg : bool) {
+    def override visitExprLetVariable(expr : ExprLet?; arg : VariablePtr; lastArg : bool) {
         
         if (!lastArg) {
             write(*writer, ";");
         }
         return arg;
     }
-    def override preVisitExprLetVariableInit(blk : smart_ptr<ExprLet>; arg : VariablePtr; expr : ExpressionPtr) {
+    def override preVisitExprLetVariableInit(blk : ExprLet?; arg : VariablePtr; expr : ExpressionPtr) {
         
         if (arg.flags.init_via_move) {
             write(*writer, " <- ");
@@ -329,16 +329,16 @@ class PrintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprStringBuilder(expr : smart_ptr<ExprStringBuilder>) {
+    def override preVisitExprStringBuilder(expr : ExprStringBuilder?) {
         
         write(*writer, "string_builder(");
     }
-    def override visitExprStringBuilder(var expr : smart_ptr<ExprStringBuilder>) : ExpressionPtr {
+    def override visitExprStringBuilder(var expr : ExprStringBuilder?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
-    def override visitExprStringBuilderElement(expr : smart_ptr<ExprStringBuilder>; elem : ExpressionPtr; last : bool) {
+    def override visitExprStringBuilderElement(expr : ExprStringBuilder?; elem : ExpressionPtr; last : bool) {
         
         if (!last) {
             write(*writer, ",");
@@ -346,21 +346,21 @@ class PrintVisitor : AstVisitor {
         return elem;
     }
 
-    def override preVisitExprNew(expr : smart_ptr<ExprNew>) {
+    def override preVisitExprNew(expr : ExprNew?) {
         
         write(*writer, "new {describe(expr.typeexpr)}");
         if (expr.initializer) {
             write(*writer, "(");
         }
     }
-    def override visitExprNew(var expr : smart_ptr<ExprNew>) : ExpressionPtr {
+    def override visitExprNew(var expr : ExprNew?) : ExpressionPtr {
         
         if (expr.initializer) {
             write(*writer, ")");
         }
         return <- expr;
     }
-    def override visitExprNewArgument(expr : smart_ptr<ExprNew>; arg : ExpressionPtr; last : bool) {
+    def override visitExprNewArgument(expr : ExprNew?; arg : ExpressionPtr; last : bool) {
         
         if (!last) {
             write(*writer, ",");
@@ -368,20 +368,20 @@ class PrintVisitor : AstVisitor {
         return arg;
     }
 
-    def override preVisitExprNamedCall(expr : smart_ptr<ExprNamedCall>) {
+    def override preVisitExprNamedCall(expr : ExprNamedCall?) {
         
         write(*writer, "{expr.name}([");
     }
-    def override visitExprNamedCall(var expr : smart_ptr<ExprNamedCall>) : ExpressionPtr {
+    def override visitExprNamedCall(var expr : ExprNamedCall?) : ExpressionPtr {
         
         write(*writer, "])");
         return <- expr;
     }
-    def override preVisitExprNamedCallArgument(expr : smart_ptr<ExprNamedCall>; arg : MakeFieldDeclPtr; last : bool) {
+    def override preVisitExprNamedCallArgument(expr : ExprNamedCall?; arg : MakeFieldDeclPtr; last : bool) {
         
         write(*writer, "{arg.name}{arg.flags.moveSemantics ? "<-" : "="}");
     }
-    def override visitExprNamedCallArgument(expr : smart_ptr<ExprNamedCall>; arg : MakeFieldDeclPtr; last : bool) {
+    def override visitExprNamedCallArgument(expr : ExprNamedCall?; arg : MakeFieldDeclPtr; last : bool) {
         
         if (!last) {
             write(*writer, ",");
@@ -389,16 +389,16 @@ class PrintVisitor : AstVisitor {
         return arg;
     }
 
-    def override preVisitExprLooksLikeCall(expr : smart_ptr<ExprLooksLikeCall>) {
+    def override preVisitExprLooksLikeCall(expr : ExprLooksLikeCall?) {
         
         write(*writer, "{expr.name}(");
     }
-    def override visitExprLooksLikeCall(var expr : smart_ptr<ExprLooksLikeCall>) : ExpressionPtr {
+    def override visitExprLooksLikeCall(var expr : ExprLooksLikeCall?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
-    def override visitExprLooksLikeCallArgument(expr : smart_ptr<ExprLooksLikeCall>; arg : ExpressionPtr; last : bool) {
+    def override visitExprLooksLikeCallArgument(expr : ExprLooksLikeCall?; arg : ExpressionPtr; last : bool) {
         
         if (!last) {
             write(*writer, ",");
@@ -406,16 +406,16 @@ class PrintVisitor : AstVisitor {
         return arg;
     }
 
-    def override preVisitExprCall(expr : smart_ptr<ExprCall>) {
+    def override preVisitExprCall(expr : ExprCall?) {
         
         write(*writer, "{expr.name}(");
     }
-    def override visitExprCall(var expr : smart_ptr<ExprCall>) : ExpressionPtr {
+    def override visitExprCall(var expr : ExprCall?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
-    def override visitExprCallArgument(expr : smart_ptr<ExprCall>; arg : ExpressionPtr; last : bool) {
+    def override visitExprCallArgument(expr : ExprCall?; arg : ExpressionPtr; last : bool) {
         
         if (!last) {
             write(*writer, ",");
@@ -423,172 +423,168 @@ class PrintVisitor : AstVisitor {
         return arg;
     }
 
-    def override preVisitExprNullCoalescingDefault(expr : smart_ptr<ExprNullCoalescing>; defval : ExpressionPtr) {
+    def override preVisitExprNullCoalescingDefault(expr : ExprNullCoalescing?; defval : ExpressionPtr) {
         
         write(*writer, " ?? ");
     }
 
-    def override visitExprAt(var expr : smart_ptr<ExprAt>) : ExpressionPtr {
+    def override visitExprAt(var expr : ExprAt?) : ExpressionPtr {
         
         write(*writer, "]");
         return <- expr;
     }
-    def override preVisitExprAtIndex(expr : smart_ptr<ExprAt>; index : ExpressionPtr) {
+    def override preVisitExprAtIndex(expr : ExprAt?; index : ExpressionPtr) {
         
         write(*writer, "[");
     }
 
-    def override visitExprSafeAt(var expr : smart_ptr<ExprSafeAt>) : ExpressionPtr {
+    def override visitExprSafeAt(var expr : ExprSafeAt?) : ExpressionPtr {
         
         write(*writer, "]");
         return <- expr;
     }
-    def override preVisitExprSafeAtIndex(expr : smart_ptr<ExprSafeAt>; index : ExpressionPtr) {
+    def override preVisitExprSafeAtIndex(expr : ExprSafeAt?; index : ExpressionPtr) {
         
         write(*writer, "?[");
     }
 
-    def override preVisitExprIsType(expr : smart_ptr<ExprIs>; typeDecl : TypeDeclPtr) {
+    def override preVisitExprIsType(expr : ExprIs?; typeDecl : TypeDeclPtr) {
         
         write(*writer, "is type<{describe([decl=typeDecl,extra=false,contracts=true])}>");
     }
 
-    def override preVisitExprOp2(expr : smart_ptr<ExprOp2>) {
+    def override preVisitExprOp2(expr : ExprOp2?) {
         
         if (!noBracket(expr)) {
             write(*writer, "(");
         }
     }
-    def override visitExprOp2(var expr : smart_ptr<ExprOp2>) : ExpressionPtr {
+    def override visitExprOp2(var expr : ExprOp2?) : ExpressionPtr {
         
         if (!noBracket(expr)) {
             write(*writer, ")");
         }
         return <- expr;
     }
-    def override preVisitExprOp2Right(expr : smart_ptr<ExprOp2>; right : ExpressionPtr) {
+    def override preVisitExprOp2Right(expr : ExprOp2?; right : ExpressionPtr) {
         
         write(*writer, " {expr.op} ");
     }
 
-    def override preVisitExprOp3(expr : smart_ptr<ExprOp3>) {
+    def override preVisitExprOp3(expr : ExprOp3?) {
         
         if (!noBracket(expr)) {
             write(*writer, "(");
         }
     }
-    def override visitExprOp3(var expr : smart_ptr<ExprOp3>) : ExpressionPtr {
+    def override visitExprOp3(var expr : ExprOp3?) : ExpressionPtr {
         
         if (!noBracket(expr)) {
             write(*writer, ")");
         }
         return <- expr;
     }
-    def override preVisitExprOp3Left(expr : smart_ptr<ExprOp3>; left : ExpressionPtr) {
+    def override preVisitExprOp3Left(expr : ExprOp3?; left : ExpressionPtr) {
         
         write(*writer, " ? ");
     }
-    def override preVisitExprOp3Right(expr : smart_ptr<ExprOp3>; right : ExpressionPtr) {
+    def override preVisitExprOp3Right(expr : ExprOp3?; right : ExpressionPtr) {
         
         write(*writer, " : ");
     }
 
-    def override preVisitExprCopyRight(expr : smart_ptr<ExprCopy>; right : ExpressionPtr) {
+    def override preVisitExprCopyRight(expr : ExprCopy?; right : ExpressionPtr) {
         
         write(*writer, " = ");
     }
 
-    def override preVisitExprMoveRight(expr : smart_ptr<ExprMove>; right : ExpressionPtr) {
+    def override preVisitExprMoveRight(expr : ExprMove?; right : ExpressionPtr) {
         
         write(*writer, " <- ");
     }
 
-    def override preVisitExprCloneRight(expr : smart_ptr<ExprClone>; right : ExpressionPtr) {
+    def override preVisitExprCloneRight(expr : ExprClone?; right : ExpressionPtr) {
         
         write(*writer, " := ");
     }
 
-    def override preVisitExprWith(expr : smart_ptr<ExprWith>) {
+    def override preVisitExprWith(expr : ExprWith?) {
         
         write(*writer, "with ");
     }
-    def override preVisitExprWithBody(expr : smart_ptr<ExprWith>; right : ExpressionPtr) {
+    def override preVisitExprWithBody(expr : ExprWith?; right : ExpressionPtr) {
         
         write(*writer, " ");
     }
 
-    def override preVisitExprWhile(expr : smart_ptr<ExprWhile>) {
+    def override preVisitExprWhile(expr : ExprWhile?) {
         
         write(*writer, "while ");
     }
-    def override preVisitExprWhileBody(expr : smart_ptr<ExprWhile>; right : ExpressionPtr) {
+    def override preVisitExprWhileBody(expr : ExprWhile?; right : ExpressionPtr) {
         
         write(*writer, " ");
     }
 
-    def override preVisitExprTryCatch(expr : smart_ptr<ExprTryCatch>) {
+    def override preVisitExprTryCatch(expr : ExprTryCatch?) {
         
         write(*writer, "try ");
     }
-    def override preVisitExprTryCatchCatch(expr : smart_ptr<ExprTryCatch>; right : ExpressionPtr) {
+    def override preVisitExprTryCatchCatch(expr : ExprTryCatch?; right : ExpressionPtr) {
         
         write(*writer, " recover ");
     }
 
-    def override preVisitExprIfThenElse(expr : smart_ptr<ExprIfThenElse>) {
+    def override preVisitExprIfThenElse(expr : ExprIfThenElse?) {
         
         write(*writer, "if (");
     }
-    def override preVisitExprIfThenElseIfBlock(expr : smart_ptr<ExprIfThenElse>; ifBlock : ExpressionPtr) {
+    def override preVisitExprIfThenElseIfBlock(expr : ExprIfThenElse?; ifBlock : ExpressionPtr) {
         
         write(*writer, ") ");
     }
-    def override preVisitExprIfThenElseElseBlock(expr : smart_ptr<ExprIfThenElse>; elseBlock : ExpressionPtr) {
+    def override preVisitExprIfThenElseElseBlock(expr : ExprIfThenElse?; elseBlock : ExpressionPtr) {
         
-        if (elseBlock.__rtti == "ExprIfThenElse") {
-            write(*writer, " else ");
-        } else {
-            write(*writer, " else ");
-        }
+        write(*writer, " else ");
     }
 
-    def override preVisitExprFor(expr : smart_ptr<ExprFor>) {
+    def override preVisitExprFor(expr : ExprFor?) {
         
         write(*writer, "for (");
     }
-    def override preVisitExprForVariable(expr : smart_ptr<ExprFor>; svar : VariablePtr; last : bool) {
+    def override preVisitExprForVariable(expr : ExprFor?; svar : VariablePtr; last : bool) {
         
         write(*writer, "{svar.name}{last ? " in " : ","}");
     }
-    def override visitExprForSource(var expr : smart_ptr<ExprFor>; var source : ExpressionPtr; last : bool) : ExpressionPtr {
+    def override visitExprForSource(var expr : ExprFor?; var source : ExpressionPtr; last : bool) : ExpressionPtr {
         
         if (!last) {
             write(*writer, ",");
         }
         return <- source;
     }
-    def override preVisitExprForBody(expr : smart_ptr<ExprFor>) {
+    def override preVisitExprForBody(expr : ExprFor?) {
         
         write(*writer, ") ");
     }
 
-    def override preVisitExprMakeVariant(expr : smart_ptr<ExprMakeVariant>) {
+    def override preVisitExprMakeVariant(expr : ExprMakeVariant?) {
         
         if (expr._type != null) {
             write(*writer, "{describe(expr._type)}");
         }
         write(*writer, "(");
     }
-    def override visitExprMakeVariant(var expr : smart_ptr<ExprMakeVariant>) : ExpressionPtr {
+    def override visitExprMakeVariant(var expr : ExprMakeVariant?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
-    def override preVisitExprMakeVariantField(expr : smart_ptr<ExprMakeVariant>; index : int; decl : MakeFieldDeclPtr; last : bool) {
+    def override preVisitExprMakeVariantField(expr : ExprMakeVariant?; index : int; decl : MakeFieldDeclPtr; last : bool) {
         
         write(*writer, "{decl.name} {decl.flags.moveSemantics ? "<-" : "=" } ");
     }
-    def override visitExprMakeVariantField(expr : smart_ptr<ExprMakeVariant>; index : int; decl : MakeFieldDeclPtr; last : bool) {
+    def override visitExprMakeVariantField(expr : ExprMakeVariant?; index : int; decl : MakeFieldDeclPtr; last : bool) {
         
         if (!last) {
             write(*writer, "; ");
@@ -596,7 +592,7 @@ class PrintVisitor : AstVisitor {
         return decl;
     }
 
-    def override preVisitExprMakeStruct(expr : smart_ptr<ExprMakeStruct>) {
+    def override preVisitExprMakeStruct(expr : ExprMakeStruct?) {
         
         if (expr._type != null) {
             write(*writer, "{describe(expr._type)}({expr.makeStructFlags.useInitializer ? "" : "uninitialized"} ");
@@ -604,22 +600,22 @@ class PrintVisitor : AstVisitor {
             write(*writer, "(")
         }
     }
-    def override visitExprMakeStruct(var expr : smart_ptr<ExprMakeStruct>) : ExpressionPtr {
+    def override visitExprMakeStruct(var expr : ExprMakeStruct?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
-    def override visitExprMakeStructIndex(expr : smart_ptr<ExprMakeStruct>; index : int; last : bool) {
+    def override visitExprMakeStructIndex(expr : ExprMakeStruct?; index : int; last : bool) {
         
         if (!last) {
             write(*writer, "; ");
         }
     }
-    def override preVisitExprMakeStructField(expr : smart_ptr<ExprMakeStruct>; index : int; decl : MakeFieldDeclPtr; last : bool) {
+    def override preVisitExprMakeStructField(expr : ExprMakeStruct?; index : int; decl : MakeFieldDeclPtr; last : bool) {
         
         write(*writer, "{decl.name} {decl.flags.moveSemantics ? "<-" : "=" } ");
     }
-    def override visitExprMakeStructField(expr : smart_ptr<ExprMakeStruct>; index : int; decl : MakeFieldDeclPtr; last : bool) {
+    def override visitExprMakeStructField(expr : ExprMakeStruct?; index : int; decl : MakeFieldDeclPtr; last : bool) {
         
         if (!last) {
             write(*writer, ", ");
@@ -627,7 +623,7 @@ class PrintVisitor : AstVisitor {
         return decl;
     }
 
-    def override preVisitExprMakeArray(expr : smart_ptr<ExprMakeArray>) {
+    def override preVisitExprMakeArray(expr : ExprMakeArray?) {
         
         write(*writer, "fixed_array");
         if (expr.recordType != null) {
@@ -635,12 +631,12 @@ class PrintVisitor : AstVisitor {
         }
         write(*writer, "(");
     }
-    def override visitExprMakeArray(var expr : smart_ptr<ExprMakeArray>) : ExpressionPtr {
+    def override visitExprMakeArray(var expr : ExprMakeArray?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
-    def override visitExprMakeArrayIndex(expr : smart_ptr<ExprMakeArray>; index : int; var init : ExpressionPtr; last : bool) : ExpressionPtr {
+    def override visitExprMakeArrayIndex(expr : ExprMakeArray?; index : int; var init : ExpressionPtr; last : bool) : ExpressionPtr {
         
         if (!last) {
             write(*writer, ", ");
@@ -648,19 +644,19 @@ class PrintVisitor : AstVisitor {
         return <- init;
     }
 
-    def override preVisitExprMakeTuple(expr : smart_ptr<ExprMakeTuple>) {
+    def override preVisitExprMakeTuple(expr : ExprMakeTuple?) {
         
         if (expr._type != null) {
             write(*writer, "{describe(expr._type)} ");
         }
         write(*writer, "(");
     }
-    def override visitExprMakeTuple(var expr : smart_ptr<ExprMakeTuple>) : ExpressionPtr {
+    def override visitExprMakeTuple(var expr : ExprMakeTuple?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
-    def override visitExprMakeTupleIndex(expr : smart_ptr<ExprMakeTuple>; index : int; var init : ExpressionPtr; last : bool) : ExpressionPtr {
+    def override visitExprMakeTupleIndex(expr : ExprMakeTuple?; index : int; var init : ExpressionPtr; last : bool) : ExpressionPtr {
         
         if (!last) {
             write(*writer, ", ");
@@ -668,7 +664,7 @@ class PrintVisitor : AstVisitor {
         return <- init;
     }
 
-    def override preVisitExprArrayComprehension(expr : smart_ptr<ExprArrayComprehension>) {
+    def override preVisitExprArrayComprehension(expr : ExprArrayComprehension?) {
         
         if (expr.tableSyntax) {
             write(*writer, "\{");
@@ -676,7 +672,7 @@ class PrintVisitor : AstVisitor {
             write(*writer, "[");
         }
     }
-    def override visitExprArrayComprehension(var expr : smart_ptr<ExprArrayComprehension>) : ExpressionPtr {
+    def override visitExprArrayComprehension(var expr : ExprArrayComprehension?) : ExpressionPtr {
         
         if (expr.tableSyntax) {
             write(*writer, "\}");
@@ -685,22 +681,22 @@ class PrintVisitor : AstVisitor {
         }
         return <- expr;
     }
-    def override preVisitExprArrayComprehensionSubexpr(expr : smart_ptr<ExprArrayComprehension>; subexrp : ExpressionPtr) {
+    def override preVisitExprArrayComprehensionSubexpr(expr : ExprArrayComprehension?; subexrp : ExpressionPtr) {
         
         write(*writer, "; ");
     }
-    def override preVisitExprArrayComprehensionWhere(expr : smart_ptr<ExprArrayComprehension>; filter : ExpressionPtr) {
+    def override preVisitExprArrayComprehensionWhere(expr : ExprArrayComprehension?; filter : ExpressionPtr) {
         
         write(*writer, "; where ");
     }
 
-    def override preVisitExprTypeDecl(var expr : smart_ptr<ExprTypeDecl>) {
+    def override preVisitExprTypeDecl(var expr : ExprTypeDecl?) {
         
         write(*writer, "type<{describe(expr.typeexpr)}>")
     }
 
 
-    def override preVisitExprTypeInfo(expr : smart_ptr<ExprTypeInfo>) {
+    def override preVisitExprTypeInfo(expr : ExprTypeInfo?) {
         
         write(*writer, "typeinfo({expr.trait}");
         if (!empty(expr.subtrait)) {
@@ -714,23 +710,23 @@ class PrintVisitor : AstVisitor {
             write(*writer, "type<{describe(expr.typeexpr)}>");
         }
     }
-    def override visitExprTypeInfo(var expr : smart_ptr<ExprTypeInfo>) : ExpressionPtr {
+    def override visitExprTypeInfo(var expr : ExprTypeInfo?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
 
-    def override preVisitExprPtr2Ref(expr : smart_ptr<ExprPtr2Ref>) {
+    def override preVisitExprPtr2Ref(expr : ExprPtr2Ref?) {
         
         write(*writer, "deref(");
     }
-    def override visitExprPtr2Ref(var expr : smart_ptr<ExprPtr2Ref>) : ExpressionPtr {
+    def override visitExprPtr2Ref(var expr : ExprPtr2Ref?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
 
-    def override preVisitExprLabel(expr : smart_ptr<ExprLabel>) {
+    def override preVisitExprLabel(expr : ExprLabel?) {
         
         write(*writer, "label {expr.labelName}:");
         if (!empty(expr.comment)) {
@@ -738,7 +734,7 @@ class PrintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprGoto(expr : smart_ptr<ExprGoto>) {
+    def override preVisitExprGoto(expr : ExprGoto?) {
         
         write(*writer, "goto ");
         if (expr.subexpr == null) {
@@ -746,27 +742,27 @@ class PrintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprRef2Value(expr : smart_ptr<ExprRef2Value>) {
+    def override preVisitExprRef2Value(expr : ExprRef2Value?) {
         
         write(*writer, "/*r2v*/ (");
     }
-    def override visitExprRef2Value(var expr : smart_ptr<ExprRef2Value>) : ExpressionPtr {
+    def override visitExprRef2Value(var expr : ExprRef2Value?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
 
-    def override preVisitExprRef2Ptr(expr : smart_ptr<ExprRef2Ptr>) {
+    def override preVisitExprRef2Ptr(expr : ExprRef2Ptr?) {
         
         write(*writer, "addr(");
     }
-    def override visitExprRef2Ptr(var expr : smart_ptr<ExprRef2Ptr>) : ExpressionPtr {
+    def override visitExprRef2Ptr(var expr : ExprRef2Ptr?) : ExpressionPtr {
         
         write(*writer, ")");
         return <- expr;
     }
 
-    def override preVisitExprAddr(expr : smart_ptr<ExprAddr>) {
+    def override preVisitExprAddr(expr : ExprAddr?) {
         
         write(*writer, "@@");
         if (expr.funcType != null) {
@@ -775,7 +771,7 @@ class PrintVisitor : AstVisitor {
         write(*writer, "{expr.target}");
     }
 
-    def override preVisitExprAscend(expr : smart_ptr<ExprAscend>) {
+    def override preVisitExprAscend(expr : ExprAscend?) {
         
         if (expr.ascType != null) {
             write(*writer, "new<{describe(expr.ascType)}> ");
@@ -784,7 +780,7 @@ class PrintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprCast(expr : smart_ptr<ExprCast>) {
+    def override preVisitExprCast(expr : ExprCast?) {
         
         if (expr.castFlags.reinterpretCast) {
             write(*writer, "reinterpret");
@@ -796,7 +792,7 @@ class PrintVisitor : AstVisitor {
         write(*writer, "<{describe(expr.castType)}> ");
     }
 
-    def override preVisitExprDelete(expr : smart_ptr<ExprDelete>) {
+    def override preVisitExprDelete(expr : ExprDelete?) {
         
         write(*writer, "delete ");
         if (expr.native) {
@@ -804,24 +800,24 @@ class PrintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprVar(expr : smart_ptr<ExprVar>) {
+    def override preVisitExprVar(expr : ExprVar?) {
         
         write(*writer, "{expr.name}");
     }
 
-    def override visitExprField(var expr : smart_ptr<ExprField>) : ExpressionPtr {
+    def override visitExprField(var expr : ExprField?) : ExpressionPtr {
         
         write(*writer, ".{expr.name}");
         return <- expr;
     }
 
-    def override visitExprSafeField(var expr : smart_ptr<ExprSafeField>) : ExpressionPtr {
+    def override visitExprSafeField(var expr : ExprSafeField?) : ExpressionPtr {
         
         write(*writer, "?.{expr.name}");
         return <- expr;
     }
 
-    def override visitExprSwizzle(var expr : smart_ptr<ExprSwizzle>) : ExpressionPtr {
+    def override visitExprSwizzle(var expr : ExprSwizzle?) : ExpressionPtr {
         
         write(*writer, ".");
         let f2name = fixed_array<string>("x", "y", "z", "w");
@@ -832,25 +828,25 @@ class PrintVisitor : AstVisitor {
         return <- expr;
     }
 
-    def override visitExprIsVariant(var expr : smart_ptr<ExprIsVariant>) : ExpressionPtr {
+    def override visitExprIsVariant(var expr : ExprIsVariant?) : ExpressionPtr {
         
         write(*writer, " is {expr.name}");
         return <- expr;
     }
 
-    def override visitExprAsVariant(var expr : smart_ptr<ExprAsVariant>) : ExpressionPtr {
+    def override visitExprAsVariant(var expr : ExprAsVariant?) : ExpressionPtr {
         
         write(*writer, " as {expr.name}");
         return <- expr;
     }
 
-    def override visitExprSafeAsVariant(var expr : smart_ptr<ExprSafeAsVariant>) : ExpressionPtr {
+    def override visitExprSafeAsVariant(var expr : ExprSafeAsVariant?) : ExpressionPtr {
         
         write(*writer, " ?as {expr.name}");
         return <- expr;
     }
 
-    def override preVisitExprOp1(expr : smart_ptr<ExprOp1>) : void {
+    def override preVisitExprOp1(expr : ExprOp1?) : void {
         
         let op = "{expr.op}";
         if (op != "+++" && op != "---") {
@@ -860,7 +856,7 @@ class PrintVisitor : AstVisitor {
             write(*writer, "(");
         }
     }
-    def override visitExprOp1(var expr : smart_ptr<ExprOp1>) : ExpressionPtr {
+    def override visitExprOp1(var expr : ExprOp1?) : ExpressionPtr {
         
         let op = "{expr.op}";
         if (!noBracket(expr)) {
@@ -872,7 +868,7 @@ class PrintVisitor : AstVisitor {
         return <- expr;
     }
 
-    def override preVisitExprReturn(expr : smart_ptr<ExprReturn>) : void {
+    def override preVisitExprReturn(expr : ExprReturn?) : void {
         
         write(*writer, "return ");
         if (expr.returnFlags.fromYield) {
@@ -883,7 +879,7 @@ class PrintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprYield(expr : smart_ptr<ExprYield>) : void {
+    def override preVisitExprYield(expr : ExprYield?) : void {
         
         write(*writer, "yield ");
         if (expr.returnFlags.moveSemantics) {
@@ -891,17 +887,17 @@ class PrintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprBreak(expr : smart_ptr<ExprBreak>) : void {
+    def override preVisitExprBreak(expr : ExprBreak?) : void {
         
         write(*writer, "break");
     }
 
-    def override preVisitExprContinue(expr : smart_ptr<ExprContinue>) : void {
+    def override preVisitExprContinue(expr : ExprContinue?) : void {
         
         write(*writer, "continue");
     }
 
-    def override preVisitExprConstPtr(expr : smart_ptr<ExprConstPtr>) : void {
+    def override preVisitExprConstPtr(expr : ExprConstPtr?) : void {
         
         if (expr.value != null) {
             write(*writer, "{expr.value}");
@@ -910,144 +906,144 @@ class PrintVisitor : AstVisitor {
         }
     }
 
-    def override preVisitExprConstInt8(expr : smart_ptr<ExprConstInt8>) : void {
+    def override preVisitExprConstInt8(expr : ExprConstInt8?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstInt16(expr : smart_ptr<ExprConstInt16>) : void {
+    def override preVisitExprConstInt16(expr : ExprConstInt16?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstInt64(expr : smart_ptr<ExprConstInt64>) : void {
+    def override preVisitExprConstInt64(expr : ExprConstInt64?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstInt(expr : smart_ptr<ExprConstInt>) : void {
+    def override preVisitExprConstInt(expr : ExprConstInt?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstInt2(expr : smart_ptr<ExprConstInt2>) : void {
+    def override preVisitExprConstInt2(expr : ExprConstInt2?) : void {
         
         write(*writer, "int2({expr.value})");
     }
 
-    def override preVisitExprConstInt3(expr : smart_ptr<ExprConstInt3>) : void {
+    def override preVisitExprConstInt3(expr : ExprConstInt3?) : void {
         
         write(*writer, "int3({expr.value})");
     }
 
-    def override preVisitExprConstInt4(expr : smart_ptr<ExprConstInt4>) : void {
+    def override preVisitExprConstInt4(expr : ExprConstInt4?) : void {
         
         write(*writer, "int4({expr.value})");
     }
 
-    def override preVisitExprConstUInt8(expr : smart_ptr<ExprConstUInt8>) : void {
+    def override preVisitExprConstUInt8(expr : ExprConstUInt8?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstUInt16(expr : smart_ptr<ExprConstUInt16>) : void {
+    def override preVisitExprConstUInt16(expr : ExprConstUInt16?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstUInt64(expr : smart_ptr<ExprConstUInt64>) : void {
+    def override preVisitExprConstUInt64(expr : ExprConstUInt64?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstUInt(expr : smart_ptr<ExprConstUInt>) : void {
+    def override preVisitExprConstUInt(expr : ExprConstUInt?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstUInt2(expr : smart_ptr<ExprConstUInt2>) : void {
+    def override preVisitExprConstUInt2(expr : ExprConstUInt2?) : void {
         
         write(*writer, "uint2({expr.value})");
     }
 
-    def override preVisitExprConstUInt3(expr : smart_ptr<ExprConstUInt3>) : void {
+    def override preVisitExprConstUInt3(expr : ExprConstUInt3?) : void {
         
         write(*writer, "uint3({expr.value})");
     }
 
-    def override preVisitExprConstUInt4(expr : smart_ptr<ExprConstUInt4>) : void {
+    def override preVisitExprConstUInt4(expr : ExprConstUInt4?) : void {
         
         write(*writer, "uint4({expr.value})");
     }
 
-    def override preVisitExprConstRange(expr : smart_ptr<ExprConstRange>) : void {
+    def override preVisitExprConstRange(expr : ExprConstRange?) : void {
         
         write(*writer, "range({expr.value})");
     }
 
-    def override preVisitExprConstURange(expr : smart_ptr<ExprConstURange>) : void {
+    def override preVisitExprConstURange(expr : ExprConstURange?) : void {
         
         write(*writer, "urange({expr.value})");
     }
 
-    def override preVisitExprConstRange64(expr : smart_ptr<ExprConstRange64>) : void {
+    def override preVisitExprConstRange64(expr : ExprConstRange64?) : void {
         
         write(*writer, "range64({expr.value})");
     }
 
-    def override preVisitExprConstURange64(expr : smart_ptr<ExprConstURange64>) : void {
+    def override preVisitExprConstURange64(expr : ExprConstURange64?) : void {
         
         write(*writer, "urange64({expr.value})");
     }
 
-    def override preVisitExprConstBool(expr : smart_ptr<ExprConstBool>) : void {
+    def override preVisitExprConstBool(expr : ExprConstBool?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstFloat(expr : smart_ptr<ExprConstFloat>) : void {
+    def override preVisitExprConstFloat(expr : ExprConstFloat?) : void {
         
         write(*writer, "{expr.value}");
     }
 
-    def override preVisitExprConstFloat2(expr : smart_ptr<ExprConstFloat2>) : void {
+    def override preVisitExprConstFloat2(expr : ExprConstFloat2?) : void {
         
         write(*writer, "float2({expr.value})");
     }
 
-    def override preVisitExprConstFloat3(expr : smart_ptr<ExprConstFloat3>) : void {
+    def override preVisitExprConstFloat3(expr : ExprConstFloat3?) : void {
         
         write(*writer, "float3({expr.value})");
     }
 
-    def override preVisitExprConstFloat4(expr : smart_ptr<ExprConstFloat4>) : void {
+    def override preVisitExprConstFloat4(expr : ExprConstFloat4?) : void {
         
         write(*writer, "float4({expr.value})");
     }
 
-    def override preVisitExprConstDouble(expr : smart_ptr<ExprConstDouble>) : void {
+    def override preVisitExprConstDouble(expr : ExprConstDouble?) : void {
         
         write(*writer, "{expr.value}lf");
     }
 
-    def override preVisitExprFakeContext(expr : smart_ptr<ExprFakeContext>) : void {
+    def override preVisitExprFakeContext(expr : ExprFakeContext?) : void {
         
         write(*writer, "__context__");
     }
 
-    def override preVisitExprFakeLineInfo(expr : smart_ptr<ExprFakeLineInfo>) : void {
+    def override preVisitExprFakeLineInfo(expr : ExprFakeLineInfo?) : void {
         
         write(*writer, "__lineinfo__");
     }
 
-    def override preVisitExprConstString(expr : smart_ptr<ExprConstString>) : void {
+    def override preVisitExprConstString(expr : ExprConstString?) : void {
         
         peek(expr.value) $(str) {
             write(*writer, "\"{escape(str)}\"");
         }
     }
 
-    def override preVisitExprConstEnumeration(expr : smart_ptr<ExprConstEnumeration>) : void {
+    def override preVisitExprConstEnumeration(expr : ExprConstEnumeration?) : void {
         
         let enumModule = expr.enumType._module;
         if (enumModule != null && !empty(enumModule.name)) {
@@ -1056,7 +1052,7 @@ class PrintVisitor : AstVisitor {
         write(*writer, "{expr.enumType.name}.{expr.value}");
     }
 
-    def override preVisitExprConstBitfield(expr : smart_ptr<ExprConstBitfield>) : void {
+    def override preVisitExprConstBitfield(expr : ExprConstBitfield?) : void {
         
         var name : string;
         if (expr.bitfieldType != null && !empty(expr.bitfieldType.alias)) {
@@ -1105,7 +1101,7 @@ def Foo(x, y : int) {
 def add(a, b : int) {
     
     
-    var add_extra = 13;
+    let add_extra = 13;
     print("a={a} b={b}");
     return a + b + add_extra;
 }
@@ -1194,7 +1190,7 @@ def allExpr(arg : int) {
         verify(ta == tg);
     }
     
-    var tinfo = typeinfo rtti_typeinfo(type<int>).basicType;
+    let tinfo = typeinfo rtti_typeinfo(type<int>).basicType;
     print("{tinfo}\n");
     
     print("{*pFoo1}");
@@ -1265,8 +1261,9 @@ def allExpr(arg : int) {
 def test {
     
     var astVisitor = new PrintVisitor();
-    var astVisitorAdapter <- make_visitor(*astVisitor);
-    visit(this_program(), astVisitorAdapter);
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit(this_program(), astVisitorAdapter);
+    }
 
 
 
@@ -1292,30 +1289,34 @@ def test {
 def printAst(var prog : ProgramPtr; var writer : StringBuilderWriter?) {
     
     var flags = new PrintVisitor(writer = writer);
-    var inscope adapter <- make_visitor(*flags)
-    visit(prog, adapter)
+    make_visitor(*flags) $(adapter) {
+        visit(prog, adapter)
+    }
 }
 
 [export]
 def printExpr(var expr : ExpressionPtr; var writer : StringBuilderWriter?) {
     
     var flags = new PrintVisitor(writer = writer);
-    var inscope adapter <- make_visitor(*flags)
-    visit(expr, adapter)
+    make_visitor(*flags) $(adapter) {
+        visit(expr, adapter)
+    }
 }
 
 [export]
 def printFunc(var func : FunctionPtr; var writer : StringBuilderWriter?) {
     
     var flags = new PrintVisitor(writer = writer);
-    var inscope adapter <- make_visitor(*flags)
-    visit(func, adapter)
+    make_visitor(*flags) $(adapter) {
+        visit(func, adapter)
+    }
 }
 
 [export]
 def setFlags(var prog : ProgramPtr) {
     
     var flags = new SetPrinterFlags();
-    var inscope adapter <- make_visitor(*flags)
-    visit(prog, adapter)
+    make_visitor(*flags) $(adapter) {
+        visit(prog, adapter)
+    }
 }

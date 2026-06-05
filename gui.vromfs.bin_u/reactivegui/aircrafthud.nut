@@ -8,11 +8,9 @@ let opticAtgmSight = require("%rGui/opticAtgmSight.nut")
 let laserAtgmSight = require("%rGui/laserAtgmSight.nut")
 let { aircraftTargetingPodSight } = require("%rGui/targetingPodSight.nut")
 let { leftPanel } = require("%rGui/airHudLeftPanel.nut")
-let { OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible
 
-
-
-} = require("%rGui/planeState/planeWeaponState.nut")
+let { OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible,
+  LaserAtgmSightVisible, TargetingPodSightVisible, ShellFPVModeEnabled } = require("%rGui/planeState/planeWeaponState.nut")
 let {
   IndicatorsVisible, MainMask, SecondaryMask, TertiaryMask IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
@@ -22,6 +20,7 @@ let {
 let aamAim = require("%rGui/rocketAamAim.nut")
 let agmAim = require("%rGui/agmAim.nut")
 let gbuAim = require("%rGui/gbuAim.nut")
+let { styleText } = require("%rGui/style/airHudStyle.nut")
 let { paramsTable, agmLaunchZoneTps, compassElem }  = require("%rGui/airHudElems.nut")
 let {
   aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight,
@@ -36,9 +35,9 @@ let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
 let { isCollapsedRadarInReplay, IsRadarDamaged } = require("%rGui/radarState.nut")
-
-
-
+let { dmgIndicatorWidth } = require("%rGui/hud/dmgIndicatorState.nut")
+let fpvShellHud = require("%rGui/fpvShellHud.nut")
+let { AgmBlockedState } = require("%rGui/agmAimState.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -61,21 +60,21 @@ let radarPosWatched = Computed(@()
   ]
 )
 
-let twsSize = sh(20)
+let twsSize = [sh(28), sh(50)]
 let twsPosWatched = Computed(@()
   isPlayingReplay.get() ?
   [
     scrn_tgt(0.24) + fpx(45) + scrn_tgt(0.005) + fpx(32) + 6 + bw.get(),
-    bh.get() + rh.get() - twsSize * 1.5
+    bh.get() + rh.get() - twsSize[1] - dmgIndicatorWidth.get() - hdpx(50)
   ] :
   (IsMlwsLwsHudVisible.get() ?
   [
     bw.get() + 0.02 * rw.get(),
-    bh.get() + 0.43 * rh.get()
+    bh.get() + 0.53 * rh.get() - twsSize[1] * 0.5
   ] :
   [
     bw.get() + 0.01 * rw.get(),
-    bh.get() + 0.38 * rh.get()
+    bh.get() + 0.5 * (rh.get() - twsSize[1])
   ])
 )
 
@@ -92,6 +91,13 @@ let aircraftArbiterParamsTable = paramsTable(MainMask, SecondaryMask, TertiaryMa
 let aircraftParamsTableView = @(color, isReplayVal, isRefereeModeVal)
   ((isReplayVal || isRefereeModeVal) ? aircraftArbiterParamsTable : aircraftParamsTable)(color)
 
+let agmHighSpeedWarning = @() styleText.__merge({
+  watch = AgmBlockedState
+  rendObj = ROBJ_TEXT
+  pos = [sw(50) + sw(5), sh(50) - sw(5)]
+  text = AgmBlockedState.get() ? loc("HUD/AGM_HIGH_SPEED") : ""
+})
+
 function mkAircraftMainHud() {
   let watch = [IsMainHudVisible, IsBomberViewHudVisible, isRocketSightActivated, isAAMSightActivated,
     isTurretSightActivated, isCanonSightActivated, isParamTableActivated, isBombSightActivated, isPlayingReplay, isSpectatorMode]
@@ -107,6 +113,7 @@ function mkAircraftMainHud() {
         isCanonSightActivated.get() ? fixedGunsDirection(crosshairColorOpt) : null
         isParamTableActivated.get() ? aircraftParamsTableView(HudParamColor, isPlayingReplay.get(), isSpectatorMode.get()) : null
         isBombSightActivated.get() ? bombSightComponent(sh(10.0), sh(10.0), crosshairColorOpt) : null
+        agmHighSpeedWarning
         agmLaunchZoneTps(HudColor)
       ]
         : IsBomberViewHudVisible.get()
@@ -201,16 +208,9 @@ let aircraftHud = {
   valign = ALIGN_TOP
   size = const [sw(100), sh(100)]
   children = @() {
-    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, TargetingPodSightVisible
-
-
-
-    ]
+    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, TargetingPodSightVisible, ShellFPVModeEnabled]
     size = flex()
-    children =
-
-
-
+    children = ShellFPVModeEnabled.get() ? fpvShellHud :
     [
       mkAircraftMainHud()
       aircraftGunnerHud

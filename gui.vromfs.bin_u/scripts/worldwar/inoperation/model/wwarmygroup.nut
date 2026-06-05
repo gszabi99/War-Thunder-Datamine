@@ -11,6 +11,7 @@ let { wwGetPlayerSide } = require("worldwar")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let { WwArmyView } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
+let { registerWwArmyGroupClass } = require("%scripts/worldWar/worldWarState.nut")
 
 let WwArmyGroup = class {
   clanId               = ""
@@ -186,4 +187,5 @@ let WwArmyGroup = class {
     return this.armyManagers.filter(@(m) m.name == "" && !(m.uid in armyManagersNames)).map(@(m) m.uid)
   }
 }
-return {WwArmyGroup}
+
+registerWwArmyGroupClass(WwArmyGroup)

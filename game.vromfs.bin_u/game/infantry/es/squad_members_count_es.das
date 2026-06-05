@@ -58,7 +58,7 @@ def squad_members_count_impl(dt : float;
     for i in range(0, numPoses)
       let offset = recalc_member_offset(i, squad__spreadAroundOrderPoint.y)
       let pos = find_best_squad_pos(squad__leader, squad__orderType, squad__regroupPos, offset, squad__spreadAroundOrderPoint.x).p
-      posList |> emplace((offset, pos))
+      posList |> emplace((offset = offset, pos = pos))
 
     for memberEid in members
       query(memberEid) <| $ [es] (transform : float3x4; var squad_member__offset : float3&)

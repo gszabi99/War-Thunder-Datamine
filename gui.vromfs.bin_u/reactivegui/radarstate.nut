@@ -209,6 +209,7 @@ let ElevationMax = Watched(0)
 
 let IsBScopeVisible = Watched(false)
 let IsCScopeVisible = Watched(false)
+let IsEsm = Watched(false)
 let ScanAzimuthMin = Watched(0)
 let ScanAzimuthMax = Watched(0)
 let ScanElevationMin = Watched(0)
@@ -285,7 +286,7 @@ radarState.__update({
 
     AimAzimuth, TurretAzimuth, CueReferenceTurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax,
 
-    IsBScopeVisible, IsCScopeVisible, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax, CueVisible, CueAzimuth, CueDist,
+    IsBScopeVisible, IsCScopeVisible, IsEsm, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax, CueVisible, CueAzimuth, CueDist,
 
     targets, TargetsTrigger, screenTargets, ScreenTargetsTrigger, ViewMode, MfdViewMode, HasAzimuthScale, HasDistanceScale, ScanPatternsMax,
     DistanceMax, DistanceMin, DistanceScalesMax, azimuthMarkers, AzimuthMarkersTrigger, Irst, RadarScale, MfdIlsHeight, MfdRadarOffsetX, MfdRadarOffsetY,

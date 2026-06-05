@@ -6,6 +6,10 @@
     ],
     "unit__ownsUnitId": true,
     "drone__type": 0,
+    "_tracked": "drone__ewInterferenceHintActive",
+    "drone__ewIntensity": 0.0,
+    "drone__ewControlLoss": 0.0,
+    "drone__ewInterferenceHintActive": false,
     "drone__releaseControlsDelay": 2.0,
     "drone__releaseControlsAtTime": -1.0,
     "drone__start_velocity_dir": [
@@ -53,6 +57,35 @@
         "ownedByPlr:eid": {},
         "drone__owner:eid": {},
         "drone__launcherEid:eid": {}
+      },
+      {
+        "_tags": "render",
+        "nodes_los__visiblePrecalc": false,
+        "nodes_los__visible": false,
+        "nodes_los__showMarker": false,
+        "nodes_los__showMapMarker": false,
+        "nodes_los__showKillerMarker": false,
+        "nodes_los__considerVisibleToTime": -1.0,
+        "nodes_los__considerInvisibleToTime": -1.0,
+        "nodes_los__considerAsVisibleTime": 0.3,
+        "nodes_los__considerAsInvisibleTime": 0.25,
+        "nodes_los__considerMapVisibleToTime": -1.0,
+        "nodes_los__considerMapAsVisibleTime": 5.0,
+        "nodes_los__forceShowMarkerTime": 0.0,
+        "nodes_los__forceShowMarkerToTime": -1.0,
+        "nodes_los__curLod": -1,
+        "nodes_los__lodsDistSq": [
+          1600.0,
+          6400.0,
+          14400.0,
+          40000.0
+        ],
+        "nodes_los__maxFriendlyDistSq": 160000.0,
+        "nodes_los__maxPassiveEnemyDistSq": 160000.0,
+        "nodes_los__traceMatName": "losRay",
+        "nodes_los__traceMatId": -1,
+        "nodes_los__minSmokeTraceDist": 7.0,
+        "nodes_los__traceTransparencyThreshold": 0.1
       }
     ]
   },
@@ -172,8 +205,7 @@
     "_use": [
       "base_drone",
       "drone_coverage",
-      "aircraft",
-      "unit_init_params"
+      "aircraft"
     ],
     "unit__className": "uav_inf_recon_drone",
     "drone__coverageArea": [
@@ -192,19 +224,21 @@
       "unit_params__behTreeName": "quadcopter"
     },
     "whitelistedDetector:tag": {},
-    "canBeWirelesslyMonitored:tag": {}
+    "canBeWirelesslyMonitored:tag": {},
+    "drone_type__recon:tag": {}
   },
   "uav_inf_recon_drone_item": {
-    "_use": [
-      "base_drone_launcher_gun",
-      "unit_init_params"
-    ],
+    "_use": "base_drone_launcher_gun",
     "item__name": "items/recon_drone",
     "item__template": "uav_inf_recon_drone_item",
     "item__weapTemplate": "uav_inf_recon_drone_item",
     "item__weapType": "recon_drone",
     "gun__switchToPriority": -3,
     "gun__locName": "recon_drone",
+    "gun_anim_var__defGunOffsetAlong": 0.15,
+    "gun_anim_var__defGunOffsetUp": -0.1,
+    "gun_anim_var__tpsGunOffsetAlong": 0.1,
+    "gun_anim_var__tpsGunOffsetUp": -0.15,
     "drone_launcher_anim__launchTime": 2.5,
     "drone_launcher__droneTemplate": "uav_inf_recon_drone",
     "drone_launcher__firstLaunchTimeout": 30.0,
@@ -311,13 +345,13 @@
     "vhs_camera__chromaticAberrationStart": 0.0,
     "vhs_camera__scanlineHeight": 0.001,
     "vhs_camera__noiseEndTime": -1.0,
-    "vhs_camera__dynamicRangeMinNear": 0.0,
+    "vhs_camera__dynamicRangeMinNear": -0.015,
     "vhs_camera__dynamicRangeMinFar": -0.1,
     "vhs_camera__dynamicRangeMinDestroyed": -0.5,
     "vhs_camera__dynamicRangeMaxNear": 0.9,
     "vhs_camera__dynamicRangeMaxFar": 0.5,
     "vhs_camera__dynamicRangeMaxDestroyed": 2.0,
-    "vhs_camera__dynamicRangeGammaNear": 1.0,
+    "vhs_camera__dynamicRangeGammaNear": 0.9,
     "vhs_camera__dynamicRangeGammaFar": 1.0,
     "vhs_camera__dynamicRangeGammaDestroyed": 1.0,
     "vhs_camera__chromaticAberrationIntensityNear": 0.005,
@@ -326,23 +360,70 @@
     "vhs_camera__chromaticAberrationStartNear": 0.25,
     "vhs_camera__chromaticAberrationStartFar": 0.25,
     "vhs_camera__chromaticAberrationStartDestroyed": 0.0,
-    "vhs_camera__noiseIntensityNear": 0.01,
+    "vhs_camera__noiseIntensityNear": 0.015,
     "vhs_camera__noiseIntensityFar": 0.15,
     "vhs_camera__noiseIntensityDestroyed": 0.2,
     "vhs_camera__noiseUvScaleNear": 4.0,
     "vhs_camera__noiseUvScaleFar": 4.0,
     "vhs_camera__noiseUvScaleDestroyed": 4.0,
-    "vhs_camera__scanlineHeightNear": 0.0005,
+    "vhs_camera__scanlineHeightNear": 0.0035,
     "vhs_camera__scanlineHeightFar": 0.2,
     "vhs_camera__scanlineHeightDestroyed": 1.5,
     "vhs_camera__resolutionDownscaleDefault": 1.0,
+    "vhs_camera__resolutionDownscaleEWzone": 0.6,
     "vhs_camera__resolutionDownscaleDestroyed": 0.25,
     "vhs_camera__saturationMultiplierNear": 0.75,
     "vhs_camera__saturationMultiplierFar": 0.2,
     "vhs_camera__saturationMultiplierDestroyed": 0.0,
-    "vhs_camera__noiseSaturationNear": 0.0,
+    "vhs_camera__noiseSaturationNear": 0.9,
     "vhs_camera__noiseSaturationFar": 0.25,
     "vhs_camera__noiseSaturationDestroyed": 0.5,
     "drone_camera_vhs_effect:tag": {}
+  },
+  "fake_ew_zone_base": {
+    "_use": "replicating",
+    "fake_ew_zone__areaSq": [
+      10000.0,
+      22500.0
+    ],
+    "fake_ew_zone__maxControlLoss": 0.9,
+    "team": -1,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "fakeEwZone:tag": {}
+  },
+  "fake_ew_zone_tanks": {
+    "_use": "fake_ew_zone_base",
+    "fake_ew_zone__areaSq": [
+      5625.0,
+      15625.0
+    ]
+  },
+  "fake_ew_zone_humans": {
+    "_use": "fake_ew_zone_base",
+    "fake_ew_zone__areaSq": [
+      1600.0,
+      6400.0
+    ]
   }
 }

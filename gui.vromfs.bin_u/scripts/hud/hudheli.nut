@@ -2,9 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
 let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
-let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { eventbus_send } = require("eventbus")
 let { isShowTankMinimap } = require("gameplayBinding")
 let { is_replay_playing } = require("replays")
 let { mkActionBarAir } = require("%scripts/hud/hudActionBar.nut")
@@ -23,9 +21,6 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
     this.createAirWeaponSelector(getPlayerCurUnit())
-
-    g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
-      @(_) this.updateDmgIndicatorState(), this)
   }
 
   function reinitScreen(_params = null) {
@@ -33,16 +28,6 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
     this.actionBarWeak?.reinit()
     this.updateTacticalMapVisibility()
     hudEnemyDamage.reinit()
-    this.updateDmgIndicatorState()
-  }
-
-  function updateDmgIndicatorState() {
-    let obj = this.scene.findObject("xray_render_dmg_indicator")
-    if (obj?.isValid())
-      eventbus_send("updateDmgIndicatorStates", {
-        size = obj.getSize()
-        pos = obj.getPos()
-      })
   }
 
   function updateTacticalMapVisibility() {

@@ -114,6 +114,11 @@ let CONSUMABLE_TYPES = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, 
 
 let NOT_WEAPON_TYPES = [ "targetingPod", "fuel tanks" ]
 
+let missileWeaponTypes = [WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM].totable()
+let missileBulletTypes = [
+  "aam", "sam_tank", "atgm_tank", "atgm_tandem_tank", "atgm_ke_tank", "atgm_vt_fuze_tank", "atgm_he_tank"
+].totable()
+
 let WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
   BULLET           = "bullet"
@@ -248,7 +253,7 @@ let getWeaponDisabledMods = @(unit, weapon)
 let isDefaultTorpedoes = @(weapon) weapon?.reqModification.contains("ship_torpedoes") ?? false
 
 function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null) {
-  if (isWeaponAux(weapon))
+  if (weapon?.hideInGui || isWeaponAux(weapon))
     return false
 
   if (weaponTags != null) {
@@ -269,6 +274,22 @@ function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null)
     return false
 
   return true
+}
+
+function isWeaponUnavailableInMission(unit, weapon, isForcedAvailable, isForcedShowDefaultTorpedoes) {
+  if (isForcedAvailable)
+    return false
+
+  let needShowDefTorpedoes = isForcedShowDefaultTorpedoes && isDefaultTorpedoes(weapon)
+  if (needShowDefTorpedoes)
+    return false
+
+  let hasOnlySelectable = !isInFlight() || !getCurMissionRules().isWorldWar
+  let isHidden = !isWeaponVisible(unit, weapon, hasOnlySelectable)
+  if (isHidden)
+    return true
+  let isDisabled = hasOnlySelectable && !isWeaponEnabled(this.unit, weapon)
+  return isDisabled
 }
 
 function getLastWeapon(unitName) {
@@ -596,7 +617,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
                 item.seekerIRCCM <- true
             }
             else if (itemBlk.guidance?.opticalFlowSeeker != null) {
-              let targetSignatureType = itemBlk.guidance?.opticalFlowSeeker != null ? itemBlk.guidance?.opticalFlowSeeker.targetSignatureType : "infraRed"
+              let targetSignatureType = itemBlk.guidance.opticalFlowSeeker.targetSignatureType
               if (targetSignatureType == "optic")
                 item.guidanceType <- "tv"
               else
@@ -1218,6 +1239,13 @@ function get_weapon_icons_text(unitName, weaponName) {
   return colorize("weaponPresetColor", "".join(weaponIconsText))
 }
 
+
+let isMissileWeaponType = @(weaponType) weaponType in missileWeaponTypes
+
+let isMissileBullet = @(bulletType) bulletType in missileBulletTypes
+
+let isGuidedBomb = @(weaponType) weaponType == WEAPON_TYPE.GUIDED_BOMBS
+
 return {
   KGF_TO_NEWTON
   TRIGGER_TYPE
@@ -1263,4 +1291,8 @@ return {
   getBulletBeltShortLocId
   getScoutScoreMuliplierWithUavByDiff
   getWeaponLocByTrigger
+  isMissileWeaponType
+  isMissileBullet
+  isGuidedBomb
+  isWeaponUnavailableInMission
 }

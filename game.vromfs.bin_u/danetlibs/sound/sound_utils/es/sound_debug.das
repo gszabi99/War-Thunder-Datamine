@@ -90,13 +90,16 @@ def human_sound_debug_draw(evt : Event;
 
   if human_speech__voiceIdx >= 0
     text += "voice=#{human_speech__voiceIdx} "
-    text += "member=#{squad_member__memberIdx} "
-    text += "team=#{team} "
-    text += "squad=#{squad_member__squad} "
+    if squad_member__memberIdx != -1
+      text += "member=#{squad_member__memberIdx} "
+    if team != -1
+      text += "team=#{team} "
+    if squad_member__squad != INVALID_ENTITY_ID
+      text += "squad=#{squad_member__squad} "
 
   if !empty(text)
     let color = is_watched_sound_state(sound_control__state) ? E3DCOLOR(0xFF0000FF) : E3DCOLOR(0xFF000000)
-    let pos = transform[3] + float3(0., 0.5, 0.)
+    let pos = transform[3]
     add_debug_text_mark(pos, text, -1, 0., color)
 
 
@@ -131,6 +134,18 @@ def sound_debug_console_sound_play_pos(path : string; x, y, z : float; duration 
 [console_cmd(name="snd.enum_events")]
 def sound_debug_console_enum_events()
   sound_debug_enum_events()
+
+
+[console_cmd(name="snd.debug_set_hero_watched")]
+def sound_debug_set_hero_watched_console_cmd(set_watched : bool)
+  query() <| $ [es(REQUIRE=hero)] (eid : EntityId; possessedByPlr : EntityId)
+    if set_watched
+      addSubTemplate(eid, "observed_local") <| $(var init : ComponentsInitializer)
+        init |> set("watchedByPlr", possessedByPlr)
+      sound_debug("snd.debug_set_hero_watched: added watchedByPlr to {eid}")
+    else
+      removeSubTemplate(eid, "observed_local")
+      sound_debug("snd.debug_set_hero_watched: removed watchedByPlr from {eid}")
 
 
 [ecs_template]

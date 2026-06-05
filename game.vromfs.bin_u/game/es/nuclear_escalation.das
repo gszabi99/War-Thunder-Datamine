@@ -11,7 +11,9 @@ require DagorSystem
 require strings
 require app
 require Weapon
+require Mission
 require Grid
+require %appGame.wt_events
 
 struct TargetCandidate
   eid : EntityId
@@ -31,20 +33,42 @@ def on_equip_storage_appear_es(evt : Event;
   equip_storage__current = rnd_float(equip_storage__capacity * 0.2, equip_storage__capacity * 0.4)
 
 def create_unit(template_name : string;
-                unit_name : das_string;
+                settings_obj : Object const?;
                 transform : float3x4;
                 team : int;
-                mods : StringList;
-                settings : Array;
                 check_visibility_target : bool = true;
-                move_speed_k_at_shooting : float = 1.)
+                move_speed_k_at_shooting : float = 1.;
+                death_substract_tickets : int = 5;
+                target__tag : das_string const? = null)
+  if template_name.empty()
+    logerr("Empty template name for unit creation")
+    return INVALID_ENTITY_ID
   var unitEid = INVALID_ENTITY_ID
+  let unitName = settings_obj?.name ?? ""
+  if unitName == ""
+    logerr("Empty unit name for unit creation")
+    return INVALID_ENTITY_ID
+  var templateName = template_name
+  templateName += "+unit_init_params"
   using() <| $(var disabledTriggers : IntList)
-    unitEid = createEntity(template_name) <| $(init)
-      init |> set("unit__className", unit_name)
+    unitEid = createEntity(templateName) <| $(init)
+      init |> set("unit__className", unitName)
       init |> set("transform", transform)
       init |> set("team", team)
       init |> set("unit__ownsUnitId", true)
+      init |> set("setting__toGround", true)
+      init |> set("setting__dontCreateChar", settings_obj?.dontCreateChar ?? false)
+
+      let mods = get_ecs_StringList(settings_obj, "mods")
+      if mods != null
+        init |> set("unit_params__modList", *mods)
+      let bulletNameList = get_ecs_StringList(settings_obj, "bulletNames")
+      if bulletNameList != null
+        init |> set("setting__bullets", *bulletNameList)
+      let bulletsCountList = get_ecs_IntList(settings_obj, "bulletsCount")
+      if bulletsCountList != null
+        init |> set("setting__bulletsCount", *bulletsCountList)
+
       init |> set("aimer_custom_setting__checkVisibilityTarget", check_visibility_target)
       init |> set("aimer_custom_setting__ignoreStopForFire", true)
       init |> set("aimer_custom_setting__targetAAA", false)
@@ -53,20 +77,11 @@ def create_unit(template_name : string;
       disabledTriggers |> push(int(WeaponTriggerGroups.TRIGGER_GROUP_COAXIAL_GUN))
       init |> set("custom_gun_properties__tiggerGroupNo", disabledTriggers)
       init |> set("custom_gun_properties__aimMaxDist", 0.)
-      init |> set("unit_params__modList", mods)
-      init |> set("unit_params__rearmOnFieldTime", 20.)
-      for j in range(length(settings))
-        let obj = settings[j] as Object
-        if obj != null
-          let unitName = obj?.unit ?? ""
-          if unitName == unit_name
-            let nameList = get_ecs_StringList(obj, "bulletNames")
-            if nameList != null
-              init |> set("unit_params__bulletNames", *nameList)
-            let countList = get_ecs_IntList(obj, "bulletsCount")
-            if countList != null
-              init |> set("unit_params__bulletsCount", *countList)
-            break;
+
+      init |> set("unit_params__rearmTimeOnField", 20.)
+      init |> set("on_death_substract_team_tickets_num", death_substract_tickets)
+      if target__tag != null
+        init |> set("nuclear_escalation_target__tag", *target__tag)
   return unitEid
 
 [es(tag=server, no_order)]
@@ -77,10 +92,8 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
                             equip_factory__equipForSendColumn : float;
                             equip_factory__maxUnitsCount : int;
                             var equip_storage__current aka factory_equip_storage__current : float&;
-                            equip_factory__columnUnitNames1 : StringList;
-                            equip_factory__columnUnitNames2 : StringList;
-                            equip_factory__unitsColumnMods : StringList;
-                            equip_factory__bulletSetsForUnits : Array;
+                            equip_factory__columnUnitsSettings1 : Array;
+                            equip_factory__columnUnitsSettings2 : Array;
                             var equip_factory__columnUnits : EidList&;
                             var equip_factory__currentColumnTarget : EntityId&;
                             fuel_factory : Tag const?;
@@ -91,9 +104,18 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
     factory_equip_storage__current = 0.
     return
   factory_equip_storage__current = clamp(factory_equip_storage__current + equip_factory__productionRate * act.dt, 0., factory_equip_storage__capacity)
-  let existUnitsCount = equip_factory__columnUnits |> length()
-  assume columnUnitsNames = storage_unit__ref.unit.army == 1 ? equip_factory__columnUnitNames1 : equip_factory__columnUnitNames2
-  if factory_equip_storage__current >= equip_factory__equipForSendColumn && existUnitsCount <= equip_factory__maxUnitsCount - columnUnitsNames |> length()
+
+  if factory_equip_storage__current >= equip_factory__equipForSendColumn
+    let existUnitsCount = equip_factory__columnUnits |> length()
+    assume columnUnitSettings = storage_unit__ref.unit.army == 1 ? equip_factory__columnUnitsSettings1 : equip_factory__columnUnitsSettings2
+    var needUnits = 0
+    for i in range(0, columnUnitSettings |> length())
+      let obj = columnUnitSettings[i] as Object
+      if obj != null
+        needUnits += obj.count ?? 1
+    if existUnitsCount > equip_factory__maxUnitsCount - needUnits
+      return
+
     equip_factory__currentColumnTarget = INVALID_ENTITY_ID
     var targetCandidates : array<TargetCandidate>
     if fuel_factory != null
@@ -110,48 +132,65 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
                                                equip_storage__capacity aka target_equip_storage__capacity : float)
         if !target_unit__ref.unit.isDelayed && target_unit__ref.unit.isAlive && target_unit__ref.unit.army == storage_unit__ref.unit.army && target_equip_storage__current < target_equip_storage__capacity
           targetCandidates.emplace(TargetCandidate(eid = eid, freeCapacity = target_equip_storage__capacity - target_equip_storage__current, dist = length(storage_unit__ref.unit.pos - target_unit__ref.unit.pos)))
+
     if targetCandidates |> length() <= 0
       return
 
     sort_candidates(targetCandidates)
     let idx = rnd_int(0, min(2, length(targetCandidates) - 1))
     equip_factory__currentColumnTarget = targetCandidates[idx].eid
-    let unitCnt = columnUnitsNames |> length()
     using() <| $(var columnUnits : EidList)
-      for unit, i in columnUnitsNames, range(0, unitCnt)
-        var unitTransform = storage_unit__ref.unit.unitTm
-        unitTransform[3] += unitTransform[2] * float(i) * 10.
-        var templateName = "tank+delayed_destroy_dead_unit+aimer_custom_setting+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-        if string(unit) |> find("/") != -1
-          templateName = "simple_tank+delayed_destroy_dead_unit+aimer_custom_setting+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-        let unitEid = create_unit(templateName, unit, unitTransform, storage_unit__ref.unit.army, equip_factory__unitsColumnMods, equip_factory__bulletSetsForUnits)
-        equip_factory__columnUnits |> push(unitEid)
-        columnUnits |> push(unitEid)
+      var j = 0
+      for i in range(0, columnUnitSettings |> length())
+        let obj = columnUnitSettings[i] as Object
+        if obj != null
+          var unitTransform = storage_unit__ref.unit.unitTm
+          unitTransform[3] += unitTransform[2] * float(j) * 10.
+          let templateName = obj.templateName ?? "tank+nuclear_escalation_tank"
+          let count = obj.count ?? 1
+          for _k in range(0, count)
+            let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army)
+            if unitEid != INVALID_ENTITY_ID
+              equip_factory__columnUnits |> push(unitEid)
+              columnUnits |> push(unitEid)
+              unitTransform[3] += unitTransform[2] * 10.
+              ++j
       if columnUnits |> length() > 0
         factory_equip_storage__current -= equip_factory__equipForSendColumn
         createEntity("units_column") <| $(init)
           init |> set("units_column__units", columnUnits)
           init |> set("units_column__target", equip_factory__currentColumnTarget)
           init |> set("units_column__captureCheckTimer", rnd_float(0., 1.))
-          init |> set("units_column__transportedEquipment", equip_factory__equipForSendColumn / float(unitCnt))
+          init |> set("units_column__transportedEquipment", equip_factory__equipForSendColumn / float(needUnits))
 
 [es(tag=server, no_order)]
 def equip_storage_repair_update_es(act : UpdateStageInfoAct;
-                                   var unit__ref : UnitRef&;
+                                   var unit__ref aka storage_unit__ref : UnitRef&;
                                    equip_storage__repairTime : float;
                                    var equip_storage__current : float&;
-                                   var equip_storage__repairTimer : float&)
+                                   var equip_storage__repairTimer : float&;
+                                   units_spawn_on_init__units : EidList const?)
   if equip_storage__repairTimer > 0.
     equip_storage__repairTimer -= act.dt
     if equip_storage__repairTimer <= 0.
       equip_storage__repairTimer = -1.
-      *unit__ref.unit |> repair()
+      *storage_unit__ref.unit |> repair()
+      if units_spawn_on_init__units != null
+        for unitEid in *units_spawn_on_init__units
+          query(unitEid) <| $ [es] (var unit__ref aka spawned_unit__ref : UnitRef)
+            if !spawned_unit__ref.unit.isDelayed
+              *spawned_unit__ref.unit |> repair()
       return
-  if unit__ref.unit.isDelayed || unit__ref.unit.isAlive
+  if storage_unit__ref.unit.isDelayed || storage_unit__ref.unit.isAlive
     return
   equip_storage__current = 0.
   if equip_storage__repairTimer < 0.
     equip_storage__repairTimer = equip_storage__repairTime
+    if units_spawn_on_init__units != null
+      for unitEid in *units_spawn_on_init__units
+        query(unitEid) <| $ [es] (var restore_unit_by_timer__restoreAtTime : float&)
+          if restore_unit_by_timer__restoreAtTime > 0.
+            restore_unit_by_timer__restoreAtTime = get_sync_time() + equip_storage__repairTime
 
 [es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
 def on_column_unit_appear_es(evt : Event;
@@ -159,13 +198,9 @@ def on_column_unit_appear_es(evt : Event;
                              var unit__ref : UnitRef&)
   query() <| $ [es] (equip_factory__columnUnits : EidList&; equip_factory__currentColumnTarget : EntityId; tank_factory : Tag const?)
     if find_index(equip_factory__columnUnits, eid) != -1
-      var tm = IDENT_TM
-      query(equip_factory__currentColumnTarget) <| $ [es] (unit__ref aka target_unit__ref : UnitRef)
-        tm = target_unit__ref.unit.unitTm
-      query(equip_factory__currentColumnTarget) <| $ [es(REQUIRE=strongpoint__radius)] (transform : float3x4)
-        tm = transform
-      if tm != IDENT_TM
-        set_destination_way_point(unit__ref.unit, "USE_SPLINE", tm, columnTanksSpeed)
+      let tm = get_TMatrix(equip_factory__currentColumnTarget, "transform")
+      if tm != null && *tm != IDENT_TM
+        set_destination_way_point(unit__ref.unit, "USE_SPLINE", *tm, columnTanksSpeed)
       if tank_factory != null
         var gm = unit__ref.unit |> as_gm()
         gm.slowWhenEnemyNear = 0.2
@@ -285,13 +320,11 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
                            tank_factory__consumeInterval : float;
                            tank_factory__spawnThreshold : float;
                            equip_factory__maxUnitsCount : int;
-                           equip_factory__columnUnitNames1 : StringList;
-                           equip_factory__columnUnitNames2 : StringList;
-                           tank_factory__spgColumnUnitNames1 : StringList;
-                           tank_factory__spgColumnUnitNames2 : StringList;
+                           equip_factory__columnUnitsSettings1 : Array;
+                           equip_factory__columnUnitsSettings2 : Array;
+                           tank_factory__spgColumnUnitsSettings1 : Array;
+                           tank_factory__spgColumnUnitsSettings2 : Array;
                            tank_factory__spgColummProbability : float;
-                           equip_factory__bulletSetsForUnits : Array;
-                           equip_factory__unitsColumnMods : StringList;
                            var tank_factory__spawnPoints : float&;
                            var tank_factory__consumeTimer : float&;
                            var equip_factory__columnUnits : EidList&;
@@ -342,11 +375,15 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
   if tank_factory__spawnPoints >= tank_factory__spawnThreshold
     let existUnitsCount = equip_factory__columnUnits |> length()
     let isSpg = gfrnd() < tank_factory__spgColummProbability
-    assume columnUnitsNames = (isSpg ?
-                               (army == 1 ? tank_factory__spgColumnUnitNames1 : tank_factory__spgColumnUnitNames2) :
-                               (army == 1 ? equip_factory__columnUnitNames1 : equip_factory__columnUnitNames2))
-    let columnSize = columnUnitsNames |> length()
-    if existUnitsCount <= equip_factory__maxUnitsCount - columnSize
+    assume columnUnitSettings = (isSpg ?
+                               (army == 1 ? tank_factory__spgColumnUnitsSettings1 : tank_factory__spgColumnUnitsSettings2) :
+                               (army == 1 ? equip_factory__columnUnitsSettings1 : equip_factory__columnUnitsSettings2))
+    var needUnits = 0
+    for i in range(0, columnUnitSettings |> length())
+      let obj = columnUnitSettings[i] as Object
+      if obj != null
+        needUnits += obj.count ?? 1
+    if existUnitsCount <= equip_factory__maxUnitsCount - needUnits
       
       equip_factory__currentColumnTarget = INVALID_ENTITY_ID
       if !isSpg
@@ -364,6 +401,12 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
           if team != army || (team == army && strongpoint__units |> length() <= 0)
             let dist = length(storage_unit__ref.unit.pos - transform[3])
             targetCandidates.emplace(TargetCandidate(eid = eid, freeCapacity = 0., dist = dist))
+        query() <| $ [es(REQUIRE=airfield_aa__nuclearEscalationField)] (eid : EntityId;
+                                                                        team : int;
+                                                                        transform : float3x4)
+          if team != army
+            let dist = length(storage_unit__ref.unit.pos - transform[3])
+            targetCandidates.emplace(TargetCandidate(eid = eid, freeCapacity = 0., dist = dist))
         if targetCandidates |> length() <= 0
           return
         sort_candidates(targetCandidates)
@@ -374,15 +417,20 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
           return
 
       using() <| $(var columnUnits : EidList)
-        for unit, i in columnUnitsNames, range(0, columnSize)
-          var unitTransform = storage_unit__ref.unit.unitTm
-          unitTransform[3] += unitTransform[2] * float(i) * 10.
-          var templateName = "tank+delayed_destroy_dead_unit+aimer_custom_setting+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-          if string(unit) |> find("/") != -1
-            templateName = "simple_tank+delayed_destroy_dead_unit+aimer_custom_setting+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-          let unitEid = create_unit(templateName, unit, unitTransform, army, equip_factory__unitsColumnMods, equip_factory__bulletSetsForUnits, !isSpg, 0.1)
-          columnUnits |> push(unitEid)
-          equip_factory__columnUnits |> push(unitEid)
+        var j = 0
+        for i in range(0, columnUnitSettings |> length())
+          let obj = columnUnitSettings[i] as Object
+          if obj != null
+            var unitTransform = storage_unit__ref.unit.unitTm
+            unitTransform[3] += unitTransform[2] * float(j) * 10.
+            let templateName = obj.templateName ?? "tank+nuclear_escalation_tank"
+            let count = obj.count ?? 1
+            for _k in range(0, count)
+              let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army, !isSpg, 0.1)
+              equip_factory__columnUnits |> push(unitEid)
+              columnUnits |> push(unitEid)
+              unitTransform[3] += unitTransform[2] * 10.
+              ++j
         if columnUnits |> length() > 0
           tank_factory__spawnPoints -= tank_factory__spawnThreshold
           createEntity(isSpg ? "spg_units_column" : "units_column") <| $(init)
@@ -466,46 +514,122 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
       if found
         return true
     return false
-
-[es(tag=server, on_event=EventFlightStart)]
-def init_assembly_area_es(evt : Event;
-                          assembly_area__fuelStorageName : string;
-                          assembly_area__ammoStorageName : string;
-                          assembly_area__tankStorageName : string;
-                          var assembly_area__fuelStorage : EntityId&;
-                          var assembly_area__ammoStorage : EntityId&;
-                          var assembly_area__tankStorage : EntityId&)
-  query() <| $ [es(REQUIRE=equip_storage__current)] (eid : EntityId; unit__missionName : string)
-    if unit__missionName == assembly_area__fuelStorageName
-      assembly_area__fuelStorage = eid
-    elif unit__missionName == assembly_area__ammoStorageName
-      assembly_area__ammoStorage = eid
-    elif unit__missionName == assembly_area__tankStorageName
-      assembly_area__tankStorage = eid
-
-  if assembly_area__tankStorage == INVALID_ENTITY_ID
-    return
-  query(assembly_area__tankStorage) <| $ [es] (var tank_factory__fuelStorage : EntityId&; var tank_factory__ammoStorage : EntityId&)
-    tank_factory__fuelStorage = assembly_area__fuelStorage
-    tank_factory__ammoStorage = assembly_area__ammoStorage
+  
+  query(units_column__target) <| $ [es(REQUIRE=airfield_aa__nuclearEscalationField)] (var team : int&;
+                                                                                      airfield_aa__ticketsByCapture : int;
+                                                                                      transform : float3x4)
+    for unitEid in units_column__units
+      query(unitEid) <| $ [es] (unit__ref aka column_unit__ref : UnitRef)
+        if (!column_unit__ref.unit.isDelayed &&
+         column_unit__ref.unit.isAlive &&
+         length_sq(column_unit__ref.unit.pos - transform[3]) < 50. * 50.)
+          if column_unit__ref.unit.army != team
+            if !capture_blocked(transform[3], column_unit__ref.unit.army, 50.)
+              change_mp_tickets_for_team(team, -airfield_aa__ticketsByCapture)
+              team = column_unit__ref.unit.army
+          destroyEntity(unitEid)
 
 [es(tag=server, on_appear)]
-def on_strongpoint_appear_es(evt : Event;
-                             team : int;
-                             transform : float3x4;
-                             object_group_spawn_units__positions : TMatrixList;
-                             object_group_spawn_units__namesTeam1 : StringList;
-                             object_group_spawn_units__namesTeam2 : StringList;
-                             strongpoint__unitMods : StringList;
-                             strongpoint__bulletSetsForUnits : Array;
-                             var strongpoint__units : EidList&)
-  assume unitList = team == 1 ? object_group_spawn_units__namesTeam1 : object_group_spawn_units__namesTeam2
-  for unit, tm in unitList, object_group_spawn_units__positions
-    var templateName = "tank+delayed_destroy_dead_unit+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-    if string(unit) |> find("/") != -1
-      templateName = "simple_tank+delayed_destroy_dead_unit+custom_gun_properties+disable_radar_on_start+unit_death_substract_team_tickets_5"
-    let unitEid = create_unit(templateName, unit, transform * tm, team, strongpoint__unitMods, strongpoint__bulletSetsForUnits)
-    strongpoint__units |> push(unitEid)
+def init_assembly_area_es(evt : Event;
+                          eid : EntityId;
+                          transform : float3x4;
+                          assembly_area__tankFactoryTempl : string;
+                          assembly_area__fuelStorageTempl : string;
+                          assembly_area__ammoStorageTempl : string;
+                          assembly_area__tankFactoryUnitName : string;
+                          assembly_area__fuelStorageUnitName : string;
+                          assembly_area__ammoStorageUnitName : string;
+                          team : int;
+                          units_spawn_on_init__positions : TMatrixList;
+                          units_spawn_on_init__positionNames : StringList;
+                          nuclear_escalation_target__tag : string)
+  var fuelStorageEid = INVALID_ENTITY_ID
+  var ammoStorageEid = INVALID_ENTITY_ID
+  if !assembly_area__fuelStorageTempl.empty() && !assembly_area__fuelStorageUnitName.empty()
+    var tm = IDENT_TM
+    for i in range(0, units_spawn_on_init__positionNames |> length())
+      if units_spawn_on_init__positionNames[i] == "fuel_storage"
+        tm = units_spawn_on_init__positions[i]
+        break
+    fuelStorageEid = createEntity(assembly_area__fuelStorageTempl + "+unit_init_params") <| $(init)
+      init |> set("unit__className", assembly_area__fuelStorageUnitName)
+      init |> set("transform", transform * tm)
+      init |> set("unit__ownsUnitId", true)
+      init |> set("team", team)
+      init |> set("setting__toGround", true)
+      init |> set("nuclear_escalation_target__tag", nuclear_escalation_target__tag)
+  if !assembly_area__ammoStorageTempl.empty() && !assembly_area__ammoStorageUnitName.empty()
+    var tm = IDENT_TM
+    for i in range(0, units_spawn_on_init__positionNames |> length())
+      if units_spawn_on_init__positionNames[i] == "ammo_storage"
+        tm = units_spawn_on_init__positions[i]
+        break
+    ammoStorageEid = createEntity(assembly_area__ammoStorageTempl + "+unit_init_params") <| $(init)
+      init |> set("unit__className", assembly_area__ammoStorageUnitName)
+      init |> set("transform", transform * tm)
+      init |> set("unit__ownsUnitId", true)
+      init |> set("team", team)
+      init |> set("setting__toGround", true)
+      init |> set("nuclear_escalation_target__tag", nuclear_escalation_target__tag)
+  if !assembly_area__tankFactoryTempl.empty() && !assembly_area__tankFactoryUnitName.empty()
+    createEntity(assembly_area__tankFactoryTempl + "+unit_init_params") <| $(init)
+      init |> set("unit__className", assembly_area__tankFactoryUnitName)
+      init |> set("transform", transform)
+      init |> set("unit__ownsUnitId", true)
+      init |> set("setting__toGround", true)
+      init |> set("team", team)
+      init |> set("tank_factory__fuelStorage", fuelStorageEid)
+      init |> set("tank_factory__ammoStorage", ammoStorageEid)
+      init |> set("units_spawn_on_init__positions", units_spawn_on_init__positions)
+      init |> set("units_spawn_on_init__positionNames", units_spawn_on_init__positionNames)
+      init |> set("nuclear_escalation_target__tag", nuclear_escalation_target__tag)
+  destroyEntity(eid)
+
+[es(tag=server, on_appear, on_event=EventUnitDelayedStatusChanged, after=unit_init_completed_es)]
+def units_spawn_on_init_es(evt : Event;
+                           team : int;
+                           active : bool const?;
+                           transform : float3x4;
+                           units_spawn_on_init__positions : TMatrixList;
+                           units_spawn_on_init__positionNames : StringList;
+                           units_spawn_on_init__unitSettings : Array const?;
+                           units_spawn_on_init__unitSettingsTeam1 : Array const?;
+                           units_spawn_on_init__unitSettingsTeam2 : Array const?;
+                           var units_spawn_on_init__units : EidList&;
+                           nuclear_escalation_target__tag : das_string const?)
+  if active != null && *active == false
+    return
+  if units_spawn_on_init__units |> length() > 0
+    return
+  let unitSettingsAny = units_spawn_on_init__unitSettings
+  let unitSettingsByTeam = team == 1 ? units_spawn_on_init__unitSettingsTeam1 : units_spawn_on_init__unitSettingsTeam2
+  let unitSettings : Array const? = (unitSettingsAny != null && *unitSettingsAny |> length() > 0) ? unitSettingsAny : unitSettingsByTeam
+  if unitSettings == null
+    return
+  var nextNameSearchIndex : table<string; int>
+  for unit in *unitSettings
+    let obj = unit as Object
+    if obj != null
+      let templateName = obj.templateName ?? "tank+nuclear_escalation_tank"
+      let spawnName = obj.spawnName ?? ""
+      for _ in range(0, obj.count ?? 1)
+        var tm = IDENT_TM
+        let startIdx = nextNameSearchIndex?[spawnName] ?? 0
+        if !spawnName.empty()
+          for j in range(startIdx, units_spawn_on_init__positionNames |> length())
+            if units_spawn_on_init__positionNames[j] == spawnName
+              tm = units_spawn_on_init__positions[j]
+              nextNameSearchIndex[spawnName] = j + 1
+              break
+        elif startIdx < units_spawn_on_init__positions |> length()
+          tm = units_spawn_on_init__positions[startIdx]
+          nextNameSearchIndex[spawnName] = startIdx + 1
+          let posName = units_spawn_on_init__positionNames |> length() > startIdx ? "{units_spawn_on_init__positionNames[startIdx]}" : ""
+          if !posName.empty()
+            nextNameSearchIndex[posName] = startIdx + 1
+        let unitEid = create_unit(templateName, obj, transform * tm, team, true, 1., 5, nuclear_escalation_target__tag)
+        if unitEid != INVALID_ENTITY_ID
+          units_spawn_on_init__units |> push(unitEid)
 
 let distSqToAlly = 300. * 300.
 
@@ -590,3 +714,72 @@ def activate_delayed_destroy_timer_es(evt : Event;
                                       delayed_destroy_dead_unit__time : float;
                                       var entity_destroyer__destroyAtTime : float&)
   entity_destroyer__destroyAtTime = get_sync_time() + delayed_destroy_dead_unit__time
+
+[es(tag=server, track=team)]
+def change_team_of_child_units_es(evt : Event;
+                                  team aka parent_team : int;
+                                  units_spawn_on_init__units : EidList)
+  for unitEid in units_spawn_on_init__units
+    query(unitEid) <| $ [es] (var team aka child_team : int&)
+      child_team = parent_team
+
+[es(tag=server, track=team)]
+def change_team_of_airfield_es(evt : Event;
+                               team : int;
+                               spawnedOnAirfieldId : int)
+  if spawnedOnAirfieldId >= 0
+    var af = get_airfield_by_id(spawnedOnAirfieldId)
+    if af != null
+      *af |> captureField(team)
+
+[es(tag=server)]
+def on_airfield_active_state_changed_es(evt : EventAirfieldActiveStateChanged;
+                                        spawnedOnAirfieldId : int;
+                                        units_spawn_on_init__units : EidList)
+  if spawnedOnAirfieldId >= 0 && spawnedOnAirfieldId == evt.airfieldId
+    if evt.active
+      for unitEid in units_spawn_on_init__units
+        query(unitEid) <| $ [es] (var restore_unit_by_timer__restoreAtTime : float&)
+          if restore_unit_by_timer__restoreAtTime > 0.
+            restore_unit_by_timer__restoreAtTime = get_sync_time()
+
+[es(on_event=CmdUnitAttackTarget, REQUIRE_NOT=unit_init_attack_type__targets)]
+def on_unit_attack_nuclear_escalation_target_es(evt : Event;
+                                                var unit__ref aka hunter_unit__ref : UnitRef&;
+                                                nuclear_escalation_target_hunter__hash : uint64)
+  var nearestSq = FLT_MAX
+  var targetUnit = null
+  if nuclear_escalation_target_hunter__hash == uint64(0)
+    return
+  query() <| $ [es(REQUIRE=unit_tag__gm)] (unit__ref aka target_unit__ref : UnitRef; nuclear_escalation_target__hash : uint64)
+    if target_unit__ref.unit.isDelayed || nuclear_escalation_target__hash == uint64(0)
+      return
+    if nuclear_escalation_target_hunter__hash != nuclear_escalation_target__hash || !target_unit__ref.unit.isAlive || hunter_unit__ref.unit.army == target_unit__ref.unit.army
+      return
+    let distSq = length_sq(target_unit__ref.unit.pos - hunter_unit__ref.unit.pos)
+    if distSq < nearestSq
+      nearestSq = distSq
+      targetUnit = target_unit__ref.unit
+  if targetUnit != null
+    var gm = as_gm(hunter_unit__ref.unit)
+    if gm != null
+      add_unit_for_target(*gm, targetUnit)
+      set_unit_attack_type(hunter_unit__ref.unit, "attack_target")
+  else
+    set_unit_attack_type(hunter_unit__ref.unit, "dont_aim")
+
+[es(tag=server, on_appear)]
+def on_nuclear_escalation_target_appear_es(evt : Event;
+                                           var nuclear_escalation_target__hash : uint64&;
+                                           nuclear_escalation_target__tag : string)
+  if nuclear_escalation_target__tag.empty()
+    return
+  nuclear_escalation_target__hash = hash(nuclear_escalation_target__tag)
+
+[es(tag=server, on_appear)]
+def on_nuclear_escalation_target_hunter_appear_es(evt : Event;
+                                                  var nuclear_escalation_target_hunter__hash : uint64&;
+                                                  nuclear_escalation_target_hunter__target_tag : string)
+  if nuclear_escalation_target_hunter__target_tag.empty()
+    return
+  nuclear_escalation_target_hunter__hash = hash(nuclear_escalation_target_hunter__target_tag)

@@ -16,7 +16,7 @@ require FlightControl
 require FlightModelWrap
 require HeroManager
 require math
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require RadarHud
 require Plane
 require Sensors
@@ -25,6 +25,7 @@ require Unit
 require Weapon
 require hud
 require WTCamera
+require Localization
 
 enum ArrowType
   simple

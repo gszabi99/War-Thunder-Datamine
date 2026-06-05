@@ -26,8 +26,8 @@
     "vehicle"
   ],
   "maxFwdSpeed": [
-    60.0,
-    60.0
+    75.0,
+    75.0
   ],
   "maxRevSpeed": [
     10.0,
@@ -73,22 +73,6 @@
     60000.0,
     300000.0
   ],
-  "bulletHitFx": [
-    "ground_model_hit",
-    "ground_model_hit"
-  ],
-  "partDamageFx": [
-    "part_damage",
-    "part_damage"
-  ],
-  "explosionFx": [
-    "tank_explosion",
-    "tank_explosion"
-  ],
-  "fireFx": [
-    "ground_model_fire",
-    "ground_model_fire"
-  ],
   "destroysRendInstances": [
     false,
     false
@@ -101,6 +85,9 @@
     "typeLightTank",
     "typeLightTank"
   ],
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "isDynamicObstacle": true,
   "isConstantlyWinchable": true,
   "onRadarAs": "tracked",
@@ -284,6 +271,10 @@
         "armorThrough": 3.0
       },
       "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
       }
@@ -1005,10 +996,7 @@
       }
     ]
   },
-  "class_tags": [
-    {},
-    {}
-  ],
+  "class_tags": {},
   "unitFx": {
     "event": [
       {
@@ -1211,20 +1199,12 @@
     "zoomInFov": 20.0,
     "detectionHeight": 2.2
   },
-  "user_skin": [
-    {
-      "name": "default",
-      "replace_tex": {
-        "from": "us_camo_olive*"
-      }
-    },
-    {
-      "name": "default",
-      "replace_tex": {
-        "from": "us_camo_olive*"
-      }
+  "user_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "us_camo_olive*"
     }
-  ],
+  },
   "MetaParts": {
     "inner": {
       "hp": 20000.0,
@@ -1423,8 +1403,5 @@
   },
   "optics": {
     "driverReticule": "car_driver_optics"
-  },
-  "default_skin": {
-    "name": "default"
   }
 }

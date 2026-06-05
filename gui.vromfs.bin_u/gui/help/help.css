@@ -49,18 +49,41 @@ controlsHelpFrame > tdiv > line {
 }
 
 controlsHelpFrame keyboardButton {
-  height:0.8@kbh;
-  min-width:0.8@kbh;
-  min-height:0.8@kbh;
+  height:0.7@kbh;
+  min-width:0.7@kbh;
+}
+
+controlsHelpFrame combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  height:0.56@kbh;
+  min-width:0.56@kbh;
+}
+
+controlsHelpFrame combination[hasActivationTypeImg=yes] > combinationBackground {
+  background-image:#ui/gameuiskin#hotkey_combo_bg.svg;
+  padding:0.07@kbh;
+}
+
+controlsHelpFrame activationTypeImg {
+  size: 0.63@kbh, 0.63@kbh;
 }
 
 controlsHelpFrame keyboardButtonText {
-  font:@fontTiny;
+  font:@fontNormal;
+}
+
+controlsHelpFrame combination > combinationBackground > textareaNoTab {
+  font: @fontMedium;
+  margin: 0.5@blockInterval, 0;
 }
 
 controlsHelpFrame gamepadButton,
 controlsHelpFrame shortcutAxis {
   size: 0.9@kbh, 0.9@kbh;
+}
+
+controlsHelpFrame combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+controlsHelpFrame combination[hasActivationTypeImg=yes] > combinationBackground > shortcutAxis {
+  size: 0.72@kbh, 0.72@kbh;
 }
 
 controlsHelpText {

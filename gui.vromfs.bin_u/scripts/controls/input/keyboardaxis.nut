@@ -28,7 +28,7 @@ let KeyboardAxis = class (InputBase) {
     this.isCompositAxis = false
   }
 
-  function getMarkup(_hasHoldButtonSign = false) {
+  function getMarkup() {
     let data = this.getMarkupData()
     return handyman.renderCached(data.template, data.view)
   }

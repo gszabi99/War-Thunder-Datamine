@@ -7,6 +7,8 @@ require DagorMath
 require DagorMathUtils
 require %appGame.infantry.es.human_weap_common
 require DagorSystem
+require Dacoll
+
 
 [es(REQUIRE_NOT=(deadEntity, menuSoldier))]
 def human_weapon_aim(evt : CmdPostPhysUpdate;
@@ -124,3 +126,82 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
     currentState.gunDir = normalize(currentState.gunDir)
   let vertOffsetVisc = weapParams.vertOffsetRestoreVisc * currentState.aimingAfterFireMult
   currentState.gunAimOffset = approach(currentState.gunAimOffset, float2(), evt.dt, vertOffsetVisc)
+
+
+def human_crawl_ground_set_allowed_weapon_angle(dt : float;
+                                                human_weap__gunMatId : int;
+                                                var human_weap__crawlClampVertAngleTraceIndex : int&;
+                                                human_weap__crawlClampVertAngleRadBase : float2;
+                                                var human_weap__crawlClampVertAngleRad : float2&;
+                                                var human_net_phys : HumanActor&)
+  assume phys = human_net_phys.phys
+  assume TRACE_COUNT = 30
+  assume TRACE_LENGTH = 0.3
+  assume MAX_ANGLE = -0.698132
+
+  if !phys.currentState.isCrawl
+    human_weap__crawlClampVertAngleRad = human_weap__crawlClampVertAngleRadBase
+    return
+
+  let traceHandle = phys |> human_phys_getTraceHandle()
+  var humanTm : float3x4
+  location_toTM(phys.currentState.location, humanTm)
+
+  let basePosition = humanTm * float3(0.6, 0.2, -0.2)
+  let minTracePos = basePosition + humanTm[0] * 0.1
+  let maxTracePos = basePosition + humanTm[0] * 0.4
+  let traceStep = length(maxTracePos - minTracePos) / float(TRACE_COUNT)
+
+  let idx = human_weap__crawlClampVertAngleTraceIndex
+  let tracePos = minTracePos + normalize(maxTracePos - minTracePos) * traceStep * float(idx)
+  var t = TRACE_LENGTH
+  let dir = float3(0.f, -1.f, 0.f)
+  var pmid = -1
+  var norm : float3
+  var riDesc = RendInstDesc()
+
+  var targetAngles = human_weap__crawlClampVertAngleRad
+  if traceray_normalized(tracePos, dir, t, pmid, norm, ETF_DEFAULT | ETF_RI_PHYS, riDesc, human_weap__gunMatId, traceHandle)
+    if human_weap__crawlClampVertAngleTraceIndex < TRACE_COUNT
+      human_weap__crawlClampVertAngleTraceIndex += 1
+    let horizontal = length(tracePos - basePosition)
+    let vertical = t
+    let angle = atan2(vertical, horizontal)
+    targetAngles.x = min(-angle, MAX_ANGLE)
+  else
+    if human_weap__crawlClampVertAngleTraceIndex == 0
+      
+      targetAngles.x = human_weap__crawlClampVertAngleRadBase.x
+    if human_weap__crawlClampVertAngleTraceIndex > 0
+      
+      human_weap__crawlClampVertAngleTraceIndex -= 1
+  human_weap__crawlClampVertAngleRad = approach(human_weap__crawlClampVertAngleRad, targetAngles, dt, 0.1)
+
+[es(tag=gameClient, REQUIRE=watchedByPlr, REQUIRE_NOT=(deadEntity, menuSoldier))]
+def human_crawl_ground_clamp_client_es(info : ParallelUpdateFrameDelayed;
+                                       human_weap__gunMatId : int;
+                                       var human_weap__crawlClampVertAngleTraceIndex : int&;
+                                       human_weap__crawlClampVertAngleRadBase : float2;
+                                       var human_weap__crawlClampVertAngleRad : float2&;
+                                       var human_net_phys : HumanActor&)
+  human_crawl_ground_set_allowed_weapon_angle(info.dt,
+                                              human_weap__gunMatId,
+                                              human_weap__crawlClampVertAngleTraceIndex,
+                                              human_weap__crawlClampVertAngleRadBase,
+                                              human_weap__crawlClampVertAngleRad,
+                                              human_net_phys)
+
+[es(tag=server, REQUIRE_NOT=(watchedByPlr, deadEntity, menuSoldier), before=human_weapon_aim)]
+def human_crawl_ground_clamp_server_es(evt : CmdPostPhysUpdate;
+                                       human_weap__gunMatId : int;
+                                       var human_weap__crawlClampVertAngleTraceIndex : int&;
+                                       human_weap__crawlClampVertAngleRadBase : float2;
+                                       var human_weap__crawlClampVertAngleRad : float2&;
+                                       var human_net_phys : HumanActor&)
+  human_crawl_ground_set_allowed_weapon_angle(evt.dt,
+                                              human_weap__gunMatId,
+                                              human_weap__crawlClampVertAngleTraceIndex,
+                                              human_weap__crawlClampVertAngleRadBase,
+                                              human_weap__crawlClampVertAngleRad,
+                                              human_net_phys)
+

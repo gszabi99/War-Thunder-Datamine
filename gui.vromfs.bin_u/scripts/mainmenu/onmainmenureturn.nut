@@ -43,8 +43,10 @@ let { showUserSightMigrationPopupIfNeeded } = require("%scripts/options/tankSigh
 let { checkLogoutScheduled } = require("%scripts/login/logout.nut")
 let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
-let { isTutorialBeforeCountrySelect, needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
-let { showMsgboxIfSoundModsForceDisabled, showMsgboxIfSoundModsBanksCheckFailed } = require("%scripts/penitentiary/soundMods.nut")
+let { needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
+let { showMsgboxIfSoundModsForceDisabled, showMsgboxIfSoundModsBanksCheckFailed
+} = require("%scripts/penitentiary/soundMods.nut")
+let ludeo = require_optional("acesludeo")
 
 
 let delayed_gblk_error_popups = []
@@ -138,17 +140,10 @@ function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(@() itemNotifications.checkOfferToBuyAtExpiration())
     handler.doWhenActive(@() checkGaijinPassReminder())
 
-    if (isTutorialBeforeCountrySelect()) {
-      handler.doWhenActive(checkTutorialOnStart)
-      handler.doWhenActiveOnce("checkCountrySelect")
-      if (!needShowTutorial("takeUnit", 1))
-        handler.doWhenActiveOnce("checkNoviceTutor")
-    }
-    else {
-      handler.doWhenActiveOnce("checkCountrySelect")
-      handler.doWhenActive(checkTutorialOnStart)
+    handler.doWhenActive(checkTutorialOnStart)
+    handler.doWhenActiveOnce("checkCountrySelect")
+    if (!needShowTutorial("takeUnit", 1))
       handler.doWhenActiveOnce("checkNoviceTutor")
-    }
 
     handler.doWhenActiveOnce("checkUpgradeCrewTutorial")
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
@@ -171,6 +166,9 @@ function onMainMenuReturn(handler, isAfterLogin) {
     showMsgboxIfSoundModsForceDisabled()
     showMsgboxIfSoundModsBanksCheckFailed()
   }
+
+  if (isAfterLogin && ludeo?.is_running())
+    ludeo?.activate_session()
 
   handler.doWhenActive(popGblkErrorPopups)
 

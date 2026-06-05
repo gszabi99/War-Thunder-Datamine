@@ -130,8 +130,8 @@ let hydrophoneProcessingBlock = @() {
     @() {
       watch = [hydrophoneDistance, CalcProgress]
       children = CalcProgress.get() < 0.6 ? null
-        : mkText({ text = format("%s%s", loc("fcs_target_distance"),
-          cross_call.measureTypes.DEPTH.getMeasureUnitsText(hydrophoneDistance.get())) })
+        : mkText({ text = "".concat(loc("fcs_target_distance"),
+          cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(hydrophoneDistance.get())) })
     }
   ]
 }

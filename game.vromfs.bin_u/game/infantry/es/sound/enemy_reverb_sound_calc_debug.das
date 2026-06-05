@@ -43,7 +43,7 @@ def wt_enemy_reverb_sound_calculator_debug_draw(evt : Event;
                                                                     wt_enemy_reverb_sound__value : float)
       let begin = transform[3]
       let end = begin + float3(0, 2, 0)
-      add_debug_text_mark(end, "{format("%.0f", wt_enemy_reverb_sound__value)}", -1, 0., E3DCOLOR(0xffffffff))
+      add_debug_text_mark(end, "{fmt(":.0f", wt_enemy_reverb_sound__value)}", -1, 0., E3DCOLOR(0xffffffff))
 
     
     

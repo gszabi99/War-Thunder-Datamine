@@ -45,9 +45,9 @@ def plane_hit_sound_projectile(evt : CmdPlayProjectileHitSound; human_anim__vehi
                                                 plane_hit_sound__caliberToDist : float4;
                                                 plane_hit_sound__caliberToVar : float4;
                                                 var sound_event_group : SoundEventGroup&;
-                                                plane_hit_sound__canopyNodeIds : IntList const?)
+                                                plane_glassCanopyNodeIds : IntList const?)
     on_hit(evt.caliber, evt.localHitPos,
-          (plane_hit_sound__canopyNodeIds != null && find_index(*plane_hit_sound__canopyNodeIds, evt.nodeId) >= 0) ? "hitGlass" : "hit",
+          (plane_glassCanopyNodeIds != null && find_index(*plane_glassCanopyNodeIds, evt.nodeId) >= 0) ? "hitGlass" : "hit",
           plane_hit_sound__paths,
           sound_tags,
           is_watched_sound,
@@ -89,17 +89,3 @@ def plane_hit_sound_collision(evt : Event;
                               sound_control__state : int)
   if have_sound(sound_control__state) && is_watched_sound
     sound_player_common::play_path("collision", plane_hit_sound__paths, sound_tags, is_watched_sound, transform[3])
-
-
-[es(tag=sound, on_appear)]
-def plane_hit_sound_created(evt : Event;
-                            eid : EntityId;
-                            collres : CollisionResource;
-                            plane_hit_sound__canopyNodes : StringList;
-                            var plane_hit_sound__canopyNodeIds : IntList&)
-  for nodeName in plane_hit_sound__canopyNodes
-    let nodeIdx = collres_get_node_index_by_name(collres, string(nodeName))
-    if nodeIdx < 0
-      logerr("Canopy node {nodeName} was not found in {eid} <{getEntityTemplateName(eid)}>")
-    else
-      push(plane_hit_sound__canopyNodeIds, nodeIdx)

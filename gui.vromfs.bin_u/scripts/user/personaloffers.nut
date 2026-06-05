@@ -25,7 +25,7 @@ let { performPromoAction, togglePromoItem } = require("%scripts/promo/promo.nut"
 let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { convertBlk, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig, getEntitlementFullTimeText,
@@ -278,16 +278,19 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBuy() {
-    let msgText = warningIfGold(
+    let text = warningIfGold(
       loc("onlineShop/needMoneyQuestion", {
           purchase = loc("specialOffer"),
           cost = this.costGold.getTextAccordingToBalance()
         }),
         this.costGold)
-    purchaseConfirmation("purchase_ask", msgText, Callback(function() {
-      if (checkBalanceMsgBox(this.costGold))
-        this.onBuyImpl()
-    }, this))
+    let callbackYes = Callback(
+      @() checkBalanceMsgBox(this.costGold)
+            ? this.onBuyImpl()
+            : null,
+      this
+    )
+    purchaseConfirmation({ id = "purchase_ask", text, callbackYes })
   }
 
   function onTimer(_obj, _dt) {

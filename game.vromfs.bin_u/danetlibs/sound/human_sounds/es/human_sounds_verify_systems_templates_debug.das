@@ -92,21 +92,3 @@ struct HumanCollisionScrapeSound
 def human_sounds_verify_ecs_templates(evt : Event)
   req_unique_event_handler("CmdSoundIrq")
   req_unique_event_handler("CmdSoundVoicefxIrq")
-
-[req_template]
-struct SoundLandmeshQueries
-  is_watched_sound : bool
-  transform : float3x4
-  human_sound_landmesh_queries_vars__speedSq : float
-  human_sound_landmesh_queries_vars__isOnGround : bool
-  human_sound_landmesh_queries__lmeshDiff : float
-  human_sound_landmesh_queries__farawayThreshold : float
-  human_sound_landmesh_queries__heroSpeedToQueryInterval : float4
-  human_sound_landmesh_queries__enemySpeedToQueryInterval : float4
-  human_sound_landmesh_queries__heroEnemyInAirInterval : float2
-  human_sound_landmesh_queries__lastQueryTime : float
-  human_sound_landmesh_queries__biomeQueryId : int
-  human_sound_landmesh_queries__puddleQueryId : int
-  human_sound_landmesh_queries__biomeId : int
-  human_sound_landmesh_queries__puddleQueryToDepth : float4
-  human_sound_landmesh_queries__puddleDepth : float

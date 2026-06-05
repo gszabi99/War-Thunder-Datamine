@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { g_hud_messages } = require("%scripts/hud/hudMessages.nut")
-let { getHasCompassObservable } = require("hudCompassState")
+let { hasCompassObservable } = require("hudCompassState")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
@@ -46,7 +46,7 @@ let g_hud_message_stack = {
     let containerObj = this.scene?.findObject("hud_messages_top_center_container")
     if (containerObj?.isValid())
       containerObj.setValue(stashBhvValueConfig([{
-        watch = getHasCompassObservable()
+        watch = hasCompassObservable
         updateFunc = function(obj, value) {
           obj["margin-top"] = value ? "@notificationsWithCompassTopOffset" : "0"
         }

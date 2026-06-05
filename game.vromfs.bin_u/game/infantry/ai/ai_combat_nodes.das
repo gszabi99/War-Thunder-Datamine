@@ -1528,6 +1528,7 @@ class FindPiercableEnemyVehicle : BehNodeAdapter
   runBallisticCoef : float = 1.0
   runShootRange : float2 = float2()
   runTicketIdx : int = -1
+  runIsSimplified : bool = false
 
   runStep : int = 0
   runIndex1 : int = 0
@@ -1614,7 +1615,7 @@ class FindPiercableEnemyVehicle : BehNodeAdapter
     if runStep == STEP_INIT_CHECK
       var gunEid = INVALID_ENTITY_ID
       let gunSlot = owner.blackBoard |> datablock_getInt(weaponSlotParam)
-      query(agentEid) <| $ [es] (transform : float3x4; human_weap__gunEids : EidList; team : int; walker_agent : EntityAgent)
+      query(agentEid) <| $ [es] (transform : float3x4; human_weap__gunEids : EidList; team : int; walker_agent : EntityAgent; beh_tree__limitedMode : int)
         if gunSlot >= 0 && gunSlot < length(human_weap__gunEids)
           let checkGunEid = human_weap__gunEids[gunSlot]
           query(checkGunEid) <| $ [es] (combatFiringRange : float2;
@@ -1645,6 +1646,7 @@ class FindPiercableEnemyVehicle : BehNodeAdapter
             runAgentShootForwPos = invTr * walker_agent.shootFrom[shootStances.y]
             runAgentShootDownPos = invTr * walker_agent.shootFrom[shootStances.z]
             runTeam = team
+            runIsSimplified = beh_tree__limitedMode > 0
       if gunEid == INVALID_ENTITY_ID
         return EBehResult.ER_FAILED
 
@@ -1658,9 +1660,11 @@ class FindPiercableEnemyVehicle : BehNodeAdapter
         return EBehResult.ER_FAILED
 
       runTicketIdx = -1
-      query(runFarTracersEid) <| $ [es] (team_bots__maxFarTracesAtOnce : int;
+      query(runFarTracersEid) <| $ [es] (team_bots__maxFarTracersAtOnce : int;
+                                         team_bots__maxFarTracersAtOnceSimplified : int;
                                          var team_bots__farTracersEids : EidList&;
                                          var team_bots__farTracersTimeouts : FloatList&)
+        let maxTracers = runIsSimplified ? team_bots__maxFarTracersAtOnceSimplified : team_bots__maxFarTracersAtOnce
         for i in iter_range(team_bots__farTracersEids)
           if team_bots__farTracersEids[i] == agentEid || team_bots__farTracersTimeouts[i] < curTime
             team_bots__farTracersEids[i] = agentEid
@@ -1668,7 +1672,7 @@ class FindPiercableEnemyVehicle : BehNodeAdapter
             runTicketIdx = i
             break
         let numAllocated = length(team_bots__farTracersEids)
-        if runTicketIdx < 0 && numAllocated < team_bots__maxFarTracesAtOnce
+        if runTicketIdx < 0 && numAllocated < maxTracers
           runTicketIdx = numAllocated
           team_bots__farTracersEids |> push(agentEid)
           team_bots__farTracersTimeouts |> push(curTime + SCAN_TICKET_TIMEOUT)
@@ -3537,7 +3541,15 @@ class TraceMoveToSeeTarget : BehNodeAdapter
   stepTryTwoDirs : bool = false
   randomizeDirs : bool = true
 
+  leanChance : float = 0.0
+  leanDistRange : float2 = float2(5.0, 10.0)
+  leanWallMaxDist : float = -1.0
+  leanWallMaxDistParam : int = -1
+  distToLean : float = 0.5
+  distCutLean : float = 0.5
+
   outMoveToPosParam : int = -1
+  outLeanParam : int = -1
 
   def override loadFromBlk(data : DataBlock) : void
     if datablock_find_param(data, "targetPosParam") >= 0
@@ -3554,8 +3566,40 @@ class TraceMoveToSeeTarget : BehNodeAdapter
     stepByNavMesh = datablock_getBool(data, "stepByNavMesh", stepByNavMesh)
     stepTryTwoDirs = datablock_getBool(data, "stepTryTwoDirs", stepTryTwoDirs)
 
+    leanChance = datablock_getReal(data, "leanChance", leanChance)
+    leanDistRange = datablock_getPoint2(data, "leanDistRange", leanDistRange)
+    leanWallMaxDist = datablock_getReal(data, "leanWallMaxDist", leanWallMaxDist)
+    if datablock_find_param(data, "leanWallMaxDistParam") >= 0
+      leanWallMaxDistParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "leanWallMaxDistParam", ""), -1.0)
+    distToLean = datablock_getReal(data, "distToLean", distToLean)
+    distCutLean = datablock_getReal(data, "distCutLean", distCutLean)
+
     if datablock_find_param(data, "outMoveToPosParam") >= 0
       outMoveToPosParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outMoveToPosParam", ""), float3())
+    if datablock_find_param(data, "outLeanParam") >= 0
+      outLeanParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outLeanParam", ""), 0.0)
+
+  def trace_aim(from_pos : float3; dir : float3; dist : float; hmap_trace_offset : float3; shoot_ray_mat : int; target_eid : EntityId; agent_eid : EntityId)
+    let toPos = from_pos + dir * dist
+    let lmeshTracePos = from_pos + hmap_trace_offset
+    let flags = (ETF_ALL) & ~(ETF_LMESH | ETF_HEIGHTMAP)
+    var collides = (rayhit_normalized_lmesh(lmeshTracePos, dir, dist) ||
+                    rayhit_normalized(from_pos, dir, dist, flags, shoot_ray_mat) ||
+                    traceTransparencyRayRIGenNormalized(from_pos, dir, dist, 0.01) ||
+                    (traceSmoke && rayhit_smoke_occluders(from_pos, toPos)))
+    if collides
+      return true
+    if traceVehicles && rayhit_entities_in_grid(ecs_hash("vehicles"), from_pos, dir, dist, target_eid)
+      return true
+    if traceHumans
+      find_entity_in_grid(ecs_hash("humans"), from_pos, dir, dist, 0.0, GridEntCheck.BOUNDING) <| $(objEid : EntityId)
+        if objEid != target_eid && objEid != agent_eid
+          query(objEid) <| $ [es] (transform aka obj_transform : float3x4; collres : CollisionResource; animchar : AnimcharBaseComponent)
+            collides = collres_rayhit(collres, obj_transform, animchar.nodeTree, from_pos, dir, dist)
+        return collides
+      if collides
+        return true
+    return false
 
   def override update(dt : float) : EBehResult
     let agentEid = beh_tree_eid(owner)
@@ -3602,9 +3646,12 @@ class TraceMoveToSeeTarget : BehNodeAdapter
     var checkInvDir = stepTryTwoDirs
     var pos1 = shootPos
     var pos2 = shootPos
+    var wasPos1 = shootPos
+    var wasPos2 = shootPos
 
     var gotPos = false
     var resultPos = float3()
+    var resultWall = false
 
     let minStepDistSq = square(0.3)
     let extents = float3(0.8, FLT_MAX, 0.8)
@@ -3614,6 +3661,9 @@ class TraceMoveToSeeTarget : BehNodeAdapter
     let sphereVec2 = float3(0.0, 1.3, 0.0)
     let shootHtVec = float3(0.0, shootHt, 0.0)
     let firstDirCoef = (randomizeDirs && rnd_int(0, 100) < 50) ? -1.0 : 1.0
+
+    if leanWallMaxDistParam >= 0
+      leanWallMaxDist = owner.blackBoard |> datablock_getReal(leanWallMaxDistParam)
 
     var step = 0
     while (checkOneDir || checkInvDir) && step < stepsRange.y
@@ -3626,7 +3676,10 @@ class TraceMoveToSeeTarget : BehNodeAdapter
       for dirIdx in range(0, 2)
         assume checkDir = dirIdx == 0 ? checkOneDir : checkInvDir
         assume atPos = dirIdx == 0 ? pos1 : pos2
+        assume wasPos = dirIdx == 0 ? wasPos1 : wasPos2
         let dirCoef = dirIdx == 0 ? firstDirCoef : -firstDirCoef
+        let checkWasPos = wasPos
+        wasPos = atPos
 
         if checkDir
           checkDir = false
@@ -3650,26 +3703,22 @@ class TraceMoveToSeeTarget : BehNodeAdapter
               checkDir = true
           if checkDir
             let fromPos = atPos + shootHtVec
-            let dist = length(targetPos - fromPos)
-            let dir = normalize(targetPos - fromPos)
-            let lmeshTracePos = fromPos + hmapTraceOffset
-            let t = dist
-            let flags = (ETF_ALL) & ~(ETF_LMESH | ETF_HEIGHTMAP)
-            var collides = (rayhit_normalized_lmesh(lmeshTracePos, dir, dist) ||
-                            rayhit_normalized(fromPos, dir, dist, flags, shootRayMat) ||
-                            traceTransparencyRayRIGenNormalized(fromPos, dir, dist, 0.01) ||
-                            (traceSmoke && rayhit_smoke_occluders(fromPos, targetPos)))
-            if traceVehicles
-              collides ||= rayhit_entities_in_grid(ecs_hash("vehicles"), fromPos, dir, t, targetEid)
-            if !collides && traceHumans
-              find_entity_in_grid(ecs_hash("humans"), fromPos, dir, t, 0.0, GridEntCheck.BOUNDING) <| $(objEid : EntityId)
-                if objEid != targetEid && objEid != agentEid
-                  query(objEid) <| $ [es] (transform aka obj_transform : float3x4; collres : CollisionResource; animchar : AnimcharBaseComponent)
-                    collides = collres_rayhit(collres, obj_transform, animchar.nodeTree, fromPos, dir, t)
-                return collides
+            let aimDir = normalize(targetPos - fromPos)
+            let aimDist = length(targetPos - fromPos)
+            let collides = trace_aim(fromPos, aimDir, aimDist, hmapTraceOffset, shootRayMat, targetEid, agentEid)
             if !collides
               gotPos = true
               resultPos = atPos
+              resultWall = false
+
+              if leanWallMaxDist > 0.0
+                let checkWasDir = normalize(targetPos - checkWasPos)
+                let wasCollide = trace_aim(checkWasPos, checkWasDir, leanWallMaxDist, hmapTraceOffset, shootRayMat, targetEid, agentEid)
+                if wasCollide
+                  resultWall = true
+              else
+                resultWall = step > 0
+
               
               
               break
@@ -3681,8 +3730,49 @@ class TraceMoveToSeeTarget : BehNodeAdapter
         break
     if !gotPos
       return EBehResult.ER_FAILED
+
+    var resultLean = 0.0
+    if resultWall && leanChance > 0.0
+      let distSq = distance_sq(shootPos, targetPos)
+      if distSq > square(leanDistRange.x) &&  distSq < square(leanDistRange.y)
+        if distance_sq(shootPos, resultPos) >= square(distToLean) && (leanChance >= 1.0 || rnd_float(0.0, 1.0) < leanChance)
+          let deltaToTarget = targetPos - shootPos
+          let dirRight = float3(deltaToTarget.z, 0.0, -deltaToTarget.x)
+          if length_sq(dirRight) >= 0.99
+            let leanRight = dot(dirRight, resultPos - shootPos) > 0.0
+            resultLean = leanRight ? 1.0 : -1.0
+            let strafeDelta = resultPos - shootPos
+            let strafeDist = max(0.0, length(strafeDelta) - distCutLean)
+            resultPos = shootPos + normalize(strafeDelta) * strafeDist
+
+            var htFix = leanRight ? -0.08 : -0.19
+            query(agentEid) <| $ [es] (human_net_phys : HumanActor; transform : float3x4)
+              assume phys = human_net_phys.phys
+              assume currentState = phys.currentState
+              let forHeight = currentState.height
+
+              var gunTm : float3x4
+              var gunTmInLean : float3x4
+              human_phys_calcGunTm(phys, PrecomputedPresetMode.TPV, transform, 0.0, 0.0, forHeight, gunTm)
+              human_phys_calcGunTm(phys, PrecomputedPresetMode.TPV, transform, 0.0, leanRight ? phys.leanDegrees : -phys.leanDegrees, forHeight, gunTmInLean)
+
+              htFix = gunTmInLean[3].y - gunTm[3].y
+
+            let leanFromPos = resultPos + shootHtVec + float3(0.0, htFix, 0.0)
+            let leanAimDir = normalize(targetPos - leanFromPos)
+            let leanAimDist = length(targetPos - leanFromPos)
+            let collidesInLean = trace_aim(leanFromPos, leanAimDir, leanAimDist, hmapTraceOffset, shootRayMat, targetEid, agentEid)
+            if collidesInLean
+              resultLean = 0.0
+
+            
+            
+            
+            
     if outMoveToPosParam >= 0
       owner.blackBoard |> set(outMoveToPosParam, resultPos)
+    if outLeanParam >= 0
+      owner.blackBoard |> set(outLeanParam, resultLean)
     return EBehResult.ER_SUCCESS
 
 

@@ -1,8 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY, HUD_VIS_PART
+from "%scripts/viewUtils/hints.nut" import g_hints
 
-let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
+let { isValidKillLogMsg, getKillLogMsgText } = require("%scripts/hud/hudBattleLog.nut")
 let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 let { g_hud_reward_message } = require("%scripts/hud/hudRewardMessage.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
@@ -19,12 +20,11 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { get_game_mode, get_game_type, get_mplayer_by_id } = require("mission")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_REWARDS_MSG,
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_REWARDS_MSG,
   USEROPT_SHOW_MESSAGE_MISSILE_EVADE
 } = require("%scripts/options/optionsExtNames.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
-let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { getKillerCardView, isKillerCardData } = require("%scripts/hud/killerCardUtils.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
@@ -33,21 +33,6 @@ let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 
 let heightPID = dagui_propid_add_name_id("height")
 
-let hiddenCrashUnitTags = {
-  type_drone = true
-}
-
-function isCrashMsgHidden(unitName) {
-  let unit = getAircraftByName(unitName)
-  if (unit == null)
-    return false
-
-  foreach (unitTag in unit.tags)
-    if (unitTag in hiddenCrashUnitTags)
-      return true
-
-  return false
-}
 
 
 let g_hud_messages = {
@@ -434,9 +419,9 @@ enumsAddTypes(g_hud_messages, {
       }
       this.stack.append(message)
       let view = {
-        text = messageData.text
+        contentMarkup = g_hints.buildHintMarkup(messageData.text)
       }
-      let blk = handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
+      let blk = handyman.renderCached("%gui/hud/messageStack/messageWithHintContent.tpl", view)
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
@@ -459,8 +444,10 @@ enumsAddTypes(g_hud_messages, {
       message.messageData = messageData
       if (message.timer)
         this.timers.setTimerTime(message.timer, this.showSec)
-      if (updateText && checkObj(message.obj))
-        message.obj.findObject("text").setValue(messageData.text)
+      if (updateText && checkObj(message.obj)) {
+        let blk = g_hints.buildHintMarkup(messageData.text)
+        this.guiScene.replaceContentFromText(message.obj, blk, blk.len(), this)
+      }
     }
 
     clearStack = function () {
@@ -499,23 +486,9 @@ enumsAddTypes(g_hud_messages, {
     }
 
     onMessage = function (messageData) {
-      let msgType = messageData.type
-      if (msgType != HUD_MSG_MULTIPLAYER_DMG
-        && msgType != HUD_MSG_ENEMY_DAMAGE
-        && msgType != HUD_MSG_ENEMY_CRITICAL_DAMAGE
-        && msgType != HUD_MSG_ENEMY_FATAL_DAMAGE)
-        return
       if (!checkObj(this.nest))
         return
-
-      let { isKill = true, victimUnitName = "", action = "" } = messageData
-      if (action == "crash" && isCrashMsgHidden(victimUnitName))
-        return
-
-      let { maxRespawns } = get_mission_settings()
-      if (msgType == HUD_MSG_MULTIPLAYER_DMG && !isKill && maxRespawns != 1)
-        return
-      if (!get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
+      if (!isValidKillLogMsg(messageData))
         return
       this.addMessage(messageData)
     }
@@ -529,15 +502,7 @@ enumsAddTypes(g_hud_messages, {
         obj = null
       }
       this.stack.append(message)
-      local text = null
-      if (messageData.type == HUD_MSG_MULTIPLAYER_DMG)
-        text = HudBattleLog.msgMultiplayerDmgToText(messageData, true)
-      else if (messageData.type == HUD_MSG_ENEMY_CRITICAL_DAMAGE)
-        text = colorize("orange", messageData.text)
-      else if (messageData.type == HUD_MSG_ENEMY_FATAL_DAMAGE)
-        text = colorize("red", messageData.text)
-      else
-        text = colorize("silver", messageData.text)
+      let text = getKillLogMsgText(messageData)
       let view = { text = text }
 
       let timeToShow = timestamp

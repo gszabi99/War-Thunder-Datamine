@@ -223,8 +223,6 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                             repair_system_toolkit_count_max : int;
                             repair_system_speed_multiplier_base : float;
                             var repair_system_speed_multiplier : float&;
-                            var repair_system_trailer_repair_progress : float&;
-                            repair_system_trailer_repair_time : float;
                             repair_system_repair_hp_multiplier : float;
                             var repair_system_scheduled_bot_repair_time : float&;
                             repair_system_parts_id : PartIdList;
@@ -290,7 +288,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
             repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
             repair_system_parts_id, repair_system_parts_state,
             repair_system_parts_hp, repair_system_parts_speed_mult,
-            repair_with_mods_available, repair_system_trailer_repair_time, repair_system_trailer_repair_progress)
+            repair_with_mods_available)
           has_changed = true
 
         
@@ -354,7 +352,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                 repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
                 repair_system_parts_id, repair_system_parts_state,
                 repair_system_parts_hp, repair_system_parts_speed_mult,
-                repair_with_mods_available, repair_system_trailer_repair_time, repair_system_trailer_repair_progress)
+                repair_with_mods_available)
               set_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS, get_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY))
 
             
@@ -403,22 +401,12 @@ def repair_system_update_es(act : UpdateStageInfoAct;
             else
               set_flag(part_state, DmPartRepairState.IN_PROGRESS, false)
 
-          if repair_system_trailer_repair_progress >= 0.0
-            repair_system_trailer_repair_progress += repair_system_speed_multiplier / get_difficulty_config().tankRepairSpeedK * act.dt / repair_system_trailer_repair_time
-            if repair_system_trailer_repair_progress >= 1.0
-              var trailer = get_unit_by_eid(unit.trailerEid)
-              if trailer != null
-                *trailer |> sendRepair()
-              repair_system_trailer_repair_progress = -1.0
-              any_parts_repairing = true
-
           let prev_remaining_repair_time = repair_system_remaining_repair_time
           repair_system_remaining_repair_time = calc_time_to_repair(unit,
             repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
             repair_system_parts_id, repair_system_parts_state,
             repair_system_parts_hp, repair_system_parts_speed_mult,
-            repair_with_mods_available, repair_system_trailer_repair_time,
-            repair_system_trailer_repair_progress)
+            repair_with_mods_available)
 
           
           if repair_system_remaining_repair_time <= 0.0
@@ -654,12 +642,6 @@ def repair_system_net_sync_handle_es(evt : EventRepairSystemNetSync;
   repair_system_toolkit_count = evt.toolkitCount
   repair_system_delay_time_to_repair = evt.delayToRepair
   repair_system_remaining_repair_time = evt.remainingRepiarTime
-
-
-[es]
-def repair_system_trailer_dead_handle_es(evt : EventOnTrailerDead;
-                                         var repair_system_trailer_repair_progress : float&)
-  repair_system_trailer_repair_progress = 0.0
 
 
 [es(tag=server)]

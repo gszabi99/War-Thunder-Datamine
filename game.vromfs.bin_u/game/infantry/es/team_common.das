@@ -60,7 +60,8 @@ def assign_team(var out_team_id : int&; var out_team_eid : EntityId&)
 
 let
   TB_LIMITER_TACTICALPATH = 0
-  TB_LIMITERS_MAX = 1
+  TB_LIMITER_USING_RECONS = 1
+  TB_LIMITERS_MAX = 2
 
 def team_bots_tick_limiter_check(for_team : int; kind_idx : int; max_num : int)
   if kind_idx >= TB_LIMITERS_MAX

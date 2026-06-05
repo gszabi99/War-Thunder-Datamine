@@ -2,9 +2,10 @@ require ecs
 require math.base
 require DagorMath
 require DngHuman
+require MotionMatching
 require %game.events
 
-[es(tag=gameClient, after=(after_net_phys_sync, mm_calculate_root_offset_es), before=before_animchar_update_sync)]
+[es(tag=gameClient, after=(after_net_phys_sync), before=(before_animchar_update_sync, human_vehicle_seats_non_shooter_pre_animchar_es))]
 def human_locomotion_es(info : ParallelUpdateFrameDelayed;
                         eid : EntityId;
                         human_net_phys : HumanActor;
@@ -14,6 +15,7 @@ def human_locomotion_es(info : ParallelUpdateFrameDelayed;
                         locomotion__walkMult : float;
                         locomotion__runMult : float;
                         locomotion__sprintMult : float;
+                        var motion_matching__controller : MotionMatchingController;
                         var transform : float3x4&;
                         var prevLocoVel : float3&;
                         var prevLocoAcc : float3&;
@@ -56,6 +58,9 @@ def human_locomotion_es(info : ParallelUpdateFrameDelayed;
     var qtm : float3x4
     make_tm(qDefl, qtm)
     transform = transform * qtm
+    let yaw = euler_from_quat(motion_matching__controller.rootRotation).x
+    let pitchRoll = euler_from_quat(float4(qDefl)).yz
+    motion_matching__controller.rootRotation = quat_from_euler(float3(yaw, -pitchRoll.y, pitchRoll.x))
 
   prevLocoVel = vel
   prevLocoAcc = acc

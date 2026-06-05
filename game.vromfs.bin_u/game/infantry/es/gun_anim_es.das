@@ -255,7 +255,10 @@ def gun_anim_update_triger_pull(info : ParallelUpdateFrameDelayed;
 def gun_anim_update_ads_position(info : ParallelUpdateFrameDelayed;
                                  human_weap__currentGunSlot : int;
                                  human_weap__gunEids : EidList;
-                                 human_net_phys : HumanActor)
+                                 human_net_phys : HumanActor;
+                                 animchar__visible : bool = true)
+  if !animchar__visible
+    return
   let gunEid = human_weap__currentGunSlot >= 0 ? human_weap__gunEids[human_weap__currentGunSlot] : INVALID_ENTITY_ID
   query(gunEid) <| $ [es] (gun_anim__adsPositionVarId : int; var phys_vars : PhysVars)
     let interpK = get_phys_interpk_clamped(human_net_phys.phys, info.curTime)

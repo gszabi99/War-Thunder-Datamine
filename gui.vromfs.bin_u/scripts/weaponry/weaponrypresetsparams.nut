@@ -721,7 +721,9 @@ function getPresetWeightRestrictionText(preset, unitBlk) {
     let { tierId = -1, massKg = 0.0 } = tier?.weaponry
     let { additionalMassKg = 0.0 } = tier?.weaponry.tiers[idx]
     let amount = tier?.weaponry.tiers[tierId].amountPerTier ?? 1.0
-    let tierMass = massKg * amount + additionalMassKg
+    let addWeaponryMassKg = tier?.weaponry.addWeaponry.massKg ?? 0.0
+    let addWeaponryAmount = tier?.weaponry.addWeaponry.tiers[tierId].amountPerTier ?? 1.0
+    let tierMass = massKg * amount + additionalMassKg + (addWeaponryAmount * addWeaponryMassKg)
     if (notUseforDisbalance?[idx] ?? false)
       centerMass += tierMass
     else if (idx < centerIdx)

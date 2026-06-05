@@ -1,0 +1,27 @@
+@const limitBuyUnitWidth: 366@sf/@pf;
+@const limitBuyUnitHeight: 362@sf/@pf;
+@const limitBuyUnitContentWidth: 350@sf/@pf;
+@const limitBuyUnitContentHeight: 346@sf/@pf;
+
+
+limitBuyUnit:hover {
+  border: yes;
+  border-offset: 1@blockInterval;
+  border-color: #3c101315;
+}
+
+limitBuyUnit > tdiv > pricePlace {
+  display: show;
+}
+
+limitBuyUnit:hover > tdiv > pricePlace {
+  display: hide;
+}
+
+limitBuyUnit > tdiv > buttonPlace {
+  display: hide;
+}
+
+limitBuyUnit:hover > tdiv > buttonPlace {
+  display: show;
+}

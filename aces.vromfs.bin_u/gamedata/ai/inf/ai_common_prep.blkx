@@ -3,6 +3,68 @@
     {
       "name": "prep.once.readyForAction",
       "onceUntilReset": {},
+      "orderedSelector": {
+        "isVarsIntEqual": {
+          "lhs": "persInit",
+          "rhs_value": 1
+        },
+        "sequencer": {
+          "setIntVar": [
+            {
+              "to": "persInit",
+              "value": 1
+            },
+            {
+              "to": "persKeepLeans",
+              "value": 1
+            },
+            {
+              "to": "persHuntAround",
+              "value": 0
+            }
+          ],
+          "setRealVar": {
+            "to": "persLeanMaxWallDist",
+            "value": 3.5
+          },
+          "sequencer": [
+            {
+              "ignoreChance": {
+                "chance": 0.25
+              },
+              "setIntVar": {
+                "to": "persKeepLeans",
+                "value": 1
+              }
+            },
+            {
+              "ignoreChance": {
+                "chance": 0.25
+              },
+              "setIntVar": [
+                {
+                  "to": "persKeepLeans",
+                  "value": 1
+                },
+                {
+                  "to": "persHuntAround",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "setRealVar": {
+                "to": "persLeanMaxWallDist",
+                "value": -1.0
+              },
+              "setIntVar": {
+                "to": "persKeepLeans",
+                "value": 1
+              }
+            }
+          ]
+        }
+      },
       "setIntVar": [
         {
           "to": "standStance",

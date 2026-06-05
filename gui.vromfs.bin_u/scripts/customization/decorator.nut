@@ -5,7 +5,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { format, split_by_chars } = require("string")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
-let contentPreview = require("%scripts/customization/contentPreview.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { copyParamsToTable, eachParam } = require("%sqstd/datablock.nut")
@@ -25,7 +24,13 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
-::Decorator <- class {
+
+
+
+local doPreviewImpl = @(_id, _resourceType) null
+function setDecoratorPreviewer(fn) { doPreviewImpl = fn }
+
+let Decorator = class {
   id = ""
   blk = null
   decoratorType = null
@@ -201,7 +206,7 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
     if (!this.decoratorType.hasLocations(this.id))
       return ""
 
-    let mask = skinLocations.getSkinLocationsMaskBySkinId(this.id, decoratorTypes.SKINS, false)
+    let mask = skinLocations.getSkinLocationsMaskBySkinId(this.id, false)
     let locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (!locations.len())
       return ""
@@ -350,13 +355,13 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
 
   function doPreview() {
     if (this.canPreview())
-      contentPreview.showResource(this.id, this.decoratorType.resourceType)
+      doPreviewImpl(this.id, this.decoratorType.resourceType)
   }
 
   function isAllowedByUnitTypes(unitType) {
     return ((this.allowedUnitTypes.len() == 0
-      && unitType != unitTypes.HUMAN.tag
-      ) || this.allowedUnitTypes.indexof(unitType) != null)
+      && ((this.decoratorType != decoratorTypes.DECALS) || (unitType != unitTypes.HUMAN.tag)))
+      || this.allowedUnitTypes.indexof(unitType) != null)
   }
 
   function getLocAllowedUnitTypes() {
@@ -392,4 +397,9 @@ let { getCountryOverride } = require("%scripts/countries/countriesCustomization.
       this.tex = this.blk ? get_decal_tex(this.blk, 1) : this.id
     return this.tex
   }
+}
+
+return {
+  Decorator
+  setDecoratorPreviewer
 }

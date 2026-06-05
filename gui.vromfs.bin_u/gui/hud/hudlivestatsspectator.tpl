@@ -12,6 +12,7 @@ tdiv {
     pos:t='pw/2-w/2, 0'
     position:t='relative'
     style:t='color:@white; font:@fontHudMedium'
+    shadeStyle:t='LiveStats'
     text:t='<<title>>'
   }
   <</title>>
@@ -41,6 +42,7 @@ tdiv {
           pos:t='0, ph/2-h/2'
           position:t='relative'
           overlayTextColor:t='active'
+          shadeStyle:t='LiveStats'
           text:t=''
         }
       }
@@ -60,6 +62,7 @@ tdiv {
           pos:t='0, ph/2-h/2'
           position:t='relative'
           overlayTextColor:t='active'
+          shadeStyle:t='LiveStats'
           text:t=''
         }
       }

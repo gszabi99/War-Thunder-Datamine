@@ -132,6 +132,10 @@ slotbarTable > unitCell {
   css-hier-invalidate:yes;
 }
 
+navBar > navLeft > weapon_item_unit > unitCell {
+  padding: @slot_interval, 0;
+  size:@slot_width, @slot_height+2@slot_vert_pad;
+}
 slotsScrollDiv[flow=vertical] > slotbarTable > unitCell,
 slotsScrollDiv[flow=vertical] > slotbarTable > unitItemContainer {
   size:@slot_width, @slot_height+2@slot_vert_pad;

@@ -92,12 +92,7 @@ def reset_squad_mate_behaviour(squad_member_eid : EntityId)
         formationSpread = squadFormationSpread
 
       if squad__orderType == int(SquadOrder.ESO_FOLLOW_ME)
-        if formationSpread == int(SquadFormationSpread.ESFN_CLOSEST)
-          beh_tree__refs__behaviour := "dummy"
-        elif formationSpread == int(SquadFormationSpread.ESFN_STANDARD)
-          beh_tree__refs__behaviour := "dummy"
-        else
-          beh_tree__refs__behaviour := "dummy"
+        beh_tree__refs__behaviour := "dummy"
 
         if squad__squadBehaviour == int(SquadBehaviour.ESB_AGGRESSIVE)
           reset_squad_mate_behaviour(squad_member_eid, "dummy", beh_tree__refs__behaviour)

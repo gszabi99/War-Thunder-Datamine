@@ -1,6 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { eventbus_send } = require("eventbus")
 let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
@@ -8,12 +7,13 @@ let { brokenEnginesCount, enginesInCooldown, enginesCount,
 } = require("%rGui/shipState.nut")
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { driverAlive } = require("%rGui/crewState.nut")
-let { needShowDmgIndicator, isUnitAlive } = require("%rGui/hudState.nut")
+let { needShowDmgIndicator, isUnitAlive, isSpectatorMode } = require("%rGui/hudState.nut")
 let dmModule = require("%rGui/dmModule.nut")
 let { crewLifebar } = require("%rGui/crewLifebar.nut")
 let { sin } = require("%sqstd/math.nut")
 let { hud } = require("%rGui/style/colors.nut")
 let { damageIndicatorScale } = require("%rGui/options/options.nut")
+let { dmgIndicatorWidth, updateDmgIndicatorElement } = require("%rGui/hud/dmgIndicatorState.nut")
 
 const STATE_ICON_SIZE = 54
 const FIRE_ICON_SIZE = 24
@@ -237,18 +237,22 @@ let steeringComp = {
   ]
 }
 
-let dollSize = Computed(@() [
-  sh(16 * damageIndicatorScale.get()),
-  sh(32 * damageIndicatorScale.get())
-])
+let shipDmgIndicatorSize = Computed(@() isSpectatorMode.get()
+  ? [dmgIndicatorWidth.get(), dmgIndicatorWidth.get()]
+  : [
+    sh(16 * damageIndicatorScale.get()),
+    sh(32 * damageIndicatorScale.get())
+  ]
+)
+
 let fovSize = Computed(@() [
   sh(30 * damageIndicatorScale.get()),
   sh(30 * damageIndicatorScale.get())
 ])
 let fovTopOffset = Computed(@() sh(2 * damageIndicatorScale.get()))
 
-let fovPos = Computed(@() [0.5 * dollSize.get()[0] - 0.5 * fovSize.get()[0],
-  0.5 * dollSize.get()[1] - 0.5 * fovSize.get()[1] + fovTopOffset.get()])
+let fovPos = Computed(@() [0.5 * shipDmgIndicatorSize.get()[0] - 0.5 * fovSize.get()[0],
+  0.5 * shipDmgIndicatorSize.get()[1] - 0.5 * fovSize.get()[1] + fovTopOffset.get()])
 
 let dollFov = @() {
   watch = [fwdAngle, sightAngle, fov, fovSize, fovPos]
@@ -336,16 +340,16 @@ function makeFireIcons(burningPartsTable, dollSizeVals, iconFireSizeVal) {
 }
 
 let fireIconsOverlay = @() {
-  watch = [burningParts, dollSize, iconFireSize]
+  watch = [burningParts, shipDmgIndicatorSize, iconFireSize]
 
-  size = dollSize.get()
-  children = makeFireIcons(burningParts.get(), dollSize.get(), iconFireSize.get())
+  size = shipDmgIndicatorSize.get()
+  children = makeFireIcons(burningParts.get(), shipDmgIndicatorSize.get(), iconFireSize.get())
 }
 
 let doll = @() {
-  watch = dollSize
+  watch = shipDmgIndicatorSize
   color = Color(0, 255, 0)
-  size = dollSize.get()
+  size = shipDmgIndicatorSize.get()
   rendObj = ROBJ_XRAYDOLL
   rotateWithCamera = false
   children = [
@@ -408,24 +412,16 @@ let mainPanel = {
 }
 
 return @() {
-  watch = [needShowDmgIndicator, isUnitAlive]
+  watch = [needShowDmgIndicator, isUnitAlive, isSpectatorMode]
   flow = FLOW_VERTICAL
   gap = hdpx(4)
   behavior = Behaviors.RecalcHandler
-  function onRecalcLayout(_initial, elem) {
-    if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-      eventbus_send("update_damage_panel_state", {
-        pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-        size = [elem.getWidth(), elem.getHeight()]
-        visible = needShowDmgIndicator.get()
-      })
-    }
-    else
-      eventbus_send("update_damage_panel_state", {})
-  }
+  onRecalcLayout = updateDmgIndicatorElement
 
   children = [
-    isUnitAlive.get() ? crewLifebar : null
-    needShowDmgIndicator.get() ? mainPanel : xraydoll
+    (isUnitAlive.get() && !isSpectatorMode.get()) ? crewLifebar : null
+    needShowDmgIndicator.get()
+      ? isSpectatorMode.get() ? doll : mainPanel
+      : xraydoll
   ]
 }

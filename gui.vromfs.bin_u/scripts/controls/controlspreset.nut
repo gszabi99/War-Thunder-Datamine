@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_axis_name, joystick_get_default
 from "%scripts/dagui_library.nut" import *
+from "controls" import ActivationCondition
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let DataBlock  = require("DataBlock")
@@ -623,6 +624,7 @@ ControlsPreset = class {
       for (local j = 0; j < blkHotkeys.blockCount(); j++) {
         let blkHotkey = blkHotkeys.getBlock(j)
         let hotkeyName = blkHotkey.getBlockName()
+        let activationType = blkHotkey?.activationType ?? ActivationCondition.DEFAULT
         let shortcut = []
 
         for (local k = 0; k < blkHotkey.paramCount(); k++) {
@@ -636,6 +638,7 @@ ControlsPreset = class {
           shortcut.append({
             deviceId = deviceId
             buttonId = buttonId
+            activationType
           })
         }
 
@@ -668,6 +671,7 @@ ControlsPreset = class {
             shortcut.append({
               deviceId = blkButton["deviceId"]
               buttonId = blkButton["buttonId"]
+              activationType = ActivationCondition.DEFAULT
             })
           }
           event.append(shortcut)
@@ -774,19 +778,26 @@ ControlsPreset = class {
     hotkeyNames.sort()
     foreach (eventName in hotkeyNames) {
       let hotkeyData = this.hotkeys[eventName]
+      if (hotkeyData.len() == 0) {
+        blkHotkeys[eventName] <- DataBlock()
+        continue
+      }
 
       foreach (shortcut in hotkeyData) {
         let blkShortcut = DataBlock()
+        local activationType = ActivationCondition.DEFAULT
         foreach (button in shortcut) {
           let deviceName = getTblValue(button.deviceId, deviceTypeById, null)
-          if (deviceName != null)
-            blkShortcut[deviceName] <- button.buttonId
+          if (deviceName == null)
+            continue
+          blkShortcut[deviceName] <- button.buttonId
+          activationType = button?.activationType ?? ActivationCondition.DEFAULT
         }
+        if (activationType != ActivationCondition.DEFAULT)
+          blkShortcut.activationType <- activationType
         blkHotkeys[eventName] <- blkShortcut
       }
 
-      if (hotkeyData.len() == 0)
-        blkHotkeys[eventName] <- DataBlock()
     }
   }
 

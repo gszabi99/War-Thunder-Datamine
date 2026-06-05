@@ -18,6 +18,7 @@ require app
 require DagorMathUtils
 require GamePhys
 require hud
+require Localization
 
 let yellow = E3DCOLOR(Color4(float4(1., 1., 0., 1.)))
 

@@ -102,13 +102,72 @@ def scan_recons_corners(pos : float3; radius : float; out_recons_cb : block<(pos
     covers_box_cull(covers, box) <| $ [unused_argument(tm)] (id : int; tm : mat44f#)
       assume extra = covers.coverExtra[id]
       let reconType = recon_type(extra.info)
-      if !recon_flag(extra.info, RCXI_FLAG_CONTAINS) || reconType != int(ReconType.CORNER)
+      if (extra.info & int(RCXI_FLAG_CONTAINS)) == 0 || (extra.info >> RCXI_TYPE_SHIFT) != int(ReconType.CORNER)
         return
+      
+      
       let ang1 = recon_arg1(extra.info)
       let ang2 = recon_arg2(extra.info)
       let dir1 = recon_ang_to_dir(ang1)
       let dir2 = recon_ang_to_dir(ang2)
       out_recons_cb(extra.pos, dir1, dir2)
+
+def scan_recons_corners_packed(pos : float3; radius : float; out_recons_cb : block<(pos : float3; info : int) : void>)
+  query() <| $ [es] (var covers : CoversComponent&)
+    if length(covers.coverExtra) != length(covers.list)
+      return
+    var box : bbox3f
+    let boxCenter = pos
+    box.bmax.xyz = boxCenter + float3(radius, 3.5, radius)
+    box.bmin.xyz = boxCenter + float3(-radius, -3.5, -radius)
+    covers_box_cull(covers, box) <| $ [unused_argument(tm)] (id : int; tm : mat44f#)
+      assume extra = covers.coverExtra[id]
+      let reconType = recon_type(extra.info)
+      if (extra.info & int(RCXI_FLAG_CONTAINS)) == 0 || (extra.info >> RCXI_TYPE_SHIFT) != int(ReconType.CORNER)
+        return
+      
+      
+      out_recons_cb(extra.pos, extra.info)
+
+def walk_seg_intersects_recon_danger_zone(prev_pos : float3; next_pos : float3;
+                                          min_radius_sq : float; max_radius_sq : float;
+                                          pos : float3; dir1 : float3; dir2 : float3;
+                                          var out_look_dir : float3&;
+                                          var out_along_dir : float3&)
+  let MAX_HEIGHT_DOWN = 3.5
+  if prev_pos.y < pos.y - MAX_HEIGHT_DOWN && next_pos.y < pos.y - MAX_HEIGHT_DOWN
+    return false
+  let MAX_HEIGHT_UP = 3.5
+  if prev_pos.y > pos.y + MAX_HEIGHT_UP && next_pos.y > pos.y + MAX_HEIGHT_UP
+    return false
+
+  let MIN_DIST_SQ = min_radius_sq
+  let MAX_DIST_SQ = max_radius_sq
+  let distSq1 = distance_sq(prev_pos, pos)
+  let distSq2 = distance_sq(next_pos, pos)
+  if distSq1 < MIN_DIST_SQ || distSq2 < MIN_DIST_SQ
+    return false
+  if distSq1 > MAX_DIST_SQ && distSq2 > MAX_DIST_SQ
+    return false
+
+  let nx1 = -dir1.z; let nz1 = dir1.x; let add1 = -(nx1 * pos.x + nz1 * pos.z)
+  let nx2 = dir2.z; let nz2 = -dir2.x; let add2 = -(nx2 * pos.x + nz2 * pos.z)
+  let was1 = nx1 * prev_pos.x + nz1 * prev_pos.z + add1 > 0.0
+  let was2 = nx2 * prev_pos.x + nz2 * prev_pos.z + add2 > 0.0
+  if !was1
+    let now1 = nx1 * next_pos.x + nz1 * next_pos.z + add1 > 0.0
+    if now1
+      out_look_dir = normalize(float3(-nx2, 0.0, -nz2) * 0.7 + dir1 * 0.3)
+      out_along_dir = dir2
+      return true
+    return false
+  if !was2
+    let now2 = nx2 * next_pos.x + nz2 * next_pos.z + add2 > 0.0
+    if now2
+      out_look_dir = normalize(float3(-nx1, 0.0, -nz1) * 0.7 + dir2 * 0.3)
+      out_along_dir = dir1
+      return true
+  return false
 
 
 def calc_recon_threat(t : float; t0 : float; v0 : float)

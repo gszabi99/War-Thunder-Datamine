@@ -16,8 +16,17 @@ let { MAX_REWARDS_SHOW_IN_TROPHY } = require("%scripts/items/trophyReward.nut")
 let { getPrizeTooltipConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
+let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
+let sheets = require("%scripts/items/itemsShopSheets.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
+
 
 let delayedUnlocksQueue = {}
+
+const unlockTypesWithFullSizedImage = {
+  [UNLOCKABLE_DECAL] = true,
+  [UNLOCKABLE_INVENTORY] = true
+}
 
 register_command(
   function () {
@@ -54,6 +63,10 @@ register_command(function() {
   showUnlocks({ helmet_m35 = true })
 }, "debug.new_unlocks_received")
 
+register_command(function(id) {
+  showUnlocks({ [id] = true })
+}, "debug.new_unlockId_received")
+
 gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
@@ -65,9 +78,11 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   decorator = null
   decoratorUnit = null
   decoratorSlot = -1
+  gotoItemTarget = null
 
   function initScreen() {
     this.processConfigsArray()
+    this.updateRewardItem()
     this.checkConfigsArray()
     this.setTitle()
     this.updateWnd()
@@ -82,6 +97,26 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     return loc("unlocks/achievement")
   }
 
+  function updateRewardItem() {
+    if (this.gotoItemTarget != null)
+      return
+
+    foreach (unlockId, _ in this.unlocksRewards) {
+      let config = getUnlockById(unlockId)
+      if (!config)
+        continue
+
+      let { userLogId = null } = config
+      if (userLogId != null) {
+        let item = getInventoryItemById(to_integer_safe(userLogId))
+        if (item != null && !item.shouldAutoConsume && !item.isHiddenItem()) {
+          this.gotoItemTarget = item
+          break
+        }
+      }
+    }
+  }
+
   function processConfigsArray() {
     this.unlocks.clear()
     this.shrinkedUnlocks.clear()
@@ -89,6 +124,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       let config = getUnlockById(unlockId)
       if (!config)
         continue
+
       let unlockConditions = buildConditionsConfig(config)
       let unlock = buildLogUnlockData(unlockConditions)
       this.unlocks.append(unlock)
@@ -243,6 +279,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("open_chest_animation", !this.animFinished, this.scene)
     showObjById("btn_ok", this.animFinished, this.scene)
     showObjById("btn_back", this.animFinished, this.scene)
+    showObjById("btn_go_to_item", this.animFinished && this.canGoToItem(), this.scene)
   }
 
   function onViewRewards() {
@@ -263,21 +300,40 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   onPreloaderSettings = @() null
   onReUseItem = @() null
   onRunCustomMission = @() null
-  onGoToItem = @() null
   onPreviewDecorator = @() null
 
   function getImageLayer(unlock, config) {
-    let imageLayer = LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
+    let { unlockCfg = null } = unlock
+    let iconStyle = unlockCfg?.iconStyle ?? unlock?.iconStyle ?? ""
+    let unlockImg = (unlockCfg == null ? unlock?.descrImage : unlockCfg?.image) ?? ""
+    let imageLayer = LayersIcon.getIconData(iconStyle, unlockImg)
     let tooltipConfig = getPrizeTooltipConfig(config)
-
-    return handyman.renderCached(("%gui/items/item.tpl"), { items = [tooltipConfig.__update({
-      layered_image = imageLayer,
-      hasFocusBorder = true })] })
+    let isFullSizeImage = this.unlocks.len() == 1 && !!unlockTypesWithFullSizedImage?[unlock.type]
+    return handyman.renderCached(("%gui/items/item.tpl"), {
+      items = [tooltipConfig.__update({
+        layered_image = imageLayer
+        hasFocusBorder = true
+        fullSizeImage = isFullSizeImage
+      })]
+    })
   }
 
   function afterModalDestroy() {
     if (delayedUnlocksQueue.len() > 0)
       showUnlocks(delayedUnlocksQueue)
+  }
+
+  function onGoToItem() {
+    this.goBack()
+    if (this.canGoToItem())
+      gui_start_items_list(-1, { curItem = this.gotoItemTarget })
+  }
+
+  canGoToItem = @() !!(this.gotoItemTarget && sheets.getSheetDataByItem(this.gotoItemTarget))
+
+  function onEventInventoryUpdate(_params) {
+    this.updateRewardItem()
+    this.updateButtons()
   }
 }
 

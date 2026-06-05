@@ -28,6 +28,9 @@ let controlsList = {
   l_trigger_pressed = true
   r_trigger = true
   r_trigger_pressed = true
+  l_r_trigger = true
+  l_r_trigger_pressed = true
+
   l_shoulder = true
   l_shoulder_pressed = true
   r_shoulder = true
@@ -63,6 +66,10 @@ let controlsList = {
   team_dirpad = true
   touchpad = true
   touchpad_pressed = true
+
+  sensor_x = true
+  sensor_y = true
+  sensor_z = true
 }
 
 let btnNameByIndex = [
@@ -94,6 +101,35 @@ let btnNameByIndex = [
   "r_stick_down"  
 ]
 
+let accessKeyByIndex = [
+  "DpadUp"             
+  "DpadDown"           
+  "DpadLeft"           
+  "DpadRight"          
+  "start"              
+  "back"               
+  "L3"                 
+  "R3"                 
+  "LB"                 
+  "RB"                 
+  ""                   
+  ""                   
+  "Space"              
+  "B"                  
+  "X"                  
+  "Y"                  
+  "LT"                 
+  "RT"                 
+  "LS.Right"           
+  "LS.Left"            
+  "LS.Up"              
+  "LS.Down"            
+  "RS.Right"           
+  "RS.Left"            
+  "RS.Up"              
+  "RS.Down"            
+]
+
 let mouseButtonTextures = [
   "mouse_left"
   "mouse_right"
@@ -115,6 +151,10 @@ let gamepadAxesImages = {
   [GAMEPAD_AXIS.RIGHT_STICK] = "r_stick_4",
   [GAMEPAD_AXIS.LEFT_TRIGGER] = "l_trigger",
   [GAMEPAD_AXIS.RIGHT_TRIGGER] = "r_trigger",
+  [GAMEPAD_AXIS.BOTH_TRIGGER_XBOX] = isPlatformSony ? "sensor_x" : "l_r_trigger",
+  [GAMEPAD_AXIS.SENSOR_Y_PS4] = "sensor_y",
+  [GAMEPAD_AXIS.SENSOR_Z_PS4] = "sensor_z",
+  [GAMEPAD_AXIS.BOTH_TRIGGER_PS4] = "l_r_trigger",
 
   [GAMEPAD_AXIS.LEFT_STICK_VERTICAL | AXIS_MODIFIERS.MIN] = "l_stick_down",
   [GAMEPAD_AXIS.LEFT_STICK_VERTICAL | AXIS_MODIFIERS.MAX] = "l_stick_up",
@@ -191,5 +231,6 @@ return {
   hasMouseTexture = @(idx) mouseButtonTextures?[idx] != null
   hasTextureByButtonIdx = @(idx) btnNameByIndex?[idx] != null
   getButtonNameByIdx = @(idx) btnNameByIndex?[idx] ?? ""
+  getAccessKeyByIdx = @(idx) accessKeyByIndex?[idx] ?? ""
   getCssString = getCssString
 }

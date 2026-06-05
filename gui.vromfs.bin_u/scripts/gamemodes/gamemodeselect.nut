@@ -456,11 +456,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   function onGameModeSelect(obj) {
     this.markGameModeSeen(obj)
     let gameModeView = u.search(this.filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
-    if (gameModeView?.gameMode.inactiveColor()) {
-      showInfoMsgBox(getGameModeUnlockFullText(gameModeView.gameMode))
-      return
-    }
-    this.performGameModeSelect(gameModeView.gameMode)
+    this.trySelectGameMode(gameModeView)
   }
 
   function performGameModeSelect(gameMode) {
@@ -554,7 +550,15 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     if (value < 0)
       return
 
-    this.performGameModeSelect(this.filledGameModes[value].gameMode)
+    this.trySelectGameMode(this.filledGameModes[value])
+  }
+
+  function trySelectGameMode(gameModeView) {
+    if (gameModeView?.gameMode.inactiveColor()) {
+      showInfoMsgBox(getGameModeUnlockFullText(gameModeView.gameMode))
+      return
+    }
+    this.performGameModeSelect(gameModeView.gameMode)
   }
 
   function onEventDescription(obj) {

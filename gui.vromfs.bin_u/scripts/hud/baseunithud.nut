@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getHasCompassObservable } = require("hudCompassState")
+let { hasCompassObservable } = require("hudCompassState")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
@@ -30,12 +30,12 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
     let multiplayerScoreObj = this.scene.findObject("hud_multiplayer_score")
     if (checkObj(multiplayerScoreObj)) {
       multiplayerScoreObj.setValue(stashBhvValueConfig([{
-        watch = getHasCompassObservable()
+        watch = hasCompassObservable
         updateFunc = Callback(@(obj, value) updatePosMultiplayerScore(obj, value, isAAComplexMenuActive.get()), this)
       },
       {
         watch = isAAComplexMenuActive
-        updateFunc = Callback(@(obj, value) updatePosMultiplayerScore(obj, getHasCompassObservable().get(), value), this)
+        updateFunc = Callback(@(obj, value) updatePosMultiplayerScore(obj, hasCompassObservable.get(), value), this)
       },
       {
         watch = isPlayerAlive

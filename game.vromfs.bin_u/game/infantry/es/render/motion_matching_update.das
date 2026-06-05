@@ -1,5 +1,5 @@
 require ecs
-require danetlibs.motion_matching.es.mm_events
+require %gameLibs.anim.motionMatching.das.mm_events
 require %game.events
 
 

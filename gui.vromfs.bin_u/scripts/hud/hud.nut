@@ -44,7 +44,7 @@ let { HudHeli } = require("%scripts/hud/hudHeli.nut")
 let { HudInfantry } = require("%scripts/hud/hudInfantry.nut")
 let { HudInfantryDrone } = require("%scripts/hud/hudInfantryDrone.nut")
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
-let { enableOrders } = require("%scripts/items/orders.nut")
+let { HudFreeCam } = require("%scripts/hud/hudFreeCam.nut")
 let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
 let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
 let { isInKillerCamera, updateHudStatesSubscribes } = require("%scripts/hud/hudState.nut")
@@ -60,6 +60,7 @@ let DataBlock = require("DataBlock")
 let { get_current_mission_desc } = require("guiMission")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
+let { was_screenshot_applied_to_config } = require("debug.config")
 require("%scripts/hud/scoreboardTooltipBridge.nut")
 
 dagui_propid_add_name_id("fontSize")
@@ -128,12 +129,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   missionBlk = null
 
   objectsTable = {
-    [USEROPT_DAMAGE_INDICATOR_SIZE] = {
-      objectsToScale = {
-        xray_render_dmg_indicator = "@sizeDamageIndicator"
-      }
-      onChangedFunc = @(_obj) g_hud_event_manager.onHudEvent("DamageIndicatorSizeChanged")
-    },
     [USEROPT_TACTICAL_MAP_SIZE] = {
       objectsToScale = {
         hud_tactical_map_bg        = "@sizeTacticalMap"
@@ -203,11 +198,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       mask = mask & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
 
     this.switchControlsAllowMask(mask)
-  }
-
-   function onSceneActivate(show) {
-    enableOrders(this.scene.findObject("order_status"))
-    base.onSceneActivate(show)
   }
 
   function loadGameChat() {
@@ -304,6 +294,8 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       this.currentHud = handlersManager.loadHandler(HudHeli, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HUMAN)
       this.currentHud = handlersManager.loadHandler(HudInfantry, { scene = hudObj })
+    else if (newHudType == HUD_TYPE.FREECAM && !was_screenshot_applied_to_config())
+      this.currentHud = handlersManager.loadHandler(HudFreeCam, { scene = hudObj })
     else 
       this.currentHud = null
 
@@ -323,7 +315,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
 
     
-    enableOrders(this.scene.findObject("order_status"))
 
     this.updateObjectsSize()
     this.updateMissionProgressPlace()
@@ -378,24 +369,21 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.curHudVisMode = visMode
 
+    this.currentHud?.updateTacticalMapVisibility()
+
+    let objsToShow = {
+      hud_kill_log               = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
+      hud_enemy_damage_nest      = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
+    }
+
     let isDmgPanelVisible = !isInKillerCamera.get()
       && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
       && is_tank_damage_indicator_visible()
 
-    this.currentHud?.updateTacticalMapVisibility()
-
-    let objsToShow = {
-      xray_render_dmg_indicator  = isDmgPanelVisible
-      hud_tank_damage_indicator  = isDmgPanelVisible
-      hud_kill_log               = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
-      chatPlace                  = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
-      hud_enemy_damage_nest      = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
-      order_status               = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY, true)
-    }
-
     updateExtWatched({
-      isChatPlaceVisible = objsToShow.chatPlace
-      isOrderStatusVisible = objsToShow.order_status
+      isChatPlaceVisible = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
+      isOrderStatusVisible = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY, true)
+      isDmgPanelVisible
     })
 
     this.guiScene.setUpdatesEnabled(false, false)
@@ -554,10 +542,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getHudActionBarObj() {
     return this.scene.findObject("hud_action_bar")
-  }
-
-  function getDamagePannelObj() {
-    return this.scene.findObject("xray_render_dmg_indicator")
   }
 
   function updateAFKTimeKick() {

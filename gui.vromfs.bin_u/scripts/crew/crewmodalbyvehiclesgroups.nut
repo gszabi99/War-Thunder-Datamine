@@ -13,6 +13,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { purchaseNewCrewSlot } = require("%scripts/crew/crew.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
   slotbarActions = ["aircraft", "changeUnitsGroup", "repair"]
@@ -100,14 +101,13 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
       this.updatePage()
     }, this)
     if (cost > zero_money) {
-      let msgText = warningIfGold(
+      let text = warningIfGold(
         format(loc("shop/needMoneyQuestion_purchaseCrew"),
           cost.getTextAccordingToBalance()),
         cost)
-      this.msgBox("need_money", msgText,
-        [ ["ok", @() purchaseNewCrewSlot(country, onTaskSuccess) ],
-          ["cancel", @() null ]
-        ], "ok")
+
+      let callbackYes = @() purchaseNewCrewSlot(country, onTaskSuccess)
+      purchaseConfirmation({ id = "need_money", text, callbackYes }, cost)
     }
     else
       onTaskSuccess()

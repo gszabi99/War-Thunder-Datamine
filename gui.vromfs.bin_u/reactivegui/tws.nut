@@ -989,7 +989,7 @@ let twsDas = kwarg(function(colorWatched, posWatched, sizeWatched) {
     fontSize = hudFontHgt
     fontFxColor = fontOutlineColor
     fontFxFactor = fontOutlineFxFactor
-    textColor = greenColor
+    textColor = isColorOrWhite(colorWatched.get())
   }
 })
 

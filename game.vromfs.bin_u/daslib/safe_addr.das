@@ -13,8 +13,8 @@ module safe_addr shared private
 
 
 
-require ast
-require rtti
+require daslib/ast
+require daslib/rtti
 require daslib/ast_boost
 require daslib/is_local
 
@@ -38,11 +38,11 @@ def public safe_addr(x : auto(T)& ==const) : T -&? const# {
 class SafeAddrMacro : AstFunctionAnnotation {
     
     
-    def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
+    def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         if (!is_local_or_global_expr(call.arguments[0])) {
             compiling_program() |> macro_error(call.at, "not a local value")
         }
-        return <- default<ExpressionPtr>
+        return null
     }
 }
 
@@ -78,7 +78,7 @@ def public shared_addr(val : auto(VALUE)&) {
 class SharedAddrMacro : AstFunctionAnnotation {
     
     
-    def override verifyCall(var call : smart_ptr<ExprCallFunc>; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
+    def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         if (is_shared_expr(call.arguments[0])) {
             return true
         }
@@ -106,7 +106,7 @@ def public temp_value(var x : auto(T)& ==const) : T&# {
 [tag_function_macro(tag="temp_value_tag")]
 class TempValueMacro : AstFunctionAnnotation {
     
-    def override verifyCall(var call : smart_ptr<ExprCallFunc>; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
+    def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         if (is_temp_safe(call.arguments[0])) {
             return true
         }

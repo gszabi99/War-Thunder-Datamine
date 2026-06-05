@@ -4,7 +4,7 @@ require %rGui.utils.helpers_common
 require %rGui.utils.constants_common
 require %rGui.utils.radar_common
 
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require %daslib.match
 require %game.utils.utils_common
 require app

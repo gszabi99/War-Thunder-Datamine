@@ -66,6 +66,8 @@
   ],
   "bombSightBlockedWarningEnabled": true,
   "bombSightBlockedWarningDuration": 5.0,
+  "agmBlockedWarningEnabled": true,
+  "agmBlockedWarningDuration": 5.0,
   "helicopterWarningOverheatTimeToDie": 120.0,
   "helicopterWarningOverheatFrequency0": [
     60.0,
@@ -379,11 +381,16 @@
     "enableRocketDrawing": true,
     "enableBombDrawing": true,
     "enableProjectileClickSelect": true,
-    "launchedTorpedo": "torpedo_icon.svg:10:10:K",
-    "launchedRocket": "ui/gameuiskin#tws_filter_ammunition.svg:10:10:K",
-    "launchedBomb": "ui/gameuiskin#tws_filter_small.svg:10:10:K",
+    "showTurretDirInArbiter": true,
+    "showVelVectorInArbiter": true,
+    "projectileClickWidth": 0.5,
+    "launchedTorpedo": "ui/gameuiskin#tws_filter_ammunition.svg:20:20:K",
+    "launchedRocket": "ui/gameuiskin#tws_filter_ammunition.svg:20:20:K",
+    "launchedBomb": "ui/gameuiskin#tws_filter_ammunition.svg:20:20:K",
     "selectedProjectile": "selected_projectile.svg:10:10:K",
     "deadUnitIconScale": 0.5,
+    "maxZoomFactor": 10.0,
+    "maxZoomFactorAirplane": 150.0,
     "captureZoneAlpha": 1.0,
     "textOffset": [
       3.0,
@@ -518,7 +525,7 @@
     "respawnbase_select": "respawnbase_select.svg:44:54:K",
     "unit_respawn_select": "respawnbase_select.svg:32:39:K",
     "unit_respawn_highlight": "respawnbase_highlight.svg:32:39:K",
-    "icon_marker_point_of_interest": "map_interestpoint.svg:20:20:K",
+    "icon_marker_point_of_interest": "poi.svg:30:30:K",
     "iconArtilleryAttackBlinkTime": 20.0,
     "iconArtilleryAttackDist": 150.0,
     "curveMaxLinesPerSegment": 25,
@@ -569,7 +576,7 @@
         1.5
       ]
     },
-    "nuclearEscalation": {
+    "iconTooltip": {
       "tooltipMouseOffset": [
         15.0,
         20.0
@@ -694,6 +701,34 @@
     "iconTorpedoBoatTarget": "def_ship_radar_target.svg:11:11:K",
     "iconBoat": "def_ship_radar.svg:9:9:K",
     "iconBoatTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconMissileBoat": "def_ship_radar.svg:9:9:K",
+    "iconMissileBoatTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconCorvette": "def_ship_radar.svg:9:9:K",
+    "iconCorvetteTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconMissileCorvette": "def_ship_radar.svg:9:9:K",
+    "iconMissileCorvetteTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconDestroyer": "def_ship_radar.svg:9:9:K",
+    "iconDestroyerTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconMissileDestroyer": "def_ship_radar.svg:9:9:K",
+    "iconMissileDestroyerTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconFrigate": "def_ship_radar.svg:9:9:K",
+    "iconFrigateTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconMissileFrigate": "def_ship_radar.svg:9:9:K",
+    "iconMissileFrigateTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconLightCruiser": "def_ship_radar.svg:9:9:K",
+    "iconLightCruiserTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconMissileLightCruiser": "def_ship_radar.svg:9:9:K",
+    "iconMissileLightCruiserTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconHeavyCruiser": "def_ship_radar.svg:9:9:K",
+    "iconHeavyCruiserTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconMissileHeavyCruiser": "def_ship_radar.svg:9:9:K",
+    "iconMissileHeavyCruiserTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconBattleShip": "def_ship_radar.svg:9:9:K",
+    "iconBattleShipTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconMissileBattleship": "def_ship_radar.svg:9:9:K",
+    "iconMissileBattleshipTarget": "def_ship_radar_target.svg:11:11:K",
+    "iconAircraftCarrier": "def_ship_radar.svg:9:9:K",
+    "iconAircraftCarrierTarget": "def_ship_radar_target.svg:11:11:K",
     "iconPhysObj": "soccer_ball_radar.svg:16:16:K",
     "iconPhysObjTarget": "soccer_ball_radar.svg:16:16:K",
     "iconHuman": "gnd_wheeled_radar.svg:16:16:K",
@@ -896,6 +931,34 @@
       "iconTorpedoBoatTarget": "gnd_ship_radar_target.svg:13:13:K",
       "iconBoat": "gnd_ship_radar.svg:11:11:K",
       "iconBoatTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconMissileBoat": "gnd_ship_radar.svg:11:11:K",
+      "iconMissileBoatTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconCorvette": "gnd_ship_radar.svg:11:11:K",
+      "iconCorvetteTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconMissileCorvette": "gnd_ship_radar.svg:11:11:K",
+      "iconMissileCorvetteTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconDestroyer": "gnd_ship_radar.svg:11:11:K",
+      "iconDestroyerTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconMissileDestroyer": "gnd_ship_radar.svg:11:11:K",
+      "iconMissileDestroyerTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconFrigate": "gnd_ship_radar.svg:11:11:K",
+      "iconFrigateTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconMissileFrigate": "gnd_ship_radar.svg:11:11:K",
+      "iconMissileFrigateTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconLightCruiser": "gnd_ship_radar.svg:11:11:K",
+      "iconLightCruiserTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconMissileLightCruiser": "gnd_ship_radar.svg:11:11:K",
+      "iconMissileLightCruiserTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconHeavyCruiser": "gnd_ship_radar.svg:11:11:K",
+      "iconHeavyCruiserTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconMissileHeavyCruiser": "gnd_ship_radar.svg:11:11:K",
+      "iconMissileHeavyCruiserTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconBattleShip": "gnd_ship_radar.svg:11:11:K",
+      "iconBattleShipTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconMissileBattleship": "gnd_ship_radar.svg:11:11:K",
+      "iconMissileBattleshipTarget": "gnd_ship_radar_target.svg:13:13:K",
+      "iconAircraftCarrier": "gnd_ship_radar.svg:11:11:K",
+      "iconAircraftCarrierTarget": "gnd_ship_radar_target.svg:13:13:K",
       "iconAmmoStorage": "gnd_structure_radar.svg:11:11:K",
       "iconAmmoStorageTarget": "gnd_structure_radar_target.svg:13:13:K",
       "iconFuelStorage": "gnd_structure_radar.svg:11:11:K",
@@ -946,6 +1009,34 @@
       "iconTorpedoBoatTarget": "pix_ship_radar_target.svg:13:13:K",
       "iconBoat": "pix_ship_radar.svg:11:11:K",
       "iconBoatTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconMissileBoat": "pix_ship_radar.svg:11:11:K",
+      "iconMissileBoatTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconCorvette": "pix_ship_radar.svg:11:11:K",
+      "iconCorvetteTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconMissileCorvette": "pix_ship_radar.svg:11:11:K",
+      "iconMissileCorvetteTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconDestroyer": "pix_ship_radar.svg:11:11:K",
+      "iconDestroyerTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconMissileDestroyer": "pix_ship_radar.svg:11:11:K",
+      "iconMissileDestroyerTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconFrigate": "pix_ship_radar.svg:11:11:K",
+      "iconFrigateTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconMissileFrigate": "pix_ship_radar.svg:11:11:K",
+      "iconMissileFrigateTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconLightCruiser": "pix_ship_radar.svg:11:11:K",
+      "iconLightCruiserTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconMissileLightCruiser": "pix_ship_radar.svg:11:11:K",
+      "iconMissileLightCruiserTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconHeavyCruiser": "pix_ship_radar.svg:11:11:K",
+      "iconHeavyCruiserTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconMissileHeavyCruiser": "pix_ship_radar.svg:11:11:K",
+      "iconMissileHeavyCruiserTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconBattleShip": "pix_ship_radar.svg:11:11:K",
+      "iconBattleShipTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconMissileBattleship": "pix_ship_radar.svg:11:11:K",
+      "iconMissileBattleshipTarget": "pix_ship_radar_target.svg:13:13:K",
+      "iconAircraftCarrier": "pix_ship_radar.svg:11:11:K",
+      "iconAircraftCarrierTarget": "pix_ship_radar_target.svg:13:13:K",
       "iconHuman": "pix_infantry_radar.svg:10:14:K",
       "iconHumanTarget": "pix_infantry_radar_target.svg:12:16:K",
       "iconAmmoStorage": "pix_structure_radar.svg:9:9:K",
@@ -976,6 +1067,20 @@
       "iconRadar": "shadow_spaa_radar.svg:13:11:K",
       "iconTorpedoBoat": "shadow_ship_radar.svg:11:11:K",
       "iconBoat": "shadow_ship_radar.svg:11:11:K",
+      "iconMissileBoat": "shadow_ship_radar.svg:11:11:K",
+      "iconCorvette": "shadow_ship_radar.svg:11:11:K",
+      "iconMissileCorvette": "shadow_ship_radar.svg:11:11:K",
+      "iconDestroyer": "shadow_ship_radar.svg:11:11:K",
+      "iconMissileDestroyer": "shadow_ship_radar.svg:11:11:K",
+      "iconFrigate": "shadow_ship_radar.svg:11:11:K",
+      "iconMissileFrigate": "shadow_ship_radar.svg:11:11:K",
+      "iconLightCruiser": "shadow_ship_radar.svg:11:11:K",
+      "iconMissileLightCruiser": "shadow_ship_radar.svg:11:11:K",
+      "iconHeavyCruiser": "shadow_ship_radar.svg:11:11:K",
+      "iconMissileHeavyCruiser": "shadow_ship_radar.svg:11:11:K",
+      "iconBattleShip": "shadow_ship_radar.svg:11:11:K",
+      "iconMissileBattleship": "shadow_ship_radar.svg:11:11:K",
+      "iconAircraftCarrier": "shadow_ship_radar.svg:11:11:K",
       "iconHuman": "shadow_infantry_radar.svg:10:14:K",
       "iconAmmoStorage": "shadow_structure_radar.svg:9:9:K",
       "iconFuelStorage": "shadow_structure_radar.svg:9:9:K",
@@ -1014,7 +1119,37 @@
         "iconFuelStorage": "def_nato_ally_fuel_storage_radar.svg:24:24:K",
         "iconFuelStorageTarget": "def_nato_ally_tank_radar_target.svg:28:28:K",
         "iconTankStorage": "def_nato_ally_tank_storage_radar.svg:24:24:K",
-        "iconTankStorageTarget": "def_nato_ally_tank_radar_target.svg:28:28:K"
+        "iconTankStorageTarget": "def_nato_ally_tank_radar_target.svg:28:28:K",
+        "iconBoat": "def_nato_ally_boat_radar.svg:22:22:K",
+        "iconBoatTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconMissileBoat": "def_nato_ally_boat_radar.svg:22:22:K",
+        "iconMissileBoatTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconCorvette": "def_nato_ally_corvette_radar.svg:22:22:K",
+        "iconCorvetteTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconMissileCorvette": "def_nato_ally_corvette_radar.svg:22:22:K",
+        "iconMissileCorvetteTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconDestroyer": "def_nato_ally_destroyer_radar.svg:22:22:K",
+        "iconDestroyerTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconMissileDestroyer": "def_nato_ally_destroyer_radar.svg:22:22:K",
+        "iconMissileDestroyerTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconFrigate": "def_nato_ally_frigate_radar.svg:22:22:K",
+        "iconFrigateTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconMissileFrigate": "def_nato_ally_frigate_radar.svg:22:22:K",
+        "iconMissileFrigateTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconLightCruiser": "def_nato_ally_cruiser_radar.svg:22:22:K",
+        "iconLightCruiserTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconMissileLightCruiser": "def_nato_ally_missile_cruiser_radar.svg:22:22:K",
+        "iconMissileLightCruiserTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconHeavyCruiser": "def_nato_ally_heavy_cruiser_radar.svg:22:22:K",
+        "iconHeavyCruiserTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconMissileHeavyCruiser": "def_nato_ally_heavy_cruiser_radar.svg:22:22:K",
+        "iconMissileHeavyCruiserTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconBattleShip": "def_nato_ally_battleship_radar.svg:22:22:K",
+        "iconBattleShipTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconMissileBattleship": "def_nato_ally_battleship_radar.svg:22:22:K",
+        "iconMissileBattleshipTarget": "def_ussr_radar_station_radar_target.svg:26:26:K",
+        "iconAircraftCarrier": "def_nato_ally_aircraft_carrier_radar.svg:22:22:K",
+        "iconAircraftCarrierTarget": "def_ussr_radar_station_radar_target.svg:26:26:K"
       },
       "iconsNATOenemy": {
         "isAdjustByPixel": true,
@@ -1047,7 +1182,37 @@
         "iconFuelStorage": "def_nato_enemy_fuel_storage_radar.svg:24:24:K",
         "iconFuelStorageTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
         "iconTankStorage": "def_nato_enemy_tank_storage_radar.svg:24:24:K",
-        "iconTankStorageTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K"
+        "iconTankStorageTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconBoat": "def_nato_enemy_boat_radar.svg:24:24:K",
+        "iconBoatTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconMissileBoat": "def_nato_enemy_boat_radar.svg:24:24:K",
+        "iconMissileBoatTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconCorvette": "def_nato_enemy_corvette_radar.svg:24:24:K",
+        "iconCorvetteTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconMissileCorvette": "def_nato_enemy_corvette_radar.svg:24:24:K",
+        "iconMissileCorvetteTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconDestroyer": "def_nato_enemy_destroyer_radar.svg:24:24:K",
+        "iconDestroyerTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconMissileDestroyer": "def_nato_enemy_destroyer_radar.svg:24:24:K",
+        "iconMissileDestroyerTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconFrigate": "def_nato_enemy_frigate_radar.svg:24:24:K",
+        "iconFrigateTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconMissileFrigate": "def_nato_enemy_frigate_radar.svg:24:24:K",
+        "iconMissileFrigateTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconLightCruiser": "def_nato_enemy_cruiser_radar.svg:24:24:K",
+        "iconLightCruiserTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconMissileLightCruiser": "def_nato_enemy_missile_cruiser_radar.svg:24:24:K",
+        "iconMissileLightCruiserTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconHeavyCruiser": "def_nato_enemy_heavy_cruiser_radar.svg:24:24:K",
+        "iconHeavyCruiserTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconMissileHeavyCruiser": "def_nato_enemy_heavy_cruiser_radar.svg:24:24:K",
+        "iconMissileHeavyCruiserTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconBattleShip": "def_nato_enemy_battleship_radar.svg:24:24:K",
+        "iconBattleShipTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconMissileBattleship": "def_nato_enemy_battleship_radar.svg:24:24:K",
+        "iconMissileBattleshipTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K",
+        "iconAircraftCarrier": "def_nato_enemy_aircraft_carrier_radar.svg:24:24:K",
+        "iconAircraftCarrierTarget": "def_nato_enemy_tank_radar_target.svg:28:28:K"
       },
       "iconsUSSR": {
         "isAdjustByPixel": true,
@@ -1080,7 +1245,37 @@
         "iconFuelStorage": "def_ussr_fuel_storage_radar.svg:20:20:K",
         "iconFuelStorageTarget": "def_ussr_ammo_storage_radar_target.svg:24:24:K",
         "iconTankStorage": "def_ussr_tank_storage_radar.svg:20:20:K",
-        "iconTankStorageTarget": "def_ussr_ammo_storage_radar_target.svg:24:24:K"
+        "iconTankStorageTarget": "def_ussr_ammo_storage_radar_target.svg:24:24:K",
+        "iconBoat": "def_ussr_boat_radar.svg:29:21:K",
+        "iconBoatTarget": "def_ussr_boat_radar_target.svg:33:25:K",
+        "iconMissileBoat": "def_ussr_missile_boat_radar.svg:29:21:K",
+        "iconMissileBoatTarget": "def_ussr_boat_radar_target.svg:33:25:K",
+        "iconCorvette": "def_ussr_corvette_radar.svg:35:15:K",
+        "iconCorvetteTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconMissileCorvette": "def_ussr_missile_corvette_radar.svg:35:15:K",
+        "iconMissileCorvetteTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconDestroyer": "def_ussr_destroyer_radar.svg:35:15:K",
+        "iconDestroyerTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconMissileDestroyer": "def_ussr_missile_destroyer_radar.svg:35:15:K",
+        "iconMissileDestroyerTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconFrigate": "def_ussr_frigate_radar.svg:43:15:K",
+        "iconFrigateTarget": "def_ussr_frigate_radar_target.svg:47:19:K",
+        "iconMissileFrigate": "def_ussr_missile_frigate_radar.svg:43:15:K",
+        "iconMissileFrigateTarget": "def_ussr_frigate_radar_target.svg:47:19:K",
+        "iconLightCruiser": "def_ussr_cruiser_radar.svg:35:15:K",
+        "iconLightCruiserTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconMissileLightCruiser": "def_ussr_missile_cruiser_radar.svg:35:15:K",
+        "iconMissileLightCruiserTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconHeavyCruiser": "def_ussr_heavy_cruiser_radar.svg:35:15:K",
+        "iconHeavyCruiserTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconMissileHeavyCruiser": "def_ussr_missile_heavy_cruiser_radar.svg:35:15:K",
+        "iconMissileHeavyCruiserTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconBattleShip": "def_ussr_battleship_radar.svg:35:15:K",
+        "iconBattleShipTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconMissileBattleship": "def_ussr_missile_battleship_radar.svg:35:15:K",
+        "iconMissileBattleshipTarget": "def_ussr_sam_radar_target.svg:39:19:K",
+        "iconAircraftCarrier": "def_ussr_aircraft_carrier_radar.svg:35:15:K",
+        "iconAircraftCarrierTarget": "def_ussr_sam_radar_target.svg:39:19:K"
       }
     }
   },
@@ -1426,6 +1621,46 @@
       0.8
     ],
     "shipMinReloadTimeForHud": 1.5,
+    "aimingPointsMemMap": {
+      "worldAimPointIcon": "ap.svg:25:25:K",
+      "weaponLinkedMarkIcon": "ap_add_projectile.svg:25:25:K",
+      "aimMarkWorldIconColor": [
+        0,
+        217,
+        255,
+        157
+      ],
+      "aimNumberFontColor": [
+        0,
+        217,
+        255,
+        157
+      ],
+      "aimMarkMapSelectedIconColor": [
+        0,
+        217,
+        255,
+        255
+      ],
+      "aimMarkMapHoverIconColor": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "weaponLinkedMarkColor": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "aimNumberActiveFontColor": [
+        0,
+        206,
+        242,
+        255
+      ]
+    },
     "crosshairColor": [
       {
         "name": "white",
@@ -1755,7 +1990,7 @@
     "ship_bullet_fall_spot": {
       "enabled": true,
       "widthLimitsPx": [
-        20.0,
+        10.0,
         30.0
       ],
       "heightLimitsPx": [
@@ -1766,10 +2001,10 @@
         0,
         255,
         0,
-        128
+        180
       ],
       "lineWidthPx": 3.0,
-      "worldRadiusM": 30.0,
+      "worldRadiusM": 50.0,
       "airRadiusPx": 10.0,
       "worldMinDistToShow": 30.0,
       "worldMinDistToShootPos": 5000.0,
@@ -1778,7 +2013,21 @@
         0.2,
         0.1,
         0.05
-      ]
+      ],
+      "topGradientColor": [
+        150,
+        150,
+        150,
+        0
+      ],
+      "dmHitAlphaMult": 0.9,
+      "dmMissAlphaMult": 0.5,
+      "falloffDist": 700.0,
+      "farSizeFactor": 0.2,
+      "sightSizeMult": 1.3,
+      "cylHeightMult": 0.5,
+      "cylBottomAlphaMult": 0.667,
+      "cylMinScreenHeightPx": 8.0
     },
     "ship_weapon_status": {
       "enabled": true,
@@ -2667,22 +2916,22 @@
     },
     "shipsShootingTracking": {
       "borderColor": [
-        0,
-        160,
-        0,
+        100,
+        192,
+        60,
         255
       ],
       "fillColor": [
-        0,
-        220,
-        0,
-        255
+        100,
+        100,
+        100,
+        60
       ],
       "lineColor": [
-        0,
-        220,
-        0,
-        220
+        150,
+        150,
+        150,
+        180
       ],
       "scale": 10.0,
       "height": 0.3,
@@ -4366,7 +4615,10 @@
         {
           "index": 1
         }
-      ]
+      ],
+      "fpv_shell_activate": {
+        "shortcutIdx": -1
+      }
     },
     "wheelActions": {
       "weaponSelect": [
@@ -5194,26 +5446,23 @@
     "entry": [
       {
         "targetTypeIdStr": "hud/helicopter",
-        "iconType": "HELI"
+        "type": "HELI"
       },
       {
         "targetTypeIdStr": "hud/rocket",
-        "iconType": "ROCKET"
+        "type": "ROCKET"
       },
       {
         "targetTypeIdStr": "hud/small",
-        "iconType": "NONE",
-        "typeFilter": "SMALL"
+        "type": "NONE"
       },
       {
         "targetTypeIdStr": "hud/medium",
-        "iconType": "NONE",
-        "typeFilter": "MEDIUM"
+        "type": "NONE"
       },
       {
         "targetTypeIdStr": "hud/large",
-        "iconType": "NONE",
-        "typeFilter": "LARGE"
+        "type": "NONE"
       }
     ]
   }

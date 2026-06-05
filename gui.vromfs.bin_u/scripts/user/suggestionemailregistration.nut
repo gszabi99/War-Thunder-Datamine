@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, xbox_link_email, get_steam_link_token
+from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, get_steam_link_token
 from "%scripts/dagui_library.nut" import *
 
 let { is_gdk } = require("%sqstd/platform.nut")
@@ -7,7 +7,7 @@ let { isPlatformSony, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { register_command } = require("console")
-let { getPlayerSsoShortTokenAsync } = require("auth_wt")
+let { getPlayerSsoShortTokenAsync, live_link_email } = require("auth_wt")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { validateEmail } = require("%sqstd/string.nut")
 let { eventbus_subscribe, eventbus_subscribe_onehit } = require("eventbus")
@@ -131,7 +131,7 @@ function checkShowPS4EmailRegistration() {
 
 function sendXboxEmailBind(val) {
   showWaitScreen("msgbox/please_wait")
-  let eventName = "xbox_link_email_event"
+  let eventName = "live_link_email_event"
   eventbus_subscribe_onehit(eventName, function(data) {
     let status = data?.status ?? YU2_FAIL
     closeWaitScreen()
@@ -140,7 +140,7 @@ function sendXboxEmailBind(val) {
       loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
     ))
   })
-  xbox_link_email(val, eventName)
+  live_link_email(val, eventName)
 }
 
 function launchXboxEmailRegistration(override = {}) {

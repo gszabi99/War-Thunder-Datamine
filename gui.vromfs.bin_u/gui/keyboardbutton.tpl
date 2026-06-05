@@ -1,8 +1,8 @@
-<<#hasHoldButtonSign>>
-hasHoldButtonSign:t='yes'
-holdButtonSign {}
-padding-left:t='-1@sIco'
-<</hasHoldButtonSign>>
+<<#activationTypeImg>>
+activationTypeImg {
+  background-image:t='#ui/gameuiskin#<<activationTypeImg>>'
+}
+<</activationTypeImg>>
 
 keyboardButton {
   keyboardButtonText {

@@ -82,6 +82,12 @@ let tableColumns = [
       if (cellValue == "artillery")
         return {text = loc("structures/ussr_122mm_m30_0")}
 
+      if (cellValue == "crashKill")
+        return {text = loc("userlog/crash_kill_without_offender")}
+
+      if (cellValue == "leaveKill")
+        return {text = loc("userlog/leave_kill_without_offender")}
+
       if (doesLocTextExist(cellValue))
         return {text = loc(cellValue)}
 
@@ -248,7 +254,12 @@ let tableColumns = [
   {
     id = "finishingType"
     titleLocId = "userlog/finishing_type"
-    cellTransformFn = @(cellValue, _reward) { text = loc($"userlog/finishing_type/{cellValue}") }
+    cellTransformFn = function(cellValue, reward) {
+      let weaponName = reward?.weaponName
+      if (weaponName == "crashKill" || weaponName == "leaveKill")
+        return { text = loc("ui/mdash") }
+      return { text = loc($"userlog/finishing_type/{cellValue}") }
+    }
   }
   {
     id = "reason"

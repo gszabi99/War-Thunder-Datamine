@@ -5,14 +5,22 @@ require human_sounds.modules.human_sounds_events
 require DagorConsole
 
 
+def get_human_eid()
+  var target = INVALID_ENTITY_ID
+  query() <| $ [es(REQUIRE=watchedByPlr)] (eid : EntityId)
+    target = eid
+  query() <| $ [es(REQUIRE=daeditor__selected)] (eid : EntityId)
+    target = eid
+  return target
+
+
 [console_cmd(name="snd.set_human_voice_effect")]
 def sound_set_human_voice_effect(name : string; enabled : bool)
-  ecs::query() <| $ [es(REQUIRE=hero)] (var human_voice_effect__activeEffects : Object&)
+  query(get_human_eid()) <| $ [es] (var human_voice_effect__activeEffects : Object&)
     set_human_voice_effect(name, enabled, human_voice_effect__activeEffects)
 
 
 
 [console_cmd(name="snd.human_voice_effect")]
 def sound_human_voice_effect(phrase : string)
-  ecs::query() <| $ [es(REQUIRE=hero)] (eid : EntityId)
-    sendEvent(eid, CmdHumanVoiceEffect(phrase = phrase))
+  sendEvent(get_human_eid(), CmdHumanVoiceEffect(phrase = phrase))

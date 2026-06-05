@@ -7,6 +7,7 @@ cell {
     cellType:t='top'
     overflow-x:t='hidden'
     optiontext {
+      id:t='<<id>>_tr_label'
       text:t ='<<label>>'
     }
   }

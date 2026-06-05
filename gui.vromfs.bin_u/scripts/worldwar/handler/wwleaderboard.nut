@@ -472,8 +472,8 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
         clanTag = clansInfo?[row?.clanId.tostring() ?? ""].tag ?? row?.clanTag ?? ""
       })
     }
-    (this.selfRowData ?? []).map(updateClanTag)
-    this.pageData?.rows.map(updateClanTag)
+    (this.selfRowData ?? []).each(updateClanTag)
+    this.pageData?.rows.each(updateClanTag)
   }
 
   function onEventUpdateClansInfoList(p) {

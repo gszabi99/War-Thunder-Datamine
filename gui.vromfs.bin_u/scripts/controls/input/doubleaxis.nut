@@ -10,7 +10,7 @@ let DoubleAxis = class (InputBase) {
 
   deviceId = null
 
-  function getMarkup(_hasHoldButtonSign = false) {
+  function getMarkup() {
     let data = this.getMarkupData()
     return handyman.renderCached(data.template, data.view)
   }

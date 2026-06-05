@@ -39,7 +39,8 @@ def check_space_for_launching_drone(human_eid : EntityId;
 
 
 def create_drone_entity(transform : float3x4; droneTemplate : string; ownerEid : EntityId; playerEid : EntityId; team : int; launcherEid : EntityId; enableSound : bool)
-  return createEntity(droneTemplate) <| $(var init)
+  let templateName = droneTemplate + "+unit_init_params"
+  return createEntity(templateName) <| $(var init)
     set(init, "drone__owner", ownerEid)
     set(init, "ownedByPlr", playerEid)
     set(init, "unit_params__supportUnitIdx", 0) 

@@ -49,6 +49,8 @@ let { initBackgroundModelHint, updateBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
 let { EventToggleWeaponryWnd = null } = require("dasevents")
 let ecs = require("%sqstd/ecs.nut")
+let { getShopDevMode } = require("%scripts/debugTools/dbgShop.nut")
+let { openMissileTrajectoryWnd } = require("%scripts/weaponry/graphCompareBullets/missileTrajectoryWnd.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 const DELAY_BEFORE_GET_PRESET_DESCRIPTION = 0.5
@@ -93,6 +95,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   presetsHeightInTiers = 0
   tierSize             = 0
   showPresetInfoTimer  = null
+  selectedIdOnInit    = null
 
   function getSceneTplView() {
     this.weaponryByPresetInfo = getWeaponryByPresetInfo(this.unit, this.chooseMenuList)
@@ -121,19 +124,27 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
+    this.presetNest = this.scene.findObject("presetNest")
+    this.setSceneTitle(" ".concat(loc("modification/category/secondaryWeapon"),
+      loc("ui/mdash"), getUnitName(this.unit)))
+
     this.loadHangarModel()
     secondary_weapon_camera_mode(true)
     this.multiPurchaseList = []
     let chpn = this.lastWeapon
     this.chosenPresetIdx = this.presets.findindex(@(w) w.name == chpn) ?? 0
-    this.presetNest = this.scene.findObject("presetNest")
-    this.setSceneTitle("".concat(loc("modification/category/secondaryWeapon"), " ",
-      loc("ui/mdash"), " ", getUnitName(this.unit)))
-    this.selectPreset(this.chosenPresetIdx)
+
+    let selectedId = this.selectedIdOnInit
+    let foundIdx = selectedId != null
+      ? this.presets.findindex(@(p) p.tiersView.findvalue(@(t) t?.weaponry.presetId == selectedId) != null)
+      : null
+    let presetForSelectIdx = foundIdx ?? this.chosenPresetIdx
+    this.selectPreset(presetForSelectIdx)
+
     this.updateCustomIdx()
     this.updatePresetsByRanks()
     this.updateMultiPurchaseList()
-    move_mouse_on_obj(this.scene.findObject($"presetHeader_{this.chosenPresetIdx}"))
+    move_mouse_on_obj(this.scene.findObject($"presetHeader_{presetForSelectIdx}"))
 
     this.filterObj = this.scene.findObject("filter_nest")
     this.myFilters = loadLocalAccountSettings($"{MY_FILTERS}/{this.unit.name}", DataBlock())
@@ -354,6 +365,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let tooltipParams = getTierTooltipParams(weaponry, item.name, this.curTierIdx).__update({
       narrowPenetrationTable = true 
+      addShellTrajectoryBtn = !isInFlight()
     })
     return handyman.renderCached(("%gui/weaponry/weaponsPresetTooltip.tpl"),
       getTierDescTbl(this.unit, tooltipParams))
@@ -362,7 +374,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateTierDesc() {
     let descObj = this.scene.findObject("tierDesc")
     let data = this.getTierDeskMarkup()
-    this.guiScene.replaceContentFromText(descObj, data, data.len(), null)
+    this.guiScene.replaceContentFromText(descObj, data, data.len(), this)
   }
 
   function onModItemDblClick(_obj) {
@@ -494,6 +506,8 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       markupFileName = "%gui/weaponry/weaponsPresetTooltip.tpl"
       showOnlyNamesAndSpecs = true
       checkItemBeforeGetDescFn = Callback(this.checkItemBeforeGetDescFn, this)
+      alwaysShowReqMod = !!getShopDevMode()
+      addShellTrajectoryBtn = !isInFlight()
     })
   }
 
@@ -527,6 +541,16 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         action = @() this.onPresetDelete()
       }
     ].filter(@(a) a.show)
+  }
+
+  function onOpenShellTrajectoryWnd(obj) {
+    let ammoName = obj?.id ?? ""
+
+    openMissileTrajectoryWnd({
+      unit = this.unit
+      ammoName
+      applySelectedOptionAfterInit = true
+    })
   }
 
   function onPresetMenuOpen() {
@@ -606,8 +630,11 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     })
     this.guiScene.replaceContentFromText(this.presetNest, data, data.len(), this)
     
-    local firstIdx = this.presetIdxToChildIdx.findindex(@(_) true)
-    this.selectPreset(this.chosenPresetIdx in this.presetIdxToChildIdx ? this.chosenPresetIdx : firstIdx, true)
+    if (this.curPresetIdx not in this.presetIdxToChildIdx) {
+      local firstIdx = this.presetIdxToChildIdx.findindex(@(_) true)
+      this.selectPreset(this.chosenPresetIdx in this.presetIdxToChildIdx ? this.chosenPresetIdx : firstIdx, true)
+    } else
+      this.selectPreset(this.curPresetIdx, true)
 
     
     let popupObj = this.filterObj.findObject("filter_popup")

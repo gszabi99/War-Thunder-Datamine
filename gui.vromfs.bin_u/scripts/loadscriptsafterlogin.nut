@@ -25,6 +25,7 @@ function loadScriptsAfterLoginOnce() {
   require("%scripts/onScriptLoadAfterLogin.nut")
 
   
+  require("%scripts/onlineShop/registerOnlineShopHandlers.nut")
   require("%scripts/social/playerInfoUpdater.nut")
   require("%scripts/squads/elems/voiceChatElem.nut")
   require("%scripts/matching/serviceNotifications/showInfo.nut")

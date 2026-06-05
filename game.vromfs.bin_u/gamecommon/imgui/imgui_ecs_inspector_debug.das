@@ -5,7 +5,7 @@ options stack = 65536
 require ecs
 require imgui
 require daslib/static_let
-require %danetlibs.imgui_daeditor.imgui.daEditor.ecs_inspector_common
+require %gameLibs.imgui_daeditor.imgui.daEditor.ecs_inspector_common
 
 
 [es(on_event=CmdImGuiDebug, before=__first_sync_point)]

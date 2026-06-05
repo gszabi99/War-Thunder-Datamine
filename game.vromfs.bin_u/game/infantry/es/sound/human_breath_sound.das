@@ -5,10 +5,11 @@ require DngHuman
 require soundEvent
 require soundHash
 require sound_utils.modules.sound_player_common
+require human_sounds.modules.human_voice_effect_common
 require math
 require math.base
 require DagorMath
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 require strings
 
 
@@ -54,6 +55,7 @@ def human_breath_sound_update(info : ParallelUpdateFrameDelayed;
                               var sound_event_group : SoundEventGroup&;
                               @shared_comp human_voice_sound__path : Object;
                               @shared_comp human_voice_sound__descs : Object;
+                              human_speech__locale = "";
                               transform : float3x4;
                               hitpoints__hp : float;
                               hitpoints__maxHp : float)
@@ -82,16 +84,16 @@ def human_breath_sound_update(info : ParallelUpdateFrameDelayed;
   if isPoorBreath || isLowHealth
     if !human_breath_sound__isBreath
       human_breath_sound__isBreath = true
-      sound_player_common::play("sprintBreath", human_voice_sound__path, human_voice_sound__descs, sound_tags, true, transform[3], sound_hash("breath"), sound_event_group)
+      play_voice("sprintBreath", human_voice_sound__path, human_voice_sound__descs, sound_tags, true, transform[3], sound_hash("breath"), sound_event_group, human_speech__locale)
     let handle = get_sound(sound_event_group, sound_hash("breath"))
     set_var(handle, "Stamina", (1. - saturate(breathShortness)) * 100.)
   elif human_breath_sound__isBreath
     human_breath_sound__isBreath = false
     reject_sound(sound_event_group, sound_hash("breath"))
     if max(human_breath_sound__prevBreathShortness, breathShortness) > human_breath_sound__breathoutThreshold
-      sound_player_common::play("sprintBreathOut", human_voice_sound__path, human_voice_sound__descs, sound_tags, true, transform[3], sound_hash("breathOut"), sound_event_group)
+      play_voice("sprintBreathOut", human_voice_sound__path, human_voice_sound__descs, sound_tags, true, transform[3], sound_hash("breathOut"), sound_event_group, human_speech__locale)
 
   if isPoorBreath && human_breath_sound__prevBreathShortness < human_breath_sound__inhaleThreshold && breathShortness >= human_breath_sound__inhaleThreshold
-    sound_player_common::play("inhale", human_voice_sound__path, human_voice_sound__descs, sound_tags, true, transform[3], sound_hash("inhale"), sound_event_group)
+    play_voice("inhale", human_voice_sound__path, human_voice_sound__descs, sound_tags, true, transform[3], sound_hash("inhale"), sound_event_group, human_speech__locale)
 
   human_breath_sound__prevBreathShortness = breathShortness

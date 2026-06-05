@@ -64,7 +64,7 @@
         },
         {
           "to": "leader_recons",
-          "value": 1
+          "value": 0
         }
       ],
       "orderedSelector": [
@@ -214,14 +214,39 @@
             "outTargetVehicleEidParam": "orderTargetVehicle",
             "outExecutorEidParam": "orderExecutorEid",
             "outShootPosFromParam": "orderVehicleShootFromPos",
-            "outShootPosToParam": "orderVehicleShootToPos"
+            "outShootPosToParam": "orderVehicleShootToPos",
+            "outIsSelfExecutorParam": "orderIsSelfExecutor"
           },
-          "giveOrder": {
-            "orderType": "attack_vehicle",
-            "orderUseEntityEidParam": "orderTargetVehicle",
-            "executorEidParam": "orderExecutorEid",
-            "shootPosFromParam": "orderVehicleShootFromPos",
-            "shootPosToParam": "orderVehicleShootToPos"
+          "orderedSelector": {
+            "sequencer": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "orderIsSelfExecutor",
+                  "rhs_value": 0
+                },
+                "giveOrder": {
+                  "orderType": "attack_vehicle",
+                  "orderUseEntityEidParam": "orderTargetVehicle",
+                  "executorEidParam": "orderExecutorEid",
+                  "shootPosFromParam": "orderVehicleShootFromPos",
+                  "shootPosToParam": "orderVehicleShootToPos"
+                }
+              },
+              {
+                "isVarsIntEqual": {
+                  "lhs": "orderIsSelfExecutor",
+                  "rhs_value": 1
+                },
+                "copyIntVar": {
+                  "to": "antiTankAttackTarget",
+                  "from": "orderTargetVehicle"
+                },
+                "setIntVar": {
+                  "to": "tryAntiTankWeaponAttack",
+                  "value": 1
+                }
+              }
+            ]
           },
           "initPeriodicTimer": {
             "timeParam": "checkSquadDangerVehiclesTimer",
@@ -373,17 +398,24 @@
                           {
                             "to": "leader_full_stay",
                             "value": 1
-                          },
-                          {
-                            "to": "leader_reject",
-                            "value": 1
                           }
                         ],
+                        "success": {
+                          "sequencer": {
+                            "ignoreChance": {
+                              "chance": 0.45
+                            },
+                            "setIntVar": {
+                              "to": "leader_reject",
+                              "value": 1
+                            }
+                          }
+                        },
                         "initPeriodicTimer": {
                           "timeParam": "onChangeLeaderFollowPos",
                           "timePeriod": [
-                            7.0,
-                            11.0
+                            5.0,
+                            7.0
                           ]
                         }
                       }
@@ -418,6 +450,48 @@
                 "zoneEidParam": "leaderTargetEid",
                 "insideCapzone": true,
                 "minDist": 3.5,
+                "notClosestChance": 0.25
+              },
+              "copyPoint3Var": {
+                "to": "leaderTargetPos",
+                "from": "regroupPosition"
+              },
+              "setIntVar": {
+                "to": "leaderTargetType",
+                "value": 1
+              }
+            },
+            {
+              "isVarsIntEqual": {
+                "lhs": "leaderTargetCrowded",
+                "rhs_value": 1
+              },
+              "getCapzonePoint": {
+                "outPosParam": "regroupPosition",
+                "zoneEidParam": "leaderTargetEid",
+                "insideCapzone": true,
+                "minDist": 5.0,
+                "notClosestChance": 0.12
+              },
+              "copyPoint3Var": {
+                "to": "leaderTargetPos",
+                "from": "regroupPosition"
+              },
+              "setIntVar": {
+                "to": "leaderTargetType",
+                "value": 1
+              }
+            },
+            {
+              "isVarsIntEqual": {
+                "lhs": "leaderTargetCrowded",
+                "rhs_value": 2
+              },
+              "getCapzonePoint": {
+                "outPosParam": "regroupPosition",
+                "zoneEidParam": "leaderTargetEid",
+                "insideCapzone": true,
+                "minDist": 5.0,
                 "notClosestChance": 0.07
               },
               "copyPoint3Var": {
@@ -434,9 +508,9 @@
                 "outPosParam": "regroupPosition",
                 "zoneEidParam": "leaderTargetEid",
                 "insideCapzone": false,
-                "minDist": 3.5,
+                "minDist": 7.0,
                 "minDistChance": 0.1,
-                "notClosestChance": 0.2
+                "notClosestChance": 0.5
               },
               "copyPoint3Var": {
                 "to": "leaderTargetPos",
@@ -560,8 +634,8 @@
                     "initPeriodicTimer": {
                       "timeParam": "onChangeLeaderFollowPos",
                       "timePeriod": [
-                        1.0,
-                        2.0
+                        2.0,
+                        3.0
                       ]
                     },
                     "setDebugSym": {
@@ -824,49 +898,60 @@
                 },
                 "continue": {}
               },
-              "moveToPos": {
-                "startRestTimerRange": [
-                  0.465,
-                  0.47
-                ],
-                "noSprintTurnDeg": 75.0,
-                "tryClimbing": true,
-                "maxClimbWalkSpeed": 0.25,
-                "jumpClimbTime": 1.0,
-                "posParam": "regroupPosition",
-                "sprintTimerRange": [
-                  10.0,
-                  20.0
-                ],
-                "minDistToSprint": 7.0,
-                "lookVisc": 0.1,
-                "restTimerRange": [
-                  3.0,
-                  5.0
-                ],
-                "minStanceParam": "minStance",
-                "maxStanceParam": "maxStance",
-                "stuckDirParam": "stuckDir",
-                "incLadders": true,
-                "strafeNearDist": 2.5,
-                "rotateDistThreshold": 0.7,
-                "rotateFactors": [
-                  0.7,
-                  0.5,
-                  0.5,
-                  0.25
-                ],
-                "rotateStartTime": 0.5,
-                "useTeamCustomNav": true,
-                "timeToStuck": 0.9,
-                "incObstacles": false,
-                "avoidAiObstacles": false,
-                "distThreshold": 0.5,
-                "jumpDownTraceCheck": [
-                  0.4,
-                  1.0,
-                  0.15
-                ]
+              "parallel": {
+                "moveToPos": {
+                  "startRestTimerRange": [
+                    0.465,
+                    0.47
+                  ],
+                  "noSprintTurnDeg": 75.0,
+                  "tryClimbing": true,
+                  "maxClimbWalkSpeed": 0.25,
+                  "jumpClimbTime": 1.0,
+                  "posParam": "regroupPosition",
+                  "sprintTimerRange": [
+                    10.0,
+                    20.0
+                  ],
+                  "minDistToSprint": 7.0,
+                  "lookVisc": 0.1,
+                  "restTimerRange": [
+                    3.0,
+                    5.0
+                  ],
+                  "minStanceParam": "minStance",
+                  "maxStanceParam": "maxStance",
+                  "stuckDirParam": "stuckDir",
+                  "incLadders": true,
+                  "strafeNearDist": 2.5,
+                  "rotateDistThreshold": 0.7,
+                  "rotateFactors": [
+                    0.7,
+                    0.5,
+                    0.5,
+                    0.25
+                  ],
+                  "rotateStartTime": 0.5,
+                  "useTeamCustomNav": true,
+                  "timeToStuck": 0.9,
+                  "incObstacles": false,
+                  "avoidAiObstacles": false,
+                  "distThreshold": 0.5,
+                  "jumpDownTraceCheck": [
+                    0.4,
+                    1.0,
+                    0.15
+                  ]
+                },
+                "sequencer": {
+                  "considerCornersAlongMovementPath": {
+                    "outPosFromParam": "movePeekFrom",
+                    "outPosLookParam": "movePeekLook",
+                    "outPosMoveParam": "movePeekMove",
+                    "outPosLeanParam": "movePeekLean"
+                  },
+                  "recalculateTree": {}
+                }
               }
             }
           }
@@ -1761,16 +1846,10 @@
                 "posParam": "wishPosition",
                 "radius": 5.5
               },
-              "setRealVar": [
-                {
-                  "to": "maxMoveSpeed",
-                  "value": 0.97
-                },
-                {
-                  "to": "minDistToSprint",
-                  "value": 1000.0
-                }
-              ]
+              "setRealVar": {
+                "to": "minDistToSprint",
+                "value": 1000.0
+              }
             }
           }
         },
@@ -2235,66 +2314,77 @@
           "fixMoveWishPos": {
             "posParam": "movePos"
           },
-          "moveToPos": {
-            "startRestTimerRange": [
-              0.465,
-              0.47
-            ],
-            "noSprintTurnDeg": 60.0,
-            "forceNavDirTimeAfterClimb": 1.5,
-            "restTimerRange": [
-              3.0,
-              5.0
-            ],
-            "posParam": "movePos",
-            "sprintTimerRange": [
-              10.0,
-              20.0
-            ],
-            "minDistToSprintParam": "minDistToSprint",
-            "lookVisc": 0.1,
-            "tryClimbing": true,
-            "maxClimbWalkSpeed": 0.25,
-            "jumpClimbTime": 1.0,
-            "minStanceParam": "minStance",
-            "maxStanceParam": "maxStance",
-            "stuckDirParam": "stuckDir",
-            "incLadders": true,
-            "strafeNearDistParam": "moveStrafeNearDist",
-            "timeToStuck": 0.9,
-            "incObstacles": false,
-            "avoidAiObstacles": false,
-            "distThreshold": 0.5,
-            "pauseStuckTimerOnHtVel": 0.5,
-            "rotateDistThreshold": 0.7,
-            "rotateFactors": [
-              0.7,
-              0.5,
-              0.5,
-              0.25
-            ],
-            "rotateStartTime": 0.5,
-            "finalLookSetup": [
-              1.0,
-              1.0,
-              4.0,
-              0.17
-            ],
-            "finalLookPosParam": "finalLookPos",
-            "finalLookClipAngleParam": "finalLookClipAngle",
-            "doNotStopParam": "doNotStop",
-            "noCrouchParam": "doNotStop",
-            "maxSpeedParam": "maxMoveSpeed",
-            "slowdownDistCoef": 1.2,
-            "slowdownSpeedCoef": 1.0,
-            "waitMoveVisc": 0.1,
-            "fixMoveVisc": 0.05,
-            "jumpDownTraceCheck": [
-              0.4,
-              1.0,
-              0.15
-            ],
-            "useTeamCustomNav": true
+          "parallel": {
+            "moveToPos": {
+              "startRestTimerRange": [
+                0.465,
+                0.47
+              ],
+              "noSprintTurnDeg": 60.0,
+              "forceNavDirTimeAfterClimb": 1.5,
+              "restTimerRange": [
+                3.0,
+                5.0
+              ],
+              "posParam": "movePos",
+              "sprintTimerRange": [
+                10.0,
+                20.0
+              ],
+              "minDistToSprintParam": "minDistToSprint",
+              "lookVisc": 0.1,
+              "tryClimbing": true,
+              "maxClimbWalkSpeed": 0.25,
+              "jumpClimbTime": 1.0,
+              "minStanceParam": "minStance",
+              "maxStanceParam": "maxStance",
+              "stuckDirParam": "stuckDir",
+              "incLadders": true,
+              "strafeNearDistParam": "moveStrafeNearDist",
+              "timeToStuck": 0.9,
+              "incObstacles": false,
+              "avoidAiObstacles": false,
+              "distThreshold": 0.5,
+              "pauseStuckTimerOnHtVel": 0.5,
+              "rotateDistThreshold": 0.7,
+              "rotateFactors": [
+                0.7,
+                0.5,
+                0.5,
+                0.25
+              ],
+              "rotateStartTime": 0.5,
+              "finalLookSetup": [
+                1.0,
+                1.0,
+                4.0,
+                0.17
+              ],
+              "finalLookPosParam": "finalLookPos",
+              "finalLookClipAngleParam": "finalLookClipAngle",
+              "doNotStopParam": "doNotStop",
+              "noCrouchParam": "doNotStop",
+              "maxSpeedParam": "maxMoveSpeed",
+              "slowdownDistCoef": 1.2,
+              "slowdownSpeedCoef": 1.0,
+              "waitMoveVisc": 0.1,
+              "fixMoveVisc": 0.05,
+              "jumpDownTraceCheck": [
+                0.4,
+                1.0,
+                0.15
+              ],
+              "useTeamCustomNav": true
+            },
+            "sequencer": {
+              "considerCornersAlongMovementPath": {
+                "outPosFromParam": "movePeekFrom",
+                "outPosLookParam": "movePeekLook",
+                "outPosMoveParam": "movePeekMove",
+                "outPosLeanParam": "movePeekLean"
+              },
+              "recalculateTree": {}
+            }
           }
         },
         {
@@ -2308,67 +2398,78 @@
           "fixMoveWishPos": {
             "posParam": "movePos"
           },
-          "moveToPos": {
-            "startRestTimerRange": [
-              0.465,
-              0.47
-            ],
-            "noSprintTurnDeg": 60.0,
-            "forceNavDirTimeAfterClimb": 1.5,
-            "restTimerRange": [
-              3.0,
-              5.0
-            ],
-            "posParam": "movePos",
-            "sprintTimerRange": [
-              10.0,
-              20.0
-            ],
-            "minDistToSprintParam": "minDistToSprint",
-            "lookVisc": 0.1,
-            "tryClimbing": true,
-            "maxClimbWalkSpeed": 0.25,
-            "jumpClimbTime": 1.0,
-            "minStanceParam": "minStance",
-            "maxStanceParam": "maxStance",
-            "stuckDirParam": "stuckDir",
-            "incLadders": true,
-            "strafeNearDistParam": "moveStrafeNearDist",
-            "timeToStuck": 0.9,
-            "incObstacles": false,
-            "avoidAiObstacles": false,
-            "distThreshold": 0.25,
-            "pauseStuckTimerOnHtVel": 0.5,
-            "rotateDistThreshold": 0.7,
-            "rotateFactors": [
-              0.7,
-              0.5,
-              0.5,
-              0.25
-            ],
-            "rotateStartTime": 0.5,
-            "finalLookSetup": [
-              1.0,
-              1.0,
-              4.0,
-              0.17
-            ],
-            "finalLookPosParam": "finalLookPos",
-            "finalLookClipAngleParam": "finalLookClipAngle",
-            "doNotStopParam": "doNotStop",
-            "noCrouchParam": "doNotStop",
-            "maxSpeedParam": "maxMoveSpeed",
-            "slowdownDistCoef": 1.2,
-            "slowdownSpeedCoef": 1.0,
-            "waitMoveVisc": 0.1,
-            "fixMoveVisc": 0.05,
-            "failOnPartialTime": 0.8,
-            "jumpDownTraceCheck": [
-              0.4,
-              1.0,
-              0.15
-            ],
-            "useTeamCustomNav": true
+          "parallel": {
+            "moveToPos": {
+              "startRestTimerRange": [
+                0.465,
+                0.47
+              ],
+              "noSprintTurnDeg": 60.0,
+              "forceNavDirTimeAfterClimb": 1.5,
+              "restTimerRange": [
+                3.0,
+                5.0
+              ],
+              "posParam": "movePos",
+              "sprintTimerRange": [
+                10.0,
+                20.0
+              ],
+              "minDistToSprintParam": "minDistToSprint",
+              "lookVisc": 0.1,
+              "tryClimbing": true,
+              "maxClimbWalkSpeed": 0.25,
+              "jumpClimbTime": 1.0,
+              "minStanceParam": "minStance",
+              "maxStanceParam": "maxStance",
+              "stuckDirParam": "stuckDir",
+              "incLadders": true,
+              "strafeNearDistParam": "moveStrafeNearDist",
+              "timeToStuck": 0.9,
+              "incObstacles": false,
+              "avoidAiObstacles": false,
+              "distThreshold": 0.25,
+              "pauseStuckTimerOnHtVel": 0.5,
+              "rotateDistThreshold": 0.7,
+              "rotateFactors": [
+                0.7,
+                0.5,
+                0.5,
+                0.25
+              ],
+              "rotateStartTime": 0.5,
+              "finalLookSetup": [
+                1.0,
+                1.0,
+                4.0,
+                0.17
+              ],
+              "finalLookPosParam": "finalLookPos",
+              "finalLookClipAngleParam": "finalLookClipAngle",
+              "doNotStopParam": "doNotStop",
+              "noCrouchParam": "doNotStop",
+              "maxSpeedParam": "maxMoveSpeed",
+              "slowdownDistCoef": 1.2,
+              "slowdownSpeedCoef": 1.0,
+              "waitMoveVisc": 0.1,
+              "fixMoveVisc": 0.05,
+              "failOnPartialTime": 0.8,
+              "jumpDownTraceCheck": [
+                0.4,
+                1.0,
+                0.15
+              ],
+              "useTeamCustomNav": true
+            },
+            "sequencer": {
+              "considerCornersAlongMovementPath": {
+                "outPosFromParam": "movePeekFrom",
+                "outPosLookParam": "movePeekLook",
+                "outPosMoveParam": "movePeekMove",
+                "outPosLeanParam": "movePeekLean"
+              },
+              "recalculateTree": {}
+            }
           },
           "orderedSelector": {
             "isVarsIntEqual": {

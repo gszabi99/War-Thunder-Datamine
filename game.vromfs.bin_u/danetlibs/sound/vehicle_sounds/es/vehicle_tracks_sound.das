@@ -2,7 +2,7 @@ require ecs
 require DagorMath
 require soundEvent
 require sound_utils.modules.sound_player_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 
 
 [es(tag=sound, track=is_watched_sound, REQUIRE=is_watched_sound)]
@@ -42,7 +42,8 @@ def vehicle_tracks_sound(info : ParallelUpdateFrameDelayed;
                          is_watched_sound : bool;
                          @shared_comp vehicle_tracks_sound__path : Object;
                          sound_tags : Object;
-                         transform : float3x4)
+                         transform : float3x4;
+                         vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
 
   vehicle_tracks_sound__delay -= info.dt
   if vehicle_tracks_sound__delay <= 0.
@@ -54,7 +55,9 @@ def vehicle_tracks_sound(info : ParallelUpdateFrameDelayed;
       if !vehicle_tracks_sound__event.enabled
         vehicle_tracks_sound__event.enabled = true
         abandon(vehicle_tracks_sound__event)
-        vehicle_tracks_sound__event |> reset(sound_player_common::play_path(vehicle_tracks_sound__path, sound_tags, is_watched_sound, transform[3], false))
+        vehicle_tracks_sound__event |> reset(play_path(vehicle_tracks_sound__path, sound_tags, is_watched_sound, transform[3], false))
+        attach_to_blob(vehicle_tracks_sound__event, vehicle_sound_occlusion__blob)
+
     elif vehicle_tracks_sound__delay <= -3.
       vehicle_tracks_sound__delay = 1.
       if vehicle_tracks_sound__event.enabled

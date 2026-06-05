@@ -1218,7 +1218,7 @@ def human_context_command_menu_trace_throw_grenade(human_eid : EntityId; var out
     var grenadeAltPos = float3()
     if human_context_command__menuCtxTracePos != float3() && human_context_command__menuCtxTraceDir != float3()
       if trace_human_context_command_grenade_pos(grenadePos, grenadeDir, false, human_eid, human_context_command__menuCtxTracePos, human_context_command__menuCtxTraceDir)
-        if grenadePos != float3() && grenadePos == grenadePos
+        if grenadePos != float3()
           grenadeAltPos = ctxPos
         else
           grenadePos = ctxPos

@@ -6,6 +6,14 @@
       "human_sound_geomtree_nodes__headNodeId": -1
     }
   },
+  "human_voice_sound_occlusion": {
+    "_group": {
+      "_tags": "sound",
+      "human_voice_sound_occlusion__radius": 0.5,
+      "human_voice_sound_occlusion__attachRadius": 0.5,
+      "human_voice_sound_occlusion__blob:SoundOcclusionBlob": {}
+    }
+  },
   "sound_step_settings": {
     "_use": [
       "sound_physmat",
@@ -138,7 +146,6 @@
         "human_voice_effect__isInited": false,
         "human_voice_effect__isActive": false,
         "human_voice_effect__activeEffects:object": {},
-        "human_voice_effect__orderedEffects:shared:list<t>": {},
         "human_voice_effect__event:SoundEvent": {},
         "human_voice_effect__oneshotEvent:SoundEvent": {},
         "human_voice_effect__allOrderedEffects:shared:list<t>": {}
@@ -201,42 +208,5 @@
         }
       }
     ]
-  },
-  "human_sound_landmesh_queries": {
-    "_group": {
-      "_tags": "sound",
-      "human_sound_landmesh_queries__lastQueryTime": -1.0,
-      "human_sound_landmesh_queries__biomeId": -1,
-      "human_sound_landmesh_queries__biomeQueryId": -1,
-      "human_sound_landmesh_queries__puddleDepth": 0.0,
-      "human_sound_landmesh_queries__puddleQueryId": -1,
-      "human_sound_landmesh_queries_vars__speedSq": 0.0,
-      "human_sound_landmesh_queries_vars__isOnGround": true,
-      "human_sound_landmesh_queries__farawayThreshold": 15.0,
-      "human_sound_landmesh_queries__zeroSpeedThreshold": 0.01,
-      "human_sound_landmesh_queries__heroSpeedToQueryInterval": [
-        0.0,
-        4.0,
-        1.0,
-        0.2
-      ],
-      "human_sound_landmesh_queries__enemySpeedToQueryInterval": [
-        0.0,
-        4.0,
-        1.5,
-        0.5
-      ],
-      "human_sound_landmesh_queries__heroEnemyInAirInterval": [
-        0.1,
-        0.5
-      ],
-      "human_sound_landmesh_queries__lmeshDiff": 2.0,
-      "human_sound_landmesh_queries__puddleQueryToDepth": [
-        0.1,
-        0.4,
-        0.0,
-        0.05
-      ]
-    }
   }
 }

@@ -6,6 +6,7 @@ let interopGet = require("%rGui/interopGen.nut")
 let { isDmgIndicatorVisible } = require("gameplayBinding")
 let { eventbus_subscribe } = require("eventbus")
 let { getHudGuiState, HudGuiState } = require("hudState")
+let { isDmgPanelVisible } = require("%rGui/hud/hudPartVisibleState.nut")
 
 let isInKillerCam = @() getHudGuiState() == HudGuiState.GUI_STATE_KILLER_CAMERA
 
@@ -15,7 +16,6 @@ let hudState = {
   isSpectatorMode = cross_call.isPlayerDedicatedSpectator()
   isPlayingReplay = false
   isVisibleDmgIndicator = isDmgIndicatorVisible()
-  dmgIndicatorStates = { size = [0, 0], pos = [0, 0] }
   tacticalMapStates = { size = [0, 0], pos = [0, 0] }
   missionProgressHeight = 0
   hasTarget = false
@@ -29,13 +29,9 @@ let hudState = {
 }.map(@(val, key) mkWatched(persist, key, val))
 
 let { isInKillerCamera, isVisibleDmgIndicator } = hudState
-let needShowDmgIndicator = Computed(@() isVisibleDmgIndicator.get() && !isInKillerCamera.get())
+let needShowDmgIndicator = Computed(@() isVisibleDmgIndicator.get() && !isInKillerCamera.get() && isDmgPanelVisible.get())
 hudState.needShowDmgIndicator <- needShowDmgIndicator
 
-eventbus_subscribe("updateDmgIndicatorStates", function(v) {
-  if (!isEqual(hudState.dmgIndicatorStates.get(), v))
-    hudState.dmgIndicatorStates.set(v)
-})
 eventbus_subscribe("updateTacticalMapStates", function(v) {
   if (!isEqual(hudState.tacticalMapStates.get(), v))
     hudState.tacticalMapStates.set(v)

@@ -1,19 +1,15 @@
 {
   "import": "%wtlibs/templates/essentials.blk",
   "unit_loader": {
-    "_use": "ecs_no_debug",
+    "_tags": "server",
+    "_use": [
+      "ecs_no_debug",
+      "unit_init_params"
+    ],
     "setting__className": "",
-    "setting__playerNo": -1,
-    "setting__unitType": "",
-    "setting__crewSkillK": -1.0,
-    "setting__weapons": "",
-    "setting__skin": "",
-    "setting__canChangeUnit": false,
-    "setting__isPhysPredictionEnabled": false,
-    "setting__loadAnim": false,
     "setting__unit_class": "",
-    "setting__applyAllMods": false,
-    "setting__closed_waypoints": false,
+    "setting__unitType": "",
+    "setting__playerNo": -1,
     "setting__tm": [
       [
         1.0,
@@ -36,15 +32,11 @@
         0.0
       ]
     ],
-    "setting__isDelayed": false,
-    "setting__isDead": false,
-    "setting__active": true,
-    "setting__ignoreCollisions": false,
-    "setting__shouldDrawSmallIndForMissTarget": true,
-    "setting__uniqueName": "",
-    "setting__count": 1,
-    "setting__attack_type": "",
     "setting__army": 0,
+    "setting__forcePos": false,
+    "setting__active": true,
+    "setting__canChangeUnit": false,
+    "setting__count": 1,
     "setting__formation_type": "cols",
     "setting__formation_div": 1,
     "setting__formation_step": [
@@ -55,33 +47,6 @@
       0.1,
       0.1
     ],
-    "setting__stealthRadius": -1.0,
-    "setting__supportUnitType": 0,
-    "setting__targetAir": true,
-    "setting__targetGnd": true,
-    "setting__targetAAA": true,
-    "setting__accuracy": 1.0,
-    "setting__maxDeviationAngle": 0.0,
-    "setting__moveSysTraceRI": false,
-    "setting__effShootingRate": 1.0,
-    "setting__lightlyArmored": false,
-    "setting__avoidObstacles": false,
-    "setting__targetableByAi": true,
-    "setting__isImmortal": false,
-    "setting__calmDetection": false,
-    "setting__name": "",
-    "setting__flags": 0,
-    "setting__aiReloadMult": 1.0,
-    "setting__speed": 0.0,
-    "setting__routeName": "",
-    "setting__cannotMove": false,
-    "setting__toGround": false,
-    "setting__forcePos": false,
-    "setting__loadSound": true,
-    "setting__aiEnabled": true,
-    "setting__canControlInHangar": false,
-    "setting__bullets:list<t>": {},
-    "setting__bulletsCount:list<i>": {},
     "setting__unit_target_list:list<t>": {}
   },
   "spawn_point": {
@@ -336,6 +301,60 @@
   "capture_zone_proxy_polygon": {
     "_use": "base_capture_zone_proxy",
     "capzone__approximateRadius": -1.0
+  },
+  "infantry_spawn_zone_proxy": {
+    "_use": "replicating",
+    "capture_zone__zoneId": -1,
+    "_replicated": [
+      "capture_zone__zoneId",
+      "infantry_spawn__owningTeam",
+      "capzone__hasEnemyInside",
+      "dynamic_respawn__prevPositionsClient"
+    ],
+    "infantry_spawn__zoneName": "",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "infantry_spawn__owningTeam": -1,
+    "_tracked": [
+      "infantry_spawn__owningTeam",
+      "capzone__hasEnemyInside",
+      "dynamic_respawn__prevPositionsClient"
+    ],
+    "capzone__hasEnemyInside": false,
+    "dynamic_respawn__selected": false,
+    "dynamic_respawn__selectedSpawnPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "dynamic_respawn__selectedSpawnChecked": false,
+    "infantry_spawn_zone_proxy:tag": {},
+    "dynamic_respawn__prevPositions:list<p3>": {},
+    "dynamic_respawn__prevPositionsClient:list<p3>": {},
+    "_group": {
+      "_tags": "server",
+      "infantry_spawn__capzoneEid:eid": {}
+    }
   },
   "pickup_zone_fx_object": {
     "pickup_zone__zoneId": -1,

@@ -53,6 +53,7 @@ infoMarker {
   size: 1@markerWidth, 1@markerHeight;
   background-svg-size: 1@markerWidth, 1@markerHeight;
   background-color: @white;
+  not-input-transparent: yes;
 }
 
 infoMarker[place=topMenu] {
@@ -132,8 +133,16 @@ infoMarker[type=unlockMarker][place=unitCell]:pushed {
 }
 
 infoMarker[type=remainingTimeMarker] {
-  behavior:bhvUpdater;
+  behavior: bhvUpdater;
   background-image: #ui/gameuiskin#remaining_color_icon_down.svg;
+}
+
+infoMarker[type=remainingTimeMarker][place=topMenu],
+infoMarker[type=remainingTimeMarker][place=slotbarCountry],
+infoMarker[type=remainingTimeMarker][place=unitCell] {
+  behavior: button;
+  on_click: onMarkerClick;
+  focusBtnName: 'A';
 }
 
 infoMarker[type=remainingTimeMarker][place=inTab] {
@@ -143,8 +152,28 @@ infoMarker[type=remainingTimeMarker][place=inTab] {
   pos:0, ph/2-h/2;
 }
 
-infoMarker[type=discountNotificationMarker] {
+infoMarker[type=remainingTimeMarker]:hover,
+infoMarker[type=discountNotificationMarker]:hover {
+  background-position:0, -2@dp, 0, 2@dp;
+}
+
+infoMarker[type=remainingTimeMarker][place=inTab]:hover,
+infoMarker[type=discountNotificationMarker][place=inTab]:hover {
+  background-position:0;
+}
+
+infoMarker[type=remainingTimeMarker]:pushed,
+infoMarker[type=discountNotificationMarker]:pushed {
+  background-position:0;
+}
+
+infoMarker[type=discountNotificationMarker][place=topMenu],
+infoMarker[type=discountNotificationMarker][place=slotbarCountry],
+infoMarker[type=discountNotificationMarker][place=unitCell] {
   background-image: #ui/gameuiskin#discount_color_icon_down.svg;
+  behavior: button;
+  on_click: onMarkerClick;
+  focusBtnName: 'A';
 }
 
 infoMarker[type=discountNotificationMarker][place=topMenu],
@@ -164,6 +193,16 @@ infoMarker[type=discountNotificationMarker][place=unitCell] {
   font: @fontSmall;
   textShade: yes;
   not-input-transparent: yes;
+}
+
+infoMarker[type=discountNotificationMarker][place=slotbarCountry]:hover,
+infoMarker[type=discountNotificationMarker][place=unitCell]:hover {
+  padding: 1@discountBoxPadding, 0.5@discountBoxPadding-2@dp, 1@discountBoxPadding, 1@discountBoxDownArrowHeight+2@dp;
+}
+
+infoMarker[type=discountNotificationMarker][place=slotbarCountry]:pushed,
+infoMarker[type=discountNotificationMarker][place=unitCell]:pushed {
+  padding: 1@discountBoxPadding, 0.5@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxDownArrowHeight;
 }
 
 infoMarker[type=discountNotificationMarker][place=inTab] {

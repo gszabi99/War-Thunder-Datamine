@@ -79,6 +79,10 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_HELP"
+    checkAssign = false
+  }
+  {
     id = "ID_PTT"
     checkAssign = false
     condition = @() gchat_is_voice_enabled()

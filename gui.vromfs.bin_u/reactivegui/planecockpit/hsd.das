@@ -12,12 +12,13 @@ require FlightControl
 require FlightModelWrap
 require HeroManager
 require math
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require Plane
 require Sensors
 require strings
 require Unit
 require Weapon
+require Localization
 
 struct Tracking
   isActive      : bool

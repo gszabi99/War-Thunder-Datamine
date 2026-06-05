@@ -6,12 +6,27 @@ let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getDecorTypeBlk, needCacheDecorTypeByCategories
 } = require("%scripts/customization/decoratorTypeUtils.nut")
+let { Decorator } = require("%scripts/customization/decorator.nut")
+
+function getSingleDecor(decorId, decType) {
+  let dblk = getDecorTypeBlk(decType.name)?[decorId]
+  if (isEmpty(dblk))
+    return null
+
+  let decorator = Decorator(dblk, decType)
+  decorator.category = dblk?.category ?? ""
+
+  if (decorator.getCouponItemdefId() != null
+    && !findItemById(decorator.getCouponItemdefId()))
+      waitingItemdefs[decorator.getCouponItemdefId()] <- decorator
+
+  return decorator
+}
 
 function cacheDecor(decType, unitTypeTag) {
   let curCache = {
     categories      = []
     decoratorsList  = {}
-    fullBlk         = null
     catToGroupNames = {} 
     catToGroups     = {} 
   }
@@ -20,14 +35,12 @@ function cacheDecor(decType, unitTypeTag) {
   if (isEmpty(blk))
     return curCache
 
-  curCache.fullBlk = blk 
-
   let prevCategory = ""
   let numDecors = blk.blockCount()
   for (local i = 0; i < numDecors; ++i) {
     let dblk = blk.getBlock(i)
 
-    let decorator = ::Decorator(dblk, decType) 
+    let decorator = Decorator(dblk, decType) 
     if (unitTypeTag != null && !decorator.isAllowedByUnitTypes(unitTypeTag))
       continue
 
@@ -91,4 +104,5 @@ function addDecorToCache(decorator, decCache) {
 return {
   cacheDecor
   addDecorToCache
+  getSingleDecor
 }

@@ -60,8 +60,10 @@
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
     "explosiveType": "tgaf_5m",
-    "explosiveMass": 58.5,
+    "explosiveMass": 110.0,
     "warheadMass": 140.0,
+    "canChangeFuseMode": true,
+    "hasProximityFuse": true,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.025,
     "shellCollision": true,
@@ -101,7 +103,8 @@
       "workTime": 100.0,
       "uncageBeforeLaunch": true,
       "lockAfterLaunch": false,
-      "useTargetVel": true,
+      "reacquireTarget": true,
+      "useTargetVel": false,
       "lockTimeOut": 0.0,
       "disableTOFInHud": true,
       "timeTableCorrection": [
@@ -111,19 +114,19 @@
       "breakLockMaxTime": 240.0,
       "radarSeeker": {
         "groundVehiclesAsTarget": true,
-        "aircraftAsTarget": true,
+        "aircraftAsTarget": false,
         "groundClutter": false,
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
         "active": false,
-        "useTargetId": true,
-        "sideLobesAttenuation": -20.0,
         "multipathEffect": [
           0.0,
           1.0,
           0.5,
           0.0
         ],
+        "useTargetId": true,
+        "sideLobesAttenuation": -20.0,
         "lockAngleMax": 15.0,
         "angleMax": 50.0,
         "rateMax": 8.0,
@@ -143,7 +146,7 @@
           }
         },
         "receiver": {
-          "rcs": 0.1,
+          "rcs": 0.01,
           "range": 100000.0,
           "rangeMax": 200000.0,
           "timeGainControl": false,

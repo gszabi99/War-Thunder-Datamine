@@ -13,6 +13,7 @@ require DagorMath
 require darg
 require DagorSystem
 require hud
+require Localization
 
 class Radar
   def static getModeName()

@@ -65,15 +65,16 @@ hintRow > shortcutAxis,
 hintRow > keyboardButton,
 hintRow > combination,
 hintRow > timeBar,
-hintRow > keyboardAxis {
+hintRow > keyboardAxis,
+hintRow > activationTypeImg {
   position: relative;
   top: 0;
 }
 
 
-hintRow > combination > gamepadButton,
-hintRow > combination > shortcutAxis,
-hintRow > combination > keyboardButton {
+hintRow > combination > combinationBackground > gamepadButton,
+hintRow > combination > combinationBackground > shortcutAxis,
+hintRow > combination > combinationBackground > keyboardButton {
   position: relative;
   top: 50%ph - 50%h;
 }
@@ -173,12 +174,17 @@ subtitlesHint hintRow > timeBar {
   top: 0;
 }
 
+action_item_content hintRow > activationTypeImg,
+second_action_shortcuts hintRow > activationTypeImg {
+  top:0.5ph - 0.5h;
+}
+
 chatHint hintRow textareaNoTab {
   font: @fontSmall;
   max-width: p.p.p.p.w;
 }
 
-chatHint hintRow  > combination > textareaNoTab {
+chatHint hintRow  > combination > combinationBackground > textareaNoTab {
   margin: 1@blockInterval,0;
 }
 
@@ -186,7 +192,7 @@ action_item_content hintRow > textareaNoTab {
   font: @fontHudSmall;
 }
 
-action_item_content hintRow > combination > textareaNoTab {
+action_item_content hintRow > combination > combinationBackground > textareaNoTab {
   font: @fontHudTiny;
   margin: 0;
 }
@@ -196,7 +202,8 @@ chatHint hintRow > shortcutAxis,
 chatHint hintRow > keyboardButton,
 chatHint hintRow > combination,
 chatHint hintRow > timeBar,
-chatHint hintRow > textareaNoTab {
+chatHint hintRow > textareaNoTab,
+chatHint hintRow > activationTypeImg {
   position: relative;
   top: 50%ph - 50%h;
 }

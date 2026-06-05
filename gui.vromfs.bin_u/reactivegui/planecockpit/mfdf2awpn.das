@@ -16,6 +16,7 @@ require Weapon
 require WTCamera
 
 require DagorSystem
+require Localization
 
 
 def loc_wpn(str : string, suffix : string) : string
@@ -25,7 +26,7 @@ def loc_wpn(str : string, suffix : string) : string
 
 
 def calc_box_points(pos : float2; size : float2) : tuple<lt : float2, rb : float2>
-  return size * -0.5 + pos, size * 0.5 + pos
+  return (lt = size * -0.5 + pos, rb = size * 0.5 + pos)
 
 
 struct Shapes

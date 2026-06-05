@@ -934,7 +934,7 @@ function getModificationInfo(air, modifName, p = {}) {
     if (doesLocTextExist(locKey)) {
       let locParams = {}
       if (!isLimitedName)
-        locParams.unlockWeapons <- getLocalizedModWeapons(air, modifName)
+        locParams.unlockWeapons <- colorize("activeTextColor", getLocalizedModWeapons(air, modifName))
       res.desc = loc(locKey, "", locParams)
     }
 

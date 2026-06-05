@@ -4,6 +4,19 @@ tr {
     highlight {}
     hr {}
 
+    playerStats {
+      width:t='1@teammateStatWidth'
+      flow:t='vertical'
+
+      <<#statsRows>>
+      tdiv {
+        width:t='pw'
+        height:t='ph/3'
+        <<@col1>>
+        <<@col2>>
+      }
+      <</statsRows>>
+    }
     <<#iconLeft>>
     icon {
       ButtonContainer { ButtonImg {} }

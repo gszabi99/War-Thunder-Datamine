@@ -12,6 +12,8 @@ require PropsManager
 require DaWeapons
 require HumanPhys
 require app
+require net
+require wt_events
 
 def interrupt_reload_immediately_impl(human_weap__reloadStartTime : float;
                                       var human_weap__reloadFinishTime : float&;
@@ -507,3 +509,29 @@ def human_weap_reset_inspection_time(evt : Event;
 def human_weap_reload_interrupt_on_climbing(evt : Event; eid : EntityId; human_net_phys__isClimbing : bool)
   if human_net_phys__isClimbing
     sendEvent(eid, CmdInterruptReloadImmediately())
+
+
+[es(tag=gameClient, REQUIRE=controlledHero, track=human_weap__isReloadRequested)]
+def hero_forward_reload_to_server_es(evt : Event;
+                                     eid : EntityId;
+                                     human_weap__isReloadRequested : bool;
+                                     human_weap__reloadStartTime : float;
+                                     human_weap__reloadGunEid : EntityId;
+                                     human_weap__isQuickReload : bool)
+  if !human_weap__isReloadRequested
+    return
+  var isEmptyMag = false
+  query(human_weap__reloadGunEid) <| $ [es(REQUIRE_NOT=(launcherTag, subsidiaryGun))] (gun__ammo : int)
+    isEmptyMag = (gun__ammo == 0)
+  if !isEmptyMag
+    return
+  send_net_event(eid, HumanRequestReload(atTime = human_weap__reloadStartTime,
+                                         gunEid = human_weap__reloadGunEid,
+                                         isQuick = human_weap__isQuickReload))
+
+
+[es(tag=(server, net))]
+def human_weap_force_reload_net_es(evt : HumanRequestReload; eid : EntityId)
+  query(evt.gunEid) <| $ [es] (var gun__ammo : int&)
+    gun__ammo = 0
+  sendEventImmediate(eid, CmdRequestReload(atTime = evt.atTime, gunEid = evt.gunEid, isQuick = evt.isQuick))

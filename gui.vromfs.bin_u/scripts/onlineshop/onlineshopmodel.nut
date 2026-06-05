@@ -295,11 +295,6 @@ function launchOnlineShop(owner = null, chapter = null, afterCloseFunc = null, l
   openModalOnlineShop(owner, chapter, afterCloseFunc)
 }
 
-::launchOnlineShop <- launchOnlineShop 
-
-
-
-
 function openOnlineShopFromPromo(handler, params) {
   let shopType = params?[0]
   if (shopType == ONLINE_SHOP_TYPES.BUNDLE

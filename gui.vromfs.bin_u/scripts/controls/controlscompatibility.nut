@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_axis_name
 from "%scripts/dagui_library.nut" import *
-
+from "controls" import ActivationCondition
 let u = require("%sqStdLibs/helpers/u.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
@@ -21,7 +21,11 @@ function getShortcuts(list, preset = null) {
 
     let hotkey = preset.getHotkey(name)
     foreach (shortcut in hotkey) {
-      local shortcutData = { dev = [], btn = [] }
+      let shortcutData = {
+        dev = []
+        btn = []
+        activationType = shortcut?[0].activationType ?? ActivationCondition.DEFAULT
+      }
       foreach (button in shortcut) {
         shortcutData.dev.append(button.deviceId)
         shortcutData.btn.append(button.buttonId)
@@ -46,6 +50,7 @@ function setShortcutsAndSaveControls(shortcutList, nameList) {
         shortcutData.append({
           deviceId = shortcut.dev[j]
           buttonId = shortcut.btn[j]
+          activationType = shortcut?.activationType ?? ActivationCondition.DEFAULT
         })
 
       hotkey.append(shortcutData)

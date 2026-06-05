@@ -22,7 +22,7 @@ def enable_concussion_affect(owner_eid : EntityId;
                               var concussion__endTime : float&;
                               var concussion__intensityMult : float&)
     if !concussion__isActive || concussion__allowReapply
-      concussion__endTime = get_sync_time() + duration
+      concussion__endTime = get_sync_time() + duration * intensity
     concussion__isActive = true
     concussion__isBlocksSprint = is_blocks_sprint
     concussion__lookSensMult = look_sens_mult

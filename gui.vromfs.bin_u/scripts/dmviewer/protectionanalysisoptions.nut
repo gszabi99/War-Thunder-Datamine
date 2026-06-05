@@ -126,6 +126,22 @@ function updateArmorPiercingText(obj) {
   descObj.setValue(desc)
 }
 
+function mkSliderMarkup(option) {
+  return handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
+    containerId =$"container_{option.id}"
+    id = option.id
+    sliderWidth = "1@sliderWidth"
+    min = 0
+    max = 0
+    value = 0
+    step = 0
+    width = "fw"
+    btnOnDec = "onButtonDec"
+    btnOnInc = "onButtonInc"
+    onChangeSliderValue = "onChangeOption"
+  })
+}
+
 local isBulletAvailable = @() options?.BULLET.value != null
 
 options.template <- {
@@ -279,7 +295,7 @@ options.addTypes({
   }
   UNIT = {
     sortId = sortIdCount++
-    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue" }
+    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue", tooltipOnHold = showConsoleButtons.get() }
 
     updateParams = function(_handler, _scene) {
       let unitType = options.UNITTYPE.value
@@ -291,13 +307,15 @@ options.addTypes({
       list = list.map(@(unit) { unit, id = unit.name, br = unit.getBattleRating(ediff) })
       list.sort(@(a, b) a.br <=> b.br)
       this.values = list.map(@(v) v.unit)
-      
-      let needDisableTooltip = showConsoleButtons.get()
+
+      let tooltipOnHold = showConsoleButtons.get()
       this.items = list.map(@(v) {
         text  = format("[%.1f] %s", v.br, getUnitName(v.id))
         image = image_for_air(v.unit)
-        addDiv = needDisableTooltip ? null
+        addDiv = tooltipOnHold ? null
           : getTooltipType("UNIT").getMarkup(v.id, { showLocalState = false })
+        tooltipId = tooltipOnHold ? getTooltipType("UNIT").getTooltipId(v.id, { showLocalState = false }) : ""
+        tooltipOnHold
       })
       let targetUnitId = options.targetUnit.name
       let preferredUnitId = this.value?.name ?? targetUnitId
@@ -513,13 +531,15 @@ options.addTypes({
           }
 
         let isBullet = curType == "bullet"
+        let isRocket = curType == "rocket"
         let locName = utf8Capitalize(loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))))
         if (!curBlk || isInArray(locName, bulletNamesSet))
           continue
 
         bulletNamesSet.append(locName)
         let bulletParams = calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
-        let btName = isBullet ? curBlk.bulletType : ""
+        let btName = isBullet ? curBlk.bulletType
+          : isRocket ? (curBlk?.bulletName ?? curBlk?.weaponName ?? "") : ""
         this.values.append({
           bulletName = btName
           weaponBlkName = weaponBlkPath
@@ -579,20 +599,7 @@ options.addTypes({
     step = 0
     valueWidth = "fw"
 
-    getControlMarkup = function() {
-      return handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
-        containerId =$"container_{this.id}"
-        id = this.id
-        min = 0
-        max = 0
-        value = 0
-        step = 0
-        width = "fw"
-        btnOnDec = "onButtonDec"
-        btnOnInc = "onButtonInc"
-        onChangeSliderValue = "onChangeOption"
-      })
-    }
+    getControlMarkup = @() mkSliderMarkup(this)
 
     getInfoRows = function() {
       let res = [{
@@ -738,32 +745,6 @@ options.addTypes({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 })
 
 options.init <- function(handler, scene) {
@@ -786,13 +767,9 @@ options.setAnalysisParams <- function() {
   let bullet   = options.BULLET.value
   let distance = options.DISTANCE.value
   let unit = options.UNIT.value
-  
-
-
-
-
-  set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", unit?.name ?? "", distance, 0, 0)
-  
+  let offset = options?.OFFSET.value ?? 0
+  let depth = options?.DEPTH.value ?? 0
+  set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", unit?.name ?? "", distance, offset, depth)
 }
 
 options.get <- @(id) this?[id] ?? this.UNKNOWN

@@ -1,4 +1,11 @@
 {
+  "global_sound_cooldown": {
+    "_use": "replicating",
+    "_singleton": true,
+    "global_sound_cooldown:object": {
+      "_tags": "sound"
+    }
+  },
   "sound_effect": {
     "_use": "sound_control",
     "_group": [
@@ -17,6 +24,8 @@
         "sound_effect__occlusionRadius": 0.0,
         "sound_effect__abandonOnReset": false,
         "sound_effect__autoRange": true,
+        "sound_effect__globalKey": "",
+        "sound_effect__globalCooldown": 0.0,
         "sound_effect__event:SoundEvent": {}
       }
     ]
@@ -107,6 +116,9 @@
         0.0,
         0.0
       ],
+      "sound_effect_speed_var__speedSq": -1.0,
+      "sound_effect_speed_var__name": "speed",
+      "sound_effect_speed_var__thresholdSq": 0.01,
       "sound_effect_speed_var__speedToVar": [
         0.0,
         10.0,
@@ -148,6 +160,18 @@
       ],
       "phys_obj_collision_sound__numSounds": 9999,
       "phys_obj_collision_sound__event:SoundEvent": {}
+    }
+  },
+  "phys_obj_fall_sound": {
+    "_group": {
+      "_tags": "sound",
+      "phys_obj_fall_sound__prevSpeed": 0.0,
+      "phys_obj_fall_sound__nextTime": 0.0,
+      "phys_obj_fall_sound__path": "missing phys_obj_fall_sound__path",
+      "phys_obj_fall_sound__minSpeedDrop": 3.0,
+      "phys_obj_fall_sound__minSpeed": 2.0,
+      "phys_obj_fall_sound__cooldown": 2.0,
+      "phys_obj_fall_sound__cooldownOnAppear": 1.0
     }
   },
   "fx_destruction_sound": {

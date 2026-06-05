@@ -2,9 +2,10 @@ include common.das_project
 
 let
   mountPointPrefixes <- {
-    "ecs" => "%dasGameLibs/ecs",
-    "math" => "%dasGameLibs/math",
+    "ecs" => "%gameLibs/das/ecs",
+    "math" => "%gameLibs/das/math",
     "danetlibs" => "%danetlibs",
+    "gameLibs" => "%gameLibs",
     "imgui" => "%dasImgui",
     "sound_utils" => "%danetlibs/sound/sound_utils",
     "sound_utils_net" => "%danetlibs/sound/sound_utils_net",
@@ -12,5 +13,9 @@ let
     "human_sounds_net" => "%danetlibs/sound/human_sounds_net",
     "human_speech" => "%danetlibs/sound/human_speech",
     "human_net_speech" => "%danetlibs/sound/human_net_speech",
-    "common_sounds" => "%danetlibs/sound/common_sounds"
+    "common_sounds" => "%danetlibs/sound/common_sounds",
+    "daFrameGraph" => "%gameLibs/das/daFrameGraph"
+  }
+  commonAliasPath <- {
+    "daFrameGraph" => "%gameLibs/das/daFrameGraph.daFG.das"
   }

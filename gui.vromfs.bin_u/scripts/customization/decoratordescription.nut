@@ -77,7 +77,7 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
   let colonLoc = loc("ui/colon")
   let searchId = decorator.id
   if (decoratorType.hasLocations(searchId)) {
-    let mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, decoratorTypes.SKINS, false)
+    let mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, false)
     let locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (locations.len())
       desc.append($"{loc("camouflage/for_environment_conditions")}{colonLoc}{commaLoc.join(locations, true)}")

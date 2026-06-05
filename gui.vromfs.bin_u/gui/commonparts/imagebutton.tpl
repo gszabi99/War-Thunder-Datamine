@@ -1,10 +1,15 @@
 <<#buttons>>
 imgButton {
-  id:t='<<id>>';
-  width:t='<<ratio>>@decalIconHeight + ((<<ratio>> - 1)@decalItemMargin)';
-  min-height:t='1@decalIconHeight';
-  min-width:t='1@decalIconHeight';
+  id:t='<<id>>'
+  decoratorId:t='<<decoratorId>>'
+  width:t='<<ratio>>@decalIconHeight + ((<<ratio>> - 1)@decalItemMargin)'
+  min-width:t='1@decalIconHeight'
+  min-height:t='1@decalIconHeight'
   margin:t='1@decalItemMargin'
+  <<#favoriteBtn>>
+  <<#isFavorite>>isFavorite:t='yes'<</isFavorite>>
+  <<^isFavorite>>isFavorite:t='no'<</isFavorite>>
+  <</favoriteBtn>>
 
   <<^tooltipId>>
   <<#tooltipText>>
@@ -175,6 +180,20 @@ imgButton {
     value:t='<<unseenIcon>>'
   }
   <</unseenIcon>>
+  <<#favoriteBtn>>
+  favoriteBtn {
+    id:t='favorite_btn'
+    margin:t='3@sf/@pf'
+    on_click:t='onAddToFavoriteBtn'
+
+    <<#isFavorite>>
+    tooltip:t='#mainmenu/btnFavoriteUnmark'
+    <</isFavorite>>
+    <<^isFavorite>>
+    tooltip:t='#mainmenu/btnFavorite'
+    <</isFavorite>>
+  }
+  <</favoriteBtn>>
   <<#tooltipId>>
   <<^isTooltipByHold>>
     tooltipObj {

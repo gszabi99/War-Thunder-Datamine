@@ -39,7 +39,7 @@ def updateHeatSourceTm(carTransform : float3x4;
   if node != null
     var tm : float3x4
     collres_get_collision_node_tm(collres, collisionNodeId, carTransform, animchar.nodeTree, tm)
-    let partModelBBox = (*node).modelBBox
+    let partModelBBox = collres_get_node_bbox(collres, collisionNodeId)
     let pos = tm * partModelBBox.center
     query(heatEid) <| $ [es] (var transform : float3x4&;
                               heat_source__type : int)
@@ -92,12 +92,14 @@ def human_gun_heat_source_init_es(evt : Event;
                                   item__weapType : string;
                                   animchar : AnimcharBaseComponent;
                                   var heat_source__humanGunEid : EntityId&;
+                                  var heat_source__gunFxNodeId : int&;
                                   var heat_source__human_gun_offset : float3&;
                                   var heat_source__human_gun_size : float3&;
                                   var heat_source__human_gun_heating : float3&)
   if item__weapType == "melee" || item__weapType == "building_tool"
     return
   let nodeIndex = geomtree_findNodeIndex(*animchar.nodeTree, "gunFx_main")
+  heat_source__gunFxNodeId = nodeIndex
   var heatEid = INVALID_ENTITY_ID
   if nodeIndex > 0
     var nodeWtm : float3x4
@@ -129,12 +131,13 @@ def human_gun_heat_source_on_destroy_es(evt : Event;
 def human_gun_heat_source_update_es(info : ParallelUpdateFrameDelayed;
                                     animchar : AnimcharBaseComponent;
                                     heat_source__humanGunEid : EntityId;
+                                    heat_source__gunFxNodeId : int;
                                     heat_source__human_gun_heating : float3)
 
-  if heat_source__humanGunEid == INVALID_ENTITY_ID
+  if heat_source__humanGunEid == INVALID_ENTITY_ID || heat_source__gunFxNodeId <= 0
     return
   var nodeWtm : float3x4
-  geomtree_getNodeWtmScalar(*animchar.nodeTree, geomtree_findNodeIndex(*animchar.nodeTree, "gunFx_main"), nodeWtm)
+  geomtree_getNodeWtmScalar(*animchar.nodeTree, heat_source__gunFxNodeId, nodeWtm)
 
   query(heat_source__humanGunEid) <| $ [es] (var transform : float3x4&;
                                              var heat_source__temperature : float4&)
@@ -195,7 +198,7 @@ def human_heat_source_init_es(evt : Event;
     if node != null
       var tm : float3x4
       collres_get_collision_node_tm(collres, collisionNodeId, transform, animchar.nodeTree, tm)
-      let partModelBBox = (*node).modelBBox
+      let partModelBBox = collres_get_node_bbox(collres, collisionNodeId)
       var partTemperature = float2(3.0f, 36.0f) 
       let basicRad = partModelBBox.width
       var scale = float3(1.0f, 1.0f, 1.0f)

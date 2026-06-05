@@ -37,6 +37,7 @@ let shortcutsParamsByPlace = @(scale = 1) {
     keyboardButtonPad = [0, hdpx(6)]
     keyboardButtonTextFont = fontsState.get("tiny")
     combinationGap = fpx(6)
+    combinationBackground = "ui/gameuiskin#hotkey_combo_bg.svg"
   }
   antiAirMenu = { shortcutAxis = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
     gamepadButtonSize = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
@@ -61,11 +62,20 @@ let shortcutsParamsByPlace = @(scale = 1) {
     bgImage = $"ui/gameuiskin#shortcut_flat.svg:{infantryShortcutHeight}:P"
     texOffs = [0, 0]
     screenOffs = [0, 0]
+    combinationBackground = "ui/gameuiskin#hotkey_combo_bg_hud_inf.svg"
   }
 }
 
 let hasImage = @(shortcutConfig) shortcutConfig?.buttonImage
   && shortcutConfig?.buttonImage != ""
+
+let mkActivationTypeImage = @(imageName, width) {
+  size = [width, width]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#{imageName}:{width}:P")
+  color = colors.white
+  keepAspect = true
+}
 
 function gamepadButton(shortcutConfig, override, isAxis = true, addChildrend = []) {
   let { scale = 1, place = "defaultP" } = override
@@ -148,28 +158,54 @@ let shortcutByInputName = {
       ? gamepadButton(shortcutConfig, override, true, addChildrend)
       : keyboardButton(shortcutConfig, override, addChildrend)
 
-  button = @(shortcutConfig, override, addChildrend = []) hasImage(shortcutConfig)
+  function button(shortcutConfig, override, addChildrend = []) {
+    let buttonComp = hasImage(shortcutConfig)
       ? gamepadButton(shortcutConfig, override, false, addChildrend)
       : keyboardButton(shortcutConfig, override, addChildrend)
+    let { activationTypeImg = null } = shortcutConfig
+    if (activationTypeImg == null)
+      return buttonComp
+
+    let { scale = 1, place = "defaultP" } = override
+    let { gamepadButtonSize } = shortcutsParamsByPlace(scale)[place]
+    return {
+      size = SIZE_TO_CONTENT
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_CENTER
+      children = [
+        mkActivationTypeImage(activationTypeImg, gamepadButtonSize[0])
+        buttonComp
+      ]
+    }
+  }
 
   combination = function(shortcutConfig, override, addChildrend = []) {
-    let { scale = 1, place = "defaultP", shortCombination = false } = override
+    let { place = "defaultP", shortCombination = false } = override
+    local { scale = 1 } = override
+    let { elements, activationTypeImg = null } = shortcutConfig
     let sizeParam = shortcutsParamsByPlace(scale)[place]
-    let elmementsCount = shortcutConfig.elements.len()
+    let { gamepadButtonSize, keyboardButtonTextFont, combinationGap,
+      combinationBackground = "ui/gameuiskin#hotkey_combo_bg_hud.svg" } = sizeParam
+    let activateIconHeight = gamepadButtonSize[0]
+    let elmementsCount = elements.len()
+    let hasActivationType = activationTypeImg != null
+    if (hasActivationType) {
+      scale *= 0.8
+      override = override.__merge({ scale })
+    }
     let shortcutsCombination = []
-    if (!shortCombination) {
-      foreach (idx, element in shortcutConfig.elements) {
+    if (!shortCombination)
+      foreach (idx, element in elements) {
         shortcutsCombination.append(getShortcut(element, override, addChildrend))
         if (idx < elmementsCount - 1)
           shortcutsCombination.append({
             rendObj = ROBJ_TEXT
-            font = sizeParam.keyboardButtonTextFont
-            fontSize = getFontDefHt(getFontName(sizeParam.keyboardButtonTextFont)) * scale
+            font = keyboardButtonTextFont
+            fontSize = getFontDefHt(getFontName(keyboardButtonTextFont)) * scale
             text = "+"
             color = colors.menu.commonTextColor
           })
       }
-    }
     else {
       shortcutsCombination.append(getShortcut({inputName = "button",
         text = shortcutConfig.text.replace(" + ", "+")}, override, addChildrend))
@@ -183,9 +219,24 @@ let shortcutByInputName = {
       size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
-      halign = ALIGN_CENTER
-      gap = sizeParam.combinationGap
-      children = shortcutsCombination
+      children = [
+        hasActivationType ? mkActivationTypeImage(activationTypeImg, activateIconHeight) : null
+        {
+          size = SIZE_TO_CONTENT
+          rendObj = hasActivationType ? ROBJ_9RECT : null
+          image = hasActivationType
+            ? Picture($"{combinationBackground}:{activateIconHeight}:P")
+            : null
+          texOffs = 6
+          screenOffs = hdpx(6)
+          color = colors.white
+          padding = hasActivationType ? 0.1*gamepadButtonSize[0] : 0
+          flow = FLOW_HORIZONTAL
+          valign = ALIGN_CENTER
+          gap = combinationGap
+          children = shortcutsCombination
+        }
+      ]
     }
   }
 

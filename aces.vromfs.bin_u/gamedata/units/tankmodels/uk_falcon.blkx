@@ -25,7 +25,7 @@
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
+  "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
   "maxAngSpeed": 30.0,
   "maxAccel": 4.0,
@@ -37,13 +37,12 @@
   "minDistBetween": 10.0,
   "expClass": "exp_SPAA",
   "mass": 17550.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
+  "partDamageFx": "part_damage",
+  "explosionFx": "tank_explosion",
+  "fireFx": "ground_model_fire",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -381,6 +380,10 @@
         "hp": 60.0,
         "armorThrough": 15.0,
         "fireParamsPreset": "powersystem_internal"
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1834,7 +1837,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "turret": {
           "head": "bone_turret",
@@ -1871,7 +1873,7 @@
           ],
           "pitch": [
             -10.0,
-            85.0
+            80.0
           ]
         },
         "gunStabilizer": {
@@ -1952,7 +1954,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "errExplTime": 0.0,
         "forestallTime": 0.1,
         "reuseYawTrigger": 10,
         "reusePitchTrigger": 10,
@@ -1991,7 +1992,7 @@
           ],
           "pitch": [
             -10.0,
-            85.0
+            80.0
           ]
         },
         "gunStabilizer": {
@@ -2130,20 +2131,20 @@
       "maxBrakeForce": 60024.0,
       "driveGearRadius": 0.34,
       "mainGearRatio": 1.95,
-      "sideGearRatio": 3.71,
+      "sideGearRatio": 3.972,
       "gearRatios": {
         "ratio": [
-          -6.62,
-          -13.24,
+          -5.98,
+          -11.96,
           0.0,
-          8.32,
-          4.16,
-          3.25,
-          2.34,
-          1.9,
-          1.46,
-          1.25,
-          1.04
+          10.588,
+          5.294,
+          3.81,
+          3.2505,
+          2.691,
+          1.936,
+          1.39,
+          1.0
         ]
       }
     },
@@ -3035,10 +3036,10 @@
       3.3,
       0.27
     ],
-    "zoomOutFov": 13.3,
+    "zoomOutFov": 12.3,
     "zoomInFov": 12.3,
-    "sightFov": 6.1,
-    "sightName": "no1_mk3",
+    "sightFov": 5.0,
+    "sightName": "m271",
     "detectionHeight": 2.52
   },
   "modifications": {

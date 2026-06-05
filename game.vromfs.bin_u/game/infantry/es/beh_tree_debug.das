@@ -1,6 +1,7 @@
 options no_aot
 require ecs
 require ecs.common
+require ECSGlobalTags
 require app
 require DagorConsole
 require DagorDebug3D
@@ -11,11 +12,16 @@ require BehNodes
 require walkerai
 require math
 require math.base
+require Dacoll
+require SmokeOccluder
+require RendInst
 require DngHuman
 require HumanPhys
 require ecs.ecs_template
 require strings
 require %appGame.infantry.es.net_console_macro
+require %appGame.wt_events
+require net
 
 
 [ecs_template]
@@ -42,7 +48,6 @@ struct debug_bot_temp_template
 [ecs_template]
 struct global_debug_attract_points
   attract_points__debugDraw : bool
-
 
 def toggle_bots_template(template_name : string; activate : bool)
   query() <| $ [es(REQUIRE_NOT=controlledHero)] (eid : EntityId; beh_tree__enabled : bool)
@@ -483,6 +488,132 @@ def debug_render_squads_ai_debug_primitives(evt : UpdateStageInfoRenderDebug;
         draw_debug_sphere_buffered(squadAIDebug__drawPoint1[i] + drawOfs, radius * popRatio, color, 12, 1)
       elif elem_type == 2 
         add_debug_text_mark(squadAIDebug__drawPoint1[i], string(squadAIDebug__drawTexts[i]), -1, 0f, E3DCOLOR(0x00000000))
+
+
+[console_cmd(name="ai.debug_aim_ray")]
+def ai_debug_aim_ray(dist : float = 10.0)
+  if !ecs_has_tag("dev")
+    return
+
+  if dist <= 0.0
+    let pt1 = float3()
+    let pt2 = float3()
+    broadcast_net_event(CmdDebugTestAIAimRay(pos1 = pt1, pos2 = pt2))
+    return
+
+  var camPos = float3()
+  var camDir = float3()
+  let camFound = find_query() <| $ [es] (camera__active : bool; transform : float3x4)
+    if camera__active
+      camPos = transform[3]
+      camDir = transform[2]
+      return true
+    return false
+  if !camFound
+    error("No camera found!")
+    return
+
+  let pt1 = camPos + camDir * 1.0
+  let pt2 = camPos + camDir * (1.0 + max(0.0, dist))
+  broadcast_net_event(CmdDebugTestAIAimRay(pos1 = pt1, pos2 = pt2))
+
+def private trace_debug_aim_ray(pos1 : float3; pos2 : float3; var out_canopy_opacity : float&)
+  if pos1 == float3() && pos2 == float3()
+    return 0
+
+  var shootRayMat = -1
+  var hmapTraceOffset = float3()
+  query() <| $ [es] (human_weap__currentGunEid : EntityId; agent_dangers__hmapTraceOffset = float3())
+    hmapTraceOffset = agent_dangers__hmapTraceOffset
+    query(human_weap__currentGunEid) <| $ [es] (gun__aimRayMatId : int)
+      shootRayMat = gun__aimRayMatId
+  if shootRayMat < 0
+    error("No hero with gun! (for aimRay physmat id)")
+    return 0
+
+  let traceFrom = pos1
+  let traceTo = pos2
+  let traceDelta = traceTo - traceFrom
+  let traceDir = normalize(traceDelta)
+  let traceDist = length(traceDelta)
+
+  let flags = (ETF_ALL) & ~(ETF_LMESH | ETF_HEIGHTMAP)
+  var result = 0
+  let traceFromLM = traceFrom + hmapTraceOffset
+  if rayhit_normalized_lmesh(traceFromLM, traceDir, traceDist)
+    result |= 1
+  if rayhit_normalized(traceFrom, traceDir, traceDist, flags, shootRayMat)
+    result |= 2
+  var tmpDist = traceDist
+  var riDesc = RendInstDesc()
+  var tmpPMid = 0
+  let tmpRayMatId = -1
+  let checkCanopyTrue = true
+  if traceTransparencyRayRIGenNormalized(traceFrom, traceDir, tmpDist, 0.01, riDesc, tmpPMid, out_canopy_opacity, tmpRayMatId, checkCanopyTrue)
+    result |= 4
+  if rayhit_smoke_occluders(traceFrom, traceTo)
+    result |= 8
+  if result == 0
+    result = 16
+  return result
+
+[es(tag=(dev, server))]
+def ai_debug_aim_ray_apply(evt : CmdDebugTestAIAimRay)
+  let hasDebugRay = find_query() <| $ [es] (var ai_debug_aim_ray__pos1 : float3&;
+                                            var ai_debug_aim_ray__pos2 : float3&;
+                                            var ai_debug_aim_ray__trace : int&;
+                                            var ai_debug_aim_ray__opacity : float&)
+    ai_debug_aim_ray__pos1 = evt.pos1
+    ai_debug_aim_ray__pos2 = evt.pos2
+    ai_debug_aim_ray__trace = trace_debug_aim_ray(evt.pos1, evt.pos2, ai_debug_aim_ray__opacity)
+    return true
+
+  if !hasDebugRay
+    createEntity("ai_debug_aim_ray") <| $(init)
+      init |> set("ai_debug_aim_ray__pos1", evt.pos1)
+      init |> set("ai_debug_aim_ray__pos2", evt.pos2)
+      var opacity = 0.0
+      init |> set("ai_debug_aim_ray__trace", trace_debug_aim_ray(evt.pos1, evt.pos2,  opacity))
+      init |> set("ai_debug_aim_ray__opacity", opacity)
+
+[es(tag=(render, dev), no_order)]
+def draw_debug_aim_ray(evt : UpdateStageInfoRenderDebug;
+                       ai_debug_aim_ray__pos1 : float3;
+                       ai_debug_aim_ray__pos2 : float3;
+                       ai_debug_aim_ray__trace : int;
+                       ai_debug_aim_ray__opacity : float)
+  let RAD1 = 0.22
+  let OFS1 = float3(0.001, 0.001, 0.001)
+  let COL1 = E3DCOLOR(0xFFFF0000)
+  let COL2 = E3DCOLOR(0xFF0000FF)
+
+  if ai_debug_aim_ray__pos1 != float3()
+    draw_debug_sphere_buffered(ai_debug_aim_ray__pos1, RAD1, COL1, 12, 1)
+    draw_debug_sphere_buffered(ai_debug_aim_ray__pos1 + OFS1, RAD1, COL2, 12, 1)
+  if ai_debug_aim_ray__pos2 != float3()
+    let prePos = ai_debug_aim_ray__pos2 + normalize(ai_debug_aim_ray__pos1 - ai_debug_aim_ray__pos2) * 1.5
+    draw_debug_cone_buffered(ai_debug_aim_ray__pos2, prePos, 0.15, COL1, 12)
+    draw_debug_cone_buffered(ai_debug_aim_ray__pos2 + OFS1, prePos + OFS1, 0.15, COL2, 12)
+
+  if ai_debug_aim_ray__trace != 0
+    let curTime = int(get_sync_time() * 1000.0)
+    let subTime = curTime % 1000
+    var color = ai_debug_aim_ray__trace == 16 ? E3DCOLOR(0xFFFFFFFF) : E3DCOLOR(0xFF000000)
+    if subTime < 250
+      if (ai_debug_aim_ray__trace & 1) != 0
+        color = E3DCOLOR(0xFFFFFF00)
+    elif subTime < 500
+      if (ai_debug_aim_ray__trace & 2) != 0
+        color = E3DCOLOR(0xFFFF0000)
+    elif subTime < 750
+      if (ai_debug_aim_ray__trace & 4) != 0
+        color = E3DCOLOR(0xFF00FF00)
+    else
+      if (ai_debug_aim_ray__trace & 8) != 0
+        color = E3DCOLOR(0xFF777777)
+    draw_debug_line_buffered(ai_debug_aim_ray__pos1, ai_debug_aim_ray__pos2, color, 1)
+    draw_debug_line_buffered(ai_debug_aim_ray__pos1 + OFS1, ai_debug_aim_ray__pos2 + OFS1, color, 1)
+    add_debug_text_mark(ai_debug_aim_ray__pos1, "Opacity: {ai_debug_aim_ray__opacity}", -1, 0f, E3DCOLOR(0xFFFFFFFF))
 
 
 [console_cmd(name="ai.print_behtree_stats")]

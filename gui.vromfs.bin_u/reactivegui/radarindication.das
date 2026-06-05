@@ -9,6 +9,7 @@ require Mission
 require hud
 require app
 require WTInput
+require Localization
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 
@@ -51,8 +52,7 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
   let time = float(get_total_time())
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
-  var needToHandleClick = data.handleClicks && is_mouse_btn_down(0)
-
+  var needToHandleClick = data.handleClicks && is_cursor_visible_in_gui() && is_mouse_btn_down(0)
   foreach_screen_targets() <| $(var target)
     if target.forIlsOnly
       return

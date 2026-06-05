@@ -97,16 +97,16 @@ class Component : Canvas
       (isAcmMode || (isTrkMode && hasTrackedTarget && trackingDist < 2.0 * airGunDistance))))
 
     setColor(*fmw.cockpit |> getPageColor(MfdPageType.MFD_PLANE_ILS))
-    setLineWidth(floor(6.0 * fmw.cockpit.ilsLineWidthScale))
+    setLineWidth(floor(3.0 * fmw.cockpit.ilsLineWidthScale))
     setFont(props.fontId)
     isValid = true
 
   def drawLaunchZone()
     return if !showAAMLaunchZone
     let maxT = 1.1
-    let height = 0.25
-    let pos = toAbsPos(float2(0.15, 0.0))
-    let size = toAbsXY(float2(0.005, -height))
+    let height = 0.125
+    let pos = toAbsPos(float2(0.075, 0.0))
+    let size = toAbsXY(float2(0.0025, -height))
     pushAxes(pos, size) // [0, 1], +y - up
 
     drawLine(float2(0.0), float2(0.0, 1.0))
@@ -120,9 +120,9 @@ class Component : Canvas
     popAxes()
 
   def drawBarometricAltitude()
-    let height = 0.4
-    let size = toAbsXY(float2(0.03, -height))
-    let pos = toAbsPos(float2(0.2, 0.5 * height))
+    let height = 0.2
+    let size = toAbsXY(float2(0.015, -height))
+    let pos = toAbsPos(float2(0.1, 0.5 * height))
     pushAxes(pos, size) // [0, 1], +y - up
 
     let altSpan = 1200.0
@@ -152,9 +152,9 @@ class Component : Canvas
     popAxes()
 
   def drawIAS()
-    let height = 0.4
-    let size = toAbsXY(float2(0.03, -height))
-    let pos = toAbsPos(float2(-0.2, 0.5 * height))
+    let height = 0.2
+    let size = toAbsXY(float2(0.015, -height))
+    let pos = toAbsPos(float2(-0.1, 0.5 * height))
     pushAxes(pos, size) // [0, 1], +y - up
 
     let iasSpan = 150.0
@@ -182,7 +182,7 @@ class Component : Canvas
     popAxes()
 
   def drawBoreSight()
-    let size = float2(toAbsX(0.1))
+    let size = float2(toAbsX(0.05))
     let pos = toAbsPos(float2(0.0, 0.0))
     pushAxes(pos, size) // [-0.5. 0.5]
 
@@ -191,7 +191,7 @@ class Component : Canvas
 
     popAxes()
 
-  targetMarkSize : float = 0.01
+  targetMarkSize : float = 0.005
   def drawTrackedTarget()
     return if !trackedTargetVisible
     pushAxes(trackedTargetAbsPos, float2(1.0))
@@ -210,8 +210,8 @@ class Component : Canvas
     popAxes()
 
   def drawHeading()
-    let pos = toAbsPos(float2(0.0, -0.4))
-    let size = toAbsXY(float2(0.25, 0.03))
+    let pos = toAbsPos(float2(0.0, -0.15))
+    let size = toAbsXY(float2(0.125, 0.015))
     pushAxes(pos, size) // [-0.5, 0.5]
 
     drawHeadingTape()
@@ -235,7 +235,7 @@ class Component : Canvas
 
       if angleI % 3 == 0
         drawLine(float2(t, -0.5), float2(t, 0.5))
-        drawStrAnchored(float2(t, -0.6), "{norm_ang_deg(angle)}", AnchorHorz.Center, AnchorVert.Bottom)
+        drawStrAnchored(float2(t, 0.0), "{norm_ang_deg(angle)}", AnchorHorz.Center, AnchorVert.Bottom)
       else
         drawLine(float2(t, -0.35), float2(t, 0.35))
 
@@ -249,8 +249,8 @@ class Component : Canvas
     drawArrow(arrowStart, arrowPos)
 
   def drawWeaponStatus()
-    let pos = float2(-0.2, 0.3)
-    setFontSize(40)
+    let pos = float2(-0.1, 0.15)
+    setFontSize(20)
     setCaretPosition(pos)
     if isArmed
       printStrLn("ARM")
@@ -260,7 +260,7 @@ class Component : Canvas
   def drawArrow(var from : float2; var to : float2)
     let headLengthFraction = 0.33
     let widthToLengthFraction = 0.1
-    let arrowLength = 0.01
+    let arrowLength = 0.005
 
     from = toAbsPos(from)
     to = toAbsPos(to)

@@ -1617,9 +1617,9 @@
     "mass": {
       "Empty": 140000.0,
       "momentOfInertia": [
-        33.0,
-        110.0,
-        80.0
+        20.0,
+        65.0,
+        40.0
       ],
       "CenterOfGravity": [
         0.0,
@@ -1638,11 +1638,11 @@
           ],
           [
             7.6,
-            9.1
+            8.5
           ],
           [
             13.38,
-            16.1
+            15.5
           ]
         ]
       },
@@ -1650,7 +1650,7 @@
         "row": [
           [
             1.0,
-            2.1
+            1.7
           ],
           [
             3.5,
@@ -1658,7 +1658,7 @@
           ],
           [
             6.32,
-            7.5
+            7.0
           ]
         ]
       },
@@ -1694,6 +1694,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
+      "mulReaction": 0.8,
       "rudder": [
         {
           "pos": [
@@ -1752,7 +1753,6 @@
         "errMeasureVelFwdShift": 0.3,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -1899,7 +1899,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -1927,19 +1926,19 @@
           ]
         },
         "limitsTable": {
-          "lim2": [
+          "lim1": [
             -96.0,
             -81.0,
             4.0,
             70.0
           ],
-          "lim3": [
+          "lim2": [
             -81.0,
             -70.0,
             -7.0,
             70.0
           ],
-          "lim4": [
+          "lim3": [
             -70.0,
             115.0,
             -10.0,
@@ -1984,7 +1983,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02",
@@ -2097,7 +2095,7 @@
       9.7,
       0.0
     ],
-    "detectionHeight": 11.7
+    "detectionHeight": 15.4
   },
   "sound": {
     "EngineName": "engine_shiplight01",
@@ -2120,9 +2118,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_small",
+            "name": "ship_smoke_medium",
             "emitter": "emtr_fire_engine_02",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 15.0
           },
           {
             "name": "ship_fire_small",
@@ -2134,29 +2133,53 @@
       {
         "name": "compartment_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "superstructure_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "turret_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "fuel_tank_fire",
@@ -3194,7 +3217,7 @@
   "wreckedParts": {
     "part": {
       "node": "main_caliber_turret_01",
-      "idx": 2,
+      "idx": 1,
       "mass": 500.0,
       "cutDamage": 350.0,
       "deviation": 0.6,

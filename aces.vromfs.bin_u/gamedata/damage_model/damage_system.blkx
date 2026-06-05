@@ -54,6 +54,7 @@
     0.35,
     0.85
   ],
+  "boilerSplashDamageType": "explosion",
   "groundDamagePart": {
     "armorThickness": 1.0,
     "cumulativeArmorQuality": 0.25
@@ -318,10 +319,11 @@
     "thicknessMapResolution": 32,
     "thicknessMapMinVoxelSize": 0.1,
     "thicknessMapRelLimits": [
-      0.35,
+      0.1,
       6.0
     ],
     "thicknessMapMinObstacleSize": 0.02,
+    "thicknessMapFaceNormalMinCosine": 0.1,
     "pushOutCenter": true,
     "underwaterPenetrationScale": 1.25,
     "underwaterDamageScale": 1.5,
@@ -400,5 +402,69 @@
   },
   "secondaryShatterDamage": {
     "damageType": "secondaryShatter"
+  },
+  "throttleToBoilerPressure": {
+    "p0": [
+      0.0,
+      0.0
+    ],
+    "p1": [
+      1.0,
+      0.1
+    ],
+    "p2": [
+      2.0,
+      0.3
+    ],
+    "p3": [
+      3.0,
+      0.5
+    ],
+    "p4": [
+      4.0,
+      0.8
+    ],
+    "p5": [
+      5.0,
+      1.0
+    ]
+  },
+  "boilerPressureToSplashParams": {
+    "p0": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "p1": [
+      1000.0,
+      2.0,
+      1.0,
+      1000.0
+    ],
+    "p2": [
+      3000.0,
+      2.5,
+      5.0,
+      2000.0
+    ],
+    "p3": [
+      5000.0,
+      5.0,
+      12.0,
+      4000.0
+    ],
+    "p4": [
+      8000.0,
+      7.5,
+      26.0,
+      5000.0
+    ],
+    "p5": [
+      10000.0,
+      10.0,
+      26.0,
+      6000.0
+    ]
   }
 }

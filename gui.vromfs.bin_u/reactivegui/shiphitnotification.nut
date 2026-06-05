@@ -5,6 +5,7 @@ let { setTimeout } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let DataBlock = require("DataBlock")
+let { tryLoadBlk } = require("blkLoad")
 let { shipHitIconsVisibilityStateFlags } = require("%rGui/options/options.nut")
 let { ShipHitIconId, ShipHitIconVisibilityMask,
   IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
@@ -142,7 +143,7 @@ function getConfig() {
   let hudBlk = DataBlock()
   let gameplayBlk = DataBlock()
 
-  hudBlk.tryLoad("config/hud.blk") 
+  tryLoadBlk(hudBlk, "config/hud.blk")
   let iconsParams = hudBlk?.shipHitNotification
 
   let size = iconsParams?.size ?? DEFAULT_ICON_SIZE
@@ -171,7 +172,7 @@ function getConfig() {
       res, iconsParams?.pierceThroughHit, pierceThroughHitPic, shellHitDamageEvents.pierceThroughCount, {hintLoc = "shipHitHint/pierceThroughHit"}),
   }
 
-  gameplayBlk.tryLoad("config/gameplay.blk") 
+  tryLoadBlk(gameplayBlk, "config/gameplay.blk")
   res.resetDuration = gameplayBlk?.hudShowHitInfoTime ?? SHOW_RESET_DEFAULT_DURATION
 
   scriptConfig = res

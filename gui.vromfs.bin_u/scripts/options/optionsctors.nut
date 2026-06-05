@@ -206,24 +206,26 @@ function create_option_vlistbox(id, items, value, cb, isFull) {
   return data
 }
 
-function create_option_slider(id, value, cb, isFull, sliderType, params = {}) {
+function create_option_slider(id, value, cb, _isFull, _sliderType, params = {}) {
   if (!checkArgument(id, value, "integer"))
     return ""
 
-  let minVal = params?.min ?? 0
-  let maxVal = params?.max ?? 100
-  let step = params?.step ?? 5
-  let clickByPoints = params?.clickByPoints ? "yes" : "no"
-  let classProp = params?.cssClass ? $"class:t='{params.cssClass}';" : ""
-  local data = "".concat(
-    $"id:t = '{id}'; min:t='{minVal}'; max:t='{maxVal}'; step:t = '{step}'; value:t = '{value}'; ", classProp
-    $"clicks-by-points:t='{clickByPoints}'; fullWidth:t={!params?.needShowValueText  ? "yes" : "no"};",
-    cb == null ? "" : $"on_change_value:t = '{cb}'; "
-  )
-  if (isFull)
-    data = "{0} { {1} focus_border{} tdiv{} }".subst(sliderType, data) 
+  let isShowSliderValue = "sliderPrintFormat" in params
 
-  return data
+  let view = {
+    id
+    minVal = params?.min ?? 0
+    maxVal = params?.max ?? 100
+    step = params?.step ?? 5
+    value
+    isShowSliderValue
+    text_value = isShowSliderValue ? params.sliderPrintFormat(value) : ""
+    classProp = params?.cssClass ? $"class:t='{params.cssClass}';" : ""
+    clickByPoints = params?.clickByPoints ? "yes" : "no"
+    fullWidth = !params?.needShowValueText ? "yes" : "no"
+    cb
+  }
+  return handyman.renderCached("%gui/options/optionsSlider.tpl", view)
 }
 
 return {

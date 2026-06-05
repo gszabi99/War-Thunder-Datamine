@@ -10,7 +10,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { buyUnlockImpl } = require("%scripts/unlocks/unlocksAction.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 
 
@@ -54,17 +54,17 @@ function askPurchaseDecorator(decorator, onSuccessCb) {
     unitName = getPlaneBySkinId(decoratorId)
     decoratorId = getSkinNameBySkinId(decoratorId)
   }
-  let msgText = warningIfGold(loc("shop/needMoneyQuestion_purchaseDecal",
+  let text = warningIfGold(loc("shop/needMoneyQuestion_purchaseDecal",
     { purchase = decorator.getName(),
       cost = cost.getTextAccordingToBalance()
     }), cost)
 
-  this.msgBox("need_money", msgText,
-        [["ok", function() {
-          if (checkBalanceMsgBox(cost))
-            getResourceBuyFunc(decoratorType)(unitName, decoratorId, cost, onSuccessCb)
-        }],
-        ["cancel"]], "ok", { cancel_fn = @() null })
+  let callbackYes = function() {
+    if (checkBalanceMsgBox(cost))
+      getResourceBuyFunc(decoratorType)(unitName, decoratorId, cost, onSuccessCb)
+  }
+
+  purchaseConfirmation({ id = "need_money", text, callbackYes }, cost)
 }
 
 function askConsumeDecoratorCoupon(decorator, onSuccessCb) {

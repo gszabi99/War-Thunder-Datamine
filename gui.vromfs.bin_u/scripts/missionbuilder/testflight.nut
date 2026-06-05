@@ -190,6 +190,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       isForcedAvailable = isUntSpecial && !isUnitUsable
       forceShowDefaultTorpedoes = !isUntSpecial && !isUnitUsable
       getCurrentEdiff = Callback(@() this.getCurrentEdiff(), this)
+      fixedSizeForItem = true
     })
 
     this.weaponsSelectorWeak = handler.weakref()

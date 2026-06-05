@@ -2,7 +2,7 @@ options gen2 = false
 
 module avionics_common shared public
 
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 require %game.utils.utils_common
 
 require DagorMath
@@ -205,12 +205,17 @@ struct SensorPointOfInterest : ScreenPos
   worldPos         : float3
   distance         : float
 
-def get_sensor_point_of_interest(hero : Unit const?;
-                                 world_to_screen : block<(world_pos : float3 const&; var screen_pos : float2&) : bool>) : SensorPointOfInterest
+def get_sensor_point_of_interest(hero : Unit const?) : SensorPointOfInterest
   var spi : SensorPointOfInterest
   if get_point_of_interest(spi.worldPos)
     spi.isSet = true
     spi.distance = length(spi.worldPos - hero.pos)
+  return spi
+
+def get_sensor_point_of_interest(hero : Unit const?;
+                                 world_to_screen : block<(world_pos : float3 const&; var screen_pos : float2&) : bool>) : SensorPointOfInterest
+  var spi = get_sensor_point_of_interest(hero)
+  if spi.isSet
     if world_to_screen |> invoke(spi.worldPos, spi.screenPos)
       spi.isScreenPosValid = true
   return spi

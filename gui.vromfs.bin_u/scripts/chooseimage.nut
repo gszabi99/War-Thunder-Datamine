@@ -17,7 +17,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { generatePaginator, paginator_set_unseen } = require("%scripts/viewUtils/paginator.nut")
@@ -292,13 +292,13 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     let cost = getUnlockCost(unlockId)
     let unlockBlk = getUnlockById(unlockId)
     let unlockCfg = buildConditionsConfig(unlockBlk)
-    let title = warningIfGold(loc("onlineShop/needMoneyQuestion", {
+    let text = warningIfGold(loc("onlineShop/needMoneyQuestion", {
       purchase = colorize("unlockHeaderColor", getUnlockTitle(unlockCfg)),
       cost = cost.getTextAccordingToBalance()
     }), cost)
     let onSuccess = Callback(@() this.chooseImage(idx), this)
-    let onOk = @() buyUnlock(unlockId, onSuccess)
-    purchaseConfirmation("question_buy_unlock", title, onOk)
+    let callbackYes = @() buyUnlock(unlockId, onSuccess)
+    purchaseConfirmation({ id = "question_buy_unlock", text, callbackYes }, cost)
   }
 
   function goToMarketplace(item) {

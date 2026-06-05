@@ -70,7 +70,7 @@ def shooter_cam_rotate_es(info : UpdateStageInfoAct;
     camera_transform[2] = dir2
     camera_transform[1] = normalize(cross(dir2, dir0)) 
 
-[es(tag=render, after=human_init_tm, on_appear)]
+[es(tag=render, on_appear)]
 def init_new_camera_for_unit(evt : Event;
                              camera__target : EntityId;
                              var shooter_cam__tauInc : float&)

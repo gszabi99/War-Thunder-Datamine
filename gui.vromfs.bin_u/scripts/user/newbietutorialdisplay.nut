@@ -10,7 +10,6 @@ let { loadLocalByAccount, saveLocalByAccount
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
@@ -45,9 +44,6 @@ function reqFirstCountryChoice() {
     && !disableNetwork
 }
 
-let isTutorialBeforeCountrySelect = @() userIdInt64.get() % 2 != 0
-
-
 subscriptions.addListenersWithoutEnv({
   AccountReset = function(_p) {
     saveVersion()
@@ -63,7 +59,6 @@ return {
   needShowTutorial
   saveShowedTutorial
   reqFirstCountryChoice
-  isTutorialBeforeCountrySelect
   getFirstCountryChoice
 }
 

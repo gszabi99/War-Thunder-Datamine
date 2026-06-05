@@ -2,7 +2,6 @@ module fire_system_common shared public
 require ecs
 require dm
 require WTDamageModel
-require DmFire
 require DagorMath
 require GeomNodeTree
 require AmmoStowage
@@ -119,10 +118,10 @@ def fire_system_stop_single_burn(eid : EntityId; fire_id : int;
     v.fire_data__initiatorId[fire_id] = -1u
 
 
-def fire_system_calc_burn_radius(fire_params : FireParams; coll_node_sph : BSphere3; bounding_radius : float)
+def fire_system_calc_burn_radius(fire_params : FireParams; coll_node_sph : BSphere3; bounding_radius : float) : tuple<radius : float; final_radius : float>
   let radius = coll_node_sph.r * fire_params.radiusScales.x
   let final_radius = fire_params.radiusScales.y > 0.0f ? coll_node_sph.r * fire_params.radiusScales.y : bounding_radius * 2.0f
-  return (radius, final_radius)
+  return (radius = radius, final_radius = final_radius)
 
 
 def fire_system_calc_burn_offset(fire_params : FireParams; coll_node_sph : BSphere3; tree : GeomNodeTree; node_id : int; pos : float3)

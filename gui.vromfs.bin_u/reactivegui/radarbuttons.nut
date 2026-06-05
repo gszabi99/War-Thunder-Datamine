@@ -3,7 +3,7 @@ let { setVirtualAxisValue } = require("controls")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let hints = require("%rGui/hints/hints.nut")
 let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX,
-  IsRadarHudVisible, IsRadarHasFilters
+  IsRadarHudVisible, IsRadarHasFilters, IsEsm
 } = require("%rGui/radarState.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
@@ -17,7 +17,7 @@ let JB = require("%rGui/control/gui_buttons.nut")
 let { register_command } = require("console")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
-let { IFFFilter, typeFilter, filterPresets, switchFilter, isFiltersExpanded } = require("%rGui/radarFilters.nut")
+let { IFFFilter, typeFilter, filterPresets, switchFilter, isFiltersExpanded, ESMModeTypeFilter } = require("%rGui/radarFilters.nut")
 let { isAir } = require("%rGui/hudUnitType.nut")
 
 const HELI_AXIS_CONTROL_PREFIX = "helicopter_"
@@ -65,8 +65,8 @@ let isRadarButtonsVisible = Computed(@() IsRadarHudVisible.get()
   && !isPlayingReplay.get()
   && (airRadarGuiControlMode.get() != AIR_RADAR_GUI_CONTROL_HIDDEN || isRadarGamepadNavEnabled.get()))
 
-let isRadarFiltersButtonsVisible = Computed(@() isRadarButtonsVisible.get()
-  && IsRadarHasFilters.get() && IsRadarVisible.get()
+let isRadarFiltersButtonsVisible = Computed(@() IsRadarHasFilters.get()
+  && IsRadarVisible.get()
   && (unitType.get() == "aircraft" || unitType.get() == "helicopter"))
 
 let modeName = Computed(@() modeNames?[RadarModeNameId.get()] ?? "")
@@ -248,7 +248,7 @@ function onCollapseFiltersBtn() {
 function getFilterButtonsConfig() {
   if (cachedFiltersBtns.len() > 0)
     return cachedFiltersBtns
-  let preset = filterPresets.findvalue(@(p) p.filter == typeFilter)
+  let preset = filterPresets.findvalue(@(p) p.filter == (IsEsm.get() ? ESMModeTypeFilter : typeFilter))
   if (preset == null)
     return cachedFiltersBtns
 
@@ -269,7 +269,8 @@ function getFilterButtonsConfig() {
     let valueMask = valueData.valueMask
     cachedFiltersBtns.append(
       { icon = valueData?.getImage(iconSize), iconSize, isSelected = valueData?.isSelected,
-        onClick = @() switchFilter(filter, valueMask), text = valueData.locText
+        onClick = @() switchFilter(filter, valueMask), text = valueData.locText,
+        label = valueData?.label
       })
   }
   return cachedFiltersBtns
@@ -498,6 +499,29 @@ function mkExitGamepadNavBtn() {
       }
     }
 
+function mkFilterButtonChild(btnData, isFilterSelected) {
+  let contentColor = isFilterSelected ? HudColor.get() : buttonFillColor.get()
+  if (btnData?.icon != null)
+    return {
+      size = btnData.iconSize
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = btnData.icon
+      color = contentColor
+    }
+  if (btnData?.label != null)
+    return {
+      rendObj = ROBJ_TEXT
+      text = btnData.label
+      font = Fonts.tiny_text_hud
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      color = contentColor
+    }
+  return null
+}
+
 function mkFilterButton(btnData, idx) {
   let stateFlag = Watched(0)
   let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0 || idx == selectedFilterBtnIndex.get())
@@ -521,16 +545,7 @@ function mkFilterButton(btnData, idx) {
       updateButtonTooltip(stateFlag, $"filterbtn_{idx}", btnData?.getText() ?? btnData.text)
     }
     onClick = btnData.onClick
-    children = btnData?.icon ? [
-      {
-        size = btnData.iconSize
-        vplace = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        rendObj = ROBJ_IMAGE
-        image = btnData.icon
-        color = filterValueWatch.get() ? HudColor.get() : buttonFillColor.get()
-      }
-    ] : null
+    children = mkFilterButtonChild(btnData, filterValueWatch.get())
   }
 }
 
@@ -579,7 +594,7 @@ let filtersButtons = @(offsets) function() {
   let totalHeight = (gapSize + FILTER_BTN_SIZE) * btnsConfig.len() - gapSize
 
   return {
-    watch = [isFiltersExpanded, filtersBtnsPadding]
+    watch = [isFiltersExpanded, filtersBtnsPadding, IsEsm]
     flow = FLOW_VERTICAL
     padding = filtersBtnsPadding.get()
     pos = [pw(100), 0]
@@ -633,6 +648,7 @@ function onUnitAliveChange(v) {
 }
 
 isUnitAlive.subscribe(onUnitAliveChange)
+IsEsm.subscribe(@(_) cachedFiltersBtns.clear())
 
 register_command(@() isRadarGamepadNavEnabled.set(!isRadarGamepadNavEnabled.get()), "ui.toggle_radar_nav")
 

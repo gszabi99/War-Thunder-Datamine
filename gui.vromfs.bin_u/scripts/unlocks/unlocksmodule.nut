@@ -19,7 +19,7 @@ let { getUnlockTypeById } = require("unlocks")
 let { isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById,
   regionalUnlocks, isRegionalUnlockCompleted
 } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { Status, get_status } = require("%gdkLib/impl/achievements.nut")
+let { is_achievement_unlocked } = require("%gdkLib/impl/achievements.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { isPsnTrophyUnlocked, getPsnTrophyIdByName } = require("sony.trophies")
 let { buildRewardText } = require("%scripts/missions/missionsText.nut")
@@ -72,7 +72,7 @@ function isUnlockOpened(unlockId, unlockType = -1) {
   if (isPlatformSony && unlockType == UNLOCKABLE_TROPHY_PSN)
     return isPsnTrophyUnlocked(getPsnTrophyIdByName(unlockId))
   if (is_gdk && unlockType == UNLOCKABLE_TROPHY_XBOXONE)
-    return (get_status(unlockId) == Status.Achieved)
+    return is_achievement_unlocked(unlockId)
   return true
 }
 

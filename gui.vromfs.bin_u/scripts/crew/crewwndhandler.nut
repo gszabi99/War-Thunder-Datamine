@@ -8,6 +8,7 @@ let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { Point2 } = require("dagor.math")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { round_by_value, abs } = require("%sqstd/math.nut")
 let { getPageStatus } = require("%scripts/crew/skillsPageStatus.nut")
@@ -598,5 +599,23 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
   function onEventBeforeStartShowroom(_p) {
     this.resetFiltersAndFocus()
+  }
+}
+
+gui_handlers.CrewWndModal <- class (gui_handlers.CrewHandler) {
+  wndType = handlerType.MODAL
+
+  function initScreen() {
+    base.initScreen()
+    let baseScene = handlersManager.getActiveBaseHandler()?.scene
+    if (baseScene?.isValid())
+      baseScene.show(false)
+  }
+
+  function onDestroy() {
+    let baseScene = handlersManager.getActiveBaseHandler()?.scene
+    if (baseScene?.isValid())
+      baseScene.show(true)
+    base.onDestroy()
   }
 }

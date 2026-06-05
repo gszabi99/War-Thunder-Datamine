@@ -161,21 +161,23 @@
       "inertialNavigationDriftSpeed": 0.0,
       "indicateOnHud": false,
       "designationError": 5.0,
+      "reacquireTarget": true,
+      "lockMode": "LOAL+LOBL",
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
-        "rangeMax": 40000.0,
-        "rangeSurface": 40000.0,
+        "rangeMax": 100000.0,
+        "rangeSurface": 100000.0,
         "fov": 0.1,
         "minAngleToSun": 0.0,
-        "lockAngleMax": 40.0,
-        "angleMax": 80.0,
-        "rateMax": 10.0,
+        "lockAngleMax": 20.0,
+        "angleMax": 60.0,
+        "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": "camera",
-        "constantDesignationSourceTypeMask": 0,
+        "constantDesignationSourceType": "",
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
@@ -183,8 +185,8 @@
       },
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 5.0,
-        "loftTargetElevation": -65.0,
+        "loftElevation": 4.5,
+        "loftTargetElevation": -55.0,
         "loftAngleToAccelMult": 0.35,
         "loftTargetOmegaMax": 1.25,
         "timeToGain0": [
@@ -564,6 +566,27 @@
           }
         ]
       }
+    },
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -20.0,
+        20.0
+      ],
+      "verLimit": [
+        -20.0,
+        60.0
+      ],
+      "zoomMinMax": [
+        11.0,
+        3.0
+      ],
+      "rateMax": [
+        5.0,
+        5.0
+      ],
+      "rotation": 180.0
     }
   }
 }

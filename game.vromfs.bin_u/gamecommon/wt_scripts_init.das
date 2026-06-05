@@ -1,5 +1,5 @@
 options no_aot = true
-require %dasGameLibs.ecs.fs
+require %gameLibs.das.ecs.fs
 require ECSGlobalTags
 require app
 require DagorSystem

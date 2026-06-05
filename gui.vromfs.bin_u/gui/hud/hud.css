@@ -208,9 +208,11 @@ hudMessages[message_style=death_reason_notification] > message[remove=yes] {
   selfRemoveOnFinish:-1;
 }
 
-hudMessages[message_style=player_damage_notification] > message > textareaNoTab {
-  width: pw;
-  text-align: left;
+hudMessages[message_style=player_damage_notification] > message hint {
+  pos:0, 0;
+}
+
+hudMessages[message_style=player_damage_notification] > message textareaNoTab {
   font: @fontHudSmall;
   color: @white;
   shadeStyle:outline33pct;
@@ -804,13 +806,29 @@ textareaNoTab[shadeStyle=LiveStats] {
 }
 
 
+
+[hintStyle] hintRow > gamepadButton,
+[hintStyle] hintRow > shortcutAxis,
+[hintStyle] hintRow > keyboardButton,
+[hintStyle] hintRow > combination {
+  margin-right: 0.01@shHud;
+}
+
+[hintStyle=hudCrosshair] hintRow > gamepadButton,
+[hintStyle=hudCrosshair] hintRow > shortcutAxis,
+[hintStyle=hudCrosshair] hintRow > keyboardButton,
+[hintStyle=hudCrosshair] hintRow > combination {
+  margin-right: 0.005@shHud;
+}
+
 [hintStyle=hudCrosshair] hintRow > timeBar textareaNoTab,
-[hintStyle=hudCrosshair] hintRow > textareaNoTab {
-  font:@fontHudTiny;
+[hintStyle=hudCrosshair] hintRow > textareaNoTab,
+[hintStyle=hudCrosshair] hintRow > combination > combinationBackground > textareaNoTab {
+  font:@fontHudSmall;
 }
 
 [hintStyle=hudCrosshair] keyboardButtonText {
-  font:@fontHudTiny;
+  font:@fontHudSmall;
   color:@infantryShortcutTextColor;
 }
 
@@ -818,17 +836,38 @@ textareaNoTab[shadeStyle=LiveStats] {
   background-color:@infantryShortcutColor;
   background-image:#ui/gameuiskin#shortcut_flat.svg;
   min-width:0.015@shHud;
-  height:0.015@shHud;
+  height:0.025@shHud;
 }
 
-[hintStyle=hudMinor] gamepadButton {
-  size: 0.015@shHud, 0.015@shHud;
+[hintStyle=hudCrosshair] activationTypeImg {
+  size: 0.028@shHud, 0.028@shHud;
+}
+
+[hintStyle=hudCrosshair] gamepadButton {
+  size: 0.028@shHud, 0.028@shHud;
+}
+
+[hintStyle=hudCrosshair] combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton {
+  size: 0.026@shHud, 0.026@shHud;
+}
+
+[hintStyle=hudCrosshair] combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  height:0.025@shHud;
+  min-width:0.015@shHud;
+}
+
+[hintStyle=hudCrosshair] combination[hasActivationTypeImg=yes] > combinationBackground {
+  padding:0.001@shHud;
 }
 
 [hintStyle=hudMinor] hintRow > timeBar textareaNoTab,
 [hintStyle=hudMinor] hintRow > textareaNoTab,
 [hintStyle=hudMinor] keyboardButtonText {
   font:@fontHudNormal;
+}
+
+[hintStyle=hudMinor] hintRow > combination > combinationBackground > textareaNoTab {
+  font:@fontHudSmall;
 }
 
 [hintStyle=hudMinor] keyboardButton {
@@ -838,6 +877,20 @@ textareaNoTab[shadeStyle=LiveStats] {
 
 [hintStyle=hudMinor] gamepadButton {
   size: 0.03@shHud, 0.03@shHud;
+}
+
+[hintStyle=hudMinor] combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+[hintStyle=hudMinor] activationTypeImg {
+  size: 0.024@shHud, 0.024@shHud;
+}
+
+[hintStyle=hudMinor] combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  height:0.024@shHud;
+  min-width:0.024@shHud;
+}
+
+[hintStyle=hudMinor] combination[hasActivationTypeImg=yes] > combinationBackground {
+  padding:0.003@shHud;
 }
 
 [hintStyle=hudHintBig] hintRow > timeBar textareaNoTab,
@@ -876,17 +929,6 @@ textareaNoTab[shadeStyle=LiveStats] {
   background-svg-size:0.06sh, 0.06sh;
 }
 
-hudBase[hudUnitType=infantry] hint[hintStyle=hudHintCommon] > hintRow > keyboardButton,
-hudBase[hudUnitType=infantry] hint[hintStyle=hudMinor] > hintRow > keyboardButton,
-hudBase[hudUnitType=infantry] hint[hintStyle=hudHintAction] > hintRow > keyboardButton {
-  background-color:@infantryShortcutColor;
-  background-image:#ui/gameuiskin#shortcut_flat.svg;
-  min-width:1@infantryShortcutImageHeight;
-  height:1@infantryShortcutImageHeight;
-  padding:0;
-  top:0.5ph - 0.5h;
-}
-
 [hintStyle=hudHintAction] hintRow {
   height:2/3@shortcutImageHeight;
 }
@@ -896,20 +938,68 @@ hudBase[hudUnitType=infantry] hint[hintStyle=hudHintAction] > hintRow > keyboard
   background-svg-size:0.04sh, 0.04sh;
 }
 
-[hintStyle=hudHintAction] hintRow > keyboardButton {
-  size:2/3@shortcutImageHeight, 2/3@shortcutImageHeight;
-  background-svg-size:2/3@shortcutImageHeight, 2/3@shortcutImageHeight;
+[hintStyle=hudHintAction] hintRow keyboardButton {
+  height:2/3@shortcutImageHeight;
   min-width:2/3@shortcutImageHeight;
+}
+
+[hintStyle=hudHintAction] gamepadButton {
+  size: 2/3@shortcutImageHeight, 2/3@shortcutImageHeight;
+}
+
+[hintStyle=hudHintAction] combination[hasActivationTypeImg=yes] > combinationBackground > gamepadButton,
+[hintStyle=hudHintAction] activationTypeImg {
+  size: 0.6@shortcutImageHeight, 0.6@shortcutImageHeight;
+}
+
+[hintStyle=hudHintAction] combination[hasActivationTypeImg=yes] > combinationBackground > keyboardButton {
+  height:0.6@shortcutImageHeight;
+  min-width:0.6@shortcutImageHeight;
+}
+
+[hintStyle=hudHintAction] combination[hasActivationTypeImg=yes] > combinationBackground {
+  padding:0.035@shortcutImageHeight;
 }
 
 [hintStyle=hudHintAction] hintRow > timeBar textareaNoTab,
 [hintStyle=hudHintAction] hintRow > textareaNoTab,
-[hintStyle=hudHintAction] keyboardButtonText {
+[hintStyle=hudHintAction] keyboardButtonText,
+[hintStyle=hudHintAction] hintRow > combination > combinationBackground > textareaNoTab {
   font:@fontHudSmall;
 }
 
 [hintStyle=hudHintAction] hintRow > textareaNoTab {
   margin-top:ph/2 - h/2;
+}
+
+hudBase[hudUnitType=infantry] combination[hasActivationTypeImg=yes] > combinationBackground {
+  background-image:#ui/gameuiskin#hotkey_combo_bg_hud_inf.svg;
+}
+
+hudBase[hudUnitType=infantry] hint[hintStyle=hudHintCommon] > hintRow keyboardButton,
+hudBase[hudUnitType=infantry] hint[hintStyle=hudMinor] > hintRow keyboardButton,
+hudBase[hudUnitType=infantry] hint[hintStyle=hudHintAction] > hintRow keyboardButton {
+  background-color:@infantryShortcutColor;
+  background-image:#ui/gameuiskin#shortcut_flat.svg;
+  min-width:1@infantryShortcutImageHeight;
+  height:1@infantryShortcutImageHeight;
+}
+
+hudBase[hudUnitType=infantry] hint[hintStyle=hudHintAction] > hintRow keyboardButton {
+  min-width:0.8@infantryShortcutImageHeight;
+  height:0.8@infantryShortcutImageHeight;
+}
+
+hudBase[hudUnitType=infantry] hint[hintStyle=hudHintCommon] > hintRow > keyboardButton {
+  top:0.005@shHud;
+}
+
+hudBase[hudUnitType=infantry] hint[hintStyle=hudHintAction] > hintRow > keyboardButton {
+  top:-0.001@shHud;
+}
+
+hudBase[hudUnitType=infantry] hint[hintStyle=hudMinor] > hintRow > keyboardButton {
+  top:0.001@shHud;
 }
 
 [hintStyle=hudCrosshair] hintRow > img {
@@ -969,9 +1059,9 @@ hudBase[hudUnitType=infantry] hint[hintStyle=hudHintAction] > hintRow > keyboard
   flow-align: center;
 }
 
-hudBase[hudUnitType=infantry] hint[hintStyle=hudHintCommon] > hintRow > keyboardButton > keyboardButtonText,
-hudBase[hudUnitType=infantry] hint[hintStyle=hudMinor] > hintRow > keyboardButton > keyboardButtonText,
-hudBase[hudUnitType=infantry] hint[hintStyle=hudHintAction] > hintRow > keyboardButton > keyboardButtonText {
+hudBase[hudUnitType=infantry] hint[hintStyle=hudHintCommon] > hintRow keyboardButton > keyboardButtonText,
+hudBase[hudUnitType=infantry] hint[hintStyle=hudMinor] > hintRow keyboardButton > keyboardButtonText,
+hudBase[hudUnitType=infantry] hint[hintStyle=hudHintAction] > hintRow keyboardButton > keyboardButtonText {
   color:@infantryShortcutTextColor;
 }
 

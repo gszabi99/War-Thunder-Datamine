@@ -10,7 +10,7 @@ let class BhvHint {
   eventMask    = EV_ON_CMD
   valuePID               = dagui_propid_add_name_id("value")
   wrapInRowPID           = dagui_propid_add_name_id("isWrapInRowAllowed")
-
+  showIfNotAssignID      = dagui_propid_add_name_id("showIfNotAssign")
   isUpdateInProgressPID  = dagui_propid_add_name_id("_isUpdateInProgress")
 
   function onAttach(obj) {
@@ -37,7 +37,7 @@ let class BhvHint {
     let params = {
       isWrapInRowAllowed = obj.getFinalProp("isWrapInRowAllowed") == "yes"
       flowAlign = obj.getFinalProp("flow-align") ?? "center"
-      showShortcutsNameIfNotAssign = true
+      showShortcutsNameIfNotAssign = obj.getFinalProp("showIfNotAssign") != "no"
     }
     let value = obj?.value ?? ""
     let markup = g_hints.buildHintMarkup(doesLocTextExist(value) ? loc(value) : value, params)

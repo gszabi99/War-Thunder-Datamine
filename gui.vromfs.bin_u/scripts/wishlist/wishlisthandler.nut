@@ -26,7 +26,7 @@ let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut"
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/wishlist/wishlistFilter.nut")
 let { fillAirInfo } = require("%scripts/airInfo.nut")
 let { isUnitResearched, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
-let { hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
+let { isUnitOnlyFromEvent } = require("%scripts/unit/unitEvents.nut")
 let { getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType } = require("%scripts/wishlist/filterUtils.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 let { findItemById, getInventoryListByShopMask } = require("%scripts/items/itemsManagerModule.nut")
@@ -108,7 +108,7 @@ function getUnitButtonType(unit, friendUid) {
   let hasUseCouponButton = unit.name in unitCoupons
   let hasMarketPlaceButton = !hasUseCouponButton && buyTypes.contains("marketPlace")
   let hasShopButton = buyTypes.contains("shop")
-  let hasBuyButton = !hasUnitEvent(unit.name)
+  let hasBuyButton = !isUnitOnlyFromEvent(unit)
     && (isEqual(buyTypes, ["squadron"]) || isEqual(buyTypes, ["premium"])
       || (isIntersects(buyTypes, ["researchable", "conditionToReceive"])
         && (canBuyNotResearchedUnit || canBuyUnit(unit))))

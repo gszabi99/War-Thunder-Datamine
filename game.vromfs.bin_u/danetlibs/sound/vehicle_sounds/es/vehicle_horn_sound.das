@@ -2,7 +2,7 @@ require ecs
 require ecs.common
 require app 
 require sound_utils.modules.sound_player_common
-require danetlibs.renderer.includes.pufd_events
+require gameLibs.pufd_events.pufd_events
 require vehicle_sounds_net.modules.vehicle_sounds_net_events
 require vehicle_sounds_net.modules.vehicle_net_horn_common
 require soundEvent
@@ -21,14 +21,17 @@ def vehicle_horn_sound_toggle(evt : Event;
                               @shared_comp vehicle_horn_sound__path : Object;
                               sound_tags : Object;
                               is_watched_sound : bool;
-                              transform : float3x4)
+                              transform : float3x4;
+                              vehicle_sound_occlusion__blob : SoundOcclusionBlob&)
+
   let shouldPlay = sound_preset__isLoaded && (!!vehicle_horn_control__player || !!vehicle_horn_control__localPlayer)
   if vehicle_horn_sound__event.enabled != shouldPlay
     vehicle_horn_sound__event.enabled = shouldPlay
     abandon(vehicle_horn_sound__event)
     if vehicle_horn_sound__event.enabled
-      vehicle_horn_sound__event |> reset(sound_player_common::play_path(vehicle_horn_sound__path, sound_tags, is_watched_sound, transform[3], false))
+      vehicle_horn_sound__event |> reset(play_path(vehicle_horn_sound__path, sound_tags, is_watched_sound, transform[3], false))
       set_var_optional(vehicle_horn_sound__event, "note", float(vehicle_horn_sound__note))
+      attach_to_blob(vehicle_horn_sound__event, vehicle_sound_occlusion__blob)
 
 
 [es(tag=sound, after=sound_begin_update_es, before=sound_end_update_es)]

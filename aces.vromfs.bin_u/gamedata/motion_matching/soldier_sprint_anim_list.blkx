@@ -1,7 +1,7 @@
 {
   "clips": {
     "default_animation_mask": "soldier_lower_nodemask",
-    "default_tags": "sprint,3rd_person_view",
+    "default_tags": "sprint,3rd_person_view,default_weapon",
     "lower_sprint_0_mm_mc": {
       "play_speed_multiplier_range": [
         0.5,
@@ -34,6 +34,20 @@
         2.0
       ],
       "nextClip": "sprint_double_fast_all_body_0_mm_mc",
+      "animation_mask": "soldier_full_body_nodemask",
+      "use_foot_ik_locker": {},
+      "set_anim_tree_timer": {
+        "timer_name": ":sprint_timer",
+        "timer_cycle": 0.66
+      }
+    },
+    "rajah_2_knife_sprint_mm_mc": {
+      "tags": "-default_weapon,+pistol_weapon,+melee_weapon",
+      "play_speed_multiplier_range": [
+        0.5,
+        2.0
+      ],
+      "nextClip": "rajah_2_knife_sprint_mm_mc",
       "animation_mask": "soldier_full_body_nodemask",
       "use_foot_ik_locker": {},
       "set_anim_tree_timer": {

@@ -4,22 +4,27 @@ let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 
 let { IT_Fighter, IT_Bomber, IT_Assault, IT_LightTank, IT_MediumTank, IT_HeavyTank, IT_TankDestroyer,
-  IT_Tracked, IT_SPAA, IT_Airdefence, IT_BattleCruiser, IT_BattleShip, IT_Frigate, IT_HeavyBoat,
-  IT_HeavyCruiser, IT_LightCruiser, IT_Ship, IT_Submarine, IT_TorpedoBoat, IT_Boat, IT_Structure,
-  IT_Wheeled, IT_Airport, IT_MLRS, IT_Radar, IT_SAM } = TacticalMapIconType
+  IT_Tracked, IT_SPAA, IT_Airdefence, IT_Structure, IT_AmmoStorage, IT_FuelStorage, IT_TankStorage,
+  IT_Wheeled, IT_Airport, IT_MLRS, IT_TBMLauncher, IT_Radar, IT_SAM,
+  IT_Ship, IT_Boat, IT_MissileBoat, IT_Corvette, IT_MissileCorvette, IT_Frigate, IT_MissileFrigate,
+  IT_Destroyer, IT_MissileDestroyer, IT_LightCruiser, IT_MissileLightCruiser,
+  IT_HeavyCruiser, IT_MissileHeavyCruiser, IT_BattleShip, IT_MissileBattleship, IT_Submarine,
+  IT_AircraftCarrier } = TacticalMapIconType
 
 let unitTypesData = [
   { name = "mainmenu/aviation", types = [IT_Fighter, IT_Bomber, IT_Assault] }
   { name = "mainmenu/armored_vehicles", types = [IT_LightTank, IT_MediumTank, IT_HeavyTank, IT_TankDestroyer, IT_Tracked] }
-  { name = "mainmenu/air_defense", types = [IT_SPAA, IT_Airdefence] }
-  { name = "multiplayer/artillery", types = [IT_MLRS] }
+  { name = "mainmenu/air_defense", types = [IT_SPAA, IT_Airdefence, IT_SAM] }
+  { name = "mapMarkerFilters/rocketAndMissileSystems", types = [IT_MLRS, IT_TBMLauncher] }
   { name = "xray/radar", types = [IT_Radar] }
-  { name = "tankSight/sam", types = [IT_SAM] }
-  { name = "mainmenu/fleet", types = [IT_BattleCruiser, IT_BattleShip, IT_Frigate, IT_HeavyBoat, IT_HeavyCruiser, IT_LightCruiser,
-    IT_Ship, IT_Submarine, IT_TorpedoBoat, IT_Boat] }
-  { name = "mainmenu/ground_facilities", types = [IT_Structure] }
+  { name = "mainmenu/fleet", types = [IT_Ship, IT_Boat, IT_MissileBoat,
+    IT_Corvette, IT_MissileCorvette, IT_Frigate, IT_MissileFrigate,
+    IT_Destroyer, IT_MissileDestroyer, IT_LightCruiser, IT_MissileLightCruiser,
+    IT_HeavyCruiser, IT_MissileHeavyCruiser, IT_BattleShip, IT_MissileBattleship,
+    IT_AircraftCarrier, IT_Submarine] }
+  { name = "mainmenu/ground_facilities", types = [IT_Structure, IT_AmmoStorage, IT_FuelStorage, IT_TankStorage] }
   { name = "mainmenu/supply", types = [IT_Wheeled] }
-  { name = "worldWar/airfieldsList", types = [IT_Airport] }
+  { name = "worldWar/airfieldsList", types = [IT_Airport, IT_AircraftCarrier] }
 ]
 
 let unitTypes = unitTypesData.reduce(function(res, value, idx) {

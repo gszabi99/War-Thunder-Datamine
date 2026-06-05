@@ -58,3 +58,34 @@ objective > taskIcon {
   background-repeat:aspect-ratio;
   background-svg-size:0.029@scrn_tgt, 0.029@scrn_tgt;
 }
+
+tacticalMapHint {
+  margin-bottom:1@blockInterval;
+}
+
+tacticalMapHintIcon {
+  size:1@buttonHeight, 1@buttonHeight;
+  input-transparent:yes;
+}
+
+tacticalMapHintIcon > img {
+  size:1@cIco, 1@cIco;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:relative;
+  background-svg-size:1@cIco, 1@cIco;
+}
+
+tacticalMapHintInput {
+  size:1@keyboardHintButtonHeight, 1@buttonHeight;
+  margin-left:1@blockInterval;
+  input-transparent:yes;
+}
+
+tacticalMapHintInput > img {
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:relative;
+}
+
+[show_console_buttons=yes] tacticalMapHintInput[type=zoomMap] img {
+  background-image:@control_r_stick_to_up_n_down;
+}

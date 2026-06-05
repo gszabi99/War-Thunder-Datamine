@@ -1,0 +1,429 @@
+{
+  "units_column": {
+    "units_column__units:list<eid>": {},
+    "units_column__target:eid": {},
+    "_group": {
+      "_tags": "server",
+      "units_column__captureCheckInterval": 1.0,
+      "units_column__captureCheckTimer": -1.0,
+      "units_column__transportedEquipment": 0.0
+    }
+  },
+  "spg_units_column": {
+    "_use": "units_column",
+    "_group": {
+      "_tags": "server",
+      "spg_units_column__fireDist": 9000.0,
+      "spg_units_column__readyToFire": false,
+      "spg_units_column__changeStateTimer": 0.0,
+      "spg_units_column__changeStateTime": 5.0
+    }
+  },
+  "fuel_storage": {
+    "_use": "equip_storage",
+    "fuel_storage:tag": {}
+  },
+  "ammo_storage": {
+    "_use": "equip_storage",
+    "ammo_storage:tag": {},
+    "unit_fx": {}
+  },
+  "tank_factory": {
+    "_use": "equip_factory",
+    "tank_factory__spawnPoints": 0.0,
+    "tank_factory__spawnThreshold": 500.0,
+    "_replicated": "tank_factory__spawnPoints",
+    "tank_factory:tag": {},
+    "_group": {
+      "_tags": "server",
+      "tank_factory__baseProductionRate": 0.3,
+      "tank_factory__fuelConsumeRate": 1.0,
+      "tank_factory__ammoConsumeRate": 1.0,
+      "tank_factory__consumeInterval": 5.0,
+      "tank_factory__consumeTimer": 0.0,
+      "tank_factory__spgColummProbability": 0.15,
+      "equip_storage__ticketsByCapture": 200,
+      "tank_factory__fuelStorage:eid": {},
+      "tank_factory__ammoStorage:eid": {}
+    }
+  },
+  "assembly_area": {
+    "team": -1,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "server",
+      "assembly_area__fuelStorageTempl": "fortification+fuel_storage",
+      "assembly_area__ammoStorageTempl": "fortification+ammo_storage",
+      "assembly_area__tankFactoryUnitName": "nt_assembly_area_tank_factory",
+      "assembly_area__fuelStorageUnitName": "nt_assembly_area_fuel_storage",
+      "assembly_area__ammoStorageUnitName": "nt_assembly_area_ammo_storage",
+      "nuclear_escalation_target__tag": "",
+      "units_spawn_on_init__positions:list<m>": {},
+      "units_spawn_on_init__positionNames:list<t>": {}
+    }
+  },
+  "tank_factory_1980": {
+    "_use": [
+      "tank_factory",
+      "factory_air_defence_preset_1980"
+    ],
+    "_group": {
+      "_tags": "server",
+      "equip_factory__columnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_t_80b",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 3,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "ussr_bmp_2",
+            "templateName": "tank+nuclear_escalation_tank",
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "ussr_9a33bm3",
+            "templateName": "tank+nuclear_escalation_tank",
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {},
+            "bulletsCount:list<i>": {
+              "c": 6
+            }
+          }
+        ]
+      },
+      "tank_factory__spgColumnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_2s3m",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 4,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "ussr_9a33bm3",
+            "templateName": "tank+nuclear_escalation_tank",
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {},
+            "bulletsCount:list<i>": {
+              "c": 6
+            }
+          }
+        ]
+      },
+      "equip_factory__columnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "us_m1a1_abrams",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 3,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "us_m3_bradley",
+            "templateName": "tank+nuclear_escalation_tank",
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "germ_flarakpz_1",
+            "templateName": "tank+nuclear_escalation_tank",
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "163mm_roland_3_aam"
+            },
+            "bulletsCount:list<i>": {
+              "c": 10
+            }
+          }
+        ]
+      },
+      "tank_factory__spgColumnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "us_m109a1",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 4,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "germ_flarakpz_1",
+            "templateName": "tank+nuclear_escalation_tank",
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "163mm_roland_3_aam"
+            },
+            "bulletsCount:list<i>": {
+              "c": 10
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assembly_area_1980": {
+    "_use": "assembly_area",
+    "_group": {
+      "_tags": "server",
+      "assembly_area__tankFactoryTempl": "fortification+tank_factory_1980"
+    }
+  },
+  "tank_factory_2018": {
+    "_use": [
+      "tank_factory",
+      "factory_air_defence_preset_2018"
+    ],
+    "_group": {
+      "_tags": "server",
+      "equip_factory__columnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_t_80bvm",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 3,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "USSR_APDS_FS"
+            }
+          },
+          {
+            "name": "ussr_bmp_3",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "30mm_2a72_AP"
+            }
+          },
+          {
+            "name": "ussr_zprk_2s6",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher",
+                "2s6_upgrade_modification"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": [
+                "30mm_2a38_HE",
+                ""
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": [
+                0,
+                8
+              ]
+            }
+          }
+        ]
+      },
+      "tank_factory__spgColumnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_2s19_m1",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 4,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "ussr_zprk_2s6",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher",
+                "2s6_upgrade_modification"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": [
+                "30mm_2a38_HE",
+                ""
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": [
+                0,
+                8
+              ]
+            }
+          }
+        ]
+      },
+      "equip_factory__columnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "us_m1a2_sep2_abrams",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 3,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "NATO_APDS_FS"
+            }
+          },
+          {
+            "name": "us_m3a3_bradley",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "sw_crotale_ng",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": 8
+            }
+          }
+        ]
+      },
+      "tank_factory__spgColumnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "germ_pzh_2000",
+            "templateName": "tank+nuclear_escalation_tank",
+            "count": 4,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "sw_crotale_ng",
+            "templateName": "tank+nuclear_escalation_tank",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": 8
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assembly_area_2018": {
+    "_use": "assembly_area",
+    "_group": {
+      "_tags": "server",
+      "assembly_area__tankFactoryTempl": "fortification+tank_factory_2018"
+    }
+  }
+}

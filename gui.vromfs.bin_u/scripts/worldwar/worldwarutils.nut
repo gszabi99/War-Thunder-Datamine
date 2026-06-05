@@ -31,7 +31,6 @@ let { addTask } = require("%scripts/tasker.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
   wwGetAirfieldsCount, wwGetSelectedAirfield,
   wwFindAirfieldByCoordinates, wwGetReinforcementsInfo, wwGetMapCellByCoords
@@ -58,7 +57,7 @@ let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nu
 let {
   updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry,
   saveLastPlayed } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { baseWWState, isLastFlightWasWwBattle, getArmyGroups, getBattles
+let { baseWWState, isLastFlightWasWwBattle, getArmyGroups, getMyArmyGroup
 } = require("%scripts/worldWar/worldWarState.nut")
 let { curOperationCountry, invalidateRearZones
 } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
@@ -234,7 +233,7 @@ let g_world_war = {
     let operation = getOperationById(operationId)
     local sideSelectSuccess = false
     if (operation) {
-      if (this.getMyArmyGroup() != null)
+      if (getMyArmyGroup() != null)
         sideSelectSuccess = ww_select_player_side_for_army_group_member()
       else
         sideSelectSuccess = ww_select_player_side_for_regular_user(country)
@@ -399,23 +398,6 @@ let g_world_war = {
     return !!(access & WW_BATTLE_ACCESS.MANAGER)
   }
 
-  
-  function getArmyGroupByArmy(army) {
-    return u.search(getArmyGroups(),
-       function (group) {
-        return group.isMyArmy(army)
-      }
-    )
-  }
-
-  function getMyArmyGroup() {
-    return u.search(getArmyGroups(),
-        function(group) {
-          return isInArray(userIdInt64.get(), group.observerUids)
-        }
-      )
-  }
-
   function getAirfieldsCount() {
     return wwGetAirfieldsCount();
   }
@@ -430,14 +412,6 @@ let g_world_war = {
     }
 
     return res
-  }
-
-  function getBattleForArmy(army, _playerSide = SIDE_NONE) {
-    if (!army)
-      return null
-
-    return u.search(getBattles(), @(battle)
-      !battle.isFinished() && battle.isArmyJoined(army.name))
   }
 
   function isBattleAvailableToPlay(wwBattle) {
@@ -811,10 +785,7 @@ let g_world_war = {
     if (getGlobalStatusData())
       openWwOperationRewardPopup(logObj)
   }
-
-  getBattles
 }
-::g_world_war <- g_world_war
 
 subscribe_handler(g_world_war, g_listener_priority.DEFAULT_HANDLER)
 

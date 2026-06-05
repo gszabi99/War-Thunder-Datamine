@@ -415,7 +415,7 @@ def draw_speeds(var ctx : GuiContext&; pos : float2; size : float2; data : Canva
   var fctxSmall : StdGuiFontContext
   get_font_context(fctxSmall, data.fontId, 0, 0, data.fontSize)
 
-  let machString = "{format("%.2f", mach)}"
+  let machString = "{fmt(":.2f", mach)}"
   let machText = slice(machString, 0, 1)
   let machBox = get_str_bbox(machText, machText |> length(), fctx)
   var machPos = float2(pos.x + size.x * 0.15, pos.y + machBox.width.y + 5.)

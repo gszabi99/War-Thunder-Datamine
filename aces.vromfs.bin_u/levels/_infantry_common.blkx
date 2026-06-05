@@ -1,11 +1,88 @@
 {
-  "rendinst::tmInst12x32bit": true,
+  "mandatoryLandquality": 1,
   "groundProximityInfantryMode": true,
+  "trackDirt": false,
+  "hmapLodCount": 5,
+  "z_far": 50000.0,
+  "numBorderCellsXPos": 8,
+  "numBorderCellsXNeg": 8,
+  "numBorderCellsZPos": 8,
+  "numBorderCellsZNeg": 8,
+  "lastClip": true,
+  "lastclip_horizon": true,
   "occlusionFromCollision": true,
+  "forcedRiDepthPrepass": true,
   "useInfantryCharacterMicrodetails": true,
+  "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
+  "weatherTypes": "gamedata/environments/hvg_weather_types.blk",
+  "layeredFogThicknessScale100": 12.0,
+  "layeredFogHeightOffset": 7.0,
+  "layeredFogDensityMul": 1.0,
+  "water_level": 0.0,
   "disableRT": true,
   "disableConsoleRT": true,
   "targetUpscaleForBigResolution": true,
+  "rendinst::tmInst12x32bit": true,
+  "textures_size": 2500.0,
+  "textures_count": 2200,
+  "clipmap": {
+    "texelSize": 0.00625
+  },
+  "shader_vars": {
+    "hmap_displacement_up": 0.3,
+    "hmap_displacement_down": -0.15,
+    "min_land_height": 0.3,
+    "foliage_translucent_color_mul": [
+      1.25,
+      1.1,
+      1.05,
+      0.0
+    ],
+    "dynamic_lights_ao_effect": 0.8,
+    "gtao_apply_strength": 1.5,
+    "gtao_cutoff_radius_mul": 3.5,
+    "gtao_cutoff_smoothness": 0.95,
+    "gtao_world_radius": 0.7,
+    "gtao_screen_radius": 0.05,
+    "gtao_max_pixel_radius": 72.0,
+    "ssao_affect_on_objects": 1.0,
+    "ssao_apply_strength": 1.5,
+    "ssao_radius_factor": 60.0,
+    "ssao_ambient_cutoff": 1.85,
+    "ssao_blur_weights": [
+      0.9,
+      0.75,
+      0.5,
+      0.25
+    ],
+    "ssao_depth_limits": [
+      0.92,
+      1.35,
+      0.0,
+      0.0
+    ],
+    "ssao_blur_depth_near": 0.008,
+    "ssao_blur_depth_far": 0.0015,
+    "envi_color_gi_boost": [
+      0.003,
+      0.003,
+      0.0005,
+      0.0005
+    ]
+  },
+  "graphics": {
+    "allowAnimatedDay": false
+  },
+  "unitedVdata.rendInst": {
+    "IB": 114688,
+    "VB1": 65536,
+    "VB2": 65536,
+    "VB3": 65536,
+    "VB4": 65536,
+    "VB5": 65536,
+    "VB6": 65536,
+    "VB7": 0
+  },
   "riExtraTiledScenes": {
     "dynamicTileSize": 64.0,
     "scnCount": 3,
@@ -15,8 +92,5 @@
     "scn2.tileSize": 64.0,
     "scn2.maxSize": 32.0,
     "scn3.tileSize": 128.0
-  },
-  "graphics": {
-    "allowAnimatedDay": false
   }
 }

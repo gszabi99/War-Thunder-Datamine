@@ -6,6 +6,7 @@ require %appGame.infantry.es.team_common
 require math
 require math.base
 require DagorRandom
+require Unit
 require Dacoll
 require RendInst
 require CollRes
@@ -59,9 +60,11 @@ def find_danger(var agent_dangers : AgentDangers; eid : EntityId)
 [es(tag=server, no_order)]
 def ai_danger_update_alertness(act : UpdateStageInfoAct)
   var targets : table<uint; TargetData>
-  query() <| $ [es(REQUIRE_NOT=ai_target__autoGunTarget)] (eid : EntityId; ai_target : Target; team : int;
+  query() <| $ [es(REQUIRE_NOT=ai_target__autoGunTarget)] (eid : EntityId; ai_target : Target; team : int; unit__ref : UnitRef const?;
                                                            human_net_phys : HumanActor const?; vehicle_seats__seatEids : EidList const?)
     var stance = STANCE_STAND
+    if unit__ref != null && (*unit__ref).unit.isDelayed
+      return
     var targetTeam = team
     var moving = 0
     if human_net_phys != null
@@ -318,14 +321,14 @@ def ai_danger_trace_targets(act : UpdateStageInfoAct; eid : EntityId; isAlive : 
       let potentialDangerMeter = calc_danger(act.curTime, distCutOff, danger, *ai_target, ai_target__noiseLevel, beh_tree__enabled,
                                              danger_calc__aiCoef, danger_calc__avoidBulletsNearTime, shootLineCoef, danger_calc__onShootLineCoefs.y,
                                              danger_calc__lastShootCoef, danger_calc__noiseCoef, danger_calc__lastBulletNearbyCoef)
-      targets |> emplace((ai_target, potentialDangerMeter, corrTargetPos))
+      targets |> emplace((ai_target = ai_target, dangerMeter = potentialDangerMeter, corrTargetPos = corrTargetPos))
       let primaryK = (danger.primarySinceTime >= 0.0 && act.curTime < danger.primarySinceTime + danger_calc__keepPrimaryTime) ? danger_calc__primaryDangerCoef : 1.0
       let ratio = calc_traceable_ratio(act.curTime, potentialDangerMeter, danger) * primaryK
       if ratio > maxRatio
         maxRatio = ratio
         traceTo = danger.eid
     if !found
-      targets |> emplace(tuple<Target const?; float; float3>())
+      targets |> emplace(tuple<ai_target : Target const?; dangerMeter : float, corrTargetPos : float3>())
 
   if nearestShootLineDanger >= 0
     agent_dangers.dangers[nearestShootLineDanger].lastTraceTime = 0.0

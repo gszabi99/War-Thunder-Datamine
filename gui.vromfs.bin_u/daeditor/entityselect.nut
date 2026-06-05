@@ -39,7 +39,7 @@ let numSelectedEntities = Computed(function() {
 })
 
 function matchEntityByText(eid, text) {
-  if (text==null || text=="" || eid.tostring().indexof(text)!=null)
+  if (text==null || text=="" || eid.tostring().contains(text))
     return true
   let tplName = g_entity_mgr.getEntityTemplateName(eid)
   if (tplName==null)
@@ -435,7 +435,7 @@ function mkEntitySelect() {
   })
   const WORKSET_FILTER = "workset filter"
   let closeWorkset = @() removeModalWindow(WORKSET_FILTER)
-  let mkSelectWorkSet = function(ws) {
+  function mkSelectWorkSet(ws) {
     let hovered = Watched(false)
     let group = ElemGroup()
     return @() {

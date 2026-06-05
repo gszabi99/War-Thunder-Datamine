@@ -56,7 +56,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
   if bundleArgIdx >= 0 || get_only
     return <- BundleMacroResult(idx = bundleArgIdx, fields <- bundleFieldNames)
 
-  var inscope stubLet <- new ExprLet(at = func.at, atInit = func.at)
+  var stubLet = new ExprLet(at = func.at, atInit = func.at)
 
   let inCompletion = is_in_completion()
   let isValidationRequired = get_DAGOR_DBGLEVEL() > 0 || is_in_aot() || inCompletion
@@ -91,13 +91,13 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
       bundleFieldNames |> push(fieldName)
 
       if true
-        var inscope varType <- clone_type(argType)
+        var varType = clone_type(argType)
         if (arg._type.flags.constant || argType.flags.constant) && !argType.flags.removeConstant
           varType.flags |= TypeDeclFlags.constant
         else
           varType.flags |= TypeDeclFlags.removeConstant
           varType.flags |= TypeDeclFlags.ref
-        var inscope variable : VariablePtr <- new Variable(
+        var variable : VariablePtr = new Variable(
           _type <- varType,
           at = argType.at,
           name := fieldName
@@ -105,12 +105,12 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
         arguments |> emplace(variable, ++emplaceIdx)
 
     if inCompletion
-      var inscope stubVar <- clone_variable(arg)
-      var inscope stubVarType <- new TypeDecl(baseType = Type.tPointer, at = arg.at)
-      move_new(stubVarType.firstType) <| clone_type(stubVar._type)
+      var stubVar = clone_variable(arg)
+      var stubVarType = new TypeDecl(baseType = Type.tPointer, at = arg.at)
+      stubVarType.firstType = clone_type(stubVar._type)
       stubVarType.firstType.flags &= ~(TypeDeclFlags.constant)
       stubVarType.flags |= TypeDeclFlags.removeConstant
-      stubVar._type := stubVarType
+      stubVar._type = stubVarType
       stubVar.flags |= VariableFlags.generated
       stubLet.variables |> emplace(stubVar)
     arguments |> erase(i)
@@ -120,8 +120,8 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
 
   if !is_es
     var annArgs : array<tuple<argname : string; argvalue : RttiValue>>
-    annArgs |> emplace <| (bundleArgName, RttiValue(tString = join(bundleFieldNames, ",")))
-    annArgs |> emplace <| (bundleArgName, RttiValue(tInt = bundleArgIdx))
+    annArgs |> emplace <| (argname = bundleArgName, argvalue = RttiValue(tString = join(bundleFieldNames, ",")))
+    annArgs |> emplace <| (argname = bundleArgName, argvalue = RttiValue(tInt = bundleArgIdx))
     append_annotation(func, "component_bundle_macro", "_bundle_args", annArgs)
 
   var astVisitor = new ResolveBundlesVisitor()
@@ -133,8 +133,8 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
   astVisitor.thisFuncName = funcName
   astVisitor.thisFuncBundleArgIdx = bundleArgIdx
 
-  var inscope astVisitorAdapter <- make_visitor(*astVisitor)
-  visit(body, astVisitorAdapter)
+  make_visitor(*astVisitor) <| $(astVisitorAdapter)
+    visit(body, astVisitorAdapter)
   bundleArgName <- astVisitor.bundleArgName
   bundleFieldNames <- astVisitor.bundleFieldNames
 
@@ -144,7 +144,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
 
 
 [macro_function]
-def apply_to_func(var func; blk : block<(var func : FunctionPtr; var args : dasvector`smart_ptr`Variable; var body : ExpressionPtr; is_es : bool) : void>)
+def apply_to_func(var func; blk : block<(var func : FunctionPtr; var args : dasvector`ptr`Variable; var body : ExpressionPtr; is_es : bool) : void>)
   var fnBlock = func.body as ExprBlock
   if length(fnBlock.list) > 0
     assume firstBlk = fnBlock.list[0]
@@ -152,26 +152,26 @@ def apply_to_func(var func; blk : block<(var func : FunctionPtr; var args : dasv
       let call = firstBlk as ExprCall
       if call.name == "ecs::process_view" && length(call.arguments) > 1 && call.arguments[1] is ExprMakeBlock
         var makeEsBlk = call.arguments[1] as ExprMakeBlock
-        var inscope esBlk : ExpressionPtr := makeEsBlk._block
+        var esBlk : ExpressionPtr = makeEsBlk._block
         blk |> invoke(func, (esBlk as ExprBlock).arguments, esBlk, true)
         return
   blk |> invoke(func, func.arguments, func.body, false)
 
 
 def find_unique_function_in_all_modules(name : string)
-  var inscope res : FunctionPtr
+  var res : FunctionPtr
   var count = 0
   for_each_function(compiling_module(), name) <| $(func)
-    res := func
+    res = func
     count ++
   if count == 0
     compiling_program() |> program_for_each_module() <| $(mod)
       for_each_function(mod, name) <| $(func)
-        res := func
+        res = func
         count ++
   if count > 1
-    return <- default<FunctionPtr>
-  return <- res
+    return default<FunctionPtr>
+  return res
 
 
 class ResolveBundlesVisitor : AstVisitor
@@ -181,7 +181,7 @@ class ResolveBundlesVisitor : AstVisitor
   thisFuncName : string
   thisFuncBundleArgIdx : int
 
-  def override visitExprCall(var expr : smart_ptr<ExprCall>) : ExpressionPtr
+  def override visitExprCall(var expr : ExprCall?) : ExpressionPtr
     var i = 0
     var bundlePassedAt = -1
     while i < length(expr.arguments)
@@ -197,7 +197,7 @@ class ResolveBundlesVisitor : AstVisitor
       return <- expr
 
     let fnName = "{expr.name}"
-    var inscope fn <- find_unique_function_in_all_modules(fnName)
+    var fn = find_unique_function_in_all_modules(fnName)
     var res : BundleMacroResult
     if thisFuncName == fnName
       res.idx = thisFuncBundleArgIdx
@@ -218,7 +218,7 @@ class ResolveBundlesVisitor : AstVisitor
     var emplaceIdx = res.idx
     for fieldName in res.fields
       if true
-        var inscope expandedArg : ExpressionPtr <- new ExprVar(
+        var expandedArg : ExpressionPtr = new ExprVar(
           at = bundleArg.at,
           name := fieldName,
           genFlags = ExprGenFlags.generated
@@ -227,7 +227,7 @@ class ResolveBundlesVisitor : AstVisitor
     expr.arguments |> erase(res.idx)
     return <- expr
 
-  def override visitExprField(var expr : smart_ptr<ExprField>) : ExpressionPtr
+  def override visitExprField(var expr : ExprField?) : ExpressionPtr
     if expr.value is ExprVar
       let bundleName = string((expr.value as ExprVar).name)
       if bundleName == bundleArgName
@@ -240,12 +240,12 @@ class ResolveBundlesVisitor : AstVisitor
           macro_error(compiling_program(), expr.at, "field {expr.name} is not present in bundle {bundleName}")
     return <- expr
 
-  def override visitExprVar(var expr : smart_ptr<ExprVar>) : ExpressionPtr
+  def override visitExprVar(var expr : ExprVar?) : ExpressionPtr
     if key_exists(bundleFieldNamesSetForValidation, "{expr.name}")
       macro_error(compiling_program(), expr.at, "use of bundled component '{expr.name}' without bundle is prohibited, use '{bundleArgName}.{expr.name}' instead")
     return <- expr
 
-  def override visitExprLet(var expr : smart_ptr<ExprLet>) : ExpressionPtr
+  def override visitExprLet(var expr : ExprLet?) : ExpressionPtr
     for variable in expr.variables
       if key_exists(bundleFieldNamesSetForValidation, "{variable.name}")
         macro_error(compiling_program(), variable.at, "local variable '{variable.name}' shadows bundled component '{bundleArgName}.{variable.name}'")
@@ -266,7 +266,7 @@ class WithBundleMacro : AstFunctionAnnotation
 
 [block_macro(name="block_with_bundle")]
 class BlockWithBundleMacro : AstBlockAnnotation
-  [unused_argument(group, errors)] def override apply(var blk : smart_ptr<ExprBlock>; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
+  [unused_argument(group, errors)] def override apply(var blk : ExprBlock?; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
     var bundleArgName : string = ""
     for arg in args
       bundleArgName = "{arg.name}"

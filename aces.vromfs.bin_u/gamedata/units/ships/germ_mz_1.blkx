@@ -1185,11 +1185,6 @@
         "armorClass": "ship_wood",
         "armorThickness": 15.0,
         "hp": 789.0
-      },
-      "mid_top_dm": {
-        "armorClass": "ship_wood",
-        "armorThickness": 15.0,
-        "hp": 800.0
       }
     },
     "bulkheads": {
@@ -1507,10 +1502,16 @@
       "armorThickness": 2.0,
       "fireProtectionHp": 10.0,
       "ammunition_storage_01_dm": {
-        "hp": 510.0
+        "hp": 390.0
       },
       "ammunition_storage_02_dm": {
         "hp": 510.0
+      },
+      "ammunition_storage_03_dm": {
+        "hp": 390.0
+      },
+      "ammunition_storage_04_dm": {
+        "hp": 390.0
       }
     },
     "ammo_storages_shells": {
@@ -2282,6 +2283,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
+      "mulReaction": 0.9,
       "rudder": {
         "pos": [
           -23.8,
@@ -2331,7 +2333,6 @@
         "errMeasureVelFwdShift": 0.3,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -2421,7 +2422,6 @@
         "errMeasureVelFwdShift": 0.3,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -2476,7 +2476,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01",
@@ -2576,7 +2575,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02",
@@ -2663,7 +2661,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02",
@@ -2739,7 +2736,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_03",
           "gun": "aa_gun_03",
@@ -2826,7 +2822,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.1,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_03",
           "gun": "aa_gun_03",
@@ -2902,7 +2897,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -2989,7 +2983,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -3065,7 +3058,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -3141,7 +3133,6 @@
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
-        "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -3246,7 +3237,9 @@
       "prevModification": "new_ship_screw"
     },
     "ship_tool_kit": {},
-    "manual_ship_extinguisher": {},
+    "manual_ship_extinguisher": {
+      "disableModEffects": {}
+    },
     "ship_smoke_screen_system_mod": {},
     "new_ship_pumps": {},
     "88mm_spgr_lh31_navy_HE": {},
@@ -3294,9 +3287,10 @@
             "isFireBurnMark": false
           },
           {
-            "name": "ship_fire_small",
+            "name": "ship_smoke_medium",
             "emitter": "emtr_fire_engine_02",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "postDelay": 15.0
           },
           {
             "name": "ship_fire_small",
@@ -3308,29 +3302,53 @@
       {
         "name": "compartment_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "superstructure_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "turret_fire",
         "lifetime": 60.0,
-        "fx": {
-          "name": "ship_fire_small",
-          "centerDmgPart": true,
-          "isFireBurnMark": false
-        }
+        "fx": [
+          {
+            "name": "ship_fire_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_smoke_small",
+            "centerDmgPart": true,
+            "isFireBurnMark": false,
+            "postDelay": 20.0
+          }
+        ]
       },
       {
         "name": "fuel_tank_fire",
@@ -4280,8 +4298,39 @@
   },
   "ammoStowages": {
     "ammo1": {
+      "weaponTrigger": "gunner0",
+      "shareDelay": 10,
+      "shareTime": 6,
+      "shareCount": 1,
+      "shareDuration": 120,
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_1",
+        "explosionEvent": "ammo_explosion_1",
+        "ammunition_storage_01_dm": {
+          "count": 220
+        }
+      }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner1",
+      "shareDelay": 10,
+      "shareTime": 6,
+      "shareCount": 1,
+      "shareDuration": 120,
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_2",
+        "explosionEvent": "ammo_explosion_2",
+        "ammunition_storage_02_dm": {
+          "count": 220
+        }
+      }
+    },
+    "ammo3": {
       "weaponTrigger": [
-        "gunner0",
         "gunner2",
         "gunner3",
         "gunner4"
@@ -4291,23 +4340,20 @@
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
-        "ammunition_storage_01_dm": {
-          "count": 10220
+        "ammunition_storage_03_dm": {
+          "count": 10000
         }
       }
     },
-    "ammo2": {
-      "weaponTrigger": [
-        "gunner1",
-        "gunner5"
-      ],
+    "ammo4": {
+      "weaponTrigger": "gunner5",
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_2",
         "explosionEvent": "ammo_explosion_2",
-        "ammunition_storage_02_dm": {
-          "count": 8220
+        "ammunition_storage_04_dm": {
+          "count": 8000
         }
       }
     }

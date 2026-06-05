@@ -47,6 +47,8 @@ function isCollectionItem(decorator) {
     : false
 }
 
+let hasAvailableCollections = @() hasFeature("Collection") && getCollectionsList().len() > 0
+
 addListenersWithoutEnv({
   DecorCacheInvalidate = @(_) invalidateCache()
 })
@@ -55,4 +57,5 @@ return {
   getCollectionsList = getCollectionsList
   isCollectionPrize = isCollectionPrize
   isCollectionItem = isCollectionItem
+  hasAvailableCollections
 }

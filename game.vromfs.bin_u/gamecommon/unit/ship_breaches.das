@@ -1,6 +1,7 @@
 require ecs
 require net
 require dm
+require CollRes
 require Unit
 require app
 require DagorSystem
@@ -14,7 +15,7 @@ require %game.unit.unit_events
 require %game.unit.repair_system_events
 require %game.unit.ship_events
 require %game.utils.component_bundle_macro
-require %dasGameLibs.math.base
+require %gameLibs.das.math.base
 
 
 [with_bundle(v)]
@@ -58,7 +59,8 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
       else
         let node = unit_dm |> dm_get_collision_node_by_part_id(cover_part_no)
         assert(node != null)
-        v.ship_cover_parts__pos |> push(node.tm * node.modelBBox.center)
+        let nodeIdx = int(node.nodeIndex)
+        v.ship_cover_parts__pos |> push(collres_get_node_tm(*unit_dm.collisionResource, nodeIdx) * collres_get_node_bbox(*unit_dm.collisionResource, nodeIdx).center)
 
       let inner_parts_start = length(v.ship_cover_parts__innerPartsId)
       var inner_parts_end = inner_parts_start

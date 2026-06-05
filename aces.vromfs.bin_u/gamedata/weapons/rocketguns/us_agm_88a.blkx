@@ -68,6 +68,8 @@
     "explosiveType": "pbxn_107",
     "explosiveMass": 20.6,
     "warheadMass": 66.22449,
+    "canChangeFuseMode": true,
+    "hasProximityFuse": true,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.025,
     "shellCollision": true,
@@ -107,16 +109,28 @@
       "workTime": 100.0,
       "uncageBeforeLaunch": true,
       "lockAfterLaunch": false,
-      "useTargetVel": true,
+      "reacquireTarget": true,
+      "useTargetVel": false,
       "lockTimeOut": 0.0,
       "disableTOFInHud": true,
+      "inertialNavigation": true,
       "breakLockMaxTime": 120.0,
+      "inertialGuidance": {
+        "inertialNavigationDriftSpeed": 2.5
+      },
       "radarSeeker": {
         "groundVehiclesAsTarget": true,
-        "aircraftAsTarget": true,
+        "aircraftAsTarget": false,
         "groundClutter": false,
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
+        "active": false,
+        "multipathEffect": [
+          0.0,
+          1.0,
+          0.5,
+          0.0
+        ],
         "band": [
           4,
           5,
@@ -125,15 +139,8 @@
           8,
           9
         ],
-        "active": false,
         "useTargetId": true,
         "sideLobesAttenuation": -20.0,
-        "multipathEffect": [
-          0.0,
-          1.0,
-          0.5,
-          0.0
-        ],
         "lockAngleMax": 15.0,
         "angleMax": 50.0,
         "rateMax": 10.0,
@@ -144,11 +151,11 @@
           "power": 200.0,
           "antenna": {
             "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -50.0
+            "sideLobesSensitivity": -30.0
           }
         },
         "receiver": {
-          "rcs": 0.1,
+          "rcs": 0.01,
           "range": 100000.0,
           "rangeMax": 200000.0,
           "timeGainControl": false,

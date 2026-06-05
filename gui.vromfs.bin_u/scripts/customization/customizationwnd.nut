@@ -54,8 +54,8 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { needSuggestSkin, saveSeenSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getSkinId, getPlaneBySkinId, getSkinNameBySkinId, approversUnitToPreviewLiveResource
-} = require("%scripts/customization/skinUtils.nut")
+let { getSkinId, getPlaneBySkinId, getSkinNameBySkinId, approversUnitToPreviewLiveResource,
+  DEFAULT_SKIN_NAME } = require("%scripts/customization/skinUtils.nut")
 let { clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin,
   previewedLiveSkinIds , getSkinsOption, getCurUserSkin
 } = require("%scripts/customization/skins.nut")
@@ -102,6 +102,8 @@ let { initBackgroundModelHint, updateBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
 let ecs = require("%sqstd/ecs.nut")
 let { EventToggleDemonstratedShellOpt = null } = require("dasevents")
+let { isPrioritySkin, setPrioritySkin } = require("%scripts/customization/prioritySkins.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
@@ -211,6 +213,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   defaultFlag = ""
 
   skinToBan = null
+  skinToSetPriority = null
 
   isSlotInfoOpenedPrevValue = null
 
@@ -225,7 +228,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.access_SkinsUnrestrictedPreview = hasFeature("SkinsPreviewOnUnboughtUnits")
     this.access_SkinsUnrestrictedExport  = this.access_UserSkins && this.access_SkinsUnrestrictedExport
 
-    this.initialAppliedSkinId   = get_last_skin(this.unit.name)
+    this.initialAppliedSkinId   = get_last_skin(this.getSkinSourceUnitName())
     this.initialUserSkinId      = get_user_skins_profile_blk()?[this.unit.name] ?? ""
 
     this.scene.findObject("timer_update").setUserData(this)
@@ -262,6 +265,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.updateBanButton(this.initialAppliedSkinId)
+    this.setPrioritySkin(this.initialAppliedSkinId)
 
     this.guiScene.setCursor("normal", true)
     initBackgroundModelHint(this)
@@ -305,12 +309,12 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initMainParams() {
-    this.isUnitOwn = this.unit.isUsable()
+    this.isUnitOwn = this.unit.isUsable() || this.unit.isUsableSlaveUnit()
     this.isUnitTank = this.unit.isTank()
     this.isUnitShipOrBoat = this.unit.isShipOrBoat()
 
-    this.access_Decals      = !this.previewMode && this.isUnitOwn && decoratorTypes.DECALS.isAvailable(this.unit)
-    this.access_Attachables = !this.previewMode && this.isUnitOwn && decoratorTypes.ATTACHABLES.isAvailable(this.unit)
+    this.access_Decals      = !this.previewMode && this.isUnitOwn && decoratorTypes.DECALS.isAvailable(this.unit, false)
+    this.access_Attachables = !this.previewMode && this.isUnitOwn && decoratorTypes.ATTACHABLES.isAvailable(this.unit, false)
     this.access_Flags = !this.previewMode && this.isUnitOwn && decoratorTypes.FLAGS.isAvailable(this.unit) && this.isUnitShipOrBoat
     this.access_Skins = (this.previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)) ? true
       : (this.previewMode & PREVIEW_MODE.DECORATOR) ? false
@@ -395,8 +399,15 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       bObj.setValue(getAxisTextOrAxisName("decal_rotate"))
   }
 
+  
+  
+  
+  function getSkinSourceUnitName() {
+    return this.unit.masterUnit ?? this.unit.name
+  }
+
   function getSelectedBuiltinSkinId() {
-    let res = this.previewSkinId || get_last_skin(this.unit.name)
+    let res = this.previewSkinId || get_last_skin(this.getSkinSourceUnitName())
     return res == "" ? "default" : res 
   }
 
@@ -502,10 +513,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.access_Skins)
       return
 
-    this.skinList = getSkinsOption(this.unit.name, {
-      showLocked = true, needAutoSkin = false, showDownloadable = true
-    })
     let curSkinId = this.getSelectedBuiltinSkinId()
+    this.skinList = getSkinsOption(this.getSkinSourceUnitName(), {
+      showLocked = true, needAutoSkin = false, showDownloadable = true,
+      overridedUnitSkin = this.unit.isSlave() ? curSkinId : null,
+    })
     let curSkinIndex = u.find_in_array(this.skinList.values, curSkinId, 0)
 
     let skinItems = []
@@ -623,7 +635,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isUnitOwn || (!this.isUnitTank && !this.isUnitShipOrBoat))
       return
 
-    let skinIndex = this.skinList?.values.indexof(this.previewSkinId ?? get_last_skin(this.unit.name)) ?? 0
+    let skinIndex = this.skinList?.values.indexof(this.previewSkinId ?? get_last_skin(this.getSkinSourceUnitName())) ?? 0
 
     let skinDecorator = this.skinList?.decorators[skinIndex]
     let curUserSkin = getCurUserSkin()
@@ -1028,6 +1040,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateDecoratorActions(isInEditMode, decoratorType)
     this.scene.findObject("gamercard_div")["gamercardSkipNavigation"] = isInEditMode ? "yes" : "no"
     updateGamercards()
+    this.updateAddToFavoriteButtons()
   }
 
   function updateBackButton() {
@@ -1632,22 +1645,27 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function askBuyDecorator(decorator, afterPurchDo = null) {
     let cost = decorator.getCost()
-    let msgText = warningIfGold(
+    let text = warningIfGold(
       loc("shop/needMoneyQuestion_purchaseDecal",
         { purchase = colorize("userlogColoredText", decorator.getName()),
           cost = cost.getTextAccordingToBalance() }),
       decorator.getCost())
-    this.msgBox("buy_decorator_on_preview", msgText,
-      [["ok",  function() {
-          this.currentState = decoratorEditState.PURCHASE
-          if (!this.buyDecorator(decorator, cost, afterPurchDo))
-            return this.forceResetInstalledDecorators()
 
-          dmViewer.update()
-          this.onFinishInstallDecoratorOnUnit(true)
-        }],
-      ["cancel", this.onMsgBoxCancel]
-      ], "ok", { cancel_fn = this.onMsgBoxCancel })
+    let callbackYes = Callback(
+      function() {
+        this.currentState = decoratorEditState.PURCHASE
+        if (!this.buyDecorator(decorator, cost, afterPurchDo))
+          return this.forceResetInstalledDecorators()
+        dmViewer.update()
+        this.onFinishInstallDecoratorOnUnit(true)
+      },
+      this
+    )
+    let callbackNo = Callback(@() this.onMsgBoxCancel(), this)
+    purchaseConfirmation(
+      { id = "buy_decorator_on_preview", text, callbackYes, callbackNo, onExitFunc = callbackNo },
+      cost
+    )
   }
 
   function onMsgBoxCancel() {
@@ -1783,7 +1801,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let access = this.skinList.access[skinNum]
 
     if (this.isUnitOwn && access.isOwn && !this.previewMode) {
-      let curSkinId = get_last_skin(this.unit.name)
+      let curSkinId = get_last_skin(this.getSkinSourceUnitName())
       if (!this.previewSkinId && (skinId == curSkinId || (skinId == "" && curSkinId == "default")))
         return
 
@@ -1843,6 +1861,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       apply_skin(skinId)
     }
     this.updateBanButton(skinId)
+    this.setPrioritySkin(skinId)
     this.previewSkinId = previewSkin ? skinId : null
 
     if (!previewSkin) {
@@ -1895,17 +1914,18 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let cost = previewSkinDecorator.getCost()
-    let msgText = warningIfGold(loc("shop/needMoneyQuestion_purchaseSkin",
+    let text = warningIfGold(loc("shop/needMoneyQuestion_purchaseSkin",
                           { purchase = previewSkinDecorator.getName(),
                             cost = cost.getTextAccordingToBalance()
                           }), cost)
 
-    this.msgBox("need_money", msgText,
-          [["ok", function() {
-            if (checkBalanceMsgBox(cost))
-              this.buySkin(this.previewSkinId, cost)
-          }],
-          ["cancel", function() {} ]], "ok")
+    let callbackYes = Callback(
+      @() checkBalanceMsgBox(cost)
+            ? this.buySkin(this.previewSkinId, cost)
+            : null,
+      this
+    )
+    purchaseConfirmation({ id = "need_money", text, callbackYes }, cost)
   }
 
   function buySkin(skinName, cost) {
@@ -2242,7 +2262,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (this.previewSkinId) {
         saveSeenSuggestedSkin(this.unit.name, this.previewSkinId)
-        this.applySkin(get_last_skin(this.unit.name), true)
+        this.applySkin(get_last_skin(this.getSkinSourceUnitName()), true)
         this.previewSkinId = null
         if (this.initialUserSkinId != "")
           get_user_skins_profile_blk()[this.unit.name] = this.initialUserSkinId
@@ -2427,6 +2447,28 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     saveBannedSkins()
   }
 
+  function setPrioritySkin(skinId) {
+    this.skinToSetPriority = (skinId == null || skinId == "") ? DEFAULT_SKIN_NAME : skinId
+    this.updatePriorityButton(this.skinToSetPriority)
+  }
+
+  function updatePriorityButton(skinId) {
+    let fullSkinId = getSkinId(this.unit.name, skinId)
+    let skin = getDecorator(fullSkinId, decoratorTypes.SKINS)
+    let isSkinUnlocked = skin && skin.isUnlocked()
+    let btn = this.scene.findObject("btn_use_as_priority")
+    btn.enable(isSkinUnlocked)
+
+    let btnText = isPrioritySkin(this.unit.name, skinId) ? loc("customization/skin/dont_use_as_default")
+      : loc("customization/skin/use_as_default")
+    btn.setValue(btnText)
+  }
+
+  function onUseAsPriority() {
+    setPrioritySkin(this.unit.name, this.skinToSetPriority)
+    this.updatePriorityButton(this.skinToSetPriority)
+  }
+
   function onHelp() {
     gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
@@ -2533,5 +2575,19 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (hintParam in hintsParams)
       updateHintPosition(this.scene, handler.scene, hintParam)
+  }
+
+  function onAddToFavoriteConsoleBtn() {
+    if (!this.decorMenu?.isOpened)
+      return
+    this.decorMenu?.onAddToFavoriteConsoleBtn()
+    this.updateAddToFavoriteButtons()
+  }
+
+  function updateAddToFavoriteButtons() {
+    let selectedDecor = this.decorMenu?.isOpened ? this.decorMenu?.getSelectedDecor() : null
+    let isDecorInFavorites = selectedDecor ? this.decorMenu?.curDecorType.isInFavorites(selectedDecor.id) : false
+    showObjById("btn_add_favorite", selectedDecor && !isDecorInFavorites, this.scene)
+    showObjById("btn_remove_favorite", selectedDecor && isDecorInFavorites, this.scene)
   }
 }

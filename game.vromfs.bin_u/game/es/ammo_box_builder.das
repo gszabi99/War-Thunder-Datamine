@@ -111,16 +111,15 @@ def build_object_es(evt : CmdBuildObject;
     let idx = evt.triggerGroup == WeaponTriggerGroups.TRIGGER_GROUP_SPECIAL_GUN ? 2 : (evt.triggerGroup == WeaponTriggerGroups.TRIGGER_GROUP_SECONDARY ? 1 : 0)
     count -= reloadedFromAmmoBoxCount[idx]
     if count > 0
-      query() <| $ [es] (eid aka box_eid : EntityId; ammo_box__owner : EntityId; ammo_box__triggerGroupNo : int)
-        if ammo_box__owner == unit_eid && ammo_box__triggerGroupNo == int(evt.triggerGroup)
+      query() <| $ [es] (eid aka box_eid : EntityId; ri_extra__owner : EntityId; ammo_box__triggerGroupNo : int)
+        if ri_extra__owner == unit_eid && ammo_box__triggerGroupNo == int(evt.triggerGroup)
           destroyEntity(box_eid)
       *unit |> setLastBuildingTime(float(get_total_time()))
       createEntity(evt.objectTemplate) <| $(init)
         init |> set("transform", evt.tm)
-        init |> set("ammo_box__owner", unit_eid)
         init |> set("ammo_box__bulletCount", count)
         init |> set("ri_extra__owner", unit_eid)
-        init |> set("ri_extra__armyId", unit.army)
+        init |> set("team", unit.army)
 
 [es(tag=server, REQUIRE=unit__ref, on_disappear, on_event = EventOnUnitDead)]
 def destroy_boxes_of_dead_unit_es(evt : Event;
@@ -128,18 +127,18 @@ def destroy_boxes_of_dead_unit_es(evt : Event;
                                   var reloadedFromAmmoBoxCount : IntList&)
   for count in reloadedFromAmmoBoxCount
     count = 0
-  query() <| $ [es] (eid aka box_eid : EntityId; ammo_box__owner : EntityId)
-    if ammo_box__owner == unit_eid
+  query() <| $ [es] (eid aka box_eid : EntityId; ri_extra__owner : EntityId)
+    if ri_extra__owner == unit_eid
       destroyEntity(box_eid)
 
 [es(tag=server, on_disappear)]
 def on_ammo_box_destroy(evt : Event;
-                        ammo_box__owner : EntityId;
+                        ri_extra__owner : EntityId;
                         ammo_box__bulletCount : int)
   if ammo_box__bulletCount > 0
     return
-  query(ammo_box__owner) <| $ [es] (reloadedFromAmmoBoxCount : IntList; canReloadFromBox : BoolList)
-    let hero = get_unit_by_eid(ammo_box__owner)
+  query(ri_extra__owner) <| $ [es] (reloadedFromAmmoBoxCount : IntList; canReloadFromBox : BoolList)
+    let hero = get_unit_by_eid(ri_extra__owner)
     if hero == null || hero.isDelayed
       return
     var count = 0
@@ -162,4 +161,4 @@ def on_ammo_box_destroy(evt : Event;
       if count > 0
         break
     if count <= 0
-      sendEvent(ammo_box__owner, EventCantReloadingFromBox())
+      sendEvent(ri_extra__owner, EventCantReloadingFromBox())

@@ -9,12 +9,12 @@ let
   concussion_effect_intensityVarId = get_shader_variable_id("concussion_shake_intensity", true)
 
 def enable_concussion_screen_effect(duration : float; intensity : float)
-  DagorShaders::set_real(concsussion_effect_time_startVarId, get_shader_global_time_phase(0.0, 0.0))
-  DagorShaders::set_real(concussion_effect_durationVarId, duration)
-  DagorShaders::set_real(concussion_effect_intensityVarId, intensity)
+  DagorShaders::set_float(concsussion_effect_time_startVarId, get_shader_global_time_phase(0.0, 0.0))
+  DagorShaders::set_float(concussion_effect_durationVarId, duration)
+  DagorShaders::set_float(concussion_effect_intensityVarId, intensity)
 
 def disable_concussion_screen_effect()
-  DagorShaders::set_real(concsussion_effect_time_startVarId, -1000.0)
+  DagorShaders::set_float(concsussion_effect_time_startVarId, -1000.0)
 
 [es(tag=render, REQUIRE=(hero, hasConcussedVision), on_disappear)]
 def disable_concussion_vision_on_destroy(evt : Event)

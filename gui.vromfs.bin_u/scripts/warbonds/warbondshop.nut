@@ -29,7 +29,7 @@ let { getWarbondsList, getCurrentWarbond, getWarbondAwardByFullId
 let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { getBPStageByShopLevel } = require("%scripts/battlePass/seasonState.nut")
-let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
@@ -412,7 +412,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
       cost = colorize("activeTextColor", wbAward.getCostText())
     })
     let callbackYes = Callback(@() this.buyAction(wbAward), this)
-    purchaseConfirmation("purchase_ask", text, callbackYes, null, null, this.curWb)
+    purchaseConfirmation({ id = "purchase_ask", text, callbackYes, warbond = this.curWb })
   }
 
   function markAwardSeen(award) {

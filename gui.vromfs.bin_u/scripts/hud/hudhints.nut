@@ -92,6 +92,7 @@ g_hud_hints._getHintMarkupParams <- function _getHintMarkupParams(eventData, hin
     isWrapInRowAllowed = this.isWrapInRowAllowed
     showShortcutsNameIfNotAssign = this.showShortcutsNameIfNotAssign
     topImages = getHinToptImagesView(this.hintTopImages)
+    hasBackdrop = this.hintType == g_hud_hint_types.NAVAL_TOP
   }
 }
 
@@ -1819,6 +1820,14 @@ enums.addTypes(g_hud_hints, {
     lifeTime = 5.0
   }
 
+  AMMO_SHARING = {
+    hintType = g_hud_hint_types.MISSION_ACTION_HINTS
+    locId = "hints/ammo_sharing"
+    showEvent = "hint:ammoSharing:show"
+    priority = CATASTROPHIC_HINT_PRIORITY
+    lifeTime = 5.0
+  }
+
   WEAPON_TYPE_UNAVAILABLE = {
     hintType = g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/weapon_type_unavailable"
@@ -2642,6 +2651,69 @@ NEED_STOP_FOR_RADAR = {
     isVerticalAlignText = true
   }
 
+  SM_SEARCH_FOR_NOISE_SOURCE = {
+    hintType = g_hud_hint_types.NAVAL_TOP
+    isHideOnWatchedHeroChanged = true
+    showEvent = "hint:sm_search_for_noise_source"
+    locId = "hints/sm_search_for_noise_source"
+    lifeTime = 5.0
+    uid = 11250
+    totalCount=2
+    secondsOfForgetting=7*(3600*24)
+    hintTopImages = [
+      { src = "!#ui/gameuiskin#look_for_noise_markers.avif", size = "0.2@shHud" }
+    ]
+    isVerticalAlignText = true
+  }
+  SM_USE_HYDROPHONE = {
+    hintType = g_hud_hint_types.NAVAL_TOP
+    isHideOnWatchedHeroChanged = true
+    showEvent = "hint:sm_use_hydrophone"
+    locId = "hints/sm_use_hydrophone"
+    lifeTime = 5.0
+    hintTopImages = [
+      { src = "!#ui/gameuiskin#acoustic_countermeasures.avif", size = "0.08@shHud" }
+    ]
+    isVerticalAlignText = true
+  }
+  SM_INSPECT_NOISE_SOURCE = {
+    hintType = g_hud_hint_types.NAVAL_TOP
+    isHideOnWatchedHeroChanged = true
+    showEvent = "hint:sm_inspect_noise_source"
+    locId = "hints/sm_inspect_noise_source"
+    lifeTime = 7.0
+    hintTopImages = [
+      { src = "!#ui/gameuiskin#inspect_the_noise_source.avif", size = "0.15@shHud" }
+    ]
+    isVerticalAlignText = true
+  }
+
+  SHIP_SONAR_USE_PASSIVE = {
+    hintType = g_hud_hint_types.NAVAL_TOP
+    isHideOnWatchedHeroChanged = true
+    showEvent = "hint:ship_sonar_use_passive"
+    locId = "hints/ship_sonar_use_passive"
+    lifeTime = 5.0
+    uid = 11251
+    totalCount=2
+    secondsOfForgetting=7*(3600*24)
+    hintTopImages = [
+      { src = "!#ui/gameuiskin#sonar_indicator.avif", size = "0.08@shHud" }
+    ]
+    isVerticalAlignText = true
+  }
+  SHIP_SONAR_LOCATE_NOISE_SOURCE = {
+    hintType = g_hud_hint_types.NAVAL_TOP
+    isHideOnWatchedHeroChanged = true
+    showEvent = "hint:ship_sonar_locate_noise_source"
+    locId = "hints/sm_inspect_noise_source"
+    lifeTime = 7.0
+    hintTopImages = [
+      { src = "!#ui/gameuiskin#inspect_the_noise_source.avif", size = "0.15@shHud" }
+    ]
+    isVerticalAlignText = true
+  }
+
   SHIP_DEPTH_CHARGE_SALVO = {
     hintType = g_hud_hint_types.COMMON
     showEvent = "hint:ship_depth_charge_salvo"
@@ -2930,13 +3002,6 @@ NEED_STOP_FOR_RADAR = {
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
-  MANUAL_SENSOR_CUE_CONTROL = {
-    hintType  = g_hud_hint_types.REPAIR
-    locId     = "hints/manual_sensor_cue_control"
-    showEvent = "hint:manual_sensor_cue_control"
-    lifeTime  = 5.0
-  }
-
   MANUAL_SENSOR_TILT_CONTROL = {
     hintType  = g_hud_hint_types.REPAIR
     locId     = "hints/manual_sensor_tilt_control"
@@ -3133,6 +3198,13 @@ NEED_STOP_FOR_RADAR = {
     locId     = "hints/drone/weak_signal"
     showEvent = "hint:drone/weak_signal:show"
     hideEvent = "hint:drone/weak_signal:hide"
+  }
+
+  DRONE_EW_INTERFERENCE = {
+    hintType  = g_hud_hint_types.WARNING_HINTS
+    locId     = "hints/drone/ew_interference"
+    showEvent = "hint:drone/ew_interference:show"
+    hideEvent = "hint:drone/ew_interference:hide"
   }
 
   HANDS_FULL = {
@@ -3393,6 +3465,14 @@ NEED_STOP_FOR_RADAR = {
     lifeTime  = 5.0
   }
 
+  TAKE_DRIVER_SEAT = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanTakeDriverSeat"
+    showEvent = "hint:human_take_driver_seat:show"
+    hideEvent = "hint:human_take_driver_seat:hide"
+    shortcuts = "ID_HUMAN_DRIVER_SEAT"
+  }
+
   DRONE_ENTER_ORBITING_MODE = {
     hintType = g_hud_hint_types.COMMON
     getLocParams = @(_eventData) {roll = getAxisShortCutLoc("ailerons"), pitch = getAxisShortCutLoc("elevator")}
@@ -3502,6 +3582,28 @@ NEED_STOP_FOR_RADAR = {
     showShortcutsNameIfNotAssign = true
     uid = 33
     totalCount = 5
+  }
+
+  ENABLE_SHELL_FPV_LOCK = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/enable_shell_fpv_lock"
+    showEvent = "hint:enable_shell_fpv_lock:show"
+    getShortcuts = @(_data)
+      getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_FIRE_PRIMARY_HELICOPTER"
+      : "ID_FIRE_PRIMARY"
+    lifeTime = 5.0
+    totalCount = 3
+  }
+
+  ENABLE_SHELL_FPV_CORRECTION = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/enable_shell_fpv_correction"
+    showEvent = "hint:enable_shell_fpv_correction:show"
+    getShortcuts = @(_data)
+      getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_FIRE_PRIMARY_HELICOPTER"
+      : "ID_FIRE_PRIMARY"
+    lifeTime = 5.0
+    totalCount = 3
   }
 },
 function() {

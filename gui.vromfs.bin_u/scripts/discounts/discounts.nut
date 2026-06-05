@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement, get_entitlements_price_blk, get_entitlement_gold_discount
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
@@ -27,6 +28,9 @@ let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { discountsList, consoleEntitlementUnits, getEntitlementUnitDiscount,
   getUnitDiscountByName, canBeVisibleDiscountOnUnit
 } = require("%scripts/discounts/discountsState.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
+let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 const UPDATE_DISCOUNT_DATA_TIMER_ID = "update_discount_data"
 const TOP_MENU_ONLINE_SHOP_ID = "online_shop"
@@ -147,9 +151,41 @@ function isShopDiscountVisible() {
   return isVisible
 }
 
-function updateDiscountData(isSilentUpdate = false) {
-  clearDiscountsList()
+function convertUnitsBundlesData(unitsBundles) {
+  return unitsBundles.reduce(function(res, v, key) {
+    res[key] <- v.discount
+    return res
+  }, {})
+}
 
+local updateDiscountData = null
+
+function updateProfileToUpdatePersonalDiscounts() {
+  let taskId = updateEntitlementsLimited()
+  if (taskId != -1)
+    addTask(taskId, null, updateDiscountData)
+  else
+    updateDiscountData()
+}
+
+function collectDiscountItems() {
+  let discounts = getInventoryList(itemType.DISCOUNT, @(item) item.isActive())
+  if (discounts.len() == 0)
+    return
+
+  let closestExpireTime = discounts.reduce(function(res, item) {
+    return res == 0 ? item.getExpireDeltaSec() : min(res, item.getExpireDeltaSec())
+  }, 0)
+
+  clearTimer(updateProfileToUpdatePersonalDiscounts)
+  if(closestExpireTime > 0)
+    setTimeout(closestExpireTime + 1, updateProfileToUpdatePersonalDiscounts)
+  else
+    updateProfileToUpdatePersonalDiscounts()
+}
+
+updateDiscountData = function(isSilentUpdate = false) {
+  clearDiscountsList()
   let pBlk = get_price_blk()
 
   let chPath = ["exp_to_gold_rate"]
@@ -185,7 +221,7 @@ function updateDiscountData(isSilentUpdate = false) {
     discountsList[TOP_MENU_ONLINE_SHOP_ID] = haveDiscount()
 
   discountsList.entitlementUnits.__update(
-    consoleEntitlementUnits, discountUnitsBundles.get())
+    consoleEntitlementUnits, convertUnitsBundlesData(discountUnitsBundles.get()))
 
   discountsList.topmenu_research = isShopDiscountVisible()
   if (!isSilentUpdate)
@@ -218,6 +254,8 @@ function updateOnlineShopDiscounts() {
 clearDiscountsList()
 
 function updateDiscountUnits(unitsBundles) {
+  unitsBundles = convertUnitsBundlesData(unitsBundles)
+
   foreach (airName, _ in prevDiscountUnitsBundles)
     discountsList.entitlementUnits.rawdelete(airName)
 
@@ -236,6 +274,7 @@ addListenersWithoutEnv({
   EpicShopItemUpdated         = @(_) updateOnlineShopDiscounts()
   PriceUpdated                = @(_) updateDiscountData()
   EntitlementsPriceUpdated    = @(_) updateDiscountData()
+  InventoryUpdate             = @(_) collectDiscountItems()
 
   function UnitBought(p) {
     let unitName = getTblValue("unitName", p)

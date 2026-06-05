@@ -27,7 +27,7 @@
   "instantDetectDistance": 60.0,
   "expClass": "exp_human",
   "sprintStaminaDrain": 1.5,
-  "jumpStaminaDrain": 13.0,
+  "jumpStaminaDrain": 20.0,
   "sprintSpeed": 6.0,
   "standAimPos": [
     0.1,
@@ -52,7 +52,7 @@
   "restStaminaRestore": 5.0,
   "sprintStartStaminaLevel": 6.0,
   "sprintEndStaminaLevel": 0.0,
-  "maxClimbSpeed": 1.5,
+  "maxClimbSpeed": 2.5,
   "climbVertAccel": 9.0,
   "climbVertBrake": 35.0,
   "climbVertBrakeMaxTime": 0.2,
@@ -99,7 +99,7 @@
   "sprintJumpVertSpeed": 2.0,
   "crawlVertAimAngles": [
     -40.0,
-    50.0
+    90.0
   ],
   "maxCrawlObstacleHeight": 0.2,
   "isInertMovement": true,
@@ -563,9 +563,9 @@
       "moveToSpd": 20.5,
       "vertOffsetRestoreVisc": 0.65,
       "vertOffsetMoveDownVisc": 0.75,
-      "breathShakeMagnitude": 0.01,
-      "crouchBreathShakeMagnitude": 0.005,
-      "crawlBreathShakeMagnitude": 0.0005,
+      "breathShakeMagnitude": 0.02,
+      "crouchBreathShakeMagnitude": 0.012,
+      "crawlBreathShakeMagnitude": 0.007,
       "gunLen": 0.4,
       "offsCheckRightNode": [
         0.0,
@@ -604,8 +604,8 @@
         0.45,
         -0.05
       ],
-      "holsterTime": 1.0,
-      "equipTime": 0.4,
+      "holsterTime": 0.8,
+      "equipTime": 0.6,
       "walkMoveMagnitude": 0.0,
       "predictTime": 0.1,
       "targetSpdVisc": 0.1,
@@ -615,9 +615,9 @@
       "moveToSpd": 20.5,
       "vertOffsetRestoreVisc": 0.65,
       "vertOffsetMoveDownVisc": 0.75,
-      "breathShakeMagnitude": 0.01,
-      "crouchBreathShakeMagnitude": 0.005,
-      "crawlBreathShakeMagnitude": 0.0005,
+      "breathShakeMagnitude": 0.02,
+      "crouchBreathShakeMagnitude": 0.012,
+      "crawlBreathShakeMagnitude": 0.007,
       "gunLen": 0.4,
       "offsCheckRightNode": [
         0.0,
@@ -656,9 +656,9 @@
         0.45,
         -0.05
       ],
-      "equipSpeedMult": 3.0,
-      "holsterSwapSpeedMult": 2.5,
-      "holsterTime": 1.2,
+      "equipSpeedMult": 1.0,
+      "holsterSwapSpeedMult": 1.0,
+      "holsterTime": 0.8,
       "equipTime": 0.6,
       "walkMoveMagnitude": 0.0,
       "predictTime": 0.1,
@@ -669,9 +669,9 @@
       "moveToSpd": 20.5,
       "vertOffsetRestoreVisc": 0.65,
       "vertOffsetMoveDownVisc": 0.75,
-      "breathShakeMagnitude": 0.01,
-      "crouchBreathShakeMagnitude": 0.005,
-      "crawlBreathShakeMagnitude": 0.0005,
+      "breathShakeMagnitude": 0.02,
+      "crouchBreathShakeMagnitude": 0.012,
+      "crawlBreathShakeMagnitude": 0.007,
       "gunLen": 0.4
     },
     "quaternary": {
@@ -705,9 +705,9 @@
         0.45,
         -0.05
       ],
-      "equipSpeedMult": 3.0,
-      "holsterSwapSpeedMult": 2.5,
-      "holsterTime": 1.2,
+      "equipSpeedMult": 1.0,
+      "holsterSwapSpeedMult": 1.0,
+      "holsterTime": 0.8,
       "equipTime": 0.6,
       "walkMoveMagnitude": 0.0,
       "predictTime": 0.1,
@@ -718,9 +718,9 @@
       "moveToSpd": 20.5,
       "vertOffsetRestoreVisc": 0.65,
       "vertOffsetMoveDownVisc": 0.75,
-      "breathShakeMagnitude": 0.01,
-      "crouchBreathShakeMagnitude": 0.005,
-      "crawlBreathShakeMagnitude": 0.0005,
+      "breathShakeMagnitude": 0.02,
+      "crouchBreathShakeMagnitude": 0.012,
+      "crawlBreathShakeMagnitude": 0.007,
       "gunLen": 0.4
     },
     "melee": {
@@ -777,11 +777,11 @@
     "scope_acog_ta31": {
       "reqModification": "scope_exps3"
     },
-    "scope_vortex_lpvo": {
+    "scope_sig_tango6_x6": {
       "reqModification": "scope_acog_ta31"
     },
     "scope_scotopia_s350f": {
-      "reqModification": "scope_vortex_lpvo"
+      "reqModification": "scope_sig_tango6_x6"
     },
     "grip_vertical_tangodown": {},
     "grip_angled_magpul": {
@@ -916,27 +916,19 @@
     "preset": [
       {
         "name": "sig_xm5_default",
-        "blk": "gameData/units/humans/weaponPresets/sig_xm5_default.blk"
-      },
-      {
-        "name": "sig_xm5_preset_1",
         "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_specop_preset_1.blk"
       },
       {
         "name": "sig_xm5_preset_2",
-        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_specop_preset_2.blk"
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_support_preset_2.blk"
       },
       {
         "name": "sig_xm5_preset_3",
-        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_specop_preset_3.blk"
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_support_preset_3.blk"
       },
       {
         "name": "sig_xm5_preset_4",
-        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_specop_preset_4.blk"
-      },
-      {
-        "name": "sig_xm5_preset_5",
-        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_specop_preset_5.blk"
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_support_preset_4.blk"
       }
     ]
   }
