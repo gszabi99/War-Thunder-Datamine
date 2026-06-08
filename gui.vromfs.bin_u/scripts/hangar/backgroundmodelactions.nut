@@ -5,8 +5,12 @@ let { eventbus_subscribe } = require("eventbus")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { isPresetsWndReserved } = require("%scripts/weaponry/weaponryPresetsWndState.nut")
 
 function onClickDemonstratedShell(params) {
+  if (isPresetsWndReserved.get())
+    return
+
   let unitName = hangar_get_current_unit_name()
   let unit = getAircraftByName(unitName)
 

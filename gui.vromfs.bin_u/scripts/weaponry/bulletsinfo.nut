@@ -1377,6 +1377,8 @@ function getFakeBulletsModByName(unit, modName) {
 }
 
 function getWeaponBlkNameByGroupIdx(unit, groupIndex) {
+  if (groupIndex < 0)
+    return ""
   let bulletsList = getBulletsList(unit.name, groupIndex, {
     needCheckUnitPurchase = false, needOnlyAvailable = false
   })

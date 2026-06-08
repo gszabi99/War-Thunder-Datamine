@@ -4,6 +4,9 @@ limitBuyUnit {
   timeEnd:t='<<timeEnd>>'
   size:t='1@limitBuyUnitWidth, 1@limitBuyUnitHeight'
   css-hier-invalidate:t='yes'
+  <<#hasActionButton>>
+  hasActionButton:t='yes'
+  <</hasActionButton>>
   tdiv {
     halign:t='center'
     valign:t='center'

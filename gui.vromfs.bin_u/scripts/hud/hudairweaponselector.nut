@@ -198,7 +198,7 @@ let class HudAirWeaponSelector {
 
         this.weaponSlotToTiersId[idx] <- {
           tierId = this.slotIdToTiersId[idx],
-          ammo = t.weaponry?.tiers[t.tierId].amountPerTier ?? t.weaponry?.amountPerTier ?? 1,
+          ammo = t.weaponry?.tiers[t.tierId].amountPerTier ?? t.weaponry?.amountPerTier ?? t.weaponry?.ammo ?? 1,
           countedAmmo = 0
           trigger = triggerTypeConvert?[t.weaponry?.tType] ?? -1
         }

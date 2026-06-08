@@ -27,6 +27,8 @@ let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut"
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/limitBuyUnits/limitBuyUnitsFilter.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
+let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
+let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
@@ -182,6 +184,7 @@ function createUnitViewData(unitData) {
   let timeFinal = (timeEnd != null && !isLeftLessThanDay(timeEnd)) ?
     loc("mainmenu/dataRemaningTimeShort", { time = buildDateTimeStr(timeEnd, false, false) }): null
   let hasShopButton = canBuyUnitOnline(unit)
+  let hasBuyButton = !hasShopButton && (canBuyUnit(unit) || canBuyNotResearched(unit))
   let unitCost = getUnitCost(unit)
 
   return {
@@ -200,8 +203,9 @@ function createUnitViewData(unitData) {
     priceText = unitCost.toStringWithParams({ needCheckBalance = true })
     hasDiscount = discount > 0
     discountText = $"-{discount}%"
-    hasBuyButton = !hasShopButton
+    hasBuyButton
     hasShopButton
+    hasActionButton = hasShopButton || hasBuyButton
     oldPrice = getDiscountedPriceText(unit)
     newPrice = getNewPriceText(unit)
     tooltipId = getTooltipType("UNIT").getTooltipId(unit.name, { canOpenOtherWindows = false })

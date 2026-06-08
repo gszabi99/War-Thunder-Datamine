@@ -2494,6 +2494,10 @@
         "blk": "gameData/FlightModels/weaponPresets/j_22m1a_default.blk"
       },
       {
+        "name": "j_22m1a_plab_350m_73",
+        "blk": "gameData/FlightModels/weaponPresets/j_22m1a_plab_350m_73.blk"
+      },
+      {
         "name": "j_22m1a_fab_100_m80",
         "blk": "gameData/FlightModels/weaponPresets/j_22m1a_fab_100_m80.blk"
       },
@@ -2536,6 +2540,14 @@
       {
         "name": "j_22m1a_vrvz_240",
         "blk": "gameData/FlightModels/weaponPresets/j_22m1a_vrvz_240.blk"
+      },
+      {
+        "name": "j_22m1a_grom",
+        "blk": "gameData/FlightModels/weaponPresets/j_22m1a_grom.blk"
+      },
+      {
+        "name": "j_22m1a_e_24_a1",
+        "blk": "gameData/FlightModels/weaponPresets/j_22m1a_e_24_a1.blk"
       }
     ]
   },
@@ -2693,6 +2705,27 @@
         "order": 1,
         "WeaponPreset": [
           {
+            "iconType": "napalm_large",
+            "name": "plab_350m_73_slot1",
+            "reqModification": "rs_plab_350m_73",
+            "ShowNodes": {
+              "node": [
+                "pylon1",
+                "pylon1_upor_bomb",
+                "pylon1_upor_standard"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/rs_plab_350m_73.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "fab_100_m80_slot1",
             "ShowNodes": {
@@ -2753,7 +2786,7 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "iconType": "glide_bombs_middle",
             "name": "fab_250_pgb_slot1",
             "reqModification": "rs_fab_pgb",
             "ShowNodes": {
@@ -2869,6 +2902,24 @@
             }
           },
           {
+            "iconType": "guided_bomb_yellow",
+            "name": "grom_slot1",
+            "reqModification": "rs_grom",
+            "ShowNodes": {
+              "node": [
+                "pylon1",
+                "pylon1_upor_bomb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/rs_lau_117_grom.blk",
+              "emitter": "rs_lau_117_launcher_1",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_smal",
             "name": "vrvz_240_slot1",
             "reqModification": "rs_vrvz_240",
@@ -2881,6 +2932,21 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/rs_apu_68um2_vrvz_240.blk",
+              "emitter": "rs_apu_68um2_launcher_1",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "e_24_a1_slot1",
+            "reqModification": "rs_e_24_a1",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/rs_apu_68um2_e_24_a1.blk",
               "emitter": "rs_apu_68um2_launcher_1",
               "external": true,
               "separate": true
@@ -2908,6 +2974,27 @@
         "tier": 7,
         "order": 3,
         "WeaponPreset": [
+          {
+            "iconType": "napalm_large",
+            "name": "plab_350m_73_slot2",
+            "reqModification": "rs_plab_350m_73",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_upor_bomb",
+                "pylon2_upor_standard"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/rs_plab_350m_73.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "bombs_small",
             "name": "fab_100_m80_slot2",
@@ -2969,7 +3056,7 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "iconType": "glide_bombs_middle",
             "name": "fab_250_pgb_slot2",
             "reqModification": "rs_fab_pgb",
             "ShowNodes": {
@@ -3085,6 +3172,24 @@
             }
           },
           {
+            "iconType": "guided_bomb_yellow",
+            "name": "grom_slot2",
+            "reqModification": "rs_grom",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_upor_bomb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/rs_lau_117_grom.blk",
+              "emitter": "rs_lau_117_launcher_2",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_smal",
             "name": "vrvz_240_slot2",
             "reqModification": "rs_vrvz_240",
@@ -3097,6 +3202,21 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/rs_apu_68um2_vrvz_240.blk",
+              "emitter": "rs_apu_68um2_launcher_2",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "e_24_a1_slot2",
+            "reqModification": "rs_e_24_a1",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/rs_apu_68um2_e_24_a1.blk",
               "emitter": "rs_apu_68um2_launcher_2",
               "external": true,
               "separate": true
@@ -3124,6 +3244,27 @@
         "tier": 6,
         "order": 5,
         "WeaponPreset": [
+          {
+            "iconType": "napalm_large",
+            "name": "plab_350m_73_slot3",
+            "reqModification": "rs_plab_350m_73",
+            "ShowNodes": {
+              "node": [
+                "pylon3",
+                "pylon3_upor_bomb",
+                "pylon3_upor_standard"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/rs_plab_350m_73.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "bombs_small",
             "name": "fab_100_m80_slot3",
@@ -3166,7 +3307,7 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "iconType": "glide_bombs_middle",
             "name": "fab_250_pgb_slot3",
             "reqModification": "rs_fab_pgb",
             "ShowNodes": {
@@ -3185,6 +3326,25 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "ShowDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/rs_500l_j_22.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -3193,6 +3353,27 @@
         "tier": 5,
         "order": 4,
         "WeaponPreset": [
+          {
+            "iconType": "napalm_large",
+            "name": "plab_350m_73_slot4",
+            "reqModification": "rs_plab_350m_73",
+            "ShowNodes": {
+              "node": [
+                "pylon4",
+                "pylon4_upor_bomb",
+                "pylon4_upor_standard"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/rs_plab_350m_73.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "bombs_small",
             "name": "fab_100_m80_slot4",
@@ -3254,7 +3435,7 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "iconType": "glide_bombs_middle",
             "name": "fab_250_pgb_slot4",
             "reqModification": "rs_fab_pgb",
             "ShowNodes": {
@@ -3370,6 +3551,24 @@
             }
           },
           {
+            "iconType": "guided_bomb_yellow",
+            "name": "grom_slot4",
+            "reqModification": "rs_grom",
+            "ShowNodes": {
+              "node": [
+                "pylon4",
+                "pylon4_upor_bomb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/rs_lau_117_grom.blk",
+              "emitter": "rs_lau_117_launcher_3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_smal",
             "name": "vrvz_240_slot4",
             "reqModification": "rs_vrvz_240",
@@ -3382,6 +3581,21 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/rs_apu_68um2_vrvz_240.blk",
+              "emitter": "rs_apu_68um2_launcher_3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "e_24_a1_slot4",
+            "reqModification": "rs_e_24_a1",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/rs_apu_68um2_e_24_a1.blk",
               "emitter": "rs_apu_68um2_launcher_3",
               "external": true,
               "separate": true
@@ -3409,6 +3623,27 @@
         "tier": 4,
         "order": 2,
         "WeaponPreset": [
+          {
+            "iconType": "napalm_large",
+            "name": "plab_350m_73_slot5",
+            "reqModification": "rs_plab_350m_73",
+            "ShowNodes": {
+              "node": [
+                "pylon5",
+                "pylon5_upor_bomb",
+                "pylon5_upor_standard"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/rs_plab_350m_73.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "bombs_small",
             "name": "fab_100_m80_slot5",
@@ -3470,7 +3705,7 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "iconType": "glide_bombs_middle",
             "name": "fab_250_pgb_slot5",
             "reqModification": "rs_fab_pgb",
             "ShowNodes": {
@@ -3586,6 +3821,24 @@
             }
           },
           {
+            "iconType": "guided_bomb_yellow",
+            "name": "grom_slot5",
+            "reqModification": "rs_grom",
+            "ShowNodes": {
+              "node": [
+                "pylon5",
+                "pylon5_upor_bomb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/rs_lau_117_grom.blk",
+              "emitter": "rs_lau_117_launcher_4",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni_smal",
             "name": "vrvz_240_slot5",
             "reqModification": "rs_vrvz_240",
@@ -3598,6 +3851,21 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/rs_apu_68um2_vrvz_240.blk",
+              "emitter": "rs_apu_68um2_launcher_4",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "e_24_a1_slot5",
+            "reqModification": "rs_e_24_a1",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/rs_apu_68um2_e_24_a1.blk",
               "emitter": "rs_apu_68um2_launcher_4",
               "external": true,
               "separate": true
@@ -3724,18 +3992,32 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "mi_24_fab_250": {
-      "prevModification": "br_vz_128_m15",
+    "il_28sh_s24": {
+      "reqModification": "br_vz_128_m15",
       "modClass": "weapon",
       "tier": 2
     },
-    "il_28sh_s24": {
+    "kosava_3_tm": {
+      "prevModification": "il_28sh_s24",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "rs_plab_350m_73": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "mi_24_fab_250": {
+      "prevModification": "rs_plab_350m_73",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "rs_grom": {
       "prevModification": "mi_24_fab_250",
       "modClass": "weapon",
       "tier": 3
     },
-    "kosava_3_tm": {
-      "prevModification": "il_28sh_s24",
+    "rs_e_24_a1": {
+      "reqModification": "rs_grom",
       "modClass": "weapon",
       "tier": 4
     },

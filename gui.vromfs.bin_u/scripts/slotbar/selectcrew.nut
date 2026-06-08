@@ -27,7 +27,7 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
+
 
 
 const CREWS_COUNT_TO_USE_REPLACE_HINT = 3
@@ -41,7 +41,7 @@ function getObjPosInSafeArea(obj) {
   return pos.map(@(val, idx) clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
 
-let useNewUnitSetLogic = @() userIdInt64.get() % 2 != 0
+let useNewUnitSetLogic = @() false
 
 
 gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {

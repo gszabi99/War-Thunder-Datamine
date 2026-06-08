@@ -275,7 +275,7 @@ def notify_leave_vehicle_tip(can_leave_vehicle : bool)
       hud_notify_script("hint:human_leave_vehicle:hide", eventData)
 
 
-[es(tag=gameClient, REQUIRE=heroVehicle, on_appear, track=isAlive)]
+[es(tag=gameClient, REQUIRE=(heroVehicle, vehicle_seats__seatEids), on_appear, track=isAlive)]
 def vehicle_leave_vehicle_tip_show_es(evt : Event;
                                       isAlive aka vehicle_isAlive : bool = true)
   if is_spectating() || is_playing_replay()
@@ -283,7 +283,7 @@ def vehicle_leave_vehicle_tip_show_es(evt : Event;
   notify_leave_vehicle_tip(vehicle_isAlive)
 
 
-[es(tag=gameClient, REQUIRE=heroVehicle, on_disappear)]
+[es(tag=gameClient, REQUIRE=(heroVehicle, vehicle_seats__seatEids), on_disappear)]
 def vehicle_leave_vehicle_tip_hide_es(evt : Event)
   if is_spectating() || is_playing_replay()
     return

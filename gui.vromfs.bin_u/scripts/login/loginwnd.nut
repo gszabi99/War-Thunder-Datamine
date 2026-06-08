@@ -217,7 +217,10 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
+    
+  }
 
+  function fillLoginForm() {
     let runCount = get_common_local_settings_blk()?.runCount ?? 0
     let isFirstLogin = type(runCount) != "integer" || runCount <= 0
     if (!isFirstLogin) {

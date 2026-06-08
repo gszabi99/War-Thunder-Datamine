@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement, get_entitlements_price_blk, get_entitlement_gold_discount
+from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement, get_entitlements_price_blk, get_entitlement_gold_discount, save_online_single_job
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -28,7 +28,6 @@ let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { discountsList, consoleEntitlementUnits, getEntitlementUnitDiscount,
   getUnitDiscountByName, canBeVisibleDiscountOnUnit
 } = require("%scripts/discounts/discountsState.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
@@ -161,7 +160,7 @@ function convertUnitsBundlesData(unitsBundles) {
 local updateDiscountData = null
 
 function updateProfileToUpdatePersonalDiscounts() {
-  let taskId = updateEntitlementsLimited()
+  let taskId = save_online_single_job(0)
   if (taskId != -1)
     addTask(taskId, null, updateDiscountData)
   else
@@ -179,7 +178,7 @@ function collectDiscountItems() {
 
   clearTimer(updateProfileToUpdatePersonalDiscounts)
   if(closestExpireTime > 0)
-    setTimeout(closestExpireTime + 1, updateProfileToUpdatePersonalDiscounts)
+    setTimeout(closestExpireTime + 2, updateProfileToUpdatePersonalDiscounts)
   else
     updateProfileToUpdatePersonalDiscounts()
 }

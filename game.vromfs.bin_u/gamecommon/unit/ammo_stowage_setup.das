@@ -317,6 +317,7 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
         let current_ammo = setup_ammo_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
         let prev_ammo = v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx]
         let delta_ammo = current_ammo - prev_ammo
+        var updated_ammo = current_ammo
         if delta_ammo < 0
           for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
             if cluster_type == int(AmmoClusterType.CHARGES) && !has_charges
@@ -328,13 +329,18 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
           set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.NEED_SYNC_BULLET_COUNT, true)
         elif delta_ammo > 0
           let ammo_type = setup_ammo_get_weapon_ammo_type(unit, stowage_id, weapon_idx, v)
+          var added_ammo = 0
           for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
             if cluster_type == int(AmmoClusterType.CHARGES) && !has_charges
               continue
             var ammo_to_add = delta_ammo
             setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.SECOND_STAGE), cluster_type, ammo_to_add, ammo_type, v)
+            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.FIRST_STAGE), cluster_type, ammo_to_add, ammo_type, v)
+            if cluster_type == int(AmmoClusterType.SHELLS)
+              added_ammo = delta_ammo - ammo_to_add
             is_sync_required = is_sync_required || ammo_to_add != delta_ammo
-        v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] = current_ammo
+          updated_ammo = prev_ammo + added_ammo
+        v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] = updated_ammo
 
     if remove_loaded_ammo && can_load_to_breech && setup_ammo_stowage_has_cluster_stage(stowage_id, int(AmmoClusterStage.LOADED_IN_GUN), v)
       let clusters_range = v.ammo_stowages__clustersRange[stowage_id]

@@ -31,6 +31,7 @@ let { renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets
 let { cutPrefix } = require("%sqstd/string.nut")
 let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/editWeaponryPreset.nut")
 let { isWeaponModsPurchasedOrAvailableForFree } = require("%scripts/weaponry/modificationInfo.nut")
+let { isPresetsWndReserved } = require("%scripts/weaponry/weaponryPresetsWndState.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -124,6 +125,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
+    isPresetsWndReserved.set(true)
     this.presetNest = this.scene.findObject("presetNest")
     this.setSceneTitle(" ".concat(loc("modification/category/secondaryWeapon"),
       loc("ui/mdash"), getUnitName(this.unit)))
@@ -966,6 +968,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
+    isPresetsWndReserved.set(false)
     if(this.showPresetInfoTimer)
       clearTimer(this.showPresetInfoTimer)
     isGettingWeaponEffects.set(false)
