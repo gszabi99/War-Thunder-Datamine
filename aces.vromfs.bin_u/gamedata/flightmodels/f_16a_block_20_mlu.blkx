@@ -2927,6 +2927,25 @@
       "opticType": "tv",
       "name": "AGM65B"
     },
+    "TV1": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -42.0,
+        42.0,
+        -54.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1,
+      "name": "AGM65G"
+    },
     "Target": {
       "pos": [
         1.3,
@@ -3014,6 +3033,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16a_block_20_mlu_agm_65b.blk"
       },
       {
+        "name": "f_16a_block_20_mlu_agm_65g",
+        "blk": "gameData/FlightModels/weaponPresets/f_16a_block_20_mlu_agm_65g.blk"
+      },
+      {
         "name": "f_16a_block_20_mlu_agm_84",
         "blk": "gameData/FlightModels/weaponPresets/f_16a_block_20_mlu_agm_84.blk"
       }
@@ -3056,6 +3079,8 @@
         "launcher_aim9_5",
         "us_370gal_drop_tank_pylon_001",
         "us_370gal_drop_tank_pylon_002",
+        "us_lau_117a_003",
+        "us_lau_117a_004",
         "us_lau_129aa_001",
         "us_lau_129aa_002",
         "us_lau_129aa_003",
@@ -3409,6 +3434,26 @@
             }
           },
           {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "us_lau_117a_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "us_lau_117a_agm_65a_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
             "ShowNodes": {
@@ -3528,6 +3573,55 @@
         "order": 7,
         "WeaponPreset": [
           {
+            "iconType": "missile_air_to_uni",
+            "name": "agm_65b_slot4",
+            "reqModification": "us_agm_65b",
+            "ShowNodes": {
+              "node": [
+                "pylon4",
+                "pylon4_holder",
+                "us_lau_117a_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65b.blk",
+              "emitter": "us_lau_117a_agm_65a_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "agm_65b_x3"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g_slot4",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": [
+                "pylon4",
+                "us_lau_117a_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "us_lau_117a_agm_65a_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "agm_65b_x3"
+            }
+          },
+          {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
             "ShowNodes": {
@@ -3574,6 +3668,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_small_laser",
+            "name": "gbu12",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": [
+                "pylon4",
+                "pylon4_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "bomb_2000lb_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn_pod"
             }
           },
           {
@@ -3694,6 +3812,54 @@
         "order": 8,
         "WeaponPreset": [
           {
+            "iconType": "missile_air_to_uni",
+            "name": "agm_65b_slot7",
+            "reqModification": "us_agm_65b",
+            "ShowNodes": {
+              "node": [
+                "pylon5",
+                "us_lau_117a_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65b.blk",
+              "emitter": "us_lau_117a_agm_65a_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "BannedWeaponPreset": {
+              "slot": 8,
+              "preset": "agm_65b_x3"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g_slot7",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": [
+                "pylon5",
+                "us_lau_117a_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "us_lau_117a_agm_65a_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            },
+            "BannedWeaponPreset": {
+              "slot": 8,
+              "preset": "agm_65b_x3"
+            }
+          },
+          {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
             "ShowNodes": {
@@ -3740,6 +3906,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_small_laser",
+            "name": "gbu12",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": [
+                "pylon5",
+                "pylon5_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "bomb_2000lb_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "lantirn_pod"
             }
           },
           {
@@ -3899,6 +4089,26 @@
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_88a_agm_65b_x_3.blk",
               "emitter": "lau_88a_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "us_lau_117a_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "us_lau_117a_agm_65a_002",
+              "bullets": 1,
               "external": true,
               "separate": true,
               "machLimit": 1.4
@@ -5099,6 +5309,11 @@
       "prevModification": "us_gbu_laser",
       "tier": 3,
       "modClass": "weapon"
+    },
+    "us_agm_65g": {
+      "reqModification": "us_agm_65b",
+      "modClass": "weapon",
+      "tier": 4
     },
     "us_aim_9p": {
       "tier": 1,

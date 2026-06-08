@@ -27,6 +27,7 @@ let { maxCountryRank } = require("%scripts/ranks.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
+
 let options = {
   types = []
   cache = {
@@ -36,6 +37,8 @@ let options = {
   nestObj = null
   targetUnit = null
   targetAmmo = null
+  structure = null
+
   function setParams(unit, ammo = null, _distance = null) {
     this.targetUnit = unit
     this.targetAmmo = ammo
@@ -147,7 +150,10 @@ options.addTypes({
     needDisabledOnSearch = @() this.isVisible()
 
     function updateParams() {
-      let esUnitTypes = clone threatEsUnitTypes
+      let structure = options.structure
+      let esUnitTypes = structure == null
+        ? clone threatEsUnitTypes
+        : threatEsUnitTypes.filter(@(uType) uType in structure)
       let types = esUnitTypes.map(@(e) unitTypes.getByEsUnitType(e))
       this.values = esUnitTypes
       this.items  = types.map(@(t) { text = "{0} {1}".subst(t.fontIcon, t.getArmyLocName()) })
@@ -166,7 +172,10 @@ options.addTypes({
 
     function updateParams() {
       let unitType = options.UNITTYPE.value
-      this.values = shopCountriesList.filter(@(c) isCountryHaveUnitType(c, unitType))
+      let structure = options.structure == null ? null : options.structure?[unitType] ?? {}
+      this.values = structure == null
+        ? shopCountriesList.filter(@(c) isCountryHaveUnitType(c, unitType))
+        : shopCountriesList.filter(@(c) isCountryHaveUnitType(c, unitType) && c in structure)
       this.items  = this.values.map(@(c) { text = loc(c), image = getCountryIcon(c) })
       let preferredCountry = this.value ?? options.targetUnit.shopCountry
       this.value = this.values.indexof(preferredCountry) != null ? preferredCountry
@@ -187,11 +196,16 @@ options.addTypes({
     function updateParams() {
       let unitType = options.UNITTYPE.value
       let country = options.COUNTRY.value
+      let structure = options.structure == null ? null
+        : options.structure?[unitType][country] ?? {}
       this.values = []
       let maxRank = maxCountryRank.get()
-      for (local rank = 1; rank <= maxRank; rank++)
+      for (local rank = 1; rank <= maxRank; rank++) {
+        if (structure != null && rank not in structure)
+          continue
         if (hasUnitAtRank(rank, unitType, country, true, false))
           this.values.append(rank)
+      }
       this.items = this.values.map(@(r) {
         text = format(loc("conditions/unitRank/format"), get_roman_numeral(r))
       })
@@ -214,8 +228,16 @@ options.addTypes({
       let rank = options.RANK.value
       let country = options.COUNTRY.value
       let ediff = getCurrentGameModeEdiff()
+      let structure = options.structure == null ? null
+        : options.structure?[unitType][country][rank] ?? {}
+
       local list = get_units_list(@(unit) unit.esUnitType == unitType
-        && unit.shopCountry == country && unit.rank == rank && unit.isVisibleInShop())
+        && unit.shopCountry == country
+        && unit.rank == rank
+        && unit.isVisibleInShop()
+      )
+      if (structure != null)
+        list = list.filter(@(unit) unit.name in structure)
       list = list.map(@(unit) { unit, id = unit.name, br = unit.getBattleRating(ediff) })
       list.sort(@(a, b) a.br <=> b.br)
       this.values = list.map(@(v) v.unit)
@@ -547,10 +569,14 @@ options.addTypes({
   }
 })
 
-options.init <- function(handler, scene) {
+options.init <- function(handler, scene, structure = null) {
   this.nestObj = scene
-  let needReinit = this.UNIT.value == null || this.UNIT.value != this.targetUnit
+  this.structure = structure
+
+  let needReinit = this.UNIT.value == null
+    || this.UNIT.value != this.targetUnit
     || this.BULLET.value?.bulletName != this.targetAmmo
+
   if (needReinit)
     this.types.each(@(o) o.value = o.defValue)
   else

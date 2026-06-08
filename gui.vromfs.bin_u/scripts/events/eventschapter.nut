@@ -114,7 +114,8 @@ let EventChaptersManager = class {
   }
 
   function sortChapters() {
-    this.chapters.sort(@(a, b) b.getSortPriority() <=> a.getSortPriority())
+    this.chapters.sort(@(a, b) b.getSortPriority() <=> a.getSortPriority()
+      || a.name <=> b.name)
     this.reindexChapters()
   }
 

@@ -1,5 +1,6 @@
 require ecs
 require ecs.common
+require app
 require %appGame.infantry.es.human_use_action_common
 require %appGame.infantry.es.action_common
 require %appGame.infantry.es.door_operations_common
@@ -264,3 +265,26 @@ def vehicle_driver_seat_show_tip_es(evt : Event;
       notified = true
     if notified
       return
+
+
+def notify_leave_vehicle_tip(can_leave_vehicle : bool)
+  using() <| $(var eventData : DataBlock)
+    if can_leave_vehicle
+      hud_notify_script("hint:human_leave_vehicle:show", eventData)
+    else
+      hud_notify_script("hint:human_leave_vehicle:hide", eventData)
+
+
+[es(tag=gameClient, REQUIRE=heroVehicle, on_appear, track=isAlive)]
+def vehicle_leave_vehicle_tip_show_es(evt : Event;
+                                      isAlive aka vehicle_isAlive : bool = true)
+  if is_spectating() || is_playing_replay()
+    return
+  notify_leave_vehicle_tip(vehicle_isAlive)
+
+
+[es(tag=gameClient, REQUIRE=heroVehicle, on_disappear)]
+def vehicle_leave_vehicle_tip_hide_es(evt : Event)
+  if is_spectating() || is_playing_replay()
+    return
+  notify_leave_vehicle_tip(false)

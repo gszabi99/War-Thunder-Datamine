@@ -17,7 +17,7 @@ const NUCLEAR_ICON_BORDER_COLOR = 0xFFE2482F
 const NUCLEAR_ICON_BORDER_SIZE = hdpx(2)
 const NUCLEAR_ICON_SIZE = hdpxi(22)
 
-const NUCLEAR_STAGES_COUNT = 3
+const NUCLEAR_STAGES_MAX_COUNT = 3
 
 let nuclearStagesCache = []
 
@@ -27,8 +27,11 @@ function cacheNuclearStages() {
 
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  for (local idx = 0; idx < NUCLEAR_STAGES_COUNT; idx++)
-    nuclearStagesCache.append(misBlk.getInt($"nuclearEscalationStage{idx+1}", 0))
+  for (local idx = 0; idx < NUCLEAR_STAGES_MAX_COUNT; idx++) {
+    let stageScore = misBlk.getInt($"nuclearEscalationStage{idx+1}", 0)
+    if (stageScore > 0)
+      nuclearStagesCache.append(stageScore)
+  }
 }
 
 isInFlight.subscribe(@(v) !v ? nuclearStagesCache.clear() : null)
@@ -61,40 +64,47 @@ let mkNuclearIcon = @(progressFillW) @() {
 }
 
 function getNuclearStageDesc(stage) {
-  let isLastStage = stage > NUCLEAR_STAGES_COUNT
-  if (isLastStage)
+  let stagesCount = nuclearStagesCache.len()
+  if (stage > stagesCount)
     return ""
 
   local yieldLimit = yieldLimitFromStage?[stage]
   if (!yieldLimit)  
     return ""
 
-  let isNextLevelStrategic = yieldLimit > 100
-  if (stage == NUCLEAR_STAGES_COUNT) 
+  local locKey = ""
+  if (stage == stagesCount) {
+    
     yieldLimit = yieldLimitFromStage[stage - 1]
+    locKey = yieldLimit >= 100
+      ? "hud/nuclear_escalation/strategic_nuclear"
+      : "hud/nuclear_escalation/tactical_nuclear_over"
+  }
+  else {
+    locKey = yieldLimit >= 100
+      ? "hud/nuclear_escalation/strategic_nuclear"
+      : "hud/nuclear_escalation/tactical_nuclear"
+  }
 
   let val = yieldLimit >= 1000
     ? " ".concat(yieldLimit * 0.001, loc("hud/nuclear_escalation/megaton"))
     : " ".concat(yieldLimit, loc("hud/nuclear_escalation/kiloton"))
 
-  let desc = isNextLevelStrategic
-    ? loc("hud/nuclear_escalation/strategic_nuclear", { val })
-    : loc("hud/nuclear_escalation/tactical_nuclear", { val })
-
-  return loc("hud/nuclear_escalation/nextLevel", { nextLevel = desc })
+  return loc("hud/nuclear_escalation/nextLevel", { nextLevel = loc(locKey, { val }) })
 }
 
 function getTooltipText(totalScore) {
   if (nuclearStagesCache.len() == 0)
     return ""
 
-  let curStage = nuclearStagesCache.findindex(@(t) totalScore < t) ?? NUCLEAR_STAGES_COUNT
-  let nextThreshold = curStage < NUCLEAR_STAGES_COUNT ? nuclearStagesCache[curStage]
+  let stagesCount = nuclearStagesCache.len()
+  let curStage = nuclearStagesCache.findindex(@(t) totalScore < t) ?? stagesCount
+  let nextThreshold = curStage < stagesCount ? nuclearStagesCache[curStage]
     : nuclearStagesCache.top()
 
   let nextNuclearStageDesc = getNuclearStageDesc(curStage + 1)
   let mainDesc = loc("hud/nuclear_escalation/tooltip",
-    { level = curStage, nextThreshold, maxLevel = NUCLEAR_STAGES_COUNT, score = totalScore })
+    { level = curStage, nextThreshold, maxLevel = stagesCount, score = totalScore })
 
   return "\n".join([mainDesc, nextNuclearStageDesc], true)
 }

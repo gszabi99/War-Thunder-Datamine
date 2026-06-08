@@ -3473,6 +3473,14 @@ NEED_STOP_FOR_RADAR = {
     shortcuts = "ID_HUMAN_DRIVER_SEAT"
   }
 
+  LEAVE_VEHICLE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanLeaveVehicle"
+    showEvent = "hint:human_leave_vehicle:show"
+    hideEvent = "hint:human_leave_vehicle:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
   DRONE_ENTER_ORBITING_MODE = {
     hintType = g_hud_hint_types.COMMON
     getLocParams = @(_eventData) {roll = getAxisShortCutLoc("ailerons"), pitch = getAxisShortCutLoc("elevator")}

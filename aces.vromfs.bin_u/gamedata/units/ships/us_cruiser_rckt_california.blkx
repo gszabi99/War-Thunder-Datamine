@@ -25,6 +25,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_med",
+  "sensorTargetTurretTrack": false,
   "explosionFx": "explosion_ship_medium",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
@@ -838,34 +839,40 @@
       "onHit": [
         {
           "damageType": "fire",
-          "expl": 0.7,
-          "damage": 55.0,
+          "expl": 0.25,
+          "damage": 37.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "expl": 0.9,
-          "damage": 74.0,
+          "expl": 0.4,
+          "damage": 50.0,
+          "fHitCritical": false
+        },
+        {
+          "damageType": "explosion",
+          "fire": 0.2,
+          "damage": 300.0,
           "fHitCritical": false
         }
       ]
     },
     "ammunition_storage_charges": {
       "onKill": {
-        "fire": 0.7,
+        "fire": 1.0,
         "fHitCritical": false
       },
       "onHit": [
         {
           "damageType": "fire",
-          "fire": 0.9,
-          "damage": 55.0,
+          "fire": 0.25,
+          "damage": 37.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "fire": 0.1,
-          "damage": 74.0,
+          "fire": 0.4,
+          "damage": 50.0,
           "fHitCritical": false
         }
       ]
@@ -877,22 +884,57 @@
       },
       "onHit": {
         "damageType": "fire",
-        "expl": 1.0,
-        "damage": 79.0,
+        "expl": 0.15,
+        "damage": 69.0,
         "fHitCritical": false
       }
     },
     "ammunition_first_stage": {
       "onKill": {
-        "fire": 1.0,
+        "expl": 1.0,
         "fHitCritical": false
       },
       "onHit": {
         "damageType": "fire",
-        "fire": 1.0,
+        "fire": 0.1,
         "damage": 50.0,
         "fHitCritical": false
       }
+    },
+    "ammunition_depth_charges": {
+      "onKill": {
+        "expl": 0.05,
+        "nothing": 0.95
+      },
+      "onHit": {
+        "damageType": "explosion",
+        "expl": 0.05,
+        "damage": 250.0,
+        "fHitCritical": false
+      }
+    },
+    "handling_room": {
+      "onKill": {
+        "expl": 0.25,
+        "fire": 0.26,
+        "fHitCritical": false
+      },
+      "onHit": [
+        {
+          "damageType": "fire",
+          "fire": 0.5,
+          "expl": 0.8,
+          "damage": 450.0,
+          "fHitCritical": false
+        },
+        {
+          "damageType": "explosion",
+          "fire": 0.56,
+          "expl": 0.89,
+          "damage": 350.0,
+          "fHitCritical": false
+        }
+      ]
     },
     "ammunition_torpedoes": {
       "onKill": {
@@ -902,12 +944,39 @@
       },
       "onHit": {
         "damageType": "fire",
-        "expl": 1.0,
+        "expl": 0.07,
         "damage": 60.0,
         "fHitCritical": false
       }
     },
+    "ammunition_mines": {
+      "onKill": {
+        "expl": 0.05,
+        "nothing": 0.95
+      }
+    },
     "part": [
+      {
+        "name": [
+          "engine_room_01_dm",
+          "engine_room_02_dm",
+          "engine_room_03_dm",
+          "engine_room_04_dm",
+          "engine_room_05_dm",
+          "engine_room_06_dm",
+          "transmission_01_dm",
+          "transmission_02_dm",
+          "transmission_03_dm",
+          "transmission_04_dm",
+          "transmission_05_dm",
+          "transmission_06_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "nothing": 0.85,
+          "fHitCritical": false
+        }
+      },
       {
         "name": [
           "engine_room_01_dm",
@@ -969,8 +1038,8 @@
           "fHitCritical": false,
           "action": {
             "type": "fxEvent",
-            "probability": 1.0,
-            "fxEventName": "steam_explosion_big"
+            "probability": 0.05,
+            "fxEventName": "explosion_steam_nuclear"
           }
         }
       },
@@ -1037,36 +1106,9 @@
           "main_caliber_turret_15_dm"
         ],
         "onKill": {
-          "fire": 0.85
-        },
-        "onHit": {
-          "damageType": "fire",
-          "fire": 0.2,
-          "damage": 70.0
+          "fire": 0.15,
+          "nothing": 0.85
         }
-      },
-      {
-        "name": [
-          "elevator_01_dm",
-          "elevator_02_dm",
-          "elevator_03_dm",
-          "elevator_04_dm"
-        ],
-        "onKill": {
-          "fire": 1.0
-        },
-        "onHit": [
-          {
-            "damageType": "fire",
-            "fire": 0.3,
-            "damage": 50.0
-          },
-          {
-            "damageType": "explosion",
-            "fire": 0.5,
-            "damage": 500.0
-          }
-        ]
       },
       {
         "name": [
@@ -1102,8 +1144,57 @@
           "auxiliary_caliber_turret_30_dm"
         ],
         "onKill": {
-          "fire": 0.85,
-          "nothing": 0.86
+          "fire": 0.1,
+          "nothing": 0.9
+        }
+      },
+      {
+        "name": [
+          "tt_01_dm",
+          "tt_02_dm",
+          "tt_03_dm",
+          "tt_04_dm",
+          "tt_05_dm",
+          "tt_06_dm",
+          "tt_07_dm",
+          "tt_08_dm"
+        ],
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "fire": 0.1,
+            "damage": 300.0
+          },
+          {
+            "damageType": "shatter",
+            "fire": 0.001,
+            "damage": 22.0,
+            "fHitCritical": false
+          }
+        ]
+      },
+      {
+        "name": [
+          "elevator_01_dm",
+          "elevator_02_dm",
+          "elevator_03_dm",
+          "elevator_04_dm",
+          "elevator_05_dm",
+          "elevator_06_dm",
+          "elevator_07_dm",
+          "elevator_08_dm",
+          "elevator_09_dm",
+          "elevator_10_dm",
+          "elevator_11_dm",
+          "elevator_12_dm",
+          "elevator_13_dm",
+          "elevator_14_dm",
+          "elevator_15_dm"
+        ],
+        "onHit": {
+          "damageType": "fire",
+          "fire": 0.1,
+          "damage": 50.0
         }
       },
       {
@@ -1374,7 +1465,8 @@
           ],
           "outputParam": "propeller_rotate_01:CRS",
           "engineDmPart": "engine_room_01_dm",
-          "propeller": "propeller_01"
+          "propeller": "propeller_01",
+          "boilerPressure": 40000.0
         },
         {
           "pos": [
@@ -1384,7 +1476,8 @@
           ],
           "outputParam": "propeller_rotate_02:CRS",
           "engineDmPart": "engine_room_02_dm",
-          "propeller": "propeller_02"
+          "propeller": "propeller_02",
+          "boilerPressure": 40000.0
         }
       ],
       "engine_rooms": {
@@ -1464,7 +1557,7 @@
         "dmPart": "antenna_target_location_01_dm"
       },
       {
-        "blk": "gameData/sensors/naval/us_an_spg_51.blk",
+        "blk": "gameData/sensors/naval/us_an_spg_51_ec.blk",
         "dmPart": [
           "antenna_target_tagging_mount_01",
           "antenna_target_tagging_mount_02",
@@ -1557,7 +1650,7 @@
           1500.0
         ],
         "shellSpeedRange": [
-          120.0,
+          200.0,
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
@@ -1688,7 +1781,7 @@
           1500.0
         ],
         "shellSpeedRange": [
-          120.0,
+          200.0,
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
@@ -2018,7 +2111,7 @@
           1500.0
         ],
         "shellSpeedRange": [
-          120.0,
+          200.0,
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
@@ -2102,7 +2195,7 @@
           1500.0
         ],
         "shellSpeedRange": [
-          120.0,
+          200.0,
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,

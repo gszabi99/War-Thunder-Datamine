@@ -715,8 +715,22 @@ addListenersWithoutEnv({
   SignOut                = @(_p) clearSlotsCache()
 
   function CurrentGameModeIdChanged(params) {
-    if (params.isUserSelected)
+    if (params.isUserSelected) {
       savePresetGameMode(profileCountrySq.get())
+      return
+    }
+
+    let curGameModeId = getCurrentGameModeId()
+    if (!curGameModeId)
+      return
+
+    let countryId = profileCountrySq.get()
+    let preset = getCurrentSlotbarPreset(countryId)
+    if (!preset || curGameModeId == preset.gameModeId)
+      return
+
+    preset.gameModeId = curGameModeId
+    updatePresetFromSlotbar(preset, countryId)
   }
 })
 

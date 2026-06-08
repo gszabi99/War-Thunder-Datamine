@@ -31,13 +31,44 @@
     "vehicle_acceleration__accelVisc": 0.3,
     "vehicle_acceleration__counterAccelVisc": 0.5
   },
+  "transport_self_destruct": {
+    "_group": {
+      "_tags": "server",
+      "transport__selfDestructDelay": 45.0,
+      "transport__homeDistThreshold": 20.0,
+      "transport__abandonTimer": -1.0,
+      "transport__homeTm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    }
+  },
   "hummer_h1": {
     "_use": [
       "tank",
       "base_vehicle_seats",
       "vehicle_seats_owner_components",
       "vehicle_acceleration",
-      "human_vehicle_components"
+      "human_vehicle_components",
+      "transport_self_destruct"
     ],
     "isAlive": true,
     "_replicated": "isAlive",

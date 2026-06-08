@@ -40,9 +40,8 @@
     "minDistance": 3000.0,
     "rangeMax": 70000.0,
     "loadFactorMax": 6.0,
-    "isHasLaserChannel": true,
-    "guidanceType": "laser",
     "launchZoneDistance": 200.0,
+    "guidanceType": "laser",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
     "normalizationPreset": "heat",
@@ -94,17 +93,20 @@
       0.0,
       0.0
     ],
+    "isHasLaserChannel": true,
     "arcadeProp": {
       "finsAoaHor": 0.18,
       "finsAoaVer": 0.18
     },
     "guidance": {
-      "warmUpTime": 1.0,
-      "workTime": 3600.0,
       "uncageBeforeLaunch": true,
-      "permanentlyActivated": true,
       "inertialNavigation": true,
       "inertialNavigationDriftSpeed": 0.0,
+      "designationError": 7.0,
+      "breakLockMaxTime": 200.0,
+      "warmUpTime": 1.0,
+      "workTime": 3600.0,
+      "permanentlyActivated": true,
       "launchAngleMax": [
         80.0,
         80.0
@@ -113,27 +115,10 @@
         1000.0,
         70000.0
       ],
-      "designationError": 7.0,
-      "breakLockMaxTime": 200.0,
       "timeTableCorrection": [
         0.407,
         0.463
       ],
-      "laserSeeker": {
-        "range": 10000.0,
-        "rangeMax": 12000.0,
-        "fov": 30.0,
-        "lockAngleMax": 30.0,
-        "angleMax": 30.0,
-        "rateMax": 8.0,
-        "prolongationTimeMax": 1.0,
-        "filterAlpha": 0.85,
-        "filterBetta": 0.2,
-        "designationSourceType": [
-          "camera",
-          "ins"
-        ]
-      },
       "guidanceAutopilot": {
         "timeOut": 0.8,
         "loftEnabled": true,
@@ -150,6 +135,21 @@
         "accelControlIntg": 0.0365,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0025
+      },
+      "laserSeeker": {
+        "range": 10000.0,
+        "rangeMax": 12000.0,
+        "fov": 30.0,
+        "lockAngleMax": 30.0,
+        "angleMax": 30.0,
+        "rateMax": 8.0,
+        "prolongationTimeMax": 1.0,
+        "filterAlpha": 0.85,
+        "filterBetta": 0.2,
+        "designationSourceType": [
+          "camera",
+          "ins"
+        ]
       },
       "table0": {
         "altitude": 0.0,

@@ -176,6 +176,18 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
     "ok", { cancel_fn = function() {} })
 }
 
+function checkCanChangeGameModeAndDo(func) {
+  let isSquadMember = g_squad_manager.isSquadMember()
+  if (!isSquadMember)
+    return func()
+
+  scene_msg_box("msg_cant_replace_leader_gamemode", null, loc("mainmenu/leader_gamemode_notice"),
+  [
+    ["ok", null]
+  ],
+  "ok", { cancel_fn = function() {} })
+}
+
 function canJoinFlightMsgBox(options = null, okFunc = null, cancelFunc = null) {
   if (!isInMenu.get()) {
     addPopup("", loc("squad/cant_join_in_flight"))
@@ -476,4 +488,5 @@ return {
   getSquadMemberAvailableUnitsCheckingData
   getSquadMembersAvailableUnitsCheckingData
   initSquadWidgetHandler
+  checkCanChangeGameModeAndDo
 }

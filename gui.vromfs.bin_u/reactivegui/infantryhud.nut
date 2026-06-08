@@ -4,6 +4,10 @@ require("%rGui/hud/humanPhysState.nut")
 
 let { isSpectatorMode, unitType, tacticalMapStates } = require("%rGui/hudState.nut")
 let { rw, rh } = require("%rGui/style/screenState.nut")
+let { totalDomTeam, totalDomMult, totalDomNextMult, totalDomSecLeft, localTeam
+} = require("%rGui/missionState.nut")
+let teamColors = require("%rGui/style/teamColors.nut")
+let string = require("string")
 let hudSquadMembers = require("%rGui/hud/humanSquad/hudSquadMembers.nut")
 let { hitMarks } = require("%rGui/hud/hitMarks.nut")
 let killMarks = require("%rGui/hud/humanSquad/killMarks.nut")
@@ -40,6 +44,35 @@ let centerPanel = {
   valign = ALIGN_CENTER
   size = flex()
   children = hitMarks
+}
+
+
+let dominationText = Computed(function() {
+  if (totalDomTeam.get() == 0)
+    return null
+  let mult = totalDomMult.get()
+  if (totalDomNextMult.get() > 0) {
+    let secLeft = totalDomSecLeft.get()
+    return string.format("x%d > x%d  %02d:%02d", mult, totalDomNextMult.get(), secLeft / 60, secLeft % 60)
+  }
+  return $"DOM x{mult}"
+})
+
+let dominationColor = Computed(@() totalDomTeam.get() == localTeam.get()
+  ? teamColors.get().teamScoreBlueColor
+  : teamColors.get().teamScoreRedColor)
+
+let dominationTimer = @() {
+  watch = [dominationText, dominationColor]
+  vplace = ALIGN_TOP
+  hplace = ALIGN_CENTER
+  pos = [0, hdpx(86)] 
+  children = dominationText.get() == null ? null : {
+    rendObj = ROBJ_TEXT
+    font = Fonts.medium_text_hud
+    color = dominationColor.get()
+    text = dominationText.get()
+  }
 }
 
 let leftPanel = {
@@ -109,6 +142,7 @@ let infantryHud = @() {
     sightPresetsPanel
     leftPanel
     rightPanel
+    dominationTimer
   ]
 }
 

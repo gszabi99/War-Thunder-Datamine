@@ -193,7 +193,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   shownTiers = []
 
   premiumModsList     = null
-  bulletsByGroupIndex = null
+  bulletGroups = null 
   expendablesArray    = null
 
   needCheckTutorial = false
@@ -394,7 +394,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             this.premiumModsList.append(mod)
 
     this.lastBullets = []
-    this.bulletsByGroupIndex = {}
+    this.bulletGroups = []
     for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(this.air); groupIndex++) {
       let bulletsList = getBulletsList(this.air.name, groupIndex, {
         needCheckUnitPurchase = false, needOnlyAvailable = false
@@ -406,7 +406,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
       if (isPairBulletsGroup(bulletsList))
         continue
-      this.bulletsByGroupIndex[groupIndex] <- bulletsList
+      this.bulletGroups.append({ groupIndex, bulletsList })
     }
     this.expendablesArray = this.getExpendableModificationsArray(this.air)
   }
@@ -414,7 +414,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateWndWidth() {
     let weaponsAndBulletsLen = 1               
       +(isUnitHaveSecondaryWeapons(this.air) ? 1 : 0) 
-      +this.bulletsByGroupIndex.len()
+      +this.bulletGroups.len()
       + this.expendablesArray.len()
     let premiumModsLen = this.premiumModsList.len() + (this.air.spare && !this.researchMode ? 1 : 0)
     this.wndWidth = clamp(max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(this.air).guiPosX),
@@ -1505,7 +1505,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     
-    foreach (groupIndex, bulletsList in this.bulletsByGroupIndex) {
+    foreach (bulletGroup in this.bulletGroups) {
+      let { groupIndex, bulletsList } = bulletGroup
       this.createBundle(getBulletsItemsList(this.air, bulletsList, groupIndex),
         weaponsItem.bullets, groupIndex, this.mainModsObj, offsetX, offsetY, bulletsList?.supportUnitName)
       let name = getBulletsListHeader(this.air, bulletsList)

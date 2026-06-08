@@ -353,6 +353,45 @@
       },
       "else_actions": {}
     },
+    "add_objectives": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "has_strategic_bombers",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "moAddMissionObjective": [
+          {
+            "target": "nuclear_escalation_objective_t1"
+          },
+          {
+            "target": "nuclear_escalation_objective_t2"
+          }
+        ]
+      },
+      "else_actions": {
+        "moAddMissionObjective": [
+          {
+            "target": "destroy_vehicles_and_airfields_t1"
+          },
+          {
+            "target": "destroy_vehicles_and_airfields_t2"
+          }
+        ]
+      }
+    },
     "create_spawns": {
       "is_enabled": true,
       "comments": "",
@@ -1202,6 +1241,40 @@
     "check_destroy_airfield": {
       "isCategory": true,
       "is_enabled": true,
+      "t1_airfield_main_check": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "has_strategic_bombers",
+            "value": false,
+            "comparasion_func": "equal"
+          },
+          "airfieldWhenStatus": {
+            "object_type": "isBombingAreaDestroyed",
+            "object": "t1_airfield_main"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": 0,
+            "valueSystem": "amount",
+            "var": "destroy_airfield_team_tickets_num",
+            "team": "A"
+          }
+        },
+        "else_actions": {}
+      },
       "t1_airfield_01_check": {
         "is_enabled": true,
         "comments": "",
@@ -1343,6 +1416,40 @@
             "valueSystem": "amount",
             "var": "destroy_airfield_team_tickets_num",
             "team": "A"
+          }
+        },
+        "else_actions": {}
+      },
+      "t2_airfield_main_check": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "has_strategic_bombers",
+            "value": false,
+            "comparasion_func": "equal"
+          },
+          "airfieldWhenStatus": {
+            "object_type": "isBombingAreaDestroyed",
+            "object": "t2_airfield_main"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": 0,
+            "valueSystem": "amount",
+            "var": "destroy_airfield_team_tickets_num",
+            "team": "B"
           }
         },
         "else_actions": {}
@@ -1510,6 +1617,11 @@
           }
         },
         "conditions": {
+          "varCompareBool": {
+            "var_value": "has_strategic_bombers",
+            "value": true,
+            "comparasion_func": "equal"
+          },
           "airfieldWhenStatus": {
             "object_type": "isBombingAreaDestroyed",
             "object": "t2_airfield_main"
@@ -1566,6 +1678,11 @@
           }
         },
         "conditions": {
+          "varCompareBool": {
+            "var_value": "has_strategic_bombers",
+            "value": true,
+            "comparasion_func": "equal"
+          },
           "airfieldWhenStatus": {
             "object_type": "isBombingAreaDestroyed",
             "object": "t1_airfield_main"
@@ -1614,7 +1731,7 @@
     "isCategory": true,
     "is_enabled": true,
     "nuclear_escalation_objective_t1": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "type": "abstractMissionObjective",
       "props": {
@@ -1626,7 +1743,31 @@
       "onFailed": {}
     },
     "nuclear_escalation_objective_t2": {
-      "is_enabled": true,
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 21600,
+        "team": "B"
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    },
+    "destroy_vehicles_and_airfields_t1": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 21600,
+        "team": "A"
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    },
+    "destroy_vehicles_and_airfields_t2": {
+      "is_enabled": false,
       "comments": "",
       "type": "abstractMissionObjective",
       "props": {

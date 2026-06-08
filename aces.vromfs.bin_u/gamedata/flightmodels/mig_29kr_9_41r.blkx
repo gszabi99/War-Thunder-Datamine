@@ -55,6 +55,7 @@
     2.0,
     0.0
   ],
+  "airWeaponCircleOffset": 6.0,
   "type": "typeFighter",
   "advancedInstructor": true,
   "standardExhaustFxType": "jet_exhaust_heavy",
@@ -2441,16 +2442,16 @@
     "hmdBlock": {
       "ils": {
         "pos": [
-          5.915,
-          1.315,
+          5.9,
+          1.38,
           0.0
         ],
-        "rad": 0.12
+        "rad": 0.11
       },
       "full_devices": {
         "pos": [
-          5.459,
-          0.79,
+          5.8,
+          0.84,
           -0.007
         ],
         "rad": 0.42
@@ -3438,6 +3439,10 @@
     "maxDisbalance": 1500.0,
     "HideNodes": {
       "node": [
+        "chute1",
+        "chute2",
+        "chute3",
+        "chute4",
         "su_1500l_extra_tank",
         "su_2000l_extra_tank",
         "apu_27_001",
@@ -3804,24 +3809,6 @@
               "bullets": 100,
               "spread": 1.0,
               "counterIndex": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "external": true,
-              "separate": true,
-              "bulletsCartridge": 1
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "external": true,
-              "separate": true,
-              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
@@ -7271,13 +7258,12 @@
       "modClass": "lth"
     },
     "countermeasures_launcher_chaff_large": {},
-    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "tier": 1,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU"
+      "group": "countermeasures"
     },
     "f_4c_g_suit": {
       "tier": 2,

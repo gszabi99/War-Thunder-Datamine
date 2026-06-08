@@ -2040,7 +2040,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let sumScore = scoreTeamA + scoreTeamB
     local escalationStage = 0
     for (local stage = 1; stage <= 3; stage++) {
-      if (sumScore >= missionInfo[$"nuclearEscalationStage{stage}"])
+      let stageScore = missionInfo[$"nuclearEscalationStage{stage}"]
+      if (stageScore > 0 && sumScore >= stageScore)
         escalationStage = stage
     }
     let allowedYield = yieldLimitFromStage?[escalationStage] ?? 0

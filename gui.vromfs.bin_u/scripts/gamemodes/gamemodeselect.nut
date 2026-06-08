@@ -19,7 +19,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEventPVETrophyName, hasNightGameModes, hasSmallTeamsGameModes, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let { checkSquadUnreadyAndDo, checkCanChangeGameModeAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
 let smallTeamsOptionsWnd = require("%scripts/events/smallTeamsOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
@@ -558,7 +558,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       showInfoMsgBox(getGameModeUnlockFullText(gameModeView.gameMode))
       return
     }
-    this.performGameModeSelect(gameModeView.gameMode)
+    checkCanChangeGameModeAndDo(@() this.performGameModeSelect(gameModeView.gameMode))
   }
 
   function onEventDescription(obj) {

@@ -20,12 +20,13 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   onChangeOptionCb = null
   goBackCb = null
   nameFilterHandler = null
+  structure = null
 
   getSceneTplView = @() this.getOptionsView(this.unit, this.ammoName)
 
   function initScreen() {
     this.guiScene.setUpdatesEnabled(false, false)
-    this.optionsList.init(this, this.scene)
+    this.optionsList.init(this, this.scene, this.structure)
 
     let nameFilterHandler = loadNameFilterHandler({
       scene = this.scene.findObject("filter_edit_box_nest")
@@ -60,7 +61,7 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let view = this.getOptionsView(unit, hitData.ammo, hitData.distance)
     let data = handyman.renderCached("%gui/options/verticalOptions.tpl", view)
     this.guiScene.replaceContentFromText(this.scene.findObject("options_container"), data, data.len(), this)
-    this.optionsList.init(this, this.scene)
+    this.optionsList.init(this, this.scene, this.structure)
   }
 
   function setDataToOptions(unit) {
@@ -80,7 +81,7 @@ let ProtectionAnalysisOptionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
     this.showTypes(true)
-    this.optionsList.init(this, this.scene)
+    this.optionsList.init(this, this.scene, this.structure)
   }
 
   function showTypes(status) {

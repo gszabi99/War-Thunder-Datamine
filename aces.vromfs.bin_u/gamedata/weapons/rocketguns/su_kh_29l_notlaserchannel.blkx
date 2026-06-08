@@ -32,15 +32,12 @@
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 1.75,
-    "maxSpeed": 410.0,
     "endSpeed": 0.0,
     "maxDistance": 10000.0,
     "minDistance": 3000.0,
     "rangeMax": 10000.0,
-    "loadFactorMax": 6.0,
-    "isHasLaserChannel": false,
+    "loadFactorMax": 5.0,
     "guidanceType": "laser",
-    "launchZoneDistance": 200.0,
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
     "normalizationPreset": "heat",
@@ -87,14 +84,16 @@
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "hasTracerTrail": true,
-    "tracerTrailEmitter": [
-      0.0,
+    "effectOffset": [
+      -2.0,
       0.0,
       0.0
     ],
-    "effectOffset": [
-      -2.0,
+    "isHasLaserChannel": false,
+    "launchZoneDistance": 200.0,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [
+      0.0,
       0.0,
       0.0
     ],
@@ -115,17 +114,6 @@
         0.884
       ],
       "uncageBeforeLaunch": false,
-      "laserSeeker": {
-        "range": 10000.0,
-        "rangeMax": 12000.0,
-        "fov": 2.0,
-        "lockAngleMax": 30.0,
-        "angleMax": 30.0,
-        "rateMax": 8.0,
-        "prolongationTimeMax": 1.0,
-        "filterAlpha": 0.85,
-        "filterBetta": 0.2
-      },
       "guidanceAutopilot": {
         "timeOut": 0.8,
         "loftEnabled": true,
@@ -142,6 +130,17 @@
         "accelControlIntg": 0.041,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0029
+      },
+      "laserSeeker": {
+        "range": 10000.0,
+        "rangeMax": 12000.0,
+        "fov": 2.0,
+        "lockAngleMax": 30.0,
+        "angleMax": 30.0,
+        "rateMax": 8.0,
+        "prolongationTimeMax": 1.0,
+        "filterAlpha": 0.85,
+        "filterBetta": 0.2
       },
       "table0": {
         "altitude": 500.0,

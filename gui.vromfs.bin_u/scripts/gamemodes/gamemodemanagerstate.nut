@@ -34,6 +34,7 @@ let { getPlayedOperationText } = require("%scripts/worldWar/operations/model/wwO
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { slotbarPresetsByCountry } = require("%scripts/slotbar/slotbarPresetsState.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 
 
@@ -705,6 +706,23 @@ function setLeaderGameMode(id) {
     createEventGameMode(events.getEvent(id), true)
 
   setCurrentGameModeId(id, false, false)
+
+  if (!g_squad_manager.isMeReady())
+    return
+
+  let leaderEvent = events.getEvent(id)
+  if (leaderEvent == null)
+    return
+
+  let requiredUnitsAvailable = events.checkRequiredUnits(leaderEvent, null, profileCountrySq.get())
+  if (!requiredUnitsAvailable) {
+    g_squad_manager.setReadyFlag(false)
+    return
+  }
+
+  let repairInfo = events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.get())
+  if (!repairInfo.canFlyout)
+    g_squad_manager.setReadyFlag(false)
 }
 
 
@@ -770,7 +788,7 @@ function updateVisibleGameMode() {
   if (g_squad_manager.isSquadLeader())
     return
 
-  if (g_squad_manager.isMeReady()) {
+  if (g_squad_manager.isInSquad()) {
     let id = g_squad_manager.getLeaderGameModeId()
     if (id != "" && id != getCurrentGameModeId())
       setLeaderGameMode(id)

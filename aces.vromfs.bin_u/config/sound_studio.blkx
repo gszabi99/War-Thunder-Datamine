@@ -6063,6 +6063,56 @@
       }
     }
   },
+  "engine_pucara_ai": {
+    "engines": {
+      "effects": {
+        "path": "aircraft/engines",
+        "wep": "engine_wep",
+        "overheatOutside": "engine_overheat_camera",
+        "overheatCockpit": "engine_overheat_cockpit",
+        "dive": "engine_dive",
+        "timeFallingDown": 2.0,
+        "engineVolumeOnOverheat": 0.8,
+        "eventStart": "engine_tvd_ai_start",
+        "eventStop": "engine_tvd_ai_stop"
+      },
+      "outside": {
+        "path": "aircraft/engines",
+        "eventFront": "",
+        "eventBack": "engine05_snecma_turbomecha_ai",
+        "eventSurround": "",
+        "eventLod1": "engine05_snecma_turbomecha_ai",
+        "rpm2Type": "jetTrue",
+        "rpm2Bias": 0.0,
+        "rpm2Scale": 2700.0,
+        "rpmSmooth": 0.014,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    },
+    "propellers": {
+      "effects": {
+        "path": "aircraft/engines"
+      },
+      "outside": {
+        "path": "aircraft/engines",
+        "event_1": "rotor_quing_6_ai",
+        "pos_1": [
+          3.0,
+          0.5,
+          0.0
+        ],
+        "propIndex_1": 1,
+        "rpmSmooth": 0.02,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 0.8
+      }
+    }
+  },
   "engine_quing_6_ai": {
     "engines": {
       "effects": {
@@ -13281,6 +13331,99 @@
       "cockpit": {
         "path": "aircraft/engines",
         "event_1": "rotor20_cockpit",
+        "pos_1": [
+          2.0,
+          0.5,
+          0.0
+        ],
+        "propIndex_1": 1,
+        "rpmSmooth": 0.02,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9
+      }
+    }
+  },
+  "engine_pucara": {
+    "engines": {
+      "effects": {
+        "path": "aircraft/engines",
+        "wep": "engine_wep",
+        "overheatOutside": "engine_overheat_camera",
+        "overheatCockpit": "engine_overheat_cockpit",
+        "dive": "engine_dive",
+        "timeFallingDown": 2.0,
+        "engineVolumeOnOverheat": 0.8,
+        "eventStart": "engine05_snecma_turbomecha_start",
+        "eventStop": "engine05_snecma_turbomecha_stop",
+        "eventProp": "engine_quing_6_prop"
+      },
+      "outside": {
+        "path": "aircraft/engines",
+        "eventFront": "",
+        "eventBack": "engine05_snecma_turbomecha",
+        "eventSurround": "",
+        "eventLod1": "engine05_snecma_turbomecha",
+        "rpm2Type": "jetTrue",
+        "rpm2Bias": 0.0,
+        "rpm2Scale": 2700.0,
+        "rpmSmooth": 0.012,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      },
+      "cockpit": {
+        "path": "aircraft/engines",
+        "event_cockpit_l": "engine05_snecma_turbomecha_cockpit_l",
+        "event_cockpit_r": "engine05_snecma_turbomecha_cockpit_r",
+        "event_start_cockpit_l": "engine05_snecma_turbomecha_start_cockpit_l",
+        "event_start_cockpit_r": "engine05_snecma_turbomecha_start_cockpit_r",
+        "event_stop_cockpit_l": "engine05_snecma_turbomecha_stop_cockpit_l",
+        "event_stop_cockpit_r": "engine05_snecma_turbomecha_stop_cockpit_r",
+        "event_prop_cockpit_l": "engine_quing_6_prop_cockpit_l",
+        "event_prop_cockpit_r": "engine_quing_6_prop_cockpit_r",
+        "leftPos": [
+          0.5,
+          1.0,
+          1.0
+        ],
+        "rightPos": [
+          0.5,
+          1.0,
+          -1.0
+        ],
+        "rpm2Type": "jetTrue",
+        "rpm2Bias": 0.0,
+        "rpm2Scale": 2700.0,
+        "rpmSmooth": 0.02,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9
+      }
+    },
+    "propellers": {
+      "effects": {
+        "path": "aircraft/engines"
+      },
+      "outside": {
+        "path": "aircraft/engines",
+        "event_1": "rotor_quing_6",
+        "pos_1": [
+          3.0,
+          0.5,
+          0.0
+        ],
+        "propIndex_1": 1,
+        "rpmSmooth": 0.02,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 0.8
+      },
+      "cockpit": {
+        "path": "aircraft/engines",
+        "event_1": "rotor_quing_6_cockpit",
         "pos_1": [
           2.0,
           0.5,

@@ -58,7 +58,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { getEventEconomicName, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { checkSquadUnreadyAndDo, canJoinFlightMsgBox, checkSquadMembersMrankDiff
+let { canJoinFlightMsgBox, checkSquadMembersMrankDiff, checkCanChangeGameModeAndDo
 } = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
@@ -516,6 +516,11 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         let leaderEvent = events.getEvent(g_squad_manager.getLeaderGameModeId())
         if (leaderEvent == null) { 
           g_squad_manager.setReadyFlag()
+          return
+        }
+        let requiredUnitsAvailable = this.checkRequiredUnits(profileCountrySq.get())
+        if (!requiredUnitsAvailable) {
+          this.showRequirementsMsgBox()
           return
         }
         let repairInfo = events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.get())
@@ -1371,7 +1376,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isValid())
       return
 
-    this.checkQueue(@() checkSquadUnreadyAndDo(@() gui_handlers.GameModeSelect.open(), null))
+    this.checkQueue(@() checkCanChangeGameModeAndDo(@() gui_handlers.GameModeSelect.open()))
   }
 
   onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)

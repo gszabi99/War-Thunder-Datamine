@@ -22,6 +22,10 @@ let missionState = {
   missionProgressAttackShip = Watched(0)
   missionProgressDefendShip = Watched(0)
   isZoneALocal = Watched(false)
+  totalDomTeam = Watched(0)
+  totalDomMult = Watched(0)
+  totalDomNextMult = Watched(0)
+  totalDomSecLeft = Watched(0)
 }
 
 interopGet({

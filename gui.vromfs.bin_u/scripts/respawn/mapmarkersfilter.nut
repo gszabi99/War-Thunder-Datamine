@@ -27,17 +27,13 @@ let unitTypesData = [
   { name = "worldWar/airfieldsList", types = [IT_Airport, IT_AircraftCarrier] }
 ]
 
-let unitTypes = unitTypesData.reduce(function(res, value, idx) {
-  res[idx] <- {
-    idx
-    text = value.name
-    types = value.types
-    value = idx
-  }
-  return res
-}, {} )
-
-let getUpdatedUnitTypes = @(side) unitTypes.map(@(v, idx) v.__merge({ id = $"{side}_{idx}" }))
+let getUpdatedUnitTypes = @(side) unitTypesData.map(@(v, idx) {
+  idx
+  text = v.name
+  types = v.types
+  value = idx
+  id = $"{side}_{idx}"
+})
 
 let filterNames = [
   {

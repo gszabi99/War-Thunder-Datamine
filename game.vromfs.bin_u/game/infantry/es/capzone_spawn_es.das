@@ -1,6 +1,7 @@
 require ecs
 require %appGame.wt_events
 require %game.events
+require %appGame.infantry.es.team_common
 
 
 [es(tag=server, REQUIRE=infantry_spawn__capzoneEid)]
@@ -86,6 +87,7 @@ def infantry_spawn_proxy_update_es(info : ParallelUpdateFrameDelayed;
                                    var capzone__hasEnemyInside : bool&;
                                    var infantry_spawn__owningTeam : int&)
   query(infantry_spawn__capzoneEid) <| $ [es] (capzone__capTeam : int;
+                                               capzone__owningTeam : int;
                                                teamPresence : Object)
     let ownerTeamStr = "{capzone__capTeam}"
     var ownerCount = 0
@@ -100,8 +102,13 @@ def infantry_spawn_proxy_update_es(info : ParallelUpdateFrameDelayed;
     let hasEnemy = totalCount > ownerCount
     if capzone__hasEnemyInside != hasEnemy
       capzone__hasEnemyInside = hasEnemy
-    if infantry_spawn__owningTeam != capzone__capTeam
-      infantry_spawn__owningTeam = capzone__capTeam
+    var owningTeam = infantry_spawn__owningTeam
+    if capzone__owningTeam != TEAM_UNASSIGNED
+      owningTeam = capzone__owningTeam
+    elif capzone__capTeam != infantry_spawn__owningTeam
+      owningTeam = TEAM_UNASSIGNED
+    if infantry_spawn__owningTeam != owningTeam
+      infantry_spawn__owningTeam = owningTeam
 
 
 [es(tag=server, REQUIRE=human)]

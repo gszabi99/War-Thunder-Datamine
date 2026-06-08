@@ -624,12 +624,16 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
                 item.guidanceType <- "ir"
             }
             if (itemBlk.guidance?.radarSeeker != null) {
-              let active = itemBlk.guidance.radarSeeker?.active ?? false
-              item.guidanceType <- active ? "ARH" : "SARH"
-              item.radarBand <- itemBlk.guidance.radarSeeker?.band ?? 8
+              let active = itemBlk.guidance.radarSeeker?.active ?? true
+              let semiActive = itemBlk.guidance.radarSeeker?.semiActive ?? !(itemBlk.guidance.radarSeeker?.active ?? false)
+              item.guidanceType <- active ? (semiActive ? "SARH" : "ARH") : "PRH"
+              item.radarBands <- []
+              for (local p = 0; p < itemBlk.guidance.radarSeeker.paramCount(); ++p)
+                if (itemBlk.guidance.radarSeeker.getParamName(p) == "band")
+                  item.radarBands.append(itemBlk.guidance.radarSeeker.getParamValue(p))
               item.groundClutter <- itemBlk.guidance.radarSeeker?.groundClutter ?? true
               item.sideLobesSensitivity <- itemBlk.guidance.radarSeeker?.receiver.antenna.sideLobesSensitivity ?? 0.0
-              local dopplerSpeed = false
+              local dopplerSpeed = null
               if (itemBlk.guidance.radarSeeker?.dopplerSpeed != null)
                 dopplerSpeed = itemBlk.guidance.radarSeeker.dopplerSpeed?.presents ?? false
               item.dopplerSpeed <- dopplerSpeed
@@ -805,8 +809,15 @@ function getWeaponExtendedInfo(weapon, unit, par) {
     if (weapon?.allAspect != null)
       addParamsToRes(loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect")),
         loc("missile/aspect"))
-    if (weapon?.radarBand)
-      addParamsToRes(loc($"radar_freq_band_{weapon.radarBand}"), loc("missile/radarBand"))
+    if (weapon?.radarBands != null) {
+      local bandsStr = ""
+      foreach (radarBand in weapon.radarBands) {
+        if (bandsStr.len() > 0)
+          bandsStr = "".concat(bandsStr, ", ")
+        bandsStr = "".concat(bandsStr, loc($"radar_freq_band_{radarBand}"))
+      }
+      addParamsToRes(bandsStr, loc("missile/radarBand"))
+    }
     if (weapon?.groundClutter != null && weapon?.dopplerSpeed != null)
       if (!weapon.groundClutter || weapon.dopplerSpeed) {
         let allAspects = !weapon?.groundClutter || (weapon?.sideLobesSensitivity != null && weapon.sideLobesSensitivity < -26.0)
