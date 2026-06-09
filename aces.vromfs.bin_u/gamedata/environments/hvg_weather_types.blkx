@@ -1280,259 +1280,77 @@
     }
   },
   "cloudy_windy": {
-    "rainSplashEnabled": false,
-    "rainSound": "rain",
-    "rainCockpitSound": "rain_cockpit",
-    "skyLightFactor": 1.0,
-    "cloudAircraftReflectMul": 4.0,
-    "cloudAircraftReflectPowerMul": 0.5,
-    "clouds_fly_cube_tex": "cloud_fly_cube",
-    "scatteringEffect": [
-      0.0,
-      0.0
-    ],
-    "cloud_shadow_intensity": 0.8,
-    "wind_strength": 1.5,
+    "scatteringEffect": 0.0,
+    "cloud_shadow_intensity": 0.7,
+    "wind_strength": 3.5,
     "waterWindStrength": 1.0,
-    "enableCloudsHole": true,
-    "forceFullresCloseClouds": true,
-    "dustMul": 1.0,
-    "mudMul": 1.0,
+    "cloudsShadowWaterInfluence": 0.0,
+    "clouds_weather_gen": {
+      "layers[0].coverage": 1.35,
+      "layers[0].freq": 14.0,
+      "layers[0].seed": 0.0,
+      "layers[1].coverage": 0.5,
+      "layers[1].freq": 12.0,
+      "layers[1].seed": 515.0,
+      "epicness": 0.0,
+      "cumulonimbusCoverage": 0.0,
+      "cumulonimbusSeed": 741.0,
+      "worldSize": 131072.0
+    },
+    "clouds_form": {
+      "layers[0].startAt": 10.0,
+      "layers[0].thickness": 15.7,
+      "layers[0].density": 0.9,
+      "layers[0].clouds_type": 1.0,
+      "layers[0].clouds_type_variance": 0.3,
+      "layers[1].startAt": 3.0,
+      "layers[1].thickness": 4.0,
+      "layers[1].density": 0.75,
+      "layers[1].clouds_type": 1.0,
+      "layers[1].clouds_type_variance": 0.3,
+      "extinction": 0.4,
+      "turbulenceStrength": 2.0,
+      "shapeNoiseScale": 11,
+      "turbulenceFreq": 17,
+      "cumulonimbusShapeScale": 4
+    },
     "clouds_rendering": {
-      "forward_eccentricity": 0.9,
       "back_eccentricity": 0.1,
-      "forward_eccentricity_weight": 0.05,
-      "erosion_noise_size": 48.0,
-      "ambient_desaturation": 0.5,
-      "ms_contribution": 0.01,
-      "ms_attenuation": 0.1,
-      "ms_ecc_attenuation": 0.99,
+      "forward_eccentricity_weight": 0.1,
+      "ms_contribution": 0.51,
+      "ms_attenuation": 0.075,
+      "ms_ecc_attenuation": 0.6,
+      "erosion_noise_size": 29.0,
       "erosionWindSpeed": 0.5
     },
-    "rainDroplets": {
-      "droplets_reflection_min": 0.1,
-      "droplets_reflection_max": 0.3,
-      "droplets_size_scale": [
-        20.0,
-        20.0,
-        4.0
+    "sky": {
+      "mie_scale": [
+        5.0,
+        5.0
       ],
-      "droplets_speed": 1.5
+      "mie_height": [
+        1.1,
+        1.1
+      ],
+      "mie2_thickness": 300.0,
+      "mie2_scale": 115.0,
+      "mie2_altitude": 10.0,
+      "multiple_scattering_factor": 1.4,
+      "sun_brightness": 0.75,
+      "moon_brightness": 1.0
+    },
+    "strata_clouds": {
+      "amount": 1.0,
+      "altitude": 12.0
     },
     "puddlesPower": {
       "p": {
         "value": [
-          0.0,
-          0.0
+          0.1,
+          0.2
         ],
         "weight": 1.0
       }
-    },
-    "rain": {
-      "probability": 0.0
-    },
-    "clouds_weather_gen": {
-      "layers[0].coverage": [
-        0.0,
-        0.0
-      ],
-      "layers[0].seed": [
-        29.0,
-        29.0
-      ],
-      "layers[0].freq": [
-        3.7,
-        3.7
-      ],
-      "layers[1].coverage": [
-        0.55,
-        0.55
-      ],
-      "layers[1].seed": [
-        41.0,
-        41.0
-      ],
-      "layers[1].freq": [
-        3.5,
-        3.5
-      ],
-      "epicness": 0.0,
-      "cumulonimbusCoverage": [
-        0.0,
-        0.0
-      ],
-      "cumulonimbusSeed": [
-        0.0,
-        0.0
-      ],
-      "worldSize": 64768.0
-    },
-    "clouds_form": {
-      "layers[0].startAt": [
-        1.0,
-        1.0
-      ],
-      "layers[0].thickness": [
-        2.9,
-        2.9
-      ],
-      "layers[0].density": [
-        0.4,
-        0.4
-      ],
-      "layers[0].clouds_type": [
-        0.5,
-        0.5
-      ],
-      "layers[0].clouds_type_variance": [
-        1.0,
-        1.0
-      ],
-      "layers[1].startAt": [
-        6.0,
-        6.0
-      ],
-      "layers[1].thickness": [
-        3.0,
-        3.0
-      ],
-      "layers[1].density": [
-        0.5,
-        0.5
-      ],
-      "layers[1].clouds_type": [
-        0.5,
-        0.5
-      ],
-      "layers[1].clouds_type_variance": [
-        1.0,
-        1.0
-      ],
-      "extinction": [
-        1.0,
-        1.0
-      ],
-      "turbulenceStrength": [
-        0.5,
-        0.5
-      ],
-      "shapeNoiseScale": 3,
-      "cumulonimbusShapeScale": 4,
-      "turbulenceFreq": 7
-    },
-    "sky": {
-      "mie_scale": [
-        1.0,
-        1.0
-      ],
-      "mie_height": [
-        4.8,
-        4.8
-      ],
-      "mie_absorption_scale": [
-        2.0,
-        2.0
-      ],
-      "mie_absorption_color": [
-        1.0,
-        1.0,
-        1.0
-      ],
-      "mie_back_assymetry": [
-        [
-          0.17,
-          0.17
-        ],
-        [
-          0.2,
-          0.2
-        ]
-      ],
-      "mie_assymetry": [
-        0.599,
-        0.599
-      ],
-      "mie_scattering_color": [
-        1.0,
-        1.0,
-        1.0
-      ],
-      "mie_forward_weight": 0.5,
-      "mie2_thickness": 257.0,
-      "mie2_scale": 44.0,
-      "mie2_altitude": 50.0,
-      "multiple_scattering_factor": 1.0,
-      "sun_brightness": 0.75,
-      "moon_color": [
-        1.0,
-        1.0,
-        1.0
-      ],
-      "moon_brightness": 1.0,
-      "planet_scale": 1.0,
-      "atmosphere_scale": 0.75,
-      "rayleigh_alt_scale": [
-        1.0,
-        1.0
-      ],
-      "rayleigh_scale": [
-        1.0,
-        1.0
-      ],
-      "rayleigh_color": [
-        1.0,
-        1.0,
-        1.0
-      ],
-      "ozone_alt_dist": 1.0,
-      "ozone_max_alt": 1.0,
-      "ozone_scale": [
-        1.0,
-        1.0
-      ],
-      "solar_irradiance_scale": [
-        1.0,
-        1.0,
-        1.0
-      ],
-      "average_ground_albedo": 0.1,
-      "min_ground_offset": 0.0,
-      "ground_color": [
-        1.0,
-        1.0,
-        1.0
-      ],
-      "weatherSeed": 131
-    },
-    "strata_clouds": {
-      "amount": [
-        0.5,
-        0.5
-      ],
-      "altitude": [
-        12.0,
-        12.0
-      ],
-      "tex": {
-        "t": {
-          "name": "strata_clouds_feather_b"
-        }
-      }
-    },
-    "windParams": {
-      "cloudsWindSpeedMult": 100.0,
-      "cloudsWindSpeedLimit": 30.0,
-      "strataCloudsWindSpeedMult": 2.0,
-      "defaultWindSpeed": 0.1,
-      "height0": 500.0,
-      "turbulence0": 0.9,
-      "windMul0": 0.0,
-      "height1": 2000.0,
-      "turbulence1": 0.3,
-      "windMul1": 0.0,
-      "height2": 8000.0,
-      "turbulence2": 0.01,
-      "windMul2": 0.0
     }
   },
   "cloudy": {

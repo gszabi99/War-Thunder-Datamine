@@ -196,6 +196,9 @@
           },
           "setSignal": {
             "signal": "search"
+          },
+          "setDesignatedTarget": {
+            "set": false
           }
         },
         "resetStandbyMode": {},
@@ -210,9 +213,6 @@
             "fsm": "search",
             "active": true
           },
-          "setCueEnabled": {
-            "value": true
-          },
           "setScanPatternSet": {
             "scanPatternSet": "search"
           },
@@ -221,6 +221,9 @@
           },
           "setSignal": {
             "signal": "search"
+          },
+          "setDesignatedTarget": {
+            "set": false
           }
         },
         "resetSearchMode": {
@@ -228,9 +231,6 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
-          },
-          "setCueEnabled": {
-            "value": false
           }
         },
         "setBvrLockMode": {
@@ -299,9 +299,6 @@
           },
           "setSignal": {
             "signal": "track"
-          },
-          "setDesignatedTarget": {
-            "set": false
           }
         },
         "resetTrackMode": {
@@ -377,7 +374,8 @@
             "designateTargetUnderCue": {
               "type": "cue",
               "self": true,
-              "sensorIndex": 0
+              "sensorIndex": 0,
+              "selectTarget": true
             }
           }
         },

@@ -1883,8 +1883,8 @@
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "barrelDP": "main_caliber_gun_01_dm",
-        "breechDP": "main_caliber_gun_01_dm",
+        "barrelDP": "auxiliary_caliber_gun_01_dm",
+        "breechDP": "auxiliary_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 60.0,
@@ -2028,8 +2028,8 @@
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "barrelDP": "main_caliber_gun_01_dm",
-        "breechDP": "main_caliber_gun_01_dm",
+        "barrelDP": "auxiliary_caliber_gun_01_dm",
+        "breechDP": "auxiliary_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 60.0,
@@ -2555,8 +2555,19 @@
       }
     },
     "ammo2": {
+      "weaponTrigger": "gunner1",
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_1",
+        "explosionEvent": "ammo_explosion_1",
+        "ammunition_storage_04_dm": {
+          "count": 3600
+        }
+      }
+    },
+    "ammo3": {
       "weaponTrigger": [
-        "gunner1",
         "gunner2",
         "gunner3"
       ],
@@ -2567,9 +2578,6 @@
         "explosionEvent": "ammo_explosion_1",
         "ammunition_storage_03_dm": {
           "count": 4000
-        },
-        "ammunition_storage_04_dm": {
-          "count": 3600
         },
         "ammunition_storage_05_dm": {
           "count": 4000

@@ -9,8 +9,14 @@
   "rollForDemonstration": 90.0,
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "cn_pl12",
+    "iconType": "missile_type_b_air_to_air_midrange",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.0,
     "caliber": 0.203,
     "length": 3.93,
     "CxK": 1.6,
@@ -28,16 +34,17 @@
     "force1": 12880.0,
     "fireDelay": 0.0,
     "timeLife": 80.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 4.0,
-    "endSpeed": 1500.0,
     "maxDistance": 80000.0,
     "minDistance": 30.0,
     "rangeMax": 80000.0,
     "loadFactorMax": 38.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
+    "explosiveType": "pbxn_4",
+    "explosiveMass": 9.2,
+    "warheadMass": 30.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -47,19 +54,7 @@
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
-    "explosiveType": "pbxn_4",
-    "explosiveMass": 9.2,
-    "maxDeltaAngle": 0.0,
-    "dragCx": 0.018,
-    "shellCollision": true,
-    "distanceFuse": false,
     "hitPowerMult": 400.0,
-    "fuseDelayDist": 1.0,
-    "explodeTreshold": [
-      0.1,
-      0.01
-    ],
-    "hasProximityFuse": true,
     "explodeHitPower": 550.0,
     "explodeArmorPower": 75.0,
     "explodeRadius": [
@@ -71,9 +66,11 @@
     "shutterAmount": 2000,
     "shutterArmorPower": 12.0,
     "shutterHit": 10.0,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_type_b_air_to_air_midrange",
+    "shellCollision": true,
+    "hasProximityFuse": true,
+    "fuseDelayDist": 1.0,
+    "explodeTreshold": 0.1,
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_small",
     "groundCollisionEffect": "hit_133_160mm_dirt_ap",
     "ricochetEffect": "hit_106_132mm_metal_ap",
@@ -94,10 +91,6 @@
       0.0,
       0.0
     ],
-    "arcadeProp": {
-      "finsAoaHor": 0.4,
-      "finsAoaVer": 0.4
-    },
     "guidance": {
       "inertialNavigation": true,
       "warmUpTime": 0.5,
@@ -450,73 +443,6 @@
     "pressureDamage": {
       "damageType": "pressure"
     },
-    "DamageParts": {
-      "body": {
-        "hp": 50.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": [
-          {
-            "shellState": "inFlight",
-            "expl": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.05,
-            "fire": 0.45,
-            "break": 0.5,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.5,
-            "fire": 0.3,
-            "break": 0.2,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "explosion",
-            "expl": 0.45,
-            "fire": 0.45,
-            "break": 0.1,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "cumulative",
-            "expl": 0.4,
-            "fire": 0.4,
-            "break": 0.1,
-            "damage": 100.0,
-            "fHitCritical": true
-          }
-        ],
-        "onKill": [
-          {
-            "shellState": "inFlight",
-            "destruction": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "expl": 0.05,
-            "fire": 0.05,
-            "break": 0.9,
-            "fHitCritical": true
-          }
-        ]
-      }
-    },
     "damage": {
       "shatter": {
         "useRealShatters": true,
@@ -603,16 +529,6 @@
         "offset": 0.9
       }
     },
-    "proximityFuse": {
-      "timeOut": 1.7,
-      "radius": 10.0,
-      "detectShells": true,
-      "hasUnitsOnlyMode": true,
-      "shellCaliberRange": [
-        0.08,
-        0.2
-      ]
-    },
     "armorpower": {
       "ArmorPower0m": [
         28.0,
@@ -640,6 +556,83 @@
         400.0,
         10000.0
       ]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 50.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
+      }
+    },
+    "proximityFuse": {
+      "timeOut": 1.7,
+      "radius": 10.0,
+      "detectShells": true,
+      "shellCaliberRange": [
+        0.08,
+        0.2
+      ],
+      "hasUnitsOnlyMode": true
     },
     "collisions": {
       "default": {

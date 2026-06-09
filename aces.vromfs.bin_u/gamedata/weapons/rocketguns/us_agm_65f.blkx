@@ -45,30 +45,11 @@
     "loadFactorMax": 5.0,
     "isHasTVChannel": true,
     "guidanceType": "optical",
-    "normalizationPreset": "heat",
-    "ricochetPreset": "heat_fs",
-    "groundRicochetPreset": "atgm",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "heat_fs_tank",
-    "explodeOnRendinst": true,
-    "fresnel": [
-      0.23,
-      0.1,
-      2.0
-    ],
-    "shellAnimation": "video/shells_animations/heat_fs.ivf",
     "explosiveType": "pbxn_110",
     "explosiveMass": 39.0,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.0035,
     "shellCollision": true,
-    "distanceFuse": false,
-    "hitPowerMult": 400.0,
-    "explodeTreshold": 0.1,
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni",
     "explosionEffect": "hit_133_205mm_heat",
@@ -91,7 +72,28 @@
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "fuseDelayDist": 1.0,
+    "warheadMass": 136.0777,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
+    "penetrationBySpeed": true,
+    "fuseDelayDist": 3.5,
+    "explodeTreshold": 0.25,
+    "distanceFuse": false,
     "arcadeProp": {
       "finsAoaHor": 0.2,
       "finsAoaVer": 0.2
@@ -300,28 +302,6 @@
           0.0,
           0.0
         ]
-      }
-    },
-    "stabilityRicochetModifier": {
-      "mod1": [
-        0.0,
-        0.5
-      ],
-      "mod2": [
-        15.0,
-        0.7
-      ],
-      "mod3": [
-        30.0,
-        0.99
-      ]
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
-    },
-    "damage": {
-      "explosive": {
-        "offset": 1.0
       }
     },
     "DamageParts": {
@@ -781,33 +761,54 @@
         "fx": "hit_8_11mm_snow_ap"
       }
     },
-    "armorpower": {
-      "ArmorPower0m": [
-        122.0,
-        10.0
+    "ballisticsTable": {
+      "velocity100m": [
+        10.0,
+        200.0
       ],
-      "ArmorPower100m": [
-        122.0,
-        100.0
+      "velocity120m": [
+        120.0,
+        270.0
       ],
-      "ArmorPower7000m": [
-        122.0,
-        7000.0
+      "velocity1700m": [
+        1180.0,
+        332.0
       ],
-      "ArmorPower20000m": [
-        122.0,
-        20000.0
+      "velocity5000m": [
+        5000.0,
+        252.0
+      ],
+      "velocity10000m": [
+        10000.0,
+        175.0
       ]
     },
-    "hitpower": {
-      "HitPower0m": [
-        400.0,
-        500.0
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
       ],
-      "HitPower20000m": [
-        400.0,
-        20000.0
+      "mod2": [
+        20.0,
+        0.6
+      ],
+      "mod3": [
+        30.0,
+        1.0
       ]
+    },
+    "damage": {
+      "offset": 1.0,
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 0.9,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      }
     }
   }
 }

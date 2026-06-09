@@ -8,8 +8,14 @@
   "mesh": "de_as_34_kormoran",
   "tags": {},
   "rocket": {
+    "dragCx": 0.02,
     "bulletName": "gr_as34_kormoran",
+    "iconType": "missile_air_to_uni_middle",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.345,
     "length": 4.4,
     "WdK": [
@@ -30,16 +36,17 @@
     "force": 26950.0,
     "force1": 2810.5,
     "timeLife": 101.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 0.95,
-    "endSpeed": 1000.0,
     "maxDistance": 34000.0,
     "minDistance": 2000.0,
     "rangeMax": 32000.0,
     "loadFactorMax": 2.5,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
+    "explosiveType": "comp_b",
+    "explosiveMass": 56.0,
+    "warheadMass": 160.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -57,16 +64,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "comp_b",
-    "explosiveMass": 56.0,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.02,
+    "penetrationBySpeed": true,
     "shellCollision": true,
+    "fuseDelayDist": 3.5,
+    "explodeTreshold": 0.25,
     "distanceFuse": false,
-    "fuseDelayDist": 5.0,
-    "explodeTreshold": 0.5,
-    "price": 3000.0,
-    "iconType": "missile_air_to_uni_middle",
     "explosionEffect": "explosion_midair_rocket_medium",
     "groundCollisionEffect": "hit_206_290mm_dirt_he",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -77,10 +79,6 @@
     "rendinstDamageRadius": 10.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "guidance": {
       "indicateOnHud": false,
       "inertialNavigation": true,
@@ -91,7 +89,7 @@
       "lockDistance": 15000.0,
       "breakLockMaxTime": 101.0,
       "inertialGuidance": {
-        "inertialNavigationDriftSpeed": 0.0
+        "inertialNavigationDriftSpeed": 0.05
       },
       "radarSeeker": {
         "band": 8,
@@ -100,6 +98,11 @@
         "aircraftAsTarget": false,
         "targetRadiusMin": 15.0,
         "groundClutter": false,
+        "prolongationTimeMax": 1.0,
+        "designationSourceType": [
+          "radarSs",
+          "ins"
+        ],
         "sideLobesAttenuation": -80.0,
         "multipathEffect": [
           0.0,
@@ -111,17 +114,16 @@
         "angleMax": 45.0,
         "rateMax": 20.0,
         "angleGateRate": 30.0,
-        "prolongationTimeMax": 1.0,
-        "designationSourceType": [
-          "radarSs",
-          "ins"
-        ],
         "transmitter": {
           "power": 2000.0,
           "antenna": {
             "angleHalfSens": 5.0,
             "sideLobesSensitivity": -60.0
           }
+        },
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05
         },
         "receiver": {
           "rcs": 2.0,
@@ -139,10 +141,6 @@
           "width": 150.0,
           "signalWidthMin": 75.0,
           "refWidth": 750.0
-        },
-        "distGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05
         }
       },
       "guidanceAutopilot": {
@@ -182,6 +180,12 @@
         "accelControlIntgLim": 1.0
       }
     },
+    "ballisticsTable": {
+      "velocity500m": [
+        500.0,
+        310.0
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -200,8 +204,13 @@
       ]
     },
     "damage": {
-      "explosive": {
-        "offset": 1.0
+      "offset": 1.0,
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 0.9,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
       }
     },
     "DamageParts": {
@@ -270,20 +279,6 @@
           }
         ]
       }
-    },
-    "armorpower": {
-      "ArmorPower0m": [
-        60.0,
-        10.0
-      ],
-      "ArmorPower30000m": [
-        60.0,
-        5000.0
-      ],
-      "ArmorPower35000m": [
-        15.0,
-        7000.0
-      ]
     },
     "collisions": {
       "default": {

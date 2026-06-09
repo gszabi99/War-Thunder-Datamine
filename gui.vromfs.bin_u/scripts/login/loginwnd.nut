@@ -228,6 +228,8 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       if (lastLoginIsGuest) {
         let guestBtn = this.scene.findObject("guest_login_action_button")
         let loginBtn = this.scene.findObject("login_action_button")
+        loginBtn.findObject("login_btn_text").show(false)
+        guestBtn.findObject("guest_btn_text").show(true)
         guestBtn["class"] = "battle"
         guestBtn["navButtonFont"] = "yes"
         loginBtn["class"] = ""

@@ -134,7 +134,7 @@
     "hasWheelBrakeControl": true,
     "hasLockGearControl": false,
     "bHasBoosterSwitcher": false,
-    "hasChutes": true,
+    "hasChutes": false,
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
     "hasManeuverabilityMode": true,
@@ -1889,9 +1889,10 @@
     ],
     "StrutL": {
       "SpringHeight": 0.48,
-      "SpringCoeff": 400000.0,
+      "SpringCoeff": 120000.0,
       "SpringDampCoeff": 2.0,
       "SpringDampForceMaxMult": 2.0,
+      "WheelRestitutionCoeff": 500000.0,
       "WheelRadus": 0.39,
       "Retractable": true,
       "LeftBrake": true,
@@ -1903,13 +1904,15 @@
         0.4
       ],
       "WaterFriction": 1.0,
-      "SteerType": "Fixed"
+      "SteerType": "Fixed",
+      "BreakTresholdMult": 2.0
     },
     "StrutR": {
       "SpringHeight": 0.48,
-      "SpringCoeff": 400000.0,
+      "SpringCoeff": 120000.0,
       "SpringDampCoeff": 2.0,
       "SpringDampForceMaxMult": 2.0,
+      "WheelRestitutionCoeff": 500000.0,
       "WheelRadus": 0.39,
       "Retractable": true,
       "LeftBrake": false,
@@ -1921,13 +1924,15 @@
         0.4
       ],
       "WaterFriction": 1.0,
-      "SteerType": "Fixed"
+      "SteerType": "Fixed",
+      "BreakTresholdMult": 2.0
     },
     "StrutC": {
       "SpringHeight": 0.21,
-      "SpringCoeff": 255000.0,
+      "SpringCoeff": 155000.0,
       "SpringDampCoeff": 0.6,
       "SpringDampForceMaxMult": 2.0,
+      "WheelRestitutionCoeff": 0.0,
       "WheelRadus": 0.303,
       "Retractable": true,
       "LeftBrake": false,
@@ -1939,7 +1944,8 @@
         0.4
       ],
       "WaterFriction": 1.0,
-      "SteerType": "ManualSteering"
+      "SteerType": "ManualSteering",
+      "BreakTresholdMult": 1.0
     }
   },
   "Passport": {

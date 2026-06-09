@@ -54,7 +54,7 @@ let checkTutorialsList = [
   }
   {
     id = "lightTank_action"
-    tutorial = "tutorial_tank_action_arcade"
+    tutorial = "tutorial_tank_basics_arcade_v2"
     canSkipByFeature = "AllowedToSkipBaseTankTutorials"
     requiresFeature = "TestTankActionTutorial"
     suitableForUnit = @(unit) unit?.isTank() ?? false

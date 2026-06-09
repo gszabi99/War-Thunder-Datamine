@@ -10,10 +10,16 @@
   "helicopterGroup": 2,
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "su_kh_31ad",
+    "iconType": "missile_air_to_uni_large",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.36,
-    "length": 4.7,
+    "length": 5.34,
     "WdK": [
       0.1,
       0.1,
@@ -24,21 +30,22 @@
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
     "distFromCmToStab": 0.065,
-    "mass": 610.0,
-    "timeLife": 120.0,
-    "useStartSpeed": true,
+    "mass": 715.0,
+    "timeLife": 250.0,
     "startSpeed": 0.0,
-    "machMax": 4.5,
+    "machMax": 4.0,
     "maxSpeed": 1100.0,
-    "endSpeed": 0.0,
-    "maxDistance": 120000.0,
+    "maxDistance": 160000.0,
     "minDistance": 10000.0,
-    "rangeMax": 120000.0,
+    "rangeMax": 160000.0,
     "loadFactorMax": 10.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
+    "explosiveType": "tgaf_5m",
+    "explosiveMass": 85.0,
+    "warheadMass": 110.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -56,17 +63,7 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tgaf_5m",
-    "explosiveMass": 65.0,
-    "warheadMass": 87.0,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
     "shellCollision": true,
-    "distanceFuse": false,
-    "hitPowerMult": 400.0,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_large",
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -77,14 +74,16 @@
     "rendinstDamageRadius": 20.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fuseDelayDist": 7.5,
-    "explodeTreshold": 20.0,
+    "penetrationBySpeed": true,
+    "fuseDelayDist": 3.5,
+    "explodeTreshold": 0.25,
+    "distanceFuse": false,
     "propulsion0": {
       "fireDelay": 0.75,
       "impulse0": {
         "time": 3.5,
-        "force": 82285.0,
-        "massLost": 128.0
+        "force": 104785.0,
+        "massLost": 163.0
       },
       "impulse1": {
         "time": 0.0,
@@ -96,7 +95,7 @@
       "impulse0": {
         "massFlow": 2.2,
         "isp": 14500.0,
-        "massLost": 55.0,
+        "massLost": 110.0,
         "factorIndex": 0
       }
     },
@@ -251,10 +250,6 @@
         0.6955307
       ]
     },
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -271,11 +266,6 @@
         30.0,
         1.0
       ]
-    },
-    "damage": {
-      "explosive": {
-        "offset": 1.0
-      }
     },
     "DamageParts": {
       "body": {
@@ -693,6 +683,11 @@
         "aircraftAsTarget": false,
         "targetRadiusMin": 15.0,
         "groundClutter": false,
+        "prolongationTimeMax": 1.0,
+        "designationSourceType": [
+          "radarSs",
+          "ins"
+        ],
         "sideLobesAttenuation": -80.0,
         "multipathEffect": [
           0.0,
@@ -701,14 +696,9 @@
           0.0
         ],
         "lockAngleMax": 8.0,
-        "angleMax": 20.0,
+        "angleMax": 27.0,
         "rateMax": 20.0,
         "angleGateRate": 30.0,
-        "prolongationTimeMax": 1.0,
-        "designationSourceType": [
-          "radarSs",
-          "ins"
-        ],
         "transmitter": {
           "power": 2000.0,
           "antenna": {
@@ -716,10 +706,14 @@
             "sideLobesSensitivity": -60.0
           }
         },
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05
+        },
         "receiver": {
-          "rcs": 100.0,
-          "range": 30000.0,
-          "rangeMax": 40000.0,
+          "rcs": 2.0,
+          "range": 15000.0,
+          "rangeMax": 18000.0,
           "antenna": {
             "angleHalfSens": 5.0,
             "sideLobesSensitivity": -60.0
@@ -732,10 +726,6 @@
           "width": 150.0,
           "signalWidthMin": 75.0,
           "refWidth": 750.0
-        },
-        "distGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05
         }
       },
       "guidanceAutopilot": {
@@ -786,14 +776,20 @@
         }
       }
     },
-    "armorpower": {
-      "ArmorPower0m": [
-        100.0,
-        10.0
-      ],
-      "ArmorPower35000m": [
-        100.0,
-        7000.0
+    "damage": {
+      "offset": 1.0,
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 0.9,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      }
+    },
+    "ballisticsTable": {
+      "velocity500m": [
+        500.0,
+        700.0
       ]
     }
   }

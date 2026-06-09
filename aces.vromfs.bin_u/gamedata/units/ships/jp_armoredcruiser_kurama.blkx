@@ -2399,7 +2399,7 @@
         "hp": 3500.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 4569.0
+        "hp": 4600.0
       },
       "ammunition_storage_shells_04_dm": {
         "hp": 3500.0
@@ -2431,15 +2431,27 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 300.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 2900.0
+        "hp": 2200.0
       },
       "ammunition_storage_aux_02_dm": {
-        "hp": 2900.0
+        "hp": 2200.0
       },
       "ammunition_storage_aux_03_dm": {
         "hp": 2200.0
       },
       "ammunition_storage_aux_04_dm": {
+        "hp": 2200.0
+      },
+      "ammunition_storage_aux_05_dm": {
+        "hp": 2200.0
+      },
+      "ammunition_storage_aux_06_dm": {
+        "hp": 2200.0
+      },
+      "ammunition_storage_aux_07_dm": {
+        "hp": 2200.0
+      },
+      "ammunition_storage_aux_08_dm": {
         "hp": 2200.0
       }
     },
@@ -9010,8 +9022,109 @@
       ]
     },
     "ammo3": {
+      "weaponTrigger": "gunner2",
+      "entityMunition": "aux",
+      "fatalExplosion": false,
+      "fatalFire": false,
+      "fireParamsPreset": "ship_ammo_fire_total",
+      "explosionEvent": "ammo_aux_explosion_1",
+      "fireEvent": "ammo_aux_fire_1",
+      "splashRadiusConstraint": 20.0,
+      "splashDamageConstraint": 2000.0,
+      "splashPenetrationConstraint": 15.0,
+      "shareDelay": 15,
+      "shareTime": 20,
+      "shareCount": 2,
+      "shareDuration": 120,
+      "shells": {
+        "damageEffect": "ammunition_storage_aux",
+        "ammunition_storage_aux_05_dm": {
+          "count": 200
+        }
+      }
+    },
+    "ammo4": {
+      "weaponTrigger": "gunner3",
+      "entityMunition": "aux",
+      "fatalExplosion": false,
+      "fatalFire": false,
+      "fireParamsPreset": "ship_ammo_fire_aux",
+      "explosionEvent": "ammo_aux_explosion_1",
+      "fireEvent": "ammo_aux_fire_1",
+      "splashRadiusConstraint": 20.0,
+      "splashDamageConstraint": 2000.0,
+      "splashPenetrationConstraint": 15.0,
+      "shareDelay": 15,
+      "shareTime": 20,
+      "shareCount": 2,
+      "shareDuration": 120,
+      "shells": {
+        "damageEffect": "ammunition_storage_aux",
+        "ammunition_storage_aux_06_dm": {
+          "count": 200
+        }
+      }
+    },
+    "ammo5": {
+      "weaponTrigger": "gunner4",
+      "entityMunition": "aux",
+      "fatalExplosion": false,
+      "fatalFire": false,
+      "fireParamsPreset": "ship_ammo_fire_aux",
+      "explosionEvent": "ammo_aux_explosion_2",
+      "fireEvent": "ammo_aux_fire_2",
+      "splashRadiusConstraint": [
+        20.0,
+        10.0
+      ],
+      "splashDamageConstraint": [
+        2000.0,
+        3000.0
+      ],
+      "splashPenetrationConstraint": 15.0,
+      "shareDelay": 15,
+      "shareTime": 20,
+      "shareCount": 2,
+      "shareDuration": 120,
+      "shatterRadiusConstraint": 10.0,
+      "shells": {
+        "damageEffect": "ammunition_storage_aux",
+        "ammunition_storage_aux_07_dm": {
+          "count": 200
+        }
+      }
+    },
+    "ammo6": {
+      "weaponTrigger": "gunner5",
+      "entityMunition": "aux",
+      "fatalExplosion": false,
+      "fatalFire": false,
+      "fireParamsPreset": "ship_ammo_fire_aux",
+      "explosionEvent": "ammo_aux_explosion_2",
+      "fireEvent": "ammo_aux_fire_2",
+      "splashRadiusConstraint": [
+        20.0,
+        10.0
+      ],
+      "splashDamageConstraint": [
+        2000.0,
+        3000.0
+      ],
+      "splashPenetrationConstraint": 15.0,
+      "shareDelay": 15,
+      "shareTime": 20,
+      "shareCount": 2,
+      "shareDuration": 120,
+      "shatterRadiusConstraint": 10.0,
+      "shells": {
+        "damageEffect": "ammunition_storage_aux",
+        "ammunition_storage_aux_08_dm": {
+          "count": 200
+        }
+      }
+    },
+    "ammo7": {
       "weaponTrigger": [
-        "gunner2",
         "gunner6",
         "gunner8",
         "gunner10",
@@ -9036,13 +9149,12 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_01_dm": {
-          "count": 1650
+          "count": 1450
         }
       }
     },
-    "ammo4": {
+    "ammo8": {
       "weaponTrigger": [
-        "gunner3",
         "gunner7",
         "gunner9",
         "gunner11",
@@ -9067,13 +9179,12 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_02_dm": {
-          "count": 1650
+          "count": 1450
         }
       }
     },
-    "ammo5": {
+    "ammo9": {
       "weaponTrigger": [
-        "gunner4",
         "gunner14",
         "gunner16",
         "gunner18",
@@ -9104,13 +9215,12 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_03_dm": {
-          "count": 1500
+          "count": 1300
         }
       }
     },
-    "ammo6": {
+    "ammo10": {
       "weaponTrigger": [
-        "gunner5",
         "gunner15",
         "gunner17",
         "gunner19",
@@ -9141,11 +9251,11 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_04_dm": {
-          "count": 1500
+          "count": 1300
         }
       }
     },
-    "ammo7": {
+    "ammo11": {
       "weaponTrigger": "gunner32",
       "entityMunition": "torpedo",
       "replenishmentDelay": 10.0,
@@ -9175,7 +9285,7 @@
         }
       ]
     },
-    "ammo8": {
+    "ammo12": {
       "weaponTrigger": "gunner33",
       "entityMunition": "torpedo",
       "replenishmentDelay": 10.0,
@@ -9205,7 +9315,7 @@
         }
       ]
     },
-    "ammo9": {
+    "ammo13": {
       "weaponTrigger": "gunner34",
       "entityMunition": "torpedo",
       "replenishmentDelay": 10.0,
