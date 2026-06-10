@@ -195,3 +195,31 @@ def track_attach_es(evt : Event;
 def detach_anim_es(evt : Event; var animchar_attach__attachedTo : EntityId&; var slot_attach__slotId : int&)
   animchar_attach__attachedTo = INVALID_ENTITY_ID
   slot_attach__slotId = -1
+
+def bake_slot_attaches_recursive(dt : float; attaches_list : EidList)
+  for attachEid in attaches_list
+    query(attachEid) <| $ [es(REQUIRE=(slot_attach, slot_attach__slotName, attachedToParent),
+                              REQUIRE_NOT=menuPoseTm)] (slot_attach__slotId : int;
+                                                        animchar_attach__attachedTo : EntityId;
+                                                        var animchar : AnimcharBaseComponent;
+                                                        disableUpdate : Tag const?;
+                                                        var animchar_node_wtm : AnimcharNodesMat44?;
+                                                        var animchar_render__root_pos : vec4f?;
+                                                        animchar__visible : bool = false;
+                                                        slot_attach__calcAnim : bool = true;
+                                                        slot_attach__rotTm : float3x4 const?;
+                                                        attaches_list : EidList const? = null)
+      slot_attach_init_tms_impl(dt, slot_attach__slotId, animchar_attach__attachedTo, animchar, disableUpdate,
+                                animchar_node_wtm, animchar_render__root_pos, animchar__visible, slot_attach__calcAnim,
+                                slot_attach__rotTm)
+      if attaches_list != null
+        bake_slot_attaches_recursive(dt, *attaches_list)
+
+[es(tag=gameClient, REQUIRE_NOT=attachedToParent, parallel_for=4, after=seated_human_bake_post_pausable_animchar_es)]
+def seated_human_bake_post_pausable_slot_attach_es(act : UpdateStageInfoAct;
+                                                   isInVehicle : bool;
+                                                   attaches_list : EidList;
+                                                   animchar__visible : bool)
+  if !animchar__visible || !isInVehicle
+    return
+  bake_slot_attaches_recursive(act.dt, attaches_list)

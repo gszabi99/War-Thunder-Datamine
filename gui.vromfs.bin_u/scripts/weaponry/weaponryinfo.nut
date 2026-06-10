@@ -69,6 +69,8 @@ let TRIGGER_TYPE = {
   GUNNER          = "gunner"
   CONTAINER_ITEM  = "container_item"
   FUEL_TANKS      = "fuel tanks"
+  GUNNER_1        = "gunner1"
+  BOOSTERS        = "boosters"
 }
 
 let WEAPON_TYPE = {
@@ -101,10 +103,16 @@ let triggerTypeToLoc = {
   [TRIGGER_TYPE.ADD_GUN] = "additional_guns",
   [TRIGGER_TYPE.MACHINE_GUN] = "additional_guns",
   [TRIGGER_TYPE.CANNON] = "additional_guns",
+  [TRIGGER_TYPE.GUNNER_1] = "additional_guns",
+  [TRIGGER_TYPE.BOOSTERS] = "targetingPod",
+}
+
+function convertTriggerToTriggerForLoc(trigger) {
+  return triggerTypeToLoc?[trigger] ?? trigger
 }
 
 function getWeaponLocByTrigger(trigger) {
-  let locTriggerName = triggerTypeToLoc?[trigger] ?? trigger
+  let locTriggerName = convertTriggerToTriggerForLoc(trigger)
   return loc($"triggerType/{locTriggerName}")
 }
 
@@ -1306,4 +1314,5 @@ return {
   isMissileBullet
   isGuidedBomb
   isWeaponUnavailableInMission
+  convertTriggerToTriggerForLoc
 }

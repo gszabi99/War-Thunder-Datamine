@@ -2011,6 +2011,18 @@
       "prevModification": "new_aux_caliber_turrets"
     }
   },
+  "boilerExplosionFx": {
+    "fx": [
+      {
+        "gearFrom": 0.0,
+        "event": "steam_explosion_medium"
+      },
+      {
+        "gearFrom": 3.0,
+        "event": "steam_explosion_big"
+      }
+    ]
+  },
   "shipFuelLeakFxParams": {
     "fuelLeakFxName": "fire_burning_fuel_oil_med",
     "fuelLeakStayFxName": "fire_burning_fuel_oil_med",
@@ -3145,7 +3157,7 @@
       },
       {
         "name": "steam_leak",
-        "lifetime": 8.0,
+        "lifetime": 5.0,
         "fx": {
           "name": "explosion_steam_leak"
         }

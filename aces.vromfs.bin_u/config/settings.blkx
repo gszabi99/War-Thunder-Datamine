@@ -24,11 +24,15 @@
   "nvidia_app_id": 10839111,
   "gameId": "wt",
   "dasMain": "%appGame/main.das",
+  "game_das_script_thread_init": "%toolScripts/wt_thread_init.das",
+  "game_das_script": "%scripts/wt.das",
   "game_das_script_init": "%appGame/wt_init.das",
   "game_das_loading_threads": 2,
   "game_das_gen_2_make_syntax": true,
   "game_das_enable_serialization": true,
   "game_das_serialization_remove_cache": false,
+  "game_das_project": "dasProject/project.das_project",
+  "game_das_sandbox_project": "",
   "game_darg_project_script": "dasProject/darg.das_project",
   "localizationVrom": "lang.vromfs.bin",
   "localizationRegionalVrom": "regional.vromfs.bin",
@@ -1920,6 +1924,7 @@
     "enableHdr": false,
     "menuFpsLimit": 0,
     "dlss_rr_reads_rt_settings": true,
+    "msgBoxAndQuitOnInitVideoFail": true,
     "hdrBlackList": {
       "blocked": "AMD Radeon Pro 560"
     }

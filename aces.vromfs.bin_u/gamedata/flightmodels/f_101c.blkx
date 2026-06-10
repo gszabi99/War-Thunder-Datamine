@@ -10,6 +10,7 @@
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
   "gyroSight": true,
+  "ilsK19": true,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -2801,18 +2802,43 @@
       ]
     },
     "multifunctionDisplays": {
-      "display": {
-        "textureArea": [
-          0.0,
-          0.0,
-          1.0,
-          1.0
-        ],
-        "page": {
-          "type": "custom",
-          "pageName": "f101Radar"
+      "display": [
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "page": {
+            "type": "custom",
+            "pageName": "f101Radar"
+          }
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "page": {
+            "type": "plane_ils",
+            "ilsSize": [
+              0.25,
+              0.25
+            ],
+            "ilsOffsetForce": 0.0,
+            "brightnessMult": 3.5,
+            "ilsColor": [
+              10,
+              30,
+              202,
+              120
+            ]
+          }
         }
-      }
+      ]
     },
     "parts_holes_dmg": {
       "part": "fuse"

@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-let { canEnterAAComplexMenu, RadarTargetIconType } = require("guiRadar")
+let { canEnterAAComplexMenu, RadarCompositeSubfilter } = require("guiRadar")
 let { isUnitAlive, isUnitDelayed, playerUnitName, unitType } = require("%rGui/hudState.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
@@ -10,8 +10,6 @@ let { IFFFilter, typeFilter, genericSourceFilter, rangeFilter, ESMModeTypeFilter
   targetsFilterConfig, iffOnlyFilter, defaultFilters, esmFilter
 } = require("%rGui/radarFiltersConfig.nut")
 let { eventbus_subscribe } = require("eventbus")
-let { RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET,
-  RADAR_TAGET_ICON_SMALL, RADAR_TAGET_ICON_MEDIUM, RADAR_TAGET_ICON_LARGE } = RadarTargetIconType
 let { IsRadarHasFilters, IsEsm } = require("%rGui/radarState.nut")
 
 let filterPresets = [
@@ -36,37 +34,37 @@ let filterPresets = [
       {
         locText = loc("mainmenu/type_aircraft")
         getImage = @(imageSize) Picture($"ui/gameuiskin#tws_filter_aircraft.svg:{imageSize}:P")
-        valueMask = 1 << RADAR_TAGET_ICON_JET
+        valueMask = 1 << RadarCompositeSubfilter.JETS
         isSelected = Watched(false)
       },
       {
         locText = loc("mainmenu/type_helicopter")
         getImage = @(imageSize) Picture($"ui/gameuiskin#tws_filter_helicopter.svg:{imageSize}:P")
-        valueMask = 1 << RADAR_TAGET_ICON_HELICOPTER
+        valueMask = 1 << RadarCompositeSubfilter.HELICOPTERS
         isSelected = Watched(false)
       },
       {
         locText = loc("logs/ammunition")
         getImage = @(imageSize) Picture($"ui/gameuiskin#tws_filter_ammunition.svg:{imageSize}:P")
-        valueMask = 1 << RADAR_TAGET_ICON_ROCKET
+        valueMask = 1 << RadarCompositeSubfilter.ROCKETS
         isSelected = Watched(false)
       },
       {
         locText = loc("hud/small")
         getImage = @(imageSize) Picture($"ui/gameuiskin#tws_filter_small.svg:{imageSize}:P")
-        valueMask = 1 << RADAR_TAGET_ICON_SMALL
+        valueMask = 1 << RadarCompositeSubfilter.SMALL
         isSelected = Watched(false)
       },
       {
         locText = loc("hud/medium")
         getImage = @(imageSize) Picture($"ui/gameuiskin#tws_filter_medium.svg:{imageSize}:P")
-        valueMask = 1 << RADAR_TAGET_ICON_MEDIUM
+        valueMask = 1 << RadarCompositeSubfilter.MEDIUM
         isSelected = Watched(false)
       },
       {
         locText = loc("hud/large")
         getImage = @(imageSize) Picture($"ui/gameuiskin#tws_filter_large.svg:{imageSize}:P")
-        valueMask = 1 << RADAR_TAGET_ICON_LARGE
+        valueMask = 1 << RadarCompositeSubfilter.LARGE
         isSelected = Watched(false)
       },
     ]
@@ -105,21 +103,21 @@ let filterPresets = [
         locText = loc("hud/short_range_spaa")
         label = "S"
         getImage = @(_imageSize) null
-        valueMask = 1 << RadarTargetIconType.RADAR_TAGET_ICON_SHORT_RANGE_SPAA
+        valueMask = 1 << RadarCompositeSubfilter.SHORT_RANGE_SPAA
         isSelected = Watched(false)
       },
       {
         locText = loc("hud/medium_range_spaa")
         label = "M"
         getImage = @(_imageSize) null
-        valueMask = 1 << RadarTargetIconType.RADAR_TAGET_ICON_MEDIUM_RANGE_SPAA
+        valueMask = 1 << RadarCompositeSubfilter.MEDIUM_RANGE_SPAA
         isSelected = Watched(false)
       },
       {
         locText = loc("hud/long_range_spaa")
         label = "L"
         getImage = @(_imageSize) null
-        valueMask = 1 << RadarTargetIconType.RADAR_TAGET_ICON_LONG_RANGE_SPAA
+        valueMask = 1 << RadarCompositeSubfilter.LONG_RANGE_SPAA
         isSelected = Watched(false)
       },
     ]
@@ -165,7 +163,7 @@ function restoreVisibleFilters(config) {
   let saveSlot = getFiltersSaveSlot(key)
   filterList.each(function(v) {
     if (v.filterId in saveSlot){
-      let value = saveSlot[v.filterId]
+      let value = ("deserialize" in v) ? v.deserialize(saveSlot[v.filterId]) : saveSlot[v.filterId]
       v.setFilterValue(value, false)
       updateFilterSelectedState(v, value)
     }
@@ -201,7 +199,7 @@ function saveFilters() {
   foreach (filter in activeFilters) {
     let { filterId, getFilterValue } = filter
     let currValue = getFilterValue()
-    save[filterId] <- currValue
+    save[filterId] <- ("serialize" in filter) ? filter.serialize(currValue) : currValue
     updateFilterSelectedState(filter, currValue)
   }
   savedRadarFilters.mutate(@(v) v[key] <- save)

@@ -96,3 +96,21 @@ def vehicle_relative_unit_track_es(evt : Event;
                                    eid : EntityId;
                                    vehicle__controlledByDriver : EntityId)
   unit_set_relative(eid, vehicle__controlledByDriver)
+
+[es(on_appear, track=(human_vehicle__occupiedSeatEid, human_anim__vehicleSelected))]
+def human_vehicle_inside_covered_track_es(evt : Event;
+                                          human_anim__vehicleSelected : EntityId;
+                                          human_vehicle__occupiedSeatEid : EntityId;
+                                          var human_vehicle__isInsideCovered : bool&)
+  var covered = false
+  if human_vehicle__occupiedSeatEid != INVALID_ENTITY_ID
+    query(human_anim__vehicleSelected) <| $ [es] (@shared_comp vehicle_seats__seats : Array;
+                                                  vehicle_seats__seatEids : EidList)
+      for seatNo, seatEid in iter_range(vehicle_seats__seatEids), vehicle_seats__seatEids
+        if seatEid == human_vehicle__occupiedSeatEid
+          let seat = get_ecs_object(vehicle_seats__seats, seatNo)
+          if seat != null
+            covered = !(get_bool(*seat, "seatIsUncovered") ?? false)
+          break
+  human_vehicle__isInsideCovered = covered
+

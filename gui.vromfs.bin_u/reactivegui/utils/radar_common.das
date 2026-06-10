@@ -50,16 +50,12 @@ class Radar
       planeTargetPicture : Picture ?;
       helicopterTargetPicture : Picture ?;
       rocketTargetPicture : Picture ?) : Picture ? const
-    if target.iconType == int(RadarTargetIconType.NONE)
-      return null
-    elif target.iconType == int(RadarTargetIconType.JET)
+    if target.iconType == int(RadarHudTargetIconType.JET)
       return planeTargetPicture
-    elif target.iconType == int(RadarTargetIconType.HELICOPTER)
+    elif target.iconType == int(RadarHudTargetIconType.HELICOPTER)
       return helicopterTargetPicture
-    elif target.iconType == int(RadarTargetIconType.ROCKET)
+    elif target.iconType == int(RadarHudTargetIconType.ROCKET)
       return rocketTargetPicture
-    else
-      logerr("could not find picture for radar target of type {target.iconType}")
     return null
 
   def static changeScanPattern()

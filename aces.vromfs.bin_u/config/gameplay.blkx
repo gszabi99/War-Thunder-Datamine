@@ -8467,6 +8467,16 @@
     "targetSearchBeamWidthMult": 1.0
   },
   "targetSignature": {
+    "Optic": {
+      "InfraRed": {
+        "ircmSourceMask": [
+          16,
+          8,
+          64,
+          256
+        ]
+      }
+    },
     "Radar": {
       "ecmSourceMask": [
         4,
@@ -8488,31 +8498,30 @@
     "chaffLineOfSight": false,
     "chaffAttenuationPower": 0.35
   },
-  "radarFilterTypes": {
-    "default": "JET",
+  "radarTypeIdCategories": {
     "entry": [
       {
         "targetTypeIdStr": "hud/helicopter",
-        "type": "HELI"
+        "typeIdCategory": "HELI"
       },
       {
         "targetTypeIdStr": "hud/rocket",
-        "type": "ROCKET"
+        "typeIdCategory": "ROCKET"
       },
       {
         "targetTypeIdStr": "hud/small",
-        "type": "SMALL"
+        "typeIdCategory": "SMALL"
       },
       {
         "targetTypeIdStr": "hud/medium",
-        "type": "MEDIUM"
+        "typeIdCategory": "MEDIUM"
       },
       {
         "targetTypeIdStr": "hud/large",
-        "type": "LARGE"
+        "typeIdCategory": "LARGE"
       },
       {
-        "type": "SHORT_RANGE_SPAA",
+        "typeIdCategory": "SHORT_RANGE_SPAA",
         "targetTypeIdStr": [
           "hud/zsu23",
           "hud/2s6",
@@ -8523,16 +8532,56 @@
         ]
       },
       {
-        "type": "MEDIUM_RANGE_SPAA"
+        "typeIdCategory": "MEDIUM_RANGE_SPAA"
       },
       {
-        "type": "LONG_RANGE_SPAA",
+        "typeIdCategory": "LONG_RANGE_SPAA",
         "targetTypeIdStr": [
           "hud/buk",
           "hud/hawk",
           "hud/patriot",
           "hud/s300"
         ]
+      }
+    ]
+  },
+  "radarCompositeFilter": {
+    "subfilter": [
+      {
+        "name": "JETS",
+        "genericCategory": "AIR"
+      },
+      {
+        "name": "HELICOPTERS",
+        "typeIdCategory": "HELI"
+      },
+      {
+        "name": "ROCKETS",
+        "typeIdCategory": "ROCKET"
+      },
+      {
+        "name": "SMALL",
+        "typeIdCategory": "SMALL"
+      },
+      {
+        "name": "MEDIUM",
+        "typeIdCategory": "MEDIUM"
+      },
+      {
+        "name": "LARGE",
+        "typeIdCategory": "LARGE"
+      },
+      {
+        "name": "SHORT_RANGE_SPAA",
+        "typeIdCategory": "SHORT_RANGE_SPAA"
+      },
+      {
+        "name": "MEDIUM_RANGE_SPAA",
+        "typeIdCategory": "MEDIUM_RANGE_SPAA"
+      },
+      {
+        "name": "LONG_RANGE_SPAA",
+        "typeIdCategory": "LONG_RANGE_SPAA"
       }
     ]
   },

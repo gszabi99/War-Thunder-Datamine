@@ -97,7 +97,8 @@ let timeOfFlight = @() {
   watch = ShellFPVTimeOfFlight
   size = SIZE_TO_CONTENT
   hplace = ALIGN_CENTER
-  vplace = ALIGN_BOTTOM
+  vplace = ALIGN_CENTER
+  pos = [0, ph(7)]
   rendObj = ROBJ_TEXT
   color = baseColor
   font = Fonts.hud
@@ -124,7 +125,6 @@ let area = @() {
     [VECTOR_LINE, 100, 0, 100, 20],
     [VECTOR_LINE, 100, 0, 85, 0],
   ]
-  children = timeOfFlight
 }
 
 let angleLimits = @() {
@@ -159,7 +159,8 @@ let page = @(){
     ShellFPVModeValid.get() ? crosshair : noSignal,
     ShellFPVModeValid.get() ? area : null,
     ShellFPVModeValid.get() ? angleLimits : null,
-    ShellFPVHasTarget.get() && !ShellFPVAnglesLocked.get() ? target : null
+    ShellFPVHasTarget.get() && !ShellFPVAnglesLocked.get() ? target : null,
+    ShellFPVModeValid.get() ? timeOfFlight : null
   ]
 }
 

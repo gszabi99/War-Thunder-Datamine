@@ -372,12 +372,6 @@
     "part": [
       {
         "name": [
-          "engine_room_01_dm",
-          "engine_room_02_dm",
-          "engine_room_03_dm",
-          "engine_room_04_dm",
-          "engine_room_05_dm",
-          "engine_room_06_dm",
           "transmission_01_dm",
           "transmission_02_dm",
           "transmission_03_dm",
@@ -398,33 +392,11 @@
           "engine_room_03_dm",
           "engine_room_04_dm",
           "engine_room_05_dm",
-          "engine_room_06_dm"
-        ],
-        "onHit": [
-          {
-            "damageType": "explosion",
-            "damage": 200.0,
-            "action": {
-              "type": "fxEvent",
-              "fxEventName": "steam_leak"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 300.0,
-            "action": {
-              "type": "fxEvent",
-              "fxEventName": "steam_leak"
-            }
-          },
-          {
-            "damageType": "shatter",
-            "damage": 10.0,
-            "action": {
-              "type": "fxEvent",
-              "fxEventName": "steam_leak"
-            }
-          }
+          "engine_room_06_dm",
+          "engine_room_07_dm",
+          "engine_room_08_dm",
+          "engine_room_09_dm",
+          "engine_room_10_dm"
         ],
         "onKill": {
           "expl": 1.0,
@@ -432,7 +404,7 @@
           "action": {
             "type": "fxEvent",
             "probability": 1.0,
-            "fxEventName": "steam_explosion_big"
+            "fxEventName": "steam_leak"
           }
         }
       },

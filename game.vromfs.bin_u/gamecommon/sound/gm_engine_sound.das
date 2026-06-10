@@ -188,7 +188,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
                             var gm_engine_sound__start_inside_name : das_string&;
                             var gm_engine_sound__stop_inside_name : das_string&)
   gm_engine_sound_init(evt.modelBlk,
-                       unit__playerId == get_local_player_no(),
+                       unit__playerId == get_local_player_no() || has(eid, "human_controlled_vehicle"),
                        eid,
                        unit__ref,
                        unit__className,
@@ -224,7 +224,7 @@ def gm_engine_sound_reinit_es(evt : CmdEngineReinitSound;
                               var gm_engine_sound__stop_inside_name : das_string&)
   abandon(gm_engine_sound__event)
   gm_engine_sound_init(evt.modelBlk,
-                       evt.forHero,
+                       evt.forHero || has(eid, "human_controlled_vehicle"),
                        eid,
                        unit__ref,
                        unit__className,
@@ -251,6 +251,27 @@ def reset_cached_params(var cached_params : FloatList&)
   cached_params[7] = 0.  
 
 
+def gm_engine_sound_update_inside(gm_engine_sound__should_play : bool;
+                                  gm_engine_sound__event_inside_name : das_string;
+                                  var gm_engine_sound__is_inside : bool&;
+                                  var gm_engine_sound__event : SoundEvent&;
+                                  var gm_engine_sound__start_inside_event : SoundEvent&;
+                                  var gm_engine_sound__stop_inside_event : SoundEvent&;
+                                  var gm_engine_sound__event_inside : SoundEvent&)
+  if gm_engine_sound__is_inside
+    if is_playing(gm_engine_sound__event)
+      abandon(gm_engine_sound__event)
+    if gm_engine_sound__should_play && !is_playing(gm_engine_sound__event_inside) && gm_engine_sound__event_inside_name != ""
+      gm_engine_sound__event_inside |> play(string(gm_engine_sound__event_inside_name))
+  else
+    if is_playing(gm_engine_sound__event_inside)
+      abandon(gm_engine_sound__event_inside)
+
+  if !is_playing(gm_engine_sound__start_inside_event)
+    abandon(gm_engine_sound__start_inside_event)
+  if !is_playing(gm_engine_sound__stop_inside_event)
+    abandon(gm_engine_sound__stop_inside_event)
+
 [es(tag=sound, REQUIRE = controlledHero, no_order)]
 def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
                                      unit__ref : UnitRef;
@@ -272,20 +293,58 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
     reset_cached_params(gm_engine_sound__cached_params)
 
   gm_engine_sound__is_inside = unit.isCameraInCockpit
+  gm_engine_sound_update_inside(gm_engine_sound__should_play, gm_engine_sound__event_inside_name,
+                                gm_engine_sound__is_inside,
+                                gm_engine_sound__event, gm_engine_sound__start_inside_event,
+                                gm_engine_sound__stop_inside_event, gm_engine_sound__event_inside)
 
-  if unit.isCameraInCockpit
-    if is_playing(gm_engine_sound__event)
-      abandon(gm_engine_sound__event)
-    if gm_engine_sound__should_play && !is_playing(gm_engine_sound__event_inside) && gm_engine_sound__event_inside_name != ""
-      gm_engine_sound__event_inside |> play(string(gm_engine_sound__event_inside_name))
-  else
-    if is_playing(gm_engine_sound__event_inside)
-      abandon(gm_engine_sound__event_inside)
+[es(tag=sound, REQUIRE = heroVehicle, REQUIRE_NOT = controlledHero, no_order)]
+def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
+                                                  eid : EntityId;
+                                                  unit__ref : UnitRef;
+                                                  gm_engine_sound__should_play : bool;
+                                                  gm_engine_sound__event_inside_name : das_string;
+                                                  var gm_engine_sound__loadswitch : bool&;
+                                                  var gm_engine_sound__is_inside : bool&;
+                                                  var gm_engine_sound__cached_params : FloatList&;
+                                                  var gm_engine_sound__event : SoundEvent&;
+                                                  var gm_engine_sound__start_inside_event : SoundEvent&;
+                                                  var gm_engine_sound__stop_inside_event : SoundEvent&;
+                                                  var gm_engine_sound__event_inside : SoundEvent&)
+  let unit = unit__ref.unit
+  if unit.isDelayed
+    return
 
-  if !is_playing(gm_engine_sound__start_inside_event)
-    abandon(gm_engine_sound__start_inside_event)
-  if !is_playing(gm_engine_sound__stop_inside_event)
-    abandon(gm_engine_sound__stop_inside_event)
+  var insideCovered = false
+  ecs::query() <| $ [es(REQUIRE=controlledHero)] (isInVehicle : bool = false;
+                                                  human_anim__vehicleSelected : EntityId = INVALID_ENTITY_ID;
+                                                  human_vehicle__isInsideCovered : bool = false)
+    insideCovered = isInVehicle && human_vehicle__isInsideCovered && human_anim__vehicleSelected == eid
+
+  if gm_engine_sound__is_inside != insideCovered
+    gm_engine_sound__loadswitch = false
+    reset_cached_params(gm_engine_sound__cached_params)
+
+  gm_engine_sound__is_inside = insideCovered
+  gm_engine_sound_update_inside(gm_engine_sound__should_play, gm_engine_sound__event_inside_name,
+                                gm_engine_sound__is_inside,
+                                gm_engine_sound__event, gm_engine_sound__start_inside_event,
+                                gm_engine_sound__stop_inside_event, gm_engine_sound__event_inside)
+
+[es(tag=sound, REQUIRE = heroVehicle, on_disappear)]
+def gm_engine_sound_reset_inside_on_hero_vehicle_disappear_es(evt : Event;
+                                                              gm_engine_sound__should_play : bool;
+                                                              gm_engine_sound__event_inside_name : das_string;
+                                                              var gm_engine_sound__is_inside : bool&;
+                                                              var gm_engine_sound__event : SoundEvent&;
+                                                              var gm_engine_sound__start_inside_event : SoundEvent&;
+                                                              var gm_engine_sound__stop_inside_event : SoundEvent&;
+                                                              var gm_engine_sound__event_inside : SoundEvent&)
+  gm_engine_sound__is_inside = false
+  gm_engine_sound_update_inside(gm_engine_sound__should_play, gm_engine_sound__event_inside_name,
+                                gm_engine_sound__is_inside,
+                                gm_engine_sound__event, gm_engine_sound__start_inside_event,
+                                gm_engine_sound__stop_inside_event, gm_engine_sound__event_inside)
 
 def set_param_cached(sound_event : SoundEvent;
                      name : string;
@@ -296,7 +355,7 @@ def set_param_cached(sound_event : SoundEvent;
     sound_event |> set_var_optional(name, new_val)
     cached_val = new_val
 
-[es(tag=sound, after = gm_engine_sound_update_inside_es)]
+[es(tag=sound, after = (gm_engine_sound_update_inside_es, gm_engine_sound_update_inside_hero_vehicle_es))]
 def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
                               eid : EntityId;
                               unit__ref : UnitRef;
@@ -508,7 +567,7 @@ def gm_additional__on_steal_es(evt : CmdEngineStealSound;
     abandon(gm_additional_engine_sound__event)
 
 
-[es(tag=sound, after = gm_engine_sound_update_inside_es)]
+[es(tag=sound, after = (gm_engine_sound_update_inside_es, gm_engine_sound_update_inside_hero_vehicle_es))]
 def gm_additional_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
                                          unit__ref : UnitRef;
                                          gm_engine_sound__load : float;

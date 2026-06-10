@@ -9,7 +9,7 @@ let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { addWeaponsFromBlk, getWeaponLocByTrigger } = require("%scripts/weaponry/weaponryInfo.nut")
+let { addWeaponsFromBlk, getWeaponLocByTrigger, convertTriggerToTriggerForLoc } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
 let { openPopupTreeList } = require("%scripts/popups/popupTreeList.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
@@ -200,7 +200,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (p in params) {
       if (p.id != curPresetId) {
-        let branchName = p.tType
+        let branchName = convertTriggerToTriggerForLoc(p.tType)
         local branch = branchesByName?[branchName]
         if (branch == null) {
           branch = {
@@ -208,7 +208,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
             branches = [],
             hasBranches = true,
             btnWidth = maxWidth,
-            branchLocName = getWeaponLocByTrigger(branchName)
+            branchLocName = getWeaponLocByTrigger(p.tType)
           }
           maxWidth = max(maxWidth, getStringWidthPx(branch.branchLocName, "fontMedium"))
           branchesByName[branchName] <- branch

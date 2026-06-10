@@ -14,8 +14,14 @@
   "helicopterGroup": 2,
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "us_agm_88c",
+    "iconType": "missile_air_to_uni_middle",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.254,
     "length": 4.1656,
     "WdK": [
@@ -37,17 +43,18 @@
     "force1": 10292.51,
     "fireDelay": 0.0,
     "timeLife": 200.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 3.0,
     "maxSpeed": 2000.0,
-    "endSpeed": 0.0,
     "maxDistance": 150000.0,
     "minDistance": 10000.0,
     "rangeMax": 150000.0,
     "loadFactorMax": 10.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
+    "explosiveType": "pbxn_107",
+    "explosiveMass": 20.6,
+    "warheadMass": 66.22449,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -65,21 +72,13 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "pbxn_107",
-    "explosiveMass": 20.6,
-    "warheadMass": 66.22449,
+    "hitPowerMult": 400.0,
+    "shellCollision": true,
     "canChangeFuseMode": true,
     "hasProximityFuse": true,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
-    "hitPowerMult": 400.0,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_middle",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -100,10 +99,6 @@
       -0.16,
       0.0
     ],
-    "arcadeProp": {
-      "finsAoaHor": 0.16,
-      "finsAoaVer": 0.16
-    },
     "guidance": {
       "warmUpTime": 0.5,
       "workTime": 100.0,
@@ -200,16 +195,9 @@
         1.0
       ]
     },
-    "proximityFuse": {
-      "timeOut": 6.0,
-      "radius": 5.0,
-      "detectAirUnits": true,
-      "detectGroundUnits": true,
-      "detectGround": true
-    },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.3
       }
     },
     "DamageParts": {
@@ -278,6 +266,13 @@
           }
         ]
       }
+    },
+    "proximityFuse": {
+      "timeOut": 6.0,
+      "radius": 5.0,
+      "detectAirUnits": true,
+      "detectGroundUnits": true,
+      "detectGround": true
     },
     "collisions": {
       "default": {

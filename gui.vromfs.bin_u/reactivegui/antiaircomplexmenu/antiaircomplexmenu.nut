@@ -11,13 +11,11 @@ let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
 let { PI, floor } = require("%sqstd/math.nut")
 let { norm_s_ang } = require("dagor.math")
 let { radarSwitchToTarget, isRadarTargetFullyInAzimuthLockSpan } = require("radarGuiControls")
-let { RadarTargetType, RadarTargetIconType, RadarParkingStateType } = require("guiRadar")
-let { RADAR_TAGET_ICON_NONE, RADAR_TAGET_ICON_JET, RADAR_TAGET_ICON_HELICOPTER, RADAR_TAGET_ICON_ROCKET } = RadarTargetIconType
+let { RadarTargetType, RadarParkingStateType, RadarHudTargetIconType } = require("guiRadar")
 let { RADAR_TAGET_TYPE_OWN_WEAPON, RADAR_TAGET_TYPE_OWN_WEAPON_TARGET } = RadarTargetType
 let { safeAreaSizeHud, bh, rh } = require("%rGui/style/screenState.nut")
 let { needShowDmgIndicator } = require("%rGui/hudState.nut")
 let { setRenderCameraToHudTexture } = require("hudState")
-let { logerr } = require("dagor.debug")
 let { mkFrame, shortcutButtonPadding, frameHeaderHeight, borderWidth,
   makeTargetStatusEllementFactory, targetsSortFunction, targetSortFunctionWatched,
   frameBorderColor, frameBackgroundColor, hoverFillColor
@@ -108,9 +106,9 @@ let radarStateText = Computed(@()
   )
 
 let imageByTargetIconType = {
-  [RADAR_TAGET_ICON_JET] = planeTargetPicture,
-  [RADAR_TAGET_ICON_HELICOPTER] = helicopterTargetPicture,
-  [RADAR_TAGET_ICON_ROCKET] = rocketTargetPicture,
+  [RadarHudTargetIconType.JET] = planeTargetPicture,
+  [RadarHudTargetIconType.HELICOPTER] = helicopterTargetPicture,
+  [RadarHudTargetIconType.ROCKET] = rocketTargetPicture,
 }
 
 let contentScale = Computed(function() {
@@ -324,8 +322,6 @@ let targetTypeIconStatus = {
   construct_ellement = function(target, _) {
     let iconType = target.iconType
     let icon = imageByTargetIconType?[iconType]
-    if (icon == null && iconType != RADAR_TAGET_ICON_NONE)
-      logerr($"could not parse target type {iconType}")
 
     return {
       size = targetTypeIconSize
