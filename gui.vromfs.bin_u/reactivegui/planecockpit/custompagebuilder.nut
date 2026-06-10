@@ -234,9 +234,7 @@ let pageByName = {
   mfdOraoEngineSmall,
   z19Eng,
   z19Pfd,
-
-
-
+  mfdMig29Horizont,
 }
 
 function customPageSettingsUpd(page_blk) {

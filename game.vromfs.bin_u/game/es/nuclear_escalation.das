@@ -242,11 +242,11 @@ def units_column_update_es(act : UpdateStageInfoAct;
             destroyEntity(unitEid)
 
   query(units_column__target) <| $ [es] (strongpoint__radius : float;
-                                         var strongpoint__units : EidList;
+                                         var units_spawn_on_init__units : EidList;
                                          var team : int&;
                                          strongpoint__ticketsByCapture : int;
                                          transform : float3x4;
-                                         object_group_spawn_units__positions : TMatrixList)
+                                         units_spawn_on_init__positions : TMatrixList)
     var arrived = INVALID_ENTITY_ID
 
     for unitEid in units_column__units
@@ -255,19 +255,18 @@ def units_column_update_es(act : UpdateStageInfoAct;
           hasAlive = hasAlive || column_unit__ref.unit.isAlive
           foundSomething = true
           if column_unit__ref.unit.isAlive && length_sq(column_unit__ref.unit.pos - transform[3]) < strongpoint__radius * strongpoint__radius
-            let idx = strongpoint__units |> length()
+            let idx = units_spawn_on_init__units |> length()
             arrived = unitEid 
 
             if idx == 0 && team != column_unit__ref.unit.army
               change_mp_tickets_for_team(team, -strongpoint__ticketsByCapture)
               team = column_unit__ref.unit.army
-
-            if idx < object_group_spawn_units__positions |> length()
+            if idx < units_spawn_on_init__positions |> length()
               set_destination_way_point(column_unit__ref.unit, "HALT", transform, 0.)
               let vel = float3(0.)
               reset_movesys_vel(column_unit__ref.unit, vel)
-              strongpoint__units |> push(unitEid)
-              var tm = transform * object_group_spawn_units__positions[idx]
+              units_spawn_on_init__units |> push(unitEid)
+              var tm = transform * units_spawn_on_init__positions[idx]
               drop_object_on_ground_normal(tm, true, 3000.)
               *column_unit__ref.unit |> teleportToPos(false, tm[3])
               column_unit__ref.unit |> setOrientation(tm[0], tm[1]);
@@ -289,10 +288,10 @@ def on_column_unit_disappear_es(evt : Event;
     if idx != -1
       equip_factory__columnUnits |> erase(idx)
 
-  query() <| $ [es] (var strongpoint__units : EidList&)
-    let idx = find_index(strongpoint__units, eid)
+  query() <| $ [es(REQUIRE=strongpoint__radius)] (var units_spawn_on_init__units : EidList&)
+    let idx = find_index(units_spawn_on_init__units, eid)
     if idx != -1
-      strongpoint__units |> erase(idx)
+      units_spawn_on_init__units |> erase(idx)
   query() <| $ [es] (var units_column__units : EidList&)
     let idx = find_index(units_column__units, eid)
     if idx != -1
@@ -397,8 +396,8 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
         query() <| $ [es] (eid : EntityId;
                            team : int;
                            transform : float3x4;
-                           strongpoint__units : EidList)
-          if team != army || (team == army && strongpoint__units |> length() <= 0)
+                           units_spawn_on_init__units : EidList)
+          if team != army || (team == army && units_spawn_on_init__units |> length() <= 0)
             let dist = length(storage_unit__ref.unit.pos - transform[3])
             targetCandidates.emplace(TargetCandidate(eid = eid, freeCapacity = 0., dist = dist))
         query() <| $ [es(REQUIRE=airfield_aa__nuclearEscalationField)] (eid : EntityId;
@@ -461,10 +460,10 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
     return
   units_column__captureCheckTimer = units_column__captureCheckInterval
   
-  query() <| $ [es(REQUIRE=equip_storage__capacity)] (var unit__ref aka target_unit__ref : UnitRef&;
-                                                      equip_storage__ticketsByCapture : int;
-                                                      tank_factory__fuelStorage : EntityId const?;
-                                                      tank_factory__ammoStorage : EntityId const?)
+  query() <| $ [es(REQUIRE=equip_factory__maxUnitsCount)] (var unit__ref aka target_unit__ref : UnitRef&;
+                                                           equip_storage__ticketsByCapture : int;
+                                                           tank_factory__fuelStorage : EntityId const?;
+                                                           tank_factory__ammoStorage : EntityId const?)
     if target_unit__ref.unit.isDelayed
       return
 
@@ -495,7 +494,7 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
         if !ammo_unit__ref.unit.isDelayed && ammo_unit__ref.unit.army != newArmy
           *ammo_unit__ref.unit |> setArmy(newArmy)
   
-  find_query() <| $ [es] (strongpoint__units : EidList;
+  find_query() <| $ [es] (units_spawn_on_init__units : EidList;
                           var team : int&;
                           strongpoint__ticketsByCapture : int;
                           strongpoint__radius : float;
@@ -505,7 +504,7 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
       query(unitEid) <| $ [es] (unit__ref aka column_unit__ref : UnitRef)
         if (!column_unit__ref.unit.isDelayed &&
          column_unit__ref.unit.isAlive && column_unit__ref.unit.army != team &&
-         strongpoint__units |> length() <= 0 &&
+         units_spawn_on_init__units |> length() <= 0 &&
          length_sq(column_unit__ref.unit.pos - transform[3]) < strongpoint__radius * strongpoint__radius)
           found = true
           if !capture_blocked(transform[3], column_unit__ref.unit.army, strongpoint__radius)
