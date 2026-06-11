@@ -105,40 +105,41 @@
       ]
     },
     "guidance": {
-      "warmUpTime": 1.0,
-      "acquisitionTime": 0.1,
-      "workTime": 3600.0,
-      "useTrippleClickLockInTpv": true,
-      "applyExtraDifficultyParameters": true,
       "uncageBeforeLaunch": true,
       "launchAngleMax": [
         15.0,
         15.0
       ],
+      "warmUpTime": 1.0,
+      "acquisitionTime": 0.1,
+      "workTime": 3600.0,
+      "useTrippleClickLockInTpv": true,
+      "applyExtraDifficultyParameters": true,
       "reacquireTarget": true,
       "lockMode": "LOAL+LOBL",
-      "breakLockMaxTime": 150.0,
+      "breakLockMaxTime": 1500.0,
       "opticalSeeker": {
         "targetSignatureType": "optic",
-        "rangeBand0": 6000.0,
         "rangeBand8": 200.0,
-        "rangeMax": 40000.0,
-        "rangeSurface": 40000.0,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true,
+        "boundaryTrack": true,
+        "constantDesignationSourceType": "",
         "fov": 0.1,
         "minAngleToSun": 0.0,
+        "targetRadiusMin": 1.5,
+        "rangeBand0": 6000.0,
+        "rangeMax": 40000.0,
+        "rangeSurface": 40000.0,
         "lockAngleMax": 15.0,
         "angleMax": 20.0,
         "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": [
+          "ins",
           "camera",
           "shellFpv"
-        ],
-        "constantDesignationSourceType": "",
-        "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        ]
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,

@@ -1266,6 +1266,7 @@
       "stateInit": "search",
       "transitions": {
         "scan": {
+          "stateFrom": "search",
           "event": "update",
           "actions": {
             "scan": {},
@@ -1858,12 +1859,12 @@
         "designateTarget": {
           "command": "selectTarget",
           "actions": {
-            "designateActiveDetectedTarget": {
-              "type": "target",
-              "sensorIndex": 1
-            },
             "designateTargetUnderCue": {
               "type": "cue",
+              "sensorIndex": 1
+            },
+            "designateActiveDetectedTarget": {
+              "type": "target",
               "sensorIndex": 1
             }
           }

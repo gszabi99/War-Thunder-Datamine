@@ -86,31 +86,58 @@
     "_group": {
       "_tags": "server",
       "units_spawn_on_init__unitSettingsTeam1:array": {
-        "unit:object": {
-          "name": "ussr_pantsyr_s1",
-          "templateName": "tank+nuclear_escalation_spaa_radar_off",
-          "spawnName": "spaa",
-          "count": 3,
-          "dontCreateChar": true,
-          "mods:list<t>": {
-            "m": [
-              "tank_tool_kit",
-              "manual_extinguisher"
-            ]
+        "unit:object": [
+          {
+            "name": "ussr_pantsyr_s1",
+            "templateName": "tank+nuclear_escalation_spaa_radar_off",
+            "spawnName": "spaa",
+            "count": 1,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": [
+                "30mm_2a38_HE",
+                ""
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": [
+                0,
+                12
+              ]
+            }
           },
-          "bulletNames:list<t>": {
-            "name": [
-              "30mm_2a38_HE",
-              ""
-            ]
-          },
-          "bulletsCount:list<i>": {
-            "c": [
-              0,
-              12
-            ]
+          {
+            "name": "ussr_zprk_2s6",
+            "templateName": "tank+nuclear_escalation_spaa_radar_off",
+            "count": 2,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher",
+                "2s6_upgrade_modification"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": [
+                "30mm_2a38_HE",
+                ""
+              ]
+            },
+            "bulletsCount:list<i>": {
+              "c": [
+                0,
+                8
+              ]
+            }
           }
-        }
+        ]
       },
       "units_spawn_on_init__unitSettingsTeam2:array": {
         "unit:object": {

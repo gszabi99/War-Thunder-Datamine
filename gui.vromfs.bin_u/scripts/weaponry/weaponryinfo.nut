@@ -693,6 +693,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       }
 
       if ([ WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS].contains(currentTypeName)) {
+        local hasKineticDamage = (itemBlk?.armorpower != null || itemBlk?.penetrationBySpeed) ? true : false
         if (itemBlk?.strikingPart != null)
           item.warhead <- "multidart"
         else if (itemBlk?.smokeShell == true)
@@ -700,8 +701,8 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
         else if (itemBlk?.cumulativeDamage.armorPower != null)
           item.warhead <- itemBlk?.kineticDamage.damageType == "tandemPrecharge" ? "tandem" : "heat"
         else if (item.explosiveType != null)
-          item.warhead <- itemBlk?.armorpower != null ? "aphe" : "he"
-        else if (itemBlk?.armorpower != null)
+          item.warhead <- hasKineticDamage ? "aphe" : "he"
+        else if (hasKineticDamage)
           item.warhead <- "ap"
       }
     }

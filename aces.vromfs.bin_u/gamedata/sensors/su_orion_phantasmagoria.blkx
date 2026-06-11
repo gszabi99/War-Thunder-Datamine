@@ -52,6 +52,8 @@
       "barsCount": 2,
       "rowMajor": true,
       "barsOneWay": true,
+      "preciseMinor": true,
+      "tws": true,
       "centerElevation": -2.0
     },
     "searchWide": {
@@ -72,6 +74,8 @@
       "barsCount": 2,
       "rowMajor": true,
       "barsOneWay": true,
+      "preciseMinor": true,
+      "tws": true,
       "centerElevation": -2.0
     },
     "bvrLockSearch": {
@@ -91,6 +95,8 @@
       "barHeight": 1.5,
       "barsCount": 2,
       "rowMajor": false,
+      "preciseMinor": true,
+      "tws": true,
       "centerElevation": -2.0,
       "indicate": true
     },
@@ -172,6 +178,10 @@
               -32.0,
               32.0
             ],
+            "elevationRange": [
+              -16.0,
+              0.0
+            ],
             "azimuthWidth": 2.0
           },
           "setTransiver": {
@@ -210,7 +220,7 @@
             "value": true
           },
           "setFsmActive": {
-            "fsm": "search",
+            "fsm": "tws",
             "active": true
           },
           "setScanPatternSet": {
@@ -224,14 +234,17 @@
           },
           "setDesignatedTarget": {
             "set": false
+          },
+          "setDesignationSourceType": {
+            "sourceType": "dummy"
           }
         },
         "resetSearchMode": {
-          "clearTargets": {},
           "setFsmActive": {
-            "fsm": "search",
+            "fsm": "tws",
             "active": false
-          }
+          },
+          "clearTargetsOfInterest": {}
         },
         "setBvrLockMode": {
           "setModeName": {
@@ -260,7 +273,8 @@
           },
           "setDesignatedTarget": {
             "set": true
-          }
+          },
+          "setDesignationSourceType": {}
         },
         "resetBvrLockMode": {
           "setFsmActive": {
@@ -299,7 +313,8 @@
           },
           "setSignal": {
             "signal": "track"
-          }
+          },
+          "setDesignationSourceType": {}
         },
         "resetTrackMode": {
           "clearTargetsOfInterest": {},
@@ -314,6 +329,9 @@
           "setFsmActive": {
             "fsm": "track",
             "active": false
+          },
+          "setDesignationSourceType": {
+            "sourceType": "dummy"
           }
         }
       },
@@ -366,16 +384,16 @@
           "stateFrom": "search",
           "command": "selectTarget",
           "actions": {
-            "designateActiveDetectedTarget": {
-              "type": "target",
-              "self": true,
-              "sensorIndex": 0
-            },
             "designateTargetUnderCue": {
               "type": "cue",
               "self": true,
               "sensorIndex": 0,
               "selectTarget": true
+            },
+            "designateActiveDetectedTarget": {
+              "type": "target",
+              "self": true,
+              "sensorIndex": 0
             }
           }
         },
@@ -448,14 +466,19 @@
         }
       }
     },
-    "search": {
-      "stateInit": "search",
+    "tws": {
+      "stateInit": [
+        "search",
+        "search"
+      ],
       "transitions": {
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {
-              "singleTargetScan": true
+            "scan": {},
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 15.0
             },
             "setCenterAzimuth": [
               {
@@ -496,7 +519,25 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": {},
+            "updateTargetOfInterest": {
+              "limit": 100,
+              "timeMin": 2.0,
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 1500.0,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                1000.0
+              ],
+              "dopplerSpeedGateMaxTime": 2.0,
+              "dopplerSpeedGateRange": [
+                0.0,
+                400.0
+              ]
+            },
             "updateActiveDetectedTarget": {}
           }
         },

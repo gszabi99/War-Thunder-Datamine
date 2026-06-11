@@ -535,7 +535,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function determineAndStartAction(isFromDebriefing = false) {
-    if (changeStartMission) {
+    if (!g_squad_manager.isInSquad() && changeStartMission) {
       this.startManualMission(changeStartMission)
       return
     }
@@ -677,9 +677,14 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (requirements.len() == 0)
       return ""
 
-    local msgText = "".concat(loc("events/no_required_crafts"), loc("ui/colon"))
-    foreach (rule in requirements)
-      msgText = "\n".concat(msgText, events.generateEventRule(rule, true))
+    local msgText = ""
+    if (g_squad_manager.isSquadMember())
+      msgText = loc("squadMember/airs_not_available")
+    else {
+      msgText = "".concat(loc("events/no_required_crafts"), loc("ui/colon"))
+      foreach (rule in requirements)
+        msgText = "\n".concat(msgText, events.generateEventRule(rule, true))
+    }
 
     return msgText
   }
@@ -689,6 +694,11 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showBadUnitMsgBox(msgText) {
+    if (g_squad_manager.isSquadMember()) {
+      this.msgBox("no_aircrafts", msgText, [["ok", @() null]], "ok")
+      return
+    }
+
     let buttonsArray = []
 
     

@@ -17,8 +17,14 @@
   "rollForDemonstration": 180.0,
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "rs_kosava_3_tm",
+    "iconType": "missile_air_to_uni_large",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.3,
     "length": 3.01,
     "WdK": [
@@ -39,10 +45,8 @@
     "distFromCmToStab": 0.2,
     "mass": 454.0,
     "timeLife": 550.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 0.7,
-    "endSpeed": 1000.0,
     "maxDistance": 120000.0,
     "minDistance": 2000.0,
     "rangeMax": 120000.0,
@@ -55,6 +59,9 @@
     "guidanceType": "optical",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
+    "explosiveType": "rdx",
+    "explosiveMass": 50.0,
+    "warheadMass": 130.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -72,18 +79,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "rdx",
-    "explosiveMass": 50.0,
-    "warheadMass": 130.0,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
+    "penetrationBySpeed": true,
     "shellCollision": true,
+    "fuseDelayDist": 3.5,
+    "explodeTreshold": 0.25,
     "distanceFuse": false,
-    "fuseDelayDist": 2.5,
-    "explodeTreshold": 0.5,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_large",
     "explosionEffect": "explosion_midair_rocket_medium",
     "groundCollisionEffect": "hit_206_290mm_dirt_he",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -112,10 +112,6 @@
         "massLost": 30.0
       }
     },
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "fpvModeSettings": {
       "hasNightVision": false,
       "hasFPVMode": true,
@@ -137,44 +133,46 @@
       ]
     },
     "guidance": {
+      "uncageBeforeLaunch": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "useTrippleClickLockInTpv": true,
       "applyExtraDifficultyParameters": true,
-      "uncageBeforeLaunch": true,
       "inertialNavigation": true,
-      "inertialNavigationDriftSpeed": 0.0,
       "indicateOnHud": false,
       "reacquireTarget": true,
       "lockMode": "LOAL+LOBL",
+      "breakLockMaxTime": 1500.0,
+      "inertialNavigationDriftSpeed": 0.0,
       "designationError": 7.0,
-      "breakLockMaxTime": 600.0,
       "opticalSeeker": {
         "targetSignatureType": "optic",
+        "rangeBand8": 200.0,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true,
+        "boundaryTrack": true,
+        "constantDesignationSourceType": "",
+        "fov": 0.1,
+        "minAngleToSun": 0.0,
+        "targetRadiusMin": 1.5,
         "rangeBand0": 12000.0,
         "rangeMax": 120000.0,
         "rangeSurface": 120000.0,
-        "fov": 0.1,
-        "minAngleToSun": 0.0,
         "lockAngleMax": 25.0,
         "angleMax": 30.0,
         "rateMax": 7.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": [
+          "ins",
           "camera",
           "shellFpv"
-        ],
-        "constantDesignationSourceType": "",
-        "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        ]
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,
         "timeToHitToAltitude0": [
-          1.0,
+          0.0,
           600.0
         ],
         "altitudeHoldTargetElevation": -11.0,
@@ -198,6 +196,12 @@
         "accelControlIntgLim": 1.0
       }
     },
+    "ballisticsTable": {
+      "velocity500m": [
+        500.0,
+        240.0
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -216,8 +220,13 @@
       ]
     },
     "damage": {
-      "explosive": {
-        "offset": 1.0
+      "offset": 1.0,
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 0.9,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
       }
     },
     "DamageParts": {
@@ -286,16 +295,6 @@
           }
         ]
       }
-    },
-    "armorpower": {
-      "ArmorPower0m": [
-        60.0,
-        10.0
-      ],
-      "ArmorPower30000m": [
-        50.0,
-        100000.0
-      ]
     },
     "collisions": {
       "default": {

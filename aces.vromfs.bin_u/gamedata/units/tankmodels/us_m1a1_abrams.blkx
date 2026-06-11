@@ -69,6 +69,12 @@
       "gun_mask_dm": {
         "armorThickness": 12.7
       },
+      "slip_ring_dm": {
+        "armorThickness": 1.0
+      },
+      "power_system_dm": {
+        "armorThickness": 1.0
+      },
       "gun_mask_01_dm": {
         "armorThickness": 38.1,
         "createSecondaryShatters": false
@@ -93,6 +99,12 @@
       "gun_mask_07_dm": {
         "armorThickness": 50.0
       },
+      "turret_hydraulics_01_dm": {
+        "armorThickness": 1.0
+      },
+      "driver_controls_dm": {
+        "armorThickness": 1.0
+      },
       "gun_mask_08_dm": {
         "armorThickness": 100.0,
         "armorEffectiveThicknessMax": 150.0
@@ -100,6 +112,24 @@
       "composite_armor_hull_02_dm": {
         "armorThickness": 19.05,
         "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_03_dm": {
+        "armorThickness": 63.0
+      },
+      "composite_armor_hull_04_dm": {
+        "armorThickness": 63.0
+      },
+      "composite_armor_hull_05_dm": {
+        "armorThickness": 63.0
+      },
+      "composite_armor_hull_06_dm": {
+        "armorThickness": 63.0
+      },
+      "composite_armor_hull_07_dm": {
+        "armorThickness": 63.0
+      },
+      "composite_armor_hull_08_dm": {
+        "armorThickness": 63.0
       },
       "firewall_armor_01_dm": {
         "armorThickness": 38.1,
@@ -190,7 +220,8 @@
     "hull_RHA": {
       "armorClass": "RHA_tank_modern",
       "superstructure_front_dm": {
-        "armorThickness": 38.1
+        "armorThickness": 38.1,
+        "armorClass": "CHA_tank_modern"
       },
       "superstructure_side_dm": {
         "armorThickness": 12.7
@@ -209,7 +240,8 @@
         "armorClass": "tank_structural_steel"
       },
       "body_bottom_dm": {
-        "armorThickness": 12.7
+        "armorThickness": 25.0,
+        "variableThickness": true
       },
       "body_top_dm": {
         "armorThickness": 6.35,
@@ -320,16 +352,28 @@
       "hp": 400.0,
       "hidableInViewer": true,
       "createSecondaryShatters": false,
-      "ex_armor_l_01_dm": {
+      "ex_skirt_composite_armor_01_dm": {
         "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
         "hp": 800.0
       },
-      "ex_armor_l_02_dm": {
+      "ex_skirt_composite_armor_02_dm": {
         "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
+        "hp": 800.0
+      },
+      "ex_skirt_composite_armor_03_dm": {
+        "armorThickness": 65.0,
+        "hp": 800.0
+      },
+      "ex_skirt_composite_armor_04_dm": {
+        "armorThickness": 65.0,
+        "hp": 800.0
+      },
+      "ex_skirt_composite_armor_05_dm": {
+        "armorThickness": 65.0,
+        "hp": 800.0
+      },
+      "ex_skirt_composite_armor_06_dm": {
+        "armorThickness": 65.0,
         "hp": 800.0
       },
       "ex_armor_l_03_dm": {
@@ -346,30 +390,6 @@
       },
       "ex_armor_l_07_dm": {
         "armorThickness": 6.35
-      },
-      "ex_armor_r_01_dm": {
-        "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
-        "hp": 800.0
-      },
-      "ex_armor_r_02_dm": {
-        "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
-        "hp": 800.0
-      },
-      "ex_armor_r_03_dm": {
-        "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
-        "hp": 800.0
-      },
-      "ex_armor_r_04_dm": {
-        "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
-        "hp": 800.0
       },
       "ex_armor_r_05_dm": {
         "armorThickness": 6.35
@@ -414,7 +434,8 @@
         "createSecondaryShatters": false
       },
       "turret_commander_dm": {
-        "armorThickness": 25.4
+        "armorThickness": 25.4,
+        "armorClass": "CHA_tank"
       },
       "gun_barrel_armor_dm": {
         "armorThickness": 25.4
@@ -426,7 +447,8 @@
         "armorThickness": 19.05
       },
       "turret_01_bottom_dm": {
-        "armorThickness": 25.4
+        "armorThickness": 25.4,
+        "armorClass": "CHA_tank"
       },
       "turret_01_front_dm": {
         "armorThickness": 70.0
@@ -1960,6 +1982,56 @@
               "dmPart": "turret_02_top_dm"
             }
           ]
+        }
+      }
+    ],
+    "armorArrayHullSide": [
+      {
+        "xrayDmPart": "ex_skirt_composite_armor_01_dm",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "ex_skirt_composite_armor_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "ex_skirt_composite_armor_02_dm",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "ex_skirt_composite_armor_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "ex_skirt_composite_armor_03_dm",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "ex_skirt_composite_armor_03_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "ex_skirt_composite_armor_04_dm",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "ex_skirt_composite_armor_04_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "ex_skirt_composite_armor_05_dm",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "ex_skirt_composite_armor_05_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "ex_skirt_composite_armor_06_dm",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "ex_skirt_composite_armor_06_dm"
+          }
         }
       }
     ],

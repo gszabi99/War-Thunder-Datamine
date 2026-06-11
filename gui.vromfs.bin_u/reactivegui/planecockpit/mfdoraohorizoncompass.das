@@ -32,7 +32,6 @@ class Component : Canvas
   rollDeg   : float = 0.0
   hdgDeg    : float = 0.0
   horMask   : Picture const? = null
-  aspect    : float = 1.0
 
   def Component(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
     Canvas`Canvas(self, guiCtx, rdata, rstate)
@@ -53,21 +52,20 @@ class Component : Canvas
     setLineWidth(1.5)
     setOrigin(canvasPos + 0.5 * canvasSize)
     setScale(canvasSize)
-    aspect = canvasSize.x / canvasSize.y
     setFont(props.fontId)
     setFontSize(9)
     setColor(CLR)
 
   def drawRoundCircle(pos : float2; radius : float)
-    drawEllipse(pos, float2(radius * aspect, radius))
+    drawEllipse(pos, float2(radius, radius))
 
   def drawAttitudeIndicator()
     let cx = 0.0
     let cy = -0.20
     let radius = 0.226
     let pitchScale = radius / 50.0
-    let lt = float2(-0.5 * aspect, -0.5)
-    let rb = float2(0.5 * aspect, 0.12)
+    let lt = float2(-0.5, -0.5)
+    let rb = float2(0.5, 0.12)
 
     setViewport(lt, rb)
     setRotation(float2(cx, cy), -rollDeg * degToRad)
@@ -76,26 +74,26 @@ class Component : Canvas
 
     setColor(CLR_SKY)
     setFillColor(CLR_SKY)
-    drawBox(float2(cx - 0.6 * aspect, cy - 0.6), float2(cx + 0.6 * aspect, horY))
+    drawBox(float2(cx - 0.6, cy - 0.6), float2(cx + 0.6, horY))
     setColor(CLR_GND)
     setFillColor(CLR_GND)
-    drawBox(float2(cx - 0.6 * aspect, horY), float2(cx + 0.6 * aspect, cy + 0.6))
+    drawBox(float2(cx - 0.6, horY), float2(cx + 0.6, cy + 0.6))
 
     setColor(CLR_WHT)
     setFillColor(CLR_NONE)
-    drawLine(float2(cx - 0.35 * aspect, horY), float2(cx + 0.35 * aspect, horY))
+    drawLine(float2(cx - 0.35, horY), float2(cx + 0.35, horY))
 
     setFontSize(8)
     let hdgRange = 70.0
-    let unitsPerDeg = 0.4 * aspect / hdgRange
+    let unitsPerDeg = 0.4 / hdgRange
     let hdgStartI = floori((hdgDeg - hdgRange * 0.5) / 5.0) * 5
     for i in range(0, 16)
       let markHdg = float(hdgStartI) + float(i) * 5.0
       let dx = (markHdg - hdgDeg) * unitsPerDeg
       let tx = cx + dx
-      if tx < cx - 0.19 * aspect
+      if tx < cx - 0.19
         continue
-      if tx > cx + 0.19 * aspect
+      if tx > cx + 0.19
         continue
       let normalizedHdg = (int(markHdg + 3600.0)) % 360
       let hasNumber = normalizedHdg % 30 == 0
@@ -112,13 +110,13 @@ class Component : Canvas
         continue
       let markY = cy + (pitchDeg - float(markVal)) * pitchScale
       if abs(markVal) % 10 == 0
-        drawLine(float2(cx - radius * 0.40 * aspect, markY), float2(cx + radius * 0.40 * aspect, markY))
-        drawStrAnchored(float2(cx - radius * 0.45 * aspect, markY), "{abs(markVal)}", AnchorHorz.Right, AnchorVert.Center)
-        drawStrAnchored(float2(cx + radius * 0.45 * aspect, markY), "{abs(markVal)}", AnchorHorz.Left, AnchorVert.Center)
+        drawLine(float2(cx - radius * 0.40, markY), float2(cx + radius * 0.40, markY))
+        drawStrAnchored(float2(cx - radius * 0.45, markY), "{abs(markVal)}", AnchorHorz.Right, AnchorVert.Center)
+        drawStrAnchored(float2(cx + radius * 0.45, markY), "{abs(markVal)}", AnchorHorz.Left, AnchorVert.Center)
       elif abs(markVal) % 5 == 0
-        drawLine(float2(cx - radius * 0.20 * aspect, markY), float2(cx + radius * 0.20 * aspect, markY))
+        drawLine(float2(cx - radius * 0.20, markY), float2(cx + radius * 0.20, markY))
       else
-        drawLine(float2(cx - radius * 0.05 * aspect, markY), float2(cx + radius * 0.05 * aspect, markY))
+        drawLine(float2(cx - radius * 0.05, markY), float2(cx + radius * 0.05, markY))
 
     setColor(CLR_WHT)
     let arcR = radius * 0.85
@@ -128,13 +126,13 @@ class Component : Canvas
       var sina, cosa = 0.0
       sincos(aRad, sina, cosa)
       let tickLen = abs(deg) < 25.0 ? 0.012 : 0.018
-      drawLine(float2(cx + (arcR - tickLen) * cosa * aspect, cy + (arcR - tickLen) * sina), float2(cx + arcR * cosa * aspect, cy + arcR * sina))
+      drawLine(float2(cx + (arcR - tickLen) * cosa, cy + (arcR - tickLen) * sina), float2(cx + arcR * cosa, cy + arcR * sina))
 
     setFillColor(CLR_WHT)
     let triTop <- to_array_move(fixed_array(
       float2(cx, cy - arcR + 0.002),
-      float2(cx - radius * 0.04 * aspect, cy - arcR + 0.018),
-      float2(cx + radius * 0.04 * aspect, cy - arcR + 0.018)))
+      float2(cx - radius * 0.04, cy - arcR + 0.018),
+      float2(cx + radius * 0.04, cy - arcR + 0.018)))
     drawFilledPolyOutlined(triTop)
     setFillColor(CLR_NONE)
 
@@ -144,17 +142,17 @@ class Component : Canvas
     setFillColor(CLR)
     drawFilledPolyOutlined([
       float2(cx,                cy - 0.010),
-      float2(cx - 0.04 * aspect, cy - 0.002),
-      float2(cx - 0.11 * aspect, cy + 0.005),
-      float2(cx - 0.10 * aspect, cy + 0.012),
-      float2(cx - 0.05 * aspect, cy + 0.007),
+      float2(cx - 0.04, cy - 0.002),
+      float2(cx - 0.11, cy + 0.005),
+      float2(cx - 0.10, cy + 0.012),
+      float2(cx - 0.05, cy + 0.007),
       float2(cx,                cy + 0.012)])
     drawFilledPolyOutlined([
       float2(cx,                cy - 0.010),
-      float2(cx + 0.04 * aspect, cy - 0.002),
-      float2(cx + 0.11 * aspect, cy + 0.005),
-      float2(cx + 0.10 * aspect, cy + 0.012),
-      float2(cx + 0.05 * aspect, cy + 0.007),
+      float2(cx + 0.04, cy - 0.002),
+      float2(cx + 0.11, cy + 0.005),
+      float2(cx + 0.10, cy + 0.012),
+      float2(cx + 0.05, cy + 0.007),
       float2(cx,        cy + 0.012)])
     setFillColor(CLR_NONE)
 
@@ -168,13 +166,12 @@ class Component : Canvas
   def drawMask()
     let cy = -0.20
     let maskR = 0.30
-    let maskRx = maskR * aspect
     setColor(CLR_BG)
     setFillColor(CLR_BG)
     let pad = 0.006
     let edge = 0.7
-    drawBox(float2(-edge, -edge), float2(-maskRx + pad, cy + maskR))
-    drawBox(float2(maskRx - pad, -edge), float2(edge, cy + maskR))
+    drawBox(float2(-edge, -edge), float2(-maskR + pad, cy + maskR))
+    drawBox(float2(maskR - pad, -edge), float2(edge, cy + maskR))
     drawBox(float2(-edge, -edge), float2(edge, cy - maskR + pad))
     drawBox(float2(-edge, cy + maskR - pad), float2(edge, cy + maskR + 0.1))
     setFillColor(CLR_NONE)
@@ -183,7 +180,7 @@ class Component : Canvas
       if m == null
         return
       setColor(CLR_BG)
-      drawPicture(float2(-maskRx, cy - maskR), float2(maskRx * 2.0, maskR * 2.0), m)
+      drawPicture(float2(-maskR, cy - maskR), float2(maskR * 2.0, maskR * 2.0), m)
 
   def drawCompass()
     let cx = 0.0
@@ -210,7 +207,7 @@ class Component : Canvas
         innerR = roseR - 0.025
       elif isMajor
         innerR = roseR - 0.016
-      let dir = float2(cosa * aspect, sina)
+      let dir = float2(cosa, sina)
       drawLine(pos + innerR * dir, pos + roseR * dir)
 
     setFontSize(14)
@@ -230,7 +227,7 @@ class Component : Canvas
         lbl = "W"
       else
         lbl = "{i * 3}"
-      drawStrAnchored(pos + textR * float2(cosa * aspect, sina), lbl, AnchorHorz.Center, AnchorVert.Center)
+      drawStrAnchored(pos + textR * float2(cosa, sina), lbl, AnchorHorz.Center, AnchorVert.Center)
 
     setFillColor(CLR)
     setColor(CLR)
@@ -246,13 +243,13 @@ class Component : Canvas
 
     let symScale = 0.04
     drawLine(pos + float2(0.0, -symScale), pos + float2(0.0, symScale * 0.5))
-    drawLine(pos + float2(-symScale * 0.8 * aspect, 0.0), pos + float2(symScale * 0.8 * aspect, 0.0))
-    drawLine(pos + float2(-symScale * 0.3 * aspect, symScale * 0.5), pos + float2(symScale * 0.3 * aspect, symScale * 0.5))
+    drawLine(pos + float2(-symScale * 0.8, 0.0), pos + float2(symScale * 0.8, 0.0))
+    drawLine(pos + float2(-symScale * 0.3, symScale * 0.5), pos + float2(symScale * 0.3, symScale * 0.5))
     drawRoundCircle(pos, symScale * 0.15)
 
     let northAngle = -hdgRad - PI_2
     sincos(northAngle, sina, cosa)
-    let ndir = float2(cosa * aspect, sina)
+    let ndir = float2(cosa, sina)
     setColor(CLR)
     setLineWidth(2.0)
     drawLine(pos - roseR * 0.85 * ndir, pos + roseR * 0.85 * ndir)

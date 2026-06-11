@@ -1,13 +1,13 @@
 {
-  "mesh": "su_kh_31p_missile_na",
-  "mesh_deployed": "su_kh_31p_missile",
-  "shellAnimChar": "su_kh_31p_missile_char",
   "rocketGun": true,
   "preset_cost": 20,
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
+  "mesh": "su_kh_31p_missile_na",
+  "mesh_deployed": "su_kh_31p_missile",
+  "shellAnimChar": "su_kh_31p_missile_char",
   "tags": {},
   "rocket": {
     "dragCx": 0.025,
@@ -251,9 +251,9 @@
       ]
     },
     "guidance": {
-      "warmUpTime": 0.5,
-      "workTime": 100.0,
       "uncageBeforeLaunch": true,
+      "warmUpTime": 0.5,
+      "workTime": 10.0,
       "lockAfterLaunch": false,
       "reacquireTarget": true,
       "useTargetVel": false,
@@ -267,6 +267,7 @@
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
         "active": false,
+        "prolongationTimeMax": 1.0,
         "multipathEffect": [
           0.0,
           1.0,
@@ -279,7 +280,6 @@
         "angleMax": 45.0,
         "rateMax": 10.0,
         "angleGateRate": 5.0,
-        "prolongationTimeMax": 240.0,
         "designationSourceType": "esm",
         "band": [
           3,
@@ -365,7 +365,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.3
       }
     },
     "DamageParts": {
@@ -751,7 +751,7 @@
         "inactiveAtStage2": true
       },
       {
-        "fireEffect": "",
+        "fireEffect": "fires_exhaust_jet_mach_discs_med",
         "smokeEffect": "trail_jet",
         "smokeEffect2": "",
         "hazeEffect": "haze_jet",

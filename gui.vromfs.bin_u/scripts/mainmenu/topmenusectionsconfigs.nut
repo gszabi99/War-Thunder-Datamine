@@ -94,6 +94,9 @@ addTopMenuRightSideSections([
         buttonsList.PREMIUM
         buttonsList.WARPOINTS
         buttonsList.WISHLIST
+
+
+
         buttonsList.INVENTORY
         buttonsList.ITEMS_SHOP
         buttonsList.WORKSHOP

@@ -500,13 +500,13 @@
           "stateFrom": "search",
           "command": "selectTarget",
           "actions": {
-            "designateActiveDetectedTarget": {
-              "type": "target",
+            "designateTargetUnderCue": {
+              "type": "cue",
               "self": true,
               "sensorIndex": 0
             },
-            "designateTargetUnderCue": {
-              "type": "cue",
+            "designateActiveDetectedTarget": {
+              "type": "target",
               "self": true,
               "sensorIndex": 0
             }
@@ -668,6 +668,7 @@
       "stateInit": "search",
       "transitions": {
         "scan": {
+          "stateFrom": "search",
           "event": "update",
           "actions": {
             "scan": {},

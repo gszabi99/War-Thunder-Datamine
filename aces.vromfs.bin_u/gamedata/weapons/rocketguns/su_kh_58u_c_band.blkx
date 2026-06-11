@@ -8,8 +8,14 @@
   "mesh": "su_kh_58_missile",
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "su_kh_58u_c_band",
+    "iconType": "missile_air_to_uni_large",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.38,
     "length": 4.8,
     "WdK": [
@@ -31,17 +37,18 @@
     "force1": 10278.12,
     "fireDelay": 0.6,
     "timeLife": 240.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 4.5,
     "maxSpeed": 700.0,
-    "endSpeed": 0.0,
     "maxDistance": 120000.0,
     "minDistance": 10000.0,
     "rangeMax": 120000.0,
     "loadFactorMax": 6.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
+    "explosiveType": "tgaf_5m",
+    "explosiveMass": 110.0,
+    "warheadMass": 140.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -59,21 +66,13 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tgaf_5m",
-    "explosiveMass": 110.0,
-    "warheadMass": 140.0,
+    "hitPowerMult": 400.0,
+    "shellCollision": true,
     "canChangeFuseMode": true,
     "hasProximityFuse": true,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
-    "hitPowerMult": 400.0,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_large",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -94,14 +93,10 @@
       0.0,
       0.0
     ],
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "guidance": {
-      "warmUpTime": 0.5,
-      "workTime": 100.0,
       "uncageBeforeLaunch": true,
+      "warmUpTime": 0.5,
+      "workTime": 10.0,
       "lockAfterLaunch": false,
       "reacquireTarget": true,
       "useTargetVel": false,
@@ -119,6 +114,7 @@
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
         "active": false,
+        "prolongationTimeMax": 1.0,
         "multipathEffect": [
           0.0,
           1.0,
@@ -131,7 +127,6 @@
         "angleMax": 50.0,
         "rateMax": 15.0,
         "angleGateRate": 5.0,
-        "prolongationTimeMax": 240.0,
         "designationSourceType": "esm",
         "band": [
           3,
@@ -226,16 +221,9 @@
         1.0
       ]
     },
-    "proximityFuse": {
-      "timeOut": 6.0,
-      "radius": 5.0,
-      "detectAirUnits": true,
-      "detectGroundUnits": true,
-      "detectGround": true
-    },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.3
       }
     },
     "DamageParts": {
@@ -304,6 +292,13 @@
           }
         ]
       }
+    },
+    "proximityFuse": {
+      "timeOut": 6.0,
+      "radius": 5.0,
+      "detectAirUnits": true,
+      "detectGroundUnits": true,
+      "detectGround": true
     },
     "collisions": {
       "default": {

@@ -76,6 +76,7 @@ let xrayDescCtorsMap = {
   firewall_armor = mkTankArmorPartDesc
   composite_armor_hull = mkTankArmorPartDesc
   composite_armor_turret = mkTankArmorPartDesc
+  ex_skirt_composite_armor = mkTankArmorPartDesc
   ex_era_hull = mkTankArmorPartDesc
   ex_era_turret = mkTankArmorPartDesc
   coal_bunker = mkCoalBunkerDesc

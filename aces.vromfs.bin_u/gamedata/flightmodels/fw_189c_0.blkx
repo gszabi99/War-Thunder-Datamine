@@ -1950,16 +1950,16 @@
       -0.038
     ],
     "lightPos": [
-      1.263091,
-      1.066042,
-      0.084758
+      0.883,
+      0.425,
+      0.0
     ],
     "lightColor": [
       0.15,
       0.05,
-      0.01
+      0.0
     ],
-    "lightAttenuation": 12.0,
+    "lightRadius": 0.4,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2298,7 +2298,85 @@
         "gunnerDm": "gunner1_dm",
         "gunDm": "gun1_dm",
         "partsDP": "gun1_dm",
-        "bullets": 750,
+        "bullets": 375,
+        "turret": {
+          "head": "turret1",
+          "gun": "gun1"
+        },
+        "limits": {
+          "yaw": [
+            -35.0,
+            35.0
+          ],
+          "pitch": [
+            -19.0,
+            35.0
+          ]
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -35.0,
+              -20.0
+            ],
+            "pitch": [
+              -15.0,
+              -5.0
+            ]
+          },
+          {
+            "yaw": [
+              -20.0,
+              -15.0
+            ],
+            "pitch": [
+              -8.0,
+              7.0
+            ]
+          },
+          {
+            "yaw": [
+              -15.0,
+              15.0
+            ],
+            "pitch": [
+              -4.0,
+              -2.0
+            ]
+          },
+          {
+            "yaw": [
+              15.0,
+              20.0
+            ],
+            "pitch": [
+              -8.0,
+              7.0
+            ]
+          },
+          {
+            "yaw": [
+              20.0,
+              35.0
+            ],
+            "pitch": [
+              -15.0,
+              -5.0
+            ]
+          }
+        ]
+      },
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/gunMG81_turret.blk",
+        "breechInCockpit": true,
+        "emitter": "gun1",
+        "flash": "flare8",
+        "dm": "gunner1_dm",
+        "gunnerDm": "gunner1_dm",
+        "gunDm": "gun1_dm",
+        "partsDP": "gun1_dm",
+        "bullets": 375,
         "turret": {
           "head": "turret1",
           "gun": "gun1"

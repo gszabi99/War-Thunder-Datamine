@@ -1,5 +1,8 @@
 from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { isPC, is_android } = require("%sqstd/platform.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -71,10 +74,12 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   }
 
   function onStart() {
-    let fleetTrainingMisName = getFleetTrainingMissionName()
-    if (fleetTrainingMisName) {
-      this.guiScene.performDelayed(this, @() this.goForward(@() startFleetTrainingMission(fleetTrainingMisName)))
-      return
+    if (!g_squad_manager.isInSquad()) {
+      let fleetTrainingMisName = getFleetTrainingMissionName()
+      if (fleetTrainingMisName) {
+        this.guiScene.performDelayed(this, @() this.goForward(@() startFleetTrainingMission(fleetTrainingMisName)))
+        return
+      }
     }
     base.onStart()
   }

@@ -146,10 +146,10 @@
       "workTime": 3600.0,
       "useTrippleClickLockInTpv": true,
       "applyExtraDifficultyParameters": true,
-      "breakLockMaxTime": 120.0,
       "uncageBeforeLaunch": true,
       "reacquireTarget": true,
       "lockMode": "LOAL+LOBL",
+      "breakLockMaxTime": 1500.0,
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
@@ -162,6 +162,10 @@
         "angleMax": 54.0,
         "rateMax": 2.5,
         "prolongationTimeMax": 1.0,
+        "designationSourceType": [
+          "camera",
+          "shellFpv"
+        ],
         "constantDesignationSourceType": "",
         "aircraftAsTarget": false,
         "groundVehiclesAsTarget": true,
@@ -169,11 +173,7 @@
         "boundaryTrack": true,
         "targetRadiusMin": 1.5,
         "rangeBand1": 20000.0,
-        "rangeBand8": 200.0,
-        "designationSourceType": [
-          "camera",
-          "shellFpv"
-        ]
+        "rangeBand8": 200.0
       },
       "guidanceAutopilot": {
         "timeToGain0": [

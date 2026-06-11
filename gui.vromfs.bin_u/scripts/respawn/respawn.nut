@@ -905,14 +905,16 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       curSquadRespawnBase = this.curSquadRespawnBase
       curZoneRespawnBase = this.curZoneRespawnBase
       haveRespawnBases = this.haveRespawnBases
+      isBadWeatherForAircraft = ES_UNIT_TYPE_AIRCRAFT == unit?.esUnitType
+        && needToShowBadWeatherWarning.get()
       location = unit?.isHuman() ? convertLevelNameToLocation(this.missionTable.level) : null
       overridedUnitSkin = this.overridedUnitSkins?[unit?.name]
     }
   }
 
-  function updateOptions(trigger, paramsOverride = {}) {
+  function updateOptions(trigger) {
     this.isInUpdateLoadFuelOptions = true
-    let optionsParams = this.getOptionsParams().__update(paramsOverride)
+    let optionsParams = this.getOptionsParams()
     foreach (idx, option in respawnOptions.types)
       this.optionsFilled[idx] = option.update(optionsParams, trigger, this.optionsFilled[idx]) || this.optionsFilled[idx]
 
@@ -1527,10 +1529,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       this.hasSquadRespawnBasesList = false
       let hasListChanged = !u.isEqual(this.respawnBasesList, currBasesList)
       if (hasListChanged)
-        this.updateOptions(RespawnOptUpdBit.RESPAWN_BASES, {
-          isBadWeatherForAircraft = ES_UNIT_TYPE_AIRCRAFT == unit?.esUnitType
-            && needToShowBadWeatherWarning.get()
-        })
+        this.updateOptions(RespawnOptUpdBit.RESPAWN_BASES)
       return hasListChanged
     }
 

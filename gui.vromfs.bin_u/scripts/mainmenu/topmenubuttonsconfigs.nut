@@ -63,6 +63,7 @@ let { isAnyCampaignAvailable } = require("%scripts/missions/missionsUtils.nut")
 let { checkGamemodePkg } = require("%scripts/clientState/contentPacks.nut")
 let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
 let { openLicenseWindow } = require("%scripts/licenseHandler.nut")
+let { eventbus_send } = require("eventbus")
 
 
 let list = {
@@ -386,6 +387,14 @@ let list = {
     image = @() "#ui/gameuiskin#gc.svg"
     isHidden = @(...) !isMarketplaceEnabled() || !isInMenu.get()
   }
+
+
+
+
+
+
+
+
   WINDOW_HELP = {
     text = @() "#flightmenu/btnControlsHelp"
     onClickFunc = function(_obj, handler) {

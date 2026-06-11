@@ -149,42 +149,63 @@
     "pressureDamage": {
       "damageType": "pressure"
     },
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -20.0,
+        20.0
+      ],
+      "verLimit": [
+        -60.0,
+        20.0
+      ],
+      "zoomMinMax": [
+        11.0,
+        3.0
+      ],
+      "rateMax": [
+        5.0,
+        5.0
+      ],
+      "rotation": 180.0
+    },
     "guidance": {
+      "uncageBeforeLaunch": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
-      "useTrippleClickLockInTpv": true,
-      "applyExtraDifficultyParameters": true,
-      "breakLockMaxTime": 120.0,
-      "uncageBeforeLaunch": true,
       "inertialNavigation": true,
-      "inertialNavigationDriftSpeed": 0.0,
       "indicateOnHud": false,
-      "designationError": 5.0,
       "reacquireTarget": true,
       "lockMode": "LOAL+LOBL",
+      "breakLockMaxTime": 1500.0,
+      "inertialNavigationDriftSpeed": 0.0,
+      "designationError": 7.0,
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
-        "rangeMax": 100000.0,
-        "rangeSurface": 100000.0,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true,
+        "boundaryTrack": true,
+        "constantDesignationSourceType": "",
+        "targetRadiusMin": 1.5,
         "fov": 0.1,
-        "minAngleToSun": 0.0,
+        "gateWidth": 0.1,
+        "minAngleToSun": 1.0,
+        "rangeSurface": 100000.0,
+        "rangeMax": 100000.0,
         "lockAngleMax": 20.0,
         "angleMax": 60.0,
         "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": [
+          "ins",
           "camera",
           "shellFpv"
-        ],
-        "constantDesignationSourceType": "",
-        "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        ]
       },
       "guidanceAutopilot": {
         "loftEnabled": true,
@@ -208,18 +229,14 @@
           600.1,
           0.0
         ],
-        "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 4.0,
+        "baseIndSpeed": 1800.0,
         "accelControlProp": 0.0561,
         "accelControlIntg": 0.0555,
-        "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0008
+        "accelControlDiff": 0.0008,
+        "accelControlIntgLim": 1.0
       }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
     },
     "collisions": {
       "default": {
@@ -569,27 +586,6 @@
           }
         ]
       }
-    },
-    "fpvModeSettings": {
-      "hasNightVision": true,
-      "hasFPVMode": true,
-      "horLimit": [
-        -20.0,
-        20.0
-      ],
-      "verLimit": [
-        -20.0,
-        60.0
-      ],
-      "zoomMinMax": [
-        11.0,
-        3.0
-      ],
-      "rateMax": [
-        5.0,
-        5.0
-      ],
-      "rotation": 180.0
     }
   }
 }

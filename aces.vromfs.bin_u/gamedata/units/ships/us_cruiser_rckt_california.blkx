@@ -979,12 +979,6 @@
       },
       {
         "name": [
-          "engine_room_01_dm",
-          "engine_room_02_dm",
-          "engine_room_03_dm",
-          "engine_room_04_dm",
-          "engine_room_05_dm",
-          "engine_room_06_dm",
           "transmission_01_dm",
           "transmission_02_dm",
           "transmission_03_dm",
@@ -1007,39 +1001,14 @@
           "engine_room_05_dm",
           "engine_room_06_dm"
         ],
-        "onHit": [
-          {
-            "damageType": "explosion",
-            "damage": 200.0,
-            "action": {
-              "type": "fxEvent",
-              "fxEventName": "steam_leak"
-            }
-          },
-          {
-            "damageType": "generic",
-            "damage": 300.0,
-            "action": {
-              "type": "fxEvent",
-              "fxEventName": "steam_leak"
-            }
-          },
-          {
-            "damageType": "shatter",
-            "damage": 10.0,
-            "action": {
-              "type": "fxEvent",
-              "fxEventName": "steam_leak"
-            }
-          }
-        ],
         "onKill": {
-          "expl": 1.0,
+          "expl": 0.05,
+          "nothing": 0.95,
           "fHitCritical": false,
           "action": {
             "type": "fxEvent",
-            "probability": 0.05,
-            "fxEventName": "explosion_steam_nuclear"
+            "probability": 1.0,
+            "fxEventName": "steam_leak"
           }
         }
       },
@@ -1466,7 +1435,7 @@
           "outputParam": "propeller_rotate_01:CRS",
           "engineDmPart": "engine_room_01_dm",
           "propeller": "propeller_01",
-          "boilerPressure": 40000.0
+          "boilerPressure": 15000.0
         },
         {
           "pos": [
@@ -1477,7 +1446,7 @@
           "outputParam": "propeller_rotate_02:CRS",
           "engineDmPart": "engine_room_02_dm",
           "propeller": "propeller_02",
-          "boilerPressure": 40000.0
+          "boilerPressure": 15000.0
         }
       ],
       "engine_rooms": {
@@ -3576,6 +3545,31 @@
         }
       },
       {
+        "name": "steam_leak",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "explosion_steam_leak"
+        }
+      },
+      {
+        "name": "steam_explosion_medium",
+        "fx": {
+          "name": "explosion_steam_medium"
+        }
+      },
+      {
+        "name": "steam_explosion_big",
+        "fx": {
+          "name": "explosion_steam_big"
+        }
+      },
+      {
+        "name": "steam_explosion_nuclear",
+        "fx": {
+          "name": "explosion_steam_nuclear"
+        }
+      },
+      {
         "name": "cosmetic_fire",
         "lifetime": 25.0,
         "fxActMinSplashRad": 1.25,
@@ -3865,6 +3859,18 @@
     "damage": 10.0,
     "probability": 1.0,
     "fxEvent": "cosmetic_fire"
+  },
+  "boilerExplosionFx": {
+    "fx": [
+      {
+        "gearFrom": 0.0,
+        "event": "steam_explosion_nuclear"
+      },
+      {
+        "gearFrom": 3.0,
+        "event": "steam_explosion_nuclear"
+      }
+    ]
   },
   "breaches": {
     "repairSpeed": 25.0,

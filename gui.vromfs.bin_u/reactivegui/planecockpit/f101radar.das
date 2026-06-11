@@ -25,7 +25,6 @@ def rgb(r, g, b, a : int) : E3DCOLOR
 
 struct PropStorage
   fontId : int = 0
-  vignette : Picture? = null
 
 
 struct Props
@@ -99,14 +98,6 @@ class F101Radar : Canvas
     setFillColor(props.bgColor)
     setColor(props.bgColor)
     drawBox(float2(-0.5), float2(0.5))
-
-  def drawVignette(vignette : darg::Picture?)
-    return if vignette == null
-    let sc = min(canvasSize.x, canvasSize.y)
-    let hSize = 0.5 * canvasSize / sc
-    setColor(E3DCOLOR(0xFFFFFFFF))
-    drawPicture(-hSize, hSize * 2.0, vignette)
-    setColor(props.markingsColor)
 
 
   def drawDisplayCircle()
@@ -479,21 +470,19 @@ class F101Radar : Canvas
     restoreViewport()
     drawBScopeStatus()
 
-  def draw(in_props : PropStorage&)
+  def draw()
     return if hero == null
     setFullCanvasViewport()
     drawBackground()
     drawHud()
-    drawVignette(in_props.vignette)
     drawMarkings()
     restoreViewport()
 
 
 [export]
 def render(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
-  new F101Radar(guiCtx, rdata, rstate, props).draw(props)
+  new F101Radar(guiCtx, rdata, rstate, props).draw()
 
 [export]
 def setup(props : Properties&; var propStorage : PropStorage&)
   propStorage.fontId = props |> getInt("fontId", 0)
-  propStorage.vignette = props |> getPicture("vignette")

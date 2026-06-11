@@ -1,6 +1,10 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "pgm_500_tv",
   "bombCart": "bomb_cart_sea_eagle",
   "offsetForDemonstration": [
@@ -8,14 +12,15 @@
     -0.055,
     0.0
   ],
-  "helicopterGroup": 2,
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
   "tags": {},
   "rocket": {
-    "gunnerOpticsName": "PGM500_2000",
+    "dragCx": 0.025,
+    "iconType": "guided_bomb_large_laser",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.36,
     "length": 3.38,
     "WdK": [
@@ -30,51 +35,46 @@
     "distFromCmToStab": 0.6,
     "mass": 404.0,
     "timeLife": 220.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 1.0,
-    "endSpeed": 0.0,
     "maxDistance": 50000.0,
     "minDistance": 2000.0,
     "rangeMax": 50000.0,
+    "isHasTVChannel": true,
     "opticSightFov": [
       12.0,
       5.0
     ],
     "loadFactorMax": 2.5,
-    "isHasTVChannel": true,
+    "gunnerOpticsName": "PGM500_2000",
     "guidanceType": "optical",
     "rollStabilization": true,
     "rollStabilizationDelay": 1.0,
-    "dragCx": 0.025,
+    "explosiveType": "comp_h6",
+    "explosiveMass": 87.1,
+    "warheadMass": 240.9,
     "normalizationPreset": "heat",
-    "ricochetPreset": "heat_fs",
-    "groundRicochetPreset": "heat_fs",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "heat_fs_tank",
-    "cumulativeSecondaryShattersPreset": "heat_fs",
-    "explodeOnRendinst": true,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/heat_fs.ivf",
-    "explosiveType": "comp_h6",
-    "explosiveMass": 87.1,
-    "maxDeltaAngle": 0.02,
-    "shellCollision": true,
-    "distanceFuse": false,
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "guided_bomb_large_laser",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -103,43 +103,61 @@
         "massLost": 25.0
       }
     },
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
+    "fpvModeSettings": {
+      "hasNightVision": false,
+      "hasFPVMode": true,
+      "horLimit": [
+        -35.0,
+        35.0
+      ],
+      "verLimit": [
+        -45.0,
+        25.0
+      ],
+      "zoomMinMax": [
+        12.0,
+        5.0
+      ],
+      "rateMax": [
+        10.0,
+        10.0
+      ]
     },
     "guidance": {
+      "uncageBeforeLaunch": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "useTrippleClickLockInTpv": true,
       "applyExtraDifficultyParameters": true,
-      "breakLockMaxTime": 120.0,
-      "uncageBeforeLaunch": true,
       "inertialNavigation": true,
       "indicateOnHud": false,
       "reacquireTarget": true,
       "lockMode": "LOAL+LOBL",
+      "breakLockMaxTime": 1500.0,
+      "inertialNavigationDriftSpeed": 2.2,
       "opticalSeeker": {
         "targetSignatureType": "optic",
+        "rangeBand8": 200.0,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true,
+        "boundaryTrack": true,
+        "constantDesignationSourceType": "",
+        "fov": 0.1,
+        "minAngleToSun": 0.0,
+        "targetRadiusMin": 1.5,
         "rangeBand0": 12000.0,
         "rangeMax": 60000.0,
         "rangeSurface": 60000.0,
-        "fov": 0.1,
-        "gateWidth": 0.1,
-        "minAngleToSun": 0.0,
         "lockAngleMax": 40.0,
         "angleMax": 45.0,
         "rateMax": 10.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": [
+          "ins",
           "camera",
           "shellFpv"
-        ],
-        "constantDesignationSourceType": "",
-        "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        ]
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,
@@ -158,9 +176,10 @@
         ],
         "courseErrorAngleToAccelMult": 1.5,
         "courseErrorFinalAngleCorrection": 1.25,
-        "baseIndSpeed": 1800.0,
+        "timeOut": 1.5,
         "propNavMult": 4.0,
         "reqAccelMax": 2.5,
+        "baseIndSpeed": 1800.0,
         "accelControlProp": 0.040177,
         "accelControlIntg": 0.078704,
         "accelControlIntgLim": 1.0,
@@ -173,26 +192,26 @@
         }
       }
     },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
         0.5
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.6
       ],
       "mod3": [
         30.0,
-        0.99
+        1.0
       ]
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.3
       }
     },
     "DamageParts": {
@@ -561,26 +580,6 @@
       "stone_snow": {
         "fx": "hit_12_14mm_snow_ap"
       }
-    },
-    "fpvModeSettings": {
-      "hasNightVision": false,
-      "hasFPVMode": true,
-      "horLimit": [
-        -35.0,
-        35.0
-      ],
-      "verLimit": [
-        -45.0,
-        25.0
-      ],
-      "zoomMinMax": [
-        12.0,
-        5.0
-      ],
-      "rateMax": [
-        10.0,
-        10.0
-      ]
     }
   }
 }

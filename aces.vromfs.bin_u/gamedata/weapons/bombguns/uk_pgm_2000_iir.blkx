@@ -1,20 +1,25 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "pgm_2000_tv",
   "offsetForDemonstration": [
     -0.2,
     0.0,
     0.0
   ],
-  "helicopterGroup": 2,
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
   "tags": {},
   "rocket": {
-    "gunnerOpticsName": "PGM500_2000_IR",
+    "dragCx": 0.025,
+    "iconType": "guided_bomb_heavy_laser",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.457,
     "length": 4.623,
     "WdK": [
@@ -29,51 +34,46 @@
     "distFromCmToStab": 0.6,
     "mass": 1060.0,
     "timeLife": 220.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 1.0,
-    "endSpeed": 0.0,
     "maxDistance": 50000.0,
     "minDistance": 2000.0,
     "rangeMax": 50000.0,
+    "isHasTVChannel": true,
     "opticSightFov": [
       10.0,
       3.0
     ],
     "loadFactorMax": 2.5,
-    "isHasTVChannel": true,
+    "gunnerOpticsName": "PGM500_2000_IR",
     "guidanceType": "optical",
     "rollStabilization": true,
     "rollStabilizationDelay": 1.0,
-    "dragCx": 0.025,
+    "explosiveType": "tritonal",
+    "explosiveMass": 428.6,
+    "warheadMass": 893.6,
     "normalizationPreset": "heat",
-    "ricochetPreset": "heat_fs",
-    "groundRicochetPreset": "heat_fs",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "heat_fs_tank",
-    "cumulativeSecondaryShattersPreset": "heat_fs",
-    "explodeOnRendinst": true,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/heat_fs.ivf",
-    "explosiveType": "tritonal",
-    "explosiveMass": 428.6,
-    "maxDeltaAngle": 0.02,
-    "shellCollision": true,
-    "distanceFuse": false,
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "guided_bomb_heavy_laser",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_500kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -102,45 +102,42 @@
         "massLost": 50.0
       }
     },
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "guidance": {
+      "uncageBeforeLaunch": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "useTrippleClickLockInTpv": true,
       "applyExtraDifficultyParameters": true,
-      "breakLockMaxTime": 120.0,
-      "uncageBeforeLaunch": true,
       "inertialNavigation": true,
       "indicateOnHud": false,
       "reacquireTarget": true,
       "lockMode": "LOAL+LOBL",
+      "breakLockMaxTime": 1500.0,
+      "inertialNavigationDriftSpeed": 2.2,
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
-        "rangeBand0": 20000.0,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true,
+        "boundaryTrack": true,
+        "constantDesignationSourceType": "",
+        "fov": 0.1,
+        "targetRadiusMin": 1.5,
         "rangeMax": 60000.0,
         "rangeSurface": 60000.0,
-        "fov": 0.1,
-        "gateWidth": 0.1,
-        "minAngleToSun": 1.0,
         "lockAngleMax": 40.0,
         "angleMax": 45.0,
         "rateMax": 10.0,
         "prolongationTimeMax": 1.0,
-        "constantDesignationSourceType": "",
-        "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
-        "targetRadiusMin": 1.5,
-        "rangeBand1": 20000.0,
-        "rangeBand8": 200.0,
         "designationSourceType": [
+          "ins",
           "camera",
           "shellFpv"
-        ]
+        ],
+        "rangeBand0": 20000.0,
+        "rangeBand1": 20000.0,
+        "rangeBand8": 200.0,
+        "minAngleToSun": 1.0
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,
@@ -159,9 +156,10 @@
         ],
         "courseErrorAngleToAccelMult": 1.5,
         "courseErrorFinalAngleCorrection": 1.25,
-        "baseIndSpeed": 1800.0,
+        "timeOut": 1.5,
         "propNavMult": 4.0,
         "reqAccelMax": 2.5,
+        "baseIndSpeed": 1800.0,
         "accelControlProp": 0.091084,
         "accelControlIntg": 0.24417,
         "accelControlIntgLim": 1.0,
@@ -174,26 +172,26 @@
         }
       }
     },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
         0.5
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.6
       ],
       "mod3": [
         30.0,
-        0.99
+        1.0
       ]
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.3
       }
     },
     "DamageParts": {

@@ -34,7 +34,6 @@ let mfdYak130Compass = createScriptComponentWithPos("%rGui/planeCockpit/mfdYak13
 let mfdYak130Kab = createScriptComponentWithPos("%rGui/planeCockpit/mfdYak130Kab.das", { fontId = Fonts.ils31, fontSize = 16 })
 let f101Radar = createScriptComponentWithPos("%rGui/planeCockpit/F101Radar.das", {
   fontId = Fonts.hud
-  vignette = Picture($"!ui/gameuiskin#mfd_f4_agm65_vignetting_low.avif")
 })
 let mfdMig29additionalAH = createScriptComponentWithPos("%rGui/planeCockpit/mfdMig29additionalAH.das", { fontId = Fonts.hud, fontSize = 14, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif") })
 let m346FaWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdM346FaWpn.das", { fontId = Fonts.hud })

@@ -27,7 +27,7 @@ let { isMeNewbie } = require("%scripts/myStats.nut")
 
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
-let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin") && !isMeNewbie()
+let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
 
 function launchGuestEmailRegistration(stoken) {
   let language = getCurLangShortName()
@@ -55,6 +55,9 @@ function showGuestEmailRegistration() {
 
 function checkShowGuestEmailRegistrationAfterLogin() {
   if (!needShowGuestEmailRegistration())
+    return
+
+  if (isMeNewbie())
     return
 
   let firstCheckTime = loadLocalAccountSettings("GuestEmailRegistrationCheckTime")

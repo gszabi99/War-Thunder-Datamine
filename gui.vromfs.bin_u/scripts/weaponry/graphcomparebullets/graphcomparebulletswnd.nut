@@ -185,6 +185,7 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     this.updateShotSetting()
     this.fillSubTabs()
     this.initPlayerPanel()
+    this.guiScene.applyPendingChanges(false)
     this.updateBulletsGraphData()
   }
 

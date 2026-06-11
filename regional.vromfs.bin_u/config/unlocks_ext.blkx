@@ -20867,13 +20867,19 @@
       "hidden": true
     },
     {
-      "id": "ab_test_tank_action_tutorial_hidden",
+      "id": "ab_test_tank_action_tutorial_hidden_unlock",
       "type": "achievement",
-      "chapter": "test",
+      "hidden": true,
+      "isAllowByClient": true
+    },
+    {
+      "id": "ab_test_tank_action_tutorial_hidden",
+      "type": "entitlement",
       "hidden": true,
       "mode": {
-        "type": "char_static_progress",
-        "num": 1
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "ab_test_tank_action_tutorial_hidden_unlock"
       }
     },
     {

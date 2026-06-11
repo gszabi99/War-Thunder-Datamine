@@ -1,6 +1,10 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "us_agm_88_harm_missile",
   "rollForDemonstration": 90.0,
   "offsetForDemonstration": [
@@ -8,10 +12,6 @@
     0.15,
     0.0
   ],
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
-  "helicopterGroup": 2,
   "tags": {},
   "rocket": {
     "dragCx": 0.025,
@@ -100,19 +100,18 @@
       0.0
     ],
     "guidance": {
-      "warmUpTime": 0.5,
-      "workTime": 100.0,
       "uncageBeforeLaunch": true,
+      "warmUpTime": 0.5,
+      "workTime": 10.0,
+      "inertialNavigation": true,
+      "indicateOnHud": false,
       "lockAfterLaunch": false,
       "reacquireTarget": true,
       "useTargetVel": false,
       "lockTimeOut": 0.0,
       "disableTOFInHud": true,
-      "inertialNavigation": true,
       "breakLockMaxTime": 120.0,
-      "inertialGuidance": {
-        "inertialNavigationDriftSpeed": 1.0
-      },
+      "inertialNavigationDriftSpeed": 2.2,
       "radarSeeker": {
         "groundVehiclesAsTarget": true,
         "aircraftAsTarget": false,
@@ -120,21 +119,12 @@
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
         "active": false,
+        "prolongationTimeMax": 1.0,
         "multipathEffect": [
           0.0,
           1.0,
           0.5,
           0.0
-        ],
-        "band": [
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          2,
-          3
         ],
         "useTargetId": true,
         "sideLobesAttenuation": -20.0,
@@ -142,8 +132,17 @@
         "angleMax": 50.0,
         "rateMax": 10.0,
         "angleGateRate": 5.0,
-        "prolongationTimeMax": 200.0,
         "designationSourceType": "esm",
+        "band": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
         "transmitter": {
           "power": 200.0,
           "antenna": {
@@ -174,8 +173,8 @@
         "reqAccelMax": 10.0,
         "accelControlProp": 0.0101,
         "accelControlIntg": 0.025,
-        "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.00185
+        "accelControlDiff": 0.00185,
+        "accelControlIntgLim": 1.0
       }
     },
     "pressureDamage": {

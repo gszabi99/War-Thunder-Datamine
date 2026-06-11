@@ -409,6 +409,7 @@
       "stateInit": "search",
       "transitions": {
         "scan": {
+          "stateFrom": "search",
           "event": "update",
           "actions": {
             "scan": {},
@@ -486,19 +487,31 @@
           }
         },
         "designateTarget": {
+          "stateFrom": "search",
           "command": "selectTarget",
+          "stateTo": "designateActiveDetectedTarget",
           "actions": {
-            "designateActiveDetectedTarget": [
-              {
-                "type": "target",
-                "sensorIndex": 1
-              },
-              {
-                "type": "target",
-                "self": true,
-                "sensorIndex": 0
-              }
-            ]
+            "designateActiveDetectedTarget": {
+              "type": "target",
+              "sensorIndex": 1
+            }
+          }
+        },
+        "designateActiveDetectedTarget": {
+          "stateFrom": "designateActiveDetectedTarget",
+          "command": "designateTarget",
+          "stateTo": "search"
+        },
+        "designateTargetUnderCue": {
+          "stateFrom": "designateActiveDetectedTarget",
+          "event": "update",
+          "stateTo": "search",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": "target",
+              "self": true,
+              "sensorIndex": 0
+            }
           }
         },
         "centerZone": {

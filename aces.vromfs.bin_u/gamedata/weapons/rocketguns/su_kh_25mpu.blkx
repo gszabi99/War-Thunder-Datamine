@@ -1,6 +1,10 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "su_kh_25mp_missile",
   "rollForDemonstration": 90.0,
   "offsetForDemonstration": [
@@ -8,14 +12,16 @@
     0.15,
     0.0
   ],
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
-  "helicopterGroup": 2,
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "su_kh_25mpu",
+    "iconType": "missile_air_to_uni_middle",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.275,
     "length": 4.255,
     "WdK": [
@@ -37,17 +43,18 @@
     "force1": 17300.0,
     "fireDelay": 0.0,
     "timeLife": 90.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 3.0,
     "maxSpeed": 880.0,
-    "endSpeed": 0.0,
     "maxDistance": 60000.0,
     "minDistance": 5000.0,
     "rangeMax": 40000.0,
     "loadFactorMax": 10.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
+    "explosiveType": "tg_40",
+    "explosiveMass": 80.0,
+    "warheadMass": 88.5,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -65,18 +72,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tg_40",
-    "explosiveMass": 80.0,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_middle",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -96,14 +96,10 @@
     ],
     "canChangeFuseMode": true,
     "hasProximityFuse": true,
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "guidance": {
-      "warmUpTime": 0.5,
-      "workTime": 100.0,
       "uncageBeforeLaunch": true,
+      "warmUpTime": 0.5,
+      "workTime": 10.0,
       "lockAfterLaunch": false,
       "reacquireTarget": true,
       "useTargetVel": false,
@@ -122,6 +118,7 @@
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
         "active": false,
+        "prolongationTimeMax": 1.0,
         "multipathEffect": [
           0.0,
           1.0,
@@ -134,7 +131,6 @@
         "angleMax": 40.0,
         "rateMax": 12.0,
         "angleGateRate": 10.0,
-        "prolongationTimeMax": 10.0,
         "designationSourceType": "esm",
         "band": [
           3,
@@ -239,7 +235,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.3
       }
     },
     "DamageParts": {

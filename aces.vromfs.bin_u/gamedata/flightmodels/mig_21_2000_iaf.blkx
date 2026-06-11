@@ -1,6 +1,6 @@
 {
   "model": "mig_21_2000_iaf",
-  "fmFile": "fm/mig-21_bis.blk",
+  "fmFile": "fm/mig_21_2000_iaf.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
@@ -12,7 +12,7 @@
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
-  "ilsElbit967": true,
+  "ils31": true,
   "rwrIndicator": "Serval",
   "hmdShelZoom": true,
   "hasHelmetDesignator": true,
@@ -2311,7 +2311,7 @@
     ]
   },
   "ikPilot": {
-    "model": "usaf_pilot_1985_2011_jhmcs_char",
+    "model": "su_pilot_late_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2369,9 +2369,9 @@
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
         "flexionDir": [
-          0.0,
+          0.3,
           1.0,
-          0.3
+          0.0
         ]
       },
       {
@@ -2380,9 +2380,9 @@
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
         "flexionDir": [
-          0.0,
+          -0.3,
           1.0,
-          -0.3
+          0.0
         ]
       }
     ]
@@ -2425,7 +2425,7 @@
     ],
     "mirrorNorm": [
       -0.956,
-      -0.22,
+      -0.26,
       0.0
     ],
     "mirrorNode": "blister3",
@@ -2566,29 +2566,25 @@
         -5.0,
         10.0
       ],
-      "altitude_10k": [
-        0.0,
-        30000.0
-      ],
       "altitude_hour": [
         0.0,
-        10000.0
+        30000.0
       ],
       "altitude_min": [
         0.0,
         1000.0
       ],
-      "altitude1_10k": [
+      "altitude1_hour": [
         0.0,
-        100000.0
+        20000.0
       ],
-      "altitude2_10k": [
+      "altitude2_hour": [
         0.0,
-        100000.0
+        20000.0
       ],
       "radio_altitude": [
         0.0,
-        1000.0
+        600.0
       ],
       "altitude_koef": 1.0,
       "bank": [
@@ -2604,8 +2600,8 @@
         0.23562
       ],
       "aviahorizon_pitch": [
-        -90.0,
-        90.0
+        -80.0,
+        80.0
       ],
       "aviahorizon_roll": [
         -180.0,
@@ -2614,10 +2610,6 @@
       "aoa": [
         -10.0,
         35.0
-      ],
-      "aoa_indexer1": [
-        22.0,
-        45.0
       ],
       "clock_hour": [
         0.0,
@@ -2649,7 +2641,7 @@
       ],
       "water_temperature": [
         0.0,
-        900.0
+        1000.0
       ],
       "fuel_pressure": [
         0.0,
@@ -2775,55 +2767,24 @@
       }
     },
     "multifunctionDisplays": {
-      "display": [
-        {
-          "textureArea": [
-            0.0,
-            0.0,
-            0.5,
-            0.5
-          ],
-          "page": {
-            "type": "map"
-          }
-        },
-        {
-          "textureArea": [
-            0.5,
-            0.0,
-            1.0,
-            0.5
-          ],
-          "page": {
-            "type": "custom",
-            "pageName": "europeanAviaHorizont",
-            "scale": 1.0
-          }
-        },
-        {
-          "textureArea": [
-            0.0,
-            0.0,
-            1.0,
-            1.0
-          ],
-          "page": {
-            "type": "plane_ils",
-            "ilsSize": [
-              0.2,
-              0.2
-            ],
-            "ilsOffsetForce": 0.0,
-            "brightnessMult": 3.5,
-            "ilsColor": [
-              10,
-              255,
-              10,
-              100
-            ]
-          }
+      "display": {
+        "textureArea": [
+          0.0,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "page": {
+          "type": "radar",
+          "scale": 1.1,
+          "color": [
+            27,
+            115,
+            255,
+            255
+          ]
         }
-      ]
+      }
     },
     "parts_holes_dmg": {
       "part": "fuse"

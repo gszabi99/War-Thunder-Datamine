@@ -161,6 +161,7 @@ function getWeaponParamsTable(blk) {
     dragCx = blk?.dragCx ?? 0,
     iconType = blk?.iconType ?? "",
     bulletType = bulletType,
+    guidanceType = blk?.guidanceType,
     amountPerTier = blk?.amountPerTier ?? 1
   }
 }
@@ -205,13 +206,15 @@ function aggregatePurposeType(typesSet) {
     return typesSet.top()
   if (isInArray("AIR_TO_AIR", typesSet))
     return "UNIVERSAL"
+  if (isInArray("AIR_TO_RADAR", typesSet))
+    return "AIR_TO_RADAR"
   if (isInArray("AIR_TO_SEA", typesSet))
     return "AIR_TO_SEA"
   else
     return "AIR_TO_GROUND"
 }
 
-function findGroupBullet(bulletType) {
+function findGroupBullet(bulletType, guidanceType = null) {
   foreach (purpose, types in PURPOSE_TYPE) {
     foreach (tag in types) {
       if (bulletType == tag) {
@@ -219,6 +222,8 @@ function findGroupBullet(bulletType) {
       }
     }
   }
+  if (guidanceType == "radar" || guidanceType == "PRH")
+    return "AIR_TO_RADAR"
   return "AIR_TO_GROUND"
 }
 
@@ -230,7 +235,7 @@ function getWeaponPurposeType(airWeapons) {
     if (!bulletType)
       continue
 
-    local purposeType = findGroupBullet(bulletType)
+    local purposeType = findGroupBullet(bulletType, weapon?.guidanceType)
     if (!isInArray(purposeType, res)) {
       res.append(purposeType)
     }
@@ -663,7 +668,7 @@ function processWeaponPilons(unitName, debugLog = null) {
         debugLog?($"    Drag Coefficient: {weaponData.dragCx}")
 
         let bulletType = weaponData.bulletType
-        local thisType = findGroupBullet(bulletType)
+        local thisType = findGroupBullet(bulletType, weaponData?.guidanceType)
 
         if (!isInArray(thisType, presetTypes[preset.name]))
           presetTypes[preset.name].append(thisType)

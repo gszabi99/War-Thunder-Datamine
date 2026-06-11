@@ -4,15 +4,21 @@
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "us_agm_84hk_slam_er_missile_na",
   "mesh_deployed": "us_agm_84hk_slam_er_missile",
   "shellAnimChar": "us_agm_84hk_slam_er_missile_char",
   "bombCart": "bomb_cart_kh59",
-  "helicopterGroup": 2,
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "us_agm_84h_slam_er",
+    "iconType": "missile_air_to_uni_large",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.343,
     "length": 4.37,
     "WdK": [
@@ -33,10 +39,8 @@
     "distFromCmToStab": 0.25,
     "mass": 668.1,
     "timeLife": 530.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 0.95,
-    "endSpeed": 1000.0,
     "maxDistance": 140000.0,
     "minDistance": 2000.0,
     "rangeMax": 140000.0,
@@ -49,6 +53,9 @@
     "guidanceType": "optical",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
+    "explosiveType": "pbxn_3",
+    "explosiveMass": 75.4612,
+    "warheadMass": 231.3321,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -66,18 +73,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "pbxn_3",
-    "explosiveMass": 75.4612,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_large",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -106,51 +106,68 @@
         "massLost": 59.87419
       }
     },
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -42.0,
+        42.0
+      ],
+      "verLimit": [
+        -54.0,
+        30.0
+      ],
+      "zoomMinMax": [
+        3.0,
+        1.5
+      ],
+      "rateMax": [
+        2.5,
+        2.5
+      ]
     },
     "guidance": {
+      "uncageBeforeLaunch": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "useTrippleClickLockInTpv": true,
       "applyExtraDifficultyParameters": true,
-      "uncageBeforeLaunch": true,
       "inertialNavigation": true,
-      "inertialNavigationDriftSpeed": 0.0,
       "indicateOnHud": false,
-      "designationError": 7.0,
-      "breakLockMaxTime": 600.0,
       "reacquireTarget": true,
       "lockMode": "LOAL+LOBL",
+      "breakLockMaxTime": 1500.0,
+      "inertialNavigationDriftSpeed": 0.0,
+      "designationError": 7.0,
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
-        "rangeMax": 120000.0,
-        "rangeSurface": 120000.0,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true,
+        "boundaryTrack": true,
+        "constantDesignationSourceType": "",
         "fov": 0.1,
         "minAngleToSun": 1.0,
+        "targetRadiusMin": 1.5,
+        "rangeMax": 120000.0,
+        "rangeSurface": 120000.0,
         "lockAngleMax": 30.0,
         "angleMax": 54.0,
         "rateMax": 2.5,
         "prolongationTimeMax": 1.0,
         "designationSourceType": [
+          "ins",
           "camera",
           "shellFpv"
-        ],
-        "constantDesignationSourceType": "",
-        "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        ]
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,
         "timeToHitToAltitude0": [
-          1.0,
+          0.0,
           609.6
         ],
         "altitudeHoldTargetElevation": -11.0,
@@ -231,7 +248,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.3
       }
     },
     "DamageParts": {
@@ -600,26 +617,6 @@
       "stone_snow": {
         "fx": "hit_12_14mm_snow_ap"
       }
-    },
-    "fpvModeSettings": {
-      "hasNightVision": true,
-      "hasFPVMode": true,
-      "horLimit": [
-        -42.0,
-        42.0
-      ],
-      "verLimit": [
-        -54.0,
-        30.0
-      ],
-      "zoomMinMax": [
-        3.0,
-        1.5
-      ],
-      "rateMax": [
-        2.5,
-        2.5
-      ]
     }
   }
 }

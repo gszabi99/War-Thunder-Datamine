@@ -25,7 +25,9 @@ def human_look_dir_camera_es(info : ParallelUpdateFrameDelayed;
                                                            var camera__prevLookDir : float3&;
                                                            var camera__lookDir : float3&;
                                                            camera__shootOffsetTau : float = 0.05f;
-                                                           isInVehicle : bool = false)
+                                                           camera__breathOffsetAimMult : float = 0.7;
+                                                           isInVehicle : bool = false;
+                                                           bipod__enabled : bool = false)
     if isInVehicle
       return
     camera__prevLookDir = camera__lookDir
@@ -46,6 +48,13 @@ def human_look_dir_camera_es(info : ParallelUpdateFrameDelayed;
 
     camera__shootOffset = approach(camera__shootOffset, aimOffs, info.dt, camera__shootOffsetTau)
     ang += camera__shootOffset
+
+    
+    
+    let aimPosition = lerp(human_net_phys.phys.previousState.aimPosition, human_net_phys.phys.currentState.aimPosition, interpK)
+    if aimPosition > 0.0 && camera__breathOffsetAimMult > 0.0 && !bipod__enabled
+      let breathOffset = lerp(human_net_phys.phys.previousState.breathOffset, human_net_phys.phys.currentState.breathOffset, float2(interpK))
+      ang += breathOffset * aimPosition * camera__breathOffsetAimMult
 
     ang.y = clamp(ang.y, -SAFE_HALF_PI, SAFE_HALF_PI)
     camera__lookDir = angles_to_dir(ang)

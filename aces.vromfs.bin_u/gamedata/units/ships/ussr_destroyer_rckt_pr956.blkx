@@ -1037,7 +1037,8 @@
           "engine_room_06_dm"
         ],
         "onKill": {
-          "expl": 1.0,
+          "expl": 0.25,
+          "nothing": 0.75,
           "fHitCritical": false,
           "action": {
             "type": "fxEvent",
@@ -2375,6 +2376,18 @@
       "blk": "gameData/units/ships/weaponPresets/ussr_destroyer_rckt_pr956_default.blk"
     }
   },
+  "boilerExplosionFx": {
+    "fx": [
+      {
+        "gearFrom": 0.0,
+        "event": "steam_explosion_big"
+      },
+      {
+        "gearFrom": 3.0,
+        "event": "steam_explosion_big"
+      }
+    ]
+  },
   "shipFuelLeakFxParams": {
     "fuelLeakFxName": "fire_burning_fuel_oil_large",
     "fuelLeakStayFxName": "fire_burning_fuel_oil_large",
@@ -3527,6 +3540,31 @@
         "fx": {
           "name": "smoke_after_hit_small",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "steam_leak",
+        "lifetime": 10.0,
+        "fx": {
+          "name": "explosion_steam_leak"
+        }
+      },
+      {
+        "name": "steam_explosion_medium",
+        "fx": {
+          "name": "explosion_steam_medium"
+        }
+      },
+      {
+        "name": "steam_explosion_big",
+        "fx": {
+          "name": "explosion_steam_big"
+        }
+      },
+      {
+        "name": "steam_explosion_nuclear",
+        "fx": {
+          "name": "explosion_steam_nuclear"
         }
       },
       {

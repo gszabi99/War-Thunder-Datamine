@@ -85,6 +85,11 @@ function getTypeByPurpose(weaponry) {
             if (isFound)
               break
           }
+        if (!isFound && (w?.guidanceType == "radar" || w?.guidanceType == "PRH")) {
+          if (!isInArray("AIR_TO_RADAR", res))
+            res.append("AIR_TO_RADAR")
+          isFound = true
+        }
         if (!isFound && !isInArray("AIR_TO_GROUND", res))
           res.append("AIR_TO_GROUND")
       }
@@ -93,6 +98,7 @@ function getTypeByPurpose(weaponry) {
   return res.len() == 0 ? "UNIVERSAL"
     : res.len() == 1 ? res[0]
     : isInArray("AIR_TO_AIR", res) ? "UNIVERSAL"
+    : isInArray("AIR_TO_RADAR", res) ? "AIR_TO_RADAR"
     : isInArray("AIR_TO_SEA", res) ? "AIR_TO_SEA"
     : "AIR_TO_GROUND"
 }

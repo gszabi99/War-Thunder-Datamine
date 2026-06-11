@@ -1,20 +1,29 @@
 {
   "rocketGun": true,
   "preset_cost": 25,
+  "helicopterGroup": 2,
+  "shotFreq": 20.0,
+  "sound": "weapon.rocketgun_132",
   "mesh": "spike_er_rocket",
   "mesh_deployed": "spike_er_rocket_deployed",
-  "helicopterGroup": 2,
   "offsetForDemonstration": [
     0.07,
     0.0,
     0.0
   ],
   "demonstrateDeployedMesh": true,
-  "shotFreq": 20.0,
-  "sound": "weapon.rocketgun_132",
   "rocket": {
+    "dragCx": 0.0035,
     "bulletName": "spike_er",
+    "iconType": "atgm_type_pars3_x4",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "amountPerTier": 4.0,
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.17,
     "length": 1.65,
     "WdK": [
@@ -35,10 +44,8 @@
     "force": 2300.0,
     "force1": 138.0,
     "timeLife": 60.0,
-    "useStartSpeed": true,
     "startSpeed": 55.0,
     "maxSpeed": 180.0,
-    "endSpeed": 0.0,
     "maxDistance": 8000.0,
     "minDistance": 30.0,
     "operatedDist": 8000.0,
@@ -48,7 +55,6 @@
     "guidanceSfx": "alarm_con_scan",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
-    "maxDeltaAngle": 0.02,
     "explosiveType": "lx14",
     "explosiveMass": 2.35,
     "normalizationPreset": "heat",
@@ -68,10 +74,7 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
-    "shellCollision": true,
-    "dragCx": 0.0035,
     "hitPowerMult": 100.0,
-    "distanceFuse": false,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -81,12 +84,10 @@
       1000.0
     ],
     "hitPower": 260.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.4,
     "explodeTreshold": 0.01,
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
-    "amountPerTier": 4.0,
-    "iconType": "atgm_type_pars3_x4",
+    "distanceFuse": false,
     "explosionEffect": "hit_81_132mm_heat",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
     "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -99,18 +100,34 @@
     "visualShattersGroundOffset": 1.2,
     "hasTracerTrail": true,
     "hazeEffect": "haze_missile",
-    "arcadeProp": {
-      "finsAoaHor": 0.2,
-      "finsAoaVer": 0.2
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -20.0,
+        20.0
+      ],
+      "verLimit": [
+        -40.0,
+        10.0
+      ],
+      "zoomMinMax": [
+        4.0,
+        4.0
+      ],
+      "rateMax": [
+        5.0,
+        5.0
+      ]
     },
     "guidance": {
+      "uncageBeforeLaunch": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
-      "breakLockMaxTime": 120.0,
-      "uncageBeforeLaunch": true,
       "reacquireTarget": true,
       "lockMode": "LOAL+LOBL",
+      "breakLockMaxTime": 1500.0,
       "timeTableCorrection": [
         0.063,
         0.835
@@ -120,24 +137,25 @@
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
         "rangeBand8": 200.0,
-        "rangeSurface": 20000.0,
-        "rangeMax": 20000.0,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true,
+        "boundaryTrack": true,
+        "constantDesignationSourceType": "",
+        "targetRadiusMin": 1.5,
         "fov": 0.1,
         "gateWidth": 0.1,
         "minAngleToSun": 1.0,
+        "rangeSurface": 20000.0,
+        "rangeMax": 20000.0,
         "lockAngleMax": 30.0,
         "angleMax": 40.0,
         "rateMax": 5.0,
         "prolongationTimeMax": 1.0,
         "designationSourceType": [
+          "ins",
           "camera",
           "shellFpv"
-        ],
-        "constantDesignationSourceType": "",
-        "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        ]
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,
@@ -161,8 +179,8 @@
         "reqAccelMax": 4.0,
         "accelControlProp": 0.037449,
         "accelControlIntg": 0.032407,
-        "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.001974
+        "accelControlDiff": 0.001974,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 100.0,
@@ -203,6 +221,12 @@
         ]
       }
     },
+    "cumulativeDamage": {
+      "armorPower": 1000.0,
+      "distance": 9.5,
+      "damage": 900.0,
+      "onHitChanceMultFire": 25.0
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -219,73 +243,6 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 50.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": [
-          {
-            "shellState": "inFlight",
-            "expl": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.05,
-            "fire": 0.45,
-            "break": 0.5,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.5,
-            "fire": 0.3,
-            "break": 0.2,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "explosion",
-            "expl": 0.45,
-            "fire": 0.45,
-            "break": 0.1,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "cumulative",
-            "expl": 0.4,
-            "fire": 0.4,
-            "break": 0.1,
-            "damage": 100.0,
-            "fHitCritical": true
-          }
-        ],
-        "onKill": [
-          {
-            "shellState": "inFlight",
-            "destruction": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "expl": 0.05,
-            "fire": 0.05,
-            "break": 0.9,
-            "fHitCritical": true
-          }
-        ]
-      }
     },
     "hitpower": {
       "HitPower0m": [
@@ -435,11 +392,72 @@
         10000.0
       ]
     },
-    "cumulativeDamage": {
-      "armorPower": 1000.0,
-      "distance": 9.5,
-      "damage": 900.0,
-      "onHitChanceMultFire": 25.0
+    "DamageParts": {
+      "body": {
+        "hp": 50.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
+      }
     },
     "collisions": {
       "default": {
@@ -864,26 +882,6 @@
         "smokeEffect2": "",
         "endSmokeViscosity": 0.05
       }
-    ],
-    "fpvModeSettings": {
-      "hasNightVision": true,
-      "hasFPVMode": true,
-      "horLimit": [
-        -20.0,
-        20.0
-      ],
-      "verLimit": [
-        -40.0,
-        10.0
-      ],
-      "zoomMinMax": [
-        4.0,
-        4.0
-      ],
-      "rateMax": [
-        5.0,
-        5.0
-      ]
-    }
+    ]
   }
 }

@@ -92,9 +92,13 @@
     "guidance": {
       "breakLockMaxTime": 3.0,
       "uncageBeforeLaunch": true,
+      "lockAfterLaunch": false,
+      "reacquireTarget": true,
       "useTargetVel": false,
+      "lockTimeOut": 0.0,
+      "disableTOFInHud": true,
       "warmUpTime": 0.5,
-      "workTime": 100.0,
+      "workTime": 10.0,
       "guidanceAutopilot": {
         "timeOut": 0.5,
         "propNavMult": 4.0,
@@ -220,6 +224,7 @@
         "mandatoryDesignationSources": false,
         "targetSignatureType": "radarIntercept",
         "active": false,
+        "prolongationTimeMax": 1.0,
         "multipathEffect": [
           0.0,
           1.0,
@@ -232,7 +237,6 @@
         "lockAngleMax": 30.0,
         "angleMax": 30.0,
         "rateMax": 12.0,
-        "prolongationTimeMax": 1.0,
         "designationSourceTypeMask": 0,
         "transmitter": {
           "power": 200.0,

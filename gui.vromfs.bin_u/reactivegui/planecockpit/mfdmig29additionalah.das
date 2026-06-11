@@ -32,7 +32,7 @@ let
   RING_R_IN    = 0.3267
   RING_R_OUT   = 0.3734
   DEG_PER_UNIT = 0.0056
-  VS_RANGE     = 20.0
+  PITCH_RANGE  = 25.0
 
 class Component : Canvas
   isValid : bool = false
@@ -45,7 +45,6 @@ class Component : Canvas
   iasMps    : float = 0.0
   altM      : float = 0.0
   machNum   : float = 0.0
-  vertSpeed : float = 0.0
   pressurePa : float = 101325.0
   slipAngleDeg : float = 0.0
   fontSize       : int = 30
@@ -75,7 +74,7 @@ class Component : Canvas
     iasMps    = fmw.ias
     altM      = hero.unitTm[3].y - app.currentScene.waterLevel
     machNum   = fmw.fm.cache.Mach
-    vertSpeed = fmw.fm.vertSpeed
+
     pressurePa = GamePhys::pressure(altM)
     let zVel = dot(hero.vel, hero.unitTm[1])
     let projVel = hero.vel - hero.unitTm[1] * zVel
@@ -303,7 +302,7 @@ class Component : Canvas
     drawSector(vsOffset, float2(vsR, vsR), float2(-arcHalf, arcHalf))
     for step in range(-2, 3)
       let v = float(step * 10)
-      let angle = -v / VS_RANGE * arcHalf
+      let angle = -v / PITCH_RANGE * arcHalf
       var sinA, cosA : float
       sincos(angle, sinA, cosA)
       drawLine(vsOffset + float2(cosA * (vsR + 0.005), sinA * (vsR + 0.005)),
@@ -311,8 +310,8 @@ class Component : Canvas
       if step != 0
         let labelR = vsR - 0.06
         drawStrAnchored(vsOffset + float2(cosA * labelR, sinA * labelR), "{abs(int(v))}", AnchorHorz.Center, AnchorVert.Center)
-    let clamped = clamp(vertSpeed, -VS_RANGE, VS_RANGE)
-    let needleAngle = -clamped / VS_RANGE * arcHalf
+    let clamped = clamp(pitchDeg, -PITCH_RANGE, PITCH_RANGE)
+    let needleAngle = -clamped / PITCH_RANGE * arcHalf
     var sinN, cosN : float
     sincos(needleAngle, sinN, cosN)
     let tipC   = vsOffset + float2(cosN * vsR, sinN * vsR)
