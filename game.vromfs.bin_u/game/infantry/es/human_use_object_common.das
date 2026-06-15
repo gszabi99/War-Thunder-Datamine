@@ -11,7 +11,8 @@ require %appGame.infantry.es.squad_personal_order_common
 def human_try_use_object(user_eid : EntityId;
                          user_position : float3;
                          use_distance_threshold : float;
-                         used_object_eid : EntityId)
+                         used_object_eid : EntityId;
+                         seat_eid : EntityId = INVALID_ENTITY_ID)
   var done = false
   query(used_object_eid) <| $ [es] (squad_member__squad : EntityId)
     query(squad_member__squad) <| $ [es] (squad__leader : EntityId)
@@ -23,12 +24,18 @@ def human_try_use_object(user_eid : EntityId;
   if done
     return
 
-  query(used_object_eid) <| $ [es] (transform : float3x4)
+  query(used_object_eid) <| $ [es] (transform : float3x4; unit_tag__tank : Tag const?)
     if length_sq(user_position - transform[3]) <= square(use_distance_threshold)
       if !is_server()
-        sendEvent(user_eid, HumanUseObjectRequest(objectEid = used_object_eid))
+        if unit_tag__tank != null
+          send_net_event(user_eid, HumanUseVehicleRequest(vehicle = used_object_eid, seatEid = seat_eid))
+        else
+          sendEvent(user_eid, HumanUseObjectRequest(objectEid = used_object_eid))
       else
-        sendEvent(used_object_eid, CmdUse(requesterEid = user_eid))
+        if unit_tag__tank != null
+          sendEvent(used_object_eid, CmdUseVehicle(requester = user_eid, seatEid = seat_eid))
+        else
+          sendEvent(used_object_eid, CmdUse(requesterEid = user_eid))
 
 def human_try_use_object_alt(user_eid : EntityId;
                              user_position : float3;

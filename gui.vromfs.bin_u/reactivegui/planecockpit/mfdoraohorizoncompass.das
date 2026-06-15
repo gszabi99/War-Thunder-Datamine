@@ -11,7 +11,8 @@ require Unit
 
 
 let
-  CLR      = E3DCOLOR(0xFF_80FF00)
+  CLR      = E3DCOLOR(0xFF_00CC00)
+  CLR_LIME = E3DCOLOR(0xFF_80FF00)
   CLR_BG   = E3DCOLOR(0xFF_000000)
   CLR_NONE = E3DCOLOR(0x00_000000)
   CLR_SKY  = E3DCOLOR(uint4(0, 50, 200, 255))
@@ -138,8 +139,8 @@ class Component : Canvas
 
     resetViewTm()
 
-    setColor(CLR)
-    setFillColor(CLR)
+    setColor(CLR_LIME)
+    setFillColor(CLR_LIME)
     drawFilledPolyOutlined([
       float2(cx,                cy - 0.010),
       float2(cx - 0.04, cy - 0.002),

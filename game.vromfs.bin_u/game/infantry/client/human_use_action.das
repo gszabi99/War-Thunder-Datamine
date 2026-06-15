@@ -6,6 +6,12 @@ require %appGame.infantry.es.action_common
 require %appGame.infantry.es.door_operations_common
 require %appGame.infantry.es.inventory_common
 require %appGame.infantry.es.team_common
+require %appGame.infantry.es.vehicle.vehicle_seats_common
+require %appGame.infantry.es.vehicle.vehicle_events
+require net
+require Unit
+require CollRes
+require GeomNodeTree
 require HumanPhys
 require DngHuman
 require inventory
@@ -14,11 +20,28 @@ require hud
 require %game.events
 
 
+def get_vehicle_enter_seat(hero_eid : EntityId; aim_tm : float3x4; seat_check_offset : float; seat_sphere_radius : float; vehicle_eid : EntityId) : EntityId
+  var seatEid = INVALID_ENTITY_ID
+  let playerEid = get_Eid(hero_eid, "possessedByPlr") ?? INVALID_ENTITY_ID
+  query(vehicle_eid) <| $ [es] (unit__ref : UnitRef;
+                                transform aka vehicle_transform : float3x4;
+                                vehicle_seats__seatEids : EidList)
+    let tree = get_entity_geom_node_tree(unit__ref, null)
+    if tree == null
+      return
+    if get_entity_coll_res(unit__ref, null) == null
+      return
+    assume collres = *get_entity_coll_res(unit__ref, null)
+    seatEid = find_nearest_free_seat(playerEid, aim_tm[3], aim_tm[0], seat_check_offset, seat_sphere_radius, *tree, collres, vehicle_transform, vehicle_seats__seatEids)
+  return seatEid
+
+
 [es(tag=( render, gameClient) , REQUIRE=watchedByPlr)]
 def human_use_action_es(info : ParallelUpdateFrameDelayed;
-                        eid : EntityId;
+                        eid aka human_eid : EntityId;
                         transform aka human_transform : float3x4;
                         human_net_phys : HumanActor const?;
+                        human__aimTm : float3x4;
                         human_weap__gunEids : EidList;
                         human_use_object__lookAtObject : EntityId;
                         human_inventory__selectedItem : EntityId;
@@ -26,13 +49,17 @@ def human_use_action_es(info : ParallelUpdateFrameDelayed;
                         human_breath__isUnderWater = false;
                         isAlive = true;
                         isInVehicle = false;
+                        human_use_object__vehicleSeatCheckOffset = 0.5f;
+                        human_use_object__vehicleSeatSphereRadius = 0.3f;
                         var useActionAvailable : int&;
+                        var human_use_object__vehicleSeatEid : EntityId&;
                         var useActionEid : EntityId&;
                         var lookAtEid : EntityId&;
                         var pickupItemName : das_string&;
                         var pickupItemEid : EntityId&;
                         human__canPlantCarryingBomb : bool = false)
   useActionAvailable = int(HumanAction.ACTION_NONE)
+  human_use_object__vehicleSeatEid = INVALID_ENTITY_ID
   lookAtEid = INVALID_ENTITY_ID
   if human_net_phys == null || !isAlive
     pickupItemName := ""
@@ -69,6 +96,8 @@ def human_use_action_es(info : ParallelUpdateFrameDelayed;
         pass
       elif has(selectedObjectEid, "vehicle_seats__seats") && get_bool(selectedObjectEid, "isAlive") ?? false
         useActionAvailable = isInVehicle ? int(HumanAction.ACTION_NONE) : int(HumanAction.ACTION_USE)
+        if !isInVehicle
+          human_use_object__vehicleSeatEid = get_vehicle_enter_seat(human_eid, human__aimTm, human_use_object__vehicleSeatCheckOffset, human_use_object__vehicleSeatSphereRadius, selectedObjectEid)
       elif has(selectedObjectEid, "lootable") && !has(selectedObjectEid, "lootableGunOnly") && !(get_bool(selectedObjectEid, "isAlive") ?? true)
         useActionAvailable = int(HumanAction.ACTION_LOOT_BODY)
       elif has(selectedObjectEid, "squad_member__squad") && has(selectedObjectEid, "human")
@@ -126,12 +155,23 @@ def human_use_action_es(info : ParallelUpdateFrameDelayed;
   if human_use_object__lookAtObject != INVALID_ENTITY_ID && doesEntityExist(human_use_object__lookAtObject)
     lookAtEid = human_use_object__lookAtObject
 
-[es(tag=( render, gameClient), on_appear, track=useActionAvailable, REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved)]
+[es(tag=( render, gameClient), on_appear, track=(useActionAvailable, human_use_object__vehicleSeatEid), REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved)]
 def human_use_action_hud_es(evt : Event;
-                            useActionAvailable : int&)
+                            useActionAvailable : int;
+                            human_use_object__vehicleSeatEid : EntityId)
   using() <| $(var eventData : DataBlock)
     hud_notify_script("hint:human_use_action:hide", eventData)
-    if useActionAvailable == int(HumanAction.ACTION_USE)
+    hud_notify_script("hint:human_enter_driver_seat:hide", eventData)
+    hud_notify_script("hint:human_enter_passenger_seat:hide", eventData)
+    if human_use_object__vehicleSeatEid != INVALID_ENTITY_ID
+      var isDriver = false
+      query(human_use_object__vehicleSeatEid) <| $ [es] (seat__isDriver : bool)
+        isDriver = seat__isDriver
+      if isDriver
+        hud_notify_script("hint:human_enter_driver_seat:show", eventData)
+      else
+        hud_notify_script("hint:human_enter_passenger_seat:show", eventData)
+    elif useActionAvailable == int(HumanAction.ACTION_USE)
       hud_notify_script("hint:human_use_action:show", eventData)
     elif useActionAvailable == int(HumanAction.ACTION_PICK_UP)
       hud_notify_script("hint:human_use_pick_up:show", eventData)

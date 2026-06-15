@@ -101,21 +101,21 @@ let filterPresets = [
     valuesList = [
       {
         locText = loc("hud/short_range_spaa")
-        label = "S"
+        label = loc("hud/radarFilters/composite/shortRangeSPAA")
         getImage = @(_imageSize) null
         valueMask = 1 << RadarCompositeSubfilter.SHORT_RANGE_SPAA
         isSelected = Watched(false)
       },
       {
         locText = loc("hud/medium_range_spaa")
-        label = "M"
+        label = loc("hud/radarFilters/composite/mediumRangeSPAA")
         getImage = @(_imageSize) null
         valueMask = 1 << RadarCompositeSubfilter.MEDIUM_RANGE_SPAA
         isSelected = Watched(false)
       },
       {
         locText = loc("hud/long_range_spaa")
-        label = "L"
+        label = loc("hud/radarFilters/composite/longRangeSPAA")
         getImage = @(_imageSize) null
         valueMask = 1 << RadarCompositeSubfilter.LONG_RANGE_SPAA
         isSelected = Watched(false)

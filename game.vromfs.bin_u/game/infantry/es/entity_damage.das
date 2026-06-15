@@ -23,6 +23,7 @@ require %appGame.infantry.es.hitpoints_common
 require %appGame.infantry.es.hit_result_common
 require %game.utils.net_utils
 require %game.dm.dm_events
+require %game.player_events
 require %game.events
 require vehicle
 require AnimV20
@@ -133,6 +134,20 @@ def fill_offender_armor_info(var offender_data : OffenderData&; dm_parts__armorI
             if !empty(item__armorHudDmPart)
               let value = safediv(item__armorDurabilityAmount, item__armorDurabilityMaxAmount)
               offender_data.addArmorSegmentInfo(item__armorHudDmPart, value)
+
+
+def handoff_vehicle_control_to_dying_driver(victim : EntityId)
+  let seatEid = get_Eid(victim, "human_vehicle__occupiedSeatEid") ?? INVALID_ENTITY_ID
+  if seatEid == INVALID_ENTITY_ID
+    return
+  if !(get_bool(seatEid, "seatOwnsEntityControl") ?? false)
+    return
+  if !(get_bool(seatEid, "seat__isPlayer") ?? false)
+    return
+  let playerEid = get_Eid(seatEid, "seat__playerEid") ?? INVALID_ENTITY_ID
+  if playerEid == INVALID_ENTITY_ID
+    return
+  sendEventImmediate(playerEid, CmdPlayerSetControlledUnit(toEid = victim))
 
 
 def apply_damage(data : ApplyDamageData)
@@ -302,6 +317,7 @@ def apply_damage(victim : EntityId;
       ))
 
     if !wasDead && hitpoints__hp <= 0.
+      handoff_vehicle_control_to_dying_driver(victim)
       mainOffender = offender_data
       isAlive = false
 

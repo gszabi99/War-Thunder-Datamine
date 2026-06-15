@@ -946,7 +946,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   let isChangingWeapon = (phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_HOLSTERING ||
                           phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_EQUIPING ||
                           phys.previousState.weapEquipState.curState == HUWeaponEquipState.EES_HOLSTERING ||
-                          phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_EQUIPED)
+                          phys.previousState.weapEquipState.curState == HUWeaponEquipState.EES_EQUIPING)
 
   if human_weap__throwMode
     stateUpperBody = (effectiveCurSlot == HUWeaponSlots.EWS_GRENADE ? HumanStateUpperBody.E_THROW

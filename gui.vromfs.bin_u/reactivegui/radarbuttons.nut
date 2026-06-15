@@ -3,7 +3,7 @@ let { setVirtualAxisValue } = require("controls")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let hints = require("%rGui/hints/hints.nut")
 let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX,
-  IsRadarHudVisible, IsRadarHasFilters, IsEsm
+  IsRadarHudVisible, IsRadarHasFilters, IsEsm, HasMultipleSensorModes
 } = require("%rGui/radarState.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
@@ -78,6 +78,13 @@ let isWvrMode = Computed(function() {
 })
 
 let verticalButtonsAir = [
+  {
+    id = "ID_SENSOR_MODES_SWITCH"
+    
+    img = null
+    isVisible = Computed(@() HasMultipleSensorModes.get())
+    shHintAlign = ALIGN_RIGHT
+  }
   {
     id = "ID_SENSOR_TYPE_SWITCH"
     img = Computed(@() Irst.get() ? "ui/gameuiskin#radar_controls_irst_mode.svg"
@@ -279,6 +286,7 @@ function getFilterButtonsConfig() {
 function mkButtonIconComp(srcValueOrWatched) {
   let iconSrcW = type(srcValueOrWatched) == "string" ? Watched(srcValueOrWatched)
     : srcValueOrWatched
+  let drawPicture = srcValueOrWatched != null
 
   return @() {
     watch = [HudColor, iconSrcW]
@@ -287,7 +295,7 @@ function mkButtonIconComp(srcValueOrWatched) {
     color =  HudColor.get()
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    image = Picture($"{iconSrcW.get()}:{BTN_ICON_SIZE}:{BTN_ICON_SIZE}:P")
+    image = drawPicture ? Picture($"{iconSrcW.get()}:{BTN_ICON_SIZE}:{BTN_ICON_SIZE}:P") : null
   }
 }
 
@@ -325,6 +333,7 @@ function mkButtonBase(btn, ovr = {}) {
   let { id = "", img, axisControl = null, shHintAlign = ALIGN_CENTER, tooltipOverride = null } = btn
   let stateFlag = Watched(0)
   let isActive = btn?.isActive ?? Watched(true)
+  let isVisible = btn?.isVisible ?? Watched(true)
   let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0)
   let maxContainerWidth = shHintAlign != ALIGN_CENTER ? BTN_CONTAINER_WITH_ALIGNED_HINTS_MAX_WIDTH : null
 
@@ -340,7 +349,7 @@ function mkButtonBase(btn, ovr = {}) {
       && isActive.get() ? mkShortcutText(id.concat("{{", "}}"), showConsoleButtons.get()) : null
   }.__update(shHintOvr)
 
-  return @() {
+  let innerBtn = @() {
     key = id
     watch = isActive
     minWidth = hdpx(52)
@@ -386,6 +395,11 @@ function mkButtonBase(btn, ovr = {}) {
 
     onDetach = axisControl ? @() setVirtualAxisValue(axisControl.axisId, 0) : null
   }.__update(ovr)
+
+  return @() {
+    watch = isVisible
+    children = isVisible.get() ? innerBtn : null
+  }
 }
 
 let mkButton = @(btnCfg) mkButtonBase(btnCfg)

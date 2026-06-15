@@ -289,6 +289,16 @@ struct CmdUse
   requesterEid : EntityId
 
 [event(unicast)]
+struct CmdUseVehicle
+  requester : EntityId
+  seatEid : EntityId
+
+[event(unicast, routing=ROUTING_CLIENT_TO_SERVER)]
+struct HumanUseVehicleRequest
+  vehicle : EntityId
+  seatEid : EntityId
+
+[event(unicast)]
 struct CmdUseAlt
   requesterEid : EntityId
 

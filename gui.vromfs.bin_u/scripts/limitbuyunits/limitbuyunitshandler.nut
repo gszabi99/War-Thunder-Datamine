@@ -44,6 +44,8 @@ let { addTask } = require("%scripts/tasker.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
+const MAX_SHOW_UNITS = 50
+
 function getPromoteUnits() {
   let units = promoteUnits.get().values().filter(@(v) v.isActive)
   return units.map(function(unitData) {
@@ -327,6 +329,10 @@ let class LimitBuyUnitsHandler (gui_handlers.BaseGuiHandlerWT) {
       this.listEmptyTextObj.setValue(loc("wishlist/filter/filterStrong"))
       return
     }
+
+    showObjById("to_many_vehicles_text", this.filteredUnits.len() > MAX_SHOW_UNITS, this.scene)
+    if (this.filteredUnits.len() > MAX_SHOW_UNITS)
+      this.filteredUnits.resize(MAX_SHOW_UNITS)
 
     let units = this.filteredUnits.map(@(unitData) createUnitViewData(unitData))
     let data = handyman.renderCached("%gui/limitBuyUnits/limitBuyUnit.tpl", { units })

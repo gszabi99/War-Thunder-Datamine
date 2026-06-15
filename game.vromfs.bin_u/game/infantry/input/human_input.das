@@ -446,6 +446,7 @@ def human_use_object_input(evt : EventOnKeyDown;
                            transform : float3x4;
                            isDowned : bool = false;
                            human_use_object__selectedObject : EntityId;
+                           human_use_object__vehicleSeatEid : EntityId;
                            human_use_object__thresholdDist : float = 12.f)
   if evt.eventId == int(ShortcutEventId.ID_HUMAN_USE) && !isDowned
     var result = false
@@ -468,7 +469,7 @@ def human_use_object_input(evt : EventOnKeyDown;
           return
     if result
       return
-    human_try_use_object(eid, transform[3], human_use_object__thresholdDist, human_use_object__selectedObject)
+    human_try_use_object(eid, transform[3], human_use_object__thresholdDist, human_use_object__selectedObject, human_use_object__vehicleSeatEid)
 
 def input_melee(cur_time : float;
                 is_gamepad : bool;

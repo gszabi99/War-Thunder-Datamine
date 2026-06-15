@@ -206,6 +206,23 @@ def is_driver_of_hero_vehicle(human_eid : EntityId; vehicle_eid : EntityId) : bo
     match = (vehicle__controlledByDriver == human_eid)
   return match
 
+def assemble_seat_slot_attaches(var parent_animchar : AnimcharBaseComponent&;
+                                attaches_list : EidList;
+                                var attach_ids : array<int>&)
+  for attachEid in attaches_list
+    query(attachEid) <| $ [es(REQUIRE_NOT=menuPoseTm)] (slot_attach__slotId : int;
+                                                        var animchar aka attached_animchar : AnimcharBaseComponent)
+      if slot_attach__slotId >= 0
+        let aid = animchar_setAttachedChar(parent_animchar, slot_attach__slotId, uint(attachEid), attached_animchar, false)
+        if aid >= 0
+          attach_ids |> push(aid)
+
+def release_seat_slot_attaches(var parent_animchar : AnimcharBaseComponent&;
+                               attach_ids : array<int>)
+  for aid in attach_ids
+    animchar_releaseAttachment(parent_animchar, aid)
+
+
 [es(tag=gameClient, REQUIRE=isInVehicle)]
 def human_seat_bake_animchar_es(evt : CmdHumanSeatBake;
                                 eid : EntityId;
@@ -213,15 +230,21 @@ def human_seat_bake_animchar_es(evt : CmdHumanSeatBake;
                                 var animchar : AnimcharBaseComponent;
                                 var animchar_node_wtm : AnimcharNodesMat44;
                                 var animchar_render__root_pos : vec4f&;
+                                attaches_list : EidList const? = null;
                                 animchar__turnDir = false)
   sendEventImmediate(eid, CmdApplyAnimcharEffectorsImmediate())
   var resultTm = transform
   if animchar__turnDir
-    resultTm[0] = transform[2]
-    resultTm[2] = -transform[0]
+    let f0 = resultTm[0]
+    resultTm[0] = resultTm[2]
+    resultTm[2] = -f0
   animchar_set_tm(animchar, resultTm, true)
+  var attachIds : array<int>
+  if attaches_list != null
+    assemble_seat_slot_attaches(animchar, *attaches_list, attachIds)
   animchar |> animchar_act(0.f, true)
   animchar |> animchar_copy_nodes(animchar_node_wtm, animchar_render__root_pos)
+  release_seat_slot_attaches(animchar, attachIds)
 
 [es(tag=gameClient, REQUIRE=watchedByPlr, after=vehicle_seats_hero_pre_camera_es, before=main_update_camera_es)]
 def hero_seated_human_bake_pre_camera_es(act : UpdateStageInfoAct;
@@ -257,6 +280,7 @@ def seated_human_bake_post_pausable_animchar_es(act : UpdateStageInfoAct;
                                                 var animchar : AnimcharBaseComponent;
                                                 var animchar_node_wtm : AnimcharNodesMat44;
                                                 var animchar_render__root_pos : vec4f&;
+                                                attaches_list : EidList const? = null;
                                                 animchar__turnDir = false)
   if !isInVehicle
     return
@@ -264,11 +288,16 @@ def seated_human_bake_post_pausable_animchar_es(act : UpdateStageInfoAct;
     return
   var resultTm = transform
   if animchar__turnDir
-    resultTm[0] = transform[2]
-    resultTm[2] = -transform[0]
+    let f0 = resultTm[0]
+    resultTm[0] = resultTm[2]
+    resultTm[2] = -f0
   animchar_set_tm(animchar, resultTm, true)
+  var attachIds : array<int>
+  if attaches_list != null
+    assemble_seat_slot_attaches(animchar, *attaches_list, attachIds)
   animchar |> animchar_act(0.f, true)
   animchar |> animchar_copy_nodes(animchar_node_wtm, animchar_render__root_pos)
+  release_seat_slot_attaches(animchar, attachIds)
 
 [es(tag=server, on_appear, track=seat__isInHatch)]
 def human_vehicle_seat_update_hatch_state(evt : Event; seat__isInHatch : bool; seat__ownerEid : EntityId)
@@ -287,45 +316,45 @@ def human_vehicle_seat_disable_hatch_state_on_exit_vehicle(evt : Event; isInVehi
   if !isInVehicle
     human_vehicle__isInHatch = false
 
+[es(on_appear, track=(isInVehicle, isInVehicleHidden, human_vehicle__isInHatch, human_vehicle__occupiedSeatEid))]
+def human_vehicle_update_can_hold_weapon(evt : Event;
+                                         isInVehicle : bool;
+                                         isInVehicleHidden : bool;
+                                         human_vehicle__isInHatch : bool;
+                                         human_vehicle__occupiedSeatEid : EntityId;
+                                         var human_vehicle__canHoldWeapon : bool&)
+  var isHoldGunModeAllowed = false
+  var isPassenger = false
+  query(human_vehicle__occupiedSeatEid) <| $ [es] (seat__isHoldGunModeAllowed : bool;
+                                                   seat__isPassenger : bool)
+    isHoldGunModeAllowed = seat__isHoldGunModeAllowed
+    isPassenger = seat__isPassenger
+
+  human_vehicle__canHoldWeapon = is_hold_gun_mode_allowed(isInVehicle, isInVehicleHidden, isPassenger,
+                                                          isHoldGunModeAllowed, human_vehicle__isInHatch, false)
 
 
+[es(track=(human_net_phys__isHctAim, human_weap__throwMode, human_weap__blockAiming, human_weap__currentGunSlot, human_vehicle__canHoldWeapon, human_vehicle__isHoldGunMode))]
+def human_vehicle_update_holding_gun_passenger_mode(evt : Event;
+                                                    human_net_phys__isHctAim : bool;
+                                                    human_weap__throwMode : bool;
+                                                    human_weap__blockAiming : bool;
+                                                    human_weap__currentGunSlot : int;
+                                                    human_vehicle__canHoldWeapon : bool;
+                                                    human_vehicle__isHoldGunMode : bool;
+                                                    var human_vehicle__isHoldingGunPassenger : bool&)
+  human_vehicle__isHoldingGunPassenger = (human_vehicle__canHoldWeapon
+                                     && (human_net_phys__isHctAim || human_weap__throwMode || human_vehicle__isHoldGunMode)
+                                     && !human_weap__blockAiming
+                                     && is_gun_slot_allowed_to_hold_gun_in_hatch(human_weap__currentGunSlot))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[es(tag=input, REQUIRE=hero, on_appear, track=(human_weap__currentGunEid, human_vehicle__isHoldingGunPassenger))]
+def human_vehicle_update_shooting_passenger_mode(evt : Event;
+                                                 human_weap__currentGunEid : EntityId;
+                                                 human_vehicle__isHoldingGunPassenger : bool;
+                                                 var human_vehicle__isShootingPassenger : bool&)
+  human_vehicle__isShootingPassenger = human_vehicle__isHoldingGunPassenger && !has(human_weap__currentGunEid, "notShootableGun")
 
 
 

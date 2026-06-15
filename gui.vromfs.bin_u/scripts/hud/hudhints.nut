@@ -3481,6 +3481,22 @@ NEED_STOP_FOR_RADAR = {
     shortcuts = "ID_HUMAN_USE"
   }
 
+  ENTER_DRIVER_SEAT = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanEnterDriverSeat"
+    showEvent = "hint:human_enter_driver_seat:show"
+    hideEvent = "hint:human_enter_driver_seat:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  ENTER_PASSENGER_SEAT = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/humanEnterPassengerSeat"
+    showEvent = "hint:human_enter_passenger_seat:show"
+    hideEvent = "hint:human_enter_passenger_seat:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
   DRONE_ENTER_ORBITING_MODE = {
     hintType = g_hud_hint_types.COMMON
     getLocParams = @(_eventData) {roll = getAxisShortCutLoc("ailerons"), pitch = getAxisShortCutLoc("elevator")}
@@ -3597,8 +3613,8 @@ NEED_STOP_FOR_RADAR = {
     locId = "hints/enable_shell_fpv_lock"
     showEvent = "hint:enable_shell_fpv_lock:show"
     getShortcuts = @(_data)
-      getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_FIRE_PRIMARY_HELICOPTER"
-      : "ID_FIRE_PRIMARY"
+      getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_TOGGLE_LOCK_SHELL_FPV_HELICOPTER"
+      : "ID_TOGGLE_LOCK_SHELL_FPV"
     lifeTime = 5.0
     totalCount = 3
   }
@@ -3608,8 +3624,8 @@ NEED_STOP_FOR_RADAR = {
     locId = "hints/enable_shell_fpv_correction"
     showEvent = "hint:enable_shell_fpv_correction:show"
     getShortcuts = @(_data)
-      getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_FIRE_PRIMARY_HELICOPTER"
-      : "ID_FIRE_PRIMARY"
+      getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_TOGGLE_LOCK_SHELL_FPV_HELICOPTER"
+      : "ID_TOGGLE_LOCK_SHELL_FPV"
     lifeTime = 5.0
     totalCount = 3
   }

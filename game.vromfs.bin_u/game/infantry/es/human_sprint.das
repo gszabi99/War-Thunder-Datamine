@@ -71,7 +71,7 @@ def double_sprint_stamina_drain(double_sprint__isActive : bool;
                                 var human_net_phys : HumanActor&)
   if double_sprint__isActive
     human_stamina_regen_affect__mult *= double_sprint__staminaRegenMult
-    human_net_phys.phys.currentState.staminaSprintDrainMult *= double_sprint__staminaDrainMult
+    human_net_phys.phys.currentState.staminaSprintDrainMult = double_sprint__staminaDrainMult
 
 [es(tag=netClient, REQUIRE=watchedByPlr, after=(human_weight_influence_client_es))]
 def double_sprint_update_local(info : ParallelUpdateFrameDelayed;

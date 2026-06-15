@@ -29,7 +29,8 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_THRUST_VECTORING_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89,
   EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_HOVER_MODE, EII_FBW_MODE,
   EII_MOUSE_AIM_OVERRIDE_ROLL, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS, EII_AIR_RADAR_GUI_CONTROL_MODE, EII_RADAR_SWITCH_TARGET, EII_SENSORS_GROUP_MODE,
-  EII_RADAR_GUI_NAVIGATION, EII_SHIP_SONAR, EII_HUMAN_ORDERS_MENU, EII_SUB_HYDROPHONE, EII_FUSE_MODE, EII_FPV_SHELL_ACTIVATE
+  EII_RADAR_GUI_NAVIGATION, EII_SHIP_SONAR, EII_HUMAN_ORDERS_MENU, EII_SUB_HYDROPHONE, EII_FUSE_MODE, EII_FPV_SHELL_ACTIVATE,
+  EII_SENSOR_MODES_SWITCH
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -1530,6 +1531,26 @@ enumsAddTypes(g_hud_action_bar_type, {
     getShortcut = @(_actionItem, hudUnitType = null) hudUnitType == HUD_UNIT_TYPE.HELICOPTER
       ? "ID_CAMERA_SHELL_FPV_HELICOPTER"
       : "ID_CAMERA_SHELL_FPV"
+  }
+
+  SENSOR_MODES_SWITCH = {
+    code = EII_SENSOR_MODES_SWITCH
+    _name = "sensor_modes_switch"
+    
+    
+    _title = loc("hotkeys/ID_SENSOR_MODES_SWITCH_TANK")
+    getShortcut = function(_actionItem, hudUnitType = null) {
+      if (hudUnitType == HUD_UNIT_TYPE.TANK)
+        return "ID_SENSOR_MODES_SWITCH_TANK"
+      else if (hudUnitType == HUD_UNIT_TYPE.SHIP)
+        return "ID_SENSOR_MODES_SWITCH_SHIP"
+      else if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_SENSOR_MODES_SWITCH_HELICOPTER"
+      else if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
+        return "ID_SENSOR_MODES_SWITCH_HUMAN"
+      return "ID_SENSOR_MODES_SWITCH"
+    }
+    getTooltipText = @(actionItem = null) this.getTitle(actionItem)
   }
 
 

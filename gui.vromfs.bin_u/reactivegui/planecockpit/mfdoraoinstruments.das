@@ -14,7 +14,8 @@ require Unit
 
 
 let
-  CLR      = E3DCOLOR(0xFF_80FF00)
+  CLR      = E3DCOLOR(0xFF_00CC00)
+  CLR_LIME = E3DCOLOR(0xFF_80FF00)
   CLR_DIM  = E3DCOLOR(0xFF_406000)
   CLR_RED  = E3DCOLOR(0xFF_FF2020)
   CLR_BG   = E3DCOLOR(0xFF_000000)
@@ -112,7 +113,7 @@ class Component : Canvas
       float2(0.0, 1.0),
       float2(-0.04, 0.80),
       float2(-0.04, 0.0)))
-    setFillColor(CLR)
+    setFillColor(CLR_LIME)
     drawFilledPolyOutlined(pts.scale(float2(size)).rotate(-sina, -cosa).translate(pos))
     setFillColor(CLR_NONE)
 
@@ -361,9 +362,9 @@ class Component : Canvas
     setFillColor(CLR_NONE)
     // end rotation
     resetViewTm()
-    // static B-2 silhouette (yellow, does NOT rotate)
-    setColor(CLR)
-    setFillColor(CLR)
+    // static B-2 silhouette (lime, does NOT rotate)
+    setColor(CLR_LIME)
+    setFillColor(CLR_LIME)
     // left half: nose → left tip → trailing edge notch → back to center
     drawFilledPolyOutlined([
       float2(cx,        cy - 0.010),

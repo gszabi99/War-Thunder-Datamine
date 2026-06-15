@@ -59,7 +59,7 @@ def seat_player_relinquish_vehicle_control_es(evt : Event;
     return
   sendEventImmediate(playerEid, CmdPlayerSetControlledUnit(toEid = eid))
 
-[es(tag=server, track=seat__ownerEid, REQUIRE=seatOwnsEntityControl)]
+[es(tag=server, track=(seat__ownerEid, seat__isOwnerAlive), REQUIRE=(seatOwnsEntityControl, seat__isOwnerAlive))]
 def driver_seat_owner_track_es(evt : Event;
                                seat__vehicleEid : EntityId;
                                seat__ownerEid : EntityId;
@@ -67,10 +67,14 @@ def driver_seat_owner_track_es(evt : Event;
                                seatOwnsEntityControl : bool)
   if !seatOwnsEntityControl
     return
+  var ownerAlive = false
+  query(seat__ownerEid) <| $ [es] (isAlive : bool)
+    ownerAlive = isAlive
+  let hasLiveDriver = !!seat__ownerEid && ownerAlive
   query(seat__vehicleEid) <| $ [es] (var vehicle__controlledByDriver : EntityId&;
                                      var vehicle__controlledByPlayer : EntityId&)
-    vehicle__controlledByDriver = seat__ownerEid
-    vehicle__controlledByPlayer = seat__playerEid
+    vehicle__controlledByDriver = hasLiveDriver ? seat__ownerEid : INVALID_ENTITY_ID
+    vehicle__controlledByPlayer = hasLiveDriver ? seat__playerEid : INVALID_ENTITY_ID
 
 [es(tag=server, track=vehicle__controlledByDriver)]
 def vehicle_reset_army_on_driver_left_es(evt : Event;

@@ -375,6 +375,7 @@
     "tankHull": "map_player_tank_hull.svg:17:17:K",
     "mapCamera": "map_camera",
     "deadUnitIcon": "objective_kill",
+    "enableMoveMapInBattle": true,
     "enableTorpedoDrawing": true,
     "maxTorpedoTrailLength": -1.0,
     "maxTorpedoTrailFraction": 0.33,
@@ -2027,7 +2028,20 @@
       "sightSizeMult": 1.3,
       "cylHeightMult": 0.5,
       "cylBottomAlphaMult": 0.667,
-      "cylMinScreenHeightPx": 8.0
+      "cylMinScreenHeightPx": 8.0,
+      "bombTopGradientColor": [
+        100,
+        100,
+        100,
+        0
+      ],
+      "bombScreenRadPx": 112.0,
+      "bombCylHeightMult": 0.1,
+      "bombCylMinScreenHeightPx": 25.0,
+      "bombCylBottomAlphaMult": 0.4,
+      "bombArcCount": 4,
+      "bombArcGapDeg": 20.0,
+      "bombArcTickFrac": 0.15
     },
     "ship_weapon_status": {
       "enabled": true,
@@ -4617,6 +4631,9 @@
         }
       ],
       "fpv_shell_activate": {
+        "shortcutIdx": -1
+      },
+      "sensor_modes_switch": {
         "shortcutIdx": -1
       }
     },

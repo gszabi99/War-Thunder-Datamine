@@ -103,6 +103,7 @@ def skeleton_attach_es(info : ParallelUpdateFrameDelayed;
                        animchar__visible : bool;
                        animchar_bbox : bbox3f;
                        attaches_list : EidList;
+                       human_anim__vehicleSelected : EntityId = INVALID_ENTITY_ID;
                        var animchar_bsph_precalculated : vec4f&;
                        var animchar_bbox_precalculated : BBox3&;
                        
@@ -114,6 +115,8 @@ def skeleton_attach_es(info : ParallelUpdateFrameDelayed;
                        animchar__updatable = true)
   if !animchar__updatable && animchar__updateAttachesWhenNotUpdatable == null
     return
+  if !!human_anim__vehicleSelected
+    return
 
   animchar__usePrecalculatedData = true
 
@@ -121,7 +124,7 @@ def skeleton_attach_es(info : ParallelUpdateFrameDelayed;
   
   skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, info.dt, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated)
 
-[es(tag=gameClient, REQUIRE_NOT=attachedToParent, parallel_for=4, after=seated_human_bake_post_pausable_animchar_es)]
+[es(tag=gameClient, REQUIRE_NOT=attachedToParent, parallel_for=4, after=(seated_human_bake_post_pausable_animchar_es, seated_human_bake_post_pausable_slot_attach_es))]
 def seated_human_bake_post_pausable_attach_es(act : UpdateStageInfoAct;
                                               isInVehicle : bool;
                                               eid : EntityId;
@@ -129,7 +132,6 @@ def seated_human_bake_post_pausable_attach_es(act : UpdateStageInfoAct;
                                               animchar__visible : bool;
                                               animchar_bbox : bbox3f;
                                               attaches_list : EidList;
-                                              human_anim__vehicleSelected : EntityId;
                                               var animchar_bsph_precalculated : vec4f&;
                                               var animchar_bbox_precalculated : BBox3&;
                                               var animchar_attaches_bbox_precalculated : bbox3f?;
@@ -140,44 +142,12 @@ def seated_human_bake_post_pausable_attach_es(act : UpdateStageInfoAct;
                                               animchar__updatable = true)
   if !animchar__visible || !isInVehicle
     return
-  if has(human_anim__vehicleSelected, "watchedByPlr")
-    return
   if !animchar__updatable && animchar__updateAttachesWhenNotUpdatable == null
     return
-
   animchar__usePrecalculatedData = true
 
   animchar_bsph_precalculated = animchar_render_prepareSphereAndCalcBox(animchar_render, animchar_node_wtm, animchar_bbox_precalculated)
   skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, act.dt, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated)
-
-
-
-[es(tag=gameClient, REQUIRE=isInVehicle, REQUIRE_NOT=attachedToParent,
-    after=human_seat_bake_animchar_es)]
-def human_seat_bake_attach_es(evt : CmdHumanSeatBake;
-                              eid : EntityId;
-                              animchar : AnimcharBaseComponent&;
-                              animchar__visible : bool;
-                              animchar_bbox : bbox3f;
-                              attaches_list : EidList;
-                              var animchar_bsph_precalculated : vec4f&;
-                              var animchar_bbox_precalculated : BBox3&;
-                              var animchar_attaches_bbox_precalculated : bbox3f?;
-                              var animchar__usePrecalculatedData : bool&;
-                              animchar_render : AnimcharRendComponent;
-                              animchar_node_wtm : AnimcharNodesMat44;
-                              animchar__updateAttachesWhenNotUpdatable : Tag const?;
-                              animchar__updatable = true)
-  if !animchar__visible
-    return
-  if !animchar__updatable && animchar__updateAttachesWhenNotUpdatable == null
-    return
-
-  animchar__usePrecalculatedData = true
-
-  animchar_bsph_precalculated = animchar_render_prepareSphereAndCalcBox(animchar_render, animchar_node_wtm, animchar_bbox_precalculated)
-  skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, evt.dt, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated)
-
 
 
 

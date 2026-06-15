@@ -232,33 +232,47 @@ def find_highest_free_seat(player : EntityId; vehicle_seats__seatEids : EidList)
       break
   return res
 
-def find_nearest_free_seat(player : EntityId; requester_pos : float3; vehicle : EntityId; vehicle_seats__seatEids : EidList) : int
-  var res = -1
-  var bestDistSq = -1.0f
-  query(vehicle) <| $ [es] (unit__ref : UnitRef; transform : float3x4)
-    let tree = get_entity_geom_node_tree(unit__ref, null)
-    if tree == null
-      return
-    if get_entity_coll_res(unit__ref, null) == null
-      return
-    assume collres = *get_entity_coll_res(unit__ref, null)
-    for orderSeatEid in vehicle_seats__seatEids
-      let orderSeatNo = get_int(orderSeatEid, "seats_order__seatNo") ?? -1
-      if orderSeatNo < 0
-        continue
-      let seatEid = vehicle_seats__seatEids[orderSeatNo]
-      if !check_player_can_enter_seat(player, seatEid, vehicle_seats__seatEids)
-        continue
-      var seatTm : float3x4
-      if !get_seat_attach_tm(seatEid, *tree, collres, transform, seatTm)
-        continue
-      let distSq = length_sq(requester_pos - seatTm[3])
-      if res < 0 || distSq < bestDistSq
-        res = orderSeatNo
-        bestDistSq = distSq
-  if res < 0
-    res = find_highest_free_seat(player, vehicle_seats__seatEids)
-  return res
+def find_nearest_free_seat(player : EntityId;
+                           requester_pos : float3;
+                           look_dir : float3;
+                           seat_check_offset : float;
+                           seat_sphere_radius : float;
+                           tree : GeomNodeTree;
+                           collres : CollisionResource;
+                           vehicle_tm : float3x4;
+                           vehicle_seats__seatEids : EidList) : EntityId
+  var bestSeatDistEid = INVALID_ENTITY_ID
+  var bestSeatDistSq = -1.0f
+  var bestSeatRayEid = INVALID_ENTITY_ID
+  var bestSeatRayDistSq = -1.0f
+  for seatEid in vehicle_seats__seatEids
+    if (get_int(seatEid, "seats_order__seatNo") ?? -1) < 0
+      continue
+    if !check_player_can_enter_seat(player, seatEid, vehicle_seats__seatEids)
+      continue
+    var seatTm : float3x4
+    if !get_seat_attach_tm(seatEid, tree, collres, vehicle_tm, seatTm)
+      continue
+    let distSq = length_sq(requester_pos - seatTm[3])
+    if !bestSeatDistEid || distSq < bestSeatDistSq
+      bestSeatDistEid = seatEid
+      bestSeatDistSq = distSq
+    var sphereCheck = rayIntersectSphereDist(requester_pos, look_dir, seatTm[3], seat_sphere_radius) >= 0.f
+    if !sphereCheck
+      let relPos = seatTm[3] + seatTm[1] * seat_check_offset
+      sphereCheck = rayIntersectSphereDist(requester_pos, look_dir, relPos, seat_sphere_radius) >= 0.f
+    if sphereCheck
+      if !bestSeatRayEid || distSq < bestSeatRayDistSq
+        bestSeatRayEid = seatEid
+        bestSeatRayDistSq = distSq
+  if bestSeatRayEid != INVALID_ENTITY_ID
+    return bestSeatRayEid
+  if bestSeatDistEid != INVALID_ENTITY_ID
+    return bestSeatDistEid
+  let highestSeatNo = find_highest_free_seat(player, vehicle_seats__seatEids)
+  if highestSeatNo >= 0
+    return vehicle_seats__seatEids[highestSeatNo]
+  return INVALID_ENTITY_ID
 
 def enter_vehicle_now(requester : EntityId; vehicle : EntityId; requestSeatNo : int)
   if !is_server()
@@ -270,15 +284,16 @@ def enter_vehicle_now(requester : EntityId; vehicle : EntityId; requestSeatNo : 
       kick_from_vehicle(curOwner, vehicle, vehicle_seats__seatEids)
     sendEvent(vehicle, CmdAcquireVehicleSeat(requester = requester, seat_no = requestSeatNo))
 
-def enter_vehicle(requester : EntityId; requester_pos : float3; vehicle : EntityId; vehicle_seats__seatEids : EidList; enter_time : float; var requestSeatEid : EntityId?)
-  let playerEid = get_Eid(requester, "possessedByPlr") ?? INVALID_ENTITY_ID
-  let requestSeatNo = find_nearest_free_seat(playerEid, requester_pos, vehicle, vehicle_seats__seatEids)
+def enter_vehicle(requester : EntityId; player_eid : EntityId; vehicle : EntityId; vehicle_seats__seatEids : EidList; enter_time : float; requestSeatEid : EntityId; var outRequestSeatEid : EntityId?)
+  var requestSeatNo = find_preferred_free_seat(player_eid, vehicle_seats__seatEids, requestSeatEid)
+  if requestSeatNo < 0
+    requestSeatNo = find_highest_free_seat(player_eid, vehicle_seats__seatEids)
   if requestSeatNo < 0
     return
   if !start_enter_vehicle_timer(requester, vehicle, enter_time)
     enter_vehicle_now(requester, vehicle, requestSeatNo)
-  elif requestSeatEid != null
-    *requestSeatEid = vehicle_seats__seatEids[requestSeatNo]
+  elif outRequestSeatEid != null
+    *outRequestSeatEid = vehicle_seats__seatEids[requestSeatNo]
 
 def cancel_exit_timer(requester : EntityId) : bool
   var res = true

@@ -247,7 +247,7 @@
           ],
           "seatComponent": "isPassenger",
           "canPlaceManually": true,
-          "isHoldGunModeAllowed": false,
+          "isHoldGunModeAllowed": true,
           "shouldHideOwner": false
         },
         {
@@ -279,7 +279,7 @@
           "seatComponent": "isPassenger",
           "canPlaceManually": true,
           "seatEnum": "left_seat",
-          "isHoldGunModeAllowed": false,
+          "isHoldGunModeAllowed": true,
           "shouldHideOwner": false
         },
         {
@@ -310,7 +310,7 @@
           ],
           "seatComponent": "isPassenger",
           "canPlaceManually": true,
-          "isHoldGunModeAllowed": false,
+          "isHoldGunModeAllowed": true,
           "shouldHideOwner": false
         },
         {
@@ -493,7 +493,7 @@
       "value": 1.0
     },
     "vehicle_seats__seatTemplates:shared:object": {
-      "default": "vehicle_seat_default",
+      "default": "vehicle_seat_fire_ready",
       "driver": "vehicle_seat_driver"
     },
     "_group": {
@@ -501,6 +501,7 @@
       "dependent_templates:ecs::TemplatesListToInstantiate": {},
       "dependent_templates_list_shared:shared:list<t>": {
         "template_name": [
+          "vehicle_seat_fire_ready",
           "vehicle_seat_default",
           "vehicle_seat_driver"
         ]
@@ -728,6 +729,11 @@
     "_use": "base_vehicle_seat",
     "seat_anim__upper": "drive_passenger",
     "seat_anim__lower": "drive_passenger"
+  },
+  "vehicle_seat_fire_ready": {
+    "_use": "vehicle_seat_default",
+    "seat_anim__fireReadyUpper": "fireready_passenger",
+    "seat_anim__fireReadyLower": "fireready_passenger"
   },
   "vehicle_seat_driver": {
     "_use": "base_vehicle_seat",

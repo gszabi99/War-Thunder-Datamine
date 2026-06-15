@@ -212,7 +212,7 @@ def bake_slot_attaches_recursive(dt : float; attaches_list : EidList)
       slot_attach_init_tms_impl(dt, slot_attach__slotId, animchar_attach__attachedTo, animchar, disableUpdate,
                                 animchar_node_wtm, animchar_render__root_pos, animchar__visible, slot_attach__calcAnim,
                                 slot_attach__rotTm)
-      if attaches_list != null
+      if attaches_list != null && slot_attach__slotId > 0
         bake_slot_attaches_recursive(dt, *attaches_list)
 
 [es(tag=gameClient, REQUIRE_NOT=attachedToParent, parallel_for=4, after=seated_human_bake_post_pausable_animchar_es)]

@@ -405,6 +405,10 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_TOGGLE_LOCK_SHELL_FPV"
+    checkAssign = false
+  }
+  {
     id = "ID_EXIT_SHOOTING_CYCLE_MODE"
     checkAssign = false
     needShowInHelp = true

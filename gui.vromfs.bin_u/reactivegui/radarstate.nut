@@ -262,6 +262,7 @@ let AamLaunchZoneDistDgftMin = Watched(0.0)
 let AamLaunchZoneDistDgftMax = Watched(0.0)
 
 let HasHelmetTarget = Watched(false)
+let HasMultipleSensorModes = Watched(false)
 let HmdSensorVisible = Watched(false)
 let HmdSensorDesignation = Watched(false)
 let IsRadarHasFilters = Watched(false)
@@ -302,7 +303,7 @@ radarState.__update({
 
     AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
 
-    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay, TimeToMissileHitRel, HasHelmetTarget,
+    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay, TimeToMissileHitRel, HasHelmetTarget, HasMultipleSensorModes,
   }
 )
 

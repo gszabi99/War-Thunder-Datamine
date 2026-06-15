@@ -19,6 +19,16 @@ def on_human_use_object_request(evt : HumanUseObjectRequest;
 
 
 [es(tag=server, REQUIRE=human_use_object__selectedObject, REQUIRE_NOT=deadEntity)]
+def on_human_use_vehicle_request(evt : HumanUseVehicleRequest;
+                                 eid : EntityId;
+                                 transform aka user_transform : float3x4;
+                                 isDowned : bool = false;
+                                 human_use_object__thresholdDist : float = 12.f)
+  if !isDowned
+    human_try_use_object(eid, user_transform[3], human_use_object__thresholdDist, evt.vehicle, evt.seatEid)
+
+
+[es(tag=server, REQUIRE=human_use_object__selectedObject, REQUIRE_NOT=deadEntity)]
 def on_human_use_alt_object_request(evt : HumanUseAltObjectRequest;
                                     eid : EntityId;
                                     transform aka user_transform : float3x4;

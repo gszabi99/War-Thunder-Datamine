@@ -259,6 +259,10 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_LOCK_SHELL_FPV_HELICOPTER"
+    checkAssign = false
+  }
+  {
     id = "ID_EXIT_SHOOTING_CYCLE_MODE_HELICOPTER"
     checkAssign = false
   }

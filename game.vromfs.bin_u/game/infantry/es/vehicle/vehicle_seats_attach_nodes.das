@@ -7,7 +7,7 @@ require GeomNodeTree
 require DagorSystem
 require Unit
 
-[es(tag=server, on_appear)]
+[es(on_appear)]
 def init_attach_nodes(evt : Event;
                       seat__id : int;
                       seat__vehicleEid : EntityId;

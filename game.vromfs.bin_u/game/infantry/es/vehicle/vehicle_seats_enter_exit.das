@@ -10,8 +10,8 @@ require Unit
 
 
 [es(REQUIRE_NOT=deadEntity)]
-def vehicle_seats_es_enter_exit(evt : CmdUse;
-                                eid : EntityId;
+def vehicle_seats_es_enter_exit(evt : CmdUseVehicle;
+                                eid aka vehicle_eid : EntityId;
                                 var unit__ref : UnitRef;
                                 ownedByPlayer aka vehicle_ownedByPlayer : EntityId;
                                 vehicle_seats__seatEids : EidList;
@@ -28,12 +28,13 @@ def vehicle_seats_es_enter_exit(evt : CmdUse;
   if !unit.isAlive || unit.isDelayed
     return
 
-  let requester = evt.requesterEid
+  let requester = evt.requester
+  let seatEid = evt.seatEid
   query(requester) <| $ [es] (var human_vehicle__requestSeatEid : EntityId?;
                               team : int;
                               isInVehicle : bool;
                               squad_member__playerEid : EntityId;
-                              human__aimTm : float3x4;
+                              possessedByPlr : EntityId = INVALID_ENTITY_ID;
                               human_vehicle__can_take_seat : bool = true;
                               human_use_object__lockVehicleUse : bool = false)
     if !isInVehicle && !vehicle__otherPlayersCanEnter && squad_member__playerEid != vehicle_ownedByPlayer
@@ -50,9 +51,10 @@ def vehicle_seats_es_enter_exit(evt : CmdUse;
       return
 
     if can_exit_vehicle(vehicle__isPlayerExitAutoBlocked, vehicle__isPlayerCanExit) && find_seat_with_owner(requester, vehicle_seats__seatEids) >= 0
-      exit_vehicle(requester, eid, vehicle_seats__exitTime)
+      if possessedByPlr != INVALID_ENTITY_ID
+        exit_vehicle(requester, vehicle_eid, vehicle_seats__exitTime)
     elif canEnter && human_vehicle__can_take_seat && !human_use_object__lockVehicleUse
-      enter_vehicle(requester, human__aimTm[3], eid, vehicle_seats__seatEids, vehicle_seats__enterTime, human_vehicle__requestSeatEid)
+      enter_vehicle(requester, possessedByPlr, vehicle_eid, vehicle_seats__seatEids, vehicle_seats__enterTime, seatEid, human_vehicle__requestSeatEid)
 
 
 

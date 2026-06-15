@@ -625,9 +625,7 @@
       "throttle": {
         "axisId": 6,
         "innerDeadzone": 0.0,
-        "kMul": 1.2,
-        "rangeMin": 0.0,
-        "relSens": 0.01
+        "rangeMin": 0.0
       },
       "trim_ailerons": {
         "axisId": 7,
@@ -671,15 +669,26 @@
       "trackIrZoom": true
     },
     "deviceMapping": {
-      "joystick": {
-        "axesCount": 6,
-        "axesOffset": 0,
-        "buttonsCount": 30,
-        "buttonsOffset": 0,
-        "connected": true,
-        "devId": "11C0:5603",
-        "name": "Defender COBRA M5 USB Joystick"
-      }
+      "joystick": [
+        {
+          "axesCount": 6,
+          "axesOffset": 0,
+          "buttonsCount": 30,
+          "buttonsOffset": 0,
+          "connected": true,
+          "devId": "11C0:5603",
+          "name": "Defender COBRA M5 USB Joystick"
+        },
+        {
+          "buttonsOffset": 30,
+          "name": "GTX Throttle",
+          "axesCount": 5,
+          "buttonsCount": 28,
+          "devId": "231D:1105",
+          "connected": true,
+          "axesOffset": 6
+        }
+      ]
     }
   }
 }
