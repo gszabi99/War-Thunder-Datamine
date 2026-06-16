@@ -5,6 +5,7 @@ let { graphPlayerParams } = require("%rGui/weapons/bulletsGraphState.nut")
 let { get_time_msec } = require("dagor.time")
 let { secondsToMilliseconds } = require("%sqstd/time.nut")
 let { lerp } = require("%sqstd/math.nut")
+let { format } = require("string")
 let { abs } = require("math")
 
 const MARK_COUNT_Y = 9
@@ -406,9 +407,11 @@ function mkGridAndGraphComp(graphConfig, size, keyX, keyY, getTooltipText,
   }
 }
 
+let mkTextStringValue = @(titleLocId, value, measureLocId) loc("ui/space").concat(
+  $"{loc(titleLocId)}{loc("ui/colon")}", value, loc(measureLocId))
 
-let mkTextValue = @(titleLocId, value, measureLocId) loc("ui/space").concat(
-  $"{loc(titleLocId)}{loc("ui/colon")}", (value + 0.5).tointeger(), loc(measureLocId))
+let mkTextValue = @(titleLocId, value, measureLocId)
+  mkTextStringValue(titleLocId, (value + 0.5).tointeger(), measureLocId)
 
 let getBulletPenetrationTooltip = @(graphPoint) "\n".concat(
   mkTextValue("bullet_properties/armorPiercing", graphPoint.penetration, "measureUnits/mm"),
@@ -426,7 +429,7 @@ function getBulletBallisticTooltip(graphPoint) {
     mkTextValue("options/measure_units_alt", altitude, "measureUnits/meters_alt"),
     mkTextValue("options/measure_units_speed", speed, "measureUnits/metersPerSecond_climbSpeed"),
     mkTextValue("flightDistance", flightDistance, "measureUnits/meters_alt"),
-    mkTextValue("flightTime", flightTime, "measureUnits/seconds")
+    mkTextStringValue("flightTime", format("%.2f", flightTime), "measureUnits/seconds")
   )
 }
 
@@ -437,7 +440,7 @@ let mkBulletsBallisticTrajectoryGraph = @(bulletsConfig, size)
 function getMissileTooltip(graphPoint) {
   let { distance, altitude, speed, flightDistance, flightTime } = graphPoint
   return "\n".concat(
-    mkTextValue("flightTime", flightTime, "measureUnits/seconds")
+    mkTextStringValue("flightTime", format("%.2f", flightTime), "measureUnits/seconds")
     mkTextValue("options/measure_units_speed", speed, "measureUnits/metersPerSecond_climbSpeed"),
     mkTextValue("options/measure_units_dist", flightDistance, "measureUnits/meters_alt"),
     loc("ui/space").concat(loc("graph/missleTooltip/position"),

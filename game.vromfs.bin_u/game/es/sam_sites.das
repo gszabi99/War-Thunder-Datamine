@@ -41,6 +41,7 @@ def private create_sam_unit(settings_obj : Object const?;
     init |> set("on_death_substract_team_tickets_num", 5)
     init |> set("aimer_custom_setting__maxNumAttackersPerTargetGroupIdx", attackers_group_idx)
     init |> set("aimer_custom_setting__maxNumAttackersPerTarget", max_attackers_per_target)
+    init |> set("unit_params__rearmTimeOnField", settings_obj?.rearmTimeOnField ?? 20.)
 
 
 [es(tag=server, on_appear)]

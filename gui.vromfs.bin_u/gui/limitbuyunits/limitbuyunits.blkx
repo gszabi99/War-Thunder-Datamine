@@ -100,6 +100,7 @@
         },
         {
           "size": "pw, fh",
+          "flow": "vertical",
           "div": {
             "id": "units_list_div",
             "flow": "vertical",
@@ -148,21 +149,19 @@
               "navigatorShortcuts": "yes",
               "css-hier-invalidate": "yes"
             },
-            "textareaNoTab": [
-              {
-                "id": "list_empty_text",
-                "pos": "pw/2-w/2, ph/2-h/2",
-                "position": "absolute",
-                "display": "hide"
-              },
-              {
-                "id": "to_many_vehicles_text",
-                "pos": "pw/2-w/2, ph-h",
-                "position": "absolute",
-                "display": "hide",
-                "text": "#mainmenu/limitBuyWnd/toManyVehicles"
-              }
-            ]
+            "textareaNoTab": {
+              "id": "list_empty_text",
+              "pos": "pw/2-w/2, ph/2-h/2",
+              "position": "absolute",
+              "display": "hide"
+            }
+          },
+          "textareaNoTab": {
+            "id": "to_many_vehicles_text",
+            "position": "relative",
+            "halign": "center",
+            "display": "hide",
+            "text": "#mainmenu/limitBuyWnd/toManyVehicles"
           }
         }
       ]

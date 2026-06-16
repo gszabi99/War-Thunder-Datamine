@@ -1527,7 +1527,15 @@ enumsAddTypes(g_hud_action_bar_type, {
     code = EII_FPV_SHELL_ACTIVATE
     _name = "fpv_shell_activate"
     _title = loc("hotkeys/ID_CAMERA_SHELL_FPV")
-    _icon = "#ui/gameuiskin#thermal_sight.avif"
+    getIcon = function(actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
+      if (actionItem?.active) {
+        hudUnitType = hudUnitType ?? getHudUnitType()
+        return hudUnitType == HUD_UNIT_TYPE.HELICOPTER
+          ? "#ui/gameuiskin#camera_shell_fpv_helicopter_3rd_person_view.avif"
+          : "#ui/gameuiskin#camera_shell_fpv_3rd_person_view.avif"
+      }
+      return "#ui/gameuiskin#camera_shell_fpv.avif"
+    }
     getShortcut = @(_actionItem, hudUnitType = null) hudUnitType == HUD_UNIT_TYPE.HELICOPTER
       ? "ID_CAMERA_SHELL_FPV_HELICOPTER"
       : "ID_CAMERA_SHELL_FPV"

@@ -239,7 +239,6 @@ function findAirSystems(unit, unitBlk, unitType) {
   if (blk?.pilotIr != null || blk?.gunnerIr != null) {
     addOnceUnitModification(unit.name, modName)
   }
-
   if (unitBlk?.cockpit.sightInFov != null || unitBlk?.cockpit.sightOutFov != null) {
     let sightInFov = unitBlk?.cockpit.sightInFov ?? 0
     let sightOutFov = unitBlk?.cockpit.sightOutFov ?? 0
@@ -258,6 +257,11 @@ function findAirSystems(unit, unitBlk, unitType) {
       unitSystemsCache[unit.name].append({ name = desc, ttype = "UNIT_SIMPLE_TOOLTIP",
         params = { unitId = unit.name, text = desc } })
     }
+  }
+  if (blk == null &&
+    (unitBlk?.nightVision.pilotIr != null || unitBlk?.nightVision.gunnerIr != null)) {
+      unitSystemsCache[unit.name].append({ name = loc("modification/night_vision_system"), ttype = "UNIT_SIMPLE_TOOLTIP",
+        params = { unitId = unit.name, text = loc("modification/night_vision_system/desc") } })
   }
 
   let commonData = {

@@ -9,6 +9,15 @@ let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let filterTypes = {}
 
+let buyTypes = [
+  { name = "researchable", title = "wishlist/filter/researchableVehicle" }
+  { name = "premium", title = "wishlist/filter/premiumVehicle" }
+  { name = "shop", title = "wishlist/filter/shopVehicle" }
+]
+
+let availability = [
+  { name = "available", title = "wishlist/filter/available" }
+]
 
 function fillUnitTypes() {
   let res = {}
@@ -45,32 +54,59 @@ function fillCountries() {
 function fillRanks() {
   let res = {}
   let maxRank = maxCountryRank.get()
-  for (local i = 1; i <= maxRank; i++) {
+  for (local i = 1; i <= maxRank; i++)
     res[i] <- {
       id = $"rank_{i}"
       idx = i
       text = $"{loc("shop/age")} {get_roman_numeral(i)}"
       value = i
     }
-  }
+  return res
+}
+
+function fillBuyType() {
+  let res = {}
+  foreach (i, buyType in buyTypes)
+    res[i] <- {
+      id = $"buyType_{i}"
+      idx = i
+      text = loc(buyType.title)
+      value = buyType.name
+    }
+
+  return res
+}
+
+function fillAvailability() {
+  let res = {}
+  foreach (i, avail in availability)
+    res[i] <- {
+      id = $"availability_{i}"
+      idx = i
+      text = loc(avail.title)
+      value = avail.name
+    }
+
   return res
 }
 
 let filterNames = [
-  { name = "country", fillFunction = fillCountries, selectedArr = persist("wishlistFilterCountry", @() []) }
-  { name = "unitType", fillFunction = fillUnitTypes, selectedArr = persist("wishlistFilterUnitType", @() []) }
-  { name = "rank", fillFunction = fillRanks, selectedArr = persist("wishlistFilterRank", @() []) }
+  { name = "country", fillFunction = fillCountries, selectedArr = persist("limitBuyFilterCountry", @() []) }
+  { name = "unitType", fillFunction = fillUnitTypes, selectedArr = persist("limitBuyFilterUnitType", @() []) }
+  { name = "rank", fillFunction = fillRanks, selectedArr = persist("limitBuyFilterRank", @() []) }
+  { name = "buyType", fillFunction = fillBuyType, selectedArr = persist("limitBuyFilterBuyType", @() []) }
+  { name = "availability", fillFunction = fillAvailability, selectedArr = persist("limitBuyFilterAvailability", @() []) }
 ]
 
 function getFiltersView() {
   return filterNames
     .map(function(fName) {
       let { name, fillFunction, selectedArr } = fName
-      let referenceArr = fillFunction()
-      filterTypes[name] <- { referenceArr, selectedArr }
+      let referenceData = fillFunction()
+      filterTypes[name] <- { referenceData, selectedArr }
 
       let view = { checkbox = [] }
-      foreach (key, inst in referenceArr)
+      foreach (key, inst in referenceData)
         view.checkbox.append({
           id = inst.id
           idx = inst.idx
@@ -85,7 +121,7 @@ function getFiltersView() {
     })
 }
 
-let getSelectedFilters = @() filterTypes.map(@(value) value.selectedArr.map(@(v) value.referenceArr[v].value))
+let getSelectedFilters = @() filterTypes.map(@(value) value.selectedArr.map(@(v) value.referenceData[v].value))
 
 function removeItemFromList(value, list) {
   let idx = list.findindex(@(v) v == value)
@@ -95,7 +131,7 @@ function removeItemFromList(value, list) {
 
 function applyFilterChange(objId, tName, value) {
   let selectedArr = filterTypes[tName].selectedArr
-  let referenceArr = filterTypes[tName].referenceArr
+  let referenceData = filterTypes[tName].referenceData
 
   if (objId == RESET_ID) {
     selectedArr.clear()
@@ -103,11 +139,11 @@ function applyFilterChange(objId, tName, value) {
   }
 
   if (objId == SELECT_ALL_ID) {
-    referenceArr.each(@(_v, idx) appendOnce(idx, selectedArr))
+    referenceData.each(@(_v, idx) appendOnce(idx, selectedArr))
     return
   }
 
-  foreach (idx, inst in referenceArr) {
+  foreach (idx, inst in referenceData) {
     if (inst.id != objId)
       continue
 

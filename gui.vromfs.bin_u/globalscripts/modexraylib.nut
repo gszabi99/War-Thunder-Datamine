@@ -1930,7 +1930,7 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
         haveAuto ? loc("sight_AUTO") : "", haveCcrp ? loc("CCRP") : "" ], true)))
   }
 
-  let nightVisionBlk = findAnyModEffectValueBlk(commonData, "nightVision")
+  let nightVisionBlk = findAnyModEffectValueBlk(commonData, "nightVision") ?? unitBlk?.nightVision
   if ((partType == "pilot" && nightVisionBlk?.pilotIr != null)
       || (partType == "gunner" && nightVisionBlk?.gunnerIr != null))
     desc.append(loc("modification/night_vision_system"))

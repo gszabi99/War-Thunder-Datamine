@@ -87,6 +87,7 @@ enum chatErrorName {
   NO_SUCH_NICK_CHANNEL    = "401"
   NO_SUCH_CHANNEL         = "403"
   CANT_SEND_MESSAGE       = "404"
+  USER_NOT_IN_CHANNEL     = "441"
   ALREADY_ON_CHANNEL      = "443"
   CANNOT_JOIN_CHANNEL_NO_INVITATION = "473"
   CANNOT_JOIN_THE_CHANNEL = "475"
@@ -1636,9 +1637,10 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
         if (this.roomRegexp.match(value))
           value = roomType.getRoomName(value)
-        else if ((i == 0 && errorName == chatErrorName.CANNOT_JOIN_CHANNEL_NO_INVITATION)
-          || ((i == 0 || i == 1) && errorName == chatErrorName.ALREADY_ON_CHANNEL))
-            value = getPlayerName(filterNameFromHtmlCodes(value))
+        
+        else if (i == 0 || (i == 1 && (errorName == chatErrorName.ALREADY_ON_CHANNEL
+            || errorName == chatErrorName.USER_NOT_IN_CHANNEL)))
+          value = getPlayerName(filterNameFromHtmlCodes(value))
 
         locParams[key] <- value
       }

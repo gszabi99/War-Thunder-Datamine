@@ -3432,6 +3432,9 @@
   "sensors": {
     "sensor": [
       {
+        "blk": "gameData/sensors/su_spo_150_esm.blk"
+      },
+      {
         "blk": "gameData/sensors/tv_tracker_tgp.blk",
         "node": "optic1_gun"
       },
@@ -5321,19 +5324,10 @@
               "bullets": 1
             },
             "sensors": {
-              "sensor": [
-                {
-                  "blk": "gameData/sensors/tv_tracker_tgp_mercury.blk",
-                  "node": "optic1_gun"
-                },
-                {
-                  "blk": "gameData/sensors/su_spo-150.blk"
-                },
-                {
-                  "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
-                  "node": "optic1_gun"
-                }
-              ]
+              "sensor": {
+                "blk": "gameData/sensors/tv_tracker_tgp_mercury.blk",
+                "node": "optic1_gun"
+              }
             }
           },
           {
@@ -5355,17 +5349,16 @@
               "bullets": 1
             },
             "sensors": {
-              "sensor": [
+              "sensor": {
+                "blk": "gameData/sensors/su_kopio_25.blk",
+                "dmPart": "radar_dm"
+              },
+              "sensorsMode": [
                 {
-                  "blk": "gameData/sensors/su_kopio_25.blk",
-                  "dmPart": "radar_dm"
+                  "blockSensorIndex": 5
                 },
                 {
-                  "blk": "gameData/sensors/su_spo-150.blk"
-                },
-                {
-                  "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
-                  "node": "optic1_gun"
+                  "blockSensorIndex": 0
                 }
               ]
             }

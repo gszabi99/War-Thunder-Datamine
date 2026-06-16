@@ -2837,24 +2837,6 @@
     "gun": "gun_default",
     "eventThrustReverse": "thrust_reverse"
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/uk_ari_23274_ids.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-      },
-      {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic1_gun"
-      },
-      {
-        "blk": "gameData/sensors/uk_ari_23284.blk"
-      }
-    ]
-  },
   "jetwash": {
     "radius": 10.0,
     "minDist": 50.0,
@@ -3959,6 +3941,36 @@
       "noiseFactor": 0.04
     }
   },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/uk_ari_23274_ids.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_harm_a_esm.blk",
+        "external": true
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/uk_ari_23284.blk"
+      }
+    ],
+    "sensorsMode": [
+      {
+        "blockSensorIndex": 1
+      },
+      {
+        "blockSensorIndex": 0
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -4494,7 +4506,8 @@
               "emitter": "pylon_tsc_1",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             }
           },
           {
@@ -5140,7 +5153,8 @@
               "emitter": "pylon_tsc_3",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             },
             "BannedWeaponPreset": [
               {
@@ -6600,7 +6614,8 @@
               "emitter": "pylon_tsc_4",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             },
             "BannedWeaponPreset": [
               {
@@ -6913,7 +6928,8 @@
               "emitter": "pylon_tsc_2",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             }
           }
         ]

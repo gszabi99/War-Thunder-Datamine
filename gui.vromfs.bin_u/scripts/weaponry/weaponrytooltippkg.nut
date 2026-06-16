@@ -44,7 +44,8 @@ let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 let { getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
 
 
-let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
+let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM,
+  TRIGGER_TYPE.GUIDED_BOMBS]
 const UI_BASE_REWARD_DECORATION = 10
 const PRESETS_IN_ROW = 2
 

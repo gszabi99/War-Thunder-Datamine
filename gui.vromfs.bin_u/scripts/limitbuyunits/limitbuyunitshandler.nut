@@ -25,6 +25,8 @@ let { buildDateTimeStr, TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS } = require("%
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/limitBuyUnits/limitBuyUnitsFilter.nut")
+let { getUnitBuyTypes, isIntersects, isFullyIncluded,
+  getUnitAvailabilityForBuyType } = require("%scripts/limitBuyUnits/filterUtils.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
@@ -112,6 +114,16 @@ function filterUnitsListFunc(unit, nameFilter) {
   if(ranks.len() > 0 && !ranks.contains(unit.rank))
     return false
 
+  
+  let buyTypes = selectedFilters?.buyType ?? []
+  if(buyTypes.len() > 0 && !isIntersects(buyTypes, getUnitBuyTypes(unit)))
+    return false
+
+  
+  let availability = selectedFilters?.availability ?? []
+  let unitAvailabilityType = getUnitAvailabilityForBuyType(unit)
+  if(availability.len() > 0 && !isFullyIncluded(unitAvailabilityType, availability))
+    return false
   return true
 }
 

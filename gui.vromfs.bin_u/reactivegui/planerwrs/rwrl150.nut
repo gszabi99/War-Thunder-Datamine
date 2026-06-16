@@ -6,8 +6,7 @@ let { color, baseLineWidth, styleText, settings, createCompass, rwrTargetsCompon
 
 function createRwrGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    size = flex()
     children = [
       {
         size = flex()
@@ -16,11 +15,11 @@ function createRwrGrid(gridStyle) {
         lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
         fillColor = 0,
         commands = [
-          [VECTOR_ELLIPSE,  0,    0,  33,  33],
-          [VECTOR_ELLIPSE,  0,    0,  67,  67],
-          [VECTOR_ELLIPSE,  0,    0, 100, 100],
-          [VECTOR_LINE,     0, -100,   0, 100],
-          [VECTOR_LINE,  -100,    0, 100,   0]
+          [VECTOR_ELLIPSE,  50,    50,  33,  33],
+          [VECTOR_ELLIPSE,  50,    50,  67,  67],
+          [VECTOR_ELLIPSE,  50,    50, 100, 100],
+          [VECTOR_LINE,     50,   -50,  50, 150],
+          [VECTOR_LINE,    -50,    50, 150,  50]
         ]
       }
     ]
@@ -34,7 +33,7 @@ function createRwrGridMarks(gridStyle, settingsIn) {
     children = [
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(30), ph(10)]
+        pos = [pw(30), ph(10)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -43,7 +42,7 @@ function createRwrGridMarks(gridStyle, settingsIn) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(64), ph(20)]
+        pos = [pw(64), ph(20)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -52,7 +51,7 @@ function createRwrGridMarks(gridStyle, settingsIn) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(95), ph(30)]
+        pos = [pw(95), ph(30)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -71,18 +70,22 @@ function rwrGridMarksComponent(gridStyle) {
   }
 }
 
-function scope(scale, style) {
+function scope(size, scale, style) {
+  let isWidthMin = size[0] <= size[1]
+  let sizeFunc = isWidthMin ? pw : ph
+  let compSize = sizeFunc(scale * style.grid.scale)
   return {
-    size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
+    size = [compSize, compSize]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
       {
-        pos = [pw(7), ph(0)],
-        size = const [pw(90), ph(90)],
+        size = [pw(90), ph(90)]
+        vplace = ALIGN_CENTER
+        hplace = ALIGN_CENTER
         children = [
           {
-            size = const [ph(100), ph(100)],
+            size = flex()
             children = [
               rwrTargetsComponent(style.object, 100.0),
               createRwrGrid(style.grid),
@@ -103,7 +106,7 @@ let function tws(posWatched, sizeWatched, scale, style) {
     pos = posWatched.get()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(scale, style)
+    children = scope(sizeWatched.get(), scale, style)
   }
 }
 
