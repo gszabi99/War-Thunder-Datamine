@@ -76,62 +76,62 @@ let xrayDataMapping = {
 
 let xrayBodyData = {
   hp = {
-    image = "ui/gameuiskin#inf_xray_body_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_body_{0}.svg:P"
     color = mkXrayColor
     order = xrayOrder.HP
   }
   groin = {
-    image = "ui/gameuiskin#inf_xray_armor_bottom_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_bottom_{0}.svg:P"
     color = mkXrayBodyArmorColor
     order = xrayOrder.GROIN
   }
   vest = {
-    image = "ui/gameuiskin#inf_xray_armor_front_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_front_{0}.svg:P"
     color = mkXrayBodyArmorColor
     order = xrayOrder.VEST
   }
   helmet = {
-    image = "ui/gameuiskin#inf_xray_helmet_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_helmet_{0}.svg:P"
     color = mkXrayBodyArmorColor
     order = xrayOrder.HELMET
   }
   shoulder_L = {
-    image = "ui/gameuiskin#inf_xray_armor_right_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_right_{0}.svg:P"
     color = mkXrayBodyArmorColor
     order = xrayOrder.SHOULDER_L
   }
   rear_plate = {
-    image = "ui/gameuiskin#inf_xray_armor_plate_back_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_plate_back_{0}.svg:P"
     color = mkXrayArmorPlateColor
     order = xrayOrder.READ_PLATE
   }
   side_plate_R = {
-    image = "ui/gameuiskin#inf_xray_armor_plate_left_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_plate_left_{0}.svg:P"
     color = mkXrayArmorPlateColor
     order = xrayOrder.SIDE_PLATE_R
   }
   side_plate_L = {
-    image = "ui/gameuiskin#inf_xray_armor_plate_right_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_plate_right_{0}.svg:P"
     color = mkXrayArmorPlateColor
     order = xrayOrder.SIDE_PLATE_L
   }
   front_plate = {
-    image = "ui/gameuiskin#inf_xray_armor_plate_front_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_plate_front_{0}.svg:P"
     color = mkXrayArmorPlateColor
     order = xrayOrder.FRONT_PLATE
   }
   groin_plate = {
-    image = "ui/gameuiskin#inf_xray_armor_plate_bottom_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_plate_bottom_{0}.svg:P"
     color = mkXrayArmorPlateColor
     order = xrayOrder.GROIN_PLATE
   }
   shoulder_R = {
-    image = "ui/gameuiskin#inf_xray_armor_left_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_armor_left_{0}.svg:P"
     color = mkXrayBodyArmorColor
     order = xrayOrder.SHOULDER_R
   }
   neck = {
-    image = "ui/gameuiskin#inf_xray_neck_{0}.svg:P"
+    image = "ui/images/infantry_xray/inf_xray_neck_{0}.svg:P"
     color = mkXrayBodyArmorColor
     order = xrayOrder.NECK
   }

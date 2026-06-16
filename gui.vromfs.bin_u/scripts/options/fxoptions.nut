@@ -52,7 +52,7 @@ gui_handlers.fxOptions <- class (BaseGuiHandler) {
       if (recScale)
         val *= scale
 
-      let ctorParams = { min = minVal * scale, max = maxVal * scale, step }
+      let ctorParams = { min = minVal * scale, max = maxVal * scale, step, needShowValueText = true }
       view.rows.append({
         id
         option = create_option_slider(id, val.tointeger(), "onSettingChanged", true, "slider", ctorParams)

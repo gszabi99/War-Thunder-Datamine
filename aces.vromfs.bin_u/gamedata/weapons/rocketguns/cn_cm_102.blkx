@@ -5,12 +5,12 @@
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
-  "mesh": "cn_cm_102_missile",
   "offsetForDemonstration": [
     0.0,
     -0.1,
     0.0
   ],
+  "mesh": "cn_cm_102_missile",
   "tags": {},
   "rocket": {
     "dragCx": 0.025,
@@ -21,39 +21,39 @@
     "price": 3000.0,
     "statType": "hydra",
     "maxDeltaAngle": 0.02,
-    "caliber": 0.38,
-    "length": 4.7,
+    "caliber": 0.254,
+    "length": 4.0,
     "WdK": [
       0.1,
       0.1,
       0.1
     ],
-    "CxK": 1.075,
-    "wingAreaMult": 1.5,
-    "finsAoaHor": 0.2,
-    "finsAoaVer": 0.2,
-    "distFromCmToStab": 0.15,
-    "mass": 650.0,
-    "massEnd": 550.0,
-    "massEnd1": 440.0,
-    "timeFire": 4.0,
-    "timeFire1": 16.0,
-    "force": 57500.0,
-    "force1": 15812.5,
-    "fireDelay": 0.6,
-    "timeLife": 500.0,
+    "CxK": 1.375,
+    "wingAreaMult": 1.3,
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "distFromCmToStab": 0.1,
+    "mass": 350.0,
+    "massEnd": 280.0,
+    "massEnd1": 235.0,
+    "timeFire": 5.0,
+    "timeFire1": 15.0,
+    "force": 32200.0,
+    "force1": 6900.0,
+    "fireDelay": 0.5,
+    "timeLife": 240.0,
     "startSpeed": 0.0,
-    "machMax": 4.5,
-    "maxSpeed": 700.0,
-    "maxDistance": 250000.0,
+    "machMax": 3.5,
+    "maxSpeed": 2000.0,
+    "maxDistance": 100000.0,
     "minDistance": 10000.0,
-    "rangeMax": 120000.0,
+    "rangeMax": 100000.0,
     "loadFactorMax": 6.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
-    "explosiveType": "tgaf_5m",
-    "explosiveMass": 110.0,
-    "warheadMass": 140.0,
+    "explosiveType": "tp_88",
+    "explosiveMass": 60.0,
+    "warheadMass": 80.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -94,25 +94,23 @@
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "effectOffset": [
-      -2.3,
-      0.0,
+      -1.55,
+      -0.15,
       0.0
     ],
     "guidance": {
       "uncageBeforeLaunch": true,
       "warmUpTime": 0.3,
       "workTime": 10.0,
+      "inertialNavigation": true,
+      "indicateOnHud": false,
       "lockAfterLaunch": false,
       "reacquireTarget": true,
       "useTargetVel": false,
       "lockTimeOut": 0.0,
       "disableTOFInHud": true,
-      "timeTableCorrection": [
-        0.383,
-        0.553
-      ],
-      "breakLockMaxTime": 240.0,
-      "inertialNavigation": true,
+      "inertialNavigationDriftSpeed": 0.25,
+      "breakLockMaxTime": 120.0,
       "radarSeeker": {
         "groundVehiclesAsTarget": true,
         "aircraftAsTarget": false,
@@ -127,6 +125,14 @@
           0.5,
           0.0
         ],
+        "band": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
         "useTargetId": true,
         "sideLobesAttenuation": -20.0,
         "lockAngleMax": 15.0,
@@ -134,14 +140,6 @@
         "rateMax": 15.0,
         "angleGateRate": 5.0,
         "designationSourceType": "esm",
-        "band": [
-          3,
-          4,
-          5,
-          6,
-          7,
-          8
-        ],
         "transmitter": {
           "power": 200.0,
           "antenna": {
@@ -161,60 +159,19 @@
         }
       },
       "guidanceAutopilot": {
-        "timeOut": 1.6,
+        "timeOut": 2.0,
         "loftEnabled": true,
-        "loftElevation": 27.5,
-        "loftTargetElevation": -18.5,
-        "loftAngleToAccelMult": 1.5,
+        "loftElevation": 25.0,
+        "loftTargetElevation": -25.0,
+        "loftAngleToAccelMult": 1.0,
         "loftTargetOmegaMax": 0.75,
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 8.0,
-        "accelControlProp": 0.0121,
-        "accelControlIntg": 0.022,
-        "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0017
-      },
-      "table0": {
-        "altitude": 0.0,
-        "fighterMach": [
-          0.5,
-          0.9
-        ],
-        "targetMach": [
-          0.1,
-          0.1
-        ],
-        "targetMach2Mult": -1.0,
-        "rangeMin": [
-          10000.0,
-          10000.0,
-          10000.0,
-          10000.0
-        ],
-        "rangeMax": [
-          42034.9,
-          50216.3,
-          53059.0,
-          55736.9
-        ],
-        "rangeMaxAltDiff": [
-          -50.0,
-          175.0
-        ],
-        "timeMax": [
-          202.716,
-          237.719,
-          239.91,
-          239.963
-        ],
-        "timeMaxAltDiff": [
-          -50.0,
-          0.0
-        ]
-      },
-      "inertialGuidance": {
-        "inertialNavigationDriftSpeed": 0.5
+        "reqAccelMax": 10.0,
+        "accelControlProp": 0.017901,
+        "accelControlIntg": 0.034465,
+        "accelControlDiff": 0.001591,
+        "accelControlIntgLim": 1.0
       }
     },
     "pressureDamage": {
