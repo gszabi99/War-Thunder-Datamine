@@ -389,8 +389,7 @@ function getIsVisibleTankGunsAmmoIndicatorValue() {
 }
 
 function getIsChatReputationFilterEnabledValue() {
-  return hasFeature("ChatReputationFilter")
-    && get_gui_option(USEROPT_CHAT_REPUTATION_FILTER)
+  return get_gui_option(USEROPT_CHAT_REPUTATION_FILTER)
 }
 
 let getUserOptDamageIndicatorSize = @() get_gui_option_in_mode(USEROPT_DAMAGE_INDICATOR_SIZE, OPTIONS_MODE_GAMEPLAY, 1)

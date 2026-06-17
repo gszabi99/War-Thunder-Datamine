@@ -6,29 +6,44 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
 let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
 let { getUnitPurchasePeriod } = require("chard")
+let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 
 let shopPromoteUnits = mkWatched(persist, "shopPromoteUnits", {})
 local countDefaultUnitsByCountry = null
 
-function fillPromoteUnitsList(unit) {
+function addUnitToPromote(unit, promoteUnits) {
   let { beginPurchaseTime, endPurchaseTime } = getUnitPurchasePeriod(unit.name)
   if (beginPurchaseTime > 0 && endPurchaseTime > 0) {
-    shopPromoteUnits.mutate(@(v) v[unit.name] <- {
+    promoteUnits[unit.name] <- {
       unit
       timeStart = beginPurchaseTime
       timeEnd = endPurchaseTime
       showMarker = true
-    })
+    }
   }
 
   if (unit.endResearchDate != null) {
-    shopPromoteUnits.mutate(@(v) v[unit.name] <- {
+    promoteUnits[unit.name] <- {
       unit
       timeStart = 0
       timeEnd = getTimestampFromStringUtc(unit.endResearchDate)
       showMarker = false
-    })
+    }
   }
+}
+
+function updateShopPromoteUnits(promoteUnits) {
+  if (!isEqual(shopPromoteUnits.get(), promoteUnits))
+    shopPromoteUnits.set(promoteUnits)
+}
+
+function refillPromoteUnitsList() {
+  let promoteUnits = {}
+  foreach (unit in getAllUnits())
+    if (unit.isInShop)
+      addUnitToPromote(unit, promoteUnits)
+
+  updateShopPromoteUnits(promoteUnits)
 }
 
 function addSlaveData(arr, masterName, slaves) {
@@ -46,6 +61,7 @@ function generateUnitShopInfo() {
   let blk = get_shop_blk()
   let totalCountries = blk.blockCount()
   let masterSlavesData = {}
+  let promoteUnits = {}
 
   for (local c = 0; c < totalCountries; c++) {  
     let cblk = blk.getBlock(c)
@@ -66,7 +82,7 @@ function generateUnitShopInfo() {
 
           if (air) {
             air.applyShopBlk(airBlk)
-            fillPromoteUnitsList(air)
+            addUnitToPromote(air, promoteUnits)
             addSlaveData(masterSlavesData, air.name, air.slaveUnits)
           }
           else { 
@@ -78,7 +94,7 @@ function generateUnitShopInfo() {
               if (!air)
                 continue
               air.applyShopBlk(gAirBlk, groupName)
-              fillPromoteUnitsList(air)
+              addUnitToPromote(air, promoteUnits)
               addSlaveData(masterSlavesData, air.name, air.slaveUnits)
             }
           }
@@ -86,6 +102,7 @@ function generateUnitShopInfo() {
       }
     }
   }
+  updateShopPromoteUnits(promoteUnits)
 
   foreach (masterName, slavesNames in masterSlavesData) {
     foreach (slaveName in slavesNames) {
@@ -118,6 +135,7 @@ function hasDefaultUnitsInCountry(country) {
 
 addListenersWithoutEnv({
   InitConfigs = @(_p) invalidateCache()
+  PriceUpdated = @(_) refillPromoteUnitsList()
 })
 
 return {

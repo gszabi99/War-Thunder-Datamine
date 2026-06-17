@@ -43,10 +43,7 @@ addTooltipTypes({
         return false
 
       let guiScene = obj.getScene()
-      let blkPath = hasFeature("UnitModalInfo")
-        ? "%gui/unitInfo/unitModalInfo.blk"
-        : "%gui/unitInfo/unitInfo.blk"
-      guiScene.replaceContent(obj, blkPath, handler)
+      guiScene.replaceContent(obj, "%gui/unitInfo/unitModalInfo.blk", handler)
       let contentObj = obj.findObject("air_info_tooltip")
       contentObj.id = getAirInfoTooltipId(id)
       return this.fillTooltipContent(obj, handler, id, params)

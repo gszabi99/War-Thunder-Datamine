@@ -165,18 +165,20 @@ struct GunReloadData
   prereq : bool
   reloadTime : float
 
-[es(REQUIRE=human, REQUIRE_NOT=deadEntity, on_appear)]
+[es(tag=server, REQUIRE=human, REQUIRE_NOT=deadEntity, on_appear)]
 def human_inspect_on_spawn_init(evt : Event;
                                 eid : EntityId)
   addSubTemplate(eid, "inspect_on_spawn")
 
-[es(REQUIRE=inspectOnSpawn, on_event=ParallelUpdateFrameDelayed)]
+[es(tag=server, REQUIRE=inspectOnSpawn, on_event=ParallelUpdateFrameDelayed)]
 def human_inspect_on_spawn(evt : Event;
                            eid : EntityId;
                            dynamic_respawn__spawnOnUnitEid : EntityId;
+                           squad_member__playerEid : EntityId;
                            active : bool;
                            human_weap__currentGunEid : EntityId;
-                           human_net_phys : HumanActor&)
+                           human_net_phys : HumanActor&;
+                           var inspectOnSpawnRequested : bool&)
   if !active
     return
   assume phys = human_net_phys.phys
@@ -184,8 +186,20 @@ def human_inspect_on_spawn(evt : Event;
   assume weapEquipState = currentState.weapEquipState
   if weapEquipState.curState == HUWeaponEquipState.EES_EQUIPED && !!human_weap__currentGunEid
     if !dynamic_respawn__spawnOnUnitEid
-      sendEvent(eid, CmdGunRequestInspect(atTime = get_sync_time(), gunEid = human_weap__currentGunEid))
+      query(squad_member__playerEid) <| $ [es] (var player__inspectOnFirstSpawn : bool&)
+        if !player__inspectOnFirstSpawn
+          inspectOnSpawnRequested = true
+          player__inspectOnFirstSpawn = true
     removeSubTemplate(eid, "inspect_on_spawn")
+
+[es(track=inspectOnSpawnRequested)]
+def human_inspect_on_spawn_requested(evt : Event;
+                                     eid : EntityId;
+                                     human_weap__currentGunEid : EntityId;
+                                     inspectOnSpawnRequested : bool)
+  if !inspectOnSpawnRequested
+    return
+  sendEvent(eid, CmdGunRequestInspect(atTime = get_sync_time(), gunEid = human_weap__currentGunEid))
 
 [es]
 def human_weap_request_inspection_es(evt : CmdGunRequestInspect;

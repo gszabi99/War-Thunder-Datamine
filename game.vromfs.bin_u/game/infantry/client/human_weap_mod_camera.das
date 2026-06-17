@@ -3,6 +3,7 @@ require DngHuman
 require DagorMath
 require AnimV20
 require GeomNodeTree
+require %appGame.infantry.es.vehicle.vehicle_events
 
 
 def set_lookat_from_sight_node(cur_time : float;
@@ -76,23 +77,18 @@ def set_lookat_from_sight_node(cur_time : float;
   gun_aim_offset = lerp(float2(0.0, 0.0), aimOffset, float2(lerpFactor))
 
 
-[es(tag=render,
-     before=before_camera_sync,
-     after=(human_fpv_cam_pos, animchar_cam_target_es, animchar_cam_target_with_offset_es, human_gun_lookat_camera_es),
-     REQUIRE=watchedByPlr)]
-
-def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
-                                  human__aimTm : float3x4;
-                                  human_net_phys : HumanActor;
-                                  human_weap__currentGunEid : EntityId;
-                                  human_weap__gunOffset : float3;
-                                  bindedCamera : EntityId;
-                                  human_weap__currentScope : EntityId;
-                                  var camera__look_at : DPoint3&;
-                                  var camera__gunAimOffset : float2&;
-                                  var camera__lastValidGunAimPos : float3&;
-                                  action__running : bool = false;
-                                  bipod__enabled : bool = false)
+def optics_lookat_camera_impl(cur_time : float;
+                              human__aimTm : float3x4;
+                              human_net_phys : HumanActor;
+                              human_weap__currentGunEid : EntityId;
+                              human_weap__gunOffset : float3;
+                              bindedCamera : EntityId;
+                              human_weap__currentScope : EntityId;
+                              action__running : bool;
+                              bipod__enabled : bool;
+                              var camera__look_at : DPoint3&;
+                              var camera__gunAimOffset : float2&;
+                              var camera__lastValidGunAimPos : float3&)
   var gunScopeEid = human_weap__currentScope
   let isIntegratedScope = get_bool(human_weap__currentGunEid, "gun__integratedScope") ?? false
   if isIntegratedScope && !gunScopeEid
@@ -111,7 +107,6 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
           if useWeaponSight == null || !*useWeaponSight
             gunScopeEid = subsidiaryGunEid
 
-
   query(gunScopeEid) <| $ [es] (gunmod__camNodeId : int;
                                 animchar : AnimcharBaseComponent;
                                 gunmod__camShiftMin : float;
@@ -121,7 +116,7 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                 gunmod__camFovMax : float;
                                 gunmod__frontsightCamNodeId : int = -1;
                                 gunmod__bipodScopeOffset : float = 0.1)
-    set_lookat_from_sight_node(info.curTime, human_net_phys,
+    set_lookat_from_sight_node(cur_time, human_net_phys,
                                gunmod__camNodeId, gunmod__frontsightCamNodeId, animchar,
                                human__aimTm, human_weap__gunOffset, gunmod__gunOffsetMult,
                                gunTm, bindedCamera,
@@ -134,3 +129,44 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                camera__look_at,
                                camera__gunAimOffset,
                                camera__lastValidGunAimPos)
+
+
+[es(tag=render,
+     before=before_camera_sync,
+     after=(human_fpv_cam_pos, animchar_cam_target_es, animchar_cam_target_with_offset_es, human_gun_lookat_camera_es),
+     REQUIRE=watchedByPlr)]
+def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
+                                  human__aimTm : float3x4;
+                                  human_net_phys : HumanActor;
+                                  human_weap__currentGunEid : EntityId;
+                                  human_weap__gunOffset : float3;
+                                  bindedCamera : EntityId;
+                                  human_weap__currentScope : EntityId;
+                                  var camera__look_at : DPoint3&;
+                                  var camera__gunAimOffset : float2&;
+                                  var camera__lastValidGunAimPos : float3&;
+                                  action__running : bool = false;
+                                  bipod__enabled : bool = false)
+  optics_lookat_camera_impl(info.curTime, human__aimTm, human_net_phys, human_weap__currentGunEid,
+                            human_weap__gunOffset, bindedCamera, human_weap__currentScope,
+                            action__running, bipod__enabled,
+                            camera__look_at, camera__gunAimOffset, camera__lastValidGunAimPos)
+
+
+[es(tag=render, REQUIRE=watchedByPlr, after=human_seat_bake_slot_attach_es)]
+def human_seat_optics_lookat_es(evt : CmdHumanSeatBake;
+                                human__aimTm : float3x4;
+                                human_net_phys : HumanActor;
+                                human_weap__currentGunEid : EntityId;
+                                human_weap__gunOffset : float3;
+                                bindedCamera : EntityId;
+                                human_weap__currentScope : EntityId;
+                                var camera__look_at : DPoint3&;
+                                var camera__gunAimOffset : float2&;
+                                var camera__lastValidGunAimPos : float3&;
+                                action__running : bool = false;
+                                bipod__enabled : bool = false)
+  optics_lookat_camera_impl(evt.curTime, human__aimTm, human_net_phys, human_weap__currentGunEid,
+                            human_weap__gunOffset, bindedCamera, human_weap__currentScope,
+                            action__running, bipod__enabled,
+                            camera__look_at, camera__gunAimOffset, camera__lastValidGunAimPos)

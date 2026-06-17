@@ -11,5 +11,5 @@ def player_components_init_client(evt : Event; squad__ownerPlayer : EntityId)
 
 [es(tag=server, on_appear)]
 def player_components_init_server(evt : Event; squad__ownerPlayer : EntityId)
-  query(squad__ownerPlayer) <| $ [es(REQUIRE_NOT=covers__coversCheckInterval)] ()
-    addSubTemplate(squad__ownerPlayer, "covers_interval_check")
+  query(squad__ownerPlayer) <| $ [es(REQUIRE_NOT=infantry_player)] ()
+    addSubTemplate(squad__ownerPlayer, "infantry_player")

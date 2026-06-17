@@ -140,7 +140,7 @@ def seated_human_bake_post_pausable_attach_es(act : UpdateStageInfoAct;
                                               animchar_node_wtm : AnimcharNodesMat44;
                                               animchar__updateAttachesWhenNotUpdatable : Tag const?;
                                               animchar__updatable = true)
-  if !animchar__visible || !isInVehicle
+  if !isInVehicle
     return
   if !animchar__updatable && animchar__updateAttachesWhenNotUpdatable == null
     return

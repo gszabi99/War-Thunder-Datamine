@@ -71,7 +71,7 @@ function openGenericTooltip(obj, handler) {
   let tooltipType = getTooltipType(params.ttype)
   let id = params.id
 
-  if (tooltipType.isModalTooltip && hasFeature("UnitModalInfo")) {
+  if (tooltipType.isModalTooltip) {
     let realObj = openModalInfo(obj, handler, tooltipType, id, params)
     if (realObj == null)
       return false
@@ -84,13 +84,12 @@ function openGenericTooltip(obj, handler) {
   if (!isSucceed || !checkObj(obj))
     return
 
-  obj["class"] = (hasFeature("UnitModalInfo") && tooltipType.isEmptyTooltipObjClass) ? "empty" : ""
+  obj["class"] = tooltipType.isEmptyTooltipObjClass ? "empty" : ""
   openedTooltipObjs.append(addEventListenersTooltip(obj, handler, tooltipType, id, params))
 }
 
 function closeGenericTooltip(obj, handler) {
-  if (hasFeature("UnitModalInfo"))
-    closeModalInfo()
+  closeModalInfo()
 
   let tIdx = !obj.isValid() ? null
     : openedTooltipObjs.findindex(@(v) v.obj.isValid() && v.obj.isEqual(obj))

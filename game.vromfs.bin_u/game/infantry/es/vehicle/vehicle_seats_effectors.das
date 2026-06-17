@@ -8,6 +8,9 @@ require GeomNodeTree
 require EffectorData
 require Unit
 require %appGame.infantry.es.vehicle.vehicle_events
+require HumanPhys
+require WTPhysActor
+require DngHuman
 
 [es(tag=render, on_appear)]
 def vehicle_seats_effectors_init(evt : Event;
@@ -202,10 +205,26 @@ def update_vehicle_seat_effectors(unit__ref : UnitRef;
                                vehicle__localSeatTm : float3x4;
                                isInVehicle : bool;
                                isInVehicleHidden : bool;
-                               human_vehicle__isHoldingGunPassenger : bool)
+                               human_vehicle__isHoldingGunPassenger : bool;
+                               human_net_phys : HumanActor;
+                               camera__lookDir : float3 = float3(0., 0., 1.))
       if !isInVehicle || isInVehicleHidden
         return
-      human_transform = vehicleTm * vehicle__localSeatTm
+      if human_vehicle__isHoldingGunPassenger
+        let seatWtm = vehicleTm * vehicle__localSeatTm
+        let helperTm = vehicle__localSeatTm * vehicleTm
+        let up = normalize(helperTm[1])
+        var fwdIn = human_transform[0]
+        if (int(human_net_phys.role) & int(NetRole.URF_LOCAL_CONTROL)) != 0 && length_sq(camera__lookDir) > 0.5
+          fwdIn = camera__lookDir
+        let left = normalize(cross(fwdIn, up))
+        let forward = normalize(cross(up, left))
+        human_transform[0] = forward
+        human_transform[1] = up
+        human_transform[2] = left
+        human_transform[3] = seatWtm[3]
+      else
+        human_transform = vehicleTm * vehicle__localSeatTm
       let effectors = get_ecs_object(vehicle_seats__effectors[seatOwnerNo])
       if effectors == null
         return
@@ -250,7 +269,7 @@ def vehicle_seats_hero_pre_camera_es(act : UpdateStageInfoAct;
                                      vehicle__controlledByDriver : EntityId)
   update_vehicle_seat_effectors(unit__ref, vehicle_seats__effectors, vehicle_seats__seatEids, transform)
   if vehicle__controlledByDriver != INVALID_ENTITY_ID
-    sendEventImmediate(vehicle__controlledByDriver, CmdHumanSeatBake(dt = act.dt))
+    sendEventImmediate(vehicle__controlledByDriver, CmdHumanSeatBake(dt = act.dt, curTime = act.curTime))
 
 [es(tag=gameClient, after=main_update_pausable_es)]
 def vehicle_seats_post_pausable_es(act : UpdateStageInfoAct;

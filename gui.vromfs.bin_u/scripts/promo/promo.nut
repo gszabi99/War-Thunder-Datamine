@@ -166,7 +166,7 @@ function manualSwitchPromoBlock(obj, promoHolderObj) {
   switchPromoBlock(obj, promoHolderObj)
 }
 
-let getCurrentPromoRadioButtonIndex = @(listObj) listObj.getValue()
+let getCurrentPromoRadioButtonIndex = @(listObj) max(0, listObj.getValue())
 
 function getCurrentPromoRadioButton(listObj) {
   let index = getCurrentPromoRadioButtonIndex(listObj)

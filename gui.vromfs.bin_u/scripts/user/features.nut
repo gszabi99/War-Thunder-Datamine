@@ -289,7 +289,6 @@ let defaults = Watched({
   optionConsolePreset = true
   ReplaySystemWindow = true
   DevFeatures = true
-  CompareBulletsGraphs = true
 })
 
 let override = mkWatched(persist, "override", {})

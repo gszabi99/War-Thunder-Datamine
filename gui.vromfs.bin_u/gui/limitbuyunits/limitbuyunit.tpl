@@ -85,6 +85,7 @@ limitBuyUnit {
             on_click:t='onPreviewUnit'
             on_hover:t='onHoverPreviewBtn'
             no_text:t='yes'
+            not-input-transparent:t='yes'
             icon { background-image:t='#ui/gameuiskin#btn_preview.svg' }
           }
         }

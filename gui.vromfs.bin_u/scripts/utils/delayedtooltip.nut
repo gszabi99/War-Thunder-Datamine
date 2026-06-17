@@ -42,8 +42,7 @@ function hideTooltip() {
   show_obj(tooltipPlace, false)
   tooltipPlace = null
   tooltipData = null
-  if (hasFeature("UnitModalInfo"))
-    closeModalInfo(true)
+  closeModalInfo(true)
 }
 
 function hideHint() {
@@ -124,7 +123,7 @@ function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false)
 
   let tooltipType = getTooltipType(params.ttype)
 
-  if (tooltipType.isModalTooltip && hasFeature("UnitModalInfo")) {
+  if (tooltipType.isModalTooltip) {
     let realObj = openModalInfo(tooltipObj, gui_handlers.BaseGuiHandlerWT, tooltipType, params.id, params, initObj)
     if (realObj == null)
       return false
@@ -132,7 +131,7 @@ function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false)
     return false
   }
 
-  tooltipObj["class"] = (hasFeature("UnitModalInfo") && tooltipType.isEmptyTooltipObjClass) ? "empty" : ""
+  tooltipObj["class"] = tooltipType.isEmptyTooltipObjClass ? "empty" : ""
   let isSuccess = fillTooltip(tooltipObj, null, tooltipType, params.id, params)
   if (isSuccess)
     tooltipData = addEventListenersTooltip(tooltipObj, null, tooltipType, params.id, params)

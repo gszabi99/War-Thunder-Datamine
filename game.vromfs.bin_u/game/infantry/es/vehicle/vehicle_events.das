@@ -49,6 +49,7 @@ struct EventOnSeatOwnersChanged {}
 [event(unicast)]
 struct CmdHumanSeatBake
   dt : float
+  curTime : float
 
 [event(unicast, routing=ROUTING_CLIENT_TO_SERVER)]
 struct RequestVehicleChangeSeat

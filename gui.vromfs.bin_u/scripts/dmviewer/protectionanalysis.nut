@@ -98,7 +98,6 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     allow_cutting = false
     explosionTest = false
 
-    showObjById("btnCompareBullets", hasFeature("CompareBulletsGraphs"))
     let isShowProtectionMapOptions = hasFeature("ProtectionMap") && this.unit.isTank()
     showObjById("btnProtectionMap", isShowProtectionMapOptions)
     let isShowCrewMapOptions = hasFeature("CrewMap") && this.unit.isShip()

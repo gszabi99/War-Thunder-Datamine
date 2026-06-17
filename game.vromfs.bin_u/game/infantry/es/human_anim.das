@@ -398,9 +398,11 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__crawlContinuousRotationVarId : int&;
                          var human_anim__leanSpineRotateVarId : int&;
                          var human_anim__gunLengthCompensationVarId : int&;
-                         var human_anim__fullBodyRootRotateVarId : int&)
+                         var human_anim__fullBodyRootRotateVarId : int&;
+                         var human_anim__bodyDirVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
+  human_anim__bodyDirVarId = phys_vars |> registerVar("body_dir", 0.f)
   human_anim__changeWeaponVarId = phys_vars |> registerVar("changeweapon_progress", 0.f)
   human_anim__changeDirVarId = phys_vars |> registerVar("changeweapon_dir", 1.f)
   human_anim__reloadVarId = phys_vars |> registerVar("reload_progress", 0.f)
@@ -697,6 +699,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   human_anim__climbProgressVarId : int;
                   human_anim__vehicleSelectedVarId : int;
                   human_anim__seatTypeVarId : int;
+                  human_anim__bodyDirVarId : int;
                   human_anim__vertSpeedVarId : int;
                   human_anim__bipodVarId : int;
                   hitpoints__lastHitNodeId : int = -1;
@@ -908,17 +911,21 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   
   if isInVehicle
     localWalkDir = 0.0
-  phys_vars |> setVar(human_anim__localWalkDirVarId, localWalkDir)
+  let seatedHoldingGun = isInVehicle && human_vehicle__isHoldingGunPassenger
+  if !seatedHoldingGun
+    phys_vars |> setVar(human_anim__localWalkDirVarId, localWalkDir)
 
   let prevRootRotate = phys_vars |> getVar(human_anim__rootRotateVarId)
-  if statePos == HumanStatePos.E_CRAWL
+  if seatedHoldingGun
+    phys_vars |> setVar(human_anim__bodyDirVarId, -rad_to_deg(bodyAngles.x))
+  elif statePos == HumanStatePos.E_CRAWL
     let rootRotate = standingInPlace ? localWalkDirFrom : approach(prevRootRotate, 0.0, dt, human_anim__rootRotateViscosity)
     phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
-  elif human_anim__isFpv
+  elif human_anim__isFpv && !isInVehicle
     let rootRotate = approach(prevRootRotate, standingInPlace ? localWalkDirFrom : 0.0, dt, human_anim__rootRotateToSideViscosityFpv)
     phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
   
-  if isInVehicle
+  if isInVehicle && !seatedHoldingGun
     phys_vars |> setVar(human_anim__rootRotateVarId, 0.0)
 
   if human_anim__gunLengthCompensationVarId != -1

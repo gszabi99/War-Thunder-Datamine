@@ -60,7 +60,22 @@ def human_look_dir_camera_es(info : ParallelUpdateFrameDelayed;
     camera__lookDir = angles_to_dir(ang)
 
 
-[es(after=human_look_dir_camera_es)]
+[es(after=human_look_dir_camera_es, REQUIRE=watchedHero, REQUIRE_NOT=isReplayObserved)]
+def human_look_dir_camera_in_vehicle_es(info : ParallelUpdateFrameDelayed;
+                                        isInVehicle : bool;
+                                        isAlive : bool;
+                                        human_net_phys : HumanActor;
+                                        human_vehicle__isHoldingGunPassenger : bool = false;
+                                        var camera__lookDir : float3&)
+  if !isInVehicle || !isAlive || !human_vehicle__isHoldingGunPassenger
+    return
+  assume ct = human_net_phys.phys.producedCT
+  var ang = dir_to_angles(ct.wishLookDir)
+  ang.y = clamp(ang.y, -SAFE_HALF_PI, SAFE_HALF_PI)
+  camera__lookDir = angles_to_dir(ang)
+
+
+[es(after=human_look_dir_camera_in_vehicle_es)]
 def vehicle_passenger_freelook_camera_es(info : ParallelUpdateFrameDelayed;
                                          camera__active : bool;
                                          camera__target : EntityId;
@@ -72,8 +87,9 @@ def vehicle_passenger_freelook_camera_es(info : ParallelUpdateFrameDelayed;
   query(camera__target) <| $ [es(REQUIRE_NOT=deadEntity)] (var camera__lookDir : float3&;
                                                            vehicle__globalSeatTm : float3x4;
                                                            isInVehicle : bool = false;
+                                                           human_vehicle__isHoldingGunPassenger = false;
                                                            vehicle_passenger_camera__maxAngleDeg : float2 = float2(90.0, 60.0))
-    if !isInVehicle
+    if !isInVehicle || human_vehicle__isHoldingGunPassenger
       vehicle_passenger_camera__relAngle = float2(0., 0.)
       return
     let maxAngleRad = deg_to_rad(vehicle_passenger_camera__maxAngleDeg)
@@ -83,6 +99,30 @@ def vehicle_passenger_freelook_camera_es(info : ParallelUpdateFrameDelayed;
     var worldAng = seatAngles + vehicle_passenger_camera__relAngle
     worldAng.y = clamp(worldAng.y, -SAFE_HALF_PI, SAFE_HALF_PI)
     camera__lookDir = angles_to_dir(worldAng)
+
+
+[es(after=vehicle_passenger_freelook_camera_es)]
+def vehicle_passenger_freelook_sync_aim_es(info : ParallelUpdateFrameDelayed;
+                                           camera__active : bool;
+                                           camera__target : EntityId)
+  if !camera__active
+    return
+  query(camera__target) <| $ [es(REQUIRE_NOT=deadEntity)] (camera__lookDir : float3;
+                                                           human_net_phys__prevVertDir : float3;
+                                                           var human_input__aimAngle : float2&;
+                                                           var human_input__lookAngle : float2&;
+                                                           var human_net_phys : HumanActor;
+                                                           isInVehicle : bool = false;
+                                                           human_vehicle__isHoldingGunPassenger = false)
+    if !isInVehicle || human_vehicle__isHoldingGunPassenger
+      return
+    if (int(human_net_phys.role) & int(NetRole.URF_LOCAL_CONTROL)) == 0
+      return
+    let rootDir = get_some_normal(human_net_phys__prevVertDir)
+    human_input__aimAngle = basis_aware_dir_to_angles(camera__lookDir, human_net_phys__prevVertDir, rootDir)
+    human_input__lookAngle = float2(0., 0.)
+    human_net_phys.phys.producedCT |> human_control_state_set_wish_look_dir(camera__lookDir)
+    human_net_phys.phys.producedCT |> human_control_state_set_wish_shoot_dir(camera__lookDir)
 
 
 [es(tag=gameClient, track=isInVehicle, on_appear)]
@@ -115,18 +155,6 @@ def human_look_dir_dead_camera_es(info : ParallelUpdateFrameDelayed;
     let viscosityPercent = cvt(info.curTime, death_cam__startedAt, death_cam__startedAt + death_cam__followTime, 0.0, 1.0)
     let viscosity = deatch_cam__viscosity[0] + deatch_cam__viscosity[1] * viscosityPercent * viscosityPercent
     camera__lookDir = approach(camera__lookDir, wishLookDir, info.dt, viscosity)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 [es(after=human_look_dir_camera_es, REQUIRE=watchedHero, tag=ui)]

@@ -113,7 +113,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     this.infoPanelObj.show(true)
     dmViewer.init(this)
 
-    this.updateAirInfoBlk(hasFeature("UnitModalInfo"))
+    this.updateAirInfoBlk()
 
     
     let buttonsPlace = this.scene.findObject("buttons_place")
@@ -579,15 +579,6 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   onEventMarkSeenNightBattle = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
   onEventMarkSeenModTutorial = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
 
-  function onEventDevFeatureChanged(p) {
-    let { name, value } = p
-    if (name != "UnitModalInfo")
-      return
-
-    this.updateAirInfoBlk(value)
-    this.doWhenActiveOnce("updateAirInfo")
-  }
-
   function onEventChangeDMVieverMode(params) {
     let pages = { protection = 1, xray = 2 }
 
@@ -597,12 +588,11 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     listboxObj.setValue(index)
   }
 
-  function updateAirInfoBlk(value) {
+  function updateAirInfoBlk() {
     let unitInfoObjPanel = this.scene.findObject("air_info_content_info_panel")
-    this.guiScene.replaceContent(unitInfoObjPanel, value ? "%gui/unitInfo/unitModalInfo.blk"
-      : "%gui/unitInfo/airInfoPanel.blk", this)
-    if (value)
-      unitInfoObjPanel.findObject("air_info_tooltip")["inHangar"] = "yes"
+    this.guiScene.replaceContent(unitInfoObjPanel,
+      "%gui/unitInfo/unitModalInfo.blk", this)
+    unitInfoObjPanel.findObject("air_info_tooltip")["inHangar"] = "yes"
   }
 }
 

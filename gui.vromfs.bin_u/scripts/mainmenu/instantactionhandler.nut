@@ -211,7 +211,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initGamercardDrawerHandler() {
-    if (topMenuHandler.get() == null)
+    if (!handlersManager.isHandlerValid(topMenuHandler.get()))
       return
 
     let gamercardPanelCenterObject = topMenuHandler.get().scene.findObject("gamercard_panel_center")

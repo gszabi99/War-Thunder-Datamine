@@ -8,10 +8,12 @@ let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { hangar_current_preset_changed } = require("hangar")
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
+let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
 local curPresetId = -1
+local curUnitsCount = -1
 
 function updateHangarPreset(forceUpdate = false) {
   if (!isInMenu.get() || !isLoggedIn.get())
@@ -21,13 +23,16 @@ function updateHangarPreset(forceUpdate = false) {
   let newSlotCountryId = shopCountriesList.findindex(@(cName) cName == country) ?? -1
   let newSlotIdInCountry = getSelectedCrews(country)
   let newPresetId = getCurrentPresetIdx(country)
+  let newUnitsCount = getCurrentSlotbarPreset(country)?.units.len() ?? -1
   if (!forceUpdate && newPresetId == curPresetId
-    && newSlotCountryId == curSlotCountryId && newSlotIdInCountry == curSlotIdInCountry)
+    && newSlotCountryId == curSlotCountryId && newSlotIdInCountry == curSlotIdInCountry
+    && newUnitsCount == curUnitsCount)
     return
 
   curPresetId = newPresetId
   curSlotCountryId = newSlotCountryId
   curSlotIdInCountry = newSlotIdInCountry
+  curUnitsCount = newUnitsCount
   hangar_current_preset_changed(curSlotCountryId, curSlotIdInCountry, curPresetId)
 }
 

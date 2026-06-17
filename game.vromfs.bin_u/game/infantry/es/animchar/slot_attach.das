@@ -5,6 +5,7 @@ require AnimV20
 require GeomNodeTree
 require %game.events
 require ecs.common
+require %appGame.infantry.es.vehicle.vehicle_events
 
 [event(broadcast)]            
 struct SlotAttachUpdateEvent  
@@ -223,3 +224,11 @@ def seated_human_bake_post_pausable_slot_attach_es(act : UpdateStageInfoAct;
   if !animchar__visible || !isInVehicle
     return
   bake_slot_attaches_recursive(act.dt, attaches_list)
+
+[es(tag=gameClient, REQUIRE=isInVehicle, after=human_seat_bake_animchar_es)]
+def human_seat_bake_slot_attach_es(evt : CmdHumanSeatBake;
+                                   attaches_list : EidList;
+                                   animchar__visible : bool)
+  if !animchar__visible
+    return
+  bake_slot_attaches_recursive(evt.dt, attaches_list)

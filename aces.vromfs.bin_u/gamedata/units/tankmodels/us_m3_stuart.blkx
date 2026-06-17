@@ -190,6 +190,21 @@
         "armorThickness": 5.0,
         "hp": 50.0
       },
+      "gun_barrel_02_dm": {
+        "armorThrough": 10.0,
+        "armorThickness": 5.0,
+        "hp": 50.0
+      },
+      "gun_barrel_03_dm": {
+        "armorThrough": 10.0,
+        "armorThickness": 5.0,
+        "hp": 50.0
+      },
+      "gun_barrel_04_dm": {
+        "armorThrough": 10.0,
+        "armorThickness": 5.0,
+        "hp": 50.0
+      },
       "gun_barrel_05_dm": {
         "armorThrough": 10.0,
         "armorThickness": 5.0,
@@ -319,6 +334,10 @@
         "armorThrough": 5.0
       },
       "radio_station_dm": {
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "auxiliary_power_unit": {
         "hp": 50.0,
         "armorThrough": 3.0
       },
@@ -1874,7 +1893,7 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "turret": {
-          "head": "bone_mg_v_01",
+          "head": "bone_mg_h_01",
           "gun": "bone_mg_v_01",
           "gunnerDm": "driver_dm"
         },
@@ -1915,7 +1934,48 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "turret": {
-          "head": "bone_mg_v_02",
+          "head": "bone_mg_h_02",
+          "gun": "bone_mg_v_02",
+          "gunnerDm": "driver_dm"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner5",
+        "triggerGroup": "coaxial",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "emitter": "bone_mg_v_02",
+        "flash": "emtr_mg_flame_03",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_04_dm",
+        "speedYaw": 5.5,
+        "speedPitch": 4.0,
+        "fireConeAngle": 1.0,
+        "bullets": 2000,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxRadius": 2000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "turret": {
+          "head": "bone_mg_h_03",
           "gun": "bone_mg_v_02",
           "gunnerDm": "driver_dm"
         },

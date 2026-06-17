@@ -255,7 +255,7 @@ def hero_seated_human_bake_pre_camera_es(act : UpdateStageInfoAct;
     return
   if is_driver_of_hero_vehicle(eid, human_anim__vehicleSelected)
     return
-  sendEventImmediate(eid, CmdHumanSeatBake(dt = act.dt))
+  sendEventImmediate(eid, CmdHumanSeatBake(dt = act.dt, curTime = act.curTime))
 
 
 
