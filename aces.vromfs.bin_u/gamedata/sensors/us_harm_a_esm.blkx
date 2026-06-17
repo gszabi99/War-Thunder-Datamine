@@ -90,28 +90,28 @@
   },
   "signals": {
     "search": {
-      "aircraftAsTarget": false,
+      "aircraftAsTarget": true,
       "groundVehiclesAsTarget": true,
       "shipsAsTarget": true,
       "detectWeapon": false,
+      "targetId": true,
       "groundClutter": false,
       "rangeFinder": false,
       "friendFoeId": true,
-      "showBScope": true,
-      "showCScope": false,
-      "targetId": true
+      "showBScope": false,
+      "showCScope": true
     },
     "track": {
-      "aircraftAsTarget": false,
+      "aircraftAsTarget": true,
       "groundVehiclesAsTarget": true,
       "shipsAsTarget": true,
       "detectWeapon": false,
-      "groundClutter": false,
-      "rangeFinder": false,
       "targetId": [
         true,
         true
       ],
+      "groundClutter": false,
+      "rangeFinder": false,
       "track": true,
       "angularAccuracy": 0.06
     }
@@ -177,6 +177,9 @@
           },
           "setSignal": {
             "signal": "search"
+          },
+          "setDesignatedTarget": {
+            "set": false
           }
         },
         "resetStandbyMode": {},
@@ -191,9 +194,6 @@
             "fsm": "tws",
             "active": true
           },
-          "setCueEnabled": {
-            "value": true
-          },
           "setScanPatternSet": {
             "scanPatternSet": "search"
           },
@@ -202,17 +202,20 @@
           },
           "setSignal": {
             "signal": "search"
+          },
+          "setDesignatedTarget": {
+            "set": false
+          },
+          "setDesignationSourceType": {
+            "sourceType": "dummy"
           }
         },
         "resetSearchMode": {
-          "clearTargets": {},
           "setFsmActive": {
             "fsm": "tws",
             "active": false
           },
-          "setCueEnabled": {
-            "value": false
-          }
+          "clearTargetsOfInterest": {}
         },
         "setBvrLockMode": {
           "setModeName": {
@@ -241,7 +244,8 @@
           },
           "setDesignatedTarget": {
             "set": true
-          }
+          },
+          "setDesignationSourceType": {}
         },
         "resetBvrLockMode": {
           "setFsmActive": {
@@ -281,9 +285,7 @@
           "setSignal": {
             "signal": "track"
           },
-          "setDesignatedTarget": {
-            "set": false
-          }
+          "setDesignationSourceType": {}
         },
         "resetTrackMode": {
           "clearTargetsOfInterest": {},
@@ -298,6 +300,9 @@
           "setFsmActive": {
             "fsm": "track",
             "active": false
+          },
+          "setDesignationSourceType": {
+            "sourceType": "dummy"
           }
         }
       },
@@ -353,7 +358,8 @@
             "designateTargetUnderCue": {
               "type": "cue",
               "self": true,
-              "sensorIndex": 0
+              "sensorIndex": 0,
+              "selectTarget": true
             },
             "designateActiveDetectedTarget": {
               "type": "target",
@@ -445,7 +451,6 @@
             "clearTargetsOfInterest": {
               "timeOut": 10.0
             },
-            "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
               {
                 "source": "constant",
@@ -505,8 +510,7 @@
               ],
               "useTargetId": true
             },
-            "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {}
+            "updateActiveDetectedTarget": {}
           }
         },
         "switchSelectedTarget": {
