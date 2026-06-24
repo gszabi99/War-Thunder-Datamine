@@ -37,6 +37,7 @@ function genAllSkinLocksToBlkCurLang(path) {
 }
 
 function makeLoc(path, langsInfo, curLang, status = {}) {
+  status = clone status
   let makeLocImp = callee()
   let lang = langsInfo.pop()
   setGameLocalization(lang.id, false, false)

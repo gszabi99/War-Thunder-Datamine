@@ -71,11 +71,13 @@ function rwrGridMarksComponent(gridStyle) {
 }
 
 function scope(size, scale, style) {
+  let verticalScale = style?.verticalScale ?? 1.0
   let isWidthMin = size[0] <= size[1]
   let sizeFunc = isWidthMin ? pw : ph
   let compSize = sizeFunc(scale * style.grid.scale)
+  let compSizeVert = sizeFunc(scale * style.grid.scale * verticalScale)
   return {
-    size = [compSize, compSize]
+    size = [compSize, compSizeVert]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
@@ -92,7 +94,7 @@ function scope(size, scale, style) {
               rwrGridMarksComponent(style.grid)
             ]
           },
-          createCompass(style.grid, 100.0)
+          createCompass(style.grid, 100.0, true)
         ]
       }
     ]

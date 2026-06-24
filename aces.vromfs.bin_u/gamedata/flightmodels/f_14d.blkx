@@ -91,6 +91,12 @@
       "flap_r_dm": {
         "hp": 30.5
       },
+      "flap_sweep_lim_l_dm": {
+        "hp": 30.5
+      },
+      "flap_sweep_lim_r_dm": {
+        "hp": 30.5
+      },
       "rudder0_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
@@ -657,6 +663,88 @@
       },
       {
         "name": "flap_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flap_sweep_lim_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flap_sweep_lim_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -2550,6 +2638,18 @@
     "nozzleMoveSfx": "nozzle_moving_2",
     "nozzleAngleThreshold": 0.3
   },
+  "hook": {
+    "coeffHookJ": 0.03,
+    "hookDeflectionAngles": [
+      -50.0,
+      5.0
+    ],
+    "hookCxDiap": [
+      0.2,
+      0.9
+    ],
+    "hookMass": 10.0
+  },
   "cockpit": {
     "targetingPodFov": [
       5.87,
@@ -3857,6 +3957,12 @@
             0.5,
             0.5
           ],
+          "cameraFromTargetingPod": true,
+          "monoDisplayColor": [
+            0.11,
+            0.38,
+            0.17
+          ],
           "page": [
             {
               "type": "vdi",
@@ -3934,11 +4040,11 @@
               }
             },
             {
-              "type": "target_tracking",
+              "type": "thermal",
               "turretIdx": 0
             },
             {
-              "type": "thermal",
+              "type": "target_tracking",
               "turretIdx": 0
             }
           ]
@@ -4193,8 +4299,8 @@
       "angularLimits": [
         -89.0,
         89.0,
-        -159.0,
-        14.0
+        -150.0,
+        30.0
       ],
       "opticType": "targeting",
       "turretNo": 0,

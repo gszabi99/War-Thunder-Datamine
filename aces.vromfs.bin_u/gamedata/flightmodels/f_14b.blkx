@@ -91,6 +91,12 @@
       "flap_r_dm": {
         "hp": 30.5
       },
+      "flap_sweep_lim_l_dm": {
+        "hp": 30.5
+      },
+      "flap_sweep_lim_r_dm": {
+        "hp": 30.5
+      },
       "rudder0_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
@@ -657,6 +663,88 @@
       },
       {
         "name": "flap_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flap_sweep_lim_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flap_sweep_lim_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -2525,6 +2613,18 @@
     "nozzleMoveSfx": "nozzle_moving_2",
     "nozzleAngleThreshold": 0.3
   },
+  "hook": {
+    "coeffHookJ": 0.03,
+    "hookDeflectionAngles": [
+      -50.0,
+      5.0
+    ],
+    "hookCxDiap": [
+      0.2,
+      0.9
+    ],
+    "hookMass": 10.0
+  },
   "cockpit": {
     "targetingPodFov": [
       5.87,
@@ -4170,7 +4270,7 @@
         30.0
       ],
       "opticType": "",
-      "turretNo": 1
+      "turretNo": 0
     },
     "Target": {
       "pos": [
@@ -4183,8 +4283,8 @@
       "angularLimits": [
         -89.0,
         89.0,
-        -159.0,
-        14.0
+        -150.0,
+        30.0
       ],
       "opticType": "targeting",
       "turretNo": 0,
@@ -4221,6 +4321,14 @@
       {
         "name": "f_14b_aim_9m_default",
         "blk": "gameData/FlightModels/weaponPresets/f_14b_aim_9m_default.blk"
+      },
+      {
+        "name": "f_14b_aim_9l",
+        "blk": "gameData/FlightModels/weaponPresets/f_14b_aim_9l.blk"
+      },
+      {
+        "name": "f_14b_aim_9l_bol",
+        "blk": "gameData/FlightModels/weaponPresets/f_14b_aim_9l_bol.blk"
       },
       {
         "name": "f_14b_aim_9m",
@@ -4422,6 +4530,22 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": "lau7_1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9_1",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m_default",
             "ShowNodes": {
               "node": "lau7_1"
@@ -4454,7 +4578,7 @@
             }
           },
           {
-            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "iconType": "missile_type_f_air_to_air_ltc_pod",
             "name": "aim9m_bol",
             "ShowNodes": {
               "node": "lau_138_bol_001"
@@ -4481,6 +4605,35 @@
                 "reqModification": "us_aim_9m"
               }
             ]
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "ShowNodes": {
+              "node": "lau_138_bol_001"
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 25.0,
+                "bulletsCartridge": 1,
+                "reqModification": "uk_ltc_bol"
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "emitter": "aim_9_1",
+                "bullets": 1,
+                "reqModification": "us_aim_9l"
+              }
+            ]
           }
         ]
       },
@@ -4491,6 +4644,25 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": [
+                "pylon_for_lau7a_1",
+                "lau7_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9_2",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m",
             "reqModification": "us_aim_9m",
             "ShowNodes": {
@@ -4531,6 +4703,38 @@
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_for_lau7a_1",
+                "lau_138_bol_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 25.0,
+                "bulletsCartridge": 1,
+                "reqModification": "uk_ltc_bol"
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "emitter": "aim_9_2",
+                "bullets": 1,
+                "reqModification": "us_aim_9l"
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_ltc_pod",
             "name": "aim9m_bol",
             "ShowNodes": {
               "node": [
@@ -4628,7 +4832,6 @@
           {
             "iconType": "nar_ap_special_group",
             "name": "ter_lau_10a_left_wing",
-            "reqModification": "f4c_zuni",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix1",
@@ -4873,7 +5076,6 @@
           {
             "iconType": "bombs_middle_group_x6",
             "name": "us_mk82_x6",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -4946,7 +5148,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "us_mk83_x2",
-            "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -4979,7 +5180,6 @@
           {
             "iconType": "bombs_heavy_middle_group",
             "name": "us_mk84_x2",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -5012,7 +5212,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "us_gbu_38_x2_slot4",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -5045,7 +5245,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam_group_x2",
             "name": "us_gbu_31_x2_slot4",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -5078,7 +5278,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "us_mk84_air_x2",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -5111,7 +5310,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "us_gbu_12_x2",
-            "reqModification": "us_gbu_12",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -5148,7 +5347,7 @@
           {
             "iconType": "guided_bomb_large_laser_x2",
             "name": "us_gbu_16_x2",
-            "reqModification": "us_gbu_16",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -5185,7 +5384,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "us_mk82_air_x6",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -5258,7 +5456,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "us_mk83_air_x2",
-            "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -5291,7 +5488,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_24_slot4",
-            "reqModification": "us_gbu_10_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix5",
@@ -5425,7 +5622,6 @@
           {
             "iconType": "bombs_middle_group_x8",
             "name": "us_mk82_x8",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5518,7 +5714,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "us_mk83_x2",
-            "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5551,7 +5746,6 @@
           {
             "iconType": "bombs_heavy_middle_group",
             "name": "us_mk84_x2",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5584,7 +5778,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "us_gbu_38_x2_slot5",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5617,7 +5811,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam_group_x2",
             "name": "us_gbu_31_x2_slot5",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5650,7 +5844,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "us_mk84_air_x2",
-            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5683,7 +5876,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "us_gbu_12_x2",
-            "reqModification": "us_gbu_12",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5720,7 +5913,7 @@
           {
             "iconType": "guided_bomb_large_laser_x2",
             "name": "us_gbu_16_x2",
-            "reqModification": "us_gbu_16",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5757,7 +5950,7 @@
           {
             "iconType": "guided_bomb_small_laser_x2",
             "name": "us_gbu_10_x2",
-            "reqModification": "us_gbu_10_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5794,7 +5987,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x8",
             "name": "us_mk82_air_x8",
-            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5887,7 +6079,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "us_mk83_air_x2",
-            "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5920,7 +6111,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_24",
-            "reqModification": "us_gbu_10_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -5979,6 +6170,25 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": [
+                "pylon_for_lau7a_2",
+                "lau7_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9_3",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m",
             "reqModification": "us_aim_9m",
             "ShowNodes": {
@@ -6019,6 +6229,38 @@
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_for_lau7a_2",
+                "lau_138_bol_003"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 25.0,
+                "bulletsCartridge": 1,
+                "reqModification": "uk_ltc_bol"
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "emitter": "aim_9_3",
+                "bullets": 1,
+                "reqModification": "us_aim_9l"
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_ltc_pod",
             "name": "aim9m_bol",
             "ShowNodes": {
               "node": [
@@ -6116,7 +6358,6 @@
           {
             "iconType": "nar_ap_special_group",
             "name": "ter_lau_10a_right_wing",
-            "reqModification": "f4c_zuni",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix6",
@@ -6176,6 +6417,22 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": "lau7_4"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9_4",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m_default",
             "ShowNodes": {
               "node": "lau7_4"
@@ -6209,6 +6466,35 @@
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "ShowNodes": {
+              "node": "lau_138_bol_004"
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 25.0,
+                "bulletsCartridge": 1,
+                "reqModification": "uk_ltc_bol"
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "emitter": "aim_9_4",
+                "bullets": 1,
+                "reqModification": "us_aim_9l"
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_ltc_pod",
             "name": "aim9m_bol",
             "ShowNodes": {
               "node": "lau_138_bol_004"
@@ -7356,43 +7642,19 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
-    "f4c_zuni": {
-      "tier": 1,
-      "modClass": "weapon"
-    },
-    "us_500lb_mk82_gbu38_jdam": {
-      "modClass": "weapon",
-      "tier": 2,
-      "prevModification": "f4c_zuni"
-    },
-    "us_1000lb_mk83": {
-      "modClass": "weapon",
-      "tier": 3,
-      "reqModification": "us_500lb_mk82_gbu38_jdam"
-    },
-    "us_2000lb_mk84_gbu31_jdam": {
-      "modClass": "weapon",
-      "tier": 4,
-      "reqModification": "us_1000lb_mk83"
-    },
     "us_lantirn_pod": {
       "modClass": "weapon",
       "tier": 1
     },
-    "us_gbu_12": {
+    "us_gbu_laser": {
       "reqModification": "us_lantirn_pod",
       "modClass": "weapon",
       "tier": 2
     },
-    "us_gbu_16": {
-      "reqModification": "us_gbu_12",
-      "tier": 3,
-      "modClass": "weapon"
-    },
-    "us_gbu_10_gbu_24": {
-      "reqModification": "us_gbu_16",
-      "tier": 4,
-      "modClass": "weapon"
+    "us_jdam": {
+      "prevModification": "us_gbu_laser",
+      "modClass": "weapon",
+      "tier": 3
     },
     "countermeasures_launcher_chaff_bol_pod": {},
     "countermeasures_launcher_chaff": {},
@@ -7408,9 +7670,14 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "us_aim_9m": {
-      "reqModification": "uk_ltc_bol",
+    "us_aim_9l": {
+      "prevModification": "uk_ltc_bol",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_9m": {
+      "reqModification": "us_aim_9l",
+      "tier": 4,
       "modClass": "weapon"
     },
     "us_aim_7m": {

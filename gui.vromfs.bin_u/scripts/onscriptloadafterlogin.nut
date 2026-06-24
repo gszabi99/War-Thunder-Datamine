@@ -226,7 +226,6 @@ foreach (fn in [
   "%scripts/userLog/userlogViewData.nut"
   "%scripts/userLog/userLog.nut"
 
-  "%scripts/crew/crewModalHandler.nut"
   "%scripts/crew/crewWndHandler.nut"
   "%scripts/crew/crewShortCache.nut"
   "%scripts/crew/skillParametersRequestType.nut"

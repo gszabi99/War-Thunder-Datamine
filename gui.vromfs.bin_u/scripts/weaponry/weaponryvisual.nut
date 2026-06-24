@@ -718,10 +718,11 @@ function createModItemLayout(id, unit, item, iType, params = {}) {
   if (item.type == weaponsItem.skin)
     return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getSkinModView(id, unit, item, params))
 
-  if (unit.isHuman() && item.type == weaponsItem.bundle) {
-    if (item?.itemsType == weaponsItem.infantryWeapon)
+  if (unit.isHuman() && item.type == weaponsItem.bundle)
+    if (item?.itemsType == weaponsItem.infantryWeapon) {
+      params = clone params
       params.itemWidth <- 0.5
-  }
+    }
   return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getWeaponItemViewParams(id, unit, item, params))
 }
 

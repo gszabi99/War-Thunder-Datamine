@@ -3042,6 +3042,14 @@
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_bgl_400.blk"
       },
       {
+        "name": "mirage_2000d_rmv_pgm_500_laser",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_pgm_500_laser.blk"
+      },
+      {
+        "name": "mirage_2000d_rmv_pgm_2000_laser",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_pgm_2000_laser.blk"
+      },
+      {
         "name": "mirage_2000d_rmv_pgm_500",
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_pgm_500.blk"
       },
@@ -3564,7 +3572,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "pgm_500_slot2",
-            "reqModification": "fr_pgm_500",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_clb_lat_002"
             },
@@ -3579,9 +3587,30 @@
             }
           },
           {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "pgm_500_laser_slot2",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_clb_lat_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_laser.blk",
+              "emitter": "bomb_pgm_500_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "damocles"
+            }
+          },
+          {
             "iconType": "guided_bomb_grey",
             "name": "pgm_2000_slot2",
-            "reqModification": "fr_pgm_2000",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_clb_lat_002"
             },
@@ -3593,6 +3622,27 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_jdam",
+            "name": "pgm_2000_laser_slot2",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_clb_lat_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_laser.blk",
+              "emitter": "bomb_pgm_2000_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "damocles"
             }
           },
           {
@@ -3911,7 +3961,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "pgm_500_slot4",
-            "reqModification": "fr_pgm_500",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_clb_503_001"
             },
@@ -3923,6 +3973,45 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "mk82_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk82_snakeye_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "gbu_12_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "gbu_49_x2_slot5"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "pgm_500_laser_slot4",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_clb_503_001"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_laser.blk",
+              "emitter": "bomb_pgm_500_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "damocles"
             },
             "BannedWeaponPreset": [
               {
@@ -4193,6 +4282,10 @@
                 "preset": "pgm_500_slot4"
               },
               {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
+              },
+              {
                 "slot": 6,
                 "preset": "pgm_500_slot6"
               }
@@ -4244,6 +4337,10 @@
                 "preset": "pgm_500_slot4"
               },
               {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
+              },
+              {
                 "slot": 6,
                 "preset": "pgm_500_slot6"
               }
@@ -4273,6 +4370,10 @@
               {
                 "slot": 4,
                 "preset": "pgm_500_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
               },
               {
                 "slot": 6,
@@ -4306,6 +4407,10 @@
                 "preset": "pgm_500_slot4"
               },
               {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
+              },
+              {
                 "slot": 6,
                 "preset": "pgm_500_slot6"
               }
@@ -4337,6 +4442,10 @@
                 "preset": "pgm_500_slot4"
               },
               {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
+              },
+              {
                 "slot": 6,
                 "preset": "pgm_500_slot6"
               }
@@ -4345,7 +4454,7 @@
           {
             "iconType": "guided_bomb_grey",
             "name": "pgm_2000_slot5",
-            "reqModification": "fr_pgm_2000",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_central"
             },
@@ -4362,6 +4471,45 @@
               {
                 "slot": 4,
                 "preset": "pgm_500_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "pgm_500_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_heavy_jdam",
+            "name": "pgm_2000_laser_slot5",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_central"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_laser.blk",
+              "emitter": "bomb_pgm_2000_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "damocles"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "pgm_500_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
               },
               {
                 "slot": 6,
@@ -4390,6 +4538,10 @@
                 "preset": "pgm_500_slot4"
               },
               {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
+              },
+              {
                 "slot": 6,
                 "preset": "pgm_500_slot6"
               }
@@ -4416,6 +4568,10 @@
                 "preset": "pgm_500_slot4"
               },
               {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
+              },
+              {
                 "slot": 6,
                 "preset": "pgm_500_slot6"
               }
@@ -4440,6 +4596,10 @@
               {
                 "slot": 4,
                 "preset": "pgm_500_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
               },
               {
                 "slot": 6,
@@ -4473,6 +4633,10 @@
               {
                 "slot": 4,
                 "preset": "pgm_500_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "pgm_500_laser_slot4"
               },
               {
                 "slot": 6,
@@ -4555,7 +4719,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "pgm_500_slot6",
-            "reqModification": "fr_pgm_500",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_clb_503_002"
             },
@@ -4867,7 +5031,7 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "pgm_500_slot8",
-            "reqModification": "fr_pgm_500",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_clb_lat_003"
             },
@@ -4882,9 +5046,30 @@
             }
           },
           {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "pgm_500_laser_slot8",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_clb_lat_003"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_laser.blk",
+              "emitter": "bomb_pgm_500_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "damocles"
+            }
+          },
+          {
             "iconType": "guided_bomb_grey",
             "name": "pgm_2000_slot8",
-            "reqModification": "fr_pgm_2000",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_clb_lat_003"
             },
@@ -4896,6 +5081,27 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_jdam",
+            "name": "pgm_2000_laser_slot8",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_clb_lat_003"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_laser.blk",
+              "emitter": "bomb_pgm_2000_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "damocles"
             }
           },
           {
@@ -5582,12 +5788,13 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "fr_pgm_500": {
+    "fr_pgm_laser": {
       "modClass": "weapon",
+      "reqModification": "fr_aasm_250_sbu_38",
       "tier": 2
     },
-    "fr_pgm_2000": {
-      "reqModification": "fr_pgm_500",
+    "fr_pgm_ir": {
+      "prevModification": "fr_pgm_laser",
       "modClass": "weapon",
       "tier": 3
     }

@@ -109,6 +109,8 @@
   "drawShipsInShipSensorView": true,
   "drawSubsInShipSensorView": true,
   "sonarViewNearRenderDist": 200.0,
+  "cameraInsideHullHideDelay": 0.1,
+  "cameraInsideHullHideDelayUnderwater": 0.0,
   "squadTargetIndicatorRandomRange": [
     15.0,
     500.0
@@ -459,7 +461,7 @@
   "enableFlightModelDamageTexture": false,
   "maxDistanceForUpdateWithShipPhys": 800.0,
   "maxDistanceForDetailedUpdateShipPhys": 400.0,
-  "fpvShellMaxTimeAfterLosingContact": 3.0,
+  "fpvShellMaxTimeAfterLosingContact": 0.75,
   "planeTraceOpacityAoaCritMultRange": [
     0.5,
     0.85
@@ -13505,7 +13507,6 @@
     ],
     "reflectionHdrMultiplier": 4.0,
     "reflectionDistortionScale": 3.0,
-    "reflectionVerticalBlurStrength": 3.0,
     "cloudsWaterBlurMask": 0.4,
     "cloudsWaterBlurDrawNear": 3.0,
     "cloudsWaterBlurDrawFar": 0.3,
@@ -23823,6 +23824,8 @@
         "ice_floe_underwater_h",
         "ice_floe_underwater_i",
         "ice_floe_underwater_j",
+        "aerofinisher_long",
+        "aerofinisher_marking_b",
         "air_port_building_service_i",
         "air_port_building_service_h",
         "air_port_building_service_b",

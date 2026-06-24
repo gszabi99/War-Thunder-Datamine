@@ -96,14 +96,13 @@ let objectsWithTooltip = {
   }
 }
 
-function fillTooltipsIds(holderObj, unit, params = {}) {
+function fillTooltipsIds(holderObj, unit) {
+  let unitType = getEsUnitType(unit)
+  let params = { unitType }
   foreach (objId, data in objectsWithTooltip) {
-    let unitType = getEsUnitType(unit)
-
     if (!isInArray(unitType, data.showForTypes))
       continue
 
-    params.__update({ unitType })
     let tooltipId = objectsWithTooltip[objId].getTooltipId(unit.name, params)
     let tooltipNest = holderObj.findObject($"{objId}-tooltip")
     if (!tooltipNest?.isValid())

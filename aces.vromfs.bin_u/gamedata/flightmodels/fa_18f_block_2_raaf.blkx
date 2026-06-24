@@ -68,7 +68,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map_fa_18.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -3061,8 +3061,6 @@
     "eventAOAAlarm": "alarm_attack_angle_f18",
     "voiceWarningSystem": "betty",
     "gun": "gun_default",
-    "nozzleMoveSfx": "nozzle_moving_3",
-    "nozzleAngleThreshold": 0.05,
     "voiceWarningSystemOverride": {
       "vws_right": {},
       "vws_left": {},
@@ -3119,6 +3117,18 @@
       "vws_increase_engine_rpm": {},
       "vws_check_mech": {}
     }
+  },
+  "hook": {
+    "coeffHookJ": 0.03,
+    "hookDeflectionAngles": [
+      -50.0,
+      5.0
+    ],
+    "hookCxDiap": [
+      0.2,
+      0.9
+    ],
+    "hookMass": 10.0
   },
   "cockpit": {
     "mfdTextureSize": [

@@ -1,6 +1,6 @@
 tdiv {
   flow:t='vertical'
-  width:t=<<#isTooltipWide>>'460@sf/@pf'<</isTooltipWide>><<^isTooltipWide>>'360@sf/@pf'<</isTooltipWide>>
+  min-width:t=<<#isTooltipWide>>'460@sf/@pf'<</isTooltipWide>><<^isTooltipWide>>'360@sf/@pf'<</isTooltipWide>>
 
   textareaNoTab {
     text:t='<<header>>'
@@ -20,7 +20,6 @@ tdiv {
   <</isPC>>
   <<^isPC>>
   tdiv {
-    width:t='pw'
     margin-bottom:t='1@blockInterval'
     textareaNoTab {
       text:t='#mainmenu/openLimitBuyWndHintConsolePrefix'

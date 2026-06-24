@@ -19,6 +19,26 @@ let graphColorList = [
     int = 0xFFD34FE2, 
     hex = "FFD34FE2"
   }
+  {
+    int = 0xFF39B3BC, 
+    hex = "FF39B3BC"
+  }
+  {
+    int = 0xFFDA6900, 
+    hex = "FFDA6900"
+  }
+  {
+    int = 0xFF7F65FF, 
+    hex = "FF7F65FF"
+  }
+  {
+    int = 0xFFB7B7B7, 
+    hex = "FFB7B7B7"
+  }
+  {
+    int = 0xFF94D244, 
+    hex = "FF94D244"
+  }
 ]
 
 let getBulletCacheSaveId = @(bullet) $"{bullet.weaponBlkName}_{bullet.bulletName}"

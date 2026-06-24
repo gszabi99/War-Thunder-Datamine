@@ -179,7 +179,7 @@ def equip_storage_repair_update_es(act : UpdateStageInfoAct;
         for unitEid in *units_spawn_on_init__units
           query(unitEid) <| $ [es] (var unit__ref aka spawned_unit__ref : UnitRef)
             if !spawned_unit__ref.unit.isDelayed
-              *spawned_unit__ref.unit |> repair()
+              *spawned_unit__ref.unit |> sendRepair()
       return
   if storage_unit__ref.unit.isDelayed || storage_unit__ref.unit.isAlive
     return

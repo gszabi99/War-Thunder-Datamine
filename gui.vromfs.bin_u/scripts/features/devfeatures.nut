@@ -9,9 +9,6 @@ let devFeatures = {
   PremiumSubscription = {
     title = "Enable premium by subscription"
   }
-  FullScreenCrewWindow = {
-    title = "Enable showing the updated view for crew skill window"
-  }
   AssistantMap = {
     title = "Enable tactical map assistant (QR session)"
   }

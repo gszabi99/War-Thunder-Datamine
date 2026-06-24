@@ -387,7 +387,7 @@ ControlsPreset = class {
 
   
 
-  function loadFromPreset(presetPath, presetChain = []) {
+  function loadFromPreset(presetPath, presetChain) {
     presetPath = this.compatibility.getActualPresetName(presetPath)
 
     
@@ -404,7 +404,7 @@ ControlsPreset = class {
   }
 
 
-  function loadFromBlk(blk, presetChain = []) {
+  function loadFromBlk(blk, presetChain) {
     local controlsBlk = blk?.controls
     let version = controlsBlk != null ?
       getTblValue("version", controlsBlk, PRESET_DEFAULT_VERSION) :

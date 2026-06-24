@@ -1,4 +1,6 @@
 {
+  "blur": {},
+  "blur_foreground": {},
   "img": {
     "position": "absolute",
     "size": "3sw - 3sw*@isInVr, sh/3+1",
@@ -7,317 +9,33 @@
   },
   "root": {
     "type": "big",
-    "blur": {},
-    "blur_foreground": {},
-    "frame": {
+    "hangarControlTracking": {},
+    "tdiv": {
       "id": "wnd_frame",
-      "width": "@slotbarWidthFull",
-      "max-width": "1.5@sf",
-      "height": "(((0.035*@sf)\\1 + 6*@sf/@pf_outdated) * 14) + 4*@scrn_tgt/100.0 + 1@frameHeaderHeight + (22*@sf/@pf) \\ 1 + 1@blockInterval",
-      "pos": "50%pw-50%w, 1@bh + 1@titleLogoPlateHeight + 0.6*0.02@scrn_tgt + 0.4 * (1@maxWindowHeight - h)",
+      "overflow": "hidden",
+      "right": "1@bw",
+      "top": "1@bh + 1@titleLogoPlateHeight - 0.5@frameMediumPadding",
       "position": "absolute",
-      "class": "wndNav",
-      "type": "big",
-      "frame_header": {
-        "HorizontalListBox": {
-          "id": "crew_pages_list",
-          "height": "ph",
-          "width": "fw",
-          "class": "header",
-          "activeAccesskeys": "RS",
-          "on_select": "onCrewPage"
-        },
-        "Button_close": {
-          "id": "btn_back"
-        }
-      },
-      "div": {
-        "size": "pw, fh",
-        "position": "relative",
-        "flow": "vertical",
-        "activeText": [
-          {
-            "id": "crew_name",
-            "pos": "50%pw-50%w, 1*@scrn_tgt/100.0",
-            "position": "relative"
-          },
-          {
-            "id": "skills_unit_type_warning",
-            "pos": "50%pw-50%w, 0",
-            "position": "relative",
-            "overlayTextColor": "warning",
-            "text": "#crew/skillsWorkWithUnitsSameType"
-          }
-        ],
-        "tdiv": [
-          {
-            "id": "crew_level_block",
-            "pos": "50%pw-50%w, 0",
-            "position": "relative",
-            "tooltip": "#crew/usedSkills/tooltip",
-            "text": {
-              "text": "#crew/usedSkills"
-            },
-            "activeText": [
-              {
-                "id": "crew_cur_skills",
-                "margin-left": "1@blockInterval"
-              },
-              {
-                "id": "crew_new_skills",
-                "style": "color:@cardProgressChangeColor;"
-              }
-            ]
-          },
-          {
-            "id": "crew_cur_points_block",
-            "pos": "50%pw-50%w, 0",
-            "position": "relative",
-            "tooltip": "#crew/availablePoints/tooltip",
-            "text": {
-              "text": "#crew/availablePoints"
-            },
-            "textareaNoTab": {
-              "id": "crew_cur_points",
-              "margin-left": "1@blockInterval",
-              "overlayTextColor": "active"
-            }
-          },
-          {
-            "id": "crew_points_advice_block",
-            "height": "@cIco",
-            "pos": "50%pw-50%w, 0",
-            "position": "relative",
-            "tdiv": {
-              "id": "crew_points_advice",
-              "display": "hide",
-              "img": {
-                "size": "@cIco, @cIco",
-                "pos": "0, ph/2-h/2",
-                "position": "relative",
-                "background-image": "#ui/gameuiskin#new_icon.svg",
-                "background-svg-size": "@cIco, @cIco"
-              },
-              "textareaNoTab": {
-                "pos": "0.2@cIco, 0",
-                "position": "relative",
-                "text": "#crew/availablePoints/advice"
-              }
-            }
-          },
-          {
-            "pos": "pw-w-1@bw, 1*@scrn_tgt/100.0",
+      "width": "1048@sf/@pf",
+      "height": "1@crewWndBaseHeight",
+      "blur": {},
+      "blur_foreground": {},
+      "frame": {
+        "class": "wndNav",
+        "noHeaderFooterBars": "yes",
+        "size": "pw,ph",
+        "tdiv": {
+          "size": "pw,ph",
+          "padding": "1@frameThickPadding",
+          "padding-top": "0.5@frameThickPadding",
+          "flow": "vertical",
+          "topRightButtonsBlock": {
             "position": "absolute",
-            "flow": "vertical",
+            "top": "0",
+            "right": "0",
             "Button_text": {
-              "id": "btn_buy",
-              "text": "#mainmenu/btnBuySkillPoints",
-              "visualStyle": "purchase",
-              "display": "hide",
-              "btnName": "Y",
-              "_on_click": "onBuyPoints",
-              "buttonWink": {},
-              "buttonGlance": {},
-              "ButtonImg": {},
-              "discount": {
-                "id": "buyPoints_discount",
-                "text": "",
-                "pos": "pw-30%w, 50%ph-h",
-                "position": "absolute",
-                "rotation": "-20"
-              }
-            }
-          },
-          {
-            "id": "upgrade_qualification_block",
-            "width": "pw",
-            "top": "ph-h",
-            "flow": "vertical",
-            "background-position": "1, @blockInterval, 0, h - 1@blockInterval - 1@dp",
-            "background-color": "@frameSeparatorColor",
-            "padding-top": "2@blockInterval",
-            "padding-left": "2@blockInterval",
-            "padding-right": "2@blockInterval",
-            "tdiv": {
-              "width": "pw",
-              "top": "ph-h",
-              "flow": "vertical",
-              "tdiv": [
-                {
-                  "flow": "h-flow",
-                  "width": "pw",
-                  "textareaNoTab": {
-                    "width": "fw",
-                    "text": "#crew/qualification/tooltip"
-                  },
-                  "tdiv": {
-                    "Button_text": {
-                      "id": "upgrade_button",
-                      "class": "image",
-                      "noMargin": "yes",
-                      "visualStyle": "purchase",
-                      "on_click": "onSpecIncreaseBtn",
-                      "text": "#crew/qualifyIncrease",
-                      "padding": "0, 0",
-                      "hasWhiteColoredImg": "yes",
-                      "buttonWink": {},
-                      "buttonGlance": {},
-                      "ButtonImg": {},
-                      "img": {
-                        "isColoredImg": "yes",
-                        "id": "upgrade_button_icon",
-                        "pos": "0.5ph - 0.5h, (ph-h)/2",
-                        "background-image": "#ui/gameuiskin#spec_icon1_place.svg"
-                      }
-                    }
-                  }
-                },
-                {
-                  "textareaNoTab": [
-                    {
-                      "id": "current_qualification",
-                      "text": ""
-                    },
-                    {
-                      "id": "current_qualification_desc",
-                      "text": ""
-                    }
-                  ],
-                  "img": {
-                    "id": "current_qualification_icon",
-                    "background-svg-size": "@cIco,@cIco",
-                    "size": "@cIco,@cIco",
-                    "background-image": ""
-                  }
-                },
-                {
-                  "id": "exp_block",
-                  "width": "pw",
-                  "flow": "h-flow",
-                  "textAreaCentered": {
-                    "id": "expText",
-                    "position": "relative",
-                    "top": "ph-h + 0.8@blockInterval",
-                    "text-align": "left",
-                    "padding-rigth": "2@blockInterval"
-                  },
-                  "tdiv": {
-                    "id": "expProgressBar",
-                    "width": "fw",
-                    "max-width": "66%@pw"
-                  }
-                }
-              ],
-              "loadingHint": {
-                "id": "qualification_requirement",
-                "width": "pw",
-                "behaviour": "bhvHint",
-                "isWrapInRowAllowed": "yes",
-                "isCommonHint": "yes",
-                "hintAlign": "left",
-                "hintSizeStyle": "action"
-              }
-            }
-          }
-        ],
-        "textareaNoTab": [
-          {
-            "id": "not_recrute_crew_warning",
-            "display": "hide",
-            "pos": "50%pw-50%w, 0",
-            "position": "relative",
-            "text": "#mainmenu/needRecruitCrewWarning",
-            "overlayTextColor": "bad"
-          },
-          {
-            "id": "crew-info-text",
-            "padding-top": "1@blockInterval",
-            "pos": "50%pw-50%w, 0",
-            "position": "relative",
-            "text-align": "center"
-          }
-        ],
-        "div": {
-          "id": "crew_items_scroll_div",
-          "height": "fh",
-          "pos": "50%pw-50%w, 2*@scrn_tgt/100.0",
-          "position": "relative",
-          "overflow-y": "auto",
-          "total-input-transparent": "yes",
-          "table": [
-            {
-              "id": "skills_table",
-              "class": "crewTable",
-              "behavior": "PosOptionsNavigator",
-              "display": "hide",
-              "enable": "no"
-            },
-            {
-              "id": "specs_table",
-              "class": "crewTable",
-              "behavior": "PosOptionsNavigator",
-              "navigatorShortcuts": "yes",
-              "display": "hide",
-              "enable": "no"
-            }
-          ],
-          "tdiv": {
-            "total-input-transparent": "yes",
-            "id": "skills_help_table",
-            "position": "absolute",
-            "width": "pw",
-            "height": "ph",
-            "div": [
-              {
-                "id": "table_row1",
-                "width": "fw",
-                "height": "ph"
-              },
-              {
-                "id": "table_row2",
-                "width": "(0.09*@sf)\\1 + 12*@sf/@pf_outdated",
-                "height": "ph"
-              },
-              {
-                "id": "table_row3",
-                "width": "1@sliderButtonSquareHeight+1@buttonMargin",
-                "height": "ph"
-              },
-              {
-                "id": "table_row_progressbar",
-                "width": "5 * (0.185@scrn_tgt \\ (5 * @skillProgressWidthMul)) * @skillProgressWidthMul + 1@skillProgressBgIncSize + 1*@scrn_tgt/100.0",
-                "height": "ph"
-              },
-              {
-                "id": "table_row5",
-                "width": "5.5*@scrn_tgt/100.0",
-                "height": "ph"
-              },
-              {
-                "id": "table_row_inc_buttons",
-                "width": "0.4*@scrn_tgt/100.0 + 1@sliderButtonSquareHeight + 2*@scrn_tgt/100.0",
-                "height": "ph"
-              },
-              {
-                "id": "table_row_price",
-                "width": "17.1*@scrn_tgt/100.0",
-                "height": "ph"
-              }
-            ]
-          }
-        }
-      },
-      "navBar": {
-        "navLeft": {
-          "RadioButtonList": {
-            "id": "rb_unit_type",
-            "navigatorShortcuts": "yes",
-            "on_select": "onChangeUnitType"
-          }
-        },
-        "navRight": {
-          "Button_text": [
-            {
+              "position": "relative",
+              "left": "pw-w-1@buttonCloseHeight-0.5@frameThickPadding",
               "id": "btn_buy_all",
               "text": "#mainmenu/btnBuyAll",
               "btnName": "R3",
@@ -333,35 +51,349 @@
               },
               "ButtonImg": {}
             },
-            {
-              "id": "btn_apply",
-              "text": "#mainmenu/btnApply",
-              "btnName": "X",
-              "_on_click": "onSelect",
-              "visualStyle": "secondary",
-              "display": "hide",
-              "enable": "no",
-              "buttonWink": {},
-              "ButtonImg": {}
-            },
-            {
-              "id": "btn_recruit",
-              "text": "#shop/recruitCrew",
-              "btnName": "X",
-              "on_click": "onRecruitCrew",
-              "visualStyle": "secondary",
-              "display": "hide",
-              "enable": "no",
-              "buttonWink": {},
-              "textarea": {
-                "id": "btn_recruit_text",
-                "class": "buttonText"
-              },
-              "ButtonImg": {}
+            "Button_close": {
+              "id": "btn_back",
+              "_on_click": "goBack"
             }
-          ]
+          },
+          "mainBlock": {
+            "height": "fh",
+            "width": "pw",
+            "margin-bottom": "1@frameMediumPadding",
+            "input-transparent": "yes",
+            "leftBlock": {
+              "width": "372@sf/@pf",
+              "height": "ph",
+              "flow": "vertical",
+              "leftBlockHeader": {
+                "width": "pw",
+                "height": "100@sf/@pf",
+                "margin-bottom": "1@frameMediumPadding",
+                "flow": "vertical",
+                "activeText": [
+                  {
+                    "id": "crew_name"
+                  },
+                  {
+                    "id": "crew-info-text"
+                  }
+                ],
+                "tdiv": {
+                  "width": "pw",
+                  "id": "crew_level_block",
+                  "tooltip": "#crew/usedSkills/tooltip",
+                  "activeText": {
+                    "text": "#crew/usedSkills"
+                  },
+                  "tdiv": {
+                    "position": "relative",
+                    "right": "0",
+                    "activeText": [
+                      {
+                        "id": "crew_cur_skills"
+                      },
+                      {
+                        "id": "crew_new_skills",
+                        "overlayTextColor": "premium"
+                      },
+                      {
+                        "id": "crew_max_skills"
+                      }
+                    ]
+                  }
+                },
+                "skilsPointsProgressBar": {
+                  "width": "pw",
+                  "airResearchProgress": [
+                    {
+                      "id": "progressNew",
+                      "type": "new",
+                      "paused": "no",
+                      "value": ""
+                    },
+                    {
+                      "id": "progressOld",
+                      "position": "absolute",
+                      "type": "old",
+                      "paused": "",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "tdiv": {
+                "size": "pw,fh",
+                "VerticalListBox": {
+                  "id": "crew_pages_list",
+                  "size": "pw,ph",
+                  "on_select": "onCrewPage",
+                  "navigator": "posNavigator",
+                  "navigatorShortcuts": "yes",
+                  "css-hier-invalidate": "yes"
+                },
+                "tdiv": {
+                  "total-input-transparent": "yes",
+                  "id": "crew_pages_help",
+                  "position": "absolute",
+                  "width": "pw",
+                  "height": "ph"
+                }
+              }
+            },
+            "verticalLine": {
+              "margin-top": "0.5@frameMediumPadding",
+              "margin-left": "1@frameMediumPadding",
+              "margin-right": "1@frameMediumPadding",
+              "height": "ph-0.5@frameMediumPadding"
+            },
+            "rightBlock": {
+              "width": "fw",
+              "height": "ph",
+              "flow": "vertical",
+              "input-transparent": "yes",
+              "rightBlockHeader": {
+                "width": "pw",
+                "height": "1@crewRightTopHeaderHeight",
+                "margin-bottom": "0.5@frameMediumPadding",
+                "flow": "vertical",
+                "input-transparent": "yes",
+                "tdiv": [
+                  {
+                    "id": "crew_cur_points_block",
+                    "tooltip": "#crew/availablePoints/tooltip",
+                    "margin-bottom": "0.2@frameMediumPadding",
+                    "text": {
+                      "text": "#crew/availablePoints/short"
+                    },
+                    "textareaNoTab": {
+                      "id": "crew_cur_points",
+                      "margin-left": "1@blockInterval",
+                      "overlayTextColor": "active"
+                    }
+                  },
+                  {
+                    "id": "crew_points_advice_block",
+                    "height": "@sIco",
+                    "display": "hide",
+                    "img": {
+                      "size": "@sIco, @sIco",
+                      "pos": "0, ph/2-h/2",
+                      "position": "relative",
+                      "background-image": "#ui/gameuiskin#new_icon.svg",
+                      "background-svg-size": "@sIco, @sIco"
+                    },
+                    "textareaNoTab": {
+                      "pos": "0.2@sIco, ph/2-h/2",
+                      "position": "relative",
+                      "text": "#crew/availablePoints/advice"
+                    }
+                  }
+                ],
+                "textareaNoTab": {
+                  "id": "not_recrute_crew_warning",
+                  "display": "hide",
+                  "pos": "pw/2-w/2, 0",
+                  "position": "relative",
+                  "text": "#mainmenu/needRecruitCrewWarning",
+                  "overlayTextColor": "bad"
+                }
+              },
+              "rightBlockCenter": {
+                "width": "pw",
+                "height": "ph-1@crewRightTopHeaderHeight-1@buttonHeight-1@frameThickPadding",
+                "overflow-y": "auto",
+                "total-input-transparent": "yes",
+                "tdiv": [
+                  {
+                    "id": "skills_table",
+                    "flow": "vertical",
+                    "display": "hide",
+                    "enable": "no",
+                    "width": "pw"
+                  },
+                  {
+                    "total-input-transparent": "yes",
+                    "id": "skills_help_table",
+                    "position": "absolute",
+                    "width": "pw",
+                    "height": "ph",
+                    "padding": "10@sf/@pf,5@sf/@pf,10@sf/@pf,7@sf/@pf",
+                    "tdiv": [
+                      {
+                        "width": "5@crewSkillBockWidth + 2*(30@sf/@pf+30@sf/@pf)",
+                        "height": "ph"
+                      },
+                      {
+                        "id": "table_row_dec_buttons",
+                        "width": "1@sliderButtonSquareHeightSm",
+                        "height": "ph"
+                      },
+                      {
+                        "id": "table_row_progressbar",
+                        "width": "5@crewSkillBockWidth+8@sf/@pf",
+                        "height": "ph"
+                      },
+                      {
+                        "id": "table_row_inc_buttons",
+                        "width": "1@sliderButtonSquareHeightSm",
+                        "height": "ph"
+                      },
+                      {
+                        "id": "table_row_price",
+                        "width": "68@sf/@pf",
+                        "height": "ph"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "rightBlockFooter": {
+                "width": "pw",
+                "height": "1@buttonHeight",
+                "position": "relative",
+                "bottom": "0",
+                "tdiv": {
+                  "width": "fw"
+                },
+                "Button_text": [
+                  {
+                    "id": "btn_buy",
+                    "text": "#mainmenu/btnBuySkillPoints",
+                    "visualStyle": "purchase",
+                    "display": "hide",
+                    "btnName": "Y",
+                    "_on_click": "onBuyPoints",
+                    "noMargin": "yes",
+                    "buttonWink": {},
+                    "buttonGlance": {},
+                    "ButtonImg": {},
+                    "discount": {
+                      "id": "buyPoints_discount",
+                      "text": "",
+                      "pos": "pw-30%w, 50%ph-h",
+                      "position": "absolute",
+                      "rotation": "-20"
+                    }
+                  },
+                  {
+                    "id": "btn_apply",
+                    "text": "#mainmenu/btnApply",
+                    "btnName": "X",
+                    "_on_click": "onSelect",
+                    "visualStyle": "secondary",
+                    "display": "hide",
+                    "enable": "no",
+                    "noMargin": "yes",
+                    "margin-left": "1@frameThickPadding",
+                    "buttonWink": {},
+                    "ButtonImg": {}
+                  },
+                  {
+                    "id": "btn_recruit",
+                    "text": "#shop/recruitCrew",
+                    "btnName": "X",
+                    "on_click": "onRecruitCrew",
+                    "visualStyle": "secondary",
+                    "display": "hide",
+                    "enable": "no",
+                    "noMargin": "yes",
+                    "buttonWink": {},
+                    "textarea": {
+                      "id": "btn_recruit_text",
+                      "class": "buttonText"
+                    },
+                    "ButtonImg": {}
+                  }
+                ]
+              }
+            }
+          },
+          "horizontalLine": {
+            "width": "pw"
+          },
+          "bottomBlock": {
+            "id": "upgrade_qualification_block",
+            "margin-top": "1@frameMediumPadding",
+            "width": "pw",
+            "height": "1@upgradeQualContainerBaseHeight",
+            "flow": "vertical",
+            "tdiv": [
+              {
+                "margin-bottom": "5@sf/@pf",
+                "textareaNoTab": {
+                  "id": "current_qualification",
+                  "position": "relative",
+                  "top": "ph/2-h/2",
+                  "text": ""
+                },
+                "img": {
+                  "id": "current_qualification_icon",
+                  "position": "relative",
+                  "top": "ph/2-h/2",
+                  "background-svg-size": "@sIco,@sIco",
+                  "size": "@sIco,@sIco",
+                  "background-image": ""
+                },
+                "activeText": {
+                  "id": "current_qualification_desc",
+                  "position": "relative",
+                  "top": "ph/2-h/2",
+                  "text": ""
+                }
+              },
+              {
+                "width": "pw",
+                "height": "fh",
+                "tdiv": {
+                  "width": "fw",
+                  "margin-right": "25@sf/@pf",
+                  "position": "relative",
+                  "bottom": "-3@sf/@pf",
+                  "tdiv": {
+                    "id": "expProgressBar",
+                    "width": "pw"
+                  }
+                },
+                "Button_text": {
+                  "position": "relative",
+                  "bottom": "0",
+                  "id": "upgrade_button",
+                  "noMargin": "yes",
+                  "visualStyle": "purchase",
+                  "on_click": "onSpecIncreaseBtn",
+                  "text": "#crew/qualifyIncrease",
+                  "css-hier-invalidate": "yes",
+                  "padding": "0, 0",
+                  "hasWhiteColoredImg": "yes",
+                  "buttonWink": {},
+                  "buttonGlance": {},
+                  "ButtonImg": {},
+                  "textarea": {
+                    "id": "upgrade_button_text",
+                    "class": "buttonText"
+                  }
+                }
+              }
+            ],
+            "loadingHint": {
+              "id": "qualification_requirement",
+              "width": "pw",
+              "behaviour": "bhvHint",
+              "isWrapInRowAllowed": "yes",
+              "isCommonHint": "yes",
+              "hintAlign": "left",
+              "textAlign": "left",
+              "hintSizeStyle": "action",
+              "normalFont": "yes"
+            }
+          }
         }
       }
+    },
+    "slotbarDiv": {
+      "id": "nav-slotbar",
+      "position": "root",
+      "pos": "50%sw-50%w, sh-h-1@slotbarOffset"
     },
     "DummyButton": {
       "behaviour": "accesskey",
@@ -1092,6 +1124,108 @@
           }
         }
       ]
+    }
+  },
+  "tooltipObj": {
+    "position": "root",
+    "pos": "50%sw-50%w, 70%sh-50%h",
+    "style": "padding:16@sf/@pf; color-factor:192;",
+    "display": "hide",
+    "order-popup": "yes",
+    "skip-cursor": "skip",
+    "id": "dmviewer_hint",
+    "behavior": "Timer",
+    "timer_handler_func": "onDMViewerHintTimer",
+    "input-transparent": "yes",
+    "flow": "vertical",
+    "textareaNoTab": [
+      {
+        "id": "dmviewer_title",
+        "overlayTextColor": "active",
+        "text": "",
+        "input-transparent": "yes"
+      },
+      {
+        "id": "dmviewer_debug",
+        "text": "",
+        "input-transparent": "yes"
+      }
+    ],
+    "tdiv": [
+      {
+        "id": "dmviewer_desc",
+        "position": "relative",
+        "margin-top": "8@sf/@pf",
+        "input-transparent": "yes",
+        "flow": "vertical"
+      },
+      {
+        "id": "dmviewer_ext_hint",
+        "flow": "vertical",
+        "position": "relative",
+        "width": "0.5@sf",
+        "total-input-transparent": "yes",
+        "display": "hide",
+        "rowSeparator": {
+          "margin": "0, @blockInterval"
+        },
+        "textareaNoTab": [
+          {
+            "position": "relative",
+            "margin-top": "@blockInterval",
+            "overlayTextColor": "active",
+            "text": "#xray_ext_hint/title"
+          },
+          {
+            "id": "dmviewer_ext_hint_desc",
+            "position": "relative",
+            "margin-top": "@blockInterval",
+            "hideEmptyText": "yes",
+            "text": "",
+            "smallFont": "yes",
+            "width": "pw"
+          }
+        ],
+        "img": {
+          "id": "dmviewer_ext_hint_icon",
+          "position": "relative",
+          "margin-top": "2@blockInterval",
+          "size": "@dIco, @dIco",
+          "background-image": ""
+        },
+        "loadingHint": {
+          "id": "dmviewer_ext_hint_shortcut",
+          "behaviour": "bhvHint",
+          "position": "relative",
+          "width": "pw",
+          "isXrayHint": "yes",
+          "smallFont": "yes",
+          "isWrapInRowAllowed": "yes",
+          "flow-align": "left"
+        }
+      },
+      {
+        "id": "topValueHint",
+        "display": "hide",
+        "img": {
+          "background-image": "#ui/gameuiskin#spec_icon2.svg",
+          "background-svg-size": "@sIco,@sIco",
+          "size": "@sIco,@sIco"
+        },
+        "textareaNoTab": {
+          "text": "#crewSkillParameter/topSkillValue",
+          "overlayTextColor": "faded",
+          "smallFont": "yes",
+          "valign": "center"
+        }
+      }
+    ],
+    "movie": {
+      "id": "dmviewer_anim",
+      "display": "hide",
+      "size": "@tooltipAnimationWidth,@tooltipAnimationHeight",
+      "movie-autoStart": "yes",
+      "movie-loop": "yes"
     }
   }
 }

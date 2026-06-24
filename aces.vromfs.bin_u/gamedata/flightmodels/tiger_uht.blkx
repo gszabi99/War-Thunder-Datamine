@@ -1920,10 +1920,6 @@
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_apkws_m282.blk"
       },
       {
-        "name": "tiger_uht_4x_hot3",
-        "blk": "gameData/flightModels/weaponPresets/tiger_uht_4x_hot3.blk"
-      },
-      {
         "name": "tiger_uht_hot3",
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_hot3.blk"
       },
@@ -2158,7 +2154,6 @@
           {
             "iconType": "atgm_type1_x4",
             "name": "hot3_x4",
-            "reqModification": "tiger_hot3",
             "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": "pylon_l_atgw3"
@@ -2362,7 +2357,6 @@
           {
             "iconType": "atgm_type1_x4",
             "name": "hot3_x4",
-            "reqModification": "tiger_hot3",
             "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": "pylon_r_atgw3"
@@ -3466,21 +3460,16 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "tiger_hot3": {
+    "us_apkws": {
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 2
     },
     "tiger_atgw3": {
-      "reqModification": "tiger_hot3",
+      "prevModification": "us_apkws",
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 3
-    },
-    "us_apkws": {
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 2
     },
     "stinger_aam": {
       "prevModification": "us_apkws",

@@ -1645,10 +1645,6 @@
         "blk": "gameData/flightModels/weaponPresets/ah_1f_iaf_rocket_8xTOW.blk"
       },
       {
-        "name": "ah_1f_iaf_rocket_4xTOW2",
-        "blk": "gameData/flightModels/weaponPresets/ah_1f_iaf_rocket_4xTOW2.blk"
-      },
-      {
         "name": "ah_1f_iaf_rocket_8xTOW2",
         "blk": "gameData/flightModels/weaponPresets/ah_1f_iaf_rocket_8xTOW2.blk"
       }
@@ -2051,7 +2047,6 @@
           {
             "iconType": "atgm_type2_x2",
             "name": "tow_x2",
-            "reqModification": "ah_1_TOW",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2077,7 +2072,7 @@
           {
             "iconType": "atgm_type1_x4",
             "name": "tow_x4",
-            "reqModification": "ah_1_TOW_2",
+            "reqModification": "ah_1_TOW",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2090,7 +2085,7 @@
           {
             "iconType": "atgm_type1_x4_late",
             "name": "tow2_x4",
-            "reqModification": "ah_1_TOW2_2",
+            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2205,7 +2200,6 @@
           {
             "iconType": "atgm_type2_x2",
             "name": "tow_x2",
-            "reqModification": "ah_1_TOW",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2231,7 +2225,7 @@
           {
             "iconType": "atgm_type1_x4",
             "name": "tow_x4",
-            "reqModification": "ah_1_TOW_2",
+            "reqModification": "ah_1_TOW",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2244,7 +2238,7 @@
           {
             "iconType": "atgm_type1_x4_late",
             "name": "tow2_x4",
-            "reqModification": "ah_1_TOW2_2",
+            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -3334,25 +3328,13 @@
     },
     "ah_1_TOW": {
       "deactivationIsAllowed": false,
-      "reqModification": "ah_1_m261_hydra_70",
+      "prevModification": "ah_1_m261_hydra_70",
       "modClass": "weapon",
-      "tier": 3
-    },
-    "ah_1_TOW_2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW",
-      "modClass": "weapon",
-      "tier": 4
+      "tier": 2
     },
     "ah_1_TOW2": {
       "deactivationIsAllowed": false,
       "reqModification": "ah_1_TOW",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "ah_1_TOW2_2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW2",
       "modClass": "weapon",
       "tier": 4
     },

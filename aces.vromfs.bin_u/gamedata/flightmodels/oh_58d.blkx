@@ -85,23 +85,6 @@
         "hp": 125.5
       }
     },
-    "dural5": {
-      "optic_block1_dm": {
-        "hp": 35.0
-      },
-      "cockpit_control1_dm": {
-        "hp": 60.0
-      },
-      "electronic_block1_dm": {
-        "hp": 60.0
-      },
-      "electronic_block2_dm": {
-        "hp": 60.0
-      },
-      "electronic_block3_dm": {
-        "hp": 60.0
-      }
-    },
     "c_dural3": {
       "fin_dm": {
         "hp": 29.5
@@ -111,13 +94,31 @@
       }
     },
     "dural": {
+      "cockpit_control1_dm": {
+        "hp": 19.5
+      },
       "cover1_dm": {
+        "hp": 19.5
+      },
+      "electronic_block1_dm": {
+        "hp": 19.5
+      },
+      "electronic_block2_dm": {
+        "hp": 19.5
+      },
+      "electronic_block3_dm": {
+        "hp": 19.5
+      },
+      "ircm1_dm": {
+        "hp": 19.5
+      },
+      "optic_block1_dm": {
         "hp": 19.5
       }
     },
     "protected_controls": {
       "propeller_shaft1_dm": {
-        "hp": 39.5
+        "hp": 60.5
       },
       "propeller_shaft2_dm": {
         "hp": 60.5
@@ -159,7 +160,7 @@
     },
     "steel_tank_m": {
       "tank1_dm": {
-        "hp": 75.5
+        "hp": 56.4
       }
     }
   },
@@ -172,7 +173,19 @@
         "name": "cannon1_dm"
       },
       {
+        "name": "cockpit_control1_dm"
+      },
+      {
         "name": "cover1_dm"
+      },
+      {
+        "name": "electronic_block1_dm"
+      },
+      {
+        "name": "electronic_block2_dm"
+      },
+      {
+        "name": "electronic_block3_dm"
       },
       {
         "name": "engine1_dm",
@@ -425,19 +438,7 @@
         "name": "gunner1_dm"
       },
       {
-        "name": "optic_block1_dm"
-      },
-      {
-        "name": "cockpit_control1_dm"
-      },
-      {
-        "name": "electronic_block1_dm"
-      },
-      {
-        "name": "electronic_block2_dm"
-      },
-      {
-        "name": "electronic_block3_dm"
+        "name": "ircm1_dm"
       },
       {
         "name": "oil1_dm",
@@ -465,6 +466,9 @@
         "onKill": {
           "leak_oil": 1.0
         }
+      },
+      {
+        "name": "optic_block1_dm"
       },
       {
         "name": "pilot_dm"
@@ -1975,7 +1979,9 @@
         "cannon1_dm",
         "cannon1_dm",
         "armor1_dm",
-        "transmission2_dm"
+        "transmission2_dm",
+        "cover1_dm",
+        "ircm1_dm"
       ]
     },
     "WeaponSlot": [
@@ -2088,7 +2094,11 @@
               ]
             },
             "ShowDmParts": {
-              "node": "armor1_dm"
+              "node": [
+                "armor1_dm",
+                "cover1_dm",
+                "ircm1_dm"
+              ]
             },
             "Weapon": [
               {
@@ -2177,8 +2187,20 @@
           },
           {
             "iconType": "atgm_type_helfire_x2",
+            "name": "hellfire_default",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/m279_hellfire_b_x2_default.blk",
+              "emitter": "pylon_m279_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type_helfire_x2_late",
             "name": "hellfire",
-            "reqModification": "ah_1_AGM_114_8",
+            "reqModification": "us_agm_114k",
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/m279_hellfire_x2.blk",
@@ -2332,7 +2354,20 @@
             "name": "hellfire_default",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_x2_default.blk",
+              "blk": "gameData/Weapons/containers/m279_hellfire_b_x2_default.blk",
+              "emitter": "pylon_m279_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type_helfire_x2_late",
+            "name": "hellfire",
+            "reqModification": "us_agm_114k",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/m279_hellfire_x2.blk",
               "emitter": "pylon_m279_002",
               "external": true,
               "separate": true,
@@ -2769,6 +2804,89 @@
         }
       },
       {
+        "avionics": "counterMeasures",
+        "health": {
+          "dm": "ircm1_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "ircm1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
         "avionics": "indicators",
         "health": {
           "dm": "electronic_block1_dm",
@@ -3074,14 +3192,14 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "ah_1_AGM_114_8": {
-      "reqModification": "us_apkws",
+    "us_agm_114k": {
+      "prevModification": "us_apkws",
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 3
     },
     "stinger_aam": {
-      "prevModification": "ah_1_AGM_114_8",
+      "prevModification": "us_agm_114k",
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 4

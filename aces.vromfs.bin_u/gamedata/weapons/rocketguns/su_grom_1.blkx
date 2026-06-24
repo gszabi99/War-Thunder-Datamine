@@ -10,8 +10,14 @@
   "helicopterGroup": 2,
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "grom_1",
+    "iconType": "missile_air_to_uni_middle",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.31,
     "length": 4.192,
     "WdK": [
@@ -30,19 +36,10 @@
     "brakeCxK": 0.05,
     "distFromCmToStab": 0.9,
     "mass": 594.0,
-    "massEnd": 535.0,
-    "massEnd1": 498.5,
-    "timeFire": 4.0,
-    "timeFire1": 10.0,
-    "force": 34660.0,
-    "force1": 3700.0,
-    "fireDelay": 1.0,
     "timeLife": 400.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 2.0,
     "maxSpeed": 530.0,
-    "endSpeed": 0.0,
     "maxDistance": 120000.0,
     "minDistance": 2000.0,
     "rangeMax": 120000.0,
@@ -50,6 +47,9 @@
     "guidanceType": "sns",
     "rollStabilization": true,
     "rollStabilizationDelay": 1.0,
+    "explosiveType": "tgaf_5m",
+    "explosiveMass": 165.0,
+    "warheadMass": 315.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -67,18 +67,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tgaf_5m",
-    "explosiveMass": 165.0,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_middle",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -99,9 +92,20 @@
       0.0,
       0.0
     ],
-    "arcadeProp": {
-      "finsAoaHor": 0.35,
-      "finsAoaVer": 0.35
+    "propulsion0": {
+      "fireDelay": 1.5,
+      "impulse0": {
+        "time": 4.0,
+        "force": 34500.0,
+        "massLost": 59.0
+      }
+    },
+    "propulsion1": {
+      "impulse0": {
+        "time": 10.0,
+        "force": 11500.0,
+        "massLost": 50.0
+      }
     },
     "guidance": {
       "angleMax": 180.0,
@@ -143,6 +147,14 @@
         "accelControlIntg": 0.096,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0005
+      },
+      "propulsionAutopilot": {
+        "propulsion0": {},
+        "propulsion1": {
+          "startTimeMin": 10.0,
+          "timeToHitMin": 25.0,
+          "velocityMin": 290.0
+        }
       }
     },
     "pressureDamage": {
@@ -164,7 +176,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.3
       }
     },
     "DamageParts": {

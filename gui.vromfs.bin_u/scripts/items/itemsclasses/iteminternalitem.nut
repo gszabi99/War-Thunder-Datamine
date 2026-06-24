@@ -58,7 +58,7 @@ let InternalItem = class (ItemCouponBase) {
   function getViewData(params = {}) {
     if (this.showAsContentItem())
       return this.getContentItem()?.getViewData(
-          params.__update({ count = (params?.count ?? 0) * (this.metaBlk?.count ?? 0) }))
+          params.__merge({ count = (params?.count ?? 0) * (this.metaBlk?.count ?? 0) }))
         ?? base.getViewData(params)
     return base.getViewData(params)
   }

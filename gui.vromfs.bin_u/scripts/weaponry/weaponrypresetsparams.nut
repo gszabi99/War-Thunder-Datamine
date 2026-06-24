@@ -4,7 +4,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { ceil, fabs } = require("math")
 let DataBlock = require("DataBlock")
-let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
+let { BULLET_TYPE, isAntiRadarGuidance } = require("%scripts/weaponry/bulletsInfo.nut")
 let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry,
   isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
@@ -85,7 +85,7 @@ function getTypeByPurpose(weaponry) {
             if (isFound)
               break
           }
-        if (!isFound && (w?.guidanceType == "radar" || w?.guidanceType == "PRH")) {
+        if (!isFound && isAntiRadarGuidance(w?.guidanceType)) {
           if (!isInArray("AIR_TO_RADAR", res))
             res.append("AIR_TO_RADAR")
           isFound = true

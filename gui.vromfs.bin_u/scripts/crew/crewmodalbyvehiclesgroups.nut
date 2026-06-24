@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
 let { format } = require("string")
 let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -15,7 +16,10 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { purchaseNewCrewSlot } = require("%scripts/crew/crew.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
-let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
+let class CrewModalByVehiclesGroups (gui_handlers.CrewHandler) {
+  wndType = handlerType.MODAL
+  sceneBlkName = "%gui/crew/crewModalByVehiclesGroups.blk"
+
   slotbarActions = ["aircraft", "changeUnitsGroup", "repair"]
 
   getSlotbarParams = @() {

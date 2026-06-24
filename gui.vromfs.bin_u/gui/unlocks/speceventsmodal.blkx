@@ -118,13 +118,13 @@
           "id": "rewardsContainer",
           "position": "relative",
           "left": "0.5pw-0.5w",
-          "width": "11(@rewardSlotWidth+@sf/@pf)",
+          "width": "11(@rewardSlotWidth + @dp) + @dp",
           "margin": "0, 3@blockInterval, 0, 5@blockInterval"
         }
       ],
       "listbox": {
         "id": "ordersContainer",
-        "size": "11(@rewardSlotWidth+@sf/@pf) + 4@blockInterval + @scrollBarSize, fh",
+        "size": "@specEventPanelWidth + @scrollBarSize + @dp, fh",
         "pos": "0.5pw-0.5w+0.5@scrollBarSize, 0",
         "position": "relative",
         "flow": "h-flow",

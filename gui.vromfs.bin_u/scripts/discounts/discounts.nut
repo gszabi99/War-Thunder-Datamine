@@ -21,7 +21,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
 let { get_price_blk } = require("blkGetters")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
+let { isUnitGift, canBuyUnitEvenNotInShop } = require("%scripts/unit/unitShopInfo.nut")
+let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
@@ -193,7 +194,7 @@ updateDiscountData = function(isSilentUpdate = false) {
 
   let giftUnits = {}
 
-  foreach (air in getAllUnits())
+  foreach (air in getAllUnits()) {
     if (isCountryAvailable(air.shopCountry)
         && !air.isBought()
         && air.isVisibleInShop()) {
@@ -202,12 +203,14 @@ updateDiscountData = function(isSilentUpdate = false) {
           giftUnits[air.name] <- 0
         continue
       }
-
+      if (!canBuyUnitEvenNotInShop(air))
+        continue
       let path = ["aircrafts", air.name]
       let discount = getDiscountByPath(path, pBlk)
       if (discount > 0)
         discountsList.airList[air.name] <- discount
     }
+  }
 
   eachBlock(get_entitlements_price_blk(), @(b, n) checkEntitlement(n, b, giftUnits))
 
@@ -274,6 +277,24 @@ addListenersWithoutEnv({
   PriceUpdated                = @(_) updateDiscountData()
   EntitlementsPriceUpdated    = @(_) updateDiscountData()
   InventoryUpdate             = @(_) collectDiscountItems()
+
+  function FlushSquadronExp(p) {
+    let { unit } = p
+    if (unit == null || canBuyNotResearched(unit))
+      return
+
+    updateDiscountData()
+    deferOnce(pushDiscountsUpdateEvent)
+  }
+
+  function UnitResearch(p) {
+    let unit = p?.unit ?? getAircraftByName(p?.unitName ?? "")
+    if (unit == null || !unit.isSquadronVehicle() || canBuyNotResearched(unit))
+      return
+
+    updateDiscountData()
+    deferOnce(pushDiscountsUpdateEvent)
+  }
 
   function UnitBought(p) {
     let unitName = getTblValue("unitName", p)

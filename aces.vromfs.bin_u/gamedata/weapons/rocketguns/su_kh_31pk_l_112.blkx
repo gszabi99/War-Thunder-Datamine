@@ -25,7 +25,7 @@
       0.1,
       0.1
     ],
-    "CxK": 1.35,
+    "CxK": 1.525,
     "wingAreaMult": 1.15,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
@@ -43,9 +43,9 @@
     "guidanceSfx": "alarm_spin_scan",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
-    "explosiveType": "tgaf_5m",
-    "explosiveMass": 65.0,
-    "warheadMass": 87.0,
+    "explosiveType": "hexal",
+    "explosiveMass": 68.5,
+    "warheadMass": 87.5,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -81,23 +81,23 @@
     "canChangeFuseMode": true,
     "hasProximityFuse": true,
     "propulsion0": {
-      "fireDelay": 0.75,
+      "fireDelay": 0.5,
       "impulse0": {
-        "time": 3.5,
-        "force": 82285.0,
-        "massLost": 128.0
+        "time": 2.5,
+        "force": 107100.0,
+        "massLost": 119.0
       },
       "impulse1": {
         "time": 0.0,
         "force": 0.0,
-        "massLost": 32.0
+        "massLost": 42.0
       }
     },
     "propulsion1": {
       "impulse0": {
-        "massFlow": 2.2,
-        "isp": 14500.0,
-        "massLost": 55.0,
+        "massFlow": 3.5333,
+        "isp": 17225.0,
+        "massLost": 53.0,
         "factorIndex": 0
       }
     },
@@ -273,7 +273,7 @@
         "multipathEffect": [
           0.0,
           1.0,
-          0.5,
+          27.5,
           0.0
         ],
         "useTargetId": true,
@@ -310,24 +310,24 @@
         "altitudeHoldEnabled": true,
         "useAbsoluteAltitude": true,
         "timeToHitToAltitude0": [
-          1.0,
+          0.0,
           15000.0
         ],
-        "altitudeHoldTargetElevation": -20.0,
-        "altitudeHoldTargetOmegaMax": 0.75,
-        "altitudeDiffToClimb": 0.105,
-        "altitudeRateRateToClimb": 0.385,
-        "climbDiffToAccelMult": 0.025,
+        "altitudeHoldTargetElevation": -25.0,
+        "altitudeHoldTargetOmegaMax": 1.75,
+        "altitudeDiffToClimb": 0.3,
+        "altitudeRateRateToClimb": 0.45,
+        "climbDiffToAccelMult": 0.01,
         "altitudeHoldAngleLimith": [
-          -25.0,
-          25.0
+          -20.0,
+          20.0
         ],
         "courseErrorAngleToAccelMult": 1.5,
         "courseErrorFinalAngleCorrection": 1.25,
         "timeOut": 1.5,
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 10.0,
+        "reqAccelMax": 20.0,
         "accelControlProp": 0.0041,
         "accelControlIntg": 0.014,
         "accelControlIntgLim": 1.0,
@@ -336,13 +336,13 @@
       "propulsionAutopilot": {
         "propulsion0": {},
         "propulsion1": {
-          "startTimeMin": 4.25,
+          "startTimeMin": 2.75,
           "cruiseVelocity": 3600.0,
           "cuiseVelocityDiffMax": 1000.0,
           "PidControllerCruise": {
             "prop": 0.05,
             "intg": 0.5,
-            "diff": 0.01,
+            "diff": 0.001,
             "intgLim": 1.0
           }
         }

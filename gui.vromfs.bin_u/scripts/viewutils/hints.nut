@@ -6,7 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { split_by_chars } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { startsWith, cutPrefix, trim } = require("%sqstd/string.nut")
+let { startsWith, cutPrefix } = require("%sqstd/string.nut")
 let { get_num_attempts_left } = require("guiMission")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
@@ -172,7 +172,7 @@ enum HINT_PIECE_TYPE {
   LINK
 }
 
-const symbolsToCheckSpace = [")", ".", ",", ":"]
+const symbolsToCheckSpace = [")", ".", ",", " ", ":"]
 let noSpaceBeforeText = @(textValue) textValue == "" || symbolsToCheckSpace.contains(textValue.slice(0, 1))
 let noSpaceAfterText  = @(textValue) textValue.endswith("(")
 let isStringEndOfLine = @(textValue) textValue.endswith(".")
@@ -180,12 +180,11 @@ let isStringEndOfLine = @(textValue) textValue.endswith(".")
 let getTextSlice = @(textsArray) {
   text = textsArray.map(function(text, idx) {
     let nextTextValue = textsArray?[idx + 1]
-    let currTextValue = trim(text)
     return {
-      textValue = isStringEndOfLine(currTextValue) ? $"{currTextValue} "
-        : noSpaceAfterText(currTextValue) ? currTextValue
-        : nextTextValue != null && noSpaceBeforeText(trim(nextTextValue)) ? currTextValue
-        : $"{currTextValue} "
+      textValue = isStringEndOfLine(text) ? $"{text} "
+        : noSpaceAfterText(text) ? text
+        : nextTextValue != null && noSpaceBeforeText(nextTextValue) ? text
+        : $"{text} "
     }
   })
 }

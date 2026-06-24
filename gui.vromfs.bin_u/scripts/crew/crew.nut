@@ -559,11 +559,6 @@ function gui_modal_crew(params = {}) {
     showInfoMsgBox(loc("msgbox/notAvailbleYet"))
     return
   }
-  
-  if (!hasFeature("FullScreenCrewWindow")) {
-    loadHandler(gui_handlers.CrewModalHandler, params)
-    return
-  }
   let curHandler = handlersManager.getActiveBaseHandler()
   let needModal = curHandler != null && (curHandler instanceof gui_handlers.MPLobby)
   loadHandler(needModal ? gui_handlers.CrewWndModal : gui_handlers.CrewHandler, params)

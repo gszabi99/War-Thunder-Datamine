@@ -80,7 +80,11 @@ def unit_loader_init(evt : Event;
       templateName = resolve_unit_ecs_template_from_name(fullUnitName, unitTypeHint)
 
   if templateName == ""
-    logerr("unit_loader: failed to resolve type:{setting__unitType} name:{fullUnitName} pos:{setting__tm[3]}")
+    let errorStr = "unit_loader: failed to resolve type:{setting__unitType} name:{fullUnitName} pos:{setting__tm[3]}"
+    if length(dgs_get_settings() |> datablock_getStr("hangarBlk", "")) > 0 
+      logwarn(errorStr)
+    else
+      logerr(errorStr)
     destroyEntity(eid)
     return
 

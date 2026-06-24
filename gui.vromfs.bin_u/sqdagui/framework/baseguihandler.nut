@@ -154,10 +154,8 @@ let BaseGuiHandler = class {
       if (gui_scene_boxes[i].id == id)
         return null
     }
-    if (!options)
-      options = {}
-    options.baseHandler <- this
-    return scene_msg_box(id, this.guiScene, text, buttons, def_btn, options)
+    return scene_msg_box(id, this.guiScene, text, buttons, def_btn,
+      options.__merge({ baseHandler = this }))
   }
 
   function onMsgLink(obj) {

@@ -9,7 +9,7 @@ function isUnitGift(unit) {
   return unit.gift != null
 }
 
-function canBuyUnit(unit) {
+function canBuyUnitEvenNotInShop(unit) {
   if (isUnitGift(unit))  
     return false           
 
@@ -17,7 +17,11 @@ function canBuyUnit(unit) {
     return false
 
   let status = shop_unit_research_status(unit.name)
-  return (0 != (status & ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
+  return (status & ES_ITEM_STATUS_CAN_BUY) != 0
+}
+
+function canBuyUnit(unit) {
+  return canBuyUnitEvenNotInShop(unit) && unit.isVisibleInShop()
 }
 
 function isUnitBought(unit) {
@@ -36,6 +40,7 @@ function canSpendGoldOnUnitWithPopup(unit) {
 return {
   isUnitGift
   canBuyUnit
+  canBuyUnitEvenNotInShop
   isUnitBought
   canSpendGoldOnUnitWithPopup
 }

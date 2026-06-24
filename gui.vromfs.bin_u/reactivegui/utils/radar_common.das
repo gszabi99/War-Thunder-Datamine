@@ -15,6 +15,10 @@ require DagorSystem
 require hud
 require Localization
 
+def loc_short(id : string) : string
+  let shortId = "{id}/short"
+  return does_loc_text_exist(shortId) ? loc(shortId) : loc(id)
+
 class Radar
   def static getModeName()
     let nameId = get_radar_hud_mode_name_id()

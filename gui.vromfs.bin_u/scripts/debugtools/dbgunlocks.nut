@@ -109,6 +109,7 @@ function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = fa
 }
 
 function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang, status = {}) {
+  status = clone status
   let self = callee()
   let lang = langsInfo.pop()
   setGameLocalization(lang.id, false, false)

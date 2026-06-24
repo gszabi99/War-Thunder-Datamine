@@ -2616,23 +2616,12 @@
         "blk": "gameData/flightModels/weaponPresets/mi_35m_rocket_c_13.blk"
       },
       {
-        "name": "mi_35m_rocket_9M114_default",
-        "blk": "gameData/flightModels/weaponPresets/mi_35m_rocket_9M114_default.blk"
-      },
-      {
         "name": "mi_35m_rocket_9M114",
         "blk": "gameData/flightModels/weaponPresets/mi_35m_rocket_9M114.blk"
       },
       {
         "name": "mi_35m_rocket_9M114_4",
         "blk": "gameData/flightModels/weaponPresets/mi_35m_rocket_9M114_4.blk"
-      },
-      {
-        "name": "mi_35m_rocket_9M120",
-        "blk": "gameData/flightModels/weaponPresets/mi_35m_rocket_9M120.blk",
-        "weaponConfig": {
-          "presetType": "ARMORED"
-        }
       },
       {
         "name": "mi_35m_rocket_9M120_4",
@@ -3209,7 +3198,6 @@
           {
             "iconType": "atgm_type1_x4",
             "name": "9m114_x4_right",
-            "reqModification": "mi_35_9M114_4",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -3248,7 +3236,7 @@
           {
             "iconType": "atgm_type1_x8_late",
             "name": "9m120_x8",
-            "reqModification": "mi_35_9M120_8",
+            "reqModification": "mi_35_9M120_4",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -4252,28 +4240,15 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "mi_35_9M114_4": {
-      "deactivationIsAllowed": false,
-      "reqModification": "mi_28_C13",
-      "modClass": "weapon",
-      "tier": 2
-    },
     "mi_35_9M114_8": {
       "deactivationIsAllowed": false,
-      "reqModification": "mi_35_9M114_4",
+      "prevModification": "mi_28_C13",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 2
     },
     "mi_35_9M120_4": {
       "deactivationIsAllowed": false,
       "reqModification": "mi_35_9M114_8",
-      "modClass": "weapon",
-      "tier": 4
-    },
-    "mi_35_9M120_8": {
-      "deactivationIsAllowed": false,
-      "reqModification": "mi_35_9M120_4",
-      "prevModification": "heli_counterMeasures",
       "modClass": "weapon",
       "tier": 4
     },

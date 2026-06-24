@@ -299,8 +299,13 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!bulGroup.active || bulGroup.shouldHideBullet())
         continue
       let isPairBulletsGroup = bulGroup.isPairBulletsGroup()
-      if (isPairBulletsGroup && (bulGroup.bullets.value != 0))
-        continue
+      if (isPairBulletsGroup && (bulGroup.bullets.value != 0)) {
+        let gunIdx = bulGroup.getGunIdx()
+        let hasPrimary = groups.findvalue(@(g) g.active && !g.shouldHideBullet() &&
+          g.isPairBulletsGroup() && g.bullets.value == 0 && g.getGunIdx() == gunIdx) != null
+        if (hasPrimary)
+          continue
+      }
       hasPairBulletsGroup = hasPairBulletsGroup || isPairBulletsGroup
       activeGroupsId.append(gIdx)
     }

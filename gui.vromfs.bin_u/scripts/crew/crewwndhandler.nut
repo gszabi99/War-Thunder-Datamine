@@ -1,3 +1,5 @@
+from "%scripts/dagui_natives.nut" import get_cur_warpoints, shop_upgrade_crew
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/dagui_library.nut" import *
 
 let { hangar_focus_model, hangar_set_camera_screen_offset,
@@ -6,23 +8,48 @@ let { hangar_focus_model, hangar_set_camera_screen_offset,
 } = require("hangar")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { Point2 } = require("dagor.math")
+let DataBlock = require("DataBlock")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { round_by_value, abs } = require("%sqstd/math.nut")
 let { getPageStatus } = require("%scripts/crew/skillsPageStatus.nut")
 let { getPartsListToHighlight } = require("%scripts/crew/crewWndRoleToXrayParts.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
-let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName
+} = require("%scripts/crew/crewSpecType.nut")
 let crewSkillsPageHandler = require("%scripts/crew/crewSkillsPageHandler.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getCrewLevel, getCrewSkillCost, isCrewMaxLevel, getCrewSkillValue,
-  crewSkillPages, getMaxCrewLevel } = require("%scripts/crew/crew.nut")
+let { isAllCrewsMinLevel, getCrewName, getCrewLevel, getMaxCrewLevel,
+  getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel,
+  getCrewSkillPointsToMaxAllSkills
+  createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages,
+  loadCrewSkills } = require("%scripts/crew/crew.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { setDoubleTextToButton, setColoredDoubleTextToButton
+} = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { Cost } = require("%scripts/money.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
+let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
+let { buyAllCrewSkills } = require("%scripts/crew/crewActions.nut")
+let { getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
+let { showCurBonus } = require("%scripts/bonusModule.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { scene_msg_boxes_list } = require("%sqDagui/framework/msgBox.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 const CREW_MAX_PROGRESS_BAR_VALUE = 1000
 
@@ -56,10 +83,70 @@ let crewHelpPageLinks = [
   }
 ]
 
-gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
+let crewHelpHintsParams = [
+  { hintName = "hint_crew_cur_points_block",
+    objName = "crew_cur_points_block",
+    shiftY = "- h - 1@bh - 2@helpInterval",
+    posX = "sw/2 - w/2 - 1@bw"
+  },
+  { hintName = "hint_btn_buy",
+    objName = "btn_buy",
+    shiftY = "+ 1@buttonHeight - 1@bh + 2@helpInterval",
+    posX = "sw/2 + 0.7@sf - 1@bw - w"
+  },
+  { hintName = "hint_select_venicle",
+    objName = "wnd_frame",
+    shiftY = " + 2@helpInterval",
+    posX = "sw/2 - 0.7@sf - 1@bw"
+    sizeMults = [0, 1]
+  }
+]
+
+function isAllCrewsHasBasicSpec() {
+  let basicCrewSpecType = crewSpecTypes.BASIC
+  foreach (checkedCountrys in getCrewsList())
+    foreach (crew in checkedCountrys.crews)
+      foreach (unitName, _value in crew.trainedSpec) {
+        let crewUnitSpecType = getSpecTypeByCrewAndUnitName(crew, unitName)
+        if (crewUnitSpecType != basicCrewSpecType)
+          return false
+      }
+
+  return true
+}
+
+gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/crew/crewWndow.blk"
+
+  slotbarActions = ["aircraft", "sec_weapons", "weapons", "showroom", "infantry_camouflage",
+    "repair"]
   slotbarNestId = "nav-slotbar"
+
+  countryId = -1
+  idInCountry = -1
+  showTutorial = false
+  crew = null
+  curCrewUnitType = CUT_INVALID
+  curPage = 0
+  curPageId = null
+
+  pages = null
+
+  crewCurLevel = 0
+  crewLevelInc = 0
+  curPoints = 0
+
+  afterApplyAction = null
+  updateAfterApplyAction = true
+
+  unitSpecHandler = null
+  skillsPageHandler = null
+  curEdiff = -1
+
+  curUnit = null
+  isCrewUpgradeInProgress = false
+
   visibleSkillsIdx = 0
 
   needRecalcWndHeight = true
@@ -72,7 +159,63 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
   function initScreen() {
     this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
-    base.initScreen()
+    if (!this.scene)
+      return this.goBack()
+    this.crew = this.getSlotCrew()
+    if (!this.crew)
+      return this.goBack()
+
+    let country = getCrewsList()?[this.countryId].country
+    if (country)
+      switchProfileCountry(country)
+
+    this.toggleXrayFilterMode(true)
+
+    this.initMainParams(true, true)
+
+    this.checkAndSetWindowSizeAndPos()
+    this.createSlotbar({
+      emptyText = "#shop/aircraftNotSelected",
+      beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
+      afterSlotbarSelect = this.openSelectedCrew
+      onSlotDblClick = this.onSlotDblClick
+      modalPreferredSide = "center"
+    }.__update(this.getSlotbarParams()), this.slotbarNestId)
+
+    if (this.showTutorial)
+      this.onUpgrCrewSkillsTutorial()
+    else if (!loadLocalByAccount("upgradeCrewSpecTutorialPassed", false)
+          && !isAllCrewsMinLevel()
+          && isAllCrewsHasBasicSpec()
+          && this.canUpgradeCrewSpec(this.crew))
+      this.onUpgrCrewSpec1Tutorial()
+
+    this.toggleHangarFocusModelAndCameraOffset(true)
+  }
+
+  getSlotbarParams = @() {
+    crewId = this.crew.id
+    showNewSlot = false
+  }
+
+  function initMainParams(reloadSkills = true, reinitUnitType = false) {
+    if (!this.scene?.isValid())
+      return
+
+    this.curUnit = this.getCurCrewUnit(this.crew)
+
+    this.curCrewUnitType = reinitUnitType
+      ? (this.curUnit?.getCrewUnitType?() ?? this.curCrewUnitType)
+      : this.curCrewUnitType
+
+    updateGamercards()
+    if (reloadSkills)
+      loadCrewSkills()
+
+    this.scene.findObject("crew_name").setValue(getCrewName(this.crew))
+
+    this.updateUnitType()
+    this.updateButtons()
   }
 
   function getWndSizes() {
@@ -164,8 +307,6 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     this.scene.findObject("crew-info-text").setValue(text)
   }
 
-  updateUnitTypeRadioButtons = @() null
-
   function countSkills() {
     this.crewMemberSkillsMaxAmount = 0
     this.curPoints = ("skillPoints" in this.crew) ? this.crew.skillPoints : 0
@@ -196,6 +337,10 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     this.updatePointsText()
     this.updateBuyAllButton()
     this.updateAvailableSkillsIcons()
+  }
+
+  function getCurCountryName() {
+    return getCrewsList()[this.countryId].country
   }
 
   function initPages() {
@@ -240,6 +385,18 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
     this.updateAvailableSkillsIcons()
     this.updateUpgradeBlock()
+  }
+
+  function updateDiscountInfo() {
+    let discountInfo = getCrewDiscountInfo(this.countryId, this.idInCountry)
+
+    let obj = this.scene.findObject("buyPoints_discount")
+    let buyPointsDiscount = discountInfo?.buyPoints ?? 0
+    showCurBonus(obj, buyPointsDiscount, "buyPoints", true, true)
+  }
+
+  function getCornerImgId(page) {
+    return $"{page.id}_available"
   }
 
   function updateButtons() {
@@ -455,6 +612,64 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     showObjById("upgrade_qualification_block", this.needShowUpgradeBlock(), this.scene)
   }
 
+  function needShowUpgradeBlock() {
+    return this.curUnit != null && this.isSkillsPage(this.pages[this.curPage])
+      && this.curUnit.getCrewUnitType() == this.curCrewUnitType
+  }
+
+  function onSkillRowChange(item, newValue) {
+    let wasValue = getCrewSkillNewValue(item, this.crew, this.curUnit)
+    let changeCost = getCrewSkillCost(item, newValue, wasValue)
+    let crewLevelChange = getSkillCrewLevel(item, newValue, wasValue)
+    item.newValue <- newValue 
+    this.curPoints -= changeCost
+    this.updateSkillsHandlerPoints()
+    this.crewLevelInc += crewLevelChange
+
+    this.updatePointsText()
+    this.updateBuyAllButton()
+    this.updatePointsAdvice()
+    this.updateAvailableSkillsIcons()
+    broadcastEvent("CrewNewSkillsChanged", { crew = this.crew })
+  }
+
+  function updateAvailableSkillsIcons() {
+    if (!this.pages)
+      return
+
+    this.guiScene.setUpdatesEnabled(false, false)
+    let pagesObj = this.scene.findObject("crew_pages_list")
+    foreach (page in this.pages) {
+      if (!this.isSkillsPage(page))
+        continue
+      let obj = pagesObj.findObject(this.getCornerImgId(page))
+      if (!obj?.isValid())
+        continue
+
+      let statusType = getPageStatus(
+        this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
+      let needShowPageIcon = statusType.avalibleSkills.len() > 0
+      obj.show(needShowPageIcon)
+      this.fillPageUpgradeTooltip(pagesObj.findObject(page.id), statusType.avalibleSkills)
+      if (needShowPageIcon) {
+        obj["background-image"] = statusType.icon
+        obj["background-color"] = this.guiScene.getConstantValue(statusType.iconColor) ?? ""
+      }
+    }
+    this.guiScene.setUpdatesEnabled(true, true)
+  }
+
+  function updateBuyAllButton() {
+    if (!hasFeature("CrewBuyAllSkills"))
+      return
+
+    let totalPointsToMax = getCrewSkillPointsToMaxAllSkills(this.crew, this.curUnit, this.curCrewUnitType)
+    showObjById("btn_buy_all", totalPointsToMax > 0 && this.crew.id != -1, this.scene)
+    let text = "".concat(loc("mainmenu/btnBuyAll"),
+      loc("ui/parentheses/space", { text = getCrewSpText(totalPointsToMax) }))
+    setColoredDoubleTextToButton(this.scene, "btn_buy_all", text)
+  }
+
   function onCrewPage(obj) {
     if (!obj)
       return
@@ -465,6 +680,10 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
       this.fillPage()
     }
     this.setXrayFilterShownParts()
+  }
+
+  function fillPage() {
+    this.updatePage()
   }
 
   function fillPageUpgradeTooltip(pageObj, skills) {
@@ -548,7 +767,345 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     return res
   }
 
+  function onHelp() {
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+  }
+
+  function getCrewHelpHintParams() {
+    return deep_clone(crewHelpHintsParams)
+  }
+
+  function onDestroy() {
+    this.resetFiltersAndFocus()
+  }
+
+  function isSkillsPage(page) {
+    return "items" in page
+  }
+
   prepareHelpPage = @(_handler) null
+
+  function onSpecIncreaseBtn() {
+    let crewSpecType = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
+    let nextSpecType = crewSpecType.getNextType()
+    upgradeUnitSpec(this.crew, this.curUnit, this.curCrewUnitType, nextSpecType)
+  }
+
+  function onBuyPoints() {
+    if (!this.scene?.isValid())
+      return
+
+    this.updateDiscountInfo()
+    createCrewBuyPointsHandler(this.crew)
+  }
+
+  function onBuyAll() {
+    buyAllCrewSkills(this.crew, this.curUnit, this.curCrewUnitType)
+  }
+
+  function resetFiltersAndFocus() {
+    this.toggleHangarFocusModelAndCameraOffset(false)
+    this.toggleXrayFilterMode(false)
+  }
+
+  function baseGoBack() {
+    base.goBack()
+  }
+
+  function goBack() {
+    let cb = Callback(function() {
+      this.baseGoBack()
+    }, this)
+    this.checkSkillPointsAndDo(cb)
+  }
+
+  function onApply() {
+    if (this.progressBox)
+      return
+
+    let blk = DataBlock()
+    foreach (page in crewSkillPages)
+      if (this.isSkillsPage(page)) {
+        let typeBlk = DataBlock()
+        foreach (_idx, item in page.items)
+          if ("newValue" in item) {
+            let value = getCrewSkillValue(this.crew.id, this.curUnit, page.id, item.name)
+            if (value < item.newValue)
+              typeBlk[item.name] = item.newValue - value
+          }
+        blk[page.id] = typeBlk
+      }
+
+    let curHandler = this 
+    let isTaskCreated = addTask(
+      shop_upgrade_crew(this.crew.id, blk),
+      { showProgressBox = true },
+      function() {
+        curHandler.isCrewUpgradeInProgress = false
+        broadcastEvent("CrewSkillsChanged",
+          { crew = curHandler.crew, unit = curHandler.curUnit })
+        if (curHandler.isValid() && curHandler.afterApplyAction) {
+          curHandler.afterApplyAction()
+          curHandler.afterApplyAction = null
+        }
+        flushSlotbarUpdate()
+      },
+      function(_err) {
+        curHandler.isCrewUpgradeInProgress = false
+        flushSlotbarUpdate()
+      }
+    )
+
+    if (isTaskCreated) {
+      this.isCrewUpgradeInProgress = true
+      suspendSlotbarUpdates()
+    }
+  }
+
+  function onSelect() {
+    this.onApply()
+  }
+
+  function checkSkillPointsAndDo(action, cancelAction = function() {}, updateAfterApply = true) {
+    if (this.isCrewUpgradeInProgress)
+      return
+
+    let crewPoints = this.crew?.skillPoints ?? 0
+    if (this.curPoints == crewPoints)
+      return action()
+
+    let msgOptions = [
+      ["yes", function() {
+        this.afterApplyAction = action
+        this.updateAfterApplyAction = updateAfterApply
+        this.onApply()
+      }],
+      ["no", action]
+    ]
+
+    this.msgBox("applySkills", loc("crew/applySkills"), msgOptions, "yes", {
+      cancel_fn = cancelAction
+      checkDuplicateId = true
+    })
+  }
+
+  function baseGoForward(startFunc, needFade) {
+    base.goForward(startFunc, needFade)
+  }
+
+  function goForward(startFunc, needFade = true) {
+    this.checkSkillPointsAndDo(Callback(@() this.baseGoForward(startFunc, needFade), this))
+  }
+
+  function onSlotDblClick(_slotCrew) {
+    if (this.curUnit != null)
+      this.checkSkillPointsAndDo(@() open_weapons_for_unit(this.curUnit))
+  }
+
+  function beforeSlotbarChange(action, cancelAction) {
+    this.checkSkillPointsAndDo(action, cancelAction)
+  }
+
+  function openSelectedCrew() {
+    let newCrew = this.getCurCrew()
+    if (!newCrew)
+      return
+
+    this.crew = newCrew
+    this.countryId = this.crew.idCountry
+    this.idInCountry = this.crew.idInCountry
+    this.initMainParams(true, true)
+  }
+
+  function onButtonIncForSkillTutor(rowIdx) {
+    let btnObj = this.getObj($"skill_row{rowIdx}").findObject($"buttonInc_{rowIdx}")
+    if (btnObj == null) {
+      script_net_assert_once("tutorials/upg_crew/inc_skills", "[CrewSkillsTutorial]: not found buttonInc" )
+      return
+    }
+    this.onButtonInc(btnObj)
+  }
+
+  function onUpgrCrewSkillsTutorial() {
+    let steps = [
+      {
+        obj = ["crew_cur_points_block"]
+        text = loc("tutorials/upg_crew/total_skill_points")
+        nextActionShortcut = "help/NEXT_ACTION"
+        actionType = tutorAction.ANY_CLICK
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+      },
+      {
+        obj = [["crew_pages_list", "driver_available"]]
+        text = loc("tutorials/upg_crew/skill_groups")
+        nextActionShortcut = "help/NEXT_ACTION"
+        actionType = tutorAction.ANY_CLICK
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+      },
+      {
+        obj = [this.getObj("skill_row0").findObject("incCost"), "skill_row0"]
+        text = loc("tutorials/upg_crew/take_skill_points")
+        nextActionShortcut = "help/NEXT_ACTION"
+        actionType = tutorAction.ANY_CLICK
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+      },
+      {
+        obj = [this.getObj("skill_row0").findObject("buttonInc_0"), "skill_row0"]
+        text = loc("tutorials/upg_crew/inc_skills")
+        actionType = tutorAction.FIRST_OBJ_CLICK
+        nextActionShortcut = "help/OBJ_CLICK"
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+        cb = Callback(@() this.onButtonIncForSkillTutor(0), this)
+      },
+      {
+        obj = [this.getObj("skill_row1").findObject("buttonInc_1"), "skill_row1"]
+        text = loc("tutorials/upg_crew/inc_skills")
+        actionType = tutorAction.FIRST_OBJ_CLICK
+        nextActionShortcut = "help/OBJ_CLICK"
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+        cb = Callback(@() this.onButtonIncForSkillTutor(1), this)
+      },
+      {
+        obj = ["btn_apply"]
+        text = loc("tutorials/upg_crew/apply_upgr_skills")
+        actionType = tutorAction.OBJ_CLICK
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+        cb = Callback(function() {
+          this.afterApplyAction = this.canUpgradeCrewSpec(this.crew) ? this.onUpgrCrewSpec1Tutorial
+            : this.onUpgrCrewTutorFinalStep
+          this.onApply() }, this)
+      }
+    ]
+    gui_modal_tutor(steps, this)
+  }
+
+  function canUpgradeCrewSpec(upgCrew) {
+    if (this.curUnit == null)
+      return false
+
+    let curSpecType = getSpecTypeByCrewAndUnit(upgCrew, this.curUnit)
+    let wpSpecCost = curSpecType.getUpgradeCostByCrewAndByUnit(upgCrew, this.curUnit)
+    let reqLevel = curSpecType.getUpgradeReqCrewLevel(this.curUnit)
+    let crewLevel = getCrewLevel(upgCrew, this.curUnit, this.curUnit.getCrewUnitType())
+
+    return get_cur_warpoints() >= wpSpecCost.wp &&
+           curSpecType == crewSpecTypes.BASIC &&
+           crewLevel >= reqLevel
+  }
+
+  function onUpgrCrewSpec1Tutorial() {
+    let tblObj = this.scene.findObject("skills_table")
+    if (!tblObj?.isValid())
+      return
+
+    local skillRowObj = null
+    local btnSpecObj = null
+
+    for (local i = 0; i < tblObj.childrenCount(); i++) {
+      skillRowObj = tblObj.findObject($"skill_row{i}")
+      if (!skillRowObj?.isValid())
+        continue
+
+      btnSpecObj = skillRowObj.findObject("btn_spec1")
+      if (btnSpecObj?.isValid() && btnSpecObj.isVisible())
+        break
+
+      btnSpecObj = null
+    }
+
+    if (btnSpecObj == null)
+      return
+
+    let steps = [
+      {
+        obj = [btnSpecObj, skillRowObj]
+        text = loc("tutorials/upg_crew/spec1")
+        actionType = tutorAction.ANY_CLICK
+        nextActionShortcut = "help/NEXT_ACTION"
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+        cb = Callback(this.onUpgrCrewSpec1ConfirmTutorial, this)
+      }
+    ]
+    gui_modal_tutor(steps, this)
+  }
+
+  function onUpgrCrewSpec1ConfirmTutorial() {
+    upgradeUnitSpec(this.crew, this.curUnit, null, crewSpecTypes.EXPERT)
+
+    if (scene_msg_boxes_list.len() == 0) {
+      let curSpec = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
+      let message = "\n".concat($"Error: Empty MessageBox List for userId = {userIdStr.get()}",
+        $"country = {this.crew.country}",
+        $"idInCountry = {this.crew.idInCountry}",
+        $"unitname = {this.curUnit.name}",
+        $"specCode = {curSpec.code}")
+      script_net_assert_once("empty scene_msg_boxes_list", message)
+      this.onUpgrCrewTutorFinalStep()
+      return
+    }
+
+    let specMsgBox = scene_msg_boxes_list.top()
+    if (!specMsgBox?.isValid())
+      return
+
+    let steps = [
+      {
+        obj = [[specMsgBox.findObject("buttons_holder"), specMsgBox.findObject("msgText")]]
+        text = loc("tutorials/upg_crew/confirm_spec1")
+        nextActionShortcut = "help/NEXT_ACTION"
+        actionType = tutorAction.ANY_CLICK
+        haveArrow = false
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+      }
+    ]
+    gui_modal_tutor(steps, this)
+    saveLocalByAccount("upgradeCrewSpecTutorialPassed", true)
+  }
+
+  function onUpgrCrewTutorFinalStep() {
+    let steps = [
+      {
+        text = loc("tutorials/upg_crew/final_massage")
+        nextActionShortcut = "help/NEXT_ACTION"
+        actionType = tutorAction.ANY_CLICK
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+      }
+    ]
+    gui_modal_tutor(steps, this)
+  }
+
+    function onButtonInc(obj) {
+    if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+      this.skillsPageHandler.onButtonInc(obj)
+  }
+
+  function onButtonIncRepeat(obj) {
+    if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+      this.skillsPageHandler.onButtonIncRepeat(obj)
+  }
+
+  function onButtonDec(obj) {
+    if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+      this.skillsPageHandler.onButtonDec(obj)
+  }
+
+  function onButtonDecRepeat(obj) {
+    if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+      this.skillsPageHandler.onButtonDecRepeat(obj)
+  }
+
+  function getCurrentEdiff() {
+    return this.curEdiff == -1 ? getCurrentGameModeEdiff() : this.curEdiff
+  }
+
+  function updateSkillsHandlerPoints() {
+    if (this.skillsPageHandler != null)
+      this.skillsPageHandler.setCurPoints(this.curPoints)
+  }
+
+  getCurCrewUnit = @(slotCrew) getCrewUnit(slotCrew)
+  getSlotCrew = @() getCrew(this.countryId, this.idInCountry)
+  onRecruitCrew = @() null
 
   function setHangarCameraOffsetForUnit(unit, isFocused) {
     local cameraOffset = 0
@@ -592,6 +1149,11 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
     dmViewer.placeHint(obj)
   }
 
+  function onEventCrewSkillsChanged(params) {
+    this.crew = this.getSlotCrew()
+    this.initMainParams(!params?.isOnlyPointsChanged)
+  }
+
   function onEventHangarModelLoaded(p) {
     this.setHangarCameraOffsetForUnit(getAircraftByName(p.modelName), true)
     this.setXrayFilterShownParts()
@@ -599,6 +1161,34 @@ gui_handlers.CrewHandler <- class (gui_handlers.CrewModalHandler) {
 
   function onEventBeforeStartShowroom(_p) {
     this.resetFiltersAndFocus()
+  }
+
+  function onEventSetInQueue(_params) {
+    this.baseGoBack()
+  }
+
+    
+  function onEventQualificationIncreased(_params) {
+    this.crew = this.getSlotCrew()
+    this.initMainParams()
+  }
+
+  function onEventCrewTakeUnit(p) {
+    if (!p?.unit)
+      return
+
+    if (!p?.prevUnit)
+      this.openSelectedCrew()
+    else {
+      this.crew = this.getSlotCrew()
+      this.initMainParams(false, true)
+    }
+    this.updatePage()
+  }
+
+  function onEventSlotbarPresetLoaded(_params) {
+    this.openSelectedCrew()
+    this.updatePage()
   }
 }
 

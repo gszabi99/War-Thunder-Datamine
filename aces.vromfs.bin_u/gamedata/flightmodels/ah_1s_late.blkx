@@ -1792,7 +1792,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
                 "external": true,
@@ -1947,7 +1947,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
                 "external": true,
@@ -1993,7 +1993,6 @@
           {
             "iconType": "atgm_type2_x2",
             "name": "tow_x2",
-            "reqModification": "ah_1_TOW",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2019,7 +2018,7 @@
           {
             "iconType": "atgm_type1_x4",
             "name": "tow_x4",
-            "reqModification": "ah_1_TOW_2",
+            "reqModification": "ah_1_TOW",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2032,7 +2031,7 @@
           {
             "iconType": "atgm_type1_x4_late",
             "name": "tow2_x4",
-            "reqModification": "ah_1_TOW2_2",
+            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2207,7 +2206,6 @@
           {
             "iconType": "atgm_type2_x2",
             "name": "tow_x2",
-            "reqModification": "ah_1_TOW",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2233,7 +2231,7 @@
           {
             "iconType": "atgm_type1_x4",
             "name": "tow_x4",
-            "reqModification": "ah_1_TOW_2",
+            "reqModification": "ah_1_TOW",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2246,7 +2244,7 @@
           {
             "iconType": "atgm_type1_x4_late",
             "name": "tow2_x4",
-            "reqModification": "ah_1_TOW2_2",
+            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -3345,38 +3343,17 @@
     },
     "ah_1_TOW": {
       "deactivationIsAllowed": false,
-      "reqModification": "ah_1_m200_2",
+      "prevModification": "ah_1_m200_2",
       "modClass": "weapon",
-      "tier": 3
-    },
-    "ah_1_TOW_2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW",
-      "modClass": "weapon",
-      "tier": 4
+      "tier": 2
     },
     "ah_1_TOW2": {
       "deactivationIsAllowed": false,
       "reqModification": "ah_1_TOW",
       "modClass": "weapon",
-      "tier": 3
-    },
-    "ah_1_TOW2_2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW2",
-      "modClass": "weapon",
       "tier": 4
     },
-    "countermeasures_launcher_chaff": {},
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
-      "tier": 1,
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "group": "mi-24_EVU"
-    },
     "heli_counterMeasures": {
-      "reqModification": "countermeasures_belt_pack",
       "turn_it_off": false,
       "invertEnableLogic": false,
       "tier": 2,

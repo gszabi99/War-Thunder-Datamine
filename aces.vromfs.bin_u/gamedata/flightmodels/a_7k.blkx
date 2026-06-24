@@ -2563,6 +2563,18 @@
     "Engine": "engine05_TF41_N1",
     "gun": "gun_default"
   },
+  "hook": {
+    "coeffHookJ": 0.03,
+    "hookDeflectionAngles": [
+      -50.0,
+      5.0
+    ],
+    "hookCxDiap": [
+      0.2,
+      0.9
+    ],
+    "hookMass": 10.0
+  },
   "cockpit": {
     "targetingPodFov": [
       18.75,
@@ -3569,7 +3581,49 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "mer_mk81_x6_left"
+              },
+              {
+                "slot": 1,
+                "preset": "mer_mk82_x6_left"
+              },
+              {
+                "slot": 1,
+                "preset": "mer_mk81_x6_left_snakeye"
+              },
+              {
+                "slot": 1,
+                "preset": "mer_mk82_x6_left_snakeye"
+              },
+              {
+                "slot": 1,
+                "preset": "ter_mk83_left"
+              },
+              {
+                "slot": 3,
+                "preset": "mer_mk81_x4_left_wing"
+              },
+              {
+                "slot": 3,
+                "preset": "mer_mk82_x4_left_wing"
+              },
+              {
+                "slot": 3,
+                "preset": "mer_mk81_x4_left_wing_snakeye"
+              },
+              {
+                "slot": 3,
+                "preset": "mer_mk82_x4_left_wing_snakeye"
+              },
+              {
+                "slot": 3,
+                "preset": "ter_mk83_x2_left_wing"
+              }
+            ]
           },
           {
             "iconType": "bombs_special_group_x3",
@@ -4247,7 +4301,49 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "mer_mk81_x6_right"
+              },
+              {
+                "slot": 8,
+                "preset": "mer_mk82_x6_right"
+              },
+              {
+                "slot": 8,
+                "preset": "mer_mk81_x6_right_snakeye"
+              },
+              {
+                "slot": 8,
+                "preset": "mer_mk82_x6_right_snakeye"
+              },
+              {
+                "slot": 8,
+                "preset": "ter_mk83_right"
+              },
+              {
+                "slot": 6,
+                "preset": "mer_mk81_x4_right_wing"
+              },
+              {
+                "slot": 6,
+                "preset": "mer_mk82_x4_right_wing"
+              },
+              {
+                "slot": 6,
+                "preset": "mer_mk81_x4_right_wing_snakeye"
+              },
+              {
+                "slot": 6,
+                "preset": "mer_mk82_x4_right_wing_snakeye"
+              },
+              {
+                "slot": 6,
+                "preset": "ter_mk83_x2_right_wing"
+              }
+            ]
           },
           {
             "iconType": "bombs_special_group_x3",
@@ -4962,11 +5058,6 @@
       "tier": 2,
       "reqModification": "us_500lb_mk82"
     },
-    "us_blu27_b": {
-      "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "us_750lb_m117a1"
-    },
     "us_1000lb_mk83": {
       "modClass": "weapon",
       "tier": 3,
@@ -4982,19 +5073,20 @@
       "modClass": "weapon"
     },
     "us_aim_9l": {
-      "reqModification": "us_2_75_in_ffar_lau_3a",
       "tier": 3,
       "modClass": "weapon"
     },
     "us_agm_65b": {
-      "reqModification": "us_aim_9l",
       "tier": 4,
       "modClass": "weapon"
     },
+    "us_blu27_b": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "us_gbu_8": {
       "modClass": "weapon",
-      "tier": 4,
-      "reqModification": "us_2000lb_mk84"
+      "tier": 4
     }
   },
   "user_skin": {

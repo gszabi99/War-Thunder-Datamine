@@ -2693,6 +2693,18 @@
             }
           },
           {
+            "iconType": "atgm_type2_x2",
+            "name": "9m114_default",
+            "remotelyGuidedWeaponsMax": 1,
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/9m114_ka_29_x2.blk",
+              "emitter": "9m_114_pylon_r",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "atgm_type1_x4",
             "name": "9m114",
             "reqModification": "mi_24_su_9M114",
@@ -3361,6 +3373,12 @@
     "gunGShG_new_gun": {
       "tier": 1
     },
+    "mi_24_su_9M114": {
+      "prevModification": "gunGShG_new_gun",
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 3
+    },
     "il_28sh_upk23_gunpod": {
       "deactivationIsAllowed": false,
       "tier": 1,
@@ -3384,11 +3402,6 @@
       "prevModification": "gunGShG_new_gun",
       "tier": 4,
       "reqModification": "ka_29_2a42"
-    },
-    "mi_24_su_9M114": {
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 4
     },
     "heli_screen_exhaust_device": {
       "turn_it_off": false,

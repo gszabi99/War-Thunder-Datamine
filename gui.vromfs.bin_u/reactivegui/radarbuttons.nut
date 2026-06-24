@@ -3,7 +3,9 @@ let { setVirtualAxisValue } = require("controls")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let hints = require("%rGui/hints/hints.nut")
 let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX,
-  IsRadarHudVisible, IsRadarHasFilters, IsEsm, HasMultipleSensorModes
+  IsRadarHudVisible, IsRadarHasFilters, IsEsm, HasMultipleSensorModes, ScanPatternsMax,
+  DistanceScalesMax, ScanElevationMin, ScanElevationMax, ElevationMin, ElevationMax,
+  ElevationHalfWidth
 } = require("%rGui/radarState.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
@@ -19,6 +21,7 @@ let { isInFlight } = require("%rGui/globalState.nut")
 let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
 let { IFFFilter, typeFilter, filterPresets, switchFilter, isFiltersExpanded, ESMModeTypeFilter } = require("%rGui/radarFilters.nut")
 let { isAir } = require("%rGui/hudUnitType.nut")
+let { cvt } = require("dagor.math")
 
 const HELI_AXIS_CONTROL_PREFIX = "helicopter_"
 
@@ -77,11 +80,22 @@ let isWvrMode = Computed(function() {
   return false
 })
 
+let CanControlRadarElevation = Computed(function() {
+  let elevRange = ElevationMax.get() - ElevationMin.get()
+  if (elevRange <= 0)
+    return false
+  let scanMaxRel = cvt(ScanElevationMax.get() + ElevationHalfWidth.get(), ElevationMin.get(), ElevationMax.get(), 0.0, 1.0)
+  let scanMinRel = cvt(ScanElevationMin.get() - ElevationHalfWidth.get(), ElevationMin.get(), ElevationMax.get(), 0.0, 1.0)
+  let range = scanMaxRel - scanMinRel
+
+  const ELEVATION_CONTROL_MAX_SCAN_RANGE_REL = 0.99
+  return 0.0 <= range && range < ELEVATION_CONTROL_MAX_SCAN_RANGE_REL
+})
+
 let verticalButtonsAir = [
   {
     id = "ID_SENSOR_MODES_SWITCH"
-    
-    img = null
+    img = "ui/gameuiskin#radar_controls_sensors_modes.svg"
     isVisible = Computed(@() HasMultipleSensorModes.get())
     shHintAlign = ALIGN_RIGHT
   }
@@ -90,11 +104,13 @@ let verticalButtonsAir = [
     img = Computed(@() Irst.get() ? "ui/gameuiskin#radar_controls_irst_mode.svg"
       : "ui/gameuiskin#radar_controls_radar_mode.svg")
     focusOnGamepadNav = true
+    isVisible = Computed(@() !IsEsm.get())
     shHintAlign = ALIGN_RIGHT
   }
   {
     id = "ID_SENSOR_SCAN_PATTERN_SWITCH"
     img = "ui/gameuiskin#radar_controls_search_sector.svg"
+    isVisible = Computed(@() ScanPatternsMax.get() > 1)
     shHintAlign = ALIGN_RIGHT
   }
   {
@@ -102,13 +118,14 @@ let verticalButtonsAir = [
     img = Computed(@() HasHelmetTarget.get() ? "ui/gameuiskin#radar_controls_hmd_mode.svg"
       : isWvrMode.get() ? "ui/gameuiskin#radar_controls_wvr_mode.svg"
       : "ui/gameuiskin#radar_controls_bvr_mode.svg")
+    isVisible = Computed(@() !IsEsm.get())
     shHintAlign = ALIGN_RIGHT
 
   }
   {
     id = "ID_SENSOR_MODE_SWITCH"
     img = "ui/gameuiskin#radar_controls_search_modes.svg"
-    isActive = Computed(@() !Irst.get())
+    isVisible = Computed(@() !Irst.get() && !IsEsm.get())
     shHintAlign = ALIGN_RIGHT
   }
 ]
@@ -117,6 +134,7 @@ let horizontalButtonsAir = [
   {
     id = "sensor_cue_z_rangeMax"
     img = "ui/gameuiskin#radar_controls_elevation_up.svg"
+    isVisible = CanControlRadarElevation
     axisControl = {
       onHoldValue = 1
       axisId = "sensor_cue_z"
@@ -125,6 +143,7 @@ let horizontalButtonsAir = [
   {
     id = "sensor_cue_z_rangeMin"
     img = "ui/gameuiskin#radar_controls_elevation_down.svg"
+    isVisible = CanControlRadarElevation
     axisControl = {
       onHoldValue = -1
       axisId = "sensor_cue_z"
@@ -133,11 +152,12 @@ let horizontalButtonsAir = [
   {
     id = "ID_SENSOR_DIRECTION_AXES_RESET"
     img = "ui/gameuiskin#radar_controls_elevation_reset.svg"
+    isVisible = CanControlRadarElevation
   }
   {
     id = "ID_SENSOR_RANGE_SWITCH"
     img = "ui/gameuiskin#radar_controls_scale.svg"
-    isActive = Computed(@() !Irst.get())
+    isVisible = Computed(@() DistanceScalesMax.get() > 1 && !IsEsm.get())
   }
   {
     id = "ID_SENSOR_SWITCH"

@@ -2,6 +2,11 @@ from "%rGui/globals/ui_library.nut" import *
 let { GuidanceLockResult } = require("guidanceConstants")
 let { HudColor } = require("%rGui/airState.nut")
 
+function locShort(key) {
+  let shortKey = $"{key}/short"
+  return doesLocTextExist(shortKey) ? loc(shortKey) : loc(key)
+}
+
 
 
 
@@ -103,7 +108,7 @@ function() {
           size = [0, SIZE_TO_CONTENT]
           children = {
             rendObj = ROBJ_TEXT
-            text = TrackedTargetName.get() != "" ? loc($"{TrackedTargetName.get()}_1") : ""
+            text = TrackedTargetName.get() != "" ? locShort(TrackedTargetName.get()) : ""
             color = colorTracker
             font = Fonts.hud
             fontSize = hdpx(20)

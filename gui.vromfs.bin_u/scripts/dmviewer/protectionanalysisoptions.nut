@@ -340,10 +340,15 @@ options.addTypes({
           br = unit.getBattleRating(getCurrentGameModeEdiff()) })
         .sort(@(a, b) a.unitType <=> b.unitType || a.br <=> b.br)
       this.values = list.map(@(v) v.unit)
+
+      let tooltipOnHold = showConsoleButtons.get()
       this.items = list.map(@(v) {
         text = format("[%.1f] %s", v.br, getUnitName(v.id))
         image = image_for_air(v.unit)
-        addDiv = getTooltipType("UNIT").getMarkup(v.id, { showLocalState = false })
+        addDiv = tooltipOnHold ? null
+          : getTooltipType("UNIT").getMarkup(v.id, { showLocalState = false })
+        tooltipId = tooltipOnHold ? getTooltipType("UNIT").getTooltipId(v.id, { showLocalState = false }) : ""
+        tooltipOnHold
       })
       let targetUnitId = options.targetUnit.name
       let preferredUnitId = this.value?.name ?? targetUnitId

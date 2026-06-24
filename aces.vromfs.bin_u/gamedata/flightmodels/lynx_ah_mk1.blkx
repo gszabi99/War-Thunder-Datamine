@@ -1366,18 +1366,6 @@
         "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_hydra_70_m229.blk"
       },
       {
-        "name": "lynx_ah_mk1_2_TOW_default",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_2_TOW_default.blk"
-      },
-      {
-        "name": "lynx_ah_mk1_4_TOW",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_4_TOW.blk"
-      },
-      {
-        "name": "lynx_ah_mk1_8_TOW",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_8_TOW.blk"
-      },
-      {
         "name": "lynx_ah_mk1_4_TOW2",
         "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_4_TOW2.blk"
       },
@@ -1522,48 +1510,8 @@
             }
           },
           {
-            "iconType": "atgm_type2_x2",
-            "name": "tow_x2_default",
-            "remotelyGuidedWeaponsMax": 1,
-            "ShowNodes": {
-              "node": [
-                "lynx_pylon_tow_l",
-                "lynx_pylon_l"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/tow_tube_x2_default.blk",
-              "emitter": "tow_tube_001",
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
-          },
-          {
-            "iconType": "atgm_type1_x4",
-            "name": "tow_x4",
-            "reqModification": "ah_1_TOW_2",
-            "remotelyGuidedWeaponsMax": 1,
-            "ShowNodes": {
-              "node": [
-                "lynx_pylon_tow_l",
-                "lynx_pylon_l"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/tow_tube_x4.blk",
-              "emitter": "tow_tube_001",
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
-          },
-          {
             "iconType": "atgm_type2_x2_late",
             "name": "tow2_x2",
-            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": [
@@ -1583,7 +1531,7 @@
           {
             "iconType": "atgm_type1_x4_late",
             "name": "tow2_x4",
-            "reqModification": "ah_1_TOW2_2",
+            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": [
@@ -1743,49 +1691,8 @@
             }
           },
           {
-            "iconType": "atgm_type2_x2",
-            "name": "tow_x2",
-            "reqModification": "ah_1_TOW",
-            "remotelyGuidedWeaponsMax": 1,
-            "ShowNodes": {
-              "node": [
-                "lynx_pylon_tow_r",
-                "lynx_pylon_r"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/tow_tube_x2.blk",
-              "emitter": "tow_tube_002",
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
-          },
-          {
-            "iconType": "atgm_type1_x4",
-            "name": "tow_x4",
-            "reqModification": "ah_1_TOW_2",
-            "remotelyGuidedWeaponsMax": 1,
-            "ShowNodes": {
-              "node": [
-                "lynx_pylon_tow_r",
-                "lynx_pylon_r"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/tow_tube_x4.blk",
-              "emitter": "tow_tube_002",
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
-          },
-          {
             "iconType": "atgm_type2_x2_late",
             "name": "tow2_x2",
-            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": [
@@ -1805,7 +1712,7 @@
           {
             "iconType": "atgm_type1_x4_late",
             "name": "tow2_x4",
-            "reqModification": "ah_1_TOW2_2",
+            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "ShowNodes": {
               "node": [
@@ -2551,30 +2458,12 @@
       "reqModification": "Oerlikon_KAD_belt_pack",
       "tier": 3
     },
-    "ah_1_TOW": {
+    "ah_1_TOW2": {
       "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "ah_1_TOW_2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW",
       "modClass": "weapon",
       "tier": 2
     },
-    "ah_1_TOW2": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW_2",
-      "modClass": "weapon",
-      "tier": 3
-    },
     "ah_1_AGM_114_8": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW2",
-      "modClass": "weapon",
-      "tier": 4
-    },
-    "ah_1_TOW2_2": {
       "deactivationIsAllowed": false,
       "reqModification": "ah_1_TOW2",
       "modClass": "weapon",

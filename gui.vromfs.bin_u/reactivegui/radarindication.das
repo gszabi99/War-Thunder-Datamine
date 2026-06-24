@@ -4,6 +4,7 @@ require math
 require DagorMath
 require DagorSystem
 require RadarHud
+require %rGui.utils.radar_common
 require strings
 require Mission
 require hud
@@ -50,6 +51,7 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
   let targetOnScreenWidth = ctx |> hdpx(50.)
   var fctx : StdGuiFontContext
   let time = float(get_total_time())
+  let isEsm = get_radar_hud_is_esm()
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
   var needToHandleClick = data.handleClicks && is_cursor_visible_in_gui() && is_mouse_btn_down(0)
@@ -90,7 +92,7 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x + 0.1 * targetOnScreenWidth, rb.y))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
       ctx |> render_line_aa(to_array_move(fixed_array<float2>(float2(lt.x, rb.y), float2(lt.x, lt.y + 0.9 * targetOnScreenWidth))), false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
 
-    if /*targerAspectEnabled*/target.losSpeed < 3000.
+    if !isEsm && /*targerAspectEnabled*/target.losSpeed < 3000.
       let pos = float2((lt.x + rb.x) * 0.5, rb.y + 0.75 * targetOnScreenWidth)
       let targetSpd = sqrt(target.losHorSpeed * target.losHorSpeed + target.losSpeed * target.losSpeed)
       let targetSpdInv = 1. / max(targetSpd, 1.)
@@ -100,7 +102,7 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
         pos.x - target.losHorSpeed * targetSpdInv * min(0.15 * targetOnScreenWidth + targetSpd * 0.1, 0.75 * targetOnScreenWidth),
         pos.y - target.losSpeed * targetSpdInv * min(0.15 * targetOnScreenWidth + targetSpd * 0.1, 0.75 * targetOnScreenWidth), ctx |> hdpx(4.))
 
-    if target.hasAimPos
+    if !isEsm && target.hasAimPos
       var screenPos = float2(0.)
       if world_to_screen(target.aimPos, screenPos)
         ctx |> render_ellipse_aa(screenPos, float2(targetOnScreenWidth * 0.25), ctx |> hdpx(4.), e3dColor, transparentColor)
@@ -111,7 +113,7 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
         needToHandleClick = false
         radar_switch_to_target(target.sourceObjectId)
 
-    if get_radar_hud_targeting_indicator_has_distance_scale()
+    if !isEsm && get_radar_hud_targeting_indicator_has_distance_scale()
       let distText = get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, target.dist, true, 0.1)
       let distStrBox = get_str_bbox(distText, distText |> length(), fctx)
       ctx |> goto_xy(rb.x + ctx |> hdpx(5.), lt.y + distStrBox.width.y)
@@ -128,7 +130,7 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
       ctx |> draw_str_scaled(1.0, altText, altText |> length())
 
-    let idText = loc(target.id)
+    let idText = loc_short("{target.id}")
     if idText != ""
       let idStrBox = get_str_bbox(idText, idText |> length(), fctx)
       ctx |> goto_xy(target.pos.x - 0.5 * idStrBox.width.x, target.pos.y - 0.5 * targetOnScreenWidth + ctx |> hdpx(5.) - idStrBox.width.y)
@@ -137,7 +139,7 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
       ctx |> draw_str_scaled(1.0, idText, idText |> length())
 
-    if target.radSpeed > -3000.
+    if !isEsm && target.radSpeed > -3000.
       var colorSpd = float4(Color4(data.color))
       var speedOpacity = opacity
       if get_radar_hud_selected_target_speed_blinking()

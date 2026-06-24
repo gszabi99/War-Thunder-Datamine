@@ -37,7 +37,7 @@ function getSkillCategoryTooltipView(skillCategory, crewUnitType, crewData, unit
 
   let crewSkillPoints = getCrewSkillPoints(crewData)
   foreach (categorySkill in skillCategory.skillItems) {
-    if (categorySkill.isVisible(crewUnitType))
+    if (!categorySkill.isVisible(crewUnitType))
       continue
     let skillItem = categorySkill.skillItem
     if (!skillItem)

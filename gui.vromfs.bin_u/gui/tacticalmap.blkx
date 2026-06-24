@@ -467,25 +467,21 @@
       }
     },
     "navRight": {
-      "Button_text": [
-        {
-          "id": "btn_select",
-          "text": "#mainmenu/btnSelect",
-          "btnName": "A",
-          "on_click": "onStart",
-          "skip-navigation": "yes",
-          "ButtonImg": {}
-        },
-        {
-          "id": "btn_back",
-          "text": "#mainmenu/btnBack",
-          "btnName": "B",
-          "_on_click": "goBack",
-          "display": "hide",
-          "skip-navigation": "yes",
-          "ButtonImg": {}
-        }
-      ]
+      "Button_text": {
+        "id": "btn_select",
+        "text": "#mainmenu/btnSelect",
+        "btnName": "A",
+        "on_click": "onStart",
+        "skip-navigation": "yes",
+        "ButtonImg": {}
+      },
+      "dummy": {
+        "id": "btn_back",
+        "behaviour": "accesskey",
+        "accessKey": "Esc",
+        "_on_click": "goBack",
+        "skip-navigation": "yes"
+      }
     }
   },
   "root_button": {

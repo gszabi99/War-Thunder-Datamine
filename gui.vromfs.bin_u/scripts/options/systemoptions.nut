@@ -1832,7 +1832,9 @@ mSettings = {
   }
   lensDistortions = { widgetType = "checkbox" def = true blk = "graphics/lensDistortions" restart = false
     enabled = @() is_dev_version()
+    isVisible = @() is_dev_version()
   }
+
   jpegShots = { widgetType = "checkbox" def = true blk = "debug/screenshotAsJpeg" restart = false }
   hiResShots = { widgetType = "checkbox" def = false blk = "debug/screenshotHiRes" restart = false enabled = @() getGuiValue("ssaa") == "4X" }
   compatibilityMode = { widgetType = "checkbox" def = false blk = "video/compatibilityMode" restart = true

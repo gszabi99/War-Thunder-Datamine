@@ -20,29 +20,29 @@
   "hmdShelZoom": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
-    -40.0,
-    -50.0,
-    50.0
+    -70.0,
+    -35.0,
+    65.0
   ],
   "helmetDesignatorZone1": [
-    -20.0,
-    -30.0,
-    50.0
+    -35.0,
+    -35.0,
+    65.0
   ],
   "helmetDesignatorZone2": [
     0.0,
-    -15.0,
-    50.0
+    -35.0,
+    65.0
   ],
   "helmetDesignatorZone3": [
-    20.0,
-    -30.0,
-    50.0
+    35.0,
+    -35.0,
+    65.0
   ],
   "helmetDesignatorZone4": [
-    40.0,
-    -50.0,
-    50.0
+    70.0,
+    -35.0,
+    65.0
   ],
   "mfdCamPlatan": true,
   "tpsCameraOffset": [
@@ -2743,6 +2743,18 @@
       "vws_check_mech": {}
     }
   },
+  "hook": {
+    "coeffHookJ": 0.03,
+    "hookDeflectionAngles": [
+      -50.0,
+      5.0
+    ],
+    "hookCxDiap": [
+      0.2,
+      0.9
+    ],
+    "hookMass": 10.0
+  },
   "cockpit": {
     "mfdTextureSize": [
       1024,
@@ -2780,8 +2792,8 @@
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
     "lightPos": [
-      5.334,
-      1.079,
+      5.754,
+      0.924,
       0.0
     ],
     "lightColor": [
@@ -2789,11 +2801,11 @@
       0.01,
       0.0
     ],
-    "lightRadius": 0.35,
+    "lightRadius": 0.4,
     "lightPos1": [
-      5.3,
-      0.88,
-      0.38
+      5.639,
+      0.922,
+      0.332
     ],
     "lightColor1": [
       0.7,
@@ -2802,9 +2814,9 @@
     ],
     "lightRadius1": 0.25,
     "lightPos2": [
-      5.3,
-      0.88,
-      -0.38
+      5.641,
+      0.916,
+      -0.37
     ],
     "lightColor2": [
       0.7,
@@ -2813,9 +2825,9 @@
     ],
     "lightRadius2": 0.25,
     "lightPos3": [
-      5.15,
-      0.9,
-      -0.38
+      5.655,
+      1.233,
+      0.0
     ],
     "lightColor3": [
       0.5,
@@ -4833,6 +4845,29 @@
               "separate": true,
               "machLimit": 1.5
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_1150l_mig_29kr_left_wing.blk",
+              "emitter": "mig_1150l_drop_tank_001",
+              "bullets": 1,
+              "external": true,
+              "separate": false
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "ptb_slot7"
+            }
           }
         ]
       },
@@ -5426,6 +5461,29 @@
               "separate": true,
               "machLimit": 1.5
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot4",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "ShowDmParts": {
+              "node": "tank10_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_1150l_mig_29kr_left_wing1.blk",
+              "emitter": "mig_1150l_drop_tank_002",
+              "bullets": 1,
+              "external": true,
+              "separate": false
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "ptb_slot6"
+            }
           }
         ]
       },
@@ -6016,6 +6074,29 @@
               "separate": true,
               "machLimit": 1.5
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot6",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_5"
+            },
+            "ShowDmParts": {
+              "node": "tank11_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_1150l_mig_29kr_right_wing.blk",
+              "emitter": "mig_1150l_drop_tank_003",
+              "bullets": 1,
+              "external": true,
+              "separate": false
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "ptb_slot4"
+            }
           }
         ]
       },
@@ -6535,6 +6616,29 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot7",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_6"
+            },
+            "ShowDmParts": {
+              "node": "tank12_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_1150l_mig_29kr_right_wing1.blk",
+              "emitter": "mig_1150l_drop_tank_004",
+              "bullets": 1,
+              "external": true,
+              "separate": false
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_slot3"
             }
           }
         ]

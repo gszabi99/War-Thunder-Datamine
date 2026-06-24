@@ -108,6 +108,6 @@ def restore_unit_timer_es(act : ecs::UpdateStageInfoAct;
   if restore_unit_by_timer__restoreAtTime > 0.
     if restore_unit_by_timer__restoreAtTime <= get_sync_time()
       restore_unit_by_timer__restoreAtTime = -1.0
-      *unit__ref.unit |> repair()
+      *unit__ref.unit |> sendRepair()
     if unit__ref.unit.isAlive
       restore_unit_by_timer__restoreAtTime = -1.0

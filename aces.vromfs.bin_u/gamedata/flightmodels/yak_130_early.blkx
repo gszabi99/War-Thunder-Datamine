@@ -16,29 +16,29 @@
   "hmdShelZoom": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
-    -40.0,
-    -50.0,
-    50.0
+    -70.0,
+    -35.0,
+    65.0
   ],
   "helmetDesignatorZone1": [
-    -20.0,
-    -30.0,
-    50.0
+    -35.0,
+    -35.0,
+    65.0
   ],
   "helmetDesignatorZone2": [
     0.0,
-    -15.0,
-    50.0
+    -35.0,
+    65.0
   ],
   "helmetDesignatorZone3": [
-    20.0,
-    -30.0,
-    50.0
+    35.0,
+    -35.0,
+    65.0
   ],
   "helmetDesignatorZone4": [
-    40.0,
-    -50.0,
-    50.0
+    70.0,
+    -35.0,
+    65.0
   ],
   "havePointOfInterestDesignator": true,
   "mfdCamYak130Kab": true,
@@ -96,11 +96,11 @@
     "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 40.0
+        "hp": 30.5
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 40.0
+        "hp": 30.5
       }
     },
     "c_dural3": {
@@ -183,6 +183,9 @@
       }
     },
     "dural": {
+      "apu1_dm": {
+        "hp": 19.5
+      },
       "cover1_dm": {
         "hp": 19.5
       },
@@ -199,6 +202,24 @@
         "hp": 19.5
       },
       "cover6_dm": {
+        "hp": 19.5
+      },
+      "electronic_block1_dm": {
+        "hp": 19.5
+      },
+      "electronic_block2_dm": {
+        "hp": 19.5
+      },
+      "electronic_block3_dm": {
+        "hp": 19.5
+      },
+      "electronic_block4_dm": {
+        "hp": 19.5
+      },
+      "slat_l_dm": {
+        "hp": 19.5
+      },
+      "slat_r_dm": {
         "hp": 19.5
       }
     },
@@ -220,6 +241,11 @@
       },
       "spar_r_dm": {
         "hp": 27.4
+      }
+    },
+    "dural5": {
+      "radar_dm": {
+        "hp": 35.0
       }
     },
     "protected_controls": {
@@ -264,7 +290,7 @@
     },
     "steel_tank_armor": {
       "tank1_dm": {
-        "hp": 68.5
+        "hp": 68.4
       },
       "tank2_dm": {
         "hp": 100.5
@@ -280,23 +306,6 @@
       },
       "tank6_dm": {
         "hp": 100.5
-      }
-    },
-    "wood": {
-      "apu1_dm": {
-        "hp": 26.1
-      },
-      "electronic_block1_dm": {
-        "hp": 20.7
-      },
-      "electronic_block2_dm": {
-        "hp": 32.4
-      },
-      "electronic_block3_dm": {
-        "hp": 18.3
-      },
-      "electronic_block4_dm": {
-        "hp": 25.7
       }
     }
   },
@@ -427,16 +436,104 @@
         "name": "cover6_dm"
       },
       {
-        "name": "electronic_block1_dm"
+        "name": "electronic_block1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
-        "name": "electronic_block2_dm"
+        "name": "electronic_block2_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
-        "name": "electronic_block3_dm"
+        "name": "electronic_block3_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
-        "name": "electronic_block4_dm"
+        "name": "electronic_block4_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "elevator0_dm",
@@ -994,6 +1091,9 @@
         "name": "pilot_dm"
       },
       {
+        "name": "radar_dm"
+      },
+      {
         "name": "rudder_dm",
         "onHit": [
           {
@@ -1033,6 +1133,12 @@
             "cut": 1.0
           }
         ]
+      },
+      {
+        "name": "slat_l_dm"
+      },
+      {
+        "name": "slat_r_dm"
       },
       {
         "name": "spar1_l_dm",

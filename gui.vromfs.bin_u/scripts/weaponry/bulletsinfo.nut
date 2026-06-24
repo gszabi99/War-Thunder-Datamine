@@ -49,6 +49,14 @@ let BULLET_TYPE = {
   ATGM_TANDEM_TANK    = "atgm_tandem_tank"
 }
 
+const GUIDANCE_RADAR = "radar"
+const GUIDANCE_PRH = "PRH"
+
+
+
+let isAntiRadarGuidance = @(guidanceType) guidanceType != null
+  && (guidanceType.startswith(GUIDANCE_RADAR) || guidanceType.startswith(GUIDANCE_PRH))
+
 let BULLETS_WITHOUT_ICON_PARAMS = [
   "smoke", "countermeasures"
 ]
@@ -1591,6 +1599,7 @@ return {
   isBulletGroupActive
   isBulletsGroupActiveByMod
   isBulletsWithoutTracer
+  isAntiRadarGuidance
   getOptionsBulletsList
   isBullets
   isWeaponTierAvailable

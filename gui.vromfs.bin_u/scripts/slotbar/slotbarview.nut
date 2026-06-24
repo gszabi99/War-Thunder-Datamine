@@ -824,7 +824,7 @@ function buildCommonUnitSlot(id, unit, params) {
     let maxSpawns = get_max_spawns_unit_count(unit.name)
     if (crew.idInCountry >= 0 && maxSpawns > 1) {
       let numSpawns = getNumUsedUnitSpawns(crew.idInCountry)
-      leftHistoricalSpawns = maxSpawns - numSpawns
+      leftHistoricalSpawns = max(0, maxSpawns - numSpawns)
       additionalHistoricalRespawns = $"{leftHistoricalSpawns}/{maxSpawns}"
       if (leftHistoricalSpawns == 0) {
         additionalHistoricalRespawns = colorize("badTextColor", additionalHistoricalRespawns)

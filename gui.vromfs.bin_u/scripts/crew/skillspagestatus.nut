@@ -36,8 +36,7 @@ function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
   return {
     needShowAdvice
     avalibleSkills
-    icon = hasFeature("FullScreenCrewWindow") ? "#ui/gameuiskin#new_crew_skill_points_arrow_up.svg"
-      : "#ui/gameuiskin#new_crew_skill_points.svg"
+    icon = "#ui/gameuiskin#new_crew_skill_points_arrow_up.svg"
     iconColor
   }
 }

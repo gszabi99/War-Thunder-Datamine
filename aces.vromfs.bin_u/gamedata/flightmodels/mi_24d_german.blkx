@@ -1957,16 +1957,8 @@
         "blk": "gameData/flightModels/weaponPresets/mi_24d_ub32.blk"
       },
       {
-        "name": "mi_24d_ub32_9m17m",
-        "blk": "gameData/flightModels/weaponPresets/mi_24d_ub32_9m17m.blk"
-      },
-      {
         "name": "mi_24d_s_24",
         "blk": "gameData/flightModels/weaponPresets/mi_24d_s_24.blk"
-      },
-      {
-        "name": "mi_24d_s_24_9m17m",
-        "blk": "gameData/flightModels/weaponPresets/mi_24d_s_24_9m17m.blk"
       },
       {
         "name": "mi_24d_rocket_9m17m",
@@ -1977,24 +1969,12 @@
         "blk": "gameData/flightModels/weaponPresets/mi_24d_4xfab250.blk"
       },
       {
-        "name": "mi_24d_4xfab250_9m17m",
-        "blk": "gameData/flightModels/weaponPresets/mi_24d_4xfab250_9m17m.blk"
-      },
-      {
         "name": "mi_24d_2xfab500",
         "blk": "gameData/flightModels/weaponPresets/mi_24d_2xfab500.blk"
       },
       {
-        "name": "mi_24d_2xfab500_9m17m",
-        "blk": "gameData/flightModels/weaponPresets/mi_24d_2xfab500_9m17m.blk"
-      },
-      {
         "name": "mi_24d_upk_23_250",
         "blk": "gameData/flightModels/weaponPresets/mi_24d_upk_23_250.blk"
-      },
-      {
-        "name": "mi_24d_upk_23_250_9m17m",
-        "blk": "gameData/flightModels/weaponPresets/mi_24d_upk_23_250_9m17m.blk"
       }
     ]
   },
@@ -2038,19 +2018,7 @@
         "guv_8700_gunpod_004",
         "guv_8700_gunpod_004_mgun1",
         "guv_8700_gunpod_004_mgun2",
-        "guv_8700_gunpod_004_mgun3"
-      ]
-    },
-    "HideDmParts": {
-      "node": [
-        "cover5_dm",
-        "cover6_dm",
-        "cover7_dm",
-        "cover8_dm",
-        "cannon2_dm",
-        "cannon3_dm",
-        "cannon4_dm",
-        "cannon5_dm",
+        "guv_8700_gunpod_004_mgun3",
         "cover9_dm",
         "mgun1_dm",
         "mgun2_dm",
@@ -2066,7 +2034,19 @@
         "cover12_dm",
         "mgun10_dm",
         "mgun11_dm",
-        "mgun12_dm",
+        "mgun12_dm"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cover5_dm",
+        "cover6_dm",
+        "cover7_dm",
+        "cover8_dm",
+        "cannon2_dm",
+        "cannon3_dm",
+        "cannon4_dm",
+        "cannon5_dm",
         "ircm1_dm"
       ]
     },
@@ -2354,7 +2334,6 @@
         "WeaponPreset": {
           "iconType": "atgm_type2_x2",
           "name": "9m17m",
-          "reqModification": "mi_24_su_9M17M",
           "remotelyGuidedWeaponsMax": 1,
           "ShowNodes": {
             "node": "su_9m_17m_mi_24_pylon_l"
@@ -2718,7 +2697,6 @@
         "WeaponPreset": {
           "iconType": "atgm_type2_x2",
           "name": "9m17m",
-          "reqModification": "mi_24_su_9M17M",
           "remotelyGuidedWeaponsMax": 1,
           "ShowNodes": {
             "node": "su_9m_17m_mi_24_pylon_r"
@@ -3729,20 +3707,15 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "mi_24_su_9M17M": {
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "il_28sh_s24"
-    },
     "mi_24_fab_250": {
+      "prevModification": "il_28sh_s24",
       "modClass": "weapon",
-      "tier": 1
+      "tier": 2
     },
     "mi_24_fab_500": {
       "modClass": "weapon",
       "reqModification": "mi_24_fab_250",
-      "tier": 2
+      "tier": 3
     },
     "heli_screen_exhaust_device": {
       "turn_it_off": false,

@@ -23,24 +23,35 @@ enum FireAndChangePosState
   CHANGING_POSITION
   REARMING
 
+def collect_unit_target_positions(unit__missionName : string; var positions : array<float3>)
+  for idx in range(1, 10)
+    let area_name = "{unit__missionName}__move_area_0{idx}"
+    let pos = get_area_center_by_name(area_name)
+    if pos == float3(0., 0., 0.)
+      break
+    positions |> push(pos)
+  if get_area_center_by_name("{unit__missionName}__move_area_10") != float3(0., 0., 0.)
+    logerr("Unit {unit__missionName}: more than 9 move areas defined, __move_area_10 will not be used")
+
+
 def move_mission_unit_to_random_pos(unit__missionName : string; var unit_fire_and_change_pos__move_target_pos_index : int&; var unit__ref : UnitRef&)
-  query() <| $ [es] (unit_move_to_random_position_names : Object)
-    let positions = unit_move_to_random_position_names |> get_ecs_Point3List(unit__missionName)
-    if positions == null
-      logerr("No move positions for unit {unit__missionName}, in unit_move_to_random_position_names")
+  var positions : array<float3>
+  collect_unit_target_positions(unit__missionName, positions)
+  if positions |> empty()
+    logerr("No target areas found for unit {unit__missionName} (expected {unit__missionName}__move_area_01, ...)")
+    return
+  var targetIndex = rnd_int(0, length(positions) - 1)
+  if targetIndex == unit_fire_and_change_pos__move_target_pos_index
+    if length(positions) > 1
+      targetIndex = (targetIndex + 1) % length(positions)
     else
-      var targetIndex = rnd_int(0, length(*positions) - 1)
-      if targetIndex == unit_fire_and_change_pos__move_target_pos_index
-        if length(*positions) > 1
-          targetIndex = (targetIndex + 1) % length(*positions)
-        else
-          logerr("No NEW move positions for unit {unit__missionName} in unit_move_to_random_position_names")
+      logerr("No NEW target area for unit {unit__missionName} - only one area defined")
 
-      unit_fire_and_change_pos__move_target_pos_index = targetIndex
+  unit_fire_and_change_pos__move_target_pos_index = targetIndex
 
-      var targetPos = IDENT_TM
-      targetPos[3] = (*positions)[targetIndex]
-      set_destination_way_point(unit__ref.unit, "USE_SPLINE", targetPos, 20.)
+  var targetPos = IDENT_TM
+  targetPos[3] = positions[targetIndex]
+  set_destination_way_point(unit__ref.unit, "USE_SPLINE", targetPos, 20.)
 
 
 def is_primary_gun_out_of_ammo(unit__ref : UnitRef&)

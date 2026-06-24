@@ -5,10 +5,13 @@
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
-  "mesh": "su_kh_31a_missile_na",
-  "mesh_deployed": "su_kh_31a_missile",
-  "shellAnimChar": "su_kh_31a_missile_char",
-  "bombCart": "missile_cart_mid",
+  "mesh": "su_kh_31pd_missile_na",
+  "mesh_deployed": "su_kh_31pd_missile",
+  "shellAnimChar": "su_kh_31pd_missile_char",
+  "bombCart": [
+    "missile_cart_mid",
+    "missile_cart_mid"
+  ],
   "offsetForDemonstration": [
     0.1,
     -0.02,
@@ -31,7 +34,7 @@
       0.1,
       0.1
     ],
-    "CxK": 1.35,
+    "CxK": 1.525,
     "wingAreaMult": 1.15,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
@@ -49,7 +52,7 @@
     "guidanceSfx": "alarm_spin_scan",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
-    "explosiveType": "tgaf_5m",
+    "explosiveType": "hexal",
     "explosiveMass": 85.0,
     "warheadMass": 110.0,
     "normalizationPreset": "heat",
@@ -84,24 +87,29 @@
     "fuseDelayDist": 3.5,
     "explodeTreshold": 0.25,
     "distanceFuse": false,
+    "brakeTime": [
+      2.4,
+      2.75
+    ],
+    "brakeCxK": 0.0,
     "propulsion0": {
-      "fireDelay": 0.75,
+      "fireDelay": 0.5,
       "impulse0": {
-        "time": 3.5,
-        "force": 104785.0,
-        "massLost": 163.0
+        "time": 2.5,
+        "force": 138600.0,
+        "massLost": 154.0
       },
       "impulse1": {
         "time": 0.0,
         "force": 0.0,
-        "massLost": 32.0
+        "massLost": 51.5
       }
     },
     "propulsion1": {
       "impulse0": {
-        "massFlow": 2.2,
-        "isp": 14500.0,
-        "massLost": 110.0,
+        "massFlow": 3.5333,
+        "isp": 17225.0,
+        "massLost": 98.05,
         "factorIndex": 0
       }
     },
@@ -662,7 +670,7 @@
         "hazeEffect": "haze_jet",
         "endSmokeViscosity": 0.05,
         "effectOffset": [
-          -2.0,
+          -1.6,
           0.0,
           0.0
         ],
@@ -698,7 +706,7 @@
         "multipathEffect": [
           0.0,
           1.0,
-          60.0,
+          0.0,
           0.0
         ],
         "lockAngleMax": 8.0,
@@ -736,32 +744,26 @@
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,
+        "useAbsoluteAltitude": true,
         "timeToHitToAltitude0": [
-          5.0,
-          2.0
+          0.0,
+          15000.0
         ],
-        "timeToHitToAltitude1": [
-          10.0,
-          10.0
-        ],
-        "timeToHitToAltitude2": [
-          20.0,
-          300.0
-        ],
-        "altitudeHoldTargetElevation": -25.0,
-        "altitudeDiffToClimb": 0.15,
-        "altitudeRateRateToClimb": 0.2,
-        "climbDiffToAccelMult": 0.1,
+        "altitudeHoldTargetElevation": -35.0,
+        "altitudeHoldTargetOmegaMax": 1.75,
+        "altitudeDiffToClimb": 0.105,
+        "altitudeRateRateToClimb": 0.385,
+        "climbDiffToAccelMult": 0.025,
         "altitudeHoldAngleLimith": [
-          -15.0,
-          20.0
+          -30.0,
+          30.0
         ],
         "courseErrorAngleToAccelMult": 1.5,
         "courseErrorFinalAngleCorrection": 1.25,
         "timeOut": 1.5,
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 10.0,
+        "reqAccelMax": 20.0,
         "accelControlProp": 0.0041,
         "accelControlIntg": 0.014,
         "accelControlIntgLim": 1.0,
@@ -770,8 +772,8 @@
       "propulsionAutopilot": {
         "propulsion0": {},
         "propulsion1": {
-          "startTimeMin": 4.25,
-          "cruiseVelocity": 3600.0,
+          "startTimeMin": 2.5,
+          "cruiseVelocity": 3960.0,
           "cuiseVelocityDiffMax": 1000.0,
           "PidControllerCruise": {
             "prop": 0.05,

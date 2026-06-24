@@ -7,6 +7,7 @@ limitBuyUnit {
   <<#hasActionButton>>
   hasActionButton:t='yes'
   <</hasActionButton>>
+  input-transparent:t='yes'
   tdiv {
     halign:t='center'
     valign:t='center'

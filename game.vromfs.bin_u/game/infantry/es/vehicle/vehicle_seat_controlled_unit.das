@@ -5,6 +5,7 @@ require Unit
 require MPlayer
 require %game.player_events
 require %appGame.infantry.es.vehicle.vehicle_seats_common
+require %appGame.infantry.es.team_common
 
 
 
@@ -88,6 +89,20 @@ def vehicle_reset_army_on_driver_left_es(evt : Event;
   if unit__ref.unit.army == neutralArmy
     return
   *unit__ref.unit |> setArmy(neutralArmy)
+
+[es(tag=server, track=vehicle_seats__restrictToTeam)]
+def vehicle_set_army_from_restrict_to_team_es(evt : Event;
+                                              vehicle_seats__restrictToTeam : int;
+                                              vehicle_seats__autoDetectRestrictToTeam : bool;
+                                              var unit__ref : UnitRef&)
+  if !vehicle_seats__autoDetectRestrictToTeam
+    return
+  if unit__ref.unit == null || unit__ref.unit.isDelayed
+    return
+  let army = vehicle_seats__restrictToTeam == TEAM_UNASSIGNED ? int(MultiplayerTeam.MP_TEAM_NEUTRAL) : vehicle_seats__restrictToTeam
+  if unit__ref.unit.army == army
+    return
+  *unit__ref.unit |> setArmy(army)
 
 [es(on_appear, track=human_anim__vehicleSelected)]
 def human_relative_unit_track_es(evt : Event;

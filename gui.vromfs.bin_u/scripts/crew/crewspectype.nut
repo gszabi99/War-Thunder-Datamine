@@ -81,7 +81,7 @@ function getSkillsNotAffectedBySpecDesc(crewUnitType, exceptTextColor = "fadedTe
 }
 
 function formatSpecLabel(specType, cost = null, hasImage = null) {
-  hasImage = hasImage ?? hasFeature("FullScreenCrewWindow")
+  hasImage = hasImage ?? true
   let specImg = hasImage ? "".concat("{{img=", specType.trainedIcon, "}}") : ""
   let label = cost != null
     ? "".concat(specType.getName(), loc("ui/parentheses/space", { text = cost }))
@@ -249,21 +249,13 @@ crewSpecTypes = {
         res.append(colorize("badTextColor", loc("crew/qualifyRequirement/toTrainUnit", locParams)))
 
       if (reqLevel > crewLevel && reqLevel > 1) {
-        if (hasFeature("FullScreenCrewWindow")) {
-          let reqLevelLocId = needToTrainUnit ? "crew/qualifyRequirement"
-            : "crew/qualifyRequirement/need_level"
-          res.append(loc(reqLevelLocId, locParams.__merge({
-            reqLevel
-            currentLevelText = colorize("badTextColor", loc("crew/currentLevel", { level = crewLevel }))
-            trainCost = colorize("activeTextColor", cost)
-          })))
-        }
-        else {
-          let reqLevelLocId = needToTrainUnit ? "crew/qualifyRequirement" : "crew/qualifyRequirement/full"
-          res.append(colorize("badTextColor", loc(reqLevelLocId, locParams.__merge({
-            reqLevel = colorize("activeTextColor", reqLevel)
-          }))))
-        }
+        let reqLevelLocId = needToTrainUnit ? "crew/qualifyRequirement"
+          : "crew/qualifyRequirement/need_level"
+        res.append(loc(reqLevelLocId, locParams.__merge({
+          reqLevel
+          currentLevelText = colorize("badTextColor", loc("crew/currentLevel", { level = crewLevel }))
+          trainCost = colorize("activeTextColor", cost)
+        })))
       }
       return "\n".join(res, true)
     }

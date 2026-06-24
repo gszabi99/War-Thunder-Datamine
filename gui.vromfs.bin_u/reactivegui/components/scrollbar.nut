@@ -48,7 +48,7 @@ let scrollbar = function(scroll_handler) {
 
 let makeSideScroll = function(content, options = {}) {
   if (!("styling" in options))
-    options.styling <- styling
+    options = options.__merge({ styling })
   return scrollbarBase.makeSideScroll(content, options)
 }
 

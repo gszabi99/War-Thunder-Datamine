@@ -7,8 +7,14 @@
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
   "rocket": {
+    "dragCx": 0.0035,
     "bulletName": "us_agm_65e",
+    "iconType": "missile_air_to_uni",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.3048,
     "length": 2.48158,
     "WdK": [
@@ -30,10 +36,8 @@
     "force": 44497.4,
     "force1": 8899.49,
     "timeLife": 105.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 0.9,
-    "endSpeed": 0.0,
     "maxDistance": 26400.0,
     "minDistance": 600.0,
     "rangeMax": 23000.0,
@@ -41,11 +45,7 @@
     "guidanceType": "laser",
     "explosiveType": "pbxn_af_108",
     "explosiveMass": 36.28739,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.0035,
     "shellCollision": true,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni",
     "explosionEffect": "hit_133_205mm_heat",
     "groundCollisionEffect": "hit_206_290mm_dirt_he",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -89,10 +89,6 @@
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "isHasLaserChannel": true,
-    "arcadeProp": {
-      "finsAoaHor": 0.2,
-      "finsAoaVer": 0.2
-    },
     "guidance": {
       "warmUpTime": 0.3,
       "workTime": 3600.0,

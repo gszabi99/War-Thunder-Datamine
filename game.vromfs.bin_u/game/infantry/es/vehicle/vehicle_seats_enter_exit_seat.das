@@ -93,6 +93,7 @@ def vehicle_seats_enter_exit_seat_server_es(evt : CmdAcquireVehicleSeat;
                                seat__adjacentSeat : int = -1;
                                seat__isLocked : bool = false;
                                var seat__isPlayer : bool&;
+                               var seat__isOwnerAlive : bool&;
                                var seat__ownerEid : EntityId&;
                                var seat__playerEid : EntityId&;
                                var seat__squadEid : EntityId&)
@@ -115,10 +116,11 @@ def vehicle_seats_enter_exit_seat_server_es(evt : CmdAcquireVehicleSeat;
     
     
 
-    seat__isPlayer  = !!playerEid
-    seat__ownerEid  = requester
-    seat__squadEid  = get_Eid(requester, "squad_member__squad") ?? INVALID_ENTITY_ID
-    seat__playerEid = !!playerEid ? playerEid : get_Eid(seat__squadEid, "squad__ownerPlayer") ?? INVALID_ENTITY_ID
+    seat__isPlayer     = !!playerEid
+    seat__isOwnerAlive = true
+    seat__ownerEid     = requester
+    seat__squadEid     = get_Eid(requester, "squad_member__squad") ?? INVALID_ENTITY_ID
+    seat__playerEid    = !!playerEid ? playerEid : get_Eid(seat__squadEid, "squad__ownerPlayer") ?? INVALID_ENTITY_ID
 
     attach_human_to_seat(requester, eid, seat__component, reqSeatEid, vehicle_seats_hide_owner[ requestSeatNo ])
 

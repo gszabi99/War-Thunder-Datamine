@@ -313,9 +313,8 @@ let Wager = class (BaseItem) {
   }
 
   function getItemTypeDescription(loc_params = {}) {
-    loc_params.maxWins <- this.maxWins
-    loc_params.maxFails <- this.maxFails
-    return base.getItemTypeDescription(loc_params)
+    return base.getItemTypeDescription(
+      loc_params.__merge({ maxWins = this.maxWins, maxFails = this.maxFails }))
   }
 
   function getDescription(customParams = {}) {

@@ -74,7 +74,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM,
+let { USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP,
   USEROPT_LOAD_FUEL_AMOUNT,  USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT,
   USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_IGNORE_BAD_WEATHER,
   USEROPT_SAVE_AIRCRAFT_SPAWN } = require("%scripts/options/optionsExtNames.nut")
@@ -2952,7 +2952,15 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (this.showHud())
       return; 
 
-    if (!this.isRespawn || !canRequestAircraftNow())
+    if (!this.isRespawn) {
+      if (!get_gui_option(USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP))
+        this.guiScene.performDelayed(this, function() {
+          this.goBack()
+        })
+      return
+    }
+
+    if (!canRequestAircraftNow())
       return
 
     if (this.isSpectate && this.onSpectator() && hasAvailableSlots())

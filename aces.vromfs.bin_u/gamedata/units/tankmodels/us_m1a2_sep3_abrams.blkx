@@ -99,7 +99,7 @@
         "armorEffectiveThicknessMax": 150.0
       },
       "composite_armor_hull_02_dm": {
-        "armorThickness": 19.05,
+        "armorThickness": 9.0,
         "hidableInXrayViewer": true
       },
       "firewall_armor_01_dm": {
@@ -131,8 +131,8 @@
       "armorClass": "leopard_2a5_turret_nera",
       "composite_armor_hull_01_dm": {
         "armorThickness": 360.0,
-        "cumulativeArmorQuality": 1.301,
-        "genericArmorQuality": 0.484
+        "cumulativeArmorQuality": 1.425,
+        "genericArmorQuality": 0.504
       },
       "composite_armor_turret_01_dm": {
         "armorThickness": 305.0,
@@ -140,14 +140,14 @@
         "genericArmorQuality": 0.42
       },
       "composite_armor_turret_02_dm": {
-        "armorThickness": 800.0,
-        "cumulativeArmorQuality": 1.573,
-        "genericArmorQuality": 0.907
+        "armorThickness": 900.0,
+        "cumulativeArmorQuality": 1.25,
+        "genericArmorQuality": 0.75
       },
       "composite_armor_turret_03_dm": {
-        "armorThickness": 800.0,
-        "cumulativeArmorQuality": 1.573,
-        "genericArmorQuality": 0.907
+        "armorThickness": 900.0,
+        "cumulativeArmorQuality": 1.25,
+        "genericArmorQuality": 0.75
       },
       "composite_armor_turret_04_dm": {
         "armorThickness": 300.0,
@@ -161,13 +161,13 @@
       },
       "composite_armor_turret_06_dm": {
         "armorThickness": 350.0,
-        "cumulativeArmorQuality": 0.797,
-        "genericArmorQuality": 0.09
+        "cumulativeArmorQuality": 0.745,
+        "genericArmorQuality": 0.085
       },
       "composite_armor_turret_07_dm": {
         "armorThickness": 350.0,
-        "cumulativeArmorQuality": 0.797,
-        "genericArmorQuality": 0.09
+        "cumulativeArmorQuality": 0.745,
+        "genericArmorQuality": 0.085
       }
     },
     "rha_plates": {
@@ -469,7 +469,8 @@
         "armorThickness": 12.0
       },
       "turret_02_top_dm": {
-        "armorThickness": 101.0
+        "armorThickness": 38.1,
+        "variableThickness": true
       },
       "turret_06_side_dm": {
         "armorThickness": 6.35,
@@ -2803,6 +2804,487 @@
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15
     }
+  },
+  "PhysSys": {
+    "find": "^bone_suspension_(._\\d\\d)$",
+    "points": {
+      "suspension": {
+        "name": "bone_suspension_$1"
+      },
+      "wheel": {
+        "name": "bone_wheel_$1",
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      }
+    },
+    "constraints": {
+      "edge": {
+        "from": "suspension",
+        "to": "wheel"
+      }
+    }
+  },
+  "chainIK": {
+    "points": [
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_01_01"
+          },
+          {
+            "nameTemplate": "bone_roll_01_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_02_01"
+          },
+          {
+            "nameTemplate": "bone_roll_02_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_03_01"
+          },
+          {
+            "nameTemplate": "bone_roll_03_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_04_01"
+          },
+          {
+            "nameTemplate": "bone_roll_04_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_05_01"
+          },
+          {
+            "nameTemplate": "bone_roll_05_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_06_01"
+          },
+          {
+            "nameTemplate": "bone_roll_06_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_07_01"
+          },
+          {
+            "nameTemplate": "bone_roll_07_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_08_01"
+          },
+          {
+            "nameTemplate": "bone_roll_08_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_09_01"
+          },
+          {
+            "nameTemplate": "bone_roll_09_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_10_01"
+          },
+          {
+            "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_13_01"
+          },
+          {
+            "nameTemplate": "bone_roll_13_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_14_01"
+          },
+          {
+            "nameTemplate": "bone_roll_14_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_15_01"
+          },
+          {
+            "nameTemplate": "bone_roll_15_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_16_01"
+          },
+          {
+            "nameTemplate": "bone_roll_16_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_17_01"
+          },
+          {
+            "nameTemplate": "bone_roll_17_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_18_01"
+          },
+          {
+            "nameTemplate": "bone_roll_18_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_19_01"
+          },
+          {
+            "nameTemplate": "bone_roll_19_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_20_01"
+          },
+          {
+            "nameTemplate": "bone_roll_20_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_21_01"
+          },
+          {
+            "nameTemplate": "bone_roll_21_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_22_01"
+          },
+          {
+            "nameTemplate": "bone_roll_22_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_23_01"
+          },
+          {
+            "nameTemplate": "bone_roll_23_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_24_01"
+          },
+          {
+            "nameTemplate": "bone_roll_24_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_25_01"
+          },
+          {
+            "nameTemplate": "bone_roll_25_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_26_01"
+          },
+          {
+            "nameTemplate": "bone_roll_26_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_27_01"
+          },
+          {
+            "nameTemplate": "bone_roll_27_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_28_01"
+          },
+          {
+            "nameTemplate": "bone_roll_28_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_29_01"
+          },
+          {
+            "nameTemplate": "bone_roll_29_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_30_01"
+          },
+          {
+            "nameTemplate": "bone_roll_30_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_31_01"
+          },
+          {
+            "nameTemplate": "bone_roll_31_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_32_01"
+          },
+          {
+            "nameTemplate": "bone_roll_32_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_33_01"
+          },
+          {
+            "nameTemplate": "bone_roll_33_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_34_01"
+          },
+          {
+            "nameTemplate": "bone_roll_34_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_35_01"
+          },
+          {
+            "nameTemplate": "bone_roll_35_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_36_01"
+          },
+          {
+            "nameTemplate": "bone_roll_36_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_37_01"
+          },
+          {
+            "nameTemplate": "bone_roll_37_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_38_01"
+          },
+          {
+            "nameTemplate": "bone_roll_38_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_39_01"
+          },
+          {
+            "nameTemplate": "bone_roll_39_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_40_01"
+          },
+          {
+            "nameTemplate": "bone_roll_40_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_41_01"
+          },
+          {
+            "nameTemplate": "bone_roll_41_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_42_01"
+          },
+          {
+            "nameTemplate": "bone_roll_42_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_43_01"
+          },
+          {
+            "nameTemplate": "bone_roll_43_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_44_01"
+          },
+          {
+            "nameTemplate": "bone_roll_44_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_45_01"
+          },
+          {
+            "nameTemplate": "bone_roll_45_02"
+          }
+        ]
+      }
+    ]
   },
   "ammo": {
     "combustionTime": 7.0,

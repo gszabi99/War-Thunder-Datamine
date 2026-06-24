@@ -31,6 +31,12 @@
     "vehicle_acceleration__accelVisc": 0.3,
     "vehicle_acceleration__counterAccelVisc": 0.5
   },
+  "vehicle_autodetect_team": {
+    "vehicle_seats__restrictToTeam": -1,
+    "vehicle_seats__autoDetectRestrictToTeam": true,
+    "_replicated": "vehicle_seats__restrictToTeam",
+    "_tracked": "vehicle_seats__restrictToTeam"
+  },
   "transport_self_destruct": {
     "_group": {
       "_tags": "server",
@@ -68,7 +74,8 @@
       "vehicle_seats_owner_components",
       "vehicle_acceleration",
       "human_vehicle_components",
-      "transport_self_destruct"
+      "transport_self_destruct",
+      "vehicle_autodetect_team"
     ],
     "isAlive": true,
     "_replicated": "isAlive",

@@ -530,10 +530,13 @@ function getSubUnlockLocName(config) {
 
 
 function getSubunlockOrUnlockName(id) {
-  let unlockCfg = buildConditionsConfig(getUnlockById(id))
-  if (unlockCfg?.useSubUnlockName)
-    return getSubUnlockLocName(unlockCfg)
-  if (unlockCfg?.locId)
+  let unlockBlk = getUnlockById(id)
+  if (unlockBlk == null)
+    return loc($"{id}/name")
+  if (unlockBlk?.useSubUnlockName)
+    return getSubUnlockLocName(unlockBlk)
+  let unlockCfg = buildConditionsConfig(unlockBlk)
+  if (unlockCfg.locId != "")
     return getUnlockLocName(unlockCfg)
   return loc($"{id}/name")
 }

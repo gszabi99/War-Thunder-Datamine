@@ -134,8 +134,7 @@ enumsAddTypes(skillParametersColumnType, {
     previousParametersRequestType = skillParametersRequestType.BASE_VALUES
     currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
     textColor = "goodTextColor"
-    getHeaderImage = @(_params) hasFeature("FullScreenCrewWindow") ? "#ui/gameuiskin#skill_points_old.svg"
-      : "#ui/gameuiskin#skill_star_1.svg"
+    getHeaderImage = @(_params) "#ui/gameuiskin#skill_points_old.svg"
     imageSize = HEADER_SKILLS_IMAGE_SIZE
 
     checkSkill = isSkillNotOnlyForTotalAndTop

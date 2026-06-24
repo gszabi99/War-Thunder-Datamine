@@ -36,7 +36,7 @@ skillParametersTooltip {
       td {
         tdiv {
           size:t='<<maxSkillCrewLevel>> * (0.185@scrn_tgt \ (<<maxSkillCrewLevel>> * @skillProgressWidthMul)) * @skillProgressWidthMul, 2*@scrn_tgt/100.0'
-          pos:t='0, 50%ph - 50%h - 0.002@scrn_tgt'; position:t='relative'
+          pos:t='0, 50%ph-50%h'; position:t='relative'
 
           skillProgressBg {
             height:t='(w / <<maxSkillCrewLevel>>) * 1@skillProgressHeightMul + 1@skillProgressBgIncSize'

@@ -1028,8 +1028,8 @@ let ItemExternal = class (BaseItem) {
     if (!craftResult)
       return false
 
-    params.shouldSkipMsgBox <- true
-    craftResult.doMainAction(cb, handler, params)
+    craftResult.doMainAction(cb, handler,
+      params.__merge({ shouldSkipMsgBox = true }))
     return true
   }
 
@@ -1063,9 +1063,10 @@ let ItemExternal = class (BaseItem) {
       return false
     }
 
-    params.parentItem <- this
-    params.isDisassemble <- this.needShowAsDisassemble()
-    craftingItem.cancelCrafting(cb, params)
+    craftingItem.cancelCrafting(cb, params.__merge({
+      parentItem = this
+      isDisassemble = this.needShowAsDisassemble()
+    }))
     return true
   }
 

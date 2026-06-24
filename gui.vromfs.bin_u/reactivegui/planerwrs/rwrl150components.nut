@@ -8,6 +8,8 @@ let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
 
 let {ThreatType, settings} = require("%rGui/planeRwrs/rwrL150ThreatsLibrary.nut")
 
+let { degToRad } = require("%rGui/planeIlses/ilsConstants.nut")
+
 let backGroundColor = Color(0, 0, 0, 255)
 let color = Color(10, 202, 10, 255)
 let iconColorSearch = Color(250, 250, 0, 255)
@@ -24,7 +26,7 @@ let styleText = {
   fontSize = 10
 }
 
-function createCompass(gridStyle, radius) {
+function createCompass(gridStyle, radius, useFlexSize = false) {
   let compassFontSizeMult = 2.0
 
   let markAngleStep = 10.0
@@ -32,51 +34,47 @@ function createCompass(gridStyle, radius) {
   let markDashCount = (360.0 / markAngleStep).tointeger()
   let azimuthMarkLength = 4
 
-  let commands = array(markDashCount).map(@(_, i) [
-    VECTOR_LINE,
-    50 + cos(i * markAngle) * (radius + azimuthMarkLength),
-    50 + sin(i * markAngle) * (radius + azimuthMarkLength),
-    50 + cos(i * markAngle) * radius,
-    50 + sin(i * markAngle) * radius
-  ])
-
   let textAngleStep = 30.0
   let textMarkAngle = PI * textAngleStep / 180.0
   let textDashCount = 360.0 / textAngleStep
-  local azimuthMarks = []
-  for (local i = 0; i < textDashCount; ++i) {
-    azimuthMarks.append({
-      rendObj = ROBJ_TEXT
-      pos = [pw(sin(i * textMarkAngle) * (radius + 10)), ph(-cos(i * textMarkAngle) * (radius + 10))],
-      size = flex(),
-      color = color,
-      font = styleText.font,
-      fontSize = gridStyle.fontScale * styleText.fontSize * compassFontSizeMult,
-      text = (i * textAngleStep * 0.1).tointeger(),
-      halign = ALIGN_CENTER,
-      valign = ALIGN_CENTER,
-      behavior = Behaviors.RtPropUpdate,
-      update = @() {
-        transform = {
-          rotate = CompassValue.get()
-        }
-      }
-    })
-  }
 
-  return {
-    rendObj = ROBJ_VECTOR_CANVAS,
-    size = [ph(100), ph(100)]
-    color = color,
-    lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
-    fillColor = backGroundColor,
-    commands = commands,
-    children = azimuthMarks,
-    behavior = Behaviors.RtPropUpdate,
-    update = @() {
-      transform = {
-        rotate = -CompassValue.get()
-      }
+  return function() {
+    let compassOffsetRad = -CompassValue.get() * degToRad
+
+    let commands = array(markDashCount).map(@(_, i) [
+      VECTOR_LINE,
+      50 + cos(i * markAngle + compassOffsetRad) * (radius + azimuthMarkLength),
+      50 + sin(i * markAngle + compassOffsetRad) * (radius + azimuthMarkLength),
+      50 + cos(i * markAngle + compassOffsetRad) * radius,
+      50 + sin(i * markAngle + compassOffsetRad) * radius
+    ])
+
+    local azimuthMarks = []
+    for (local i = 0; i < textDashCount; ++i) {
+      azimuthMarks.append({
+        rendObj = ROBJ_TEXT
+        pos = [pw(sin(i * textMarkAngle + compassOffsetRad) * (radius + 10)), ph(-cos(i * textMarkAngle + compassOffsetRad) * (radius + 10))],
+        size = flex(),
+        color = color,
+        font = styleText.font,
+        fontSize = gridStyle.fontScale * styleText.fontSize * compassFontSizeMult,
+        text = (i * textAngleStep * 0.1).tointeger(),
+        halign = ALIGN_CENTER,
+        valign = ALIGN_CENTER,
+        behavior = Behaviors.RtPropUpdate,
+      })
+    }
+
+    return {
+      watch = CompassValue
+      rendObj = ROBJ_VECTOR_CANVAS,
+      size = useFlexSize ? flex() : [ph(100), ph(100)]
+      color = color,
+      lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
+      fillColor = backGroundColor,
+      commands = commands,
+      children = azimuthMarks,
+      behavior = Behaviors.RtPropUpdate,
     }
   }
 }

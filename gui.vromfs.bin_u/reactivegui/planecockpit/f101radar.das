@@ -37,7 +37,7 @@ struct Props
   markingsLineWidth : float = 1.5
 
   radarBoxHalfSize : float2 = float2(0.115, 0.261)
-  radarBoxPos : float2 = float2(0.0, 0.009)
+  radarBoxPos : float2 = float2(0.0, -0.045)
   displayRadius : float = 0.336
 
   targetRadius = 0.02
@@ -335,10 +335,11 @@ class F101Radar : Canvas
     drawLine(p50b, p50b + float2(horizLen, 0.0))
     drawStrAnchored(p50b + float2(horizLen + 0.015, 0.0), "50", AnchorHorz.Center, AnchorVert.Center)
 
-    let pExBy = tickDist * 2.36
+    let pExBy = rb.y
     let pExBx = sqrt(r * r - pExBy * pExBy)
     let pExB = float2(pExBx, pExBy)
     drawLine(pExB, pExB + float2(horizLen, 0.0))
+    drawStrAnchored(pExB + float2(horizLen + 0.015, 0.0), "0", AnchorHorz.Center, AnchorVert.Center)
 
     let milesX = max(p20.x, p10.x) + horizLen + 0.015
     let milesMid = 0.0
@@ -465,6 +466,8 @@ class F101Radar : Canvas
   def drawHud()
     setViewport(float2(-0.5), float2(0.5))
     drawGround()
+    restoreViewport()
+    setViewport(lt, rb)
     setLineWidth(props.elementsLineWidth)
     drawTargets()
     restoreViewport()

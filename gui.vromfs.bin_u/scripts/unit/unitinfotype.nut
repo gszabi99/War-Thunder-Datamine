@@ -20,7 +20,8 @@ let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitCl
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { isBullets, getModificationInfo, getModificationName, BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
+let { isBullets, getModificationInfo, getModificationName, BULLET_TYPE,
+  isAntiRadarGuidance } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { image_for_air, getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
@@ -222,7 +223,7 @@ function findGroupBullet(bulletType, guidanceType = null) {
       }
     }
   }
-  if (guidanceType == "radar" || guidanceType == "PRH")
+  if (isAntiRadarGuidance(guidanceType))
     return "AIR_TO_RADAR"
   return "AIR_TO_GROUND"
 }

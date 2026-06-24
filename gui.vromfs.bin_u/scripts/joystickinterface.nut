@@ -70,7 +70,7 @@ function getWheelMenuAxisWatch(unitType) {
   return [defaultAxisWatch, ["camx", "camy"]]
 }
 
-function getAxisData(watchAxis = [], stuckAxis = {}) {
+function getAxisData(watchAxis, stuckAxis) {
   let device = joystick_get_default()
   let settings = joystickGetCurSettings()
   if (!device || !settings)

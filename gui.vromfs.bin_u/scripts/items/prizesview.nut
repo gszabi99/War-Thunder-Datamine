@@ -1636,8 +1636,7 @@ function getPrizesStacksView(content, fixedAmountHeaderFunc = null, params = {})
   if (fixedAmountHeaderFunc)
     view.header <- fixedAmountHeaderFunc(fixedAmount)
 
-  params.fixedAmount <- fixedAmount
-  view.list <- getPrizesStacksArrayForView(content, params)
+  view.list <- getPrizesStacksArrayForView(content, params.__merge({ fixedAmount }))
   return handyman.renderCached(template, view)
 }
 
@@ -1725,6 +1724,7 @@ function getTrophyReward(configsArray = []) {
 }
 
 function getRewardsListViewData(config, params = {}) {
+  params = clone params
   local rewardsList = []
   local singleReward = config
   if (type(config) != "array")

@@ -2399,7 +2399,7 @@
           {
             "iconType": "atgm_type1_x4_late",
             "name": "tow2_x4",
-            "reqModification": "ah_1_TOW2_2",
+            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2497,7 +2497,7 @@
               ]
             },
             "Weapon": {
-              "trigger": "aam",
+              "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/us_agm_122.blk",
               "emitter": "aim_9_001",
               "bullets": 1,
@@ -2839,7 +2839,7 @@
           {
             "iconType": "atgm_type1_x4_late",
             "name": "tow2_x4",
-            "reqModification": "ah_1_TOW2_2",
+            "reqModification": "ah_1_TOW2",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2937,7 +2937,7 @@
               ]
             },
             "Weapon": {
-              "trigger": "aam",
+              "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/us_agm_122.blk",
               "emitter": "aim_9_002",
               "bullets": 1,
@@ -4303,29 +4303,19 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "us_apkws": {
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 2
-    },
     "f4c_zuni": {
-      "prevModification": "us_apkws",
-      "tier": 3,
+      "tier": 1,
       "modClass": "weapon"
     },
-    "us_aim_9l": {
-      "prevModification": "f4c_zuni",
-      "tier": 4,
-      "modClass": "weapon"
-    },
-    "ah_1_TOW2_2": {
+    "ah_1_TOW2": {
       "deactivationIsAllowed": false,
+      "prevModification": "f4c_zuni",
       "modClass": "weapon",
       "tier": 2
     },
     "ah_1_AGM_114_8": {
       "deactivationIsAllowed": false,
-      "reqModification": "ah_1_TOW2_2",
+      "reqModification": "ah_1_TOW2",
       "modClass": "weapon",
       "tier": 3
     },
@@ -4335,9 +4325,20 @@
       "modClass": "weapon",
       "tier": 4
     },
+    "us_apkws": {
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 2
+    },
     "anti_radiation_missile_agm_122": {
+      "prevModification": "us_apkws",
       "modClass": "weapon",
       "tier": 3
+    },
+    "us_aim_9l": {
+      "prevModification": "anti_radiation_missile_agm_122",
+      "tier": 4,
+      "modClass": "weapon"
     }
   },
   "default_skin": {

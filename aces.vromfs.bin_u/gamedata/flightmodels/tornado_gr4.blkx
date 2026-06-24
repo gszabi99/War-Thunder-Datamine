@@ -2848,6 +2848,18 @@
     "gun": "gun_default",
     "eventThrustReverse": "thrust_reverse"
   },
+  "hook": {
+    "coeffHookJ": 0.03,
+    "hookDeflectionAngles": [
+      -50.0,
+      5.0
+    ],
+    "hookCxDiap": [
+      0.2,
+      0.9
+    ],
+    "hookMass": 10.0
+  },
   "cockpit": {
     "targetingPodFov": [
       24.0,
@@ -3415,6 +3427,10 @@
         "dmPart": "radar_dm"
       },
       {
+        "blk": "gameData/sensors/uk_alarm_esm.blk",
+        "external": true
+      },
+      {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       },
       {
@@ -3427,6 +3443,14 @@
       },
       {
         "blk": "gameData/sensors/uk_ari_23284.blk"
+      }
+    ],
+    "sensorsMode": [
+      {
+        "blockSensorIndex": 1
+      },
+      {
+        "blockSensorIndex": 0
       }
     ]
   },
@@ -3530,6 +3554,14 @@
       {
         "name": "tornado_gr4_1000lb_default",
         "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_1000lb_default.blk"
+      },
+      {
+        "name": "tornado_gr4_pgm_500_laser",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_pgm_500_laser.blk"
+      },
+      {
+        "name": "tornado_gr4_pgm_2000_laser",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_gr4_pgm_2000_laser.blk"
       },
       {
         "name": "tornado_gr4_pgm_500",
@@ -3761,7 +3793,8 @@
             "emitter": "uk_alarm_launcher_001",
             "bullets": 1,
             "external": true,
-            "separate": true
+            "separate": true,
+            "externalSensorIndex": 1
           }
         }
       },
@@ -3841,7 +3874,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot3",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
@@ -3858,7 +3890,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_slot3",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
@@ -3875,7 +3906,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_x2_slot3",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
@@ -3891,7 +3921,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_mk83_x2_slot3",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
@@ -3907,7 +3936,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "1000lbs_n117_slot3",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
@@ -3924,7 +3952,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "1000lbs_x2_n117_slot3",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
@@ -4002,13 +4029,13 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "pgm_500_slot3",
-            "reqModification": "fr_pgm_500",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_iir.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_iir_wo_mitl.blk",
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_500_1",
@@ -4016,19 +4043,59 @@
             }
           },
           {
-            "iconType": "guided_bomb_grey",
-            "name": "pgm_2000_slot3",
-            "reqModification": "fr_pgm_2000",
+            "iconType": "guided_bomb_large_jdam",
+            "name": "pgm_500_laser_slot3",
+            "reqModification": "fr_pgm_laser",
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_iir.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_laser.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "bomb_pgm_500_1",
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_slot5"
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "pgm_2000_slot3",
+            "reqModification": "fr_pgm_ir",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_iir_wo_mitl.blk",
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_2000_1",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_jdam",
+            "name": "pgm_2000_laser_slot3",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_laser.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "bomb_pgm_2000_1",
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_slot5"
             }
           },
           {
@@ -4087,7 +4154,8 @@
               "emitter": "uk_alarm_launcher_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             }
           }
         ]
@@ -4242,7 +4310,8 @@
               "emitter": "uk_alarm_launcher_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             }
           }
         ]
@@ -4339,7 +4408,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot5",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4374,7 +4442,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_slot5",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4392,7 +4459,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_x2_slot5",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4409,7 +4475,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "1000lbs_n117_slot5",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4427,7 +4492,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "1000lbs_x2_n117_slot5",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4444,7 +4508,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_mk83_x2_slot5",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4459,78 +4522,15 @@
             }
           },
           {
-            "iconType": "guided_bomb_yellow",
-            "name": "pgm_500_slot5",
-            "reqModification": "fr_pgm_500",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_iir.blk",
-              "external": true,
-              "separate": true,
-              "emitter": "bomb_pgm_500_2",
-              "bullets": 1,
-              "order": 7
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_default_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              }
-            ]
-          },
-          {
             "iconType": "guided_bomb_grey",
             "name": "pgm_2000_slot5",
-            "reqModification": "fr_pgm_2000",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_iir.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_iir_wo_mitl.blk",
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_2000_2",
@@ -4588,7 +4588,23 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_500_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 6,
+                "preset": "pgm_500_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "pgm_500_laser_slot6"
               }
             ]
           },
@@ -4609,7 +4625,8 @@
               "emitter": "uk_alarm_launcher_007",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             },
             "BannedWeaponPreset": [
               {
@@ -4662,7 +4679,15 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_500_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_500_laser_slot9"
               }
             ]
           }
@@ -4738,7 +4763,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot6",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4773,7 +4797,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_slot6",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4791,7 +4814,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_x2_slot6",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4808,7 +4830,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_mk83_x2_slot6",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4825,7 +4846,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "1000lbs_n117_slot6",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4843,7 +4863,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "1000lbs_x2_n117_slot6",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -4921,6 +4940,104 @@
               "slot": 5,
               "preset": "litening_slot5"
             }
+          },
+          {
+            "iconType": "guided_bomb_yellow",
+            "name": "pgm_500_slot6",
+            "reqModification": "fr_pgm_ir",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_iir_wo_mitl.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "bomb_pgm_500_2",
+              "emitterOffset": [
+                -1.78,
+                0.03,
+                0.0
+              ],
+              "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "pgm_2000_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "alarm_slot5"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "pgm_500_laser_slot6",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_laser.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "bomb_pgm_500_2",
+              "emitterOffset": [
+                -1.78,
+                0.03,
+                0.0
+              ],
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_slot5"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "pgm_2000_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "alarm_slot5"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni_middle_x3",
@@ -5006,35 +5123,7 @@
               },
               {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5058,19 +5147,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5079,14 +5168,6 @@
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5124,35 +5205,7 @@
               },
               {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5176,19 +5229,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5199,14 +5252,6 @@
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
               },
               {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
-              },
-              {
                 "slot": 9,
                 "preset": "500lbs_mk82_snakeye_x2_slot9"
               }
@@ -5215,7 +5260,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot7",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb4"
             },
@@ -5243,35 +5287,7 @@
               },
               {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5295,19 +5311,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5318,14 +5334,6 @@
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
               },
               {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
-              },
-              {
                 "slot": 9,
                 "preset": "500lbs_mk82_snakeye_x2_slot9"
               }
@@ -5334,7 +5342,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "1000lbs_n117_slot7",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb4"
             },
@@ -5362,35 +5369,7 @@
               },
               {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5414,19 +5393,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5437,14 +5416,6 @@
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
               },
               {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
-              },
-              {
                 "slot": 9,
                 "preset": "500lbs_mk82_snakeye_x2_slot9"
               }
@@ -5453,7 +5424,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_slot7",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb4"
             },
@@ -5481,35 +5451,7 @@
               },
               {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5533,19 +5475,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5554,14 +5496,6 @@
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5604,35 +5538,7 @@
               },
               {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5656,19 +5562,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5677,14 +5583,6 @@
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5727,35 +5625,7 @@
               },
               {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5779,19 +5649,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5800,14 +5670,6 @@
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5849,35 +5711,7 @@
               },
               {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
-              },
-              {
-                "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5901,19 +5735,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5922,14 +5756,6 @@
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
               },
               {
                 "slot": 9,
@@ -5954,7 +5780,8 @@
               "emitter": "uk_alarm_launcher_009",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             },
             "BannedWeaponPreset": [
               {
@@ -5974,36 +5801,16 @@
                 "preset": "1000lbs_mk83_x2_slot5"
               },
               {
-                "slot": 5,
-                "preset": "pgm_500_slot5"
+                "slot": 6,
+                "preset": "pgm_500_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "pgm_500_laser_slot6"
               },
               {
                 "slot": 5,
                 "preset": "pgm_2000_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_x2_n117_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
               },
               {
                 "slot": 9,
@@ -6027,19 +5834,19 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
               },
               {
                 "slot": 9,
@@ -6048,14 +5855,6 @@
               {
                 "slot": 5,
                 "preset": "500lbs_mk82_snakeye_x2_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "500lbs_mk82_snakeye_x2_slot6"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
               },
               {
                 "slot": 9,
@@ -6135,7 +5934,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot8",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6170,7 +5968,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_slot8",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6188,7 +5985,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_x2_slot8",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6205,7 +6001,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_mk83_x2_slot8",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6222,7 +6017,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "1000lbs_n117_slot8",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6240,7 +6034,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "1000lbs_x2_n117_slot8",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6316,7 +6109,15 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 9,
@@ -6370,11 +6171,11 @@
               },
               {
                 "slot": 9,
-                "preset": "pgm_500_slot9"
+                "preset": "pgm_2000_slot9"
               },
               {
                 "slot": 9,
-                "preset": "pgm_2000_slot9"
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 9,
@@ -6399,7 +6200,8 @@
               "emitter": "uk_alarm_launcher_008",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             },
             "BannedWeaponPreset": [
               {
@@ -6432,7 +6234,15 @@
               },
               {
                 "slot": 9,
+                "preset": "pgm_500_laser_slot9"
+              },
+              {
+                "slot": 9,
                 "preset": "pgm_2000_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "pgm_2000_laser_slot9"
               },
               {
                 "slot": 9,
@@ -6564,7 +6374,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot9",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6599,7 +6408,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_slot9",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6617,7 +6425,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_x2_slot9",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6634,7 +6441,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_mk83_x2_slot9",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6651,7 +6457,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "1000lbs_n117_slot9",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6669,7 +6474,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "1000lbs_x2_n117_slot9",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
@@ -6730,47 +6534,28 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "pgm_500_slot9",
-            "reqModification": "fr_pgm_500",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_iir.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_iir_wo_mitl.blk",
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_500_3",
+              "emitterOffset": [
+                1.4,
+                -0.05,
+                0.0
+              ],
               "bullets": 1,
               "order": 8
             },
             "BannedWeaponPreset": [
               {
                 "slot": 8,
-                "preset": "1000lbs_x2_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_n117_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_default_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_x2_slot8"
+                "preset": "paveway_iv_slot8"
               },
               {
                 "slot": 5,
@@ -6778,19 +6563,43 @@
               },
               {
                 "slot": 8,
-                "preset": "500lbs_mk82_slot8"
-              },
+                "preset": "alarm_slot8"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "pgm_500_laser_slot9",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_laser.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "bomb_pgm_500_3",
+              "emitterOffset": [
+                1.4,
+                -0.05,
+                0.0
+              ],
+              "bullets": 1,
+              "order": 8
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_slot5"
+            },
+            "BannedWeaponPreset": [
               {
                 "slot": 8,
-                "preset": "500lbs_mk82_x2_slot8"
+                "preset": "paveway_iv_slot8"
               },
               {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "500lbs_mk82_snakeye_x2_slot8"
+                "slot": 5,
+                "preset": "pgm_2000_slot5"
               },
               {
                 "slot": 8,
@@ -6801,13 +6610,13 @@
           {
             "iconType": "guided_bomb_grey",
             "name": "pgm_2000_slot9",
-            "reqModification": "fr_pgm_2000",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_bomb5"
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_iir.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_iir_wo_mitl.blk",
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_2000_3",
@@ -6844,8 +6653,95 @@
                 "preset": "1000lbs_x2_slot8"
               },
               {
+                "slot": 6,
+                "preset": "pgm_500_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "pgm_500_laser_slot6"
+              },
+              {
                 "slot": 5,
-                "preset": "pgm_500_slot5"
+                "preset": "pgm_2000_slot5"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_x2_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_mk82_snakeye_x2_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "alarm_slot8"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_heavy_jdam",
+            "name": "pgm_2000_laser_slot9",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_laser.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "bomb_pgm_2000_3",
+              "bullets": 1,
+              "order": 8
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_slot5"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_n117_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_n117_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_x2_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_default_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_x2_slot8"
+              },
+              {
+                "slot": 6,
+                "preset": "pgm_500_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "pgm_500_laser_slot6"
               },
               {
                 "slot": 5,
@@ -7171,7 +7067,8 @@
               "emitter": "uk_alarm_launcher_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             }
           }
         ]
@@ -7252,7 +7149,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot11",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb6"
             },
@@ -7269,7 +7165,6 @@
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_slot11",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb6"
             },
@@ -7286,7 +7181,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_x2_slot11",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb6"
             },
@@ -7302,7 +7196,6 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_mk83_x2_slot11",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb6"
             },
@@ -7318,7 +7211,6 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "1000lbs_n117_slot11",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb6"
             },
@@ -7335,7 +7227,6 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "1000lbs_x2_n117_slot11",
-            "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
               "node": "pylon_bomb6"
             },
@@ -7413,13 +7304,13 @@
           {
             "iconType": "guided_bomb_yellow",
             "name": "pgm_500_slot11",
-            "reqModification": "fr_pgm_500",
+            "reqModification": "fr_pgm_ir",
             "ShowNodes": {
               "node": "pylon_bomb6"
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_iir.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_iir_wo_mitl.blk",
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_500_4",
@@ -7427,19 +7318,59 @@
             }
           },
           {
-            "iconType": "guided_bomb_grey",
-            "name": "pgm_2000_slot11",
-            "reqModification": "fr_pgm_2000",
+            "iconType": "guided_bomb_large_jdam",
+            "name": "pgm_500_laser_slot11",
+            "reqModification": "fr_pgm_laser",
             "ShowNodes": {
               "node": "pylon_bomb6"
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_iir.blk",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_500_laser.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "bomb_pgm_500_4",
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_slot5"
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "pgm_2000_slot11",
+            "reqModification": "fr_pgm_ir",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_iir_wo_mitl.blk",
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_2000_4",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_jdam",
+            "name": "pgm_2000_laser_slot11",
+            "reqModification": "fr_pgm_laser",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/uk_pgm_2000_laser.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "bomb_pgm_2000_4",
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_slot5"
             }
           },
           {
@@ -7498,7 +7429,8 @@
               "emitter": "uk_alarm_launcher_005",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "externalSensorIndex": 1
             }
           }
         ]
@@ -7524,7 +7456,8 @@
             "emitter": "uk_alarm_launcher_006",
             "bullets": 1,
             "external": true,
-            "separate": true
+            "separate": true,
+            "externalSensorIndex": 1
           }
         }
       },
@@ -8018,17 +7951,17 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "sea_hawk_2x1000lb": {
+    "gr_litening_iii_pod": {
       "modClass": "weapon",
       "tier": 1
     },
-    "gr_litening_iii_pod": {
-      "prevModification": "sea_hawk_2x1000lb",
-      "modClass": "weapon",
-      "tier": 2
+    "uk_paveway_iv": {
+      "reqModification": "gr_litening_iii_pod",
+      "tier": 2,
+      "modClass": "weapon"
     },
     "uk_mk_13_18": {
-      "reqModification": "gr_litening_iii_pod",
+      "reqModification": "uk_paveway_iv",
       "tier": 3,
       "modClass": "weapon"
     },
@@ -8041,21 +7974,15 @@
       "modClass": "armor",
       "tier": 1
     },
-    "uk_paveway_iv": {
-      "reqModification": "gr_litening_iii_pod",
-      "tier": 2,
-      "modClass": "weapon"
-    },
-    "fr_pgm_500": {
-      "prevModification": "uk_paveway_iv",
+    "fr_pgm_laser": {
       "reqModification": "uk_mk_13_18",
       "modClass": "weapon",
       "tier": 3
     },
-    "fr_pgm_2000": {
-      "reqModification": "fr_pgm_500",
-      "modClass": "weapon",
-      "tier": 4
+    "uk_brimstone_dm": {
+      "reqModification": "fr_pgm_laser",
+      "tier": 4,
+      "modClass": "weapon"
     },
     "countermeasures_launcher_chaff_bol_pod": {},
     "countermeasures_launcher_chaff_add_pod": {},
@@ -8076,10 +8003,10 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "uk_brimstone_dm": {
+    "fr_pgm_ir": {
       "prevModification": "us_aim_9m",
-      "tier": 4,
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "tier": 4
     }
   },
   "parachutes": {

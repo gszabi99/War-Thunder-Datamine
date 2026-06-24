@@ -20,7 +20,7 @@ let graphNestPadding = fpx(5)
 let graphGridPadding = fpx(35)
 let graphGridTextMaxWidth = graphGridPadding
 let graphGridTextPadding = fpx(18)
-let graphGridBottomIndent = fpx(60)
+let graphHorizontalMeasureHeight = fpx(80)
 let graphGridLineThickness = dp(1)
 let graphLineThickness = dp(2)
 let graphGridLineLength = fpx(12)
@@ -65,7 +65,7 @@ let mkPointCanvas = @(graphColor, radius) {
   commands = [[VECTOR_ELLIPSE, 50, 50, radius, radius]]
 }
 
-function mkGraphPoint(pointPosX, pointPosY, graphColor, tooltipContent) {
+function mkGraphPoint(pointPosX, pointPosY, graphColor, tooltipContent, ovr = {}) {
   let pos = [pointPosX - 0.5*graphPointFullSize, pointPosY - 0.5*graphPointFullSize]
   let stateFlag = Watched(0)
   let key = {}
@@ -88,7 +88,7 @@ function mkGraphPoint(pointPosX, pointPosY, graphColor, tooltipContent) {
       (stateFlag.get() & S_HOVER) != 0 ? hoverPoint : null,
       constPoint
     ]
-  }
+  }.__update(ovr)
 }
 
 function getCurPlayFlightTime(playerParams) {
@@ -104,25 +104,14 @@ function isVisibleByTime(flightTimeMs, playerParams) {
 }
 
 function mkGraphPointByTime(pointPosX, pointPosY, graphColor, tooltipContent, playerParams, graphPoint) {
-  let key = {}
-  let graphPointComp = mkGraphPoint(0, 0, graphColor, tooltipContent)
   let flightTimeMs = secondsToMilliseconds(graphPoint.flightTime).tointeger()
-  let isVisible = Watched(false)
-  let updateIsVisible = @(playerParamsValue) isVisible.set(isVisibleByTime(flightTimeMs, playerParamsValue))
-  return @() {
-    key
-    watch = isVisible
-    pos = [pointPosX, pointPosY]
-    size = [graphPointFullSize, graphPointFullSize]
-    behavior = Behaviors.RtPropUpdate
-    function update() {
-      if (!isVisible.get())
-        updateIsVisible(playerParams.get())
+  let ovr = {
+    behavior = [Behaviors.Button, Behaviors.RtPropUpdate]
+    update = @() {
+      isHidden = !isVisibleByTime(flightTimeMs, playerParams.get())
     }
-    onAttach = @() playerParams.subscribe(updateIsVisible)
-    onDetach = @() playerParams.unsubscribe(updateIsVisible)
-    children = isVisible.get() ? graphPointComp : null
   }
+  return mkGraphPoint(pointPosX, pointPosY, graphColor, tooltipContent, ovr)
 }
 
 let mkGraphLine = @(commands, graphColor, lineWidth = graphLineThickness) {
@@ -228,11 +217,11 @@ function mkVerticalMeasureGridLine(idx, leftPosVeticalLine, xStep, startValueX) 
 function mkHorizontalMeasureGridLine(topPos, leftPosVeticalLine, xStep, startValueX) {
   return {
     pos = [0, topPos]
-    size = FLEX_H
-    flow = FLOW_HORIZONTAL
+    size = [flex(), graphHorizontalMeasureHeight]
     padding = [0, 0, 0, graphGridTextMaxWidth + graphGridTextPadding]
+    valign = ALIGN_BOTTOM
     children = {
-      size = flex()
+      size = FLEX_H
       flow = FLOW_VERTICAL
       children = [
         mkGraphLine([[VECTOR_LINE, 0, 0, 100, 0]], graphGridColor, graphGridLineThickness)
@@ -256,8 +245,7 @@ function mkGraphGrid(graphWidth, graphHeight, absLenX, absLenY,
     mkHorizontalGridLine(idx * topPosHorizontalLine,
       graphGridOpacityColor, $"{absLenY - idx * yStep + startValueY}"))
   horizontalLine.append(
-    mkHorizontalMeasureGridLine(MARK_COUNT_Y * topPosHorizontalLine + 0.7*topPosHorizontalLine,
-      leftPosVeticalLine, xStep, startValueX))
+    mkHorizontalMeasureGridLine(graphHeight, leftPosVeticalLine, xStep, startValueX))
   return {
     size = flex()
     children = horizontalLine
@@ -380,7 +368,7 @@ function mkGridAndGraphComp(graphConfig, size, keyX, keyY, getTooltipText,
     labelAxisX = null, labelAxisY = null, playerParams = null) {
   let paddingSize = 2 * graphNestPadding + 2 * graphGridPadding
   let width = size[0] - leftGraphPadding - paddingSize
-  let height = size[1] - graphGridBottomIndent - paddingSize
+  let height = size[1] - graphHorizontalMeasureHeight - paddingSize
   let graphHeight = roundingSizeDivisionByMarksCount(height, MARK_COUNT_Y)
   let graphWidth = roundingSizeDivisionByMarksCount(width, MARK_COUNT_X)
   let { absLenX, absLenY, startValueX, startValueY, bulletsGraphComp
@@ -393,6 +381,7 @@ function mkGridAndGraphComp(graphConfig, size, keyX, keyY, getTooltipText,
       mkAxisYLabel(labelAxisY ?? keyY)
       {
         size = flex()
+        pos = [0, 0.5*height - 0.5*graphHeight]
         padding = graphGridPadding
         children = [
           mkGraphGrid(graphWidth, graphHeight, absLenX, absLenY,

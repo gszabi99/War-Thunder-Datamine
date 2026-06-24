@@ -1521,7 +1521,27 @@
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_x2_default.blk",
+              "blk": "gameData/Weapons/containers/m279_hellfire_b_x2_default.blk",
+              "emitter": "pylon_m279_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type_helfire_x2_late",
+            "name": "hellfire_k_x2",
+            "reqModification": "us_agm_114k",
+            "ShowNodes": {
+              "node": [
+                "tow_pylon1",
+                "mcas_500ah",
+                "mcas_500ah_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/m279_hellfire_x2.blk",
               "emitter": "pylon_m279_001",
               "external": true,
               "separate": true,
@@ -1727,8 +1747,27 @@
           },
           {
             "iconType": "atgm_type_helfire_x2",
-            "name": "hellfire_x2",
-            "reqModification": "ah_1_AGM_114_8",
+            "name": "hellfire_x2_default",
+            "ShowNodes": {
+              "node": [
+                "tow_pylon2",
+                "mcas_500ah_r",
+                "mcas_500ah"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/m279_hellfire_b_x2_default.blk",
+              "emitter": "pylon_m279_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type_helfire_x2_late",
+            "name": "hellfire_k_x2",
+            "reqModification": "us_agm_114k",
             "ShowNodes": {
               "node": [
                 "tow_pylon2",
@@ -2815,11 +2854,11 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "ah_1_AGM_114_8": {
-      "reqModification": "us_apkws",
+    "us_agm_114k": {
+      "prevModification": "us_apkws",
       "deactivationIsAllowed": false,
       "modClass": "weapon",
-      "tier": 4
+      "tier": 3
     }
   },
   "user_skin": {

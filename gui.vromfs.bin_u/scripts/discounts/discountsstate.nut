@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 
 let discountsList = persist("discountsList", @() {})
 let consoleEntitlementUnits = {} 
@@ -26,6 +27,7 @@ function haveAnyUnitDiscount() {
 }
 
 let canBeVisibleDiscountOnUnit = @(unit) unit && unit.isVisibleInShop() && !unit.isBought()
+  && !canBuyNotResearched(unit) 
 
 
 function getUnitDiscount(unit) {
@@ -70,4 +72,3 @@ return {
   getGroupDiscount
   getUnitsDiscounts
 }
-

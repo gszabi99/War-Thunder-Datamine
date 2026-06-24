@@ -598,7 +598,7 @@ def human_input_es(info : UpdateStageUpdateInput;
                    isTpsView : bool = false;
                    human_input__holdBreathLastPressingTime : float;
                    human_input__holdBreathLongPressThres : float;
-                   human_input__forceSprintAction : bool = false;
+                   var human_input__forceSprintAction : bool&;
                    unit__ref : UnitRef;
                    var human_input__sprintHoldReset : bool&;
                    var human_input__currentRotationSpeed : float&;
@@ -703,6 +703,10 @@ def human_input_es(info : UpdateStageUpdateInput;
   let leanX = bipod__enabled ? 0.f : get_axis_value(Axis.AXIS_HUMAN_LEAN, true)
   phys.producedCT |> human_control_state_set_lean_position(leanX)
 
+  let joyParams = get_current_joy_param()
+  let isToggleMode = joyParams != null && !joyParams.holdFastSprintForHuman
+  if !isToggleMode
+    human_input__forceSprintAction = false
   let isSprintAction = human_input__forceSprintAction || is_shortcut_down(ShortcutEventId.ID_HUMAN_SPRINT)
   let isDoubleSprintAction = is_shortcut_down(ShortcutEventId.ID_HUMAN_SPRINT) && (human_input__sprintLastPressing - human_input__sprintLastLastPressingTime < human_input__doubleClickPeriod)
   let isSprintingMove = get_axis_value(Axis.AXIS_HUMAN_WALK, true) > human_input__sprintMoveThreshold

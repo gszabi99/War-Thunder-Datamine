@@ -1189,10 +1189,20 @@
         },
         "resetGtmBvrTrackMode": {
           "clearTargetsOfInterest": {},
-          "setFsmActive": {
-            "fsm": "gtmTrack",
-            "active": false
-          }
+          "setFsmActive": [
+            {
+              "fsm": "gtmTrack",
+              "active": false
+            },
+            {
+              "fsm": "radarBvrTrack",
+              "active": false
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ]
         },
         "setGtmTwsBvrLockMode": {
           "setGtmTwsBvrLockModeCommon": {},

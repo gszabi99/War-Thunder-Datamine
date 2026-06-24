@@ -64,6 +64,7 @@ function rwrSettingUpd(mfd_blk, rwr_type) {
   }
   local style = u.copy(styleDef)
   local defFontScale = -1.0
+  local verticalScale = 1.0
   for (local i = 0; i < mfd_blk.blockCount(); ++i) {
     let displayBlk = mfd_blk.getBlock(i)
     local displayStyle = u.copy(styleDef)
@@ -74,10 +75,12 @@ function rwrSettingUpd(mfd_blk, rwr_type) {
       if (typeStr == "rwr") {
         loadStyle(style, pageBlk, displayStyle)
         defFontScale = pageBlk.getReal("fontScale", -1.0)
+        verticalScale = pageBlk.getReal("verticalScale", 1.0)
         break
       }
     }
   }
+  style.verticalScale <- verticalScale
 
   rwrSetting.set({
     indicator = rwr_type,

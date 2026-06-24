@@ -69,10 +69,10 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "hitPowerMult": 400.0,
+    "penetrationBySpeed": true,
     "shellCollision": true,
-    "fuseDelayDist": 0.1,
-    "explodeTreshold": 0.1,
+    "fuseDelayDist": 3.5,
+    "explodeTreshold": 0.25,
     "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_medium",
     "groundCollisionEffect": "hit_161_205mm_dirt_he",
@@ -141,6 +141,24 @@
         "accelControlDiff": 0.016608
       }
     },
+    "ballisticsTable": {
+      "velocity100m": [
+        100.0,
+        200.0
+      ],
+      "velocity400m": [
+        400.0,
+        565.0
+      ],
+      "velocity5000m": [
+        5750.0,
+        351.0
+      ],
+      "velocity10000m": [
+        10000.0,
+        305.0
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -159,8 +177,13 @@
       ]
     },
     "damage": {
-      "explosive": {
-        "offset": 0.3
+      "offset": 1.0,
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 0.9,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
       }
     },
     "DamageParts": {

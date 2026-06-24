@@ -761,7 +761,7 @@ struct PolarRadarIndicator : InteractableButton
 
     let beamLineWidth = fullCircle ? 1.2 : 1.2 * data.lineWidth
     if get_radar_hud_is_visible() && !data.hideBeam
-      if get_radar_hud_is_emitting()
+      if get_radar_hud_is_emitting() && get_radar_hud_show_instantaneous_scan_area()
         let dist = get_radar_hud_distance()
         let halfVal = get_radar_hud_azimuth_half_width()
         let isSectorView = dist == 1. && halfVal > 0.
@@ -770,7 +770,7 @@ struct PolarRadarIndicator : InteractableButton
           draw_azimuth(ctx, data, isSectorView, additionalBeam.azimuth, halfVal, dist, beamLineWidth)
 
     if get_radar_hud_is_visible2() && !data.hideBeam
-      if get_radar_hud_is_emitting2()
+      if get_radar_hud_is_emitting2() && get_radar_hud_show_instantaneous_scan_area2()
         let dist = get_radar_hud_distance2()
         let halfVal = get_radar_hud_azimuth_half_width2()
         let isSectorView = dist == 1. && halfVal > 0.
@@ -986,13 +986,13 @@ struct BScopeHalfElevationCurret : InteractableButton
     ctx |> set_color(e3dColor)
 
     if get_radar_hud_is_visible() && !data.hideBeam
-      if get_radar_hud_is_emitting()
+      if get_radar_hud_is_emitting() && get_radar_hud_show_instantaneous_scan_area()
         b_scope_elevation(ctx, *data, get_radar_hud_elevation())
         foreach_additional_beams() <| $(var additionalBeam)
           b_scope_elevation(ctx, *data, additionalBeam.elevation)
 
     if get_radar_hud_is_visible2() && !data.hideBeam
-      if get_radar_hud_is_emitting2()
+      if get_radar_hud_is_emitting2() && get_radar_hud_show_instantaneous_scan_area2()
         b_scope_elevation(ctx, *data, get_radar_hud_elevation2())
 
     b_scope_elevation_scan(ctx, *data)
@@ -1557,13 +1557,13 @@ struct BScopeSquareIndicator : InteractableButton
 
     render_ground_reflection(ctx, size, pos, is_color_or_white(data.lineColor), int2(20, 10), true)
     if get_radar_hud_is_visible()
-      if get_radar_hud_is_emitting() && !data.hideBeam
+      if get_radar_hud_is_emitting() && !data.hideBeam && get_radar_hud_show_instantaneous_scan_area()
         b_scope_square_azimuth(ctx, data, pos, size, get_radar_hud_azimuth(), get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
         foreach_additional_beams() <| $(var additionalBeam)
           b_scope_square_azimuth(ctx, data, pos, size, additionalBeam.azimuth, get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
 
     if get_radar_hud_is_visible2()
-      if get_radar_hud_is_emitting2() && !data.hideBeam
+      if get_radar_hud_is_emitting2() && !data.hideBeam && get_radar_hud_show_instantaneous_scan_area2()
         b_scope_square_azimuth(ctx, data, pos, size, get_radar_hud_azimuth2(), get_radar_hud_distance2(), get_radar_hud_azimuth_half_width2())
 
     b_scope_square_cue(ctx, data, pos, size, self.size)
@@ -2442,7 +2442,7 @@ struct ESMBScopeTargets : InteractableButton
           targetAreaAnchor.x + scanMinRel * targetAreaSize.x, targetAreaAnchor.y,
           targetAreaAnchor.x + scanMaxRel * targetAreaSize.x, targetAreaAnchor.y + targetAreaSize.y,
           tc, tc, tc)
-      if get_radar_hud_is_emitting() && !data.hideBeam
+      if get_radar_hud_is_emitting() && !data.hideBeam && get_radar_hud_show_instantaneous_scan_area()
         b_scope_square_azimuth(ctx, *data, targetAreaAnchor, targetAreaSize, get_radar_hud_azimuth(), 1.0, get_radar_hud_azimuth_half_width())
         foreach_additional_beams() <| $(var additionalBeam)
           b_scope_square_azimuth(ctx, *data, targetAreaAnchor, targetAreaSize, additionalBeam.azimuth, 1.0, get_radar_hud_azimuth_half_width())
@@ -2486,10 +2486,6 @@ struct ESMBScopeTargets : InteractableButton
   def const drawTarget(var ctx : GuiContext&; target : RadarTarget const const#; column, row : int)
     let cellPos = float2(pos.x + float(column) * cellSize.x, targetAreaAnchor.y + float(row) * cellSize.y)
     ctx |> set_color(data.color)
-    let frameInset = cellSize * 0.07
-    let frameMin = cellPos + frameInset
-    let frameMax = cellPos + cellSize - frameInset
-    ctx |> render_frame(frameMin.x, frameMin.y, frameMax.x, frameMax.y, *self.data |> hdpx(1.8))
 
     let bracketLineWidth = *self.data |> hdpx(2.5)
     let bracketArm = cellSize.x * 0.25
@@ -2498,7 +2494,8 @@ struct ESMBScopeTargets : InteractableButton
     let bracketTopY = cellPos.y
     let bracketBotY = cellPos.y + cellSize.y
     let bracketArmY = cellSize.y * 0.25
-    if target.isTracked
+
+    if target.isSelectedTargetOfInterest && !get_radar_is_dummy_designation_source_type()
       ctx |> render_frame(bracketLeftX, bracketTopY, bracketRightX, bracketBotY, bracketLineWidth)
     elif target.isDetected
       ctx |> draw_line(bracketLeftX, bracketTopY, bracketLeftX + bracketArm, bracketTopY, bracketLineWidth)
@@ -2515,7 +2512,7 @@ struct ESMBScopeTargets : InteractableButton
     get_font_context(fctx, data.fontId, 0, 0, int(float(data.fontSize) * 0.5))
     ctx |> set_font(data.fontId, 0, 0)
     ctx |> set_font_ht(typeFontSize)
-    let nameText = target.typeId != "" ? loc(target.typeId) : "?"
+    let nameText = target.typeId != "" ? loc_short("{target.typeId}") : "?"
     let textBox = get_str_bbox(nameText, nameText |> length(), fctx)
     let center = cellPos + cellSize * 0.5
     ctx |> goto_xy(center.x - textBox.width.x * 0.5, center.y + textBox.width.y * 0.5)
@@ -2910,11 +2907,11 @@ struct CScopeAzimuthCurret : InteractableButton
 
 def c_scope(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   c_scope_background(ctx, data, pos, size)
-  if get_radar_hud_is_visible() && get_radar_hud_is_emitting()
+  if get_radar_hud_is_visible() && get_radar_hud_is_emitting() && get_radar_hud_show_instantaneous_scan_area()
     c_scope_azimuth(ctx, data, pos, size, get_radar_hud_azimuth(), get_radar_hud_elevation(), get_radar_hud_azimuth_half_width(), get_radar_hud_elevation_half_width())
     foreach_additional_beams() <| $(var additionalBeam)
       c_scope_azimuth(ctx, data, pos, size, additionalBeam.azimuth, additionalBeam.elevation, get_radar_hud_azimuth_half_width(), get_radar_hud_elevation_half_width())
-  if get_radar_hud_is_visible2() && get_radar_hud_is_emitting2()
+  if get_radar_hud_is_visible2() && get_radar_hud_is_emitting2() && get_radar_hud_show_instantaneous_scan_area2()
     c_scope_azimuth(ctx, data, pos, size, get_radar_hud_azimuth2(), get_radar_hud_elevation2(), get_radar_hud_azimuth_half_width2(), get_radar_hud_elevation_half_width2())
   c_scope_targets(ctx, data, pos, size)
   c_scope_cue(ctx, data, pos, size)

@@ -1544,8 +1544,7 @@ enumsAddTypes(g_hud_action_bar_type, {
   SENSOR_MODES_SWITCH = {
     code = EII_SENSOR_MODES_SWITCH
     _name = "sensor_modes_switch"
-    
-    
+    _icon = "#ui/gameuiskin#radar_controls_sensors_modes.svg"
     _title = loc("hotkeys/ID_SENSOR_MODES_SWITCH_TANK")
     getShortcut = function(_actionItem, hudUnitType = null) {
       if (hudUnitType == HUD_UNIT_TYPE.TANK)

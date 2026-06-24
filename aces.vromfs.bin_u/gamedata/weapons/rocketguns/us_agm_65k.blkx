@@ -7,9 +7,14 @@
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
   "rocket": {
-    "gunnerOpticsName": "AGM65K",
+    "dragCx": 0.0035,
     "bulletName": "us_agm_65k",
+    "iconType": "missile_air_to_uni",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
     "caliber": 0.3048,
     "length": 2.48158,
     "WdK": [
@@ -31,10 +36,8 @@
     "force": 44497.4,
     "force1": 8899.49,
     "timeLife": 105.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 0.9,
-    "endSpeed": 0.0,
     "maxDistance": 26400.0,
     "minDistance": 600.0,
     "rangeMax": 23000.0,
@@ -43,15 +46,11 @@
       2.5
     ],
     "loadFactorMax": 5.0,
-    "isHasTVChannel": true,
+    "gunnerOpticsName": "AGM65K",
     "guidanceType": "optical",
     "explosiveType": "pbxn_af_108",
     "explosiveMass": 36.28739,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.0035,
     "shellCollision": true,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni",
     "explosionEffect": "hit_133_205mm_heat",
     "groundCollisionEffect": "hit_206_290mm_dirt_he",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -94,10 +93,6 @@
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "arcadeProp": {
-      "finsAoaHor": 0.2,
-      "finsAoaVer": 0.2
-    },
     "guidance": {
       "warmUpTime": 0.3,
       "acquisitionTime": 0.1,
@@ -117,12 +112,17 @@
       ],
       "opticalSeeker": {
         "targetSignatureType": "optic",
+        "rangeBand8": 200.0,
+        "groundVehiclesAsTarget": true,
+        "surfaceAsTarget": true,
+        "boundaryTrack": true,
+        "constantDesignationSourceType": "",
+        "fov": 0.1,
+        "minAngleToSun": 0.0,
+        "targetRadiusMin": 1.5,
         "rangeBand0": 12000.0,
         "rangeMax": 24000.0,
         "rangeSurface": 24000.0,
-        "fov": 0.1,
-        "gateWidth": 0.1,
-        "minAngleToSun": 0.0,
         "lockAngleMax": 30.0,
         "angleMax": 50.0,
         "rateMax": 2.5,
@@ -130,12 +130,7 @@
         "designationSourceType": [
           "camera",
           "crosshair"
-        ],
-        "constantDesignationSourceType": "",
-        "groundVehiclesAsTarget": true,
-        "surfaceAsTarget": true,
-        "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        ]
       },
       "guidanceAutopilot": {
         "timeOut": 0.5,

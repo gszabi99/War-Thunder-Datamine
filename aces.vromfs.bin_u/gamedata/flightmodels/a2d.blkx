@@ -1988,6 +1988,18 @@
   "Params": {
     "Range": 772.0
   },
+  "hook": {
+    "coeffHookJ": 0.03,
+    "hookDeflectionAngles": [
+      -50.0,
+      5.0
+    ],
+    "hookCxDiap": [
+      0.2,
+      0.9
+    ],
+    "hookMass": 10.0
+  },
   "cockpit": {
     "headPos": [
       3.04,
@@ -4028,6 +4040,20 @@
       {
         "fm": "rudder_control",
         "dm": "tailcontrol_dm",
+        "cutHealth": 0.0
+      },
+      {
+        "fm": "aileron_control_r",
+        "dm": [
+          "wingcontrol_dm",
+          "wingcontrol_r_dm"
+        ],
+        "type": "min",
+        "cutHealth": 0.0
+      },
+      {
+        "fm": "wing_control",
+        "dm": "sweep_wing_dm",
         "cutHealth": 0.0
       },
       {

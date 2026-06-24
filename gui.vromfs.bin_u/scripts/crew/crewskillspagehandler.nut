@@ -369,46 +369,35 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       ]
     }
 
-    if (hasFeature("FullScreenCrewWindow")) {
-      
-      local maxExpPoints = MIN_EXP_POINTS
-      local currentExpPoints = 0
-      if (bonusData?.haveSpec) {
-        maxExpPoints += 5
-        if (bonusData.specType.code == crewSpecTypes.EXPERT.code)
-          currentExpPoints += MAX_EXPERT_EXP_POINTS
-        if (bonusData.specType.code == crewSpecTypes.ACE.code)
-          currentExpPoints += MAX_EXPERT_EXP_POINTS + MAX_ACE_EXP_POINTS
-      }
-      let skillsExpPoints = maxValue > 0
-        ? round_by_value(value * maxSkillCrewLevel.tofloat() / maxValue, 0.5)
-        : 0
-      currentExpPoints += skillsExpPoints
-      let addExpPointsValue = maxValue > 0
-        ? round_by_value(item.newValue * maxSkillCrewLevel.tofloat() / maxValue, 0.5) - skillsExpPoints
-        : 0
+    
+    local maxExpPoints = MIN_EXP_POINTS
+    local currentExpPoints = 0
+    if (bonusData?.haveSpec) {
+      maxExpPoints += 5
+      if (bonusData.specType.code == crewSpecTypes.EXPERT.code)
+        currentExpPoints += MAX_EXPERT_EXP_POINTS
+      if (bonusData.specType.code == crewSpecTypes.ACE.code)
+        currentExpPoints += MAX_EXPERT_EXP_POINTS + MAX_ACE_EXP_POINTS
+    }
+    let skillsExpPoints = maxValue > 0
+      ? round_by_value(value * maxSkillCrewLevel.tofloat() / maxValue, 0.5)
+      : 0
+    currentExpPoints += skillsExpPoints
+    let addExpPointsValue = maxValue > 0
+      ? round_by_value(item.newValue * maxSkillCrewLevel.tofloat() / maxValue, 0.5) - skillsExpPoints
+      : 0
 
-      res.__update({
-        name = "".concat(loc($"crew/{item.name}"), loc("ui/colon"))
-        currentExpPoints
-        addExpPointsValueStr = addExpPointsValue > 0 ? $"+{addExpPointsValue}" : null
-        maxExpPointsStr = "".concat(loc("ui/slash"), maxExpPoints.tostring())
-        activeButtonDec = (item.newValue > value && isRecrutedCrew)
-          ? "yes" : "no"
-        activeButtonInc = (item.newValue < item.costTbl.len() && isRecrutedCrew)
-          ? "yes" : "no"
-        incCost = getCrewSpTextIfNotZero(getNextCrewSkillStepCost(item, item.newValue))
-      })
-    }
-    else {
-      res.__update({
-        name = loc($"crew/{item.name}")
-        visibleButtonDec = (item.newValue > value && isRecrutedCrew)
-          ? "show" : "hide"
-        visibleButtonInc = (item.newValue < item.costTbl.len() && isRecrutedCrew)
-          ? "show" : "hide"
-      })
-    }
+    res.__update({
+      name = "".concat(loc($"crew/{item.name}"), loc("ui/colon"))
+      currentExpPoints
+      addExpPointsValueStr = addExpPointsValue > 0 ? $"+{addExpPointsValue}" : null
+      maxExpPointsStr = "".concat(loc("ui/slash"), maxExpPoints.tostring())
+      activeButtonDec = (item.newValue > value && isRecrutedCrew)
+        ? "yes" : "no"
+      activeButtonInc = (item.newValue < item.costTbl.len() && isRecrutedCrew)
+        ? "yes" : "no"
+      incCost = getCrewSpTextIfNotZero(getNextCrewSkillStepCost(item, item.newValue))
+    })
     return res
   }
 
@@ -463,7 +452,6 @@ gui_handlers.CrewSkillsWndPageHandler <- class (gui_handlers.CrewSkillsPageHandl
 }
 
 return @(params) handlersManager.loadHandler(
-  hasFeature("FullScreenCrewWindow") ? gui_handlers.CrewSkillsWndPageHandler
-    : gui_handlers.CrewSkillsPageHandler,
+  gui_handlers.CrewSkillsWndPageHandler,
   params
 )

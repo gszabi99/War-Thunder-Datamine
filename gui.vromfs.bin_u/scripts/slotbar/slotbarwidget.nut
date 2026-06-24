@@ -78,7 +78,7 @@ let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHa
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
-let hasCrewModalWndInScene = @() isHandlerInScene(gui_handlers.CrewModalHandler)
+let hasCrewModalWndInScene = @() isHandlerInScene(gui_handlers.CrewWndModal)
   || isHandlerInScene(gui_handlers.CrewHandler)
 
 function initSlotbarTopBar(slotbarObj, boxesShow) {
@@ -1561,7 +1561,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if (handlersManager.findHandlerClassInScene(gui_handlers.CrewModalHandler)) {
+    if (hasCrewModalWndInScene()) {
       this.selectCrew(crew.idInCountry)
       return
     }

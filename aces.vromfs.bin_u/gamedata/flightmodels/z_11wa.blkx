@@ -1903,10 +1903,6 @@
         "blk": "gameData/flightModels/weaponPresets/z_11wa_default.blk"
       },
       {
-        "name": "z_11wa_hj_8_default",
-        "blk": "gameData/flightModels/weaponPresets/z_11wa_hj_8_default.blk"
-      },
-      {
         "name": "z_11wa_hf_27",
         "blk": "gameData/flightModels/weaponPresets/z_11wa_hf_27.blk"
       },
@@ -2098,7 +2094,6 @@
           {
             "iconType": "missile_air_to_uni_group",
             "name": "hj8_right_wing",
-            "reqModification": "cn_hj8",
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
@@ -2724,17 +2719,11 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "cn_hj8": {
-      "deactivationIsAllowed": false,
-      "reqModification": "cn_hf7d",
-      "modClass": "weapon",
-      "tier": 3
-    },
     "cn_hj8_c": {
       "deactivationIsAllowed": false,
-      "reqModification": "cn_hj8",
+      "prevModification": "cn_hf7d",
       "modClass": "weapon",
-      "tier": 4
+      "tier": 3
     },
     "heli_night_vision_system": {
       "modClass": "weapon",

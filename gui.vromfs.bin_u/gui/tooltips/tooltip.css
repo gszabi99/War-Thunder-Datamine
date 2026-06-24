@@ -263,7 +263,7 @@ tooltipLink {
 [show_console_buttons=yes] tooltipLink {
   total-input-transparent: yes;
   behavior: PosNavigator;
-  navigatorShortcuts: yes;
+  navigatorShortcuts: onlySelect;
   on_pushed: "::gcb.delayedTooltipListPush";
   on_hold_start: "::gcb.delayedTooltipListHoldStart";
   on_hold_stop: "::gcb.delayedTooltipListHoldStop";
@@ -273,6 +273,10 @@ tooltipLink > textareaNoTab,
 tooltipLink > key > textareaNoTab {
   color: @modalInfoLinkColor;
   interactive: yes;
+}
+
+modalInfoContent tooltipLink textareaNoTab {
+  skip-navigation: no;
 }
 
 tooltipLink[isNotLink=yes] > textareaNoTab,
@@ -297,8 +301,4 @@ modalInfoContent[inHangar=yes] tooltipLink {
 
 modalInfoContent[inHangar=yes] tooltipLink:hover {
   needFocusBorder: no;
-}
-
-modalInfoContent tooltipLink textareaNoTab {
-  skip-navigation: no;
 }
