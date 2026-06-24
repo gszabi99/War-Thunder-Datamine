@@ -7,30 +7,31 @@
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
   "rocket": {
+    "dragCx": 0.0084,
     "bulletName": "rs_128_m15_heat",
-    "statType": "hydra",
-    "caliber": 0.128,
-    "length": 1.835,
-    "CxK": 1.2,
-    "distFromCmToStab": 0.01,
-    "mass": 43.7,
-    "massEnd": 32.4,
-    "timeFire": 1.3,
-    "force": 17750.0,
+    "iconType": "nar_ap_large",
+    "amountPerTier": 4.0,
     "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "maxSpeed": 600.0,
-    "endSpeed": 0.0,
-    "maxDistance": 8000.0,
-    "minDistance": 30.0,
-    "explosiveType": "rdx_tnt",
-    "explosiveMass": 2.5,
-    "explodeTreshold": 0.00001,
+    "endSpeed": 2000.0,
+    "statType": "hydra",
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "dragCx": 0.0084,
-    "amountPerTier": 4.0,
-    "iconType": "nar_ap_large",
+    "maxDeltaAngle": 1.3,
+    "caliber": 0.128,
+    "length": 1.97,
+    "CxK": 1.2,
+    "distFromCmToStab": 0.01,
+    "mass": 52.7,
+    "massEnd": 40.7,
+    "timeFire": 1.2,
+    "force": 24000.0,
+    "startSpeed": 0.0,
+    "maxSpeed": 600.0,
+    "maxDistance": 12000.0,
+    "minDistance": 30.0,
+    "explosiveType": "rdx_tnt",
+    "explosiveMass": 6.0,
+    "warheadMass": 22.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "groundRicochetPreset": "heat_fs",
@@ -85,7 +86,8 @@
       200.0,
       1000.0
     ],
-    "maxDeltaAngle": 1.3,
+    "explodeTreshold": 0.00001,
+    "distanceFuse": false,
     "explosionEffect": "hit_133_205mm_heat",
     "groundCollisionEffect": "hit_133_160mm_dirt_ap",
     "ricochetEffect": "hit_106_132mm_metal_ap",
@@ -106,14 +108,9 @@
       0.0,
       0.0
     ],
-    "damage": {
-      "explosive": {
-        "offset": 0.2
-      }
-    },
     "cumulativeDamage": {
       "armorPower": 600.0,
-      "distance": 3.0,
+      "distance": 5.0,
       "damage": 300.0,
       "onHitChanceMultFire": 15.0
     },
@@ -133,6 +130,12 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
+    },
+    "damage": {
+      "explosive": {
+        "offset": 0.2,
+        "radius": 0.35
+      }
     },
     "DamageParts": {
       "body": {

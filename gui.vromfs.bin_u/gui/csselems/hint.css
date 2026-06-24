@@ -249,3 +249,40 @@ hint[_transp-timer=1][animation=show] {
 hint[_needAnim=yes] {
   behaviour:massTransparency;
 }
+
+shortcutContent {
+  position:relative;
+  height:1@buttonHeight;
+}
+
+shortcutContent keyboardButtonText,
+shortcutContent hint {
+  position:relative;
+  pos:(pw-w)/2, 0;
+}
+
+shortcutContent hint,
+shortcutContent hint > hintRow > combination,
+shortcutContent hint > hintRow > combination > combinationBackground,
+shortcutContent keyboardButtonText,
+shortcutContent keyboardButton,
+shortcutContent > shortcutHint,
+shortcutContent hint > hintRow {
+  height:ph;
+}
+
+shortcutContent keyboardButton {
+  width:0;
+  padding:10@sf/@pf, 6@sf/@pf;
+}
+
+shortcutContent gamepadButton {
+  position:relative;
+  size:ph - 6@sf/@pf, ph - 6@sf/@pf;
+  top:(ph-h)/2;
+}
+
+shortcutContent textareaNoTab {
+  position:relative;
+  top:(ph-h)/2;
+}

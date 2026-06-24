@@ -319,127 +319,201 @@
               "size": "pw,ph",
               "id": "tactical-map",
               "tdiv": {
-                "pos": "pw+1@blockInterval, ph-h",
                 "position": "absolute",
+                "pos": "pw+1@blockInterval, ph-h",
                 "flow": "vertical",
-                "background-color": "@editboxColor",
                 "padding": "1@blockInterval, 1@blockInterval, 1@blockInterval, 0",
                 "tdiv": [
                   {
-                    "id": "hud_icon_preset_box",
-                    "margin-bottom": "1@blockInterval",
-                    "display": "hide",
-                    "width": "0.1@sf",
-                    "ComboBox": {
-                      "id": "hud_icon_preset_select",
-                      "width": "pw",
-                      "on_select": "onHudIconPresetSelect",
-                      "tooltip": "#iconPreset/hud_icon_preset_select_hint"
-                    }
-                  },
-                  {
-                    "margin-bottom": "1@blockInterval",
-                    "tooltip": "#options/rmbToMoveMap",
-                    "Button_text": {
-                      "class": "image",
-                      "btnName": "RB",
-                      "noMargin": "yes",
-                      "tooltip": "#options/moveMap",
-                      "_on_click": "onMoveMapActivate",
-                      "ButtonImg": {},
-                      "img": {
-                        "background-image": "#ui/gameuiskin#dnd_icon.svg"
-                      }
-                    },
-                    "tdiv": {
-                      "id": "hint_btn_move_map",
-                      "size": "1@keyboardHintButtonHeight, 1@buttonHeight",
-                      "margin-left": "1@blockInterval",
-                      "display": "hide",
-                      "img": {
-                        "size": "0.73h, 1@cIco",
+                    "id": "aim_points_hint",
+                    "position": "relative",
+                    "flow": "vertical",
+                    "background-color": "@editboxColor",
+                    "padding": "1@blockInterval, 1@blockInterval, 1@blockInterval, 1@blockInterval",
+                    "margin-bottom": "20@sf/@pf",
+                    "tdiv": [
+                      {
                         "position": "relative",
-                        "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                        "background-svg-size": "0.73h, 1@cIco",
-                        "background-image": "#ui/gameuiskin#mouse_right.avif"
-                      }
-                    }
-                  },
-                  {
-                    "id": "btn_set_point_of_interest",
-                    "margin-bottom": "1@blockInterval",
-                    "display": "hide",
-                    "Button_text": {
-                      "class": "image",
-                      "btnName": "LT",
-                      "noMargin": "yes",
-                      "on_click": "onSetPointOfInterest",
-                      "tooltip": "#options/setPointOfInterest",
-                      "ButtonImg": {},
-                      "img": {
-                        "id": "hud_poi_img",
-                        "background-image": "#ui/gameuiskin#map_interestpoint.svg"
-                      }
-                    },
-                    "tdiv": {
-                      "id": "hint_btn_set_point_of_interest",
-                      "size": "1@keyboardHintButtonHeight, 1@buttonHeight",
-                      "margin-left": "1@blockInterval",
-                      "display": "hide",
-                      "img": {
-                        "size": "0.73h, 1@cIco",
+                        "flow": "horizontal",
+                        "tacticalMapHintIcon": {
+                          "img": {
+                            "background-image": "#ui/gameuiskin#ic_select_aim_point.svg"
+                          }
+                        },
+                        "shortcutContent": {
+                          "gamepadButton": {
+                            "background-image": "#ui/gameuiskin#mouse_left"
+                          }
+                        }
+                      },
+                      {
                         "position": "relative",
-                        "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                        "tooltip": "#options/mmbToSetPoi",
-                        "background-image": "#ui/gameuiskin#mouse_center.avif"
+                        "flow": "horizontal",
+                        "tacticalMapHintIcon": {
+                          "img": {
+                            "background-image": "#ui/gameuiskin#ic_remove_aim_point.svg"
+                          }
+                        },
+                        "shortcutContent": {
+                          "keyboardButton": {
+                            "keyboardButtonText": {
+                              "text": "#key/Alt"
+                            }
+                          },
+                          "textareaNoTab": {
+                            "text": "+"
+                          },
+                          "gamepadButton": {
+                            "background-image": "#ui/gameuiskin#mouse_right"
+                          }
+                        }
+                      },
+                      {
+                        "position": "relative",
+                        "flow": "horizontal",
+                        "tacticalMapHintIcon": {
+                          "img": {
+                            "background-image": "#ui/gameuiskin#ic_add_aim_point.svg"
+                          }
+                        },
+                        "shortcutContent": {
+                          "keyboardButton": {
+                            "keyboardButtonText": {
+                              "text": "#key/Alt"
+                            }
+                          },
+                          "textareaNoTab": {
+                            "text": "+"
+                          },
+                          "gamepadButton": {
+                            "background-image": "#ui/gameuiskin#mouse_left"
+                          }
+                        }
                       }
-                    }
+                    ]
                   },
                   {
-                    "id": "btn_set_hud_type",
-                    "margin-bottom": "1@blockInterval",
-                    "display": "hide"
-                  },
-                  {
-                    "id": "btn_filter_markers",
-                    "margin-bottom": "1@blockInterval",
-                    "display": "hide",
-                    "popupFilter": {}
-                  }
-                ],
-                "tacticalMapHint": [
-                  {
-                    "id": "hint_attention_to_map",
-                    "tooltip": "#voice_message_attention_to_point_2",
-                    "display": "hide",
-                    "tacticalMapHintIcon": {
-                      "img": {
-                        "background-image": "#ui/gameuiskin#new_icon.svg"
+                    "position": "relative",
+                    "flow": "vertical",
+                    "background-color": "@editboxColor",
+                    "tdiv": [
+                      {
+                        "id": "hud_icon_preset_box",
+                        "margin-bottom": "1@blockInterval",
+                        "display": "hide",
+                        "width": "0.1@sf",
+                        "ComboBox": {
+                          "id": "hud_icon_preset_select",
+                          "width": "pw",
+                          "on_select": "onHudIconPresetSelect",
+                          "tooltip": "#iconPreset/hud_icon_preset_select_hint"
+                        }
+                      },
+                      {
+                        "margin-bottom": "1@blockInterval",
+                        "tooltip": "#options/rmbToMoveMap",
+                        "Button_text": {
+                          "class": "image",
+                          "btnName": "RB",
+                          "noMargin": "yes",
+                          "tooltip": "#options/moveMap",
+                          "_on_click": "onMoveMapActivate",
+                          "ButtonImg": {},
+                          "img": {
+                            "background-image": "#ui/gameuiskin#dnd_icon.svg"
+                          }
+                        },
+                        "tdiv": {
+                          "id": "hint_btn_move_map",
+                          "size": "1@keyboardHintButtonHeight, 1@buttonHeight",
+                          "margin-left": "1@blockInterval",
+                          "display": "hide",
+                          "img": {
+                            "size": "0.73h, 1@cIco",
+                            "position": "relative",
+                            "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                            "background-svg-size": "0.73h, 1@cIco",
+                            "background-image": "#ui/gameuiskin#mouse_right.avif"
+                          }
+                        }
+                      },
+                      {
+                        "id": "btn_set_point_of_interest",
+                        "margin-bottom": "1@blockInterval",
+                        "display": "hide",
+                        "Button_text": {
+                          "class": "image",
+                          "btnName": "LT",
+                          "noMargin": "yes",
+                          "on_click": "onSetPointOfInterest",
+                          "tooltip": "#options/setPointOfInterest",
+                          "ButtonImg": {},
+                          "img": {
+                            "id": "hud_poi_img",
+                            "background-image": "#ui/gameuiskin#map_interestpoint.svg"
+                          }
+                        },
+                        "tdiv": {
+                          "id": "hint_btn_set_point_of_interest",
+                          "size": "1@keyboardHintButtonHeight, 1@buttonHeight",
+                          "margin-left": "1@blockInterval",
+                          "display": "hide",
+                          "img": {
+                            "size": "0.73h, 1@cIco",
+                            "position": "relative",
+                            "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                            "tooltip": "#options/mmbToSetPoi",
+                            "background-image": "#ui/gameuiskin#mouse_center.avif"
+                          }
+                        }
+                      },
+                      {
+                        "id": "btn_set_hud_type",
+                        "margin-bottom": "1@blockInterval",
+                        "display": "hide"
+                      },
+                      {
+                        "id": "btn_filter_markers",
+                        "margin-bottom": "1@blockInterval",
+                        "display": "hide",
+                        "popupFilter": {}
                       }
-                    },
-                    "tacticalMapHintInput": {
-                      "img": {
-                        "size": "0.73h, 1@cIco",
-                        "background-svg-size": "0.73h, @cIco",
-                        "background-image": "#ui/gameuiskin#mouse_left.avif"
+                    ],
+                    "tacticalMapHint": [
+                      {
+                        "id": "hint_attention_to_map",
+                        "tooltip": "#voice_message_attention_to_point_2",
+                        "display": "hide",
+                        "tacticalMapHintIcon": {
+                          "img": {
+                            "background-image": "#ui/gameuiskin#new_icon.svg"
+                          }
+                        },
+                        "tacticalMapHintInput": {
+                          "img": {
+                            "size": "0.73h, 1@cIco",
+                            "background-svg-size": "0.73h, @cIco",
+                            "background-image": "#ui/gameuiskin#mouse_left.avif"
+                          }
+                        }
+                      },
+                      {
+                        "tooltip": "#guiHints/mapZoomInOut",
+                        "tacticalMapHintIcon": {
+                          "img": {
+                            "background-image": "#ui/gameuiskin#btn_search.svg"
+                          }
+                        },
+                        "tacticalMapHintInput": {
+                          "type": "zoomMap",
+                          "img": {
+                            "size": "1@dIco, 1@dIco",
+                            "background-svg-size": "1@dIco, 1@dIco",
+                            "background-image": "#ui/gameuiskin#mouse_center_up_down.avif"
+                          }
+                        }
                       }
-                    }
-                  },
-                  {
-                    "tooltip": "#guiHints/mapZoomInOut",
-                    "tacticalMapHintIcon": {
-                      "img": {
-                        "background-image": "#ui/gameuiskin#btn_search.svg"
-                      }
-                    },
-                    "tacticalMapHintInput": {
-                      "type": "zoomMap",
-                      "img": {
-                        "size": "1@dIco, 1@dIco",
-                        "background-svg-size": "1@dIco, 1@dIco",
-                        "background-image": "#ui/gameuiskin#mouse_center_up_down.avif"
-                      }
-                    }
+                    ]
                   }
                 ]
               }

@@ -6,6 +6,8 @@ from "%scripts/options/optionsCtors.nut" import create_option_combobox
 let { get_player_unit_name, get_cur_unit_weapon_preset } = require("unit")
 let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { can_use_aiming_points = @() false } = require("aimingMemPoints")
+let { isXInputDevice } = require("controls")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -169,6 +171,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
       setAllowMoveCenter(false)
       this.resetPointOfInterestMode()
+      showObjById("aim_points_hint", !isRespawn && !isXInputDevice() && can_use_aiming_points(), this.scene)
     }
 
     function reinitScreen(params = {}) {

@@ -115,6 +115,8 @@ let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, 
   setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet,
   setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset, setTacticalMapHudType,
   setTacticalMapIconsFilter } = require("guiTacticalMap")
+let { can_use_aiming_points = @() false } = require("aimingMemPoints")
+let { isXInputDevice } = require("controls")
 let { hasSightStabilization } = require("vehicleModel")
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
 let { isGroundAndAirMission, g_mission_type, isShipBattle } = require("%scripts/missions/missionType.nut")
@@ -502,6 +504,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if(this.missionRules instanceof AdditionalUnits)
       this.scene.findObject("additionalUnitsNest").show(true)
+    showObjById("aim_points_hint", !this.isRespawn && !isXInputDevice() && can_use_aiming_points(), this.scene)
   }
 
   function moveCursorToInitailPosition() {
