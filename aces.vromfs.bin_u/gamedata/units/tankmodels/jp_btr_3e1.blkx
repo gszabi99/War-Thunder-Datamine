@@ -3919,26 +3919,6 @@
         "allowSupportPlane": false
       }
     },
-    "night_vision_system": {
-      "tier": 3,
-      "modClass": "firepower",
-      "image": "!#ui/gameuiskin#thermal_sight.avif",
-      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
-      "effects": {
-        "nightVision": {
-          "nightVisionDmPart": "fire_control_system_dm",
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          }
-        }
-      }
-    },
     "tank_smoke_screen_system_mod": {
       "modClass": "protection",
       "tier": 4,
@@ -4313,17 +4293,14 @@
     "tank_engine_smoke_screen_system": {}
   },
   "nightVision": {
-    "nightVisionDmPart": [
-      "fire_control_system_dm",
-      "fire_control_system_01_dm"
-    ],
-    "driverIr": {
+    "nightVisionDmPart": "fire_control_system_dm",
+    "gunnerIr": {
       "resolution": [
         800,
         600
       ],
-      "lightMult": 5.0,
-      "ghosting": 0.7,
+      "lightMult": 8.0,
+      "ghosting": 0.75,
       "noiseFactor": 0.2
     }
   },
