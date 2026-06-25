@@ -8,6 +8,8 @@ let { isMissileWeaponType, isMissileBullet, isGuidedBomb } = require("%scripts/w
 let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 let { GraphCompareBulletsWnd } = require("%scripts/weaponry/graphCompareBullets/graphCompareBulletsWnd.nut")
 let { mkSliderMarkup } = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut")
+let { getStatCardInfo } = require("%scripts/unit/statCardInfo.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 function canRequestTrajectorysData(bullet) {
   return isMissileWeaponType(bullet?.weaponType)
@@ -146,10 +148,41 @@ let shotSettings = [
   }
 ]
 
+
+function getUnitRocketStructure() {
+  let structure = {}
+  let statCardInfo = getStatCardInfo()
+
+  foreach (unit in getAllUnits()) {
+    if (!unit.isVisibleInShop())
+      continue
+
+    let { name, esUnitType, shopCountry, rank } = unit
+    if (!(statCardInfo?[name].hasRockets ?? false))
+      continue
+
+    if (esUnitType not in structure)
+      structure[esUnitType] <- {}
+
+    if (shopCountry not in structure[esUnitType])
+      structure[esUnitType][shopCountry] <- {}
+
+    if (rank not in structure[esUnitType][shopCountry])
+      structure[esUnitType][shopCountry][rank] <- {}
+
+    if (name not in structure[esUnitType][shopCountry][rank])
+      structure[esUnitType][shopCountry][rank][name] <- true
+  }
+
+  return structure
+}
+
+
 let openMissileTrajectoryWnd = @(p)
   handlersManager.loadHandler(GraphCompareBulletsWnd, p.__merge({
     pagesConfig = missileParametersPages
     shotSettings
+    structure = getUnitRocketStructure()
   }))
 
 register_command(@() openMissileTrajectoryWnd({ unit = getAircraftByName("f_14b") }), "debug.open_missile_trajectory_wnd")

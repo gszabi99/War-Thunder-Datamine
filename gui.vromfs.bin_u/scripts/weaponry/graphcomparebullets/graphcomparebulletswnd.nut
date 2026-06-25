@@ -14,9 +14,6 @@ let { graphColorList, getBulletCacheSaveId
 } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { secondsToMilliseconds, millisecondsToSeconds } = require("%sqstd/time.nut")
-let { getStatCardInfo } = require("%scripts/unit/statCardInfo.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-
 
 const MAX_PLAY_VALUE = 1000
 
@@ -52,34 +49,6 @@ function getStartPlayingTime(curPlayValue, maxPlayTimeMs) {
   return curTimeMs - getPlayTimeMs(curPlayValue, maxPlayTimeMs)
 }
 
-function getUnitRocketStructure() {
-  let structure = {}
-  let statCardInfo = getStatCardInfo()
-
-  foreach (unit in getAllUnits()) {
-    if (!unit.isVisibleInShop())
-      continue
-
-    let { name, esUnitType, shopCountry, rank } = unit
-    if (!(statCardInfo?[name].hasRockets ?? false))
-      continue
-
-    if (esUnitType not in structure)
-      structure[esUnitType] <- {}
-
-    if (shopCountry not in structure[esUnitType])
-      structure[esUnitType][shopCountry] <- {}
-
-    if (rank not in structure[esUnitType][shopCountry])
-      structure[esUnitType][shopCountry][rank] <- {}
-
-    if (name not in structure[esUnitType][shopCountry][rank])
-      structure[esUnitType][shopCountry][rank][name] <- true
-  }
-
-  return structure
-}
-
 
 let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -112,6 +81,7 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
   startPlayingTimeMs = 0
 
   applySelectedOptionAfterInit = false
+  structure = null
 
   function initScreen() {
     this.compareBulletsList = []
@@ -124,7 +94,7 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
       optionsList      = bulletsBallisticOptions
       onChangeOptionCb = Callback(this.onChangeOption, this)
       goBackCb         = Callback(this.goBack, this)
-      structure        = getUnitRocketStructure()
+      structure        = this.structure
     })
 
     this.registerSubHandler(optionsHandler)
