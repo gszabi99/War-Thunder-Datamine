@@ -3,7 +3,7 @@ let { canEnterAAComplexMenu, RadarCompositeSubfilter } = require("guiRadar")
 let { isUnitAlive, isUnitDelayed, playerUnitName, unitType } = require("%rGui/hudState.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
-let { savedRadarFilters, AAComplexRadarFiltersSaveSlotName, ESMRadarFiltersSaveSlotName } = require("%appGlobals/hud/hudState.nut")
+let { savedRadarFilters, AAComplexRadarFiltersSaveSlotName } = require("%appGlobals/hud/hudState.nut")
 let { RadarTargetsIffFilterMask, GenericSourceType, sendIffFilterToRadars
 } = require("radarGuiControls")
 let { IFFFilter, typeFilter, genericSourceFilter, rangeFilter, ESMModeTypeFilter,
@@ -151,9 +151,7 @@ let getFiltersList = @(targetListColumnsConfig)
 function getSaveSlotKey() {
   if (canEnterAAComplexMenu())
     return AAComplexRadarFiltersSaveSlotName
-  if (IsEsm.get())
-    return ESMRadarFiltersSaveSlotName
-  return unitType.get()
+  return unitType.get() 
 }
 let getFiltersSaveSlot = @(key) savedRadarFilters.get()?[key] ?? {}
 

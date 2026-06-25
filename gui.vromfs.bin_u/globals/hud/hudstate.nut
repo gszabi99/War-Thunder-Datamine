@@ -4,7 +4,6 @@ let isAAComplexMenuActive = sharedWatched("isAAComplexMenuActive", @() false)
 let isWheelMenuActive = sharedWatched("isWheelMenuActive", @() false)
 let savedRadarFilters = sharedWatched("savedRadarFilters", @() {})
 let AAComplexRadarFiltersSaveSlotName = "AAComplex"
-let ESMRadarFiltersSaveSlotName = "ESM"
 
 
 return {
@@ -12,5 +11,4 @@ return {
   isWheelMenuActive
   savedRadarFilters
   AAComplexRadarFiltersSaveSlotName
-  ESMRadarFiltersSaveSlotName
 }
