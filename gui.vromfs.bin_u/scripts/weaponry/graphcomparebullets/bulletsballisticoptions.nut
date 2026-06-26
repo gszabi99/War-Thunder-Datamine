@@ -221,7 +221,7 @@ options.addTypes({
   }
   UNIT = {
     sortId = sortIdCount++
-    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue", tooltipOnHold = showConsoleButtons.get() }
+    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue", tooltipOnHold = @() showConsoleButtons.get() }
 
     function updateParams() {
       let unitType = options.UNITTYPE.value
@@ -308,6 +308,7 @@ options.addTypes({
     sortId = sortIdCount++
     labelLocId = "mainmenu/shell"
     visibleTypes = [ WEAPON_TYPE.GUNS, WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM ]
+    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue", tooltipOnHold = @() showConsoleButtons.get() }
 
     function updateView(handler, scene) {
       let obj = scene.findObject(this.id)
@@ -346,6 +347,7 @@ options.addTypes({
       local curGunIdx = -1
       local selectedIndex = 0
       let groupsCount = getBulletsGroupCount(unit)
+      let isTooltipOnHold = showConsoleButtons.get()
 
       
       for (local bulletSetIdx = 0; bulletSetIdx < getLastFakeBulletsIndex(unit); bulletSetIdx++) {
@@ -406,27 +408,21 @@ options.addTypes({
             if (isDub)
               continue
 
-            local addDiv = ""
-            local tooltipId = ""
-
+            local bSet
             if (isBulletBelt) {
               let bData = bulletsSet.bulletDataByType[bulletName]
-              local bSet = bulletsSet.__merge({
+              bSet = bulletsSet.__merge({
                 bullets = [bulletName]
                 bulletAnimations = bData.bulletAnimations
               })
               addParamsToBulletSet(bSet, bData)
+            }
 
-              tooltipId = SINGLE_BULLET.getTooltipId(unit.name, bulletName, {
-                modName = value,
-                bSet,
-                bulletParams })
-              addDiv = SINGLE_BULLET.mkMarkup(tooltipId)
-            }
-            else {
-              tooltipId = MODIFICATION.getTooltipId(bulletsSet?.supportUnitName ?? unit.name, value, { hasPlayerInfo = false })
-              addDiv = MODIFICATION.mkMarkup(tooltipId)
-            }
+            let tooltipId = isBulletBelt
+              ? SINGLE_BULLET.getTooltipId(unit.name, bulletName,
+                { modName = value, bSet, bulletParams })
+              : MODIFICATION.getTooltipId(bulletsSet?.supportUnitName ?? unit.name, value,
+                { hasPlayerInfo = false })
 
             bulletNamesSet.append(locName)
             let btName = bulletName ?? ""
@@ -447,7 +443,13 @@ options.addTypes({
 
             this.items.append({
               text = locName
-              addDiv = addDiv
+              addDiv = isTooltipOnHold ? null
+                : isBulletBelt ? SINGLE_BULLET.getMarkup(unit.name, bulletName,
+                  { modName = value, bSet, bulletParams })
+                : MODIFICATION.getMarkup(bulletsSet?.supportUnitName ?? unit.name, value,
+                  { hasPlayerInfo = false })
+              tooltipId = isTooltipOnHold ? tooltipId : ""
+              tooltipOnHold = isTooltipOnHold
             })
           }
         }
@@ -518,13 +520,22 @@ options.addTypes({
               blkPath = weaponBlkPath
               tType = weap.trigger
               presetName = weap.presetId
-          })
+            })
 
         this.items.append({
           text = locName
-          addDiv = isBullet
-            ? SINGLE_BULLET.mkMarkup(tooltipId)
-            : SINGLE_WEAPON.mkMarkup(tooltipId)
+          addDiv = isTooltipOnHold ? null
+            : isBullet ? SINGLE_BULLET.getMarkup(unitName, curBlk.bulletType, {
+              bSet
+              bulletParams
+            })
+            : SINGLE_WEAPON.getMarkup(unitName, {
+              blkPath = weaponBlkPath
+              tType = weap.trigger
+              presetName = weap.presetId
+            })
+          tooltipId = isTooltipOnHold ? tooltipId : ""
+          tooltipOnHold = isTooltipOnHold
         })
 
         let iconType = curBlk?.iconType ?? weaponBlk?.iconType ?? weap?.iconType

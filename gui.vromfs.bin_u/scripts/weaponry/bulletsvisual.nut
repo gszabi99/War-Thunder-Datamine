@@ -19,8 +19,8 @@ let {
         getBulletsSearchName, anglesToCalcDamageMultiplier,
         getModifIconItem, getSquashArmorAnglesScale,
         getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
-let { WEAPON_TYPE,
-  isCaliberCannon, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { WEAPON_TYPE, isCaliberCannon, getWeaponNameByBlkPath, additionalMarkupTypes,
+  additionalMarkupByType, getAdditionalBulletMarkupTypes } = require("%scripts/weaponry/weaponryInfo.nut")
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
 let { getMeasuredExplosionText, getTntEquivalentText, getRicochetData, getTntEquivalentDmg,
   getMaxArmorPiercing
@@ -313,7 +313,13 @@ function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
   })
 }
 
-function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = false) {
+function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, params = {}) {
+  let { name, isBulletCard, needAdditionalMarkupInShellDesc = false } = params
+  let optionalMarkupTypes = !needAdditionalMarkupInShellDesc ? null
+    : getAdditionalBulletMarkupTypes(bulletsData)
+
+  let speedAdditionalMarkupType = optionalMarkupTypes?[additionalMarkupTypes.MISSILE_SPEED]
+
   let p = []
   let isSmokeBullet = !!bulletsData?.smokeShellRad
   
@@ -328,11 +334,11 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = fal
     text = loc("bullet_properties/angleWithRicochet")
     data = []
   }
-  let addProp = function(arr, text, value) {
-    arr.append({
-      text = text
-      value = value
-    })
+  let addProp = function(arr, text, value, addMarkupType = null) {
+    let newVal = { text, value }
+    if (addMarkupType)
+      newVal.additionalMarkup <- additionalMarkupByType?[addMarkupType]({ bulletName = name })
+    arr.append(newVal)
   }
   if ("sonicDamage" in bulletsData) {
     let { distance, speed, horAngles, verAngles } = bulletsData.sonicDamage
@@ -481,7 +487,7 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = fal
     addProp(p, loc("firingRange"), measureType.DISTANCE.getMeasureUnitsText(operatedDist))
 
   if ("rangeMax" in bulletsData)
-    addProp(p, loc("launchRange"), measureType.DISTANCE.getMeasureUnitsText(bulletsData.rangeMax))
+    addProp(p, loc("launchRange"), measureType.DISTANCE.getMeasureUnitsText(bulletsData.rangeMax), speedAdditionalMarkupType)
 
   if ("guaranteedRange" in bulletsData)
     addProp(p, loc("guaranteedRange"), measureType.DISTANCE.getMeasureUnitsText(bulletsData.guaranteedRange))
@@ -810,7 +816,8 @@ function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
 
 
 
-function addBulletsParamToDesc(descTbl, unit, item, isBulletCard) {
+function addBulletsParamToDesc(descTbl, unit, item, params = {}) {
+  let { isBulletCard } = params
   if (!unit.unitType.canUseSeveralBulletsForGun && !hasFeature("BulletParamsForAirs"))
     return
 
@@ -876,7 +883,7 @@ function addBulletsParamToDesc(descTbl, unit, item, isBulletCard) {
 
 
 
-  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard)
+  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, params.__merge({ name = bulletsSet?.bulletNames[0] ?? modName }))
   if (isBulletCard)
     addArmorPiercingToDescForBullets(bulletsData, descTbl)
   else
@@ -928,7 +935,7 @@ function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulle
 
   descTbl.bulletActions = [{ visual = getBulletsIconData(bulletsSet) }]
   let bulletsData = buildBulletsData([bulletParams], bulletsSet)
-  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, true)
+  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, { isBulletCard = true, name = bulletName })
   addArmorPiercingToDescForBullets(bulletsData, descTbl)
   checkBulletParamsBeforeRender(descTbl)
   return descTbl

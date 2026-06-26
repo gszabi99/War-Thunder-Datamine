@@ -587,6 +587,15 @@ bulletGraphSlot > bulletDesc {
   background-color:@frameHeaderBackgroundColor;
 }
 
+[show_console_buttons=yes] bulletGraphSlot > bulletDesc {
+  behavior:button;
+  on_pushed:'::gcb.delayedTooltipPush';
+  on_hold_start:'::gcb.delayedTooltipHoldStart';
+  on_hold_stop:'::gcb.delayedTooltipHoldStop';
+  on_hover:'::gcb.delayedTooltipHover';
+  on_unhover:'::gcb.delayedTooltipHover';
+}
+
 bulletGraphSlot[selected=yes] > bulletDesc {
   background-color:@buttonColor;
 }

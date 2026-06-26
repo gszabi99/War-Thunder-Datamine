@@ -35,7 +35,7 @@ let { getSelAircraftByCountry, getCurSlotbarUnit } = require("%scripts/slotbar/s
 let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint
+let { initBackgroundModelHint, updateBackgroundModelHint, openPresetWndForShell
 } = require("%scripts/hangar/backgroundModelHint.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -91,7 +91,6 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 let { needShowTutorial, reqFirstCountryChoice,
   saveShowedTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
-
 
 let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nut")
 let { isQueueActive, findQueue, isAnyQueuesActive, checkQueueType } = require("%scripts/queue/queueState.nut")
@@ -1376,6 +1375,10 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   function on_show_clan_requests() { 
     if (isHaveRightsToReviewCandidates())
       openClanRequestsWnd(getMyClanCandidates(), clan_get_my_clan_id(), false);
+  }
+
+  function onShellClick(obj) {
+    openPresetWndForShell(obj)
   }
 
   onEventToBattleLocShortChanged = @(_params) this.doWhenActiveOnce("updateStartButton")

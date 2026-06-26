@@ -496,6 +496,11 @@ weaponry_item {
       btnName:t='RT'
       hasIncreasedTopMargin:t='yes'
       ButtonImg {}
+      <<#isTooltipByHold>>
+      on_pushed:t='::gcb.delayedTooltipChildPush'
+      on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
+      on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+      <</isTooltipByHold>>
 
       tdiv {
         id:t='goToModTutorial_new_icon'

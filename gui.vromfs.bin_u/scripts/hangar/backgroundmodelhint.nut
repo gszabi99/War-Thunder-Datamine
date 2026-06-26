@@ -1,12 +1,10 @@
-from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { eventbus_subscribe } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { endsWith } = require("%sqstd/string.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { hangar_get_current_unit_name } = require("hangar")
 let { getWeaponParamsByWeaponBlkPath } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -15,6 +13,12 @@ let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName,
   getModificationBulletsEffect
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
+let { openModalInfo, destroyModalInfo, getModalInfoByUnitId, isUseGamePad
+} = require("%scripts/modalInfo/modalInfo.nut")
+let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
+let { parse_json } = require("json")
+
+let shellFocusedInHangar = Watched("")
 
 const DELAYED_SHOW_HINT_SEC = 0.3
 
@@ -26,6 +30,35 @@ let defData = {
   viewData = null
 }
 
+function isShellFocusedInHangar(shellName) {
+  if (shellFocusedInHangar.get() == "")
+    return false
+  return shellFocusedInHangar.get() == shellName
+}
+
+function openPresetWndForShell(obj) {
+  destroyModalInfo()
+  let tooltipId = obj?.tooltipId ?? ""
+  if (tooltipId == "")
+    return
+  let params = parse_json(tooltipId)
+  let presetName = params?.presetName
+  if (presetName == null)
+    return
+  eventbus_send("click_demonstrated_shell", { presetName })
+}
+
+function openDelayedOrModalTooltip(obj, tooltipProvider, unitName, params, isCursorInBoundsOptional, getTooltipIdFn) {
+  let parentObj = obj.getParent()
+  parentObj.tooltipId = getTooltipIdFn()
+  if (isUseGamePad()) {
+    delayedTooltipOnHover(parentObj, isCursorInBoundsOptional)
+    return
+  }
+  let handler = handlersManager.getActiveBaseHandler()
+  openModalInfo(obj, handler, tooltipProvider, unitName, params, null, isCursorInBoundsOptional)
+}
+
 function fillSecondaryWeaponHint(obj, unitName, weaponBlkName, presetName) {
   let weapon = getWeaponParamsByWeaponBlkPath(unitName, weaponBlkName)
   if (weapon == null) {
@@ -34,9 +67,10 @@ function fillSecondaryWeaponHint(obj, unitName, weaponBlkName, presetName) {
   }
   if (presetName == "")
     presetName = weapon.presetId
-  SINGLE_WEAPON.fillTooltip(obj, {}, unitName,
-    { blkPath = weaponBlkName, tType = weapon.trigger, presetName = presetName })
-  obj.width = "1@bulletTooltipCardWidth"
+  let params = { blkPath = weaponBlkName, tType = weapon.trigger, presetName = presetName }
+  let isCursorInBoundsOptional = @() isShellFocusedInHangar(weaponBlkName)
+  openDelayedOrModalTooltip(obj, SINGLE_WEAPON, unitName, params, isCursorInBoundsOptional,
+    @() SINGLE_WEAPON.getTooltipId(unitName, params))
   obj.show(true)
 }
 
@@ -57,8 +91,13 @@ function fillBulletHint(obj, unitName, bulletName, bulletType) {
   }
   let isBulletBelt = (bulletsSet?.isBulletBelt ?? false)
     && ((bulletsSet?.bulletDataByType.len() ?? 0) > 1)
-  if (!isBulletBelt)
-    MODIFICATION.fillTooltip(obj, {}, unitName, { modName = bulletSetName })
+  let isCursorInBoundsOptional = @() isShellFocusedInHangar(bulletName)
+  if (!isBulletBelt) {
+    let params = { modName = bulletSetName }
+    params.__update({ forceHideActionText = true })
+    openDelayedOrModalTooltip(obj, MODIFICATION, unitName, params, isCursorInBoundsOptional,
+      @() MODIFICATION.getTooltipId(unitName, bulletSetName, params))
+  }
   else {
     let bSet = bulletsSet.__merge({ bullets = [bulletType] },
       bulletsSet.bulletDataByType?[bulletType] ?? {})
@@ -70,14 +109,16 @@ function fillBulletHint(obj, unitName, bulletName, bulletType) {
       useDefaultBullet, false)
 
     let bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
-    SINGLE_BULLET.fillTooltip(obj, {}, unitName, {
+    let params = {
       bulletName = bulletType
       modName = bulletName
       bSet
       bulletParams
-    })
+    }
+    params.__update({ forceHideActionText = true })
+    openDelayedOrModalTooltip(obj, SINGLE_BULLET, unitName, params, isCursorInBoundsOptional,
+      @() SINGLE_BULLET.getTooltipId(unitName, bulletType, params))
   }
-  obj.width = "1@bulletTooltipCardWidth"
   obj.show(true)
 }
 
@@ -100,6 +141,7 @@ let hintsDataById = {
   weaponsHint = {
     objId = "custom_hint"
     updateObjData = fillWeaponsHint
+    isModalTooltip = true
   }.__update(defData)
 }
 
@@ -115,6 +157,7 @@ function initBackgroundModelHint(handler) {
   screen = [ screen_width(), screen_height() ]
   unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
   offset = [ cursorOffset, cursorOffset ]
+
   obj.setUserData(handler)
 }
 
@@ -129,15 +172,22 @@ function getHintObj(hintData) {
   return res?.isValid() ? res : null
 }
 
-
 function placeBackgroundModelHint(obj) {
-  if (hintsDataById.findvalue(@(v) v.needShow) == null)
+  let hintDataToShow = hintsDataById.findvalue(@(v) v.needShow)
+  if (hintDataToShow == null)
     return
 
+  let { isModalTooltip = false } = hintDataToShow
+
   let cursorPos = get_dagui_mouse_cursor_pos_RC()
-  let size = obj.getSize()
-  obj.left = clamp(cursorPos[0] + offset[0], unsafe[0], max(unsafe[0], screen[0] - unsafe[0] - size[0])).tointeger()
-  obj.top = clamp(cursorPos[1] + offset[1], unsafe[1], max(unsafe[1], screen[1] - unsafe[1] - size[1])).tointeger()
+  let size = isModalTooltip ? [2*offset[0], 2*offset[1]] : obj.getSize()
+  let [posX, posY] = isModalTooltip
+    ? [cursorPos[0] - offset[0], cursorPos[1] - offset[1]]
+    : [cursorPos[0] + offset[0], cursorPos[1] + offset[1]]
+
+  obj.left = clamp(posX, unsafe[0], max(unsafe[0], screen[0] - unsafe[0] - size[0])).tointeger()
+  obj.top = clamp(posY, unsafe[1], max(unsafe[1], screen[1] - unsafe[1] - size[1])).tointeger()
+  obj["size"] = isModalTooltip ? $"{size[0]},{size[1]}" : "w,h"
 }
 
 function showHint() {
@@ -147,15 +197,17 @@ function showHint() {
     return
 
   let hintObj = getHintObj(hintDataToShow)
-  if (!hintObj)
+  if (!hintObj?.isValid())
     return
 
   let { updateObjData = @(obj, _viewData) obj.show(true), viewData } = hintDataToShow
   hintDataToShow.obj = hintObj
   hintDataToShow.isVisible = true
   hintDataToShow.needUpdate = false
+  let handler = handlersManager.getActiveBaseHandler()
+  let parentObj = !!handler ? handler.scene.findObject("hangar_hint") : hintObj.getParent()
+  placeBackgroundModelHint(parentObj)
   updateObjData(hintObj, viewData)
-  placeBackgroundModelHint(hintObj.getParent())
 }
 
 function startHintTimer() {
@@ -170,8 +222,14 @@ function hideSingleHint(hintData) {
   hintData.isVisible = false
   hintData.needShow = false
   hintData.needUpdate = false
-  getHintObj(hintData)?.show(false)
   hintData.obj = null
+  shellFocusedInHangar.set("")
+  let hintObj = getHintObj(hintData)
+  if (!hintObj?.isValid())
+    return
+  hintObj.show(false)
+  if (hintData?.isModalTooltip)
+    hintObj.getParent().tooltipId = ""
 }
 
 function hideAllHints() {
@@ -193,7 +251,7 @@ function showBackgroundModelHint(params) {
     return
   }
 
-  if (!showConsoleButtons.get() || is_mouse_last_time_used()) 
+  if (!isUseGamePad()) 
     return
 
   clickToView.needShow = true
@@ -212,16 +270,27 @@ function updateBackgroundModelHint(obj) {
 eventbus_subscribe("backgroundHangarVehicleHoverChanged", showBackgroundModelHint)
 
 function showWeaponTooltip(params) {
+  let unitName = hangar_get_current_unit_name()
+
+  let shownModalInfo = getModalInfoByUnitId(unitName)
+  if (shownModalInfo) {
+    if (isUseGamePad())
+      return
+    destroyModalInfo()
+  }
+
   let { weaponsHint } = hintsDataById
   weaponsHint.viewData = {
-    unitName = hangar_get_current_unit_name()
+    unitName
     weaponName = params.name
     presetName = params.presetName
     bulletType = params.bulletType
   }
   if (weaponsHint.isVisible) 
     weaponsHint.needUpdate = true
+
   weaponsHint.needShow = true
+  shellFocusedInHangar.set(params.name)
   startHintTimer()
 }
 
@@ -236,4 +305,5 @@ addListenersWithoutEnv({
 return {
   initBackgroundModelHint
   updateBackgroundModelHint
+  openPresetWndForShell
 }

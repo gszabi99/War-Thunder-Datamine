@@ -51,6 +51,7 @@ tdiv {
         text:t='<<name>>'
       }
       tooltipDesc {
+        id:t='descriptionText'
         tinyFont:t='yes'
         text:t='<<desc>>'
         max-width:t='@bulletAnimationWidth'
@@ -133,14 +134,19 @@ tdiv {
       tdiv {
         margin-bottom:t='1/4@bulletTooltipPadding'
         <<#value>>
-        activeText { text:t='<<value>>'; smallFont:t='yes' }
-        textareaNoTab {
-          text:t=' - <<text>>';
+        activeText {
+          text:t='<<value>>'
           smallFont:t='yes'
-          valign:t='center';
-          overlayTextColor:t='minor';
+          valign:t='center'
+        }
+        textareaNoTab {
+          text:t=' - <<text>>'
+          smallFont:t='yes'
+          valign:t='center'
+          overlayTextColor:t='minor'
         }
         <</value>>
+        <<@additionalMarkup>>
       }
       <</divider>>
       <<#divider>>
@@ -196,10 +202,10 @@ tdiv {
     <<#delayed>>
     animated_wait_icon
     {
-      id:t='loading'
-      pos:t="50%pw-50%w,0";
-      position:t='relative';
-      background-rotation:t = '0'
+      id:t='delayed_icon'
+      pos:t='50%pw-50%w,0'
+      position:t='relative'
+      background-rotation:t='0'
     }
     <</delayed>>
 

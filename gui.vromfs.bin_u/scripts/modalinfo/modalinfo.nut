@@ -128,6 +128,14 @@ function getObjectBounds(obj) {
   }
 }
 
+function getCursorPos() {
+  let cursorPosArr = get_dagui_mouse_cursor_pos()
+  return {
+    x = cursorPosArr[0]
+    y = cursorPosArr[1]
+  }
+}
+
 function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds, preferredSide, offsetX, offsetY) {
   let overlapDelta = to_pixels("1@blockInterval")
   let nestPlaceBounds = createInfoPlaceBounds()
@@ -170,6 +178,7 @@ function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds, preferredSid
 
   let isOverflowBottom = mainObjTop + infoObjHgt > nestObjBtm
   let posY = !isOverflowBottom ? mainObjTop : max(nestObjTop, nestObjBtm - infoObjHgt)
+
   let infoWndPos = [
     clamp(posX + offsetX, nestObjLft, maxX)
     clamp(posY + offsetY, nestObjTop, maxY)
@@ -180,9 +189,11 @@ function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds, preferredSid
 }
 
 function createInfoHolder(initiatorObj) {
-  initiatorObj.getScene().createElementByObject(initiatorObj, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", null)
+  let holderParent = watchedObjects.len() > 0 ? watchedObjects[watchedObjects.len() - 1].infoWnd : null
+  let parentObj = holderParent ?? initiatorObj
+  parentObj.getScene().createElementByObject(parentObj, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", null)
   return {
-    infoWnd = initiatorObj.findObject("modalInfoHolder")
+    infoWnd = parentObj.findObject("modalInfoHolder")
   }
 }
 
@@ -225,14 +236,6 @@ function destroy() {
   updateTimer()
 }
 
-function getCursorPos() {
-  let cursorPosArr = get_dagui_mouse_cursor_pos()
-  return {
-    x = cursorPosArr[0]
-    y = cursorPosArr[1]
-  }
-}
-
 function removeInvalidWatchedObjects() {
   watchedObjects.replace(watchedObjects.filter(function(objects) {
     let { infoWnd, infoWndHolder } = objects
@@ -255,11 +258,11 @@ onTimerTick = function() {
   let cursorPos = getCursorPos()
   isInAct = true
 
-  let { infoWnd, infoWndHolder, initiatorObj, infoWndBounds } = watchedObjects[watchedObjects.len() - 1]
+  let { infoWnd, infoWndHolder, initiatorObj, infoWndBounds, isCursorInBoundsOptional } = watchedObjects[watchedObjects.len() - 1]
   let boundsArr = [infoWndBounds]
   if (initiatorObj.isValid())
     boundsArr.append(getObjectBounds(initiatorObj))
-  if (!isCursorInBounds(boundsArr, cursorPos)) {
+  if (!isCursorInBounds(boundsArr, cursorPos) && !(isCursorInBoundsOptional?() ?? false)) {
     watchedObjects.pop()
     if (infoWnd?.isValid()) {
       broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })
@@ -275,8 +278,8 @@ onTimerTick = function() {
   isInAct = false
 }
 
-function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
-  if (watchedObjects.findindex(@(o) o.id == id) != null)
+function addModalInfo(initiatorObj, handler, tooltipType, id, params, isCursorInBoundsOptional) {
+  if (watchedObjects.findindex(@(o) o.id == id && o.initiatorObj.isEqual(initiatorObj)) != null)
     return null
 
   let initiatorBounds = getObjectBounds(initiatorObj)
@@ -296,9 +299,7 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
   let infoWndBounds = getObjectBounds(infoWnd)
   let offsetX = tooltipType.modalOffsetX != "" ? to_pixels(tooltipType.modalOffsetX) : 0
   let offsetY = tooltipType.modalOffsetY != "" ? to_pixels(tooltipType.modalOffsetY) : 0
-
   infoWnd["pos"] = getInfoWndPosition(initiatorBounds, infoWndBounds, prefSide, offsetX, offsetY)
-
   local fakeInitiator = null
   if (infoWndHolder != null) {
     fakeInitiator = infoWndHolder.findObject("fakeInitiator")
@@ -313,6 +314,7 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params) {
     initiatorObj
     infoWndBounds
     fakeInitiator
+    isCursorInBoundsOptional
   })
 
   updateTimer()
@@ -334,10 +336,10 @@ function closeModalInfo(isDelayed = false) {
   broadcastEvent("RemoveOpenedModalInfo", { objs = watchedObjects.map(@(t) t.infoWnd) })
 }
 
-function openModalInfo(obj, handler, tooltipType, id, params, initObj = null) {
+function openModalInfo(obj, handler, tooltipType, id, params, initObj = null, isCursorInBoundsOptional = @() null) {
   if (isActionsListOpen.get() == true)
     return null
-  return addModalInfo(initObj ?? obj.getParent(), handler, tooltipType, id, params)
+  return addModalInfo(initObj ?? obj.getParent(), handler, tooltipType, id, params, isCursorInBoundsOptional)
 }
 
 isActionsListOpen.subscribe(@(_) destroy())
@@ -346,5 +348,6 @@ return {
   openModalInfo
   closeModalInfo
   destroyModalInfo = destroy
+  getModalInfoByUnitId = @(id) watchedObjects.findvalue(@(o) o.id == id)
   isUseGamePad
 }

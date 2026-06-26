@@ -350,6 +350,8 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)
+
+  onShellClick = @(_obj) null
 }
 
 function canOpenHitsAnalysisWindow() {

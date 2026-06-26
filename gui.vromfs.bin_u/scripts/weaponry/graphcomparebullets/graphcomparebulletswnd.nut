@@ -14,6 +14,7 @@ let { graphColorList, getBulletCacheSaveId
 } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { secondsToMilliseconds, millisecondsToSeconds } = require("%sqstd/time.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const MAX_PLAY_VALUE = 1000
 
@@ -413,6 +414,11 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     this.updateBulletMarginInList(idx, obj)
     obj.findObject("bullet_name").setValue(bulletData.locName)
     obj.findObject("graph_legend").graphColor = graphColorList[idx].hex
+    let isTooltipByHold = showConsoleButtons.get()
+    let { tooltipId } = bulletData
+    let descObj = obj.findObject("bullet_desc")
+    descObj.title = isTooltipByHold ? "" : "$tooltipObj"
+    descObj.tooltipId = isTooltipByHold ? tooltipId : ""
     obj.findObject("tooltip_nest").tooltipId = bulletData.tooltipId
     let layeredIcon = handyman.renderCached("%gui/weaponry/bullets.tpl", bulletData.layeredIconData)
     this.guiScene.replaceContentFromText(obj.findObject("bullet_icon"), layeredIcon, layeredIcon.len(), this)

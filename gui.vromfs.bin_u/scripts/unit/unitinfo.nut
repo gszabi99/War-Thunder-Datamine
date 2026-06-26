@@ -93,6 +93,22 @@ function getUnitCountry(unit) {
   return unit?.shopCountry ?? ""
 }
 
+let cacheUnitCountryFromTags = {} 
+function getUnitCountryFromTags(unit) {
+  let cacheCountry = cacheUnitCountryFromTags?[unit.name]
+  if (cacheCountry != null)
+    return cacheCountry
+  local country = ""
+  foreach (tag in unit.tags) {
+    if (tag.startswith("country_")) {
+      country = tag
+      break
+    }
+  }
+  cacheUnitCountryFromTags[unit.name] <- country
+  return country
+}
+
 function getUnitName(unit, shopName = true) {
   let unitId = u.isUnit(unit) ? unit.name
     : u.isString(unit) ? unit
@@ -102,7 +118,8 @@ function getUnitName(unit, shopName = true) {
 }
 
 function getUnitCountryIcon(unit, needOperatorCountry = false, needOverride = true) {
-  return getCountryIcon(needOperatorCountry ? unit.getOperatorCountry() : unit.shopCountry, needOverride)
+  let country = unit.shopCountry != "" ? unit.shopCountry : getUnitCountryFromTags(unit)
+  return getCountryIcon(needOperatorCountry ? unit.getOperatorCountry() : country, needOverride)
 }
 
 function getUnitsNeedBuyToOpenNextInEra(countryId, unitType, rank, ranksBlk = null) {

@@ -6,11 +6,13 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
+let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { eventbus_send} = require("eventbus")
 
 
 function doAction(obj, curEdiff) {
   let destination = obj.destination
-  let unit = getAircraftByName(obj.unit)
+  let unit = obj?.unit ? getAircraftByName(obj.unit) : getShowedUnit()
 
   if (["protection", "xray"].contains(destination)) {
     broadcastEvent("ChangeDMVieverMode", { page = destination })
@@ -24,6 +26,14 @@ function doAction(obj, curEdiff) {
       defer(@() handlersManager.animatedSwitchScene(@() handlersManager.loadHandler(gui_handlers.ProtectionAnalysis, { unit = unit })))
     else
       handlersManager.animatedSwitchScene(@() handlersManager.loadHandler(gui_handlers.ProtectionAnalysis, { unit = unit }))
+  }
+  else if (destination == "trajectory") {
+    let ammoName = obj?.id ?? ""
+    eventbus_send("trajectory_btn_clicked", {
+      unit
+      ammoName
+      applySelectedOptionAfterInit = true
+    })
   }
   destroyModalInfo()
 }

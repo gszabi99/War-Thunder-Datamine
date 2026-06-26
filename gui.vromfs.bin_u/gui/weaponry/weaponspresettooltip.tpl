@@ -59,16 +59,20 @@ tdiv {
         <<^divider>>
         tdiv {
           width:t='pw'
+          flow:t='h-flow'
           margin-bottom:t='1/2@bulletTooltipPadding'
           <<#value>>
+          <<@markupValue>>
           textareaNoTab {
-            width:t='fw'
-            max-width:t='fw'
+            max-width:t='pw'
             text:t='<color=@activeTextColor><<value>></color> - <<text>>'
             smallFont:t='yes'
+            <<#additionalMarkup>>
             valign:t='center'
+            <</additionalMarkup>>
             overlayTextColor:t='minor'
           }
+          <<@additionalMarkup>>
           <</value>>
         }
         <</divider>>
@@ -187,60 +191,18 @@ tdiv {
     <<#delayed>>
     animated_wait_icon
     {
-      id:t='loading'
-      pos:t="50%pw-50%w,0"
+      id:t='delayed_icon'
+      pos:t='50%pw-50%w,0'
       position:t='relative'
-      background-rotation:t = '0'
+      background-rotation:t='0'
     }
     <</delayed>>
 
-    <<#changeToSpecs>>
-    weaponPresetChangeSpecBlock {
-      flow:t='vertical'
+    tdiv {
+      id:t='changeToSpecsNest'
       width:t='pw'
-      padding-bottom:t='1/2@bulletTooltipPadding'
-      tooltipDesc {
-        tinyFont:t='yes'
-        padding:t='1@bulletTooltipPadding'
-        <<#presetsNames>>
-        text:t='<<changeSpecTitle>><<?ui/colon>>'
-        <</presetsNames>>
-
-        <<^presetsNames>>
-        text:t='<<changeSpecTitle>>'
-        background-color:t='@frameHeaderBackgroundColor'
-        margin-bottom:t='1@bulletTooltipPadding'
-        <</presetsNames>>
-      }
-
-      <<#changeToSpecsParams>>
-      tdiv {
-        width:t='pw'
-        padding:t='1@bulletTooltipPadding, 0'
-        margin-bottom:t='1/2@bulletTooltipPadding'
-        <<#effectValue>>
-        textareaNoTab {
-          width:t='fw'
-          max-width:t='fw'
-          text:t='<<effectValue>> - <<text>>'
-          smallFont:t='yes'
-          valign:t='center'
-          overlayTextColor:t='minor'
-        }
-        <</effectValue>>
-      }
-      <</changeToSpecsParams>>
-
-      textareaNoTab {
-        padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
-        width:t='pw'
-        text:t='<<changeSpecNotice>>'
-        tinyFont:t='yes'
-        overlayTextColor:t='minor'
-      }
+      include "%gui/weaponry/weaponTooltipChangeToSpecs.tpl"
     }
-    <</changeToSpecs>>
-
     <<#showFooter>>
     div {
       width:t='pw'

@@ -56,8 +56,8 @@ function removeValidateTimer() {
   validateTimerId = -1
 }
 
-function validateObjs(_) {
-  if (hintTgt?.isValid() && hintTgt.isHovered()) 
+function validateObjs(isCursorInBoundsOptional) {
+  if (hintTgt?.isValid() && (hintTgt.isHovered() || isCursorInBoundsOptional())) 
     return
   hintTgt = null
   hideWaitIcon()
@@ -66,9 +66,9 @@ function validateObjs(_) {
   removeValidateTimer()
 }
 
-function startValidateTimer() {
+function startValidateTimer(isCursorInBoundsOptional) {
   if (validateTimerId < 0)
-    validateTimerId = periodic_task_register({}, validateObjs, 1)
+    validateTimerId = periodic_task_register({}, @(_) validateObjs(isCursorInBoundsOptional), 1)
 }
 
 function getInfoObjForObj(obj, curInfoObj, infoObjId, ctor) {
@@ -115,7 +115,7 @@ function showWaitIconForObj(obj) {
   waitPlace = wIcon
 }
 
-function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false) {
+function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false, isCursorInBoundsOptional = @() null) {
   let params = parse_json(tooltipId)
   params.isOpenByHoldBtn <- isOpenByHoldBtn
   if (type(params) != "table" || !("ttype" in params) || !("id" in params))
@@ -124,7 +124,7 @@ function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false)
   let tooltipType = getTooltipType(params.ttype)
 
   if (tooltipType.isModalTooltip) {
-    let realObj = openModalInfo(tooltipObj, gui_handlers.BaseGuiHandlerWT, tooltipType, params.id, params, initObj)
+    let realObj = openModalInfo(tooltipObj, gui_handlers.BaseGuiHandlerWT, tooltipType, params.id, params, initObj, isCursorInBoundsOptional)
     if (realObj == null)
       return false
     openedTooltipObjs.append(addEventListenersTooltip(realObj, null, tooltipType, params.id, params))
@@ -138,7 +138,7 @@ function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false)
   return isSuccess
 }
 
-function showTooltipForObj(obj, isOpenByHoldBtn = false) {
+function showTooltipForObj(obj, isOpenByHoldBtn = false, isCursorInBoundsOptional = @() null) {
   let tooltipId = obj?.tooltipId
   let tooltip = getTooltipForObj(obj)
   if (!tooltip)
@@ -146,7 +146,7 @@ function showTooltipForObj(obj, isOpenByHoldBtn = false) {
   if (tooltipPlace?.isValid() && !tooltipPlace.isEqual(tooltip))
     hideTooltip()
 
-  let isSuccess = fillTooltipObj(tooltip, obj, tooltipId ?? "", isOpenByHoldBtn)
+  let isSuccess = fillTooltipObj(tooltip, obj, tooltipId ?? "", isOpenByHoldBtn, isCursorInBoundsOptional)
   show_obj(tooltip, isSuccess)
   tooltipPlace = tooltip
 
@@ -216,9 +216,9 @@ function restartHintTask(cb, delay = 1) {
   hoverHintTask = periodic_task_register({}, cb, delay)
 }
 
-function onHover(obj) {
+function onHover(obj, isCursorInBoundsOptional = @() false) {
   hideWaitIcon()
-  let isHovered = obj.isHovered()
+  let isHovered = obj.isHovered() || isCursorInBoundsOptional()
   let isSame = hintTgt?.isValid() && hintTgt.isEqual(obj)
   if (isSame ? !isHovered : isHovered) {
     removeHintTask()
@@ -228,14 +228,14 @@ function onHover(obj) {
   if (!isHovered)
     return
 
-  startValidateTimer()
+  startValidateTimer(isCursorInBoundsOptional)
   hintTgt = obj
   restartHintTask(function(_) {
     removeHintTask()
     if (hintTgt?.isValid())
       if (is_mouse_last_time_used()) {
         if (hasTooltip(obj))
-          showTooltipForObj(hintTgt)
+          showTooltipForObj(hintTgt, false, isCursorInBoundsOptional)
       }
       else
         if(showConsoleButtons.get())

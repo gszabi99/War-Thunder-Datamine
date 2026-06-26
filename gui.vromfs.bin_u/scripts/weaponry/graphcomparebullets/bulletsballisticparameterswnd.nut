@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { buildBallisticTrajectoryData, buildArmorPenetrationData } = require("unitCalculcation")
-let { isMissileWeaponType, isMissileBullet, isGuidedBomb } = require("%scripts/weaponry/weaponryInfo.nut")
+let { isMissileWeapon, isMissileBullet, isGuidedBomb } = require("%scripts/weaponry/weaponryInfo.nut")
 let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 let { GraphCompareBulletsWnd } = require("%scripts/weaponry/graphCompareBullets/graphCompareBulletsWnd.nut")
 let { mkSliderMarkup } = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut")
@@ -24,7 +24,7 @@ let unitsTypesBulletsCanBeCompared = {
 }.map(@(l) l.reduce(@(res, v) res.$rawset(v, true), {}))
 
 function canRequestBallisticsData(bullet) {
-  return isMissileWeaponType(bullet?.weaponType)
+  return isMissileWeapon(bullet?.weaponType)
     || isGuidedBomb(bullet?.weaponType)
     || isMissileBullet(bullet?.bulletParams.bulletType)
 }

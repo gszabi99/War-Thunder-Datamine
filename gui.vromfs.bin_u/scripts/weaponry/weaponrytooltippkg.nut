@@ -25,7 +25,8 @@ let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorP
   checkBulletParamsBeforeRender
 } = require("%scripts/weaponry/bulletsVisual.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWeaponsList, isWeaponEnabled,
-  addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeaponType, isGuidedBomb
+  addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb,
+  getAdditionalWeaponMarkupTypes
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModElements, getFullItemCostText, makeWeaponInfoData
 } = require("weaponryDescription.nut")
@@ -140,7 +141,8 @@ function reqEffectsGeneration(unit) {
 
 function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
   
-  let { showOnlyNamesAndSpecs = false, addShellTrajectoryBtn = false } = params
+  let { showOnlyNamesAndSpecs = false, addShellTrajectoryBtn = false,
+    needAdditionalMarkupInShellDesc = false } = params
   let presetsWeapons = []
   let presetsNames = {
     names = []
@@ -148,8 +150,8 @@ function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
   foreach(weaponBlockSet in (weaponInfoData?.resultWeaponBlocks ?? [])) {
     foreach(weapon in weaponBlockSet) {
       let weaponName = weapon.weaponName
-      let addShellTrajectoryBtnForMissile = addShellTrajectoryBtn &&
-        (isMissileWeaponType(weapon?.weaponType) || isGuidedBomb(weapon?.weaponType))
+      let isMissileOrGuidedBomb = isMissileWeapon(weapon?.weaponType) || isGuidedBomb(weapon?.weaponType)
+      let addShellTrajectoryBtnForMissile = addShellTrajectoryBtn && isMissileOrGuidedBomb
       local presetName = loc($"weapons/{weaponName}")
       let ammoName = weapon?.bulletName ?? weapon?.weaponName ?? ""
       if ([WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNON].contains(weapon.weaponType)) {
@@ -168,10 +170,14 @@ function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
         presetsNames.names.append(presetDesc)
         continue
       }
-      let presetParams = getWeaponExtendedInfo(weapon, unit, {
+      let paramsForWeaponExtendedInfo = {
         weaponType = weapon.weaponType
         ediff = params?.curEdiff
-      })
+        optionalMarkupTypes = !needAdditionalMarkupInShellDesc ? null
+          : getAdditionalWeaponMarkupTypes(weapon)
+        canAddNestedTooltips = true
+      }
+      let presetParams = getWeaponExtendedInfo(weapon, unit, paramsForWeaponExtendedInfo)
       let presetDesc = { presetName, presetParams}
       if (addShellTrajectoryBtnForMissile)
         presetDesc.ammoNameForShellTrajectoryBtn <- ammoName
@@ -522,7 +528,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   local currentPrice = statusTbl.showPrice ? getFullItemCostText(unit, item) : ""
 
   let { isBulletCard = false, hasPlayerInfo = true, isPurchaseInfoHidden = false,
-    alwaysShowReqMod = false } = params
+    alwaysShowReqMod = false, needAdditionalMarkupInShellDesc = false } = params
 
   if (hasPlayerInfo
     && !isWeaponTierAvailable(unit, curTier) && curTier > 1
@@ -671,14 +677,14 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     if (item.type == weaponsItem.modification)
       res.modificationAnimation <- item?.modificationAnimation
 
-    addBulletsParamToDesc(res, unit, item, isBulletCard)
+    addBulletsParamToDesc(res, unit, item, { isBulletCard, needAdditionalMarkupInShellDesc })
     let { pairModName = null } = params
     if (pairModName != null) {
       let pairMod = getModificationByName(unit, pairModName)
       if (pairMod != null) {
         name = ""
         let pairBulletsParam = {}
-        addBulletsParamToDesc(pairBulletsParam, unit, pairMod, isBulletCard)
+        addBulletsParamToDesc(pairBulletsParam, unit, pairMod, { isBulletCard })
         res.bulletAnimations.extend(pairBulletsParam.bulletAnimations)
         res.bulletActions.extend(pairBulletsParam.bulletActions )
         res.hasBulletAnimation = res.hasBulletAnimation || pairBulletsParam.hasBulletAnimation
@@ -832,16 +838,38 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
     checkItemBeforeGetDescFn = null
     isPurchaseInfoHidden = false
   } = params
-
-  let self = callee()
   let descTbl = getItemDescTbl(unit, item, params, effect,
     function(effect_, ...) {
       if (checkObj(obj) && obj.isVisible()) {
         let itemAndEffectToPass = checkItemBeforeGetDescFn ? checkItemBeforeGetDescFn(item, effect_)
           : { item , effect = effect_ }
 
-        if (itemAndEffectToPass.item)
-          self(obj, unit, itemAndEffectToPass.item, handler, params, itemAndEffectToPass.effect)
+        if (!itemAndEffectToPass.item)
+          return
+
+        let self = callee()
+        let fullDescTbl = getItemDescTbl(unit, itemAndEffectToPass.item,
+          params, itemAndEffectToPass.effect, self)
+        let { delayed, desc, addDesc = null, changeToSpecs = null } = fullDescTbl
+        showObjById("delayed_icon", delayed, obj)
+        if (desc != "") {
+          let descObj = obj.findObject("descriptionText")
+          if (descObj?.isValid())
+            descObj.setValue(desc)
+        }
+        if (addDesc != null) {
+          let descObj = obj.findObject("addDescText")
+          if (descObj?.isValid())
+            descObj.setValue(addDesc)
+        }
+        if (changeToSpecs != null) {
+          let changeToSpecsObj = obj.findObject("changeToSpecsNest")
+          if (changeToSpecsObj?.isValid()) {
+            let data = handyman.renderCached("%gui/weaponry/weaponTooltipChangeToSpecs.tpl",
+              fullDescTbl)
+            obj.getScene().replaceContentFromText(changeToSpecsObj, data, data.len(), handler)
+          }
+        }
       }
     })
 
@@ -977,6 +1005,7 @@ let defaultWeaponTooltipParamKeys = [
   "weaponBlkPath"
   "pairModName"
   "isPurchaseInfoHidden"
+  "isModalTooltip"
 ]
 function validateWeaponryTooltipParams(params) {
   if (params == null)

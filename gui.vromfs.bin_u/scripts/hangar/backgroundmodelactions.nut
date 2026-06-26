@@ -6,11 +6,13 @@ let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isPresetsWndReserved } = require("%scripts/weaponry/weaponryPresetsWndState.nut")
+let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 function onClickDemonstratedShell(params) {
   if (isPresetsWndReserved.get())
     return
 
+  destroyModalInfo()
   let unitName = hangar_get_current_unit_name()
   let unit = getAircraftByName(unitName)
 

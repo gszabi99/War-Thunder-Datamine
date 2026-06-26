@@ -167,15 +167,21 @@ function getUnitBulletsMarkup(unitName, unitType) {
   cacheUnitBullets(unitName, unitType)
 
   let bullets = unitBulletsCache[unitName]
-  let items = []
-  for (local i = 0; i < bullets.len(); i++) {
-    let caliber = floor(bullets[i].caliber * 1000)
-    local bulletsByCaliber = items.findvalue(@(v) v.caliber == caliber)
+  let items = bullets.reduce(function(acc, bullet) {
+    let caliber = floor(bullet.caliber * 1000)
+    local bulletsByCaliber = acc.findvalue(@(v) v.caliber == caliber)
     if (bulletsByCaliber == null) {
       bulletsByCaliber = { caliber, bullets = [], getCaliber = @() format(loc("caliber/mm"), caliber) }
-      items.append(bulletsByCaliber)
+      acc.append(bulletsByCaliber)
     }
-    bulletsByCaliber.bullets.append(bullets[i].__merge({ isLastItem = i == bullets.len() - 1 }))
+    bulletsByCaliber.bullets.append(bullet)
+    return acc
+  }, [])
+
+  foreach (bulletByCaliber in items) {
+    let lastIdx = bulletByCaliber.bullets.len() - 1
+    foreach (i, bullet in bulletByCaliber.bullets)
+      bullet.isLastItem <- i == lastIdx
   }
   return handyman.renderCached("%gui/unitInfo/unitBullets.tpl", { items, isTooltipByHold = showConsoleButtons.get() })
 }

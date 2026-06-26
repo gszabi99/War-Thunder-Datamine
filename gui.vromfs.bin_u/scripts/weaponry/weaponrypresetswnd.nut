@@ -476,20 +476,20 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       item = null
       effect = null
     }
-    let descObj = this.scene.findObject("desc")
     let currentPreset = this.presets?[this.curPresetIdx].weaponPreset
     if (!currentPreset) {
+      let descObj = this.scene.findObject("desc")
       this.guiScene.replaceContentFromText(descObj, "", 0, this)
       isGettingWeaponEffects.set(false)
     }
     else if (currentPreset.name == effect?.modifName) {
       isGettingWeaponEffects.set(false)
-      res.item <- item
-      res.effect <- effect
+      res.item = item
+      res.effect = effect
     }
-    else {
-      res.item <- currentPreset
-    }
+    else
+      this.updateDesc()
+
     return res
   }
 
@@ -1033,6 +1033,8 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.changeWndHeight(true)
     this.moveMouseToVisibleObj(obj, "decreaseWndHeightBtn")
   }
+
+  onShellClick = @(_obj) null
 
   function updateChangeWndHeightButtons(heightInTiers = null) {
     if (heightInTiers == null)

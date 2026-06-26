@@ -898,7 +898,3 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 }
 
 gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT
-
-return {
-  stickedDropDown
-}

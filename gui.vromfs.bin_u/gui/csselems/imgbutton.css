@@ -230,6 +230,7 @@ favoriteBtn {
   background-color:@gray;
   background-image:#ui/gameuiskin#icon_star.svg;
   input-transparent:no;
+  behavior:button;
 }
 
 favoriteBtn:hover {
@@ -242,8 +243,4 @@ favoriteBtn:hover {
 
 [isFavorite=yes] > favoriteBtn:hover {
   background-color:@gold;
-}
-
-[show_console_buttons=no] favoriteBtn {
-  behavior:button;
 }

@@ -124,13 +124,9 @@ let class ExporterForTss {
   function getMissionsList() {
     let missionsList = get_meta_missions_info(GM_SKIRMISH)
       .filter(function (mission) {
-        let misCampaign = mission?.campaign
         let misChapter = mission?.chapter
 
-        return (
-          misCampaign == "skirmish"
-          && !["test", "hidden"].contains(misChapter)
-        )
+        return !["test", "hidden"].contains(misChapter)
       })
 
     return missionsList

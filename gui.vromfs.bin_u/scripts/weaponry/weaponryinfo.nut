@@ -40,6 +40,8 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { getRandUnitOptPath, saveLocalUnitSettings, loadLocalUnitSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { mkRadarBandsListMarkup } = require("%scripts/weaponry/radarBandsView.nut")
+let { addBandsText } = require("%globalScripts/modeXrayLib.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -107,6 +109,53 @@ let triggerTypeToLoc = {
   [TRIGGER_TYPE.BOOSTERS] = "targetingPod",
 }
 
+const additionalMarkupTypes = {
+  MISSILE_SPEED = "missileSpeed"
+  RADAR_BANDS = "radarBands"
+}
+
+let missileWeaponTypes = [WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM].totable()
+let missileBulletTypes = [
+  "aam", "sam_tank", "atgm_tank", "atgm_tandem_tank", "atgm_ke_tank", "atgm_vt_fuze_tank", "atgm_he_tank"
+].totable()
+
+let isMissileWeapon = @(weaponType) weaponType in missileWeaponTypes
+let isMissileBullet = @(bulletType) bulletType in missileBulletTypes
+let isGuidedBomb = @(weaponType) weaponType == WEAPON_TYPE.GUIDED_BOMBS
+
+let mkMissileTrajectoryBtnMarkup = @(weapon)
+  @"Button_text {
+    id:t='{ammoName}'
+    class:t='modalInfo'
+    img {
+      background-image:t='#ui/gameuiskin#btn_fm_perfomance.svg'
+    }
+    on_click:t='onModalInfoButtonClick'
+    destination:t='trajectory'
+    btnText {
+      text:t='#mainmenu/missiles_trajectory'
+    }
+  }".subst({ ammoName = weapon?.bulletName ?? weapon?.weaponName ?? "" })
+
+let additionalMarkupByType = {
+  [additionalMarkupTypes.MISSILE_SPEED] = mkMissileTrajectoryBtnMarkup,
+  [additionalMarkupTypes.RADAR_BANDS] = mkRadarBandsListMarkup,
+}
+
+function getAdditionalWeaponMarkupTypes(weapon) {
+  let res = {}
+  if (isMissileWeapon(weapon?.weaponType) || isGuidedBomb(weapon?.weaponType))
+    res[additionalMarkupTypes.MISSILE_SPEED] <- additionalMarkupTypes.MISSILE_SPEED
+  return res
+}
+
+function getAdditionalBulletMarkupTypes(bulletsData) {
+  let res = {}
+  if (isMissileBullet(bulletsData?.bulletType))
+    res[additionalMarkupTypes.MISSILE_SPEED] <- additionalMarkupTypes.MISSILE_SPEED
+  return res
+}
+
 function convertTriggerToTriggerForLoc(trigger) {
   return triggerTypeToLoc?[trigger] ?? trigger
 }
@@ -121,11 +170,6 @@ let CONSUMABLE_TYPES = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, 
   TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES ]
 
 let NOT_WEAPON_TYPES = [ "targetingPod", "fuel tanks" ]
-
-let missileWeaponTypes = [WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM].totable()
-let missileBulletTypes = [
-  "aam", "sam_tank", "atgm_tank", "atgm_tandem_tank", "atgm_ke_tank", "atgm_vt_fuze_tank", "atgm_he_tank"
-].totable()
 
 let WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
@@ -781,11 +825,15 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
 
 
 function getWeaponExtendedInfo(weapon, unit, par) {
-  let { weaponType, ediff, newLine = null } = par
+  let { weaponType, ediff, newLine = null, optionalMarkupTypes = null,
+    canAddNestedTooltips = false } = par
   let res = []
   let activeEdiff = ediff ?? getShopDiffCode()
-  function addParamsToRes(value, text) {
-    res.append({ value, text, separator = loc("ui/colon") })
+  function addParamsToRes(value, text, addMarkupType = null) {
+    let newVal = { value, text, separator = loc("ui/colon") }
+    if (addMarkupType)
+      newVal.additionalMarkup <- additionalMarkupByType?[addMarkupType](weapon)
+    res.append(newVal)
   }
 
   local massText = null
@@ -802,6 +850,7 @@ function getWeaponExtendedInfo(weapon, unit, par) {
   if (massText)
     addParamsToRes(massText, loc("shop/tank_mass/tooltip"))
 
+  let speedAdditionalMarkupType = optionalMarkupTypes?[additionalMarkupTypes.MISSILE_SPEED]
   if (isInArray(weaponType, [ "rockets", "agm", "aam", "guided bombs" ])) {
     if (weapon?.guidanceType != null || weapon?.autoAiming != null) {
       let aimingType = weapon?.autoAiming == null ? ""
@@ -819,13 +868,14 @@ function getWeaponExtendedInfo(weapon, unit, par) {
       addParamsToRes(loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect")),
         loc("missile/aspect"))
     if (weapon?.radarBands != null) {
-      local bandsStr = ""
-      foreach (radarBand in weapon.radarBands) {
-        if (bandsStr.len() > 0)
-          bandsStr = "".concat(bandsStr, ", ")
-        bandsStr = "".concat(bandsStr, loc($"radar_freq_band_{radarBand}"))
+      if (canAddNestedTooltips)
+        res.append({ value = "", text = loc("missile/radarBand"),
+          markupValue = additionalMarkupByType?[additionalMarkupTypes.RADAR_BANDS](weapon) })
+      else {
+        let bandsTxtArr = []
+        addBandsText(weapon.radarBands, bandsTxtArr)
+        addParamsToRes("".join(bandsTxtArr), loc("missile/radarBand"))
       }
-      addParamsToRes(bandsStr, loc("missile/radarBand"))
     }
     if (weapon?.groundClutter != null && weapon?.dopplerSpeed != null)
       if (!weapon.groundClutter || weapon.dopplerSpeed) {
@@ -844,9 +894,11 @@ function getWeaponExtendedInfo(weapon, unit, par) {
     if (weapon?.launchRange)
       addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.launchRange), loc("missile/launchRange"))
     if (weapon?.machMax)
-      addParamsToRes(format("%.1f %s", weapon.machMax, loc("measureUnits/machNumber")), loc("rocket/maxSpeed"))
+      addParamsToRes(format("%.1f %s", weapon.machMax, loc("measureUnits/machNumber")),
+        loc("rocket/maxSpeed"), speedAdditionalMarkupType)
     else if (weapon?.maxSpeed)
-      addParamsToRes(measureType.SPEED_PER_SEC.getMeasureUnitsText(weapon.maxSpeed), loc("rocket/maxSpeed"))
+      addParamsToRes(measureType.SPEED_PER_SEC.getMeasureUnitsText(weapon.maxSpeed),
+        loc("rocket/maxSpeed"), speedAdditionalMarkupType)
     if (weapon?.loadFactorMax)
       addParamsToRes(measureType.GFORCE.getMeasureUnitsText(weapon.loadFactorMax), loc("missile/loadFactorMax"))
     if (weapon?.loadFactorLimit)
@@ -916,7 +968,8 @@ function getWeaponExtendedInfo(weapon, unit, par) {
   }
 
   if (weapon?.machLimit)
-    addParamsToRes(format("%.1f %s", weapon.machLimit, loc("measureUnits/machNumber")), loc("bombProperties/machLimit"))
+    addParamsToRes(format("%.1f %s", weapon.machLimit, loc("measureUnits/machNumber")),
+      loc("bombProperties/machLimit"), speedAdditionalMarkupType)
   if (weapon?.machLimitRockets)
     addParamsToRes(format("%.1f %s", weapon.machLimitRockets, loc("measureUnits/machNumber")), loc("rocketProperties/machLimit"))
 
@@ -1259,13 +1312,6 @@ function get_weapon_icons_text(unitName, weaponName) {
   return colorize("weaponPresetColor", "".join(weaponIconsText))
 }
 
-
-let isMissileWeaponType = @(weaponType) weaponType in missileWeaponTypes
-
-let isMissileBullet = @(bulletType) bulletType in missileBulletTypes
-
-let isGuidedBomb = @(weaponType) weaponType == WEAPON_TYPE.GUIDED_BOMBS
-
 return {
   KGF_TO_NEWTON
   TRIGGER_TYPE
@@ -1311,9 +1357,13 @@ return {
   getBulletBeltShortLocId
   getScoutScoreMuliplierWithUavByDiff
   getWeaponLocByTrigger
-  isMissileWeaponType
+  isMissileWeapon
   isMissileBullet
   isGuidedBomb
   isWeaponUnavailableInMission
   convertTriggerToTriggerForLoc
+  additionalMarkupTypes
+  additionalMarkupByType
+  getAdditionalWeaponMarkupTypes
+  getAdditionalBulletMarkupTypes
 }

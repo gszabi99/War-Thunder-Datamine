@@ -2426,6 +2426,7 @@ return {
   getInfoBlk
 
   getRadarSensorType
+  addBandsText
   getPartLocNameByBlkFile
   findBlockByNameWithParamValue
   findParamValue

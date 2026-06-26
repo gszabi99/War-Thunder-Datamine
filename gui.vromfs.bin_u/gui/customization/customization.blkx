@@ -1126,29 +1126,39 @@
       "position": "root",
       "input-transparent": "yes",
       "order-popup": "yes",
-      "smallHint": [
-        {
-          "id": "click_to_view_hint",
-          "display": "hide",
-          "text": {
-            "pos": "0, 50%ph-50%h",
-            "position": "relative",
-            "margin": "@blockInterval, 0",
-            "text": "#click_to_view",
-            "tinyFont": "yes"
-          },
-          "ButtonImg": {
-            "size": "1@infoBtnIconSize, 1@infoBtnIconSize",
-            "pos": "0, 50%ph-50%h",
-            "position": "relative",
-            "btnName": "A"
-          }
+      "smallHint": {
+        "id": "click_to_view_hint",
+        "display": "hide",
+        "text": {
+          "pos": "0, 50%ph-50%h",
+          "position": "relative",
+          "margin": "@blockInterval, 0",
+          "text": "#click_to_view",
+          "tinyFont": "yes"
         },
-        {
+        "ButtonImg": {
+          "size": "1@infoBtnIconSize, 1@infoBtnIconSize",
+          "pos": "0, 50%ph-50%h",
+          "position": "relative",
+          "btnName": "A"
+        }
+      },
+      "tdiv": {
+        "tooltipId": "",
+        "size": "pw,ph",
+        "behavior": "button",
+        "on_click": "onShellClick",
+        "on_pushed": "::gcb.delayedTooltipPush",
+        "on_hold_start": "::gcb.delayedTooltipHoldStart",
+        "on_hold_stop": "::gcb.delayedTooltipHoldStop",
+        "on_hover": "::gcb.delayedTooltipHover",
+        "on_unhover": "::gcb.delayedTooltipHover",
+        "focusBtnName": "A",
+        "smallHint": {
           "id": "custom_hint",
           "transparent": "yes"
         }
-      ]
+      }
     }
   ],
   "airInfoBlock": {

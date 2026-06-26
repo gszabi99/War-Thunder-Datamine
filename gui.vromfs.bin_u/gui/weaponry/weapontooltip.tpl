@@ -26,6 +26,7 @@ tdiv {
       text:t='<<reqText>>'
     }
     tooltipDesc {
+      id:t='descriptionText'
       text:t='<<desc>>'
     }
 
@@ -89,7 +90,19 @@ tdiv {
       }
     }
     <</modificationAnimation>>
+
+    <<#delayed>>
+    animated_wait_icon
+    {
+      id:t='delayed_icon'
+      pos:t='50%pw-50%w,0'
+      position:t='relative'
+      background-rotation:t='0'
+    }
+    <</delayed>>
+
     tooltipDesc {
+      id:t='addDescText'
       pos:t='0, @blockInterval'
       position:t='relative'
       hideEmptyText:t='yes'
@@ -166,15 +179,6 @@ tdiv {
     }
     <</amountText>>
 
-    <<#delayed>>
-    animated_wait_icon
-    {
-      id:t='loading'
-      pos:t="50%pw-50%w,0";
-      position:t='relative';
-      background-rotation:t = '0'
-    }
-    <</delayed>>
     <<#expText>>
     textareaNoTab {
       smallFont:t='yes'

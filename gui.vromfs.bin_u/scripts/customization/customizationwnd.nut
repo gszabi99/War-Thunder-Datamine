@@ -98,7 +98,7 @@ let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint
+let { initBackgroundModelHint, updateBackgroundModelHint, openPresetWndForShell
 } = require("%scripts/hangar/backgroundModelHint.nut")
 let ecs = require("%sqstd/ecs.nut")
 let { EventToggleDemonstratedShellOpt = null } = require("dasevents")
@@ -2445,6 +2445,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateSkinList()
     this.updateBanButton()
     saveBannedSkins()
+  }
+
+  function onShellClick(obj) {
+    openPresetWndForShell(obj)
   }
 
   function setPrioritySkin(skinId) {

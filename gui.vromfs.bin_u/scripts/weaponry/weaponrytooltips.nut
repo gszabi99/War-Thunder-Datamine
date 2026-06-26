@@ -12,6 +12,7 @@ let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, up
   validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip
   getInfantryWeaponParamToDesc, getInfantryArmorParamToDesc
 } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
+let { isInFlight } = require("gameplayBinding")
 
 const INFO_DELAY = 2.0
 local infoUnit = null
@@ -40,6 +41,7 @@ let lockedTimerHandler = {
 
 let tooltipTypes = {
   SINGLE_BULLET = {
+    isModalTooltip = true
     getTooltipId = function(unitName, bulletName = "", params = null, _p3 = null) {
       let p = params ? clone params : {}
       p.bulletName <- bulletName
@@ -66,6 +68,7 @@ let tooltipTypes = {
   }
 
   MODIFICATION = { 
+    isModalTooltip = true
     getTooltipId = function(unitName, modName = "", params = null, _p3 = null) {
       let p = validateWeaponryTooltipParams(params)
       p.modName <- modName
@@ -87,6 +90,7 @@ let tooltipTypes = {
       if (isModificationIsShell(unit, mod)) {
         params.isBulletCard <- true
         params.markupFileName <- "%gui/weaponry/shellTooltip.tpl"
+        params.needAdditionalMarkupInShellDesc <- !isInFlight()
       }
       updateModType(unit, mod)
       updateWeaponTooltip(obj, unit, mod, handler, params)
@@ -163,6 +167,7 @@ let tooltipTypes = {
 
   SINGLE_WEAPON = {
     isCustomTooltipFill = true
+    isModalTooltip = true
     fillTooltip = function(obj, handler, unitName, params) {
       if (!obj?.isValid())
         return false
@@ -174,6 +179,9 @@ let tooltipTypes = {
       obj["noPadding"] = "yes"
       obj["transparent"] = "yes"
 
+      if (!isInFlight())
+        params.needAdditionalMarkupInShellDesc <- true
+
       let descTbl = getSingleWeaponDescTbl(unit, params)
       setWidthForWeaponsPresetTooltip(obj, descTbl)
 
@@ -184,6 +192,7 @@ let tooltipTypes = {
   }
 
   WEAPON = { 
+    isModalTooltip = true
     getTooltipId = function(unitName, weaponName = "", params = null, _p3 = null) {
       let p = validateWeaponryTooltipParams(params)
       p.weaponName <- weaponName
@@ -218,6 +227,7 @@ let tooltipTypes = {
         needDescInArrayForm = true 
         markupFileName = "%gui/weaponry/weaponsPresetTooltip.tpl"
         maxSoldiersActive = params?.maxSoldiersActive
+        needAdditionalMarkupInShellDesc = !isInFlight()
       }, effect)
 
       return true

@@ -1725,8 +1725,42 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     move_mouse_on_child(this.curBundleTblObj, 0)
   }
 
+  function onBundleUnHover(obj) {
+    this.guiScene.performDelayed(this, function() {
+      if (this.curBundleTblObj == null)
+        return
+      local needResetDropdown = false
+
+      let openedModalInfo = this.scene.findObject("modalInfoHolder")
+      if (!openedModalInfo?.isValid())
+        needResetDropdown = true
+      else {
+        let [ width, height ] = openedModalInfo.getSize()
+        let [ left, top ] = openedModalInfo.getPosRC()
+        let cursorPosArr = get_dagui_mouse_cursor_pos()
+        let safeGap = to_pixels("20@sf/@pf")
+        let right = left + width + safeGap
+        let bottom = top + height
+        let isOutOfObject = cursorPosArr[0] < left - safeGap || cursorPosArr[1] < top || cursorPosArr[0] > right || cursorPosArr[1] > bottom
+        needResetDropdown = isOutOfObject
+      }
+
+      if (needResetDropdown)
+        this.onDropDownToggle(obj)
+    })
+  }
+
   function onBundleHover(obj) {
     
+    let hoveredBundleObj = obj.findObject("items_field")
+    if (this.curBundleTblObj != null && hoveredBundleObj?.isValid() && this.curBundleTblObj.isEqual(hoveredBundleObj))
+      return
+    let needDropdownForceOpen = !showConsoleButtons.get() && this.curBundleTblObj == null
+    if (needDropdownForceOpen) {
+      this.curBundleTblObj = hoveredBundleObj
+      this.onDropDownToggle(obj)
+      return
+    }
     if (!showConsoleButtons.get() || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     this.unstickCurBundle()
