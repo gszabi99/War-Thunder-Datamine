@@ -28,6 +28,7 @@ let { isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { bhvHintForceUpdateValuePID } = require("%scripts/viewUtils/bhvHint.nut")
 let { get_mission_difficulty_int } = require("guiMission")
+let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 const UPDATE_WEAPONS_DELAY = 0.5
 const SELECTOR_PIN_STATE_SAVE_ID = "airWeaponSelectorState"
@@ -360,6 +361,8 @@ let class HudAirWeaponSelector {
   function onTooltipObjClose(obj) {
     closeGenericTooltip(obj, this)
   }
+
+  onModalInfoClose = @() destroyModalInfo()
 
   function onAirWeapSelectorHover(obj) {
     this.hoveredWeaponBtn = obj

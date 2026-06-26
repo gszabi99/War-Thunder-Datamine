@@ -1727,7 +1727,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onBundleUnHover(obj) {
     this.guiScene.performDelayed(this, function() {
-      if (this.curBundleTblObj == null)
+      if (!this.isValid() || this.curBundleTblObj == null)
         return
       local needResetDropdown = false
 
@@ -1753,6 +1753,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onBundleHover(obj) {
     
     let hoveredBundleObj = obj.findObject("items_field")
+    if (this.curBundleTblObj != null && !this.curBundleTblObj?.isValid())
+      this.curBundleTblObj = null
     if (this.curBundleTblObj != null && hoveredBundleObj?.isValid() && this.curBundleTblObj.isEqual(hoveredBundleObj))
       return
     let needDropdownForceOpen = !showConsoleButtons.get() && this.curBundleTblObj == null

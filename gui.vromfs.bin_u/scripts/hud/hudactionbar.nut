@@ -49,6 +49,7 @@ let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { bhvHintForceUpdateValuePID } = require("%scripts/viewUtils/bhvHint.nut")
 let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
+let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 ecs.register_es("current_weapons_templates_init_es", {
   [["onInit", "onChange"]] = function(_eid, comp){
@@ -1234,6 +1235,8 @@ let class ActionBar {
   function onGenericTooltipOpen(obj) {
     openGenericTooltip(obj, this)
   }
+
+  onModalInfoClose = @() destroyModalInfo()
 
   function onActivateByShortcutId(obj) {
     let { shortcutId = "" } = obj
