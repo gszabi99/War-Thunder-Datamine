@@ -2570,18 +2570,18 @@
   },
   "125mm_ussr_APDS_FS": {
     "bullet": {
-      "mass": 4.85,
+      "mass": 3.9,
       "caliber": 0.125,
-      "damageCaliber": 0.032,
-      "ballisticCaliber": 0.032,
-      "Cx": 0.5068,
-      "speed": 1700.0,
+      "damageCaliber": 0.021,
+      "ballisticCaliber": 0.021,
+      "Cx": 0.85,
+      "speed": 1750.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "groundRicochetPreset": "apds_fs_ground",
       "secondaryShattersPreset": "apds_fs_long",
-      "bulletType": "apds_fs_tungsten_caliber_fins_tank",
+      "bulletType": "apds_fs_long_l30_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [
         0.23,
@@ -2589,7 +2589,10 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "bulletName": "125mm_3bm42",
+      "gbufferModelName": "tank_shell_apdsfs_ld_30_su",
+      "modelName": "tank_shell_apdsfs_ld_30_su",
+      "penetratorModelName": "tank_shell_apdsfs_ld_30_su_deform",
+      "bulletName": "125mm_3bm42_2",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -2662,17 +2665,17 @@
       },
       "sabot": {
         "bulletName": "apfsds_sabot",
-        "segmentCount": 3,
+        "segmentCount": 4,
         "startSeparateDist": 5.0,
         "separateRelSpeed": 0.03,
         "separateTime": 0.1,
         "separateDeviation": 0.035,
         "tumblingSpeed": 10.0,
-        "gbufferModelName": "tank_sabot_apdsfs_3bm42",
-        "modelName": "tank_sabot_apdsfs_3bm42",
+        "gbufferModelName": "tank_sabot_apdsfs_ld_30_su",
+        "modelName": "tank_sabot_apdsfs_ld_30_su",
         "mass": 0.733,
-        "caliber": 0.032,
-        "speed": 1700.0,
+        "caliber": 0.022,
+        "speed": 1660.0,
         "Cx": 3.5,
         "maxDistance": 17000.0,
         "normalizationPreset": "ap",
@@ -3048,43 +3051,12 @@
           10000.0
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          457.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          454.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          445.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          431.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          419.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          406.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          380.0,
-          3000.0
-        ],
-        "ArmorPower10000m": [
-          5.0,
-          10000.0
-        ],
-        "ArmorPower20000m": [
-          0.0,
-          20000.0
-        ]
+      "damage": {
+        "kinetic": {
+          "lanzOdermattMaterial": "tungsten",
+          "lanzOdermattWorkingLength": 565.0,
+          "lanzOdermattDensity": 17500.0
+        }
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -3386,18 +3358,18 @@
   },
   "USSR_APDS_FS": {
     "bullet": {
-      "mass": 4.85,
+      "mass": 3.9,
       "caliber": 0.125,
-      "damageCaliber": 0.032,
-      "ballisticCaliber": 0.032,
-      "Cx": 0.5068,
-      "speed": 1700.0,
+      "damageCaliber": 0.021,
+      "ballisticCaliber": 0.021,
+      "Cx": 0.85,
+      "speed": 1750.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "groundRicochetPreset": "apds_fs_ground",
       "secondaryShattersPreset": "apds_fs_long",
-      "bulletType": "apds_fs_tungsten_caliber_fins_tank",
+      "bulletType": "apds_fs_long_l30_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [
         0.23,
@@ -3405,7 +3377,10 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "bulletName": "125mm_3bm42",
+      "gbufferModelName": "tank_shell_apdsfs_ld_30_su",
+      "modelName": "tank_shell_apdsfs_ld_30_su",
+      "penetratorModelName": "tank_shell_apdsfs_ld_30_su_deform",
+      "bulletName": "125mm_3bm42_2",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -3478,17 +3453,17 @@
       },
       "sabot": {
         "bulletName": "apfsds_sabot",
-        "segmentCount": 3,
+        "segmentCount": 4,
         "startSeparateDist": 5.0,
         "separateRelSpeed": 0.03,
         "separateTime": 0.1,
         "separateDeviation": 0.035,
         "tumblingSpeed": 10.0,
-        "gbufferModelName": "tank_sabot_apdsfs_3bm42",
-        "modelName": "tank_sabot_apdsfs_3bm42",
+        "gbufferModelName": "tank_sabot_apdsfs_ld_30_su",
+        "modelName": "tank_sabot_apdsfs_ld_30_su",
         "mass": 0.733,
-        "caliber": 0.032,
-        "speed": 1700.0,
+        "caliber": 0.022,
+        "speed": 1660.0,
         "Cx": 3.5,
         "maxDistance": 17000.0,
         "normalizationPreset": "ap",
@@ -3864,43 +3839,12 @@
           10000.0
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          457.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          454.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          445.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          431.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          419.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          406.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          380.0,
-          3000.0
-        ],
-        "ArmorPower10000m": [
-          5.0,
-          10000.0
-        ],
-        "ArmorPower20000m": [
-          0.0,
-          20000.0
-        ]
+      "damage": {
+        "kinetic": {
+          "lanzOdermattMaterial": "tungsten",
+          "lanzOdermattWorkingLength": 565.0,
+          "lanzOdermattDensity": 17500.0
+        }
       },
       "visual": {
         "range_percent_of_ammo": [
