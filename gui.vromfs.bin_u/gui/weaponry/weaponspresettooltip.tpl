@@ -64,12 +64,15 @@ tdiv {
           <<#value>>
           <<@markupValue>>
           textareaNoTab {
+            <<^additionalMarkup>>
             max-width:t='pw'
-            text:t='<color=@activeTextColor><<value>></color> - <<text>>'
-            smallFont:t='yes'
+            <</additionalMarkup>>
             <<#additionalMarkup>>
+            width:t='fw'
             valign:t='center'
             <</additionalMarkup>>
+            text:t='<color=@activeTextColor><<value>></color> - <<text>>'
+            smallFont:t='yes'
             overlayTextColor:t='minor'
           }
           <<@additionalMarkup>>

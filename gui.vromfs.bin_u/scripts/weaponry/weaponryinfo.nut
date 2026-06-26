@@ -676,21 +676,23 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
                 item.guidanceType <- "ir"
             }
             if (itemBlk.guidance?.radarSeeker != null) {
-              let active = itemBlk.guidance.radarSeeker?.active ?? true
-              let semiActive = itemBlk.guidance.radarSeeker?.semiActive ?? !(itemBlk.guidance.radarSeeker?.active ?? false)
+              let radarSeekerBlk = itemBlk.guidance.radarSeeker
+              let active = radarSeekerBlk?.active ?? true
+              let semiActive = radarSeekerBlk?.semiActive ?? !(radarSeekerBlk?.active ?? false)
               item.guidanceType <- active ? (semiActive ? "SARH" : "ARH") : "PRH"
+              item.hasArmSeeker <- radarSeekerBlk?.targetSignatureType == "radarIntercept"
               item.radarBands <- []
-              for (local p = 0; p < itemBlk.guidance.radarSeeker.paramCount(); ++p)
-                if (itemBlk.guidance.radarSeeker.getParamName(p) == "band")
-                  item.radarBands.append(itemBlk.guidance.radarSeeker.getParamValue(p))
-              item.groundClutter <- itemBlk.guidance.radarSeeker?.groundClutter ?? true
-              item.sideLobesSensitivity <- itemBlk.guidance.radarSeeker?.receiver.antenna.sideLobesSensitivity ?? 0.0
+              for (local p = 0; p < radarSeekerBlk.paramCount(); ++p)
+                if (radarSeekerBlk.getParamName(p) == "band")
+                  item.radarBands.append(radarSeekerBlk.getParamValue(p))
+              item.groundClutter <- radarSeekerBlk?.groundClutter ?? true
+              item.sideLobesSensitivity <- radarSeekerBlk?.receiver.antenna.sideLobesSensitivity ?? 0.0
               local dopplerSpeed = null
-              if (itemBlk.guidance.radarSeeker?.dopplerSpeed != null)
-                dopplerSpeed = itemBlk.guidance.radarSeeker.dopplerSpeed?.presents ?? false
+              if (radarSeekerBlk?.dopplerSpeed != null)
+                dopplerSpeed = radarSeekerBlk.dopplerSpeed?.presents ?? false
               item.dopplerSpeed <- dopplerSpeed
-              if (itemBlk.guidance.radarSeeker?.receiver != null) {
-                let range = itemBlk.guidance.radarSeeker.receiver?.range ?? 0
+              if (radarSeekerBlk?.receiver != null) {
+                let range = radarSeekerBlk.receiver?.range ?? 0
                 item.seekerRange <- range
               }
             }
@@ -868,7 +870,7 @@ function getWeaponExtendedInfo(weapon, unit, par) {
       addParamsToRes(loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect")),
         loc("missile/aspect"))
     if (weapon?.radarBands != null) {
-      if (canAddNestedTooltips)
+      if (canAddNestedTooltips && weapon?.hasArmSeeker)
         res.append({ value = "", text = loc("missile/radarBand"),
           markupValue = additionalMarkupByType?[additionalMarkupTypes.RADAR_BANDS](weapon) })
       else {
