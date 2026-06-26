@@ -5179,7 +5179,7 @@
           },
           {
             "type": "timeRange",
-            "beginDate": "2026-06-26 10:00:00",
+            "beginDate": "2026-06-26 11:00:00",
             "endDate": "2026-06-29 11:30:00"
           }
         ]
@@ -5943,6 +5943,33 @@
             "type": "timeRange",
             "beginDate": "2026-04-29 10:00:00",
             "endDate": "2026-05-02 10:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_06_26_nuclear_escalation_poll",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 2,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "nuclear_escalation",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-06-26 10:00:00",
+            "endDate": "2026-07-01 10:30:00"
           }
         ]
       }
