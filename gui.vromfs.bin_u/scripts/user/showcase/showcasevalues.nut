@@ -282,6 +282,36 @@ let showcaseValues = {
     valueId = "avg_rel_position"
     getValue = @(params, val) measureType.PERCENT_FLOAT.getMeasureUnitsText(getStatsValue(params, val, params.scorePeriod) * 0.001)
   }
+  football_matches = {
+    type = "stat"
+    icon = "lb_each_player_session"
+    locId = "multiplayer/matches"
+    getValue = @(params, _val) params.terseInfo?.showcase.footballer_matches__counter ?? 0
+  },
+  football_goals = {
+    type = "stat"
+    icon = "lb_football_goals"
+    locId = "multiplayer/football/goals"
+    getValue = @(params, _val) params.terseInfo?.showcase.footballer_goals__counter ?? 0
+  },
+  football_wins = {
+    type = "stat"
+    icon = "lb_each_player_victories"
+    locId = "multiplayer/each_player_victories"
+    getValue = @(params, _val) params.terseInfo?.showcase.footballer_wins__counter ?? 0
+  },
+  football_passes = {
+    type = "stat"
+    icon = "lb_football_assists"
+    locId = "multiplayer/football/assists"
+    getValue = @(params, _val) params.terseInfo?.showcase.footballer_passes__counter ?? 0
+  },
+  football_saves = {
+    type = "stat"
+    icon = "lb_football_saves"
+    locId = "multiplayer/football/saves"
+    getValue = @(params, _val) params.terseInfo?.showcase.footballer_saves__counter ?? 0
+  }
 }
 
 return {

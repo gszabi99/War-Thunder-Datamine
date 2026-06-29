@@ -47,7 +47,8 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex, fillStatsValuesOfTerseInfo,
   getGameModeBoxIndex, getShowcaseByTerseInfo, getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode,
-  writeGameModeToTerseInfo, getShowcaseUnitsFilter, getShowcaseGameModeByIndex, getShowcaseByIndex } = require("%scripts/user/profileShowcase.nut")
+  writeGameModeToTerseInfo, getShowcaseUnitsFilter, getShowcaseGameModeByIndex, getShowcaseByIndex, defaultTitleIcon
+} = require("%scripts/user/profileShowcase.nut")
 let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { addGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { generateShowcaseInfo } = require("%scripts/user/profileShowcasesData.nut")
@@ -1066,6 +1067,19 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     }
   }
 
+  function updateTitleIconsInEditMode(showcase) {
+    let titleIcon = showcase?.titleIcon ?? defaultTitleIcon
+    let secondTitleObj = this.scene.findObject("edit_second_title_text")
+    if (!secondTitleObj?.isValid())
+      return
+    let leftIcon = secondTitleObj.findObject("left_title_icon")
+    if (leftIcon?.isValid())
+      leftIcon["background-image"] = titleIcon
+    let rightIcon = secondTitleObj.findObject("right_title_icon")
+    if (rightIcon?.isValid())
+      rightIcon["background-image"] = titleIcon
+  }
+
   function updateEditModeSecondTitle(terseInfo) {
     let showcase = getShowcaseByTerseInfo(terseInfo)
     this.setEditModeSecondTitle(
@@ -1073,6 +1087,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         ? showcase.getSecondTitle(terseInfo)
         : ""
     )
+    this.updateTitleIconsInEditMode(showcase)
   }
 
   function fillShowcaseEdit(terseInfo) {

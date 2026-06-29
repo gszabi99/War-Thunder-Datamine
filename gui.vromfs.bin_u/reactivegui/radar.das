@@ -2452,6 +2452,9 @@ struct ESMBScopeTargets : InteractableButton
   def const drawCells(var ctx : GuiContext&)
     let gTop = targetAreaAnchor.y
     let gBot = pos.y + size.y
+    let bkgTc = float2(0., 0.)
+    ctx |> set_color(areaBackgroundColor)
+    ctx |> render_rect(pos.x, gTop, pos.x + size.x, gBot, bkgTc, bkgTc, bkgTc)
     ctx |> set_color(color_mult4(data.color, 0.4))
     ctx |> render_frame(pos.x, gTop, pos.x + size.x, gBot, *self.data |> hdpx(1.8))
     let cellLineWidth = *self.data |> hdpx(1.0)

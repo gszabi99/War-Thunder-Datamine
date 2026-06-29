@@ -609,11 +609,9 @@ function getConditionsToUnlockShowcaseById(unlockId) {
 
   let config = buildConditionsConfig(unlock)
   let subunlockCfg = getSubunlockCfg(config.conditions)
-  local conds = getUnlockCondsDescByCfg(subunlockCfg ?? config)
-  if (conds == "")
-    conds = getUnlockMainCondDescByCfg(subunlockCfg ?? config, {})
-
-  return conds
+  let mainCond = getUnlockMainCondDescByCfg(subunlockCfg ?? config, {})
+  let conds = getUnlockCondsDescByCfg(subunlockCfg ?? config)
+  return "\n".join([mainCond, conds], true)
 }
 
 function getSubunlockTooltipMarkup(unlockCfg, subunlockId, allowActionText = "") {

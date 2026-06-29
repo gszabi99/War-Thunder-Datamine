@@ -17,9 +17,11 @@ let { aceOfSpades } = require("%scripts/user/showcase/aceOfSpades.nut")
 let { unitsCollector } = require("%scripts/user/showcase/unitsCollector.nut")
 let { medalist } = require("%scripts/user/showcase/medalist.nut")
 let { achivHunter } = require("%scripts/user/showcase/achievementHunter.nut")
+let { tankFootballer } = require("%scripts/user/showcase/tankFootball.nut")
 let { leaderboardModes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let defaultShowcase = "favorite_mode"
+let defaultTitleIcon = "#ui/gameuiskin#all_unit_types.svg"
 let getDiffByIndex = @(index) diffNames?[index] ?? diffNames[0]
 
 let pageTypes = [
@@ -130,7 +132,8 @@ let pageTypes = [
   unitsCollector,
   aceOfSpades,
   medalist,
-  achivHunter
+  achivHunter,
+  tankFootballer
 ]
 
 function getShowcaseByTerseInfo(terseInfo) {
@@ -311,6 +314,7 @@ function getEditViewData(terseInfo, params) {
   let {scale = 1, isSmallSize = null } = params
   let showcase = getShowcaseByTerseInfo(terseInfo)
   let view = {scale, isSmallSize}
+  view.titleIcon <- showcase?.titleIcon ?? defaultTitleIcon
   view.options <- []
   let boxFirstModes = {id = "box_first_modes", options = [], onSelect = "onShowcaseSelect"}
   foreach (idx, mode in pageTypes) {
@@ -329,9 +333,9 @@ function getEditViewData(terseInfo, params) {
 }
 
 function getShowcaseTitleViewData(terseInfo, params = null) {
-  let {scale = 1, isSmallSize = null } = params
+  let { scale = 1, isSmallSize = null } = params
   let terseName = (terseInfo?.schType ?? "") == "" ? defaultShowcase : terseInfo.schType
-  let view = {scale, isSmallSize}
+  let view = { scale, isSmallSize }
   foreach (showcase in pageTypes)
     if (showcase?.terseName == terseName) {
       view.title <- showcase?.hasOnlySecondTitle ? " " : loc(showcase.locName)
@@ -341,6 +345,7 @@ function getShowcaseTitleViewData(terseInfo, params = null) {
         let gameMode = getGameMode(terseInfo, showcase)
         view.secondTitle <- loc(gameMode?.text ?? "")
       }
+      view.titleIcon <- showcase?.titleIcon ?? defaultTitleIcon
       break
     }
   return handyman.renderCached("%gui/profile/profileMainPageTitle.tpl", view)
@@ -436,6 +441,7 @@ function getShowcaseUnitsFilter(terseInfo, unitIdx = -1) {
 }
 
 return {
+  defaultTitleIcon
   getShowcaseTitleViewData
   getEditViewData
   getShowcaseTypeBoxData

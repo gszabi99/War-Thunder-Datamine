@@ -52,11 +52,12 @@ tdiv {
     display:t='hide'
 
     image {
+      id:t='left_title_icon'
       position:t='relative'
       top:t='(ph-h)/2'
       size:t='<<scale>>*32@sf/@pf, <<scale>>*32@sf/@pf'
       background-color:t='@showcaseBlue'
-      background-image:t='#ui/gameuiskin#all_unit_types.svg'
+      background-image:t='<<titleIcon>>'
       background-svg-size:t='<<scale>>*32@sf/@pf, <<scale>>*32@sf/@pf'
       background-repeat:t='aspect-ratio'
     }
@@ -72,11 +73,12 @@ tdiv {
     }
 
     image {
+      id:t='right_title_icon'
       position:t='relative'
       top:t='(ph-h)/2'
       size:t='<<scale>>*32@sf/@pf, <<scale>>*32@sf/@pf'
       background-color:t='@showcaseBlue'
-      background-image:t='#ui/gameuiskin#all_unit_types.svg'
+      background-image:t='<<titleIcon>>'
       background-svg-size:t='<<scale>>*32@sf/@pf, <<scale>>*32@sf/@pf'
       background-repeat:t='aspect-ratio'
     }
