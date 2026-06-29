@@ -143,6 +143,17 @@ def building_process_update_es(info : UpdateStageInfoAct;
           add(eventData, "pause", hero.speed >= 1. && inArea)
           hud_notify_script("TankDebuffs:Building", eventData)
 
+[es(tag=gameClient, on_disappear, REQUIRE=preview_render__enabled)]
+def building_preview_destroyed_es(evt : Event;
+                                  buildingTime : float)
+  using() <| $(var eventData : DataBlock)
+    add(eventData, "timer", 0.)
+    add(eventData, "totalTime", buildingTime)
+    add(eventData, "showTimer", false)
+    add(eventData, "backward", false)
+    add(eventData, "pause", false)
+    hud_notify_script("TankDebuffs:Building", eventData)
+
 [es(tag=gameClient)]
 def building_preview_switch_es(evt : EventToggleBuildingPreview;
                                var preview_render__enabled : bool&;
