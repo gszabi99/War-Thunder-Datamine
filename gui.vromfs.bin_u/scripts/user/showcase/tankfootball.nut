@@ -17,6 +17,7 @@ let tankFootballer = {
   terseName = "tank_footballer"
   locName = "tank_footballer/name"
   titleIcon = "#ui/gameuiskin#ic_soccer_ball.svg"
+  titleIconRight = "#ui/gameuiskin#ic_soccer_ball_mirrored.svg"
   hasOnlySecondTitle = true
   hasSecondTitleInEditMode = true
   getSecondTitle = @(_terseInfo) loc("tank_footballer/name")

@@ -11,6 +11,8 @@ let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { checkPackageFull, havePackage } = require("%scripts/clientState/contentPacks.nut")
 let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
+let { getUserstatTableData } = require("%scripts/userstat/userstat.nut")
+let { buildDateTimeStr } = require("%scripts/time.nut")
 
 let eventIdsForMainGameModeList = [
   "tank_event_in_random_battles_arcade"
@@ -133,6 +135,34 @@ let canJoinWithoutRequireCrafts = @(event) !(event?.requireCrafts ?? true)
 
 let isVrModeAllowedInEvent = @(event) event?.isVrModeAllowed != false
 
+let leagueLocNames = [
+  "league/groupStage"
+  "league/roundOf32"
+  "league/roundOf16"
+  "league/quarterfinal"
+  "league/semifinal"
+  "league/final"
+]
+function getEventLeagueName(event) {
+  let { leaderboardContactTable = null } = event
+  if (leaderboardContactTable == null)
+    return ""
+  let tableData = getUserstatTableData(leaderboardContactTable)
+  if (tableData == null)
+    return ""
+
+  let leagueLevel = tableData?.stats.league_level ?? 0
+  let leagueLocId = leagueLocNames?[leagueLevel]
+  let leagueName = leagueLocId != null ? loc(leagueLocId) : ""
+  let endTime = tableData?["$endsAt"] ?? 0
+  if (endTime == 0)
+    return leagueName
+
+  let endText = loc("battlePass/endDate",
+    { time = buildDateTimeStr(endTime, false, false) })
+  return $"{leagueName} {endText}"
+}
+
 return {
   eventIdsForMainGameModeList
   getEventEconomicName
@@ -167,4 +197,5 @@ return {
   canJoinWithoutRequireCrafts
   isEventAllowedByPackage
   isVrModeAllowedInEvent
+  getEventLeagueName
 }

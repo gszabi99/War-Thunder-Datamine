@@ -64,7 +64,8 @@ let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventForClan,
   getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
   isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature,
-  isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage, isVrModeAllowedInEvent
+  isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage, isVrModeAllowedInEvent,
+  getEventLeagueName
 } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
@@ -73,9 +74,11 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { get_time_msec } = require("dagor.time")
 let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
-  requestCustomEventLeaderboardData, convertLeaderboardData
+  requestCustomEventLeaderboardData, convertLeaderboardData,
+  requestContactLeaderboardData, convertContactLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { userIdInt64, userIdStr } = require("%scripts/user/profileStates.nut")
+let { getTableActiveIndex } = require("%scripts/userstat/userstat.nut")
 let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -217,6 +220,9 @@ let _leaderboards = {
 
     lbTable = null
     lbMode = null
+
+    lbContactTable = null
+    lbContactIndex = 0
   }
 
   defaultRequest = {
@@ -231,6 +237,9 @@ let _leaderboards = {
 
     lbTable = null
     lbMode = null
+
+    lbContactTable = null
+    lbContactIndex = 0
   }
 
   canRequestEventLb    = true
@@ -338,7 +347,11 @@ let _leaderboards = {
 
 
   function requestUpdateEventLb(requestData, onSuccessCb, onErrorCb) {
-    if (requestData.lbTable == null) {
+    if (requestData.lbContactTable != null) {
+      requestContactLeaderboardData(requestData, onSuccessCb, onErrorCb)
+      return
+    }
+    else if (requestData.lbTable == null) {
       requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb)
       return
     }
@@ -350,7 +363,10 @@ let _leaderboards = {
 
 
   function requestEventLbSelfRow(requestData, onSuccessCb, onErrorCb) {
-    if (requestData.lbTable == null) {
+    if (requestData.lbContactTable != null) {
+      requestContactLeaderboardData(requestData, onSuccessCb, onErrorCb)
+      return
+    } else if (requestData.lbTable == null) {
       requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb)
       return
     }
@@ -368,6 +384,12 @@ let _leaderboards = {
 
 
   function hashLbRequest(request_data) {
+    let { lbContactTable = null } = request_data
+    if (lbContactTable != null) {
+      let { lbField, lbContactIndex, rowsInPage = "", pos = "" } = request_data
+      return "".concat(lbContactTable, lbField, lbContactIndex, rowsInPage, pos)
+    }
+
     return "".concat(
       request_data.lbField,
       request_data?.rowsInPage ?? "",
@@ -401,6 +423,12 @@ let _leaderboards = {
   }
 
   function handleLbSelfRowRequest(requestData, id, requestResult) {
+    let { hasAllPlayersInResult = false } = requestData
+    if (hasAllPlayersInResult) {
+      let requestDataWithoutCallback = clone requestData
+      requestDataWithoutCallback.$rawdelete("callBack")
+      this.handleLbRequest(requestDataWithoutCallback, id, requestResult)
+    }
     let lbData = this.getSelfRowDataFromBlk(requestResult, requestData)
 
     if (!(requestData.economicName in this.__cache.selfRow))
@@ -466,6 +494,13 @@ let _leaderboards = {
       newRequest.lbMode = "stats"
       newRequest.lbField = event?.leaderboardEventBestStat ?? shortRow.field
     }
+    else if (event?.leaderboardContactTable != null) {
+      let contactTable = event.leaderboardContactTable
+      newRequest.lbContactTable = contactTable
+      newRequest.lbContactIndex = getTableActiveIndex(contactTable) ?? 0
+      newRequest.lbField = event?.leaderboardContactBestStat ?? "ext4"
+      newRequest.hasAllPlayersInResult <-true
+    }
 
     return newRequest
   }
@@ -506,9 +541,16 @@ let _leaderboards = {
   }
 
   function getLbDataFromBlk(blk, requestData) {
+    if (requestData?.lbContactTable != null) {
+      let allRows = convertContactLeaderboardData(blk, requestData.lbField).rows
+      let start = requestData?.pos ?? 0
+      let end = min(start + (requestData?.rowsInPage ?? allRows.len()), allRows.len())
+      return { rows = allRows.slice(start, end) }
+    }
+
     let { success = true } = blk?.result
     if (!success)
-      return []
+      return { rows = [] }
 
     let lbRows = this.lbBlkToArray(blk)
     if (this.isClanLbRequest(requestData))
@@ -528,6 +570,12 @@ let _leaderboards = {
   }
 
   function getSelfRowDataFromBlk(blk, requestData) {
+    if (requestData?.lbContactTable != null) {
+      let myId = userIdStr.get()
+      return convertContactLeaderboardData(blk, requestData.lbField).rows
+        .filter(@(r) r?._id.tostring() == myId)
+    }
+
     let { success = true } = blk?.result
     if (!success)
       return []
@@ -2087,6 +2135,12 @@ let Events = class {
     return loc(event?.loc_desc ?? $"events/{economicName}/desc", "")
   }
 
+  function getEventLeaderboardName(event) {
+    let eventName = this.getEventNameText(event)
+    let leagueName = getEventLeagueName(event)
+    return leagueName == "" ? eventName
+      : loc("ui/colon").concat(eventName, leagueName)
+  }
 
   function isEventRandomBattlesById(eventId) {
     let event = this.getEvent(eventId)

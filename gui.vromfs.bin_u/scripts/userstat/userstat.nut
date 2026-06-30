@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import char_send_custom_action, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import APP_ID_CUSTOM_LEADERBOARD
 
 let { eventbus_subscribe } = require("eventbus")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -7,8 +8,6 @@ let userstat = require("userstat")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { APP_ID } = require("app")
-let { APP_ID_CUSTOM_LEADERBOARD
-} = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let DataBlock = require("DataBlock")
 let { object_to_json_string } = require("json")
 let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
@@ -16,11 +15,15 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 let { mnSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { get_charserver_time_sec } = require("chard")
+let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 
+const UPDATE_TABLE_TIMER_ID = "UPDATE_TABLE_TIMER_ID"
+let statsUpdateTimerByTable = {}
 
 function updateGetUnlocksValue(watchValue, response) {
   foreach (key, value in response) {
@@ -181,6 +184,71 @@ let userstatUnlocks = unlocksUpdatable.data
 let userstatDescList = descListUpdatable.data
 let userstatStats = statsUpdatable.data
 
+let refreshUserstatStats = @() statsUpdatable.forceRefresh()
+
+let getUserstatTableData = @(tableName) userstatStats.get()?.stats[tableName]
+let getTableActiveIndex = @(tableName) getUserstatTableData(tableName)?["$index"]
+
+function calculateTimerNextTableUpdate() {
+  clearTimer(UPDATE_TABLE_TIMER_ID)
+  if (statsUpdateTimerByTable.len() == 0)
+    return
+
+  let curServerTimeSec = get_charserver_time_sec()
+  local minExpiredSec = null
+  foreach (data in statsUpdateTimerByTable) {
+    let { endTime } = data
+    let expiredSec = endTime - curServerTimeSec
+    minExpiredSec = min(minExpiredSec ?? expiredSec, expiredSec)
+  }
+
+  if (minExpiredSec <= 0) {
+    deferOnce(refreshUserstatStats)
+    return
+  }
+  setTimeout(minExpiredSec, refreshUserstatStats, UPDATE_TABLE_TIMER_ID)
+}
+
+function addTimerForRefreshStatsWhenTableEnd(tableName) {
+  if (tableName in statsUpdateTimerByTable)
+    return
+
+  let tableData = getUserstatTableData(tableName)
+  if (tableData == null)
+    return
+
+  let endTime = tableData?["$endsAt"]
+  if (endTime == null)
+    return
+
+  let table = {
+    index = tableData?["$index"] ?? 0
+    endTime
+  }
+  statsUpdateTimerByTable[tableName] <- table
+  calculateTimerNextTableUpdate()
+}
+
+userstatStats.subscribe(function(statsData) {
+  if (statsUpdateTimerByTable.len() == 0)
+    return
+
+  let updatedTables = []
+  foreach (name, data in statsUpdateTimerByTable) {
+    let tableData = statsData?.stats[name]
+    if (tableData == null || data.index != (tableData?["$index"] ?? 0)
+        || data.endTime != tableData?["$endsAt"])
+      updatedTables.append(name)
+  }
+  if (updatedTables.len() == 0)
+    return
+
+  foreach (name in updatedTables)
+    statsUpdateTimerByTable.$rawdelete(name)
+  calculateTimerNextTableUpdate()
+  broadcastEvent("UserstatTablesUpdated", { updatedTables })
+})
+
 let isUserstatMissingData = Computed(@() userstatUnlocks.get().len() == 0
   || userstatDescList.get().len() == 0
   || userstatStats.get().len() == 0)
@@ -241,12 +309,15 @@ return {
   userstatStats
   refreshUserstatUnlocks = @() unlocksUpdatable.forceRefresh()
   refreshUserstatDescList = @() descListUpdatable.forceRefresh()
-  refreshUserstatStats = @() statsUpdatable.forceRefresh()
+  refreshUserstatStats
   receiveUnlockRewards
   isUserstatMissingData
   validateUserstatData
   userstatCustomLeaderboardStats
   refreshUserstatCustomLeaderboardStats = @() customLeaderboardStatsUpdatable.refresh()
+  getUserstatTableData
+  getTableActiveIndex
   waitingToShowRewardsArray
   getUserstatItemRewardData
+  addTimerForRefreshStatsWhenTableEnd
 }

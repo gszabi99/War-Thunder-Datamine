@@ -100,6 +100,8 @@ function getLbCategoryTypeByField(field) {
   return category ?? lbCategoryTypes.UNKNOWN
 }
 
+let isSortDefaultFilterAlwaysTrue = @(_event) true
+
 let categoryTemplate = {
   id = "" 
   field = "" 
@@ -115,7 +117,7 @@ let categoryTemplate = {
   ownProfileOnly = false  
   additionalTooltipCategoryes = null
   hideInAdditionalTooltipIfZero = false
-  isSortDefaultFilter = false 
+  isSortDefaultFilter = @(_event) false 
   showFieldFilter = null 
   showEventFilterFunc = null 
 
@@ -180,7 +182,8 @@ let categoryTemplate = {
     return true
   }
 
-  isDefaultSortRowInEvent = @(event) this.isSortDefaultFilter && this.isVisibleInEvent(event)
+  isDefaultSortRowInEvent = @(event) this.isSortDefaultFilter(event)
+    && this.isVisibleInEvent(event)
 }
 
 
@@ -455,7 +458,7 @@ lbCategoryTypes.__update({
     headerImage = "elo_rating"
     headerTooltip = "personal_elo"
 
-    isSortDefaultFilter = true
+    isSortDefaultFilter = isSortDefaultFilterAlwaysTrue
 
    showFieldFilter = [
       GAME_EVENT_TYPE.TM_NONE_RACE,
@@ -472,7 +475,7 @@ lbCategoryTypes.__update({
     headerTooltip = "personal_elo"
     wwModesMask = ~WW_LB_MODE.WW_COUNTRIES
 
-    isSortDefaultFilter = true
+    isSortDefaultFilter = isSortDefaultFilterAlwaysTrue
 
     showFieldFilter = [
       GAME_EVENT_TYPE.TM_NONE_RACE,
@@ -514,9 +517,10 @@ lbCategoryTypes.__update({
   EVENTS_WP_TOTAL_GAINED = {
     field = "wpEarned"
     visualKey = "wp_total_gained"
-    isSortDefaultFilter = true
+    isSortDefaultFilter = isSortDefaultFilterAlwaysTrue
     showFieldFilter = [GAME_EVENT_TYPE.TM_NONE]
-    showEventFilterFunc = @(event) !(event?.mission_decl.isScoreTournament ?? false)
+    showEventFilterFunc = @(event) !event?.mission_decl.isScoreTournament
+      && !events.isGameTypeOfEvent(event, "gt_football")
   }
 
   EVENT_STAT_TOTALKILLS = {
@@ -538,7 +542,7 @@ lbCategoryTypes.__update({
     headerTooltip = "averageRelativePosition"
     lbDataType = lbDataType.PERCENT
     additionalTooltipCategoryes = ["EVENTS_SUPERIORITY_BATTLES_THRESHOLD"]
-    isSortDefaultFilter = true
+    isSortDefaultFilter = isSortDefaultFilterAlwaysTrue
     showFieldFilter = [GAME_EVENT_TYPE.TM_NONE]
     showEventFilterFunc = function (event) {
       return isEventLastManStanding(event)
@@ -581,6 +585,7 @@ lbCategoryTypes.__update({
     visualKey = "footballTotalActions"
     headerImage = "total_score"
     headerTooltip = "football/totalActions"
+    isSortDefaultFilter = @(event) ((event?.leaderboardContactBestStat ?? "") == "ext4")
     showEventFilterFunc = @(event) events.isGameTypeOfEvent(event, "gt_football")
   }
 
@@ -589,7 +594,7 @@ lbCategoryTypes.__update({
     visualKey = "total_score"
     headerImage = "total_score"
     headerTooltip = "score"
-    isSortDefaultFilter = true
+    isSortDefaultFilter = isSortDefaultFilterAlwaysTrue
     showEventFilterFunc = @(event) ((event?.leaderboardEventBestStat ?? "") == "ext1")
   }
 
@@ -598,7 +603,7 @@ lbCategoryTypes.__update({
     visualKey = "total_score"
     headerImage = "total_score"
     headerTooltip = "personal_elo"
-    isSortDefaultFilter = true
+    isSortDefaultFilter = isSortDefaultFilterAlwaysTrue
     showEventFilterFunc = @(event) ((event?.leaderboardEventBestStat ?? "") == "score_rating")
   }
 
@@ -608,7 +613,7 @@ lbCategoryTypes.__update({
     visualKey = "total_score"
     headerImage = "total_score"
     headerTooltip = "personal_elo"
-    isSortDefaultFilter = true
+    isSortDefaultFilter = isSortDefaultFilterAlwaysTrue
     showEventFilterFunc = @(event) ((event?.leaderboardEventBestStat ?? "") == "score_rating_x10000")
   }
 

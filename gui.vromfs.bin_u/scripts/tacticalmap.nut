@@ -35,6 +35,8 @@ let DataBlock = require("DataBlock")
 let { fillSwitchMapTypeBtn } = require("%scripts/tacticalMapUtils.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
+dagui_propid_add_name_id("permanentMapTool")
+
 function gui_start_tactical_map(params = {}) {
   let { forceTacticalControl = false } = params
   handlersManager.loadHandler(gui_handlers.TacticalMap, { forceTacticalControl })

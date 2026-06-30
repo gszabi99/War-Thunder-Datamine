@@ -197,6 +197,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   expendablesArray    = null
 
   needCheckTutorial = false
+  modTutorialFocusIdx = -1
   curEdiff = null
   purchasedModifications = null
   needHideSlotbar = false
@@ -1985,6 +1986,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let misInfo = get_meta_mission_info_by_name(tutorialMission)
     let unit = this.air
 
+    this.modTutorialFocusIdx = idx
     this.markSeenModTutorialIfNeeded(item)
 
     let params = {
@@ -2010,6 +2012,25 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     handlersManager.loadHandler(gui_handlers.GenericOptionsModal, params)
+  }
+
+  function restoreModTutorialFocus() {
+    if (this.modTutorialFocusIdx < 0 || !this.isSceneActiveNoModals())
+      return
+
+    let idx = this.modTutorialFocusIdx
+    this.modTutorialFocusIdx = -1
+    if (!showConsoleButtons.get())
+      return
+
+    let itemObj = this.getItemObj(idx)
+    if (itemObj?.isValid())
+      move_mouse_on_obj(itemObj)
+  }
+
+  function onEventModalWndDestroy(params) {
+    base.onEventModalWndDestroy(params)
+    this.restoreModTutorialFocus()
   }
 
   function onAltModActionCommon(obj) { 

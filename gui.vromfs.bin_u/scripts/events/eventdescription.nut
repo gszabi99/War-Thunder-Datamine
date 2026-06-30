@@ -42,6 +42,7 @@ let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
+let { addTimerForRefreshStatsWhenTableEnd } = require("%scripts/userstat/userstat.nut")
 
 function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -66,6 +67,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   playersInTable = null
   currentFullRoomData = null
+  lastShortLbData = null
 
   
   newSelfRowRequest = null
@@ -408,6 +410,9 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
+    let { leaderboardContactTable = null } = this.selectedEvent
+    if (leaderboardContactTable != null)
+      addTimerForRefreshStatsWhenTableEnd(leaderboardContactTable)
     this.newSelfRowRequest = events.getMainLbRequest(this.selectedEvent)
     events.requestSelfRow(
       this.newSelfRowRequest,
@@ -424,6 +429,9 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function showEventLb(lb_data) {
     if (!checkObj(this.scene))
       return
+
+    if (lb_data != null)
+      this.lastShortLbData = lb_data
 
     let lbWrapObj = this.getObject("lb_wrap")
     let lbWaitBox = this.getObject("msgWaitAnimation")
@@ -527,6 +535,30 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       this.fetchLbData()
   }
 
+  function onEventUserInfoManagerDataUpdated(p) {
+    let rows = this.lastShortLbData?.rows
+    if (!rows || rows.len() == 0)
+      return
+
+    let { usersInfo = null } = p
+    if (!usersInfo)
+      return
+
+    local updated = false
+    foreach (row in rows) {
+      let uid = row?._id.tostring()
+      if (uid == null || uid not in usersInfo)
+        continue
+      let newName = usersInfo[uid]?.name ?? ""
+      if (newName != "" && newName != row.name) {
+        row.name = newName
+        updated = true
+      }
+    }
+    if (updated)
+      this.showEventLb(this.lastShortLbData)
+  }
+
   function onEventItemBought(params) {
     let item = getTblValue("item", params)
     if (item && item.isForEvent(getTblValue("name", this.selectedEvent)))
@@ -597,6 +629,13 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventMRoomInfoUpdated(p) {
     if (this.room && p.roomId == this.room.roomId && !u.isEqual(this.currentFullRoomData, this.getFullRoomData()))
       this.updateContent()
+  }
+
+  function onEventUserstatTablesUpdated(p) {
+    let { leaderboardContactTable = null } = this.selectedEvent
+    if (leaderboardContactTable == null || !p.updatedTables.contains(leaderboardContactTable))
+      return
+    this.fetchLbData()
   }
 }
 

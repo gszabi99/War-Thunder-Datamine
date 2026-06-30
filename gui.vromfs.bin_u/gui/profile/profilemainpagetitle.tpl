@@ -42,7 +42,7 @@ tdiv {
     top:t='(ph-h)/2'
     size:t='<<scale>>*32@sf/@pf, <<scale>>*32@sf/@pf'
     background-color:t='@showcaseBlue'
-    background-image:t='<<titleIcon>>'
+    background-image:t='<<titleIconRight>>'
     background-svg-size:t='<<scale>>*32@sf/@pf, <<scale>>*32@sf/@pf'
     background-repeat:t='aspect-ratio'
   }

@@ -778,8 +778,11 @@ gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
     this.initNavigation()
     this.initModalSize()
 
-    if (this.needMoveMouseOnButtonApply)
+    if (this.needMoveMouseOnButtonApply) {
+      if (this.modalWidth != null || this.modalHeight != null)
+        this.guiScene.applyPendingChanges(false)
       move_mouse_on_obj(this.scene.findObject("btn_apply"))
+    }
     if (this.modalHeader)
       this.scene.findObject("header_name")?.setValue(this.modalHeader)
   }

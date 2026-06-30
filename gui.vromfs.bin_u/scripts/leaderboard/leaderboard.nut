@@ -17,7 +17,8 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
-let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats
+let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats,
+  addTimerForRefreshStatsWhenTableEnd,getTableActiveIndex
 } = require("%scripts/userstat/userstat.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -460,6 +461,9 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     }
 
     this.request = events.getMainLbRequest(eventData)
+    let { lbContactTable = null } = this.request
+    if (lbContactTable != null)
+      addTimerForRefreshStatsWhenTableEnd(lbContactTable)
     if (!this.lbModel)
       this.lbModel = events
 
@@ -480,7 +484,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     let tabsArr = [
       {
         id = eventData.economicName
-        name = events.getEventNameText(eventData)
+        name = events.getEventLeaderboardName(eventData)
       },
       {
         id = this.sharedEconomicName
@@ -498,6 +502,22 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
 
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(nestObj, data, data.len(), this)
+  }
+
+  function updateMainLeaderboardTabName() {
+    let nestObj = this.scene.findObject("tabs_list")
+    if (!nestObj?.isValid())
+      return
+
+    let event = events.getEvent(this.eventId)
+    if (event == null)
+      return
+
+    let obj = this.scene.findObject($"{event.economicName}_text")
+    if (!obj?.isValid())
+      return
+
+    obj.setValue(events.getEventLeaderboardName(event))
   }
 
   function updateLeaderboard() {
@@ -546,6 +566,41 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
 
     this.customSelfStats = userstatCustomLeaderboardStats.get()?.stats[event.leaderboardEventTable]
     this.fillLeaderboard(this.pageData)
+  }
+
+  function onEventUserInfoManagerDataUpdated(p) {
+    let rows = this.pageData?.rows
+    if (!rows || rows.len() == 0)
+      return
+
+    let { usersInfo = null } = p
+    if (!usersInfo)
+      return
+
+    local updated = false
+    foreach (row in rows) {
+      let uid = row?._id.tostring()
+      if (uid == null || uid not in usersInfo)
+        continue
+      let newName = usersInfo[uid]?.name ?? ""
+      if (newName != "" && newName != row.name) {
+        row.name = newName
+        updated = true
+      }
+    }
+    if (updated)
+      this.fillLeaderboard(this.pageData)
+  }
+
+  function onEventUserstatTablesUpdated(p) {
+    let { lbContactTable = null } = this.request
+    if (lbContactTable == null || !p.updatedTables.contains(lbContactTable))
+      return
+
+    this.request.lbContactIndex = getTableActiveIndex(lbContactTable)
+    this.fetchLbData()
+    this.updateMainLeaderboardTabName()
+    addTimerForRefreshStatsWhenTableEnd(lbContactTable)
   }
 }
 

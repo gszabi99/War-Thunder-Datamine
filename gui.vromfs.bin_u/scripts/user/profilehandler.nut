@@ -1069,7 +1069,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function updateTitleIconsInEditMode(showcase) {
     let titleIcon = showcase?.titleIcon ?? defaultTitleIcon
-    let secondTitleObj = this.scene.findObject("edit_second_title_text")
+    let titleIconRight = showcase?.titleIconRight ?? titleIcon
+    let secondTitleObj = this.scene.findObject("edit_second_title")
     if (!secondTitleObj?.isValid())
       return
     let leftIcon = secondTitleObj.findObject("left_title_icon")
@@ -1077,7 +1078,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       leftIcon["background-image"] = titleIcon
     let rightIcon = secondTitleObj.findObject("right_title_icon")
     if (rightIcon?.isValid())
-      rightIcon["background-image"] = titleIcon
+      rightIcon["background-image"] = titleIconRight
   }
 
   function updateEditModeSecondTitle(terseInfo) {

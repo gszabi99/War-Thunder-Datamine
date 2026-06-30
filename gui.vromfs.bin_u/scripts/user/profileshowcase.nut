@@ -315,6 +315,7 @@ function getEditViewData(terseInfo, params) {
   let showcase = getShowcaseByTerseInfo(terseInfo)
   let view = {scale, isSmallSize}
   view.titleIcon <- showcase?.titleIcon ?? defaultTitleIcon
+  view.titleIconRight <- showcase?.titleIconRight ?? view.titleIcon
   view.options <- []
   let boxFirstModes = {id = "box_first_modes", options = [], onSelect = "onShowcaseSelect"}
   foreach (idx, mode in pageTypes) {
@@ -346,6 +347,7 @@ function getShowcaseTitleViewData(terseInfo, params = null) {
         view.secondTitle <- loc(gameMode?.text ?? "")
       }
       view.titleIcon <- showcase?.titleIcon ?? defaultTitleIcon
+      view.titleIconRight <- showcase?.titleIconRight ?? view.titleIcon
       break
     }
   return handyman.renderCached("%gui/profile/profileMainPageTitle.tpl", view)

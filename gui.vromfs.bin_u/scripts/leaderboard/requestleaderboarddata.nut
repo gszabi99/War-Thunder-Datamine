@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL
+from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, APP_ID_CUSTOM_LEADERBOARD
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -11,9 +11,10 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let DataBlock = require("DataBlock")
 let { charRequestBlk } = require("%scripts/tasker.nut")
+let { contacts_request } = require("%scripts/contacts/contactsClient.nut")
 let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
+let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 
-const APP_ID_CUSTOM_LEADERBOARD = 1231
 
 
 
@@ -125,6 +126,46 @@ function requestCustomEventLeaderboardData(requestData, onSuccessCb, onErrorCb) 
   requestLeaderboardData(dataParams, headers, resultCb)
 }
 
+function requestContactLeaderboardData(requestData, onSuccessCb, onErrorCb) {
+  contacts_request(
+    "cln_leaderboard_team_get",
+    { table = requestData.lbContactTable, index = requestData.lbContactIndex },
+    function(result) {
+      if (result?.result.success == false) {
+        onErrorCb(result.result.error)
+        return
+      }
+      onSuccessCb(result)
+    }
+  )
+}
+
+let contactLeaderboardFieldsMap = {
+  season_val_footballer_matches__counter = "battles"
+  season_val_footballer_wins__counter    = "wins"
+  season_val_footballer_goals__counter   = "ext1"
+  season_val_footballer_passes__counter  = "ext2"
+  season_val_footballer_saves__counter   = "ext3"
+  season_val_tank_football_score         = "ext4"
+}
+
+function convertContactLeaderboardData(result, sortStat = null) {
+  let rows = []
+  foreach (entry in (result?.league ?? [])) {
+    let uid = entry?._id.tostring() ?? ""
+    let userInfo = uid != "" ? getUserInfo(uid) : null  
+    let row = { _id = entry?._id, name = userInfo?.name ?? uid }
+    foreach (statKey, lbField in contactLeaderboardFieldsMap)
+      row[lbField] <- entry?.stat_total.stats[statKey] ?? 0
+    rows.append(row)
+  }
+  if (sortStat != null)
+    rows.sort(@(a, b) (b?[sortStat] ?? 0) <=> (a?[sortStat] ?? 0))
+  for (local i = 0; i < rows.len(); i++)
+    rows[i].pos <- i
+  return { rows }
+}
+
 let leaderboardValueFactors = {
   rating = 0.0001
   operation_winrate = 0.0001
@@ -182,4 +223,6 @@ return {
   requestEventLeaderboardSelfRow
   requestCustomEventLeaderboardData
   convertLeaderboardData
+  requestContactLeaderboardData
+  convertContactLeaderboardData
 }

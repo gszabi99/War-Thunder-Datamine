@@ -3090,7 +3090,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 21,
               "external": true,
@@ -3099,7 +3099,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 21,
               "external": true,
@@ -4517,6 +4517,7 @@
       "modClass": "lth"
     },
     "countermeasures_launcher_chaff": {},
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
@@ -4524,8 +4525,13 @@
       "group": "countermeasures",
       "tier": 1
     },
-    "air_extinguisher": {
+    "g_suit": {
       "prevModification": "countermeasures_belt_pack",
+      "tier": 3,
+      "modClass": "armor"
+    },
+    "air_extinguisher": {
+      "prevModification": "g_suit",
       "tier": 4,
       "modClass": "armor",
       "invertEnableLogic": false
