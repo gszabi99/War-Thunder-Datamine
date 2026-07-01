@@ -141,8 +141,7 @@ def draw_rectangular_radar_background(var ctx : GuiContext&; pos : float2; size 
   let radarSize = float2(size.x - (arrowPos.x - pos.x), size.y)
   let rb = radarPos + radarSize
   ctx |> set_color(colors.darkGray)
-  let tc = float2(0., 0.)
-  ctx |> render_rect(radarPos.x, radarPos.y, rb.x, rb.y, tc, tc, tc)
+  ctx |> render_box(radarPos.x, radarPos.y, rb.x, rb.y)
 
 def draw_rectangular_radar_indication(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   ctx |> set_font_ht(15)
@@ -384,9 +383,8 @@ def draw_round_scan_angles(var ctx : GuiContext&; data : CanvasParams&; pos : fl
 
   ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + 1.1 * size.y)
 
-  let tc = float2(0., 0.)
   ctx |> set_color(colors.darkGray)
-  ctx |> render_rect(pos.x, pos.y + size.y * 0.5, pos.x + size.x, pos.y + size.y, tc, tc, tc)
+  ctx |> render_box(pos.x, pos.y + size.y * 0.5, pos.x + size.x, pos.y + size.y)
   let anglesExternal = float2(get_radar_hud_azimuth_min() - PI * 0.5, get_radar_hud_azimuth_max() - PI * 0.5)
   ctx |> render_sector_aa(origin, radius, anglesExternal, 1., colors.cyan, colors.transparent)
   ctx |> render_simple_line(origin, origin + float2(cos(anglesExternal.x), sin(anglesExternal.x)) * radius, colors.cyan, data.lineWidth * 0.5)
@@ -416,8 +414,7 @@ def draw_bottom_part(var ctx : GuiContext&; data : CanvasParams&; origin : float
 def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
   ctx |> set_color(colors.darkGray)
   let rb = origin + float2(size.x, 1.1 * size.y)
-  let tc = float2(0., 0.)
-  ctx |> render_rect(origin.x, origin.y, rb.x, rb.y, tc, tc, tc)
+  ctx |> render_box(origin.x, origin.y, rb.x, rb.y)
   ctx |> draw_round_scan_angles(data, origin, size)
   ctx |> draw_radar_cue_indication(data, origin, size)
 

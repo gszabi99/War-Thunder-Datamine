@@ -1207,16 +1207,14 @@ def noise_signal(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size
   for i in range(0, 4)
     let p = pos + float2(0., float(i) * size.y * 0.25)
     let rb = p + quadSize
-    let tc = float2(0., 0.)
     var color = float4(Color4(data.color))//isColorOrWhite(color) ??
     color *= val > float(3 - i) ? 1. : 0.21
     let e3dColor = E3DCOLOR(Color4(color))
     ctx |> set_color(e3dColor)
-    ctx |> render_rect(p.x, p.y, rb.x, rb.y, tc, tc, tc)
+    ctx |> render_box(p.x, p.y, rb.x, rb.y)
   let p = pos - float2(size.x * 1.2, -size.y * 0.75)
   let rb = p + float2(size.x, size.y * 0.32)
-  let tc = float2(0., 0.)
-  ctx |> render_rect(p.x, p.y, rb.x, rb.y, tc, tc, tc)
+  ctx |> render_box(p.x, p.y, rb.x, rb.y)
 
   let aSz = float2(size.x * 0.25, size.y * 0.75)
   let aPl1 = pos - float2(size.x * 0.55, 0.)
@@ -1662,10 +1660,9 @@ struct BScopeSquareIndicator : InteractableButton
             ctx |> render_line_aa(coord, false, data |> hdpx(2. * data.lineWidth), float2(0, 0), e3dColor)
         else
           if data.targetFormType == 0
-            let tc = float2(0., 0.)
             let lt = p - targetHalfSize
             let rb = p + targetHalfSize
-            ctx |> render_rect(lt.x, lt.y, rb.x, rb.y, tc, tc, tc)
+            ctx |> render_box(lt.x, lt.y, rb.x, rb.y)
           elif data.targetFormType == 1
             let sz = scaledTargetCanvasSize.y * 0.02
             let coord <- to_array_move(fixed_array<float2>(
@@ -1674,11 +1671,10 @@ struct BScopeSquareIndicator : InteractableButton
             float2(p.x + targetHalfSize.x, p.y + sz)))
             ctx |> render_line_aa(coord, true, data |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
           elif data.targetFormType == 2
-            let tc = float2(0., 0.)
             let boxSize = float2(0.02 * scaledTargetCanvasSize.x)
             let lt = p - boxSize
             let rb = p + boxSize
-            ctx |> render_rect(lt.x, lt.y, rb.x, rb.y, tc, tc, tc)
+            ctx |> render_box(lt.x, lt.y, rb.x, rb.y)
 
       elif (target.targetType == int(RadarTargetType.TYPE_OWN_WEAPON) && !data.hideWeaponIndication)
         if hasAzimuthScale
@@ -2026,8 +2022,7 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
     scanAzimuthMaxRelW = 1.0
   ctx |> set_color(areaBackgroundColor)
   let rb = pos + size
-  let tc = float2(0., 0.)
-  ctx |> render_rect(pos.x, pos.y, rb.x, rb.y, tc, tc, tc)
+  ctx |> render_box(pos.x, pos.y, rb.x, rb.y)
   //not repeat component 'frame' from darg, i am cant see him in game (useless)
 
   var color = float4(Color4(is_color_or_white(data.lineColor)))
@@ -2091,7 +2086,6 @@ def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : fl
     color *= 0.4
     let e3dColor = E3DCOLOR(Color4(color))
     ctx |> set_color(e3dColor)
-    let tc = float2(0., 0.)
     if data.beamShape == 1
       ctx |> set_color(data.lineColor)
       ctx |> draw_line(pos.x + (val - 0.02) * size.x, pos.y + size.y * 0.97, pos.x + (val + 0.02) * size.x, pos.y + size.y * 0.97, data |> hdpx(data.lineWidth * 5.))
@@ -2105,23 +2099,23 @@ def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : fl
         let lValOutOfBounds = lVal < 0. || lVal > 1.
         let rValOutOfBounds = lVal < 0. || rVal > 1.
         if lValOutOfBounds
-          ctx |> render_rect(pos.x + (0.) * size.x, pos.y,
-          pos.x + (rVal) * size.x, pos.y + size.y, tc, tc, tc)
+          ctx |> render_box(pos.x + (0.) * size.x, pos.y,
+          pos.x + (rVal) * size.x, pos.y + size.y)
 
           let lValMirrored = b_scope_square_norm_rel_azimuth(lVal)
-          ctx |> render_rect(pos.x + (lValMirrored) * size.x, pos.y,
-          pos.x + (1.) * size.x, pos.y + size.y, tc, tc, tc)
+          ctx |> render_box(pos.x + (lValMirrored) * size.x, pos.y,
+          pos.x + (1.) * size.x, pos.y + size.y)
           return
         if rValOutOfBounds
-          ctx |> render_rect(pos.x + (lVal) * size.x, pos.y,
-          pos.x + (1.) * size.x, pos.y + size.y, tc, tc, tc)
+          ctx |> render_box(pos.x + (lVal) * size.x, pos.y,
+          pos.x + (1.) * size.x, pos.y + size.y)
 
           let rValMirrored = b_scope_square_norm_rel_azimuth(rVal)
-          ctx |> render_rect(pos.x + (0.) * size.x, pos.y,
-          pos.x + (rValMirrored) * size.x, pos.y + size.y, tc, tc, tc)
+          ctx |> render_box(pos.x + (0.) * size.x, pos.y,
+          pos.x + (rValMirrored) * size.x, pos.y + size.y)
           return
-      ctx |> render_rect(pos.x + lVal * size.x, pos.y,
-       pos.x + rVal * size.x, pos.y + size.y, tc, tc, tc)
+      ctx |> render_box(pos.x + lVal * size.x, pos.y,
+       pos.x + rVal * size.x, pos.y + size.y)
   else
     let color = is_color_or_white(data.lineColor)
     ctx |> set_color(color)
@@ -2133,7 +2127,6 @@ def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; po
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
 
   let halfAzimuthWidth = min(azimuthRange > 0. ? get_radar_hud_target_azimuth_width() / azimuthRange : 0., 0.5)
-  let tc = float2(0., 0.)
   var color = float4(Color4(data.color))
   color *= 0.2
   let e3dColor = E3DCOLOR(Color4(color))
@@ -2148,16 +2141,16 @@ def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; po
     if l < 0.0
       let lCircled = circle_azimuth_rel(l)
       let rCircled = 1.0
-      ctx |> render_rect(pos.x + lCircled * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
-        pos.x + rCircled * size.x, pos.y + size.y, tc, tc, tc)
+      ctx |> render_box(pos.x + lCircled * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
+        pos.x + rCircled * size.x, pos.y + size.y)
     if r > 1.0
       let lCircled = 0.0
       let rCircled = circle_azimuth_rel(r)
-      ctx |> render_rect(pos.x + lCircled * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
-        pos.x + rCircled * size.x, pos.y + size.y, tc, tc, tc)
+      ctx |> render_box(pos.x + lCircled * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
+        pos.x + rCircled * size.x, pos.y + size.y)
 
-  ctx |> render_rect(pos.x + l * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
-    pos.x + r * size.x, pos.y + size.y, tc, tc, tc)
+  ctx |> render_box(pos.x + l * size.x, pos.y + (1. - get_radar_hud_target_distance()) * size.y,
+    pos.x + r * size.x, pos.y + size.y)
 
 def b_scope_square_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   var color = float4(Color4(is_color_or_white(data.lineColor)))
@@ -2433,11 +2426,9 @@ struct ESMBScopeTargets : InteractableButton
         var color = float4(Color4(data.color))
         color *= 0.2
         ctx |> set_color(E3DCOLOR(Color4(color)))
-        let tc = float2(0., 0.)
-        ctx |> render_rect(
+        ctx |> render_box(
           targetAreaAnchor.x + scanMinRel * targetAreaSize.x, targetAreaAnchor.y,
-          targetAreaAnchor.x + scanMaxRel * targetAreaSize.x, targetAreaAnchor.y + targetAreaSize.y,
-          tc, tc, tc)
+          targetAreaAnchor.x + scanMaxRel * targetAreaSize.x, targetAreaAnchor.y + targetAreaSize.y)
       if get_radar_hud_is_emitting() && !data.hideBeam && get_radar_hud_show_instantaneous_scan_area()
         b_scope_square_azimuth(ctx, *data, targetAreaAnchor, targetAreaSize, get_radar_hud_azimuth(), 1.0, get_radar_hud_azimuth_half_width())
         foreach_additional_beams() <| $(var additionalBeam)
@@ -2448,9 +2439,8 @@ struct ESMBScopeTargets : InteractableButton
   def const drawCells(var ctx : GuiContext&)
     let gTop = targetAreaAnchor.y
     let gBot = pos.y + size.y
-    let bkgTc = float2(0., 0.)
     ctx |> set_color(areaBackgroundColor)
-    ctx |> render_rect(pos.x, gTop, pos.x + size.x, gBot, bkgTc, bkgTc, bkgTc)
+    ctx |> render_box(pos.x, gTop, pos.x + size.x, gBot)
     ctx |> set_color(color_mult4(data.color, 0.4))
     ctx |> render_frame(pos.x, gTop, pos.x + size.x, gBot, *self.data |> hdpx(1.8))
     let cellLineWidth = *self.data |> hdpx(1.0)
@@ -3053,9 +3043,8 @@ def c_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
 
   ctx |> set_color(areaBackgroundColor)
-  let tc = float2(0., 0.)
   let rb = pos + size
-  ctx |> render_rect(pos.x, pos.y, rb.x, rb.y, tc, tc, tc)
+  ctx |> render_box(pos.x, pos.y, rb.x, rb.y)
   ctx |> set_color(data.color)
   ctx |> render_frame(pos.x, pos.y, pos.x + size.x, pos.y + size.y, data |> hdpx(1.8))
 
@@ -3182,10 +3171,9 @@ def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
     let e3dColor = E3DCOLOR(Color4(color))
     ctx |> set_color(e3dColor)
 
-    let tc = float2(0., 0.)
     let lt = c_scope_convert_pos(size, pos, azimuthLeft, elevationLowerRel)
     let rt = c_scope_convert_pos(size, pos, azimuthRight, elevationUpperRel)
-    ctx |> render_rect(lt.x, lt.y, rt.x, rt.y, tc, tc, tc)
+    ctx |> render_box(lt.x, lt.y, rt.x, rt.y)
 
     let azimuthGateWidthRel = angularGateWidthMultSquare * 2. * max(get_radar_hud_azimuth_half_width(), angularGateBeamWidthMin) * azimuthRangeInv
     let elevationGateWidthRel = angularGateWidthMultSquare * 2. * max(get_radar_hud_elevation_half_width(), angularGateBeamWidthMin) * elevationRangeInv
@@ -3325,13 +3313,12 @@ struct IFFFilterButton : InteractableButton
     onClick(rel_pos)
 
   def drawTarget(pos, targetHalfSize : float2; friendly : bool; var ctx : GuiContext&)
-    let tc = float2(0., 0.)
     let friendlyOffset = size.y * 0.07
     let friendlyHeight = size.y * 0.1
 
     let lt = pos - targetHalfSize
     let rb = pos + targetHalfSize
-    ctx |> render_rect(lt.x, lt.y, rb.x, rb.y, tc, tc, tc)
+    ctx |> render_box(lt.x, lt.y, rb.x, rb.y)
 
     if (friendly)
-      ctx |> render_rect(lt.x, lt.y - friendlyOffset - friendlyHeight, rb.x, lt.y - friendlyOffset, tc, tc, tc)
+      ctx |> render_box(lt.x, lt.y - friendlyOffset - friendlyHeight, rb.x, lt.y - friendlyOffset)

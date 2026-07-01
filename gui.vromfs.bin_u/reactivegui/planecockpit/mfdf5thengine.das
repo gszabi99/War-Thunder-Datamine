@@ -105,11 +105,9 @@ def draw_rpm_indicator(var ctx : GuiContext&; pos : float2; size : float2; data 
   let text = "{roundi(rpm * 100.)}"
   let strBox = get_str_bbox(text, text |> length(), fctx)
   if rpm < 0.5
-    let tc = float2(0., 0.)
     ctx |> set_color(red)
-    ctx |> render_rect(pos.x + size.x * 0.6, pos.y + size.y * 0.5 - strBox.width.y * 0.7,
-     pos.x + size.x, pos.y + size.y * 0.5 + strBox.width.y * 0.7,
-     tc, tc, tc)
+    ctx |> render_box(pos.x + size.x * 0.6, pos.y + size.y * 0.5 - strBox.width.y * 0.7,
+     pos.x + size.x, pos.y + size.y * 0.5 + strBox.width.y * 0.7)
 
   ctx |> set_color(rpm > 0.5 ? green : black)
   ctx |> goto_xy(pos.x + size.x - strBox.width.x - 5., pos.y + size.y * 0.5 + strBox.width.y * 0.5)
@@ -180,10 +178,9 @@ def draw_oil_press_ind(var ctx : GuiContext&; pos : float2; size : float2; data 
   let pressText = fmt(":.1f", press * 30.)
   let strBox = get_str_bbox(pressText, pressText |> length(), fctx)
   if press < 0.2
-    let tc = float2(0., 0.)
     ctx |> set_color(red)
-    ctx |> render_rect(pos.x + size.x * 0.5 - strBox.width.x * 0.7, pos.y + size.y - strBox.width.y * 1.2,
-     pos.x + size.x * 0.5 + strBox.width.x * 0.7, pos.y + size.y, tc, tc, tc)
+    ctx |> render_box(pos.x + size.x * 0.5 - strBox.width.x * 0.7, pos.y + size.y - strBox.width.y * 1.2,
+     pos.x + size.x * 0.5 + strBox.width.x * 0.7, pos.y + size.y)
   ctx |> set_color(press < 0.2 ? black : green)
   ctx |> goto_xy(pos.x + size.x * 0.5 - strBox.width.x * 0.5, pos.y + size.y - strBox.width.y * 0.1)
   ctx |> draw_str_scaled(1., pressText, pressText |> length())
@@ -228,10 +225,9 @@ def draw_hydr_press_ind(var ctx : GuiContext&; pos : float2; size : float2; data
   let maxText = "1500"
   let maxStrBox = get_str_bbox(maxText, maxText |> length(), fctx)
   if press < 1500.
-    let tc = float2(0., 0.)
     ctx |> set_color(red)
-    ctx |> render_rect(pos.x + size.x * 0.5 - maxStrBox.width.x * 0.6, pos.y + size.y - maxStrBox.width.y * 1.2,
-     pos.x + size.x * 0.5 + maxStrBox.width.x * 0.6, pos.y + size.y, tc, tc, tc)
+    ctx |> render_box(pos.x + size.x * 0.5 - maxStrBox.width.x * 0.6, pos.y + size.y - maxStrBox.width.y * 1.2,
+     pos.x + size.x * 0.5 + maxStrBox.width.x * 0.6, pos.y + size.y)
   ctx |> set_color(textColor)
   ctx |> goto_xy(pos.x + size.x * 0.5 - strBox.width.x * 0.5, pos.y + size.y - strBox.width.y * 0.1)
   ctx |> draw_str_scaled(1., pressText, pressText |> length())

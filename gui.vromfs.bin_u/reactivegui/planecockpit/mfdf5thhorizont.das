@@ -62,7 +62,6 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
 
 def draw_avia_horizont(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; tangage : float; roll : float)
   let horLevel = pos.y + size.y * cvt(tangage, -30., 30., 0., 1.)
-  let tc = float2(0., 0.)
   let origin = pos + size * 0.5
 
   ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
@@ -70,9 +69,9 @@ def draw_avia_horizont(var ctx : GuiContext&; pos : float2; size : float2; data 
 
   ctx |> set_color(skyColor)
   let dim = max(size.x, size.y)
-  ctx |> render_rect(pos.x + (size.x - dim) * 0.5, pos.y, pos.x + dim, horLevel, tc, tc, tc)
+  ctx |> render_box(pos.x + (size.x - dim) * 0.5, pos.y, pos.x + dim, horLevel)
   ctx |> set_color(groundColor)
-  ctx |> render_rect(pos.x + (size.x - dim) * 0.5, horLevel, pos.x + dim, pos.y + size.y, tc, tc, tc)
+  ctx |> render_box(pos.x + (size.x - dim) * 0.5, horLevel, pos.x + dim, pos.y + size.y)
 
   ctx |> set_color(lineColor)
   var fctx : StdGuiFontContext

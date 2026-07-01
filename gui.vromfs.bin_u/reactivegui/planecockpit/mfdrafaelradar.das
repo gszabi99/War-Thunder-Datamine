@@ -172,15 +172,14 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   for elevationMark in elevationMarks
     let elevationMarkLine <- to_array_move(fixed_array<float2>(origin + float2(-radius + size.x * 0.1, -0.25 * size.y + elevationMark * PI / 180.0 * elevationRangeInv * elevationScaleHalfSize), origin + float2(-radius + size.x * 0.1 - elevationMarkLen, -0.25 * size.y + elevationMark * PI / 180.0 * elevationRangeInv * elevationScaleHalfSize)))
     ctx |> render_line_aa(elevationMarkLine, false, data.lineWidth, float2(0., 0.), radarScanZoneElevationMarksColor)
-  let tc = float2(0., 0.)
 
   let elevationZoneLen = 0.5 * elevationMarkLen
   let scanElevationMin = get_radar_hud_scan_elevation_min()
   let scanElevationMax = get_radar_hud_scan_elevation_max()
   if (scanElevationMax - scanElevationMin > 0.01)
     ctx |> set_color(radarScanZoneElevationMarksColor)
-    ctx |> render_rect(origin.x - radius + size.x * 0.15, origin.y - 0.25 * size.y - scanElevationMin * elevationRangeInv * elevationScaleHalfSize,
-      origin.x - radius + size.x * 0.15 - elevationZoneLen, origin.y - 0.25 * size.y - scanElevationMax * elevationRangeInv * elevationScaleHalfSize, tc, tc, tc)
+    ctx |> render_box(origin.x - radius + size.x * 0.15, origin.y - 0.25 * size.y - scanElevationMin * elevationRangeInv * elevationScaleHalfSize,
+      origin.x - radius + size.x * 0.15 - elevationZoneLen, origin.y - 0.25 * size.y - scanElevationMax * elevationRangeInv * elevationScaleHalfSize)
 
   let scanAzimuthMin = get_radar_hud_scan_azimuth_min()
   let scanAzimuthMax = get_radar_hud_scan_azimuth_max()

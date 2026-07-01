@@ -225,8 +225,7 @@ def draw_target_info(var ctx : GuiContext&; pos : float2; size : float2)
   if hasSelectedTarget
     ctx |> set_color(colors.darkGray)
     let rb = pos + float2(size.x, size.y)
-    let tc = float2(0., 0.)
-    ctx |> render_rect(pos.x, pos.y, rb.x, rb.y, tc, tc, tc)
+    ctx |> render_box(pos.x, pos.y, rb.x, rb.y)
     ctx |> set_color(colors.white)
     let rPos = pos + float2(0.1 * size.x, 0.4 * size.y)
     let distMul = kMetrToMile

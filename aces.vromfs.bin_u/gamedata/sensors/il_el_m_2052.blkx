@@ -390,6 +390,66 @@
       "rowMajor": true,
       "preciseMinor": true
     },
+    "twsNarrow": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -70.0,
+        70.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 70.0,
+      "period": 1.1431754,
+      "width": 10.0,
+      "barHeight": 2.5,
+      "barsCount": 8,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "twsMedium": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -70.0,
+        70.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 70.0,
+      "period": 2.2046952,
+      "width": 20.0,
+      "barHeight": 2.5,
+      "barsCount": 8,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "twsWide": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -70.0,
+        70.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 70.0,
+      "period": 3.837803,
+      "width": 35.0,
+      "barHeight": 2.5,
+      "barsCount": 8,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
     "fastTws": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -402,7 +462,7 @@
       ],
       "rollStabLimit": 180.0,
       "pitchStabLimit": 70.0,
-      "period": 0.022,
+      "period": 0.0416,
       "width": 70.0,
       "barHeight": 2.5,
       "barsCount": 56,
@@ -529,9 +589,9 @@
       "scanPattern3": "searchAutoNarrow"
     },
     "tws": {
-      "scanPattern1": "searchAutoMedium",
-      "scanPattern2": "searchAutoWide",
-      "scanPattern3": "searchAutoNarrow"
+      "scanPattern1": "twsMedium",
+      "scanPattern2": "twsWide",
+      "scanPattern3": "twsNarrow"
     },
     "acmLock": {
       "scanPattern1": "boresightLock",

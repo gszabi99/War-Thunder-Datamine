@@ -52,8 +52,7 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
   let size = float2(rdata.size.x * (data.useArea.z - data.useArea.x), rdata.size.y * (data.useArea.w - data.useArea.y))
   ctx |> set_color(data.backgroundColor)
   let rb = pos + size
-  let tc = float2(0., 0.)
-  ctx |> render_rect(pos.x, pos.y, rb.x, rb.y, tc, tc, tc)
+  ctx |> render_box(pos.x, pos.y, rb.x, rb.y)
 
   let offset = draw_button_labels(ctx, data, pos, size)
 
@@ -135,8 +134,7 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
   let radarSize = float2(size.x - (arrowPos.x - pos.x), size.y)
   let rb = radarPos + radarSize
   ctx |> set_color(data.radarBackgroundColor)
-  let tc = float2(0., 0.)
-  ctx |> render_rect(radarPos.x, radarPos.y, rb.x, rb.y, tc, tc, tc)
+  ctx |> render_box(radarPos.x, radarPos.y, rb.x, rb.y)
 
   ctx |> set_viewport(radarPos.x, radarPos.y, rb.x, rb.y)
 
@@ -430,9 +428,8 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
 
   ctx |> set_viewport(pos.x, pos.y - size.y * 0.12, pos.x + size.x, pos.y + size.y)
 
-  let tc = float2(0., 0.)
   ctx |> set_color(data.radarBackgroundColor)
-  ctx |> render_rect(pos.x, pos.y + size.y * 0.5, pos.x + size.x, pos.y + size.y, tc, tc, tc)
+  ctx |> render_box(pos.x, pos.y + size.y * 0.5, pos.x + size.x, pos.y + size.y)
   let anglesExternal = float2(get_radar_hud_azimuth_min() - PI * 0.5, get_radar_hud_azimuth_max() - PI * 0.5)
   ctx |> render_sector_aa(origin, radius, anglesExternal, 1., transparentColor, data.radarBackgroundColor)
 

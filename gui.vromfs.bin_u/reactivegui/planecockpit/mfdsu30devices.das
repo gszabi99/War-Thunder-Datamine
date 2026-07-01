@@ -135,15 +135,14 @@ def draw_climb(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
 
 def draw_avia_horizont(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; tangage : float; roll : float)
   let horLevel = pos.y + size.y * cvt(tangage, -30., 30., 0., 1.)
-  let tc = float2(0., 0.)
   let origin = pos + size * 0.5
 
   ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
 
   ctx |> set_color(skyColor)
-  ctx |> render_rect(pos.x, pos.y, pos.x + size.x, horLevel, tc, tc, tc)
+  ctx |> render_box(pos.x, pos.y, pos.x + size.x, horLevel)
   ctx |> set_color(groundColor)
-  ctx |> render_rect(pos.x, horLevel, pos.x + size.x, pos.y + size.y, tc, tc, tc)
+  ctx |> render_box(pos.x, horLevel, pos.x + size.x, pos.y + size.y)
 
   ctx |> set_color(white)
   var fctx : StdGuiFontContext
@@ -305,9 +304,8 @@ def draw_altitude(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(data.fontSize)
 
-  let tc = float2(0.)
   ctx |> set_color(yellow)
-  ctx |> render_rect(pos.x + size.x * 0.32, pos.y + size.y * 0.55, pos.x + size.x * 0.68, pos.y + size.y * 0.7, tc, tc, tc)
+  ctx |> render_box(pos.x + size.x * 0.32, pos.y + size.y * 0.55, pos.x + size.x * 0.68, pos.y + size.y * 0.7)
 
   ctx |> set_color(black)
   let mod = "{int(alt % 1000.)}"
