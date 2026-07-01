@@ -82,7 +82,7 @@ function makeFilterMap(enabledFilters) {
 
 let iffOnlyFilter = makeFilterMap([IFFFilter])
 let defaultFilters = makeFilterMap([IFFFilter, typeFilter, rangeFilter])
-let esmFilter = makeFilterMap([IFFFilter, genericSourceFilter, ESMModeTypeFilter])
+let esmFilter = makeFilterMap([IFFFilter, ESMModeTypeFilter])
 
 return {
   IFFFilter

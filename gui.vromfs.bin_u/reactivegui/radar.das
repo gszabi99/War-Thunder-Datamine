@@ -2311,10 +2311,6 @@ struct ESMBScopeMain : RadarInteractableEll
         Radar`changeScanPattern()
       scanEl.walkLayout(visitor)
 
-    let filterMargin = *self.data |> hdpx(4.0)
-    let filterAnchor = float2(pos.x + size.x - filterMargin, targets.pos.y)
-    var filterEl = ESMFilterButtons(filterAnchor, modeStyle, *self.data)
-    filterEl.walkLayout(visitor)
 
 
 struct ESMFilterButtons
