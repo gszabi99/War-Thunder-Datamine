@@ -238,8 +238,8 @@ function destroy() {
 
 function removeInvalidWatchedObjects() {
   watchedObjects.replace(watchedObjects.filter(function(objects) {
-    let { infoWnd, infoWndHolder } = objects
-    return infoWnd?.isValid() && (infoWndHolder?.isValid() ?? true)
+    let { infoWnd, infoWndHolder, initiatorObj } = objects
+    return infoWnd?.isValid() && (infoWndHolder?.isValid() ?? true) && initiatorObj?.isValid()
   }))
 }
 
@@ -279,7 +279,7 @@ onTimerTick = function() {
 }
 
 function addModalInfo(initiatorObj, handler, tooltipType, id, params, isCursorInBoundsOptional) {
-  if (watchedObjects.findindex(@(o) o.id == id && o.initiatorObj.isEqual(initiatorObj)) != null)
+  if (watchedObjects.findindex(@(o) o.id == id && o.initiatorObj?.isValid() && o.initiatorObj.isEqual(initiatorObj)) != null)
     return null
 
   let initiatorBounds = getObjectBounds(initiatorObj)
