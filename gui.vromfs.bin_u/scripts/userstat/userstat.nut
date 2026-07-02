@@ -187,7 +187,14 @@ let userstatStats = statsUpdatable.data
 let refreshUserstatStats = @() statsUpdatable.forceRefresh()
 
 let getUserstatTableData = @(tableName) userstatStats.get()?.stats[tableName]
-let getTableActiveIndex = @(tableName) getUserstatTableData(tableName)?["$index"]
+function getTableActiveIndex(tableName) {
+  let tableData = getUserstatTableData(tableName)
+  if (tableData != null)
+    return tableData?["$index"] ?? 0
+
+  
+  return userstatStats.get()?.stats["global"].stats.given_reward_table_idx ?? 0
+}
 
 function calculateTimerNextTableUpdate() {
   clearTimer(UPDATE_TABLE_TIMER_ID)

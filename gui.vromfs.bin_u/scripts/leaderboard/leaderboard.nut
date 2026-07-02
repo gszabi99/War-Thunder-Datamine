@@ -537,17 +537,29 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
 
 
   function fillAdditionalLeaderboardInfo(pageData) {
-    let updateTime = getTblValue("updateTime", pageData, 0)
+    let lbUpdateTime = this.scene.findObject("lb_update_time")
+    if (!lbUpdateTime?.isValid())
+      return
+
+    let { updateTime = 0, isEnoughPlayers = null } = pageData
     let timeStr = updateTime > 0
                     ? format("%s %s %s",
                                loc("mainmenu/lbUpdateTime"),
                                time.buildDateStr(updateTime),
                                time.buildTimeStr(updateTime, false, false))
                     : ""
-    let lbUpdateTime = this.scene.findObject("lb_update_time")
-    if (!checkObj(lbUpdateTime))
+
+    if (isEnoughPlayers != false) { 
+      lbUpdateTime.tooltip = ""
+      lbUpdateTime.setValue(timeStr)
       return
-    lbUpdateTime.setValue(timeStr)
+    }
+
+    lbUpdateTime.tooltip = loc("leaderboard/canNotBePromoted/tooltip")
+    lbUpdateTime.setValue("".concat(
+      loc("leaderboard/canNotBePromoted")
+      timeStr != "" ? loc("ui/parentheses/space", { text = timeStr }) : ""
+    ))
   }
 
   function onTabChange(obj) {

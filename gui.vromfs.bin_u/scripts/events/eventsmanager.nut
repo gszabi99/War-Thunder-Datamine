@@ -65,7 +65,7 @@ let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventF
   getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
   isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature,
   isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage, isVrModeAllowedInEvent,
-  getEventLeagueName
+  getEventLeagueName, getCurLeagueConfig
 } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
@@ -541,11 +541,14 @@ let _leaderboards = {
   }
 
   function getLbDataFromBlk(blk, requestData) {
-    if (requestData?.lbContactTable != null) {
-      let allRows = convertContactLeaderboardData(blk, requestData.lbField).rows
+    let { lbContactTable = null, lbField } = requestData
+    if (lbContactTable != null) {
+      let leaderboardData = convertContactLeaderboardData(blk, lbField,
+        getCurLeagueConfig(lbContactTable))
+      let allRows = leaderboardData.rows
       let start = requestData?.pos ?? 0
       let end = min(start + (requestData?.rowsInPage ?? allRows.len()), allRows.len())
-      return { rows = allRows.slice(start, end) }
+      return leaderboardData.__update({ rows = allRows.slice(start, end) })
     }
 
     let { success = true } = blk?.result
@@ -570,10 +573,11 @@ let _leaderboards = {
   }
 
   function getSelfRowDataFromBlk(blk, requestData) {
-    if (requestData?.lbContactTable != null) {
+    let { lbContactTable = null, lbField } = requestData
+    if (lbContactTable != null) {
       let myId = userIdStr.get()
-      return convertContactLeaderboardData(blk, requestData.lbField).rows
-        .filter(@(r) r?._id.tostring() == myId)
+      return convertContactLeaderboardData(blk, lbField,
+        getCurLeagueConfig(lbContactTable)).rows.filter(@(r) r?._id.tostring() == myId)
     }
 
     let { success = true } = blk?.result

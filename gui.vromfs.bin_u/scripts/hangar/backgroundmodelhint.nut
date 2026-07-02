@@ -30,6 +30,34 @@ let defData = {
   viewData = null
 }
 
+let delayedTooltipButtonParamsText = @"
+  on_pushed:t='::gcb.delayedTooltipPush'
+  on_hold_start:t='::gcb.delayedTooltipHoldStart'
+  on_hold_stop:t='::gcb.delayedTooltipHoldStop'
+  on_hover:t='::gcb.delayedTooltipHover'
+  on_unhover:t='::gcb.delayedTooltipHover'
+"
+let shellClickButtonText = @"
+tdiv {
+  id:t='shell_click_btn'
+  size:t='pw, ph'
+  tooltipId:t=''
+  behavior:t='button'
+  on_click:t='onShellClick'
+  {additionalParams}
+  focusBtnName:t='A'
+}"
+
+function addShellClickButton(obj) {
+  let handler = handlersManager.getActiveBaseHandler()
+  if (handler == null)
+    return
+
+  let additionalParams = isUseGamePad() ? delayedTooltipButtonParamsText : ""
+  let data = shellClickButtonText.subst({ additionalParams })
+  handler.guiScene.replaceContentFromText(obj, data, data.len(), handler)
+}
+
 function isShellFocusedInHangar(shellName) {
   if (shellFocusedInHangar.get() == "")
     return false
@@ -49,14 +77,14 @@ function openPresetWndForShell(obj) {
 }
 
 function openDelayedOrModalTooltip(obj, tooltipProvider, unitName, params, isCursorInBoundsOptional, getTooltipIdFn) {
-  let parentObj = obj.getParent()
-  parentObj.tooltipId = getTooltipIdFn()
+  obj.tooltipId = getTooltipIdFn()
+  obj.getScene().applyPendingChanges(false)
   if (isUseGamePad()) {
-    delayedTooltipOnHover(parentObj, isCursorInBoundsOptional)
+    delayedTooltipOnHover(obj, isCursorInBoundsOptional)
     return
   }
   let handler = handlersManager.getActiveBaseHandler()
-  openModalInfo(obj, handler, tooltipProvider, unitName, params, null, isCursorInBoundsOptional)
+  openModalInfo(obj.getParent(), handler, tooltipProvider, unitName, params, null, isCursorInBoundsOptional)
 }
 
 function fillSecondaryWeaponHint(obj, unitName, weaponBlkName, presetName) {
@@ -65,13 +93,14 @@ function fillSecondaryWeaponHint(obj, unitName, weaponBlkName, presetName) {
     obj.show(false)
     return
   }
+  obj.show(true)
   if (presetName == "")
     presetName = weapon.presetId
   let params = { blkPath = weaponBlkName, tType = weapon.trigger, presetName = presetName }
   let isCursorInBoundsOptional = @() isShellFocusedInHangar(weaponBlkName)
-  openDelayedOrModalTooltip(obj, SINGLE_WEAPON, unitName, params, isCursorInBoundsOptional,
+  let tooltipObj = obj.findObject("shell_click_btn") ?? obj
+  openDelayedOrModalTooltip(tooltipObj, SINGLE_WEAPON, unitName, params, isCursorInBoundsOptional,
     @() SINGLE_WEAPON.getTooltipId(unitName, params))
-  obj.show(true)
 }
 
 function fillBulletHint(obj, unitName, bulletName, bulletType) {
@@ -89,13 +118,15 @@ function fillBulletHint(obj, unitName, bulletName, bulletType) {
     obj.show(false)
     return
   }
+  obj.show(true)
   let isBulletBelt = (bulletsSet?.isBulletBelt ?? false)
     && ((bulletsSet?.bulletDataByType.len() ?? 0) > 1)
+  let tooltipObj = obj.findObject("shell_click_btn") ?? obj
   let isCursorInBoundsOptional = @() isShellFocusedInHangar(bulletName)
   if (!isBulletBelt) {
     let params = { modName = bulletSetName }
     params.__update({ forceHideActionText = true })
-    openDelayedOrModalTooltip(obj, MODIFICATION, unitName, params, isCursorInBoundsOptional,
+    openDelayedOrModalTooltip(tooltipObj, MODIFICATION, unitName, params, isCursorInBoundsOptional,
       @() MODIFICATION.getTooltipId(unitName, bulletSetName, params))
   }
   else {
@@ -116,10 +147,9 @@ function fillBulletHint(obj, unitName, bulletName, bulletType) {
       bulletParams
     }
     params.__update({ forceHideActionText = true })
-    openDelayedOrModalTooltip(obj, SINGLE_BULLET, unitName, params, isCursorInBoundsOptional,
+    openDelayedOrModalTooltip(tooltipObj, SINGLE_BULLET, unitName, params, isCursorInBoundsOptional,
       @() SINGLE_BULLET.getTooltipId(unitName, bulletType, params))
   }
-  obj.show(true)
 }
 
 function fillWeaponsHint(obj, viewData) {
@@ -128,6 +158,8 @@ function fillWeaponsHint(obj, viewData) {
     obj.show(false)
     return
   }
+
+  addShellClickButton(obj)
   if (endsWith(weaponName, ".blk"))
     fillSecondaryWeaponHint(obj, unitName, weaponName, presetName)
   else
@@ -142,6 +174,7 @@ let hintsDataById = {
     objId = "custom_hint"
     updateObjData = fillWeaponsHint
     isModalTooltip = true
+    afterHide = @() shellFocusedInHangar.set("")
   }.__update(defData)
 }
 
@@ -204,9 +237,7 @@ function showHint() {
   hintDataToShow.obj = hintObj
   hintDataToShow.isVisible = true
   hintDataToShow.needUpdate = false
-  let handler = handlersManager.getActiveBaseHandler()
-  let parentObj = !!handler ? handler.scene.findObject("hangar_hint") : hintObj.getParent()
-  placeBackgroundModelHint(parentObj)
+  placeBackgroundModelHint(hintObj.getParent())
   updateObjData(hintObj, viewData)
 }
 
@@ -222,14 +253,9 @@ function hideSingleHint(hintData) {
   hintData.isVisible = false
   hintData.needShow = false
   hintData.needUpdate = false
+  getHintObj(hintData)?.show(false)
   hintData.obj = null
-  shellFocusedInHangar.set("")
-  let hintObj = getHintObj(hintData)
-  if (!hintObj?.isValid())
-    return
-  hintObj.show(false)
-  if (hintData?.isModalTooltip)
-    hintObj.getParent().tooltipId = ""
+  hintData?.afterHide()
 }
 
 function hideAllHints() {

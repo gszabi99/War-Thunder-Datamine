@@ -107,22 +107,47 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("lb_table", hasHeader && hasTable, this.scene)
   }
 
+  function getImageParams(row) {
+    let { bePromoted = null, beDemoted = null } = row
+    if (!bePromoted && !beDemoted)
+      return {}
+
+    let rotation = bePromoted ? 0 : 180
+    let color = bePromoted ? "@goodTextColor" : "@badTextColor"
+    let tooltipText = bePromoted ? loc("leaderboard/bePromoted/tooltip")
+      : loc("leaderboard/beDemoted/tooltip")
+    return {
+      image = "#ui/gameuiskin#spinnerListBox_arrow_up.svg"
+      imageType = "tdiv"
+      imageRawParams = " ".concat(@"left:t='-w';
+        size:t='1@cIco, 1@cIco';
+        background-svg-size:t='1@cIco, 1@cIco';"
+        $"rotation:t='{rotation}'; background-color:t='{color}'; tooltip:t='{tooltipText}';")
+    }
+  }
+
   function getTableRowMarkup(row, rowIdx, selfPos) {
     let needAddClanTag = row?.needAddClanTag ?? false
     let clanTag = row?.clanTag ?? ""
     let rowName = row?.name ?? ""
     let playerName = getCustomNick(getContactByName(rowName))
       ?? (this.isClanLb ? rowName : getPlayerName(rowName))
+    let { bePromoted = null, beDemoted = null } = row
+    let rawParam = bePromoted ? "background-color:t='#00031803'"
+      : beDemoted ? "background-color:t='#00190705'"
+      : ""
     let rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
-      }
+        rawParam
+      }.__update(this.getImageParams(row))
       {
         id = "name"
         tdalign = "left"
         text = needAddClanTag
           ? getPlayerFullName(playerName, clanTag)
           : playerName
+        rawParam
       }
     ]
     let isMainPlayer = selfPos == row.pos && row.pos >= 0
@@ -132,6 +157,9 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       let itemCell = this.getItemCell(category, row)
+      if (rawParam != "")
+        itemCell.rawParam <- itemCell?.rawParam == null ? rawParam
+          : "; ".concat(itemCell.rawParam, rawParam)
       if (customSelfStats != null) {
         let customTooltip = this.getCustomSelfStatsTooltip(category, customSelfStats)
         itemCell.tooltip <- itemCell?.tooltip == null ? customTooltip

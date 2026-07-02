@@ -19,6 +19,15 @@ let eventIdsForMainGameModeList = [
   "air_arcade"
 ]
 
+let leaguesConfig = [
+  { locId = "league/groupStage", minSize = 40, maxSize = 48, bePromoted = 24, beDemoted = 0 }
+  { locId = "league/roundOf32", minSize = 30, maxSize = 32, bePromoted = 8, beDemoted = 12 }
+  { locId = "league/roundOf16", minSize = 14, maxSize = 16, bePromoted = 4, beDemoted = 6 }
+  { locId = "league/quarterfinal", minSize = 7, maxSize = 8, bePromoted = 2, beDemoted = 3 }
+  { locId = "league/semifinal", minSize = 4, maxSize = 4, bePromoted = 1, beDemoted = 2 }
+  { locId = "league/final", minSize = 2, maxSize = 2, bePromoted = 1, beDemoted = 1 }
+]
+
 let isEventAllowedByPackage = @(event) event?.reqPacks.findvalue(@(packName) !havePackage(packName)) == null
 
 let needShowOverrideSlotbar = @(event) (event?.showEditSlotbar ?? false)
@@ -28,8 +37,9 @@ let getCustomViewCountryData = @(event) event?.customViewCountry
 
 let getEventEconomicName = @(event) event?.economicName ?? ""
 
-let isLeaderboardsAvailable = @() !getSeparateLeaderboardPlatformValue()
-  || hasFeature("ConsoleSeparateEventsLeaderboards")
+let isLeaderboardsAvailable = @(event) (event?.enableEventsLeaderboard ?? false)
+  && (!getSeparateLeaderboardPlatformValue()
+    || hasFeature("ConsoleSeparateEventsLeaderboards"))
 
 let getEventTournamentMode = @(event) event?.tournament_mode ?? GAME_EVENT_TYPE.TM_NONE
 
@@ -135,14 +145,15 @@ let canJoinWithoutRequireCrafts = @(event) !(event?.requireCrafts ?? true)
 
 let isVrModeAllowedInEvent = @(event) event?.isVrModeAllowed != false
 
-let leagueLocNames = [
-  "league/groupStage"
-  "league/roundOf32"
-  "league/roundOf16"
-  "league/quarterfinal"
-  "league/semifinal"
-  "league/final"
-]
+function getCurLeagueConfig(leaderboardContactTable) {
+  let tableData = getUserstatTableData(leaderboardContactTable)
+  if (tableData == null)
+    return null
+
+  let leagueLevel = tableData?.stats.league_level ?? 0
+  return leaguesConfig?[leagueLevel]
+}
+
 function getEventLeagueName(event) {
   let { leaderboardContactTable = null } = event
   if (leaderboardContactTable == null)
@@ -152,8 +163,8 @@ function getEventLeagueName(event) {
     return ""
 
   let leagueLevel = tableData?.stats.league_level ?? 0
-  let leagueLocId = leagueLocNames?[leagueLevel]
-  let leagueName = leagueLocId != null ? loc(leagueLocId) : ""
+  let { locId = "" } = leaguesConfig?[leagueLevel]
+  let leagueName = locId != "" ? loc(locId) : ""
   let endTime = tableData?["$endsAt"] ?? 0
   if (endTime == 0)
     return leagueName
@@ -198,4 +209,5 @@ return {
   isEventAllowedByPackage
   isVrModeAllowedInEvent
   getEventLeagueName
+  getCurLeagueConfig
 }

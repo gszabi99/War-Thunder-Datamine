@@ -403,7 +403,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fetchLbData() {
-    let isLbAvailable = isLeaderboardsAvailable()
+    let isLbAvailable = isLeaderboardsAvailable(this.selectedEvent)
     this.hideEventLeaderboard(isLbAvailable)
     if (!isLbAvailable) {
       this.showEventLb(null)
@@ -443,7 +443,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (btnLb == null || lbTable == null)
       return
 
-    let isLbAvailable = isLeaderboardsAvailable()
+    let isLbAvailable = isLeaderboardsAvailable(this.selectedEvent)
     let lbRows = lb_data?.rows ?? []
     this.playersInTable = []
     this.guiScene.replaceContentFromText(lbTable, "", 0, this)

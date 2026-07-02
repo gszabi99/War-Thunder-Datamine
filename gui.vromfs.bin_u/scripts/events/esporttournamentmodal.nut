@@ -155,12 +155,22 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
     return res
   }
 
-  function updateLbObjects(lbData) {
-    let isLbEnable = lbData.rows.len() > 0
-    let lbObj = showObjById("leaderboard_obj", isLeaderboardsAvailable(), this.scene)
+  function updateLeaderboard() {
+    let event = getEventByDay(this.tournament.id, this.curTourParams.dayNum, false)
+    let lbObj = showObjById("leaderboard_obj", isLeaderboardsAvailable(event), this.scene)
     if (!lbObj?.isValid())
       return
 
+    fetchLbData(event, @(lbData) this.updateLbObjects(lbData), this)
+  }
+
+  function updateLbObjects(lbData) {
+    let event = getEventByDay(this.tournament.id, this.curTourParams.dayNum, false)
+    let lbObj = showObjById("leaderboard_obj", isLeaderboardsAvailable(event), this.scene)
+    if (!lbObj?.isValid())
+      return
+
+    let isLbEnable = lbData.rows.len() > 0
     lbObj.enable(isLbEnable)
     lbObj.inactiveColor = isLbEnable ? "no" : "yes"
     if (!isLbEnable)
@@ -184,9 +194,6 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getDescParams() {
-    fetchLbData(
-      getEventByDay(this.tournament.id, this.curTourParams.dayNum, false),
-      @(lbData) this.updateLbObjects(lbData), this)
     let rangeData = events.getPlayersRangeTextData(this.curEvent)
     let missArr = [$"{loc("mainmenu/missions")}{loc("ui/colon")}"]
     foreach (miss, _v in (this.curEvent.mission_decl?.missions_list ?? {}))
@@ -209,6 +216,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateContentView() {
+    this.updateLeaderboard()
     this.updateApplyButton()
     let isFinished = this.curTourParams.dayNum == DAY.FINISH
     if (isFinished)

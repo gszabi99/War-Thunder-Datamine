@@ -149,7 +149,7 @@ let contactLeaderboardFieldsMap = {
   season_val_tank_football_score         = "ext4"
 }
 
-function convertContactLeaderboardData(result, sortStat = null) {
+function convertContactLeaderboardData(result, sortStat, leagueConfig) {
   let rows = []
   foreach (entry in (result?.league ?? [])) {
     let uid = entry?._id.tostring() ?? ""
@@ -161,9 +161,23 @@ function convertContactLeaderboardData(result, sortStat = null) {
   }
   if (sortStat != null)
     rows.sort(@(a, b) (b?[sortStat] ?? 0) <=> (a?[sortStat] ?? 0))
-  for (local i = 0; i < rows.len(); i++)
+
+  let playersCount = rows.len()
+  let { bePromoted = 0, beDemoted = 0, minSize = 0 } = leagueConfig
+  let isEnoughPlayers = minSize <= playersCount
+  let firstDemotionIndex = playersCount - beDemoted
+  for (local i = 0; i < playersCount; i++) {
     rows[i].pos <- i
-  return { rows }
+    if (leagueConfig == null)
+      continue
+    rows[i].bePromoted <- isEnoughPlayers && (i < bePromoted)
+    rows[i].beDemoted <- isEnoughPlayers && (i >= firstDemotionIndex)
+  }
+  return {
+    rows
+    updateTime = (result?.lastUpdateTime ?? 0).tointeger()
+    isEnoughPlayers
+  }
 }
 
 let leaderboardValueFactors = {
