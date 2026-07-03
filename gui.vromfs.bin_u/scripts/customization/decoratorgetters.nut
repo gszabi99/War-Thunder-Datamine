@@ -96,8 +96,8 @@ function getDecorator(decorId, decType, unitTypeTag = null) {
   if (isEmpty(decorId))
     return null
   let res = getSkinsDefaultDecorator(decorId, decType)
-    ?? getCachedDecorator(decorId, decType, unitTypeTag)
     ?? getSkinsLiveDecorator(decorId, decType)
+    ?? getCachedDecorator(decorId, decType, unitTypeTag)
   if (!res)
     log($"Decorators Manager: {decorId} was not found in the cache, try updating the cache.")
   return res
