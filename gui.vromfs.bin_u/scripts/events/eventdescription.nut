@@ -42,7 +42,7 @@ let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
-let { addTimerForRefreshStatsWhenTableEnd } = require("%scripts/userstat/userstat.nut")
+let { addTimerForRefreshStatsWhenTableEnd, actualizeStats } = require("%scripts/userstat/userstat.nut")
 
 function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -411,8 +411,10 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let { leaderboardContactTable = null } = this.selectedEvent
-    if (leaderboardContactTable != null)
+    if (leaderboardContactTable != null) {
+      actualizeStats()
       addTimerForRefreshStatsWhenTableEnd(leaderboardContactTable)
+    }
     this.newSelfRowRequest = events.getMainLbRequest(this.selectedEvent)
     events.requestSelfRow(
       this.newSelfRowRequest,

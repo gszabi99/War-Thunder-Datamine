@@ -118,8 +118,8 @@ let getMainOptions = function() {
 
       ["options/header/air"],
       [USEROPT_HUE_AIRCRAFT_HUD, "spinner"],
-      [USEROPT_HUE_AIRCRAFT_PARAM_HUD, "spinner",  hasFeature("reactivGuiForAircraft")],
-      [USEROPT_HUE_AIRCRAFT_HUD_ALERT, "spinner",  hasFeature("reactivGuiForAircraft")],
+      [USEROPT_HUE_AIRCRAFT_PARAM_HUD, "spinner"],
+      [USEROPT_HUE_AIRCRAFT_HUD_ALERT, "spinner"],
       [USEROPT_VIEWTYPE, "spinner", ! isInFlight()],
       [USEROPT_GUN_TARGET_DISTANCE, "spinner", ! isInFlight()],
       [USEROPT_GUN_VERTICAL_TARGETING, "spinner", ! isInFlight()],

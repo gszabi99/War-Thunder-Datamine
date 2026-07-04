@@ -12,9 +12,12 @@ let { eventbus_send} = require("eventbus")
 
 function doAction(obj, curEdiff) {
   let destination = obj.destination
-  let unit = obj?.unit ? getAircraftByName(obj.unit) : getShowedUnit()
+  let unitName = obj?.unit ?? ""
+  let unit = unitName != "" ? getAircraftByName(unitName) : getShowedUnit()
 
   if (["protection", "xray"].contains(destination)) {
+    if (unit == null)
+      return
     broadcastEvent("ChangeDMVieverMode", { page = destination })
     obj.getScene().performDelayed(this, @() unit.doPreview())
   }

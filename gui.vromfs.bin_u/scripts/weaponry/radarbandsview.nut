@@ -42,7 +42,7 @@ function getBandsInfo() {
 
 let getBandLocName = @(v) loc($"radar_freq_band_{v}")
 
-function mkRadarBandsListMarkup(weapon) {
+function mkRadarBandsListMarkup(weapon, _unit = null) {
   let { radarBands } = weapon
   let count = radarBands.len()
   if (count == 0)

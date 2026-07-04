@@ -123,7 +123,7 @@ let isMissileWeapon = @(weaponType) weaponType in missileWeaponTypes
 let isMissileBullet = @(bulletType) bulletType in missileBulletTypes
 let isGuidedBomb = @(weaponType) weaponType == WEAPON_TYPE.GUIDED_BOMBS
 
-let mkMissileTrajectoryBtnMarkup = @(weapon)
+let mkMissileTrajectoryBtnMarkup = @(weapon, unit)
   @"Button_text {
     id:t='{ammoName}'
     class:t='modalInfo'
@@ -132,10 +132,14 @@ let mkMissileTrajectoryBtnMarkup = @(weapon)
     }
     on_click:t='onModalInfoButtonClick'
     destination:t='trajectory'
+    unit:t='{unitName}'
     btnText {
       text:t='#mainmenu/missiles_trajectory'
     }
-  }".subst({ ammoName = weapon?.bulletName ?? weapon?.weaponName ?? "" })
+  }".subst({
+    ammoName = weapon?.bulletName ?? weapon?.weaponName ?? "",
+    unitName = unit?.name ?? ""
+  })
 
 let additionalMarkupByType = {
   [additionalMarkupTypes.MISSILE_SPEED] = mkMissileTrajectoryBtnMarkup,
@@ -834,7 +838,7 @@ function getWeaponExtendedInfo(weapon, unit, par) {
   function addParamsToRes(value, text, addMarkupType = null) {
     let newVal = { value, text, separator = loc("ui/colon") }
     if (addMarkupType)
-      newVal.additionalMarkup <- additionalMarkupByType?[addMarkupType](weapon)
+      newVal.additionalMarkup <- additionalMarkupByType?[addMarkupType](weapon, unit)
     res.append(newVal)
   }
 

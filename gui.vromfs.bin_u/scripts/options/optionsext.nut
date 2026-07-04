@@ -53,9 +53,8 @@ let time = require("%scripts/time.nut")
 let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY, TARGET_HUE_SQUAD, TARGET_HUE_SPECTATOR_ALLY,
   TARGET_HUE_SPECTATOR_ENEMY, TARGET_HUE_RELOAD, TARGET_HUE_RELOAD_DONE, TARGET_HUE_AIRCRAFT_HUD,
   TARGET_HUE_AIRCRAFT_PARAM_HUD, TARGET_HUE_HELICOPTER_CROSSHAIR, TARGET_HUE_HELICOPTER_HUD,
-  TARGET_HUE_HELICOPTER_PARAM_HUD, TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH,
-  TARGET_HUE_HELICOPTER_MFD, TARGET_HUE_ARBITER_HUD, setHsb, getAlertAircraftHues,
-  setAlertAircraftHues, getAlertHelicopterHues, setAlertHelicopterHues
+  TARGET_HUE_HELICOPTER_PARAM_HUD, TARGET_HUE_HELICOPTER_MFD, TARGET_HUE_ARBITER_HUD, setHsb,
+  getAlertAircraftHues, setAlertAircraftHues, getAlertHelicopterHues, setAlertHelicopterHues
 } = require("colorCorrector")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
@@ -3521,10 +3520,7 @@ let optionsMap = {
       122, 1.0, 1.0, get_hue(TARGET_HUE_HELICOPTER_PARAM_HUD))
   },
   [USEROPT_HUE_HELICOPTER_HUD_ALERT] = function(_optionId, descr, _context) {
-    if (hasFeature("reactivGuiForAircraft"))
-      fillMultipleHueOption(descr, "color_picker_hue_helicopter_hud_alert", getAlertHelicopterHues())
-    else
-      fillHueOption(descr, "color_picker_hue_helicopter_hud_alert", get_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH), 0)
+    fillMultipleHueOption(descr, "color_picker_hue_helicopter_hud_alert", getAlertHelicopterHues())
   },
   [USEROPT_HUE_ARBITER_HUD] = function(_optionId, descr, _context) {
     fillHueSaturationBrightnessOption(descr, "color_picker_hue_arbiter_hud",
@@ -4594,10 +4590,7 @@ let optionsSetMap = {
   [USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW] = @(value, _descr, _optionId) set_option_auto_pilot_on_gunner_view_helicopter(value),
   [USEROPT_HELI_MOUSE_AIM_ROLL_OVERRIDE_ENABLED] = def_set_gui_option,
   [USEROPT_HUE_HELICOPTER_HUD_ALERT] = function(value, descr, _optionId) {
-    if (hasFeature("reactivGuiForAircraft"))
-      setAlertHelicopterHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value)
-    else
-      set_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH, descr.values[value])
+    setAlertHelicopterHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value)
     handlersManager.checkPostLoadCssOnBackToBaseHandler()
   },
   [USEROPT_HUE_HELICOPTER_MFD] = function(value, descr, _optionId) {

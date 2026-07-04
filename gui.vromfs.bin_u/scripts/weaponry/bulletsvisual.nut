@@ -313,7 +313,7 @@ function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
   })
 }
 
-function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, params = {}) {
+function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, unit, params = {}) {
   let { name, isBulletCard, needAdditionalMarkupInShellDesc = false } = params
   let optionalMarkupTypes = !needAdditionalMarkupInShellDesc ? null
     : getAdditionalBulletMarkupTypes(bulletsData)
@@ -337,7 +337,7 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, params = {}) {
   let addProp = function(arr, text, value, addMarkupType = null) {
     let newVal = { text, value }
     if (addMarkupType)
-      newVal.additionalMarkup <- additionalMarkupByType?[addMarkupType]({ bulletName = name })
+      newVal.additionalMarkup <- additionalMarkupByType?[addMarkupType]({ bulletName = name }, unit)
     arr.append(newVal)
   }
   if ("sonicDamage" in bulletsData) {
@@ -883,7 +883,8 @@ function addBulletsParamToDesc(descTbl, unit, item, params = {}) {
 
 
 
-  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, params.__merge({ name = bulletsSet?.bulletNames[0] ?? modName }))
+  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, unit,
+    params.__merge({ name = bulletsSet?.bulletNames[0] ?? modName }))
   if (isBulletCard)
     addArmorPiercingToDescForBullets(bulletsData, descTbl)
   else
@@ -935,7 +936,8 @@ function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulle
 
   descTbl.bulletActions = [{ visual = getBulletsIconData(bulletsSet) }]
   let bulletsData = buildBulletsData([bulletParams], bulletsSet)
-  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, { isBulletCard = true, name = bulletName })
+  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, unit,
+    { isBulletCard = true, name = bulletName })
   addArmorPiercingToDescForBullets(bulletsData, descTbl)
   checkBulletParamsBeforeRender(descTbl)
   return descTbl

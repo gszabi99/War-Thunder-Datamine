@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import char_send_custom_action, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import APP_ID_CUSTOM_LEADERBOARD
-
+let logU = log_with_prefix("[userstat] ")
 let { eventbus_subscribe } = require("eventbus")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let userstat = require("userstat")
@@ -16,14 +16,21 @@ let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 let { mnSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { get_charserver_time_sec } = require("chard")
-let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
+let { deferOnce, setTimeout, clearTimer, resetTimeout
+} = require("dagor.workcycle")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
+const STATS_ACTUAL_TIMEOUT_SEC = 900
 
 const UPDATE_TABLE_TIMER_ID = "UPDATE_TABLE_TIMER_ID"
 let statsUpdateTimerByTable = {}
+
+let isStatsActualByBattle = hardPersistWatched("userstats.actualByBattle", true)
+isInBattleState.subscribe(@(_) isStatsActualByBattle.set(false))
 
 function updateGetUnlocksValue(watchValue, response) {
   foreach (key, value in response) {
@@ -231,20 +238,32 @@ function addTimerForRefreshStatsWhenTableEnd(tableName) {
   let table = {
     index = tableData?["$index"] ?? 0
     endTime
+    leagueLevel = tableData?.stats.league_level ?? 0
   }
   statsUpdateTimerByTable[tableName] <- table
   calculateTimerNextTableUpdate()
 }
 
+let getStatsActualTimeLeft = @() (userstatStats.get()?.timestamp ?? 0)
+  + STATS_ACTUAL_TIMEOUT_SEC - get_charserver_time_sec()
+let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
+
 userstatStats.subscribe(function(statsData) {
+  let timeLeft = getStatsActualTimeLeft()
+  isStatsActualByTime.set(timeLeft > 0)
+  isStatsActualByBattle.set(true)
+  if (timeLeft > 0)
+    resetTimeout(timeLeft, @() isStatsActualByTime.set(false))
+
   if (statsUpdateTimerByTable.len() == 0)
     return
 
   let updatedTables = []
   foreach (name, data in statsUpdateTimerByTable) {
+    let { index, endTime, leagueLevel } = data
     let tableData = statsData?.stats[name]
-    if (tableData == null || data.index != (tableData?["$index"] ?? 0)
-        || data.endTime != tableData?["$endsAt"])
+    if (tableData == null || index != (tableData?["$index"] ?? 0)
+        || endTime != tableData?["$endsAt"] || leagueLevel != (tableData?.stats.league_level ?? 0))
       updatedTables.append(name)
   }
   if (updatedTables.len() == 0)
@@ -255,6 +274,14 @@ userstatStats.subscribe(function(statsData) {
   calculateTimerNextTableUpdate()
   broadcastEvent("UserstatTablesUpdated", { updatedTables })
 })
+
+let isStatsActual = Computed(@() isStatsActualByTime.get() && isStatsActualByBattle.get())
+function actualizeStats() {
+  if (isStatsActual.get())
+    return
+  logU("request stats refresh")
+  statsUpdatable.refresh()
+}
 
 let isUserstatMissingData = Computed(@() userstatUnlocks.get().len() == 0
   || userstatDescList.get().len() == 0
@@ -327,4 +354,5 @@ return {
   waitingToShowRewardsArray
   getUserstatItemRewardData
   addTimerForRefreshStatsWhenTableEnd
+  actualizeStats
 }

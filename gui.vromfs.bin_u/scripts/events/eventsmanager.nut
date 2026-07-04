@@ -2140,10 +2140,9 @@ let Events = class {
   }
 
   function getEventLeaderboardName(event) {
-    let eventName = this.getEventNameText(event)
     let leagueName = getEventLeagueName(event)
-    return leagueName == "" ? eventName
-      : loc("ui/colon").concat(eventName, leagueName)
+    return leagueName != "" ? leagueName
+      : this.getEventNameText(event)
   }
 
   function isEventRandomBattlesById(eventId) {
