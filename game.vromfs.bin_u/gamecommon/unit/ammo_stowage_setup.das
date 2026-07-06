@@ -334,15 +334,8 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
             if cluster_type == int(AmmoClusterType.CHARGES) && !has_charges
               continue
             var ammo_to_add = delta_ammo
-
-            var firstStageByPriority = int(AmmoClusterStage.FIRST_STAGE)
-            var secondStageByPriority = int(AmmoClusterStage.SECOND_STAGE)
-            if get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.RESTORING_STOWAGE)
-              firstStageByPriority = int(AmmoClusterStage.SECOND_STAGE)
-              secondStageByPriority = int(AmmoClusterStage.FIRST_STAGE)
-            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, firstStageByPriority, cluster_type, ammo_to_add, ammo_type, v)
-            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, secondStageByPriority, cluster_type, ammo_to_add, ammo_type, v)
-
+            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.SECOND_STAGE), cluster_type, ammo_to_add, ammo_type, v)
+            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.FIRST_STAGE), cluster_type, ammo_to_add, ammo_type, v)
             if cluster_type == int(AmmoClusterType.SHELLS)
               added_ammo = delta_ammo - ammo_to_add
             is_sync_required = is_sync_required || ammo_to_add != delta_ammo
