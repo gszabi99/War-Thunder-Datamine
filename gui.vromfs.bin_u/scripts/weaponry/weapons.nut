@@ -251,6 +251,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       emptyText = "#shop/aircraftNotSelected"
       afterSlotbarSelect = this.onSlotbarSelect
       modalPreferredSide = "center"
+      canOpenOtherWindows  = true
     })
   }
 

@@ -12,7 +12,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let DataBlock = require("DataBlock")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { contacts_request } = require("%scripts/contacts/contactsClient.nut")
-let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
+let { isRaceEvent, getLeagueConfigByLevel } = require("%scripts/events/eventInfo.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 
 
@@ -149,9 +149,11 @@ let contactLeaderboardFieldsMap = {
   season_val_tank_football_score         = "ext4"
 }
 
-function convertContactLeaderboardData(result, sortStat, leagueConfig) {
+function convertContactLeaderboardData(result, sortStat) {
   let rows = []
+  local leagueLevel = null
   foreach (entry in (result?.league ?? [])) {
+    leagueLevel = leagueLevel ?? entry?.league
     let uid = entry?._id.tostring() ?? ""
     let userInfo = uid != "" ? getUserInfo(uid) : null  
     let row = { _id = entry?._id, name = userInfo?.name ?? uid }
@@ -163,8 +165,9 @@ function convertContactLeaderboardData(result, sortStat, leagueConfig) {
     rows.sort(@(a, b) (b?[sortStat] ?? 0) <=> (a?[sortStat] ?? 0))
 
   let playersCount = rows.len()
+  let leagueConfig = getLeagueConfigByLevel(leagueLevel)
   let { bePromoted = 0, beDemoted = 0, minSize = 0 } = leagueConfig
-  let isEnoughPlayers = minSize <= playersCount
+  let isEnoughPlayers = playersCount == 0 ? null : minSize <= playersCount
   let firstDemotionIndex = playersCount - beDemoted
   for (local i = 0; i < playersCount; i++) {
     rows[i].pos <- i
@@ -177,6 +180,7 @@ function convertContactLeaderboardData(result, sortStat, leagueConfig) {
     rows
     updateTime = (result?.lastUpdateTime ?? 0).tointeger()
     isEnoughPlayers
+    leagueLevel
   }
 }
 

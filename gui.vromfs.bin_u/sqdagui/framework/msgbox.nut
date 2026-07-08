@@ -445,5 +445,4 @@ return {
   destroy_all_msg_boxes
   is_active_msg_box_in_scene
   saved_scene_msg_box
-  scene_msg_boxes_list
 }

@@ -9,7 +9,7 @@ let colors = require("%rGui/style/colors.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
-local teamColors = Watched({
+let defaultTeamColorsData = {
   teamScoreBlueColor    = null
   teamBlueColor         = null
   teamBlueLightColor    = null
@@ -40,19 +40,17 @@ local teamColors = Watched({
   silver                = colors.menu.silver
   chatInfoColor         = 0xFFF2E003
   white                 = colors.white
+}
 
-  forcedTeamColors      = {}
-})
+let forcedTeamColors = mkWatched(persist, "forcedTeamColors", {})
 
-
-function recalculateTeamColors(forcedColors = {}) {
-  local newTeamColors = clone teamColors.get()
-  newTeamColors.forcedTeamColors = forcedColors
+let teamColors = Computed(function(prev) {
+  local newTeamColors = clone defaultTeamColorsData
+  let forcedColors = forcedTeamColors.get()
   local standardColors = !isLoggedIn.get() || !cross_call.isPlayerDedicatedSpectator()
   local allyTeam, allyTeamColor, enemyTeamColor
-  local isForcedColor = forcedColors && forcedColors.len() > 0
+  local isForcedColor = forcedColors.len() > 0
   if (isForcedColor) {
-
     allyTeam = localTeam.get()
     allyTeamColor = hexStringToInt(str("FF", (allyTeam == 2 ? forcedColors?.colorTeamB : forcedColors?.colorTeamA)))
     enemyTeamColor = hexStringToInt(str("FF", (allyTeam == 2 ? forcedColors?.colorTeamA : forcedColors?.colorTeamB)))
@@ -91,18 +89,10 @@ function recalculateTeamColors(forcedColors = {}) {
   newTeamColors.hudColorDeathAlly   = newTeamColors.teamRedLightColor
   newTeamColors.hudColorDeathEnemy  = newTeamColors.teamBlueLightColor
 
-  if (!isEqual(teamColors.get(), newTeamColors))
-    teamColors.set(newTeamColors)
-}
-
-recalculateTeamColors()
-
-localTeam.subscribe(function (_new_val) {
-  recalculateTeamColors(teamColors.get().forcedTeamColors)
+  return prev == FRP_INITIAL || !isEqual(prev, newTeamColors) ? newTeamColors
+    : prev
 })
 
-isLoggedIn.subscribe(@(_) recalculateTeamColors(teamColors.get().forcedTeamColors))
-
-eventbus_subscribe("recalculateTeamColors", @(v) recalculateTeamColors(v.forcedColors))
+eventbus_subscribe("recalculateTeamColors", @(v) forcedTeamColors.set(v.forcedColors))
 
 return teamColors

@@ -105,7 +105,10 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (this.needSlotbar) {
       switchProfileCountry(this.unit.shopCountry) 
       showedUnit.set(this.unit) 
-      this.createSlotbar({ modalPreferredSide = "center" })
+      this.createSlotbar({
+        modalPreferredSide = "center"
+        canOpenOtherWindows  = true
+      })
     }
     else {
       let unitNestObj = this.scene.findObject("unit_nest")

@@ -850,7 +850,8 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
         let self = callee()
         let fullDescTbl = getItemDescTbl(unit, itemAndEffectToPass.item,
           params, itemAndEffectToPass.effect, self)
-        let { delayed, desc, addDesc = null, changeToSpecs = null } = fullDescTbl
+        let { delayed, desc, addDesc = null, changeToSpecs = null, estimatedDamageToBases = null
+        } = fullDescTbl
         showObjById("delayed_icon", delayed, obj)
         if (desc != "") {
           let descObj = obj.findObject("descriptionText")
@@ -868,6 +869,14 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
             let data = handyman.renderCached("%gui/weaponry/weaponTooltipChangeToSpecs.tpl",
               fullDescTbl)
             obj.getScene().replaceContentFromText(changeToSpecsObj, data, data.len(), handler)
+          }
+        }
+        if (estimatedDamageToBases != null) {
+          let estimatedDmgObj = obj.findObject("estimatedDamageNest")
+          if (estimatedDmgObj?.isValid()) {
+            let data = handyman.renderCached("%gui/weaponry/weaponTooltipEstimatedDamage.tpl",
+              fullDescTbl)
+            obj.getScene().replaceContentFromText(estimatedDmgObj, data, data.len(), handler)
           }
         }
       }

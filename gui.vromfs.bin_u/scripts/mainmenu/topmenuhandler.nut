@@ -100,6 +100,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
           hasExtraInfoBlock = true
           hasExtraInfoBlockTop = true
           modalPreferredSide = "center"
+          canOpenOtherWindows  = true
           onCountryDblClick = function() {
             if (!topMenuShopActive.get())
               this.shopWndSwitch()

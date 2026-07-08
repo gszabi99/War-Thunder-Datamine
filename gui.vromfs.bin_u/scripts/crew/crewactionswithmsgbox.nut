@@ -70,7 +70,7 @@ function upgradeUnitSpecImpl(crew, unit, upgradesAmount = 1) {
   addTask(taskId, progBox, onTaskSuccess)
 }
 
-function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = null) {
+function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = null, params = {}) {
   if (!unit)
     return showInfoMsgBox(loc("shop/aircraftNotSelected"))
 
@@ -144,11 +144,11 @@ function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = 
       "\n", unitTypeSkillsMsg),
     cost)
 
+  let { mustShowConfirmationWnd = false } = params
   let callbackYes = @() checkBalanceMsgBox(cost)
     ? upgradeUnitSpecImpl(crew, unit, upgradesAmount)
     : null
-
-  purchaseConfirmation({ id = "purchase_ask", text, callbackYes }, cost)
+  purchaseConfirmation({ id = "purchase_ask", text, callbackYes, mustShowConfirmationWnd }, cost)
 }
 
 return {

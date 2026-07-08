@@ -195,6 +195,8 @@ let refreshUserstatStats = @() statsUpdatable.forceRefresh()
 
 let getUserstatTableData = @(tableName) userstatStats.get()?.stats[tableName]
 function getTableActiveIndex(tableName) {
+  if (tableName == null)
+    return -1
   let tableData = getUserstatTableData(tableName)
   if (tableData != null)
     return tableData?["$index"] ?? 0

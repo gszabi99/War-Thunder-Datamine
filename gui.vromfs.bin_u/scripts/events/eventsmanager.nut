@@ -65,7 +65,7 @@ let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventF
   getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
   isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature,
   isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage, isVrModeAllowedInEvent,
-  getEventLeagueName, getCurLeagueConfig
+  getEventLeagueName
 } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
@@ -543,8 +543,7 @@ let _leaderboards = {
   function getLbDataFromBlk(blk, requestData) {
     let { lbContactTable = null, lbField } = requestData
     if (lbContactTable != null) {
-      let leaderboardData = convertContactLeaderboardData(blk, lbField,
-        getCurLeagueConfig(lbContactTable))
+      let leaderboardData = convertContactLeaderboardData(blk, lbField)
       let allRows = leaderboardData.rows
       let start = requestData?.pos ?? 0
       let end = min(start + (requestData?.rowsInPage ?? allRows.len()), allRows.len())
@@ -576,8 +575,8 @@ let _leaderboards = {
     let { lbContactTable = null, lbField } = requestData
     if (lbContactTable != null) {
       let myId = userIdStr.get()
-      return convertContactLeaderboardData(blk, lbField,
-        getCurLeagueConfig(lbContactTable)).rows.filter(@(r) r?._id.tostring() == myId)
+      return convertContactLeaderboardData(blk, lbField)
+        .rows.filter(@(r) r?._id.tostring() == myId)
     }
 
     let { success = true } = blk?.result

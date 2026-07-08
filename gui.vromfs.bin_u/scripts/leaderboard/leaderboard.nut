@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_requested_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
+from "%scripts/options/optionsCtors.nut" import create_option_list
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -32,10 +33,10 @@ let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { requestMembership } = require("%scripts/clans/clanRequests.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
+let { isEqual } = require("%sqStdLibs/helpers/u.nut")
+let { getEventLeaderboardModes, getLeagueNameByLevel } = require("%scripts/events/eventInfo.nut")
 
 function gui_modal_event_leaderboards(params) {
   loadHandler(gui_handlers.EventsLeaderboardWindow, params)
@@ -476,7 +477,12 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
       ? getLbCategoryTypeByField(sortLeaderboard)
       : events.getTableConfigShortRowByEvent(eventData)
 
+    this.fillTabsList(eventData)
+    this.initModes()
     this.updateLeaderboard()
+  }
+
+  function fillTabsList(eventData) {
     let nestObj = this.scene.findObject("tabs_list")
     if (!nestObj?.isValid())
       return
@@ -504,20 +510,55 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     this.guiScene.replaceContentFromText(nestObj, data, data.len(), this)
   }
 
-  function updateMainLeaderboardTabName() {
-    let nestObj = this.scene.findObject("tabs_list")
-    if (!nestObj?.isValid())
+  function initModes() {
+    let { modes, modesNames } = getEventLeaderboardModes(events.getEvent(this.eventId))
+    if (modes.len() == 0 || isEqual(modes, this.lbModesList))
       return
 
+    this.lbModesList = modes
+    let curMode = this.request.lbContactIndex
+    let curValue = modes.findindex(@(v) v == curMode) ?? 0
+    let modesObjId = "modes_list"
+    let modesObj = showObjById(modesObjId, true, this.scene)
+    modesObj.width = "0.4@sf"
+    let markup = create_option_list(modesObjId, modesNames, curValue, "onModeSelect", false)
+    this.guiScene.replaceContentFromText(modesObj, markup, markup.len(), this)
+    modesObj.setValue(curValue)
+  }
+
+  function onModeSelect(obj) {
+    if (!obj?.isValid() || this.lbModesList == null)
+      return
+
+    let val = obj.getValue()
+    if (val >= 0 && val < this.lbModesList.len()
+        && this.request.lbContactIndex != this.lbModesList[val]) {
+      this.request.lbContactIndex = this.lbModesList[val]
+      this.pos = 0
+    }
+
+    this.fetchLbData()
+  }
+
+  function updateMainLeaderboardTabName(pageData) {
     let event = events.getEvent(this.eventId)
     if (event == null)
       return
 
-    let obj = this.scene.findObject($"{event.economicName}_text")
+    let { leaderboardContactTable = null, economicName } = event
+    if (leaderboardContactTable == null)
+      return
+
+    let nestObj = this.scene.findObject("tabs_list")
+    if (!nestObj?.isValid())
+      return
+
+    let obj = nestObj.findObject($"{economicName}_text")
     if (!obj?.isValid())
       return
 
-    obj.setValue(events.getEventLeaderboardName(event))
+    let { leagueLevel = null } = pageData
+    obj.setValue(getLeagueNameByLevel(leagueLevel))
   }
 
   function updateLeaderboard() {
@@ -528,6 +569,21 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     this.updateButtons()
   }
 
+  function updateNoLeaderboardsText() {
+    let { lbContactTable = null } = this.request
+    if (lbContactTable == null)
+      return
+
+    let noLeaderboardObj = this.scene.findObject("no_leaderboads_text")
+    if (!noLeaderboardObj?.isValid())
+      return
+
+    let isCurrentLeague = this.isCurrentLeagueSelected()
+    let locId = isCurrentLeague ? "noLeaderboard/earnPoints"
+      : "noLeaderboard/didNotParticipate"
+    noLeaderboardObj.setValue(loc(locId))
+  }
+
   function getTopItemsTplView() {
     let res = {
       updateTime = [{}]
@@ -535,8 +591,12 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     return res
   }
 
+  isCurrentLeagueSelected = @() this.lbModesList == null
+    || this.request.lbContactIndex == this.lbModesList[0]
 
   function fillAdditionalLeaderboardInfo(pageData) {
+    this.updateMainLeaderboardTabName(pageData)
+    this.updateNoLeaderboardsText()
     let lbUpdateTime = this.scene.findObject("lb_update_time")
     if (!lbUpdateTime?.isValid())
       return
@@ -549,7 +609,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
                                time.buildTimeStr(updateTime, false, false))
                     : ""
 
-    if (isEnoughPlayers != false) { 
+    if (isEnoughPlayers != false || !this.isCurrentLeagueSelected()) { 
       lbUpdateTime.tooltip = ""
       lbUpdateTime.setValue(timeStr)
       return
@@ -609,9 +669,11 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     if (lbContactTable == null || !p.updatedTables.contains(lbContactTable))
       return
 
-    this.request.lbContactIndex = getTableActiveIndex(lbContactTable)
-    this.fetchLbData()
-    this.updateMainLeaderboardTabName()
+    this.initModes()
+    if (this.lbModesList == null) {
+      this.request.lbContactIndex = getTableActiveIndex(lbContactTable)
+      this.fetchLbData()
+    }
     addTimerForRefreshStatsWhenTableEnd(lbContactTable)
   }
 }

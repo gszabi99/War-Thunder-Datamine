@@ -12,12 +12,14 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { checkPackageFull, havePackage } = require("%scripts/clientState/contentPacks.nut")
 let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
 let { getUserstatTableData } = require("%scripts/userstat/userstat.nut")
-let { buildDateTimeStr } = require("%scripts/time.nut")
+let { buildDateStrShort, buildTimeStr, TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 
 let eventIdsForMainGameModeList = [
   "tank_event_in_random_battles_arcade"
   "air_arcade"
 ]
+
+const MAX_LEAGUES_HISTORY_COUNT = 20
 
 let leaguesConfig = [
   { locId = "league/groupStage", minSize = 40, maxSize = 48, bePromoted = 24, beDemoted = 0 }
@@ -145,13 +147,11 @@ let canJoinWithoutRequireCrafts = @(event) !(event?.requireCrafts ?? true)
 
 let isVrModeAllowedInEvent = @(event) event?.isVrModeAllowed != false
 
-function getCurLeagueConfig(leaderboardContactTable) {
-  let tableData = getUserstatTableData(leaderboardContactTable)
-  if (tableData == null)
-    return null
+let getLeagueConfigByLevel = @(leagueLevel) leaguesConfig?[leagueLevel]
 
-  let leagueLevel = tableData?.stats.league_level ?? 0
-  return leaguesConfig?[leagueLevel]
+function getLeagueNameByLevel(leagueLevel) {
+  let { locId = "leaderboards/notAvailable" } = leaguesConfig?[leagueLevel]
+  return loc(locId)
 }
 
 function getEventLeagueName(event) {
@@ -162,16 +162,50 @@ function getEventLeagueName(event) {
   if (tableData == null)
     return ""
 
-  let leagueLevel = tableData?.stats.league_level ?? 0
-  let { locId = "" } = leaguesConfig?[leagueLevel]
-  let leagueName = locId != "" ? loc(locId) : ""
-  let endTime = tableData?["$endsAt"] ?? 0
-  if (endTime == 0)
-    return leagueName
+  return getLeagueNameByLevel(tableData?.stats.league_level ?? 0)
+}
 
-  let endText = loc("battlePass/endDate",
-    { time = buildDateTimeStr(endTime, false, false) })
-  return $"{leagueName} {endText}"
+let buildShortDateTimeStr = @(t)
+  " ".concat(buildDateStrShort(t), buildTimeStr(t, false, false))
+
+function getLeaguePeriodText(baseStartTime, baseEndTime, diffIdx) {
+  
+  let diffTime = TIME_DAY_IN_SECONDS * diffIdx
+  let startTime = baseStartTime - diffTime
+  let endTime = baseEndTime - diffTime
+  return " - ".concat(buildShortDateTimeStr(startTime),
+    buildShortDateTimeStr(endTime))
+}
+
+function getEventLeaderboardModes(event) {
+  let modes = []
+  let modesNames = []
+  let res = {
+    modes
+    modesNames
+  }
+  let { leaderboardContactTable = null } = event
+  if (leaderboardContactTable == null)
+    return res
+
+  let tableData = getUserstatTableData(leaderboardContactTable)
+  if (tableData == null)
+    return res
+
+  let endTime = tableData?["$endsAt"] ?? 0
+  let startTime = tableData?["$startedAt"] ?? 0
+  let tableIdx = (tableData?["$index"] ?? 0)
+  if (endTime == 0 || startTime == 0 || tableIdx == 0)
+    return res
+
+  for (local i = tableIdx; i > 0; i--) {
+    modes.append(i)
+    modesNames.append(getLeaguePeriodText(startTime, endTime, tableIdx - i))
+    if (modes.len() == MAX_LEAGUES_HISTORY_COUNT)
+      break
+  }
+
+  return res
 }
 
 return {
@@ -208,6 +242,8 @@ return {
   canJoinWithoutRequireCrafts
   isEventAllowedByPackage
   isVrModeAllowedInEvent
+  getLeagueNameByLevel
   getEventLeagueName
-  getCurLeagueConfig
+  getLeagueConfigByLevel
+  getEventLeaderboardModes
 }

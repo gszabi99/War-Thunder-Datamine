@@ -48,7 +48,6 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { scene_msg_boxes_list } = require("%sqDagui/framework/msgBox.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 const CREW_MAX_PROGRESS_BAR_VALUE = 1000
@@ -180,6 +179,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       afterSlotbarSelect = this.openSelectedCrew
       onSlotDblClick = this.onSlotDblClick
       modalPreferredSide = "center"
+      canOpenOtherWindows  = true
     }.__update(this.getSlotbarParams()), this.slotbarNestId)
 
     if (this.showTutorial)
@@ -1030,24 +1030,25 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUpgrCrewSpec1ConfirmTutorial() {
-    upgradeUnitSpec(this.crew, this.curUnit, null, crewSpecTypes.EXPERT)
+    upgradeUnitSpec(this.crew, this.curUnit, null, crewSpecTypes.EXPERT,
+      { mustShowConfirmationWnd = true })
 
-    if (scene_msg_boxes_list.len() == 0) {
+    let purchaseHandler = handlersManager.findHandlerClassInScene(
+      gui_handlers.purchaseConfirmationHandler)
+    if (!(purchaseHandler?.isValid() ?? false)) {
       let curSpec = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
-      let message = "\n".concat($"Error: Empty MessageBox List for userId = {userIdStr.get()}",
+      let message = "\n".concat("Error: Empty MessageBox List for upgrade crew spec tutorial",
+        $"/*for userId = {userIdStr.get()}",
         $"country = {this.crew.country}",
         $"idInCountry = {this.crew.idInCountry}",
         $"unitname = {this.curUnit.name}",
-        $"specCode = {curSpec.code}")
+        $"specCode = {curSpec.code}*/")
       script_net_assert_once("empty scene_msg_boxes_list", message)
       this.onUpgrCrewTutorFinalStep()
       return
     }
 
-    let specMsgBox = scene_msg_boxes_list.top()
-    if (!specMsgBox?.isValid())
-      return
-
+    let specMsgBox = purchaseHandler.scene
     let steps = [
       {
         obj = [[specMsgBox.findObject("buttons_holder"), specMsgBox.findObject("msgText")]]

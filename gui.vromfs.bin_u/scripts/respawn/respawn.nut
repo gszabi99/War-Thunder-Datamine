@@ -413,8 +413,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       selectRespawnBase(this.curRespawnBase.id)
 
     this.missionRules = getCurMissionRules()
-    this.fullListBases = this.missionRules.isSpawnDelayEnabled ? getFullRespawnBasesList()
-      : []
+    this.fullListBases = []
+    if (this.missionRules.isSpawnDelayEnabled)
+      this.updateFullListBases()
     this.checkFirstInit()
 
     disableFlightMenu(true)
@@ -795,9 +796,15 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.customStateCrewAvailableMask = this.missionRules.getCurCrewsRespawnMask()
   }
 
+  function updateFullListBases() {
+    let localTeam = get_mp_local_team()
+    this.fullListBases = getFullRespawnBasesList()
+      .filter(@(v) v.team == localTeam && is_respawnbase_selectable(v.id))
+  }
+
   function updateRespawnWhenChangedMissionRespawnBasesStatus() {
     if (this.missionRules.isSpawnDelayEnabled)
-      this.fullListBases = getFullRespawnBasesList()
+      this.updateFullListBases()
     let isStayOnrespScreenChanged = this.recountStayOnRespScreen()
     let isNoRespawnsChanged = this.updateRespawnBasesStatus()
     if (!this.stayOnRespScreen  && !this.isNoRespawns
@@ -2663,12 +2670,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       let priceTextHintObj = showObjById("extraInfoPriceTextHint", hasPriceText, slotObj)
       if (hasPriceText && priceTextHintObj?.isValid()) {
         if (params.haveSpawnDelay && spawnDelay > 0) {
-          let localTeam = get_mp_local_team()
           let savedBaseForSlot = getSavedRespawnBaseForSlot(idInCountry)
           let hasSavedBase = this.fullListBases.findvalue(@(rb) rb.id == savedBaseForSlot) != null
           foreach (rb in this.fullListBases) {
-            let { id, team } = rb
-            if (team != localTeam || !is_respawnbase_selectable(id) || id == this.curRespawnBase?.id)
+            let { id } = rb
+            if (id == this.curRespawnBase?.id)
               continue
             let isSavedForSlot = id == savedBaseForSlot
             let canSelect = !hasSavedBase || isSavedForSlot

@@ -40,13 +40,20 @@ local respawnBases = {
     let lastSelectedBase = this.getSelectedBase()
     let localTeam = get_mp_local_team()
     let savedBaseForSlot = getSavedRespawnBaseForSlot(-1)
-    let hasSavedBase = rbs.findvalue(@(rb) rb.id == savedBaseForSlot) != null
-    local defaultBase = null
-    local airfiled = null
+    let availableBases = []
+    local hasSavedBase = false
     foreach (rbConfig in rbs) {
       let { id, team } = rbConfig
       if (team != localTeam || !is_respawnbase_selectable(id))
         continue
+      availableBases.append(rbConfig)
+      hasSavedBase = hasSavedBase || id == savedBaseForSlot
+    }
+
+    local defaultBase = null
+    local airfiled = null
+    foreach (rbConfig in availableBases) {
+      let { id } = rbConfig
       let rb = RespawnBase(id)
       let isSavedForSlot = id == savedBaseForSlot
       let canSelect = !hasSavedBase || isSavedForSlot

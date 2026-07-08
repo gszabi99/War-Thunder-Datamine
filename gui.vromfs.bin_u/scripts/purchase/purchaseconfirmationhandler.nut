@@ -128,7 +128,8 @@ function needPurchaseConfirmation(cost) {
 }
 
 function purchaseConfirmation(params, cost = null) {
-  if (cost && !needPurchaseConfirmation(cost)) {
+  let { mustShowConfirmationWnd = false } = params
+  if (cost && !mustShowConfirmationWnd && !needPurchaseConfirmation(cost)) {
     params?.callbackYes()
     return
   }
