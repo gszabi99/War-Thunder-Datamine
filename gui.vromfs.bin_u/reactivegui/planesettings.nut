@@ -13,6 +13,8 @@ let { hmdSettingsUpd } = require("%rGui/planeHmd.nut")
 let { mfdCameraSettingUpd } = require("%rGui/planeMfdCamera.nut")
 let { customPageSettingsUpd } = require("%rGui/planeCockpit/customPageBuilder.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
+let { unitType } = require("%rGui/hudState.nut")
+let { isAirUnitType } = require("%rGui/hudUnitType.nut")
 
 
 
@@ -68,5 +70,5 @@ function updateSettings(blk_name) {
   foreach(pageBlk in customPagesBlks)
     customPageSettingsUpd(pageBlk)
 }
-let unitBlkNameInFlight = keepref(Computed(@() isInFlight.get() ? BlkFileName.get() : ""))
+let unitBlkNameInFlight = keepref(Computed(@() isInFlight.get() && isAirUnitType(unitType.get()) ? BlkFileName.get() : ""))
 unitBlkNameInFlight.subscribe(updateSettings)

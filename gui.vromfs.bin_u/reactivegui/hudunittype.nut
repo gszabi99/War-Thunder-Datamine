@@ -2,6 +2,8 @@ from "%rGui/globals/ui_library.nut" import *
 
 let hudState = require("%rGui/hudState.nut")
 
+let airUnitTypes = ["aircraft", "helicopter", "humanDrone", "humanDroneHeli"]
+
 return {
   isAir            = @() hudState.unitType.get() == "aircraft"
   isTank           = @() hudState.unitType.get() == "tank"
@@ -14,4 +16,5 @@ return {
 
   isHumanAirDrone  = @() hudState.unitType.get() == "humanDrone"
   isHumanHeliDrone = @() hudState.unitType.get() == "humanDroneHeli"
+  isAirUnitType    = @(unitType) airUnitTypes.contains(unitType)
 }
