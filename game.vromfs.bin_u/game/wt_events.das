@@ -93,6 +93,7 @@ struct RequestBipodPlacing
   anchorNormal : float3
   anchorYawLimit : float2
   recoilMult : float
+  mountIsRest : bool
 
 [cpp_event(unicast, with_scheme)]
 struct EventToggleHydrophoneMode
@@ -549,7 +550,7 @@ struct EventOnLootUse
 [event(unicast)]
 struct EventInterruptItemUse {}
 
-[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+[event(unicast)]
 struct EventEntityDied
   victim : EntityId
   offender : EntityId

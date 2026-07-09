@@ -452,6 +452,7 @@ def human_place_bipod_server_es(evt : RequestBipodPlacing;
                                 var bipod__anchorNormal : float3&;
                                 var bipod__anchorYawLimit : float2&;
                                 var bipod__recoilMult : float&;
+                                var bipod__isRest : bool&;
                                 var bipod__pitchLimit : float2&;
                                 var bipod__validateTimer : float&;
                                 var bipod__lastValidAngle : float2&)
@@ -465,6 +466,7 @@ def human_place_bipod_server_es(evt : RequestBipodPlacing;
   bipod__anchorNormal   = evt.anchorNormal
   bipod__anchorYawLimit = evt.anchorYawLimit
   bipod__recoilMult     = clamp(evt.recoilMult, 0.0, 1.0)
+  bipod__isRest         = evt.mountIsRest
 
   if bipod__enabled
     bipod__pitchLimit     = float2(BIPOD_DEFAULT_PITCH_MIN, BIPOD_DEFAULT_PITCH_MAX)

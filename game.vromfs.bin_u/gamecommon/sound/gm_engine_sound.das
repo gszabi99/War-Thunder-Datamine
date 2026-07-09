@@ -300,7 +300,6 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
 
 [es(tag=sound, REQUIRE = heroVehicle, REQUIRE_NOT = controlledHero, no_order)]
 def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
-                                                  eid : EntityId;
                                                   unit__ref : UnitRef;
                                                   gm_engine_sound__should_play : bool;
                                                   gm_engine_sound__event_inside_name : das_string;
@@ -315,11 +314,7 @@ def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
   if unit.isDelayed
     return
 
-  var insideCovered = false
-  ecs::query() <| $ [es(REQUIRE=controlledHero)] (isInVehicle : bool = false;
-                                                  human_anim__vehicleSelected : EntityId = INVALID_ENTITY_ID;
-                                                  human_vehicle__isInsideCovered : bool = false)
-    insideCovered = isInVehicle && human_vehicle__isInsideCovered && human_anim__vehicleSelected == eid
+  let insideCovered = unit.isHeroInside
 
   if gm_engine_sound__is_inside != insideCovered
     gm_engine_sound__loadswitch = false
@@ -330,6 +325,14 @@ def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
                                 gm_engine_sound__is_inside,
                                 gm_engine_sound__event, gm_engine_sound__start_inside_event,
                                 gm_engine_sound__stop_inside_event, gm_engine_sound__event_inside)
+
+[es(tag=sound, REQUIRE=heroVehicle, on_appear)]
+def hero_vehicle_load_hero_sounds_es(evt : Event; eid : EntityId)
+  gm_reinit_sounds(eid, true)
+
+[es(tag=sound, REQUIRE=heroVehicle, on_disappear)]
+def hero_vehicle_unload_hero_sounds_es(evt : Event; eid : EntityId)
+  gm_reinit_sounds(eid, false)
 
 [es(tag=sound, REQUIRE = heroVehicle, on_disappear)]
 def gm_engine_sound_reset_inside_on_hero_vehicle_disappear_es(evt : Event;

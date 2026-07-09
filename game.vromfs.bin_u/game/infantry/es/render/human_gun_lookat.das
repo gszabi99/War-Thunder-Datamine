@@ -33,11 +33,11 @@ def human_gun_lookat_camera_es(info : UpdateStageInfoAct;
 
   query(human_weap__currentGunEid) <| $ [es] (entity_cam_nodes__aimNodeIdx : int;
                                               weap__sightEid : EntityId;
+                                              human_gun_attached : bool;
                                               gun__maxSightOffset : float = 0.03;
                                               gun__sightOffsetToAimPositionPower : float = 3.;
                                               weapon_sight__minDistFrom : float = 0.05)
-
-    if entity_cam_nodes__aimNodeIdx < 0
+    if entity_cam_nodes__aimNodeIdx < 0 || !human_gun_attached
       return
 
     let interpK = get_phys_interpk_clamped(human_net_phys.phys, info.curTime)

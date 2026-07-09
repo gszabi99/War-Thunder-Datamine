@@ -292,8 +292,17 @@ def door_state_on_simple_phys_rotation_finished(evt : Event;
 [es(tag=server, REQUIRE=rotating_rendinst_simple_phys__angularVelocity, after=rotating_rendinst_simple_phys_update_finished)]
 def sync_door_target_angles_on_simple_phys_rotation_server(evt : RotatingRendinstSimplePhysUpdateFinished;
                                                            rendinst_axis_rotation__targetAngle : float;
-                                                           var door_operations__serverTargetAngle : float&)
+                                                           var door_operations__serverTargetAngle : float&;
+                                                           var door_operations__lastServerSyncTime : float&;
+                                                           door_operations__serverSyncMinDelta : float = 2.0;
+                                                           door_operations__serverSyncMinInterval : float = 0.1)
+  let curTime = get_sync_time()
+  if curTime - door_operations__lastServerSyncTime < door_operations__serverSyncMinInterval
+    return
+  if abs(rendinst_axis_rotation__targetAngle - door_operations__serverTargetAngle) < door_operations__serverSyncMinDelta
+    return
   door_operations__serverTargetAngle = rendinst_axis_rotation__targetAngle
+  door_operations__lastServerSyncTime = curTime
 
 
 [es(tag=netClient, REQUIRE=rotating_rendinst_simple_phys__angularVelocity, before=rotating_rendinst_simple_phys_fixed_update)]

@@ -211,8 +211,8 @@ def  gun_anim_updater_es(info : ParallelUpdateFrameDelayed&;
 
   setVar(phys_vars, gun_anim__curNumAmmoVarId, visual_magazine_fullness__ammoCount >= 0 ? float(visual_magazine_fullness__ammoCount) : float(gun__ammo))
   setVar(phys_vars, gun_anim__nextMagNumAmmoVarId, float(gun__ammoToReloadCount))
-  query(gun__owner) <| $ [es] (bipod__enabled : bool = false)
-    setVar(phys_vars, gun_anim__bipodEnabledId, bipod__enabled ? 1.f : 0.f)
+  query(gun__owner) <| $ [es] (bipod__enabled : bool = false; bipod__isRest : bool = false)
+    setVar(phys_vars, gun_anim__bipodEnabledId, (bipod__enabled && !bipod__isRest) ? 1.f : 0.f)
 
 [es(tag=render, after=human_anim_es)]
 def gun_anim_sync_vars_from_human(info : ParallelUpdateFrameDelayed;

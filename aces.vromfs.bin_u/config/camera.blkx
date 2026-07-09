@@ -2214,8 +2214,15 @@
     "viscosity": 0.05,
     "trackGunDirection": true,
     "condition": {
-      "not": {
-        "isFlightModel": {}
+      "and": {
+        "not": [
+          {
+            "isFlightModel": {}
+          },
+          {
+            "isHumanControlledVehicle": {}
+          }
+        ]
       }
     },
     "up": {

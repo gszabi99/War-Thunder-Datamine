@@ -1,4 +1,5 @@
 require ecs
+require ecs.common
 require app
 require net
 require WTInput
@@ -9,6 +10,7 @@ require %appGame.infantry.es.multiple_guns_slot_common
 require %appGame.infantry.es.grenade_thrower_common
 require %appGame.infantry.es.human_weap_common
 require %appGame.infantry.input.human_context_command_point_common
+require %appGame.infantry.es.vehicle.vehicle_seats_common
 
 require %appGame.wt_events
 require DaWeapons
@@ -24,8 +26,6 @@ def get_weapon_slot_at(main_weapon : int;
   let ret = main_weapon + offset
   return HUWeaponSlots(ret % limit)
 
-def is_gun_slot_allowed_to_hold_gun_in_hatch(slot : int)
-  return slot < int(HUWeaponSlots.EWS_MELEE) || slot == int(HUWeaponSlots.EWS_GRENADE)
 
 [es(tag=input, on_appear)]
 def human_weapon_input_init_es(evt : Event;
@@ -37,6 +37,7 @@ def human_weapon_input_init_es(evt : Event;
   push(human_input__weapons, int(ShortcutEventId.ID_HUMAN_MELEE))       
   human_input__weaponSlotCount = length(human_input__weapons)
 
+
 [es(tag=input, REQUIRE=controlledHero)]
 def human_weapon_switch_input_es(evt : EventOnKeyDown;
                                  eid aka human__eid : EntityId;
@@ -46,7 +47,8 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
                                  human_input__lastShootInput : float;
                                  human_input__weapons : IntList;
                                  human_input__weaponSlotCount : int;
-                                 human_vehicle__isHoldingGunPassenger : bool = false;
+                                 isInVehicle : bool = false;
+                                 human_vehicle__occupiedSeatEid : EntityId = INVALID_ENTITY_ID;
                                  human_weap__grenadeThrower : EntityId;
                                  multiple_guns_slots__gunsEids : EidList;
                                  multiple_guns_slots__active : BoolList;
@@ -63,6 +65,14 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
   let cur_weap = int(ct.chosenWeapon)
   assume last_change_time = human_input__lastWeaponChangeInput
   let forbidSwitching = is_shortcut_down(ShortcutEventId.ID_HUMAN_CONTEXT_COMMAND) || is_voice_messages_active()
+  var isDriver = false
+  var isPassenger = false
+  if isInVehicle
+    query(human_vehicle__occupiedSeatEid) <| $ [es] (seat__isDriver : bool; seat__isPassenger : bool)
+      isDriver = seat__isDriver
+      isPassenger = seat__isPassenger
+  if isDriver 
+    return
   
   
   if time - human_input__lastShootInput < 0.1
@@ -70,7 +80,9 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
 
   for i in range(0, human_input__weaponSlotCount)
     let weapon = human_weap__gunEids[i]
-    if !!weapon && action == human_input__weapons[i] && (!human_vehicle__isHoldingGunPassenger || is_gun_slot_allowed_to_hold_gun_in_hatch(i)) && !forbidSwitching
+    if isPassenger && !is_gun_slot_allowed_to_hold_gun_in_hatch(i)
+      continue
+    if !!weapon && action == human_input__weapons[i] && !forbidSwitching
       if has(weapon, "drone_launcher")
         sendEvent(weapon, EventTakeDroneLauncherOrDroneTacticalPhone(atTime = time, weaponSlot = i))
         return
@@ -88,10 +100,19 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
     else
       if bipod__enabled
         return
+      
+      
+      var cycleFromSlot = cur_weap
+      query(human_weap__gunEids[cur_weap]) <| $ [es] (tactical_phone__droneLauncher : EntityId)
+        let launcherSlot = find_index(human_weap__gunEids, tactical_phone__droneLauncher)
+        if launcherSlot >= 0
+          cycleFromSlot = launcherSlot
       for i in range(int(HUWeaponSlots.EWS_SECONDARY), int(HUWeaponSlots.EWS_NUM))
-        let slot = get_weapon_slot_at(cur_weap, forward, i)
+        let slot = get_weapon_slot_at(cycleFromSlot, forward, i)
+        if isPassenger && !is_gun_slot_allowed_to_hold_gun_in_hatch(int(slot))
+          continue
         let weapon = human_weap__gunEids[int(slot)]
-        if !!weapon && slot != (HUWeaponSlots EWS_GRENADE)
+        if !!weapon && slot != (HUWeaponSlots EWS_GRENADE) && !has(weapon, "multiple_guns_slot_gun_hidden")
           if has(weapon, "drone_launcher")
             sendEvent(weapon, EventTakeDroneLauncherOrDroneTacticalPhone(atTime = time, weaponSlot = int(slot)))
             return
@@ -103,6 +124,8 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
     if bipod__enabled
       return
     let slot = HUWeaponSlots.EWS_GRENADE
+    if isPassenger && !is_gun_slot_allowed_to_hold_gun_in_hatch(int(slot))
+      return
     let weapon = human_weap__gunEids[int(slot)]
     if slot != HUWeaponSlots(cur_weap)
       if can_switch_to_multiple_guns_slot(weapon, int(slot), multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__lastVisibleGunIndex)
@@ -130,12 +153,39 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
     if bipod__enabled
       return
     let slot = HUWeaponSlots.EWS_SPECIAL
+    if isPassenger && !is_gun_slot_allowed_to_hold_gun_in_hatch(int(slot))
+      return
     let weapon = human_weap__gunEids[int(slot)]
     if slot != HUWeaponSlots(cur_weap)
       if can_switch_to_multiple_guns_slot(weapon, int(slot), multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__lastVisibleGunIndex)
         set_weapon_slot(time, weapon, slot, ct, last_change_time)
     else
       try_request_multiple_guns_slot_equip_next_gun(eid, weapon, cur_weap, cur_weap, multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__wantedGunEid, multiple_guns_slots__lastVisibleGunIndex)
+
+
+[es(tag=input, REQUIRE=controlledHero, on_appear, track=human_vehicle__occupiedSeatEid)]
+def human_weapon_passenger_slot_correction_es(evt : Event;
+                                              human_vehicle__occupiedSeatEid : EntityId;
+                                              human_weap__gunEids : EidList;
+                                              var human_net_phys : HumanActor&;
+                                              var human_input__lastWeaponChangeInput : float&)
+  var isPassenger = false
+  query(human_vehicle__occupiedSeatEid) <| $ [es] (seat__isPassenger : bool)
+    isPassenger = seat__isPassenger
+  if !isPassenger
+    return
+  assume ct = human_net_phys.phys.producedCT
+  if is_gun_slot_allowed_to_hold_gun_in_hatch(int(ct.chosenWeapon))
+    return
+  let time = get_sync_time()
+  for i in range(0, int(HUWeaponSlots.EWS_NUM))
+    if !is_gun_slot_allowed_to_hold_gun_in_hatch(i)
+      continue
+    let weapon = human_weap__gunEids[i]
+    if !!weapon && !has(weapon, "multiple_guns_slot_gun_hidden")
+      set_weapon_slot(time, weapon, HUWeaponSlots(i), ct, human_input__lastWeaponChangeInput)
+      return
+
 
 [es(tag=gameClient)]
 def human_weap_change_weapon_es(evt : CmdSelectWeaponSlot;

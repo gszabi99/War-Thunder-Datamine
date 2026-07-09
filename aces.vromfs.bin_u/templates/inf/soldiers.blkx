@@ -67,10 +67,12 @@
       "bipod__isCrawl",
       "bipod__anchorPos",
       "bipod__anchorHeight",
-      "bipod__anchorOffset"
+      "bipod__anchorOffset",
+      "bipod__isRest"
     ],
     "bipod__enabled": false,
     "bipod__isCrawl": false,
+    "bipod__isRest": false,
     "bipod__recoilMult": 0.0,
     "bipod__anchorPos": [
       0.0,
@@ -158,6 +160,7 @@
         ],
         "bipod__placeYawLimit": 0.0,
         "bipod__placeRecoilMult": 0.0,
+        "bipod__placeIsRest": false,
         "bipod__solveStep": 0,
         "bipod__solveFunc": 0,
         "bipod__solveIter": 0,
@@ -413,7 +416,7 @@
     "double_sprint__speedMultBase": 1.42,
     "double_sprint__speedMult": 1.42,
     "double_sprint__accelerationMult": 2.0,
-    "double_sprint__staminaDrainMult": 27.0,
+    "double_sprint__staminaDrainMult": 13.0,
     "double_sprint__staminaRegenMult": 0.16,
     "double_sprint__minStamina": 0.0,
     "double_sprint__rotationSpeed": 0.185,
@@ -1400,6 +1403,7 @@
     "_replicated": [
       "human_vehicle__isInHatch",
       "human_vehicle__isHoldGunMode",
+      "human_vehicle__isHoldingGunPassenger",
       "human_vehicle__occupiedSeatEid",
       "human_vehicle__isMobileSpawnDriverCloseToCapturePoint"
     ],
@@ -1410,7 +1414,11 @@
     },
     "human_vehicle__occupiedSeatEid:eid": {},
     "human_vehicle__lastKnownSeatEid:eid": {},
-    "human_vehicle__requestSeatEid:eid": {}
+    "human_vehicle__requestSeatEid:eid": {},
+    "human_vehicle__attachesWasHidden:b": {
+      "value": false,
+      "_tags": "gameClient"
+    }
   },
   "human_hold_breath": {
     "human_hold_breath__isAvailable": false,
@@ -2088,6 +2096,7 @@
     "human_inventory__giveTourniquet": true,
     "human_use_object__nodeId": 0,
     "human_use_object__lookNodeName": "reye",
+    "human_head__nodeIndex": -1,
     "bodyCleanupTime": 30.0,
     "human_inventory__lootCleanupTime": 60.0,
     "isTpsView": false,
@@ -2250,7 +2259,7 @@
         "_replicate": true,
         "entity_mods__speedMult": 1.0,
         "entity_mods__staminaDrain": 1.0,
-        "entity_mods__sprintStaminaDrain": 0.0,
+        "entity_mods__sprintStaminaDrain": 1.0,
         "entity_mods__sprintSpeedMult": 1.0,
         "entity_mods__playerSquadBotsSprintSpeedMult": 1.15,
         "entity_mods__reloadMult": 1.0,
@@ -2259,7 +2268,7 @@
         "entity_mods__shotDeviationMult": 1.0,
         "entity_mods__meleeDamageMult": 1.0,
         "entity_mods__staminaBoostMult": 1.0,
-        "entity_mods__restoreStaminaMult": 3.0,
+        "entity_mods__restoreStaminaMult": 1.5,
         "entity_mods__jamChanceMult": 1.0,
         "entity_mods__accelerationMult": 1.0,
         "entity_mods__boltActionMult": 1.0,

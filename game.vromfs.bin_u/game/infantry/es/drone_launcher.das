@@ -38,12 +38,20 @@ def check_space_for_launching_drone(human_eid : EntityId;
   return is_there_space_for_drone(ccdTm, truePositionOffset)
 
 
-def create_drone_entity(transform : float3x4; droneTemplate : string; ownerEid : EntityId; playerEid : EntityId; team : int; launcherEid : EntityId; enableSound : bool)
+def create_drone_entity(transform : float3x4;
+                        droneTemplate : string;
+                        behTreeName : string;
+                        ownerEid : EntityId;
+                        playerEid : EntityId;
+                        team : int;
+                        launcherEid : EntityId;
+                        enableSound : bool)
   let templateName = droneTemplate + "+unit_init_params"
   return createEntity(templateName) <| $(var init)
     set(init, "drone__owner", ownerEid)
     set(init, "ownedByPlr", playerEid)
     set(init, "unit_params__supportUnitIdx", 0) 
+    set(init, "unit_params__behTreeName", behTreeName)
     set(init, "drone__launcherEid", launcherEid)
     set(init, "transform", transform)
     set(init, "team", team)
@@ -114,6 +122,7 @@ def drone_launcher_on_instant_launch_request(evt : RequestDroneLauncherInstantLa
                                          drone_launcher__droneTemplate : string;
                                          drone_launcher__cooldown : float;
                                          drone_launcher__instantLaunchFromPhone : bool;
+                                         drone_launcher__behTreeName : string;
                                          var drone_launcher__drone : EntityId&;
                                          var drone_launcher__state : int&;
                                          var drone_launcher__nextUseAtTime : float&;
@@ -132,7 +141,7 @@ def drone_launcher_on_instant_launch_request(evt : RequestDroneLauncherInstantLa
 
     beh_tree__wantRoleDroner = true
 
-    drone_launcher__drone = create_drone_entity(respawn as transform, drone_launcher__droneTemplate, human_eid, possessedByPlr, team, evt.droneLauncherEid, true)
+    drone_launcher__drone = create_drone_entity(respawn as transform, drone_launcher__droneTemplate, drone_launcher__behTreeName, human_eid, possessedByPlr, team, evt.droneLauncherEid, true)
     drone_launcher__nextUseAtTime = time + drone_launcher__cooldown
     drone_launcher__state = int(DroneLauncherState.DLS_LAUNCHED)
     if drone_launcher__launchesRemaining > 0
@@ -227,6 +236,7 @@ def drone_launcher_launching_server(info : UpdateStageInfoAct;
                                     drone_launcher_launch__enableSoundTime : float;
                                     drone_launcher_launch__replaceTime : float;
                                     drone_launcher_launch__controlTime : float;
+                                    drone_launcher__behTreeName : string;
                                     var drone_launcher_launch__enableSoundStatus : bool&;
                                     var drone_launcher_launch__replaceStatus : bool&;
                                     var drone_launcher_launch__controlStatus : bool&;
@@ -257,7 +267,7 @@ def drone_launcher_launching_server(info : UpdateStageInfoAct;
                                  possessedByPlr : EntityId;
                                  team : int)
       let droneTm = get_drone_transform_relative_to_human(human_net_phys, drone_launcher_launch__positionOffset)
-      drone_launcher__drone = create_drone_entity(droneTm, drone_launcher__droneTemplate, gun__owner, possessedByPlr, team, eid, true)
+      drone_launcher__drone = create_drone_entity(droneTm, drone_launcher__droneTemplate, drone_launcher__behTreeName, gun__owner, possessedByPlr, team, eid, true)
       drone_launcher_launch__controlStatus = true
 
   if drone_launcher_launch__enableSoundStatus && drone_launcher_launch__replaceStatus && drone_launcher_launch__controlStatus

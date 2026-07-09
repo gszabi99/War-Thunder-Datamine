@@ -80,6 +80,26 @@
     "isAlive": true,
     "_replicated": "isAlive",
     "_tracked": "isAlive",
+    "vehicle_seats__seatTemplates:shared:object": {
+      "default": "vehicle_seat_fire_ready",
+      "driver": "vehicle_seat_driver",
+      "passenger1": "vehicle_seat_window",
+      "passenger2": "vehicle_seat_window",
+      "passenger3": "vehicle_seat_window",
+      "passenger4": "vehicle_seat_open_fire_ready"
+    },
+    "_group": {
+      "_tags": "server",
+      "dependent_templates_list_shared:shared:list<t>": {
+        "template_name": [
+          "vehicle_seat_fire_ready",
+          "vehicle_seat_open_fire_ready",
+          "vehicle_seat_default",
+          "vehicle_seat_driver",
+          "vehicle_seat_window"
+        ]
+      }
+    },
     "vehicle_seats__effectors:array": {},
     "vehicle_seats__seats:shared:array": {
       "seats:object": [
@@ -229,98 +249,110 @@
         {
           "name": "passenger1",
           "locName": "vehicle_seats/shooter",
-          "attachNode": "root",
+          "attachNode": "char_passenger_01_pivot",
           "attachTm": [
             [
-              1.00032,
+              1.0,
               0.0,
-              -0.0
-            ],
-            [
-              -0.0,
-              -3.42273e-8,
-              -0.999965
+              0.0
             ],
             [
               0.0,
-              0.999969,
-              -3.42275e-8
+              1.0,
+              0.0
             ],
             [
-              0.06,
-              -0.72,
-              -0.83
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
             ]
           ],
           "seatComponent": "isPassenger",
           "canPlaceManually": true,
           "seatEnum": "right_seat",
-          "isHoldGunModeAllowed": true,
-          "shouldHideOwner": false
+          "isHoldGunModeAllowed": false,
+          "shouldHideOwner": false,
+          "windowSlideDist": 0.45,
+          "windowNodes:array": {
+            "node": "ex_decor_r_06"
+          }
         },
         {
           "name": "passenger2",
           "locName": "vehicle_seats/shooter",
-          "attachNode": "root",
+          "attachNode": "char_passenger_02_pivot",
           "attachTm": [
             [
-              0.997501,
+              1.0,
               0.0,
-              -0.0
-            ],
-            [
-              -0.0,
-              -3.4136e-8,
-              -0.997297
+              0.0
             ],
             [
               0.0,
               1.0,
-              -3.42286e-8
+              0.0
             ],
             [
-              -0.88,
-              0.72,
-              -0.83
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
             ]
           ],
           "seatComponent": "isPassenger",
           "canPlaceManually": true,
           "seatEnum": "left_seat",
-          "isHoldGunModeAllowed": true,
-          "shouldHideOwner": false
+          "isHoldGunModeAllowed": false,
+          "shouldHideOwner": false,
+          "windowSlideDist": 0.45,
+          "windowNodes:array": {
+            "node": "ex_decor_l_07"
+          }
         },
         {
           "name": "passenger3",
           "locName": "vehicle_seats/shooter",
-          "attachNode": "root",
+          "attachNode": "char_passenger_03_pivot",
           "attachTm": [
             [
-              0.997563,
+              1.0,
               0.0,
-              -0.0
-            ],
-            [
-              -0.0,
-              -3.41361e-8,
-              -0.997299
+              0.0
             ],
             [
               0.0,
               1.0,
-              -3.42286e-8
+              0.0
             ],
             [
-              -0.88,
-              -0.72,
-              -0.83
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
             ]
           ],
           "seatComponent": "isPassenger",
           "canPlaceManually": true,
           "seatEnum": "right_seat",
-          "isHoldGunModeAllowed": true,
-          "shouldHideOwner": false
+          "isHoldGunModeAllowed": false,
+          "shouldHideOwner": false,
+          "windowSlideDist": 0.45,
+          "windowNodes:array": {
+            "node": "ex_decor_r_07"
+          }
         },
         {
           "name": "passenger4",
@@ -353,113 +385,12 @@
           "shouldHideOwner": false,
           "canPlaceManually": true,
           "seatEnum": "stool_seat",
+          "isHoldGunModeAllowed": false,
           "seatIsUncovered": true,
           "holdingGunPassengerVertLookLimit": [
             -10.0,
             85.0
-          ],
-          "effectors:object": {
-            "l.hand:object": {
-              "rel_tm": [
-                [
-                  0.406898,
-                  -0.668542,
-                  0.622485
-                ],
-                [
-                  0.380031,
-                  -0.495784,
-                  -0.780881
-                ],
-                [
-                  0.830671,
-                  0.554303,
-                  0.0523327
-                ],
-                [
-                  -1.11612,
-                  0.493707,
-                  1.80967
-                ]
-              ],
-              "node": "root"
-            },
-            "r.hand:object": {
-              "rel_tm": [
-                [
-                  -0.244381,
-                  -0.969664,
-                  0.00549955
-                ],
-                [
-                  0.407596,
-                  -0.107868,
-                  -0.906768
-                ],
-                [
-                  0.879854,
-                  -0.219356,
-                  0.421593
-                ],
-                [
-                  -1.56831,
-                  0.596426,
-                  1.47708
-                ]
-              ],
-              "node": "root"
-            },
-            "l.foot:object": {
-              "rel_tm": [
-                [
-                  0.126419,
-                  0.00859611,
-                  -0.991941
-                ],
-                [
-                  0.0182709,
-                  -0.999815,
-                  -0.00633579
-                ],
-                [
-                  -0.991808,
-                  -0.0173227,
-                  -0.126552
-                ],
-                [
-                  -1.24787,
-                  0.420681,
-                  1.03193
-                ]
-              ],
-              "node": "root"
-            },
-            "r.foot:object": {
-              "rel_tm": [
-                [
-                  -0.12186,
-                  -0.0429531,
-                  -0.991618
-                ],
-                [
-                  -0.141754,
-                  -0.98807,
-                  0.0602196
-                ],
-                [
-                  -0.982374,
-                  0.147904,
-                  0.114318
-                ],
-                [
-                  -1.55307,
-                  0.505777,
-                  1.01357
-                ]
-              ],
-              "node": "root"
-            }
-          }
+          ]
         }
       ]
     }
@@ -503,7 +434,8 @@
     },
     "vehicle_seats__seatTemplates:shared:object": {
       "default": "vehicle_seat_fire_ready",
-      "driver": "vehicle_seat_driver"
+      "driver": "vehicle_seat_driver",
+      "passenger4": "vehicle_seat_open_fire_ready"
     },
     "_group": {
       "_tags": "server",
@@ -511,6 +443,7 @@
       "dependent_templates_list_shared:shared:list<t>": {
         "template_name": [
           "vehicle_seat_fire_ready",
+          "vehicle_seat_open_fire_ready",
           "vehicle_seat_default",
           "vehicle_seat_driver"
         ]
@@ -607,6 +540,28 @@
       ]
     ],
     "seats_attach_nodes__attachTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "seats_attach_nodes__holdingGunAttachTm": [
       [
         1.0,
         0.0,
@@ -742,13 +697,31 @@
   "vehicle_seat_fire_ready": {
     "_use": "vehicle_seat_default",
     "seat_anim__fireReadyUpper": "fireready_passenger",
+    "seat_anim__fireReadyLower": "fireready_passenger",
+    "seat__hideAttaches:tag": {}
+  },
+  "vehicle_seat_open_fire_ready": {
+    "_use": "vehicle_seat_default",
+    "seat_anim__fireReadyUpper": "fireready_passenger",
     "seat_anim__fireReadyLower": "fireready_passenger"
+  },
+  "vehicle_seat_window": {
+    "_use": "vehicle_seat_fire_ready",
+    "seat_window__inited": false,
+    "seat_window__isValid": false,
+    "seat_window__openPos": 0.0,
+    "seat_window__openVel": 5.0,
+    "seat_window__slideDist": 0.45,
+    "seat_window__nodeIds:list<i>": {},
+    "seat_window__baseLocalPos:list<p3>": {},
+    "seat_window__slideDirLocal:list<p3>": {}
   },
   "vehicle_seat_driver": {
     "_use": "base_vehicle_seat",
     "seats_order__canPlaceManually": true,
     "seat_anim__upper": "drive_driver",
     "seat_anim__lower": "drive_driver",
+    "seat__hideAttaches:tag": {},
     "vehicle_seats_auto_effectors__effectorNames:list<t>": {
       "node": [
         "r.hand",

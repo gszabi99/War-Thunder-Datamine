@@ -9,12 +9,15 @@ require Unit
 require %appGame.infantry.es.vehicle.vehicle_events
 require %appGame.infantry.es.vehicle.vehicle_seats_common
 require %appGame.infantry.es.vehicle.human_vehicle_common
+require %appGame.infantry.es.instant_gun_animchar_update_common
 require vehicle
+require HumanPhys
+require WTPhysActor
 
 require math.random
 require math.base
 
-def get_seat_tm(human_eid, vehicle_eid; var out_tm : float3x4&; useSpring : bool)
+def get_seat_tm(human_eid, vehicle_eid; var out_tm : float3x4&; useSpring : bool; use_holding_gun_tm : bool = false)
   var res = false
   query(vehicle_eid) <| $ [es] (vehicle_seats__seatEids : EidList;
                                 unit__ref : UnitRef;
@@ -32,7 +35,7 @@ def get_seat_tm(human_eid, vehicle_eid; var out_tm : float3x4&; useSpring : bool
         ownerSeatEid = seatEid
         break
 
-    res = get_seat_attach_tm(ownerSeatEid, *tree, collres, transform, out_tm)
+    res = get_seat_attach_tm(ownerSeatEid, *tree, collres, transform, out_tm, use_holding_gun_tm)
     if useSpring
       query(ownerSeatEid) <| $ [es] (vehicle_seat__springPos : float3;
                                      vehicle_seat__springInverseRoll = false)
@@ -109,7 +112,7 @@ def human_vehicle_seats_es(info : ParallelUpdateFrameDelayed;
 
   var nodeTm = IDENT_TM
   let useSeatSprings = animchar__visible && !human_vehicle__isHoldingGunPassenger && !isInVehicleHidden
-  if !get_seat_tm(eid, human_anim__vehicleSelected, nodeTm, useSeatSprings)
+  if !get_seat_tm(eid, human_anim__vehicleSelected, nodeTm, useSeatSprings, human_vehicle__isHoldingGunPassenger)
     return
   query(human_anim__vehicleSelected) <| $ [es] (transform : float3x4)
     let inverseTm = inverse(transform)
@@ -227,9 +230,11 @@ def release_seat_slot_attaches(var parent_animchar : AnimcharBaseComponent&;
 def human_seat_bake_animchar_es(evt : CmdHumanSeatBake;
                                 eid : EntityId;
                                 transform : float3x4;
+                                human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
                                 var animchar : AnimcharBaseComponent;
                                 var animchar_node_wtm : AnimcharNodesMat44;
                                 var animchar_render__root_pos : vec4f&;
+                                human_vehicle__isHoldingGunPassenger : bool = false;
                                 attaches_list : EidList const? = null;
                                 animchar__turnDir = false)
   sendEventImmediate(eid, CmdApplyAnimcharEffectorsImmediate())
@@ -245,6 +250,8 @@ def human_seat_bake_animchar_es(evt : CmdHumanSeatBake;
   animchar |> animchar_act(0.f, true)
   animchar |> animchar_copy_nodes(animchar_node_wtm, animchar_render__root_pos)
   release_seat_slot_attaches(animchar, attachIds)
+  if !!human_weap__currentGunEid && human_vehicle__isHoldingGunPassenger
+    instant_gun_animchar_anim_update(human_weap__currentGunEid)
 
 [es(tag=gameClient, REQUIRE=watchedByPlr, after=vehicle_seats_hero_pre_camera_es, before=main_update_camera_es)]
 def hero_seated_human_bake_pre_camera_es(act : UpdateStageInfoAct;
@@ -334,8 +341,9 @@ def human_vehicle_update_can_hold_weapon(evt : Event;
                                                           isHoldGunModeAllowed, human_vehicle__isInHatch, false)
 
 
-[es(track=(human_net_phys__isHctAim, human_weap__throwMode, human_weap__blockAiming, human_weap__currentGunSlot, human_vehicle__canHoldWeapon, human_vehicle__isHoldGunMode))]
-def human_vehicle_update_holding_gun_passenger_mode(evt : Event;
+[es]
+def human_vehicle_update_holding_gun_passenger_mode(info : ParallelUpdateFrameDelayed;
+                                                    human_net_phys : HumanActor;
                                                     human_net_phys__isHctAim : bool;
                                                     human_weap__throwMode : bool;
                                                     human_weap__blockAiming : bool;
@@ -343,10 +351,14 @@ def human_vehicle_update_holding_gun_passenger_mode(evt : Event;
                                                     human_vehicle__canHoldWeapon : bool;
                                                     human_vehicle__isHoldGunMode : bool;
                                                     var human_vehicle__isHoldingGunPassenger : bool&)
-  human_vehicle__isHoldingGunPassenger = (human_vehicle__canHoldWeapon
-                                     && (human_net_phys__isHctAim || human_weap__throwMode || human_vehicle__isHoldGunMode)
-                                     && !human_weap__blockAiming
-                                     && is_gun_slot_allowed_to_hold_gun_in_hatch(human_weap__currentGunSlot))
+  if (uint(human_net_phys.role) & (uint(NetRole.URF_AUTHORITY) | uint(NetRole.URF_LOCAL_CONTROL))) == 0u
+    return
+  let newValue = (human_vehicle__canHoldWeapon
+                  && (human_net_phys__isHctAim || human_weap__throwMode || human_vehicle__isHoldGunMode)
+                  && !human_weap__blockAiming
+                  && is_gun_slot_allowed_to_hold_gun_in_hatch(human_weap__currentGunSlot))
+  if newValue != human_vehicle__isHoldingGunPassenger
+    human_vehicle__isHoldingGunPassenger = newValue
 
 
 [es(tag=input, REQUIRE=hero, on_appear, track=(human_weap__currentGunEid, human_vehicle__isHoldingGunPassenger))]

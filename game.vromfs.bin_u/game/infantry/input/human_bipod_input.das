@@ -54,6 +54,7 @@ def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
                                           var bipod__placeNormal : float3&;
                                           var bipod__placeYawLimit : float&;
                                           var bipod__placeRecoilMult : float&;
+                                          var bipod__placeIsRest : bool&;
                                           var bipod__enabled : bool&;
                                           var bipod__validateTimer : float&;
                                           var bipod__isCrawl : bool&;
@@ -64,6 +65,7 @@ def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
                                           var bipod__anchorNormal : float3&;
                                           var bipod__anchorYawLimit : float2&;
                                           var bipod__recoilMult : float&;
+                                          var bipod__isRest : bool&;
                                           var bipod__pitchLimit : float2&;
                                           var bipod__prevAngle : float2&;
                                           var bipod__lastValidAngle : float2&;
@@ -83,6 +85,7 @@ def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
   let saved_placeNormal     = bipod__placeNormal
   let saved_placeYawLimit   = bipod__placeYawLimit
   let saved_placeRecoilMult = bipod__placeRecoilMult
+  let saved_placeIsRest     = bipod__placeIsRest
 
   solve_bipod_placing(eid, true)
 
@@ -95,6 +98,7 @@ def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
     bipod__placeNormal     = saved_placeNormal
     bipod__placeYawLimit   = saved_placeYawLimit
     bipod__placeRecoilMult = saved_placeRecoilMult
+    bipod__placeIsRest     = saved_placeIsRest
 
   if !bipod__placeable
     return
@@ -106,6 +110,7 @@ def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
   bipod__enabled        = true
   bipod__isCrawl        = bipod__placeCrawl
   bipod__recoilMult     = bipod__placeRecoilMult
+  bipod__isRest         = bipod__placeIsRest
   bipod__anchorPos      = bipod__placePos
   bipod__anchorDir      = calc_anchor_dir(bipod__isCrawl, bipod__placeNormal, human__aimTm)
   bipod__lastValidAngle = dir_to_angles(bipod__anchorDir)
@@ -303,7 +308,8 @@ def human_request_placing_es(evt : Event;
                              bipod__anchorOffset : float3;
                              bipod__anchorNormal : float3;
                              bipod__anchorYawLimit : float2;
-                             bipod__recoilMult : float)
+                             bipod__recoilMult : float;
+                             bipod__isRest : bool)
   send_net_event(eid, RequestBipodPlacing(enabled        = bipod__enabled,
                                             isCrawl        = bipod__isCrawl,
                                             anchorPos      = bipod__anchorPos,
@@ -312,7 +318,8 @@ def human_request_placing_es(evt : Event;
                                             anchorOffset   = bipod__anchorOffset,
                                             anchorNormal   = bipod__anchorNormal,
                                             anchorYawLimit = bipod__anchorYawLimit,
-                                            recoilMult     = bipod__recoilMult))
+                                            recoilMult     = bipod__recoilMult,
+                                            mountIsRest    = bipod__isRest))
 
 
 [es(tag=input, REQUIRE=controlledHero, REQUIRE_NOT=isReplayObserved)]

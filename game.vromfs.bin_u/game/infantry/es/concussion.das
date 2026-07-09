@@ -9,6 +9,10 @@ require PropsManager
 require DaWeapons
 require Weapon
 require Grid
+require Dacoll
+require AnimV20
+require GeomNodeTree
+require DagorSystem
 
 
 [es(tag=server, no_order)]
@@ -31,13 +35,14 @@ def concussion_screen_effect_toggle(evt : Event; concussion__isActive : bool; va
 def concussion_sound_toggle(evt : Event; concussion__isActive : bool; var hasConcussedSound : bool&)
   hasConcussedSound = concussion__isActive
 
-def apply_concussion_in_radius(pos : float3;
-                               radius : float;
-                               is_blocks_sprint : bool;
-                               look_sens_mult : float;
-                               look_inertia : float;
-                               move_inertia : float)
-  apply_concussion_in_radius(pos, radius, is_blocks_sprint, look_sens_mult, look_inertia, move_inertia) <| $ [unused_argument(object_pos)] (object_pos) => 1.0
+[es(tag=server, on_appear, REQUIRE=human)]
+def concussion_head_node_init(evt : Event;
+                              eid : EntityId;
+                              animchar : AnimcharBaseComponent;
+                              var human_head__nodeIndex : int&)
+  human_head__nodeIndex = geomtree_findNodeIndex(*animchar.nodeTree, "Bip01 Head")
+  if human_head__nodeIndex < 0
+    logerr("concussion: \"Bip01 Head\" not found (eid: {eid} template: {getEntityTemplateName(eid)})")
 
 
 def apply_concussion_in_radius(pos : float3;
@@ -46,15 +51,36 @@ def apply_concussion_in_radius(pos : float3;
                                look_sens_mult : float;
                                look_inertia : float;
                                move_inertia : float;
+                               vel : float3)
+  apply_concussion_in_radius(pos, radius, is_blocks_sprint, look_sens_mult, look_inertia, move_inertia, vel) <| $ [unused_argument(object_pos)] (object_pos) => 1.0
+
+
+def apply_concussion_in_radius(pos : float3;
+                               radius : float;
+                               is_blocks_sprint : bool;
+                               look_sens_mult : float;
+                               look_inertia : float;
+                               move_inertia : float;
+                               vel : float3;
                                calc_intensity_cb : block<(object_pos : float3) : float>)
   if radius > 0.
+    let rayPos = length(vel) > 0.01 ? pos - normalize(vel) * 0.05 : pos
     for_each_entity_in_grid(ecs_hash("humans"), BSphere3(pos, radius), GridEntCheck.BOUNDING) <| $(eid : EntityId)
-      query(eid) <| $ [es(REQUIRE_NOT=deadEntity)] (transform : float3x4; concussion__duration : float; isInVehicleHidden : bool = false)
-        if !isInVehicleHidden
+      query(eid) <| $ [es(REQUIRE_NOT=deadEntity)] (animchar : AnimcharBaseComponent;
+                                                    human_head__nodeIndex : int;
+                                                    concussion__duration : float;
+                                                    isInVehicleHidden : bool = false)
+        if !isInVehicleHidden && human_head__nodeIndex >= 0
+          let targetPos = geomtree_getNodeWpos(*animchar.nodeTree, human_head__nodeIndex)
+          let toTarget = targetPos - rayPos
+          let dist = length(toTarget)
+          let dir = normalize(toTarget)
+          if dist > 0.01 && rayhit_normalized(rayPos, dir, dist, ETF_DEFAULT, -1)
+            return
           enable_concussion_affect([
             owner_eid=eid,
             duration=concussion__duration,
-            intensity=invoke(calc_intensity_cb, transform[3]),
+            intensity=invoke(calc_intensity_cb, targetPos),
             is_blocks_sprint = is_blocks_sprint,
             look_sens_mult = look_sens_mult,
             look_inertia = look_inertia,
@@ -83,7 +109,7 @@ def on_flash_explosion_concussion(evt : EventShellExplodedServer;
     return
 
   let maxRadius = sqrt(maxRadiusSq)
-  apply_concussion_in_radius(evt.pos, maxRadius, shell__concussionBlocksSprint != null, shell__concussionLookSensMult, shell__concussionLookInertia, shell__concussionMoveInertia) <| $(object_pos)
+  apply_concussion_in_radius(evt.pos, maxRadius, shell__concussionBlocksSprint != null, shell__concussionLookSensMult, shell__concussionLookInertia, shell__concussionMoveInertia, evt.vel) <| $(object_pos)
     let distSq = distance_sq(evt.pos, object_pos)
     let mult = interpolate_by_point_list(concussionIntensityByDistSq, distSq)
     return mult
@@ -100,11 +126,11 @@ def on_explosion_concussion(evt : EventShellExplodedServer;
                             shell__concussionBlocksSprint : Tag const?)
   let damageRadius = get_shell_max_radius(shell__shell_id__shell_id)
   let concussionRadius = clamp(damageRadius, shell__concussionMinRadius, shell__concussionMaxRadius >= 0. ? shell__concussionMaxRadius : damageRadius)
-  apply_concussion_in_radius(evt.pos, concussionRadius, shell__concussionBlocksSprint != null, shell__concussionLookSensMult, shell__concussionLookInertia, shell__concussionMoveInertia)
+  apply_concussion_in_radius(evt.pos, concussionRadius, shell__concussionBlocksSprint != null, shell__concussionLookSensMult, shell__concussionLookInertia, shell__concussionMoveInertia, evt.vel)
 
 [es(tag=server)]
 def on_visual_explosion_concussion(evt : EventOnVisualExplosion)
-  apply_concussion_in_radius(evt.pos, evt.explosion_radius, false, 1.0, 0.0, 0.0) <| $(object_pos)
+  apply_concussion_in_radius(evt.pos, evt.explosion_radius, false, 1.0, 0.0, 0.0, float3()) <| $(object_pos)
     let dist = distance(evt.pos, object_pos)
     let mult = lerp(1.0, 0.0, clamp(safediv(dist, evt.explosion_radius), 0.0, 1.0))
     return mult
@@ -121,7 +147,7 @@ def on_explosion_concussion_launch_desc(evt : EventShellExplodedServer;
   assume shellId = launch_desc.shellId
   let damageRadius = get_shell_max_radius(shellId)
   let concussionRadius = clamp(damageRadius, shell__concussionMinRadius, shell__concussionMaxRadius >= 0. ? shell__concussionMaxRadius : damageRadius)
-  apply_concussion_in_radius(evt.pos, concussionRadius, shell__concussionBlocksSprint != null, shell__concussionLookSensMult, shell__concussionLookInertia, shell__concussionMoveInertia)
+  apply_concussion_in_radius(evt.pos, concussionRadius, shell__concussionBlocksSprint != null, shell__concussionLookSensMult, shell__concussionLookInertia, shell__concussionMoveInertia, evt.vel)
 
 
 

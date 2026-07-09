@@ -21,7 +21,8 @@
     "hideFlags:array": {
       "hideFlag": "chest_armor"
     },
-    "bipodDontHideAttach:tag": {}
+    "bipodDontHideAttach:tag": {},
+    "vehicleDontHideAttachButChildren:tag": {}
   },
   "attachable_chest_vest": {
     "_use": "attachable_wear",
@@ -2422,6 +2423,81 @@
       "_tags": "gameClient"
     }
   },
+  "attachable_wear_lba_armor_base_khaki_item": {
+    "_use": "attachable_wear_lba_armor_base_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.42,
+          0.41,
+          0.33,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.45,
+          0.42,
+          0.3,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.45,
+          0.4,
+          0.34,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.35,
+          0.3,
+          0.2,
+          1.0
+        ]
+      },
+      "material10:object": {
+        "material_id": 10,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.56,
+          0.52,
+          0.44,
+          1.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.65,
+          0.66,
+          0.5,
+          1.0
+        ]
+      },
+      "material12:object": {
+        "material_id": 12,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ]
+      }
+    }
+  },
   "attachable_wear_lba_armor_heavy_item": {
     "_use": [
       "attachable_chest_armor",
@@ -2434,6 +2510,52 @@
     "animchar_fast_phys__res": "lba_armor_heavy_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_mnla_vest_tier2_item": {
+    "_use": [
+      "attachable_chest_armor",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_mnla_vest_tier2_item",
+    "animchar__res": "mnla_vest_tier2_char",
+    "collres__res": "mnla_vest_tier2_collision",
+    "_tracked": "attaches_list",
+    "animchar_node_collapser__camThreshold": 0.15,
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "backpack"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_mnla_vest_tier2_heavy_item": {
+    "_use": [
+      "attachable_chest_armor",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_mnla_vest_tier2_heavy_item",
+    "animchar__res": "mnla_vest_tier2_heavy_char",
+    "collres__res": "mnla_vest_tier2_heavy_collision",
+    "animchar_fast_phys__res": "mnla_vest_tier2_heavy_fastphys",
+    "_tracked": "attaches_list",
+    "animchar_node_collapser__camThreshold": 0.15,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "backpack"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
     }
   }
 }

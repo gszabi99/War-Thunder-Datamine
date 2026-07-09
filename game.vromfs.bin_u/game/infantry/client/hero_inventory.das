@@ -107,9 +107,12 @@ def watched_by_player_inventory(evt : Event;
 [es(tag=gameClient, on_disappear, REQUIRE=watchedByPlr)]
 def watched_by_player_inventory_remove_tag(evt : Event;
                                            eid aka destroyed_eid : EntityId;
+                                           isInVehicle : bool;
                                            itemContainer : EidList;
                                            human_weap__gunMods : Array;
                                            human_weap__gunEids : EidList)
+  if isInVehicle
+    return
   set_watched_by_player_components(itemContainer, false)
   set_watched_by_player_components(human_weap__gunEids, false)
   set_watched_by_player_components(human_weap__gunMods, false)

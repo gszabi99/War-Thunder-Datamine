@@ -19,6 +19,8 @@ require Sound
 let GRAIN_TTL_HERO = 5.
 let GRAIN_TTL = 4.
 
+let BURST_SOUND_SHOTS_DONE = -1
+
 def try_shot_loop(var sound_event : SoundEvent&; turret_owner : EntityId; pos : float3; shot_path, tags : Object; is_watched : bool; prefix = "")
   release(sound_event)
   let path = "{prefix}{make_gun_shot_sound_path_str(shot_path, tags, is_watched, false)}"
@@ -163,7 +165,7 @@ def on_shot_grain(launch_pos : float3;
   assume firingMode = gun_getFiringMode(gun, int(firing_mode))
   let burstSize = firingMode.modeType == EFiringModeType.EFM_BURST ? firingMode.burstSize : INT_MAX
 
-  if num_shots % burstSize == 0
+  if num_shots % burstSize == 0 || (int(firingMode.burstCounterMode) != 0 && int(gun.curState.burstCounter) + 1 >= firingMode.burstSize)
     shot_loop_timeout = time_between_shots / 3.
 
 
@@ -180,8 +182,10 @@ def gun_sound_on_stop_shot(evt : Event;
     set_var_optional(gun_sound__event, "on_shot", 0.)
     assume firingMode = gun_getFiringMode(gun, gun__firingModeIndex)
     let burstSize = firingMode.modeType == EFiringModeType.EFM_BURST ? firingMode.burstSize : INT_MAX
-    if gun_sound__numShots % burstSize == 0
-      gun_sound__numShots = -1
+    let burstComplete = gun_sound__numShots > 0 && gun_sound__numShots % burstSize == 0
+    let earlyRelease = int(firingMode.burstCounterMode) != 0 && !burstComplete
+    if burstComplete || earlyRelease
+      gun_sound__numShots = BURST_SOUND_SHOTS_DONE
 
 
 

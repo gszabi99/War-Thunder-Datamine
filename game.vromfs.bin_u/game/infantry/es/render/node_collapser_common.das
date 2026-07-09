@@ -5,6 +5,9 @@ require DagorSystem
 require math.base
 require ecs.soa_template
 
+require app
+require WTCamera
+
 let MAX_COLLAPSE_NODES = 4
 
 [soa_template]
@@ -12,6 +15,18 @@ struct AnimcharNodeCollapser
   animchar_node_collapser__rootNode : int
   animchar_node_collapser__targetNode : int
   animchar_node_collapser__childrenCount : int
+  animchar_node_collapser__threshold : float
+
+
+def get_fov_threshold_mult() : float
+  let app = get_app()
+  if app == null || app.flightControlMode == null
+    return 1.f
+  let camera = app.flightControlMode.cameraControl.cur
+  if camera == null
+    return 1.f
+  let fovDeg = fov_to_deg(camera.viewData.fov)
+  return 90.f / max(fovDeg, 1.f)
 
 
 [soa_def]
@@ -21,8 +36,8 @@ def collapser(position : float3;
               animchar_bsph : float3;
               animchar_node_collapser : AnimcharNodeCollapser_SOA;
               animchar_node_collapser__children : IntList;
-              animchar_node_collapser__camThreshold : float;
-              animchar_node_collapser__origin_threshold_sq : float)
+              animchar_node_collapser__origin_threshold_sq : float;
+              threshold_mult : float)
   if animchar_visbits == animchar_visbits_t(0)
     return
   if distance_sq(animchar_bsph, position) > animchar_node_collapser__origin_threshold_sq
@@ -38,7 +53,7 @@ def collapser(position : float3;
       let child = uint(animchar_node_collapser__children[childIdx])
       let childPos = scene_instance_getNodeWtm(*scene, child)[3]
       
-      if length_sq(childPos) <= square(animchar_node_collapser__camThreshold)
+      if length_sq(childPos) <= square(node.animchar_node_collapser__threshold * threshold_mult)
         collide = true
         break
 

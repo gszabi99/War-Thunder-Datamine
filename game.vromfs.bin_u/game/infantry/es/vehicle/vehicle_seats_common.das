@@ -41,13 +41,15 @@ def get_seat_attach_tm(seat_eid : EntityId;
                        tree : GeomNodeTree;
                        collres : CollisionResource;
                        transform : float3x4;
-                       var out_tm : float3x4)
+                       var out_tm : float3x4;
+                       use_holding_gun_tm : bool = false)
   var res = false
   query(seat_eid) <| $ [es] (seats_attach_nodes__nodeId : int;
                              seats_attach_nodes__collNodeId : int;
                              seats_attach_nodes__ignoreAttachNodeRotation : bool;
                              seats_attach_nodes__nodeItm : float3x4;
-                             seats_attach_nodes__attachTm : float3x4)
+                             seats_attach_nodes__attachTm : float3x4;
+                             seats_attach_nodes__holdingGunAttachTm : float3x4)
     if seats_attach_nodes__nodeId >= 0
       
       
@@ -67,7 +69,7 @@ def get_seat_attach_tm(seat_eid : EntityId;
     elif det(out_tm) < 0.0f
       orthonormalize(out_tm)
 
-    out_tm = out_tm * seats_attach_nodes__attachTm
+    out_tm = out_tm * (use_holding_gun_tm ? seats_attach_nodes__holdingGunAttachTm : seats_attach_nodes__attachTm)
     res = true
   return res
 
@@ -412,7 +414,7 @@ def can_take_adjacent_seat(seat_eid : EntityId)
 
 
 def is_gun_slot_allowed_to_hold_gun_in_hatch(slot : int)
-  return slot < int(HUWeaponSlots.EWS_MELEE) || slot == int(HUWeaponSlots.EWS_GRENADE)
+  return slot < int(HUWeaponSlots.EWS_TERTIARY)
 
 
 

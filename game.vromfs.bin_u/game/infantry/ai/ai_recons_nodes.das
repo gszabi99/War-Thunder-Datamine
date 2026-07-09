@@ -1006,10 +1006,23 @@ class ConsiderCornersAlongMovementPath : BehNodeAdapter
                       if rayhit_normalized(rayFrom1, rayDir1, rayDist1, ETF_DEFAULT, -1)
                         if rayhit_normalized(rayFrom2, rayDir1, rayDist1, ETF_DEFAULT, -1)
                           if !rayhit_normalized(rayFrom3, rayDir1, rayDist2, ETF_DEFAULT, -1)
+                            var alreadyLooked = false
+                            let newLookPos = basePos + float3(0.0, 1.5, 0.0) + lookDir * LOOK_DIST
+                            query() <| $ [es] (team__id : int; team__peekLookedPoints : Point4List)
+                              let DIST_PEEK_LOOKED_RADIUS = 10.0
+                              let DIST_PEEK_LOOKED_RADIUS_SQ = square(DIST_PEEK_LOOKED_RADIUS)
+                              if agent_team == team__id
+                                for pt in team__peekLookedPoints
+                                  if distance_sq(pt.xyz, newLookPos) < DIST_PEEK_LOOKED_RADIUS_SQ && curTime < pt.w
+                                    
+                                    
+                                    
+                                    alreadyLooked = true
+                                    return
                             var hasMateThere = false
-                            let checkMatesPos = rayFrom3 + rayDir1 * 2.0
-                            let checkMatesRad = 3.0
-                            if !checkedMates
+                            if !checkedMates && !alreadyLooked
+                              let checkMatesPos = rayFrom3 + rayDir1 * 2.0
+                              let checkMatesRad = 3.0
                               for_each_entity_in_grid(ecs_hash("humans"), BSphere3(checkMatesPos, checkMatesRad), GridEntCheck.BOUNDING) <| $(that_eid : EntityId; that_pos : float3)
                                 checkedMates = true
                                 if that_eid != agentEid && distance_sq(checkMatesPos, that_pos) < square(checkMatesRad)
@@ -1017,11 +1030,11 @@ class ConsiderCornersAlongMovementPath : BehNodeAdapter
                                     if that_team == agent_team && isAlive
                                       hasMateThere = true
                                       
-                            if !hasMateThere
+                            if !hasMateThere && !alreadyLooked
                               resultLean = true
                               resultLeanPos1 = basePos + alongDir * 0.7
                               resultLeanPos2 = basePos - alongDir * 0.5
-                              resultLeanLook = basePos + float3(0.0, 1.5, 0.0) + lookDir * LOOK_DIST
+                              resultLeanLook = newLookPos
                               resultLeanVal = leanRight ? 1.0 : -1.0
                               let MIN_TIME_BETWEEN_LEANS = 3.5
                               recon__runReconLastLookTime = curTime + MIN_TIME_BETWEEN_LEANS
@@ -1110,3 +1123,35 @@ class ConsiderCornersAlongMovementPath : BehNodeAdapter
       return EBehResult.ER_SUCCESS
 
     return EBehResult.ER_RUNNING
+
+[beh_node(name="acceptTeamPeekLookPoint")]
+class AcceptTeamPeekLookPoint : BehNodeAdapter
+  posParam : int = -1
+  def override loadFromBlk(var data : DataBlock) : void
+    posParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "posParam", ""), float3())
+  def override update(dt : float) : EBehResult
+    let agentEid = beh_tree_eid(owner)
+    var agentTeam = -1
+    query(agentEid) <| $ [es] (team : int)
+      agentTeam = team
+    if agentTeam > 0
+      query() <| $ [es] (team__id : int; var team__peekLookedPoints : Point4List&; team__maxPeekLookedPoints : int = 5)
+        if team__id == agentTeam
+          let TIME_TO_OFF = 15.0
+          let MIN_DIST_SAME_SQ = square(5.0)
+          let lookPos = owner.blackBoard |> datablock_getPoint3(posParam)
+          let curTime = get_sync_time()
+          let offTime = curTime + TIME_TO_OFF
+          var alreadyAdded = false
+          for pt in team__peekLookedPoints
+            if distance_sq(pt.xyz, lookPos) < MIN_DIST_SAME_SQ && curTime < pt.w
+              alreadyAdded = true
+              break
+          if !alreadyAdded
+            team__peekLookedPoints |> push(float4(lookPos.x, lookPos.y, lookPos.z, offTime))
+            
+            
+            if length(team__peekLookedPoints) > team__maxPeekLookedPoints
+              team__peekLookedPoints |> erase(0)
+    return EBehResult.ER_SUCCESS
+

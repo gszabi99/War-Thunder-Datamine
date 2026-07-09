@@ -20,12 +20,14 @@ def need_enable_motion_matching(human_anim__lowerStateLowerSprint : int;
                                 human_anim__lowerStateRotateRight : int;
                                 human_anim__comboStateFullBodyWalk : int;
                                 human_anim__comboStateFullBodyRun : int;
+                                human_anim__comboStateFullBodyCrouch : int;
                                 from_crawl_transition_state_id : int;
                                 anim_state_id : int)
   return (anim_state_id == human_anim__lowerStateLowerSprint || anim_state_id == human_anim__lowerStateRun ||
     anim_state_id == human_anim__lowerStateWalk || anim_state_id == human_anim__lowerStateStand ||
     anim_state_id == human_anim__lowerStateRotateLeft || anim_state_id == human_anim__lowerStateRotateRight ||
     anim_state_id == human_anim__comboStateFullBodyWalk || anim_state_id == human_anim__comboStateFullBodyRun ||
+    anim_state_id == human_anim__comboStateFullBodyCrouch ||
     anim_state_id == from_crawl_transition_state_id)
 
 enum WishStandState
@@ -40,6 +42,7 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
                                     human_anim__lowerStateRotateRight : int;
                                     human_anim__comboStateFullBodyWalk : int;
                                     human_anim__comboStateFullBodyRun : int;
+                                    human_anim__comboStateFullBodyCrouch : int;
                                     prev_anim_state_id : int;
                                     next_anim_state_id : int;
                                     from_crawl_transition_state_id : int;
@@ -52,13 +55,15 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
                                                  mm_tag_id__stand : int;
                                                  mm_tag_id__crouch : int;
                                                  mm_tag_id__turnOnSpot : int;
-                                                 mm_tag_id__fullBodyMovement : int)
+                                                 mm_tag_id__fullBodyMovement : int;
+                                                 mm_tag_id__fullBodyCrouch : int)
     remove_tag(motion_matching__controller, mm_tag_id__sprint)
     remove_tag(motion_matching__controller, mm_tag_id__walk)
     remove_tag(motion_matching__controller, mm_tag_id__stand)
     remove_tag(motion_matching__controller, mm_tag_id__crouch)
     remove_tag(motion_matching__controller, mm_tag_id__turnOnSpot)
     remove_tag(motion_matching__controller, mm_tag_id__fullBodyMovement)
+    remove_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch)
 
     
     
@@ -74,7 +79,10 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
         if wish_to_move
           set_tag(motion_matching__controller, mm_tag_id__stand, false)
       elif wishStandState == WishStandState.CROUCH
-        set_tag(motion_matching__controller, mm_tag_id__crouch, true)
+        if next_anim_state_id == human_anim__comboStateFullBodyCrouch
+          set_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch, true)
+        else
+          set_tag(motion_matching__controller, mm_tag_id__crouch, true)
     elif (next_anim_state_id == human_anim__lowerStateStand ||
           next_anim_state_id == human_anim__lowerStateRotateLeft ||
           next_anim_state_id == human_anim__lowerStateRotateRight ||
@@ -82,7 +90,10 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
       if wishStandState == WishStandState.STAND
         set_tag(motion_matching__controller, mm_tag_id__stand, true)
       elif wishStandState == WishStandState.CROUCH
-        set_tag(motion_matching__controller, mm_tag_id__crouch, true)
+        if next_anim_state_id == human_anim__comboStateFullBodyCrouch
+          set_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch, true)
+        else
+          set_tag(motion_matching__controller, mm_tag_id__crouch, true)
         if (next_anim_state_id == human_anim__lowerStateRotateLeft ||
             next_anim_state_id == human_anim__lowerStateRotateRight ||
             prev_anim_state_id == human_anim__lowerStateRotateLeft ||
@@ -90,6 +101,8 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
           set_tag(motion_matching__controller, mm_tag_id__turnOnSpot, true)
     elif next_anim_state_id == human_anim__comboStateFullBodyWalk || next_anim_state_id == human_anim__comboStateFullBodyRun
       set_tag(motion_matching__controller, mm_tag_id__fullBodyMovement, true)
+    elif next_anim_state_id == human_anim__comboStateFullBodyCrouch
+      set_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch, true)
 
 [es(tag=gameClient, after=(human_anim_es, force_anim_state_es, wait_motion_matching_job_es), before=(anim_state_es, update_tag_changes_es))]
 def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
@@ -103,6 +116,7 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
                             human_anim__lowerStateRotateRight : int;
                             human_anim__comboStateFullBodyWalk : int;
                             human_anim__comboStateFullBodyRun : int;
+                            human_anim__comboStateFullBodyCrouch : int;
                             human_anim__fromCrawlTransitionAnimId : int;
                             human_net_phys : HumanActor;
                             motion_matching__dataBaseEid : EntityId;
@@ -129,6 +143,7 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
                                       human_anim__lowerStateRotateRight,
                                       human_anim__comboStateFullBodyWalk,
                                       human_anim__comboStateFullBodyRun,
+                                      human_anim__comboStateFullBodyCrouch,
                                       motion_matching__prevLowerAnimState,
                                       nextLowerStateId,
                                       human_anim__fromCrawlTransitionAnimId,
@@ -146,6 +161,7 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
                                                               human_anim__lowerStateRotateRight,
                                                               human_anim__comboStateFullBodyWalk,
                                                               human_anim__comboStateFullBodyRun,
+                                                              human_anim__comboStateFullBodyCrouch,
                                                               human_anim__fromCrawlTransitionAnimId,
                                                               nextLowerStateId) &&
         hasAvailableAnimations(*motion_matching__controller.dataBase, motion_matching__controller.currentTags))
@@ -178,6 +194,7 @@ def set_mm_view_mode_tag_es(evt : Event;
                             human_anim__lowerStateRotateRight : int;
                             human_anim__comboStateFullBodyWalk : int;
                             human_anim__comboStateFullBodyRun : int;
+                            human_anim__comboStateFullBodyCrouch : int;
                             human_anim__fromCrawlTransitionAnimId : int;
                             animchar__animState : Object;
                             motion_matching__dataBaseEid : EntityId;
@@ -203,6 +220,7 @@ def set_mm_view_mode_tag_es(evt : Event;
                                                                 human_anim__lowerStateRotateRight,
                                                                 human_anim__comboStateFullBodyWalk,
                                                                 human_anim__comboStateFullBodyRun,
+                                                                human_anim__comboStateFullBodyCrouch,
                                                                 human_anim__fromCrawlTransitionAnimId,
                                                                 nextLowerStateId) &&
           hasAvailableAnimations(*motion_matching__controller.dataBase, motion_matching__controller.currentTags))
@@ -218,7 +236,8 @@ def init_mm_tags_es(evt : Event;
                     var mm_tag_id__turnInMove : int&;
                     var mm_tag_id__1stPersonView : int&;
                     var mm_tag_id__3rdPersonView : int&;
-                    var mm_tag_id__fullBodyMovement : int&)
+                    var mm_tag_id__fullBodyMovement : int&;
+                    var mm_tag_id__fullBodyCrouch : int&)
   mm_tag_id__sprint = get_tag_index(dataBase, "sprint")
   mm_tag_id__walk = get_tag_index(dataBase, "walk")
   mm_tag_id__stand = get_tag_index(dataBase, "stand")
@@ -228,6 +247,7 @@ def init_mm_tags_es(evt : Event;
   mm_tag_id__1stPersonView = get_tag_index(dataBase, "1st_person_view")
   mm_tag_id__3rdPersonView = get_tag_index(dataBase, "3rd_person_view")
   mm_tag_id__fullBodyMovement = get_tag_index(dataBase, "full_body_movement")
+  mm_tag_id__fullBodyCrouch = get_tag_index(dataBase, "full_body_crouch")
 
 
 def get_selected_weapon_var_id(human_weap__currentGunSlot : int;

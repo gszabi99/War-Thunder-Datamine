@@ -65,6 +65,14 @@ def human_weap_zoom_reset_es(evt : Event; var human_net_phys : HumanActor; var c
 def human_weap_lock_zoom_reset_es(evt : Event; var human_net_phys : HumanActor; var camera__magnification : float&)
   reset_human_aim_zoom(human_net_phys, camera__magnification)
 
+[es(track=human_vehicle__canHoldWeapon, REQUIRE=isInVehicle)]
+def human_vehicle_seat_zoom_reset_es(evt : Event;
+                                     human_vehicle__canHoldWeapon : bool;
+                                     var human_net_phys : HumanActor&;
+                                     var camera__magnification : float&)
+  if !human_vehicle__canHoldWeapon
+    reset_human_aim_zoom(human_net_phys, camera__magnification)
+
 
 
 

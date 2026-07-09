@@ -16,6 +16,7 @@ def init_attach_nodes(evt : Event;
                       var seats_attach_nodes__collNodeId : int&;
                       var seats_attach_nodes__initialTm : float3x4;
                       var seats_attach_nodes__attachTm : float3x4;
+                      var seats_attach_nodes__holdingGunAttachTm : float3x4;
                       var seats_attach_nodes__nodeItm : float3x4)
   query(seat__vehicleEid) <| $ [es] (@shared_comp vehicle_seats__seats : Array;
                                      unit__ref : UnitRef)
@@ -43,6 +44,7 @@ def init_attach_nodes(evt : Event;
     seats_attach_nodes__collNodeId = collres_get_node_index_by_name(collres, nodeName)
     seats_attach_nodes__attachTm   = get_TMatrix(*seat, "attachTm") ?? IDENT_TM
     seats_attach_nodes__initialTm  = seats_attach_nodes__attachTm
+    seats_attach_nodes__holdingGunAttachTm = get_TMatrix(*seat, "holdingGunAttachTm") ?? seats_attach_nodes__attachTm
     seats_attach_nodes__ignoreAttachNodeRotation = get_bool(*seat, "ignoreAttachNodeRotation") ?? false
 
     if seats_attach_nodes__nodeId >= 0

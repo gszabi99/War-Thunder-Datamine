@@ -248,8 +248,27 @@ def human_weap_change_zoom_to_next(evt : NextVariableZoomGunScope;
 
 [es(tag=server)]
 def human_weap_server_change_zoom_to_next(evt : ChangeGunModZoomIndex;
+                                          gunmod__zoomFactor : float;
+                                          var gunmod__previousZoomFactor : float&;
+                                          var gunmod__zoomAnimationTime : float&;
                                           var gunmod__currentZoomIndex : int&)
+  gunmod__previousZoomFactor = gunmod__zoomFactor
+  gunmod__zoomAnimationTime = 0.0
   gunmod__currentZoomIndex = evt.zoomIndex
+
+
+[es(tag=server, no_order)]
+def human_weap_zoom_animation_server(info : UpdateStageInfoAct;
+                                     gunmod__previousZoomFactor : float;
+                                     gunmod__currentZoomIndex : int;
+                                     gunmod__variableZoomOptions : Array;
+                                     gunmod__zoomAnimationViscocity : float;
+                                     var gunmod__zoomAnimationTime : float&;
+                                     var gunmod__zoomFactor : float&)
+  let zoomOptions = gunmod__variableZoomOptions?[gunmod__currentZoomIndex] ?as Object
+  let targetZoomFactor = zoomOptions?.gunmod__zoomFactor ?? gunmod__previousZoomFactor
+  gunmod__zoomAnimationTime += info.dt
+  gunmod__zoomFactor = approach(gunmod__previousZoomFactor, targetZoomFactor, gunmod__zoomAnimationTime, gunmod__zoomAnimationViscocity)
 
 [es(tag=gameClient, no_order)]
 def human_weap_zoom_animation(info : UpdateStageInfoAct;

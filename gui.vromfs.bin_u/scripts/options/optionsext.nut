@@ -1288,6 +1288,13 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = false
   },
+  [USEROPT_INFANTRY_USE_NEOCLASSICAL_TILT] = function(optionId, descr, _context) {
+    descr.id = "infantryUseNeoclassicalTilt"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.value = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    descr.defaultValue = false
+  },
   [USEROPT_SHIP_PRESET_BASED_DAMAGE_CONTROL] = function(_optionId, descr, _context) {
     descr.id = "shipPresetBasedDamageControl"
     descr.controlType = optionControlType.CHECKBOX
@@ -4786,6 +4793,7 @@ let optionsSetMap = {
   [USEROPT_AUTO_TARGET_CHANGE_SHIP] = set_useropt_landing_mode,
   [USEROPT_REALISTIC_AIMING_SHIP] = set_useropt_landing_mode,
   [USEROPT_SHIP_PRESET_BASED_DAMAGE_CONTROL] = set_useropt_landing_mode,
+  [USEROPT_INFANTRY_USE_NEOCLASSICAL_TILT] = setGuiOptionInGameplayMode,
   [USEROPT_TORPEDO_AUTO_SWITCH] = set_useropt_landing_mode,
   [USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE] = set_useropt_landing_mode,
   [USEROPT_REPLAY_ALL_INDICATORS] = set_useropt_landing_mode,

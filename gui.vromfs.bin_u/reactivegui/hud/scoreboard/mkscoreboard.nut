@@ -16,6 +16,7 @@ let { fontSizeMultiplier } = require("%rGui/style/fontsState.nut")
 let extraction = require("%rGui/hud/scoreboard/extraction.nut")
 let { sead, oil_refinery_strbomb, power_plant_strbomb } = require("%rGui/hud/scoreboard/assimModes.nut")
 let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
+let dominationNotification = require("%rGui/dominationNotification.nut")
 
 let getNoRespTextSize = @() fpx(22)
 
@@ -79,7 +80,12 @@ return function mkScoreboard() {
     pos = [0, yPos.get()]
     margin = margin.get()
     halign = ALIGN_CENTER
-    children = getScoreBoardChildren()
+    flow = FLOW_VERTICAL
+    gap = hdpx(10)
+    children = [
+      getScoreBoardChildren()
+      dominationNotification
+    ]
 
     transform = {
       scale = [hudScale.get(), hudScale.get()]

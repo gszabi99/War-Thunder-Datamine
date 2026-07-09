@@ -47,6 +47,7 @@ require BallisticsProps
 require AnimV20
 require CollRes
 
+require %appGame.infantry.es.level_common
 require %appGame.infantry.ai.walker_nodes_common
 require %appGame.infantry.ai.ai_weapons_common
 require %appGame.infantry.ai.walker_vehicles_danger_common
@@ -2263,7 +2264,8 @@ class GetRegroupPos : BehNodeAdapter
                                 squad_member__wasBotLeaderPosThreshold : float = 1.0;
                                 var squad_member__wasBotLeaderPos : float3&;
                                 var squad_member__wasBotRegroupPos : float3&;
-                                beh_tree__latencyLoadRequire : bool = false)
+                                beh_tree__latencyLoadRequire : bool = false;
+                                team aka agent_team : int = TEAM_UNASSIGNED)
       query(squad_member__squad) <| $ [es] (squad__leader : EntityId; squadAI_tactical__actionType : int = -1)
         if squad__leader == agent.eid
           return
@@ -2325,6 +2327,7 @@ class GetRegroupPos : BehNodeAdapter
                     let isCornerAction = squadAI_tactical__actionType != 2 
                     let radius = !isCornerAction ? rnd_float(5.0, 15.0) : rnd_float(3.0, 5.0)
                     let angle = deg_to_rad(rnd_float(0.0, 360.0))
+                    let leaderToIndoor = is_pos_indoor(pos)
                     for i in range(5)
                       var newPos = pos
                       let tryRadius = radius / float(i + 1)
@@ -2332,7 +2335,15 @@ class GetRegroupPos : BehNodeAdapter
                       newPos.z = pos.z + tryRadius * cos(angle)
                       let projExtents = float3(2.5, 1.5, 2.5)
                       var projectedPos = newPos + float3(0.0, -0.5, 0.0)
-                      if project_to_nearest_navmesh_point_avoid_obstacles(projectedPos, projExtents)
+                      if !is_point_safe(newPos, agent_team)
+                        pass
+                        
+                        
+                      elif leaderToIndoor && !is_pos_indoor(newPos)
+                        pass
+                        
+                        
+                      elif project_to_nearest_navmesh_point_avoid_obstacles(projectedPos, projExtents)
                         if abs(projectedPos.y - newPos.y) < 2.5
                           squad_member__wasBotLeaderPos = pos
                           squad_member__wasBotRegroupPos = projectedPos
@@ -2641,6 +2652,8 @@ class AcceptActiveDanger : BehNodeAdapter
   chanceMakeTraceable : float = 0.0
   makeTraceableDanger : float = 0.5
 
+  ignoreFarDangerousTargets : bool = false
+
   FROM_EID_PARAM = 0
   FROM_REACTION_ON_HIT = 1
   FROM_REACTION_ON_BULLET_NEARBY = 2
@@ -2660,10 +2673,13 @@ class AcceptActiveDanger : BehNodeAdapter
     chanceMakeTraceable = datablock_getReal(data, "chanceMakeTraceable", chanceMakeTraceable)
     makeTraceableDanger = datablock_getReal(data, "makeTraceableDanger", makeTraceableDanger)
 
+    ignoreFarDangerousTargets = datablock_getBool(data, "ignoreFarDangerousTargets", ignoreFarDangerousTargets)
+
   def override update(dt : float) : EBehResult
     let agentEid = beh_tree_eid(owner)
     let curTime = get_sync_time()
     let DISTANCE_EPSILON = 5.0
+    var ignoreTarget = false
     query(agentEid) <| $ [es] (var agent_dangers__keepDangerEid : EntityId&;
                                var agent_dangers__keepDangerToTime : float&;
                                var agent_dangers : AgentDangers;
@@ -2682,10 +2698,26 @@ class AcceptActiveDanger : BehNodeAdapter
       elif fromType == FROM_REACTION_ON_BULLET_NEARBY
         targetEid = agent_dangers__lastBulletReactionOffenderEid
 
-      query(targetEid) <| $ [es] (transform aka target_transform : float3x4)
+      query(targetEid) <| $ [es] (transform aka target_transform : float3x4;
+                                  human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID)
         let distSq = distance_sq(agent_transform[3], target_transform[3])
+        let maxTargetDist = agent_dangers__maxDangerDist - DISTANCE_EPSILON
+        let isFarTarget = distSq > square(max(0.0, maxTargetDist))
 
-        if fromType != FROM_EID_PARAM
+        if isFarTarget && ignoreFarDangerousTargets
+          var agentCombatRange = float2(0.0, 0.0)
+          query(agentEid) <| $ [es] (human_weap__currentGunEid aka agent_human_weap__currentGunEid : EntityId)
+            query(agent_human_weap__currentGunEid) <| $ [es] (specialAIWeaponType : int = 0; combatFiringRange : float2)
+              if specialAIWeaponType == int(SpecialAIWeaponType NON_SPECIAL) || specialAIWeaponType == int(SpecialAIWeaponType ANTI_TANK_RIFLES)
+                agentCombatRange = combatFiringRange
+          query(human_weap__currentGunEid) <| $ [es] (specialAIWeaponType : int = 0; combatFiringRange : float2)
+            if specialAIWeaponType == int(SpecialAIWeaponType NON_SPECIAL) || specialAIWeaponType == int(SpecialAIWeaponType ANTI_TANK_RIFLES)
+              let DIST_SELF_FACTOR = 0.75
+              let DIST_ENEMY_FACTOR = 2.5
+              if distSq > square(agentCombatRange.y) || (distSq > square(agentCombatRange.y * DIST_SELF_FACTOR) && distSq < square(combatFiringRange.y * DIST_ENEMY_FACTOR))
+                ignoreTarget = true
+
+        if fromType != FROM_EID_PARAM && !ignoreTarget
           if chanceMakeTraceable > 0.0 && rnd_float(0.0, 1.0) < chanceMakeTraceable
             var found = false
             for danger in agent_dangers.dangers
@@ -2706,10 +2738,21 @@ class AcceptActiveDanger : BehNodeAdapter
                 newDanger.dangerMeter = makeTraceableDanger
                 push_clone(agent_dangers.dangers, newDanger)
 
-        if distSq > square(max(0.0, agent_dangers__maxDangerDist - DISTANCE_EPSILON))
+        if isFarTarget && !ignoreTarget
           agent_dangers__keepDangerEid = targetEid
           agent_dangers__keepDangerToTime = curTime + time
 
+        if ignoreTarget
+          if agent_dangers__keepDangerEid == targetEid
+            agent_dangers__keepDangerEid = INVALID_ENTITY_ID
+            agent_dangers__keepDangerToTime = 0.0
+          for i in iter_range(agent_dangers.dangers)
+            if agent_dangers.dangers[i].eid == targetEid
+              agent_dangers.dangers |> erase(i)
+              break
+
+    if ignoreTarget && ignoreFarDangerousTargets
+      return EBehResult.ER_FAILED
     return EBehResult.ER_SUCCESS
 
 
@@ -3271,6 +3314,9 @@ class FindSafeFromGrenadePos : BehNodeAdapter
     if curDistSq > square(radius) || curDistSq > square(closestGrenadeRad)
       return EBehResult.ER_FAILED
 
+    let fromIndoor = is_pos_indoor(agent.pos)
+    let agentTeam = agent.teamId
+
     var dir = agent.pos - closestGrenadePos
     var dist = length(dir)
     dir *= safediv(closestGrenadeRad * 1.2, dist)
@@ -3311,9 +3357,16 @@ class FindSafeFromGrenadePos : BehNodeAdapter
             if !trace_explosion_reach(closestGrenadePos, pathPos + float3(0.0, 0.4, 0.0))
               if !trace_explosion_reach(closestGrenadePos, pathPos + float3(0.0, 1.0, 0.0))
                 if !trace_explosion_reach(closestGrenadePos, pathPos + float3(0.0, 1.6, 0.0))
-                  wishPos = pathPos
-                  
-                  break
+                  if !is_point_safe(pathPos, agentTeam)
+                    pass
+                    
+                  elif fromIndoor && !is_pos_indoor(pathPos + float3(0.0, 1.6, 0.0))
+                    pass
+                    
+                  else
+                    wishPos = pathPos
+                    
+                    break
             skips = skip
             skip += 1
             
@@ -3610,10 +3663,12 @@ class TraceMoveToSeeTarget : BehNodeAdapter
     var hmapTraceOffset = float3()
     var shootRayMat = -1
     var hasShootInfo = false
+    var agentTeam = -1
     query(agentEid) <| $ [es] (agent_dangers__standShootPos : float3 const?; transform : float3x4;
                                agent_dangers__hmapTraceOffset : float3 = float3();
                                human_attached_gun__attachedGunEid : EntityId = INVALID_ENTITY_ID;
-                               human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID)
+                               human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
+                               team aka agent_team : int = TEAM_UNASSIGNED)
       stepDir = transform[0] * stepLocalDir.z
       stepDir += transform[1] * stepLocalDir.y
       stepDir += transform[2] * -stepLocalDir.x
@@ -3622,6 +3677,7 @@ class TraceMoveToSeeTarget : BehNodeAdapter
         shootHt = (*agent_dangers__standShootPos).y - shootPos.y
       hmapTraceOffset = agent_dangers__hmapTraceOffset
       shootRayMat = get_shoot_ray_mat(human_attached_gun__attachedGunEid, human_weap__currentGunEid)
+      agentTeam = agent_team
       hasShootInfo = true
     if !hasShootInfo
       return EBehResult.ER_FAILED
@@ -3648,6 +3704,7 @@ class TraceMoveToSeeTarget : BehNodeAdapter
     var pos2 = shootPos
     var wasPos1 = shootPos
     var wasPos2 = shootPos
+    let fromIndoor = is_pos_indoor(shootPos)
 
     var gotPos = false
     var resultPos = float3()
@@ -3684,7 +3741,11 @@ class TraceMoveToSeeTarget : BehNodeAdapter
         if checkDir
           checkDir = false
           var testPos = atPos + stepDir * stepLen * dirCoef
-          if stepByNavMesh
+          if !is_point_safe(testPos, agentTeam)
+            checkDir = false 
+          elif fromIndoor && !is_pos_indoor(testPos)
+            checkDir = false 
+          elif stepByNavMesh
             if !traceray_navmesh(atPos, testPos, extents, testPos) || distance_sq(atPos, testPos) >= minStepDistSq
               if project_to_nearest_navmesh_point_avoid_obstacles(testPos, projExtents)
                 atPos = testPos
@@ -3865,7 +3926,7 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
     var totalCnt = 0
 
     var numTraces = 0
-    query(agentEid) <| $ [es] (agent_dangers : AgentDangers)
+    query(agentEid) <| $ [es] (agent_dangers : AgentDangers; team aka agent_team : int = TEAM_UNASSIGNED)
       var numDangers = 0
       if hasMainEnemy && !trace_hidden(bodyPos, mainEnemyEid, shootRayMat, numTraces, enemyPos)
         ++numDangers
@@ -3915,6 +3976,7 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
       var checkInvDir = true
       var pos1 = bodyPos
       var pos2 = bodyPos
+      let fromIndoor = is_pos_indoor(bodyPos)
 
       let minStepDistSq = square(0.3)
       let extents = float3(0.8, FLT_MAX, 0.8)
@@ -3932,6 +3994,10 @@ class TraceMoveToHideFromEnemies : BehNodeAdapter
             checkDir = false
             assume stepDir = dirIdx == 0 ? stepDirLt : stepDirRt
             var testPos = atPos + stepDir * stepDist
+            if !is_point_safe(testPos, agent_team)
+              checkDir = false 
+            elif fromIndoor && !is_pos_indoor(testPos)
+              checkDir = false 
             if !traceray_navmesh(atPos, testPos, extents, testPos) || distance_sq(atPos, testPos) >= minStepDistSq
               if project_to_nearest_navmesh_point_avoid_obstacles(testPos, projExtents)
                 atPos = testPos

@@ -4,6 +4,7 @@ require PhysVars
 require DngHuman
 require %game.events
 require DagorMath
+require GuiOptions
 
 
 [es(on_appear, before=anim_phys_init_es)]
@@ -103,10 +104,7 @@ def gun_lean_anim_update(info : ParallelUpdateFrameDelayed;
     else
       assume leanTilt = isTpsViewOnSoldier ? gun_tilt__leanTpsAngle : gun_tilt__leanFpsAngle
       var tilt = isTpsViewOnSoldier ? gun_tilt__tpsAngle : gun_tilt__fpsAngle
-      var useNeoclassicalTilt = false
-      find_query() <| $ [es] (neoclassical_tilt__enable : bool)
-        useNeoclassicalTilt = neoclassical_tilt__enable
-        return true
+      let useNeoclassicalTilt = guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_INFANTRY_USE_NEOCLASSICAL_TILT", false)
 
       if useNeoclassicalTilt && gun_tilt__fpsAngleOptional != null && !isTpsViewOnSoldier
         tilt += *gun_tilt__fpsAngleOptional

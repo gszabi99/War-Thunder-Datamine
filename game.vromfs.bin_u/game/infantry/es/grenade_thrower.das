@@ -59,7 +59,7 @@ def grenade_thrower_phys_es(evt : CmdWeapPhysUpdate;
     
     if grenade_thrower.state == GrenadeThrowState.GTS_READY
       verify(grenade_thrower.throwProgress == 0.0)
-      if gctrl.shoot
+      if gctrl.shoot && !isInVehicle
         
         grenade_thrower.state = GrenadeThrowState.GTS_DRAW
         grenade_thrower.stateStart = atTime

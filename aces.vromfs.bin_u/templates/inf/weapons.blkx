@@ -92,7 +92,7 @@
     "gunmod__dofFarAmountPercent": 0.004,
     "gunmod__gunOffsetMult": 1.0,
     "gunmod__disableToggleAim": true,
-    "gunmod__crosshairParallaxDistance": 50.0,
+    "gunmod__crosshairParallaxDistance": 100.0,
     "gunmod__nightvisionTex_res": "",
     "late_transparent_render:tag": {},
     "gunScope:tag": {}
@@ -858,8 +858,8 @@
     "_use": "camera_shake_on_reload",
     "_tags": "gameClient",
     "gun_reload_camera_shake__scale": [
-      0.1,
-      0.15
+      0.05,
+      0.05
     ]
   },
   "camera_shake_on_reload_shotgun": {
@@ -2070,7 +2070,7 @@
       1.3,
       2.0
     ],
-    "gunmod__crosshairParallaxDistance": 50.0,
+    "gunmod__crosshairParallaxDistance": 100.0,
     "gun__reloadTime": 3.55,
     "gunmod__bipodScopeOffset": 0.1,
     "item__id:i": {
@@ -3342,18 +3342,29 @@
     },
     "anim_irq_to_event_converter": {},
     "gun__mountPoints:shared:array": {
-      "point:object": {
-        "type": "bipod",
-        "recoil": 0.65,
-        "offset": [
-          0.6,
-          0.05,
-          0.0
-        ],
-        "forceOffset": true,
-        "angle": 33.5,
-        "length": 0.35
-      }
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.6,
+            0.05,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 33.5,
+          "length": 0.35
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.7,
+            -0.02,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "rp_46": {
@@ -4482,10 +4493,19 @@
     "gun__recoilControlMult": 0.2,
     "weapon__aimNodeOffset": 0.3,
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.1,
+          0.01
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -6183,10 +6203,19 @@
     "gun__recoilDir": 0.4,
     "gun__visualRecoilMult": 8.0,
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.15,
+          0.05
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -6385,18 +6414,29 @@
       }
     },
     "gun__mountPoints:shared:array": {
-      "point:object": {
-        "type": "bipod",
-        "recoil": 0.65,
-        "offset": [
-          0.42,
-          0.0,
-          0.0
-        ],
-        "forceOffset": true,
-        "angle": 31.0,
-        "length": 0.13
-      }
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.42,
+            0.0,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 31.0,
+          "length": 0.13
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.54,
+            0.01,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "mk_14_ebr": {
@@ -7483,10 +7523,17 @@
     "gun__visualRecoilMult": 4.0,
     "weapon__aimNodeOffset": 0.2,
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__node1Name": "muzzle_mesh",
+        "gun_reload_camera_shake__node2Name": "rearsight_aim"
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -7902,18 +7949,29 @@
       }
     },
     "gun__mountPoints:shared:array": {
-      "point:object": {
-        "type": "bipod",
-        "recoil": 0.65,
-        "offset": [
-          0.73,
-          -0.01,
-          0.0
-        ],
-        "forceOffset": true,
-        "angle": 31.0,
-        "length": 0.33
-      }
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.73,
+            -0.01,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 31.0,
+          "length": 0.33
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.78,
+            -0.02,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "m249_para": {
@@ -8261,18 +8319,29 @@
       }
     },
     "gun__mountPoints:shared:array": {
-      "point:object": {
-        "type": "bipod",
-        "recoil": 0.65,
-        "offset": [
-          0.61,
-          0.015,
-          0.0
-        ],
-        "forceOffset": true,
-        "angle": 30.0,
-        "length": 0.26
-      }
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.61,
+            0.015,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 30.0,
+          "length": 0.26
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.53,
+            0.04,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "mk_48": {
@@ -8471,18 +8540,29 @@
       }
     },
     "gun__mountPoints:shared:array": {
-      "point:object": {
-        "type": "bipod",
-        "recoil": 0.65,
-        "offset": [
-          0.44,
-          0.015,
-          0.0
-        ],
-        "forceOffset": true,
-        "angle": 32.0,
-        "length": 0.225
-      }
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.44,
+            0.015,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 32.0,
+          "length": 0.225
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.65,
+            0.025,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "sig_xm250": {
@@ -8657,18 +8737,29 @@
       }
     },
     "gun__mountPoints:shared:array": {
-      "point:object": {
-        "type": "bipod",
-        "recoil": 0.65,
-        "offset": [
-          0.55,
-          0.015,
-          0.0
-        ],
-        "forceOffset": true,
-        "angle": 28.0,
-        "length": 0.21
-      }
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.55,
+            0.015,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 28.0,
+          "length": 0.21
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.67,
+            0.01,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "barrett_m82a1": {
@@ -8782,18 +8873,29 @@
       }
     },
     "gun__mountPoints:shared:array": {
-      "point:object": {
-        "type": "bipod",
-        "recoil": 0.65,
-        "offset": [
-          0.45,
-          0.02,
-          0.0
-        ],
-        "forceOffset": true,
-        "angle": 35.0,
-        "length": 0.26
-      }
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.45,
+            0.02,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 35.0,
+          "length": 0.26
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.75,
+            0.035,
+            0.0
+          ]
+        }
+      ]
     }
   },
   "beretta_m9": {
@@ -9094,7 +9196,7 @@
     "gun_anim_var__tpsGunOffsetAlong": -0.05,
     "gun_anim_var__tpsGunOffsetAcross": 0.05,
     "gun_anim_var__tpsGunOffsetUp": -0.08,
-    "gun_anim_var__fpsGunOffsetAlong": -0.1,
+    "gun_anim_var__fpsGunOffsetAlong": 0.0,
     "gun_anim_var__fpsGunOffsetAcross": 0.03,
     "gun_anim_var__fpsGunOffsetUp": -0.02,
     "gun_shell_ejection__timeMult": 0.35,
@@ -9103,10 +9205,11 @@
     "gun__recoilDirAmount": 0.64,
     "gun__recoilDir": 0.15,
     "gun__visualRecoilMult": 4.0,
+    "gun__visualBoltRecoilMult": 0.0,
     "gun__recoilOffsMult": 0.2,
     "gun_attach__slot": "weapon",
     "meleeSoundType": "rifle",
-    "gun_reload_state__emptyChamberTime": 1.06,
+    "gun_reload_state__emptyChamberTime": 2.06,
     "gun_reload_state__prepareTime": 0.4,
     "gun_reload_state__bulletSingleTime": 0.6,
     "gun_reload_state__bulletMultipleTime": 0.8,
@@ -9249,7 +9352,7 @@
     "gun_anim_var__tpsGunOffsetAcross": 0.037,
     "gun_anim_var__tpsGunOffsetUp": -0.06,
     "gun_tilt__tpsAngle": 2.0,
-    "gun_anim_var__fpsGunOffsetAlong": -0.07,
+    "gun_anim_var__fpsGunOffsetAlong": -0.03,
     "gun_anim_var__fpsGunOffsetAcross": 0.045,
     "gun_anim_var__fpsGunOffsetUp": -0.02,
     "gun_shell_ejection__timeMult": 0.35,
@@ -9264,7 +9367,7 @@
     "gun_reload_state__emptyChamberTime": 1.6,
     "gun_reload_state__prepareTime": 0.46,
     "gun_reload_state__bulletSingleTime": 0.8,
-    "gun_reload_state__bulletMultipleTime": 0.8,
+    "gun_reload_state__bulletMultipleTime": 1.2,
     "gun_reload_state__bulletMultipleCount": 2,
     "gun_reload_state__postTime": 0.6,
     "multiStateReloadSystem:tag": {},
@@ -11255,10 +11358,19 @@
     "gun__recoilControlMult": 0.2,
     "weapon__aimNodeOffset": 0.3,
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.09,
+          0.04
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {

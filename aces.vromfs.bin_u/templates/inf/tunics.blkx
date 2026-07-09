@@ -2,67 +2,83 @@
   "hands_collapser_in_sleeves": {
     "equipment__scaleAttaches:object": {
       "hands:object": {
-        "Bip01 L Clavicle:object": {
-          "scale": [
-            0.3,
-            0.4,
-            0.3
-          ],
-          "recalc": false
-        },
         "Bip01 R Clavicle:object": {
           "scale": [
-            0.3,
-            0.4,
-            0.3
-          ],
-          "recalc": false
-        },
-        "Bip01 L Forearm:object": {
-          "scale": [
-            0.7,
-            0.7,
-            0.7
-          ],
-          "recalc": false
-        },
-        "Bip01 R Forearm:object": {
-          "scale": [
-            0.7,
-            0.7,
-            0.7
-          ],
-          "recalc": false
-        },
-        "Bip01 L UpperArm:object": {
-          "scale": [
-            0.7,
-            0.7,
-            0.7
+            0.01,
+            0.01,
+            0.01
           ],
           "recalc": false
         },
         "Bip01 R UpperArm:object": {
           "scale": [
-            0.7,
-            0.7,
-            0.7
+            0.01,
+            0.01,
+            0.01
           ],
           "recalc": false
         },
-        "Bip01e L Twist:object": {
+        "Bip01 R Forearm:object": {
           "scale": [
-            0.8,
-            0.8,
-            0.8
+            0.01,
+            0.01,
+            0.01
           ],
           "recalc": false
         },
         "Bip01e R Twist:object": {
           "scale": [
-            0.8,
-            0.8,
-            0.8
+            0.01,
+            0.01,
+            0.01
+          ],
+          "recalc": false
+        },
+        "Bip01e R Twist1:object": {
+          "scale": [
+            0.6,
+            0.6,
+            0.6
+          ],
+          "recalc": false
+        },
+        "Bip01 L Clavicle:object": {
+          "scale": [
+            0.01,
+            0.01,
+            0.01
+          ],
+          "recalc": false
+        },
+        "Bip01 L UpperArm:object": {
+          "scale": [
+            0.01,
+            0.01,
+            0.01
+          ],
+          "recalc": false
+        },
+        "Bip01 L Forearm:object": {
+          "scale": [
+            0.01,
+            0.01,
+            0.01
+          ],
+          "recalc": false
+        },
+        "Bip01e L Twist:object": {
+          "scale": [
+            0.01,
+            0.01,
+            0.01
+          ],
+          "recalc": false
+        },
+        "Bip01e L Twist1:object": {
+          "scale": [
+            0.6,
+            0.6,
+            0.6
           ],
           "recalc": false
         }
@@ -74,33 +90,33 @@
       "hands:object": {
         "Bip01 L Clavicle:object": {
           "scale": [
-            0.3,
-            0.3,
-            0.3
+            0.1,
+            0.1,
+            0.1
           ],
           "recalc": false
         },
         "Bip01 R Clavicle:object": {
           "scale": [
-            0.3,
-            0.3,
-            0.3
+            0.1,
+            0.1,
+            0.1
           ],
           "recalc": false
         },
         "Bip01 L UpperArm:object": {
           "scale": [
             1.0,
-            0.83,
-            1.0
+            0.8,
+            0.9
           ],
           "recalc": false
         },
         "Bip01 R UpperArm:object": {
           "scale": [
             1.0,
-            0.86,
-            1.0
+            0.8,
+            0.9
           ],
           "recalc": false
         }
@@ -1209,5 +1225,63 @@
         ]
       }
     }
+  },
+  "attachable_wear_mnla_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_mnla_jacket_item",
+    "animchar__res": "mnla_jacket_char",
+    "collres__res": "mnla_jacket_collision",
+    "animchar_node_collapser__camThreshold": 0.2,
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_mnla_jacket_sleeveless_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_rolled_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_mnla_jacket_sleeveless_item",
+    "animchar__res": "mnla_jacket_sleeveless_char",
+    "collres__res": "mnla_jacket_sleeveless_collision"
+  },
+  "attachable_wear_fama_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves",
+      "node_collapser"
+    ],
+    "item__uniqueName": "attachable_wear_fama_jacket_item",
+    "animchar__res": "fama_jacket_char",
+    "collres__res": "fama_jacket_collision",
+    "animchar_node_collapser__camThreshold": 0.25,
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": "Bip01 Neck",
+        "Bip01 R UpperArm": "Bip01 Neck",
+        "Bip01 L UpperArm": "Bip01 Neck"
+      },
+      "animchar_node_collapser__thresholds:object": {
+        "Bip01 R UpperArm": 0.1,
+        "Bip01 L UpperArm": 0.1
+      }
+    }
+  },
+  "attachable_wear_fama_jacket_sleevless_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_rolled_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_fama_jacket_sleevless_item",
+    "animchar__res": "fama_jacket_sleevless_char",
+    "collres__res": "fama_jacket_sleevless_collision"
   }
 }

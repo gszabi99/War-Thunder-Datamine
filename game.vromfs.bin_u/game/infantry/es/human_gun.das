@@ -5,6 +5,7 @@ require math
 require %appGame.infantry.es.human_gun_common
 require %game.events
 require DagorDataBlock
+require GuiOptions
 require DngWeapon
 require AnimV20
 require HumanPhys
@@ -93,18 +94,14 @@ def special_item_attach_to_holster(evt : Event; eid : EntityId; gun__owner : Ent
   query(gun__owner) <| $ [es] (human_weap__currentGunEid : EntityId)
     sendEvent(eid, CmdWeapAttach(slotId = int(HUWeaponSlots.EWS_SPECIAL), toEid = gun__owner, isAttached = (human_weap__currentGunEid == eid)))
 
-[es(tag=render, REQUIRE=human, on_appear, track=(human_weap__gunEids, isInVehicle, itemContainer), after=human_gun_attach_es)]
-def hide_guns_in_vehicle_es(evt : Event; isInVehicle : bool; human_weap__gunEids : EidList; itemContainer : EidList)
-  for gunEid in human_weap__gunEids
-    query(gunEid) <| $ [es(REQUIRE=gun__hideInVehcile)] (var gun__visible : bool&)
-      gun__visible = !isInVehicle
-
-  for itemEid in itemContainer 
-    query(itemEid) <| $ [es(REQUIRE=gun__hideInVehcile)] (var gun__visible : bool&)
-      gun__visible = !isInVehicle
+[es(track=isInVehicle, REQUIRE=isInVehicle)]
+def attach_weapon_on_vehicle_enter_exit(evt : Event; eid : EntityId; human_weap__gunEids : EidList; human_weap__currentGunSlot : int)
+  if human_weap__currentGunSlot >= 0 && human_weap__currentGunSlot < length(human_weap__gunEids)
+    sendEvent(human_weap__gunEids[human_weap__currentGunSlot], CmdWeapAttach(slotId = human_weap__currentGunSlot, toEid = eid, isAttached = true))
 
 [es(no_order, REQUIRE=animchar_render__enabled)]
 def human_gun_attach_es(evt : CmdWeapAttach;
+                        eid : EntityId;
                         gun_attach__mainSlotId : int;
                         gun_attach__holsterSlotsIds : IntList const?;
                         var slot_attach__rotOffset : float3?;
@@ -112,7 +109,6 @@ def human_gun_attach_es(evt : CmdWeapAttach;
                         var slot_attach__slotId : int&;
                         var animchar_attach__attachedTo : EntityId&;
                         var gun__visible : bool&;
-                        gun__hideInVehcile : Tag const?;
                         gun_attach__holsterRotOffset : float3 = float3())
   let ownerEid = evt.toEid
   if !ownerEid || !doesEntityExist(ownerEid)
@@ -125,9 +121,13 @@ def human_gun_attach_es(evt : CmdWeapAttach;
   var holsetOffset = float3()
 
   gun__visible = (attachFlag || weaponHolster)
-  if gun__hideInVehcile != null
-    query(ownerEid) <| $ [es] (isInVehicle : bool)
-      gun__visible &&= !isInVehicle
+  query(ownerEid) <| $ [es] (isInVehicle : bool; human_vehicle__isHoldingGunPassenger : bool;
+                             human_weap__currentGunSlot : int; human_weap__gunEids : EidList)
+    if isInVehicle
+      let curSlotEid = (human_weap__currentGunSlot >= 0 && human_weap__currentGunSlot < length(human_weap__gunEids)
+                        ? human_weap__gunEids[human_weap__currentGunSlot]
+                        : INVALID_ENTITY_ID)
+      gun__visible &&= human_vehicle__isHoldingGunPassenger && curSlotEid == eid
 
   if attachFlag
     animchar_attach__attachedTo = ownerEid
@@ -274,10 +274,7 @@ def human_gun_phys_vars_es(info : ParallelUpdateFrameDelayed;
     if !isTpsViewOnSoldier
       var offsetUp = gun_anim_var__fpsGunOffsetUp ?? gun_anim_var__defGunOffsetUp
       var offsetAcross = gun_anim_var__fpsGunOffsetAcross ?? gun_anim_var__defGunOffsetAcross
-      var useNeoclassicalTilt = false
-      find_query() <| $ [es] (neoclassical_tilt__enable : bool)
-        useNeoclassicalTilt = neoclassical_tilt__enable
-        return true
+      let useNeoclassicalTilt = guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_INFANTRY_USE_NEOCLASSICAL_TILT", false)
       let isReloading = gun_anim__reloadProgress > 0.
       let isEndOfReloading = gun_anim__reloadProgress > gun_tilt__reloadProgressLimit
       let isWearingWeaponMod = subsidiaryGunEid != null

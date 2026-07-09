@@ -34,6 +34,8 @@ require DaWeaponProps
 
 require %appGame.wt_events
 
+let TRADE_KILL_GRACE_SEC = 0.3
+
 struct ApplyDamageData
   victim : EntityId
   offender : EntityId
@@ -94,6 +96,7 @@ struct EventNotifyServerOnHitEntity
   piercingShift : float
   startPos : float3
   startVel : float3
+  atTime : float
 
 
 def damage_debug_msg(s : string)
@@ -180,6 +183,7 @@ def apply_damage(victim : EntityId;
                            var mainOffender : OffenderData&;
                            var isAlive : bool&;
                            var hitpoints__lastHitAtTime : float?;
+                           var hitpoints__deathAtTime : float?;
                            dm_parts__type : StringList const?;
                            hitpoints__dmgMult : float = 1.f;
                            hitpoints__deathHpThreshold : float = -10.f)
@@ -320,6 +324,8 @@ def apply_damage(victim : EntityId;
       handoff_vehicle_control_to_dying_driver(victim)
       mainOffender = offender_data
       isAlive = false
+      if hitpoints__deathAtTime != null
+        *hitpoints__deathAtTime = get_sync_time()
 
       var victimTeam = TEAM_UNASSIGNED
       query(victim) <| $ [es] (team : int)
@@ -329,7 +335,7 @@ def apply_damage(victim : EntityId;
         offenderTeam = team
       sendEvent(offender, EventEntityEnemyKilledToPart(collNodeId = coll_node_id, damageType = int(damage_type)))
       sendEvent(victim, EventEntityWasKilledToPart(collNodeId = coll_node_id, damageType = int(damage_type)))
-      send_net_event(victim, EventEntityDied(victim = victim, offender = offender, victimTeam = victimTeam, offenderTeam = offenderTeam, collNodeId = coll_node_id))
+      sendEvent(victim, EventEntityDied(victim = victim, offender = offender, victimTeam = victimTeam, offenderTeam = offenderTeam, collNodeId = coll_node_id))
       broadcast_net_event(EventAnyEntityDied(
         victim = victim,
         offender = offender,
@@ -378,6 +384,12 @@ def check_friendly_fire(victim_team : int;
       return get_difficulty_config().aircraftFriendlyFireForBanOnly
     return true
   return false
+
+[es(tag=gameClient)]
+def entity_died_local_resend_es(evt : EventAnyEntityDied)
+  if is_server()
+    return
+  sendEvent(evt.victim, EventEntityDied(victim = evt.victim, offender = evt.offender, victimTeam = evt.victimTeam, offenderTeam = evt.offenderTeam, collNodeId = evt.collNodeId))
 
 [es(tag=gameClient)]
 def on_hero_collision_damage(evt : EventOnEntityHit)
@@ -430,7 +442,7 @@ def on_entity_hit_notify(evt : EventNotifyServerOnHitEntity;
                                 startPos = evt.startPos,
                                 startVel = evt.startVel)
     var isStopped = false
-    if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isStopped)
+    if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isStopped, false, evt.atTime)
       return
     using() <| $(var kpp : KineticProjectileParams)
       var newPiercingShift = 0.0 
@@ -534,7 +546,8 @@ def notify_server_about_entity_hit(hitData : EntityHitData)
                                                               distance = hitData.distance,
                                                               piercingShift = hitData.piercingShift,
                                                               startPos = hitData.startPos,
-                                                              startVel = hitData.startVel))
+                                                              startVel = hitData.startVel,
+                                                              atTime = get_sync_time()))
 
 def calc_armor_durability_mult(durability_rel : float; durability_to_armor_table : Point2List)
   if empty(durability_to_armor_table)
@@ -803,7 +816,8 @@ def precheck_entity_hit(victim : EntityId;
                         offender : EntityId;
                         coll_node_id : int;
                         var is_stopped : bool&;
-                        is_self_damage_allowed : bool = false)
+                        is_self_damage_allowed : bool = false;
+                        offender_hit_at_time : float = -1.0)
   is_stopped = false
   let isSelfDamage = victim == offender
 
@@ -811,7 +825,11 @@ def precheck_entity_hit(victim : EntityId;
     return false
 
   if !(get_bool(offender, "isAlive") ?? true)
-    return false
+    let offenderDeathAtTime = get_float(offender, "hitpoints__deathAtTime") ?? -1.0
+    let hasTradeKillTimes = offender_hit_at_time >= 0.0 && offenderDeathAtTime >= 0.0
+    let tradeKillOk = hasTradeKillTimes && offender_hit_at_time <= offenderDeathAtTime + TRADE_KILL_GRACE_SEC
+    if !tradeKillOk
+      return false
 
   var isSuccessful = false
   query(victim) <| $ [es] (dm_parts__bulletTransparent : BoolList;

@@ -151,9 +151,19 @@
       "nameKillStreaks": "killStreaksHumanMission",
       "detectionZoneVisibilityDistance": 0.0,
       "killZoneVisibilityDistance": 0.0,
-      "environment": "10",
-      "weather": "good",
+      "environment": [
+        "10",
+        "Day"
+      ],
+      "weather": [
+        "good",
+        "good"
+      ],
       "restrictArtilleryCameraUse": true,
+      "scoreTicketBleed": 30,
+      "totalDominationX2": 30,
+      "totalDominationX4": 90,
+      "totalDominationX10": 180,
       "scoreLimit": 20000,
       "timeLimit": 25,
       "deathPenaltyMul": 0.2,
@@ -161,10 +171,6 @@
       "randomSpawnTeams": true,
       "country_axis": "usa",
       "country_allies": "ussr",
-      "scoreTicketBleed": 25,
-      "totalDominationX2": 30,
-      "totalDominationX4": 90,
-      "totalDominationX10": 180,
       "customRules": {
         "customBots": {
           "allowedHumans": {
@@ -300,6 +306,7 @@
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": [
               "t1_spawns_1",
               "t1_spawns_2",
@@ -309,7 +316,6 @@
             ],
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -318,10 +324,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_1",
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -329,29 +335,29 @@
           {
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_kamikaze_spawns_01",
             "team": "A",
             "kamikazeResp": true,
-            "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans"
+            "isIndividual": true
           },
           {
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_kamikaze_spawns_01",
             "team": "B",
             "kamikazeResp": true,
-            "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans"
+            "isIndividual": true
           },
           {
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_2",
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -360,10 +366,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_3",
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -372,10 +378,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_4",
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -384,10 +390,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_5",
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -396,6 +402,7 @@
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": [
               "t2_spawns_1",
               "t2_spawns_2",
@@ -405,7 +412,6 @@
             ],
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -414,10 +420,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_1",
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -426,10 +432,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_2",
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -438,10 +444,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_3",
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -450,10 +456,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_4",
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -462,10 +468,10 @@
             "loc_name": "",
             "radius": -1.0,
             "blockedForArtillery": false,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_5",
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": true
             }
@@ -473,13 +479,13 @@
           {
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": [
               "t1_spawns_tanks_1",
               "t1_spawns_tanks_2"
             ],
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -488,13 +494,13 @@
           {
             "loc_name": "missions/spawn_random",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": [
               "t2_spawns_tanks_1",
               "t2_spawns_tanks_2"
             ],
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -503,10 +509,10 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_tanks_1",
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -515,10 +521,10 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_spawns_tanks_2",
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -527,10 +533,10 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_tanks_1",
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -539,10 +545,10 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_spawns_tanks_2",
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "tank": true
@@ -707,10 +713,10 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t1_helicopter_spawn_01",
             "team": "A",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "type_attack_helicopter": true,
@@ -720,10 +726,10 @@
           {
             "loc_name": "",
             "radius": -1.0,
+            "ewZone": "fake_ew_zone_humans",
             "target": "t2_helicopter_spawn_01",
             "team": "B",
             "isIndividual": true,
-            "ewZone": "fake_ew_zone_humans",
             "tags": {
               "human": false,
               "type_attack_helicopter": true,
@@ -3118,7 +3124,7 @@
         [
           53.4184,
           6.98273,
-          -106.119
+          -105.969
         ]
       ],
       "topY": 12.6165,
@@ -3136,17 +3142,17 @@
         [
           52.85,
           6.98273,
-          -142.4
+          -142.1
         ],
         [
           53.65,
           6.98793,
-          -137.1
+          -136.5
         ],
         [
           68.75,
           6.98357,
-          -138.9
+          -138.5
         ],
         [
           76.8272,
@@ -3186,7 +3192,7 @@
         [
           45.9548,
           6.98273,
-          -135.819
+          -135.55
         ]
       ],
       "objLayer": 0,
@@ -3213,25 +3219,25 @@
         [
           200.575,
           9.9,
-          -148.269
+          -148.019
         ]
       ],
       "topY": 29.9242,
       "polygonPoint": [
         [
-          195.5,
+          194.55,
           9.9242,
-          -121.6
+          -121.1
         ],
         [
-          195.05,
+          194.2,
           9.9242,
-          -133.3
+          -132.55
         ],
         [
           185.3,
           9.9242,
-          -133.15
+          -132.35
         ],
         [
           182.45,
@@ -3284,9 +3290,9 @@
           -131.75
         ],
         [
-          209.4,
+          209.05,
           9.9242,
-          -122.35
+          -121.6
         ]
       ],
       "objLayer": 0,
@@ -3419,7 +3425,7 @@
           1.0
         ],
         [
-          80.15,
+          91.575,
           -31.2719,
           -64.85
         ]
@@ -4234,9 +4240,9 @@
           1.0
         ],
         [
-          37.0385,
+          79.95,
           -20.0749,
-          -273.434
+          -274.425
         ]
       ],
       "topY": 46.9,
@@ -4306,7 +4312,7 @@
         [
           94.55,
           8.9,
-          93.5
+          93.55
         ]
       ],
       "topY": 97.3,

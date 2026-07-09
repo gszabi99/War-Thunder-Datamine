@@ -90,7 +90,6 @@ def human_weap_mod_active_update_es(info : ParallelUpdateFrameDelayed;
 def human_weap_update_es(info : ParallelUpdateFrameDelayed;
                          eid : EntityId;
                          isInVehicle : bool = false;
-                         human_vehicle__isHoldingGunPassenger : bool = false;
                          human_weap__currentGunEid : EntityId;
                          human_weap__grenadeThrower : EntityId = INVALID_ENTITY_ID;
                          human_weap__lockedGrenadeThrowingCounter : int = 0;
@@ -183,7 +182,7 @@ def human_weap_update_es(info : ParallelUpdateFrameDelayed;
     isForReal = isForReal,
     eid = eid,
     isDowned = isDowned,
-    isThrowingAllowed = human_weap__lockedGrenadeThrowingCounter == 0 && (human_vehicle__isHoldingGunPassenger || !isInVehicle),
+    isThrowingAllowed = human_weap__lockedGrenadeThrowingCounter == 0 && !isInVehicle,
     shotDeviationMult = entity_mods__shotDeviationMult,
     rotationShotSpreadDecrMult = entity_mods__rotationShotSpreadDecrMult,
     aimingAfterFireMult = entity_mods__aimingAfterFireMult,

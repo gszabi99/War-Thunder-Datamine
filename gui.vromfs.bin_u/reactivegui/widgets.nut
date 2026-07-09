@@ -23,33 +23,35 @@ let tankSightPreview = require("%rGui/tankSightPreview.nut")
 let wwMap = require("%rGui/wwMap/wwMap.nut")
 let bulletsGraph = require("%rGui/weapons/bulletsGraphPanel.nut")
 
+
 let widgetsMap = {
   [DargWidgets.HUD] = function() {
     if (!globalState.isInFlight.get())
       return null
 
+    local unitHud = null
     if (hudUnitType.isHelicopter())
-      return helicopterHud
+      unitHud = helicopterHud
     else if (hudUnitType.isAir())
-      return aircraftHud
+      unitHud = aircraftHud
     else if (hudUnitType.isTank())
-      return tankHud
+      unitHud = tankHud
     else if (hudUnitType.isShip())
-      return shipHud
+      unitHud = shipHud
     else if (hudUnitType.isSubmarine() && !isPlayingReplay.get())
-      return shipExHud
+      unitHud = shipExHud
     else if (hudUnitType.isHuman())
-      return infantryHud
+      unitHud = infantryHud
 
 
 
 
     else if (hudUnitType.isHumanAirDrone())
-      return infantryDroneHud
+      unitHud = infantryDroneHud
     else if (hudUnitType.isHumanHeliDrone())
-      return infantryDroneHud
-    else
-      return null
+      unitHud = infantryDroneHud
+
+    return unitHud
   },
 
   [DargWidgets.HUD_TOUCH] = function() {

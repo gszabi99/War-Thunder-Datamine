@@ -128,6 +128,7 @@
     "_group": [
       {
         "_tags": "server",
+        "drone_launcher__behTreeName": "",
         "drone_launcher_launch__positionOffset": [
           0.0,
           0.0,
@@ -219,10 +220,6 @@
     ],
     "drone__start_velocity_speed": 0.0,
     "isQuadrocopterHints:tag": {},
-    "_group": {
-      "_tags": "server",
-      "unit_params__behTreeName": "quadcopter"
-    },
     "whitelistedDetector:tag": {},
     "canBeWirelesslyMonitored:tag": {},
     "drone_type__recon:tag": {}
@@ -246,6 +243,7 @@
     "drone_launcher__maxLaunches": 2,
     "_group": {
       "_tags": "server",
+      "drone_launcher__behTreeName": "quadcopter",
       "drone_launcher_launch__positionOffset": [
         2.4,
         1.8,
@@ -308,10 +306,6 @@
       1000.0
     ],
     "isQuadrocopterHints:tag": {},
-    "_group": {
-      "_tags": "server",
-      "unit_params__behTreeName": "quadcopter"
-    },
     "drone_type__kamikaze:tag": {}
   },
   "uav_inf_fpv_strike_drone_item": {
@@ -327,7 +321,11 @@
     "drone_launcher__needRespawnForLaunch": true,
     "drone_launcher__cooldown": 90.0,
     "drone_launcher__firstLaunchTimeout": 30.0,
-    "drone_launcher__maxLaunches": 2
+    "drone_launcher__maxLaunches": 2,
+    "_group": {
+      "_tags": "server",
+      "drone_launcher__behTreeName": "quadcopter"
+    }
   },
   "drone_camera_vhs_effect": {
     "_singleton": true,

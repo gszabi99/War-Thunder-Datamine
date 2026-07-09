@@ -141,11 +141,51 @@
       "getTime": {
         "to": "lastAttackedTime"
       },
-      "acceptActiveDanger": {
-        "fromReaction": "onHit",
-        "time": 10.0,
-        "chanceMakeTraceable": 0.9,
-        "makeTraceableDanger": 5.0
+      "orderedSelector": {
+        "acceptActiveDanger": {
+          "fromReaction": "onHit",
+          "time": 10.0,
+          "chanceMakeTraceable": 0.9,
+          "makeTraceableDanger": 5.0,
+          "ignoreFarDangerousTargets": true
+        },
+        "sequencer": {
+          "ignoreChance": {
+            "chance": 0.3
+          },
+          "orderedSelector": {
+            "sequencer": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "farPain",
+                  "rhs_value": 0
+                },
+                "setIntVar": {
+                  "to": "farPain",
+                  "value": 2
+                }
+              },
+              {
+                "acceptActiveDanger": {
+                  "fromReaction": "onHit",
+                  "time": 10.0,
+                  "chanceMakeTraceable": 0.9,
+                  "makeTraceableDanger": 5.0
+                },
+                "setIntVar": [
+                  {
+                    "to": "farPain",
+                    "value": 0
+                  },
+                  {
+                    "to": "farReply",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
       },
       "checkAtTime": {
         "moreThan": true,
@@ -164,11 +204,61 @@
       "getTime": {
         "to": "lastAttackedTime"
       },
-      "acceptActiveDanger": {
-        "fromReaction": "onBulletNearby",
-        "time": 10.0,
-        "chanceMakeTraceable": 0.7,
-        "makeTraceableDanger": 1.0
+      "orderedSelector": {
+        "acceptActiveDanger": {
+          "fromReaction": "onBulletNearby",
+          "time": 10.0,
+          "chanceMakeTraceable": 0.7,
+          "makeTraceableDanger": 1.0,
+          "ignoreFarDangerousTargets": true
+        },
+        "sequencer": {
+          "ignoreChance": {
+            "chance": 0.5
+          },
+          "orderedSelector": {
+            "sequencer": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "farPain",
+                  "rhs_value": 0
+                },
+                "setIntVar": {
+                  "to": "farPain",
+                  "value": 1
+                }
+              },
+              {
+                "isVarsIntEqual": {
+                  "lhs": "farPain",
+                  "rhs_value": 1
+                },
+                "setIntVar": {
+                  "to": "farPain",
+                  "value": 2
+                }
+              },
+              {
+                "acceptActiveDanger": {
+                  "fromReaction": "onBulletNearby",
+                  "time": 10.0,
+                  "chanceMakeTraceable": 0.7,
+                  "makeTraceableDanger": 1.0
+                },
+                "setIntVar": [
+                  {
+                    "to": "farPain",
+                    "value": 0
+                  },
+                  {
+                    "to": "farReply",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
       },
       "checkAtTime": {
         "moreThan": true,
@@ -1941,6 +2031,9 @@
             }
           }
         ],
+        "acceptTeamPeekLookPoint": {
+          "posParam": "lookPos"
+        },
         "wait": {
           "range": [
             0.2,

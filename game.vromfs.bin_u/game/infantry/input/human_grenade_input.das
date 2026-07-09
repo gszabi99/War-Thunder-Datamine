@@ -45,10 +45,13 @@ def human_grenade_input_action_triggered_es(evt : EventOnKeyDown;
                                             human_weap__throwMode : bool;
                                             human_weap__grenadeThrowModeServer : bool;
                                             input__enabled : bool = true;
+                                            isInVehicle : bool = false;
                                             itemContainer : EidList)
   if !input__enabled
     return
   if evt.eventId != int(ShortcutEventId.ID_HUMAN_THROW)
+    return
+  if isInVehicle
     return
   if human_weap__throwMode || human_weap__grenadeThrowModeServer
     return

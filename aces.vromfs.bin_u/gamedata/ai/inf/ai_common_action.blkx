@@ -458,797 +458,853 @@
               "outTargetEidParam": "tryShootEnemy",
               "maxActualTime": 10.0
             },
-            "orderedSelector": {
-              "sequencer": [
-                {
-                  "isTargetTraceable": {
-                    "targetEidParam": "tryShootEnemy"
+            "orderedSelector": [
+              {
+                "sequencer": {
+                  "isVarsIntEqual": {
+                    "lhs": "farReply",
+                    "rhs_value": 1
                   },
-                  "isTargetStillTraceable": {
-                    "targetEidParam": "tryShootEnemy"
+                  "setIntVar": {
+                    "to": "farReply",
+                    "value": 0
                   },
-                  "copyIntVar": {
-                    "to": "shootEnemy",
-                    "from": "tryShootEnemy"
+                  "acceptActiveDanger": {
+                    "eidParam": "tryShootEnemy",
+                    "time": 10.0,
+                    "chanceMakeTraceable": 0.0
                   }
                 },
-                {
-                  "traceMoveToSeeTarget": {
-                    "targetPosParam": "tryShootEnemyPos",
-                    "targetEidParam": "tryShootEnemy",
-                    "outMoveToPosParam": "movePos",
-                    "leanWallMaxDistParam": "persLeanMaxWallDist",
-                    "outLeanParam": "strafeAttackLean",
-                    "leanChance": 1.0,
-                    "leanDistRange": [
-                      5.0,
-                      75.0
-                    ],
-                    "distToLean": 0.3,
-                    "distCutLean": 0.2,
-                    "stepLocalDir": [
-                      1.0,
-                      0.0,
-                      0.0
-                    ],
-                    "stepsRange": [
-                      1,
-                      3
-                    ],
-                    "stepDist": 0.9,
-                    "stepTryTwoDirs": true
-                  },
-                  "copyIntVar": {
-                    "to": "shootEnemy",
-                    "from": "tryShootEnemy"
-                  },
-                  "getRandomPointAroundTarget": {
-                    "targetPosParam": "tryShootEnemyPos",
-                    "posParam": "posNearTarget",
-                    "radiusRange": [
-                      0.0,
-                      1.0
-                    ],
-                    "awayMinRadius": 7.0,
-                    "minDistanceFromAllies": 7.0
-                  },
-                  "orderedSelector": [
-                    {
-                      "isLookingToPos": {
-                        "posParam": "posNearTarget",
-                        "offAngle": 5.0
-                      },
-                      "rotateToPoint": {
-                        "posParam": "posNearTarget",
-                        "aimSpeedCoef": 0.5,
-                        "maxSimAngle": [
-                          70.0,
-                          90.0
-                        ],
-                        "minSimAngle": 33.0,
-                        "minSimSpeedCoef": 0.5
-                      }
+                "acceptActiveDanger": {
+                  "eidParam": "tryShootEnemy",
+                  "time": 10.0,
+                  "chanceMakeTraceable": 0.0,
+                  "ignoreFarDangerousTargets": true
+                }
+              },
+              {
+                "sequencer": [
+                  {
+                    "isTargetTraceable": {
+                      "targetEidParam": "tryShootEnemy"
                     },
-                    {
-                      "not": {
-                        "isAtStance": {
-                          "stanceParam": "crawlStance"
-                        }
-                      },
-                      "setRealVar": {
-                        "to": "strafeAttackLean",
-                        "value": 0.0
-                      }
+                    "isTargetStillTraceable": {
+                      "targetEidParam": "tryShootEnemy"
+                    },
+                    "copyIntVar": {
+                      "to": "shootEnemy",
+                      "from": "tryShootEnemy"
                     }
-                  ],
-                  "acquireTacticalTarget": {
-                    "targetEidParam": "tryShootEnemy"
                   },
-                  "setDebugSym": [
-                    {
-                      "act": "r20"
+                  {
+                    "traceMoveToSeeTarget": {
+                      "targetPosParam": "tryShootEnemyPos",
+                      "targetEidParam": "tryShootEnemy",
+                      "outMoveToPosParam": "movePos",
+                      "leanWallMaxDistParam": "persLeanMaxWallDist",
+                      "outLeanParam": "strafeAttackLean",
+                      "leanChance": 1.0,
+                      "leanDistRange": [
+                        5.0,
+                        75.0
+                      ],
+                      "distToLean": 0.3,
+                      "distCutLean": 0.2,
+                      "stepLocalDir": [
+                        1.0,
+                        0.0,
+                        0.0
+                      ],
+                      "stepsRange": [
+                        1,
+                        3
+                      ],
+                      "stepDist": 0.9,
+                      "stepTryTwoDirs": true
                     },
-                    {
-                      "act": "r22"
-                    }
-                  ],
-                  "setIntVar": [
-                    {
-                      "to": "minStance",
-                      "value": 1
+                    "copyIntVar": {
+                      "to": "shootEnemy",
+                      "from": "tryShootEnemy"
                     },
-                    {
-                      "to": "defReact",
-                      "value": 202
+                    "getRandomPointAroundTarget": {
+                      "targetPosParam": "tryShootEnemyPos",
+                      "posParam": "posNearTarget",
+                      "radiusRange": [
+                        0.0,
+                        1.0
+                      ],
+                      "awayMinRadius": 7.0,
+                      "minDistanceFromAllies": 7.0
                     },
-                    {
-                      "to": "minStance",
-                      "value": 1
-                    },
-                    {
-                      "to": "defReact",
-                      "value": 0
-                    }
-                  ],
-                  "success": [
-                    {
-                      "sequencer": {
-                        "isAgentPlayerBot": {},
-                        "copyPoint3Var": [
-                          {
-                            "to": "wishPosition",
-                            "from": "movePos"
-                          },
-                          {
-                            "to": "regroupPosition",
-                            "from": "movePos"
-                          },
-                          {
-                            "to": "storedRegroupPosition",
-                            "from": "movePos"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "parallel": {
-                        "moveToPos": {
-                          "posParam": "movePos",
-                          "sprintTimerRange": [
-                            20.0,
-                            20.0
-                          ],
-                          "minDistToSprint": 2.5,
-                          "distThreshold": 0.1,
-                          "minStanceParam": "minStance",
-                          "maxStanceParam": "maxStanceInAttack",
-                          "maxClimbWalkSpeed": 0.25,
-                          "avoidAiObstacles": true,
-                          "timeToStuck": 0.25,
-                          "jumpDownTraceCheck": [
-                            0.4,
-                            1.0,
-                            0.15
-                          ],
-                          "incLadders": false,
-                          "strafeNearDist": 7.0,
-                          "maxAroundCoef": 1.33,
-                          "restTimerRange": [
-                            3.0,
-                            5.0
-                          ]
+                    "orderedSelector": [
+                      {
+                        "isLookingToPos": {
+                          "posParam": "posNearTarget",
+                          "offAngle": 5.0
                         },
-                        "wait": {
-                          "range": [
-                            0.4,
-                            0.6
+                        "rotateToPoint": {
+                          "posParam": "posNearTarget",
+                          "aimSpeedCoef": 0.5,
+                          "maxSimAngle": [
+                            70.0,
+                            90.0
                           ],
-                          "resetable": true
+                          "minSimAngle": 33.0,
+                          "minSimSpeedCoef": 0.5
+                        }
+                      },
+                      {
+                        "not": {
+                          "isAtStance": {
+                            "stanceParam": "crawlStance"
+                          }
+                        },
+                        "setRealVar": {
+                          "to": "strafeAttackLean",
+                          "value": 0.0
                         }
                       }
-                    },
-                    {
-                      "moveShoot": {
-                        "posParam": "movePos",
-                        "distThreshold": 0.15,
-                        "angleThreshold": 180.0,
-                        "keepCrouch": true,
-                        "onlyAliveTarget": false,
-                        "distOfAimingFade": 7.0,
-                        "accuracyForceShot": [
-                          0.75,
-                          0.5
-                        ],
-                        "failOnNotReady": true,
-                        "forceStanceLimit": true,
-                        "incLadders": false,
-                        "chooseStance": true,
-                        "tryToSaveCurrentStance": true,
-                        "minStanceChance": 0.0,
-                        "targetUnitParam": "tryShootEnemy",
-                        "minStanceParam": "minStance",
-                        "shootCyclesRange": [
-                          1,
-                          2
-                        ],
-                        "shootTime": [
-                          1.5,
-                          2.1
-                        ],
-                        "cooldownTime": [
-                          0.1,
-                          0.1
-                        ],
-                        "minAimTime": [
-                          0.15,
-                          0.25
-                        ],
-                        "maxStanceParam": "maxStanceInAttack",
-                        "alwaysAiming": true,
-                        "cyclesSuccess": true,
-                        "lostTargetCooldownRange": [
-                          0.1,
-                          0.2
-                        ],
-                        "closeShootRange": [
-                          1.0,
-                          50.0
-                        ],
-                        "closeShootAngles": [
-                          45.0,
-                          30.0
-                        ],
-                        "criticalShotTime": 0.5,
-                        "criticalShotAngle": 60.0,
-                        "checkFriendlyFireRadius": 0.05,
-                        "ignoreLostTargetParam": "enemiesWatching50",
-                        "useTeamCustomNav": true
-                      }
-                    }
-                  ],
-                  "changeLean": [
-                    {
-                      "leanToParam": "strafeAttackLean"
-                    },
-                    {
-                      "leanTo": 0.0
-                    }
-                  ],
-                  "wait": {
-                    "range": [
-                      0.2,
-                      0.3
                     ],
-                    "resetable": true
-                  }
-                },
-                {
-                  "checkDistance": {
-                    "posParam": "tryShootEnemyPos",
-                    "radius": 42.0,
-                    "yRadius": 30.0
-                  },
-                  "not": [
-                    {
-                      "checkAtTime": {
-                        "timeParam": "rememberEnemyTime",
-                        "range": [
-                          0.0,
-                          7.0
-                        ]
-                      }
+                    "acquireTacticalTarget": {
+                      "targetEidParam": "tryShootEnemy"
                     },
-                    {
-                      "checkAtTime": {
-                        "timeParam": "huntEnemyTime",
-                        "range": [
-                          0.0,
-                          10.0
-                        ]
-                      }
-                    },
-                    {
-                      "isVarsIntEqual": {
-                        "lhs": "huntLogic",
-                        "rhs_value": 1
-                      }
-                    }
-                  ],
-                  "orderedSelector": [
-                    {
-                      "checkAtTime": {
-                        "timeParam": "huntLogicTime",
-                        "range": [
-                          -50.0,
-                          0.0
-                        ]
+                    "setDebugSym": [
+                      {
+                        "act": "r20"
                       },
-                      "success": {
+                      {
+                        "act": "r22"
+                      }
+                    ],
+                    "setIntVar": [
+                      {
+                        "to": "minStance",
+                        "value": 1
+                      },
+                      {
+                        "to": "defReact",
+                        "value": 202
+                      },
+                      {
+                        "to": "minStance",
+                        "value": 1
+                      },
+                      {
+                        "to": "defReact",
+                        "value": 0
+                      }
+                    ],
+                    "success": [
+                      {
                         "sequencer": {
-                          "getTime": {
-                            "to": "huntLogicTime",
-                            "addRange": [
-                              30.0,
-                              50.0
+                          "isAgentPlayerBot": {},
+                          "copyPoint3Var": [
+                            {
+                              "to": "wishPosition",
+                              "from": "movePos"
+                            },
+                            {
+                              "to": "regroupPosition",
+                              "from": "movePos"
+                            },
+                            {
+                              "to": "storedRegroupPosition",
+                              "from": "movePos"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "parallel": {
+                          "moveToPos": {
+                            "posParam": "movePos",
+                            "sprintTimerRange": [
+                              20.0,
+                              20.0
+                            ],
+                            "minDistToSprint": 2.5,
+                            "distThreshold": 0.1,
+                            "minStanceParam": "minStance",
+                            "maxStanceParam": "maxStanceInAttack",
+                            "maxClimbWalkSpeed": 0.25,
+                            "avoidAiObstacles": true,
+                            "timeToStuck": 0.25,
+                            "jumpDownTraceCheck": [
+                              0.4,
+                              1.0,
+                              0.15
+                            ],
+                            "incLadders": false,
+                            "strafeNearDist": 7.0,
+                            "maxAroundCoef": 1.33,
+                            "restTimerRange": [
+                              3.0,
+                              5.0
                             ]
                           },
-                          "success": {
-                            "sequencer": {
-                              "setIntVar": [
-                                {
-                                  "to": "huntLogic",
-                                  "value": 1
-                                },
-                                {
-                                  "to": "huntLogic",
-                                  "value": 2
-                                },
-                                {
-                                  "to": "huntLogic",
-                                  "value": 3
+                          "wait": {
+                            "range": [
+                              0.4,
+                              0.6
+                            ],
+                            "resetable": true
+                          }
+                        }
+                      },
+                      {
+                        "moveShoot": {
+                          "posParam": "movePos",
+                          "distThreshold": 0.15,
+                          "angleThreshold": 180.0,
+                          "keepCrouch": true,
+                          "onlyAliveTarget": false,
+                          "distOfAimingFade": 7.0,
+                          "accuracyForceShot": [
+                            0.75,
+                            0.5
+                          ],
+                          "failOnNotReady": true,
+                          "forceStanceLimit": true,
+                          "incLadders": false,
+                          "chooseStance": true,
+                          "tryToSaveCurrentStance": true,
+                          "minStanceChance": 0.0,
+                          "targetUnitParam": "tryShootEnemy",
+                          "minStanceParam": "minStance",
+                          "shootCyclesRange": [
+                            1,
+                            2
+                          ],
+                          "shootTime": [
+                            1.5,
+                            2.1
+                          ],
+                          "cooldownTime": [
+                            0.1,
+                            0.1
+                          ],
+                          "minAimTime": [
+                            0.15,
+                            0.25
+                          ],
+                          "maxStanceParam": "maxStanceInAttack",
+                          "alwaysAiming": true,
+                          "cyclesSuccess": true,
+                          "lostTargetCooldownRange": [
+                            0.1,
+                            0.2
+                          ],
+                          "closeShootRange": [
+                            1.0,
+                            50.0
+                          ],
+                          "closeShootAngles": [
+                            45.0,
+                            30.0
+                          ],
+                          "criticalShotTime": 0.5,
+                          "criticalShotAngle": 60.0,
+                          "checkFriendlyFireRadius": 0.05,
+                          "ignoreLostTargetParam": "enemiesWatching50",
+                          "useTeamCustomNav": true
+                        }
+                      }
+                    ],
+                    "changeLean": [
+                      {
+                        "leanToParam": "strafeAttackLean"
+                      },
+                      {
+                        "leanTo": 0.0
+                      }
+                    ],
+                    "wait": {
+                      "range": [
+                        0.2,
+                        0.3
+                      ],
+                      "resetable": true
+                    }
+                  },
+                  {
+                    "checkDistance": {
+                      "posParam": "tryShootEnemyPos",
+                      "radius": 42.0,
+                      "yRadius": 30.0
+                    },
+                    "not": [
+                      {
+                        "checkAtTime": {
+                          "timeParam": "rememberEnemyTime",
+                          "range": [
+                            0.0,
+                            7.0
+                          ]
+                        }
+                      },
+                      {
+                        "checkAtTime": {
+                          "timeParam": "huntEnemyTime",
+                          "range": [
+                            0.0,
+                            10.0
+                          ]
+                        }
+                      },
+                      {
+                        "isVarsIntEqual": {
+                          "lhs": "huntLogic",
+                          "rhs_value": 1
+                        }
+                      }
+                    ],
+                    "orderedSelector": [
+                      {
+                        "checkAtTime": {
+                          "timeParam": "huntLogicTime",
+                          "range": [
+                            -50.0,
+                            0.0
+                          ]
+                        },
+                        "success": {
+                          "sequencer": {
+                            "getTime": {
+                              "to": "huntLogicTime",
+                              "addRange": [
+                                30.0,
+                                50.0
+                              ]
+                            },
+                            "success": {
+                              "sequencer": {
+                                "setIntVar": [
+                                  {
+                                    "to": "huntLogic",
+                                    "value": 1
+                                  },
+                                  {
+                                    "to": "huntLogic",
+                                    "value": 2
+                                  },
+                                  {
+                                    "to": "huntLogic",
+                                    "value": 3
+                                  }
+                                ],
+                                "ignoreChance": [
+                                  {
+                                    "chance": 0.65
+                                  },
+                                  {
+                                    "chance": 0.65
+                                  }
+                                ],
+                                "isVarsIntEqual": {
+                                  "lhs": "persHuntAround",
+                                  "rhs_value": 1
                                 }
-                              ],
-                              "ignoreChance": [
-                                {
-                                  "chance": 0.65
-                                },
-                                {
-                                  "chance": 0.65
-                                }
-                              ],
-                              "isVarsIntEqual": {
-                                "lhs": "persHuntAround",
-                                "rhs_value": 1
                               }
                             }
                           }
                         }
-                      }
-                    },
-                    {
-                      "sequencer": [
-                        {
-                          "isVarsIntEqual": {
-                            "lhs": "huntLogic",
-                            "rhs_value": 3
-                          },
-                          "copyPoint3Var": {
-                            "to": "movePos",
-                            "from": "tryShootEnemyPos"
-                          },
-                          "tryFindPathAroundToAttack": {
-                            "posParam": "movePos",
-                            "outPosParam1": "posMove1",
-                            "outPosParam2": "posMove2"
-                          },
-                          "acquireTacticalTarget": {
-                            "targetEidParam": "tryShootEnemy"
-                          },
-                          "getTime": {
-                            "to": "huntEnemyTime"
-                          },
-                          "copyIntVar": {
-                            "to": "huntEnemy",
-                            "from": "tryShootEnemy"
-                          },
-                          "setDebugSym": [
-                            {
-                              "act": "r26"
+                      },
+                      {
+                        "sequencer": [
+                          {
+                            "isVarsIntEqual": {
+                              "lhs": "huntLogic",
+                              "rhs_value": 3
                             },
-                            {
-                              "act": "r27"
+                            "copyPoint3Var": {
+                              "to": "movePos",
+                              "from": "tryShootEnemyPos"
                             },
-                            {
-                              "act": "r28"
-                            }
-                          ],
-                          "setIntVar": [
-                            {
-                              "to": "defReact",
-                              "value": 202
-                            },
-                            {
-                              "to": "minStance",
-                              "value": 1
-                            },
-                            {
-                              "to": "defReact",
-                              "value": 0
-                            },
-                            {
-                              "to": "defReact",
-                              "value": 202
-                            },
-                            {
-                              "to": "minStance",
-                              "value": 1
-                            },
-                            {
-                              "to": "defReact",
-                              "value": 0
-                            },
-                            {
-                              "to": "defReact",
-                              "value": 202
-                            },
-                            {
-                              "to": "minStance",
-                              "value": 1
-                            },
-                            {
-                              "to": "defReact",
-                              "value": 0
-                            }
-                          ],
-                          "success": [
-                            {
-                              "sequencer": {
-                                "isAgentPlayerBot": {},
-                                "copyPoint3Var": [
-                                  {
-                                    "to": "wishPosition",
-                                    "from": "posMove1"
-                                  },
-                                  {
-                                    "to": "regroupPosition",
-                                    "from": "posMove1"
-                                  },
-                                  {
-                                    "to": "storedRegroupPosition",
-                                    "from": "posMove1"
-                                  }
+                            "not": {
+                              "checkAtTime": {
+                                "timeParam": "huntEnemyTime3",
+                                "range": [
+                                  0.0,
+                                  5.0
                                 ]
                               }
                             },
-                            {
-                              "sequencer": {
-                                "orderedSelector": {
-                                  "isLookingToPos": {
-                                    "posParam": "posMove1",
-                                    "offAngle": 5.0
-                                  },
-                                  "rotateToPoint": {
-                                    "posParam": "posMove1",
-                                    "aimSpeedCoef": 0.5,
-                                    "maxSimAngle": [
-                                      70.0,
-                                      90.0
-                                    ],
-                                    "minSimAngle": 33.0,
-                                    "minSimSpeedCoef": 0.5,
-                                    "pitchRange": [
-                                      -5.0,
-                                      5.0
-                                    ]
-                                  }
-                                },
-                                "success": {
-                                  "parallel": {
-                                    "moveToPos": {
-                                      "posParam": "posMove1",
-                                      "sprintTimerRange": [
-                                        20.0,
-                                        20.0
-                                      ],
-                                      "minDistToSprint": 1000.0,
-                                      "distThreshold": 2.0,
-                                      "minStanceParam": "minStance",
-                                      "maxStanceParam": "maxStance",
-                                      "incLadders": [
-                                        false,
-                                        false
-                                      ],
-                                      "restTimerRange": [
-                                        3.0,
-                                        5.0
-                                      ],
-                                      "avoidAiObstacles": true,
-                                      "timeToStuck": 0.25,
-                                      "jumpDownTraceCheck": [
-                                        0.4,
-                                        1.0,
-                                        0.15
-                                      ],
-                                      "navLookAhead": 10.0,
-                                      "strafeNearDist": 2.5,
-                                      "maxAroundCoef": 1.33,
-                                      "useTeamCustomNav": true
-                                    },
-                                    "wait": {
-                                      "range": [
-                                        10.0,
-                                        15.0
-                                      ],
-                                      "resetable": true
-                                    }
-                                  }
-                                },
-                                "wait": {
-                                  "range": [
-                                    1.0,
-                                    2.0
-                                  ],
-                                  "resetable": true
-                                }
+                            "getTime": [
+                              {
+                                "to": "huntEnemyTime3"
+                              },
+                              {
+                                "to": "huntEnemyTime"
                               }
-                            },
-                            {
-                              "sequencer": {
-                                "isAgentPlayerBot": {},
-                                "copyPoint3Var": [
-                                  {
-                                    "to": "wishPosition",
-                                    "from": "posMove2"
-                                  },
-                                  {
-                                    "to": "regroupPosition",
-                                    "from": "posMove2"
-                                  },
-                                  {
-                                    "to": "storedRegroupPosition",
-                                    "from": "posMove2"
-                                  }
-                                ]
-                              }
-                            },
-                            {
-                              "sequencer": {
-                                "success": {
-                                  "parallel": {
-                                    "moveToPos": {
-                                      "posParam": "posMove2",
-                                      "sprintTimerRange": [
-                                        20.0,
-                                        20.0
-                                      ],
-                                      "minDistToSprint": 1000.0,
-                                      "distThreshold": 2.0,
-                                      "minStanceParam": "minStance",
-                                      "maxStanceParam": "maxStance",
-                                      "incLadders": [
-                                        false,
-                                        false
-                                      ],
-                                      "restTimerRange": [
-                                        3.0,
-                                        5.0
-                                      ],
-                                      "avoidAiObstacles": true,
-                                      "timeToStuck": 0.25,
-                                      "jumpDownTraceCheck": [
-                                        0.4,
-                                        1.0,
-                                        0.15
-                                      ],
-                                      "navLookAhead": 10.0,
-                                      "strafeNearDist": 2.5,
-                                      "maxAroundCoef": 1.33,
-                                      "useTeamCustomNav": true
-                                    },
-                                    "sequencer": {
-                                      "considerCornersAlongMovementPath": {
-                                        "outPosFromParam": "movePeekFrom",
-                                        "outPosLookParam": "movePeekLook",
-                                        "outPosMoveParam": "movePeekMove",
-                                        "outPosLeanParam": "movePeekLean"
-                                      },
-                                      "recalculateTree": {}
-                                    },
-                                    "wait": {
-                                      "range": [
-                                        10.0,
-                                        15.0
-                                      ],
-                                      "resetable": true
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            {
-                              "sequencer": {
-                                "isAgentPlayerBot": {},
-                                "copyPoint3Var": [
-                                  {
-                                    "to": "wishPosition",
-                                    "from": "posMove2"
-                                  },
-                                  {
-                                    "to": "regroupPosition",
-                                    "from": "posMove2"
-                                  },
-                                  {
-                                    "to": "storedRegroupPosition",
-                                    "from": "posMove2"
-                                  }
-                                ]
-                              }
-                            },
-                            {
-                              "sequencer": {
-                                "success": {
-                                  "parallel": {
-                                    "moveToPos": {
-                                      "posParam": "movePos",
-                                      "sprintTimerRange": [
-                                        20.0,
-                                        20.0
-                                      ],
-                                      "minDistToSprint": 1000.0,
-                                      "distThreshold": 5.0,
-                                      "minStanceParam": "minStance",
-                                      "maxStanceParam": "maxStance",
-                                      "incLadders": [
-                                        false,
-                                        false
-                                      ],
-                                      "restTimerRange": [
-                                        3.0,
-                                        5.0
-                                      ],
-                                      "avoidAiObstacles": true,
-                                      "timeToStuck": 0.25,
-                                      "jumpDownTraceCheck": [
-                                        0.4,
-                                        1.0,
-                                        0.15
-                                      ],
-                                      "navLookAhead": 10.0,
-                                      "strafeNearDist": 2.5,
-                                      "maxAroundCoef": 1.33,
-                                      "useTeamCustomNav": true
-                                    },
-                                    "sequencer": {
-                                      "considerCornersAlongMovementPath": {
-                                        "outPosFromParam": "movePeekFrom",
-                                        "outPosLookParam": "movePeekLook",
-                                        "outPosMoveParam": "movePeekMove",
-                                        "outPosLeanParam": "movePeekLean"
-                                      },
-                                      "recalculateTree": {}
-                                    },
-                                    "wait": {
-                                      "range": [
-                                        10.0,
-                                        15.0
-                                      ],
-                                      "resetable": true
-                                    }
-                                  }
-                                },
-                                "wait": {
-                                  "range": [
-                                    1.0,
-                                    2.0
-                                  ],
-                                  "resetable": true
-                                }
-                              }
-                            }
-                          ]
-                        },
-                        {
-                          "acquireTacticalTarget": {
-                            "targetEidParam": "tryShootEnemy"
-                          },
-                          "getRandomPointAroundTarget": {
-                            "targetPosParam": "tryShootEnemyPos",
-                            "posParam": "posNearTarget",
-                            "radiusRange": [
-                              1.0,
-                              2.0
                             ],
-                            "awayMinRadius": 7.0,
-                            "minDistanceFromAllies": 7.0
-                          },
-                          "copyPoint3Var": {
-                            "to": "movePos",
-                            "from": "posNearTarget"
-                          },
-                          "getTime": {
-                            "to": "huntEnemyTime"
-                          },
-                          "copyIntVar": {
-                            "to": "huntEnemy",
-                            "from": "tryShootEnemy"
-                          },
-                          "setDebugSym": {
-                            "act": "r25"
-                          },
-                          "setIntVar": [
-                            {
-                              "to": "defReact",
-                              "value": 202
+                            "tryFindPathAroundToAttack": {
+                              "posParam": "movePos",
+                              "outPosParam1": "posMove1",
+                              "outPosParam2": "posMove2"
                             },
-                            {
-                              "to": "minStance",
-                              "value": 1
+                            "acquireTacticalTarget": {
+                              "targetEidParam": "tryShootEnemy"
                             },
-                            {
-                              "to": "defReact",
-                              "value": 0
-                            }
-                          ],
-                          "success": [
-                            {
-                              "sequencer": {
-                                "isAgentPlayerBot": {},
-                                "copyPoint3Var": [
-                                  {
-                                    "to": "wishPosition",
-                                    "from": "movePos"
+                            "copyIntVar": {
+                              "to": "huntEnemy",
+                              "from": "tryShootEnemy"
+                            },
+                            "setDebugSym": [
+                              {
+                                "act": "r26"
+                              },
+                              {
+                                "act": "r27"
+                              },
+                              {
+                                "act": "r28"
+                              }
+                            ],
+                            "setIntVar": [
+                              {
+                                "to": "defReact",
+                                "value": 202
+                              },
+                              {
+                                "to": "minStance",
+                                "value": 1
+                              },
+                              {
+                                "to": "defReact",
+                                "value": 0
+                              },
+                              {
+                                "to": "defReact",
+                                "value": 202
+                              },
+                              {
+                                "to": "minStance",
+                                "value": 1
+                              },
+                              {
+                                "to": "defReact",
+                                "value": 0
+                              },
+                              {
+                                "to": "defReact",
+                                "value": 202
+                              },
+                              {
+                                "to": "minStance",
+                                "value": 1
+                              },
+                              {
+                                "to": "defReact",
+                                "value": 0
+                              }
+                            ],
+                            "success": [
+                              {
+                                "sequencer": {
+                                  "isAgentPlayerBot": {},
+                                  "copyPoint3Var": [
+                                    {
+                                      "to": "wishPosition",
+                                      "from": "posMove1"
+                                    },
+                                    {
+                                      "to": "regroupPosition",
+                                      "from": "posMove1"
+                                    },
+                                    {
+                                      "to": "storedRegroupPosition",
+                                      "from": "posMove1"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "sequencer": {
+                                  "orderedSelector": {
+                                    "isLookingToPos": {
+                                      "posParam": "posMove1",
+                                      "offAngle": 5.0
+                                    },
+                                    "rotateToPoint": {
+                                      "posParam": "posMove1",
+                                      "aimSpeedCoef": 0.5,
+                                      "maxSimAngle": [
+                                        70.0,
+                                        90.0
+                                      ],
+                                      "minSimAngle": 33.0,
+                                      "minSimSpeedCoef": 0.5,
+                                      "pitchRange": [
+                                        -5.0,
+                                        5.0
+                                      ]
+                                    }
                                   },
-                                  {
-                                    "to": "regroupPosition",
-                                    "from": "movePos"
+                                  "success": {
+                                    "parallel": {
+                                      "moveToPos": {
+                                        "posParam": "posMove1",
+                                        "sprintTimerRange": [
+                                          20.0,
+                                          20.0
+                                        ],
+                                        "minDistToSprint": 1000.0,
+                                        "distThreshold": 2.0,
+                                        "minStanceParam": "minStance",
+                                        "maxStanceParam": "maxStance",
+                                        "incLadders": [
+                                          false,
+                                          false
+                                        ],
+                                        "restTimerRange": [
+                                          3.0,
+                                          5.0
+                                        ],
+                                        "avoidAiObstacles": true,
+                                        "timeToStuck": 0.25,
+                                        "jumpDownTraceCheck": [
+                                          0.4,
+                                          1.0,
+                                          0.15
+                                        ],
+                                        "navLookAhead": 10.0,
+                                        "strafeNearDist": 2.5,
+                                        "maxAroundCoef": 1.33,
+                                        "useTeamCustomNav": true
+                                      },
+                                      "wait": {
+                                        "range": [
+                                          10.0,
+                                          15.0
+                                        ],
+                                        "resetable": true
+                                      }
+                                    }
                                   },
-                                  {
-                                    "to": "storedRegroupPosition",
-                                    "from": "movePos"
+                                  "wait": {
+                                    "range": [
+                                      1.0,
+                                      2.0
+                                    ],
+                                    "resetable": true
                                   }
+                                }
+                              },
+                              {
+                                "sequencer": {
+                                  "isAgentPlayerBot": {},
+                                  "copyPoint3Var": [
+                                    {
+                                      "to": "wishPosition",
+                                      "from": "posMove2"
+                                    },
+                                    {
+                                      "to": "regroupPosition",
+                                      "from": "posMove2"
+                                    },
+                                    {
+                                      "to": "storedRegroupPosition",
+                                      "from": "posMove2"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "sequencer": {
+                                  "success": {
+                                    "parallel": {
+                                      "moveToPos": {
+                                        "posParam": "posMove2",
+                                        "sprintTimerRange": [
+                                          20.0,
+                                          20.0
+                                        ],
+                                        "minDistToSprint": 1000.0,
+                                        "distThreshold": 2.0,
+                                        "minStanceParam": "minStance",
+                                        "maxStanceParam": "maxStance",
+                                        "incLadders": [
+                                          false,
+                                          false
+                                        ],
+                                        "restTimerRange": [
+                                          3.0,
+                                          5.0
+                                        ],
+                                        "avoidAiObstacles": true,
+                                        "timeToStuck": 0.25,
+                                        "jumpDownTraceCheck": [
+                                          0.4,
+                                          1.0,
+                                          0.15
+                                        ],
+                                        "navLookAhead": 10.0,
+                                        "strafeNearDist": 2.5,
+                                        "maxAroundCoef": 1.33,
+                                        "useTeamCustomNav": true
+                                      },
+                                      "sequencer": {
+                                        "considerCornersAlongMovementPath": {
+                                          "outPosFromParam": "movePeekFrom",
+                                          "outPosLookParam": "movePeekLook",
+                                          "outPosMoveParam": "movePeekMove",
+                                          "outPosLeanParam": "movePeekLean"
+                                        },
+                                        "recalculateTree": {}
+                                      },
+                                      "wait": {
+                                        "range": [
+                                          10.0,
+                                          15.0
+                                        ],
+                                        "resetable": true
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "sequencer": {
+                                  "isAgentPlayerBot": {},
+                                  "copyPoint3Var": [
+                                    {
+                                      "to": "wishPosition",
+                                      "from": "posMove2"
+                                    },
+                                    {
+                                      "to": "regroupPosition",
+                                      "from": "posMove2"
+                                    },
+                                    {
+                                      "to": "storedRegroupPosition",
+                                      "from": "posMove2"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "sequencer": {
+                                  "success": {
+                                    "parallel": {
+                                      "moveToPos": {
+                                        "posParam": "movePos",
+                                        "sprintTimerRange": [
+                                          20.0,
+                                          20.0
+                                        ],
+                                        "minDistToSprint": 1000.0,
+                                        "distThreshold": 5.0,
+                                        "minStanceParam": "minStance",
+                                        "maxStanceParam": "maxStance",
+                                        "incLadders": [
+                                          false,
+                                          false
+                                        ],
+                                        "restTimerRange": [
+                                          3.0,
+                                          5.0
+                                        ],
+                                        "avoidAiObstacles": true,
+                                        "timeToStuck": 0.25,
+                                        "jumpDownTraceCheck": [
+                                          0.4,
+                                          1.0,
+                                          0.15
+                                        ],
+                                        "navLookAhead": 10.0,
+                                        "strafeNearDist": 2.5,
+                                        "maxAroundCoef": 1.33,
+                                        "useTeamCustomNav": true
+                                      },
+                                      "sequencer": {
+                                        "considerCornersAlongMovementPath": {
+                                          "outPosFromParam": "movePeekFrom",
+                                          "outPosLookParam": "movePeekLook",
+                                          "outPosMoveParam": "movePeekMove",
+                                          "outPosLeanParam": "movePeekLean"
+                                        },
+                                        "recalculateTree": {}
+                                      },
+                                      "wait": {
+                                        "range": [
+                                          10.0,
+                                          15.0
+                                        ],
+                                        "resetable": true
+                                      }
+                                    }
+                                  },
+                                  "wait": {
+                                    "range": [
+                                      1.0,
+                                      2.0
+                                    ],
+                                    "resetable": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "not": {
+                              "checkAtTime": {
+                                "timeParam": "huntEnemyTime2",
+                                "range": [
+                                  0.0,
+                                  5.0
                                 ]
                               }
                             },
-                            {
-                              "sequencer": {
-                                "orderedSelector": {
-                                  "isLookingToPos": {
-                                    "posParam": "posNearTarget",
-                                    "offAngle": 5.0
-                                  },
-                                  "rotateToPoint": {
-                                    "posParam": "posNearTarget",
-                                    "aimSpeedCoef": 0.5,
-                                    "maxSimAngle": [
-                                      70.0,
-                                      90.0
-                                    ],
-                                    "minSimAngle": 33.0,
-                                    "minSimSpeedCoef": 0.5,
-                                    "pitchRange": [
-                                      -5.0,
-                                      5.0
-                                    ]
-                                  }
-                                },
-                                "success": {
-                                  "parallel": {
-                                    "moveToPos": {
-                                      "posParam": "posNearTarget",
-                                      "sprintTimerRange": [
-                                        20.0,
-                                        20.0
-                                      ],
-                                      "minDistToSprint": 1000.0,
-                                      "distThreshold": 5.0,
-                                      "minStanceParam": "minStance",
-                                      "maxStanceParam": "maxStance",
-                                      "incLadders": [
-                                        false,
-                                        false
-                                      ],
-                                      "restTimerRange": [
-                                        3.0,
-                                        5.0
-                                      ],
-                                      "avoidAiObstacles": true,
-                                      "timeToStuck": 0.25,
-                                      "jumpDownTraceCheck": [
-                                        0.4,
-                                        1.0,
-                                        0.15
-                                      ],
-                                      "navLookAhead": 10.0,
-                                      "strafeNearDist": 2.5,
-                                      "maxAroundCoef": 1.33,
-                                      "useTeamCustomNav": true
+                            "getTime": [
+                              {
+                                "to": "huntEnemyTime2"
+                              },
+                              {
+                                "to": "huntEnemyTime"
+                              }
+                            ],
+                            "checkFindPathDirectSafe": {
+                              "posParam": "tryShootEnemyPos"
+                            },
+                            "acquireTacticalTarget": {
+                              "targetEidParam": "tryShootEnemy"
+                            },
+                            "getRandomPointAroundTarget": {
+                              "targetPosParam": "tryShootEnemyPos",
+                              "posParam": "posNearTarget",
+                              "radiusRange": [
+                                1.0,
+                                2.0
+                              ],
+                              "awayMinRadius": 7.0,
+                              "minDistanceFromAllies": 7.0
+                            },
+                            "copyPoint3Var": {
+                              "to": "movePos",
+                              "from": "posNearTarget"
+                            },
+                            "copyIntVar": {
+                              "to": "huntEnemy",
+                              "from": "tryShootEnemy"
+                            },
+                            "setDebugSym": {
+                              "act": "r25"
+                            },
+                            "setIntVar": [
+                              {
+                                "to": "defReact",
+                                "value": 202
+                              },
+                              {
+                                "to": "minStance",
+                                "value": 1
+                              },
+                              {
+                                "to": "defReact",
+                                "value": 0
+                              }
+                            ],
+                            "success": [
+                              {
+                                "sequencer": {
+                                  "isAgentPlayerBot": {},
+                                  "copyPoint3Var": [
+                                    {
+                                      "to": "wishPosition",
+                                      "from": "movePos"
                                     },
-                                    "wait": {
-                                      "range": [
-                                        7.0,
-                                        15.0
-                                      ],
-                                      "resetable": true
+                                    {
+                                      "to": "regroupPosition",
+                                      "from": "movePos"
+                                    },
+                                    {
+                                      "to": "storedRegroupPosition",
+                                      "from": "movePos"
                                     }
+                                  ]
+                                }
+                              },
+                              {
+                                "sequencer": {
+                                  "orderedSelector": {
+                                    "isLookingToPos": {
+                                      "posParam": "posNearTarget",
+                                      "offAngle": 5.0
+                                    },
+                                    "rotateToPoint": {
+                                      "posParam": "posNearTarget",
+                                      "aimSpeedCoef": 0.5,
+                                      "maxSimAngle": [
+                                        70.0,
+                                        90.0
+                                      ],
+                                      "minSimAngle": 33.0,
+                                      "minSimSpeedCoef": 0.5,
+                                      "pitchRange": [
+                                        -5.0,
+                                        5.0
+                                      ]
+                                    }
+                                  },
+                                  "success": {
+                                    "parallel": {
+                                      "moveToPos": {
+                                        "posParam": "posNearTarget",
+                                        "sprintTimerRange": [
+                                          20.0,
+                                          20.0
+                                        ],
+                                        "minDistToSprint": 1000.0,
+                                        "distThreshold": 5.0,
+                                        "minStanceParam": "minStance",
+                                        "maxStanceParam": "maxStance",
+                                        "incLadders": [
+                                          false,
+                                          false
+                                        ],
+                                        "restTimerRange": [
+                                          3.0,
+                                          5.0
+                                        ],
+                                        "avoidAiObstacles": true,
+                                        "timeToStuck": 0.25,
+                                        "jumpDownTraceCheck": [
+                                          0.4,
+                                          1.0,
+                                          0.15
+                                        ],
+                                        "navLookAhead": 10.0,
+                                        "strafeNearDist": 2.5,
+                                        "maxAroundCoef": 1.33,
+                                        "useTeamCustomNav": true
+                                      },
+                                      "wait": {
+                                        "range": [
+                                          7.0,
+                                          15.0
+                                        ],
+                                        "resetable": true
+                                      }
+                                    }
+                                  },
+                                  "wait": {
+                                    "range": [
+                                      1.0,
+                                      2.0
+                                    ],
+                                    "resetable": true
                                   }
-                                },
-                                "wait": {
-                                  "range": [
-                                    1.0,
-                                    2.0
-                                  ],
-                                  "resetable": true
                                 }
                               }
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1281,6 +1337,38 @@
         "radiusParamName": "enemyFarRadius",
         "minDanger": 0.1,
         "tag": "human"
+      },
+      "orderedSelector": {
+        "sequencer": [
+          {
+            "isVarsIntEqual": {
+              "lhs": "farReply",
+              "rhs_value": 1
+            },
+            "setIntVar": {
+              "to": "farReply",
+              "value": 0
+            },
+            "acceptActiveDanger": {
+              "eidParam": "shootEnemy",
+              "time": 10.0,
+              "chanceMakeTraceable": 0.0
+            }
+          },
+          {
+            "setIntVar": {
+              "to": "shootEnemy",
+              "value": 0
+            },
+            "break": {}
+          }
+        ],
+        "acceptActiveDanger": {
+          "eidParam": "shootEnemy",
+          "time": 10.0,
+          "chanceMakeTraceable": 0.0,
+          "ignoreFarDangerousTargets": true
+        }
       },
       "debugDanger": {
         "type": 1,
@@ -2227,6 +2315,10 @@
                   0.15
                 ]
               }
+            },
+            "waitBeforePlantWallMine": {
+              "eidParam": "squadActionTarget",
+              "maxTimeToWait": 10.0
             }
           },
           "setIntVar": {
@@ -2736,6 +2828,21 @@
           },
           "not": {
             "hasOrder": {}
+          }
+        },
+        {
+          "acceptActiveDanger": {
+            "eidParam": "shootEnemy",
+            "time": 10.0,
+            "chanceMakeTraceable": 0.0,
+            "ignoreFarDangerousTargets": true
+          },
+          "sequencer": {
+            "setIntVar": {
+              "to": "shootEnemy",
+              "value": 0
+            },
+            "break": {}
           }
         },
         {

@@ -2157,6 +2157,22 @@
       ],
       "platform_lock": "ps4;ps5;xboxOne;xboxScarlett;linux64;win32"
     },
+    "HumanEventAccessForDeveloper": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER",
+        "perm_feature.debug"
+      ],
+      "platform_lock": "ps4;xboxOne;linux64;win32"
+    },
+    "HumanEventAccessCombined": {
+      "condition": [
+        "HumanEventAccess",
+        "HumanEventAccessForDeveloper"
+      ]
+    },
     "HumanOfllineMissions": {
       "condition": [
         "role_GAIJIN",

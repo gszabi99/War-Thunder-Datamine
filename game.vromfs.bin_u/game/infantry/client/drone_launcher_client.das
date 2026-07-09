@@ -84,6 +84,7 @@ def take_drone_launcher_or_drone_tactical_phone(human_eid : EntityId;
                                                 drone_launcher__nextUseAtTime : float;
                                                 drone_launcher__instantLaunchFromPhone : bool;
                                                 drone_launcher__droneControlsAcquired : bool;
+                                                drone_launcher__launchesRemaining : int;
                                                 drone_launcher__nextInfoMessageCooldown : float;
                                                 var drone_launcher__nextInfoMessageAtTime : float&;
                                                 weapon_slot : int = -1)
@@ -101,7 +102,8 @@ def take_drone_launcher_or_drone_tactical_phone(human_eid : EntityId;
     sendEvent(drone_launcher__tacticalPhone, EventRequestTakeTactialPhone(ownerEid = human_eid, mode = int(TacticalPhoneMode.TPM_DRONE)))
     return
 
-  if droneExists || drone_launcher__nextUseAtTime > time
+  let noLaunchesLeft = drone_launcher__launchesRemaining == 0
+  if droneExists || drone_launcher__nextUseAtTime > time || noLaunchesLeft
     sendEvent(drone_launcher__tacticalPhone, EventRequestTakeTactialPhone(ownerEid = human_eid, mode = int(TacticalPhoneMode.TPM_DRONE)))
   else
     take_drone_launcher(human_eid, drone_launcher__eid, time, weapon_slot)
@@ -172,6 +174,7 @@ def drone_launcher_on_fail_launch_response(evt : ResponseDroneLauncherFailLaunch
                                            drone_launcher__tacticalPhone : EntityId;
                                            drone_launcher__instantLaunchFromPhone : bool;
                                            drone_launcher__droneControlsAcquired : bool;
+                                           drone_launcher__launchesRemaining : int;
                                            drone_launcher__nextInfoMessageCooldown : float;
                                            var drone_launcher__nextInfoMessageAtTime : float&;
                                            var drone_launcher__state : int&;
@@ -180,7 +183,7 @@ def drone_launcher_on_fail_launch_response(evt : ResponseDroneLauncherFailLaunch
   drone_launcher__state = int(DroneLauncherState.DLS_READY)
   animchar_render__enabled = true
   drone_launcher_anim__launchInProgress = false
-  take_drone_launcher_or_drone_tactical_phone(gun__owner, eid, drone_launcher__drone, drone_launcher__tacticalPhone, get_sync_time(), drone_launcher__nextUseAtTime, drone_launcher__instantLaunchFromPhone, drone_launcher__droneControlsAcquired, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
+  take_drone_launcher_or_drone_tactical_phone(gun__owner, eid, drone_launcher__drone, drone_launcher__tacticalPhone, get_sync_time(), drone_launcher__nextUseAtTime, drone_launcher__instantLaunchFromPhone, drone_launcher__droneControlsAcquired, drone_launcher__launchesRemaining, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime)
 
 
 [es(tag=gameClient)]
@@ -244,9 +247,10 @@ def take_drone_launcher_or_drone_tactical_phone_es(evt : EventTakeDroneLauncherO
                                                    drone_launcher__tacticalPhone : EntityId;
                                                    drone_launcher__instantLaunchFromPhone : bool;
                                                    drone_launcher__droneControlsAcquired : bool;
+                                                   drone_launcher__launchesRemaining : int;
                                                    drone_launcher__nextInfoMessageCooldown : float;
                                                    var drone_launcher__nextInfoMessageAtTime : float&)
-  take_drone_launcher_or_drone_tactical_phone(gun__owner, eid, drone_launcher__drone, drone_launcher__tacticalPhone, evt.atTime, drone_launcher__nextUseAtTime, drone_launcher__instantLaunchFromPhone, drone_launcher__droneControlsAcquired, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime, evt.weaponSlot)
+  take_drone_launcher_or_drone_tactical_phone(gun__owner, eid, drone_launcher__drone, drone_launcher__tacticalPhone, evt.atTime, drone_launcher__nextUseAtTime, drone_launcher__instantLaunchFromPhone, drone_launcher__droneControlsAcquired, drone_launcher__launchesRemaining, drone_launcher__nextInfoMessageCooldown, drone_launcher__nextInfoMessageAtTime, evt.weaponSlot)
 
 [es(tag=gameClient, on_appear, REQUIRE=isQuadrocopterHints)]
 def hud_appear_controls_on_drone_creation_es(evt : Event;

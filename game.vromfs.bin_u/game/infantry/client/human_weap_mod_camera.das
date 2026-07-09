@@ -67,7 +67,12 @@ def set_lookat_from_sight_node(cur_time : float;
     wpos += nodeDir * threshold - DPoint3(lookDir) * (shift + threshold)
 
   let aimPosition = lerp(hphys.previousState.aimPosition, hphys.currentState.aimPosition, interpK)
-  let baseValue = (has(gunmod_eid, "isCameraAlwaysOnScope") || bipod_enabled) && !action__running ? 1.0 : 0.0
+  var baseValue = 0.0
+  query(gunmod_eid) <| $ [es] (isCameraAlwaysOnScope : Tag const?; gunmod__unzoomedCamLock : float = -1.0)
+    if gunmod__unzoomedCamLock >= 0.0
+      baseValue = gunmod__unzoomedCamLock
+    elif (isCameraAlwaysOnScope != null || bipod_enabled) && !action__running
+      baseValue = 1.0
   let lerpFactor = lerp(0.0, max(zoomPosition, baseValue), aimPosition)
   if !human_net_phys.phys.currentState |> human_phys_state_can_aim()
     wpos = DPoint3(camera__lastValidGunAimPos) + DPoint3(wtmOfs)
@@ -94,9 +99,12 @@ def optics_lookat_camera_impl(cur_time : float;
   if isIntegratedScope && !gunScopeEid
     gunScopeEid = human_weap__currentGunEid
 
+  var gunAttached = false
   var gunTm = human__aimTm
   query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
+                                              human_gun_attached : bool;
                                               subsidiaryGunEid : EntityId = INVALID_ENTITY_ID)
+    gunAttached = human_gun_attached
     animchar |> animchar_get_tm(gunTm)
     if !!subsidiaryGunEid
       query(subsidiaryGunEid) <| $ [es] (sightPresets : Array const?;
@@ -106,6 +114,9 @@ def optics_lookat_camera_impl(cur_time : float;
           let useWeaponSight = preset != null ? preset |> get_bool("useWeaponSight") : null
           if useWeaponSight == null || !*useWeaponSight
             gunScopeEid = subsidiaryGunEid
+
+  if !gunAttached
+    return
 
   query(gunScopeEid) <| $ [es] (gunmod__camNodeId : int;
                                 animchar : AnimcharBaseComponent;

@@ -30,18 +30,15 @@
   },
   "dev_soldier_equip": {
     "human_equipment__initialEquip:object": {
-      "attachable_wear_head_russian_02_item": "face",
-      "attachable_wear_pasgt_helmet_cuted_desert_item": "helmet",
+      "attachable_wear_head_nigerian_01_item": "face",
+      "attachable_wear_fast_sf_helmet_item": "helmet",
+      "attachable_wear_mnla_backpack_item": "backpack",
       "attachable_wear_tactical_gloves_item": "gloves",
-      "attachable_wear_acu_jacket_ucp_urban_item": "tunic",
-      "attachable_wear_acu_pants_ucp_urban_item": "pants",
-      "attachable_wear_lbx_armatus2_desert_gray_item": "chest_armor",
+      "attachable_wear_mnla_jacket_item": "tunic",
+      "attachable_wear_mnla_pants_item": "pants",
       "ballistic_glasses_transp_item": "face_goggles",
-      "attachable_wear_narrow_tactical_belt_desert_item": "belt",
-      "attachable_wear_dump_pouch_closed_bl_khaki_item": "rear_belt_l",
-      "attachable_wear_qt1_canteen_pouch_br_khaki_item": "rear_belt_r",
-      "attachable_wear_holster_on_leg_item": "holster_on_leg",
-      "attachable_wear_zephyr_gtx_hi_tf_item": "boots"
+      "attachable_wear_mnla_belt_item": "belt",
+      "attachable_wear_mnla_boots_item": "boots"
     },
     "human__useBaseEquip:tag": {}
   },
@@ -334,6 +331,7 @@
       0.0
     ],
     "hitpoints__lastHitAtTime": -1.0,
+    "hitpoints__deathAtTime": -1.0,
     "hitpoints__lastHitDir": [
       0.0,
       0.0,
@@ -701,6 +699,12 @@
     "human_weap__canOperate": true,
     "human_weap__throwOnEquip": false,
     "human_weap__quickThrowLastWeaponSlot": -1,
+    "human_weap__magnificationCoeffs": [
+      1.0,
+      1.0,
+      10.0,
+      0.5
+    ],
     "human_weap__gunVelocityBasedOffsetCurrent": [
       0.0,
       0.0,
@@ -1811,6 +1815,7 @@
     "human_anim__crawlContinuousRotationVarId": -1,
     "human_anim__gunLengthCompensationVarId": -1,
     "human_anim__fullBodyRootRotateVarId": -1,
+    "human_anim__climbStageVarId": -1,
     "human_anim__leanSpineRotateVarId": -1,
     "human_anim__isCrawlContinuousRotating": true,
     "human_anim__crawlContinuousRotationLastChangeTime": -1.0,
@@ -1864,6 +1869,8 @@
     "human_anim__comboStateUseMortar": -1,
     "human_anim__comboStateFullBodyWalk": -1,
     "human_anim__comboStateFullBodyRun": -1,
+    "human_anim__comboStateFullBodyCrouch": -1,
+    "human_anim__comboStateClimbTrajectory": -1,
     "human_anim__comboStateDead": -1,
     "human_anim__ladderQuickDescentProgressVar": "ladder_drop_slide_width",
     "human_anim__ladderQuickDescentProgressVarId": -1,

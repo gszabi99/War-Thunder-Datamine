@@ -8,7 +8,6 @@
     "item__armorAmount": 0.0,
     "item__armorAmountMin": 0.0,
     "item__armorDurabilityMaxAmount": 0.0,
-    "_replicated": "item__armoredPartsIds",
     "item__armorHudDmPart": "",
     "_group": {
       "_track": true,
@@ -58,10 +57,16 @@
     "item__armorMaterialName": "ceramic",
     "item__armorAmountMin": 0.5,
     "item__hitFxMaterialRelDurabilities:list<r>": {
-      "durability": 1.0
+      "durability": [
+        0.5,
+        1.0
+      ]
     },
     "item__hitFxMaterialNames:list<t>": {
-      "name": "fabric"
+      "name": [
+        "fabric",
+        "aluminum_armor"
+      ]
     },
     "item__durabilityToArmorTable:list<p2>": {
       "point": [
@@ -288,11 +293,7 @@
     "_use": "item_with_owner",
     "segmented_armor__hitChanceRatioThreshold": 0.1,
     "item__armorAmount": 1.0,
-    "_replicated": [
-      "item__armoredPartsIds",
-      "segmented_armor__armoredPartsIds",
-      "segmented_armor__segmentsEids"
-    ],
+    "_replicated": "segmented_armor__segmentsEids",
     "segmented_armor__armoredParts:shared:array": {},
     "segmented_armor__armoredPartsIds:array": {},
     "segmented_armor__hitChances:shared:list<r>": {},

@@ -17,6 +17,8 @@ def node_collapser_create(evt : Event;
                           var animchar_node_collapser : AnimcharNodeCollapser_SOA&;
                           var animchar_node_collapser__children : IntList&;
                           animchar_node_collapser__nodes : Object const?;
+                          animchar_node_collapser__thresholds : Object const?;
+                          animchar_node_collapser__camThreshold : float = 0.3;
                           animchar : AnimcharBaseComponent;
                           animchar_render : AnimcharRendComponent)
   var isDisabled = false
@@ -53,10 +55,14 @@ def node_collapser_create(evt : Event;
           childNodes |> push(*geomtree |> geomtree_getChildNodeIdx(childNodes[i], uint(j)))
         i += 1
       let target = iter.value ?? ""
+      var threshold = animchar_node_collapser__camThreshold
+      if animchar_node_collapser__thresholds != null
+        threshold = (*animchar_node_collapser__thresholds)[iter.key] ?? animchar_node_collapser__camThreshold
       animchar_node_collapser |> push() <| AnimcharNodeCollapser(
         animchar_node_collapser__rootNode = rootRenderNodeIdx,
         animchar_node_collapser__targetNode = target == "" ? -1 : *scene |> scene_instance_getNodeId(target),
-        animchar_node_collapser__childrenCount = childrenCount
+        animchar_node_collapser__childrenCount = childrenCount,
+        animchar_node_collapser__threshold = threshold
       )
 
   if length(animchar_node_collapser) == 0 && !isDisabled
@@ -69,11 +75,10 @@ def on_animchar_node_collapser_item(evt : HideNodesEvent;
                                     animchar_bsph : vec4f;
                                     animchar_node_collapser : AnimcharNodeCollapser_SOA;
                                     animchar_node_collapser__children : IntList;
-                                    animchar_node_collapser__camThreshold : float = 0.3;
                                     animchar_node_collapser__origin_threshold_sq : float = 100.0)
   collapser(evt.at, animchar_render, animchar_visbits, float4(animchar_bsph).xyz,
             animchar_node_collapser, animchar_node_collapser__children,
-            animchar_node_collapser__camThreshold, animchar_node_collapser__origin_threshold_sq)
+            animchar_node_collapser__origin_threshold_sq, get_fov_threshold_mult())
 
 
 [soa_es, es(REQUIRE=hero, before=animchar_before_render_es)]
@@ -83,8 +88,7 @@ def on_animchar_node_collapser(evt : HideNodesEvent;
                                animchar_bsph : vec4f;
                                animchar_node_collapser : AnimcharNodeCollapser_SOA;
                                animchar_node_collapser__children : IntList;
-                               animchar_node_collapser__camThreshold : float = 0.3;
                                animchar_node_collapser__origin_threshold_sq : float = 100.0)
   collapser(evt.at, animchar_render, animchar_visbits, float4(animchar_bsph).xyz,
             animchar_node_collapser, animchar_node_collapser__children,
-            animchar_node_collapser__camThreshold, animchar_node_collapser__origin_threshold_sq)
+            animchar_node_collapser__origin_threshold_sq, get_fov_threshold_mult())

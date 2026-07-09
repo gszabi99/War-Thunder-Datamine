@@ -1,4 +1,5 @@
 require ecs
+require app
 require math.base
 require HumanPhys
 require DngHuman
@@ -10,11 +11,31 @@ require DagorSystem
 require Dacoll
 
 
+def get_aim_optic_magnification(gun_eid : EntityId; gun_mod_eids : EidList) : float
+  if !gun_eid
+    return 1.0
+  let subsEid = get_Eid(gun_eid, "subsidiaryGunEid") ?? INVALID_ENTITY_ID
+  if !!subsEid
+    return get_float(subsEid, "gun__magnification") ?? 1.0
+  var scopeEid = INVALID_ENTITY_ID
+  for gunMod in gun_mod_eids
+    query(gunMod) <| $ [es(REQUIRE_NOT=secondScope, REQUIRE=gunScope)] (eid : EntityId)
+      scopeEid = eid
+  if !scopeEid && (get_bool(gun_eid, "gun__integratedScope") ?? false)
+    scopeEid = gun_eid
+
+  let scopeZoomFactor = get_float(scopeEid, "gunmod__zoomFactor") ?? 0.0
+  if scopeZoomFactor > 0.0
+    return scopeZoomFactor
+  return get_float(gun_eid, "gun__magnification") ?? 1.5
+
+
 [es(REQUIRE_NOT=(deadEntity, menuSoldier))]
 def human_weapon_aim(evt : CmdPostPhysUpdate;
                      isDowned : bool;
                      human_net_phys__maxStamina : float;
                      human_weap__currentGunEid : EntityId;
+                     human_weap__currentGunModEids : EidList;
                      human_weap__enableClampVertAimAngle : bool;
                      human_weap__crawlClampVertAngleRad : float2;
                      human_weap__clampVertAngleRad : float2;
@@ -23,6 +44,8 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
                      human_weap__crawlClampAngleRad : float = HALF_PI;
                      human_weap__clampAngleRad : float = PI;
                      entity_mods__breathAimMult : float = 1.0;
+                     human_weap__throwMode : bool = false;
+                     human_weap__grenadeThrower : EntityId = INVALID_ENTITY_ID;
                      var human_net_phys : HumanActor&;
                      var human_weap__holdBreathShakeMagnitudeMult : float&;
                      human_weap__holdBreathShakeMagnitudeMultViscosity : float = 1.0f;
@@ -30,15 +53,18 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
                      human_weap__weaponShakeMagnitudePow = 1.1f;
                      human_weap__weaponShakeSpeedMult = 0.15f;
                      human_weap__weaponShakeSpeedPow = 0.9f;
-                     human_weap__weaponShakeDefaultWeight = 1.0f)
+                     human_weap__weaponShakeDefaultWeight = 1.0f;
+                     human_weap__magnificationCoeffs = float4(1.0, 1.0, 10.0, 0.5))
   assume currentState = human_net_phys.phys.currentState
   assume appliedCT = human_net_phys.phys.appliedCT
   assume holdBreathMagnitudeMult = human_weap__holdBreathShakeMagnitudeMult
 
   let rootDir = get_some_normal(currentState.vertDirection)
-  assume weapParams = human_net_phys.phys.weaponParams[int(currentState.weapEquipState.curSlot)]
+  let weapSlot = human_weap__throwMode ? int(HUWeaponSlots.EWS_GRENADE) : int(currentState.weapEquipState.curSlot)
+  assume weapParams = human_net_phys.phys.weaponParams[weapSlot]
 
-  let weight = get_float(human_weap__currentGunEid, "item__weight") ?? human_weap__weaponShakeDefaultWeight
+  let weightGunEid = human_weap__throwMode ? human_weap__grenadeThrower : human_weap__currentGunEid
+  let weight = get_float(weightGunEid, "item__weight") ?? human_weap__weaponShakeDefaultWeight
   let weapShakeMagnitudeMult = weight == 0.0 ? 1.0 : pow(weight, human_weap__weaponShakeMagnitudePow) * human_weap__weaponShakeMagnitudeMult
   let weapShakeSpeedMult = weight == 0.0 ? 1.0 : pow(weight, human_weap__weaponShakeSpeedPow) * human_weap__weaponShakeSpeedMult
 
@@ -82,8 +108,13 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
   let breathSpeed = currentState.breathShakeMult * holdBreathSpeedMult * weapShakeSpeedMult
   currentState.breathTime += evt.dt * breathSpeed
   let timeMult = 0.15
-  currentState.breathOffset.x = perlin_noise1(timeMult * currentState.breathTime + 17.21) * shakeMagnitude * holdBreathSpeedMult
-  currentState.breathOffset.y = perlin_noise1(timeMult * currentState.breathTime + 13.19) * shakeMagnitude * holdBreathSpeedMult
+  var breathFovMult = 1.0
+  if currentState.aimPosition > 0.0
+    let magnification = get_aim_optic_magnification(human_weap__currentGunEid, human_weap__currentGunModEids)
+    breathFovMult = cvt(magnification, human_weap__magnificationCoeffs.x, human_weap__magnificationCoeffs.z, human_weap__magnificationCoeffs.y, human_weap__magnificationCoeffs.w)
+
+  currentState.breathOffset.x = perlin_noise1(timeMult * currentState.breathTime + 17.21) * shakeMagnitude * holdBreathSpeedMult * breathFovMult
+  currentState.breathOffset.y = perlin_noise1(timeMult * currentState.breathTime + 13.19) * shakeMagnitude * holdBreathSpeedMult * breathFovMult
 
   let handShakeMagnitude = currentState.handsShakeMagnitude
   currentState.handsShakeTime += evt.dt * currentState.handsShakeSpeedMult

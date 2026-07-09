@@ -533,6 +533,90 @@
     "autodeleteEffectEntity:tag": {},
     "staticEffect:tag": {}
   },
+  "hit_melee_metal_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_5_7mm_metal_ap_cmps_fx"
+    }
+  },
+  "hit_melee_sand_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_5_7mm_sand_ap_cmps_fx"
+    }
+  },
+  "hit_melee_dirt_effect": {
+    "_use": "hit_effect_base",
+    "paint_from_biome": true,
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_5_7mm_dirt_ap_cmps_fx"
+    }
+  },
+  "hit_melee_snow_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_5_7mm_snow_ap_cmps_fx"
+    }
+  },
+  "hit_melee_stone_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_5_7mm_stone_ap_cmps_fx"
+    }
+  },
+  "hit_melee_wood_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_5_7mm_wood_ap_cmps_fx"
+    }
+  },
+  "hit_melee_fabric_effect": {
+    "_use": "hit_effect_base",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "hit_5_7mm_fabric_cmps_fx"
+    }
+  },
+  "hit_effect_group_melee": {
+    "_tags": "render",
+    "melee_fx__default": "hit_melee_dirt_effect",
+    "melee_fx__info:object": {
+      "default": "hit_melee_stone_effect",
+      "flesh": "hit_melee_fabric_effect",
+      "fabric": "hit_melee_fabric_effect",
+      "metal": "hit_melee_metal_effect",
+      "softSteelDoor": "hit_melee_metal_effect",
+      "barbwire": "hit_melee_metal_effect",
+      "sand": "hit_melee_sand_effect",
+      "duneSand": "hit_melee_sand_effect",
+      "roadSand": "hit_melee_sand_effect",
+      "quickSand": "hit_melee_sand_effect",
+      "sandbag_grey": "hit_melee_sand_effect",
+      "sandbag_biege": "hit_melee_sand_effect",
+      "soil": "hit_melee_dirt_effect",
+      "soil_brown": "hit_melee_dirt_effect",
+      "soil_sand": "hit_melee_dirt_effect",
+      "roadSoil": "hit_melee_dirt_effect",
+      "dirt": "hit_melee_dirt_effect",
+      "road": "hit_melee_dirt_effect",
+      "steppe": "hit_melee_dirt_effect",
+      "snow": "hit_melee_snow_effect",
+      "snowLower": "hit_melee_snow_effect",
+      "roadSnow": "hit_melee_snow_effect",
+      "ice": "hit_melee_snow_effect",
+      "rocks": "hit_melee_stone_effect",
+      "rocksSlippery": "hit_melee_stone_effect",
+      "rocksSlipperyHigh": "hit_melee_stone_effect",
+      "wood": "hit_melee_wood_effect"
+    }
+  },
   "hit_footstep_dirt_effect": {
     "_use": "hit_effect_base",
     "paint_from_biome": true,

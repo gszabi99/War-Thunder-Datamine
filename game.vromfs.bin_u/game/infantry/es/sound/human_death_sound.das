@@ -6,7 +6,7 @@ require human_sounds.modules.human_voice_effect_common
 require human_sounds.modules.human_sound_geomtree_nodes_common
 require %appGame.wt_events
 
-
+[es(tag=sound, REQUIRE_NOT=shootingRangeDummy)]
 def human_death_sound(evt : EventEntityDied;
                       @shared_comp human_voice_sound__path : Object;
                       @shared_comp human_voice_sound__descs : Object;

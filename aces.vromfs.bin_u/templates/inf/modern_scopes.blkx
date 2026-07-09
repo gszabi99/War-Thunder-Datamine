@@ -1170,8 +1170,11 @@
       2.0
     ],
     "gunmod__currentZoomIndex": 0,
-    "gunmod__crosshairParallaxDistance": 50.0,
+    "gunmod__crosshairParallaxDistance": 100.0,
     "_replicated": "gunmod__currentZoomIndex",
+    "gunmod__zoomAnimationTime": 0.0,
+    "gunmod__zoomAnimationViscocity": 0.3,
+    "gunmod__previousZoomFactor": 5.0,
     "gun_attachable_mod_params__adderNames:list<t>": {
       "name": [
         "gun_anim_var__fpsGunOffsetUp",
@@ -1192,30 +1195,27 @@
     },
     "_group": {
       "_tags": "gameClient",
-      "gunmod__zoomAnimationTime": 0.0,
-      "gunmod__zoomAnimationViscocity": 0.3,
-      "gunmod__previousZoomFactor": 5.0,
       "gunmod__previousCamShiftMin": 0.22,
-      "gunmod__previousCamShiftMax": 0.22,
-      "gunmod__variableZoomOptions:array": {
-        "gunmod__variableZoom:object": [
-          {
-            "gunmod__zoomFactor": 5.0,
-            "gunmod__camShiftMin": 0.22,
-            "gunmod__camShiftMax": 0.22
-          },
-          {
-            "gunmod__zoomFactor": 10.0,
-            "gunmod__camShiftMin": 0.3,
-            "gunmod__camShiftMax": 0.3
-          },
-          {
-            "gunmod__zoomFactor": 2.0,
-            "gunmod__camShiftMin": 0.15,
-            "gunmod__camShiftMax": 0.15
-          }
-        ]
-      }
+      "gunmod__previousCamShiftMax": 0.22
+    },
+    "gunmod__variableZoomOptions:array": {
+      "gunmod__variableZoom:object": [
+        {
+          "gunmod__zoomFactor": 5.0,
+          "gunmod__camShiftMin": 0.22,
+          "gunmod__camShiftMax": 0.22
+        },
+        {
+          "gunmod__zoomFactor": 10.0,
+          "gunmod__camShiftMin": 0.3,
+          "gunmod__camShiftMax": 0.3
+        },
+        {
+          "gunmod__zoomFactor": 2.0,
+          "gunmod__camShiftMin": 0.15,
+          "gunmod__camShiftMax": 0.15
+        }
+      ]
     }
   },
   "scope_1p69_giperon_item": {
@@ -1407,7 +1407,7 @@
   "scope_scp_t4iecdq_item": {
     "_use": "item_scope",
     "animchar__res": "scp_t4iecdq_sight_char",
-    "collres__res": "scope_pso1_collision",
+    "collres__res": "scp_t4iecdq_sight_collision",
     "item__template": "scope_scp_t4iecdq_item",
     "item__proto": "scope_scp_t4iecdq",
     "item__locDetails": "",
@@ -1424,6 +1424,7 @@
   "scope_scp_t4iecdq": {
     "_use": "scope_optical_gunmod",
     "animchar__res": "scp_t4iecdq_sight_char",
+    "collres__res": "scp_t4iecdq_sight_collision",
     "item__template": "scope_scp_t4iecdq_item",
     "gunAttachable__slotName": "scope",
     "gunAttachable__gunSlotName": "scope",
@@ -1626,8 +1627,12 @@
     "gunmod__zoomFactor": 4.5,
     "gunmod__camShiftMin": 0.123,
     "gunmod__camShiftMax": 0.146,
+    "gunmod__unzoomedCamLock": 0.96,
     "gunmod__currentZoomIndex": 0,
     "_replicated": "gunmod__currentZoomIndex",
+    "gunmod__zoomAnimationTime": 0.0,
+    "gunmod__zoomAnimationViscocity": 0.3,
+    "gunmod__previousZoomFactor": 4.5,
     "gunmod__deviationMult": 0.5,
     "gunmod__camFovMin": 28.0,
     "gunmod__camFovMax": 19.0,
@@ -1648,33 +1653,30 @@
       1.3,
       2.0
     ],
-    "gunmod__crosshairParallaxDistance": 50.0,
+    "gunmod__crosshairParallaxDistance": 100.0,
     "_group": {
       "_tags": "gameClient",
-      "gunmod__zoomAnimationTime": 0.0,
-      "gunmod__zoomAnimationViscocity": 0.3,
-      "gunmod__previousZoomFactor": 4.5,
       "gunmod__previousCamShiftMin": 0.123,
-      "gunmod__previousCamShiftMax": 0.146,
-      "gunmod__variableZoomOptions:array": {
-        "gunmod__variableZoom:object": [
-          {
-            "gunmod__zoomFactor": 4.5,
-            "gunmod__camShiftMin": 0.123,
-            "gunmod__camShiftMax": 0.146
-          },
-          {
-            "gunmod__zoomFactor": 10.0,
-            "gunmod__camShiftMin": 0.275,
-            "gunmod__camShiftMax": 0.325
-          },
-          {
-            "gunmod__zoomFactor": 14.0,
-            "gunmod__camShiftMin": 0.285,
-            "gunmod__camShiftMax": 0.325
-          }
-        ]
-      }
+      "gunmod__previousCamShiftMax": 0.146
+    },
+    "gunmod__variableZoomOptions:array": {
+      "gunmod__variableZoom:object": [
+        {
+          "gunmod__zoomFactor": 4.5,
+          "gunmod__camShiftMin": 0.123,
+          "gunmod__camShiftMax": 0.146
+        },
+        {
+          "gunmod__zoomFactor": 10.0,
+          "gunmod__camShiftMin": 0.275,
+          "gunmod__camShiftMax": 0.325
+        },
+        {
+          "gunmod__zoomFactor": 14.0,
+          "gunmod__camShiftMin": 0.285,
+          "gunmod__camShiftMax": 0.325
+        }
+      ]
     }
   },
   "scope_leupold_mark_4_variable_item": {
@@ -1709,6 +1711,9 @@
     "gunmod__camShiftMax": 0.2,
     "gunmod__currentZoomIndex": 0,
     "_replicated": "gunmod__currentZoomIndex",
+    "gunmod__zoomAnimationTime": 0.0,
+    "gunmod__zoomAnimationViscocity": 0.3,
+    "gunmod__previousZoomFactor": 5.0,
     "gunmod__deviationMult": 0.5,
     "gunmod__camFovMin": 28.0,
     "gunmod__camFovMax": 19.0,
@@ -1729,7 +1734,7 @@
       1.3,
       2.0
     ],
-    "gunmod__crosshairParallaxDistance": 50.0,
+    "gunmod__crosshairParallaxDistance": 100.0,
     "gun_attachable_mod_params__adderNames:list<t>": {
       "name": [
         "gun_anim_var__fpsGunOffsetUp",
@@ -1750,30 +1755,27 @@
     },
     "_group": {
       "_tags": "gameClient",
-      "gunmod__zoomAnimationTime": 0.0,
-      "gunmod__zoomAnimationViscocity": 0.3,
-      "gunmod__previousZoomFactor": 5.0,
       "gunmod__previousCamShiftMin": 0.2,
-      "gunmod__previousCamShiftMax": 0.2,
-      "gunmod__variableZoomOptions:array": {
-        "gunmod__variableZoom:object": [
-          {
-            "gunmod__zoomFactor": 5.0,
-            "gunmod__camShiftMin": 0.2,
-            "gunmod__camShiftMax": 0.2
-          },
-          {
-            "gunmod__zoomFactor": 7.5,
-            "gunmod__camShiftMin": 0.27,
-            "gunmod__camShiftMax": 0.27
-          },
-          {
-            "gunmod__zoomFactor": 10.0,
-            "gunmod__camShiftMin": 0.35,
-            "gunmod__camShiftMax": 0.35
-          }
-        ]
-      }
+      "gunmod__previousCamShiftMax": 0.2
+    },
+    "gunmod__variableZoomOptions:array": {
+      "gunmod__variableZoom:object": [
+        {
+          "gunmod__zoomFactor": 5.0,
+          "gunmod__camShiftMin": 0.2,
+          "gunmod__camShiftMax": 0.2
+        },
+        {
+          "gunmod__zoomFactor": 7.5,
+          "gunmod__camShiftMin": 0.27,
+          "gunmod__camShiftMax": 0.27
+        },
+        {
+          "gunmod__zoomFactor": 10.0,
+          "gunmod__camShiftMin": 0.35,
+          "gunmod__camShiftMax": 0.35
+        }
+      ]
     }
   },
   "scope_snb_pm_ii_variable_item": {
@@ -1808,6 +1810,9 @@
     "gunmod__camShiftMax": 0.15,
     "gunmod__currentZoomIndex": 0,
     "_replicated": "gunmod__currentZoomIndex",
+    "gunmod__zoomAnimationTime": 0.0,
+    "gunmod__zoomAnimationViscocity": 0.3,
+    "gunmod__previousZoomFactor": 5.0,
     "gunmod__deviationMult": 0.5,
     "gunmod__camFovMin": 28.0,
     "gunmod__camFovMax": 19.0,
@@ -1828,7 +1833,7 @@
       1.3,
       2.0
     ],
-    "gunmod__crosshairParallaxDistance": 50.0,
+    "gunmod__crosshairParallaxDistance": 100.0,
     "gun_attachable_mod_params__adderNames:list<t>": {
       "name": [
         "gun_anim_var__fpsGunOffsetUp",
@@ -1849,30 +1854,27 @@
     },
     "_group": {
       "_tags": "gameClient",
-      "gunmod__zoomAnimationTime": 0.0,
-      "gunmod__zoomAnimationViscocity": 0.3,
-      "gunmod__previousZoomFactor": 5.0,
       "gunmod__previousCamShiftMin": 0.25,
-      "gunmod__previousCamShiftMax": 0.25,
-      "gunmod__variableZoomOptions:array": {
-        "gunmod__variableZoom:object": [
-          {
-            "gunmod__zoomFactor": 5.0,
-            "gunmod__camShiftMin": 0.25,
-            "gunmod__camShiftMax": 0.25
-          },
-          {
-            "gunmod__zoomFactor": 10.0,
-            "gunmod__camShiftMin": 0.4,
-            "gunmod__camShiftMax": 0.4
-          },
-          {
-            "gunmod__zoomFactor": 1.5,
-            "gunmod__camShiftMin": 0.15,
-            "gunmod__camShiftMax": 0.15
-          }
-        ]
-      }
+      "gunmod__previousCamShiftMax": 0.25
+    },
+    "gunmod__variableZoomOptions:array": {
+      "gunmod__variableZoom:object": [
+        {
+          "gunmod__zoomFactor": 5.0,
+          "gunmod__camShiftMin": 0.25,
+          "gunmod__camShiftMax": 0.25
+        },
+        {
+          "gunmod__zoomFactor": 10.0,
+          "gunmod__camShiftMin": 0.4,
+          "gunmod__camShiftMax": 0.4
+        },
+        {
+          "gunmod__zoomFactor": 1.5,
+          "gunmod__camShiftMin": 0.15,
+          "gunmod__camShiftMax": 0.15
+        }
+      ]
     }
   },
   "scope_vortex_lpvo_dovetail": {
@@ -1927,8 +1929,11 @@
       3.0
     ],
     "gunmod__currentZoomIndex": 0,
-    "gunmod__crosshairParallaxDistance": 50.0,
+    "gunmod__crosshairParallaxDistance": 100.0,
     "_replicated": "gunmod__currentZoomIndex",
+    "gunmod__zoomAnimationTime": 0.0,
+    "gunmod__zoomAnimationViscocity": 0.3,
+    "gunmod__previousZoomFactor": 3.0,
     "gun_attachable_mod_params__adderNames:list<t>": {
       "name": [
         "gun_anim_var__fpsGunOffsetUp",
@@ -1949,30 +1954,27 @@
     },
     "_group": {
       "_tags": "gameClient",
-      "gunmod__zoomAnimationTime": 0.0,
-      "gunmod__zoomAnimationViscocity": 0.3,
-      "gunmod__previousZoomFactor": 3.0,
       "gunmod__previousCamShiftMin": 0.22,
-      "gunmod__previousCamShiftMax": 0.22,
-      "gunmod__variableZoomOptions:array": {
-        "gunmod__variableZoom:object": [
-          {
-            "gunmod__zoomFactor": 3.0,
-            "gunmod__camShiftMin": 0.22,
-            "gunmod__camShiftMax": 0.22
-          },
-          {
-            "gunmod__zoomFactor": 6.0,
-            "gunmod__camShiftMin": 0.3,
-            "gunmod__camShiftMax": 0.3
-          },
-          {
-            "gunmod__zoomFactor": 1.5,
-            "gunmod__camShiftMin": 0.15,
-            "gunmod__camShiftMax": 0.15
-          }
-        ]
-      }
+      "gunmod__previousCamShiftMax": 0.22
+    },
+    "gunmod__variableZoomOptions:array": {
+      "gunmod__variableZoom:object": [
+        {
+          "gunmod__zoomFactor": 3.0,
+          "gunmod__camShiftMin": 0.22,
+          "gunmod__camShiftMax": 0.22
+        },
+        {
+          "gunmod__zoomFactor": 6.0,
+          "gunmod__camShiftMin": 0.3,
+          "gunmod__camShiftMax": 0.3
+        },
+        {
+          "gunmod__zoomFactor": 1.5,
+          "gunmod__camShiftMin": 0.15,
+          "gunmod__camShiftMax": 0.15
+        }
+      ]
     }
   },
   "scope_sig_tango6_x6_item": {
@@ -2024,7 +2026,7 @@
       1.04,
       2.0
     ],
-    "gunmod__crosshairParallaxDistance": 50.0,
+    "gunmod__crosshairParallaxDistance": 100.0,
     "gun_attachable_mod_params__adderNames:list<t>": {
       "name": [
         "gun_anim_var__fpsGunOffsetUp",

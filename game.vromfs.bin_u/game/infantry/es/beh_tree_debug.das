@@ -22,6 +22,10 @@ require strings
 require %appGame.infantry.es.net_console_macro
 require %appGame.wt_events
 require net
+require Grid
+require GridCollision
+require AnimV20
+require CollRes
 
 
 [ecs_template]
@@ -553,8 +557,17 @@ def private trace_debug_aim_ray(pos1 : float3; pos2 : float3; var out_canopy_opa
     result |= 4
   if rayhit_smoke_occluders(traceFrom, traceTo)
     result |= 8
+  if rayhit_entities_in_grid(ecs_hash("vehicles"), traceFrom, traceDir, traceDist, INVALID_ENTITY_ID)
+    result |= 16
+  find_entity_in_grid(ecs_hash("humans"), traceFrom, traceDir, traceDist, 0.0, GridEntCheck.BOUNDING) <| $(objEid : EntityId)
+    var found = false
+    query(objEid) <| $ [es] (transform aka obj_transform : float3x4; collres : CollisionResource; animchar : AnimcharBaseComponent)
+      if collres_rayhit(collres, obj_transform, animchar.nodeTree, traceFrom, traceDir, traceDist)
+        result |= 32
+        found = true
+    return found
   if result == 0
-    result = 16
+    result = 64
   return result
 
 [es(tag=(dev, server))]
@@ -597,20 +610,26 @@ def draw_debug_aim_ray(evt : UpdateStageInfoRenderDebug;
 
   if ai_debug_aim_ray__trace != 0
     let curTime = int(get_sync_time() * 1000.0)
-    let subTime = curTime % 1000
-    var color = ai_debug_aim_ray__trace == 16 ? E3DCOLOR(0xFFFFFFFF) : E3DCOLOR(0xFF000000)
-    if subTime < 250
+    let subTime = curTime % 1400
+    var color = ai_debug_aim_ray__trace == 64 ? E3DCOLOR(0xFFFFFFFF) : E3DCOLOR(0xFF000000)
+    if subTime < 200
       if (ai_debug_aim_ray__trace & 1) != 0
-        color = E3DCOLOR(0xFFFFFF00)
-    elif subTime < 500
+        color = E3DCOLOR(0xFFFFFF00) 
+    elif subTime < 400
       if (ai_debug_aim_ray__trace & 2) != 0
-        color = E3DCOLOR(0xFFFF0000)
-    elif subTime < 750
+        color = E3DCOLOR(0xFFFF0000) 
+    elif subTime < 600
       if (ai_debug_aim_ray__trace & 4) != 0
-        color = E3DCOLOR(0xFF00FF00)
-    else
+        color = E3DCOLOR(0xFF00FF00) 
+    elif subTime < 800
       if (ai_debug_aim_ray__trace & 8) != 0
-        color = E3DCOLOR(0xFF777777)
+        color = E3DCOLOR(0xFF777777) 
+    elif subTime < 1000
+      if (ai_debug_aim_ray__trace & 16) != 0
+        color = E3DCOLOR(0xFFFF0077) 
+    elif subTime < 1200
+      if (ai_debug_aim_ray__trace & 32) != 0
+        color = E3DCOLOR(0xFF0077FF) 
     draw_debug_line_buffered(ai_debug_aim_ray__pos1, ai_debug_aim_ray__pos2, color, 1)
     draw_debug_line_buffered(ai_debug_aim_ray__pos1 + OFS1, ai_debug_aim_ray__pos2 + OFS1, color, 1)
     add_debug_text_mark(ai_debug_aim_ray__pos1, "Opacity: {ai_debug_aim_ray__opacity}", -1, 0f, E3DCOLOR(0xFFFFFFFF))

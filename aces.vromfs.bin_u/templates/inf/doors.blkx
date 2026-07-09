@@ -168,15 +168,21 @@
     "ri_extra__destroyed": false,
     "pair_door__eid:eid": {},
     "grid_obj": {},
-    "_group": {
-      "_tags": "server",
-      "obstacle__lastCheckTime": -1.0,
-      "obstacle__checkDelta": 1.0,
-      "obstacle__handle": 0,
-      "obstacle__padding": 0.7,
-      "obstacle__doorMaxAngleDeviationFromClosed": 45.0,
-      "obstacle__doorMaxStillAngularVelocity": 10.0
-    },
+    "_group": [
+      {
+        "_tags": "server",
+        "obstacle__lastCheckTime": -1.0,
+        "obstacle__checkDelta": 1.0,
+        "obstacle__handle": 0,
+        "obstacle__padding": 0.7,
+        "obstacle__doorMaxAngleDeviationFromClosed": 45.0,
+        "obstacle__doorMaxStillAngularVelocity": 10.0
+      },
+      {
+        "_tags": "server",
+        "door_operations__lastServerSyncTime": 0.0
+      }
+    ],
     "obstacle__isDestructible:tag": {},
     "ri_extra__handle:u64": {
       "value": -1

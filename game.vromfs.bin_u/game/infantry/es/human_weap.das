@@ -470,7 +470,6 @@ def human_weap_post_phys_es(evt : CmdPostPhysUpdate;
                             eid : EntityId;
                             transform : float3x4;
                             isInVehicle : bool = false;
-                            human_vehicle__isHoldingGunPassenger : bool = false;
                             human_weap__currentGunEid : EntityId;
                             human_weap__grenadeThrower : EntityId = INVALID_ENTITY_ID;
                             human_weap__lockedGrenadeThrowingCounter : int = 0;
@@ -512,7 +511,7 @@ def human_weap_post_phys_es(evt : CmdPostPhysUpdate;
       isForReal = isForReal,
       eid = eid,
       isDowned = isDowned,
-      isThrowingAllowed = human_weap__lockedGrenadeThrowingCounter == 0 && (human_vehicle__isHoldingGunPassenger || !isInVehicle),
+      isThrowingAllowed = human_weap__lockedGrenadeThrowingCounter == 0 && !isInVehicle,
       shotDeviationMult = entity_mods__shotDeviationMult,
       rotationShotSpreadDecrMult = entity_mods__rotationShotSpreadDecrMult,
       aimingAfterFireMult = entity_mods__aimingAfterFireMult,

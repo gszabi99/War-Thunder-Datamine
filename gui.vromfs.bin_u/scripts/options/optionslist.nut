@@ -27,6 +27,7 @@ let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 let { getDevFeaturesList } = require("%scripts/features/devFeatures.nut")
 let { getIsConsoleModeForceEnabled, showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -74,6 +75,7 @@ let getMainOptions = function() {
   let isTank = unit?.isTank() ?? false
   let isAir = unit?.isAir() ?? false
   let isHelicopter = unit?.isHelicopter() ?? false
+  let isHuman = unit?.isHuman() ?? false
   let isAllowRadarMode = hasFeature("allowRadarModeOptions") && get_radar_mode_names("", "").len() > 0 && (get_radar_mode_names("", "").len() > 1 || get_radar_scan_pattern_names("", "").len() > 1 || get_radar_range_values("", "").len() > 1)
 
   if (overrideMainOptionsFn != null)
@@ -243,6 +245,9 @@ let getMainOptions = function() {
       [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
       [USEROPT_SHOW_HIT_ICONS_SHIP, "button", IS_SHIP_HIT_NOTIFICATIONS_VISIBLE],
       [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_SHIPS, "spinner"],
+
+      ["options/header/infantry"],
+      [USEROPT_INFANTRY_USE_NEOCLASSICAL_TILT, "switchbox", unitTypes.HUMAN.isAvailable() || isHuman],
 
       ["options/header/interface"],
       [USEROPT_HUD_SCREEN_SAFE_AREA, "spinner", safeAreaHud.canChangeValue()],

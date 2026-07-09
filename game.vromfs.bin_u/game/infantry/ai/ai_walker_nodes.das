@@ -923,6 +923,66 @@ class CheckEntityDestrWall : BehNodeAdapter
     return EBehResult.ER_SUCCESS
 
 
+[beh_node(name="waitBeforePlantWallMine")]
+class WaitBeforePlantWallMine : BehNodeAdapter
+  eidParam : int = -1
+  maxTimeToWait : float = 5.0
+
+  waitTillTimeMax : float = 0.0
+  startWaitTime : float = 0.0
+  agentTeamEid : EntityId = INVALID_ENTITY_ID
+
+  def override loadFromBlk(var data : DataBlock)
+    eidParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "eidParam", ""), 0)
+    maxTimeToWait = datablock_getReal(data, "maxTimeToWait", maxTimeToWait)
+
+  def override init()
+    startWaitTime = get_sync_time()
+    waitTillTimeMax = startWaitTime
+    let agent = beh_tree_entity_agent(*owner)
+    if agent != null
+      query() <| $ [es] (eid : EntityId; team__id : int)
+        if team__id == agent.teamId
+          agentTeamEid = eid
+
+  def override update(dt : float) : EBehResult
+    let agentEid = beh_tree_eid(owner)
+    let targetEid = EntityId(uint(owner.blackBoard |> datablock_getInt(eidParam)))
+    var occupied = false
+    let curTime = get_sync_time()
+    query(agentTeamEid) <| $ [es] (team_bots__plantMinesWalls : EidList; team_bots__plantMinesTimes : FloatList)
+      for wallEid, wallTime in team_bots__plantMinesWalls, team_bots__plantMinesTimes
+        if wallEid == targetEid && curTime < wallTime
+          waitTillTimeMax = startWaitTime + maxTimeToWait
+          occupied = true
+    
+    
+    
+    
+    
+    
+    
+    if occupied && curTime < waitTillTimeMax
+      return EBehResult.ER_RUNNING
+
+    query(agentTeamEid) <| $ [es] (var team_bots__plantMinesWalls : EidList&; var team_bots__plantMinesTimes : FloatList&)
+      var updated = false
+      let TIMEOUT_AFTER_PLANTED = 10.0
+      let targetTime = curTime + TIMEOUT_AFTER_PLANTED
+      while length(team_bots__plantMinesWalls) > 0 && length(team_bots__plantMinesTimes) > 0
+        if curTime < team_bots__plantMinesTimes[0]
+          break
+        team_bots__plantMinesWalls |> erase(0)
+        team_bots__plantMinesTimes |> erase(0)
+      for i in iter_range(team_bots__plantMinesWalls)
+        if team_bots__plantMinesWalls[i] == targetEid
+          team_bots__plantMinesTimes[i] = targetTime
+          updated = true
+      if !updated
+        team_bots__plantMinesWalls |> push(targetEid)
+        team_bots__plantMinesTimes |> push(targetTime)
+    return EBehResult.ER_SUCCESS
+
 [beh_node(name="checkPlantWallMine")]
 class CheckPlantWallMine : BehNodeAdapter
   eidParam : int = -1
@@ -2503,6 +2563,7 @@ class FindCoverAroundPoint : BehNodeAdapter
 
   maxOccupied  : int = -1
   traceVisible : bool = false
+  keepIndoor : bool = false
 
   avoidLeaderActing : LeaderActingInfo
 
@@ -2526,6 +2587,7 @@ class FindCoverAroundPoint : BehNodeAdapter
 
     maxOccupied = datablock_getInt(data, "maxOccupied", maxOccupied)
     traceVisible = datablock_getBool(data, "traceVisible", traceVisible)
+    keepIndoor = datablock_getBool(data, "keepIndoor", keepIndoor)
 
   def override init()
     if possibleAngleParam >= 0
@@ -2537,6 +2599,9 @@ class FindCoverAroundPoint : BehNodeAdapter
   def override update(dt : float) : EBehResult
     var res = EBehResult.ER_FAILED
     let visibleMap = get_global_visible_covers_map()
+
+    var agent = beh_tree_entity_agent(*owner)
+    let agentIndoor = is_pos_indoor(agent.pos)
 
     let agentEid = beh_tree_eid(owner)
     query() <| $ [es] (var covers : CoversComponent&)
@@ -2634,6 +2699,8 @@ class FindCoverAroundPoint : BehNodeAdapter
             if distFromAgentSq > slotBestDistSq && score == slotBestScore && !isBetter
               continue
             if !is_point_safe(coverSlotPos, team)
+              continue
+            if agentIndoor && keepIndoor && !is_pos_indoor(coverSlotPos)
               continue
             if traceVisible && !isPrevCoverSlot
               let dir = normalize(coverSlotOfs)
@@ -2976,6 +3043,80 @@ class setSquadGoal : BehNodeAdapter
     return done ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
 
 
+[beh_node(name="checkFindPathDirectSafe")]
+class CheckFindPathDirectSafe : BehNodeAdapter
+  posParam : int = -1
+
+  def override loadFromBlk(var data : DataBlock)
+    posParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "posParam", ""), float3())
+
+  def override update(dt : float) : EBehResult
+    let agentEid = beh_tree_eid(owner)
+    var agentPos = float3()
+    var agentSquad = INVALID_ENTITY_ID
+    var agentTeam = TEAM_UNASSIGNED
+    var hasAgentInfo = false
+    query(agentEid) <| $ [es] (transform : float3x4; squad_member__squad : EntityId; team : int)
+      agentPos = transform[3]
+      agentSquad = squad_member__squad
+      agentTeam = team
+      hasAgentInfo = true
+    if !hasAgentInfo || agentSquad == INVALID_ENTITY_ID
+      return EBehResult.ER_FAILED
+
+    if !is_pos_indoor(agentPos)
+      return EBehResult.ER_SUCCESS
+
+    if !team_bots_tick_limiter_check(agentTeam, TB_LIMITER_TACTICALPATH, 1)
+      return EBehResult.ER_RUNNING
+
+    let fromPos = agentPos
+    let destPos = owner.blackBoard |> datablock_getPoint3(posParam)
+
+    var result = false
+    find_query() <| $ [es] (team__id : int; walker_custom_nav : CustomNav const?)
+      if team__id != agentTeam || walker_custom_nav == null
+        return false
+
+      var path : array<float3>
+      let extents = float3(1.5, FLT_MAX, 1.5)
+
+      let stepSize = 1.0
+      let pathSlope = 0.1
+      let maxPartial = 2
+      let reachDist = 0.5
+      let reachHeight = 1.0
+      let findThruBlocked = false
+      if !find_path_full(fromPos, destPos, extents, stepSize, pathSlope, maxPartial, reachDist, reachHeight, findThruBlocked, walker_custom_nav, path)
+        return false
+      let len = length(path)
+      if len <= 1
+        return false
+
+      result = true
+      let checkStartLen = min(len / 3, 15)
+      var toOutLen = 0
+      for j in range(checkStartLen)
+        if !is_pos_indoor(path[j])
+          toOutLen += 1
+
+      if toOutLen >= checkStartLen - 2
+        result = false
+      
+      
+      
+      
+      
+
+      
+      
+      
+      
+      
+      return true
+    return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
+
+
 [beh_node(name="tryFindPathAroundToAttack")]
 class TryFindPathAroundToAttack : BehNodeAdapter
   posParam : int = -1
@@ -2985,7 +3126,8 @@ class TryFindPathAroundToAttack : BehNodeAdapter
   blockRadius : float = 3.5
   blockHeights : float2 = float2(-1.0, 2.5)
   blockWeight : float = 50.0
-  blockAreaId : int = -1
+  blockAreaId1 : int = -1
+  blockAreaId2 : int = -1
 
   def override loadFromBlk(var data : DataBlock)
     posParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "posParam", ""), float3())
@@ -3010,6 +3152,7 @@ class TryFindPathAroundToAttack : BehNodeAdapter
       return EBehResult.ER_RUNNING
 
     var result = false
+    let fromIndoor = is_pos_indoor(agentPos)
     find_query() <| $ [es] (team__id : int; var walker_custom_nav : CustomNav?)
       if team__id != agentTeam || walker_custom_nav == null
         return false
@@ -3032,28 +3175,48 @@ class TryFindPathAroundToAttack : BehNodeAdapter
       if len <= 1
         return false
 
+      let midsPos = path[len / 2]
       let prevPos = path[len - 2]
       let lastPos = path[len - 1]
       let dirVec = normalize(x0z(prevPos - lastPos))
       if length_sq(dirVec) < 0.999
         return false
 
-      if blockAreaId < 0
-        blockAreaId = walker_agent_nav_allocAreaId()
+      if blockAreaId1 < 0
+        blockAreaId1 = walker_agent_nav_allocAreaId()
+      if blockAreaId2 < 0
+        blockAreaId2 = walker_agent_nav_allocAreaId()
 
-      var pos = destPos + dirVec * blockRadius * 2.0
-      pos.y += blockHeights.x
+      var pos1 = destPos + dirVec * blockRadius * 2.0
+      var pos2 = midsPos
+      pos1.y += blockHeights.x
+      pos2.y += blockHeights.x
       let areaHeight = -blockHeights.x + blockHeights.y
       let areaRadiusHeight = float2(blockRadius, areaHeight)
-      walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, blockAreaId, pos, areaRadiusHeight, blockWeight, blockWeight, true)
+      walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, blockAreaId1, pos1, areaRadiusHeight, blockWeight, blockWeight, true)
+      walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, blockAreaId2, pos2, areaRadiusHeight, blockWeight, blockWeight, true)
       let gotPath = find_path_full(fromPos, destPos, extents, stepSize, pathSlope, maxPartial, reachDist, reachHeight, findThruBlocked, walker_custom_nav, path)
-      walker_custom_nav_areaRemove(*walker_custom_nav, blockAreaId)
+      walker_custom_nav_areaRemove(*walker_custom_nav, blockAreaId1)
+      walker_custom_nav_areaRemove(*walker_custom_nav, blockAreaId2)
 
       
 
       len = length(path)
       if !gotPath || len < 3
         return false
+
+      if fromIndoor
+        let checkStartLen = min(len / 3, 15)
+        var outdoorLen = 0
+        for j in range(checkStartLen)
+          if is_pos_indoor(path[j])
+            ++outdoorLen
+        
+        if outdoorLen >= checkStartLen - 2
+          
+          
+          
+          return false
 
       let mid1 = len / 3
       let mid2 = (len * 2) / 3
@@ -3066,6 +3229,9 @@ class TryFindPathAroundToAttack : BehNodeAdapter
       
 
       result = true
+      
+      
+      
       return true
     return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
 

@@ -94,6 +94,41 @@ def attach_vis_entity_cb_handler(evt : Event;
     destroyEntity(eid)
 
 
+def build_armored_parts_ids(item_eid : EntityId;
+                            dm_parts__parts : Object;
+                            coll_node_count : int;
+                            owner_eid : EntityId)
+  query(item_eid) <| $ [es] (var item__armoredPartsIds : IntList&;
+                             var segmented_armor__armoredPartsIds : Array?;
+                             @shared_comp segmented_armor__armoredParts : Array const?;
+                             item__armoredParts : Array const?)
+    clear(item__armoredPartsIds)
+    if segmented_armor__armoredPartsIds != null
+      clear(*segmented_armor__armoredPartsIds)
+    if item__armoredParts != null
+      for part in *item__armoredParts
+        let partId = get_part_data_node_id(dm_parts__parts, get_string(part, ""))
+        if partId >= 0 && partId < coll_node_count
+          push(item__armoredPartsIds, partId)
+    if segmented_armor__armoredParts != null && segmented_armor__armoredPartsIds != null
+      var uniquePartsIds : table<int, int>
+      clear(item__armoredPartsIds)
+      for segment in *segmented_armor__armoredParts
+        let parts = get_ecs_StringList(segment)
+        if parts == null
+          push_to_array(*segmented_armor__armoredPartsIds) <| $ [unused_argument(emptyList)] (var emptyList : IntList&) {}
+          logerr("Error parsing segmented_armor__armoredParts for {item_eid} ({getEntityTemplateName(owner_eid)}): all entries should be list<t>")
+        else
+          push_to_array(*segmented_armor__armoredPartsIds) <| $(var partsIds : IntList&)
+            for part in *parts
+              let partId = get_part_data_node_id(dm_parts__parts, string(part))
+              if partId >= 0 && partId < coll_node_count
+                push(partsIds, partId)
+                insert(uniquePartsIds, partId, 0)
+      for uniquePartId in keys(uniquePartsIds)
+        push(item__armoredPartsIds, uniquePartId)
+
+
 def equip_item_direct_impl(item_eid : EntityId;
                            slot_name : string;
                            allow_reorder_slots : bool;
@@ -198,45 +233,20 @@ def equip_item_direct_impl(item_eid : EntityId;
     clear(*entities)
 
   var newSoundTag = ""
-  query(item_eid) <| $ [es] (var item__armoredPartsIds : IntList&;
-                             var segmented_armor__armoredPartsIds : Array?;
-                             @shared_comp segmented_armor__armoredParts : Array const?;
-                             item__armoredParts : Array const?;
-                             item__soundTag : string = "";
-                             item__armorAmount : float = 0.f)
+  query(item_eid) <| $ [es] (item__soundTag : string = "")
     newSoundTag = item__soundTag
-    clear(item__armoredPartsIds)
 
-    
-    if dm_parts__armorItemEids != null
-      push(*dm_parts__armorItemEids, item_eid)
-    if dm_parts__parts != null
-      let collNodeCount = collres_get_nodesCount(*collres)
-      if item__armoredParts != null
-        for part in *item__armoredParts
-          let partId = get_part_data_node_id(*dm_parts__parts, get_string(part, ""))
-          if partId >= 0 && partId < collNodeCount
-            push(item__armoredPartsIds, partId)
-            if dm_parts__partsArmor != null
-              (*dm_parts__partsArmor)[partId] = item__armorAmount
-      if segmented_armor__armoredParts != null && segmented_armor__armoredPartsIds != null
-        var uniquePartsIds : table<int, int>
-        clear(item__armoredPartsIds)
-        for segment in *segmented_armor__armoredParts
-          let parts = get_ecs_StringList(segment)
-          if parts == null
-            push_to_array(*segmented_armor__armoredPartsIds) <| $ [unused_argument(emptyList)] (var emptyList : IntList&) {}
-            logerr("Error parsing segmented_armor__armoredParts for {item_eid} ({getEntityTemplateName(eid)}): all entries should be list<t>")
-          else
-            push_to_array(*segmented_armor__armoredPartsIds) <| $(var partsIds : IntList&)
-              for part in *parts
-                let partId = get_part_data_node_id(*dm_parts__parts, string(part))
-                if partId >= 0 && partId < collNodeCount
-                  push(partsIds, partId)
-                  insert(uniquePartsIds, partId, 0)
-        for uniquePartId in keys(uniquePartsIds)
-          push(item__armoredPartsIds, uniquePartId)
-          (*dm_parts__partsArmor)[uniquePartId] = item__armorAmount
+  
+  if dm_parts__armorItemEids != null
+    push(*dm_parts__armorItemEids, item_eid)
+  if dm_parts__parts != null
+    let collNodeCount = collres_get_nodesCount(*collres)
+    build_armored_parts_ids(item_eid, *dm_parts__parts, collNodeCount, eid)
+    if dm_parts__partsArmor != null
+      query(item_eid) <| $ [es] (item__armoredPartsIds : IntList;
+                                 item__armorAmount : float = 0.f)
+        for partId in item__armoredPartsIds
+          (*dm_parts__partsArmor)[partId] = item__armorAmount
 
   query(item_eid) <| $ [es] (item__equipSlots : Object const?)
     if item__equipSlots != null
@@ -320,3 +330,31 @@ def equip_item(evt : CmdEquipItem;
                          human_equipment__itemRemap, isAlive, possessedByPlr, collres, dm_parts__parts, entity_mods__bagsVolumeMult,
                          human_equipment__slots, human_inventory__capacity, human_inventory__currentVolume,
                          dm_parts__partsArmor, dm_parts__armorItemEids)
+
+
+[es(tag=gameClient, on_appear, track=dm_parts__armorItemEids, after=dm_parts_es)]
+def resolve_armored_parts_ids_on_owner_es(evt : Event;
+                                          eid : EntityId;
+                                          dm_parts__armorItemEids : EidList;
+                                          dm_parts__parts : Object;
+                                          collres : CollisionResource)
+  let collNodeCount = collres_get_nodesCount(collres)
+  for itemEid in dm_parts__armorItemEids
+    build_armored_parts_ids(itemEid, dm_parts__parts, collNodeCount, eid)
+
+
+[es(tag=gameClient, on_appear, track=item__ownerEid, REQUIRE=item__armoredPartsIds)]
+def resolve_armored_parts_ids_on_item_appear_es(evt : Event;
+                                                eid : EntityId;
+                                                item__ownerEid : EntityId;
+                                                var item__armoredPartsIds : IntList&;
+                                                var segmented_armor__armoredPartsIds : Array?)
+  if item__ownerEid == INVALID_ENTITY_ID
+    clear(item__armoredPartsIds)
+    if segmented_armor__armoredPartsIds != null
+      clear(*segmented_armor__armoredPartsIds)
+    return
+  query(item__ownerEid) <| $ [es] (dm_parts__parts : Object;
+                                   collres : CollisionResource)
+    let collNodeCount = collres_get_nodesCount(collres)
+    build_armored_parts_ids(eid, dm_parts__parts, collNodeCount, item__ownerEid)

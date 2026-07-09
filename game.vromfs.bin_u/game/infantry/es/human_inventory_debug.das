@@ -107,6 +107,8 @@ def inventory_create_weap_slot_item_debug_cmd(item_template : string;
       set(init, "item__lastOwner", hero_eid)
       set(init, "item__ownerEid", hero_eid)
       set(init, "gun__owner", hero_eid)
+      set(init, "gun__initialSlotId", gun_slot_id)
+      set(init, "gun__initialFlags", int(RecreateGunsFlags.Attach))
 
     var gunTemplate = getTemplateByName(item_template)
     if gunTemplate == null

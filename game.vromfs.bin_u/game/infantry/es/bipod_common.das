@@ -186,6 +186,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
                          var placeable : bool&; var placeCrawl : bool&;
                          var placePos : float3&; var placeHeight : float&; var placeOffset : float3&;
                          var placeNormal : float3&; var placeYawLimit : float&; var placeRecoilMult : float&;
+                         var placeIsRest : bool&;
                          force_bipod_offset : float3; force_bipod_recoil_mult : float; mount_points : Array; barrel_offset : float3; barrel_radius : float;
                          trace_handle : TraceMeshFaces?)
   query(bipod_eid) <| $ [es] (bipod__solveMaxIterationsPerCall : int = 5;
@@ -569,6 +570,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
           placeNormal     = bipod__solveBestNormal
           placeYawLimit   = 0.0
           placeRecoilMult = bipod__solveBestRecoilMult
+          placeIsRest     = bipod__solveBestType == BIPOD_RESULT_REST
 
           query(gun_eid) <| $ [es] (gun__mountBipodYawLimit : float = BIPOD_DEFAULT_YAWLIMIT_BIPOD_DEGREES;
                                     gun__mountRestYawLimit : float = BIPOD_DEFAULT_YAWLIMIT_REST_DEGREES;
@@ -607,6 +609,7 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
                         var bipod__placeNormal : float3&;
                         var bipod__placeYawLimit : float&;
                         var bipod__placeRecoilMult : float&;
+                        var bipod__placeIsRest : bool&;
                         human_cam__calculatedOffset : DPoint3 const?;
                         human_cam__offsetMult : float = 1.0)
     let isInAir = (uint(human_net_phys.phys.currentState.isInAirHistory) & 1u) != 0u
@@ -655,5 +658,6 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
                            bipod__placeable, bipod__placeCrawl,
                            bipod__placePos, bipod__placeHeight, bipod__placeOffset,
                            bipod__placeNormal, bipod__placeYawLimit, bipod__placeRecoilMult,
+                           bipod__placeIsRest,
                            gun__bipodOffset, gun__bipodRecoilMult, gun__mountPoints, gun__barrelTipOffset, gun__barrelRadius,
                            humanTraceHandle)

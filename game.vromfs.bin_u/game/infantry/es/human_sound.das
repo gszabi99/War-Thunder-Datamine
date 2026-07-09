@@ -59,7 +59,7 @@ def human_sound_on_start_attack(evt : Event;
   if trench_bot__generalState == 1 && rnd_float(0., 1.0) < START_SOUND_PROBABILITY
     oneshot(human_sound__startAttackEventPath, transform[3])
 
-[es(tag=sound, track=hitpoints__totalDotAmount, REQUIRE_NOT=deadEntity, REQUIRE=watchedByPlr)]
+[es(tag=sound, on_appear, track=hitpoints__totalDotAmount, REQUIRE_NOT=deadEntity, REQUIRE=watchedByPlr)]
 def human_bleeding_sound_es(evt : Event;
                             human_bleeding_sound__name : string;
                             var human_bleeding_sound__event : SoundEvent&;
@@ -70,6 +70,13 @@ def human_bleeding_sound_es(evt : Event;
   else
     if is_playing(human_bleeding_sound__event)
       keyoff(human_bleeding_sound__event)
+
+
+[es(tag=sound, on_disappear, REQUIRE=watchedByPlr)]
+def human_bleeding_sound_stop_unwatched(evt : Event;
+                                        human_bleeding_sound__event : SoundEvent)
+  if is_playing(human_bleeding_sound__event)
+    keyoff(human_bleeding_sound__event)
 
 
 [es(tag=sound, track=isAlive, REQUIRE=watchedByPlr)]

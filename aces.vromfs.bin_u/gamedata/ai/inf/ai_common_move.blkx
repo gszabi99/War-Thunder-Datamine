@@ -2266,6 +2266,69 @@
               "continue": {}
             },
             {
+              "sequencer": [
+                {
+                  "checkReloadWeapon": [
+                    {
+                      "checkOnly": true,
+                      "enoughAmmoRatio": 0.05
+                    },
+                    {
+                      "enoughAmmoRatio": 0.05,
+                      "waitReloadFinish": false
+                    }
+                  ]
+                },
+                {
+                  "checkReloadWeapon": [
+                    {
+                      "checkOnly": true,
+                      "enoughAmmoRatio": 0.15
+                    },
+                    {
+                      "enoughAmmoRatio": 0.15,
+                      "waitReloadFinish": false
+                    }
+                  ]
+                },
+                {
+                  "ignoreChance": {
+                    "chance": 0.5
+                  },
+                  "checkReloadWeapon": [
+                    {
+                      "checkOnly": true,
+                      "enoughAmmoRatio": 1.0
+                    },
+                    {
+                      "enoughAmmoRatio": 1.0,
+                      "waitReloadFinish": false
+                    }
+                  ],
+                  "not": {
+                    "checkReloadWeapon": {
+                      "checkOnly": true,
+                      "enoughAmmoRatio": 0.9
+                    }
+                  }
+                }
+              ],
+              "checkDistance": {
+                "posParam": "wishPosition",
+                "radius": 7.5
+              },
+              "checkAtTime": {
+                "timeParam": "rememberEnemyTime",
+                "range": [
+                  0.0,
+                  5.0
+                ]
+              },
+              "checkTooManyEnemiesWatching": {
+                "maxSumCosCoef": 0.5
+              }
+            },
+            {
               "isVarsIntEqual": {
                 "lhs": "doNotStop",
                 "rhs_value": 1
