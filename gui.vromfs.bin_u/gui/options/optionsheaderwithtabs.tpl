@@ -1,4 +1,5 @@
 tr {
+  id:t='<<id>>'
   optContainer:t='yes'
   headerRow:t='yes'
 
@@ -7,6 +8,7 @@ tr {
     width:t='0.50pw'
     optionBlockHeader {
       text:t='<<headerText>>'
+      margin-left:t='@blockInterval'
     }
   }
   td {
@@ -21,12 +23,25 @@ tr {
 
       <<#tabs>>
       shopFilter {
+        <<#tabId>>
+          id:t='<<tabId>>'
+        <</tabId>>
+        unitTypeTag:t='<<unitTypeTag>>'
+        hasChangedIcon:t='no'
         <<#selected>>
         selected:t='yes'
         <</selected>>
         shopFilterText {
           text:t='<<tabName>>'
         }
+        <<#tabId>>
+        cornerImg {
+          imgTiny:t='yes'
+          type:t='left'
+          background-image:t='#ui/gameuiskin#controls_help_point.svg'
+          display:t='hide'
+        }
+        <</tabId>>
         <<#tabImage>>
         shopFilterImg {
           background-image:t='<<tabImage>>'

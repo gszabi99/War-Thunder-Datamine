@@ -77,7 +77,6 @@ def init_human_anim_states(evt : Event;
                            var human_anim__comboStateFullBodyWalk : int&;
                            var human_anim__comboStateFullBodyRun : int&;
                            var human_anim__comboStateFullBodyCrouch : int&;
-                           var human_anim__comboStateClimbTrajectory : int&;
                            var human_anim__comboStateDead : int&)
   assume animGraph = *animchar.animGraph
   human_anim__lowerStateStand = animGraph |> anim_graph_getStateIdx("lower_stand")
@@ -133,7 +132,6 @@ def init_human_anim_states(evt : Event;
   human_anim__comboStateFullBodyWalk = animGraph |> anim_graph_getStateIdx("full_body_walk")
   human_anim__comboStateFullBodyRun = animGraph |> anim_graph_getStateIdx("full_body_run")
   human_anim__comboStateFullBodyCrouch = animGraph |> anim_graph_getStateIdx("full_body_crouch")
-  human_anim__comboStateClimbTrajectory = animGraph |> anim_graph_getStateIdx("climb_trajectory")
   human_anim__comboStateDead = animGraph |> anim_graph_getStateIdx("dead")
 
 
@@ -190,7 +188,6 @@ def updateState(eid : EntityId;
                         human_anim__comboStateSwimOnWater : int;
                         human_anim__comboStateSwimUnderWater : int;
                         human_anim__comboStateClimbHigh : int;
-                        human_anim__comboStateClimbTrajectory : int;
                         human_anim__comboStateClimbLadder : int;
                         human_anim__comboStateUseMortar : int;
                         human_anim__comboStateClimbOverObstacle : int;
@@ -219,16 +216,12 @@ def updateState(eid : EntityId;
       res.lower = human_anim__comboStateFastClimb
       return
     if (state_flags & uint(HumanAnimStateFlags.Climbing)) != 0u
-      if human_net_phys.phys.useClimbTrajectory
-        res.upper = human_anim__comboStateClimbTrajectory
-        res.lower = human_anim__comboStateClimbTrajectory
+      if is_fpv && human_net_phys.phys.currentState.standState == HUStandState.ESS_CLIMB_THROUGH
+        res.upper = human_anim__upperStateFireReady
+        res.lower = human_anim__lowerStateStand
       else
-        if is_fpv && human_net_phys.phys.currentState.standState == HUStandState.ESS_CLIMB_THROUGH
-          res.upper = human_anim__upperStateFireReady
-          res.lower = human_anim__lowerStateStand
-        else
-          res.upper = human_anim__comboStateClimbHigh
-          res.lower = human_anim__comboStateClimbHigh
+        res.upper = human_anim__comboStateClimbHigh
+        res.lower = human_anim__comboStateClimbHigh
       return
     if (state_flags & uint(HumanAnimStateFlags.Ladder)) != 0u
       res.upper = human_anim__comboStateClimbLadder
@@ -424,7 +417,6 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__leanSpineRotateVarId : int&;
                          var human_anim__gunLengthCompensationVarId : int&;
                          var human_anim__fullBodyRootRotateVarId : int&;
-                         var human_anim__climbStageVarId : int&;
                          var human_anim__bodyDirVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
@@ -456,7 +448,6 @@ def init_human_anim_vars(evt : Event;
   human_anim__leanSpineRotateVarId = phys_vars |> registerVar("torso_lean_rotate", 0.0)
   human_anim__gunLengthCompensationVarId = phys_vars |> registerVar("gun_length_compensation", 0.0)
   human_anim__fullBodyRootRotateVarId = phys_vars |> registerVar("full_body_root_rotate", 0.0)
-  human_anim__climbStageVarId = phys_vars |> registerVar("climb_stage", 0.0)
 
 
 def private calc_head_pitch_yaw(state : HumanPhysState)
@@ -1027,7 +1018,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   if human_weap__mortarMode
     stateUpperBody = HumanStateUpperBody.E_USE_MORTAR
 
-  if !phys.useClimbTrajectory && isClimbing
+  if isClimbing
     let posHt = human_net_phys__climbToPos.y - unitTm[3].y
     var startPt = float2(0.0, 1.0)
     var endPt = float2(0.0, 1.0)
@@ -1373,38 +1364,3 @@ def human_anim_on_finish_equipping_es(info : ParallelUpdateFrameDelayed;
                                 previousWeapState != HUWeaponEquipState.EES_EQUIPED)
   if finishedChangingWeapon
     phys_vars |> setVar(human_anim__changeWeaponVarId, 0.0)
-
-
-[es(REQUIRE=hero, on_event=CmdUnitUpdateTransformComponent, before=human_save_tm)]
-def human_anim_update_climb_animation_es(info : Event;
-                                         var human_net_phys : HumanActor;
-                                         human_net_phys__isClimbing : bool;
-                                         human_anim__climbStageVarId : int;
-                                         human_anim__climbProgressVarId : int;
-                                         var phys_vars : PhysVars)
-  assume phys = human_net_phys.phys
-  if phys.useClimbTrajectory && human_net_phys__isClimbing
-    let interpK = get_phys_interpk_clamped(phys, get_sync_time())
-
-    phys_vars |> setVar(human_anim__climbStageVarId, float(phys.climbTrajectoryNextStage))
-    if (phys.climbTrajectoryNextStage == int(ClimbTrajectoryStage.CLIMB_STAGE_CLIMB) ||
-        phys.climbTrajectoryNextStage == int(ClimbTrajectoryStage.CLIMB_STAGE_JUMP_DOWN) ||
-        phys.climbTrajectoryNextStage == int(ClimbTrajectoryStage.CLIMB_STAGE_FLY_DOWN))
-      let interpolatedPosition = lerp(phys.climbTrajectoryPrevPosition, phys.climbTrajectoryNextPosition, interpK)
-      phys.visualLocation.P = DPoint3(interpolatedPosition)
-
-      if phys.climbTrajectoryTransitionK >= 0.f
-        
-        if interpK < phys.climbTrajectoryTransitionK
-          
-          let interpolatedProgress = lerp(phys.climbTrajectoryPrevProgress, 1.f, interpK / phys.climbTrajectoryTransitionK)
-          phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)
-          phys_vars |> setVar(human_anim__climbStageVarId, float(phys.climbTrajectoryPrevStage))
-        else
-          
-          let interpolatedProgress = lerp(0.f, phys.climbTrajectoryNextProgress, interpK - (interpK / phys.climbTrajectoryTransitionK))
-          phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)
-      else
-        
-        let interpolatedProgress = lerp(phys.climbTrajectoryPrevProgress, phys.climbTrajectoryNextProgress, interpK)
-        phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)

@@ -94,15 +94,23 @@
             "alignMode": "center",
             "css-hier-invalidate": "all"
           },
-          "tdiv": {
-            "id": "option_info_container",
-            "position": "absolute",
-            "pos": "0.45pw, 0",
-            "size": "0.55pw,ph",
-            "padding": "4@blockInterval, 1@blockInterval",
-            "flow": "vertical",
-            "display": "hide"
-          }
+          "tdiv": [
+            {
+              "id": "stickyHeaderNest",
+              "position": "absolute",
+              "size": "0.45pw - 10@sf/@pf, 0",
+              "background-color": "#FF20262c"
+            },
+            {
+              "id": "option_info_container",
+              "position": "absolute",
+              "pos": "0.45pw, 0",
+              "size": "0.55pw,ph",
+              "padding": "4@blockInterval, 1@blockInterval",
+              "flow": "vertical",
+              "display": "hide"
+            }
+          ]
         }
       },
       "navBar": {}
@@ -327,5 +335,10 @@
         }
       }
     }
+  },
+  "timer": {
+    "id": "options_update",
+    "timer_handler_func": "onUpdate",
+    "timer_interval_msec": "50"
   }
 }

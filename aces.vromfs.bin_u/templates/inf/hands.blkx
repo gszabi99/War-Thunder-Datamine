@@ -19,11 +19,27 @@
     "collres__res": "short_hands_collision"
   },
   "attachable_wear_hands_long_item": {
-    "_use": "attachable_hands",
+    "_use": [
+      "attachable_hands",
+      "node_collapser"
+    ],
+    "animchar_node_collapser__camThreshold": 0.25,
     "item__uniqueName": "attachable_wear_hands_long_item",
     "animchar__res": "hands_long_char",
     "collres__res": "hands_long_collision",
     "_tracked": "attaches_list",
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": "Bip01 Neck",
+        "Bip01 R UpperArm": "Bip01 Neck",
+        "Bip01 L UpperArm": "Bip01 Neck"
+      },
+      "animchar_node_collapser__thresholds:object": {
+        "Bip01 R UpperArm": 0.1,
+        "Bip01 L UpperArm": 0.1
+      }
+    },
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": "elbow"

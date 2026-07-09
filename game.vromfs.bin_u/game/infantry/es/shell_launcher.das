@@ -178,17 +178,29 @@ def launcher_add_timer_es(evt : Event;
                           var shell__explTime : float&)
   shell__explTime += explTimeAdd
 
+
+
+
 def create_shell_smoke_fx(shell__shell_id__shell_id : PropsId; pos : float3)
   proj_damage_fx_get_props(shell__shell_id__shell_id) <| $(dmgProps : ProjDamageFxProps)
-    if dmgProps.smokeShell
-      let fxName := get_name_by_type(dmgProps.smokeFxId)
-      if empty(fxName)
-        logerr("incorrect fx name for smoke grenade")
-        return
-      create_smoke(dmgProps.smokeActivateTime, dmgProps.smokeDeactivateTime,
-        dmgProps.smokeTime, pos, dmgProps.smokeShellRad,
-        49u,
-        dmgProps.smokeExplosionFxId, false, fxName);
+    static_if typeinfo(builtin_function_exists @@ < (arg0 : ProjDamageFxProps const implicit; arg1 : float3 const& implicit) : void > Weapon::maybe_create_explosion_smoke)
+      maybe_create_explosion_smoke(dmgProps, pos)
+      if dmgProps.smokeShell
+        if dmgProps.smokeFxId < 0
+          logerr("incorrect fx name for smoke grenade")
+          return
+        create_smoke(dmgProps, pos)
+    else
+      
+      if dmgProps.smokeShell
+        let fxName := get_name_by_type(dmgProps.smokeFxId)
+        if empty(fxName)
+          logerr("incorrect fx name for smoke grenade")
+          return
+        create_smoke(dmgProps.smokeActivateTime, dmgProps.smokeDeactivateTime,
+          dmgProps.smokeTime, pos, dmgProps.smokeShellRad,
+          49u,
+          dmgProps.smokeExplosionFxId, false, fxName);
 
 
 def clear_projectile_entity_impl(eid : EntityId;

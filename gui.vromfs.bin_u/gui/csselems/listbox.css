@@ -580,7 +580,8 @@ shopFilter > shopFilterImg[isLeftAligned=yes] {
 }
 
 shopFilter[selected=yes] > shopFilterImg,
-shopFilter[selected=yes] > flagImageHolder > img {
+shopFilter[selected=yes] > flagImageHolder > img,
+.header shopFilter[hasChangedIcon=yes] > shopFilterImg {
   background-color:@white;
 }
 
@@ -646,10 +647,23 @@ cornerImgGlow {
   pos:pw-w-6@sf/@pf, -0.5h;
 }
 
-.tabs[smallFont=yes] cornerImg[imgTiny=yes] {
+.tabs[smallFont=yes] cornerImg[imgTiny=yes],
+.header cornerImg[imgTiny=yes] {
   height:1@vtIco;
   background-svg-size:@vtIco, @vtIco;
   pos:pw-w, 0.5h;
+}
+
+.header cornerImg[imgTiny=yes][type=left] {
+  pos:1@blockInterval, 0.5h;
+}
+
+.header shopFilter[hasChangedIcon=yes] > cornerImg {
+  display:show;
+}
+
+.header shopFilter[hasChangedIcon=yes][selected=yes] > cornerImg {
+  display:hide;
 }
 
 navigationImage {

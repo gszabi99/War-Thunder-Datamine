@@ -444,11 +444,34 @@
     }
   },
   "attachable_wear_mnla_backpack_item": {
-    "_use": "attachable_backpack",
+    "_use": [
+      "attachable_backpack",
+      "node_collapser"
+    ],
     "item__uniqueName": "attachable_wear_mnla_backpack_item",
     "animchar__res": "mnla_backpack_char",
     "collres__res": "mnla_backpack_collision",
     "animchar_fast_phys__res": "mnla_backpack_fastphys",
+    "animchar_node_collapser__camThreshold": 0.2,
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": "chest_armor"
+    },
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": ""
+      }
+    }
+  },
+  "attachable_wear_fama_backpack_item": {
+    "_use": "attachable_backpack",
+    "item__uniqueName": "attachable_wear_fama_backpack_item",
+    "animchar__res": "fama_backpack_char",
+    "collres__res": "fama_backpack_collision",
+    "animchar_fast_phys__res": "fama_backpack_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
     },

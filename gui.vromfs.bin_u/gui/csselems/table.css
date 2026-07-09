@@ -1,4 +1,5 @@
 @const rowHoverBackgroundColor: #18181818;
+@const rowChangedBackgroundColor: #0E0E0E0E;
 @const rowFocusBackgroundColor: #332C2C2C;
 @const rowFocusForegroundColor: #C6AEAEAE;
 
@@ -11,6 +12,14 @@
 optiontext {
   min-width:pw-1*@scrn_tgt/100.0;   text-align:right;
   font:@option_font;
+}
+
+optionWithDiffBg {
+  position: absolute;
+  size: p.p.w, 0.75ph;
+  pos: -w, (ph-h)/2;
+  background-color:@rowChangedBackgroundColor;
+  display:hide;
 }
 
 optionBlockHeader {
@@ -449,6 +458,10 @@ tr[even=yes][queueTableRow=yes] {
   background-color:@evenQueueTableTrColor;
 }
 
+tr[optContainer=yes][hasChangedRow=yes][selected=no] > td > optionWithDiffBg {
+  display:show;
+}
+
 tr[selected=yes],
 .crewTable > tr:hover,
 .mpTable > tr:hover,
@@ -586,6 +599,15 @@ tr[active=yes] > td > optiontext {
   color:@hoverTextColor;
   move-start:yes;
 }
+.optionsTable[ignoreHoverState=yes] > tr:hover > td > optiontext,
+.optionsTable[ignoreHoverState=yes] > tr[active=yes] > td > optiontext {
+  color:@commonTextColor;
+}
+
+.optionsTable > tr[optContainer=yes][hasChangedRow=yes][selected=no] > td > optiontext{
+  color:@highlightedTextColor;
+}
+
 tr[selected=yes] > td > optiontext {
   color:@activeTextColor;
   font:@option_selected_font;
@@ -930,6 +952,9 @@ tr[optContainer=yes] > td[cellType=left] {
   padding-right:@optCellSeparatorMargin;
 }
 tr[optContainer=yes][hasLockedSign=yes] > td[cellType=left] {
+  padding-right:2.5@optCellSeparatorMargin;
+}
+tr[optContainer=yes][hasChangedIcon=yes] > td[cellType=left] {
   padding-right:2.5@optCellSeparatorMargin;
 }
 

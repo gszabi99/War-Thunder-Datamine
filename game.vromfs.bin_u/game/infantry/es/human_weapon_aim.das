@@ -51,8 +51,8 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
                      human_weap__holdBreathShakeMagnitudeMultViscosity : float = 1.0f;
                      human_weap__weaponShakeMagnitudeMult = 1.5f;
                      human_weap__weaponShakeMagnitudePow = 1.1f;
-                     human_weap__weaponShakeSpeedMult = 0.15f;
-                     human_weap__weaponShakeSpeedPow = 0.9f;
+                     human_weap__weaponShakeSpeedMult = 2.0f;
+                     human_weap__weaponShakeSpeedPow = -0.1f;
                      human_weap__weaponShakeDefaultWeight = 1.0f;
                      human_weap__magnificationCoeffs = float4(1.0, 1.0, 10.0, 0.5))
   assume currentState = human_net_phys.phys.currentState
@@ -113,7 +113,7 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
     let magnification = get_aim_optic_magnification(human_weap__currentGunEid, human_weap__currentGunModEids)
     breathFovMult = cvt(magnification, human_weap__magnificationCoeffs.x, human_weap__magnificationCoeffs.z, human_weap__magnificationCoeffs.y, human_weap__magnificationCoeffs.w)
 
-  currentState.breathOffset.x = perlin_noise1(timeMult * currentState.breathTime + 17.21) * shakeMagnitude * holdBreathSpeedMult * breathFovMult
+  currentState.breathOffset.x = 0.67 * perlin_noise1(1.5 * timeMult * currentState.breathTime + 17.21) * shakeMagnitude * holdBreathSpeedMult * breathFovMult
   currentState.breathOffset.y = perlin_noise1(timeMult * currentState.breathTime + 13.19) * shakeMagnitude * holdBreathSpeedMult * breathFovMult
 
   let handShakeMagnitude = currentState.handsShakeMagnitude

@@ -15,11 +15,15 @@ def reset_hero_cockpit_params(event : ParallelUpdateFrameDelayed;
                               var hero_cockpit_vec_value : float4&;
                               var hero_cockpit_camera_to_point_value : float4&;
                               var hero_cockpit_camera_enabled_value : int&;
-                              var hero_cockpit_camera_fade_value : int&)
+                              var hero_cockpit_camera_fade_value : int&;
+                              var hero_cockpit_bbox_min_value : float4&;
+                              var hero_cockpit_bbox_max_value : float4&)
   hero_cockpit_vec_value = float4(0, 0, 0, 0)
   hero_cockpit_camera_to_point_value = float4(0, 0, 0, 0) 
   hero_cockpit_camera_enabled_value = 0
   hero_cockpit_camera_fade_value = 0
+  hero_cockpit_bbox_min_value = float4(0, 0, 0, 0)
+  hero_cockpit_bbox_max_value = float4(0, 0, 0, 0)
 
 [es(tag=render, after=reset_hero_cockpit_params)]
 def update_and_provide_human_cockpit(event : ParallelUpdateFrameDelayed;
@@ -111,8 +115,12 @@ def update_and_provide_human_cockpit(event : ParallelUpdateFrameDelayed;
   query() <| $ [es] (var hero_cockpit_vec_value : float4&;
                      var hero_cockpit_camera_to_point_value : float4&;
                      var hero_cockpit_camera_enabled_value : int&;
-                     var hero_cockpit_camera_fade_value : int&)
+                     var hero_cockpit_camera_fade_value : int&;
+                     var hero_cockpit_bbox_min_value : float4&;
+                     var hero_cockpit_bbox_max_value : float4&)
     hero_cockpit_camera_enabled_value = 1
+    hero_cockpit_bbox_min_value = float4(heroBbox.boxMin, 0.0)
+    hero_cockpit_bbox_max_value = float4(heroBbox.boxMax, 0.0)
 
     if applyFade
       hero_cockpit_camera_fade_value = 1

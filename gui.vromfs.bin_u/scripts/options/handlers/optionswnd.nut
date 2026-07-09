@@ -14,8 +14,10 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_gui_option } = require("guiOptions")
 let optionsListModule = require("%scripts/options/optionsList.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
-let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged,
-  onRestartClient, onSystemOptionControlHover, updateGuiOptionsGroup
+let { fillSystemGuiOptions, resetSystemGuiOptions, resetSystemActiveTabDiffs,
+  getActiveTabDiffSectionTitles, onSystemGuiOptionChanged, onRestartClient,
+  onSystemOptionControlHover, updateGuiOptionsGroup, getOptionDiffTags,
+  getOptionSectionTitle, getOptionIdByObjId
 } = require("%scripts/options/systemOptions.nut")
 let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
@@ -94,14 +96,21 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   getOptionInfoViewFn = null
   lastHoveredRowId = null
+  lastHoveredDiffTabIds = null
 
   preloadOptionsImgTimer = null
   initOptionId = ""
+  curTabIdx = -1
+
+  stickyHeaders = null
+  curStickyId = ""
+  curSysoptsObjY = 0
 
   function initScreen() {
     if (!this.optGroups)
       base.goBack()
 
+    this.lastHoveredDiffTabIds = []
     base.initScreen()
     setBreadcrumbGoBackParams(this)
 
@@ -131,6 +140,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     showObjById("web_ui_button", showWebUI, this.scene)
     showObjById("assistant_map_qr_button", showAssistantMapQr, this.scene)
     this.selectOptionOnInit()
+    this.scene.findObject("options_update").setUserData(this)
   }
 
   function selectOptionOnInit() {
@@ -192,6 +202,10 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     this.setupSearch()
     this.joinEchoChannel(false)
     handlersManager.setLastBaseHandlerStartParams({ handlerName = "Options", params = getOptionsWndOpenParams(groupName) })
+
+    this.guiScene.replaceContentFromText(this.scene.findObject("stickyHeaderNest"), "", 0, this)
+    this.curStickyId = ""
+    this.stickyHeaders = null
   }
 
   function fillOptions(group) {
@@ -487,6 +501,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   function onSystemOptionChanged(obj) {
     onSystemGuiOptionChanged(obj)
+    if (obj?.id != null)
+      this.updateChangedTabIcons(getOptionIdByObjId(obj.id))
   }
 
   function onSystemOptionsRestartClient(_obj) {
@@ -498,15 +514,50 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     resetSystemGuiOptions()
   }
 
-  function onUnitTypeOptionSelect(obj) {
-    let groupIdx = to_integer_safe(obj?.sectionIdx, null, false)
-    let tabIdx = obj?.getValue()
-    if (groupIdx == null || tabIdx == null)
+  function onSystemOptionsResetTab(_obj) {
+    let titles = getActiveTabDiffSectionTitles()
+    if (titles.len() == 0)
       return
 
-    updateGuiOptionsGroup(groupIdx, tabIdx == 0)
-    
-    
+    let groupsList = ", ".join(titles.map(@(t) colorize("userlogColoredText", loc(t))))
+    scene_msg_box("ask_reset_tab_values", null,
+      loc("msgbox/ask_reset_tab_values", {groupsList}),
+      [
+        ["ok", @() resetSystemActiveTabDiffs()],
+        ["cancel", @() null]
+      ],
+      "no", { cancel_fn = @() null })
+  }
+
+  function implSwitchUnitTypeTab(headerObj, tabIdx, unitTypeTag, reqUpdate = true) {
+    let tabsObj = headerObj.findObject("tabs_list")
+    if (tabsObj?.isValid()) {
+      tabsObj.setValue(tabIdx)
+      let groupIdx = to_integer_safe(tabsObj.sectionIdx, null, false)
+      if (reqUpdate && groupIdx != null)
+        updateGuiOptionsGroup(groupIdx, tabIdx == 0, unitTypeTag)
+    }
+  }
+
+  function switchUnitTypeTab(tabIdx, unitTypeTag) {
+    let optinsContainerObj = this.scene.findObject("sysopts")
+    for (local i = 0; i < optinsContainerObj.childrenCount(); i++)
+      this.implSwitchUnitTypeTab(optinsContainerObj.getChild(i), tabIdx, unitTypeTag)
+
+    if (this.curStickyId != "") {
+      let stickyObj = this.scene.findObject("stickyHeaderNest").getChild(0)
+      if (stickyObj?.isValid())
+        this.implSwitchUnitTypeTab(stickyObj, tabIdx, unitTypeTag, false)
+    }
+  }
+
+  function onUnitTypeOptionSelect(obj) {
+    let tabIdx = obj?.getValue()
+    if (tabIdx == null || this.curTabIdx == tabIdx)
+      return
+
+    this.curTabIdx = tabIdx
+    this.switchUnitTypeTab(tabIdx, obj.getChild(tabIdx)?.unitTypeTag ?? "")
   }
 
   function passValueToParent(obj) {
@@ -552,6 +603,46 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       let cb = Callback(this.preloadOptionImages, this)
       this.preloadOptionsImgTimer =
         setTimeout(DELAY_BEFORE_PRELOAD_HOVERED_OPT_IMAGES_SEC, @() cb())
+    }
+
+    this.updateChangedTabIcons(id)
+  }
+
+  function updateStickyTab() {
+    if (this.curStickyId != "") {
+      let stickyObj = this.scene.findObject("stickyHeaderNest")
+      this.guiScene.replaceContentFromText(stickyObj, "", 0, this)
+      this.scene.findObject(this.curStickyId).getClone(stickyObj, this)
+    }
+  }
+
+  function updateChangedTabIcons(optionId) {
+    if (!hasFeature("HasTabsInGraphicsOption"))
+      return
+
+    foreach (tabId in this.lastHoveredDiffTabIds) {
+      let tabObj = this.scene.findObject(tabId)
+      if (tabObj?.isValid()) {
+        tabObj.hasChangedIcon = "no"
+        this.updateStickyTab()
+      }
+    }
+
+    this.lastHoveredDiffTabIds.clear()
+    let sectionTitle = getOptionSectionTitle(optionId)
+    if (sectionTitle == null)
+      return
+
+    foreach (tag, isValChanged in getOptionDiffTags(optionId)) {
+      if (!isValChanged)
+        continue
+      let tabId = $"{sectionTitle}_{tag}"
+      let tabObj = this.scene.findObject(tabId)
+      if (tabObj?.isValid()) {
+        tabObj.hasChangedIcon = "yes"
+        this.lastHoveredDiffTabIds.append(tabId)
+        this.updateStickyTab()
+      }
     }
   }
 
@@ -786,6 +877,55 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     if (option.optionCb != null)
       this[option.optionCb](obj)
+  }
+
+  function fillStickyHeaders(sysoptsObj) {
+    this.stickyHeaders = []
+    local childrenOffsetY = null
+    let sysoptsObjY = sysoptsObj.getPos()[1]
+    for (local i = 0; i < sysoptsObj.childrenCount(); i++) {
+      let child = sysoptsObj.getChild(i)
+      if (child?.headerRow != "yes")
+        continue
+
+      if (childrenOffsetY == null)
+        childrenOffsetY = sysoptsObjY - child.getPos()[1]
+
+      this.stickyHeaders.append({
+        id = child.id
+        vertDiff = 2 * sysoptsObjY - child.getPos()[1] + childrenOffsetY
+      })
+    }
+  }
+
+  function onUpdate(_obj, _dt) {
+    let sysoptsObj = this.scene.findObject("sysopts")
+    if (!sysoptsObj?.isValid())
+      return
+
+    if (this.stickyHeaders == null)
+      this.fillStickyHeaders(sysoptsObj)
+
+    let sysoptsObjY = sysoptsObj.getPos()[1]
+    if (this.curSysoptsObjY == sysoptsObjY)
+      return
+
+    this.curSysoptsObjY = sysoptsObjY
+    local headerId = ""
+    foreach (stickyHeader in this.stickyHeaders) {
+      if (sysoptsObjY >= stickyHeader.vertDiff)
+        break
+
+      headerId = stickyHeader.id
+    }
+
+    let stickyObj = this.scene.findObject("stickyHeaderNest")
+    if (headerId != this.curStickyId) {
+      this.curStickyId = headerId
+      this.guiScene.replaceContentFromText(stickyObj, "", 0, this)
+      if (this.curStickyId != "")
+        this.scene.findObject(headerId).getClone(stickyObj, this)
+    }
   }
 }
 

@@ -154,10 +154,18 @@ LockedImg[statusLock=limit] {
 
 optionsList > tr[hasLockedSign=yes] > td > LockedImg {
   pos: -4@blockInterval, (ph-h)/2;
-  size: @sIco, @sIco;
+  size: @tIco, @sIco;
   background-color: @disabledTextColor;
-  background-image: #ui/gameuiskin#locked.svg;
-  background-svg-size: @sIco, @sIco;
+  background-image: #ui/gameuiskin#locked_no_borders.svg;
+  background-svg-size: @tIco, @sIco;
+}
+
+optionsList > tr[hasChangedIcon=yes] > td > LockedImg {
+  pos: (@tIco-@vtIco)/2 - 4@blockInterval, (ph-h)/2;
+  size: @vtIco, @vtIco;
+  background-color: @commonTextColor;
+  background-image: #ui/gameuiskin#controls_help_point.svg;
+  background-svg-size: @vtIco, @vtIco;
 }
 
 LockedImg[statusLock=headerImage] {

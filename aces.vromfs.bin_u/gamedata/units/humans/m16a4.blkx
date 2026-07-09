@@ -159,13 +159,6 @@
   "heightChangeDeltaClampMin": -0.1,
   "heightChangeDeltaClampMax": 0.1,
   "leanDegrees": 45.0,
-  "useClimbTrajectory": false,
-  "climbTrajectoryStartPositionOffset": [
-    0.0,
-    -1.35,
-    0.0
-  ],
-  "climbTrajectorySpeedCoef": 0.5,
   "gunNode": "neck",
   "customClassIco": "!#ui/gameuiskin#infantry_ico.svg",
   "supportUnitClass": "structures/ussr_122mm_m30",
@@ -556,174 +549,6 @@
         "haveCollision": true
       }
     }
-  },
-  "climbTrajectoryClimb": {
-    "key": [
-      {
-        "t": 0.0,
-        "p": [
-          0.0,
-          0.0,
-          0.0
-        ]
-      },
-      {
-        "t": 0.0333333,
-        "p": [
-          -0.00366832,
-          0.154508,
-          0.00624166
-        ]
-      },
-      {
-        "t": 0.0666667,
-        "p": [
-          -0.00802425,
-          0.457577,
-          0.0135094
-        ]
-      },
-      {
-        "t": 0.1,
-        "p": [
-          -0.0154287,
-          1.00751,
-          0.0317584
-        ]
-      },
-      {
-        "t": 0.133333,
-        "p": [
-          -0.0215495,
-          1.45653,
-          0.0352275
-        ]
-      },
-      {
-        "t": 0.166667,
-        "p": [
-          -0.0239978,
-          1.63946,
-          0.0125616
-        ]
-      },
-      {
-        "t": 0.2,
-        "p": [
-          -0.0258249,
-          1.745,
-          -0.0138051
-        ]
-      },
-      {
-        "t": 0.233333,
-        "p": [
-          -0.027214,
-          1.80485,
-          -0.0436839
-        ]
-      },
-      {
-        "t": 0.266667,
-        "p": [
-          -0.0283481,
-          1.85071,
-          -0.0768871
-        ]
-      },
-      {
-        "t": 0.3,
-        "p": [
-          -0.0294103,
-          1.81763,
-          -0.113227
-        ]
-      },
-      {
-        "t": 0.333333,
-        "p": [
-          -0.0305838,
-          1.75313,
-          -0.152514
-        ]
-      },
-      {
-        "t": 0.366667,
-        "p": [
-          -0.0318252,
-          1.74481,
-          -0.190101
-        ]
-      },
-      {
-        "t": 0.4,
-        "p": [
-          -0.0329661,
-          1.74442,
-          -0.226834
-        ]
-      },
-      {
-        "t": 0.433333,
-        "p": [
-          -0.034002,
-          1.74855,
-          -0.270768
-        ]
-      },
-      {
-        "t": 0.466667,
-        "p": [
-          -0.0349283,
-          1.75382,
-          -0.329957
-        ]
-      },
-      {
-        "t": 0.5,
-        "p": [
-          -0.0357406,
-          1.75682,
-          -0.412458
-        ]
-      }
-    ]
-  },
-  "climbTrajectoryJumpDown": {
-    "key": [
-      {
-        "t": 0.0,
-        "p": [
-          0.0,
-          0.0,
-          0.0
-        ]
-      },
-      {
-        "t": 0.0333333,
-        "p": [
-          0.000634432,
-          0.0182583,
-          -0.321097
-        ]
-      },
-      {
-        "t": 0.0666667,
-        "p": [
-          0.00208738,
-          -0.150485,
-          -0.582856
-        ]
-      },
-      {
-        "t": 0.1,
-        "p": [
-          0.00359564,
-          -0.291525,
-          -0.698362
-        ]
-      }
-    ]
   },
   "weapons": {
     "primary": {
@@ -1119,5 +944,121 @@
         "blk": "gameData/units/humans/weaponPresets/presetsSolo//usa_class_assault_preset_4.blk"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "modern_urban",
+      "nameLocId": "skin/usa_weap_modern_urban",
+      "descLocId": "skin/usa_weap_modern_urban/desc",
+      "set_tex": [
+        {
+          "from": "m16a4_barrel_tex_d*",
+          "to": "m16a4_barrel_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_grip_tex_d*",
+          "to": "m16a4_grip_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_handguard_tex_d*",
+          "to": "m16a4_handguard_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_lower_receiver_tex_d*",
+          "to": "m16a4_lower_receiver_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_muzzle_tex_d*",
+          "to": "m16a4_muzzle_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_sight_tex_d*",
+          "to": "m16a4_sight_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_stock_tex_d*",
+          "to": "m16a4_stock_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_upper_barrel_tex_d*",
+          "to": "m16a4_upper_barrel_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_upper_receiver_tex_d*",
+          "to": "m16a4_upper_receiver_city_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m4a1_cover_tex_d*",
+          "to": "m4a1_cover_city_tex_d*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    },
+    {
+      "name": "modern_desert",
+      "nameLocId": "skin/usa_weap_modern_desert",
+      "descLocId": "skin/usa_weap_modern_desert/desc",
+      "set_tex": [
+        {
+          "from": "m16a4_barrel_tex_d*",
+          "to": "m16a4_barrel_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_grip_tex_d*",
+          "to": "m16a4_grip_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_handguard_tex_d*",
+          "to": "m16a4_handguard_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_lower_receiver_tex_d*",
+          "to": "m16a4_lower_receiver_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_muzzle_tex_d*",
+          "to": "m16a4_muzzle_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_sight_tex_d*",
+          "to": "m16a4_sight_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_stock_tex_d*",
+          "to": "m16a4_stock_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_upper_barrel_tex_d*",
+          "to": "m16a4_upper_barrel_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m16a4_upper_receiver_tex_d*",
+          "to": "m16a4_upper_receiver_desert_tex_d*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m4a1_cover_tex_d*",
+          "to": "m4a1_cover_desert_tex_d*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    }
+  ]
 }

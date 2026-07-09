@@ -314,6 +314,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   isRespawn = false 
   needRefreshSlotbarOnReinit = false
   lastHudUnitType = HUD_TYPE_UNKNOWN
+  lastRespawnMapHudType = null 
 
   canInitVoiceChatWithSquadWidget = true
 
@@ -1740,19 +1741,23 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       }
   }
 
-  function updateTacticalMapUnitType(isMapForSelectedUnit = null) {
-    local hudType = HUD_TYPE_UNKNOWN
-    if (this.isRespawn) {
-      if (isMapForSelectedUnit == null)
-        isMapForSelectedUnit = !this.isSpectate
-      let unit = isMapForSelectedUnit ? this.getCurSlotUnit() : null
-      if (unit)
-        hudType = unit.unitType.hudTypeCode
-    }
-    else
-      hudType = isForcedHudType() ? getCurHudType()
-        : unitTypeByHudUnitType?[getHudUnitType()].hudTypeCode ?? HUD_TYPE_UNKNOWN
+  function getRespawnSelectedUnitHudType(isMapForSelectedUnit) {
+    if (isMapForSelectedUnit == null)
+      isMapForSelectedUnit = !this.isSpectate
+    let unit = isMapForSelectedUnit ? this.getCurSlotUnit() : null
+    return unit ? unit.unitType.hudTypeCode : HUD_TYPE_UNKNOWN
+  }
 
+  function getMapBrowseHudType(isMapForSelectedUnit) {
+    let curUnitHudType = unitTypeByHudUnitType?[getHudUnitType()].hudTypeCode ?? HUD_TYPE_UNKNOWN
+    if (isMapForSelectedUnit == false) 
+      return curUnitHudType
+    return this.lastRespawnMapHudType ?? (isForcedHudType() ? getCurHudType() : curUnitHudType)
+  }
+
+  function updateTacticalMapUnitType(isMapForSelectedUnit = null) {
+    let hudType = this.isRespawn ? this.getRespawnSelectedUnitHudType(isMapForSelectedUnit)
+      : this.getMapBrowseHudType(isMapForSelectedUnit)
     if (this.lastHudUnitType == hudType)
       return
     this.lastHudUnitType = hudType
@@ -3090,6 +3095,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     let nextUnitType = this.getNextType(curHudType)
     setForcedHudType(nextUnitType)
+    this.lastRespawnMapHudType = nextUnitType
+    this.lastHudUnitType = nextUnitType
     obj.findObject("hud_type_img")["background-image"] = getZoomIconByUnitType(this.getNextType(nextUnitType))
   }
 

@@ -53,9 +53,16 @@ local mCfgCurrent = {}
 local mScriptValid = true
 local mValidationError = ""
 local mMaintainDone = false
+let mCfgDiffs = {}
+let mCfgCommon = {}
+let mCfgDiffsCurrent = {} 
+
+let mActiveTabTags = {}
 const mRowHeightScale = 1.0
 const mMaxSliderSteps = 50
 local prevRtMode = null
+
+let CONFIG_DIFF_PATH_PREFIX = "config_diff_"
 
 let mQualityPresets = DataBlock()
 mQualityPresets.load("%guiConfig/graphicsPresets.blk")
@@ -320,6 +327,118 @@ function configValueToGuiValue(id, value) {
   return desc?.configValueToGuiValue(value) ?? value
 }
 
+function readGuiValueFromBlk(id, blk) {
+  let desc = mSettings?[id]
+  if (desc == null)
+    return null
+
+  let v = desc?.getValueFromConfig(blk, desc) ?? getBlkValueByPath(blk, desc.blk, desc.def)
+  return configValueToGuiValue(id, v)
+}
+
+function isOptionChangedFromCommon(optionId, isCommon, unitTypeTag) {
+  if ((mSettings?[optionId].blk) == null)
+    return false
+  if (optionId not in mCfgCommon)
+    return false
+
+  let commonGui = mCfgCommon[optionId]
+  if (isCommon) {
+    foreach (_tag, tagCfg in mCfgDiffsCurrent) {
+      if (optionId not in tagCfg)
+        continue
+      if (tagCfg[optionId] != commonGui)
+        return true
+    }
+    return false
+  }
+
+  let tagCfg = mCfgDiffsCurrent?[unitTypeTag]
+  if (tagCfg == null || optionId not in tagCfg)
+    return false
+  return tagCfg[optionId] != commonGui
+}
+
+function getOptionDiffTags(id) {
+  let res = {}
+  let blkPath = mSettings?[id].blk
+  if (blkPath == null)
+    return res
+  foreach (tag, _diffBlk in mCfgDiffs)
+    res[tag] <- isOptionChangedFromCommon(id, false, tag)
+  return res
+}
+
+function getActiveTabDiffSectionTitles() {
+  let res = []
+  foreach (sectionIdx, tag in mActiveTabTags) {
+    if (tag == "")
+      continue
+    let section = mUiStruct?[sectionIdx]
+    if (section == null)
+      continue
+    let items = section?.items ?? []
+    local hasDiff = false
+    foreach (optionId in items)
+      if (isOptionChangedFromCommon(optionId, false, tag)) {
+        hasDiff = true
+        break
+      }
+    if (hasDiff && section?.title != null)
+      res.append(section.title)
+  }
+  return res
+}
+
+function hasActiveTabDiffs() {
+  if (!hasFeature("HasTabsInGraphicsOption"))
+    return false
+  foreach (sectionIdx, tag in mActiveTabTags) {
+    if (tag == "")
+      continue
+    let items = mUiStruct?[sectionIdx].items ?? []
+    foreach (optionId in items)
+      if (isOptionChangedFromCommon(optionId, false, tag))
+        return true
+  }
+  return false
+}
+
+function getOptionSectionTitle(itemId) {
+  foreach (section in mUiStruct) {
+    let { title, id = null, items = null } = section
+    if (items ? items.indexof(itemId) != null : id == itemId)
+      return title
+  }
+  return null
+}
+
+function getOptionSectionIdx(itemId) {
+  foreach (idx, section in mUiStruct) {
+    let { id = null, items = null } = section
+    if (items ? items.indexof(itemId) != null : id == itemId)
+      return idx
+  }
+  return -1
+}
+
+let getActiveTagForOption = @(itemId) mActiveTabTags?[getOptionSectionIdx(itemId)] ?? ""
+
+function updateOptionChangedIcon(optionId) {
+  if (!hasFeature("HasTabsInGraphicsOption"))
+    return
+
+  let optionObj = mHandler?.scene.findObject($"{optionId}_tr")
+  if (!(optionObj?.isValid() ?? false))
+    return
+
+  let activeTag = getActiveTagForOption(optionId)
+  let isCommon = activeTag == ""
+  let hasChanged = isOptionChangedFromCommon(optionId, isCommon, activeTag)
+  optionObj.hasChangedIcon = isCommon && hasChanged ? "yes" : "no"
+  optionObj.hasChangedRow = !isCommon && hasChanged ? "yes" : "no"
+}
+
 function validateGuiValue(id, value) {
   if (!isPC)
     return value
@@ -475,6 +594,7 @@ function updateGuiNavbar(show = true) {
   let applyText = loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
 
   showObjById("btn_reset", show && isSavePending(), scene)
+  showObjById("btn_reset_tab", show && hasActiveTabDiffs(), scene)
   showObjById("restart_suggestion", showText, scene)
   showObjById("btn_restart", showRestartButton, scene)
   showObjById("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
@@ -482,6 +602,27 @@ function updateGuiNavbar(show = true) {
   let objNavbarApplyButton = scene.findObject("btn_apply")
   if (objNavbarApplyButton?.isValid())
     objNavbarApplyButton.setValue(applyText)
+}
+
+function resetActiveTabDiffs() {
+  if (!hasFeature("HasTabsInGraphicsOption"))
+    return
+  foreach (sectionIdx, tag in mActiveTabTags) {
+    if (tag == "")
+      continue
+    let items = mUiStruct?[sectionIdx].items ?? []
+    let tagCfg = mCfgDiffsCurrent?[tag]
+    foreach (optionId in items) {
+      if (tagCfg != null && optionId in tagCfg)
+        tagCfg.$rawdelete(optionId)
+      if (optionId in mCfgCommon)
+        setGuiValue(optionId, mCfgCommon[optionId])
+      updateOptionChangedIcon(optionId)
+    }
+    if (tagCfg != null && tagCfg.len() == 0)
+      mCfgDiffsCurrent.$rawdelete(tag)
+  }
+  updateGuiNavbar(true)
 }
 
 function pickQualityPreset() {
@@ -827,6 +968,18 @@ mShared = {
   presetCheck = function() {
     let preset = pickQualityPreset()
     setGuiValue("graphicsQuality", preset)
+    
+    
+    
+    
+    let activeTag = getActiveTagForOption("graphicsQuality")
+    if (activeTag == "")
+      mCfgCommon["graphicsQuality"] <- mCfgCurrent["graphicsQuality"]
+    else {
+      if (activeTag not in mCfgDiffsCurrent)
+        mCfgDiffsCurrent[activeTag] <- {}
+      mCfgDiffsCurrent[activeTag]["graphicsQuality"] <- mCfgCurrent["graphicsQuality"]
+    }
   }
 
   resolutionClick = function() {
@@ -1479,6 +1632,16 @@ mSettings = {
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
     infoImgPattern = "#ui/images/settings/graphicsQuality/%s"
+    init = function(_blk, desc) {
+      
+      let isCommonTab = getActiveTagForOption("graphicsQuality") == ""
+      desc.items <- desc.values.map(function(v) {
+        let item = { text = localize("graphicsQuality", v) }
+        if (v == "ultralow" && !isCommonTab)
+          item.enabled <- false
+        return item
+      })
+    }
   }
 
   antialiasingMode = { widgetType = "list" def = "off" blk = "video/antialiasing_mode" restart = false
@@ -2064,17 +2227,51 @@ function validateInternalConfigs() {
       $"not valid system option list /*errorString = {"\n".join(errorsList, true)}*/")
 }
 
+function refreshCfgDiffsFromBlk() {
+  mCfgDiffs.clear()
+  if (!hasFeature("HasTabsInGraphicsOption"))
+    return
+  foreach (unitType in unitTypes.types) {
+    if (!(unitType?.hasGraphicsPreset ?? false))
+      continue
+    let tag = unitType?.tag ?? ""
+    if (tag == "")
+      continue
+    let diffBlk = mBlk?[$"{CONFIG_DIFF_PATH_PREFIX}{tag}"]
+    if (diffBlk != null)
+      mCfgDiffs[tag] <- diffBlk
+  }
+}
+
 function configRead() {
   mCfgInitial = {}
   mCfgCurrent = {}
+  mCfgCommon.clear()
+  mCfgDiffsCurrent.clear()
+  mActiveTabTags.clear()
   mBlk = blkOptFromPath(get_config_name())
+  refreshCfgDiffsFromBlk()
+
   foreach (id, desc in mSettings) {
     if ("init" in desc)
       desc.init(mBlk, desc)
-    local value = ("getValueFromConfig" in desc) ? desc.getValueFromConfig(mBlk, desc) : getBlkValueByPath(mBlk, desc.blk, desc.def)
-    value = configValueToGuiValue(id, value)
+    local value = readGuiValueFromBlk(id, mBlk)
     mCfgInitial[id] <- value
     mCfgCurrent[id] <- validateGuiValue(id, value)
+    mCfgCommon[id] <- mCfgCurrent[id]
+  }
+
+  foreach (tag, diffBlk in mCfgDiffs) {
+    let tagCfg = {}
+    foreach (id, desc in mSettings) {
+      let blkPath = desc?.blk
+      if (blkPath == null)
+        continue
+      if (getBlkValueByPath(diffBlk, blkPath, null) == null)
+        continue
+      tagCfg[id] <- validateGuiValue(id, readGuiValueFromBlk(id, diffBlk))
+    }
+    mCfgDiffsCurrent[tag] <- tagCfg
   }
 
   if (!mCfgStartup.len())
@@ -2098,8 +2295,23 @@ function configWrite() {
   }
 
   log("[sysopt] Saving config:")
+  foreach (sectionIdx, tag in mActiveTabTags) {
+    foreach (optionId in mUiStruct?[sectionIdx].items ?? []) {
+      if (!(optionId in mCfgCurrent))
+        continue
+      let value = mCfgCurrent[optionId]
+      if (tag == "")
+        mCfgCommon[optionId] <- value
+      else {
+        if (tag not in mCfgDiffsCurrent)
+          mCfgDiffsCurrent[tag] <- {}
+        mCfgDiffsCurrent[tag][optionId] <- value
+      }
+    }
+  }
+
   foreach (id, _ in mCfgCurrent) {
-    let value = getGuiValue(id)
+    let value = mCfgCommon?[id] ?? getGuiValue(id)
     if (mCfgInitial?[id] != value)
       log($"[sysopt] {id}: {mCfgInitial?[id] ?? "null"} -> {value}")
     let desc = getOptionDesc(id)
@@ -2113,7 +2325,28 @@ function configWrite() {
       setBlkValueByPath(mBlk, desc.blk, value)
   }
 
+  foreach (tag, tagCfg in mCfgDiffsCurrent) {
+    let blkName = $"{CONFIG_DIFF_PATH_PREFIX}{tag}"
+    mBlk.removeBlock(blkName)
+    local diffBlk = null
+    foreach (id, value in tagCfg) {
+      let desc = getOptionDesc(id)
+      if (!(desc?.isVisible() ?? true))
+        continue
+      let commonValue = (id in mCfgCommon) ? mCfgCommon[id] : null
+      if (value == commonValue)
+        continue
+      if (diffBlk == null)
+        diffBlk = mBlk.addBlock(blkName)
+      if ("setGuiValueToConfig" in desc)
+        desc.setGuiValueToConfig(diffBlk, desc, value)
+      else
+        setBlkValueByPath(diffBlk, desc.blk, value)
+    }
+  }
+
   mBlk.saveToTextFile(get_config_name())
+  refreshCfgDiffsFromBlk()
   log("[sysopt] Config saved.")
 }
 
@@ -2161,9 +2394,23 @@ function configFree() {
   mContainerObj = null
   mCfgInitial = {}
   mCfgCurrent = {}
+  mCfgCommon.clear()
+  mCfgDiffs.clear()
+  mCfgDiffsCurrent.clear()
+  mActiveTabTags.clear()
 }
 
 function resetGuiOptions() {
+  mCfgCommon.clear()
+  mCfgDiffsCurrent.clear()
+  mActiveTabTags.clear()
+
+  if (mBlk) {
+    foreach (tag, _diffBlk in mCfgDiffs)
+      mBlk.removeBlock($"{CONFIG_DIFF_PATH_PREFIX}{tag}")
+  }
+  mCfgDiffs.clear()
+
   foreach (id, value in mCfgInitial) {
     setGuiValue(id, value)
   }
@@ -2232,6 +2479,10 @@ function isReloadSceneRerquired() {
       return true
   return false
 }
+
+let isOnlyCommonOption = @(optionId)
+  isInArray(optionId, reloadSceneOptionIds) || (mSettings?[optionId].restart ?? false)
+
 
 function onRestartClient() {
   configWrite()
@@ -2354,12 +2605,23 @@ function onGuiOptionChanged(obj) {
     return
 
   setGuiValue(id, value, true)
+
+  let activeTag = getActiveTagForOption(id)
+  if (activeTag == "")
+    mCfgCommon[id] <- mCfgCurrent[id] 
+  else {
+    if (activeTag not in mCfgDiffsCurrent)
+      mCfgDiffsCurrent[activeTag] <- {}
+    mCfgDiffsCurrent[activeTag][id] <- mCfgCurrent[id]
+  }
   if (("onChanged" in desc) && desc.onChanged)
     desc.onChanged()
 
   if (id != "graphicsQuality")
     mShared.presetCheck()
   updateGuiNavbar(true)
+
+  updateOptionChangedIcon(id)
 
   tryUpdateOptionImage(id)
 }
@@ -2378,19 +2640,19 @@ function updateSliderText(obj, val, sliderPrintFormat) {
 function mkOptionHeaderRow(sectionIdx, title, addInfo, tabs) {
   let addTxt = addInfo == null ? "" : loc("ui/parentheses/space", { text = loc(addInfo) })
   let view = {
+    id = $"header_{sectionIdx}"
     headerText = "".concat(loc(title), addTxt)
     sectionIdx
+    tabs = null
   }
-  
-
-
-
-
-
-
-
-
-
+  if (hasFeature("HasTabsInGraphicsOption"))
+    view.tabs = tabs.map(@(tab, tabIdx) {
+      tabId = (tab?.unitTypeTag ?? "") == "" ? null : $"{title}_{tab.unitTypeTag}"
+      tabName = tab?.locId ? loc(tab.locId) : null
+      tabImage = tab?.image
+      selected = tabIdx == 0
+      unitTypeTag = tab?.unitTypeTag ?? ""
+    })
   return handyman.renderCached(("%gui/options/optionsHeaderWithTabs.tpl"), view)
 }
 
@@ -2419,7 +2681,7 @@ function fillGuiOptions(containerObj, handler) {
   let unitTypesTabs = [{ locId = "unlocks/group/common" }]
     .extend(unitTypes.types
       .filter(@(v) (v?.hasGraphicsPreset ?? false) && (v?.isAvailable() ?? false))
-      .map(@(v) { image = v.testFlightIcon }))
+      .map(@(v) { image = v.testFlightIcon, unitTypeTag = v.tag }))
 
   local data = ""
   foreach (sectionIdx, section in mUiStruct) {
@@ -2494,14 +2756,18 @@ function fillGuiOptions(containerObj, handler) {
         let disabledTooltip = disabled == "yes" ? getDisabledOptionTooltip(itemId) : null
         let tooltipProp = disabledTooltip != null ? $" tooltip:t='{disabledTooltip}';" : ""
         let label = stripTags("".join([optionName, requiresRestart ? $"{nbsp}*" : $"{nbsp}{nbsp}"]))
+        local hasChangedIcon = "no"
+        if (hasFeature("HasTabsInGraphicsOption"))
+          hasChangedIcon = isOptionChangedFromCommon(itemId, true, "") ? "yes" : "no"
 
         option = "".concat("tr { id:t='", itemId, "_tr'; disabled:t='", disabled, "' disabledVal:t='", disabled,
-          "' selected:t='no'", tooltipProp, " hasLockedSign:t='no' size:t='pw, ", mRowHeightScale,
+          "' selected:t='no'", tooltipProp, " hasLockedSign:t='no' hasChangedIcon:t='", hasChangedIcon,
+          "' hasChangedRow:t='no' size:t='pw, ", mRowHeightScale,
           "@optContainerHeight' overflow:t='hidden' optContainer:t='yes' on_hover:t='onOptionContainerHover'",
           " td { width:t='0.50pw'; cellType:t='left'; overflow:t='hidden'; height:t='", mRowHeightScale,
-          "@optContainerHeight' optiontext {text:t='", label, "'} LockedImg{} }",
+          "@optContainerHeight' optiontext {text:t='", label, "'} }",
           " td { width:t='0.50pw'; cellType:t='right';  height:t='", mRowHeightScale,
-          "@optContainerHeight' padding-left:t='@optPad'; LockedImg{} cellSeparator{}", option, " } }"
+          "@optContainerHeight' padding-left:t='@optPad'; optionWithDiffBg{} LockedImg{} cellSeparator{}", option, " } }"
         )
       }
       data = "".concat(data, option)
@@ -2513,18 +2779,60 @@ function fillGuiOptions(containerObj, handler) {
   onGuiLoaded()
 }
 
-function updateGuiOptionsGroup(groupIdx, isCommon) {
-  foreach (optionId in mUiStruct?[groupIdx].items ?? []) {
-    if (!isInArray(optionId, reloadSceneOptionIds) && !(mSettings?[optionId].restart ?? false))
-      continue
+function updateGuiOptionsGroup(groupIdx, isCommon, unitTypeTag) {
+  let prevTag = mActiveTabTags?[groupIdx] ?? ""
+  let newTag = isCommon ? "" : unitTypeTag
 
+  let sectionItems = mUiStruct?[groupIdx].items ?? []
+  if (prevTag != newTag) {
+    foreach (optionId in sectionItems) {
+      if (!(optionId in mCfgCurrent))
+        continue
+      let value = mCfgCurrent[optionId]
+      if (prevTag == "")
+        mCfgCommon[optionId] = value
+      else if (!isOnlyCommonOption(optionId)) {
+        if (prevTag not in mCfgDiffsCurrent)
+          mCfgDiffsCurrent[prevTag] <- {}
+        mCfgDiffsCurrent[prevTag][optionId] <- value
+      }
+    }
+    mActiveTabTags[groupIdx] <- newTag
+  }
+
+  foreach (optionId in sectionItems) {
     let optionObj = mHandler.scene.findObject($"{optionId}_tr")
     if (!(optionObj?.isValid() ?? false))
       continue
 
-    optionObj.disabled = isCommon ? optionObj.disabledVal : "yes"
-    optionObj.hasLockedSign = isCommon ? "no" : "yes"
+    if (isOnlyCommonOption(optionId)) {
+      optionObj.disabled = isCommon ? optionObj.disabledVal : "yes"
+      optionObj.hasLockedSign = isCommon ? "no" : "yes"
+    }
+
+    
+    if (optionId == "graphicsQuality") {
+      updateOption(optionId)
+      
+      enableGuiOption(optionId, isCommon || mCfgCommon?[optionId] != "ultralow")
+    }
+
+    if (optionId in mCfgCommon) {
+      local target = mCfgCommon[optionId]
+      if (!isCommon && newTag != "" && newTag in mCfgDiffsCurrent
+          && optionId in mCfgDiffsCurrent[newTag])
+        target = mCfgDiffsCurrent[newTag][optionId]
+      setGuiValue(optionId, target)
+    }
+
+    if (hasFeature("HasTabsInGraphicsOption")) {
+      let hasChanged = isOptionChangedFromCommon(optionId, isCommon, unitTypeTag)
+      optionObj.hasChangedIcon = isCommon && hasChanged ? "yes" : "no"
+      optionObj.hasChangedRow = !isCommon && hasChanged ? "yes" : "no"
+    }
   }
+
+  updateGuiNavbar(true)
 }
 
 function checkShowGraphicSettingsWasModified() {
@@ -2594,6 +2902,8 @@ init()
 return {
   fillSystemGuiOptions = fillGuiOptions
   resetSystemGuiOptions = resetGuiOptions
+  resetSystemActiveTabDiffs = resetActiveTabDiffs
+  getActiveTabDiffSectionTitles
   onSystemGuiOptionChanged = onGuiOptionChanged
   onRestartClient = onRestartClient
   getVideoResolution = mShared.getVideoResolution
@@ -2612,4 +2922,7 @@ return {
   isVrModeEnable
   disableVrModeValue
   updateGuiOptionsGroup
+  getOptionDiffTags
+  getOptionSectionTitle
+  getOptionIdByObjId
 }
