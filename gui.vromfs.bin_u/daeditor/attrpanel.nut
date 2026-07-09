@@ -975,9 +975,10 @@ let mkCompFlagTag = memoize(@(text) mkTagFromTextColor(text, Color(40,90,90, 50)
 let mkFlagTags = @(eid, rawComponentName)
   get_tags(ecs.get_comp_flags(eid, rawComponentName)).map(mkCompFlagTag)
 
+let updateAttrComponentTimer = @() selectedCompName.trigger()
 function updateAttrComponent(eid, cname) {
   updateComp(eid, cname)
-  gui_scene.resetTimeout(0.1, @() selectedCompName.trigger())
+  gui_scene.resetTimeout(0.1, updateAttrComponentTimer)
 }
 
 mkCompObject = function(eid, rawComponentName, rawObject, isLocked, caption=null, onChange = null, path = null){

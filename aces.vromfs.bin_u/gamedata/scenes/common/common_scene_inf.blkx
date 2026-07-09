@@ -112,11 +112,17 @@
     },
     {
       "_template": "bloom_settings",
-      "bloom_settings__halation_brightness": 1.0,
+      "bloom_settings__halation_brightness": 2.0,
+      "bloom_settings__halation_color": [
+        0,
+        40,
+        255,
+        0
+      ],
       "bloom_settings__threshold": 0.1,
-      "bloom_settings__radius": 15.0,
-      "bloom_settings__upSample": 1.1,
-      "bloom_settings__mul": 0.03
+      "bloom_settings__radius": 7.0,
+      "bloom_settings__upSample": 0.8,
+      "bloom_settings__mul": 0.075
     },
     {
       "_template": "outline_renderer"
@@ -166,7 +172,30 @@
     },
     {
       "_template": "adaptation_default_settings",
-      "adaptation_default_settings:object": {}
+      "adaptation_default_settings:object": {
+        "adaptation__autoExposureScale": 1.0,
+        "adaptation__maxExposure": 16.0,
+        "adaptation__minExposure": 0.25,
+        "adaptation__luminanceLowRange": 0.0,
+        "adaptation__luminanceHighRange": 0.8,
+        "adaptation__useLuminanceTrimming": true,
+        "adaptation__includesHeroCockpit": false,
+        "adaptation__minSamples": 9.5,
+        "adaptation__focusOnAim": true,
+        "adaptation__focusAimScale": [
+          0.5,
+          0.5
+        ],
+        "adaptation__adaptDownSpeed": 12.0,
+        "adaptation__adaptUpSpeed": 24.0,
+        "adaptation__brightnessPerceptionLinear": 1.0,
+        "adaptation__brightnessPerceptionPower": 0.55,
+        "adaptation__fixedExposure": -1.0,
+        "adaptation__fnUniformSamplesPercentage": 25.0,
+        "adaptation__fnUniformDistributionRadius": 0.25,
+        "adaptation__fnNonLinearDistributionRadius": 1.0,
+        "adaptation__fnNonLinearDistributionCurvinesPow": 0.9
+      }
     }
   ]
 }
