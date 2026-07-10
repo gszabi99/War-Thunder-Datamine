@@ -37,7 +37,8 @@ function getKillerCardView(messageData, userInfo) {
   if (!isKillerCardData(messageData))
     return null
   let { playerId = -1, killerProjectileName = "", isDebugData = false, action = "",
-    weaponEcsTemplateName = "", offenderHits = "", offenderHp = -1, offenderArmorSegmentsInfo = ""
+    weaponEcsTemplateName = "", offenderHits = "", offenderHp = -1, offenderArmorSegmentsInfo = "",
+    unitType = UT_Unknown
   } = messageData
   let { aircraftName, name, clanTag = "", title = "", aircraft } = isDebugData ? messageData
     : get_mplayer_by_id(playerId)
@@ -73,7 +74,7 @@ function getKillerCardView(messageData, userInfo) {
     areaLocId = loc($"hits/area/{area}"), hitsNum = offenderHitsTable?[area] ?? 0
   })
 
-  let needShowXrayDoll = offenderHp >= 0 && offenderArmorSegmentsInfo != ""
+  let needShowXrayDoll = offenderHp >= 0 && offenderArmorSegmentsInfo != "" && unitType == UT_Human
   return {
     cardCaption = "".concat(utf8Capitalize(loc("NET_UNIT_KILLED_BY_PLAYER")), loc("ui/colon"))
     pilotIcon = $"#ui/images/avatars/{getAvatarIconIdByUserInfo(userInfo)}.avif"
