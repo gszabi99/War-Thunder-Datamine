@@ -637,7 +637,9 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   function updateTables(dt) {
     this.updateCooldown -= dt
     if (this.updateCooldown <= 0) {
+      this.guiScene.setUpdatesEnabled(false, false)
       this.updateStats()
+      this.guiScene.setUpdatesEnabled(true, true)
       this.updateCooldown = 3
     }
 

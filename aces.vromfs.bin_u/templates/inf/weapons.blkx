@@ -4162,10 +4162,19 @@
     "gun__recoilControlMult": 0.2,
     "weapon__aimNodeOffset": 0.3,
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.09,
+          0.025
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {

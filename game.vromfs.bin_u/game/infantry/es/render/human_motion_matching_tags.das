@@ -62,8 +62,8 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
     remove_tag(motion_matching__controller, mm_tag_id__stand)
     remove_tag(motion_matching__controller, mm_tag_id__crouch)
     remove_tag(motion_matching__controller, mm_tag_id__turnOnSpot)
-    remove_tag(motion_matching__controller, mm_tag_id__fullBodyMovement)
-    remove_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch)
+    set_tag(motion_matching__controller, mm_tag_id__fullBodyMovement, false)
+    set_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch, false)
 
     
     

@@ -310,7 +310,7 @@ def human_request_placing_es(evt : Event;
                              bipod__anchorYawLimit : float2;
                              bipod__recoilMult : float;
                              bipod__isRest : bool)
-  send_net_event(eid, RequestBipodPlacing(enabled        = bipod__enabled,
+  send_net_event(eid, RequestBipodPlacingV2(enabled        = bipod__enabled,
                                             isCrawl        = bipod__isCrawl,
                                             anchorPos      = bipod__anchorPos,
                                             anchorDir      = bipod__anchorDir,

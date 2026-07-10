@@ -93,6 +93,18 @@ struct RequestBipodPlacing
   anchorNormal : float3
   anchorYawLimit : float2
   recoilMult : float
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct RequestBipodPlacingV2
+  enabled : bool
+  isCrawl : bool
+  anchorPos : float3
+  anchorDir : float3
+  anchorHeight : float
+  anchorOffset : float3
+  anchorNormal : float3
+  anchorYawLimit : float2
+  recoilMult : float
   mountIsRest : bool
 
 [cpp_event(unicast, with_scheme)]
@@ -550,7 +562,7 @@ struct EventOnLootUse
 [event(unicast)]
 struct EventInterruptItemUse {}
 
-[event(unicast)]
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventEntityDied
   victim : EntityId
   offender : EntityId

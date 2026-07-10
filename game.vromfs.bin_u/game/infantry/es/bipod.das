@@ -442,7 +442,7 @@ def bipod_human_post_phys_act_es(evt : CmdPostPhysUpdate;
   bipod__prevBodyDirYaw = dir_to_angles(float3(newBodyDir.x, 0.0, newBodyDir.z)).x
 
 [es(tag=server)]
-def human_place_bipod_server_es(evt : RequestBipodPlacing;
+def human_place_bipod_server_es(evt : RequestBipodPlacingV2;
                                 var bipod__enabled : bool&;
                                 var bipod__isCrawl : bool&;
                                 var bipod__anchorPos : float3&;
