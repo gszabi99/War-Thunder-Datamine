@@ -1235,11 +1235,17 @@
     "item__uniqueName": "attachable_wear_mnla_jacket_item",
     "animchar__res": "mnla_jacket_char",
     "collres__res": "mnla_jacket_collision",
-    "animchar_node_collapser__camThreshold": 0.2,
+    "animchar_node_collapser__camThreshold": 0.25,
     "_group": {
       "_tags": "render",
       "animchar_node_collapser__nodes:object": {
-        "Bip01 Spine1": ""
+        "Bip01 Spine1": "Bip01 Neck",
+        "Bip01 R UpperArm": "Bip01 Neck",
+        "Bip01 L UpperArm": "Bip01 Neck"
+      },
+      "animchar_node_collapser__thresholds:object": {
+        "Bip01 R UpperArm": 0.1,
+        "Bip01 L UpperArm": 0.1
       }
     }
   },
