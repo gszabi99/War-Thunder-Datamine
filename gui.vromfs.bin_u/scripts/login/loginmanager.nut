@@ -1,4 +1,5 @@
-from "%scripts/dagui_natives.nut" import epic_is_running, ps4_is_chat_enabled, ps4_is_ugc_enabled, get_localization_blk_copy, dgs_get_argv
+from "%scripts/dagui_natives.nut" import epic_is_running, ps4_is_chat_enabled, ps4_is_ugc_enabled,
+  get_localization_blk_copy, dgs_get_argv, is_eac_inited
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
@@ -74,7 +75,10 @@ function bigQueryOnLogin() {
   local params = platformId
   if (getSystemConfigOption("launcher/bg_update", true))
     params = " ".concat(params, "bg_update")
-  let data = { params = params }
+  let data = {
+    params = params
+    haveAntiCheat = is_eac_inited()
+  }
 
   let hangarBlk = getSystemConfigOption("hangarBlk", "")
   if(hangarBlk != "")

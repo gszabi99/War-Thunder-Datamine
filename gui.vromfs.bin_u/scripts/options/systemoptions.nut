@@ -56,6 +56,8 @@ local mMaintainDone = false
 let mCfgDiffs = {}
 let mCfgCommon = {}
 let mCfgDiffsCurrent = {} 
+local mCfgDiffsInitial = {}
+local mCfgDiffsApplied = {}
 
 let mActiveTabTags = {}
 const mRowHeightScale = 1.0
@@ -573,11 +575,74 @@ function checkChanges(config1, config2) {
   return changes
 }
 
-let isRestartPending = @() checkChanges(mCfgStartup, mCfgCurrent).needClientRestart
+function getEffectiveDiffs() {
+  let liveDiffs = {}
+  foreach (tag, tagCfg in mCfgDiffsCurrent)
+    liveDiffs[tag] <- clone tagCfg
+  foreach (sectionIdx, tag in mActiveTabTags) {
+    if (tag == "")
+      continue
+    if (tag not in liveDiffs)
+      liveDiffs[tag] <- {}
+    foreach (optionId in mUiStruct?[sectionIdx].items ?? [])
+      if (optionId in mCfgCurrent)
+        liveDiffs[tag][optionId] <- mCfgCurrent[optionId]
+  }
 
-let isHotReloadPending = @() checkChanges(mCfgApplied, mCfgCurrent).needEngineReload
+  let res = {}
+  foreach (tag, tagCfg in liveDiffs) {
+    let diff = {}
+    foreach (id, value in tagCfg)
+      if (mCfgCommon?[id] != value)
+        diff[id] <- value
+    if (diff.len())
+      res[tag] <- diff
+  }
+  return res
+}
 
-let isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
+function areDiffsEqual(diffs1, diffs2) {
+  if (diffs1.len() != diffs2.len())
+    return false
+  foreach (tag, cfg1 in diffs1) {
+    let cfg2 = diffs2?[tag]
+    if (cfg2 == null || cfg1.len() != cfg2.len())
+      return false
+    foreach (id, value in cfg1)
+      if (cfg2?[id] != value)
+        return false
+  }
+  return true
+}
+
+function getCommonViewCurrent() {
+  let res = {}
+  foreach (id, value in mCfgCurrent)
+    res[id] <- getActiveTagForOption(id) == "" ? value : (mCfgCommon?[id] ?? value)
+  return res
+}
+
+function stripDiffsId(diffs, ignoreId) {
+  let res = {}
+  foreach (tag, cfg in diffs) {
+    let c = {}
+    foreach (id, v in cfg)
+      if (id != ignoreId)
+        c[id] <- v
+    if (c.len())
+      res[tag] <- c
+  }
+  return res
+}
+
+let isRestartPending = @() checkChanges(mCfgStartup, getCommonViewCurrent()).needClientRestart
+
+let isHotReloadPending = @() checkChanges(mCfgApplied, getCommonViewCurrent()).needEngineReload
+  || !areDiffsEqual(stripDiffsId(mCfgDiffsApplied, "graphicsQuality"),
+                    stripDiffsId(getEffectiveDiffs(), "graphicsQuality"))
+
+let isSavePending = @() checkChanges(mCfgInitial, getCommonViewCurrent()).needSave
+  || !areDiffsEqual(mCfgDiffsInitial, getEffectiveDiffs())
 
 let canUseGraphicsOptions = @() isPC && hasFeature("GraphicsOptions")
 let canShowGpuBenchmark = @() canUseGraphicsOptions()
@@ -878,8 +943,22 @@ mShared = {
   setQualityPreset = function(preset) {
     eachBlock(mQualityPresets, function(v, k) {
       let value = v?[preset] ?? v?["medium"]
-      if (value != null)
-        setValue(k, value)
+      if (value == null)
+        return
+      setValue(k, value)
+      if (mSkipUI)
+        return
+      
+      
+      let activeTag = getActiveTagForOption(k)
+      if (activeTag == "")
+        mCfgCommon[k] <- mCfgCurrent[k]
+      else {
+        if (activeTag not in mCfgDiffsCurrent)
+          mCfgDiffsCurrent[activeTag] <- {}
+        mCfgDiffsCurrent[activeTag][k] <- mCfgCurrent[k]
+      }
+      updateOptionChangedIcon(k)
     })
   }
 
@@ -980,6 +1059,7 @@ mShared = {
         mCfgDiffsCurrent[activeTag] <- {}
       mCfgDiffsCurrent[activeTag]["graphicsQuality"] <- mCfgCurrent["graphicsQuality"]
     }
+    updateOptionChangedIcon("graphicsQuality")
   }
 
   resolutionClick = function() {
@@ -2256,8 +2336,9 @@ function configRead() {
     if ("init" in desc)
       desc.init(mBlk, desc)
     local value = readGuiValueFromBlk(id, mBlk)
-    mCfgInitial[id] <- value
-    mCfgCurrent[id] <- validateGuiValue(id, value)
+    let validated = validateGuiValue(id, value)
+    mCfgInitial[id] <- (desc?.isVisible() ?? true) ? value : validated
+    mCfgCurrent[id] <- validated
     mCfgCommon[id] <- mCfgCurrent[id]
   }
 
@@ -2273,14 +2354,17 @@ function configRead() {
     }
     mCfgDiffsCurrent[tag] <- tagCfg
   }
+  mCfgDiffsInitial = getEffectiveDiffs()
 
   if (!mCfgStartup.len())
-    foreach (id, value in mCfgInitial)
+    foreach (id, value in mCfgCurrent)
       mCfgStartup[id] <- value
 
-  if (!mCfgApplied.len())
-    foreach (id, value in mCfgInitial)
+  if (!mCfgApplied.len()) {
+    foreach (id, value in mCfgCurrent)
       mCfgApplied[id] <- value
+    mCfgDiffsApplied = mCfgDiffsInitial
+  }
 }
 
 function configWrite() {
@@ -2324,6 +2408,9 @@ function configWrite() {
     else
       setBlkValueByPath(mBlk, desc.blk, value)
   }
+
+  foreach (tag, _diffBlk in mCfgDiffs)
+    mBlk.removeBlock($"{CONFIG_DIFF_PATH_PREFIX}{tag}")
 
   foreach (tag, tagCfg in mCfgDiffsCurrent) {
     let blkName = $"{CONFIG_DIFF_PATH_PREFIX}{tag}"
@@ -2394,6 +2481,7 @@ function configFree() {
   mContainerObj = null
   mCfgInitial = {}
   mCfgCurrent = {}
+  mCfgDiffsInitial = {}
   mCfgCommon.clear()
   mCfgDiffs.clear()
   mCfgDiffsCurrent.clear()
@@ -2464,9 +2552,8 @@ function configMaintain() {
 }
 
 function applyRestartEngine(reloadScene, shouldDoItOnSceneSwitch) {
-  mCfgApplied = {}
-  foreach (id, value in mCfgCurrent)
-    mCfgApplied[id] <- value
+  mCfgApplied = getCommonViewCurrent()
+  mCfgDiffsApplied = getEffectiveDiffs()
 
   log("[sysopt] Resetting renderer.")
   applyRendererSettingsChange(reloadScene, shouldDoItOnSceneSwitch)

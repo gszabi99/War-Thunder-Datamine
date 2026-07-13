@@ -4722,10 +4722,19 @@
     ],
     "weapon__aimNodeOffset": 0.2,
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.1,
+          0.02
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -4924,10 +4933,19 @@
     "weapon__aimNodeOffset": 0.3,
     "gun__adsSpeedMult": 0.9,
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.12,
+          0.015
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -5313,6 +5331,13 @@
     ],
     "meleeSoundType": "mgun",
     "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.14,
+          0.03
+        ]
+      },
       {
         "_tags": "gameClient",
         "gun__firingParamsRecoilMults:list<r>": {
@@ -7004,6 +7029,20 @@
     "gun__crawlRecoilMult": 0.8,
     "meleeSoundType": "mgun",
     "gun__saveAmmoInChamberOnReload": true,
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.16,
+          0.05
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true,
+        "gun_sound__forceOneshotEnemy": true
+      }
+    ],
     "anim_irq__eventNames:object": {
       "newMagazineShown:object": {
         "irqName": "ammo_refresh",
@@ -7011,11 +7050,6 @@
       }
     },
     "anim_irq_to_event_converter": {},
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true,
-      "gun_sound__forceOneshotEnemy": true
-    },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -7916,10 +7950,19 @@
     "gun__recoilRiseMult": 0.3,
     "meleeSoundType": "mgun",
     "gun__adsSpeedMult": 0.5,
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.15,
+          0.025
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -10246,10 +10289,19 @@
       3.0
     ],
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.18,
+          0.05
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -11811,6 +11863,19 @@
     "gun_anim_var__fpsGunOffsetAlong": 0.1,
     "gun_anim_var__fpsGunOffsetAcross": 0.06,
     "gun_anim_var__fpsGunOffsetUp": -0.03,
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.1,
+          0.04
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "anim_irq__eventNames:object": {
       "newMagazineShown:object": {
         "irqName": "ammo_refresh",
@@ -11818,10 +11883,6 @@
       }
     },
     "anim_irq_to_event_converter": {},
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "path": "/weapon/rifle/ksvk_12_7"
@@ -12025,10 +12086,19 @@
       2.0,
       2.0
     ],
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.15,
+          0.05
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {

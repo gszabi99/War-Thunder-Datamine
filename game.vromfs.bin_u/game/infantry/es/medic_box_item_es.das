@@ -21,8 +21,8 @@ def medic_box_item_init_es(evt : EventEntityRecreated;
   buildByPlayer = get_Eid(placeable_item__ownerEid, "squad_member__playerEid") ?? INVALID_ENTITY_ID
 
 
-[es(tag=gameClient, REQUIRE=(isRendinstDestr, medBox))]
-def medic_box_item_init_client_es(evt : EventEntityRecreated;
+[es(tag=gameClient, on_appear, REQUIRE=(isRendinstDestr, medBox))]
+def medic_box_item_init_client_es(evt : Event;
                                   var animchar_render__enabled : bool&)
   animchar_render__enabled = true
 
