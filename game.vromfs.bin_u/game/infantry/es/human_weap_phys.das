@@ -106,3 +106,24 @@ def human_weap_update_backoff_gun_dynamic_offset(evt : ParallelUpdateFrameDelaye
                                               var gun_dynamic_position__offset : float3&)
     let backoffProgress = cvt(currentState.gunBackoffAmount, 0.0, human_weap__gunMaxBackoff, 0.0, 1.0)
     gun_dynamic_position__offset = gun_dynamic_position__maxOffset * backoffProgress
+
+
+[es(before=after_net_phys_sync, after=human_weap_phys_es)]
+def aim_in_jump_human_weap_phys_es(info : ParallelUpdateFrameDelayed;
+                                   human_phys__jumpEndTime : float;
+                                   human_phys__isInAirLong : bool;
+                                   human_weap__canAimInJump : bool = false;
+                                   human_phys__afterJumpDelay : float = -1.;
+                                   human_phys__aimPoseHeightVelThreshold : float;
+                                   human_phys__aimPoseHeightThreshold : float;
+                                   action__running : bool = false;
+                                   var human_net_phys : HumanActor&)
+  assume ct = human_net_phys.phys.currentState
+  let isChangingCrawlTransition = ct.height < human_phys__aimPoseHeightThreshold && abs(ct.heightCurVel) > human_phys__aimPoseHeightVelThreshold
+  let isJumpState = (!human_weap__canAimInJump &&
+    (human_phys__isInAirLong
+    || (uint(ct.states) & uint(StateFlag.ST_JUMP)) != 0u
+    || ct.jumpStartTime > 0.
+    || info.curTime - human_phys__jumpEndTime < human_phys__afterJumpDelay))
+  human_phys_state_set_can_aim(ct, human_phys_state_can_aim(ct) && !isJumpState && !isChangingCrawlTransition && !action__running)
+  human_phys_state_set_can_zoom(ct, human_phys_state_can_zoom(ct) && !isJumpState && !isChangingCrawlTransition && !action__running)
