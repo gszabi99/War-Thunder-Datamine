@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": [
@@ -52,18 +48,43 @@
     "mission": {
       "level": "levels/korea.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
+      "kill_percent": 100.0,
       "scoreLimit": 2000,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
       "country_axis": "usa",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "editSlotbar": {
+        "keepOwnUnits": false,
+        "country_ussr": {
+          "mig-15_ns23": {
+            "crewSkillsPercent": 100,
+            "allWeapons": true,
+            "allModifications": true
+          }
+        },
+        "country_usa": {
+          "f-86a-5": {
+            "crewSkillsPercent": 100,
+            "allWeapons": true,
+            "allModifications": true
+          }
+        }
+      },
       "allowedUnitTypes": {
-        "isAirplanesAllowed": true
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
     },
     "spectator_points": {},
     "briefing": {
@@ -78,11 +99,12 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "ally",
             "point": [
-              "t2_bombers_spawn",
+              "t2_bombers_spawn01",
               "t1_bomb_target_01"
             ]
           },
@@ -91,18 +113,18 @@
               "icontype": "fighter",
               "side": "enemy",
               "target": "t1_fighters_spawn",
-              "lookAt": "t2_bombers_spawn"
+              "lookAt": "t2_bombers_spawn01"
             },
             {
               "icontype": "fighter",
               "side": "ally",
-              "target": "t2_fighters_spawn",
+              "target": "t2_fighters_spawn01",
               "lookAt": "battle_area"
             },
             {
               "icontype": "bomber",
               "side": "ally",
-              "target": "t2_bombers_spawn",
+              "target": "t2_bombers_spawn01",
               "lookAt": "battle_area"
             },
             {
@@ -123,11 +145,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -147,6 +171,102 @@
       },
       "conditions": {},
       "actions": {
+        "comment": [
+          {
+            "value": "calculate targets count: all_bombers * kill_percent%"
+          },
+          {
+            "value": "calculate points by killing one target bomber"
+          },
+          {
+            "value": "calculate base hp"
+          },
+          {
+            "value": "connect links"
+          }
+        ],
+        "__varSetReal": {
+          "value": 100.0,
+          "var": "kill_percent"
+        },
+        "varSetReal": {
+          "value": 0.0,
+          "var": "kill_percent",
+          "fromDescriptor": "kill_percent"
+        },
+        "getUnitsCount": [
+          {
+            "target": "t2_bombers_squad",
+            "var": "t2_quest_target_count"
+          },
+          {
+            "target": "t2_bombers_squad",
+            "var": "hp_tmp"
+          }
+        ],
+        "varModify": [
+          {
+            "operator": "mul",
+            "value": 1.0,
+            "var": "t2_quest_target_count",
+            "use_variable": true,
+            "var_value": "kill_percent"
+          },
+          {
+            "operator": "divAB",
+            "value": 100.0,
+            "var": "t2_quest_target_count"
+          },
+          {
+            "operator": "divAB",
+            "value": 1.0,
+            "var": "t2_points_lost_count",
+            "use_variable": true,
+            "var_value": "t2_quest_target_count"
+          },
+          {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "t2_points_lost_count"
+          },
+          {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "hp_tmp",
+            "use_variable": true,
+            "var_value": "t2_quest_target_count"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": "hp_tmp"
+          },
+          {
+            "operator": "mul",
+            "value": 1.0,
+            "var": "airfield_full_hp",
+            "use_variable": true,
+            "var_value": "hp_tmp"
+          }
+        ],
+        "missionSetBombingArea": {
+          "army": 1,
+          "target": "t1_bombing_area",
+          "hp": 105000.0,
+          "use_variable": true,
+          "var_value": "airfield_full_hp",
+          "airfield": "t1_airfield"
+        },
+        "varSetString": [
+          {
+            "value": "t2_bombers_spawn01",
+            "var": "t2_spawn_bombers_area"
+          },
+          {
+            "value": "t2_fighters_spawn01",
+            "var": "t2_spawn_fighters_area"
+          }
+        ],
         "addAirfield": {
           "runwayStart": "t1_airfield",
           "runwayEnd": "t1_airfield_end",
@@ -171,32 +291,21 @@
             "t1_airfield_spawn_16"
           ]
         },
-        "missionSetBombingArea": {
-          "army": 1,
-          "target": "t1_bombing_area",
-          "hp": 96000.0,
-          "airfield": "t1_airfield"
-        },
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "t1_fighters_spawn",
+            "team": "A",
+            "isStrictSpawn": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radius": -1.0,
-            "isStrictSpawn": false,
             "useExisting": false,
+            "isIndividual": false,
             "removeAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "isIndividual": false,
-            "target": "t1_fighters_spawn",
-            "team": "A",
             "tags": {
               "tank": false
             }
@@ -204,22 +313,17 @@
           {
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@t2_spawn_fighters_area",
+            "team": "B",
+            "isStrictSpawn": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radius": -1.0,
-            "isStrictSpawn": false,
             "useExisting": false,
+            "isIndividual": false,
             "removeAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "isIndividual": false,
-            "target": "t2_fighters_spawn",
-            "team": "B",
             "tags": {
               "type_bomber": false,
               "tank": false
@@ -228,63 +332,37 @@
           {
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@t2_spawn_bombers_area",
+            "team": "B",
+            "isStrictSpawn": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radius": -1.0,
-            "isStrictSpawn": false,
             "useExisting": false,
+            "isIndividual": false,
             "removeAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "isIndividual": false,
-            "target": "t2_bombers_spawn",
-            "team": "B",
             "tags": {
               "type_bomber": true,
               "tank": false
             }
-          },
-          {
-            "loc_name": "missions/airfield_spawn",
-            "spawnEffect": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "target": "t1_airfield",
-            "team": "A",
-            "tags": {
-              "type_hydroplane": false,
-              "tank": false
-            }
           }
         ],
-        "unitMoveTo": {
-          "target": "bombing_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": true,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object": "t2_bombers_squad",
-          "speed": 300.0
-        },
+        "moveRespawnBase": [
+          {
+            "loc_name": "missions/bombers_spawn",
+            "isAirfield": false,
+            "target": "@t2_spawn_bombers_area",
+            "team": "B"
+          },
+          {
+            "loc_name": "missions/fighters_spawn",
+            "isAirfield": false,
+            "target": "@t2_spawn_fighters_area",
+            "team": "B"
+          }
+        ],
         "unitSetProperties": [
           {
             "object": "t1_aaa_squad",
@@ -295,7 +373,6 @@
           {
             "object": "t2_bombers_squad",
             "accuracy": 0.6,
-            "persistentAerobaticsSmoke": true,
             "plane": {
               "targetDeviation": {
                 "trigger": "gunner",
@@ -336,7 +413,7 @@
             "target": "destroy_airfield"
           },
           {
-            "target": "destroy_bombers"
+            "target": "destroy_bombers_part"
           },
           {
             "target": "defend_bombers"
@@ -368,6 +445,8 @@
           "target_marking": 0,
           "check_objects": "any",
           "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t2_bombers_squad",
           "target": "bombing_point",
           "check_all_units": false
@@ -419,6 +498,9 @@
             "icon": "building",
             "icon army": 1,
             "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "t1_bomb_target_01"
           },
           {
@@ -428,7 +510,11 @@
             "icon": "bomber",
             "icon army": 2,
             "set": true,
-            "target": "t2_quest_units_squad"
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t2_quest_units_squad",
+            "var": "t2_quest_target_count"
           }
         ],
         "missionGetBombingAreaHP": {
@@ -457,19 +543,29 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t2_bombers_squad",
           "var": "t2_bombers_death_counter"
         }
       },
       "actions": {
-        "varModify": {
-          "operator": "add",
-          "value": 1.0,
-          "var": "t2_bombers_death_counter"
-        },
+        "varModify": [
+          {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "t2_quest_target_count"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": "t2_bombers_death_counter"
+          }
+        ],
         "gameMPChangeScore": {
-          "value": -100,
+          "value": -75,
           "valueSystem": "amount",
+          "var": "t2_points_lost_count",
           "team": "B"
         },
         "unitMark": {
@@ -508,7 +604,6 @@
           ]
         },
         "unitDamage": {
-          "partName": "body_dm",
           "power": 1.0,
           "useEffect": false,
           "countEffects": 1,
@@ -526,30 +621,43 @@
             15.0
           ],
           "target": "t1_bomb_target_01",
+          "partName": "body_dm",
           "doExplosion": true
         },
         "triggerEnable": {
-          "target": "t1_loose"
+          "target": "t1_point_lost"
         },
         "moSetObjectiveStatus": [
           {
             "target": "defend_airfield",
             "status": 3,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           },
           {
             "target": "destroy_airfield",
             "status": 2,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           },
           {
-            "target": "destroy_bombers",
+            "target": "destroy_bombers_part",
             "status": 3,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           },
           {
             "target": "defend_bombers",
             "status": 2,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         ],
@@ -573,12 +681,10 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "less",
+        "varCompareInt": {
+          "var_value": "t2_quest_target_count",
           "value": 1,
-          "object": "t2_bombers_squad"
+          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -593,13 +699,19 @@
         },
         "moSetObjectiveStatus": [
           {
-            "target": "destroy_bombers",
+            "target": "destroy_bombers_part",
             "status": 2,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           },
           {
             "target": "defend_bombers",
             "status": 3,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         ]
@@ -620,20 +732,15 @@
         }
       },
       "conditions": {
-        "unitWhenInArea": {
-          "math": "notNear2D",
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "check_objects": "any",
-          "object": "t2_bombers_squad",
-          "target": "battle_area"
-        },
         "unitWhenStatus": {
           "object_type": "noBombs",
           "object_marking": 0,
           "check_objects": "all",
           "target_type": "isAlive",
           "check_period": 1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "t2_bombers_squad"
         }
       },
@@ -660,21 +767,35 @@
         }
       },
       "conditions": {
-        "varCompareInt": {
-          "var_value": "t2_wings_bombing_end_counter",
-          "value": 1,
-          "comparasion_func": "notLess"
-        },
-        "unitWhenStatus": {
-          "object_type": "noBombs",
-          "object_marking": 0,
-          "check_objects": "all",
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object": "all_players_squad"
-        }
+        "unitWhenStatus": [
+          {
+            "object_type": "noBombs",
+            "object_marking": 0,
+            "check_objects": "all",
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "t2_bombers_squad"
+          },
+          {
+            "object_type": "noBombsInWorld",
+            "object_marking": 0,
+            "check_objects": "all",
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "t2_bombers_squad"
+          }
+        ]
       },
       "actions": {
+        "wait": {
+          "time": 5.0
+        },
         "triggerDisable": {
           "target": [
             "t1_plant_destroyed",
@@ -685,16 +806,22 @@
           {
             "target": "defend_airfield",
             "status": 2,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           },
           {
             "target": "destroy_airfield",
             "status": 3,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         ],
         "triggerEnable": {
-          "target": "t2_loose"
+          "target": "t2_airfield_protected"
         }
       },
       "else_actions": {}
@@ -719,6 +846,8 @@
             "object_marking": 0,
             "func": "more",
             "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "t2_bombers_squad"
           },
           {
@@ -726,6 +855,8 @@
             "object_marking": 0,
             "func": "more",
             "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "t2_bombers_squad"
           }
         ]
@@ -737,10 +868,126 @@
           "teleportHeightType": "absolute",
           "useUnitHeightForTele": true,
           "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
+          "teleportHeightValue": 5000.0,
           "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "shouldKeepAirFormation": true,
           "object": "t2_bombers_squad",
           "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": {}
+    },
+    "t2_change_spawn_points": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 23000.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "t2_bombers_squad",
+          "target": "t1_airfield"
+        }
+      },
+      "actions": {
+        "varSetString": [
+          {
+            "value": "t2_fighters_spawn02",
+            "var": "t2_spawn_fighters_area"
+          },
+          {
+            "value": "t2_bombers_spawn02",
+            "var": "t2_spawn_bombers_area"
+          }
+        ],
+        "moveRespawnBase": [
+          {
+            "loc_name": "missions/bombers_spawn",
+            "isAirfield": false,
+            "target": "@t2_spawn_bombers_area",
+            "team": "B"
+          },
+          {
+            "loc_name": "missions/fighters_spawn",
+            "isAirfield": false,
+            "target": "@t2_spawn_fighters_area",
+            "team": "B"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "t1_point_lost": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -5,
+          "valueSystem": "percentage",
+          "team": "A"
+        }
+      },
+      "else_actions": {}
+    },
+    "t2_airfield_protected": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -5,
+          "valueSystem": "percentage",
+          "team": "B"
         }
       },
       "else_actions": {}
@@ -749,7 +996,7 @@
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true,
-    "destroy_bombers": {
+    "destroy_bombers_part": {
       "is_enabled": false,
       "comments": "",
       "type": "abstractMissionObjective",
@@ -807,9 +1054,16 @@
     }
   },
   "variables": {
-    "t2_bombers_death_counter": 0,
     "t2_wings_bombing_end_counter": 0,
-    "base_HP": 0.0
+    "base_HP": 0.0,
+    "t2_spawn_fighters_area": "",
+    "t2_spawn_bombers_area": "",
+    "kill_percent": 1.0,
+    "t2_quest_target_count": 0,
+    "t2_bombers_death_counter": 0,
+    "t2_points_lost_count": -2000,
+    "airfield_full_hp": 103000.0,
+    "hp_tmp": 1
   },
   "dialogs": {},
   "airfields": {},
@@ -820,9 +1074,9 @@
         "name": "t1_player01",
         "tm": [
           [
-            0.675591,
+            0.869681,
             0.0,
-            0.737277
+            0.493614
           ],
           [
             0.0,
@@ -830,18 +1084,20 @@
             0.0
           ],
           [
-            -0.737277,
+            -0.493614,
             0.0,
-            0.675591
+            0.869681
           ],
           [
-            -22653.0,
+            -26350.9,
             6000.0,
-            -21978.9
+            -23208.6
           ]
         ],
         "unit_class": "spitfire_mk5c",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -851,6 +1107,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -878,9 +1136,9 @@
         "name": "t2_ai_bomber_01",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -888,18 +1146,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21194.1,
-            8000.0,
-            -20967.1
+            -22007.8,
+            7000.0,
+            -21331.0
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -909,6 +1169,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -929,72 +1191,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
-      },
-      {
-        "name": "t2_ai_bomber_02",
-        "tm": [
-          [
-            0.766045,
-            0.0,
-            0.642787
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.642787,
-            0.0,
-            0.766045
-          ],
-          [
-            -21369.4,
-            8000.0,
-            -21125.9
-          ]
-        ],
-        "unit_class": "b-29",
-        "closed_waypoints": false,
-        "weapons": "B29_12x1000lbs",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
+        "way": {
+          "t2_ai_bomber_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10203.8,
+                7000.0,
+                -9097.29
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
           }
-        },
-        "way": {}
+        }
       },
       {
         "name": "t2_ai_bomber_03",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1002,18 +1237,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21214.2,
-            8000.0,
-            -21232.4
+            -22081.2,
+            7100.0,
+            -21545.7
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1023,6 +1260,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1043,15 +1282,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10130.4,
+                7100.0,
+                -9311.99
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_04",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1059,18 +1328,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21398.6,
-            8000.0,
-            -21373.9
+            -22195.3,
+            7100.0,
+            -21252.0
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1080,6 +1351,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1100,15 +1373,136 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10016.3,
+                7100.0,
+                -9018.29
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_02",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -22254.4,
+            6900.0,
+            -21442.3
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9957.24,
+                6900.0,
+                -9208.59
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_05",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1116,18 +1510,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21432.5,
-            8000.0,
-            -20964.2
+            -22361.2,
+            6900.0,
+            -21175.2
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1137,6 +1533,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1157,15 +1555,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9850.44,
+                6900.0,
+                -8941.49
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_06",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1173,18 +1601,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21575.6,
-            8000.0,
-            -21132.4
+            -22154.5,
+            6900.0,
+            -21754.4
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1194,6 +1624,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1214,15 +1646,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10057.1,
+                6900.0,
+                -9520.69
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_09",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1230,18 +1692,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21753.2,
-            8000.0,
-            -21156.7
+            -22498.6,
+            7100.0,
+            -22242.2
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1251,6 +1715,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1272,15 +1738,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_09_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9713.04,
+                7100.0,
+                -10008.5
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_10",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1288,18 +1784,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21172.8,
-            8000.0,
-            -21451.4
+            -22651.8,
+            6900.0,
+            -22160.1
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1309,6 +1807,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1329,15 +1829,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_10_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9559.84,
+                6900.0,
+                -9926.39
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_11",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1345,18 +1875,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21643.1,
-            8000.0,
-            -20893.4
+            -22762.6,
+            6900.0,
+            -21884.2
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1366,6 +1898,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1386,15 +1920,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_11_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9449.04,
+                6900.0,
+                -9650.49
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_12",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1402,18 +1966,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21447.6,
-            8000.0,
-            -21567.1
+            -22538.3,
+            6900.0,
+            -22460.1
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1423,6 +1989,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1443,15 +2011,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_12_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9673.34,
+                6900.0,
+                -10226.4
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_07",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1459,18 +2057,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21849.9,
-            8000.0,
-            -20904.3
+            -22409.1,
+            7000.0,
+            -22052.5
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1480,6 +2080,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1500,15 +2102,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_07_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9802.54,
+                7000.0,
+                -9818.79
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_08",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1516,18 +2148,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21241.5,
-            8000.0,
-            -21676.9
+            -22591.6,
+            7100.0,
+            -21991.0
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1537,6 +2171,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1557,15 +2193,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_08_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9620.04,
+                7100.0,
+                -9757.29
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_13",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1573,18 +2239,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21597.9,
-            8000.0,
-            -21340.8
+            -22737.0,
+            7100.0,
+            -21108.0
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1594,6 +2262,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1614,15 +2284,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_13_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9474.64,
+                7100.0,
+                -8874.29
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_14",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1630,18 +2330,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21911.3,
-            8000.0,
-            -21071.3
+            -22991.5,
+            7200.0,
+            -21071.5
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1651,6 +2353,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1671,15 +2375,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_14_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9220.14,
+                7200.0,
+                -8837.79
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_15",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1687,18 +2421,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21403.4,
-            8000.0,
-            -21722.0
+            -22864.8,
+            7200.0,
+            -21314.1
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1708,6 +2444,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1728,15 +2466,45 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_15_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9346.84,
+                7200.0,
+                -9080.39
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "t2_ai_bomber_16",
         "tm": [
           [
-            0.766045,
+            0.92667,
             0.0,
-            0.642787
+            0.375875
           ],
           [
             0.0,
@@ -1744,18 +2512,20 @@
             0.0
           ],
           [
-            -0.642787,
+            -0.375875,
             0.0,
-            0.766045
+            0.92667
           ],
           [
-            -21715.9,
-            8000.0,
-            -21434.6
+            -23150.9,
+            7000.0,
+            -21003.7
           ]
         ],
         "unit_class": "b-29",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "B29_12x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -1765,6 +2535,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1785,7 +2557,1857 @@
             "task": "FLY_WAYPOINT"
           }
         },
-        "way": {}
+        "way": {
+          "t2_ai_bomber_16_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9060.74,
+                7000.0,
+                -8769.99
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_17",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23049.5,
+            7000.0,
+            -21285.1
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_17_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9162.14,
+                7000.0,
+                -9051.39
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_18",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -22913.1,
+            7000.0,
+            -21514.7
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_18_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9298.54,
+                7000.0,
+                -9280.99
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_19",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23065.0,
+            6900.0,
+            -22100.9
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_19_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9146.64,
+                6900.0,
+                -9867.19
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_20",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23302.8,
+            6900.0,
+            -21590.0
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_20_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                8908.84,
+                6900.0,
+                -9356.29
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_21",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23201.4,
+            6900.0,
+            -21871.4
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_21_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9010.24,
+                6900.0,
+                -9637.69
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_22",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23143.4,
+            7100.0,
+            -21657.8
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_22_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9068.24,
+                7100.0,
+                -9424.09
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_23",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23016.8,
+            7100.0,
+            -21900.5
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_23_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9194.84,
+                7100.0,
+                -9666.79
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_24",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -22972.6,
+            7000.0,
+            -21707.2
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_24_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9239.04,
+                7000.0,
+                -9473.49
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_25",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23424.8,
+            7000.0,
+            -21229.6
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_25_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                8786.84,
+                7000.0,
+                -8995.89
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_26",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23662.6,
+            7000.0,
+            -20718.6
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_26_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                8549.04,
+                7000.0,
+                -8484.89
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_27",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23561.2,
+            7000.0,
+            -21000.1
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_27_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                8650.44,
+                7000.0,
+                -8766.39
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_28",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23503.2,
+            7200.0,
+            -20786.5
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_28_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                8708.44,
+                7200.0,
+                -8552.79
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_29",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23376.6,
+            7200.0,
+            -21029.1
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_29_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                8835.04,
+                7200.0,
+                -8795.39
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_30",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23332.4,
+            7100.0,
+            -20835.8
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_30_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                8879.24,
+                7100.0,
+                -8602.09
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_31",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -22766.9,
+            7000.0,
+            -22890.9
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_31_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9444.74,
+                7000.0,
+                -10657.2
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_32",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -23004.7,
+            7000.0,
+            -22380.0
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_32_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9206.94,
+                7000.0,
+                -10146.3
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_33",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -22903.3,
+            7000.0,
+            -22661.4
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_33_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9308.34,
+                7000.0,
+                -10427.7
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_34",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -22845.2,
+            7200.0,
+            -22447.8
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_34_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9366.44,
+                7200.0,
+                -10214.1
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_35",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -22718.6,
+            7200.0,
+            -22690.4
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_35_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9493.04,
+                7200.0,
+                -10456.7
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_ai_bomber_36",
+        "tm": [
+          [
+            0.92667,
+            0.0,
+            0.375875
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.375875,
+            0.0,
+            0.92667
+          ],
+          [
+            -22674.4,
+            7100.0,
+            -22497.2
+          ]
+        ],
+        "unit_class": "b-29",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "t2_ai_bomber_36_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9537.24,
+                7100.0,
+                -10263.5
+              ]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       }
     ],
     "structures": [
@@ -1815,6 +4437,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1824,6 +4448,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -1871,6 +4497,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1880,6 +4508,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -1926,6 +4556,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1935,6 +4567,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -1981,6 +4615,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1990,6 +4626,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -2036,6 +4674,8 @@
         ],
         "unit_class": "dummy_airfield",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2045,6 +4685,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -2091,6 +4733,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2100,6 +4744,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -2146,6 +4792,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2155,6 +4803,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -2201,6 +4851,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2210,6 +4862,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -2256,6 +4910,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2265,6 +4921,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -2311,6 +4969,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2320,6 +4980,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -2366,6 +5028,8 @@
         ],
         "unit_class": "dummy",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2375,6 +5039,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -2485,9 +5151,9 @@
         "name": "t2_bombers_squad",
         "tm": [
           [
-            0.300706,
+            -0.007357,
             0.0,
-            -0.953717
+            -0.999973
           ],
           [
             0.0,
@@ -2495,14 +5161,14 @@
             0.0
           ],
           [
-            0.953717,
+            0.999973,
             0.0,
-            0.300706
+            -0.007357
           ],
           [
-            -23197.2,
+            -24233.2,
             75.7998,
-            -19132.3
+            -13443.8
           ]
         ],
         "props": {
@@ -2522,7 +5188,27 @@
             "t2_ai_bomber_13",
             "t2_ai_bomber_14",
             "t2_ai_bomber_15",
-            "t2_ai_bomber_16"
+            "t2_ai_bomber_16",
+            "t2_ai_bomber_17",
+            "t2_ai_bomber_18",
+            "t2_ai_bomber_19",
+            "t2_ai_bomber_20",
+            "t2_ai_bomber_21",
+            "t2_ai_bomber_22",
+            "t2_ai_bomber_23",
+            "t2_ai_bomber_24",
+            "t2_ai_bomber_25",
+            "t2_ai_bomber_26",
+            "t2_ai_bomber_27",
+            "t2_ai_bomber_28",
+            "t2_ai_bomber_29",
+            "t2_ai_bomber_30",
+            "t2_ai_bomber_31",
+            "t2_ai_bomber_32",
+            "t2_ai_bomber_33",
+            "t2_ai_bomber_34",
+            "t2_ai_bomber_35",
+            "t2_ai_bomber_36"
           ]
         }
       },
@@ -2661,6 +5347,8 @@
         ],
         "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2670,6 +5358,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2712,8 +5402,10 @@
             -11234.1
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2723,6 +5415,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2765,8 +5459,10 @@
             -9808.3
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2776,6 +5472,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2818,8 +5516,10 @@
             -9232.7
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2829,6 +5529,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2871,8 +5573,10 @@
             -9864.3
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2882,6 +5586,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2924,8 +5630,10 @@
             -11249.3
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2935,6 +5643,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2977,8 +5687,10 @@
             -9769.7
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2988,6 +5700,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3030,8 +5744,10 @@
             -10449.6
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3041,6 +5757,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3083,8 +5801,10 @@
             -11334.9
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3094,6 +5814,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3136,8 +5858,10 @@
             -12594.7
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3147,6 +5871,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3189,8 +5915,10 @@
             -13263.0
           ]
         ],
-        "unit_class": "us_90mm_m1",
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3200,6 +5928,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3241,13 +5971,13 @@
         ],
         [
           4887.17,
-          6000.0,
+          8000.0,
           -14111.9
         ]
       ],
       "props": {}
     },
-    "t2_fighters_spawn": {
+    "t2_fighters_spawn01": {
       "type": "Sphere",
       "tm": [
         [
@@ -3266,14 +5996,14 @@
           221.183
         ],
         [
-          -22769.8,
+          -17593.5,
           9000.0,
-          -21905.2
+          -19948.7
         ]
       ],
       "props": {}
     },
-    "t2_bombers_spawn": {
+    "t2_bombers_spawn01": {
       "type": "Sphere",
       "tm": [
         [
@@ -3292,9 +6022,9 @@
           221.183
         ],
         [
-          -21865.7,
+          -17581.2,
           8000.0,
-          -21550.9
+          -20262.0
         ]
       ],
       "props": {}
@@ -3319,7 +6049,7 @@
         ],
         [
           8258.11,
-          5000.0,
+          7000.0,
           -10348.9
         ]
       ],
@@ -3345,7 +6075,7 @@
         ],
         [
           -32095.3,
-          1500.0,
+          5000.0,
           27538.2
         ]
       ],
@@ -3361,7 +6091,7 @@
         ],
         [
           0.0,
-          13860.0,
+          18573.4,
           0.0
         ],
         [
@@ -3887,6 +6617,58 @@
         ]
       ],
       "objLayer": 0,
+      "props": {}
+    },
+    "t2_fighters_spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          221.183,
+          0.0,
+          202.678
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -202.678,
+          0.0,
+          221.183
+        ],
+        [
+          -9466.99,
+          9000.0,
+          -16700.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_bombers_spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          221.183,
+          0.0,
+          202.678
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -202.678,
+          0.0,
+          221.183
+        ],
+        [
+          -9454.69,
+          8000.0,
+          -17014.0
+        ]
+      ],
       "props": {}
     }
   },
