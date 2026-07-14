@@ -183,6 +183,7 @@ function onEventItemsShopUpdate(_) {
 
 function invalidateCache() {
   decoratorCache.clear()
+  liveDecoratorsCache.clear()
   broadcastEvent("DecorCacheInvalidate")
 }
 

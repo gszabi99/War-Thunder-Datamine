@@ -14,7 +14,6 @@ def human_weapon_hold_breath(evt : CmdPostPhysUpdate;
                              entity_mods__holdBreathDrainMult : float = 1.0;
                              isDowned : bool = false;
                              var human_hold_breath__isAvailable : bool&;
-                             var human_hold_breath__progressUi : float&;
                              var human_net_phys : HumanActor&)
   assume currentState = human_net_phys.phys.currentState
   assume appliedCT = human_net_phys.phys.appliedCT
@@ -28,10 +27,6 @@ def human_weapon_hold_breath(evt : CmdPostPhysUpdate;
 
   human_hold_breath__isAvailable = isAiming && !stoppedHoldBreath
 
-  query(eid) <| $ [es] (var human_hold_breath__showHintUi : bool&)
-    if (human_hold_breath__isAvailable && !is_hold_breath(currentState)) != human_hold_breath__showHintUi
-      human_hold_breath__showHintUi = human_hold_breath__isAvailable && !is_hold_breath(currentState)
-
   currentState |> set_is_hold_breath(appliedCT |> is_control_bit_set(HumanPhysControlType.HCT_SPRINT) && human_hold_breath__isAvailable)
   if is_hold_breath(currentState)
     let drain = safediv(1.0, human_hold_breath__holdDuration)
@@ -41,4 +36,8 @@ def human_weapon_hold_breath(evt : CmdPostPhysUpdate;
     currentState.breathShortness -= evt.dt * restore * entity_mods__breathRestoreMult
 
   currentState.breathShortness = saturate(currentState.breathShortness)
-  human_hold_breath__progressUi = 1.0 - currentState.breathShortness
+  query(eid) <| $ [es] (var human_hold_breath__showHintUi : bool&;
+                        var human_hold_breath__progressUi : float&)
+    if (human_hold_breath__isAvailable && !is_hold_breath(currentState)) != human_hold_breath__showHintUi
+      human_hold_breath__showHintUi = human_hold_breath__isAvailable && !is_hold_breath(currentState)
+    human_hold_breath__progressUi = 1.0 - currentState.breathShortness

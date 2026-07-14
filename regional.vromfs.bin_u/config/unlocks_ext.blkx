@@ -5147,6 +5147,36 @@
       }
     },
     {
+      "id": "2026_07_14_infantry_cbt_3_poll",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "cbt_human_combined_ab",
+              "cbt_human_combined_rb"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-07-14 09:00:00",
+            "endDate": "2026-07-20 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_07_14_bastille_day_decals",
       "locId": "unlocks/group/bastille_day",
       "locDescId": "gift_decals_trophy/desc",
