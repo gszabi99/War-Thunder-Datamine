@@ -1,0 +1,49 @@
+@const apsItemHeight: (0.75*0.06*@shHud)\1;
+@const apsBgColor: #CC1B2027;
+@const apsBorderColor: #6F000000;
+@const apsLinkedTextColor: #FFFFC000;
+@const apsHoverColor: #FFAAAAAA;
+@const apsPushedColor: #AA000000;
+@const apsShiftY: 50@sf/@pf;
+
+AimPointSelectorItem {
+  position:relative;
+  background-color:@apsBgColor;
+  css-hier-invalidate:yes;
+  width:1@apsItemHeight;
+  border-color:@apsBorderColor;
+  border:yes;
+  behaviour:button;
+  interactive:yes;
+}
+
+AimPointSelectorItem:hover {
+  background-color:@apsHoverColor;
+}
+
+AimPointSelectorItem:pushed {
+  background-color:@apsPushedColor;
+}
+
+AimPointSelectorIcon {
+  size:@apsItemHeight, @apsItemHeight;
+  position:relative;
+  left:(pw-w)/2;
+  background-repeat:expand;
+  background-svg-size:@apsItemHeight, @apsItemHeight;
+  background-color:#FFFFFF;
+  input-transparent:yes;
+}
+
+AimPointSelectorItem[enabled=no] {
+  display:hide;
+  interactive:no;
+  border-color:@apsBorderColor;
+}
+
+AimPointSelectorItem > label {
+  behaviour:textArea;
+  re-type:textarea;
+  color:@menuButtonTextColor;
+  font:@fontHudTiny;
+}

@@ -24,7 +24,6 @@ Button_text {
       height:t='1@buttonHeight'
       behaviour:t='bhvHint'
       showIfNotAssign:t='no'
-      hintStyle:t='fitHeight'
       value:t='<<shortcut>>'
     }
     shortcutMask {

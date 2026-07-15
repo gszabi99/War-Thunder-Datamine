@@ -138,8 +138,8 @@ function init() {
 }
 
 let hudLogsWidth = Computed(@() (isActionBarVisible.get() && isSpectatorMode.get())
-  ? min((actionBarPos.get()?[0] ?? sw(100)) - dmgIndicatorWidth.get() - bw.get() - hdpx(20), min(sw(20), shHud(45)))
-  : min(sw(20), shHud(45)))
+  ? min((actionBarPos.get()?[0] ?? sw(100)) - dmgIndicatorWidth.get() - bw.get() - hdpx(20), min(sw(28), shHud(45)))
+  : min(sw(28), shHud(45)))
 
 return @() {
   size = [hudLogsWidth.get(), SIZE_TO_CONTENT]

@@ -305,6 +305,12 @@
                           "size": "pw, ph",
                           "position": "absolute"
                         }
+                      },
+                      "tdiv": {
+                        "position": "absolute",
+                        "id": "aimPointSelectorNest",
+                        "size": "pw, ph",
+                        "overflow": "hidden"
                       }
                     }
                   ],
@@ -326,6 +332,21 @@
                         "padding": "1@blockInterval, 1@blockInterval, 1@blockInterval, 1@blockInterval",
                         "margin-bottom": "20@sf/@pf",
                         "tdiv": [
+                          {
+                            "id": "hint_edit_aiming_mem_point",
+                            "position": "relative",
+                            "flow": "horizontal",
+                            "tacticalMapHintIcon": {
+                              "img": {
+                                "background-image": "#ui/gameuiskin#ic_edit_aim_point.svg"
+                              }
+                            },
+                            "shortcutContent": {
+                              "gamepadButton": {
+                                "background-image": "#ui/gameuiskin#mouse_right"
+                              }
+                            }
+                          },
                           {
                             "position": "relative",
                             "flow": "horizontal",

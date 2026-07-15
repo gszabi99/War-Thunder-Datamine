@@ -6,7 +6,7 @@ from "%scripts/options/optionsCtors.nut" import create_option_combobox
 let { get_player_unit_name, get_cur_unit_weapon_preset } = require("unit")
 let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { can_use_aiming_points = @() false } = require("aimingMemPoints")
+let { is_aiming_points_enabled = @() false, can_use_aiming_points = @() false } = require("aimingMemPoints")
 let { isXInputDevice } = require("controls")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -34,6 +34,7 @@ let { hudHintsManagerInit, hudHintsManagerReinit } = require("%scripts/hud/hudHi
 let DataBlock = require("DataBlock")
 let { fillSwitchMapTypeBtn } = require("%scripts/tacticalMapUtils.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
+let { MapAimPointWeaponSelector } = require("%scripts/respawn/aimMemPointsSelector.nut")
 
 dagui_propid_add_name_id("permanentMapTool")
 
@@ -72,6 +73,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     wasMenuShift = false
     isActiveTactical = false
     missionBlk = null
+    aimMemPointsSelector = null
 
     function initScreen() {
       this.scene.findObject("update_timer").setUserData(this)
@@ -86,6 +88,11 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
       this.missionBlk = misBlk
       this.initWnd()
       hudHintsManagerInit(this.scene, { paramsToCheck = ["showWithMap"] })
+
+      if (this.aimMemPointsSelector == null) {
+        let aimPointSelectorNest = this.scene.findObject("aimPointSelectorNest")
+        this.aimMemPointsSelector = MapAimPointWeaponSelector(aimPointSelectorNest)
+      }
     }
 
     function isCurUnitAircraft() {
@@ -173,7 +180,10 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
       setAllowMoveCenter(false)
       this.resetPointOfInterestMode()
-      showObjById("aim_points_hint", !isRespawn && !isXInputDevice() && can_use_aiming_points(), this.scene)
+      let showAimingMemPointsHint = !isRespawn && !isXInputDevice() && is_aiming_points_enabled()
+      let aimPointsHintObj = showObjById("aim_points_hint", showAimingMemPointsHint, this.scene)
+      if (showAimingMemPointsHint)
+        showObjById("hint_edit_aiming_mem_point", can_use_aiming_points(), aimPointsHintObj)
     }
 
     function reinitScreen(params = {}) {
@@ -466,6 +476,11 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updatePlayer()
     }
 
+    function onTacticalmapClick(_obj) {
+      if (this.aimMemPointsSelector)
+        this.aimMemPointsSelector.hide()
+    }
+
     function doClose() {
       let closeFn = base.goBack
       this.guiScene.performDelayed(this, function() {
@@ -543,6 +558,13 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onRespawnScreenClick() {
     this.resetPointOfInterestMode()
+  }
+
+  function onDestroy() {
+    if (this.aimMemPointsSelector) {
+      this.aimMemPointsSelector.destroy()
+      this.aimMemPointsSelector = null
+    }
   }
 }
 

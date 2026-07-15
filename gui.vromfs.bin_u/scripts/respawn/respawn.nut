@@ -115,7 +115,7 @@ let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, 
   setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet,
   setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset, setTacticalMapHudType,
   setTacticalMapIconsFilter } = require("guiTacticalMap")
-let { can_use_aiming_points = @() false } = require("aimingMemPoints")
+let { is_aiming_points_enabled = @() false, can_use_aiming_points = @() false } = require("aimingMemPoints")
 let { isXInputDevice } = require("controls")
 let { hasSightStabilization } = require("vehicleModel")
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
@@ -146,6 +146,8 @@ let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { getTacticalMapMarksFiltersView, applyTacticalMapMarksFilterChange,
 getTacticalMapMarksSelectedFilters } = require("%scripts/respawn/mapMarkersFilter.nut")
 let stdMath = require("%sqstd/math.nut")
+let { MapAimPointWeaponSelector } = require("%scripts/respawn/aimMemPointsSelector.nut")
+
 
 let currentSquadSpawnsDataQuery = ecs.SqQuery("currentSquadSpawnsDataQuery", {
   comps_ro=[["dynamic_respawn__playerId", ecs.TYPE_INT],
@@ -386,6 +388,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   overridedUnitSkins = null
   fullListBases = null
+  aimMemPointsSelector = null
 
   static mainButtonsId = ["btn_select", "btn_select_no_enter"]
 
@@ -501,12 +504,20 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateControlsAllowMask()
     this.updateVoiceChatWidget(!this.isRespawn)
     getContactsHandler()?.sceneShow(false)
-
     this.updateRespawnBases(true)
 
     if(this.missionRules instanceof AdditionalUnits)
       this.scene.findObject("additionalUnitsNest").show(true)
-    showObjById("aim_points_hint", !this.isRespawn && !isXInputDevice() && can_use_aiming_points(), this.scene)
+    let showAimingMemPointsHint = !this.isRespawn && !isXInputDevice() && is_aiming_points_enabled()
+    let aimPointsHintObj = showObjById("aim_points_hint", showAimingMemPointsHint, this.scene)
+    if (showAimingMemPointsHint)
+      showObjById("hint_edit_aiming_mem_point", can_use_aiming_points(), aimPointsHintObj)
+
+
+    if (this.aimMemPointsSelector == null) {
+      let aimPointSelectorNest = this.scene.findObject("aimPointSelectorNest")
+      this.aimMemPointsSelector = MapAimPointWeaponSelector(aimPointSelectorNest)
+    }
   }
 
   function moveCursorToInitailPosition() {
@@ -1441,6 +1452,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function onTacticalmapClick(_obj) {
+    if (this.aimMemPointsSelector)
+      this.aimMemPointsSelector.hide()
+
     if (!this.isRespawn || !checkObj(this.scene) || !this.canChooseRespawnBase)
       return
 
@@ -1770,6 +1784,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function onDestroy() {
     this.updateTacticalMapUnitType(false)
+    if (this.aimMemPointsSelector) {
+      this.aimMemPointsSelector.destroy()
+      this.aimMemPointsSelector = null
+    }
   }
 
   function getSelSkin() {
