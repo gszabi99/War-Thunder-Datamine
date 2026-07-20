@@ -2513,7 +2513,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -2522,6 +2522,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -2531,6 +2532,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -2611,7 +2614,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 80.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner0",
@@ -2647,7 +2792,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -2656,6 +2801,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -2665,6 +2811,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_02",
@@ -2745,7 +2893,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 80.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner1",
@@ -2781,7 +3071,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -2790,6 +3080,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -2799,6 +3090,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_03",
@@ -2879,7 +3172,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 80.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner1",
@@ -2915,7 +3350,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -2924,6 +3359,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -2933,6 +3369,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_04",
@@ -3013,7 +3451,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 80.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner2",
@@ -3035,7 +3615,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3044,6 +3624,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3053,6 +3634,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -3127,7 +3710,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner2",
@@ -3149,7 +3874,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3158,6 +3883,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3167,6 +3893,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -3241,7 +3969,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner2",
@@ -3263,7 +4133,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3272,6 +4142,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3281,6 +4152,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -3355,7 +4228,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner2",
@@ -3377,7 +4392,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3386,6 +4401,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3395,6 +4411,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -3469,7 +4487,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner3",
@@ -3491,7 +4651,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3500,6 +4660,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3509,6 +4670,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02",
@@ -3583,7 +4746,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner3",
@@ -3605,7 +4910,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3614,6 +4919,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3623,6 +4929,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02",
@@ -3697,7 +5005,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner3",
@@ -3719,7 +5169,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3728,6 +5178,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3737,6 +5188,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02",
@@ -3811,7 +5264,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner3",
@@ -3833,7 +5428,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3842,6 +5437,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3851,6 +5447,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_02",
           "gun": "aa_gun_02",
@@ -3925,7 +5523,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner4",
@@ -3947,7 +5687,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -3956,6 +5696,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -3965,6 +5706,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_03",
           "gun": "aa_gun_03",
@@ -4057,7 +5800,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner4",
@@ -4079,7 +5964,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -4088,6 +5973,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -4097,6 +5983,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_03",
           "gun": "aa_gun_03",
@@ -4189,7 +6077,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner4",
@@ -4211,7 +6241,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -4220,6 +6250,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -4229,6 +6260,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_03",
           "gun": "aa_gun_03",
@@ -4321,7 +6354,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner4",
@@ -4343,7 +6518,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -4352,6 +6527,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -4361,6 +6537,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_03",
           "gun": "aa_gun_03",
@@ -4453,7 +6631,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner5",
@@ -4475,7 +6795,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -4484,6 +6804,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -4493,6 +6814,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_04",
           "gun": "aa_gun_04",
@@ -4585,7 +6908,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner5",
@@ -4607,7 +7072,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -4616,6 +7081,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -4625,6 +7091,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_04",
           "gun": "aa_gun_04",
@@ -4717,7 +7185,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner5",
@@ -4739,7 +7349,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -4748,6 +7358,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -4757,6 +7368,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_04",
           "gun": "aa_gun_04",
@@ -4849,7 +7462,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       },
       {
         "trigger": "gunner5",
@@ -4871,7 +7626,7 @@
         "DelayAfterShoot": 0.75,
         "AttackMaxRadius": 10000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.78,
+        "accuracyAir": 0.9,
         "accuracyGnd": 0.65,
         "errMeasureVel": 8.0,
         "errTargettingOn100kmph": 0.08,
@@ -4880,6 +7635,7 @@
         "errMeasureVelDir": 1.0,
         "errTargetting": 0.75,
         "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
         "shellMassRange": [
           30.0,
           1500.0
@@ -4889,6 +7645,8 @@
           600.0
         ],
         "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_04",
           "gun": "aa_gun_04",
@@ -4981,7 +7739,149 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 120.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              4000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          }
+        ]
       }
     ]
   },

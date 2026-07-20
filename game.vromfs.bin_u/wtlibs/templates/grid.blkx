@@ -23,6 +23,18 @@
     "grid_holder__cellSize": 32,
     "grid_holder": {}
   },
+  "aircrafts_grid": {
+    "editableObj": false,
+    "_use": [
+      "replicating",
+      "replicate_early"
+    ],
+    "_singleton": true,
+    "grid_holder__type": "aircrafts",
+    "grid_holder__typeHash": 0,
+    "grid_holder__cellSize": 512,
+    "grid_holder": {}
+  },
   "attract_points_grid": {
     "editableObj": false,
     "_use": [
@@ -60,6 +72,16 @@
   },
   "vehicle_grid_obj": {
     "grid_obj__gridType": "vehicles",
+    "grid_obj__hidden": 0,
+    "grid_obj__fixedTmScale": -1.0,
+    "_replicated": "grid_obj__hidden",
+    "_tracked": "grid_obj__hidden",
+    "grid_obj": {},
+    "grid_obj__updateInMainThread:tag": {},
+    "grid_obj__updateAlways:tag": {}
+  },
+  "aircraft_grid_obj": {
+    "grid_obj__gridType": "aircrafts",
     "grid_obj__hidden": 0,
     "grid_obj__fixedTmScale": -1.0,
     "_replicated": "grid_obj__hidden",

@@ -82,6 +82,7 @@ def create_unit(template_name : string;
       init |> set("on_death_substract_team_tickets_num", death_substract_tickets)
       if target__tag != null
         init |> set("nuclear_escalation_target__tag", *target__tag)
+      init |> set("nuclear_escalation_spaa_radar_on__threatSearchRad", settings_obj?.threatSearchRad ?? 20000.)
   return unitEid
 
 [es(tag=server, no_order)]
@@ -149,7 +150,7 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
           let templateName = obj.templateName ?? "tank+nuclear_escalation_tank"
           let count = obj.count ?? 1
           for _k in range(0, count)
-            let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army)
+            let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army, true, 0.1)
             if unitEid != INVALID_ENTITY_ID
               equip_factory__columnUnits |> push(unitEid)
               columnUnits |> push(unitEid)
@@ -782,3 +783,29 @@ def on_nuclear_escalation_target_hunter_appear_es(evt : Event;
   if nuclear_escalation_target_hunter__target_tag.empty()
     return
   nuclear_escalation_target_hunter__hash = hash(nuclear_escalation_target_hunter__target_tag)
+
+[unused_argument(unit__ref), es(tag=server, no_order, trust_access)]
+def radar_management_by_threat_es(act : UpdateStageInfoAct;
+                                  transform : float3x4;
+                                  team : int;
+                                  var unit__ref : UnitRef&;
+                                  var nuclear_escalation_spaa_radar_on__threatCheckTimer : float&;
+                                  nuclear_escalation_spaa_radar_on__threatSearchRad : float)
+  nuclear_escalation_spaa_radar_on__threatCheckTimer -= act.dt
+  if nuclear_escalation_spaa_radar_on__threatCheckTimer > 0.
+    return
+  nuclear_escalation_spaa_radar_on__threatCheckTimer = 1.
+  var found = false
+  find_entity_in_grid(ecs_hash("aircrafts"), BSphere3(transform[3], nuclear_escalation_spaa_radar_on__threatSearchRad), GridEntCheck.POS) <| $(objEid : EntityId)
+    let unit = get_unit(objEid)
+    if unit != null && !unit.isDelayed && unit.isAlive && unit.army != team
+      found = true
+    return found
+
+  static_if typeinfo(builtin_function_exists @@ < (arg0 : Unit::Unit&; arg1 : bool) : void > _::changeSensorPowerModeByCond)
+    *unit__ref.unit |> changeSensorPowerModeByCond(!found)
+
+[es(tag=server, on_appear)]
+def radar_management_by_threat_init_es(evt : Event;
+                                       var nuclear_escalation_spaa_radar_on__threatCheckTimer : float&)
+  nuclear_escalation_spaa_radar_on__threatCheckTimer = rnd_float(0., 1.)

@@ -27,7 +27,12 @@
     ],
     "physical_tracks__dontCreateTracks": true
   },
-  "nuclear_escalation_spaa_radar_on": {
+  "nuclear_escalation_spaa_with_threat_radar": {
+    "_use": "nuclear_escalation_tank",
+    "nuclear_escalation_spaa_radar_on__threatCheckTimer": 1.0,
+    "nuclear_escalation_spaa_radar_on__threatSearchRad": 20000.0
+  },
+  "nuclear_escalation_spaa_with_radar": {
     "_use": [
       "unit_death_substract_team_tickets",
       "restore_unit_by_timer",
@@ -35,9 +40,14 @@
     ],
     "physical_tracks__dontCreateTracks": true
   },
+  "nuclear_escalation_spaa_radar_on": {
+    "_use": "nuclear_escalation_spaa_with_radar",
+    "nuclear_escalation_spaa_radar_on__threatCheckTimer": 1.0,
+    "nuclear_escalation_spaa_radar_on__threatSearchRad": 20000.0
+  },
   "nuclear_escalation_spaa_radar_off": {
     "_use": [
-      "nuclear_escalation_spaa_radar_on",
+      "nuclear_escalation_spaa_with_radar",
       "disable_radar_on_start"
     ]
   },
