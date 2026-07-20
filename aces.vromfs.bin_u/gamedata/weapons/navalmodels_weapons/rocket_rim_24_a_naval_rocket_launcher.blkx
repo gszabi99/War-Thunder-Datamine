@@ -68,45 +68,39 @@
       "antiShipRocket": true
     },
     "rocket": {
+      "dragCx": 0.027,
       "statType": "hydra",
+      "maxDeltaAngle": 0.03,
+      "price": 3000.0,
+      "mesh": "rocket_rim24_tartar",
+      "shellAnimChar": "rocket_rim24_tartar_deployed_char",
       "caliber": 0.343,
       "length": 4.57,
-      "WdK": [
-        0.1,
-        0.1,
-        0.1
-      ],
-      "CxK": 1.4,
-      "CyK": 50.0,
-      "CyMaxAoA": 25.0,
-      "wingAreaMult": 0.5,
-      "distFromCmToStab": 0.005,
-      "mass": 580.0,
-      "massEnd": 510.0,
-      "massEnd1": 350.0,
-      "timeFire": 3.0,
-      "timeFire1": 12.0,
-      "force": 55200.0,
-      "force1": 30000.0,
+      "CxK": 1.05,
+      "wingAreaMult": 1.2,
+      "finsAoaHor": 0.15,
+      "finsAoaVer": 0.15,
+      "distFromCmToStab": 0.6,
+      "mass": 521.6312,
+      "massEnd": 391.6312,
+      "massEnd1": 296.1312,
+      "timeFire": 4.0,
+      "timeFire1": 22.0,
+      "force": 66750.0,
+      "force1": 8900.0,
       "timeLife": 30.0,
       "thrustDeviation": 0.01,
       "useStartSpeed": true,
-      "startSpeed": 10.0,
+      "startSpeed": 0.0,
       "endSpeed": 620.0,
       "maxDistance": 14500.0,
       "operatedDist": 14000.0,
       "rangeMax": 14000.0,
-      "operated": true,
-      "maxLateralAcceleration": 5.0,
-      "autoLeveling": true,
-      "autoAiming": true,
-      "aimCorrectionVelMin": 600.0,
-      "aimIntegralSensitivity": 0.1,
-      "aimIntegralSensitivityLimit": 1.0,
-      "maxAxisValues": 0.23,
-      "maxDeltaAngle": 0.03,
+      "loadFactorMax": 20.0,
+      "guidanceType": "saclos",
       "explosiveType": "torpex",
       "explosiveMass": 30.8,
+      "warheadMass": 52.16,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -124,17 +118,6 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
-      "shellCollision": true,
-      "mesh": "rocket_rim24_tartar",
-      "shellAnimChar": "rocket_rim24_tartar_deployed_char",
-      "hasProximityFuse": true,
-      "dragCx": 0.027,
-      "explosionOffset": 0.05,
-      "explodeTreshold": [
-        0.1,
-        0.1
-      ],
-      "fuseDelayDist": 3.0,
       "hitPowerMult": 1.0,
       "nearHitPower": [
         1.0,
@@ -172,19 +155,11 @@
         200.0,
         1000.0
       ],
+      "shellCollision": true,
+      "hasProximityFuse": true,
+      "fuseDelayDist": 1.0,
+      "explodeTreshold": 0.3,
       "distanceFuse": false,
-      "explodeHitPower": 120.0,
-      "explodeArmorPower": 40.0,
-      "explodeRadius": [
-        1.5,
-        2.5
-      ],
-      "shutterDamage": true,
-      "shutterDamageRadius": 25.0,
-      "shutterAmount": 1000,
-      "shutterArmorPower": 7.0,
-      "shutterHit": 15.0,
-      "price": 3000.0,
       "explosionEffect": "explosion_midair_rocket_medium",
       "groundCollisionEffect": "hit_161_205mm_dirt_he",
       "ricochetEffect": "hit_133_160mm_metal_ap",
@@ -205,6 +180,34 @@
         0.0,
         0.0
       ],
+      "guidance": {
+        "controlRangeMax": 14000.0,
+        "beaconBand": -1,
+        "controlConeFov": 90.0,
+        "breakLockMaxTime": 20.0,
+        "lineOfSightAutopilot": {
+          "timeOut": 0.0,
+          "timeToGain0": [
+            0.0,
+            0.0
+          ],
+          "timeToGain1": [
+            0.2,
+            1.0
+          ],
+          "crossDistToReqCrossVelMult": 0.95,
+          "reqCrossVelRationMax": 0.75,
+          "velDiffToReqAccelMult": 4.75,
+          "accelControl": {
+            "reqAccelMax": 20.0,
+            "baseIndSpeed": 1800.0,
+            "accelControlProp": 0.0481,
+            "accelControlIntg": 0.0,
+            "accelControlDiff": 0.0021,
+            "accelControlIntgLim": 0.0
+          }
+        }
+      },
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -221,99 +224,6 @@
       },
       "pressureDamage": {
         "damageType": "pressure"
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 50.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": [
-            {
-              "shellState": "inFlight",
-              "expl": 1.0
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.45,
-              "break": 0.5,
-              "damage": 3.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "genericLongRod",
-              "expl": 0.05,
-              "fire": 0.45,
-              "break": 0.5,
-              "damage": 3.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.3,
-              "break": 0.2,
-              "damage": 30.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "genericLongRod",
-              "expl": 0.5,
-              "fire": 0.3,
-              "break": 0.2,
-              "damage": 30.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "explosion",
-              "expl": 0.45,
-              "fire": 0.45,
-              "break": 0.1,
-              "damage": 50.0,
-              "fHitCritical": true
-            },
-            {
-              "shellState": "onUnit",
-              "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.4,
-              "break": 0.1,
-              "damage": 100.0,
-              "fHitCritical": true
-            }
-          ],
-          "onKill": [
-            {
-              "shellState": "inFlight",
-              "destruction": 1.0
-            },
-            {
-              "shellState": "onUnit",
-              "expl": 0.05,
-              "fire": 0.05,
-              "break": 0.9,
-              "fHitCritical": true
-            }
-          ]
-        }
-      },
-      "proximityFuse": {
-        "radius": 25.0,
-        "armDistance": 300.0,
-        "detectAirUnits": true,
-        "detectGroundUnits": false,
-        "detectGround": false,
-        "minimalAltitude": 25.0
       },
       "damage": {
         "shatter": {
@@ -410,10 +320,113 @@
           50.0,
           7000.0
         ],
-        "ArmorPower12000m": [
-          60.0,
-          12000.0
+        "ArmorPower20000m": [
+          40.0,
+          20000.0
         ]
+      },
+      "hitpower": {
+        "HitPower0m": [
+          400.0,
+          500.0
+        ],
+        "HitPower10000m": [
+          400.0,
+          10000.0
+        ]
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 50.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": [
+            {
+              "shellState": "inFlight",
+              "expl": 1.0
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "generic",
+              "expl": 0.05,
+              "fire": 0.45,
+              "break": 0.5,
+              "damage": 3.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "genericLongRod",
+              "expl": 0.05,
+              "fire": 0.45,
+              "break": 0.5,
+              "damage": 3.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "generic",
+              "expl": 0.5,
+              "fire": 0.3,
+              "break": 0.2,
+              "damage": 30.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "genericLongRod",
+              "expl": 0.5,
+              "fire": 0.3,
+              "break": 0.2,
+              "damage": 30.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "explosion",
+              "expl": 0.45,
+              "fire": 0.45,
+              "break": 0.1,
+              "damage": 50.0,
+              "fHitCritical": true
+            },
+            {
+              "shellState": "onUnit",
+              "damageType": "cumulative",
+              "expl": 0.4,
+              "fire": 0.4,
+              "break": 0.1,
+              "damage": 100.0,
+              "fHitCritical": true
+            }
+          ],
+          "onKill": [
+            {
+              "shellState": "inFlight",
+              "destruction": 1.0
+            },
+            {
+              "shellState": "onUnit",
+              "expl": 0.05,
+              "fire": 0.05,
+              "break": 0.9,
+              "fHitCritical": true
+            }
+          ]
+        }
+      },
+      "proximityFuse": {
+        "radius": 25.0,
+        "armDistance": 300.0,
+        "detectAirUnits": true,
+        "detectGroundUnits": false,
+        "detectGround": false,
+        "minimalAltitude": 25.0
       },
       "explosionSmoke": {
         "radius": 9.0,
@@ -1022,45 +1035,39 @@
         "antiShipRocket": true
       },
       "rocket": {
+        "dragCx": 0.027,
         "statType": "hydra",
+        "maxDeltaAngle": 0.03,
+        "price": 3000.0,
+        "mesh": "rocket_rim24_tartar",
+        "shellAnimChar": "rocket_rim24_tartar_deployed_char",
         "caliber": 0.343,
         "length": 4.57,
-        "WdK": [
-          0.1,
-          0.1,
-          0.1
-        ],
-        "CxK": 1.4,
-        "CyK": 50.0,
-        "CyMaxAoA": 25.0,
-        "wingAreaMult": 0.5,
-        "distFromCmToStab": 0.005,
-        "mass": 580.0,
-        "massEnd": 510.0,
-        "massEnd1": 350.0,
-        "timeFire": 3.0,
-        "timeFire1": 12.0,
-        "force": 55200.0,
-        "force1": 30000.0,
+        "CxK": 1.05,
+        "wingAreaMult": 1.2,
+        "finsAoaHor": 0.15,
+        "finsAoaVer": 0.15,
+        "distFromCmToStab": 0.6,
+        "mass": 521.6312,
+        "massEnd": 391.6312,
+        "massEnd1": 296.1312,
+        "timeFire": 4.0,
+        "timeFire1": 22.0,
+        "force": 66750.0,
+        "force1": 8900.0,
         "timeLife": 30.0,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
-        "startSpeed": 10.0,
+        "startSpeed": 0.0,
         "endSpeed": 620.0,
         "maxDistance": 14500.0,
         "operatedDist": 14000.0,
         "rangeMax": 14000.0,
-        "operated": true,
-        "maxLateralAcceleration": 5.0,
-        "autoLeveling": true,
-        "autoAiming": true,
-        "aimCorrectionVelMin": 600.0,
-        "aimIntegralSensitivity": 0.1,
-        "aimIntegralSensitivityLimit": 1.0,
-        "maxAxisValues": 0.23,
-        "maxDeltaAngle": 0.03,
+        "loadFactorMax": 20.0,
+        "guidanceType": "saclos",
         "explosiveType": "torpex",
         "explosiveMass": 30.8,
+        "warheadMass": 52.16,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he_ground",
@@ -1078,17 +1085,6 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/sam.ivf",
-        "shellCollision": true,
-        "mesh": "rocket_rim24_tartar",
-        "shellAnimChar": "rocket_rim24_tartar_deployed_char",
-        "hasProximityFuse": true,
-        "dragCx": 0.027,
-        "explosionOffset": 0.05,
-        "explodeTreshold": [
-          0.1,
-          0.1
-        ],
-        "fuseDelayDist": 3.0,
         "hitPowerMult": 1.0,
         "nearHitPower": [
           1.0,
@@ -1126,19 +1122,11 @@
           200.0,
           1000.0
         ],
+        "shellCollision": true,
+        "hasProximityFuse": true,
+        "fuseDelayDist": 1.0,
+        "explodeTreshold": 0.3,
         "distanceFuse": false,
-        "explodeHitPower": 120.0,
-        "explodeArmorPower": 40.0,
-        "explodeRadius": [
-          1.5,
-          2.5
-        ],
-        "shutterDamage": true,
-        "shutterDamageRadius": 25.0,
-        "shutterAmount": 1000,
-        "shutterArmorPower": 7.0,
-        "shutterHit": 15.0,
-        "price": 3000.0,
         "explosionEffect": "explosion_midair_rocket_medium",
         "groundCollisionEffect": "hit_161_205mm_dirt_he",
         "ricochetEffect": "hit_133_160mm_metal_ap",
@@ -1159,6 +1147,34 @@
           0.0,
           0.0
         ],
+        "guidance": {
+          "controlRangeMax": 14000.0,
+          "beaconBand": -1,
+          "controlConeFov": 90.0,
+          "breakLockMaxTime": 20.0,
+          "lineOfSightAutopilot": {
+            "timeOut": 0.0,
+            "timeToGain0": [
+              0.0,
+              0.0
+            ],
+            "timeToGain1": [
+              0.2,
+              1.0
+            ],
+            "crossDistToReqCrossVelMult": 0.95,
+            "reqCrossVelRationMax": 0.75,
+            "velDiffToReqAccelMult": 4.75,
+            "accelControl": {
+              "reqAccelMax": 20.0,
+              "baseIndSpeed": 1800.0,
+              "accelControlProp": 0.0481,
+              "accelControlIntg": 0.0,
+              "accelControlDiff": 0.0021,
+              "accelControlIntgLim": 0.0
+            }
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -1175,99 +1191,6 @@
         },
         "pressureDamage": {
           "damageType": "pressure"
-        },
-        "DamageParts": {
-          "body": {
-            "hp": 50.0,
-            "armorClass": "tank_structural_steel",
-            "armorThickness": 1.0
-          }
-        },
-        "DamageEffects": {
-          "part": {
-            "name": "body",
-            "onHit": [
-              {
-                "shellState": "inFlight",
-                "expl": 1.0
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "generic",
-                "expl": 0.05,
-                "fire": 0.45,
-                "break": 0.5,
-                "damage": 3.0,
-                "fHitCritical": true
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "genericLongRod",
-                "expl": 0.05,
-                "fire": 0.45,
-                "break": 0.5,
-                "damage": 3.0,
-                "fHitCritical": true
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "generic",
-                "expl": 0.5,
-                "fire": 0.3,
-                "break": 0.2,
-                "damage": 30.0,
-                "fHitCritical": true
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "genericLongRod",
-                "expl": 0.5,
-                "fire": 0.3,
-                "break": 0.2,
-                "damage": 30.0,
-                "fHitCritical": true
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "explosion",
-                "expl": 0.45,
-                "fire": 0.45,
-                "break": 0.1,
-                "damage": 50.0,
-                "fHitCritical": true
-              },
-              {
-                "shellState": "onUnit",
-                "damageType": "cumulative",
-                "expl": 0.4,
-                "fire": 0.4,
-                "break": 0.1,
-                "damage": 100.0,
-                "fHitCritical": true
-              }
-            ],
-            "onKill": [
-              {
-                "shellState": "inFlight",
-                "destruction": 1.0
-              },
-              {
-                "shellState": "onUnit",
-                "expl": 0.05,
-                "fire": 0.05,
-                "break": 0.9,
-                "fHitCritical": true
-              }
-            ]
-          }
-        },
-        "proximityFuse": {
-          "radius": 25.0,
-          "armDistance": 300.0,
-          "detectAirUnits": true,
-          "detectGroundUnits": false,
-          "detectGround": false,
-          "minimalAltitude": 25.0
         },
         "damage": {
           "shatter": {
@@ -1364,10 +1287,113 @@
             50.0,
             7000.0
           ],
-          "ArmorPower12000m": [
-            60.0,
-            12000.0
+          "ArmorPower20000m": [
+            40.0,
+            20000.0
           ]
+        },
+        "hitpower": {
+          "HitPower0m": [
+            400.0,
+            500.0
+          ],
+          "HitPower10000m": [
+            400.0,
+            10000.0
+          ]
+        },
+        "DamageParts": {
+          "body": {
+            "hp": 50.0,
+            "armorClass": "tank_structural_steel",
+            "armorThickness": 1.0
+          }
+        },
+        "DamageEffects": {
+          "part": {
+            "name": "body",
+            "onHit": [
+              {
+                "shellState": "inFlight",
+                "expl": 1.0
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "generic",
+                "expl": 0.05,
+                "fire": 0.45,
+                "break": 0.5,
+                "damage": 3.0,
+                "fHitCritical": true
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "genericLongRod",
+                "expl": 0.05,
+                "fire": 0.45,
+                "break": 0.5,
+                "damage": 3.0,
+                "fHitCritical": true
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "generic",
+                "expl": 0.5,
+                "fire": 0.3,
+                "break": 0.2,
+                "damage": 30.0,
+                "fHitCritical": true
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "genericLongRod",
+                "expl": 0.5,
+                "fire": 0.3,
+                "break": 0.2,
+                "damage": 30.0,
+                "fHitCritical": true
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "explosion",
+                "expl": 0.45,
+                "fire": 0.45,
+                "break": 0.1,
+                "damage": 50.0,
+                "fHitCritical": true
+              },
+              {
+                "shellState": "onUnit",
+                "damageType": "cumulative",
+                "expl": 0.4,
+                "fire": 0.4,
+                "break": 0.1,
+                "damage": 100.0,
+                "fHitCritical": true
+              }
+            ],
+            "onKill": [
+              {
+                "shellState": "inFlight",
+                "destruction": 1.0
+              },
+              {
+                "shellState": "onUnit",
+                "expl": 0.05,
+                "fire": 0.05,
+                "break": 0.9,
+                "fHitCritical": true
+              }
+            ]
+          }
+        },
+        "proximityFuse": {
+          "radius": 25.0,
+          "armDistance": 300.0,
+          "detectAirUnits": true,
+          "detectGroundUnits": false,
+          "detectGround": false,
+          "minimalAltitude": 25.0
         },
         "explosionSmoke": {
           "radius": 9.0,

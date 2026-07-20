@@ -38,7 +38,7 @@ def private create_sam_unit(settings_obj : Object const?;
     let bulletsCountList = get_ecs_IntList(settings_obj, "bulletsCount")
     if bulletsCountList != null
       init |> set("setting__bulletsCount", *bulletsCountList)
-    init |> set("on_death_substract_team_tickets_num", 5)
+    init |> set("on_death_substract_team_tickets_num", settings_obj?.death_substract_tickets ?? 5)
     init |> set("aimer_custom_setting__maxNumAttackersPerTargetGroupIdx", attackers_group_idx)
     init |> set("aimer_custom_setting__maxNumAttackersPerTarget", max_attackers_per_target)
     init |> set("unit_params__rearmTimeOnField", settings_obj?.rearmTimeOnField ?? 20.)

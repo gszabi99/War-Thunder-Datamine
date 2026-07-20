@@ -150,7 +150,7 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
           let templateName = obj.templateName ?? "tank+nuclear_escalation_tank"
           let count = obj.count ?? 1
           for _k in range(0, count)
-            let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army, true, 0.1)
+            let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army, true, 0.1, obj?.death_substract_tickets ?? 5)
             if unitEid != INVALID_ENTITY_ID
               equip_factory__columnUnits |> push(unitEid)
               columnUnits |> push(unitEid)
@@ -426,7 +426,7 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
             let templateName = obj.templateName ?? "tank+nuclear_escalation_tank"
             let count = obj.count ?? 1
             for _k in range(0, count)
-              let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army, !isSpg, 0.1)
+              let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army, !isSpg, 0.1, obj?.death_substract_tickets ?? 5)
               equip_factory__columnUnits |> push(unitEid)
               columnUnits |> push(unitEid)
               unitTransform[3] += unitTransform[2] * 10.
@@ -627,7 +627,7 @@ def units_spawn_on_init_es(evt : Event;
           let posName = units_spawn_on_init__positionNames |> length() > startIdx ? "{units_spawn_on_init__positionNames[startIdx]}" : ""
           if !posName.empty()
             nextNameSearchIndex[posName] = startIdx + 1
-        let unitEid = create_unit(templateName, obj, transform * tm, team, true, 1., 5, nuclear_escalation_target__tag)
+        let unitEid = create_unit(templateName, obj, transform * tm, team, true, 1., obj?.death_substract_tickets ?? 5, nuclear_escalation_target__tag)
         if unitEid != INVALID_ENTITY_ID
           units_spawn_on_init__units |> push(unitEid)
 
