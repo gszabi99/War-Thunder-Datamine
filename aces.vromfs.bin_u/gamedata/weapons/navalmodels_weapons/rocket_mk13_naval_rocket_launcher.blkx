@@ -1,9 +1,9 @@
 {
   "cannon": true,
   "weaponType": -1,
-  "aimMinDist": 1500.0,
-  "aimMaxDist": 40000.0,
-  "attackMaxDist": 35000.0,
+  "aimMinDist": 3500.0,
+  "aimMaxDist": 65000.0,
+  "attackMaxDist": 56300.0,
   "bullets": -1,
   "bulletsCluster": 1,
   "shotFreq": 1.0,
@@ -81,7 +81,7 @@
       "length": 4.48,
       "CxK": 0.85,
       "distFromCmToStab": 0.35,
-      "wingAreaMult": 1.5,
+      "wingAreaMult": 1.2,
       "finsAoaHor": 0.2,
       "finsAoaVer": 0.2,
       "mass": 616.0,
@@ -1460,7 +1460,12 @@
           "detectAirUnits": true,
           "detectGroundUnits": false,
           "detectGround": false,
-          "minimalAltitude": 25.0
+          "minimalAltitude": 25.0,
+          "detectShells": true,
+          "shellCaliberRange": [
+            0.08,
+            0.2
+          ]
         },
         "explosionSmoke": {
           "radius": 9.0,
@@ -2080,7 +2085,7 @@
         "length": 4.48,
         "CxK": 0.85,
         "distFromCmToStab": 0.35,
-        "wingAreaMult": 1.5,
+        "wingAreaMult": 1.2,
         "finsAoaHor": 0.2,
         "finsAoaVer": 0.2,
         "mass": 616.0,
