@@ -197037,12 +197037,12 @@
         "condition": [
           {
             "type": "battlepassSeason",
-            "season": 22
+            "season": 23
           },
           {
             "type": "char_time_range",
-            "beginDate": "2026-04-22 12:00:00",
-            "endDate": "2026-07-22 11:59:00"
+            "beginDate": "2026-07-22 12:00:00",
+            "endDate": "2026-10-21 11:59:00"
           }
         ]
       }
@@ -198580,6 +198580,67 @@
             "type": "char_time_range",
             "beginDate": "2026-05-20 12:00:00",
             "endDate": "2026-07-22 12:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season24_purchased_main",
+      "type": "achievement",
+      "costGold": 2000,
+      "hidden": true
+    },
+    {
+      "id": "battlepass_season24_purchased_entitlement",
+      "userLogId": "battlepass_season24_purchased",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season24_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season24_purchased_item",
+      "type": "inventory",
+      "userLogId": "730022",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season24_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season24_allow_skip_all_stages_entitlement",
+      "userLogId": "battlepass_season24_allow_skip_all_stages",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_always_progress",
+        "condition": [
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "battlepass_season24_allow_skip_all_stages",
+            "invertResult": true
+          },
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePassSeason24Purchased"
+          },
+          {
+            "type": "char_time_range",
+            "beginDate": "2026-08-19 12:00:00",
+            "endDate": "2026-10-21 12:00:00"
           }
         ]
       }
