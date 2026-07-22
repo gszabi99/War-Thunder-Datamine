@@ -1240,23 +1240,32 @@
       },
       "conditions": {},
       "actions": {
-        "unitSetProperties": {
-          "object": [
-            "t1_frigate_01",
-            "t1_frigate_02",
-            "t1_frigate_03",
-            "t1_destroyer_01",
-            "t1_destroyer_02",
-            "t2_frigate_01",
-            "t2_frigate_02",
-            "t2_frigate_03",
-            "t2_destroyer_01",
-            "t2_destroyer_02"
-          ],
-          "rearmTimeOnField": 60.0,
-          "maxNumAttackersPerTargetGroupIdx": 2,
-          "maxNumAttackersPerTarget": 1
-        }
+        "unitSetProperties": [
+          {
+            "object": [
+              "t1_frigate_01",
+              "t1_frigate_02",
+              "t1_frigate_03",
+              "t2_frigate_01",
+              "t2_frigate_02",
+              "t2_frigate_03"
+            ],
+            "rearmTimeOnField": 60.0,
+            "maxNumAttackersPerTargetGroupIdx": 2,
+            "maxNumAttackersPerTarget": 2
+          },
+          {
+            "object": [
+              "t1_destroyer_01",
+              "t1_destroyer_02",
+              "t2_destroyer_01",
+              "t2_destroyer_02"
+            ],
+            "rearmTimeOnField": 60.0,
+            "maxNumAttackersPerTargetGroupIdx": 3,
+            "maxNumAttackersPerTarget": 2
+          }
+        ]
       },
       "else_actions": {}
     },
