@@ -119,20 +119,23 @@
               "icontype": "fighter",
               "side": "ally",
               "target": "t2_fighters_spawn01",
-              "lookAt": "battle_area"
+              "lookAt": "airfield_area"
             },
             {
               "icontype": "bomber",
               "side": "ally",
               "target": "t2_bombers_spawn01",
-              "lookAt": "battle_area"
+              "lookAt": "airfield_area"
             },
             {
               "icontype": "building",
               "side": "enemy",
               "target": "t1_bomb_target_01"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "battle_area"
+          }
         }
       }
     }
@@ -718,6 +721,54 @@
       },
       "else_actions": {}
     },
+    "exit_zone": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsExitZone": [
+          {
+            "army": 1,
+            "area_name": "@t1_exit_zone_squad_name",
+            "enabled": true,
+            "needToShowInWorldHUD": true,
+            "needToShowWhenNoAmmoOnly": true,
+            "needToShowNearestCount": 2,
+            "auto_bailout": true,
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true
+            }
+          },
+          {
+            "army": 2,
+            "area_name": "@t2_exit_zone_squad_name",
+            "enabled": true,
+            "needToShowInWorldHUD": true,
+            "needToShowWhenNoAmmoOnly": true,
+            "needToShowNearestCount": 2,
+            "auto_bailout": true,
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    },
     "t2_bomber_01_end_bombing": {
       "is_enabled": false,
       "comments": "",
@@ -1063,7 +1114,9 @@
     "t2_bombers_death_counter": 0,
     "t2_points_lost_count": -2000,
     "airfield_full_hp": 103000.0,
-    "hp_tmp": 1
+    "hp_tmp": 1,
+    "t1_exit_zone_squad_name": "t1_exit_zone_squad",
+    "t2_exit_zone_squad_name": "t2_exit_zone_squad"
   },
   "dialogs": {},
   "airfields": {},
@@ -5948,6 +6001,78 @@
         },
         "way": {}
       }
+    ],
+    "area_squad": [
+      {
+        "name": "t1_exit_zone_squad",
+        "tm": [
+          [
+            0.984808,
+            0.0,
+            0.173648
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.173648,
+            0.0,
+            0.984808
+          ],
+          [
+            13074.8,
+            32.85,
+            -13263.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_exit_zone_01",
+            "t1_exit_zone_02",
+            "t1_exit_zone_03",
+            "t1_exit_zone_04",
+            "t1_exit_zone_05",
+            "t1_exit_zone_06"
+          ]
+        }
+      },
+      {
+        "name": "t2_exit_zone_squad",
+        "tm": [
+          [
+            -0.990169,
+            0.0,
+            -0.139877
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.139877,
+            0.0,
+            -0.990169
+          ],
+          [
+            -21538.6,
+            32.85,
+            -9224.33
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_exit_zone_01",
+            "t2_exit_zone_02",
+            "t2_exit_zone_03",
+            "t2_exit_zone_04",
+            "t2_exit_zone_05",
+            "t2_exit_zone_06"
+          ]
+        }
+      }
     ]
   },
   "areas": {
@@ -6081,7 +6206,7 @@
       ],
       "props": {}
     },
-    "battle_area": {
+    "airfield_area": {
       "type": "Sphere",
       "tm": [
         [
@@ -6667,6 +6792,344 @@
           -9454.69,
           8000.0,
           -17014.0
+        ]
+      ],
+      "props": {}
+    },
+    "t1_exit_zone_01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1291.52,
+          0.0,
+          762.871
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          -762.871,
+          0.0,
+          1291.52
+        ],
+        [
+          12704.8,
+          315.039,
+          -17193.7
+        ]
+      ],
+      "props": {}
+    },
+    "t1_exit_zone_02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1291.52,
+          0.0,
+          762.871
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          -762.871,
+          0.0,
+          1291.52
+        ],
+        [
+          8711.44,
+          315.039,
+          13.4385
+        ]
+      ],
+      "props": {}
+    },
+    "t1_exit_zone_03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1291.52,
+          0.0,
+          762.871
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          -762.871,
+          0.0,
+          1291.52
+        ],
+        [
+          9112.39,
+          315.027,
+          -23809.6
+        ]
+      ],
+      "props": {}
+    },
+    "t1_exit_zone_04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1291.52,
+          0.0,
+          762.871
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          -762.871,
+          0.0,
+          1291.52
+        ],
+        [
+          2910.7,
+          315.051,
+          -24670.9
+        ]
+      ],
+      "props": {}
+    },
+    "t1_exit_zone_05": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1291.52,
+          0.0,
+          762.871
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          -762.871,
+          0.0,
+          1291.52
+        ],
+        [
+          -3940.6,
+          315.051,
+          3778.81
+        ]
+      ],
+      "props": {}
+    },
+    "t1_exit_zone_06": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1291.52,
+          0.0,
+          762.871
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          -762.871,
+          0.0,
+          1291.52
+        ],
+        [
+          4591.69,
+          315.027,
+          5196.22
+        ]
+      ],
+      "props": {}
+    },
+    "battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          31899.0,
+          0.0,
+          5624.65
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          -5624.69,
+          0.0,
+          31899.1
+        ],
+        [
+          -3726.82,
+          0.0,
+          -11101.0
+        ]
+      ],
+      "props": {}
+    },
+    "t2_exit_zone_01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1316.85,
+          0.0,
+          -718.27
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          718.27,
+          0.0,
+          -1316.85
+        ],
+        [
+          -19255.8,
+          315.039,
+          -5646.49
+        ]
+      ],
+      "props": {}
+    },
+    "t2_exit_zone_02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1316.85,
+          0.0,
+          -718.27
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          718.27,
+          0.0,
+          -1316.85
+        ],
+        [
+          -16306.7,
+          315.039,
+          -23055.4
+        ]
+      ],
+      "props": {}
+    },
+    "t2_exit_zone_03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1316.85,
+          0.0,
+          -718.27
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          718.27,
+          0.0,
+          -1316.85
+        ],
+        [
+          -17217.9,
+          315.027,
+          1180.6
+        ]
+      ],
+      "props": {}
+    },
+    "t2_exit_zone_04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1316.85,
+          0.0,
+          -718.27
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          718.27,
+          0.0,
+          -1316.85
+        ],
+        [
+          -8538.68,
+          315.051,
+          3136.74
+        ]
+      ],
+      "props": {}
+    },
+    "t2_exit_zone_05": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1316.85,
+          0.0,
+          -718.27
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          718.27,
+          0.0,
+          -1316.85
+        ],
+        [
+          -1500.13,
+          315.051,
+          -26060.3
+        ]
+      ],
+      "props": {}
+    },
+    "t2_exit_zone_06": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1316.85,
+          0.0,
+          -718.27
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          718.27,
+          0.0,
+          -1316.85
+        ],
+        [
+          -8807.02,
+          315.027,
+          -27485.6
         ]
       ],
       "props": {}
