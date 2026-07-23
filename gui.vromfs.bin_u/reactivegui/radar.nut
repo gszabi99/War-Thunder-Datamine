@@ -6,13 +6,20 @@ let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, IsCScopeVisible, IsBScope
 let { IPoint3 } = require("dagor.math")
 let { getLangId } = require("dagor.localize")
 let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
-let { radarButtonsAir, radarButtonsHeli, isRadarButtonsVisible, isRadarFiltersButtonsVisible, filtersButtons } = require("%rGui/radarButtons.nut")
+let { radarButtonsAir, radarButtonsAirMinimized, radarButtonsHeliMinimized, radarButtonsHeli,
+  isRadarButtonsVisible, isRadarFiltersButtonsVisible, filtersButtons
+} = require("%rGui/radarButtons.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { ButtonExtendUpdatePress } = require("wt.behaviors")
 
 let radarButtonsComps = {
   aircraft = radarButtonsAir
   helicopter = radarButtonsHeli
+}
+
+let radarButtonsCompsMinimized = {
+  aircraft = radarButtonsAirMinimized
+  helicopter = radarButtonsHeliMinimized
 }
 
 let radarOffsets = Computed(function() {
@@ -97,7 +104,7 @@ let radarHud = @(width, height, x, y, color_watched, ovr = {}, handle_clicks = f
   pos = [x, y]
   children = [
     radarCanvas(color_watched, ovr, handle_clicks)
-    isRadarButtonsVisible.get() ? radarButtonsComps?[unitType.get()] : null
+    isRadarButtonsVisible.get() ? radarButtonsComps?[unitType.get()] : radarButtonsCompsMinimized?[unitType.get()]
     isRadarFiltersButtonsVisible.get()
       ? filtersButtons(radarOffsets)
       : null

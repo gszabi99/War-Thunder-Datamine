@@ -232,6 +232,7 @@ let DistanceScalesMax = Watched(0)
 let VelocitySearch = Watched(false)
 let AzimuthMarkersTrigger = Watched(0)
 let Irst = Watched(false)
+let HasIrst = Watched(true)
 let RadarScale = Watched(1.0)
 let RadarParkingState = Watched(0)
 
@@ -290,7 +291,7 @@ radarState.__update({
     IsBScopeVisible, IsCScopeVisible, IsEsm, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax, CueVisible, CueAzimuth, CueDist,
 
     targets, TargetsTrigger, screenTargets, ScreenTargetsTrigger, ViewMode, MfdViewMode, HasAzimuthScale, HasDistanceScale, ScanPatternsMax,
-    DistanceMax, DistanceMin, DistanceScalesMax, azimuthMarkers, AzimuthMarkersTrigger, Irst, RadarScale, MfdIlsHeight, MfdRadarOffsetX, MfdRadarOffsetY,
+    DistanceMax, DistanceMin, DistanceScalesMax, azimuthMarkers, AzimuthMarkersTrigger, Irst, HasIrst, RadarScale, MfdIlsHeight, MfdRadarOffsetX, MfdRadarOffsetY,
 
     IsForestallVisible, forestall, selectedTarget,
 

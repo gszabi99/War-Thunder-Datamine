@@ -1,8 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
+let { isObservable } = require("%sqstd/frp.nut")
 let { setVirtualAxisValue } = require("controls")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let hints = require("%rGui/hints/hints.nut")
-let { Irst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX,
+let { Irst, HasIrst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX,
   IsRadarHudVisible, IsRadarHasFilters, IsEsm, HasMultipleSensorModes, ScanPatternsMax,
   DistanceScalesMax, ScanElevationMin, ScanElevationMax, ElevationMin, ElevationMax,
   ElevationHalfWidth
@@ -40,6 +41,7 @@ const BTN_SIZE = hdpx(45)
 const FILTER_BTN_SIZE = hdpxi(30)
 
 const HORIZONTAL_BUTTONS_OIFFSET_X = hdpx(20)
+const MINI_BTN_ICON_SIZE = hdpxi(24)
 
 const BTN_CONTAINER_WITH_ALIGNED_HINTS_MAX_WIDTH = hdpx(80)
 
@@ -104,7 +106,7 @@ let verticalButtonsAir = [
     img = Computed(@() Irst.get() ? "ui/gameuiskin#radar_controls_irst_mode.svg"
       : "ui/gameuiskin#radar_controls_radar_mode.svg")
     focusOnGamepadNav = true
-    isVisible = Computed(@() !IsEsm.get())
+    isVisible = Computed(@() !IsEsm.get() && HasIrst.get())
     shHintAlign = ALIGN_RIGHT
   }
   {
@@ -166,6 +168,32 @@ let horizontalButtonsAir = [
   }
 ]
 
+let horizontalButtonsMinized = [
+  {
+    id = "ID_SENSOR_TYPE_SWITCH"
+    isVisible = Computed(@() !IsEsm.get() && HasIrst.get())
+    onClick = @() toggleShortcut(this.id)
+    icon = Computed(@() Irst.get() ? Picture($"ui/gameuiskin#radar_controls_irst_mode.svg:{MINI_BTN_ICON_SIZE}:P")
+      : Picture($"ui/gameuiskin#radar_controls_radar_mode.svg:{MINI_BTN_ICON_SIZE}:P"))
+    getText = @() loc($"hotkeys/{this.id}")
+    iconSize = MINI_BTN_ICON_SIZE
+    isSelected = Watched(true)
+    buttonPrefix = "radarButton"
+    hideBg = true
+  }
+  {
+    id = "ID_SENSOR_MODES_SWITCH"
+    isVisible = Computed(@() HasMultipleSensorModes.get())
+    onClick = @() toggleShortcut(this.id)
+    icon = Picture($"ui/gameuiskin#radar_controls_sensors_modes.svg:{MINI_BTN_ICON_SIZE}:P")
+    getText = @() loc($"hotkeys/{this.id}")
+    iconSize = MINI_BTN_ICON_SIZE
+    isSelected = Watched(true)
+    buttonPrefix = "radarButton"
+    hideBg = true
+  }
+]
+
 let IFFFilterConfigs = [
   {
     img = "ui/gameuiskin#radar_controls_friend_foe.svg"
@@ -193,7 +221,8 @@ let mapAirToHeliBtn = @(btn, ovr = {}) btn?.axisControl != null
 
 let verticalButtonsHeli = verticalButtonsAir.map(@(btn)
   mapAirToHeliBtn(btn, { shHintAlign = ALIGN_LEFT }))
-let horizontalButtonsHeli = horizontalButtonsAir.map(@(btn )mapAirToHeliBtn(btn))
+let horizontalButtonsHeli = horizontalButtonsAir.map(@(btn) mapAirToHeliBtn(btn))
+let horizontalButtonsMinizedHeli = horizontalButtonsMinized.map(@(btn) mapAirToHeliBtn(btn))
 
 let mkTooltipText = @(text) {
   maxWidth = sh(30)
@@ -297,7 +326,7 @@ function getFilterButtonsConfig() {
     cachedFiltersBtns.append(
       { icon = valueData?.getImage(iconSize), iconSize, isSelected = valueData?.isSelected,
         onClick = @() switchFilter(filter, valueMask), text = valueData.locText,
-        label = valueData?.label
+        label = valueData?.label, buttonPrefix = "filterbtn"
       })
   }
   return cachedFiltersBtns
@@ -422,7 +451,69 @@ function mkButtonBase(btn, ovr = {}) {
   }
 }
 
+
+function mkBaseButtonMiniChild(btnData, isFilterSelected) {
+  let icon = btnData?.icon
+  let contentColor = isFilterSelected ? HudColor.get() : buttonFillColor.get()
+  if (icon != null) {
+    let iconSrcW = isObservable(icon) ? icon : Watched(icon)
+    return @() {
+      watch = iconSrcW
+      size = btnData.iconSize
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = iconSrcW.get()
+      color = contentColor
+    }
+  }
+  if (btnData?.label != null)
+    return @() {
+      rendObj = ROBJ_TEXT
+      text = btnData.label
+      font = Fonts.tiny_text_hud
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      color = contentColor
+    }
+  return null
+}
+
+function mkBaseButtonMini(btnData, idx) {
+  let stateFlag = Watched(0)
+  let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0 || idx == selectedFilterBtnIndex.get())
+  let isSelected = btnData?.isSelected ?? Watched(false)
+  let isVisible = btnData?.isVisible ?? Watched(true)
+  let prefix = btnData?.buttonPrefix ?? "miniBtn"
+
+  return @() isVisible.get() ? {
+    key = $"{prefix}_{idx}"
+    watch = [isSelected, isHovered, HudColor, buttonFillColor, buttonDisabledFillColor, isVisible]
+    size = FILTER_BTN_SIZE
+    rendObj = ROBJ_BOX
+    fillColor = btnData?.hideBg
+      ? null
+      : isSelected.get() ? buttonFillColor.get() : buttonDisabledFillColor.get()
+    borderColor = isHovered.get()
+      ? HudColor.get()
+      : 0x00000000
+    borderWidth = dp(2)
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    behavior = Behaviors.Button
+    function onElemState(sf) {
+      stateFlag.set(sf)
+      updateButtonTooltip(stateFlag, $"{prefix}_{idx}", btnData?.getText() ?? btnData.text)
+    }
+    onClick = @() btnData.onClick()
+    children = mkBaseButtonMiniChild(btnData, isSelected.get())
+  } : {
+    watch = isVisible
+  }
+}
+
 let mkButton = @(btnCfg) mkButtonBase(btnCfg)
+let mkButtonMini = @(btnCfg) mkBaseButtonMini(btnCfg, 0)
 
 let filtersUpdated = Watched(0)
 eventbus_subscribe("hud.radar.filtersUpdated", @(_) filtersUpdated.trigger())
@@ -442,7 +533,7 @@ function mkIFFFilterButton() {
   }
 }
 
-let mkHorizontalButtons = @(buttonsCfg, ovr = {}) @() {
+let mkHorizontalButtons = @(buttonsCfg, ovr = {}, params = null) @() {
   watch = IsRadarVisible
   size = const [pw(90), SIZE_TO_CONTENT]
   pos = const [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(70)]
@@ -452,7 +543,8 @@ let mkHorizontalButtons = @(buttonsCfg, ovr = {}) @() {
   gap = const { size = flex() }
   valign = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
-  children = IsRadarVisible.get() ? buttonsCfg.map(mkButton)
+  children = IsRadarVisible.get()
+    ? buttonsCfg.map(params?.btnType ?? mkButton)
     : buttonsCfg.filter(@(btn) btn?.isAlwaysVisible).map(mkButton)
 }.__update(ovr)
 
@@ -533,55 +625,6 @@ function mkExitGamepadNavBtn() {
       }
     }
 
-function mkFilterButtonChild(btnData, isFilterSelected) {
-  let contentColor = isFilterSelected ? HudColor.get() : buttonFillColor.get()
-  if (btnData?.icon != null)
-    return {
-      size = btnData.iconSize
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
-      rendObj = ROBJ_IMAGE
-      image = btnData.icon
-      color = contentColor
-    }
-  if (btnData?.label != null)
-    return {
-      rendObj = ROBJ_TEXT
-      text = btnData.label
-      font = Fonts.tiny_text_hud
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
-      color = contentColor
-    }
-  return null
-}
-
-function mkFilterButton(btnData, idx) {
-  let stateFlag = Watched(0)
-  let isHovered = Computed(@() (stateFlag.get() & S_HOVER) != 0 || idx == selectedFilterBtnIndex.get())
-  let filterValueWatch = btnData?.isSelected ?? Watched(false)
-
-  return @() {
-    key = $"filterbtn_{idx}"
-    watch = [filterValueWatch, isHovered, HudColor, buttonFillColor, buttonDisabledFillColor]
-    size = FILTER_BTN_SIZE
-    rendObj = ROBJ_BOX
-    fillColor = filterValueWatch.get() ? buttonFillColor.get() :  buttonDisabledFillColor.get()
-    borderColor = isHovered.get()
-      ? HudColor.get()
-      : 0x00000000
-    borderWidth = dp(2)
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    behavior = Behaviors.Button
-    function onElemState(sf) {
-      stateFlag.set(sf)
-      updateButtonTooltip(stateFlag, $"filterbtn_{idx}", btnData?.getText() ?? btnData.text)
-    }
-    onClick = btnData.onClick
-    children = mkFilterButtonChild(btnData, filterValueWatch.get())
-  }
-}
 
 function onFilterBtnsNavigationShortcut() {
   let nextIndex = selectedFilterBtnIndex.get() + 1
@@ -603,7 +646,7 @@ function onFilterBtnsApplyShortcut() {
 
 let filtersButtons = @(offsets) function() {
   let btnsConfig = getFilterButtonsConfig()
-  let children = btnsConfig.filter(@(btnData) (btnData?.isVisible ?? true)).map(@(btnData, idx) mkFilterButton(btnData, idx))
+  let children = btnsConfig.filter(@(btnData) (btnData?.isVisible ?? true)).map(@(btnData, idx) mkBaseButtonMini(btnData, idx))
   let navShortcut = isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION_HELICOPTER"]
   let applyShortcut= isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY_HELICOPTER"]
 
@@ -639,7 +682,7 @@ let filtersButtons = @(offsets) function() {
   }
 }
 
-function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}) {
+function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}, params = {}) {
   let btnIdsToTryFocus = []
   foreach (btn in [].extend(vButtonsCfg, hButtonsCfg))
     if (btn?.focusOnGamepadNav || btn?.isAlwaysVisible)
@@ -651,8 +694,8 @@ function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}) {
     size = flex()
     children = [
       mkVerticalButtons(vButtonsCfg)
-      mkHorizontalButtons(hButtonsCfg, hButtonsSectionOvr)
-      cornerButton
+      mkHorizontalButtons(hButtonsCfg, hButtonsSectionOvr, params)
+      params?.hideCornerBtn ? null : cornerButton
       tooltip
       mkExitGamepadNavBtn()
     ]
@@ -688,6 +731,14 @@ register_command(@() isRadarGamepadNavEnabled.set(!isRadarGamepadNavEnabled.get(
 
 return {
   isRadarButtonsVisible
+  radarButtonsAirMinimized = mkRadarButtons([], horizontalButtonsMinized,
+    { halign = ALIGN_LEFT, pos = [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(30)], gap = hdpx(5) },
+    { hideCornerBtn = true, btnType = mkButtonMini }
+  )
+  radarButtonsHeliMinimized = mkRadarButtons([], horizontalButtonsMinizedHeli,
+    { halign = ALIGN_LEFT, pos = [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(30)], gap = hdpx(5) },
+    { hideCornerBtn = true, btnType = mkButtonMini }
+  )
   radarButtonsAir = mkRadarButtons(verticalButtonsAir, horizontalButtonsAir)
   radarButtonsHeli = mkRadarButtons(verticalButtonsHeli, horizontalButtonsHeli, { halign = ALIGN_LEFT, gap = hdpx(5) })
   isRadarGamepadNavEnabled
