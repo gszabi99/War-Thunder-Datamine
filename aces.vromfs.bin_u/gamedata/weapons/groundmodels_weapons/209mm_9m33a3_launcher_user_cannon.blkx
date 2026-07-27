@@ -87,7 +87,11 @@
       "damageType": "pressure"
     },
     "rocket": {
+      "dragCx": 0.027,
       "statType": "hydra",
+      "maxDeltaAngle": 0.03,
+      "price": 3000.0,
+      "mesh": "9a33m_rocket_deployed",
       "caliber": 0.2096,
       "length": 3.158,
       "CxK": 1.075,
@@ -111,12 +115,11 @@
       "maxDistance": 10300.0,
       "minDistance": 500.0,
       "rangeMax": 10300.0,
-      "loadFactorMax": 23.9,
       "chartShootElevation": 90.0,
       "chartStaticElevation": true,
+      "loadFactorMax": 23.9,
       "autoAimingMaxAngle": 1.0,
       "guidanceType": "saclos",
-      "maxDeltaAngle": 0.03,
       "explosiveType": "a_ix_2",
       "explosiveMass": 5.38,
       "normalizationPreset": "heat",
@@ -137,14 +140,11 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
       "shellCollision": true,
-      "dragCx": 0.027,
       "hasProximityFuse": true,
       "hitPowerMult": 400.0,
       "distanceFuse": false,
       "fuseDelayDist": 1.0,
       "explodeTreshold": 0.1,
-      "price": 3000.0,
-      "mesh": "9a33m_rocket_deployed",
       "explosionEffect": "explosion_midair_rocket_small",
       "groundCollisionEffect": "hit_106_132mm_dirt_ap",
       "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -172,6 +172,7 @@
         0.0
       ],
       "guidance": {
+        "controlRangeMax": 10300.0,
         "beaconBand": -1,
         "controlConeFov": 60.0,
         "loftEnabled": true,
@@ -208,6 +209,70 @@
             "accelControlDiff": 0.000044,
             "accelControlIntgLim": 0.0
           }
+        },
+        "table0": {
+          "altitude": 500.0,
+          "fighterMach": [
+            0.3,
+            0.5
+          ],
+          "targetMach": [
+            0.9,
+            1.2
+          ],
+          "targetMach2Mult": -1.0,
+          "rangeMin": [
+            1118.24,
+            5030.5,
+            1083.64,
+            7726.88
+          ],
+          "rangeMax": [
+            5727.62,
+            18737.0,
+            5005.09,
+            22336.8
+          ],
+          "rangeMaxAltDiff": [
+            500.0,
+            0.0
+          ],
+          "rangeMaxDogfightAltDiff": [
+            500.0,
+            0.0
+          ]
+        },
+        "table1": {
+          "altitude": 1500.0,
+          "fighterMach": [
+            0.3,
+            0.5
+          ],
+          "targetMach": [
+            0.9,
+            1.2
+          ],
+          "targetMach2Mult": -1.0,
+          "rangeMin": [
+            3032.43,
+            7903.37,
+            3030.73,
+            12847.2
+          ],
+          "rangeMax": [
+            6447.28,
+            18819.8,
+            5735.98,
+            21961.8
+          ],
+          "rangeMaxAltDiff": [
+            500.0,
+            0.0
+          ],
+          "rangeMaxDogfightAltDiff": [
+            500.0,
+            0.0
+          ]
         }
       },
       "stabilityRicochetModifier": {
@@ -1052,7 +1117,11 @@
         "damageType": "pressure"
       },
       "rocket": {
+        "dragCx": 0.027,
         "statType": "hydra",
+        "maxDeltaAngle": 0.03,
+        "price": 3000.0,
+        "mesh": "9a33m_rocket_deployed",
         "caliber": 0.2096,
         "length": 3.158,
         "CxK": 1.075,
@@ -1076,12 +1145,11 @@
         "maxDistance": 10300.0,
         "minDistance": 500.0,
         "rangeMax": 10300.0,
-        "loadFactorMax": 23.9,
         "chartShootElevation": 90.0,
         "chartStaticElevation": true,
+        "loadFactorMax": 23.9,
         "autoAimingMaxAngle": 1.0,
         "guidanceType": "saclos",
-        "maxDeltaAngle": 0.03,
         "explosiveType": "a_ix_2",
         "explosiveMass": 5.38,
         "normalizationPreset": "heat",
@@ -1102,14 +1170,11 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/sam.ivf",
         "shellCollision": true,
-        "dragCx": 0.027,
         "hasProximityFuse": true,
         "hitPowerMult": 400.0,
         "distanceFuse": false,
         "fuseDelayDist": 1.0,
         "explodeTreshold": 0.1,
-        "price": 3000.0,
-        "mesh": "9a33m_rocket_deployed",
         "explosionEffect": "explosion_midair_rocket_small",
         "groundCollisionEffect": "hit_106_132mm_dirt_ap",
         "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -1137,6 +1202,7 @@
           0.0
         ],
         "guidance": {
+          "controlRangeMax": 10300.0,
           "beaconBand": -1,
           "controlConeFov": 60.0,
           "loftEnabled": true,
@@ -1173,6 +1239,70 @@
               "accelControlDiff": 0.000044,
               "accelControlIntgLim": 0.0
             }
+          },
+          "table0": {
+            "altitude": 500.0,
+            "fighterMach": [
+              0.3,
+              0.5
+            ],
+            "targetMach": [
+              0.9,
+              1.2
+            ],
+            "targetMach2Mult": -1.0,
+            "rangeMin": [
+              1118.24,
+              5030.5,
+              1083.64,
+              7726.88
+            ],
+            "rangeMax": [
+              5727.62,
+              18737.0,
+              5005.09,
+              22336.8
+            ],
+            "rangeMaxAltDiff": [
+              500.0,
+              0.0
+            ],
+            "rangeMaxDogfightAltDiff": [
+              500.0,
+              0.0
+            ]
+          },
+          "table1": {
+            "altitude": 1500.0,
+            "fighterMach": [
+              0.3,
+              0.5
+            ],
+            "targetMach": [
+              0.9,
+              1.2
+            ],
+            "targetMach2Mult": -1.0,
+            "rangeMin": [
+              3032.43,
+              7903.37,
+              3030.73,
+              12847.2
+            ],
+            "rangeMax": [
+              6447.28,
+              18819.8,
+              5735.98,
+              21961.8
+            ],
+            "rangeMaxAltDiff": [
+              500.0,
+              0.0
+            ],
+            "rangeMaxDogfightAltDiff": [
+              500.0,
+              0.0
+            ]
           }
         },
         "stabilityRicochetModifier": {
