@@ -538,6 +538,7 @@ return freeze({
   set_dirpad_event_processed = r["set_dirpad_event_processed"]
   set_enable_laser_designatior_before_launch = r["set_enable_laser_designatior_before_launch"]
   set_gui_vr_params = r["set_gui_vr_params"]
+  set_cursor_visibility = r?["set_cursor_visibility"] ?? @(_) null
   set_hint_options_by_blk = r["set_hint_options_by_blk"]
   set_host_cb = r["set_host_cb"]
   set_hud_width_limit = r["set_hud_width_limit"]

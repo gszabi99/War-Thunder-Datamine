@@ -209,6 +209,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   canControlCameras   = false
   canSeeMissionTimer  = false
   canSeeOppositeTeam  = false
+  isServerReplay      = false
 
   cameraRotationByMouse = null
 
@@ -280,6 +281,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     this.gotRefereeRights = (mplayerTable?.spectator ?? 0) == 1
     this.mode = isReplay ? SPECTATOR_MODE.REPLAY : SPECTATOR_MODE.SKIRMISH
     this.isMultiplayer = !!(this.gameType & GT_VERSUS) || !!(this.gameType & GT_COOPERATIVE)
+    this.isServerReplay      = replayProps?.isServerReplay ?? false
     this.canControlTimeline  = this.mode == SPECTATOR_MODE.REPLAY && (replayProps?.timeSpeedAllowed ?? false)
     this.canControlCameras   = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
     this.canSeeMissionTimer  = !this.canControlTimeline && this.mode == SPECTATOR_MODE.SKIRMISH
@@ -720,10 +722,11 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
         [HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER,
           HUD_UNIT_TYPE.HUMAN_DRONE, HUD_UNIT_TYPE.HUMAN_DRONE_HELI
         ])
-
+      let isFollowCameraBtnActive = isValid && isPlayer &&
+        (this.gotRefereeRights || this.isServerReplay || isAuthor || isAuthorUnknown)
       enableObjsByTable(this.scene, {
           ID_CAMERA_DEFAULT           = isValid
-          ID_TOGGLE_FOLLOWING_CAMERA  = isValid && isPlayer && (this.gotRefereeRights || isAuthor || isAuthorUnknown)
+          ID_TOGGLE_FOLLOWING_CAMERA  = isFollowCameraBtnActive
           ID_REPLAY_CAMERA_OPERATOR   = isValid
           ID_REPLAY_CAMERA_FLYBY      = isValid
           ID_REPLAY_CAMERA_WING       = isValid
