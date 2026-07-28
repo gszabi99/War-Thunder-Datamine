@@ -34,7 +34,7 @@ let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
-let { isCollapsedRadarInReplay, IsRadarDamaged } = require("%rGui/radarState.nut")
+let { isCollapsedRadarInReplay, IsRadarDamaged, ViewMode } = require("%rGui/radarState.nut")
 let { dmgIndicatorWidth } = require("%rGui/hud/dmgIndicatorState.nut")
 let fpvShellHud = require("%rGui/fpvShellHud.nut")
 let { AgmBlockedState } = require("%rGui/agmAimState.nut")
@@ -49,16 +49,23 @@ let aircraftParamsTablePos = Computed(@() [max(bw.get(), sw(20) - hdpx(660)), ma
 
 let aircraftArbiterParamsTablePos = Computed(@() [max(bw.get(), sw(17.5)), sh(12)])
 
-let radarSize = [sh(33), sh(66)]
-let radarPosWatched = Computed(@()
-  isPlayingReplay.get() ? [
-    bw.get() + rw.get() - fsh(30) - sh(33),
-    bh.get() + rh.get() - sh(33)
-  ] : [
-    bw.get() + rw.get() - radarSize[0] - 2 * maxLabelWidth,
-    bh.get() + 0.45 * rh.get() - maxLabelHeight - radarSize[1] + sh(33)
-  ]
-)
+let radarSizeComp = Computed(@() isPlayingReplay.get() ? [sh(25), sh(50)] : [sh(33), sh(66)])
+let isSquareRadarEnabled = Computed(@() ViewMode.get() == RadarViewMode.B_SCOPE_SQUARE)
+let radarPosWatched = Computed(function() {
+  let radarSize = radarSizeComp.get()
+  return isPlayingReplay.get() ?
+    [
+      isSquareRadarEnabled.get()
+        ? bw.get() + rw.get() - fsh(33) - radarSize[0]
+        : bw.get() + rw.get() - fsh(33) - radarSize[0] - fsh(1),
+      isSquareRadarEnabled.get()
+        ? bh.get() + rh.get() - radarSize[1] - fsh(7)
+        : bh.get() + rh.get() - radarSize[1] - fsh(15)
+    ] : [
+      bw.get() + rw.get() - radarSize[0] - 2 * maxLabelWidth,
+      bh.get() + 0.45 * rh.get() - maxLabelHeight - radarSize[1] + sh(33)
+    ]
+})
 
 let twsSize = [sh(28), sh(50)]
 let twsPosWatched = Computed(@()
@@ -189,12 +196,13 @@ let aircraftDefaultHud = @(){
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = flex()
-  watch = [IsRadarDamaged, isCollapsedRadarInReplay, IsTwsDamaged, radarPosWatched, LaserAtgmSightVisible]
+  watch = [IsRadarDamaged, isCollapsedRadarInReplay, IsTwsDamaged, radarPosWatched, LaserAtgmSightVisible,
+    radarSizeComp, isSquareRadarEnabled]
   children = [
     twsElement(IsTwsDamaged.get() ? AlertColorHigh : HudColor, twsPosWatched, twsSize)
-    radarElement(IsRadarDamaged.get() ? AlertColorHigh : HudColor, radarPosWatched.get())
+    radarElement(IsRadarDamaged.get() ? AlertColorHigh : HudColor, radarPosWatched.get(), radarSizeComp.get(), isSquareRadarEnabled.get())
     radarIndication(HudColor)
-    !isCollapsedRadarInReplay.get() ? radarHud(radarSize[0], radarSize[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
+    !isCollapsedRadarInReplay.get() ? radarHud(radarSizeComp.get()[0], radarSizeComp.get()[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
       canZoom = true
       magnifiedIndicator = true
     }, true) : null

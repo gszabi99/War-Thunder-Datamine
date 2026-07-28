@@ -804,8 +804,6 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     ["aircraft-massPerSec-tr"]               = anyAirVehicle,
     ["aircraft-protection-tr"]               = notAirVehicle,
     ["aircraft-systems-tr"]                  = anyVehicle,
-    ["aircraft-armorPiercing-tr"]            = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-armorPiercingDist-tr"]        = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-ammo-tr"]                     = notAirVehicle,
     ["aircraft-mass-tr"]                     = [ ES_UNIT_TYPE_TANK ],
     ["aircraft-horsePowers-tr"]              = [ ES_UNIT_TYPE_TANK ],
@@ -978,8 +976,6 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     let minAngleStr = minAngle == 0 ? "0" : format("%.1f", minAngle)
     let maxAngleStr = maxAngle == 0 ? "0" : format("+%.1f", maxAngle)
     holderObj.findObject("aircraft-angleVerticalGuidance").setValue("".concat(minAngleStr, " / ", maxAngleStr, loc("measureUnits/deg")))
-
-    holderObj.findObject("aircraft-armorPiercing-tr").show(false)
 
     let shotFreq = ("shotFreq" in currentParams && currentParams.shotFreq > 0) ? currentParams.shotFreq : null;
 
@@ -1535,10 +1531,10 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
     tooltipLinkObj["isNotLink"] = isNotLink ? "yes" : "no"
 
     if (showConsoleButtons.get())
-      supportPlaneInfoKeyObj.tooltipId = tooltipId
+      tooltipLinkObj.tooltipId = tooltipId
     else {
-      supportPlaneInfoKeyObj.tooltip = "$tooltipObj"
-      let supportPlaneInfoTooltipObj = supportPlaneObj.findObject("supportPlaneInfo-tooltip")
+      tooltipLinkObj.tooltip = "$tooltipObj"
+      let supportPlaneInfoTooltipObj = tooltipLinkObj.findObject("supportPlaneInfo-tooltip")
       supportPlaneInfoTooltipObj.tooltipId = tooltipId
     }
     let supportPlaneInfoValueObj = supportPlaneObj.findObject("supportPlaneInfo-value")

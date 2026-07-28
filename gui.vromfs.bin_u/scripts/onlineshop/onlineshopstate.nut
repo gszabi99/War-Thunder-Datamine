@@ -2,9 +2,11 @@ from "%scripts/dagui_natives.nut" import has_entitlement, get_shop_prices
 from "%scripts/dagui_library.nut" import *
 let DataBlock = require("DataBlock")
 let { get_game_settings_blk } = require("blkGetters")
-let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
+let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 
 
 
@@ -23,6 +25,7 @@ function invalidateShopPriceBlk() {
 }
 
 function validateShopPriceBlk() {
+  ENTITLEMENTS_PRICE.checkUpdate()
   if (shopPriceBlkCache)
     return
   shopPriceBlkCache = DataBlock()
@@ -197,8 +200,9 @@ function getAllFeaturePurchases(feature) {
 addListenersWithoutEnv({
   ProfileUpdated = @(_) searchEntitlementsCache = null
   EntitlementsPriceUpdated = @(_) invalidateShopPriceBlk()
+  LoginComplete = @(_) invalidateShopPriceBlk()
   SignOut = @(_) invalidateShopPriceBlk()
-}, CONFIG_VALIDATION)
+}, LOGIN_PROCESS)
 
 return {
   searchEntitlementsByUnit

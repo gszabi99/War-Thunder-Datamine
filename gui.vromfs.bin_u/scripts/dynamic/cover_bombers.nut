@@ -60,7 +60,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "tank"
     squad_type = "#bomb_targets_tanks"
     allyBomberPlane = getAircraftDescription(playerSide, "bomber", ["bomber"],
-      ["antiTankBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
   }
   else if (light_count > 0 && light_count > art_count) {
     bombersCount = rndRangeInt(light_count * 0.5, light_count)
@@ -81,14 +81,14 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "carrier"
     squad_type = "#bomb_targets_carrier"
     allyBomberPlane = getAircraftDescription(playerSide, "bomber", ["bomber"],
-      ["antiShipBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
   }
   else if (ships_count > 0) {
     bombersCount = rndRangeInt(ships_count * 4, ships_count * 8)
     ground_type = "destroyer"
     squad_type = "#bomb_targets_ships"
     allyBomberPlane = getAircraftDescription(playerSide, "bomber", ["bomber"],
-      ["antiShipBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
   }
   else
     return

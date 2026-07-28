@@ -197,6 +197,7 @@
           "id": "prev_unit_nest",
           "margin-bottom": "1@modalInfoBlocksInterval",
           "halign": "center",
+          "isTooltipForChildren": "yes",
           "display": "hide"
         }
       },
@@ -284,18 +285,18 @@
         "key": {
           "tooltipLink": {
             "id": "tooltipLink",
+            "tooltipId": "",
+            "tooltip": "",
             "isNotLink": "no",
-            "textareaNoTab": {
-              "id": "supportPlaneInfo-key",
+            "tooltipObj": {
+              "id": "supportPlaneInfo-tooltip",
               "tooltipId": "",
-              "tooltip": "",
-              "tooltipObj": {
-                "id": "supportPlaneInfo-tooltip",
-                "tooltipId": "",
-                "on_tooltip_open": "onGenericTooltipOpen",
-                "on_tooltip_close": "onTooltipObjClose",
-                "display": "hide"
-              }
+              "on_tooltip_open": "onGenericTooltipOpen",
+              "on_tooltip_close": "onTooltipObjClose",
+              "display": "hide"
+            },
+            "textareaNoTab": {
+              "id": "supportPlaneInfo-key"
             }
           }
         },
@@ -611,77 +612,6 @@
           }
         },
         {
-          "id": "aircraft-armorPiercing-tr",
-          "keyHolder": {
-            "key": {
-              "fullScrolled": "yes",
-              "tdiv": {
-                "textareaNoTab": [
-                  {
-                    "text": "#info/armorPiercing"
-                  },
-                  {
-                    "text": " ("
-                  },
-                  {
-                    "text": ")"
-                  }
-                ],
-                "tooltipLink": {
-                  "textareaNoTab": {
-                    "id": "armorPiercing-tooltip",
-                    "tooltipId": "",
-                    "tooltip": "",
-                    "tooltipObj": {
-                      "id": "armorPiercing-tooltip-obj",
-                      "tooltipId": "",
-                      "on_tooltip_open": "onGenericTooltipOpen",
-                      "on_tooltip_close": "onTooltipObjClose",
-                      "display": "hide"
-                    }
-                  }
-                }
-              }
-            },
-            "dashedLine": {}
-          },
-          "value": {
-            "tooltipLink": [
-              {
-                "textareaNoTab": {
-                  "id": "aircraft-armorPiercing",
-                  "tooltipId": "",
-                  "tooltip": "",
-                  "tooltipObj": {
-                    "id": "armorPiercing-value-tooltip-obj",
-                    "tooltipId": "",
-                    "on_tooltip_open": "onGenericTooltipOpen",
-                    "on_tooltip_close": "onTooltipObjClose",
-                    "display": "hide"
-                  }
-                }
-              },
-              {
-                "textareaNoTab": {
-                  "id": "aircraft-armorPiercingDist",
-                  "tooltipId": "",
-                  "tooltip": "",
-                  "tooltipObj": {
-                    "id": "armorPiercingDist-value-tooltip-obj",
-                    "tooltipId": "",
-                    "on_tooltip_open": "onGenericTooltipOpen",
-                    "on_tooltip_close": "onTooltipObjClose",
-                    "display": "hide"
-                  }
-                }
-              }
-            ],
-            "textareaNoTab": {
-              "text": "#info/on"
-            }
-          }
-        },
-        {
           "id": "infantry-squad-members-tr",
           "display": "hide",
           "keyHolder": {
@@ -751,18 +681,18 @@
           "keyHolder": {
             "key": {
               "tooltipLink": {
-                "textareaNoTab": {
-                  "id": "horsePowers-tooltip",
-                  "text": "#shop/horsePowers",
+                "id": "horsePowers-tooltip",
+                "tooltipId": "",
+                "tooltip": "",
+                "tooltipObj": {
+                  "id": "horsePowers-tooltip-obj",
                   "tooltipId": "",
-                  "tooltip": "",
-                  "tooltipObj": {
-                    "id": "horsePowers-tooltip-obj",
-                    "tooltipId": "",
-                    "on_tooltip_open": "onGenericTooltipOpen",
-                    "on_tooltip_close": "onTooltipObjClose",
-                    "display": "hide"
-                  }
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                },
+                "textareaNoTab": {
+                  "text": "#shop/horsePowers"
                 }
               }
             },
@@ -779,19 +709,18 @@
           "keyHolder": {
             "key": {
               "tooltipLink": {
-                "id": "maxSpeed-tooltip-link",
-                "textareaNoTab": {
-                  "id": "maxSpeed-tooltip",
-                  "text": "#shop/max_speed",
+                "id": "maxSpeed-tooltip",
+                "tooltipId": "",
+                "tooltip": "",
+                "tooltipObj": {
+                  "id": "maxSpeed-tooltip-obj",
                   "tooltipId": "",
-                  "tooltip": "",
-                  "tooltipObj": {
-                    "id": "maxSpeed-tooltip-obj",
-                    "tooltipId": "",
-                    "on_tooltip_open": "onGenericTooltipOpen",
-                    "on_tooltip_close": "onTooltipObjClose",
-                    "display": "hide"
-                  }
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                },
+                "textareaNoTab": {
+                  "text": "#shop/max_speed"
                 }
               }
             },
@@ -831,18 +760,18 @@
               "fullScrolled": "yes",
               "tdiv": {
                 "tooltipLink": {
-                  "textareaNoTab": {
-                    "id": "maxSpeedBoth-tooltip",
-                    "text": "#info/max_speed",
+                  "id": "maxSpeedBoth-tooltip",
+                  "tooltipId": "",
+                  "tooltip": "",
+                  "tooltipObj": {
+                    "id": "maxSpeedBoth-tooltip-obj",
                     "tooltipId": "",
-                    "tooltip": "",
-                    "tooltipObj": {
-                      "id": "maxSpeedBoth-tooltip-obj",
-                      "tooltipId": "",
-                      "on_tooltip_open": "onGenericTooltipOpen",
-                      "on_tooltip_close": "onTooltipObjClose",
-                      "display": "hide"
-                    }
+                    "on_tooltip_open": "onGenericTooltipOpen",
+                    "on_tooltip_close": "onTooltipObjClose",
+                    "display": "hide"
+                  },
+                  "textareaNoTab": {
+                    "text": "#info/max_speed"
                   }
                 },
                 "textareaNoTab": [
@@ -921,18 +850,18 @@
           "keyHolder": {
             "key": {
               "tooltipLink": {
-                "textareaNoTab": {
-                  "id": "maxAltitude-tooltip",
-                  "text": "#shop/max_altitude",
+                "id": "maxAltitude-tooltip",
+                "tooltipId": "",
+                "tooltip": "",
+                "tooltipObj": {
+                  "id": "maxAltitude-tooltip-obj",
                   "tooltipId": "",
-                  "tooltip": "",
-                  "tooltipObj": {
-                    "id": "maxAltitude-tooltip-obj",
-                    "tooltipId": "",
-                    "on_tooltip_open": "onGenericTooltipOpen",
-                    "on_tooltip_close": "onTooltipObjClose",
-                    "display": "hide"
-                  }
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                },
+                "textareaNoTab": {
+                  "text": "#shop/max_altitude"
                 }
               }
             },
@@ -949,19 +878,18 @@
           "keyHolder": {
             "key": {
               "tooltipLink": {
-                "id": "maxSpeed-turnTime-link",
-                "textareaNoTab": {
-                  "id": "turnTime-tooltip",
-                  "text": "#shop/turn_time",
+                "id": "turnTime-tooltip",
+                "tooltipId": "",
+                "tooltip": "",
+                "tooltipObj": {
+                  "id": "turnTime-tooltip-obj",
                   "tooltipId": "",
-                  "tooltip": "",
-                  "tooltipObj": {
-                    "id": "turnTime-tooltip-obj",
-                    "tooltipId": "",
-                    "on_tooltip_open": "onGenericTooltipOpen",
-                    "on_tooltip_close": "onTooltipObjClose",
-                    "display": "hide"
-                  }
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                },
+                "textareaNoTab": {
+                  "text": "#shop/turn_time"
                 }
               }
             },
@@ -998,19 +926,18 @@
           "keyHolder": {
             "key": {
               "tooltipLink": {
-                "id": "maxSpeed-climbSpeed-link",
-                "textareaNoTab": {
-                  "id": "climbSpeed-tooltip",
-                  "text": "#shop/max_climbSpeed",
-                  "tooltip": "",
+                "id": "climbSpeed-tooltip",
+                "tooltip": "",
+                "tooltipId": "",
+                "tooltipObj": {
+                  "id": "climbSpeed-tooltip-obj",
                   "tooltipId": "",
-                  "tooltipObj": {
-                    "id": "climbSpeed-tooltip-obj",
-                    "tooltipId": "",
-                    "on_tooltip_open": "onGenericTooltipOpen",
-                    "on_tooltip_close": "onTooltipObjClose",
-                    "display": "hide"
-                  }
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                },
+                "textareaNoTab": {
+                  "text": "#shop/max_climbSpeed"
                 }
               }
             },
@@ -1063,18 +990,18 @@
           "keyHolder": {
             "key": {
               "tooltipLink": {
-                "textareaNoTab": {
-                  "id": "wingLoading-tooltip",
-                  "text": "#shop/wing_loading",
+                "id": "wingLoading-tooltip",
+                "tooltipId": "",
+                "tooltip": "",
+                "tooltipObj": {
+                  "id": "wingLoading-tooltip-obj",
                   "tooltipId": "",
-                  "tooltip": "",
-                  "tooltipObj": {
-                    "id": "wingLoading-tooltip-obj",
-                    "tooltipId": "",
-                    "on_tooltip_open": "onGenericTooltipOpen",
-                    "on_tooltip_close": "onTooltipObjClose",
-                    "display": "hide"
-                  }
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                },
+                "textareaNoTab": {
+                  "text": "#shop/wing_loading"
                 }
               }
             },

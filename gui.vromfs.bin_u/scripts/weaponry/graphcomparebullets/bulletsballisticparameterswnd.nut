@@ -23,11 +23,15 @@ let unitsTypesBulletsCanBeCompared = {
   [ES_UNIT_TYPE_BOAT]       = [ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT],
 }.map(@(l) l.reduce(@(res, v) res.$rawset(v, true), {}))
 
-function canRequestBallisticsData(bullet) {
-  return isMissileWeapon(bullet?.weaponType)
-    || isGuidedBomb(bullet?.weaponType)
-    || isMissileBullet(bullet?.bulletParams.bulletType)
+function canRequestBallisticsData(weaponType, bulletType) {
+  return !isMissileWeapon(weaponType)
+    && !isGuidedBomb(weaponType)
+    && !isMissileBullet(bulletType)
 }
+
+let canRequestBulletBallisticsData = @(bullet)
+  canRequestBallisticsData(bullet?.weaponType, bullet?.bulletParams.bulletType)
+
 
 function canBeComparedBulletsByUnitType(bullet, compareBulletsList) {
   if (compareBulletsList.len() == 0)
@@ -47,13 +51,13 @@ function requestArmorPenetrationData(bullet, _settings, handlerCb) {
 
 function requestBallisticsData(bullet, settings, handlerCb) {
   let { weaponBlkName, bulletName } = bullet
-  if (canRequestBallisticsData(bullet))
-    handlerCb({ weaponBlkName, bulletName })
-  else {
+  if (canRequestBulletBallisticsData(bullet)) {
     let { shotAngle } = settings
     let cb = @(ballisticsData) handlerCb({ weaponBlkName, bulletName, shotAngle, ballisticsData })
     buildBallisticTrajectoryData(weaponBlkName, bulletName, shotAngle, cb)
   }
+  else
+    handlerCb({ weaponBlkName, bulletName })
 }
 
 function getBallisticsData(compareBulletsList, cacheBulletsData) {
@@ -91,9 +95,9 @@ let bulletsParametersPages = [
     locId = "mainmenu/ballistics"
     requestGraphData = requestBallisticsData
     needActualize = function(cacheData, settings, bullet) {
-      if (canRequestBallisticsData(bullet))
-        return cacheData == null
-      return cacheData?.shotAngle != settings.shotAngle
+      if (canRequestBulletBallisticsData(bullet))
+        return cacheData?.shotAngle != settings.shotAngle
+      return cacheData == null
     }
     getGraphDataFromCache = getBallisticsData
     hasShotSetting = true
@@ -127,6 +131,7 @@ let openBulletsBallisticParametersWnd = @(p)
     pagesConfig = bulletsParametersPages
     canBeComparedBulletsByUnitType
     shotSettings
+    bulletsFilter = canRequestBallisticsData
   }))
 
 register_command(@() openBulletsBallisticParametersWnd({ unit = getAircraftByName("us_mbt_70") }), "debug.open_bullets_ballistic_parameters_wnd")

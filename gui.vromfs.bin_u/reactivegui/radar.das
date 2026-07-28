@@ -1845,23 +1845,22 @@ def b_scope_square_labels(data : CanvasParams&; pos : float2; size : float2; var
     var noiseEl = NoiseSignalElement(noisePos, noiseSize, data, get_radar_hud_noise_signal())
     noiseEl.walkLayout(visitor)
 
-  if get_radar_hud_is_visible2()
-    let nameId2 = get_radar_hud_mode_name2_id()
-    let defaultStr2 = get_radar_hud_is_visible2() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-    let modeName2 = loc(nameId2 >= 0 && nameId2 < radarModeNames |> length() ? radarModeNames[nameId2] : defaultStr2)
+  let nameId2 = get_radar_hud_mode_name2_id()
+  let defaultStr2 = get_radar_hud_is_visible2() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
+  let modeName2 = loc(nameId2 >= 0 && nameId2 < radarModeNames |> length() ? radarModeNames[nameId2] : defaultStr2)
 
+  if modeName2 |> length() > 0
     var mode2Style := modeStyle
     mode2Style.anchorHorz = AnchorHorz.Left
-
     let mode2Pos = float2(pos.x + size.x * 0.57 + strBoxMode.width.x * 0.5, pos.y)
     var modeName2El = TextButton(mode2Pos, modeName2, mode2Style)
     modeName2El.walkLayout(visitor)
 
-    if get_radar_hud_noise_signal_visible() && get_radar_hud_noise_signal2() > 0.5 && !data.enableByMfd
-      let noisePos = float2(pos.x + size.x * 0.51 + strBoxMode.width.x * 0.5, pos.y)
-      let noiseSize = size * 0.06
-      var noiseEl = NoiseSignalElement(noisePos, noiseSize, data, get_radar_hud_noise_signal2())
-      noiseEl.walkLayout(visitor)
+  if get_radar_hud_is_visible2() && get_radar_hud_noise_signal_visible() && get_radar_hud_noise_signal2() > 0.5 && !data.enableByMfd
+    let noisePos = float2(pos.x + size.x * 0.51 + strBoxMode.width.x * 0.5, pos.y)
+    let noiseSize = size * 0.06
+    var noiseEl = NoiseSignalElement(noisePos, noiseSize, data, get_radar_hud_noise_signal2())
+    noiseEl.walkLayout(visitor)
 
   if get_radar_hud_has_distance_scale() && !data.hideScale
     var style := textButtonStyle

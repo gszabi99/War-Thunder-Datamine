@@ -7,7 +7,8 @@ let {
   IndicatorsVisible, MainMask, SecondaryMask, TertiaryMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
   HudColor, MfdColor, AlertColorHigh, IsMfdEnabled, IsSightHudVisible } = require("%rGui/airState.nut")
-let { isCollapsedRadarInReplay, IsRadarDamaged, IsRadarVisible, IsRadar2Visible} = require("%rGui/radarState.nut")
+let { isCollapsedRadarInReplay, IsRadarDamaged, IsRadarVisible, IsRadar2Visible, ViewMode
+} = require("%rGui/radarState.nut")
 let aamAim = require("%rGui/rocketAamAim.nut")
 let agmAim = require("%rGui/agmAim.nut")
 let { paramsTable, taTarget, compassElem, rocketAim, vertSpeed, horSpeed } = require("%rGui/airHudElems.nut")
@@ -34,14 +35,22 @@ let paramsTableHeightHeli = hdpx(28)
 let arbiterParamsTableWidthHelicopter = hdpx(200)
 let positionParamsTable = Computed(@() [max(bw.get(), sw(50) - hdpx(660)), sh(50) - hdpx(80)])
 
-let radarSize = [sh(66), sh(33)]
-let radarPosWatched = Computed(@() isPlayingReplay.get() ? [
-    bw.get() + rw.get() - fsh(30) - sh(33),
-    bh.get() + rh.get() - sh(33)
-  ] : [
-    bw.get() + hdpx(75), bh.get()
-  ]
-)
+let radarSizeComp = Computed(@() isPlayingReplay.get() ? [sh(50), sh(25)] : [sh(66), sh(33)])
+let isSquareRadarEnabled = Computed(@() ViewMode.get() == RadarViewMode.B_SCOPE_SQUARE)
+let radarPosWatched = Computed(function() {
+  let radarSize = radarSizeComp.get()
+  return isPlayingReplay.get() ?
+    [
+      isSquareRadarEnabled.get()
+        ? bw.get() + rw.get() - fsh(33) - radarSize[0]
+        : bw.get() + rw.get() - fsh(33) - radarSize[0] - fsh(1),
+      isSquareRadarEnabled.get()
+        ? bh.get() + rh.get() - radarSize[1] - fsh(7)
+        : bh.get() + rh.get() - radarSize[1] - fsh(15)
+    ] : [
+      bw.get() + hdpx(75), bh.get()
+    ]
+})
 
 let twsSize = [sh(28), sh(50)]
 let twsPosComputed = Computed(@() isPlayingReplay.get() ?
@@ -126,7 +135,7 @@ function helicopterArbiterHud() {
 function mkHelicopterIndicators() {
   return @() {
     watch = [IsMfdEnabled, HudColor, IsRadarVisible, IsRadar2Visible, isCollapsedRadarInReplay, IsRadarDamaged, IsTwsDamaged, IsSightHudVisible,
-      radarPosWatched]
+      radarPosWatched, radarSizeComp, isSquareRadarEnabled]
     children = IsSightHudVisible.get() ? helicopterTargetingPodSight
     : [
       helicopterMainHud()
@@ -134,10 +143,10 @@ function mkHelicopterIndicators() {
       helicopterArbiterHud()
       pilotHud
       !IsMfdEnabled.get() ? twsElement(IsTwsDamaged.get() ? AlertColorHigh : MfdColor, twsPosComputed, twsSize) : null
-      !IsMfdEnabled.get() ? radarElement(IsRadarDamaged.get() ? AlertColorHigh : MfdColor, radarPosWatched.get()) : null
+      !IsMfdEnabled.get() ? radarElement(IsRadarDamaged.get() ? AlertColorHigh : MfdColor, radarPosWatched.get(), radarSizeComp.get(), isSquareRadarEnabled.get()) : null
       compassElem(MfdColor, compassSize, compassPos)
       !isCollapsedRadarInReplay.get()
-        ? radarHud(radarSize[0], radarSize[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
+        ? radarHud(radarSizeComp.get()[0], radarSizeComp.get()[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
           canZoom = true
           magnifiedIndicator = true
           moveMagnifiedIndicatorRight = !IsSightHudVisible.get()

@@ -14,6 +14,21 @@ weaponryPreset {
       shortcut-on-hover:t='yes'
       <<#tiersView>>
       tooltipLink {
+        <<#tierTooltipId>>
+        tooltip-float:t='horizontal'
+        <<#isTooltipByHold>>
+        tooltipId:t='<<tierTooltipId>>'
+        <</isTooltipByHold>>
+        <<^isTooltipByHold>>
+        tooltip:t='$tooltipObj'
+        tooltipObj {
+          tooltipId:t='<<tierTooltipId>>'
+          on_tooltip_open:t='onGenericTooltipOpen'
+          on_tooltip_close:t='onTooltipObjClose'
+          display:t='hide'
+        }
+        <</isTooltipByHold>>
+        <</tierTooltipId>>
         weaponryTier{
           size:t='<<slotScale>>*@modalInfoTierIconSize, <<slotScale>>*@modalInfoTierIconSize'
           <<^isActive>>enable:t='no'<</isActive>>
@@ -26,21 +41,6 @@ weaponryPreset {
             background-repeat:t='expand'
             background-svg-size:t='<<slotScale>>*@modalInfoTierIconSize, <<slotScale>>*@modalInfoTierIconSize'
           }
-          <<#tierTooltipId>>
-          tooltip-float:t='horizontal'
-          <<#isTooltipByHold>>
-          tooltipId:t='<<tierTooltipId>>'
-          <</isTooltipByHold>>
-          <<^isTooltipByHold>>
-          tooltip:t='$tooltipObj'
-          tooltipObj {
-            tooltipId:t='<<tierTooltipId>>'
-            on_tooltip_open:t='onGenericTooltipOpen'
-            on_tooltip_close:t='onTooltipObjClose'
-            display:t='hide'
-          }
-          <</isTooltipByHold>>
-          <</tierTooltipId>>
           focus_border {}
         }
       }

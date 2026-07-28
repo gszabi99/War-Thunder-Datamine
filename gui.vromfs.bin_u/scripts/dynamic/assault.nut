@@ -55,7 +55,7 @@ function generateGAttackMission(isFreeFlight, createGroundUnitsProc) {
     mission_name = "dynamic_assault_tanks"
     indicator_icon = "tank"
     playerAssaultPlane = getAircraftDescription(playerSide, "assault", ["can_be_assault"],
-      ["antiTankBomb", "antiTankRocket"], true, 0, wpMax)
+      ["bomb", "rocket"], true, 0, wpMax)
     time_mult = 4
   }
   else if (light_count > 0 && light_count > art_count) {
@@ -86,7 +86,7 @@ function generateGAttackMission(isFreeFlight, createGroundUnitsProc) {
     mission_name = "dynamic_assault_ships"
     indicator_icon = "ship"
     playerAssaultPlane = getAircraftDescription(playerSide, "assault", ["can_be_assault"],
-      ["antiShipBomb", "antiShipRocket"], true, 0, wpMax)
+      ["bomb", "rocket"], true, 0, wpMax)
     time_mult = 4
     mgSetBool("variables/is_target_ship", true)
   }

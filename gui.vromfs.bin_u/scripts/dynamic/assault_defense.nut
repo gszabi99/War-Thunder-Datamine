@@ -52,7 +52,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "tank"
     squad_type = "#bomb_targets_tanks"
     enemyAssaultPlane = getAircraftDescription(enemySide, "assault", ["can_be_assault"],
-      ["antiTankBomb", "antiTankRocket"], false, 0, wpMax)
+      ["bomb", "rocket"], false, 0, wpMax)
     mission_name = "dynamic_defense_ga_tank"
     indicator_icon = "tank"
     countToFail = tanks_count / 2
@@ -82,7 +82,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "destroyer"
     squad_type = "#bomb_targets_ships"
     enemyAssaultPlane = getAircraftDescription(enemySide, "assault", ["can_be_assault"],
-      ["antiShipBomb", "antiShipRocket"], false, 0, wpMax)
+      ["bomb", "rocket"], false, 0, wpMax)
     mission_name = "dynamic_defense_ga_ships"
     indicator_icon = "ship"
     countToFail = ships_count / 2

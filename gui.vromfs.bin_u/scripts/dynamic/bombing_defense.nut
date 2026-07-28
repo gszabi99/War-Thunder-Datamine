@@ -59,7 +59,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "tank"
     squad_type = "#bomb_targets_tanks"
     enemyBomberPlane = getAircraftDescription(enemySide, "bomber", ["bomber"],
-      ["antiTankBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
     mission_name = "dynamic_defense_tank"
     indicator_icon = "tank"
   }
@@ -89,7 +89,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "carrier"
     squad_type = "#bomb_targets_carrier"
     enemyBomberPlane = getAircraftDescription(enemySide, "bomber", ["bomber"],
-      ["antiShipBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
     mission_name = "dynamic_defense_carrier"
     indicator_icon = "ship"
   }
@@ -99,7 +99,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "destroyer"
     squad_type = "#bomb_targets_ships"
     enemyBomberPlane = getAircraftDescription(enemySide, "bomber", ["bomber"],
-      ["antiShipBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
     mission_name = "dynamic_defense_ships"
     indicator_icon = "ship"
   }

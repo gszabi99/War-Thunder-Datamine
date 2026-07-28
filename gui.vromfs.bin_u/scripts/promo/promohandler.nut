@@ -1,12 +1,14 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { getShowAllPromoBlocks, setShowAllPromoBlocks, canSwitchShowAllPromoBlocksFlag,
   selectNextPromoBlock, manualSwitchPromoBlock, switchPromoBlock, getPromoConfig, enablePromoPlayMenuMusic,
   DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC, isWidgetSeenById, initWidgets, setSimpleWidgetData,
   generatePromoBlockView, requestPromoUpdate, togglePromoItem, performPromoAction, getPromoActionParamsKey,
-  cutPromoActionParamsKey, getPromoVisibilityById
+  cutPromoActionParamsKey, getPromoVisibilityById, getPromoReturnCursorButtonId, setPromoReturnCursorButtonId
 } = require("%scripts/promo/promo.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { setBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
@@ -318,6 +320,22 @@ let Promo = class {
       this.updateData()
     else
       this.updateWebPollButton(p)
+  }
+
+  function onEventModalWndDestroy(_p) {
+    if (getPromoReturnCursorButtonId() == null || !this.isValid())
+      return
+    if (this.owner == null || !this.owner.isSceneActiveNoModals())
+      return
+    let buttonId = cutPromoActionParamsKey(getPromoReturnCursorButtonId())
+    setPromoReturnCursorButtonId(null)
+    if (is_mouse_last_time_used())
+      return
+
+    this.guiScene.performDelayed(this, function() {
+      if (this.isValid())
+        move_mouse_on_obj(this.scene.findObject(buttonId))
+    })
   }
 
   function setTimers() {

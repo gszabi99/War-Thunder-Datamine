@@ -1,3 +1,4 @@
+from "dagor.fs" import read_text_from_file, read_text_from_file_on_disk, file_exists
 from "%scripts/dagui_library.nut" import *
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
@@ -5,7 +6,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { platformId, is_gdk }  = require("%sqstd/platform.nut")
-let { read_text_from_file, file_exists } = require("dagor.fs")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
@@ -27,7 +27,17 @@ function fillPages(txtToSplit, txtPages) {
   }
 }
 
-let loadAndProcessText = @(fileName) fileName == null ? "" : read_text_from_file(fileName)
+function loadAndProcessText(cfg) {
+  let { fileName, readFunc } = cfg
+  if (fileName == null)
+    return ""
+  try
+    return readFunc(fileName)
+  catch (e) {
+    logerr($"LicenseHandler: error when reading file {fileName}\n{e}")
+    return ""
+  }
+}
 
 let licensesCfgList = [
   {
@@ -35,24 +45,28 @@ let licensesCfgList = [
     fileName = $"{platformId}/LICENSE-aces"
     locId = "mainmenu/license"
     isVisible = @() true
+    readFunc = read_text_from_file_on_disk
   }
   {
     id = "LICENSE_GDK"
     fileName = $"{platformId}/LICENSE-aces-gdk"
     locId = "mainmenu/licenseGdk"
     isVisible = @() is_gdk
+    readFunc = read_text_from_file_on_disk
   }
   {
     id = "LICENSE_CEFPROCESS"
     fileName = $"{platformId}/LICENSE-cefprocess"
     locId = "mainmenu/licenseCefprocess"
     isVisible = @() true
+    readFunc = read_text_from_file_on_disk
   }
   {
     id = "CREDITS"
     fileName = "%langTxt/credits.txt"
     locId = "mainmenu/btnCredits"
     isVisible = @() hasFeature("Credits")
+    readFunc = read_text_from_file
   }
 ]
 
@@ -91,7 +105,7 @@ gui_handlers.LicenseHandler <- class (BaseGuiHandler) {
 
   function updateLicenseScreen() {
     let cfg = this.curCfgList[this.curCfgIdx]
-    let txtToSplit = loadAndProcessText(cfg.fileName)
+    let txtToSplit = loadAndProcessText(cfg)
     this.curPage = 0
     this.txtPages = []
     fillPages(txtToSplit, this.txtPages)

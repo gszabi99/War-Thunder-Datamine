@@ -236,6 +236,8 @@ function getIndexedTiers(tiers, tiersCount, weaponsSlotCount) {
 function getPredefinedTiers(preset, unitName) {
   let res = []
   let filledTiers = {}
+  
+  let addWeaponryAmounts = {}
   foreach (triggerType, triggers in (preset?.weaponsByTypes ?? {}))
     foreach (weaponry in triggers.weaponBlocks)
       if (weaponry?.tiers && !u.isEmpty(weaponry.tiers)) { 
@@ -255,8 +257,18 @@ function getPredefinedTiers(preset, unitName) {
             
             let currTier = u.search(res, @(p) p.tierId == tierId)
             if (currTier) {
+              let curTierAmount = tier?.amountPerTier ?? amountPerTier
+              let tierAmountAcc = addWeaponryAmounts?[tierId] ?? { amountPerTier = 0, itemsNum = 0, num = 0 }
+              tierAmountAcc.amountPerTier += curTierAmount
+              tierAmountAcc.itemsNum += weaponry.num / curTierAmount
+              tierAmountAcc.num += weaponry.num
+              addWeaponryAmounts[tierId] <- tierAmountAcc
+
               currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
-                itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier) }))
+                itemsNum = tierAmountAcc.itemsNum
+                num = tierAmountAcc.num
+                tiers = { [tierId] = tier.__merge({ amountPerTier = tierAmountAcc.amountPerTier }) }
+              }))
               currTier.tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unitName,
                 getTierTooltipParams(currTier.weaponry, preset.name, tierId))
             }

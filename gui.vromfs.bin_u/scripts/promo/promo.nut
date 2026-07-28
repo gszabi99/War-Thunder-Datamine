@@ -51,6 +51,12 @@ let timestampCache = {}
 let actionParamsByBlockId = {}
 let getActionParamsData = @(blockId) actionParamsByBlockId?[blockId]
 
+local promoReturnCursorButtonId = null
+let getPromoReturnCursorButtonId = @() promoReturnCursorButtonId
+function setPromoReturnCursorButtonId(id) {
+  promoReturnCursorButtonId = id
+}
+
 let createActionParamsData = @(actionName, paramsArray = null) {
   action = actionName
   paramsArray = paramsArray ?? []
@@ -102,6 +108,7 @@ function performPromoAction(handler, obj) {
     return false
   }
 
+  setPromoReturnCursorButtonId(key)
   return launchPromoAction(actionData, handler, obj)
 }
 
@@ -757,6 +764,8 @@ return {
   PERFORM_PROMO_ACTION_NAME
   performPromoAction
   launchPromoAction
+  getPromoReturnCursorButtonId
+  setPromoReturnCursorButtonId
   getPromoActionParamsKey
   cutPromoActionParamsKey
   gatherPromoActionsParamsData

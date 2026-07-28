@@ -257,11 +257,22 @@ modalInfoBlockSeparator {
 }
 
 tooltipLink {
-  input-transparent:yes;
+  total-input-transparent:yes;
 }
 
 [show_console_buttons=yes] tooltipLink {
-  total-input-transparent: yes;
+  behavior: button;
+  on_pushed: "::gcb.delayedTooltipPush";
+  on_hold_start: "::gcb.delayedTooltipHoldStart";
+  on_hold_stop: "::gcb.delayedTooltipHoldStop";
+  shortcutActivate:"J:A | J:RT";
+}
+
+[swap_ab=yes][show_console_buttons=yes] tooltipLink {
+  shortcutActivate:"J:B | J:RT";
+}
+
+[show_console_buttons=yes] tooltipLink[isTooltipForChildren=yes] {
   behavior: PosNavigator;
   navigatorShortcuts: onlySelect;
   on_pushed: "::gcb.delayedTooltipListPush";

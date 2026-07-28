@@ -72,6 +72,7 @@ let TRIGGER_TYPE = {
   CONTAINER_ITEM  = "container_item"
   FUEL_TANKS      = "fuel tanks"
   GUNNER_1        = "gunner1"
+  GUNNER_2        = "gunner2"
   BOOSTERS        = "boosters"
 }
 
@@ -106,6 +107,7 @@ let triggerTypeToLoc = {
   [TRIGGER_TYPE.MACHINE_GUN] = "additional_guns",
   [TRIGGER_TYPE.CANNON] = "additional_guns",
   [TRIGGER_TYPE.GUNNER_1] = "additional_guns",
+  [TRIGGER_TYPE.GUNNER_2] = "additional_guns",
   [TRIGGER_TYPE.BOOSTERS] = "targetingPod",
 }
 
@@ -536,6 +538,9 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       nukePower = 0
       weaponTag
     }
+
+    if (weapon?.editPresetChapter)
+      item.editPresetChapter <- weapon.editPresetChapter
 
     if ( weapon?.sweepRange )
       weapons.hasSweepRange = true

@@ -50,7 +50,7 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "tank"
     squad_type = "#bomb_targets_tanks"
     enemyBomberPlane = getAircraftDescription(enemySide, "bomber", ["bomber"],
-      ["antiTankBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
   }
   else if (light_count > 0 && light_count > art_count) {
     ground_type = "truck"
@@ -68,13 +68,13 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "carrier"
     squad_type = "#bomb_targets_carrier"
     enemyBomberPlane = getAircraftDescription(enemySide, "bomber", ["bomber"],
-      ["antiShipBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
   }
   else if (ships_count > 0) {
     ground_type = "destroyer"
     squad_type = "#bomb_targets_ships"
     enemyBomberPlane = getAircraftDescription(enemySide, "bomber", ["bomber"],
-      ["antiShipBomb"], false, 0, wpMax)
+      ["bomb"], false, 0, wpMax)
   }
   else
     return

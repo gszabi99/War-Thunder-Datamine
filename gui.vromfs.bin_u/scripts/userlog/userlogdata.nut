@@ -47,6 +47,7 @@ let { checkNonApprovedResearches } = require("%scripts/researches/researchAction
 let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 let { openOrUpdateRecycleCompleteWnd } = require("%scripts/items/recycleCompleteWnd.nut")
 let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
+let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
@@ -435,6 +436,8 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
       markDisabled = true
     }
     else if (blk?.type == EULT_BUYING_RESOURCE) {
+      if (!ENTITLEMENTS_PRICE.isActual())
+        continue
       if (blk?.body.entName != null && entitlementRewards?[blk.body.entName] == null)
         entitlementRewards[blk.body.entName] <- true
       markDisabled = true

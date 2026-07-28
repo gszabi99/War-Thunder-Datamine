@@ -58,6 +58,20 @@ limitBuyUnit {
       position:t='relative'
       width:t='300/350pw'
       halign:t='center'
+      <<#isTooltipByHold>>
+      tooltipId:t='<<tooltipId>>'
+      <</isTooltipByHold>>
+      <<^isTooltipByHold>>
+      tooltipObj {
+        tooltipId:t='<<tooltipId>>'
+        on_tooltip_open:t='onGenericTooltipOpen'
+        on_tooltip_close:t='onTooltipObjClose'
+        display:t='hide'
+      }
+      tooltip-float:t='horizontal'
+      title:t='$tooltipObj'
+      <</isTooltipByHold>>
+
       tdiv {
         position:t='relative'
         width:t='pw'
@@ -97,20 +111,6 @@ limitBuyUnit {
           overlayTextColor:t='active'
           text:t='<<unitFullName>>'
         }
-        <<#isTooltipByHold>>
-        tooltipId:t='<<tooltipId>>'
-        <</isTooltipByHold>>
-        <<^isTooltipByHold>>
-        tooltipObj {
-          tooltipId:t='<<tooltipId>>'
-          on_tooltip_open:t='onGenericTooltipOpen'
-          on_tooltip_close:t='onTooltipObjClose'
-          display:t='hide'
-        }
-
-        tooltip-float:t='horizontal'
-        title:t='$tooltipObj'
-        <</isTooltipByHold>>
       }
     }
     tdiv {

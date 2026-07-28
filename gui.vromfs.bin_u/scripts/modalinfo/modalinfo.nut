@@ -189,11 +189,9 @@ function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds, preferredSid
 }
 
 function createInfoHolder(initiatorObj) {
-  let holderParent = watchedObjects.len() > 0 ? watchedObjects[watchedObjects.len() - 1].infoWnd : null
-  let parentObj = holderParent ?? initiatorObj
-  parentObj.getScene().createElementByObject(parentObj, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", null)
+  initiatorObj.getScene().createElementByObject(initiatorObj, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", null)
   return {
-    infoWnd = parentObj.findObject("modalInfoHolder")
+    infoWnd = initiatorObj.findObject("modalInfoHolder")
   }
 }
 

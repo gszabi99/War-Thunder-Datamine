@@ -82,26 +82,33 @@ let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let radarPicDamaged = Picture("!ui/gameuiskin#radar_stby_icon")
 
 
-let radarElement = @(colorWatch, position) function() {
+let radarElement = @(colorWatch, position, size, isSquareRadar) function() {
   let radarVisible = (IsRadarVisible.get() || IsRadar2Visible.get()) && (!isCollapsedRadarInReplay.get() || !isPlayingReplay.get())
   let res = { watch = [IsRadarVisible, IsRadar2Visible, IsRadarDamaged, colorWatch, rw, bw, rh, bh, isCollapsedRadarInReplay, IsRadarHudVisible, isPlayingReplay] }
   if (radarVisible || (!CollapsedIcon.get() && IsRadarHudVisible.get())) {
     return res.__update({
       children = [
         mkRadar(true, colorWatch)
-        isPlayingReplay.get() ? mkCollapseButton([position[0], rh.get() - sh(2)], isCollapsedRadarInReplay) : null
+        isPlayingReplay.get()
+          ? mkCollapseButton([
+              position[0] + size[0] - sh(2),
+              position[1] + size[1] + (isSquareRadar ? sh(4) : sh(12))
+            ], isCollapsedRadarInReplay)
+          : null
       ]
     })
   }
 
   if (IsRadarHudVisible.get()) {
     return res.__update({
-      pos = isPlayingReplay.get() ? [bw.get() + 0.75 * rw.get(), bh.get() + 0.95 * rh.get()] : [bw.get() + 0.75 * rw.get(), bh.get() + 0.1 * rh.get()]
+      pos = isPlayingReplay.get()
+        ? [position[0] + size[0] - sh(6), position[1] + size[1] + (isSquareRadar ? 0 : sh(8))]
+        : [bw.get() + 0.75 * rw.get(), bh.get() + 0.1 * rh.get()]
       size = sh(5)
       rendObj = ROBJ_IMAGE
       image = !IsRadarDamaged.get() ? radarPic : radarPicDamaged
       color = colorWatch.get()
-      children = isPlayingReplay.get() ? mkCollapseButton([sh(5), sh(2)], isCollapsedRadarInReplay) : null
+      children = isPlayingReplay.get() ? mkCollapseButton([sh(4), sh(4)], isCollapsedRadarInReplay) : null
     })
   }
   return res

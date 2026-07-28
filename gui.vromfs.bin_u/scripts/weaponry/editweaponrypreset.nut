@@ -141,7 +141,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
     foreach (_triggerType, triggers in weapons)
       foreach (weapon in triggers)
         foreach (id, inst in weapon.weaponBlocks)
-          res.append(inst.__merge({ id = id, tType = weapon.trigger }))
+          res.append(inst.__merge({ id = id, tType = inst?.editPresetChapter ?? weapon.trigger }))
     return res
   }
 

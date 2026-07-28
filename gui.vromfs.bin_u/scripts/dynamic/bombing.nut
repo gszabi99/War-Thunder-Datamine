@@ -17,6 +17,7 @@ function generateBombingMission(isFreeFlight, ground_type, createGroundUnitsProc
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()
+  let bombtargets = createGroundUnitsProc(enemySide)
 
   let wpMax = 1000000
   let allyFighterPlane = getAnyFighter(playerSide, 0, wpMax)
@@ -32,7 +33,6 @@ function generateBombingMission(isFreeFlight, ground_type, createGroundUnitsProc
   let planeCost = planeCostCalculate(allyFighterPlaneCost, enemyPlaneCost)
 
   let bombTargetsCount = mgGetUnitsCount("#bomb_targets")
-  let bombtargets = createGroundUnitsProc(enemySide)
   if (bombtargets == "" || bombTargetsCount <= 0)
     return
 
@@ -45,7 +45,7 @@ function generateBombingMission(isFreeFlight, ground_type, createGroundUnitsProc
     bombersCountMin = 1 * (bombTargetsCount) - 4
     bombersCountMax = 3 * (bombTargetsCount) - 4
     playerBomberPlane = getAircraftDescription(playerSide, "bomber", ["bomber"],
-      ["antiTankBomb"], true, 0, wpMax)
+      ["bomb"], true, 0, wpMax)
     indicator_icon = ground_type
   }
   else if (ground_type == "artillery") {
@@ -59,7 +59,7 @@ function generateBombingMission(isFreeFlight, ground_type, createGroundUnitsProc
     bombersCountMin = 4 * (bombTargetsCount) - 4
     bombersCountMax = 16 * (bombTargetsCount) - 4
     playerBomberPlane = getAircraftDescription(playerSide, "bomber", ["bomber"],
-      ["antiShipBomb"], true, 0, wpMax)
+      ["bomb"], true, 0, wpMax)
     indicator_icon = "ship"
     mgSetBool("variables/is_target_ship", true)
   }
@@ -67,7 +67,7 @@ function generateBombingMission(isFreeFlight, ground_type, createGroundUnitsProc
     bombersCountMin = 8 * bombTargetsCount - 4
     bombersCountMax = 32 * bombTargetsCount - 4
     playerBomberPlane = getAircraftDescription(playerSide, "bomber", ["bomber"],
-      ["antiShipBomb"], true, 0, wpMax)
+      ["bomb"], true, 0, wpMax)
     indicator_icon = "ship"
     mgSetBool("variables/is_target_ship", true)
   }

@@ -528,12 +528,23 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function onAddToFavoriteConsoleBtn() {
     let listObj = this.getOpenedDecorListObj()
-    let decalObj = this.getSelectedObj(listObj)
-    if (decalObj == null)
+    if (!listObj?.isValid())
       return
-    let favBtnObj = decalObj.findObject("favorite_btn")
+
+    local idx = listObj.childrenCount() - 1
+    while (idx >= 0 && !listObj.getChild(idx)?.isHovered())
+      idx--
+
+    if (idx < 0)
+      idx = listObj.getValue()
+    if (idx < 0)
+      return
+
+    let decalObj = listObj.getChild(idx)
+    let favBtnObj = decalObj?.isValid() ? decalObj.findObject("favorite_btn") : null
     if (favBtnObj == null)
       return
+
     this.onAddToFavoriteBtn(favBtnObj)
   }
 

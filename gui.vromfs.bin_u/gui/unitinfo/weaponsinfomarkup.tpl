@@ -13,20 +13,20 @@ tr {
         <</count>>
         tooltipLink {
           <<#isNotLink>>isNotLink:t='yes'<</isNotLink>>
+          <<#isTooltipByHold>>
+          tooltipId:t='<<tooltipId>>'
+          <</isTooltipByHold>>
+          <<^isTooltipByHold>>
+          tooltip:t='$tooltipObj'
+          tooltipObj {
+            tooltipId:t='<<tooltipId>>'
+            on_tooltip_open:t='onGenericTooltipOpen'
+            on_tooltip_close:t='onTooltipObjClose'
+            display:t='hide'
+          }
+          <</isTooltipByHold>>
           textareaNoTab {
             text:t='<<weaponNameLoc>>'
-            <<#isTooltipByHold>>
-            tooltipId:t='<<tooltipId>>'
-            <</isTooltipByHold>>
-            <<^isTooltipByHold>>
-            tooltip:t='$tooltipObj'
-            tooltipObj {
-              tooltipId:t='<<tooltipId>>'
-              on_tooltip_open:t='onGenericTooltipOpen'
-              on_tooltip_close:t='onTooltipObjClose'
-              display:t='hide'
-            }
-            <</isTooltipByHold>>
           }
         }
       }

@@ -455,7 +455,7 @@ let list = {
   LICENSE = {
     text = @() "#mainmenu/license"
     onClickFunc = @(_obj, _handler) openLicenseWindow()
-    isHidden = @(...) !is_dev_version()
+    isHidden = @(...) !isInMenu.get()
   }
 
   DEBUG_PS4_SHOP_DATA = {

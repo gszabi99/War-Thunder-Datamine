@@ -51,7 +51,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "tank"
     squad_type = "#bomb_targets_tanks"
     allyAssaultPlane = getAircraftDescription(playerSide, "assault", ["can_be_assault"],
-      ["antiTankBomb", "antiTankRocket"], false, 0, wpMax)
+      ["bomb", "rocket"], false, 0, wpMax)
     mgSetInt("variables/assault_time", 60)
   }
   else if (light_count > 0 && light_count > art_count) {
@@ -75,7 +75,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
     ground_type = "destroyer"
     squad_type = "#bomb_targets_ships"
     allyAssaultPlane = getAircraftDescription(playerSide, "assault", ["can_be_assault"],
-      ["antiShipBomb", "antiShipRocket"], false, 0, wpMax)
+      ["bomb", "rocket"], false, 0, wpMax)
     mgSetInt("variables/assault_time", 60)
   }
   else
