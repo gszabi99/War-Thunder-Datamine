@@ -281,8 +281,6 @@ shopItem {
     valign:t='center'
   }
   <</hasLockedIcon>>
-
-  slotSelectionRectangle {}
 }
 <<#needDnD>>
 on_end_edit:t='onCrewDropFinish'

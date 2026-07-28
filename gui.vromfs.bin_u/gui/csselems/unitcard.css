@@ -705,18 +705,6 @@ slotBottomGradientLine {
   display:hide;
 }
 
-slotSelectionRectangle {
-  re-type:9rect;
-  position:absolute;
-  pos:0, 0;
-  size:pw, ph;
-  background-image:#ui/gameuiskin#frame_selected_slot.svg;
-  background-repeat:expand;
-  background-color:@white;
-  background-svg-size:pw, ph;
-  background-position:4, 4;
-  display:hide;
-}
 
 firstChoiceItem > slotHoverHighlight {
   size:pw, ph-(@sf/@pf)/2;
@@ -738,7 +726,8 @@ firstChoiceItem[selected=yes] > slotTopGradientLine,
 firstChoiceItem[selected=yes] > slotBottomGradientLine,
 firstChoiceItem:hover > slotHoverHighlight,
 unitCell > shopItem:hover > slotHoverHighlight,
-unitItemContainer[chosen=yes] > shopItem > slotSelectionRectangle,
+unitItemContainer[chosen=yes] > shopItem > slotTopGradientLine,
+unitItemContainer[chosen=yes] > shopItem > slotBottomGradientLine,
 unitItemContainer[chosen=no] > shopItem:hover > slotBottomGradientLine,
 unitItemContainer > shopItem:hover > slotHoverHighlight {
   display:show;
