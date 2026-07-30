@@ -35,8 +35,9 @@ let { saveLocalAccountSettings, loadLocalAccountSettings,
 NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { isInFlight } = require("gameplayBinding")
+let { isInFlight, isInHangar } = require("gameplayBinding")
 let { isVrModeAllowedInEvent } = require("%scripts/events/eventInfo.nut")
+let { isHumanMission } = require("%scripts/missions/missionType.nut")
 
 
 
@@ -434,11 +435,12 @@ function updateOptionChangedIcon(optionId) {
   if (!(optionObj?.isValid() ?? false))
     return
 
-  let activeTag = getActiveTagForOption(optionId)
-  let isCommon = activeTag == ""
-  let hasChanged = isOptionChangedFromCommon(optionId, isCommon, activeTag)
-  optionObj.hasChangedIcon = isCommon && hasChanged ? "yes" : "no"
-  optionObj.hasChangedRow = !isCommon && hasChanged ? "yes" : "no"
+  if (hasFeature("HasTabsInGraphicsOption")) {
+    let activeTag = getActiveTagForOption(optionId)
+    let isCommon = activeTag == ""
+    optionObj.hasChangedRow = isOptionChangedFromCommon(optionId, isCommon, activeTag)
+      ? "yes" : "no"
+  }
 }
 
 function validateGuiValue(id, value) {
@@ -918,13 +920,18 @@ function updateOption(id) {
   local markup = ""
   let onChangeFnName = "onSystemOptionChanged"
   let onOptHoverFnName = "onSystemOptionControlHover"
+  let isEnabled = desc?.enabled() ?? true
+
   if (desc.widgetType == "list")
     markup = getListOption(id, desc, onChangeFnName, onOptHoverFnName, false)
+
   if (desc.widgetType == "options_bar") {
     let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
     let items = getOptionValueItems(id, desc)
     markup = create_options_bar(desc.widgetId, raw,
-      localize(id, mCfgCurrent[id]), items, onChangeFnName, false, { onOptHoverFnName })
+      localize(id, mCfgCurrent[id]), items, onChangeFnName, false, {
+        onOptHoverFnName = isEnabled ? onOptHoverFnName : null
+      })
   }
 
   mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
@@ -960,6 +967,9 @@ mShared = {
       }
       updateOptionChangedIcon(k)
     })
+    
+    updateOption("fxQuality")
+    updateOption("shadowQuality")
   }
 
   setGraphicsQuality = function() {
@@ -1633,6 +1643,7 @@ mSettings = {
     }
     configValueToGuiValue = @(val) val == fpsUnlimitedVal ? fpsMenuUnlimTxt : val.tostring()
     enabled = @() getGuiValue("vsync") == "vsync_off"
+    onlyCommonTabAvailable = true
   }
   dynamicResolutionEnabled = {
     widgetType = "checkbox" def = false blk = "video/dynamicResolution/enabled" restart = false
@@ -2567,8 +2578,9 @@ function isReloadSceneRerquired() {
   return false
 }
 
-let isOnlyCommonOption = @(optionId)
-  isInArray(optionId, reloadSceneOptionIds) || (mSettings?[optionId].restart ?? false)
+let isOnlyCommonOption = @(optionId) isInArray(optionId, reloadSceneOptionIds)
+  || (mSettings?[optionId].restart ?? false)
+  || (mSettings?[optionId].onlyCommonTabAvailable ?? false)
 
 
 function onRestartClient() {
@@ -2724,6 +2736,12 @@ function updateSliderText(obj, val, sliderPrintFormat) {
 }
 
 
+function isUnitTypeTabEnabled(esUnitType) {
+  if (esUnitType == ES_UNIT_TYPE_HUMAN)
+    return isInHangar() || isHumanMission()
+  return true
+}
+
 function mkOptionHeaderRow(sectionIdx, title, addInfo, tabs) {
   let addTxt = addInfo == null ? "" : loc("ui/parentheses/space", { text = loc(addInfo) })
   let view = {
@@ -2732,17 +2750,36 @@ function mkOptionHeaderRow(sectionIdx, title, addInfo, tabs) {
     sectionIdx
     tabs = null
   }
-  if (hasFeature("HasTabsInGraphicsOption"))
+  if (hasFeature("HasTabsInGraphicsOption")) {
     view.tabs = tabs.map(@(tab, tabIdx) {
       tabId = (tab?.unitTypeTag ?? "") == "" ? null : $"{title}_{tab.unitTypeTag}"
       tabName = tab?.locId ? loc(tab.locId) : null
       tabImage = tab?.image
       selected = tabIdx == 0
       unitTypeTag = tab?.unitTypeTag ?? ""
+      disabled = !isUnitTypeTabEnabled(tab?.esUnitType ?? ES_UNIT_TYPE_INVALID)
     })
+  }
   return handyman.renderCached(("%gui/options/optionsHeaderWithTabs.tpl"), view)
 }
 
+function setCurTabIdx(guiScene, unitTypesTabs) {
+  if (!hasFeature("HasTabsInGraphicsOption"))
+    return
+
+  let curUnitType = isHumanMission() ? ES_UNIT_TYPE_HUMAN : ES_UNIT_TYPE_INVALID
+  let suitableTabIdx = unitTypesTabs.findindex(@(tab) tab?.esUnitType == curUnitType) ?? 0
+  if (suitableTabIdx <= 0) 
+    return
+
+  for (local i = 0; i < guiScene.sysopts.childrenCount(); i++) {
+    let tabsObj = guiScene.sysopts.getChild(i).findObject("tabs_list")
+    if (tabsObj?.isValid() && tabsObj.childrenCount() > suitableTabIdx) {
+      tabsObj.setValue(suitableTabIdx)
+      break
+    }
+  }
+}
 
 function fillGuiOptions(containerObj, handler) {
   if (!containerObj?.isValid() || !handler)
@@ -2768,7 +2805,7 @@ function fillGuiOptions(containerObj, handler) {
   let unitTypesTabs = [{ locId = "unlocks/group/common" }]
     .extend(unitTypes.types
       .filter(@(v) (v?.hasGraphicsPreset ?? false) && (v?.isAvailable() ?? false))
-      .map(@(v) { image = v.testFlightIcon, unitTypeTag = v.tag }))
+      .map(@(v) { image = v.testFlightIcon, unitTypeTag = v.tag, esUnitType = v.esUnitType }))
 
   local data = ""
   foreach (sectionIdx, section in mUiStruct) {
@@ -2806,7 +2843,7 @@ function fillGuiOptions(containerObj, handler) {
       }
       else if (widgetType == "options_bar") {
         let value = desc.values.findindex(@(v) v == mCfgCurrent[itemId])
-        let descItems  = desc?.items ?? desc.values.map(@(v, idx) {
+        let descItems = desc?.items ?? desc.values.map(@(v, idx) {
           text = localize(itemId, v)
           selected = idx == 0
         })
@@ -2843,18 +2880,18 @@ function fillGuiOptions(containerObj, handler) {
         let disabledTooltip = disabled == "yes" ? getDisabledOptionTooltip(itemId) : null
         let tooltipProp = disabledTooltip != null ? $" tooltip:t='{disabledTooltip}';" : ""
         let label = stripTags("".join([optionName, requiresRestart ? $"{nbsp}*" : $"{nbsp}{nbsp}"]))
-        local hasChangedIcon = "no"
+        local hasChangedRow = "no"
         if (hasFeature("HasTabsInGraphicsOption"))
-          hasChangedIcon = isOptionChangedFromCommon(itemId, true, "") ? "yes" : "no"
+          hasChangedRow = isOptionChangedFromCommon(itemId, true, "") ? "yes" : "no"
 
         option = "".concat("tr { id:t='", itemId, "_tr'; disabled:t='", disabled, "' disabledVal:t='", disabled,
-          "' selected:t='no'", tooltipProp, " hasLockedSign:t='no' hasChangedIcon:t='", hasChangedIcon,
-          "' hasChangedRow:t='no' size:t='pw, ", mRowHeightScale,
+          "' selected:t='no'", tooltipProp, " hasLockedSign:t='no' hasChangedRow:t='", hasChangedRow,
+          "' size:t='pw, ", mRowHeightScale,
           "@optContainerHeight' overflow:t='hidden' optContainer:t='yes' on_hover:t='onOptionContainerHover'",
           " td { width:t='0.50pw'; cellType:t='left'; overflow:t='hidden'; height:t='", mRowHeightScale,
           "@optContainerHeight' optiontext {text:t='", label, "'} }",
           " td { width:t='0.50pw'; cellType:t='right';  height:t='", mRowHeightScale,
-          "@optContainerHeight' padding-left:t='@optPad'; optionWithDiffBg{} LockedImg{} cellSeparator{}", option, " } }"
+          "@optContainerHeight' padding-left:t='@optPad'; optionWithDiffBg{} cellSeparator{}", option, " } }"
         )
       }
       data = "".concat(data, option)
@@ -2864,6 +2901,7 @@ function fillGuiOptions(containerObj, handler) {
   guiScene.replaceContentFromText(guiScene.sysopts, data, data.len(), handler)
   guiScene.setUpdatesEnabled(true, true)
   onGuiLoaded()
+  setCurTabIdx(guiScene, unitTypesTabs)
 }
 
 function updateGuiOptionsGroup(groupIdx, isCommon, unitTypeTag) {
@@ -2877,7 +2915,7 @@ function updateGuiOptionsGroup(groupIdx, isCommon, unitTypeTag) {
         continue
       let value = mCfgCurrent[optionId]
       if (prevTag == "")
-        mCfgCommon[optionId] = value
+        mCfgCommon[optionId] <- value
       else if (!isOnlyCommonOption(optionId)) {
         if (prevTag not in mCfgDiffsCurrent)
           mCfgDiffsCurrent[prevTag] <- {}
@@ -2912,11 +2950,9 @@ function updateGuiOptionsGroup(groupIdx, isCommon, unitTypeTag) {
       setGuiValue(optionId, target)
     }
 
-    if (hasFeature("HasTabsInGraphicsOption")) {
-      let hasChanged = isOptionChangedFromCommon(optionId, isCommon, unitTypeTag)
-      optionObj.hasChangedIcon = isCommon && hasChanged ? "yes" : "no"
-      optionObj.hasChangedRow = !isCommon && hasChanged ? "yes" : "no"
-    }
+    if (hasFeature("HasTabsInGraphicsOption"))
+      optionObj.hasChangedRow = isOptionChangedFromCommon(optionId, isCommon, unitTypeTag)
+        ? "yes" : "no"
   }
 
   updateGuiNavbar(true)

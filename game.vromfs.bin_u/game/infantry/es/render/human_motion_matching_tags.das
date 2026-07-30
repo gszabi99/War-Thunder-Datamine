@@ -48,6 +48,7 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
                                     from_crawl_transition_state_id : int;
                                     applied_ct : HumanControlState;
                                     wish_to_move : bool;
+                                    is_fpv : bool;
                                     motion_matching__dataBaseEid : EntityId;
                                     var motion_matching__controller : MotionMatchingController)
   query(motion_matching__dataBaseEid) <| $ [es] (mm_tag_id__sprint : int;
@@ -62,8 +63,12 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
     remove_tag(motion_matching__controller, mm_tag_id__stand)
     remove_tag(motion_matching__controller, mm_tag_id__crouch)
     remove_tag(motion_matching__controller, mm_tag_id__turnOnSpot)
-    set_tag(motion_matching__controller, mm_tag_id__fullBodyMovement, false)
-    set_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch, false)
+    if is_fpv
+      set_tag(motion_matching__controller, mm_tag_id__fullBodyMovement, false)
+      set_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch, false)
+    else
+      remove_tag(motion_matching__controller, mm_tag_id__fullBodyMovement)
+      remove_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch)
 
     
     
@@ -118,6 +123,7 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
                             human_anim__comboStateFullBodyRun : int;
                             human_anim__comboStateFullBodyCrouch : int;
                             human_anim__fromCrawlTransitionAnimId : int;
+                            human_anim__isFpv : bool;
                             human_net_phys : HumanActor;
                             motion_matching__dataBaseEid : EntityId;
                             var motion_matching__prevLowerAnimState : int&;
@@ -149,6 +155,7 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
                                       human_anim__fromCrawlTransitionAnimId,
                                       phys.appliedCT,
                                       curState.isWishToMove,
+                                      human_anim__isFpv,
                                       motion_matching__dataBaseEid,
                                       motion_matching__controller)
       motion_matching__prevLowerAnimState = nextLowerStateId

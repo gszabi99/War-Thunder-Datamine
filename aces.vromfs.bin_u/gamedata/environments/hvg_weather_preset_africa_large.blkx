@@ -1,75 +1,36 @@
 {
   "common": {
-    "condensation_type": "rain",
-    "dirt_type": "ground",
-    "water": {
-      "L_inv_white": 0.3
-    },
     "adaptation": {
-      "useAdaptation": true,
-      "lowPart": 0.0,
-      "highPart": 0.01,
-      "minExposure": 0.25,
-      "maxExposure": 16.0,
-      "autoExposureScale": 1.0,
-      "adaptDownSpeed": 12.0,
-      "adaptUpSpeed": 24.0,
-      "brightnessPerceptionLinear": 1.0,
-      "brightnessPerceptionPower": 0.55,
-      "minExposureMul": 1.0,
-      "maxExposureMul": 1.0,
-      "exposureFadeMul": 1.0,
-      "targetLuminanceComp": 0.25
+      "useAdaptation": true
     },
     "DemonPostFx": {
-      "use": true,
-      "showAlpha": false,
-      "glowRadius": 0.1,
-      "useBetterGlow": true,
-      "glowFadeK": 2.0,
-      "glowEdgeK": 0.0,
-      "glowAngleU": 44.0,
-      "glowAngleV": 144.0,
-      "useRawSkyMask": true,
-      "hdrStarThreshold": 5.25,
-      "hdrDarkThreshold": 0.6,
-      "hdrGlowPower": 0.23,
-      "hdrGlowMul": 0.025,
-      "hdrStarPowerMul": 0.27,
-      "volfogFade": 0.000005
+      "volfogFade": 0.00005
     },
     "tonemapping": {
-      "tonemapContrast": 1.65,
-      "tonemapShoulder": 0.9,
-      "tonemapMidIn": 0.09,
-      "tonemapMidOut": 0.14,
-      "tonemapHdrMax": 4.0
-    },
-    "tonemapping_hdr": {
-      "tonemapContrast": 1.0,
-      "tonemapShoulder": 1.0,
-      "tonemapMidIn": 0.5,
-      "tonemapMidOut": 0.5,
-      "tonemapHdrMax": 1.0
+      "tonemapContrast": 1.6,
+      "tonemapShoulder": 0.92,
+      "tonemapMidIn": 0.08,
+      "tonemapMidOut": 0.11,
+      "tonemapHdrMax": 3.0
     },
     "colorgrading": {
       "default": {
-        "tonemapContrast": 1.65,
-        "tonemapShoulder": 0.9,
-        "tonemapMidIn": 0.09,
-        "tonemapMidOut": 0.14,
-        "tonemapHdrMax": 4.0,
+        "tonemapContrast": 1.6,
+        "tonemapShoulder": 0.92,
+        "tonemapMidIn": 0.08,
+        "tonemapMidOut": 0.11,
+        "tonemapHdrMax": 3.0,
         "colorSaturation": [
+          0.8,
           1.0,
           1.0,
-          1.0,
-          0.7
+          0.85
         ],
         "colorContrast": [
-          1.2,
           1.0,
           1.0,
-          1.1
+          1.0,
+          1.15
         ],
         "colorGamma": [
           1.0,
@@ -85,8 +46,8 @@
         ],
         "colorOffset": [
           0.0,
-          0.0,
-          0.0,
+          0.003,
+          0.004,
           0.0
         ],
         "shadows_colorSaturation": [
@@ -116,8 +77,8 @@
         "shadows_colorOffset": [
           0.0,
           0.003,
-          0.004,
-          0.005
+          0.005,
+          0.004
         ],
         "midtones_colorSaturation": [
           1.0,
@@ -820,24 +781,24 @@
       "Lut": {
         "at": 0.0,
         "tonemapping": {
-          "tonemapContrast": 1.65,
-          "tonemapShoulder": 0.9,
-          "tonemapMidIn": 0.09,
-          "tonemapMidOut": 0.14,
-          "tonemapHdrMax": 4.0
+          "tonemapContrast": 1.6,
+          "tonemapShoulder": 0.92,
+          "tonemapMidIn": 0.08,
+          "tonemapMidOut": 0.11,
+          "tonemapHdrMax": 3.0
         },
         "colorGrading": {
           "colorSaturation": [
+            0.8,
             1.0,
             1.0,
-            1.0,
-            0.7
+            0.85
           ],
           "colorContrast": [
-            1.2,
             1.0,
             1.0,
-            1.1
+            1.0,
+            1.15
           ],
           "colorGamma": [
             1.0,
@@ -853,8 +814,8 @@
           ],
           "colorOffset": [
             0.0,
-            0.0,
-            0.0,
+            0.003,
+            0.004,
             0.0
           ],
           "shadows_colorSaturation": [
@@ -884,8 +845,8 @@
           "shadows_colorOffset": [
             0.0,
             0.003,
-            0.004,
-            0.005
+            0.005,
+            0.004
           ],
           "midtones_colorSaturation": [
             1.0,
@@ -947,15 +908,12 @@
             0.0,
             0.0
           ],
-          "colorCorrectionShadowsMax": 0.1,
-          "colorCorrectionHighlightsMin": 0.8,
           "hueToSaturationKey": [
             1.0,
             0.0,
             0.0,
             0.0
           ],
-          "hueToSaturationKeyFalloff": 0.001,
           "hueToSaturationValueMul": [
             1.0,
             1.0,
@@ -968,6 +926,9 @@
             0.0,
             0.0
           ],
+          "colorCorrectionHighlightsMin": 0.8,
+          "colorCorrectionShadowsMax": 0.1,
+          "hueToSaturationKeyFalloff": 0.001,
           "baseWhiteTemp": 6500.0
         }
       }

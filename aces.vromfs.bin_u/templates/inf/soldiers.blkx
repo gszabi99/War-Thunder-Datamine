@@ -60,7 +60,8 @@
   "human_weap_bipod": {
     "_tracked": [
       "bipod__enabled",
-      "bipod__placeable"
+      "bipod__placeable",
+      "bipod__adsFocused"
     ],
     "_replicated": [
       "bipod__enabled",
@@ -131,6 +132,8 @@
       0.0
     ],
     "bipod__animcharWasHidden": false,
+    "bipod__adsFocused": false,
+    "bipod__camOffsetK": 0.0,
     "_group": [
       {
         "_tags": "render",
@@ -419,7 +422,7 @@
     "double_sprint__staminaDrainMult": 13.0,
     "double_sprint__staminaRegenMult": 0.16,
     "double_sprint__minStamina": 0.0,
-    "double_sprint__rotationSpeed": 0.185,
+    "double_sprint__rotationSpeed": 2.96,
     "double_sprint__rotationRestorationSpeed": 5.0,
     "double_sprint__rotationMaxSpeed": 6.28,
     "double_sprint__strafeSpeed": 0.5,
@@ -961,19 +964,19 @@
       "value": [
         [
           15.0,
-          1.0
+          1.4
         ],
         [
           20.0,
-          0.95
+          1.335
         ],
         [
           25.0,
-          0.9
+          1.265
         ],
         [
           40.0,
-          0.8
+          1.123
         ]
       ]
     },
@@ -981,19 +984,19 @@
       "value": [
         [
           15.0,
-          1.0
+          1.7
         ],
         [
           20.0,
-          0.95
+          1.65
         ],
         [
           25.0,
-          0.9
+          1.6
         ],
         [
           40.0,
-          0.8
+          1.55
         ]
       ]
     },
@@ -1036,14 +1039,6 @@
           0.9
         ],
         [
-          30.0,
-          0.85
-        ],
-        [
-          35.0,
-          0.825
-        ],
-        [
           40.0,
           0.8
         ]
@@ -1081,27 +1076,27 @@
       "value": [
         [
           15.0,
-          1.0
+          1.429
         ],
         [
           20.0,
-          1.0
+          1.35
         ],
         [
           25.0,
-          1.0
+          1.3
         ],
         [
           30.0,
-          1.0
+          1.25
         ],
         [
           35.0,
-          1.0
+          1.15
         ],
         [
           40.0,
-          1.0
+          1.03
         ]
       ]
     }
@@ -1857,18 +1852,20 @@
       400.0,
       1225.0,
       4900.0,
-      22500.0
+      136900.0
     ],
     "nodes_los__maxFriendlyDistSq": 22500.0,
-    "nodes_los__maxPassiveEnemyDistSq": 5625.0,
-    "nodes_los__maxShootingEnemyDistSq": 22500.0,
+    "nodes_los__maxPassiveEnemyDistSq": 22500.0,
+    "nodes_los__maxShootingEnemyDistSq": 136900.0,
     "nodes_los__curLod": -1,
     "nodes_los__visible": false,
     "nodes_los__showMapMarker": false,
     "nodes_los__considerVisibleToTime": -1.0,
     "nodes_los__considerInvisibleToTime": -1.0,
-    "nodes_los__considerAsVisibleTime": 0.65,
-    "nodes_los__considerAsInvisibleTime": 0.25,
+    "nodes_los__considerAsVisibleTimeFriendly": 1.0,
+    "nodes_los__considerAsVisibleTimeEnemy": 0.65,
+    "nodes_los__considerAsInvisibleTimeFriendly": 0.0,
+    "nodes_los__considerAsInvisibleTimeEnemy": 0.25,
     "nodes_los__considerMapVisibleToTime": -1.0,
     "nodes_los__considerMapAsVisibleTime": 5.0,
     "nodes_los__forceShowMarkerTime": 10.0,
@@ -1886,7 +1883,7 @@
     "nodes_los__nodeNamesLod0:list<t>": {
       "node": [
         "Bip01 L Calf",
-        "Bip01 Head",
+        "head_direction",
         "Bip01 R Hand",
         "Bip01 Pelvis",
         "Bip01 Spine1",
@@ -1896,7 +1893,7 @@
     },
     "nodes_los__nodeNamesLod1:list<t>": {
       "node": [
-        "Bip01 Head",
+        "head_direction",
         "Bip01 Spine",
         "Bip01 L Calf",
         "Bip01 R Hand"
@@ -1904,13 +1901,16 @@
     },
     "nodes_los__nodeNamesLod2:list<t>": {
       "node": [
-        "Bip01 Head",
-        "Bip01 Spine",
+        "head_direction",
+        "Bip01 R UpperArm",
         "Bip01 L Calf"
       ]
     },
     "nodes_los__nodeNamesLod3:list<t>": {
-      "node": "Bip01 Spine1"
+      "node": [
+        "head_direction",
+        "Bip01 R UpperArm"
+      ]
     },
     "nodes_los__nodeIdlod0:list<i>": {},
     "nodes_los__nodeIdlod1:list<i>": {},

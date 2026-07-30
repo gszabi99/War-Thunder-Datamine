@@ -47,17 +47,18 @@ def weapon_rearsight_node_init(evt : Event;
   let nodeIdx = find_weapon_sight_node_idx(eid, animchar, nodeName)
   weapon_rearsight_node__nodeIdx = nodeIdx
 
-[es(tag=render, after=slot_attach_init_tms_es)]
+[es(tag=render, after=slot_attach_init_tms_es, REQUIRE=watchedHero)]
 def update_gun_tm_info_for_render(info : UpdateStageInfoAct;
-                                  animchar : AnimcharBaseComponent;
-                                  weapon_rearsight_node__nodeIdx : int;
-                                  var weapon_rearsight_node__nodeTm : mat44f&)
-  if weapon_rearsight_node__nodeIdx < 0
-    return
+                                  human_weap__currentGunEid : EntityId)
+  query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
+                                              weapon_rearsight_node__nodeIdx : int;
+                                              var weapon_rearsight_node__nodeTm : mat44f&)
+    if weapon_rearsight_node__nodeIdx < 0
+      return
 
-  var newTm : float3x4
-  geomtree_getNodeWtmScalar(*animchar.nodeTree, weapon_rearsight_node__nodeIdx, newTm)
-  weapon_rearsight_node__nodeTm = mat44f(newTm)
+    var newTm : float3x4
+    geomtree_getNodeWtmScalar(*animchar.nodeTree, weapon_rearsight_node__nodeIdx, newTm)
+    weapon_rearsight_node__nodeTm = mat44f(newTm)
 
 [es(tag=render, on_appear, track=gun_anim__weapModEid)]
 def weapon_change_eid_for_sights_es(evt : Event;

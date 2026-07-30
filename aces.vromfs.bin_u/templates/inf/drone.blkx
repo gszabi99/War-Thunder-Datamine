@@ -67,8 +67,10 @@
         "nodes_los__showKillerMarker": false,
         "nodes_los__considerVisibleToTime": -1.0,
         "nodes_los__considerInvisibleToTime": -1.0,
-        "nodes_los__considerAsVisibleTime": 0.3,
-        "nodes_los__considerAsInvisibleTime": 0.25,
+        "nodes_los__considerAsVisibleTimeFriendly": 0.3,
+        "nodes_los__considerAsVisibleTimeEnemy": 0.3,
+        "nodes_los__considerAsInvisibleTimeFriendly": 0.25,
+        "nodes_los__considerAsInvisibleTimeEnemy": 0.25,
         "nodes_los__considerMapVisibleToTime": -1.0,
         "nodes_los__considerMapAsVisibleTime": 5.0,
         "nodes_los__forceShowMarkerTime": 0.0,
@@ -209,6 +211,7 @@
       "aircraft"
     ],
     "unit__className": "uav_inf_recon_drone",
+    "unit__nonStabilizedOpticCamera": true,
     "drone__coverageArea": [
       400.0,
       800.0
@@ -321,7 +324,7 @@
     "drone_launcher__needRespawnForLaunch": true,
     "drone_launcher__cooldown": 90.0,
     "drone_launcher__firstLaunchTimeout": 30.0,
-    "drone_launcher__maxLaunches": 2,
+    "drone_launcher__maxLaunches": 1,
     "_group": {
       "_tags": "server",
       "drone_launcher__behTreeName": "quadcopter"

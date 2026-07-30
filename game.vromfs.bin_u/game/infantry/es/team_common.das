@@ -61,7 +61,23 @@ def assign_team(var out_team_id : int&; var out_team_eid : EntityId&)
 let
   TB_LIMITER_TACTICALPATH = 0
   TB_LIMITER_USING_RECONS = 1
-  TB_LIMITERS_MAX = 2
+  TB_LIMITER_FIND_COVER_A = 2
+  TB_LIMITER_TRACE_COVERS = 3
+  TB_LIMITER_LOCAL_ESCAPE = 4
+  TB_LIMITERS_MAX = 5
+
+def team_bots_limiter_find_kind(kind : string)
+  if kind == "TACTICALPATH"
+    return TB_LIMITER_TACTICALPATH
+  if kind == "USING_RECONS"
+    return TB_LIMITER_USING_RECONS
+  if kind == "FIND_COVER_A"
+    return TB_LIMITER_FIND_COVER_A
+  if kind == "TRACE_COVERS"
+    return TB_LIMITER_TRACE_COVERS
+  if kind == "LOCAL_ESCAPE"
+    return TB_LIMITER_LOCAL_ESCAPE
+  return -1
 
 def team_bots_tick_limiter_check(for_team : int; kind_idx : int; max_num : int)
   if kind_idx >= TB_LIMITERS_MAX

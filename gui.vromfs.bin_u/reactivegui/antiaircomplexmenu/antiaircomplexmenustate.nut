@@ -44,9 +44,8 @@ function updateCfg(){
       let targetListCfg = cfgBlk.getBlockByNameEx("targetList")
       for (local i = 0; i < targetListCfg.paramCount(); i++) {
         let val = targetListCfg.getParamValue(i)
-        if (!type(val) == "bool"){
+        if (type(val) != "bool")
           continue
-        }
         let name = targetListCfg.getParamName(i)
         targetList[name] <- val
       }

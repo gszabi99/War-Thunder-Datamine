@@ -846,19 +846,25 @@ class IsPointSafe : BehNodeAdapter
 
 def private find_blocker_entity_at_pos(pos : float3)
   var foundEid = INVALID_ENTITY_ID
-  let found = find_query() <| $ [es(REQUIRE=destroyable_wall)] (eid : EntityId; ri_extra : RiExtraComponent)
+  var bestDistSq = -1.0
+  
+  let MAX_DIST_OFF = 3.5
+  query() <| $ [es(REQUIRE=destroyable_wall)] (eid : EntityId; ri_extra : RiExtraComponent)
     if !ri_extra.valid
-      return false
+      return
     let riType = handle_to_ri_type(ri_extra.handle)
-    let bb = riex_get_lbb(int(riType))
-    let bb3 = BBox3(bb.bmin.xyz, bb.bmax.xyz)
     var tm : float3x4
     get_rigen_extra_matrix(ri_extra.handle, tm)
-    let aabb = tm * bb3
-    if !(aabb & pos)
-      return false
+    let distSq = distance_sq(tm[3], pos)
+    if distSq > square(MAX_DIST_OFF)
+      return
+    if foundEid != INVALID_ENTITY_ID && distSq > bestDistSq
+      return
     foundEid = eid
-    return true
+    bestDistSq = distSq
+    
+  
+  
   return foundEid
 
 [beh_node(name="findBlockerEntityAtPos")]
@@ -950,9 +956,9 @@ class WaitBeforePlantWallMine : BehNodeAdapter
     let targetEid = EntityId(uint(owner.blackBoard |> datablock_getInt(eidParam)))
     var occupied = false
     let curTime = get_sync_time()
-    query(agentTeamEid) <| $ [es] (team_bots__plantMinesWalls : EidList; team_bots__plantMinesTimes : FloatList)
-      for wallEid, wallTime in team_bots__plantMinesWalls, team_bots__plantMinesTimes
-        if wallEid == targetEid && curTime < wallTime
+    query(agentTeamEid) <| $ [es] (team_bots__plantMinesWalls : EidList; team_bots__plantMinesTimes : FloatList; team_bots__plantMinesAgents : EidList)
+      for wallEid, wallTime, wallAgentEid in team_bots__plantMinesWalls, team_bots__plantMinesTimes, team_bots__plantMinesAgents
+        if wallEid == targetEid && curTime < wallTime && wallAgentEid != agentEid
           waitTillTimeMax = startWaitTime + maxTimeToWait
           occupied = true
     
@@ -965,22 +971,27 @@ class WaitBeforePlantWallMine : BehNodeAdapter
     if occupied && curTime < waitTillTimeMax
       return EBehResult.ER_RUNNING
 
-    query(agentTeamEid) <| $ [es] (var team_bots__plantMinesWalls : EidList&; var team_bots__plantMinesTimes : FloatList&)
+    query(agentTeamEid) <| $ [es] (var team_bots__plantMinesWalls : EidList&;
+                                   var team_bots__plantMinesTimes : FloatList&;
+                                   var team_bots__plantMinesAgents : EidList&)
       var updated = false
       let TIMEOUT_AFTER_PLANTED = 10.0
       let targetTime = curTime + TIMEOUT_AFTER_PLANTED
-      while length(team_bots__plantMinesWalls) > 0 && length(team_bots__plantMinesTimes) > 0
+      while length(team_bots__plantMinesWalls) > 0 && length(team_bots__plantMinesTimes) > 0 && length(team_bots__plantMinesAgents) > 0
         if curTime < team_bots__plantMinesTimes[0]
           break
         team_bots__plantMinesWalls |> erase(0)
         team_bots__plantMinesTimes |> erase(0)
+        team_bots__plantMinesAgents |> erase(0)
       for i in iter_range(team_bots__plantMinesWalls)
         if team_bots__plantMinesWalls[i] == targetEid
           team_bots__plantMinesTimes[i] = targetTime
+          team_bots__plantMinesAgents[i] = agentEid
           updated = true
       if !updated
         team_bots__plantMinesWalls |> push(targetEid)
         team_bots__plantMinesTimes |> push(targetTime)
+        team_bots__plantMinesAgents |> push(agentEid)
     return EBehResult.ER_SUCCESS
 
 [beh_node(name="checkPlantWallMine")]
@@ -2703,6 +2714,10 @@ class FindCoverAroundPoint : BehNodeAdapter
             if agentIndoor && keepIndoor && !is_pos_indoor(coverSlotPos)
               continue
             if traceVisible && !isPrevCoverSlot
+              let MAX_TEAM_TRACE_COVERS_PER_TICK = 8
+              if !team_bots_tick_limiter_check(team, TB_LIMITER_TRACE_COVERS, MAX_TEAM_TRACE_COVERS_PER_TICK)
+                if bestCoverId.x != -1 || slotBestCoverId.x != -1
+                  continue
               let dir = normalize(coverSlotOfs)
               let t1 = length(coverSlotOfs)
               let t2 = t1
@@ -3041,6 +3056,23 @@ class setSquadGoal : BehNodeAdapter
         query(squad_member__squad) <| $ [es] (var squadAI_tactical__actionType : int&)
           squadAI_tactical__actionType = -1
     return done ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
+
+
+[beh_node(name="checkTeamLimiter")]
+class CheckTeamLimiter : BehNodeAdapter
+  kind : int = -1
+  limit : int = 1
+  wait : bool = false
+  def override loadFromBlk(var data : DataBlock)
+    kind = team_bots_limiter_find_kind(datablock_getStr(data, "kind", ""))
+    limit = datablock_getInt(data, "limit", limit)
+    wait = datablock_getBool(data, "wait", wait)
+  def override update(dt : float) : EBehResult
+    if kind >= 0 && limit > 0
+      var agent = beh_tree_entity_agent(*owner)
+      if !team_bots_tick_limiter_check(agent.teamId, kind, limit)
+        return wait ? EBehResult.ER_RUNNING : EBehResult.ER_FAILED
+    return EBehResult.ER_SUCCESS
 
 
 [beh_node(name="checkFindPathDirectSafe")]
@@ -3383,6 +3415,7 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
 class GetValidatedSquadPathAction : BehNodeAdapter
   outActionTypeParam : int = -1
   outActionTargetEidParam : int = -1
+  outActionPosBackParam : int = -1
   outActionPosFromParam : int = -1
   outActionPosLookParam : int = -1
   outActionPosToParam : int = -1
@@ -3398,6 +3431,8 @@ class GetValidatedSquadPathAction : BehNodeAdapter
       outActionTypeParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outActionTypeParam", ""), -1)
     if datablock_find_param(data, "outActionTargetEidParam") >= 0
       outActionTargetEidParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outActionTargetEidParam", ""), 0)
+    if datablock_find_param(data, "outActionPosBackParam") >= 0
+      outActionPosBackParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outActionPosBackParam", ""), float3())
     if datablock_find_param(data, "outActionPosFromParam") >= 0
       outActionPosFromParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outActionPosFromParam", ""), float3())
     if datablock_find_param(data, "outActionPosLookParam") >= 0
@@ -3420,6 +3455,7 @@ class GetValidatedSquadPathAction : BehNodeAdapter
     query(agentEid) <| $ [es] (squad_member__squad : EntityId; transform : float3x4)
       query(squad_member__squad) <| $ [es] (var squadAI_tactical__actionType : int&;
                                             squadAI_tactical__actionTargetEid : EntityId;
+                                            squadAI_tactical__actionPosBack : float3;
                                             squadAI_tactical__actionPosFrom : float3;
                                             squadAI_tactical__actionPosDir : float3;
                                             squadAI_tactical__actionPosTo : float3;
@@ -3443,6 +3479,8 @@ class GetValidatedSquadPathAction : BehNodeAdapter
           owner.blackBoard |> set(outActionTypeParam, squadAI_tactical__actionType)
         if outActionTargetEidParam >= 0
           owner.blackBoard |> set(outActionTargetEidParam, int(uint(squadAI_tactical__actionTargetEid)))
+        if outActionPosBackParam >= 0
+          owner.blackBoard |> set(outActionPosBackParam, squadAI_tactical__actionPosBack)
         if outActionPosFromParam >= 0
           owner.blackBoard |> set(outActionPosFromParam, squadAI_tactical__actionPosFrom)
         if outActionPosLookParam >= 0
@@ -3526,6 +3564,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
 
     var found = false
     var foundPos = float3()
+    var foundBackPos = float3()
     var foundPrevPos = float3()
     var foundBlocked = false
 
@@ -3538,6 +3577,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
 
       var atPos = path[0]
       var prevPos = atPos
+      var backPos = atPos
       var distLeft = advanceDist
       for i in range(1, len)
         var nextPos = path[i]
@@ -3566,6 +3606,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
                 found = true
                 foundIdx = i
                 foundPos = pos
+                foundBackPos = backPos
                 foundPrevPos = prevPos
                 foundBlocked = true
                 
@@ -3580,6 +3621,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
           foundPrevPos = nextPos
           foundBlocked = false
           break
+        backPos = prevPos
         prevPos = atPos
         atPos = nextPos
 
@@ -3691,6 +3733,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
       found = false
       query(agentSquad) <| $ [es] (var squadAI_tactical__actionType : int&;
                                    var squadAI_tactical__actionTargetEid : EntityId&;
+                                   var squadAI_tactical__actionPosBack : float3&;
                                    var squadAI_tactical__actionPosFrom : float3&;
                                    var squadAI_tactical__actionPosDir : float3&;
                                    var squadAI_tactical__actionPosTo : float3&;
@@ -3703,6 +3746,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
             if get_entity_destr_wall_plant_mine_pos(agentEid, blockerEid, checkAgentHasBomb, plantPos)
               squadAI_tactical__actionType = ACTION_PLANT_DESTR_WALL
               squadAI_tactical__actionTargetEid = blockerEid
+              squadAI_tactical__actionPosBack = foundBackPos
               squadAI_tactical__actionPosFrom = foundPrevPos
               squadAI_tactical__actionPosDir = float3()
               squadAI_tactical__actionPosTo = plantPos
@@ -3712,6 +3756,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
         if !found
           squadAI_tactical__actionType = ACTION_ADVANCE_FORWARD
           squadAI_tactical__actionTargetEid = INVALID_ENTITY_ID
+          squadAI_tactical__actionPosBack = foundPos
           squadAI_tactical__actionPosFrom = foundPos
           squadAI_tactical__actionPosDir = float3()
           squadAI_tactical__actionPosTo = foundPos
@@ -3822,6 +3867,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
     var result = false
     query(agent_squad) <| $ [es] (var squadAI_tactical__actionType : int&;
                                   var squadAI_tactical__actionTargetEid : EntityId&;
+                                  var squadAI_tactical__actionPosBack : float3&;
                                   var squadAI_tactical__actionPosFrom : float3&;
                                   var squadAI_tactical__actionPosDir : float3&;
                                   var squadAI_tactical__actionPosTo : float3&;
@@ -3829,6 +3875,7 @@ class BuildSquadPathNextAdvanceAction : BehNodeAdapter
       squadAI_tactical__actionType = ACTION_ADVANCE_CORNER_1
       squadAI_tactical__actionTargetEid = INVALID_ENTITY_ID
       squadAI_tactical__actionPosFrom = path[max(1, stopIdx - 5)]
+      squadAI_tactical__actionPosBack = squadAI_tactical__actionPosFrom
       squadAI_tactical__actionPosDir = stopDir
       squadAI_tactical__actionPosTo = path[stopIdx]
       squadAI_tactical__actionTimeout = get_sync_time() + TIMEOUT_ADVANCE_CORNER_1

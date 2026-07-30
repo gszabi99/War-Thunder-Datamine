@@ -45,6 +45,7 @@
     "render/ssss.blk",
     "render/adaptation.blk",
     "render/local_tone_mapping.blk",
+    "render/tonemap_exposure_correction.blk",
     "render/vhs_camera.blk",
     "render/lens_distortion.blk",
     "render/screen_droplets.blk",
@@ -4553,6 +4554,11 @@
     "ecs_fx__res": "location_plant_leaves_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
+  "location_camera_leaves_inf": {
+    "_use": "ecs_fx",
+    "ecs_fx__res": "location_plant_leaves_inf_cmps_fx",
+    "destroyable_with_rendinst:tag": {}
+  },
   "location_camera_distortion_15m": {
     "_use": "ecs_fx",
     "ecs_fx__res": "location_distortion_15m_cmps_fx",
@@ -4728,6 +4734,27 @@
     "_use": "ecs_fx",
     "ecs_fx__res": "smoke_ground_static_small_cmps_fx",
     "destroyable_with_rendinst:tag": {}
+  },
+  "smoke_ground_static_dark_medium_warmed_up": {
+    "_use": "smoke_ground_static_dark_medium",
+    "ecs_fx__warmupTime": -1.0
+  },
+  "smoke_ground_static_medium_warmed_up": {
+    "_use": "smoke_ground_static_medium",
+    "ecs_fx__warmupTime": -1.0
+  },
+  "smoke_ground_static_dark_small_warmed_up": {
+    "_use": "smoke_ground_static_dark_small",
+    "ecs_fx__warmupTime": -1.0
+  },
+  "smoke_ground_static_small_warmed_up": {
+    "_use": "smoke_ground_static_small",
+    "ecs_fx__warmupTime": -1.0
+  },
+  "location_fire_ground_building_background_warmed_up": {
+    "_use": "location_fire_ground_building_background",
+    "ecs_fx__warmupTime": -1.0,
+    "ecs_fx__warmupStepDt": 0.35
   },
   "envir_smoke_small_effect": {
     "_use": "ecs_fx",

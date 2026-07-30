@@ -68,12 +68,13 @@
   "climbHorzAccel": 10.0,
   "climbHorzBrake": 5.0,
   "climbMinHorzSize": 0.65,
-  "climbOnMinVertSize": 1.5,
-  "climbThroughMinVertSize": 0.65,
+  "climbOnMinVertSize": 1.6,
+  "climbOnMinVertForwDist": 0.22,
+  "climbThroughMinVertSize": 0.8,
   "climbThroughForwardDist": 0.3,
   "climbThroughPosOffset": [
     0.0,
-    0.35,
+    0.6,
     0.0
   ],
   "additionalClimbPositions": 2,
@@ -763,5 +764,74 @@
       "equipTime": 0.5
     }
   },
-  "modifications": {}
+  "modifications": {
+    "smoke_grenade": {},
+    "explosive_charge": {},
+    "human_medkit": {}
+  },
+  "WeaponSlots": {
+    "WeaponSlot": [
+      {
+        "index": 2,
+        "WeaponPreset": [
+          {
+            "name": "rpg_2_default",
+            "ecsTemplate": "rpg_2_gun",
+            "inventoryItemEcsTemplate": "rpg_2_rocket_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "medic_box",
+            "ecsTemplate": "medic_box_item"
+          },
+          {
+            "name": "ammo_box",
+            "ecsTemplate": "ammo_box_item"
+          },
+          {
+            "name": "explosives_box_item",
+            "ecsTemplate": "explosives_box_item"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "WeaponPreset": [
+          {
+            "name": "frag_grenade",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "frag_grenade_medium",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 2
+          },
+          {
+            "name": "frag_grenade_light",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 1
+          },
+          {
+            "name": "smoke_grenade",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 2,
+            "reqModification": "smoke_grenade"
+          },
+          {
+            "name": "smoke_grenade_light",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 1,
+            "reqModification": "smoke_grenade"
+          }
+        ]
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "ak_47_default",
+      "blk": "gameData/units/humans/weaponPresets/presets_coldwar/ussr_class_assault_preset_1.blk"
+    }
+  }
 }

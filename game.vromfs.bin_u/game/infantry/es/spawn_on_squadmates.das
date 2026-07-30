@@ -15,6 +15,7 @@ require DagorMath
 require GeomNodeTree
 require AnimV20
 require math.base
+require DagorRandom
 
 [es(tag=server, on_event=EventEcsMissionLoaded)]
 def player_spawn_init_mode(evt : Event)
@@ -47,6 +48,15 @@ def set_ui_minimap_indicator_blink_for_unit_eid(unit_eid : EntityId; time : floa
   query(unit_eid) <| $ [es] (var unit__ref : UnitRef)
     var unit = unit__ref.unit
     setBlinkTime(*unit, time)
+
+def set_ui_minimap_indicator_respawn_candidate_for_unit_eid(unit_eid : EntityId; is_candidate : bool)
+  query(unit_eid) <| $ [es] (var unit__ref : UnitRef)
+    var unit = unit__ref.unit
+    var gm = unit |> as_gm()
+    if gm == null
+      return
+    static_if typeinfo has_field<uiMinimapIndicatorRespawnCandidate>(*gm)
+      gm.uiMinimapIndicatorRespawnCandidate = is_candidate
 
 [es(tag=gameClient, on_appear)]
 def squadmates_spawn_trace_check_init(evt : Event;
@@ -138,6 +148,89 @@ def check_dynamic_respawn_blocked_conditions(evt : Event)
       set(eid, "dynamic_respawn__onUnitAllowed", res)
 
 
+def private get_spawn_on_players_count() : int
+  static_if typeinfo(builtin_function_exists @@ < () : int > _::get_mission_spawn_on_players_count)
+    return get_mission_spawn_on_players_count()
+  return 0
+
+def private is_extra_spawn_player(player_id : int) : bool
+  var res = false
+  find_query() <| $ [es] (is_local : bool;
+                          dynamic_respawn__extraSpawnPlayers : IntList)
+    if !is_local
+      return false
+    for pid in dynamic_respawn__extraSpawnPlayers
+      if pid == player_id
+        res = true
+        break
+    return true
+  return res
+
+def private refresh_extra_spawn_players(local_player_id : int; var extra_players : IntList&)
+  let maxCount = get_spawn_on_players_count()
+  if maxCount <= 0
+    return
+  let localPlayer = player_get_by_id(local_player_id)
+  if localPlayer == null
+    return
+  let localTeam = localPlayer.team
+
+  var kept : array<int>
+  for pid in extra_players
+    let p = player_get_by_id(pid)
+    if p != null && p.team == localTeam && !p.isInHeroSquad && !p.isSpectator
+      kept |> push(pid)
+  if length(kept) != length(extra_players)
+    extra_players |> clear()
+    for pid in kept
+      extra_players |> push(pid)
+
+  var squadmatesCount = 0
+  var candidates : array<int>
+  query() <| $ [es(REQUIRE=player_spawn__eid)] (base_player_id aka candidate_base_player_id : int)
+    let p = player_get_by_id(candidate_base_player_id)
+    if p == null || p.isLocal || p.isSpectator || p.team != localTeam
+      return
+    if p.isInHeroSquad
+      squadmatesCount++
+      return
+    for pid in extra_players
+      if pid == candidate_base_player_id
+        return
+    candidates |> push(candidate_base_player_id)
+
+  let maxExtraCount = max(maxCount - squadmatesCount, 0)
+  if length(extra_players) > maxExtraCount
+    extra_players |> resize(maxExtraCount)
+  while length(extra_players) < maxExtraCount && length(candidates) > 0
+    let pick = rnd_int(0, length(candidates) - 1)
+    extra_players |> push(candidates[pick])
+    candidates[pick] = candidates[length(candidates) - 1]
+    candidates |> pop()
+
+[es(tag=gameClient, on_event=ParallelUpdateFrameDelayed)]
+def extra_spawn_players_respawn_screen_open(evt : Event;
+                                            is_local : bool;
+                                            base_player_id : int;
+                                            var dynamic_respawn__extraSpawnPlayers : IntList&;
+                                            var dynamic_respawn__extraSpawnInRespawnScreen : bool&)
+  if !is_local
+    return
+  let inRespawnScreen = is_respawn_screen()
+  if inRespawnScreen && !dynamic_respawn__extraSpawnInRespawnScreen
+    refresh_extra_spawn_players(base_player_id, dynamic_respawn__extraSpawnPlayers)
+  dynamic_respawn__extraSpawnInRespawnScreen = inRespawnScreen
+
+[es(tag=gameClient, REQUIRE=dynamic_respawn__extraSpawnPlayers, on_appear)]
+def extra_spawn_players_on_player_appear(evt : Event)
+  find_query() <| $ [es] (is_local : bool;
+                          base_player_id : int;
+                          var dynamic_respawn__extraSpawnPlayers : IntList&)
+    if !is_local
+      return false
+    refresh_extra_spawn_players(base_player_id, dynamic_respawn__extraSpawnPlayers)
+    return true
+
 [es(tag=gameClient, on_event=ParallelUpdateFrameDelayed)]
 def squadmates_spawn_position(evt : Event;
                               is_local : bool;
@@ -146,18 +239,32 @@ def squadmates_spawn_position(evt : Event;
   if is_local
     return
   let player = player_get_by_id(base_player_id)
-  if player == null || !player.isInHeroSquad
+  if player == null
     return
+  let canSpawnOnPlayer = player.isInHeroSquad || is_extra_spawn_player(base_player_id)
+  let isExtraSpawnCandidate = canSpawnOnPlayer && !player.isInHeroSquad
+  let needSpawnerEntity = canSpawnOnPlayer || get_spawn_on_players_count() > 0
 
   let ownedUnit = getOwnedUnit(*player)
-  if ownedUnit != null && (ownedUnit.isHuman || ownedUnit.isTank)
+  if needSpawnerEntity && ownedUnit != null && (ownedUnit.isHuman || ownedUnit.isTank)
     if !player_spawn__eid
       player_spawn__eid = createEntity("squad_dynamic_respawn") <| $(var init : ComponentsInitializer)
         set(init, "transform", ownedUnit.unitTm)
-        set(init, "dynamic_respawn__active", ownedUnit.isAlive && !ownedUnit.isDelayed)
+        set(init, "dynamic_respawn__active", canSpawnOnPlayer && ownedUnit.isAlive && !ownedUnit.isDelayed)
         set(init, "dynamic_respawn__unitEid", ownedUnit.eid)
         set(init, "dynamic_respawn__playerId", base_player_id)
+      set_ui_minimap_indicator_respawn_candidate_for_unit_eid(ownedUnit.eid, isExtraSpawnCandidate)
+    elif !canSpawnOnPlayer
+      query(player_spawn__eid) <| $ [es] (var dynamic_respawn__active : bool&;
+                                          var dynamic_respawn__unitEid : EntityId&;
+                                          dynamic_respawn__minimapScale : float)
+        dynamic_respawn__active = false
+        if dynamic_respawn__unitEid != INVALID_ENTITY_ID
+          set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, dynamic_respawn__minimapScale, false, false)
+          set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
+          dynamic_respawn__unitEid = INVALID_ENTITY_ID
     else
+      set_ui_minimap_indicator_respawn_candidate_for_unit_eid(ownedUnit.eid, isExtraSpawnCandidate)
       query(player_spawn__eid) <| $ [es] (var dynamic_respawn__active : bool&;
                                           var dynamic_respawn__blocked : bool&;
                                           var dynamic_respawn__unitEid : EntityId&;
@@ -177,6 +284,7 @@ def squadmates_spawn_position(evt : Event;
         let scale = dynamic_respawn__selected ? dynamic_respawn__minimapSelectedScale : dynamic_respawn__minimapScale
         if dynamic_respawn__unitEid != ownedUnit.eid
           set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, 1., dynamic_respawn__highlight, false)
+          set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
           set_ui_minimap_indicator_scale_for_unit_eid(ownedUnit.eid, scale, dynamic_respawn__highlight, dynamic_respawn__selected)
           dynamic_respawn__unitEid = ownedUnit.eid
         elif !dynamic_respawn__minimapScaleInited
@@ -188,6 +296,7 @@ def squadmates_spawn_position(evt : Event;
                                         dynamic_respawn__minimapScale : float)
       dynamic_respawn__active = false
       set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, dynamic_respawn__minimapScale, false, false)
+      set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
       dynamic_respawn__unitEid = INVALID_ENTITY_ID
 
 [es(tag=gameClient, on_disappear)]

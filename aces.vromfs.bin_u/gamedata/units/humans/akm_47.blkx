@@ -68,12 +68,13 @@
   "climbHorzAccel": 10.0,
   "climbHorzBrake": 5.0,
   "climbMinHorzSize": 0.65,
-  "climbOnMinVertSize": 1.5,
-  "climbThroughMinVertSize": 0.65,
+  "climbOnMinVertSize": 1.6,
+  "climbOnMinVertForwDist": 0.22,
+  "climbThroughMinVertSize": 0.8,
   "climbThroughForwardDist": 0.3,
   "climbThroughPosOffset": [
     0.0,
-    0.35,
+    0.6,
     0.0
   ],
   "additionalClimbPositions": 2,
@@ -768,18 +769,8 @@
     }
   },
   "modifications": {
-    "shotgun_ks_p": {},
-    "machinegun_pkp_pecheneg": {},
-    "at_laucher_rpg_7": {},
-    "mpads_igla": {},
-    "strike_drone": {},
-    "fpv_drone": {},
-    "stun_grenade": {},
     "smoke_grenade": {},
     "explosive_charge": {},
-    "bulletproof_vest_light": {},
-    "bulletproof_vest_heavy": {},
-    "sidearms_pistol_mp_443": {},
     "human_medkit": {}
   },
   "WeaponSlots": {
@@ -788,52 +779,10 @@
         "index": 2,
         "WeaponPreset": [
           {
-            "name": "ussr_recon_drone",
-            "ecsTemplate": "uav_inf_recon_drone_item"
-          },
-          {
-            "name": "ussr_kamikaze_drone",
-            "ecsTemplate": "ussr_uav_inf_strike_drone_item",
-            "reqModification": "strike_drone"
-          },
-          {
-            "name": "ussr_fpv_drone",
-            "ecsTemplate": "uav_inf_fpv_strike_drone_item",
-            "reqModification": "fpv_drone"
-          },
-          {
-            "name": "ks_p",
-            "ecsTemplate": "ks_p_18_5_gun",
-            "inventoryItemEcsTemplate": "ks_p_18_5_magazine",
-            "inventoryItemNum": 5,
-            "reqModification": "shotgun_ks_p"
-          },
-          {
-            "name": "pkp_pecheneg",
-            "ecsTemplate": "pkp_pecheneg_gun",
-            "inventoryItemEcsTemplate": "pkm_magazine",
-            "inventoryItemNum": 2,
-            "reqModification": "machinegun_pkp_pecheneg"
-          },
-          {
-            "name": "rpg_7_default",
-            "ecsTemplate": "rpg_7_default_gun",
-            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
+            "name": "rpg_2_default",
+            "ecsTemplate": "rpg_2_gun",
+            "inventoryItemEcsTemplate": "rpg_2_rocket_item",
             "inventoryItemNum": 4
-          },
-          {
-            "name": "rpg_7",
-            "ecsTemplate": "rpg_7_gun",
-            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
-            "inventoryItemNum": 4,
-            "reqModification": "at_laucher_rpg_7"
-          },
-          {
-            "name": "mpads_igla",
-            "ecsTemplate": "mpads_igla_gun",
-            "inventoryItemEcsTemplate": "9m39_missile_item",
-            "inventoryItemNum": 2,
-            "reqModification": "mpads_igla"
           },
           {
             "name": "medic_box",
@@ -852,11 +801,6 @@
       {
         "index": 4,
         "WeaponPreset": [
-          {
-            "name": "frag_grenade_heavy",
-            "inventoryItemEcsTemplate": "f1_grenade_item",
-            "inventoryItemNum": 4
-          },
           {
             "name": "frag_grenade",
             "inventoryItemEcsTemplate": "f1_grenade_item",
@@ -883,12 +827,6 @@
             "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
             "inventoryItemNum": 1,
             "reqModification": "smoke_grenade"
-          },
-          {
-            "name": "stun_grenade",
-            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
-            "inventoryItemNum": 6,
-            "reqModification": "stun_grenade"
           }
         ]
       }
@@ -897,7 +835,7 @@
   "weapon_presets": {
     "preset": {
       "name": "akm_47_default",
-      "blk": "gameData/units/humans/weaponPresets/akm_47_default.blk"
+      "blk": "gameData/units/humans/weaponPresets/presets_coldwar/ussr_class_assault_preset_1.blk"
     }
   }
 }

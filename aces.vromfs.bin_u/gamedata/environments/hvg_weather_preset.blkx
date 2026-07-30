@@ -1,63 +1,24 @@
 {
   "common": {
-    "condensation_type": "rain",
-    "dirt_type": "ground",
-    "water": {
-      "L_inv_white": 0.3
-    },
     "adaptation": {
-      "useAdaptation": true,
-      "lowPart": 0.0,
-      "highPart": 0.01,
-      "minExposure": 0.25,
-      "maxExposure": 10.0,
-      "autoExposureScale": 1.0,
-      "adaptDownSpeed": 12.0,
-      "adaptUpSpeed": 24.0,
-      "brightnessPerceptionLinear": 1.1,
-      "brightnessPerceptionPower": 0.5,
-      "minExposureMul": 1.0,
-      "maxExposureMul": 1.0,
-      "exposureFadeMul": 1.0,
-      "targetLuminanceComp": 0.25
+      "useAdaptation": true
     },
     "DemonPostFx": {
-      "use": true,
-      "showAlpha": false,
-      "glowRadius": 0.1,
-      "useBetterGlow": true,
-      "glowFadeK": 2.0,
-      "glowEdgeK": 0.0,
-      "glowAngleU": 44.0,
-      "glowAngleV": 144.0,
-      "useRawSkyMask": true,
-      "hdrStarThreshold": 5.25,
-      "hdrDarkThreshold": 0.6,
-      "hdrGlowPower": 0.23,
-      "hdrGlowMul": 0.025,
-      "hdrStarPowerMul": 0.27,
-      "volfogFade": 0.000005
+      "volfogFade": 0.00005
     },
     "tonemapping": {
       "tonemapContrast": 1.25,
       "tonemapShoulder": 0.9,
-      "tonemapMidIn": 0.12,
-      "tonemapMidOut": 0.19,
+      "tonemapMidIn": 0.08,
+      "tonemapMidOut": 0.11,
       "tonemapHdrMax": 8.0
-    },
-    "tonemapping_hdr": {
-      "tonemapContrast": 1.0,
-      "tonemapShoulder": 1.0,
-      "tonemapMidIn": 0.5,
-      "tonemapMidOut": 0.5,
-      "tonemapHdrMax": 1.0
     },
     "colorgrading": {
       "default": {
         "tonemapContrast": 1.25,
         "tonemapShoulder": 0.9,
-        "tonemapMidIn": 0.12,
-        "tonemapMidOut": 0.19,
+        "tonemapMidIn": 0.08,
+        "tonemapMidOut": 0.11,
         "tonemapHdrMax": 8.0,
         "colorSaturation": [
           1.0,
@@ -171,7 +132,7 @@
           1.0,
           1.0,
           1.0,
-          0.8
+          1.0
         ],
         "highlights_colorOffset": [
           0.0,
@@ -208,7 +169,7 @@
           1.0,
           1.0,
           1.0,
-          1.3
+          1.4
         ]
       },
       "filmstock": {
@@ -813,33 +774,6 @@
             ]
           }
         }
-      },
-      "timed": {
-        "addWhiteTempBySunPath": {
-          "type": "curve",
-          "point": [
-            [
-              -1.1,
-              6000.0
-            ],
-            [
-              -1.0,
-              -1000.0
-            ],
-            [
-              0.0,
-              0.0
-            ],
-            [
-              1.0,
-              -750.0
-            ],
-            [
-              1.1,
-              6000.0
-            ]
-          ]
-        }
       }
     },
     "dynamicLut": {
@@ -849,8 +783,8 @@
         "tonemapping": {
           "tonemapContrast": 1.25,
           "tonemapShoulder": 0.9,
-          "tonemapMidIn": 0.12,
-          "tonemapMidOut": 0.19,
+          "tonemapMidIn": 0.08,
+          "tonemapMidOut": 0.11,
           "tonemapHdrMax": 8.0
         },
         "colorGrading": {
@@ -966,7 +900,7 @@
             1.0,
             1.0,
             1.0,
-            0.8
+            1.0
           ],
           "highlights_colorOffset": [
             0.0,

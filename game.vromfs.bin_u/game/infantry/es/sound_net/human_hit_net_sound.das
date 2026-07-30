@@ -24,4 +24,4 @@ def human_hit_net_sound(evt : EventOnEntityHit;
                                             collNodeId = evt.collNodeId,
                                             shatterCount = 0,
                                             time = get_sync_time()),
-                   enum_connections_near_pos(evt.hitPos, human_hit_net_sound__range))
+                   enum_connections_near_entity(eid, human_hit_net_sound__range))

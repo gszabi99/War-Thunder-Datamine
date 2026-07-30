@@ -3066,6 +3066,15 @@ NEED_STOP_FOR_RADAR = {
     isVerticalAlignText = true
   }
 
+  BIPOD_FOCUS = {
+    hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
+    locId    = "hint/bipod_focus"
+    showEvent = "hint:bipod_focus:show"
+    hideEvent = "hint:bipod_focus:hide"
+    shortcuts = "ID_HUMAN_AIM"
+    isVerticalAlignText = true
+  }
+
   HUMAN_CHANGE_GRENADE_SIGHT = {
     hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
     locId    = "hint/change_grenade_launcher_sight"

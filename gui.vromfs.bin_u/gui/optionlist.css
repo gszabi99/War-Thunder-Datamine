@@ -111,6 +111,11 @@ optionsBoxRightScroll[alignMode=left] {
   pos:0, 0;
 }
 
+optionsBoxRightScroll[hasStickyHeader=yes] {
+  max-height:ph - @optContainerHeight;
+  margin-top: @optContainerHeight;
+}
+
 optionsList {
   flow:vertical;
 }

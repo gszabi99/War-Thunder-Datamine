@@ -217,6 +217,9 @@ def clear_projectile_entity_impl(eid : EntityId;
     query(eid) <| $ [es] (var human_net_phys : HumanActor)
       if human_weap__throwMode != null
         clear_throw_mode(eid, human_weap__grenadeThrower, human_weap__gunEids, *human_weap__throwMode, human_net_phys.phys)
+    if is_server()
+      query(eid) <| $ [es] (var human_weap__grenadeThrowServerConfirmed : bool&)
+        human_weap__grenadeThrowServerConfirmed = true
 
 
 def clear_projectile_entity(eid : EntityId;

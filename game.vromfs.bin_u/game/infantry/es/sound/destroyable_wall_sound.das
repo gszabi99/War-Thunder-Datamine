@@ -21,7 +21,7 @@ def mining_wall_planting_sound_on_update(info : ParallelUpdateFrameDelayed;
     if !is_playing(human_mining_wall_planting)
       human_mining_wall_planting |> play(is_watched_sound ? human_mining_wall_planting__hero : human_mining_wall_planting__enemy, transform[3])
   elif is_playing(human_mining_wall_planting)
-    keyoff(human_mining_wall_planting)
+    abandon(human_mining_wall_planting)
 
 [es(tag=sound, after=sound_begin_update_es, before=sound_end_update_es)]
 def mining_wall_reassembling_sound_on_update(info : ParallelUpdateFrameDelayed;
@@ -38,4 +38,4 @@ def mining_wall_reassembling_sound_on_update(info : ParallelUpdateFrameDelayed;
     if !is_playing(human_mining_wall_reassembling)
       human_mining_wall_reassembling |> play(is_watched_sound ? human_mining_wall_reassembling__hero : human_mining_wall_reassembling__enemy, transform[3])
   elif is_playing(human_mining_wall_reassembling)
-    keyoff(human_mining_wall_reassembling)
+    abandon(human_mining_wall_reassembling)

@@ -353,9 +353,10 @@ def update_movement(dt : float;
     let app = get_app()
     if app == null
       return
-    let isInFlightMenu =  *app |> checkInFlightMenu(true)
-    move = !isInFlightMenu ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_WALK, true)), -1.0lf, 1.0lf) : 0.lf
-    strafe = !isInFlightMenu ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_STRAFE, true)), -1.0lf, 1.0lf) : 0.lf
+    let isMissionEnded = app.isMissionSuccessful || app.isMissionFailed
+    let blockMove = (*app |> checkInFlightMenu(true)) || isMissionEnded
+    move = !blockMove ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_WALK, true)), -1.0lf, 1.0lf) : 0.lf
+    strafe = !blockMove ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_STRAFE, true)), -1.0lf, 1.0lf) : 0.lf
     apply_inertia(human_input__moveInputInertia, human_input__moveInputAccum, move, strafe)
 
   update_walk_dir(actor, move, strafe)

@@ -3,8 +3,10 @@ import "%sqstd/ecs.nut" as ecs
 
 let { HitResult, DamageType } = require("%rGui/hud/humanSquad/humanEnums.nut")
 let { get_time_msec } = require("dagor.time")
+let { setTimeout } = require("dagor.workcycle")
 let { EventAnyEntityDied, CmdShowHitMark } = require("dasevents")
 let { watchedHeroEid } = require("%rGui/hud/state/watched_hero.nut")
+let { isBipodEnabled, isBipodAdsFocused } = require("%rGui/hud/state/human_bipod_es.nut")
 let { localTeam } = require("%rGui/missionState.nut")
 
 let showWorldKillMark = Watched(false)
@@ -12,18 +14,26 @@ let showWorldKillMark = Watched(false)
 let hitMarks = mkWatched(persist, "hits", [])
 let killMarks = mkWatched(persist, "killMarks", [])
 let hitMarkEid = Watched(ecs.INVALID_ENTITY_ID)
-let useHitMark = Watched(false)
+let isAiming = Watched(false)
+let useHitMark = Computed(@() isAiming.get() && !(isBipodEnabled.get() && !isBipodAdsFocused.get()))
 
 const DM_DIED = "DM_DIED"
+const HITMARK_TTL = 1.8
+const WORLD_KILLMARK_TTL = 4.0
 
 function removePreviousHitmarksByVictimEid(state, eid) {
   state.set(state.get().filter((@(mark) mark.victimEid != eid)))
 }
 
-function addMark(hitMark, state){
+function addMark(hitMark, state, ttl){
   state.mutate(function(v) {
     return v.append(hitMark)
   })
+  let id = hitMark.id
+  let cb = function() {
+    state.set(state.get().filter(@(mark) mark.id != id))
+  }
+  setTimeout(ttl, cb, cb)
 }
 
 local counter = 0
@@ -32,7 +42,7 @@ local cachedShowWorldKillMark = showWorldKillMark.get()
 showWorldKillMark.subscribe(@(v) cachedShowWorldKillMark = v)
 
 function addHitMark(hitMark){
-  addMark(hitMark, hitMarks)
+  addMark(hitMark, hitMarks, HITMARK_TTL)
 }
 
 function addKillMark(hitMark){
@@ -40,7 +50,7 @@ function addKillMark(hitMark){
   if (hitMark?.killPos == null || victim == null)
     return
   killMarks.set(killMarks.get().filter(@(v) v.victimEid != victim))
-  addMark(hitMark, killMarks)
+  addMark(hitMark, killMarks, WORLD_KILLMARK_TTL)
 }
 
 let getVictimQuery = ecs.SqQuery("getVictimQuery", {
@@ -129,6 +139,7 @@ function onHitWithArmor(victimEid, hitRes, isVitalPart, isCritical, isArmorEffec
     isDownedHit = hitRes == HitResult.HIT_RES_DOWNED,
     isKillHit = hitRes == HitResult.HIT_RES_KILLED
   }
+  removePreviousHitmarksByVictimEid(hitMarks, victimEid)
   addHitMark(hitMark)
 }
 
@@ -170,7 +181,8 @@ function onEntityHit(evt, eid, _comp) {
     armorUnbreakableDamageToArmorThreshold = comp.hit_mark__armorUnbreakableDamageToArmorThreshold
   })
 
-  if (offender != watchedHeroEid.get() || victimEid == offender || victimTeam == -2)
+  if (offender != watchedHeroEid.get() || victimEid == offender || victimTeam == -2
+      || evt.hitResult == HitResult.HIT_RES_NONE)
     return
 
   let isArmorEffective = evt.armorEfficiency > armorEfficiencyThreshold
@@ -199,9 +211,13 @@ ecs.register_es("script_hit_marks_with_armor_es", {
   { comps_rq = ["watchedByPlr"] }
 )
 
+watchedHeroEid.subscribe(function(...) {
+  hitMarks.set([])
+  killMarks.set([])
+})
+
 ecs.register_es("script_hit_marks_es", {
     [EventAnyEntityDied] = onEntityDied,
-
   }, {}
 )
 
@@ -217,8 +233,8 @@ ecs.register_es("script_hit_mark_entity_es",
 
 ecs.register_es("script_hit_marks_position_es",
   {
-    [["onInit", "onChange"]] = @(_eid, comp) useHitMark.set(comp["human_net_phys__isAiming"])
-    onDestroy = @(...) useHitMark.set(false)
+    [["onInit", "onChange"]] = @(_eid, comp) isAiming.set(comp["human_net_phys__isAiming"])
+    onDestroy = @(...) isAiming.set(false)
   },
   {
     comps_track = [["human_net_phys__isAiming", ecs.TYPE_BOOL]]

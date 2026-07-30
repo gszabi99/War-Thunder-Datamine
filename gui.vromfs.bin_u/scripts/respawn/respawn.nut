@@ -159,6 +159,11 @@ let currentSquadSpawnModeQuery = ecs.SqQuery("currentSquadSpawnModeQuery", {
   comps_rq=[["squad_dynamic_respawn"]]
 })
 
+let localPlayerExtraSpawnsQuery = ecs.SqQuery("localPlayerExtraSpawnsQuery", {
+  comps_ro=[["is_local", ecs.TYPE_BOOL],
+            ["dynamic_respawn__extraSpawnPlayers", ecs.TYPE_INT_LIST]]
+})
+
 let currentZoneSpawnsDataQuery = ecs.SqQuery("currentZoneSpawnsDataQuery", {
   comps_ro=[["capture_zone__zoneId", ecs.TYPE_INT],
             ["infantry_spawn__owningTeam", ecs.TYPE_INT],
@@ -1591,9 +1596,14 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     let respawnSquadBases = []
     let team = localTeam
+    local extraSpawnPlayerIds = []
+    localPlayerExtraSpawnsQuery(function(_, comp) {
+      if (comp.is_local)
+        extraSpawnPlayerIds = comp.dynamic_respawn__extraSpawnPlayers.getAll()
+    })
     foreach (player in get_mplayers_list(team, true)) {
       let { id, name, isLocal, isInHeroSquad } = player
-      if (!isLocal && isInHeroSquad) {
+      if (!isLocal && (isInHeroSquad || extraSpawnPlayerIds.indexof(id) != null)) {
         local isAvailable = false
         currentSquadSpawnsDataQuery(function(_, comp) {
           if (id == comp.dynamic_respawn__playerId)
@@ -1605,7 +1615,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       }
     }
 
-    this.hasSquadRespawnBasesList = respawnSquadBases.len() > 1
+    this.hasSquadRespawnBasesList = respawnSquadBases.len() > 0
     this.respawnBasesList.extend(respawnSquadBases)
 
     let hasListChanged = !u.isEqual(this.respawnBasesList, currBasesList)

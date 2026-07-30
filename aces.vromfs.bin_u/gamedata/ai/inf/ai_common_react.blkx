@@ -34,14 +34,18 @@
       "name": "react.onMove",
       "orderedSelector": {
         "orderedSelector": {
-          "callTree": [
-            {
-              "treeName": "cover.check"
+          "callTree": {
+            "treeName": "cover.check"
+          },
+          "sequencer": {
+            "checkTeamLimiter": {
+              "kind": "FIND_COVER_A",
+              "limit": 4
             },
-            {
+            "callTree": {
               "treeName": "cover.findCoverAround"
             }
-          ]
+          }
         },
         "subTree": {
           "treeName": "move.updateWishPos"
@@ -115,6 +119,10 @@
               }
             },
             {
+              "checkTeamLimiter": {
+                "kind": "FIND_COVER_A",
+                "limit": 4
+              },
               "orderedSelector": {
                 "ignoreChance": {
                   "chance": 0.37
@@ -534,7 +542,9 @@
               "sequencer": {
                 "reaction": {
                   "event": "regularCheck",
-                  "findObstaclesAlongsidePath": {}
+                  "findObstaclesAlongsidePath": {
+                    "dist": 3.0
+                  }
                 },
                 "getTime": {
                   "to": "dmgZoneEscapeTimer"
@@ -619,7 +629,9 @@
       "name": "try.swimUp",
       "reaction": {
         "event": "regularCheck",
-        "findObstaclesAlongsidePath": {}
+        "findObstaclesAlongsidePath": {
+          "dist": 3.0
+        }
       },
       "isUnderwater": {},
       "hasBreath": {
@@ -689,7 +701,8 @@
     {
       "name": "force.openDoorsByPath",
       "findObstaclesAlongsidePath": {
-        "lockedDoorEidOutParam": "lockedDoor"
+        "lockedDoorEidOutParam": "lockedDoor",
+        "dist": 3.0
       },
       "not": {
         "isVarsIntEqual": {
@@ -770,7 +783,9 @@
               "treeName": "react.isBurning"
             }
           ],
-          "findObstaclesAlongsidePath": {},
+          "findObstaclesAlongsidePath": {
+            "dist": 3.0
+          },
           "sequencer": {
             "findDanger": {
               "paramName": "otherEnemy",
@@ -801,6 +816,18 @@
           ]
         }
       },
+      "checkTeamLimiter": [
+        {
+          "kind": "LOCAL_ESCAPE",
+          "limit": 1,
+          "wait": true
+        },
+        {
+          "kind": "LOCAL_ESCAPE",
+          "limit": 1,
+          "wait": true
+        }
+      ],
       "findSafeFromGrenadePos": [
         {
           "posParam": "grenadeSafePos",
@@ -940,7 +967,9 @@
       "name": "try.dmgZoneEscape",
       "reaction": {
         "event": "regularCheck",
-        "findObstaclesAlongsidePath": {}
+        "findObstaclesAlongsidePath": {
+          "dist": 3.0
+        }
       },
       "findActiveDamageZone": {
         "posParam": "dmgZonePos",
@@ -958,6 +987,11 @@
         "startPosParam": "dmgZonePos",
         "endPosParam": "tmpPos",
         "distanceParam": "dmgZoneRadius"
+      },
+      "checkTeamLimiter": {
+        "kind": "LOCAL_ESCAPE",
+        "limit": 1,
+        "wait": true
       },
       "findSafeFromGrenadePos": {
         "posParam": "dmgZoneEscapePos",
@@ -978,7 +1012,9 @@
                 "treeName": "react.needSwimUp"
               }
             ],
-            "findObstaclesAlongsidePath": {},
+            "findObstaclesAlongsidePath": {
+              "dist": 3.0
+            },
             "sequencer": {
               "findDanger": {
                 "paramName": "otherEnemy",
@@ -1083,7 +1119,9 @@
         "event": "regularCheck",
         "repeat": {
           "count": 1,
-          "findObstaclesAlongsidePath": {},
+          "findObstaclesAlongsidePath": {
+            "dist": 3.0
+          },
           "subTree": [
             {
               "treeName": "prep.chooseMaxStance"
@@ -1184,7 +1222,9 @@
       "name": "try.rethrowGrenade",
       "reaction": {
         "event": "regularCheck",
-        "findObstaclesAlongsidePath": {}
+        "findObstaclesAlongsidePath": {
+          "dist": 3.0
+        }
       },
       "isReadyForAction": {},
       "findDangerGrenade": {
@@ -1520,7 +1560,9 @@
       "name": "try.dangerousVehicleEscape",
       "reaction": {
         "event": "regularCheck",
-        "findObstaclesAlongsidePath": {}
+        "findObstaclesAlongsidePath": {
+          "dist": 3.0
+        }
       },
       "isVarsIntEqual": {
         "lhs": "dangerousVehicleEscape",
@@ -1928,7 +1970,9 @@
                   "subTree": {
                     "treeName": "prep.chooseMaxStance"
                   },
-                  "findObstaclesAlongsidePath": {},
+                  "findObstaclesAlongsidePath": {
+                    "dist": 3.0
+                  },
                   "sequencer": {
                     "findDanger": {
                       "paramName": "otherEnemy",
@@ -2087,7 +2131,9 @@
         "sequencer": {
           "reaction": {
             "event": "regularCheck",
-            "findObstaclesAlongsidePath": {}
+            "findObstaclesAlongsidePath": {
+              "dist": 3.0
+            }
           },
           "setIntVar": {
             "to": "forceMove",
@@ -2298,7 +2344,9 @@
               "code": 21
             },
             "success": {
-              "findObstaclesAlongsidePath": {}
+              "findObstaclesAlongsidePath": {
+                "dist": 3.0
+              }
             }
           },
           {

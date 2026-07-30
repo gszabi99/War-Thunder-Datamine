@@ -200,11 +200,13 @@ let mkSlot = function(weaponStaticInfoWatch, slotIdx) {
   let launcherEidWatch = Computed(@() specialSlot.get()?.launcherEid ?? ecs.INVALID_ENTITY_ID)
 
   let isSelected = Computed(function() {
-    let checkSlot = slotIdx == WEAPON_SLOTS.EWS_TERTIARY && launcherEidWatch.get() != ecs.INVALID_ENTITY_ID
-      ? WEAPON_SLOTS.EWS_SPECIAL
-      : slotIdx
-
-    return humanCurGunSlotIdx.get() == checkSlot && !isModActive.get()
+    if (isModActive.get())
+      return false
+    let curSlot = humanCurGunSlotIdx.get()
+    let isDroneRow = slotIdx == WEAPON_SLOTS.EWS_TERTIARY && launcherEidWatch.get() != ecs.INVALID_ENTITY_ID
+    if (isDroneRow)
+      return curSlot == WEAPON_SLOTS.EWS_TERTIARY || curSlot == WEAPON_SLOTS.EWS_SPECIAL
+    return curSlot == slotIdx
   })
 
   let mainWeaponInfo = weaponSlots[slotIdx]

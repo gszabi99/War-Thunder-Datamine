@@ -1476,6 +1476,7 @@
             "getValidatedSquadPathAction": {
               "outActionTypeParam": "squadActionType",
               "outActionTargetEidParam": "squadActionTarget",
+              "outActionPosBackParam": "squadActionPosBack",
               "outActionPosFromParam": "squadActionPosFrom",
               "outActionPosLookParam": "squadActionPosLook",
               "outActionPosToParam": "squadActionPosTo"
@@ -2515,7 +2516,9 @@
                             "treeName": "react.needSwimUp"
                           }
                         ],
-                        "findObstaclesAlongsidePath": {},
+                        "findObstaclesAlongsidePath": {
+                          "dist": 3.0
+                        },
                         "sequencer": {
                           "findDanger": {
                             "paramName": "otherEnemy",
@@ -2535,7 +2538,7 @@
                       {
                         "moveByDir": {
                           "lookLocked": true,
-                          "endPos": "squadActionPosFrom",
+                          "endPos": "squadActionPosBack",
                           "duration": 1.5,
                           "distThreshold": 0.25
                         }
@@ -2608,6 +2611,11 @@
                         }
                       }
                     ],
+                    "checkTeamLimiter": {
+                      "kind": "LOCAL_ESCAPE",
+                      "limit": 1,
+                      "wait": true
+                    },
                     "findSafeFromGrenadePos": {
                       "posParam": "dmgZoneEscapePos",
                       "grenPosParam": "realPlantPos",

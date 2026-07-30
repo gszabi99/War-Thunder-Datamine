@@ -1874,18 +1874,18 @@
   },
   "hvg_africa_large_overcast_c": {
     "_use": "skies_settings",
-    "clouds_rendering__forward_eccentricity": 0.97,
-    "clouds_rendering__back_eccentricity": 0.6,
-    "clouds_rendering__forward_eccentricity_weight": 0.85,
-    "clouds_rendering__erosion_noise_size": 100.0,
-    "clouds_rendering__ambient_desaturation": 0.5,
-    "clouds_rendering__ms_contribution": 0.9,
-    "clouds_rendering__ms_attenuation": 0.4,
-    "clouds_rendering__ms_ecc_attenuation": 0.1,
+    "clouds_rendering__forward_eccentricity": 0.097,
+    "clouds_rendering__back_eccentricity": 0.5,
+    "clouds_rendering__forward_eccentricity_weight": 0.55,
+    "clouds_rendering__erosion_noise_size": 90.0,
+    "clouds_rendering__ambient_desaturation": 0.25,
+    "clouds_rendering__ms_contribution": 0.2,
+    "clouds_rendering__ms_attenuation": 0.55,
+    "clouds_rendering__ms_ecc_attenuation": 0.9,
     "clouds_rendering__erosionWindSpeed": 0.6,
     "clouds_form__extinction": [
-      12.95,
-      12.95
+      3.0,
+      3.0
     ],
     "clouds_form__turbulenceStrength": [
       0.75,
@@ -1912,12 +1912,12 @@
       1.0
     ],
     "sky_atmosphere__mie_scale": [
-      2.0,
-      2.0
+      6.0,
+      6.0
     ],
     "sky_atmosphere__mie_height": [
-      0.5,
-      0.5
+      0.05,
+      0.05
     ],
     "sky_atmosphere__mie_absorption_scale": [
       1.0,
@@ -1926,7 +1926,7 @@
     "sky_atmosphere__mie_scattering_color": [
       1.0,
       1.0,
-      1.5
+      1.0
     ],
     "sky_atmosphere__mie_absorption_color": [
       1.0,
@@ -1953,11 +1953,11 @@
       0.0,
       0.0
     ],
-    "sky_atmosphere__planet_scale": 2.0,
-    "sky_atmosphere__atmosphere_scale": 1.5,
+    "sky_atmosphere__planet_scale": 1.0,
+    "sky_atmosphere__atmosphere_scale": 1.25,
     "sky_atmosphere__rayleigh_scale": [
-      1.15,
-      1.15
+      1.5,
+      1.5
     ],
     "sky_atmosphere__rayleigh_alt_scale": [
       1.0,
@@ -1968,7 +1968,7 @@
       1.0,
       1.0
     ],
-    "sky_atmosphere__multiple_scattering_factor": 1.0,
+    "sky_atmosphere__multiple_scattering_factor": 1.5,
     "sky_atmosphere__ozone_alt_dist": 1.0,
     "sky_atmosphere__ozone_max_alt": 1.0,
     "sky_atmosphere__ozone_scale": [
@@ -2016,24 +2016,24 @@
         },
         {
           "startAt": [
-            8.0,
-            8.0
+            1.0,
+            1.0
           ],
           "thickness": [
-            8.0,
-            8.0
+            2.9,
+            2.9
           ],
           "density": [
-            0.5,
-            0.5
+            0.25,
+            0.25
           ],
           "clouds_type": [
-            0.0,
-            0.0
+            0.95,
+            0.95
           ],
           "clouds_type_variance": [
-            0.5,
-            0.5
+            3.0,
+            3.0
           ]
         }
       ]
@@ -2042,8 +2042,8 @@
       "clouds_weather_gen__layers:object": [
         {
           "coverage": [
-            1.0,
-            1.0
+            0.77,
+            0.77
           ],
           "freq": [
             4.0,
@@ -2056,20 +2056,41 @@
         },
         {
           "coverage": [
-            0.0,
-            0.0
+            0.985,
+            0.985
           ],
           "freq": [
-            3.0,
-            3.0
+            4.0,
+            4.0
           ],
           "seed": [
-            0.5,
-            0.5
+            2.0,
+            2.0
           ]
         }
       ]
     }
+  },
+  "hvg_africa_large_overcast_d_rain": {
+    "_use": "hvg_africa_large_overcast_c",
+    "sky_atmosphere__average_ground_albedo": 0.5,
+    "sky_atmosphere__mie_scale": [
+      15.0,
+      15.0
+    ],
+    "sky_atmosphere__mie_height": [
+      12.5,
+      12.5
+    ],
+    "sky_atmosphere__mie_absorption_scale": [
+      0.2,
+      0.2
+    ],
+    "sky_atmosphere__mie_scattering_color": [
+      1.0,
+      1.0,
+      1.0
+    ]
   },
   "hvg_africa_large_default": {
     "_use": "skies_settings",
@@ -5555,5 +5576,217 @@
     "_use": "skies_settings",
     "sky_atmosphere__moon_brightness": 0.0,
     "sky_atmosphere__sun_brightness": 0.0
+  },
+  "hvg_amaddu_hazy_a": {
+    "_use": "skies_settings",
+    "skies_settings__weatherSeed": 1853670402,
+    "use_clouds_hole": true,
+    "clouds_rendering__forward_eccentricity": 0.1,
+    "clouds_rendering__back_eccentricity": 0.5,
+    "clouds_rendering__forward_eccentricity_weight": 0.1,
+    "clouds_rendering__erosion_noise_size": 158.0,
+    "clouds_rendering__ambient_desaturation": 0.5,
+    "clouds_rendering__ms_contribution": 0.69,
+    "clouds_rendering__ms_attenuation": 0.29,
+    "clouds_rendering__ms_ecc_attenuation": 0.5,
+    "clouds_rendering__erosionWindSpeed": 0.5,
+    "clouds_form__extinction": [
+      1.95,
+      1.95
+    ],
+    "clouds_form__turbulenceStrength": [
+      0.5,
+      0.5
+    ],
+    "clouds_form__shapeNoiseScale": 2,
+    "clouds_form__cumulonimbusShapeScale": 9,
+    "clouds_form__turbulenceFreq": 4,
+    "clouds_weather_gen__epicness": 0.0,
+    "clouds_weather_gen__cumulonimbusCoverage": [
+      0.2,
+      0.2
+    ],
+    "clouds_weather_gen__cumulonimbusSeed": [
+      0.0,
+      0.0
+    ],
+    "clouds_weather_gen__worldSize": 64768.0,
+    "sky_atmosphere__average_ground_albedo": 0.5,
+    "sky_atmosphere__min_ground_offset": 0.0,
+    "sky_atmosphere__ground_color": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "sky_atmosphere__mie_scale": [
+      1.15,
+      1.15
+    ],
+    "sky_atmosphere__mie_height": [
+      0.51,
+      0.51
+    ],
+    "sky_atmosphere__mie_absorption_scale": [
+      2.0,
+      2.0
+    ],
+    "sky_atmosphere__mie_scattering_color": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "sky_atmosphere__mie_absorption_color": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "sky_atmosphere__mie_assymetry": [
+      0.499,
+      0.499
+    ],
+    "sky_atmosphere__mie_back_assymetry": [
+      0.2,
+      0.2
+    ],
+    "sky_atmosphere__mie_forward_weight": 0.5,
+    "sky_atmosphere__mie2_thickness": [
+      1.0,
+      1.0
+    ],
+    "sky_atmosphere__mie2_altitude": [
+      120.0,
+      120.0
+    ],
+    "sky_atmosphere__mie2_scale": [
+      0.0,
+      0.0
+    ],
+    "sky_atmosphere__planet_scale": 1.0,
+    "sky_atmosphere__atmosphere_scale": 1.0,
+    "sky_atmosphere__rayleigh_scale": [
+      0.5,
+      0.5
+    ],
+    "sky_atmosphere__rayleigh_alt_scale": [
+      1.0,
+      1.0
+    ],
+    "sky_atmosphere__rayleigh_color": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "sky_atmosphere__multiple_scattering_factor": 1.5,
+    "sky_atmosphere__ozone_alt_dist": 1.0,
+    "sky_atmosphere__ozone_max_alt": 1.0,
+    "sky_atmosphere__ozone_scale": [
+      1.0,
+      1.0
+    ],
+    "sky_atmosphere__sun_brightness": 1.0,
+    "sky_atmosphere__moon_brightness": 1.0,
+    "sky_atmosphere__moon_color": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "sky_settings__haze_strength": 1.0,
+    "sky_settings__haze_min_angle": 10.0,
+    "sky_settings__haze_peak_hour_offset": 0.0,
+    "strata_clouds__amount": [
+      0.2,
+      0.2
+    ],
+    "strata_clouds__altitude": [
+      19.0,
+      19.0
+    ],
+    "strata_clouds__tex": "strata_clouds_feather_a",
+    "clouds_settings__maximum_averaging_ratio": 0.75,
+    "clouds_settings__quality": 2,
+    "clouds_settings__target_quality": 2,
+    "clouds_settings__competitive_advantage": false,
+    "clouds_settings__fastEvolution": false,
+    "clouds_settings__force_panorama": false,
+    "clouds_form__layers:array": {
+      "clouds_form__layers:object": [
+        {
+          "startAt": [
+            6.0,
+            6.0
+          ],
+          "thickness": [
+            12.0,
+            12.0
+          ],
+          "density": [
+            0.25,
+            0.25
+          ],
+          "clouds_type": [
+            0.5,
+            0.5
+          ],
+          "clouds_type_variance": [
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "startAt": [
+            5.0,
+            5.0
+          ],
+          "thickness": [
+            3.0,
+            3.0
+          ],
+          "density": [
+            0.95,
+            0.95
+          ],
+          "clouds_type": [
+            0.5,
+            0.5
+          ],
+          "clouds_type_variance": [
+            4.0,
+            4.0
+          ]
+        }
+      ]
+    },
+    "clouds_weather_gen__layers:array": {
+      "clouds_weather_gen__layers:object": [
+        {
+          "coverage": [
+            0.8,
+            0.8
+          ],
+          "seed": [
+            2.0,
+            2.0
+          ],
+          "freq": [
+            2.0,
+            2.0
+          ]
+        },
+        {
+          "coverage": [
+            0.0,
+            0.0
+          ],
+          "seed": [
+            1.0,
+            1.0
+          ],
+          "freq": [
+            2.0,
+            2.0
+          ]
+        }
+      ]
+    }
   }
 }

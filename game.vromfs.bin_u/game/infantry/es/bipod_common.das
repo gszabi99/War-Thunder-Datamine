@@ -47,6 +47,78 @@ def calc_tpv_gun_pos_for_height(var humanPhys; humanTm; gunPitch; height) : floa
   humanPhys.phys.gunOffset = wasOffset
   return gunTm[3]
 
+let
+  BIPOD_BUTTSTOCK_EXTRA_ALONG = 0.5
+  BIPOD_BUTTSTOCK_EXTRA_UP    = 0.1
+
+struct BipodHeightCalc
+  height     : float
+  pitchLimit : float2
+  findY      : float
+  gun1       : float3
+  gun2       : float3
+
+def get_gun_ads_offset(gun_eid : EntityId) : float2
+  var gunAdsOffset = float2()
+  query(gun_eid) <| $ [es] (gun_anim_var__defGunOffsetAlong : float;
+                            gun_anim_var__defGunOffsetUp : float)
+    gunAdsOffset = float2(gun_anim_var__defGunOffsetAlong, gun_anim_var__defGunOffsetUp)
+  return gunAdsOffset
+
+
+
+
+
+
+
+
+def calc_bipod_height(var human_net_phys; is_fpv : bool;
+                      human_tm : float3x4; bipod_is_crawl : bool; aim_pitch : float;
+                      bipod_anchor_pos : float3; bipod_anchor_height : float; bipod_anchor_offset : float3;
+                      gun_ads_offset : float2) : BipodHeightCalc
+  var res : BipodHeightCalc
+  if bipod_is_crawl
+    res.height = -1.0
+    return res
+
+  let anchorPos = bipod_anchor_pos + float3(0.0, bipod_anchor_height, 0.0)
+  let sinPitch = sin(aim_pitch)
+  let cosPitch = cos(aim_pitch)
+
+  
+  
+  let stick_x = bipod_anchor_offset.x + BIPOD_BUTTSTOCK_EXTRA_ALONG
+  let stick_y = -bipod_anchor_offset.y - BIPOD_BUTTSTOCK_EXTRA_UP
+  let baseY = anchorPos.y - bipod_anchor_offset.y
+  let findY = anchorPos.y - stick_x * sinPitch - stick_y * cosPitch - (1.0 - cosPitch) * bipod_anchor_height * 0.5
+
+  var gun1 = is_fpv ? calc_fpv_gun_pos_for_height(human_net_phys, human_tm, aim_pitch, 1.0) : calc_tpv_gun_pos_for_height(human_net_phys, human_tm, aim_pitch, 1.0)
+  var gun2 = is_fpv ? calc_fpv_gun_pos_for_height(human_net_phys, human_tm, aim_pitch, 0.0) : calc_tpv_gun_pos_for_height(human_net_phys, human_tm, aim_pitch, 0.0)
+  let rawGun1Y = gun1.y
+  let rawGun2Y = gun2.y
+
+  
+  let adsWorldY = gun_ads_offset.y * cosPitch + gun_ads_offset.x * sinPitch
+  gun1.y += adsWorldY
+  gun2.y += adsWorldY
+
+  let bipod__pitchLimitExtraHeight = 0.2
+  gun1.y += bipod__pitchLimitExtraHeight
+  gun2.y -= bipod__pitchLimitExtraHeight
+
+  res.findY = findY
+  res.gun1 = gun1
+  res.gun2 = gun2
+  res.height = cvt(findY, gun1.y, gun2.y, 1.0, 0.0)
+
+  if bipod_anchor_offset.x > 0.0
+    let upH = max((rawGun1Y + 0.3) - baseY, 0.0)
+    let dnH = max(baseY - (rawGun2Y - 0.3), 0.0)
+    res.pitchLimit.x = clamp(rad_to_deg(atan2(-upH, bipod_anchor_offset.x)), BIPOD_DEFAULT_PITCH_MIN, BIPOD_DEFAULT_PITCH_MAX)
+    res.pitchLimit.y = clamp(rad_to_deg(atan2(dnH, bipod_anchor_offset.x)), BIPOD_DEFAULT_PITCH_MIN, BIPOD_DEFAULT_PITCH_MAX)
+
+  return res
+
 def calc_anchor_dir(isCrawl : bool; normal : float3; aimTm : float3x4)
   return normalize(isCrawl ?
                    cross(cross(normal, aimTm[0]), normal) :

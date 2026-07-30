@@ -29,8 +29,11 @@ optionsBar {
       <<#option>>
       fullHeightBar {
         width:t='pw/<<optionsCount>>'
+
+        <<#hasTooltip>>
         tooltip:t='<<text>>'
         tooltip-timeout:t='1'
+        <</hasTooltip>>
 
         <<#onOptHoverFnName>>
         idx:t='<<idx>>'

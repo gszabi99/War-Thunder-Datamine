@@ -48,6 +48,7 @@
     "ecs_fx__pauseWhenFarAway": false,
     "ecs_fx__soundEnableDistance": -1.0,
     "ecs_fx__warmupTime": 0.0,
+    "ecs_fx__warmupStepDt": 0.0,
     "ecs_fx__effect_ref": {
       "_tags": "render"
     }
@@ -60,8 +61,10 @@
   },
   "dafx_settings": {
     "_singleton": true,
-    "dafx__warmup_sims_budget": 50,
-    "dafx__saved_budget": -1
+    "dafx__warmupPerInstanceMode": false,
+    "dafx__savedWarmupPerInstanceMode": -1,
+    "dafx__warmupPerInstanceStepDt": 0.0,
+    "dafx__savedWarmupPerInstanceStepDt": -1.0
   },
   "ground_effect": {
     "_use": "replicating",

@@ -8,7 +8,7 @@ require AnimatedPhys
 
 
 
-def instant_gun_animchar_anim_update(eid : EntityId)
+def instant_gun_animchar_anim_update(eid : EntityId; var owner_animchar : AnimcharBaseComponent)
   query(eid) <| $ [es] (attaches_list : EidList;
                         var animchar aka gun_animchar : AnimcharBaseComponent;
                         var phys_vars : PhysVars;
@@ -30,6 +30,8 @@ def instant_gun_animchar_anim_update(eid : EntityId)
     animchar |> animchar_act(0.f, true)
     animchar |> animchar_act(0.f, true)
     animchar |> animchar_copy_nodes(animchar_node_wtm, animchar_render__root_pos)
+
+    owner_animchar |> animchar_act(0.f, true)
 
     for attachmentId in attachmentIds
       if attachmentId >= 0

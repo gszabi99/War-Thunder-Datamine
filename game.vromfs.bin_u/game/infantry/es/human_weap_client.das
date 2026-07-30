@@ -114,6 +114,7 @@ def human_weap_update_es(info : ParallelUpdateFrameDelayed;
                          human_weap__maxGunVisualAngleDeviation : float = 10.;
                          human_unarmed__active : bool = false;
                          human_attached_gun__attachedGunEid : EntityId = INVALID_ENTITY_ID;
+                         var human_weap__cachedShootPosLocal : float3&;
                          human_weap__tracerayLen : float&;
                          isReplayObserved : Tag const?;
                          var human_net_phys : HumanActor;
@@ -161,6 +162,8 @@ def human_weap_update_es(info : ParallelUpdateFrameDelayed;
       let camPos = cameraTm[3]
       let shootTm = gun.shootNodeData |> gun_shoot_node_data_calcShootTm(gunDir, transform, transform)
       let shootPos = shootTm[3]
+      let physTmForCache = human_net_phys.phys.currentState.location |> location_makeTM()
+      human_weap__cachedShootPosLocal = inverse(physTmForCache) * shootPos
       gunShootDir = normalize(camPos + gunDir * human_weap__tracerayLen - shootPos)
       let initialGunAngles = dir_to_angles(gunDir)
       var wishGunAngles = dir_to_angles(gunShootDir)

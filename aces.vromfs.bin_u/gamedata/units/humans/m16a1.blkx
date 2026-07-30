@@ -68,12 +68,13 @@
   "climbHorzAccel": 10.0,
   "climbHorzBrake": 5.0,
   "climbMinHorzSize": 0.65,
-  "climbOnMinVertSize": 1.5,
-  "climbThroughMinVertSize": 0.65,
+  "climbOnMinVertSize": 1.6,
+  "climbOnMinVertForwDist": 0.22,
+  "climbThroughMinVertSize": 0.8,
   "climbThroughForwardDist": 0.3,
   "climbThroughPosOffset": [
     0.0,
-    0.35,
+    0.6,
     0.0
   ],
   "additionalClimbPositions": 2,
@@ -768,18 +769,8 @@
     }
   },
   "modifications": {
-    "shotgun_mossberg_590": {},
-    "machinegun_reapr": {},
-    "at_laucher_at_4": {},
-    "mpads_stinger": {},
-    "strike_drone": {},
-    "fpv_drone": {},
-    "stun_grenade": {},
     "smoke_grenade": {},
     "explosive_charge": {},
-    "bulletproof_vest_light": {},
-    "bulletproof_vest_heavy": {},
-    "sidearms_pistol_beretta_m9": {},
     "human_medkit": {}
   },
   "WeaponSlots": {
@@ -788,52 +779,10 @@
         "index": 2,
         "WeaponPreset": [
           {
-            "name": "usa_recon_drone",
-            "ecsTemplate": "uav_inf_recon_drone_item"
-          },
-          {
-            "name": "usa_kamikaze_drone",
-            "ecsTemplate": "ussr_uav_inf_strike_drone_item",
-            "reqModification": "strike_drone"
-          },
-          {
-            "name": "usa_fpv_drone",
-            "ecsTemplate": "uav_inf_fpv_strike_drone_item",
-            "reqModification": "fpv_drone"
-          },
-          {
-            "name": "mossberg_590",
-            "ecsTemplate": "mossberg_590_gun",
-            "inventoryItemEcsTemplate": "mossberg_590_magazine",
-            "inventoryItemNum": 5,
-            "reqModification": "shotgun_mossberg_590"
-          },
-          {
-            "name": "reapr",
-            "ecsTemplate": "m240b_gun",
-            "inventoryItemEcsTemplate": "m240_magazine",
-            "inventoryItemNum": 2,
-            "reqModification": "machinegun_reapr"
-          },
-          {
-            "name": "pslr_1_default",
-            "ecsTemplate": "pslr_1_default_gun",
-            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
+            "name": "m72_law_default",
+            "ecsTemplate": "m72_law_gun",
+            "inventoryItemEcsTemplate": "m72_law_rocket_item",
             "inventoryItemNum": 4
-          },
-          {
-            "name": "m136_at4",
-            "ecsTemplate": "m136_at4_gun",
-            "inventoryItemEcsTemplate": "m136_at4_rocket_item",
-            "inventoryItemNum": 4,
-            "reqModification": "at_laucher_at_4"
-          },
-          {
-            "name": "mpads_stinger",
-            "ecsTemplate": "mpads_fim_92e_stinger_gun",
-            "inventoryItemEcsTemplate": "fim_92e_stinger_missile_item",
-            "inventoryItemNum": 2,
-            "reqModification": "mpads_stinger"
           },
           {
             "name": "medic_box",
@@ -878,12 +827,6 @@
             "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
             "inventoryItemNum": 1,
             "reqModification": "smoke_grenade"
-          },
-          {
-            "name": "stun_grenade",
-            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
-            "inventoryItemNum": 6,
-            "reqModification": "stun_grenade"
           }
         ]
       }
@@ -892,7 +835,7 @@
   "weapon_presets": {
     "preset": {
       "name": "m16a1_default",
-      "blk": "gameData/units/humans/weaponPresets/m16a1_default.blk"
+      "blk": "gameData/units/humans/weaponPresets/presets_coldwar/usa_class_assault_preset_1.blk"
     }
   }
 }

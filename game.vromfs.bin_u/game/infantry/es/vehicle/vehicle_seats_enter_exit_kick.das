@@ -10,6 +10,7 @@ require DngHuman
 require %game.utils.net_utils
 require net
 require GamePhys
+require PhysMat
 
 require AnimV20
 require CollRes
@@ -67,7 +68,7 @@ def private vehicle_trace_exit_pos(var human_net_phys : HumanActor?; var exitPos
     var dist = length(dir)
     dir *= safeinv(dist)
     var norm : float3
-    if !forcibly && traceray_normalized(pos, dir, dist, norm)
+    if !forcibly && dist > FLT_EPSILON && traceray_normalized(pos, dir, dist, norm)
       return false
     let posXZ = pos.xz
     let lmeshHt = traceht_lmesh(posXZ)
@@ -87,10 +88,7 @@ def private vehicle_trace_exit_pos(var human_net_phys : HumanActor?; var exitPos
   if distance_sq(pos, exitPos) > 1e-6
     sphere_cast(pos, exitPos, collRad, toNewCcdOutput, rayMatId)
   let sphereCastThreshold = 0.9
-
-  if toNewCcdOutput.t == 0. 
-    toNewCcdOutput.t = sphereCastThreshold
-  elif !forcibly && toNewCcdOutput.t < sphereCastThreshold
+  if !forcibly && toNewCcdOutput.t < sphereCastThreshold
     return false
   let exit = lerp(pos, exitPos, float3(toNewCcdOutput.t))
   var wishPos = exit - localCcdPos
@@ -179,21 +177,73 @@ def private vehicle_teleport_entity_by_bounding_box(eid : EntityId; collres : Co
   query(eid) <| $ [es] (var human_net_phys : HumanActor?)
     let additionalCollRad = 0.2
     let collRad = (human_net_phys != null ? human_net_phys.phys.collRad : 0.2) + additionalCollRad
+    let vehicleForward = vehicle_tm[0]
     let vehicleLeft = vehicle_tm[2]
     let relativeVehicleTm = inverse(vehicle_tm) * requesterTm
+    let vehicleForwardOffset = -sign(relativeVehicleTm[3].x) * 0.5 * (vehicleBox.width.z + collRad) * vehicleForward
+    let vehicleSideOffset = sign(relativeVehicleTm[3].z) * 0.5 * (vehicleBox.width.z + collRad) * vehicleLeft
 
     let existWishPos = fixed_array<float3>(
-      requesterTm[3] + sign(relativeVehicleTm[3].z) * 0.5 * (vehicleBox.width.z + collRad) * vehicleLeft,
-      requesterTm[3] - sign(relativeVehicleTm[3].z) * 0.5 * (vehicleBox.width.z + collRad) * vehicleLeft)
-
-    for i in range(0, 2)
       
+      requesterTm[3] + vehicleSideOffset,
+      requesterTm[3] - vehicleSideOffset,
+      
+      vehicle_tm[3] + vehicleForwardOffset + vehicleSideOffset,
+      vehicle_tm[3] + vehicleForwardOffset - vehicleSideOffset,
+      vehicle_tm[3] - vehicleForwardOffset + vehicleSideOffset,
+      vehicle_tm[3] - vehicleForwardOffset - vehicleSideOffset)
+
+    for i in range(0, length(existWishPos))
       var exitPos = existWishPos[i]
       if vehicle_trace_exit_pos(human_net_phys, exitPos, requesterTm)
         requesterTm[3] = exitPos
         teleport_phys_actor(eid, requesterTm)
         return
 
+    
+    var exitPos = vehicle_tm[3] + float3(0.f, vehicleBox.width.y, 0.f)
+    if vehicle_trace_exit_pos(human_net_phys, exitPos, requesterTm)
+      requesterTm[3] = exitPos
+      teleport_phys_actor(eid, requesterTm)
+      return
+
+    for i in range(0, length(existWishPos))
+      exitPos = existWishPos[i]
+      let humanHeightTrace = 1.5
+      let tracePos = exitPos + float3(0., humanHeightTrace, 0.)
+      let rayMatId = human_net_phys != null ? human_net_phys.phys.rayMatId : PHYSMAT_INVALID
+      var toNewCcdOutput = ShapeQueryOutput()
+      var t = 3. 
+      if !sphere_cast(exitPos, tracePos, collRad, toNewCcdOutput, rayMatId) && tracedown_normalized(exitPos, t, ETF_DEFAULT)
+        requesterTm[3] = exitPos
+        teleport_phys_actor(eid, requesterTm)
+        return
+
+
+
+def private vehicle_ensure_exit_outside(eid : EntityId; collres : CollisionResource; vehicle_tm : float3x4)
+  query(eid) <| $ [es] (var transform : float3x4; human_net_phys : HumanActor const?)
+    let curPos = human_net_phys != null ? float3(human_net_phys.phys.currentState.location.P) : transform[3]
+    let bmin = collres.vFullBBox.bmin.xyz
+    let bmax = collres.vFullBBox.bmax.xyz
+    let localPos = inverse(vehicle_tm) * curPos
+    let margin = 0.1
+    if !(localPos.x > bmin.x - margin && localPos.x < bmax.x + margin &&
+         localPos.z > bmin.z - margin && localPos.z < bmax.z + margin &&
+         localPos.y < bmax.y - 0.3)
+      return
+    let collRad = (human_net_phys != null ? human_net_phys.phys.collRad : 0.2) + 0.2
+    let zCenter = 0.5 * (bmin.z + bmax.z)
+    let sideSign = (localPos.z - zCenter) >= 0. ? 1. : -1.
+    let halfWidth = 0.5 * (bmax.z - bmin.z)
+    let outLocal = float3(localPos.x, bmax.y, zCenter + sideSign * (halfWidth + collRad + 0.5))
+    var outPos = vehicle_tm * outLocal
+    let dropStart = outPos + float3(0., 1.0, 0.)
+    var t = (bmax.y - bmin.y) + 5.0
+    if tracedown_normalized(dropStart, t, ETF_DEFAULT)
+      outPos.y = dropStart.y - t
+    transform[3] = outPos
+    teleport_phys_actor(eid, transform)
 
 
 [es(tag=server)]
@@ -281,6 +331,8 @@ def vehicle_seats_enter_exit_kick_server_es(evt : CmdKickFromVehicle;
             vehicle_teleport_entity_to_node(requester, seatTM, tree, seat__entranceNodeId, transform,  true)
       else
         vehicle_teleport_entity_by_bounding_box(requester, collres, transform)
+
+      vehicle_ensure_exit_outside(requester, collres, transform)
 
       send_enter_vehicle_event(requester, eid, seatNo, false)
       

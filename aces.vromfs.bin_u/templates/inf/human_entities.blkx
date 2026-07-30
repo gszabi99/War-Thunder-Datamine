@@ -562,7 +562,7 @@
     "human_weap_anim__isSecondScopeActiveVarId": -1,
     "human_weap_anim__aimStateVarId": -1,
     "human_weap_anim__grenadeThrowDirectionVarId": -1,
-    "human_weap__grenadeThrowDirection": 0.0,
+    "human_weap__grenadeThrowDirection": 1.0,
     "human_weap_anim__aimStateSpeed": 6.0,
     "human_weap_anim__aimStateValue": 0.0,
     "human_weap__prevGunAngles": [
@@ -580,6 +580,11 @@
     "human_weap__gunAngleSpeedToPitchMult": 0.1,
     "human_weap__gunRotCeil": 15.0,
     "human_weap__tracerayLen": 0.0,
+    "human_weap__cachedShootPosLocal": [
+      0.0,
+      0.0,
+      0.0
+    ],
     "human_weap__enableClampVertAimAngle": true,
     "human_weap__clampVertAngleRad": [
       -1.48353,
@@ -775,7 +780,8 @@
       "multiple_guns_slots__lastVisibleGunIndex",
       "human_weap__currentScope",
       "human_weap__gunEquipAIForce",
-      "human_weap__grenadeThrowModeServer"
+      "human_weap__grenadeThrowModeServer",
+      "human_weap__grenadeThrowServerConfirmed"
     ],
     "human_inventory__capacity": 25.0,
     "team": -1,
@@ -828,6 +834,7 @@
     "human_weap__gunEquipAIForce": true,
     "human_weap__grenadeThrowViaRethrow": false,
     "human_weap__grenadeThrowModeServer": false,
+    "human_weap__grenadeThrowServerConfirmed": true,
     "human_weap__grenadeThrower:eid": {},
     "precomp_weapon_pos": {},
     "multiple_guns_slots__wantedGunEid:list<eid>": {},
@@ -1417,7 +1424,7 @@
     "human_net_phys__replicateAimMode": true,
     "human_phys__crawlThreshold": -0.1,
     "human_phys__crawlTransitionMoveSpeedMult": 0.0,
-    "human_phys__grenadeThrowDirectionAngle": 80.0,
+    "human_phys__grenadeThrowDirectionAngle": 2.5,
     "human_phys__grenadeThrowOffset": 0.2,
     "human_net_phys__minStaminaLevelToHoldBreath": 0.24,
     "human_net_phys__drainStaminaSpeedOnHoldBreath": 2.5,
@@ -1508,7 +1515,7 @@
       "_tags": "render"
     },
     "human__damageTypeMults:object": {
-      "generic": 2.3,
+      "generic": 1.3,
       "shatter": 2.5,
       "secondaryShatter": 2.5
     },
@@ -2664,6 +2671,7 @@
     "human_vehicle_anim__fireReadyUpperId": -1,
     "human_vehicle_anim__fireReadyLowerId": -1,
     "human_vehicle_anim__maxStandHeight": 1.0,
+    "human_vehicle_anim__prevIsInVehicle": false,
     "enter_vehicle__atTime": -1.0,
     "enter_vehicle__isInitDataSaved": false,
     "exit_vehicle__atTime": -1.0,

@@ -287,9 +287,14 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function needShowWeaponsItem() {
+    return isUnitHaveSecondaryWeapons(this.unit)
+      || (this.unit.isHuman() && this.unit.getWeapons().len() > 0)
+  }
+
   function getColumnsAircraft() {
     let res = this.getEmptyColumnsConfig()
-    if (isUnitHaveSecondaryWeapons(this.unit))
+    if (this.needShowWeaponsItem())
       res.columns.append([this.getCellConfig(this.weaponItemId, weaponryTypes.WEAPON.getHeader(this.unit), weaponsItem.weapon)])
 
     let groups = this.getBulletsGroups()
@@ -482,7 +487,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateWeapon() {
-    if (!isUnitHaveSecondaryWeapons(this.unit))
+    if (!this.needShowWeaponsItem())
       return
 
     let itemObj = this.scene.findObject(this.weaponItemId)

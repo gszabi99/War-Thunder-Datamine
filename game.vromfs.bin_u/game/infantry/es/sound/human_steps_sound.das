@@ -143,7 +143,7 @@ def play_step_sound_grains(desc : Object;
   if sound_player_common::get_option_path(path, sound_tags, is_watched_sound, pathStr)
     let offsetedPos = raise_pos_above_collision(pos, normalizedUp)
     let soundPath = apply_prefix(pathStr, is_watched_sound, is_enemy)
-    var sndName = sound_player_common::get_name(desc, is_watched_sound)
+    let sndName = sound_player_common::get_name(desc, is_watched_sound)
 
     if !is_valid_handle_value(step_sound_grains_event) || force_start_new
       abandon(step_sound_grains_event)

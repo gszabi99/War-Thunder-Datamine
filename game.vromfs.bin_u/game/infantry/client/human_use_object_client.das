@@ -177,12 +177,13 @@ def hero_human_use_human_object_es(info : ParallelUpdateFrameDelayed;
       if eid == entity.eid
         continue
 
-      var traceDist = entity.t - prevDist
-      tracePos += traceDir * traceDist
-      prevDist = entity.t
+      let segmentDist = entity.t - prevDist
+      var traceDist = segmentDist
       var norm : float3
       if traceray_normalized(tracePos, traceDir, traceDist, norm)
         return 
+      tracePos += traceDir * segmentDist
+      prevDist = entity.t
 
       if canUseVehicles
         query(entity.eid) <| $ [es(REQUIRE=vehicle_seats__seats)] (isAlive : bool = true;

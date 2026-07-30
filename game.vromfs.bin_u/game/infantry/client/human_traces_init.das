@@ -51,8 +51,10 @@ def save_human_los_cached_data(info : UpdateStageInfoAct;
                                unit__ref : UnitRef;
                                nodes_los__visiblePrecalc : bool;
                                nodes_los__forceShowMarkerToTime : float;
-                               nodes_los__considerAsVisibleTime : float;
-                               nodes_los__considerAsInvisibleTime : float;
+                               nodes_los__considerAsVisibleTimeFriendly : float;
+                               nodes_los__considerAsVisibleTimeEnemy : float;
+                               nodes_los__considerAsInvisibleTimeFriendly : float;
+                               nodes_los__considerAsInvisibleTimeEnemy : float;
                                nodes_los__considerMapAsVisibleTime : float;
                                var nodes_los__considerMapVisibleToTime : float&;
                                var nodes_los__considerVisibleToTime : float&;
@@ -60,7 +62,8 @@ def save_human_los_cached_data(info : UpdateStageInfoAct;
                                var nodes_los__visible : bool&;
                                var nodes_los__showKillerMarker : bool&;
                                var nodes_los__showMarker : bool&;
-                               var nodes_los__showMapMarker : bool&)
+                               var nodes_los__showMapMarker : bool&;
+                               team : int = TEAM_UNASSIGNED)
   let unit = unit__ref.unit
   if unit.isDelayed
     nodes_los__visible = false
@@ -72,14 +75,19 @@ def save_human_los_cached_data(info : UpdateStageInfoAct;
   nodes_los__visible = nodes_los__visiblePrecalc
   nodes_los__showKillerMarker = nodes_los__forceShowMarkerToTime > info.curTime
 
+  let heroTeam = get_int(get_local_player_eid(), "team") ?? TEAM_UNASSIGNED
+  let isFriendly = is_teams_friendly(team, heroTeam)
+  let considerAsVisibleTime = isFriendly ? nodes_los__considerAsVisibleTimeFriendly : nodes_los__considerAsVisibleTimeEnemy
+  let considerAsInvisibleTime = isFriendly ? nodes_los__considerAsInvisibleTimeFriendly : nodes_los__considerAsInvisibleTimeEnemy
+
   if nodes_los__visible && !nodes_los__showMarker && !nodes_los__showKillerMarker && nodes_los__considerInvisibleToTime < 0.
-    nodes_los__considerInvisibleToTime = info.curTime + nodes_los__considerAsInvisibleTime
+    nodes_los__considerInvisibleToTime = info.curTime + considerAsInvisibleTime
 
   let considerInvisible = nodes_los__considerInvisibleToTime > info.curTime
 
   if nodes_los__visible
     if !considerInvisible
-      nodes_los__considerVisibleToTime = info.curTime + nodes_los__considerAsVisibleTime
+      nodes_los__considerVisibleToTime = info.curTime + considerAsVisibleTime
   else
     nodes_los__considerInvisibleToTime = -1.
 

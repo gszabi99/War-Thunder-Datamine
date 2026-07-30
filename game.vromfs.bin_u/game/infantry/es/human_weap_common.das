@@ -684,6 +684,9 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
         grenadeEid = *grenade_rethrow__grenadeEid
     if grenadeEid != INVALID_ENTITY_ID
       human_weap__throwMode = throw_grenade_away(ctx.eid, grenadeEid, human_weap__grenadeThrower)
+      if is_server() && human_weap__throwMode
+        query(ctx.eid) <| $ [es] (var human_weap__grenadeThrowServerConfirmed : bool&)
+          human_weap__grenadeThrowServerConfirmed = false
     if is_server() && !human_weap__throwMode
       send_net_event(ctx.eid, HumanWeapThrowBackAbort())
 
@@ -946,6 +949,9 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
   if (human_weap__throwMode && ctx.isForReal && grenadeThrower != null &&
       grenadeThrower.state == GrenadeThrowState.GTS_READY && !ctx.isDowned)
     clear_throw_mode(ctx.eid, gunEid, human_weap__gunEids, human_weap__throwMode, phys)
+    if is_server()
+      query(ctx.eid) <| $ [es] (var human_weap__grenadeThrowServerConfirmed : bool&)
+        human_weap__grenadeThrowServerConfirmed = true
 
 def obtain_grenade_thrower_projectile_entity(var grenade_thrower__projectileEntity : EntityId&)
   if !doesEntityExist(grenade_thrower__projectileEntity)

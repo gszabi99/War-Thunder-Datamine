@@ -902,13 +902,20 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   let isRotatingRight = stateMove == HumanStateMove.E_ROTATE_RIGHT
   let isRotating = isRotatingLeft || isRotatingRight
 
+  let isSprinting = stateMove == HumanStateMove.E_SPRINT
   let isStandingState = (stateMove == HumanStateMove.E_ROTATE_LEFT ||
                          stateMove == HumanStateMove.E_ROTATE_RIGHT ||
                          stateMove == HumanStateMove.E_STILL)
   human_anim__standInPlaceTimer = isStandingState ? (human_anim__standInPlaceTimer + info.dt) : 0.0
   let standingInPlace = human_anim__standInPlaceTimer >= human_anim__standInPlaceWaitTime
 
-  let localWalkDirFrom = standingInPlace ? -rad_to_deg(bodyAngles.x) : -rad_to_deg(walkAngles.x) + rad_to_deg(bodyAngles.x)
+  var localWalkDirFrom = standingInPlace ? -rad_to_deg(bodyAngles.x) : -rad_to_deg(walkAngles.x) + rad_to_deg(bodyAngles.x)
+  if human_anim__isFpv && isSprinting && !standingInPlace && !isInVehicle
+    
+    
+    
+    let camAngles = basis_aware_dir_to_angles(phys.producedCT.wishLookDir, up, dir)
+    localWalkDirFrom = -rad_to_deg(walkAngles.x) + rad_to_deg(camAngles.x)
   let prevLocalWalkDir = phys_vars |> getVar(human_anim__localWalkDirVarId)
   var localWalkDir = clamp(norm_s_ang_deg(localWalkDirFrom), -human_anim__localWalkDirClampAngle, human_anim__localWalkDirClampAngle)
 
@@ -941,8 +948,14 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
     let rootRotate = standingInPlace ? localWalkDirFrom : approach(prevRootRotate, 0.0, dt, human_anim__rootRotateViscosity)
     phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
   elif human_anim__isFpv && !isInVehicle
-    let rootRotate = approach(prevRootRotate, standingInPlace ? localWalkDirFrom : 0.0, dt, human_anim__rootRotateToSideViscosityFpv)
-    phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
+    if isSprinting && !standingInPlace
+      
+      
+      let camAnglesDegrees = rad_to_deg(basis_aware_dir_to_angles(phys.producedCT.wishLookDir, up, dir).x)
+      phys_vars |> setVar(human_anim__rootRotateVarId, -camAnglesDegrees)
+    else
+      let rootRotate = approach(prevRootRotate, standingInPlace ? localWalkDirFrom : 0.0, dt, human_anim__rootRotateToSideViscosityFpv)
+      phys_vars |> setVar(human_anim__rootRotateVarId, rootRotate)
   
   if isInVehicle && !seatedHoldingGun
     phys_vars |> setVar(human_anim__rootRotateVarId, 0.0)

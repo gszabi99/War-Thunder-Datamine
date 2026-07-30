@@ -1000,18 +1000,56 @@
     "condition": {
       "and": {
         "isFlightModel": {},
-        "or": [
-          {
-            "hasOpticTurret": {},
-            "hasOpticATGM": {}
-          },
-          {
-            "not": {
-              "hasFPVCamera": {}
-            },
-            "hasFPVTargetCamera": {}
-          }
-        ]
+        "or": {
+          "hasOpticTurret": {},
+          "hasOpticATGM": {}
+        },
+        "not": {
+          "isHumanDrone": {}
+        }
+      }
+    }
+  },
+  "fpv_drone_optic": {
+    "type": "TurretFpsCamera",
+    "useExternalZoom": "sight",
+    "fov": 30.0,
+    "zoomFov": 5.0,
+    "cameraControlSmoothX": 0.0,
+    "cameraControlSmoothY": 0.0,
+    "cameraControlViewRadius": 14.0,
+    "subtype": "gunner_optic_fps",
+    "horLimit": [
+      -1.0,
+      1.0
+    ],
+    "verLimit": [
+      -1.0,
+      1.0
+    ],
+    "verticalLimit": 10.0,
+    "verticalSpeed": 1.5,
+    "horizontalSpeed": 1.5,
+    "velocitySmooth": 0.0,
+    "cameraUpOffset": 4.0,
+    "useOffset": true,
+    "cameraOffset": [
+      0.0,
+      4.0,
+      5.0
+    ],
+    "clipType": "none",
+    "cameraShakeMultiplier": 0.025,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.002,
+    "viscosity": 0.002,
+    "tiltShakeMultiplierForTanks": 0.0,
+    "tiltShakeMultiplierForShips": 0.0,
+    "condition": {
+      "and": {
+        "isFlightModel": {},
+        "hasOpticTurret": {},
+        "isHumanDrone": {}
       }
     }
   },
@@ -4996,6 +5034,7 @@
         "tps_drone",
         "gunner_fps",
         "fps_fpv",
+        "fpv_drone_optic",
         "gunner_operated_rocket_fps",
         "target_turret",
         "bomber_view",
@@ -5161,6 +5200,18 @@
       {
         "from": "artillery_crosshair",
         "to": "tps_ground",
+        "smooth": true,
+        "blur": false
+      },
+      {
+        "from": "fps_fpv",
+        "to": "fpv_drone_optic",
+        "smooth": true,
+        "blur": false
+      },
+      {
+        "from": "fpv_drone_optic",
+        "to": "fps_fpv",
         "smooth": true,
         "blur": false
       }

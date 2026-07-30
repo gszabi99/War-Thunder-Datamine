@@ -115,9 +115,10 @@ def gm_engine_sound_init(modelBlk : DataBlock?;
       if eventStop != ""
         gm_engine_sound__stop_event_name := path + "/" + eventStop
 
-    let can_patch_engines_for_enemies = sndBlk |> datablock_getBool("canPatchEnginesForEnemies", false)
+    let can_patch_engines_for_enemies = sndBlk |> datablock_getBool("canPatchEnginesForEnemies", false) && *engineBlk |> datablock_getBool("canPatchEnginesForEnemies", true)
     let hero = get_controlled_hero()
-    let is_enemy = !is_hero && unit.isTank && hero != null && hero.army != unit.army && can_patch_engines_for_enemies
+    let isReplay = is_playing_replay() 
+    let is_enemy = !is_hero && unit.isTank && hero != null && (isReplay || (hero.army != unit.army)) && can_patch_engines_for_enemies
     if is_enemy
       gm_engine_sound__event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
       gm_engine_sound__start_event_name := string(gm_engine_sound__start_event_name) |> replace("/ai/", "/ai/_enemies/")

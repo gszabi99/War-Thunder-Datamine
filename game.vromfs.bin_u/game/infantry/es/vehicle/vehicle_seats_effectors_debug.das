@@ -20,8 +20,6 @@ def vehicle_seats_effectors_init_debug(evt : Event;
     let tree = get_entity_visual_node_tree(unit__ref)
     if tree == null
       return
-    var vehicleRootTm : float3x4
-    geomtree_getNodeWtmRelScalar(*tree, 0, vehicleRootTm)
     for seatOwnerNo, seatEid in iter_range(vehicle_seats__seatEids), vehicle_seats__seatEids
       let ownerEid = get_Eid(seatEid, "seat__ownerEid") ?? INVALID_ENTITY_ID
       query(ownerEid) <| $ [es(REQUIRE=hero)] (isInVehicle : bool;
@@ -36,9 +34,6 @@ def vehicle_seats_effectors_init_debug(evt : Event;
           if effectorName != ik_effector_name
             continue
 
-          let vehicleWofs = geomtree_calc_optimal_wofs(vehicle_transform[3])
-          var vehicleLocalWtm = vehicle_transform
-          vehicleLocalWtm[3] = vehicle_transform[3] - vehicleWofs
           let effectorObj = get_ecs_object(*effectors, effectorName)
           if effectorObj != null
             let effectorNodeIdx = get_int(*effectorObj, "node_id") ?? -1
@@ -46,7 +41,7 @@ def vehicle_seats_effectors_init_debug(evt : Event;
             let relTm = get_TMatrix(*effectorObj, "tm")
             if relTm != null
               debug_transform = debug_transform * (*relTm)
-            debug_transform = vehicleLocalWtm * (inverse(vehicleRootTm) * debug_transform)
+            debug_transform = vehicle_transform * debug_transform
             let tm0 = debug_transform[0]
             debug_transform[0] = debug_transform[2]
             debug_transform[2] = tm0

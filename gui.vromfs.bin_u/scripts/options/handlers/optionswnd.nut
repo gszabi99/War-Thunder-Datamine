@@ -4,6 +4,7 @@ from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { isPC } = require("%sqstd/platform.nut")
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -203,6 +204,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     this.joinEchoChannel(false)
     handlersManager.setLastBaseHandlerStartParams({ handlerName = "Options", params = getOptionsWndOpenParams(groupName) })
 
+    let hasStickyHeaderValue = (this.optGroups?[newGroup].hasStickyHeader ?? false) ? "yes" : "no"
+    this.scene.findObject("optionslist").hasStickyHeader = hasStickyHeaderValue
     this.guiScene.replaceContentFromText(this.scene.findObject("stickyHeaderNest"), "", 0, this)
     this.curStickyId = ""
     this.stickyHeaders = null
@@ -496,6 +499,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   function fillSystemOptions(_group) {
     this.optionsContainers = [{ name = "options_systemOptions", data = [] }]
+    if (hasFeature("HasTabsInGraphicsOption"))
+      this.curTabIdx = 0 
     fillSystemGuiOptions(this.scene.findObject("optionslist"), this)
   }
 
@@ -889,7 +894,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
         continue
 
       if (childrenOffsetY == null)
-        childrenOffsetY = sysoptsObjY - child.getPos()[1]
+        childrenOffsetY = -toPixels(this.guiScene, "1@optContainerHeight")
 
       this.stickyHeaders.append({
         id = child.id

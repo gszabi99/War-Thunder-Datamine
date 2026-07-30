@@ -214,7 +214,7 @@ gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
       local newIdx = -1
       foreach (idx in indexes) {
         let child = listObj.getChild(idx)
-        if (!child?.collapse_header != "yes"  && child.isEnabled()) {
+        if (child?.collapse_header != "yes"  && child.isEnabled()) {
           newIdx = idx
           break
         }

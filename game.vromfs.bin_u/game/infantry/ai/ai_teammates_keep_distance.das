@@ -57,6 +57,7 @@ def server_ai_human_teammate_keep_distance(info : UpdateStageInfoAct;
                                            walker_agent__waitSquadMemberRunningTime : float2 = float2(0.2, 0.3);
                                            walker_agent__waitSquadMemberOnLadderTime : float2 = float2(1.5, 2.5);
                                            walker_agent__scanSquadMemberDist : float = 2.0;
+                                           walker_agent__maxHumansAroundScan : int = 8;
                                            walker_agent__waitSquadMemberDist : float2 = float2(-0.2, 1.6))
   if !beh_tree__enabled || agent_team < 1
     return
@@ -92,8 +93,11 @@ def server_ai_human_teammate_keep_distance(info : UpdateStageInfoAct;
     let agentPos = agent_transform[3] + agent_walker_agent.velocity * predictTime
 
     let checkRadius = walker_agent__scanSquadMemberDist
+    var humansInDistChecked = 0
     for_each_entity_in_grid(ecs_hash("humans"), BSphere3(agentPos, checkRadius), GridEntCheck.BOUNDING) <| $(human_eid : EntityId)
       if human_eid == agent_eid
+        return
+      if humansInDistChecked >= walker_agent__maxHumansAroundScan
         return
       query(human_eid) <| $ [es(REQUIRE=human)] (transform aka human_transform : float3x4; team aka human_team : int)
         if agent_team != human_team
@@ -105,6 +109,7 @@ def server_ai_human_teammate_keep_distance(info : UpdateStageInfoAct;
         let MID_HEIGHT = 0.5
         if agentPos.y + MID_HEIGHT < humanPos.y || humanPos.y + MID_HEIGHT < agentPos.y
           return
+        ++humansInDistChecked
 
         if !tryWishPos
           tryWishPos = true

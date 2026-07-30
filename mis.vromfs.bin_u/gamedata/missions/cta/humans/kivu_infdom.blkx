@@ -161,7 +161,7 @@
       "totalDominationX2": 30,
       "totalDominationX4": 90,
       "totalDominationX10": 180,
-      "scoreLimit": 20000,
+      "scoreLimit": 30000,
       "timeLimit": 25,
       "deathPenaltyMul": 0.2,
       "allowedKillStreaks": true,
@@ -1083,6 +1083,90 @@
             "time_to_respawn": 20.0,
             "object_name": "Hummer_17",
             "place_to_respawn": "hummer_17_spawn",
+            "cycle_respawn": true
+          }
+        },
+        "else_actions": {}
+      },
+      "respawn_hummer_18": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenKilled": {
+            "target": "Hummer_18"
+          }
+        },
+        "actions": {
+          "unitRespawnAfterTime": {
+            "time_to_respawn": 20.0,
+            "object_name": "Hummer_18",
+            "place_to_respawn": "hummer_18_spawn",
+            "cycle_respawn": true
+          }
+        },
+        "else_actions": {}
+      },
+      "respawn_hummer_19": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenKilled": {
+            "target": "Hummer_19"
+          }
+        },
+        "actions": {
+          "unitRespawnAfterTime": {
+            "time_to_respawn": 20.0,
+            "object_name": "Hummer_19",
+            "place_to_respawn": "hummer_19_spawn",
+            "cycle_respawn": true
+          }
+        },
+        "else_actions": {}
+      },
+      "respawn_hummer_20": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenKilled": {
+            "target": "Hummer_20"
+          }
+        },
+        "actions": {
+          "unitRespawnAfterTime": {
+            "time_to_respawn": 20.0,
+            "object_name": "Hummer_20",
+            "place_to_respawn": "hummer_20_spawn",
             "cycle_respawn": true
           }
         },
@@ -2186,9 +2270,9 @@
             -0.932157
           ],
           [
-            1431.75,
-            25.2549,
-            548.0
+            1453.15,
+            26.1768,
+            538.8
           ]
         ],
         "unit_class": "us_hummer_h1",
@@ -2228,9 +2312,9 @@
         "name": "Hummer_13",
         "tm": [
           [
-            -0.962108,
+            -0.979303,
             0.0,
-            -0.272666
+            0.202394
           ],
           [
             0.0,
@@ -2238,14 +2322,14 @@
             0.0
           ],
           [
-            0.272666,
+            -0.202394,
             0.0,
-            -0.962108
+            -0.979303
           ],
           [
-            1281.8,
-            17.4,
-            589.05
+            1443.5,
+            25.7,
+            551.3
           ]
         ],
         "unit_class": "us_hummer_h1",
@@ -2285,66 +2369,9 @@
         "name": "Hummer_14",
         "tm": [
           [
-            0.0292473,
+            0.993219,
             0.0,
-            0.999572
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.999572,
-            0.0,
-            0.0292473
-          ],
-          [
-            1071.75,
-            6.94629,
-            559.7
-          ]
-        ],
-        "unit_class": "us_hummer_h1",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 0,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "attack_type": "dont_aim"
-        },
-        "way": {}
-      },
-      {
-        "name": "Hummer_15",
-        "tm": [
-          [
-            -0.825925,
-            0.0,
-            -0.563779
+            -0.116254
           ],
           [
             0.0,
@@ -2352,14 +2379,14 @@
             0.0
           ],
           [
-            0.563779,
+            0.116254,
             0.0,
-            -0.825925
+            0.993219
           ],
           [
-            984.0,
-            19.8252,
-            651.25
+            778.45,
+            21.8389,
+            678.9
           ]
         ],
         "unit_class": "us_hummer_h1",
@@ -2399,9 +2426,9 @@
         "name": "Hummer_16",
         "tm": [
           [
-            -0.999833,
+            0.913865,
             0.0,
-            -0.0182404
+            -0.406016
           ],
           [
             0.0,
@@ -2409,14 +2436,14 @@
             0.0
           ],
           [
-            0.0182404,
+            0.406016,
             0.0,
-            -0.999833
+            0.913865
           ],
           [
-            1122.7,
-            60.8379,
-            919.0
+            887.35,
+            50.9746,
+            972.95
           ]
         ],
         "unit_class": "us_hummer_h1",
@@ -2456,9 +2483,9 @@
         "name": "Hummer_17",
         "tm": [
           [
-            -0.116323,
+            -0.987192,
             0.0,
-            -0.993211
+            0.159535
           ],
           [
             0.0,
@@ -2466,14 +2493,14 @@
             0.0
           ],
           [
-            0.993211,
+            -0.159535,
             0.0,
-            -0.116323
+            -0.987192
           ],
           [
-            1116.7,
-            54.498,
-            1035.95
+            1350.1,
+            43.1611,
+            916.15
           ]
         ],
         "unit_class": "us_hummer_h1",
@@ -2506,6 +2533,235 @@
             0.1
           ],
           "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "Hummer_15",
+        "tm": [
+          [
+            0.713236,
+            0.0,
+            -0.700923
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.700923,
+            0.0,
+            0.713236
+          ],
+          [
+            881.05,
+            47.9932,
+            903.8
+          ]
+        ],
+        "unit_class": "us_hummer_h1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "Hummer_18",
+        "tm": [
+          [
+            -0.984566,
+            0.0,
+            -0.175014
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.175014,
+            0.0,
+            -0.984566
+          ],
+          [
+            1374.4,
+            37.5859,
+            881.7
+          ]
+        ],
+        "unit_class": "us_hummer_h1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "Hummer_19",
+        "tm": [
+          [
+            -0.979303,
+            0.0,
+            0.202394
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.202394,
+            0.0,
+            -0.979303
+          ],
+          [
+            1425.45,
+            25.7,
+            555.5
+          ]
+        ],
+        "unit_class": "us_hummer_h1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "Hummer_20",
+        "tm": [
+          [
+            0.908344,
+            0.0,
+            -0.418223
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.418223,
+            0.0,
+            0.908344
+          ],
+          [
+            804.8,
+            19.95,
+            656.0
+          ]
+        ],
+        "unit_class": "us_hummer_h1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "unitReplacementType": ""
         },
         "way": {}
       }
@@ -5483,9 +5739,9 @@
       "type": "Sphere",
       "tm": [
         [
-          15.60528,
+          15.6053,
           0.0,
-          -3.532096
+          -3.5321
         ],
         [
           0.0,
@@ -5493,9 +5749,9 @@
           0.0
         ],
         [
-          3.532096,
+          3.5321,
           0.0,
-          15.60528
+          15.6053
         ],
         [
           762.3,
@@ -5564,9 +5820,9 @@
       "type": "Sphere",
       "tm": [
         [
-          13.768416,
+          13.7684,
           0.0,
-          -8.150544
+          -8.15054
         ],
         [
           0.0,
@@ -5574,9 +5830,9 @@
           0.0
         ],
         [
-          8.150544,
+          8.15054,
           0.0,
-          13.768416
+          13.7684
         ],
         [
           865.0,
@@ -5591,7 +5847,7 @@
       "type": "Sphere",
       "tm": [
         [
-          -15.82576,
+          -15.8258,
           0.0,
           -2.35496
         ],
@@ -5603,7 +5859,7 @@
         [
           2.35496,
           0.0,
-          -15.82576
+          -15.8258
         ],
         [
           1371.9,
@@ -5618,9 +5874,9 @@
       "type": "Sphere",
       "tm": [
         [
-          5.538272,
+          5.53827,
           0.0,
-          15.010928
+          15.0109
         ],
         [
           0.0,
@@ -5628,9 +5884,9 @@
           0.0
         ],
         [
-          -15.010928,
+          -15.0109,
           0.0,
-          5.538272
+          5.53827
         ],
         [
           1406.55,
@@ -5645,9 +5901,9 @@
       "type": "Sphere",
       "tm": [
         [
-          15.60528,
+          15.6053,
           0.0,
-          -3.532096
+          -3.5321
         ],
         [
           0.0,
@@ -5655,9 +5911,9 @@
           0.0
         ],
         [
-          3.532096,
+          3.5321,
           0.0,
-          15.60528
+          15.6053
         ],
         [
           774.05,
@@ -5672,9 +5928,9 @@
       "type": "Sphere",
       "tm": [
         [
-          15.60528,
+          15.6053,
           0.0,
-          -3.532096
+          -3.5321
         ],
         [
           0.0,
@@ -5682,9 +5938,9 @@
           0.0
         ],
         [
-          3.532096,
+          3.5321,
           0.0,
-          15.60528
+          15.6053
         ],
         [
           790.35,
@@ -5699,9 +5955,9 @@
       "type": "Sphere",
       "tm": [
         [
-          14.672576,
+          14.6726,
           0.0,
-          -6.380912
+          -6.38091
         ],
         [
           0.0,
@@ -5709,9 +5965,9 @@
           0.0
         ],
         [
-          6.380912,
+          6.38091,
           0.0,
-          14.672576
+          14.6726
         ],
         [
           872.2,
@@ -5726,9 +5982,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -15.139488,
+          -15.1395,
           0.0,
-          5.176512
+          5.17651
         ],
         [
           0.0,
@@ -5736,9 +5992,9 @@
           0.0
         ],
         [
-          -5.176512,
+          -5.17651,
           0.0,
-          -15.139488
+          -15.1395
         ],
         [
           1367.3,
@@ -5753,9 +6009,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -12.604112,
+          -12.6041,
           0.0,
-          -9.855808
+          -9.85581
         ],
         [
           0.0,
@@ -5763,9 +6019,9 @@
           0.0
         ],
         [
-          9.855808,
+          9.85581,
           0.0,
-          -12.604112
+          -12.6041
         ],
         [
           1358.25,
@@ -5780,7 +6036,7 @@
       "type": "Sphere",
       "tm": [
         [
-          15.64824,
+          15.6482,
           0.0,
           3.33664
         ],
@@ -5792,7 +6048,7 @@
         [
           -3.33664,
           0.0,
-          15.64824
+          15.6482
         ],
         [
           883.6,
@@ -5807,9 +6063,9 @@
       "type": "Sphere",
       "tm": [
         [
-          5.538272,
+          5.53827,
           0.0,
-          15.010928
+          15.0109
         ],
         [
           0.0,
@@ -5817,9 +6073,9 @@
           0.0
         ],
         [
-          -15.010928,
+          -15.0109,
           0.0,
-          5.538272
+          5.53827
         ],
         [
           1405.85,
@@ -5834,9 +6090,9 @@
       "type": "Sphere",
       "tm": [
         [
-          5.538272,
+          -15.0109,
           0.0,
-          15.010928
+          5.53827
         ],
         [
           0.0,
@@ -5844,14 +6100,14 @@
           0.0
         ],
         [
-          -15.010928,
+          -5.53827,
           0.0,
-          5.538272
+          -15.0109
         ],
         [
-          1426.5,
-          25.7,
-          544.75
+          1454.55,
+          26.2705,
+          536.35
         ]
       ],
       "objLayer": 0,
@@ -5888,9 +6144,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -15.494496,
+          -15.9993,
           0.0,
-          -3.990112
+          0.156118
         ],
         [
           0.0,
@@ -5898,14 +6154,14 @@
           0.0
         ],
         [
-          3.990112,
+          -0.156118,
           0.0,
-          -15.494496
+          -15.9993
         ],
         [
-          1280.0,
-          18.5,
-          588.85
+          1444.65,
+          26.35,
+          550.35
         ]
       ],
       "objLayer": 0,
@@ -5915,9 +6171,9 @@
       "type": "Sphere",
       "tm": [
         [
-          2.155792,
+          15.7686,
           0.0,
-          -15.854112
+          -2.71141
         ],
         [
           0.0,
@@ -5925,41 +6181,14 @@
           0.0
         ],
         [
-          15.854112,
+          2.71141,
           0.0,
-          2.155792
+          15.7686
         ],
         [
-          1071.0,
-          8.1,
-          560.35
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "hummer_15_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -12.815376,
-          0.0,
-          -9.579504
-        ],
-        [
-          0.0,
-          16.0,
-          0.0
-        ],
-        [
-          9.579504,
-          0.0,
-          -12.815376
-        ],
-        [
-          984.35,
-          21.7,
-          652.1
+          778.85,
+          21.8994,
+          679.0
         ]
       ],
       "objLayer": 0,
@@ -5969,9 +6198,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -15.971952,
+          15.8938,
           0.0,
-          -0.947326
+          -1.84057
         ],
         [
           0.0,
@@ -5979,14 +6208,14 @@
           0.0
         ],
         [
-          0.947326,
+          1.84057,
           0.0,
-          -15.971952
+          15.8938
         ],
         [
-          1123.05,
-          63.5,
-          919.2
+          887.15,
+          51.35,
+          972.9
         ]
       ],
       "objLayer": 0,
@@ -5996,9 +6225,9 @@
       "type": "Sphere",
       "tm": [
         [
-          0.347616,
+          -15.9048,
           0.0,
-          -15.99624
+          1.74328
         ],
         [
           0.0,
@@ -6006,14 +6235,14 @@
           0.0
         ],
         [
-          15.99624,
+          -1.74328,
           0.0,
-          0.347616
+          -15.9048
         ],
         [
-          1116.7,
-          55.7,
-          1034.85
+          1349.4,
+          44.5,
+          915.3
         ]
       ],
       "objLayer": 0,
@@ -6041,6 +6270,114 @@
           1115.85,
           58.371,
           865.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "hummer_15_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          14.6726,
+          0.0,
+          -6.38091
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          6.38091,
+          0.0,
+          14.6726
+        ],
+        [
+          882.15,
+          47.9141,
+          904.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "hummer_18_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.8258,
+          0.0,
+          -2.35496
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          2.35496,
+          0.0,
+          -15.8258
+        ],
+        [
+          1372.85,
+          39.35,
+          882.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "hummer_19_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.9993,
+          0.0,
+          0.156118
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -0.156118,
+          0.0,
+          -15.9993
+        ],
+        [
+          1425.1,
+          26.35,
+          556.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "hummer_20_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          13.0131,
+          0.0,
+          -9.30919
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          9.30919,
+          0.0,
+          13.0131
+        ],
+        [
+          804.15,
+          19.3223,
+          657.05
         ]
       ],
       "objLayer": 0,

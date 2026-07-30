@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+import "console" as console
 
 let teamColors = require("%rGui/style/teamColors.nut")
 let { ticketHudBlurPanel } = require("%rGui/components/blurPanel.nut")
@@ -17,6 +18,15 @@ let progressLineSize = [hdpxi(200), hdpxi(10)]
 let progressGap = hdpxi(5)
 let zoneSymbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
 let totalDomMultIconSize = [hdpxi(16), hdpxi(10)]
+
+let TOTAL_DOM_MULT_FADE_DUR = 0.4
+let TOTAL_DOM_MULT_CYCLES = 2
+
+let longAnimsCount = 2
+let longAnimDuration = 0.75
+
+let shortAnimsCount = 4
+let shortAnimDuration = 0.5
 
 
 let mkSuperiorityIcon = @(color) {
@@ -109,11 +119,6 @@ function mkCapZoneSuperiority(captureZoneVal, localTeamVal, teamColorsVal) {
   }
 }
 
-let longAnimsCount = 2
-let longAnimDuration = 0.75
-
-let shortAnimsCount = 4
-let shortAnimDuration = 0.5
 
 let mkLongSizeAnim = @(step) {
   prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = longAnimDuration,
@@ -191,36 +196,49 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
   }
 }
 
-let TOTAL_DOM_MULT_FADE_DUR = 0.4
-let TOTAL_DOM_MULT_CYCLES = 2
-
-
-function mkMultArrowEasing(i, arrCount) {
-  let steps = 2 * arrCount - 1
-  let stepFrac = 1.0 / steps
-  let outStart = ((arrCount - 1) - i) * stepFrac
-  let outEnd = outStart + stepFrac
-  let inStart = (2 * (arrCount - 1) - i) * stepFrac
-  let inEnd = inStart + stepFrac
-  return function(p) {
-    if (p < outStart) return 0.0
-    if (p < outEnd)   return (p - outStart) / stepFrac
-    if (p < inStart)  return 1.0
-    if (p < inEnd)    return 1.0 - (p - inStart) / stepFrac
-    return 0.0
-  }
+function mkMultArrowSlotTrigger(cycle, slot) {
+  return $"{TOTAL_DOMINATION_MULT_ANIM_ID}_{cycle}_{slot}"
 }
 
-let totalDomMultArrCount = keepref(Computed(function() {
-  let mult = totalDomMult.get()
-  if (mult < 2)
-    return 0
+let arrCountFromMult = @(mult) mult < 2 ? 0 : clamp((mult + 1) / 2, 2, 4)
 
-  return clamp((mult + 1) / 2, 2, 4)
-}))
+let totalDomMultArrCount = keepref(Computed(@() arrCountFromMult(totalDomMult.get())))
 
-totalDomMultArrCount.subscribe(@(v) v > 0
-  ? deferOnce(@() anim_start(TOTAL_DOMINATION_MULT_ANIM_ID)) : null)
+local lastAnimatedArrCount = 0
+local multAnimDone = false
+let tryStartMultRelay = function() {
+  let arrCount = totalDomMultArrCount.get()
+  if (arrCount == 0 || arrCount == lastAnimatedArrCount || multAnimDone)
+    return
+  lastAnimatedArrCount = arrCount
+  deferOnce(@() anim_start(mkMultArrowSlotTrigger(0, 0)))
+}
+
+
+let arrowOpacityCache = {}
+function getArrowOpacities(arrCount) {
+  if (arrCount not in arrowOpacityCache)
+    arrowOpacityCache[arrCount] <- array(arrCount).map(@(_) Watched(1.0))
+  return arrowOpacityCache[arrCount]
+}
+
+
+function restoreMultArrowsVisible() {
+  lastAnimatedArrCount = 0
+  foreach (opacities in arrowOpacityCache)
+    foreach (o in opacities)
+      o.set(1.0)
+}
+
+totalDomMultArrCount.subscribe(function(_) {
+  multAnimDone = false
+  restoreMultArrowsVisible()
+})
+
+totalDomTeam.subscribe(function(_) {
+  multAnimDone = false
+  restoreMultArrowsVisible()
+})
 
 let mkTotalDominationScoreMultiplayers = @(isAlly, teamColor) function() {
   if (totalDomTeam.get() == 0
@@ -229,13 +247,40 @@ let mkTotalDominationScoreMultiplayers = @(isAlly, teamColor) function() {
     || totalDomMultArrCount.get() == 0)
     return { watch = [ totalDomTeam, totalDomMultArrCount ] }
 
-  let multArrows = []
   let arrCount = totalDomMultArrCount.get()
-  let cycleDur = (2 * arrCount - 1) * TOTAL_DOM_MULT_FADE_DUR
-  let totalDur = TOTAL_DOM_MULT_CYCLES * cycleDur
+  let lastSlot = 2 * arrCount - 2
+
+  let mkAdvance = function(cycle, slot) {
+    if (slot < lastSlot)
+      return @() anim_start(mkMultArrowSlotTrigger(cycle, slot + 1))
+    if (cycle < TOTAL_DOM_MULT_CYCLES - 1)
+      return @() anim_start(mkMultArrowSlotTrigger(cycle + 1, 0))
+    return @() multAnimDone = true
+  }
+
+  let arrowOpacities = getArrowOpacities(arrCount)
+  let multArrows = []
   for (local i = 0; i < arrCount; i++) {
     let easingIdx = isAlly ? (arrCount - 1 - i) : i
-    let cycleEasing = mkMultArrowEasing(easingIdx, arrCount)
+    let outSlot = arrCount - 1 - easingIdx
+    let inSlot = 2 * (arrCount - 1) - easingIdx
+    let isStartArrow = outSlot == 0
+    let arrowOpacity = arrowOpacities[i]
+    let animations = []
+    for (local cycle = 0; cycle < TOTAL_DOM_MULT_CYCLES; cycle++) {
+      animations.append({
+        prop = AnimProp.opacity, from = 1, to = 0, duration = TOTAL_DOM_MULT_FADE_DUR,
+        play = false, trigger = mkMultArrowSlotTrigger(cycle, outSlot),
+        onEnter = @() arrowOpacity.set(0.0),
+        onFinish = mkAdvance(cycle, outSlot)
+      })
+      animations.append({
+        prop = AnimProp.opacity, from = 0, to = 1, duration = TOTAL_DOM_MULT_FADE_DUR,
+        play = false, trigger = mkMultArrowSlotTrigger(cycle, inSlot),
+        onEnter = @() arrowOpacity.set(1.0),
+        onFinish = mkAdvance(cycle, inSlot)
+      })
+    }
     multArrows.append({
       key = $"tdm_arrow_{arrCount}_{i}"
       size = totalDomMultIconSize
@@ -243,12 +288,11 @@ let mkTotalDominationScoreMultiplayers = @(isAlly, teamColor) function() {
       image = Picture($"ui/gameuiskin#arrow_progress.svg:{totalDomMultIconSize[0]}:{totalDomMultIconSize[1]}:K")
       keepAspect = true
       color = teamColor
+      opacity = arrowOpacity.get()
+      bindProps = { opacity = arrowOpacity }
       transform = isAlly ? { rotate = 180 } : {}
-      animations = [{
-        prop = AnimProp.opacity, from = 1, to = 0, duration = totalDur,
-        play = false, trigger = TOTAL_DOMINATION_MULT_ANIM_ID,
-        easing = @(p) cycleEasing((p * TOTAL_DOM_MULT_CYCLES) % 1.0)
-      }]
+      animations
+      onAttach = isStartArrow ? tryStartMultRelay : null
     })
   }
   return {
@@ -256,6 +300,7 @@ let mkTotalDominationScoreMultiplayers = @(isAlly, teamColor) function() {
     flow = FLOW_HORIZONTAL
     gap = totalDomMultIconSize[0]/-3
     children = multArrows
+    onDetach = restoreMultArrowsVisible
   }
 }
 
@@ -314,6 +359,27 @@ function mkTeamProgress(isAlly, ticketsW, maxTicketsW, reflectionAnimTrigger) {
   }
 }
 
+local totalDomSaved = null
+console.register_command(function(mult = 7, team = 2, enable = 1) {
+  if (enable == 0) {
+    if (totalDomSaved != null) {
+      totalDomEnabled.set(totalDomSaved.enabled)
+      totalDomTeam.set(totalDomSaved.team)
+      totalDomMult.set(totalDomSaved.mult)
+      totalDomSaved = null
+    }
+    return
+  }
+  if (totalDomSaved == null)
+    totalDomSaved = {
+      enabled = totalDomEnabled.get()
+      team = totalDomTeam.get()
+      mult = totalDomMult.get()
+    }
+  totalDomEnabled.set(true)
+  totalDomTeam.set(clamp(team, 1, 2))
+  totalDomMult.set(clamp(mult, 2, 7))
+}, "debug.total_dom.show_arrows")
 
 return {
   mkTeamCapPoint

@@ -1,6 +1,6 @@
 module ai_weapons_common shared
 require daslib/enum_trait
-
+require math.base
 require ecs
 
 enum SpecialAIWeaponType
@@ -31,7 +31,9 @@ def check_ai_gun_has_spec_ai_type(gun_eid : EntityId; spec_ai_type : int)
 def calc_corrected_target_pos(from_pos : float3; target_pos : float3; vert_corr : float3)
   if vert_corr.x == 1.0
     let hCoef = vert_corr.y
+    let baseEffectiveDistSq = square(70.0) 
+    let hDistCoef = baseEffectiveDistSq / max(baseEffectiveDistSq, distance_sq(from_pos, target_pos))
     var correctedPos = target_pos
-    correctedPos.y += vert_corr.z * clamp(abs(from_pos.y - target_pos.y) * hCoef, 0.0, 1.0)
+    correctedPos.y += hDistCoef * vert_corr.z * clamp(abs(from_pos.y - target_pos.y) * hCoef, 0.0, 1.0)
     return correctedPos
   return target_pos

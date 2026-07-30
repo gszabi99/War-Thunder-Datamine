@@ -13,6 +13,7 @@ def human_weapon_hold_breath(evt : CmdPostPhysUpdate;
                              entity_mods__breathRestoreMult : float = 1.0;
                              entity_mods__holdBreathDrainMult : float = 1.0;
                              isDowned : bool = false;
+                             bipod__enabled : bool = false;
                              var human_hold_breath__isAvailable : bool&;
                              var human_net_phys : HumanActor&)
   assume currentState = human_net_phys.phys.currentState
@@ -25,7 +26,7 @@ def human_weapon_hold_breath(evt : CmdPostPhysUpdate;
     && !human_phys_state_get_isClimbing(currentState)
     && !isDowned)
 
-  human_hold_breath__isAvailable = isAiming && !stoppedHoldBreath
+  human_hold_breath__isAvailable = isAiming && !stoppedHoldBreath && !bipod__enabled
 
   currentState |> set_is_hold_breath(appliedCT |> is_control_bit_set(HumanPhysControlType.HCT_SPRINT) && human_hold_breath__isAvailable)
   if is_hold_breath(currentState)

@@ -289,7 +289,11 @@ def apply_damage(victim : EntityId;
     if hitr != HitResult.HIT_RES_NONE && victim_unit != null
       
       if offender != victim && offender != INVALID_ENTITY_ID && damage_type != DamageType.DM_BLEEDING
+        *victim_unit |> setOffender(offender_data)
         *victim_unit |> addHitOffender(offender_data, PartId(), deltaHp / hitpoints__maxHp,  deltaHp > 0.0)
+        if deltaHp > 0.0
+          static_if typeinfo(builtin_function_exists @@ < (var arg0 : Unit&; arg1 : OffenderData&) : void > setSeriousOffender)
+            *victim_unit |> setSeriousOffender(offender_data)
 
     
     if hitr != HitResult.HIT_RES_NONE && victim_unit != null && !proj_props_id.valid
@@ -412,11 +416,28 @@ def on_entity_collision_damage(evt : EventUnitToUnitCollision;
       apply_damage(eid, OffenderData(), evt.toUnit, evt.lPos, PropsId(), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_COLLISION, 0)
 
 
+def report_hit_verify_suspicion(reason : string; offender : EntityId; victim : EntityId; detail : string)
+  logwarn("[hit-verify] {reason} offender={offender} victim={victim} {detail}")
+
+
+def verify_client_hit(evt : EventNotifyServerOnHitEntity; victim : EntityId)
+  let offender = evt.offender
+  if offender == INVALID_ENTITY_ID
+    report_hit_verify_suspicion("BadOffender", offender, victim, "")
+    return
+  if get_bool(offender, "beh_tree__enabled") ?? false
+    return
+  if (get_Eid(offender, "possessedByPlr") ?? INVALID_ENTITY_ID) == INVALID_ENTITY_ID
+    report_hit_verify_suspicion("OffenderNotPlayer", offender, victim, "")
+    return
+
+
 [es(tag=server)]
 def on_entity_hit_notify(evt : EventNotifyServerOnHitEntity;
                          eid : EntityId;
                          isAlive : bool)
   if isAlive
+    verify_client_hit(evt, eid)
     let hitData = EntityHitData(victim = eid,
                                 offender = evt.offender,
                                 gunEid = evt.gunEid,

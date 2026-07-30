@@ -31,7 +31,7 @@ def draw_line(from, to, color)
 
 [es(tag=(dev, render), REQUIRE=(hero, bipodDebug), after=bipod_human_post_phys_act_es)]
 def bipod_debug_es(info : UpdateStageInfoRenderDebug;
-                   human_net_phys : HumanActor;
+                   var human_net_phys : HumanActor;
                    human_weap__currentGunEid : EntityId;
                    human_input__aimAngle : float2;
                    human__aimTm : float3x4;
@@ -39,6 +39,8 @@ def bipod_debug_es(info : UpdateStageInfoRenderDebug;
                    bipod__anchorPos : float3;
                    bipod__anchorDir : float3;
                    bipod__anchorHeight : float;
+                   bipod__anchorOffset : float3;
+                   bipod__isCrawl : bool;
                    bipod__anchorNormal : float3;
                    bipod__placeable : bool;
                    bipod__placePos : float3;
@@ -129,6 +131,19 @@ def bipod_debug_es(info : UpdateStageInfoRenderDebug;
     draw_point(bipod__anchorPos + float3(0.0, bipod__anchorHeight, 0.0), E3DCOLOR(0xFFFFFF00), "anchorP + h")
     draw_line(bipod__anchorPos, bipod__anchorPos + bipod__anchorDir, E3DCOLOR(0xFFFF00FF))
     draw_line(bipod__anchorPos, bipod__anchorPos + bipod__anchorNormal, E3DCOLOR(0xFF0000FF))
+
+    
+    
+    if !bipod__isCrawl
+      let gunAdsOffset = get_gun_ads_offset(human_weap__currentGunEid)
+      let hc = calc_bipod_height(human_net_phys, true, prevTm, bipod__isCrawl, aimAngle.y,
+                                 bipod__anchorPos, bipod__anchorHeight, bipod__anchorOffset, gunAdsOffset)
+      draw_point(hc.gun1, E3DCOLOR(0xFF00AAFF), "gun1 stand")
+      draw_point(hc.gun2, E3DCOLOR(0xFF0066AA), "gun2 crouch")
+      draw_line(hc.gun1, hc.gun2, E3DCOLOR(0xFF0088CC))
+      draw_point(float3(hc.gun1.x, hc.findY, hc.gun1.z), E3DCOLOR(0xFFFFAA00), "findY")
+      let gunAtHeight = calc_fpv_gun_pos_for_height(human_net_phys, prevTm, aimAngle.y, hc.height)
+      draw_point(gunAtHeight, E3DCOLOR(0xFFFF00FF), "height-gun")
   elif bipod__placeable
     draw_point(bipod__placePos, E3DCOLOR(0xFF770077), "placeP")
     draw_point(bipod__placePos + float3(0.0, bipod__placeHeight, 0.0), E3DCOLOR(0xFF777700), "placeP + h")

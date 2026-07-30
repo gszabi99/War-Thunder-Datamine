@@ -80,7 +80,9 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
 }
 
 function create_options_bar(id, value, text, items, cb, isFull = true, params = null) {
-  let view = { id, value, text, cb, isFull, onOptHoverFnName = params?.onOptHoverFnName
+  let view = { id, value, text, cb, isFull,
+    hasTooltip = items.len() > 1
+    onOptHoverFnName = params?.onOptHoverFnName
     options = items.map(function (item, idx) {
       let option = type(item) == "string" ? { text = item } : clone item
       if (params?.onOptHoverFnName)

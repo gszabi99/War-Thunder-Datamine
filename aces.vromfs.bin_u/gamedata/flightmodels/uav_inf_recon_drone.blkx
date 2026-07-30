@@ -37,12 +37,13 @@
   "verifyEcsTemplate": false,
   "disableAerobaticsSmoke": true,
   "mustHaveCockpit": false,
-  "orbitAvaible": true,
+  "orbitAvaible": false,
   "gyroSight": false,
   "radarCrossSectionAspectMultFront": 1e-9,
   "radarCrossSectionAspectMultSide": 1e-9,
   "radarCrossSectionAspectMultRear": 1e-9,
   "humanDrone": true,
+  "drawFovOnTacticalMap": true,
   "sceneCollisionTickStep": 2,
   "overrideIndicatorIcon": "iconScoutDrone",
   "hasFPVCamera": true,
@@ -53,6 +54,7 @@
     0.0
   ],
   "hasFPVTargetCamera": true,
+  "autoSwitchCameraOnHover": true,
   "gForceTolerationMult": 0.0001,
   "customClassIco": "!#ui/gameuiskin#uav_quadcopter_ico.svg",
   "customImage": "!#ui/unitskin#uav_quadcopter",
@@ -390,8 +392,8 @@
     "shouldHaveExplosionEffects": false
   },
   "cockpit": {
-    "sightInFov": 40.5,
-    "sightOutFov": 50.5,
+    "sightInFov": 8.0,
+    "sightOutFov": 40.0,
     "sightFov": 1.0,
     "cameraHeightOnGround": 0.1,
     "openedCockpit": true
@@ -414,14 +416,13 @@
       ],
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
-      "offsetRotatable": true,
       "angularLimits": [
-        -70.0,
-        70.0,
+        -35.0,
+        35.0,
         -95.0,
         15.0
       ],
-      "opticType": "",
+      "opticType": "targeting",
       "turretNo": 0
     }
   },
@@ -440,23 +441,22 @@
       "emitter": "optic1_gun",
       "defaultYaw": 0.0,
       "defaultPitch": 0.0,
-      "speedYaw": 200.0,
-      "speedPitch": 200.0,
-      "parkInDeadzone": true,
-      "aimForOperatedShell": true,
+      "speedYaw": 50.0,
+      "speedPitch": 50.0,
       "turret": {
         "head": "optic1_turret",
         "gun": "optic1_gun",
-        "mainTurret": true
+        "mainTurret": true,
+        "playerControllable": false
       },
       "limits": {
         "yaw": [
-          -180.0,
-          180.0
+          -35.0,
+          35.0
         ],
         "pitch": [
-          -90.0,
-          90.0
+          -95.0,
+          15.0
         ]
       }
     }

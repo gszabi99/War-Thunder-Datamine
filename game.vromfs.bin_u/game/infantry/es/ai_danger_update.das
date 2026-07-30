@@ -59,7 +59,9 @@ def find_danger(var agent_dangers : AgentDangers; eid : EntityId)
 
 [es(tag=server, no_order)]
 def ai_danger_update_alertness(act : UpdateStageInfoAct)
+  let RESERVE_TARGETS_NUM = 256
   var targets : table<uint; TargetData>
+  targets |> reserve(RESERVE_TARGETS_NUM)
   query() <| $ [es(REQUIRE_NOT=ai_target__autoGunTarget)] (eid : EntityId; ai_target : Target; team : int; unit__ref : UnitRef const?;
                                                            human_net_phys : HumanActor const?; vehicle_seats__seatEids : EidList const?)
     var stance = STANCE_STAND

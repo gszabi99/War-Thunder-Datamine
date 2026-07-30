@@ -53,19 +53,6 @@
       "_template": "ssss"
     },
     {
-      "_template": "local_tone_mapping",
-      "local_tone_mapping__hq_shadows_multiplier": 0.0,
-      "local_tone_mapping__hq_highlights_multiplier": 1.0,
-      "local_tone_mapping__lq_shadows_multiplier": 1.5,
-      "local_tone_mapping__lq_highlights_multiplier": 2.5,
-      "local_tone_mapping__middle_luminance": 0.01,
-      "local_tone_mapping__hq_enabled": true,
-      "local_tone_mapping__display_mip": 4,
-      "local_tone_mapping__hq_sigma": 0.17,
-      "local_tone_mapping__lq_sigma": 0.5,
-      "local_tone_mapping__sigma": 0.17
-    },
-    {
       "_template": "laser_decals_manager"
     },
     {
@@ -122,7 +109,7 @@
       "bloom_settings__threshold": 0.1,
       "bloom_settings__radius": 7.0,
       "bloom_settings__upSample": 0.8,
-      "bloom_settings__mul": 0.075
+      "bloom_settings__mul": 0.05
     },
     {
       "_template": "outline_renderer"
@@ -196,6 +183,17 @@
         "adaptation__fnNonLinearDistributionRadius": 1.0,
         "adaptation__fnNonLinearDistributionCurvinesPow": 0.9
       }
+    },
+    {
+      "_template": "tonemap_exposure_correction",
+      "tonemap_exposure_correction__enabled": true,
+      "tonemap_exposure_correction__exposure_outdoor": 2.0,
+      "tonemap_exposure_correction__exposure_indoor": 16.0,
+      "tonemap_exposure_correction__power": 1.0,
+      "tonemap_exposure_correction__outdoor_hdr_max_mul": 1.0,
+      "tonemap_exposure_correction__indoor_hdr_max_mul": 2.0,
+      "tonemap_exposure_correction__outdoor_highlights_gain_mul": 1.0,
+      "tonemap_exposure_correction__indoor_highlights_gain_mul": 0.4
     }
   ]
 }

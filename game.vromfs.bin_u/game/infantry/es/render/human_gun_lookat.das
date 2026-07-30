@@ -130,3 +130,32 @@ def human_gun_lookat_camera_on_action_es(info : UpdateStageInfoAct;
   if (progress > 0.0)
     let animcharCameraTargetPos = *animchar.nodeTree |> geomtree_getNodeWpos(animchar_camera_target__nodeIndex)
     camera__look_at = lerp(camera__look_at, DPoint3(animcharCameraTargetPos), progress)
+
+
+[es(tag=render, REQUIRE=watchedHero, before=before_camera_sync,
+     after=(human_gun_lookat_camera_es, human_optics_lookat_camera_es, human_gun_lookat_camera_on_action_es))]
+def human_bipod_cam_offset_es(info : UpdateStageInfoAct;
+                              bipod__enabled : bool;
+                              bipod__adsFocused : bool = false;
+                              action__running : bool = false;
+                              isTpsView : bool = false;
+                              human__aimTm : float3x4;
+                              human_weap__currentGunEid : EntityId;
+                              human_weap__currentScope : EntityId = INVALID_ENTITY_ID;
+                              bipod__camOffsetSpeed : float = 8.0;
+                              var bipod__camOffsetK : float&;
+                              var camera__look_at : DPoint3&)
+  let wishK = (bipod__enabled && !bipod__adsFocused && !action__running && !isTpsView) ? 1.0 : 0.0
+  bipod__camOffsetK = move_to(bipod__camOffsetK, wishK, info.dt, bipod__camOffsetSpeed)
+  if bipod__camOffsetK <= 0.0
+    return
+
+  var camOff = get_Point3(human_weap__currentGunEid, "gun__bipodCamOffset") ?? float3(0., 0., 0.)
+  camOff = get_Point3(human_weap__currentScope, "gunmod__bipodCamOffset") ?? camOff
+  if camOff.x == 0. && camOff.y == 0. && camOff.z == 0.
+    return
+
+  let fwd = normalize(human__aimTm[0])
+  let right = normalize(cross(fwd, float3(0., 1., 0.)))
+  let up = normalize(cross(right, fwd))
+  camera__look_at += (DPoint3(right) * camOff.x + DPoint3(up) * camOff.y - DPoint3(fwd) * camOff.z) * bipod__camOffsetK

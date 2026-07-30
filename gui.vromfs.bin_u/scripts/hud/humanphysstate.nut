@@ -1,4 +1,4 @@
-let { canHoldBreath, canScopeChange, canSightChange } = require("%appGlobals/hud/humanPhysState.nut")
+let { canHoldBreath, canScopeChange, canSightChange, canBipodFocus } = require("%appGlobals/hud/humanPhysState.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
 canHoldBreath.subscribe(function(v) {
@@ -19,5 +19,12 @@ canSightChange.subscribe(function(v) {
   g_hud_event_manager.onHudEvent(v
     ? "hint:human_change_grenade_sight_show"
     : "hint:human_change_grenade_sight_hide"
+  )
+})
+
+canBipodFocus.subscribe(function(v) {
+  g_hud_event_manager.onHudEvent(v
+    ? "hint:bipod_focus:show"
+    : "hint:bipod_focus:hide"
   )
 })

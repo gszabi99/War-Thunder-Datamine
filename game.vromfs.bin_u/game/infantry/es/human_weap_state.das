@@ -104,9 +104,10 @@ def human_weap_grenade_throw_via_rethrow(evt : RequestQuickThrowGrenade;
                                          human_net_phys__isClimbing : bool;
                                          human_weap__throwMode : bool;
                                          human_weap__grenadeThrowModeServer : bool;
+                                         human_weap__grenadeThrowServerConfirmed : bool;
                                          var human_weap__grenadeThrowViaRethrow : bool&;
                                          human_weap__grenadeThrower : EntityId)
-  if human_net_phys__isClimbing || human_weap__throwMode || human_weap__grenadeThrowModeServer
+  if human_net_phys__isClimbing || human_weap__throwMode || human_weap__grenadeThrowModeServer || !human_weap__grenadeThrowServerConfirmed
     return
 
   assume phys = human_net_phys.phys

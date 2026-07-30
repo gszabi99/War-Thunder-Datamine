@@ -269,11 +269,11 @@ let heroModsByWeaponSlot = Computed(function(){
     let iconAttachments = []
     local modWeapon
     foreach (mod in (modsByEids ?? [])){
-      let {animchar=null, isWeapon=false, attachedItemModSlotName=null, isModActive=null} = mod
+      let {animchar = null, weaponMod = false, attachedItemModSlotName = null, isModActive = null } = mod
       if (attachedItemModSlotName==null)
         continue
       mods[attachedItemModSlotName] <- mod
-      if (isWeapon) {
+      if (weaponMod) {
         iconAttachments.append({
           animchar
           slot = attachedItemModSlotName

@@ -35,6 +35,7 @@ let getSystemOptions = @() {
   isInfoOnTheRight = true
   onApplyHandler = @() onSystemOptionsApply()
   getOptionInfoView = @(id) getSystemOptionInfoView(id)
+  hasStickyHeader = true
   options = []
 }
 

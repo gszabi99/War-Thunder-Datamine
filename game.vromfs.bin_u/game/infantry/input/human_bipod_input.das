@@ -173,6 +173,19 @@ def bipod_input_es(evt : UpdateStageUpdateInput;
     human_input__standState = int(HumanPhysControlType.HCT_CRAWL)
     human_net_phys.phys.producedCT |> human_control_state_set_control_bit(HumanPhysControlType.HCT_CRAWL, true)
 
+[es(tag=input, REQUIRE=hero, after=human_input_es)]
+def bipod_ads_focus_input_es(evt : UpdateStageUpdateInput;
+                             bipod__enabled : bool;
+                             human_weap__currentGunEid : EntityId;
+                             human_input__forceAim : bool = false;
+                             input__enabled : bool = true;
+                             var bipod__adsFocused : bool&)
+  let isAimBlockedByGun = !(get_bool(human_weap__currentGunEid, "gun__canAim") ?? true)
+  let aim = (is_shortcut_down(ShortcutEventId.ID_HUMAN_AIM) || human_input__forceAim) && !isAimBlockedByGun
+  let focused = input__enabled && bipod__enabled && aim
+  if bipod__adsFocused != focused
+    bipod__adsFocused = focused
+
 def is_bipod_aim_angle_collide(soldier_eid : EntityId)
   var angleCollide = false
   query(soldier_eid) <| $ [es] (human_weap__currentGunEid : EntityId;

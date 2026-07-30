@@ -689,12 +689,15 @@
   },
   "human_cockpit_setup": {
     "_singleton": true,
-    "_tags": "render",
-    "human_cockpit__gunMaxLength": 1.5,
-    "human_cockpit__traceMaxBias": 1.5,
-    "human_cockpit__startFadeBeforeIntersection": 0.3,
-    "human_cockpit__fadeInterval": 0.5,
-    "human_cockpit__sampleOffsetAboveCamera": 0.25,
-    "human_cockpit__sampleBias": 0.25
+    "_use": "replicating",
+    "_group": {
+      "_tags": "render",
+      "human_cockpit__gunMaxLength": 1.5,
+      "human_cockpit__traceMaxBias": 1.5,
+      "human_cockpit__startFadeBeforeIntersection": 0.3,
+      "human_cockpit__fadeInterval": 0.5,
+      "human_cockpit__sampleOffsetAboveCamera": 0.25,
+      "human_cockpit__sampleBias": 0.25
+    }
   }
 }

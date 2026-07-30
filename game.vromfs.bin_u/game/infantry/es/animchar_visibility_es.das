@@ -1,4 +1,5 @@
 require ecs
+require %appGame.wt_events
 
 
 def calc_human_visibility(isInVehicleHidden : bool; isInVehicleHiddenLocal : bool; human__visible : bool)
@@ -86,3 +87,10 @@ def human_visibility_update(evt : Event;
   if !isAlive
     return
   human__visible = !human_attached_gun__isHideHuman && !human_binocular__isHideHuman && active
+
+[es(tag=gameClient, on_event=EventEntityDied)]
+def human_died_in_vehicle_hide_es(evt : Event;
+                                  isInVehicle : bool;
+                                  var human__visible : bool&)
+  if isInVehicle
+    human__visible = false

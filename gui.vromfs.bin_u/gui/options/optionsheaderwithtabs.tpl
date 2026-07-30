@@ -31,6 +31,9 @@ tr {
         <<#selected>>
         selected:t='yes'
         <</selected>>
+        <<#disabled>>
+        enable:t='no'
+        <</disabled>>
         shopFilterText {
           text:t='<<tabName>>'
         }

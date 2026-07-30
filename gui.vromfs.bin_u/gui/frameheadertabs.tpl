@@ -138,11 +138,6 @@ shopFilter {
     <<#cornerImgSmall>>
       imgSmall:t='yes'
     <</cornerImgSmall>>
-    <<^cornerImgSmall>>
-      <<#cornerImgTiny>>
-        imgTiny:t='yes'
-      <</cornerImgTiny>>
-    <</cornerImgSmall>>
     <<#hasGlow>>
     cornerImgGlow {}
     <</hasGlow>>

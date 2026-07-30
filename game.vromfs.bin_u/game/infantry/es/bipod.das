@@ -45,39 +45,20 @@ def bipod_init_offset(evt : Event;
   if gun__barrelTipOffsetOverride.x != 0.0
     gun__barrelTipOffset = gun__barrelTipOffsetOverride
 
-def bipod_update_height(var human_net_phys : HumanActor&; is_fpv : bool;
+def bipod_update_height(var human_net_phys : HumanActor&; is_fpv : bool; use_ext_height : bool;
                         human_tm : float3x4; bipod_is_crawl : bool; aim_pitch : float;
-                        bipod_anchor_pos : float3; bipod_anchor_height : float; bipod_anchor_offset : float3; var bipod_pitch_limit : float2&)
-  let anchorPos = bipod_anchor_pos + float3(0.0, bipod_anchor_height, 0.0)
-  let sinPitch = sin(aim_pitch)
-
-  var height = 0.0
-  if bipod_is_crawl
-    height = -1.0
+                        bipod_anchor_pos : float3; bipod_anchor_height : float; bipod_anchor_offset : float3;
+                        human_weap__currentGunEid : EntityId; var bipod_pitch_limit : float2&)
+  let gunAdsOffset = get_gun_ads_offset(human_weap__currentGunEid)
+  let hc = calc_bipod_height(human_net_phys, is_fpv, human_tm, bipod_is_crawl, aim_pitch,
+                             bipod_anchor_pos, bipod_anchor_height, bipod_anchor_offset, gunAdsOffset)
+  if use_ext_height
+    human_net_phys.phys.hasExternalHeight = true
+    human_net_phys.phys.currentState.extHeight = hc.height
   else
-    let stick = bipod_anchor_offset.x
-    let baseY = anchorPos.y - bipod_anchor_offset.y
-    let findY = baseY - stick * sinPitch - (1.0 - cos(aim_pitch)) * bipod_anchor_height * 0.5
-
-    var gun1 = is_fpv ? calc_fpv_gun_pos_for_height(human_net_phys, human_tm, aim_pitch, 1.0) : calc_tpv_gun_pos_for_height(human_net_phys, human_tm, aim_pitch, 1.0)
-    var gun2 = is_fpv ? calc_fpv_gun_pos_for_height(human_net_phys, human_tm, aim_pitch, 0.0) : calc_tpv_gun_pos_for_height(human_net_phys, human_tm, aim_pitch, 0.0)
-
-    let bipod__pitchLimitExtraHeight = 0.3
-    gun1.y += bipod__pitchLimitExtraHeight
-    gun2.y -= bipod__pitchLimitExtraHeight
-
-    height = cvt(findY, gun1.y, gun2.y, 1.0, 0.0)
-
-    if bipod_anchor_offset.x > 0.0
-      let upH = max(gun1.y - baseY, 0.0)
-      let dnH = max(baseY - gun2.y, 0.0)
-      bipod_pitch_limit.x = clamp(rad_to_deg(atan2(-upH, stick)), BIPOD_DEFAULT_PITCH_MIN, BIPOD_DEFAULT_PITCH_MAX)
-      bipod_pitch_limit.y = clamp(rad_to_deg(atan2(dnH, stick)), BIPOD_DEFAULT_PITCH_MIN, BIPOD_DEFAULT_PITCH_MAX)
-    else
-      bipod_pitch_limit.x = 0.0
-      bipod_pitch_limit.y = 0.0
-
-  human_net_phys.phys.currentState.height = height
+    human_net_phys.phys.currentState.height = hc.height
+  if !bipod_is_crawl
+    bipod_pitch_limit = hc.pitchLimit
 
 
 [es(tag=netClient, REQUIRE_NOT=hero, on_event=ParallelUpdateFrameDelayed )]
@@ -87,6 +68,7 @@ def bipod_other_human_act_es(evt : Event;
                              bipod__anchorOffset : float3;
                              bipod__isCrawl : bool;
                              bipod__enabled : bool;
+                             human_weap__currentGunEid : EntityId;
                              var human_net_phys : HumanActor&)
   if !bipod__enabled
     return
@@ -97,9 +79,10 @@ def bipod_other_human_act_es(evt : Event;
   let aimAngle = dir_to_angles(human_net_phys.phys.appliedCT.wishShootDir)
 
   var tmpPitchLimit : float2
-  bipod_update_height(human_net_phys, false,
+  bipod_update_height(human_net_phys, false, false,
                       humanTm, bipod__isCrawl, aimAngle.y,
-                      bipod__anchorPos, bipod__anchorHeight, bipod__anchorOffset, tmpPitchLimit)
+                      bipod__anchorPos, bipod__anchorHeight, bipod__anchorOffset,
+                      human_weap__currentGunEid, tmpPitchLimit)
 
 let
   BIPOD_MAX_AWAY_DIST               = 0.20
@@ -325,10 +308,11 @@ def bipod_human_pre_phys_act_es(evt : CmdPrePhysUpdate;
                                 bipod__anchorNormal : float3;
                                 bipod__isCrawl : bool;
                                 transform : float3x4;
-                                bipod__fpvCorrectionBodyOffset : float2 = float2(0.0, 0.12);
-                                bipod__fpvCorrectionBodyOffsetCrawl : float2 = float2(0.0, 0.1);
+                                bipod__fpvCorrectionBodyOffset : float2 = float2(0.0, 0.06);
+                                bipod__fpvCorrectionBodyOffsetCrawl : float2 = float2(0.0, 0.06);
                                 human_cam__calculatedOffset : DPoint3 const?;
                                 human_cam__offsetMult : float = 1.0;
+                                human_weap__currentGunEid : EntityId;
                                 var bipod__enabled : bool&;
                                 var bipod__offsetMult : float&;
                                 var bipod__pitchLimit : float2&;
@@ -409,8 +393,9 @@ def bipod_human_pre_phys_act_es(evt : CmdPrePhysUpdate;
     if bipod__isCrawl || !check_human_collides_with_ri(transform, normalize(moveVel), human_net_phys.phys.currentState.height)
       human_net_phys.phys.currentState.velocity = moveVel
 
-  bipod_update_height(human_net_phys, true, humanTm, bipod__isCrawl, aimAngle.y,
-                      bipod__anchorPos, bipod__anchorHeight, bipod__anchorOffset, bipod__pitchLimit)
+  bipod_update_height(human_net_phys, true, true, humanTm, bipod__isCrawl, aimAngle.y,
+                      bipod__anchorPos, bipod__anchorHeight, bipod__anchorOffset,
+                      human_weap__currentGunEid, bipod__pitchLimit)
 
 
 [es(before=after_net_phys_sync)]
@@ -420,8 +405,8 @@ def bipod_human_post_phys_act_es(evt : CmdPostPhysUpdate;
                                  bipod__anchorHeight : float;
                                  bipod__enabled : bool;
                                  bipod__isCrawl : bool;
-                                 bipod__fpvCorrectionBodyOffset : float2 = float2(0.0, 0.12);
-                                 bipod__fpvCorrectionBodyOffsetCrawl : float2 = float2(0.0, 0.1);
+                                 bipod__fpvCorrectionBodyOffset : float2 = float2(0.0, 0.06);
+                                 bipod__fpvCorrectionBodyOffsetCrawl : float2 = float2(0.0, 0.06);
                                  var bipod__prevBodyDirYaw : float&;
                                  var bipod__prevBodyDirYawDelta : float&;
                                  var human_net_phys : HumanActor&)

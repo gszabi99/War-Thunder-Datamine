@@ -122,6 +122,31 @@ def setup_human_actor_weapon_slot(human_weap__gunEids : EidList;
       human_net_phys.phys.currentState.weapEquipState.curSlot = HUWeaponSlots(human_weap__currentGunSlot)
 
 
+def add_gun_mod_to_weap_info(mod_template_name : string;
+                             weap_info_index : int;
+                             var human_weap__weapInfo : Array) : bool
+  if weap_info_index < 0 || weap_info_index >= length(human_weap__weapInfo)
+    return false
+  if mod_template_name == ""
+    return false
+  let ecsTemplate = getTemplateByName(mod_template_name)
+  if ecsTemplate == null
+    return false
+  let attachableSlotName = getTemplateComponent(*ecsTemplate, "gunAttachable__gunSlotName") ?? ""
+  if attachableSlotName == ""
+    return false
+  var weapInfoInSlot = getRW_ecs_object(human_weap__weapInfo[weap_info_index])
+  if weapInfoInSlot == null
+    return false
+  var gunMods = weapInfoInSlot |> getRW_ecs_object("gunMods")
+  if gunMods == null
+    using() <| $(var emptyGunMods : Object)
+      *weapInfoInSlot |> set("gunMods", emptyGunMods)
+    gunMods = weapInfoInSlot |> getRW_ecs_object("gunMods")
+  *gunMods |> set(attachableSlotName, mod_template_name)
+  return true
+
+
 [es(tag=server, REQUIRE=(unit__ref, human))]
 def human_weap_modifications_init_es(evt : CmdInitComponent;
                                      ownedByPlr : EntityId;
@@ -149,17 +174,7 @@ def human_weap_modifications_init_es(evt : CmdInitComponent;
       if effectsBlock != null
         let weapInfoIndex = datablock_getInt(*effectsBlock, "weapInfoIndex", 0)
         let ecsTemplateName = datablock_getStr(*effectsBlock, "ecsGunModTemplate", "")
-        let ecsTemplate = getTemplateByName(ecsTemplateName)
-        if ecsTemplateName != "" && ecsTemplate != null
-          let attachableSlotName = getTemplateComponent(*ecsTemplate, "gunAttachable__gunSlotName") ?? ""
-          if attachableSlotName != ""
-            var weapInfoInSlot = getRW_ecs_object(human_weap__weapInfo[weapInfoIndex])
-            var gunMods = weapInfoInSlot |> getRW_ecs_object("gunMods")
-            if gunMods == null
-              using() <| $(var emptyGunMods : Object)
-                *weapInfoInSlot |> set("gunMods", emptyGunMods)
-              gunMods = weapInfoInSlot |> getRW_ecs_object("gunMods")
-            *gunMods |> set(attachableSlotName, ecsTemplateName)
+        add_gun_mod_to_weap_info(ecsTemplateName, weapInfoIndex, human_weap__weapInfo)
 
         let inventoryItemNum = datablock_getInt(*effectsBlock, "ecsItemTemplateNum", 0)
         let itemTemplateName = datablock_getStr(*effectsBlock, "ecsItemTemplate", "")
@@ -217,6 +232,7 @@ def human_init_weapon_preset_es(evt : CmdInitComponent;
                                 unit_crew__canBeLeader : bool = false;
                                 var unit__ref : UnitRef;
                                 var human_weap__weapTemplates : Object;
+                                var human_weap__weapInfo : Array&;
                                 var inventory__itemCreateTemplates : Object)
   let player = player_get_by_eid(ownedByPlr)
   if player == null
@@ -293,6 +309,10 @@ def human_init_weapon_preset_es(evt : CmdInitComponent;
               let inventoryItemNum = datablock_getInt(weaponBlk, "inventoryItemNum", 0)
               if ecsWeaponTemplate != "" && getTemplateByName(ecsWeaponTemplate) != null
                 set(human_weap__weapTemplates, get_human_weapon_slot_name(int(slotInd)), ecsWeaponTemplate)
+                datablock_for_each_block(weaponBlk, "PresetGunMod") <| $(presetGunModBlk)
+                  let gunModTemplateName = datablock_getStr(presetGunModBlk, "ecsGunModTemplateName", "")
+                  if !add_gun_mod_to_weap_info(gunModTemplateName, int(slotInd), human_weap__weapInfo)
+                    logerr("failed to add gun mod '{gunModTemplateName}' from preset '{weaponName}' to weapon slot {slotInd} for soldier {eid} ({getEntityTemplateName(eid)})")
 
               if inventoryItemNum > 0 && inventoryItemTemplate != "" && getTemplateByName(inventoryItemTemplate) != null
                 set(inventory__itemCreateTemplates, inventoryItemTemplate, inventoryItemNum)

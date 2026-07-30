@@ -247,11 +247,14 @@ def human_seat_bake_animchar_es(evt : CmdHumanSeatBake;
   var attachIds : array<int>
   if attaches_list != null
     assemble_seat_slot_attaches(animchar, *attaches_list, attachIds)
-  animchar |> animchar_act(0.f, true)
+
+  if !!human_weap__currentGunEid && human_vehicle__isHoldingGunPassenger
+    instant_gun_animchar_anim_update(human_weap__currentGunEid, animchar)
+  else
+    animchar |> animchar_act(0.f, true)
+
   animchar |> animchar_copy_nodes(animchar_node_wtm, animchar_render__root_pos)
   release_seat_slot_attaches(animchar, attachIds)
-  if !!human_weap__currentGunEid && human_vehicle__isHoldingGunPassenger
-    instant_gun_animchar_anim_update(human_weap__currentGunEid)
 
 [es(tag=gameClient, REQUIRE=watchedByPlr, after=vehicle_seats_hero_pre_camera_es, before=main_update_camera_es)]
 def hero_seated_human_bake_pre_camera_es(act : UpdateStageInfoAct;

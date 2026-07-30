@@ -780,6 +780,31 @@
       }
     }
   },
+  "marksman_preset": {
+    "_use": [
+      "ar_ww2_preset",
+      "camera_shake_on_shot_rifle"
+    ],
+    "gun__recoilSpinMult": 0.2,
+    "gun__rotationSpringMult": [
+      0.7,
+      2.0,
+      3.0
+    ],
+    "gun__inertialMass": 6.5,
+    "gun__adsSpeedMult": 0.5,
+    "gun__recoilControlMult": 0.75,
+    "gun_shell_ejection__templateName": "7_62x51_ejected_shell",
+    "_group": {
+      "_tags": "gameClient",
+      "gun__firingParamsRecoilMults:list<r>": {
+        "recoilMult": [
+          2.8,
+          1.8
+        ]
+      }
+    }
+  },
   "ptr_ww2_preset": {
     "_use": [
       "gun_aim_node",
@@ -1102,25 +1127,6 @@
           }
         ]
       },
-      "ep:array": {
-        "shell:object": [
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m856_fmj_t.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m855a1_ep.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m855a1_ep.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m855a1_ep.blk"
-          },
-          {
-            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m855a1_ep.blk"
-          }
-        ]
-      },
       "ap:array": {
         "shell:object": [
           {
@@ -1137,6 +1143,25 @@
           },
           {
             "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m995_hc.blk"
+          }
+        ]
+      },
+      "ep:array": {
+        "shell:object": [
+          {
+            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m856_fmj_t.blk"
+          },
+          {
+            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m855a1_ep.blk"
+          },
+          {
+            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m855a1_ep.blk"
+          },
+          {
+            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m855a1_ep.blk"
+          },
+          {
+            "blk": "gameData/weapons/human_weapons/bullets/5.56x45_m855a1_ep.blk"
           }
         ]
       },
@@ -4411,7 +4436,8 @@
       "mode:object": [
         {
           "modeType": "burst",
-          "burstSize": 3
+          "burstSize": 3,
+          "burstCounterMode": "held_semi_counts"
         },
         {
           "modeType": "burst",
@@ -4581,7 +4607,7 @@
     "gun__locName": "AK-12",
     "gun__statName": "assault_rifle",
     "gun__sightsDistance": 0.3,
-    "gun__shotFreq": 10.833,
+    "gun__shotFreq": 11.67,
     "gun_spread__maxDeltaAngle": 0.0625,
     "gun__reloadTime": 3.3,
     "gun__altReloadTime": 2.66,
@@ -6065,7 +6091,7 @@
   "svd_gun": {
     "_use": [
       "equipable_gun",
-      "br_ww2_preset",
+      "marksman_preset",
       "svd",
       "rifle_muzzle_preset",
       "dmr_gun_tilt",
@@ -6126,16 +6152,13 @@
     },
     "gun__mountPoints:shared:array": {
       "point:object": {
-        "type": "bipod",
-        "recoil": 0.65,
+        "type": "rest",
+        "recoil": 0.8,
         "offset": [
-          0.8,
-          -0.01,
+          0.58,
+          0.01,
           0.0
-        ],
-        "forceOffset": true,
-        "angle": 31.0,
-        "length": 0.33
+        ]
       }
     }
   },
@@ -6217,7 +6240,7 @@
   "svd_m_gun": {
     "_use": [
       "equipable_gun",
-      "br_ww2_preset",
+      "marksman_preset",
       "svd_m",
       "rifle_muzzle_preset",
       "assault_rilfe_gun_tilt",
@@ -6287,7 +6310,7 @@
     "gun__mountPoints:shared:array": {
       "point:object": {
         "type": "bipod",
-        "recoil": 0.65,
+        "recoil": 0.8,
         "offset": [
           0.575,
           -0.01,
@@ -6384,7 +6407,7 @@
   "m110a1_sdmr_gun": {
     "_use": [
       "equipable_gun",
-      "br_ww2_preset",
+      "marksman_preset",
       "m110a1_sdmr",
       "rifle_muzzle_preset",
       "dmr_gun_tilt",
@@ -6451,7 +6474,7 @@
       "point:object": [
         {
           "type": "bipod",
-          "recoil": 0.65,
+          "recoil": 0.8,
           "offset": [
             0.42,
             0.0,
@@ -6463,7 +6486,7 @@
         },
         {
           "type": "rest",
-          "recoil": 0.65,
+          "recoil": 0.8,
           "offset": [
             0.54,
             0.01,
@@ -6549,7 +6572,7 @@
   "mk_14_ebr_gun": {
     "_use": [
       "equipable_gun",
-      "br_ww2_preset",
+      "marksman_preset",
       "mk_14_ebr",
       "assault_rifle_rapid_muzzle_preset",
       "assault_rilfe_gun_tilt",
@@ -6605,7 +6628,7 @@
     "gun__mountPoints:shared:array": {
       "point:object": {
         "type": "bipod",
-        "recoil": 0.65,
+        "recoil": 0.8,
         "offset": [
           0.5,
           0.03,
@@ -7364,9 +7387,9 @@
     "gun_anim_var__tpsGunOffsetAlong": -0.12,
     "gun_anim_var__tpsGunOffsetAcross": 0.05,
     "gun_anim_var__tpsGunOffsetUp": -0.12,
-    "gun_anim_var__fpsGunOffsetAlong": -0.03,
+    "gun_anim_var__fpsGunOffsetAlong": 0.0,
     "gun_anim_var__fpsGunOffsetAcross": 0.09,
-    "gun_anim_var__fpsGunOffsetUp": -0.08,
+    "gun_anim_var__fpsGunOffsetUp": -0.04,
     "gun__saveAmmoInChamberOnReload": true,
     "gun__length": 0.4,
     "gun__recoilAmount": 0.015,
@@ -7376,10 +7399,19 @@
     "gun__recoilRiseMult": 0.3,
     "weapon__aimNodeOffset": 0.2,
     "meleeSoundType": "mgun",
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.1,
+          0.03
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -8123,9 +8155,9 @@
       "gun_switch_firing_mode_sound",
       "mgun_gun_aim_sound"
     ],
-    "gun_anim_var__tpsGunOffsetAlong": -0.15,
-    "gun_anim_var__tpsGunOffsetAcross": 0.01,
-    "gun_anim_var__tpsGunOffsetUp": -0.25,
+    "gun_anim_var__tpsGunOffsetAlong": 0.03,
+    "gun_anim_var__tpsGunOffsetAcross": 0.05,
+    "gun_anim_var__tpsGunOffsetUp": -0.18,
     "gun_anim_var__fpsGunOffsetAlong": 0.03,
     "gun_anim_var__fpsGunOffsetAcross": 0.02,
     "gun_anim_var__fpsGunOffsetUp": -0.07,
@@ -8293,9 +8325,9 @@
       "gun_switch_firing_mode_sound",
       "mgun_gun_aim_sound"
     ],
-    "gun_anim_var__tpsGunOffsetAlong": -0.28,
-    "gun_anim_var__tpsGunOffsetAcross": 0.06,
-    "gun_anim_var__tpsGunOffsetUp": -0.34,
+    "gun_anim_var__tpsGunOffsetAlong": -0.12,
+    "gun_anim_var__tpsGunOffsetAcross": 0.0,
+    "gun_anim_var__tpsGunOffsetUp": -0.3,
     "gun_anim_var__fpsGunOffsetAlong": 0.03,
     "gun_anim_var__fpsGunOffsetAcross": 0.03,
     "gun_anim_var__fpsGunOffsetUp": -0.09,
@@ -9139,8 +9171,8 @@
     "gun_anim_var__fpsGunOffsetAlong": 0.09,
     "gun_anim_var__fpsGunOffsetAcross": 0.07,
     "gun_anim_var__fpsGunOffsetUp": 0.0,
-    "gun_anim_var__tpsGunOffsetAlong": -0.03,
-    "gun_anim_var__tpsGunOffsetAcross": -0.05,
+    "gun_anim_var__tpsGunOffsetAlong": 0.11,
+    "gun_anim_var__tpsGunOffsetAcross": -0.02,
     "gun_anim_var__tpsGunOffsetUp": -0.1,
     "gun__recoilAmount": 0.037,
     "gun__recoilDirAmount": 0.63,
@@ -9212,7 +9244,7 @@
     "gun__shotFreq": 1.9,
     "gun__automaticReload": false,
     "gun_spread__maxDeltaAngle": 0.15,
-    "gun__chokeSpread": 1.4,
+    "gun__chokeSpread": 3.0,
     "gun__reloadTime": 3.5,
     "gun__inspectTime": 2.1,
     "item__id:i": {
@@ -9352,7 +9384,7 @@
     "gun__boltFreq": 7.0,
     "gun__automaticReload": false,
     "gun_spread__maxDeltaAngle": 0.15,
-    "gun__chokeSpread": 2.4,
+    "gun__chokeSpread": 3.0,
     "gun__reloadTime": 4.6,
     "gun__inspectTime": 2.1,
     "item__id:i": {
