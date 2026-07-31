@@ -289,10 +289,11 @@ def apply_damage(victim : EntityId;
     if hitr != HitResult.HIT_RES_NONE && victim_unit != null
       
       if offender != victim && offender != INVALID_ENTITY_ID && damage_type != DamageType.DM_BLEEDING
-        *victim_unit |> setOffender(offender_data)
+        static_if typeinfo(builtin_function_exists @@ < (var arg0 : Unit&; arg1 : OffenderData&) : void > setOffender)
+          *victim_unit |> setOffender(offender_data)
         *victim_unit |> addHitOffender(offender_data, PartId(), deltaHp / hitpoints__maxHp,  deltaHp > 0.0)
-        if deltaHp > 0.0
-          static_if typeinfo(builtin_function_exists @@ < (var arg0 : Unit&; arg1 : OffenderData&) : void > setSeriousOffender)
+        static_if typeinfo(builtin_function_exists @@ < (var arg0 : Unit&; arg1 : OffenderData&) : void > setSeriousOffender)
+          if deltaHp > 0.0
             *victim_unit |> setSeriousOffender(offender_data)
 
     

@@ -238,11 +238,11 @@ def squad_follow_leader_update_es(info : ParallelUpdateFrameDelayed;
                   return
                 assume cover = covers.list[cover_id]
                 assume cdesc = covers.coverDescs[cover_id]
-                let numSlots = length(cdesc.slots)
+                let numSlots = cdesc.numSlots
                 for i in range(0, numSlots)
-                  if cdesc.slots[i].numUsed > 0
+                  if cover_slot(covers, cdesc, i).numUsed > 0
                     continue
-                  let coverSlotPos = get_cover_slot_pos(cover, cdesc, i)
+                  let coverSlotPos = get_cover_slot_pos(cover, cdesc, covers, i)
                   let coverDistSq = distance_sq(lastPos.xyz, coverSlotPos)
                   let tryNewPos = lerp(enhancePos.xyz, coverSlotPos, 0.75)
                   if coverDistSq < bestCoverDistSq && distance_sq(leaderPos, tryNewPos) > REACH_DIST_LESS_SQ

@@ -2672,7 +2672,7 @@ class FindCoverAroundPoint : BehNodeAdapter
           if filter_cover(cover, coverDesc, box, maxOccupied, filterInfo)
             return
 
-          let numSlots = length(coverDesc.slots)
+          let numSlots = coverDesc.numSlots
           let isPrevCover = prevCoverId.x == id && likelyKeepCover
 
           var slotBestCoverId = int2(id, -1)
@@ -2681,13 +2681,13 @@ class FindCoverAroundPoint : BehNodeAdapter
           var slotBestTight = bestTight
           var slotBestOKDir = bestOKDir
           for i in range(0, numSlots)
-            if coverDesc.slots[i].numUsed > 0
+            if cover_slot(covers, coverDesc, i).numUsed > 0
               continue
             let isPrevCoverSlot = isPrevCover && i == prevCoverId.y
-            let coverSlotPosBase = get_cover_slot_pos(cover, coverDesc, i)
+            let coverSlotPosBase = get_cover_slot_pos(cover, coverDesc, covers, i)
             if is_conflict_with_squad_leader_acting(avoidLeaderActing, coverSlotPosBase, agentEid)
               continue
-            let isTight = !allowTight && check_covers_nearby_occupied(coverSlotPosBase, id, i, covers.list, covers.coverDescs)
+            let isTight = !allowTight && check_covers_nearby_occupied(coverSlotPosBase, id, i, covers.list, covers.coverDescs, covers)
             let goodDir = check_cover_pos_vs_points(coverSlotPosBase, cover.dir, dangerPoints)
             if isTight && !slotBestTight && !isPrevCoverSlot
               continue
@@ -2695,7 +2695,7 @@ class FindCoverAroundPoint : BehNodeAdapter
             let isBetterByTight = !isTight && slotBestTight
             let isBetter = isPrevCoverSlot || isBetterByTight || isBetterByDir
             let extraScore = (isPrevCoverSlot ? 50 : 0) + (isTight ? 0 : 50) + (goodDir ? 101 : 0)
-            let score = eval_cover_score_stay(cover, coverDesc, i) * 100 + extraScore
+            let score = eval_cover_score_stay(cover, coverDesc, covers, i) * 100 + extraScore
             if score < slotBestScore && !isBetter
               continue
             let coverSlotPos = coverSlotPosBase + traceHeightUp
@@ -2741,7 +2741,7 @@ class FindCoverAroundPoint : BehNodeAdapter
           if slotBestCoverId.y != -1
             assume cover2     = covers.list[slotBestCoverId.x]
             assume coverDesc2 = covers.coverDescs[slotBestCoverId.x]
-            let coverAIPos = get_cover_slot_pos(cover2, coverDesc2, slotBestCoverId.y)
+            let coverAIPos = get_cover_slot_pos(cover2, coverDesc2, covers, slotBestCoverId.y)
             if check_cover_pos_valid(coverAIPos)
               bestDistSq = slotBestDistSq
               bestCoverId = slotBestCoverId
@@ -2754,11 +2754,9 @@ class FindCoverAroundPoint : BehNodeAdapter
           assume coverDesc = covers.coverDescs[bestCoverId.x]
 
           push(cover_updater__heldCovers, bestCoverId)
-          coverDesc.slots[bestCoverId.y].numUsed += 1
-          if coverDesc.slots[bestCoverId.y].numUsed == 1
-            coverDesc.numUsedSlots += 1
+          covers |> occupySlot(bestCoverId.x, bestCoverId.y)
 
-          let coverAIPos = get_cover_slot_pos(cover, coverDesc, bestCoverId.y)
+          let coverAIPos = get_cover_slot_pos(cover, coverDesc, covers, bestCoverId.y)
           owner.blackBoard |> set(coverPosParam, coverAIPos)
           res = EBehResult.ER_SUCCESS
     return res

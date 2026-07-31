@@ -49,6 +49,7 @@ def set_ui_minimap_indicator_blink_for_unit_eid(unit_eid : EntityId; time : floa
     var unit = unit__ref.unit
     setBlinkTime(*unit, time)
 
+[unused_argument(is_candidate)]
 def set_ui_minimap_indicator_respawn_candidate_for_unit_eid(unit_eid : EntityId; is_candidate : bool)
   query(unit_eid) <| $ [es] (var unit__ref : UnitRef)
     var unit = unit__ref.unit
@@ -76,14 +77,21 @@ def set_prev_positions_on_spawn_on_unit(evt : Event;
       spawn_dynamic_respawn__prevPositions := on_dynamic_respawn__prevPositions
       spawn_dynamic_respawn__curIterIdx = on_dynamic_respawn__curIterIdx
 
+[unused_argument(pos, margin)]
+def private is_spawn_pos_inside_capzone(pos : float3; margin : float) : bool
+  static_if typeinfo(builtin_function_exists @@ < (arg0 : float3&; arg1 : float) : bool > _::is_pos_within_any_capzone_radius)
+    return is_pos_within_any_capzone_radius(pos, margin)
+  return false
+
 [es(REQUIRE=squad_dynamic_respawn, on_event=ParallelUpdateFrameDelayed)]
 def save_dynamic_respawn_positions(evt : Event)
-  query() <| $ [es] (unit__ref : UnitRef;
-                     human_net_phys : HumanActor;
-                     dynamic_respawn__posDiffCacheSaveSq : float;
-                     dynamic_respawn__prevPosCount : int;
-                     var dynamic_respawn__curIterIdx : int&;
-                     var dynamic_respawn__prevPositions : Point3List&)
+  query() <| $ [es, unused_argument(dynamic_respawn__capzoneMargin)] (unit__ref : UnitRef;
+                                                                      human_net_phys : HumanActor;
+                                                                      dynamic_respawn__posDiffCacheSaveSq : float;
+                                                                      dynamic_respawn__capzoneMargin : float = 10.;
+                                                                      dynamic_respawn__prevPosCount : int;
+                                                                      var dynamic_respawn__curIterIdx : int&;
+                                                                      var dynamic_respawn__prevPositions : Point3List&)
     let unit = unit__ref.unit
     if !unit.isAlive || unit.isDelayed || unit.isLoading
       return
@@ -94,6 +102,8 @@ def save_dynamic_respawn_positions(evt : Event)
     let humanPos = tm[3] + float3(0., 1., 0.)
 
     if length(dynamic_respawn__prevPositions) < dynamic_respawn__prevPosCount
+      if is_spawn_pos_inside_capzone(humanPos, dynamic_respawn__capzoneMargin)
+        return
       resize(dynamic_respawn__prevPositions, dynamic_respawn__prevPosCount)
       dynamic_respawn__curIterIdx = 0
       for spawn in dynamic_respawn__prevPositions
@@ -104,6 +114,9 @@ def save_dynamic_respawn_positions(evt : Event)
       let distSq = length_sq(dynamic_respawn__prevPositions[(dynamic_respawn__curIterIdx + i) % dynamic_respawn__prevPosCount] - humanPos)
       if distSq < dynamic_respawn__posDiffCacheSaveSq
         return
+
+    if is_spawn_pos_inside_capzone(humanPos, dynamic_respawn__capzoneMargin)
+      return
 
     dynamic_respawn__curIterIdx = (dynamic_respawn__curIterIdx + 1) % dynamic_respawn__prevPosCount
     dynamic_respawn__prevPositions[dynamic_respawn__curIterIdx] = humanPos
@@ -360,14 +373,15 @@ def set_phys_height_on_spawn_selected(evt : Event;
     basePrevState.height = 1.f
     baseCurState.height = 1.f
 
-[es(REQUIRE=human)]
+[unused_argument(dynamic_respawn__capzoneMargin), es(REQUIRE=human)]
 def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
                                             eid : EntityId;
                                             var dynamic_respawn__spawnOnUnitEid : EntityId?;
                                             dynamic_respawn__vehicleDistTraces : float;
                                             dynamic_respawn__humanDist : float;
                                             dynamic_respawn__vehicleFallbackOffset : float3;
-                                            dynamic_respawn__fallbackMinDistToUnitSq : float = 225.)
+                                            dynamic_respawn__fallbackMinDistToUnitSq : float = 225.;
+                                            dynamic_respawn__capzoneMargin : float = 10.)
   let spawnOnEid = evt.spawnOnEid
 
   if !has(spawnOnEid, "unit__ref")
@@ -393,7 +407,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
       evt.spawnTm = unit.unitTm
       var verifyDebugDeltaSq = FLT_MAX
       let requestPosCorrectly = length(evt.requestPos) > 0.f 
-      if dynamic_respawn__prevPositions != null && requestPosCorrectly
+      if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_inside_capzone(evt.requestPos, dynamic_respawn__capzoneMargin)
         for pos in *dynamic_respawn__prevPositions
           let distSq = length_sq(pos - evt.requestPos)
           if distSq < verifyDebugDeltaSq
@@ -417,6 +431,9 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
         if foundNavmesh
           evt.spawnTm[3] = resPos
         dropObjectOnNavmesh(evt.spawnTm, 2.5, 1.)
+        if is_spawn_pos_inside_capzone(evt.spawnTm[3], dynamic_respawn__capzoneMargin)
+          print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} FALLBACK REJECTED (inside capture zone) fallbackPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
+          return
         evt.verified = true
         let fallbackPos = evt.spawnTm[3]
         if dynamic_respawn__prevPositions != null

@@ -868,7 +868,7 @@ def private generate_recon_for_cover(var covers : CoversComponent&; cover_id : i
   
   
 
-  let numSlots = length(desc.slots)
+  let numSlots = desc.numSlots
   let sidesNum = numSlots > 1 ? 2 : 1
 
   for slotSide in range(sidesNum)
@@ -879,7 +879,7 @@ def private generate_recon_for_cover(var covers : CoversComponent&; cover_id : i
     
     
 
-    assume coverSlot = desc.slots[slotIdx]
+    assume coverSlot = cover_slot(covers, desc, slotIdx)
     let slotPos = coverSlot.pos - cover.dir * 0.5
     let slotDir = cover.dir
 
@@ -1037,8 +1037,8 @@ def private recons_generate_from_covers(var tctx : TraceReconCtx&; var gctx : Re
         if gctx.around
           assume cover = covers.list[coverIndex]
           assume desc = covers.coverDescs[coverIndex]
-          let numSlots = length(desc.slots)
-          let coverPos = desc.slots[numSlots / 2].pos - cover.dir * 0.5
+          let numSlots = desc.numSlots
+          let coverPos = cover_slot(covers, desc, numSlots / 2).pos - cover.dir * 0.5
           let distSq = distance_sq(gctx.aroundPos, coverPos)
           if distSq < gctx.aroundRadSq
             gen = true

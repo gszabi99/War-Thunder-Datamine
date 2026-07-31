@@ -956,6 +956,7 @@ function addBarrelToDb(barrelsDb, unitName, weaponBlkPath, wBlk) {
       weaponKind = getWeaponKind(wBlk)
       munition = munitionData
       weaponType = activeBulletIndex
+      units = []
     }
 
     let candidates = []
@@ -964,6 +965,8 @@ function addBarrelToDb(barrelsDb, unitName, weaponBlkPath, wBlk) {
     pushNonEmptyUnique(candidates, munitionData?.bulletType ?? "")
     storeLocIds(barrelsDb[key], candidates, key)
   }
+
+  appendOnce(unitName, barrelsDb[key].units)
 
   if (barrelsDb[key].munition != null) {
     let penetration = calcWeaponPenetration(unitName, weaponBlkPath, barrelsDb[key].munition, wBlk)

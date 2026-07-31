@@ -909,12 +909,17 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   human_anim__standInPlaceTimer = isStandingState ? (human_anim__standInPlaceTimer + info.dt) : 0.0
   let standingInPlace = human_anim__standInPlaceTimer >= human_anim__standInPlaceWaitTime
 
+  
+  let fpvSprintLookDir = ((int(human_net_phys.role) & int(NetRole.URF_LOCAL_CONTROL)) != 0
+    ? phys.producedCT.wishLookDir
+    : human_net_phys.phys.currentState.gunDir)
+
   var localWalkDirFrom = standingInPlace ? -rad_to_deg(bodyAngles.x) : -rad_to_deg(walkAngles.x) + rad_to_deg(bodyAngles.x)
   if human_anim__isFpv && isSprinting && !standingInPlace && !isInVehicle
     
     
     
-    let camAngles = basis_aware_dir_to_angles(phys.producedCT.wishLookDir, up, dir)
+    let camAngles = basis_aware_dir_to_angles(fpvSprintLookDir, up, dir)
     localWalkDirFrom = -rad_to_deg(walkAngles.x) + rad_to_deg(camAngles.x)
   let prevLocalWalkDir = phys_vars |> getVar(human_anim__localWalkDirVarId)
   var localWalkDir = clamp(norm_s_ang_deg(localWalkDirFrom), -human_anim__localWalkDirClampAngle, human_anim__localWalkDirClampAngle)
@@ -951,7 +956,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
     if isSprinting && !standingInPlace
       
       
-      let camAnglesDegrees = rad_to_deg(basis_aware_dir_to_angles(phys.producedCT.wishLookDir, up, dir).x)
+      let camAnglesDegrees = rad_to_deg(basis_aware_dir_to_angles(fpvSprintLookDir, up, dir).x)
       phys_vars |> setVar(human_anim__rootRotateVarId, -camAnglesDegrees)
     else
       let rootRotate = approach(prevRootRotate, standingInPlace ? localWalkDirFrom : 0.0, dt, human_anim__rootRotateToSideViscosityFpv)

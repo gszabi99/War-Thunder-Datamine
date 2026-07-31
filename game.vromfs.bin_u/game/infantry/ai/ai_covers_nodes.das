@@ -65,10 +65,10 @@ class GetCoverPosAndDir : BehNodeAdapter
         return
       assume coverDesc = covers.coverDescs[coverIndex]
       let coverSlot = owner.blackBoard |> datablock_getInt(coverSlotParam)
-      if coverSlot < 0 || coverSlot >= length(coverDesc.slots)
+      if coverSlot < 0 || coverSlot >= coverDesc.numSlots
         return
       assume cover = covers.list[coverIndex]
-      let pos = get_cover_slot_pos(cover, coverDesc, coverSlot)
+      let pos = get_cover_slot_pos(cover, coverDesc, covers, coverSlot)
       if outPosParam >= 0
         owner.blackBoard |> set(outPosParam, pos)
       if outLeftPosParam >= 0
@@ -505,7 +505,7 @@ class FindCoverForCoverAttack : BehNodeAdapter
             coverIterSlot = 0
             continue
 
-          let numSlots = length(coverDesc.slots)
+          let numSlots = coverDesc.numSlots
           let isPrevCover = prevCoverId.x == id
 
           var slotBestCoverId = int2(id, -1)
@@ -519,7 +519,7 @@ class FindCoverForCoverAttack : BehNodeAdapter
 
             let isPrevCoverSlot = isPrevCover && i == prevCoverId.y
             var attackType = CoverAttackType.NONE
-            var score = eval_cover_attack_type_and_score(cover, coverDesc, i, attackType)
+            var score = eval_cover_attack_type_and_score(cover, coverDesc, covers, i, attackType)
 
             var ignoreSlot = false
             if agent__ignoredCoversSlots != null && agent__ignoredCoversTimes != null
@@ -537,7 +537,7 @@ class FindCoverForCoverAttack : BehNodeAdapter
             if score < slotBestScore && !(score > 2 && isPrevCoverSlot)
               continue
 
-            let coverSlotPos = get_cover_slot_pos(cover, coverDesc, i)
+            let coverSlotPos = get_cover_slot_pos(cover, coverDesc, covers, i)
             if is_conflict_with_squad_leader_acting(avoidLeaderActing, coverSlotPos, agentEid)
               continue
             let coverSlotOfs = targetPos - coverSlotPos
@@ -668,10 +668,7 @@ class FindCoverForCoverAttack : BehNodeAdapter
           res = EBehResult.ER_RUNNING
         elif bestCoverId.x != -1
           push(cover_updater__heldCovers, bestCoverId)
-          assume coverDesc = covers.coverDescs[bestCoverId.x]
-          coverDesc.slots[bestCoverId.y].numUsed += 1
-          if coverDesc.slots[bestCoverId.y].numUsed == 1
-            coverDesc.numUsedSlots += 1
+          covers |> occupySlot(bestCoverId.x, bestCoverId.y)
 
           owner.blackBoard |> set(outCoverAttackTypeParam, int(bestAttack))
           owner.blackBoard |> set(outCoverAttackCoverParam, bestCoverId.x)
@@ -700,7 +697,7 @@ class CheckCoverForCoverAttack : BehNodeAdapter
         return
       assume coverDesc = covers.coverDescs[coverIndex]
       let coverSlot = owner.blackBoard |> datablock_getInt(coverSlotParam)
-      if coverSlot < 0 || coverSlot >= length(coverDesc.slots)
+      if coverSlot < 0 || coverSlot >= coverDesc.numSlots
         return
 
       assume cover = covers.list[coverIndex]
@@ -810,7 +807,7 @@ class IgnoreCover : BehNodeAdapter
         return
       assume coverDesc = covers.coverDescs[coverIndex]
       let coverSlot = owner.blackBoard |> datablock_getInt(coverSlotParam)
-      let numSlots = length(coverDesc.slots)
+      let numSlots = coverDesc.numSlots
       if coverSlot < 0 || coverSlot >= numSlots
         return
 

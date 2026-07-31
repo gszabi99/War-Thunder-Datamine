@@ -46,55 +46,66 @@ def markers_update_time_es(evt : EventEntityDied;
     nodes_los__forceShowMarkerToTime = get_sync_time() + nodes_los__forceShowMarkerTime
 
 
-[es(tag=gameClient, no_order, REQUIRE_NOT=deadEntity)]
+[es(tag=gameClient, no_order, REQUIRE=camera_view)]
 def save_human_los_cached_data(info : UpdateStageInfoAct;
-                               unit__ref : UnitRef;
-                               nodes_los__visiblePrecalc : bool;
-                               nodes_los__forceShowMarkerToTime : float;
-                               nodes_los__considerAsVisibleTimeFriendly : float;
-                               nodes_los__considerAsVisibleTimeEnemy : float;
-                               nodes_los__considerAsInvisibleTimeFriendly : float;
-                               nodes_los__considerAsInvisibleTimeEnemy : float;
-                               nodes_los__considerMapAsVisibleTime : float;
-                               var nodes_los__considerMapVisibleToTime : float&;
-                               var nodes_los__considerVisibleToTime : float&;
-                               var nodes_los__considerInvisibleToTime : float&;
-                               var nodes_los__visible : bool&;
-                               var nodes_los__showKillerMarker : bool&;
-                               var nodes_los__showMarker : bool&;
-                               var nodes_los__showMapMarker : bool&;
-                               team : int = TEAM_UNASSIGNED)
-  let unit = unit__ref.unit
-  if unit.isDelayed
-    nodes_los__visible = false
-    nodes_los__showMapMarker = false
-    nodes_los__showMarker = false
-    nodes_los__showKillerMarker = false
+                               transform aka camera_transform : float3x4;
+                               camera__active : bool = true)
+  if !camera__active
     return
 
-  nodes_los__visible = nodes_los__visiblePrecalc
-  nodes_los__showKillerMarker = nodes_los__forceShowMarkerToTime > info.curTime
-
+  let camPos = camera_transform[3]
   let heroTeam = get_int(get_local_player_eid(), "team") ?? TEAM_UNASSIGNED
-  let isFriendly = is_teams_friendly(team, heroTeam)
-  let considerAsVisibleTime = isFriendly ? nodes_los__considerAsVisibleTimeFriendly : nodes_los__considerAsVisibleTimeEnemy
-  let considerAsInvisibleTime = isFriendly ? nodes_los__considerAsInvisibleTimeFriendly : nodes_los__considerAsInvisibleTimeEnemy
 
-  if nodes_los__visible && !nodes_los__showMarker && !nodes_los__showKillerMarker && nodes_los__considerInvisibleToTime < 0.
-    nodes_los__considerInvisibleToTime = info.curTime + considerAsInvisibleTime
+  query() <| $ [es(REQUIRE_NOT=deadEntity)] (unit__ref : UnitRef;
+                                             transform : float3x4;
+                                             nodes_los__visiblePrecalc : bool;
+                                             nodes_los__forceShowMarkerToTime : float;
+                                             nodes_los__considerAsVisibleTimeFriendly : float;
+                                             nodes_los__considerAsVisibleTimeEnemy : float;
+                                             nodes_los__considerAsInvisibleTimeFriendly : float;
+                                             nodes_los__considerAsInvisibleTimeEnemy : float;
+                                             nodes_los__considerMapAsVisibleTime : float;
+                                             var nodes_los__considerMapVisibleToTime : float&;
+                                             var nodes_los__considerVisibleToTime : float&;
+                                             var nodes_los__considerInvisibleToTime : float&;
+                                             var nodes_los__visible : bool&;
+                                             var nodes_los__showKillerMarker : bool&;
+                                             var nodes_los__showMarker : bool&;
+                                             var nodes_los__showMapMarker : bool&;
+                                             nodes_los__alwaysShowMarkerFriendlyDistSq : float = -1.;
+                                             team : int = TEAM_UNASSIGNED)
+    let unit = unit__ref.unit
+    if unit.isDelayed
+      nodes_los__visible = false
+      nodes_los__showMapMarker = false
+      nodes_los__showMarker = false
+      nodes_los__showKillerMarker = false
+      return
 
-  let considerInvisible = nodes_los__considerInvisibleToTime > info.curTime
+    nodes_los__visible = nodes_los__visiblePrecalc
+    nodes_los__showKillerMarker = nodes_los__forceShowMarkerToTime > info.curTime
 
-  if nodes_los__visible
-    if !considerInvisible
-      nodes_los__considerVisibleToTime = info.curTime + considerAsVisibleTime
-  else
-    nodes_los__considerInvisibleToTime = -1.
+    let isFriendly = is_teams_friendly(team, heroTeam)
+    let considerAsVisibleTime = isFriendly ? nodes_los__considerAsVisibleTimeFriendly : nodes_los__considerAsVisibleTimeEnemy
+    let considerAsInvisibleTime = isFriendly ? nodes_los__considerAsInvisibleTimeFriendly : nodes_los__considerAsInvisibleTimeEnemy
 
-  nodes_los__showMarker = nodes_los__showKillerMarker || nodes_los__considerVisibleToTime >= info.curTime
-  if (nodes_los__showMarker)
-    nodes_los__considerMapVisibleToTime = info.curTime + nodes_los__considerMapAsVisibleTime
-  nodes_los__showMapMarker = nodes_los__considerMapVisibleToTime >= info.curTime
+    if nodes_los__visible && !nodes_los__showMarker && !nodes_los__showKillerMarker && nodes_los__considerInvisibleToTime < 0.
+      nodes_los__considerInvisibleToTime = info.curTime + considerAsInvisibleTime
+
+    let considerInvisible = nodes_los__considerInvisibleToTime > info.curTime
+
+    if nodes_los__visible
+      if !considerInvisible
+        nodes_los__considerVisibleToTime = info.curTime + considerAsVisibleTime
+    else
+      nodes_los__considerInvisibleToTime = -1.
+
+    nodes_los__showMarker = nodes_los__showKillerMarker || nodes_los__considerVisibleToTime >= info.curTime
+    if !nodes_los__showMarker && isFriendly && nodes_los__alwaysShowMarkerFriendlyDistSq > 0.
+      nodes_los__showMarker = length_sq(transform[3] - camPos) < nodes_los__alwaysShowMarkerFriendlyDistSq
+    if (nodes_los__showMarker)
+      nodes_los__considerMapVisibleToTime = info.curTime + nodes_los__considerMapAsVisibleTime
+    nodes_los__showMapMarker = nodes_los__considerMapVisibleToTime >= info.curTime
 
 
 
