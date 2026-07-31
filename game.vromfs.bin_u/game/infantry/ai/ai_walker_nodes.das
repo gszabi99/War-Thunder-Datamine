@@ -2672,7 +2672,7 @@ class FindCoverAroundPoint : BehNodeAdapter
           if filter_cover(cover, coverDesc, box, maxOccupied, filterInfo)
             return
 
-          let numSlots = coverDesc.numSlots
+          let numSlots = cover_num_slots(coverDesc)
           let isPrevCover = prevCoverId.x == id && likelyKeepCover
 
           var slotBestCoverId = int2(id, -1)
@@ -2681,7 +2681,7 @@ class FindCoverAroundPoint : BehNodeAdapter
           var slotBestTight = bestTight
           var slotBestOKDir = bestOKDir
           for i in range(0, numSlots)
-            if cover_slot(covers, coverDesc, i).numUsed > 0
+            if cover_slot_at(covers, coverDesc, i).numUsed > 0
               continue
             let isPrevCoverSlot = isPrevCover && i == prevCoverId.y
             let coverSlotPosBase = get_cover_slot_pos(cover, coverDesc, covers, i)
@@ -2754,7 +2754,7 @@ class FindCoverAroundPoint : BehNodeAdapter
           assume coverDesc = covers.coverDescs[bestCoverId.x]
 
           push(cover_updater__heldCovers, bestCoverId)
-          covers |> occupySlot(bestCoverId.x, bestCoverId.y)
+          occupy_cover_slot(covers, bestCoverId.x, bestCoverId.y)
 
           let coverAIPos = get_cover_slot_pos(cover, coverDesc, covers, bestCoverId.y)
           owner.blackBoard |> set(coverPosParam, coverAIPos)
