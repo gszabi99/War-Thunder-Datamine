@@ -1010,49 +1010,6 @@
       }
     }
   },
-  "fpv_drone_optic": {
-    "type": "TurretFpsCamera",
-    "useExternalZoom": "sight",
-    "fov": 30.0,
-    "zoomFov": 5.0,
-    "cameraControlSmoothX": 0.0,
-    "cameraControlSmoothY": 0.0,
-    "cameraControlViewRadius": 14.0,
-    "subtype": "gunner_optic_fps",
-    "horLimit": [
-      -1.0,
-      1.0
-    ],
-    "verLimit": [
-      -1.0,
-      1.0
-    ],
-    "verticalLimit": 10.0,
-    "verticalSpeed": 1.5,
-    "horizontalSpeed": 1.5,
-    "velocitySmooth": 0.0,
-    "cameraUpOffset": 4.0,
-    "useOffset": true,
-    "cameraOffset": [
-      0.0,
-      4.0,
-      5.0
-    ],
-    "clipType": "none",
-    "cameraShakeMultiplier": 0.025,
-    "transitionFadeInTime": 0.12,
-    "transitionFadeOutTime": 0.002,
-    "viscosity": 0.002,
-    "tiltShakeMultiplierForTanks": 0.0,
-    "tiltShakeMultiplierForShips": 0.0,
-    "condition": {
-      "and": {
-        "isFlightModel": {},
-        "hasOpticTurret": {},
-        "isHumanDrone": {}
-      }
-    }
-  },
   "follow_rocket_fps": {
     "type": "TurretFpsCamera",
     "fov": 30.0,
@@ -5023,6 +4980,49 @@
         "not": {
           "isInVr": {}
         }
+      }
+    }
+  },
+  "fpv_drone_optic": {
+    "type": "TurretFpsCamera",
+    "useExternalZoom": "sight",
+    "fov": 30.0,
+    "zoomFov": 5.0,
+    "cameraControlSmoothX": 0.0,
+    "cameraControlSmoothY": 0.0,
+    "cameraControlViewRadius": 14.0,
+    "subtype": "gunner_optic_fps",
+    "horLimit": [
+      -1.0,
+      1.0
+    ],
+    "verLimit": [
+      -1.0,
+      1.0
+    ],
+    "verticalLimit": 10.0,
+    "verticalSpeed": 1.5,
+    "horizontalSpeed": 1.5,
+    "velocitySmooth": 0.0,
+    "cameraUpOffset": 4.0,
+    "useOffset": true,
+    "cameraOffset": [
+      0.0,
+      4.0,
+      5.0
+    ],
+    "clipType": "none",
+    "cameraShakeMultiplier": 0.025,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.002,
+    "viscosity": 0.002,
+    "tiltShakeMultiplierForTanks": 0.0,
+    "tiltShakeMultiplierForShips": 0.0,
+    "condition": {
+      "and": {
+        "isFlightModel": {},
+        "hasOpticTurret": {},
+        "isHumanDrone": {}
       }
     }
   },
