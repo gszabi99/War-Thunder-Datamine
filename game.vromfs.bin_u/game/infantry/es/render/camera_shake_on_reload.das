@@ -54,6 +54,7 @@ def camera_shake_on_reload_update_rest_weapon_direction(info : UpdateStageInfoAc
                                                         gun__owner : EntityId;
                                                         gun_anim__reloadProgress : float;
                                                         gun_reload_camera_shake__initialWeaponDirection : float3;
+                                                        gun_reload_camera_shake__weaponDirLerpParam : float;
                                                         gun_reload_camera_shake__relaxDuration : float;
                                                         var gun_reload_camera_shake__relaxTime : float&;
                                                         var gun_reload_camera_shake__restWeaponDirection : float3&)
@@ -65,7 +66,9 @@ def camera_shake_on_reload_update_rest_weapon_direction(info : UpdateStageInfoAc
       if isInVehicle && !human_vehicle__isShootingPassenger
         return
       let restDirection = rotate(inverse(soldier_transform), camera__lookDir)
-      gun_reload_camera_shake__restWeaponDirection = lerp(gun_reload_camera_shake__initialWeaponDirection, restDirection, float3(gun_anim__reloadProgress))
+      
+      
+      gun_reload_camera_shake__restWeaponDirection = lerp(gun_reload_camera_shake__initialWeaponDirection, restDirection, float3(clamp(gun_reload_camera_shake__weaponDirLerpParam * (1.f - gun_anim__reloadProgress) * gun_anim__reloadProgress, 0.f, 1.f)))
       gun_reload_camera_shake__relaxTime = gun_reload_camera_shake__relaxDuration
 
 
