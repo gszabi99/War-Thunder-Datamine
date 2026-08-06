@@ -52,6 +52,8 @@ function gui_start_startscreen(_) {
 }
 
 eventbus_subscribe("gui_start_startscreen", gui_start_startscreen)
+eventbus_subscribe("gui_start_after_scripts_reload", @(_) null) 
+                                                                
 
 function go_to_account_web_page(bqKey = "") {
   let urlBase = getCurCircuitOverride("accountWebPage",
