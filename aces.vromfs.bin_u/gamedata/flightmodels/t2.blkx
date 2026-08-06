@@ -3358,20 +3358,38 @@
     "turnTime": 24.0
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
+    "new_compressor_jet": {
+      "tier": 1
+    },
     "hydravlic_power": {
+      "prevModification": "new_compressor_jet",
+      "tier": 2,
       "effects": {
         "aileronBooster": 0.9,
         "elevatorBooster": 0.9
       }
     },
-    "hp_105_jet": {},
-    "g_suit": {},
-    "new_compressor_jet": {
-      "tier": 1
+    "cd_98": {
+      "prevModification": "hydravlic_power",
+      "tier": 3
+    },
+    "hp_105_jet": {
+      "prevModification": "cd_98",
+      "tier": 4
+    },
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "armor"
+    },
+    "structure_str": {
+      "tier": 2
+    },
+    "g_suit": {
+      "tier": 3,
+      "modClass": "armor"
+    },
+    "new_cover": {
+      "tier": 4
     },
     "JM61A1_armor_targets": {},
     "JM61A1_air_targets": {},
@@ -3402,8 +3420,7 @@
       "modClass": "weapon"
     },
     "us_aim_9e": {
-      "reqModification": "jp_jlau_3a",
-      "tier": 3,
+      "tier": 1,
       "modClass": "weapon"
     },
     "us_aim_9p": {

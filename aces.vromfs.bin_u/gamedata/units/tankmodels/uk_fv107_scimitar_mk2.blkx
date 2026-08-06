@@ -3604,9 +3604,11 @@
     "30mm_rarden_sap": {},
     "30mm_rarden_he": {},
     "30mm_hs_831_APDS": {},
+    "30mm_rarden_apdsfs": {},
     "30mm_hs_831_APDS_ammo_pack": {
-      "tier": 3
+      "tier": 1
     },
+    "30mm_rarden_apdsfs_ammo_pack": {},
     "modern_tank_laser_rangefinder": {},
     "tank_smoke_screen_system_mod": {
       "modClass": "protection",
@@ -3887,6 +3889,16 @@
           }
         }
       }
+    },
+    "tank_support_ucav": {
+      "rcostAddParam": 0.92,
+      "tier": 4,
+      "effects": {
+        "allowSupportPlane": true
+      },
+      "disableModEffects": {
+        "allowSupportPlane": false
+      }
     }
   },
   "nightVision": {
@@ -3903,6 +3915,12 @@
       "ghosting": 0.7,
       "noiseFactor": 0.2
     }
+  },
+  "supportPlane": {
+    "supportPlaneClass": "ucav_recon_micro",
+    "behTreeName": "recon_micro",
+    "planeStartSpeed": 80.0,
+    "count": 1
   },
   "ammoStowages": {
     "ammo1": {

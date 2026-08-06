@@ -5297,11 +5297,18 @@
         "type": "char_login_time_range",
         "beginDate": "2026-08-04 18:00:00",
         "endDate": "2026-08-13 09:00:00",
-        "condition": {
-          "type": "char_unlocked",
-          "positive": false,
-          "unlock": "2026_08_04_thx_for_feedback_poll"
-        }
+        "condition": [
+          {
+            "type": "char_unlocked",
+            "positive": false,
+            "unlock": "2026_08_04_thx_for_feedback_poll"
+          },
+          {
+            "type": "playerFirstLogin",
+            "beginDate": "2015-06-09 11:00:00",
+            "endDate": "2025-05-01 11:00:00"
+          }
+        ]
       }
     },
     {
@@ -25359,6 +25366,600 @@
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_final_goal_keeper_of_defense",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_first_line_of_defense",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_key_to_defense_ready_anytime",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_inhabitants_of_the_planet_wt",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_dmm_games_wt_japan_10th_anniversary",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_shichisho_hokoku",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_certain_victory_sure_victory_invincibility",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_i_dont_want_it_until_i_win",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_luxury_is_the_enemy",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_followme_if_you_have_the_will",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_if_not_us_then_who",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_the_spirit_never_to_surrender_thats_a_sailor",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_second_to_none",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_destroy_every_enemy",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_ready_to_respond",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "gift_dmm_10th_anniversary_emblem_ten_gold_decal_trophy",
+      "userLogId": "dmm_10th_anniversary_emblem_ten_gold_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "dmm_10th_anniversary_emblem_ten_gold_decal_dmm",
+          "dmm_10th_anniversary_emblem_ten_gold_decal_scej"
+        ]
+      }
+    },
+    {
+      "id": "dmm_10th_anniversary_emblem_ten_gold_decal_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2026-08-07 07:00:00",
+        "endDate": "2026-11-03 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "dmm_10th_anniversary_emblem_ten_gold_decal_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2026-08-07 07:00:00",
+        "endDate": "2026-11-03 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "jgsdf_sakura_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 9,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jasdf_sakura_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 9,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jmsdf_sakura_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 9,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_title_final_goal_keeper_of_defense_trophy",
+      "userLogId": "title_final_goal_keeper_of_defense_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_title_first_line_of_defense_trophy",
+      "userLogId": "title_first_line_of_defense_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_title_key_to_defense_ready_anytime_trophy",
+      "userLogId": "title_key_to_defense_ready_anytime_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_jp_type_10_dmm_skin_trophy",
+      "userLogId": "jp_type_10_dmm_skin_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 9,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_f_2a_dmm_skin_trophy",
+      "userLogId": "f_2a_dmm_skin_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 9,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_jp_battleship_yamato_dmm_skin_trophy",
+      "userLogId": "jp_battleship_yamato_dmm_skin_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 9,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-07 07:00:00",
+            "endDate": "2026-11-03 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_type98_shin_gunto_ten_trophy",
+      "userLogId": "type98_shin_gunto_ten_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 9,
+        "unlock": [
+          "jgsdf_sakura_decal",
+          "jasdf_sakura_decal",
+          "jmsdf_sakura_decal",
+          "gift_title_final_goal_keeper_of_defense_trophy",
+          "gift_title_first_line_of_defense_trophy",
+          "gift_title_key_to_defense_ready_anytime_trophy",
+          "gift_jp_type_10_dmm_skin_trophy",
+          "gift_f_2a_dmm_skin_trophy",
+          "gift_jp_battleship_yamato_dmm_skin_trophy"
+        ]
+      }
+    },
+    {
+      "id": "gift_decor_fox_girl_trophy",
+      "userLogId": "decor_fox_girl_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "dmm_10th_anniversary_decal",
+          "dmm_10th_anniversary_title"
+        ]
+      }
+    },
+    {
+      "id": "dmm_10th_anniversary_title",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 11,
+        "unlock": [
+          "title_inhabitants_of_the_planet_wt",
+          "title_shichisho_hokoku",
+          "title_certain_victory_sure_victory_invincibility",
+          "title_i_dont_want_it_until_i_win",
+          "title_luxury_is_the_enemy",
+          "title_followme_if_you_have_the_will",
+          "title_if_not_us_then_who",
+          "title_the_spirit_never_to_surrender_thats_a_sailor",
+          "title_second_to_none",
+          "title_destroy_every_enemy",
+          "title_ready_to_respond"
+        ]
+      }
+    },
+    {
+      "id": "dmm_10th_anniversary_decal",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_resources",
+        "num": 13,
+        "resource": [
+          "dmm_advertising_character_decal",
+          "dmm_advertising_character_tadano_kitsune_collabo_decal",
+          "dmm_tadano_kitsune_decal",
+          "dmm_cheering_fox_red_decal",
+          "dmm_day_love_begins_decal",
+          "dmm_hurrying_fox_normal_decal",
+          "dmm_may_calendar_sd_fox_decal",
+          "dmm_no_drooling_decal",
+          "dmm_september_sd_fox_only_decal",
+          "dmm_summer_greetings_decal",
+          "dmm_surprised_fox_decal",
+          "dmm_twin_tails_decal",
+          "dmm_two_of_them_struck_right_in_the_heart_decal"
+        ]
+      }
     },
     {
       "id": "rge_ichigaya_ai_decal_trophy_gift",
