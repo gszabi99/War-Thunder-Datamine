@@ -141,7 +141,7 @@ gui_handlers.UnitTypeChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       handler.goBack()
     })
     saveShowedTutorial("unitTypeChoice")
-    sendBqEvent("CLIENT_GAMEPLAY_1", "choose_unit_type_screen", { selectedUnitType = uType.lowerName })
+    sendBqEvent("CLIENT_NEW_USER_1", "selectUnitType", { details = uType.lowerName })
     broadcastEvent("UnitTypeChosen")
   }
 

@@ -186,7 +186,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (chosenCountry == null) {
       reqUnlockByClient($"chosen_{this.selectedCountry}")
       switchProfileCountry(this.selectedCountry)
-      sendBqEvent("CLIENT_GAMEPLAY_1", "choose_country_screen", { selectedCountry = this.selectedCountry })
+      sendBqEvent("CLIENT_NEW_USER_1", "chooseCountry", { details = this.selectedCountry })
     }
     else
       switchProfileCountry(chosenCountry)

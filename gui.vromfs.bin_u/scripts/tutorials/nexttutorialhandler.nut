@@ -33,23 +33,17 @@ const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutor
 dagui_propid_add_name_id("userInputType")
 
 
-function sendTutorialChoiceStatisticOnce(action, idx, missionName, input) {
+function sendTutorialChoiceStatisticOnce(details) {
   if (loadLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, false))
     return
-
-  let skipMask = loadLocalByAccount(skipTutorialBitmaskId, 0)
-  let info = { action, missionName, input,
-    reminder = stdMath.is_bit_set(skipMask, idx) ? "off" : "on"
-  }
-  sendBqEvent("CLIENT_GAMEPLAY_1", "new_player_tutorial_choice", info)
+  sendBqEvent("CLIENT_NEW_USER_1", "tutorialChoice", { details })
   saveLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, true)
 }
 
 let setLaunchedTutorialQuestions = @(idx)
   setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.get() | (1 << idx))
 
-function prepareStartTutorial(idx, mission, input) {
-  sendTutorialChoiceStatisticOnce("start", idx, mission.name, input)
+function prepareStartTutorial(idx, mission) {
   saveTutorialToCheckReward(mission)
   saveLocalByAccount($"firstRunTutorial_{mission.name}", true)
   setLaunchedTutorialQuestions(idx)
@@ -111,18 +105,17 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function onStart(obj = null) {
-    let input = obj == null ? "" : this.getObjectUserInputType(obj)
-    prepareStartTutorial(this.checkIdx, this.tutorialMission, input)
+  function onStart() {
+    prepareStartTutorial(this.checkIdx, this.tutorialMission)
+    sendTutorialChoiceStatisticOnce("acceptTutorial")
     this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight); })
   }
 
-  function onClose(obj = null) {
+  function onClose() {
     if (!this.canSkipTutorial)
       return
 
-    let input = obj == null ? "" : this.getObjectUserInputType(obj)
-    sendTutorialChoiceStatisticOnce("close", this.checkIdx, this.tutorialMission.name, input)
+    sendTutorialChoiceStatisticOnce("declineTutorial")
     setLaunchedTutorialQuestions(this.checkIdx)
     this.goBack()
   }
@@ -135,21 +128,14 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
     skipTutorial = stdMath.change_bit(skipTutorial, this.checkIdx, obj.getValue())
     saveLocalByAccount(skipTutorialBitmaskId, skipTutorial)
   }
-
-  function getObjectUserInputType(obj) {
-    let VALID_INPUT_LIST = ["mouse", "keyboard", "gamepad"]
-    let userInputType = obj?.userInputType ?? ""
-    if (isInArray(userInputType, VALID_INPUT_LIST))
-      return userInputType
-    return "invalid"
-  }
 }
 
 gui_handlers.NextTutorialHandler <- NextTutorialHandler
 
 
 function autoRunTutorial(idx, mission) {
-  prepareStartTutorial(idx, mission, "autostart")
+  prepareStartTutorial(idx, mission)
+  sendTutorialChoiceStatisticOnce("autostart")
   guiStartFlight()
 }
 

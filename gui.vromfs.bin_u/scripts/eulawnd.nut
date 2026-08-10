@@ -114,6 +114,8 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
       let callback = this.onAcceptCallback
       defer(@()callback())
     }
+    if (!this.doOnlyLocalSave && !this.isNewEulaVersion)
+      sendBqEvent("CLIENT_NEW_USER_1", "acceptEula", { details = "acceptEula" })
     this.goBack()
   }
 
@@ -128,6 +130,8 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
       [
         ["yes", Callback(function() {
             this.sendEulaStatistic("decline")
+            if (!this.isNewEulaVersion)
+              sendBqEvent("CLIENT_NEW_USER_1", "declineEula", { details = "declineEula" })
             exitGamePlatform()
           }, this)
         ],
