@@ -125,6 +125,7 @@ shopItem {
   <</crewImage>>
 
   <<@itemButtons>>
+  slotSelectionRectangle {}
   on_hover:t='onUnitHover'
 }
 <<#needDnD>>

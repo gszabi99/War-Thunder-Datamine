@@ -1,5 +1,6 @@
 from "dagor.fs" import read_text_from_file, read_text_from_file_on_disk, file_exists
 from "%scripts/dagui_library.nut" import *
+from "%scripts/dagui_natives.nut" import is_unlocked
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -9,6 +10,7 @@ let { platformId, is_gdk }  = require("%sqstd/platform.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 
 const DELIVER = "==== "
@@ -79,6 +81,9 @@ gui_handlers.LicenseHandler <- class (BaseGuiHandler) {
   curPage = 0
   txtPages = null
 
+  creditsCompleteYPos = null
+  reqViewCreditsUnlock = true
+
   function initScreen() {
     this.curCfgList = licensesCfgList.filter(@(cfg) cfg.isVisible() && file_exists(cfg.fileName))
     let total = this.curCfgList.len()
@@ -95,7 +100,10 @@ gui_handlers.LicenseHandler <- class (BaseGuiHandler) {
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(tabNestObj, data, data.len(), this)
 
+    this.reqViewCreditsUnlock = !is_unlocked(-1, "view_credits")
     this.updateLicenseScreen()
+    if (this.reqViewCreditsUnlock)
+      this.scene.findObject("license_update").setUserData(this)
   }
 
   function onTabChange(obj) {
@@ -110,6 +118,16 @@ gui_handlers.LicenseHandler <- class (BaseGuiHandler) {
     this.txtPages = []
     fillPages(txtToSplit, this.txtPages)
     this.updatePageContent()
+
+    this.creditsCompleteYPos = null
+    if (this.reqViewCreditsUnlock && cfg.id == "CREDITS") {
+      this.guiScene.applyPendingChanges(false)
+      let licenseNestObj = this.scene.findObject("license_nest")
+      let licenseTextObj = this.scene.findObject("license_text")
+      this.creditsCompleteYPos = licenseNestObj.getSize()[1]
+        - licenseTextObj.getSize()[1]
+        + licenseNestObj.getPos()[1]
+    }
   }
 
   function updatePageContent() {
@@ -124,6 +142,17 @@ gui_handlers.LicenseHandler <- class (BaseGuiHandler) {
   function goToPage(obj) {
     this.curPage = obj.to_page.tointeger()
     this.updatePageContent()
+  }
+
+  function onUpdate(_obj, _dt) {
+    if (!this.reqViewCreditsUnlock || this.creditsCompleteYPos == null)
+      return
+
+    if (this.scene.findObject("license_text").getPos()[1] > this.creditsCompleteYPos)
+      return
+
+    reqUnlockByClient("view_credits")
+    this.reqViewCreditsUnlock = false
   }
 }
 

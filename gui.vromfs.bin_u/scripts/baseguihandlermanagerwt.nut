@@ -46,6 +46,7 @@ dagui_propid_add_name_id("platformId")
 local lastScreenHeightForFont = 0
 local lastInFlight = false  
 local hasInitializedFont = false
+local needReloadMainGuiSceneAfterFinishLoading = false
 
 
 let controlsAllowMaskDefaults = {
@@ -226,7 +227,8 @@ handlersManager.__update({
   }
 
   function isNeedReloadSceneSpecific() {
-    return this.isMainGuiSceneActive() && lastInFlight != isInFlight()
+    return this.isMainGuiSceneActive()
+      && (lastInFlight != isInFlight() || this.needFullReloadMainScene())
   }
 
   function beforeLoadHandler(hType) {
@@ -261,6 +263,17 @@ handlersManager.__update({
 
   function animatedSwitchScene(startFunc) {
     switch_gui_scene(startFunc)
+  }
+
+  function markReloadMainSceneIfNeed(hasCssChanged, guiScene) {
+    let isMainGuiScene = guiScene.isEqual(get_main_gui_scene())
+    if (isMainGuiScene) {
+      needReloadMainGuiSceneAfterFinishLoading = false
+      return
+    }
+    if (!hasCssChanged || isLoggedIn.get()) 
+      return
+    needReloadMainGuiSceneAfterFinishLoading = true
   }
 
   function updatePostLoadCss() {
@@ -469,6 +482,9 @@ handlersManager.__update({
       handler.guiScene.createElementByObject(handler.scene, "%gui/chat/voiceChatWidget.blk", "widgets", null)
   }
 
+  needFullReloadMainScene = @() needReloadMainGuiSceneAfterFinishLoading
+    && !isLoggedIn.get() && this.isMainGuiSceneActive()
+
   function validateHandlersAfterLoading() {
     this.clearInvalidHandlers()
     this.updateLoadingFlag()
@@ -507,6 +523,8 @@ function gui_start_empty_screen(...) {
 }
 
 function gui_finish_loading() {
+  if (handlersManager.needFullReloadMainScene())
+    handlersManager.startSceneFullReload()
   handlersManager.validateHandlersAfterLoading()
 }
 

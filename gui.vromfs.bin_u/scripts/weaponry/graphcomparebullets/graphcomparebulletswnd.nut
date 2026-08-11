@@ -16,6 +16,7 @@ let { round_by_value } = require("%sqstd/math.nut")
 let { secondsToMilliseconds, millisecondsToSeconds } = require("%sqstd/time.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
+
 const MAX_PLAY_VALUE = 1000
 
 let isSameBullets = @(bullet1, bullet2)
@@ -50,7 +51,6 @@ function getStartPlayingTime(curPlayValue, maxPlayTimeMs) {
   return curTimeMs - getPlayTimeMs(curPlayValue, maxPlayTimeMs)
 }
 
-
 let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/weaponry/bulletsBallisticParametersWnd.blk"
@@ -83,6 +83,7 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
 
   applySelectedOptionAfterInit = false
   structure = null
+  bulletsFilter = null
 
   function initScreen() {
     this.compareBulletsList = []
@@ -96,6 +97,7 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
       onChangeOptionCb = Callback(this.onChangeOption, this)
       goBackCb         = Callback(this.goBack, this)
       structure        = this.structure
+      bulletsFilter    = this.bulletsFilter
     })
 
     this.registerSubHandler(optionsHandler)

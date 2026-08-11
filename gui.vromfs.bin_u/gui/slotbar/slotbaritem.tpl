@@ -57,7 +57,7 @@ massTransp {
         id:t='slotbarHint'
         size:t='2.5@slot_width, @slotbarHeight'
         position:t='relative'
-        pos:t='0, 1@slotbarInvisPad'
+        pos:t='0, @slotbarInvisPad-@slotbar_bottom_margin+1@slotBattleButtonHeight+@slotbar_top_shade+1@sf/@pf'
         padding:t='@slot_interval, 0'
         display:t='hide'
         textareaNoTab {

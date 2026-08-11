@@ -12,11 +12,13 @@ let { getStatCardInfo } = require("%scripts/unit/statCardInfo.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { eventbus_subscribe} = require("eventbus")
 
-function canRequestTrajectorysData(bullet) {
-  return isMissileWeapon(bullet?.weaponType)
-    || isGuidedBomb(bullet?.weaponType)
-    || isMissileBullet(bullet?.bulletParams.bulletType)
+function canRequestTrajectorys(wType, bType) {
+  return isMissileWeapon(wType) || isGuidedBomb(wType) || isMissileBullet(bType)
 }
+
+let canRequestTrajectorysData = @(bullet)
+  canRequestTrajectorys(bullet?.weaponType, bullet?.bulletParams.bulletType)
+
 
 function requestMissileTrajectoryData(bullet, settings, handlerCb) {
   let { weaponBlkName, bulletName } = bullet
@@ -184,6 +186,7 @@ let openMissileTrajectoryWnd = @(p)
     pagesConfig = missileParametersPages
     shotSettings
     structure = getUnitRocketStructure()
+    bulletsFilter = canRequestTrajectorys
   }))
 
 eventbus_subscribe("trajectory_btn_clicked", @(p) openMissileTrajectoryWnd(p))

@@ -50,6 +50,7 @@ let handlersManager = {
   isNeedFullReloadAfterClearScene    = function() { return false }
   isNeedReloadSceneSpecific          = function() { return false }
   updatePostLoadCss                  = function() { return false } 
+  markReloadMainSceneIfNeed          = @(_hasCssChanged, _guiScene) null
   onSwitchBaseHandler                = function() {}
   onActiveHandlersChanged            = function() {} 
                                                      
@@ -205,11 +206,7 @@ let handlersManager = {
       }
     }
 
-    if (isPostLoadCssChanged) {
-      let mainGuiScene = get_main_gui_scene()
-      if (!guiScene.isEqual(mainGuiScene))
-        this.clearScene(mainGuiScene)
-    }
+    this.markReloadMainSceneIfNeed(isPostLoadCssChanged, guiScene)
 
     if (reloadScene)
       this.clearScene(guiScene)

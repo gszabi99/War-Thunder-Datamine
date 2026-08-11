@@ -760,7 +760,7 @@ options.addTypes({
 
 })
 
-options.init <- function(handler, scene, _structure) {
+options.init <- function(handler, scene, _structure = null, _bulletsFilter = null) {
   this.nestObj = scene
   let needReinit = !this.isSaved
     || !targetTypeToThreatTypes[this.targetUnit.esUnitType].contains(this.UNITTYPE.value)

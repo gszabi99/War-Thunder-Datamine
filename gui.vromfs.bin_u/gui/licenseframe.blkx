@@ -20,14 +20,18 @@
         },
         "Button_close": {}
       },
-      "textarea": {
-        "id": "license_text",
+      "tdiv": {
+        "id": "license_nest",
         "width": "pw",
         "height": "fh",
         "position": "relative",
-        "padding": "0.01@sf",
         "overflow-y": "auto",
-        "text-align": "left"
+        "textarea": {
+          "id": "license_text",
+          "width": "pw",
+          "padding": "0.01@sf",
+          "text": ""
+        }
       },
       "navBar": {
         "navMiddle": {
@@ -35,5 +39,10 @@
         }
       }
     }
+  },
+  "timer": {
+    "id": "license_update",
+    "timer_handler_func": "onUpdate",
+    "timer_interval_msec": "250"
   }
 }

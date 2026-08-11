@@ -967,6 +967,9 @@ mShared = {
       }
       updateOptionChangedIcon(k)
     })
+
+    if (mSkipUI)
+      return
     
     updateOption("fxQuality")
     updateOption("shadowQuality")

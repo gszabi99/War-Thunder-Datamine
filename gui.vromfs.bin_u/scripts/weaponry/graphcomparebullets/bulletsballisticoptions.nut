@@ -38,6 +38,7 @@ let options = {
   targetUnit = null
   targetAmmo = null
   structure = null
+  bulletsFilter = null
 
   function setParams(unit, ammo = null, _distance = null) {
     this.targetUnit = unit
@@ -333,7 +334,10 @@ options.addTypes({
     }
 
     function updateParams() {
+      let { bulletsFilter = null } = options
+
       let unit = options.UNIT.value
+      let unitName = unit.name
       this.values = []
       this.items = []
       let bulletSetData = []
@@ -356,7 +360,7 @@ options.addTypes({
         if (gunIdx == curGunIdx)
           continue
 
-        let bulletsList = getBulletsList(unit.name, bulletSetIdx, {
+        let bulletsList = getBulletsList(unitName, bulletSetIdx, {
           needCheckUnitPurchase = false, needOnlyAvailable = false, needTexts = true
         })
         if (bulletsList.values.len())
@@ -364,17 +368,16 @@ options.addTypes({
 
         foreach (i, value in bulletsList.values) {
           let bulletsSet = getBulletsSetData(unit, value)
-          let weaponBlkName = bulletsSet?.weaponBlkName
-          let isBulletBelt = bulletsSet?.isBulletBelt ?? true
+          let { weaponType = null, weaponBlkName = null, isBulletBelt = true } = bulletsSet
 
-          if (!weaponBlkName)
-            continue
-          if (this.visibleTypes.indexof(bulletsSet?.weaponType) == null)
+          if (weaponType == null
+              || weaponBlkName == null
+              || this.visibleTypes.indexof(weaponType) == null)
             continue
 
           let searchName = getBulletsSearchName(unit, value)
           let useDefaultBullet = searchName != value
-          let bulletParameters = calculate_tank_bullet_parameters(bulletsSet?.supportUnitName ?? unit.name,
+          let bulletParameters = calculate_tank_bullet_parameters(bulletsSet?.supportUnitName ?? unitName,
             (useDefaultBullet && weaponBlkName) || getModificationBulletsEffect(searchName),
             useDefaultBullet, false)
 
@@ -386,6 +389,10 @@ options.addTypes({
           foreach (idx, bulletName in bulletNames) {
             local locName = bulletsList.items[i].text
             local bulletParams = bulletParameters?[idx]
+
+            if (bulletsFilter != null && !bulletsFilter(weaponType, bulletParams?.bulletType))
+              continue
+
             local isDub = false
             if (isBulletBelt) {
               locName = " ".concat(format(loc("caliber/mm"), bulletsSet.caliber),
@@ -419,15 +426,15 @@ options.addTypes({
             }
 
             let tooltipId = isBulletBelt
-              ? SINGLE_BULLET.getTooltipId(unit.name, bulletName,
+              ? SINGLE_BULLET.getTooltipId(unitName, bulletName,
                 { modName = value, bSet, bulletParams })
-              : MODIFICATION.getTooltipId(bulletsSet?.supportUnitName ?? unit.name, value,
+              : MODIFICATION.getTooltipId(bulletsSet?.supportUnitName ?? unitName, value,
                 { hasPlayerInfo = false })
 
             bulletNamesSet.append(locName)
             let btName = bulletName ?? ""
             this.values.append({
-              unitName = unit.name
+              unitName
               esUnitType = unit.esUnitType
               bulletName = btName
               weaponBlkName = weaponBlkName
@@ -444,9 +451,9 @@ options.addTypes({
             this.items.append({
               text = locName
               addDiv = isTooltipOnHold ? null
-                : isBulletBelt ? SINGLE_BULLET.getMarkup(unit.name, bulletName,
+                : isBulletBelt ? SINGLE_BULLET.getMarkup(unitName, bulletName,
                   { modName = value, bSet, bulletParams })
-                : MODIFICATION.getMarkup(bulletsSet?.supportUnitName ?? unit.name, value,
+                : MODIFICATION.getMarkup(bulletsSet?.supportUnitName ?? unitName, value,
                   { hasPlayerInfo = false })
               tooltipId = isTooltipOnHold ? tooltipId : ""
               tooltipOnHold = isTooltipOnHold
@@ -456,17 +463,14 @@ options.addTypes({
       }
 
       
-      const shellTypesToProceed = [
+      const secondaryWeaponBullets = [
         { shellType = "rocket" }
         { shellType = "bullet" }
         { shellType = "bomb", paramToCheck = "guidanceType" }
       ]
-
-      let unitName = unit.name
       let unitBlk = getFullUnitBlk(unitName)
       let weapons = getUnitWeapons(unitName, unitBlk)
       let knownWeapBlkArray = []
-
       foreach (weap in weapons) {
         if (!weap?.blk || weap?.dummy || weap.trigger == TRIGGER_TYPE.COUNTERMEASURES
           || isInArray(weap.blk, knownWeapBlkArray))
@@ -476,8 +480,7 @@ options.addTypes({
         let { weaponBlk, weaponBlkPath } = getWeaponBlkParams(unitName, weap.blk)
         local curBlk
         local curType
-
-        foreach (t in shellTypesToProceed) {
+        foreach (t in secondaryWeaponBullets) {
           let { shellType, paramToCheck = "" } = t
           if (weaponBlk?[shellType] &&
             (paramToCheck == "" || (paramToCheck != "" && weaponBlk[shellType]?[paramToCheck]))) {
@@ -522,6 +525,20 @@ options.addTypes({
               presetName = weap.presetId
             })
 
+        let iconType = curBlk?.iconType ?? weaponBlk?.iconType ?? weap?.iconType
+        local weapType = WEAPON_TYPE.GUNS
+        if (curType == "rocket") {
+          let trig = weap.trigger
+          weapType = trig == TRIGGER_TYPE.AGM || trig == TRIGGER_TYPE.ATGM ? WEAPON_TYPE.AGM
+            : trig == TRIGGER_TYPE.AAM ? WEAPON_TYPE.AAM
+            : WEAPON_TYPE.ROCKETS
+        }
+        else if (curType == "bomb")
+          weapType = WEAPON_TYPE.GUIDED_BOMBS
+
+        if (bulletsFilter != null && !bulletsFilter(weapType, bulletParams?.bulletType))
+          continue
+
         this.items.append({
           text = locName
           addDiv = isTooltipOnHold ? null
@@ -538,23 +555,12 @@ options.addTypes({
           tooltipOnHold = isTooltipOnHold
         })
 
-        let iconType = curBlk?.iconType ?? weaponBlk?.iconType ?? weap?.iconType
-        local weapType = WEAPON_TYPE.GUNS
-        if (curType == "rocket") {
-          let trig = weap.trigger
-          weapType = trig == TRIGGER_TYPE.AGM || trig == TRIGGER_TYPE.ATGM ? WEAPON_TYPE.AGM
-            : trig == TRIGGER_TYPE.AAM ? WEAPON_TYPE.AAM
-            : WEAPON_TYPE.ROCKETS
-        }
-        else if (curType == "bomb")
-          weapType = WEAPON_TYPE.GUIDED_BOMBS
-
         let btName = isBullet ? curBlk.bulletType
           : isRocket ? (curBlk?.bulletName ?? curBlk?.weaponName ?? "")
           : isGuidedBomb ? shellName
           : ""
         this.values.append({
-          unitName = unit.name
+          unitName
           esUnitType = unit.esUnitType
           bulletName = btName
           weaponBlkName = weaponBlkPath
@@ -585,9 +591,10 @@ options.addTypes({
   }
 })
 
-options.init <- function(handler, scene, structure = null) {
+options.init <- function(handler, scene, structure = null, bulletsFilter = null) {
   this.nestObj = scene
   this.structure = structure
+  this.bulletsFilter = bulletsFilter
 
   let needReinit = this.UNIT.value == null
     || this.UNIT.value != this.targetUnit

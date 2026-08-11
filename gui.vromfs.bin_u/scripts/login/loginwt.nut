@@ -27,7 +27,7 @@ let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { isProfileReceived, isAuthorized, isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { sessionLobbyHostCb } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { startLoginProcess } = require("%scripts/login/loginProcess.nut")
 let { setLoginState } = require("%scripts/login/loginManager.nut")
@@ -52,8 +52,10 @@ function gui_start_startscreen(_) {
 }
 
 eventbus_subscribe("gui_start_startscreen", gui_start_startscreen)
-eventbus_subscribe("gui_start_after_scripts_reload", @(_) null) 
-                                                                
+eventbus_subscribe("gui_start_after_scripts_reload", function(_) {
+  if (!disableNetwork && isAuthorized.get() && !isLoggedIn.get())
+    loadHandler(gui_handlers.WaitForLoginWnd)
+})
 
 function go_to_account_web_page(bqKey = "") {
   let urlBase = getCurCircuitOverride("accountWebPage",
