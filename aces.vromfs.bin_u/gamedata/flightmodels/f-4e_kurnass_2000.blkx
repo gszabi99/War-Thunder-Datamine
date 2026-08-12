@@ -3597,6 +3597,10 @@
       {
         "name": "kurnass_2000_gbu_15",
         "blk": "gameData/flightModels/weaponPresets/kurnass_2000_gbu_15.blk"
+      },
+      {
+        "name": "kurnass_2000_agm_45b_10",
+        "blk": "gameData/FlightModels/weaponPresets/kurnass_2000_agm_45b_10.blk"
       }
     ]
   },
@@ -3976,6 +3980,25 @@
             }
           },
           {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot1",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_l_out",
+                "lau_34a_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "agm_12b_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "multibarrel_box",
             "name": "suu_23a_gunpod_wing",
             "reqModification": "f4c_suu_23a",
@@ -4184,6 +4207,22 @@
                 "preset": "aim_9l"
               }
             ]
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot2",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "lau_34a_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "agm_12b_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
           {
             "iconType": "guided_bomb_yellow",
@@ -4400,6 +4439,10 @@
               "emitter": "aero_3b_001",
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "agm_45b_10_slot2"
             }
           }
         ]
@@ -4973,6 +5016,10 @@
               "emitter": "aero_3b_002",
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 10,
+              "preset": "agm_45b_10_slot10"
             }
           }
         ]
@@ -5194,6 +5241,22 @@
                 "preset": "aim_9l"
               }
             ]
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot10",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "lau_34a_003"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "agm_12b_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
           {
             "iconType": "guided_bomb_yellow",
@@ -5509,6 +5572,25 @@
             "DependentWeaponPreset": {
               "slot": 5,
               "preset": "pave_spike"
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot11",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_r_out",
+                "lau_34a_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "agm_12b_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -6424,6 +6506,11 @@
       "prevModification": "M60_new_gun",
       "deactivationIsAllowed": false,
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_arm": {
+      "prevModification": "f4c_suu_23a",
+      "tier": 4,
       "modClass": "weapon"
     },
     "countermeasures_launcher_chaff_large": {},

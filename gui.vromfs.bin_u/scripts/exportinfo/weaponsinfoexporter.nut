@@ -31,10 +31,12 @@ let {
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { buildBulletsData } = require("%scripts/weaponry/bulletsVisual.nut")
 let { getMaxArmorPiercing } = require("%scripts/weaponry/dmgModel.nut")
-let { getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getWeaponNameByBlkPath, isCaliberCannon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 let RAW_FIELDS = [
-  "bulletName", "bulletType", "mass", "speed", "caliber",
+  "bulletName", "bulletType", "mass", "speed", "caliber", "guiCustomIcon",
   "explosiveType", "explosiveMass",
   "ricochetPreset", "fuseDelayDist", "fuseDelay",
   "normalizationPreset", "groundRicochetPreset", "stabilityThreshold",
@@ -43,7 +45,8 @@ let RAW_FIELDS = [
   "cumulativeDamage", "cumulativeByNormal",
   "operated", "guidanceType", "rangeMax", "timeLife", "endSpeed",
   "selfDestructionInAir", "maxDistance", "damageMass", "damageCaliber",
-  "ballisticCaliber", "Cx"
+  "ballisticCaliber", "Cx",
+  "smokeShell", "smokeShellRad", "smokeActivateTime", "smokeTime"
 ]
 
 let WEAPON_RAW_FIELDS = [
@@ -62,12 +65,46 @@ let MUNITION_RAW_FIELDS = [
   "explosiveType", "explosiveMass", "cumulativeByNormal",
   "explodeArmorPower", "explodeRadius", "shutterDamageRadius",
   "shutterArmorPower", "armDistance", "dropSpeedRange", "dropHeightRange",
-  "maxSpeedInWater", "distToLive", "diveDepth", "iconType", "yield"
+  "maxSpeedInWater", "distToLive", "diveDepth", "yield",
+  "smokeShellRad", "smokeActivateTime", "smokeTime"
 ]
 
 const TARGET_WEAPONS_INFO = "weaponsInfo"
 
-let class ExporterStatus {
+let WEAPON_GROUP = {
+  GUN     = "gun"
+  ROCKET  = "rocket"
+  BOMB    = "bomb"
+  TORPEDO = "torpedo"
+}
+
+let WEAPON_CLASS = {
+  MACHINE_GUN = "machineGun"
+  CANNON      = "cannon"
+  ROCKET      = "rocket"
+  BOMB        = "bomb"
+  MINE        = "mine"
+  TORPEDO     = "torpedo"
+  UNKNOWN     = "weapon"
+}
+
+let GUN_WEAPON_CLASSES = [ WEAPON_CLASS.CANNON, WEAPON_CLASS.MACHINE_GUN, WEAPON_CLASS.UNKNOWN ]
+
+let WEAPON_ROLE = {
+  GUIDED       = "guided"
+  ANTI_AIR     = "antiAir"
+  ANTI_SURFACE = "antiSurface"
+  SMOKE        = "smoke"
+}
+
+let COUNTERMEASURE_BULLET_TYPES = [ "flr", "chff" ]
+
+let ANTI_AIR_MISSILE_BULLET_TYPES = [ "aam", "sam_tank" ]
+
+let isMissileBulletType = @(bulletType) ANTI_AIR_MISSILE_BULLET_TYPES.contains(bulletType)
+  || bulletType.startswith("atgm")
+
+class ExporterStatus {
   static DETAILS_FIELD = "details"
   static SUCCESS_FIELD = "success"
 
@@ -188,6 +225,120 @@ function readNamedChildBlocks(b, names) {
       res[name] <- readParamsBlock(child)
   }
   return res
+}
+
+function getBulletIconImgId(raw) {
+  let customIcon = raw?.guiCustomIcon ?? ""
+  if (customIcon != "")
+    return customIcon
+
+  let bulletType = raw?.bulletType ?? ""
+  let atIdx = bulletType.indexof("@")
+  return atIdx != null ? bulletType.slice(0, atIdx) : bulletType
+}
+
+function makeBulletIconData(raw) {
+  let imgId = getBulletIconImgId(raw)
+  if (imgId == "")
+    return null
+
+  let bulletIcons = GUI.get()?.bullet_icons
+  let texture = bulletIcons?[imgId]
+  if (texture != null)
+    return { texture }
+
+  let caliberMm = 1000.0 * (raw?.caliber ?? 0.0)
+  let defaultImgId = isCaliberCannon(caliberMm) ? "default_shell" : "default_ball"
+  let defaultTexture = bulletIcons?[defaultImgId]
+  return defaultTexture == null ? null
+    : { texture = defaultTexture, isDefaultTexture = true }
+}
+
+function makeMunitionIconData(wBlk, munitionBlk) {
+  let iconType = munitionBlk?.iconType ?? wBlk?.iconType ?? ""
+  return iconType == "" ? null : { texture = iconType }
+}
+
+let NO_ICON_OVERLAY_BULLET_TYPES = [ "napalm_tank" ]
+
+function isBulletBeltWeapon(wBlk) {
+  return (wBlk?.isBulletBelt != false || (wBlk?.bulletsCartridge ?? 0) > 1)
+    && !wBlk?.useSingleIconForBullet
+}
+
+function hasNoIconOverlays(isBulletBelt, bullets) {
+  if (isBulletBelt)
+    return true
+
+  foreach (b in bullets)
+    if (NO_ICON_OVERLAY_BULLET_TYPES.contains(b?.bulletType ?? ""))
+      return true
+
+  return false
+}
+
+function getBulletsIconParam(unitName, weaponBlkPath, subName, effectToMod) {
+  let unit = getAircraftByName(unitName)
+  if (unit == null)
+    return 0
+
+  if (subName == null || subName == "") {
+    if (unit?.bulletsIconParams == null)
+      return 0
+    return unit.bulletsIconParams?[getWeaponNameByBlkPath(weaponBlkPath).tolower()] ?? 0
+  }
+
+  let modName = effectToMod?[subName]
+  return modName == null ? 0
+    : (getModificationByName(unit, modName)?.bulletsIconParam ?? 0)
+}
+
+function stripFeatureIconPath(path) {
+  local name = path
+  let hashIdx = name.indexof("#ui/gameuiskin#")
+  if (hashIdx != null)
+    name = name.slice(hashIdx + "#ui/gameuiskin#".len())
+  let dotIdx = name.indexof(".")
+  if (dotIdx != null)
+    name = name.slice(0, dotIdx)
+  return name
+}
+
+let featureIconsById = {}
+
+function getFeatureIcons(featureId) {
+  if (featureId in featureIconsById)
+    return featureIconsById[featureId]
+
+  let features = GUI.get()?.bullets_features_icons
+  if (!features)
+    return []
+
+  let icons = (features % featureId).map(@(path) stripFeatureIconPath(path))
+  featureIconsById[featureId] <- icons
+  return icons
+}
+
+function getFeatureIconTexture(featureId, idx) {
+  if (idx < 0)
+    return ""
+  let icons = getFeatureIcons(featureId)
+  return idx >= icons.len() ? "" : icons[idx]
+}
+
+function makeBulletIconOverlays(iconParam) {
+  if (iconParam == 0)
+    return null
+
+  let res = {}
+  let armor = getFeatureIconTexture("armor", iconParam % 10 - 1)
+  if (armor != "")
+    res.armor <- armor
+  let damage = getFeatureIconTexture("damage", (iconParam / 10).tointeger() - 1)
+  if (damage != "")
+    res.damage <- damage
+
+  return res.len() == 0 ? null : res
 }
 
 function makePenetrationData(data) {
@@ -464,6 +615,10 @@ function getProjectileId(raw) {
   return makeBulletFingerprint(raw, "")
 }
 
+function getUnitTypeTag(unitName) {
+  return getAircraftByName(unitName)?.unitType.tag ?? ""
+}
+
 function collectAvailableBulletSetNames(unitName) {
   let res = {}
 
@@ -495,8 +650,10 @@ function addWeaponPath(paths, unitName, weapon) {
     return
 
   let { weaponBlkPath = "" } = getWeaponBlkParams(unitName, blkPath)
-  if (weaponBlkPath != "")
-    paths[weaponBlkPath] <- true
+  if (weaponBlkPath == "")
+    return
+
+  paths[weaponBlkPath] <- true
 }
 
 function collectWeaponPathsFromUnitBlk(unitName) {
@@ -665,27 +822,9 @@ function addProjectileRef(projectilesDb, bulletId, raw) {
   appendOnce(bulletId, projectilesDb[projectileId].sourceBulletIds)
 }
 
-function getWeaponKind(wBlk) {
-  if (wBlk?.rocketGun)
-    return "rocketGun"
-  if (wBlk?.bombGun)
-    return "bombGun"
-  if (wBlk?.torpedoGun)
-    return "torpedoGun"
-  if (wBlk?.cannon == false)
-    return "machineGun"
-  if (wBlk?.cannon == true)
-    return "cannon"
-  return "weapon"
-}
-
-function isMunitionWeaponKind(weaponKind) {
-  return weaponKind == "rocketGun" || weaponKind == "bombGun" || weaponKind == "torpedoGun"
-}
-
 function makeExportRawBulletData(raw) {
   let skipRawKeys = [
-    "bulletName", "bulletType",
+    "bulletName", "bulletType", "guiCustomIcon",
     "ricochetPreset", "sound", "sound_inside", "sound_path", "sound_pathStudio"
   ]
 
@@ -725,7 +864,8 @@ function makeWeaponsDb(rawWeaponsDb) {
     if (shouldSkipWeaponExport(id))
       continue
 
-    let target = weaponData?.munition != null || isMunitionWeaponKind(weaponData?.weaponKind ?? "")
+    let target = weaponData?.munition != null
+        || !GUN_WEAPON_CLASSES.contains(weaponData?.weaponClass ?? WEAPON_CLASS.UNKNOWN)
       ? res.munitions
       : res.barrels
     target[id] <- removeEmptyValues(weaponData)
@@ -839,6 +979,108 @@ function readMunitionData(wBlk) {
   return res
 }
 
+function getWeaponGroup(wBlk) {
+  if (wBlk?.rocketGun)
+    return WEAPON_GROUP.ROCKET
+  if (wBlk?.bombGun)
+    return WEAPON_GROUP.BOMB
+  if (wBlk?.torpedoGun)
+    return WEAPON_GROUP.TORPEDO
+  return WEAPON_GROUP.GUN
+}
+
+function getWeaponClassByCaliber(caliber) {
+  let caliberMm = 1000.0 * caliber
+  if (caliberMm <= 0)
+    return WEAPON_CLASS.UNKNOWN
+  return isCaliberCannon(caliberMm) ? WEAPON_CLASS.CANNON : WEAPON_CLASS.MACHINE_GUN
+}
+
+function hasCountermeasureBullets(container) {
+  foreach (b in container % "bullet")
+    if (COUNTERMEASURE_BULLET_TYPES.contains(b?.bulletType ?? ""))
+      return true
+  return false
+}
+
+function isCountermeasureWeapon(wBlk) {
+  if (getWeaponGroup(wBlk) == WEAPON_GROUP.ROCKET)
+    return getWeaponMunitionBlock(wBlk)?.smokeShell == false
+
+  return hasCountermeasureBullets(wBlk)
+}
+
+function isGuidedMunition(munitionBlk) {
+  return munitionBlk?.operated == true || munitionBlk?.guidanceType != null
+    || isDataBlock(munitionBlk?.guidance)
+}
+
+function getMunitionRoles(munitionBlk) {
+  let res = []
+
+  if (isGuidedMunition(munitionBlk)) {
+    res.append(WEAPON_ROLE.GUIDED)
+    res.append(ANTI_AIR_MISSILE_BULLET_TYPES.contains(munitionBlk?.bulletType ?? "")
+      ? WEAPON_ROLE.ANTI_AIR
+      : WEAPON_ROLE.ANTI_SURFACE)
+  }
+
+  if (munitionBlk?.smokeShell == true)
+    res.append(WEAPON_ROLE.SMOKE)
+
+  return res
+}
+
+function getBulletParamsBlk(b) {
+  return b?.rocket ?? b
+}
+
+function hasMissileBullets(wBlk) {
+  foreach (b in wBlk % "bullet")
+    if (isMissileBulletType(getBulletParamsBlk(b)?.bulletType ?? ""))
+      return true
+  return false
+}
+
+function appendBulletsRoles(container, res) {
+  foreach (b in container % "bullet")
+    foreach (role in getMunitionRoles(getBulletParamsBlk(b)))
+      appendOnce(role, res)
+}
+
+function getGunBulletsRoles(wBlk) {
+  let res = []
+  appendBulletsRoles(wBlk, res)
+
+  let blockCount = wBlk.blockCount()
+  for (local i = 0; i < blockCount; i++) {
+    let sub = wBlk.getBlock(i)
+    if (sub.getBlockName() != "bullet")
+      appendBulletsRoles(sub, res)
+  }
+
+  return res
+}
+
+function getWeaponClass(wBlk) {
+  let group = getWeaponGroup(wBlk)
+  if (group == WEAPON_GROUP.TORPEDO)
+    return WEAPON_CLASS.TORPEDO
+  if (group == WEAPON_GROUP.ROCKET)
+    return WEAPON_CLASS.ROCKET
+  if (group == WEAPON_GROUP.BOMB)
+    return getWeaponMunitionBlock(wBlk)?.isMine == true ? WEAPON_CLASS.MINE : WEAPON_CLASS.BOMB
+
+  if (hasMissileBullets(wBlk))
+    return WEAPON_CLASS.ROCKET
+  return getWeaponClassByCaliber(wBlk?.bullet?.caliber ?? 0.0)
+}
+
+function getWeaponRoles(wBlk) {
+  let munitionBlk = getWeaponMunitionBlock(wBlk)
+  return munitionBlk != null ? getMunitionRoles(munitionBlk) : getGunBulletsRoles(wBlk)
+}
+
 function calcWeaponPenetration(unitName, weaponBlkPath, munitionData, wBlk = null) {
   if ((munitionData?.bulletType ?? "") == "aam")
     return null
@@ -867,7 +1109,7 @@ function calcWeaponPenetration(unitName, weaponBlkPath, munitionData, wBlk = nul
 }
 
 function addSetToDb(db, unitName, weaponBlkPath, subName, container, availableSets,
-  projectilesDb = null, effectToMod = null, errors = null) {
+  projectilesDb = null, effectToMod = null, errors = null, isBulletBelt = false) {
   let bullets = container % "bullet"
   if (bullets.len() == 0)
     return
@@ -880,6 +1122,10 @@ function addSetToDb(db, unitName, weaponBlkPath, subName, container, availableSe
   let availableOnUnit = isBulletSequence || useDefault || (subName in availableSets)
   if (!availableOnUnit)
     return
+
+  let iconOverlays = hasNoIconOverlays(isBulletBelt, bullets) ? null
+    : makeBulletIconOverlays(getBulletsIconParam(unitName, weaponBlkPath, subName, effectToMod))
+  let unitTypeTag = getUnitTypeTag(unitName)
 
   local calcResult = null
   local calcError = null
@@ -913,9 +1159,25 @@ function addSetToDb(db, unitName, weaponBlkPath, subName, container, availableSe
         bulletTypeId = raw?.bulletType ?? ""
         raw = makeExportRawBulletData(raw)
         units = []
+        unitTypes = []
+        weaponClass = isMissileBulletType(raw?.bulletType ?? "") ? WEAPON_CLASS.ROCKET
+          : getWeaponClassByCaliber(raw?.caliber ?? 0.0)
+        weaponRoles = getMunitionRoles(getBulletParamsBlk(b))
         ttxByUnit = {}
         penetrationByUnit = {}
       }
+
+      let icon = makeBulletIconData(raw)
+      if (icon != null)
+        db[key].icon <- icon
+    }
+
+    if (iconOverlays != null && "icon" in db[key]) {
+      let icon = db[key].icon
+      if (!("armor" in icon) && "armor" in iconOverlays)
+        icon.armor <- iconOverlays.armor
+      if (!("damage" in icon) && "damage" in iconOverlays)
+        icon.damage <- iconOverlays.damage
     }
 
     let modName = (!useDefault && effectToMod != null && subName in effectToMod)
@@ -930,6 +1192,8 @@ function addSetToDb(db, unitName, weaponBlkPath, subName, container, availableSe
     storeLocIds(db[key], candidates, key)
 
     appendOnce(unitName, db[key].units)
+    if (unitTypeTag != "")
+      appendOnce(unitTypeTag, db[key].unitTypes)
 
     if (calcError != null)
       db[key].ttxByUnit[unitName] <- { error = calcError }
@@ -953,11 +1217,17 @@ function addBarrelToDb(barrelsDb, unitName, weaponBlkPath, wBlk) {
     let munitionData = readMunitionData(wBlk)
     barrelsDb[key] <- {
       raw = readRawFields(wBlk, WEAPON_RAW_FIELDS)
-      weaponKind = getWeaponKind(wBlk)
+      weaponClass = getWeaponClass(wBlk)
+      weaponRoles = getWeaponRoles(wBlk)
       munition = munitionData
       weaponType = activeBulletIndex
       units = []
+      unitTypes = []
     }
+
+    let icon = makeMunitionIconData(wBlk, getWeaponMunitionBlock(wBlk))
+    if (icon != null)
+      barrelsDb[key].icon <- icon
 
     let candidates = []
     pushNonEmptyUnique(candidates, munitionData?.bulletName ?? "")
@@ -967,6 +1237,9 @@ function addBarrelToDb(barrelsDb, unitName, weaponBlkPath, wBlk) {
   }
 
   appendOnce(unitName, barrelsDb[key].units)
+  let unitTypeTag = getUnitTypeTag(unitName)
+  if (unitTypeTag != "")
+    appendOnce(unitTypeTag, barrelsDb[key].unitTypes)
 
   if (barrelsDb[key].munition != null) {
     let penetration = calcWeaponPenetration(unitName, weaponBlkPath, barrelsDb[key].munition, wBlk)
@@ -995,8 +1268,13 @@ function processUnitIntoDb(db, unitName, errors, barrelsDb = null, projectilesDb
         continue
       }
 
+      if (isCountermeasureWeapon(wBlk))
+        continue
+
+      let isBulletBelt = isBulletBeltWeapon(wBlk)
+
       addSetToDb(db, unitName, path, "", wBlk,
-        availableSets, projectilesDb, effectToMod, errors)
+        availableSets, projectilesDb, effectToMod, errors, isBulletBelt)
 
       let n = wBlk.blockCount()
       for (local i = 0; i < n; i++) {
@@ -1011,7 +1289,7 @@ function processUnitIntoDb(db, unitName, errors, barrelsDb = null, projectilesDb
           continue
 
         addSetToDb(db, unitName, path, name, sub,
-          availableSets, projectilesDb, effectToMod, errors)
+          availableSets, projectilesDb, effectToMod, errors, isBulletBelt)
       }
 
       addBarrelToDb(barrelsDb, unitName, path, wBlk)

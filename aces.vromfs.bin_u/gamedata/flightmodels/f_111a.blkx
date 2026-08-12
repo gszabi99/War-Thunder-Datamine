@@ -3400,6 +3400,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_111a_agm12b.blk"
       },
       {
+        "name": "f_111a_agm_45b_10",
+        "blk": "gameData/FlightModels/weaponPresets/f_111a_agm_45b_10.blk"
+      },
+      {
         "name": "f_111a_suu_16a",
         "blk": "gameData/FlightModels/weaponPresets/f_111a_suu_16a.blk"
       }
@@ -4277,6 +4281,25 @@
             }
           },
           {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot4",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot1",
+                "aero_5a_1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "agm_12b_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "multibarrel_box",
             "name": "suu_16",
             "reqModification": "us_suu_16a",
@@ -4622,6 +4645,29 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot5",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot2",
+                "aero_5a_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "agm_12b_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "sweepRange": [
+                0.0,
+                0.75
+              ]
             }
           },
           {
@@ -5116,6 +5162,29 @@
             }
           },
           {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot8",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot3",
+                "aero_5a_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "agm_12b_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "sweepRange": [
+                0.0,
+                0.75
+              ]
+            }
+          },
+          {
             "iconType": "multibarrel_box",
             "name": "suu_16",
             "reqModification": "us_suu_16a",
@@ -5395,6 +5464,25 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
+              "emitter": "agm_12b_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot9",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot4",
+                "aero_5a_4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
               "emitter": "agm_12b_4",
               "bullets": 1,
               "external": true,
@@ -6416,6 +6504,10 @@
       "tier": 4,
       "modClass": "weapon",
       "prevModification": "us_aim_9b"
+    },
+    "us_arm": {
+      "tier": 4,
+      "modClass": "weapon"
     }
   },
   "user_skin": {
