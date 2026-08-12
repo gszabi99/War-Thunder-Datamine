@@ -88,7 +88,9 @@ function bigQueryOnLogin() {
   if(usedTexturePacks != "")
     data.usedTexturePacks <- usedTexturePacks
 
-  sendBqEvent("CLIENT_LOGIN_2", "login", data)
+  data.bvhMode <- getSystemConfigOption("graphics/bvhMode", "off")
+
+  sendBqEvent("CLIENT_SETTINGS_1", "login", data)
 }
 
 function statsdOnLogin() {
