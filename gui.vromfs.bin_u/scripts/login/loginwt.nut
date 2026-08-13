@@ -3,6 +3,7 @@ from "%scripts/dagui_natives.nut" import stat_get_value_respawns, fetch_devices_
 from "app" import pauseGame
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
+from "%sqDagui/guiBhv/guiBhvUtils.nut" import setDebugLogBhvAttach
 
 let { is_android, platformId, is_gdk } = require("%sqstd/platform.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -78,10 +79,11 @@ function needAutoStartBattle() {
 
 function firstMainMenuLoad() {
   let isAutoStart = needAutoStartBattle()
+  setDebugLogBhvAttach(true)
   local handler = isAutoStart
     ? loadHandler(gui_handlers.AutoStartBattleHandler)
     : gui_start_mainmenu({ allowMainmenuActions = false })
-
+  setDebugLogBhvAttach(false)
   if (!handler)
     return 
 

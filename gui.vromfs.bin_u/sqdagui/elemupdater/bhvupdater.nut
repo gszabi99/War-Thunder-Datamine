@@ -1,4 +1,6 @@
 from "%sqDagui/daguiNativeApi.nut" import *
+from "%sqDagui/guiBhv/guiBhvUtils.nut" import isDebugLogBhvAttach
+
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
@@ -6,6 +8,7 @@ let elemEvents = require("%sqDagui/elemUpdater/elemUpdaterEvents.nut")
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { log } = require("%sqstd/log.nut")()
 
 local assertOnce = function(_uniqId, errorText) { throw(errorText) }
 
@@ -14,6 +17,8 @@ let BhvUpdater = class {
   valuePID     = dagui_propid_add_name_id("value")
 
   function onAttach(obj) {
+    if (isDebugLogBhvAttach())
+      log($"[DEBUG_ATTACH] BhvUpdater {obj?.value}")
     if (obj?.value) {
       try {
         

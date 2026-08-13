@@ -1,7 +1,8 @@
 from "%sqDagui/daguiNativeApi.nut" import *
-
+from "%sqDagui/guiBhv/guiBhvUtils.nut" import isDebugLogBhvAttach
 let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isTable, isArray } = require("%sqStdLibs/helpers/u.nut")
+let { log } = require("%sqstd/log.nut")()
 
 
 
@@ -21,6 +22,8 @@ let bhvUpdateByWatched = class {
   valuePID     = dagui_propid_add_name_id("value")
 
   function onAttach(obj) {
+    if (isDebugLogBhvAttach())
+      log($"[DEBUG_ATTACH] bhvUpdateByWatched {obj?.value}")
     if ((obj?.value ?? "") != "")
       this.updateSubscriptions(obj, obj.value.tointeger())
     return RETCODE_NOTHING

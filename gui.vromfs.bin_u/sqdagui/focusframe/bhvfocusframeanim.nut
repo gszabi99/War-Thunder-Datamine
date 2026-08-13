@@ -1,8 +1,10 @@
 from "%sqDagui/daguiNativeApi.nut" import *
+from "%sqDagui/guiBhv/guiBhvUtils.nut" import isDebugLogBhvAttach
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { abs } = require("math")
 let focusTarget = require("%sqDagui/focusFrame/bhvFocusFrameTarget.nut")
+let { log } = require("%sqstd/log.nut")()
 
 
 
@@ -112,6 +114,8 @@ let class bhvFocusFrameAnim {
   eventMask = EV_TIMER
 
   function onAttach(obj) {
+    if (isDebugLogBhvAttach())
+      log($"[DEBUG_ATTACH] bhvFocusFrameAnim {obj?.value}")
     setDelay(obj, SWITCH_OFF_TIME)
     if (registerFunc)
       registerFunc(obj)

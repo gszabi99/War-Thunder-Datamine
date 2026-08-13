@@ -93,6 +93,11 @@ function updateTransparencyRecursive(obj, transpNew) {
     updateTransparencyRecursive(obj.getChild(i), transpNew.tostring())
 }
 
+local isDebugLogBhvAttach = false
+function setDebugLogBhvAttach(value) {
+  isDebugLogBhvAttach = value
+}
+
 return {
   isObjHaveActiveChilds
   getNearestSelectableChildIndex
@@ -105,4 +110,7 @@ return {
   blendProp
   setTranspRecursive
   updateTransparencyRecursive
+  setDebugLogBhvAttach
+  isDebugLogBhvAttach = @() isDebugLogBhvAttach
+
 }

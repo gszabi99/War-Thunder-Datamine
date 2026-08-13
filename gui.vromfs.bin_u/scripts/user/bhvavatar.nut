@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-
+from "%sqDagui/guiBhv/guiBhvUtils.nut" import isDebugLogBhvAttach
 let { format } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -16,6 +16,8 @@ let class BhvAvatar {
   hasImageWithFullPathPID = dagui_propid_add_name_id("hasImageWithFullPath")
 
   function onAttach(obj) {
+    if (isDebugLogBhvAttach())
+      log($"[DEBUG_ATTACH] BhvAvatar {obj?.value}")
     this.setIsFull(obj, obj?.isFull == "yes")
     if (obj?.value)
       this.setStringValue(obj, this.validateStrValue(obj.value))
