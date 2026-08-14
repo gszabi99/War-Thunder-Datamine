@@ -134,6 +134,8 @@ function initLoginPseudoThreadsConfig(cb) {
         if ((isPlatformSony || isPlatformXbox || steam_is_running())
             && (agreedEulaVersion == 0 || localAgreedEulaVersion.get() >= currentEulaVersion)) {
           setAgreedEulaVersion(currentEulaVersion)
+          if (agreedEulaVersion == 0)
+            sendBqEvent("CLIENT_NEW_USER_1", "acceptEula", { details = "acceptEula" })
           sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", "accept")
         } else {
           openEulaWnd({
