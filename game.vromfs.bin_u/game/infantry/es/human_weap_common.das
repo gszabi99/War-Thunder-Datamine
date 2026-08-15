@@ -24,6 +24,7 @@ require %appGame.infantry.es.gun_anim_common
 require DngWalkerai
 require Dacoll
 require daslib.strings_boost
+require strings
 require AnimatedPhys
 require math.base
 require BallisticsProps
@@ -145,6 +146,13 @@ def get_weapon_slot_index_from_name(name : string) : int
   if slotName == HUWeaponSlots.EWS_NUM
     return -1
   return int(slotName)
+
+
+def get_base_template_name(tmpl_name : string) : string
+  let plusIdx = find(tmpl_name, "+")
+  if plusIdx >= 0
+    return slice(tmpl_name, 0, plusIdx)
+  return tmpl_name
 
 
 

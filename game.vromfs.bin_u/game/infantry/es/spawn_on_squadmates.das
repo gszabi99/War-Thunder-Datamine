@@ -16,6 +16,8 @@ require GeomNodeTree
 require AnimV20
 require math.base
 require DagorRandom
+require matching
+require %appGame.infantry.es.vehicle.vehicle_seats_common
 
 [es(tag=server, on_event=EventEcsMissionLoaded)]
 def player_spawn_init_mode(evt : Event)
@@ -69,12 +71,15 @@ def squadmates_spawn_trace_check_init(evt : Event;
 [es(track=dynamic_respawn__spawnOnUnitEid, on_appear)]
 def set_prev_positions_on_spawn_on_unit(evt : Event;
                                         dynamic_respawn__spawnOnUnitEid : EntityId;
+                                        dynamic_respawn__prevPosCount : int = 10;
                                         var dynamic_respawn__prevPositions aka spawn_dynamic_respawn__prevPositions : Point3List&;
                                         var dynamic_respawn__curIterIdx aka spawn_dynamic_respawn__curIterIdx : int&)
   if !!dynamic_respawn__spawnOnUnitEid
     query(dynamic_respawn__spawnOnUnitEid) <| $ [es] (dynamic_respawn__prevPositions aka on_dynamic_respawn__prevPositions : Point3List;
                                                       dynamic_respawn__curIterIdx aka on_dynamic_respawn__curIterIdx : int)
       spawn_dynamic_respawn__prevPositions := on_dynamic_respawn__prevPositions
+      if length(spawn_dynamic_respawn__prevPositions) > dynamic_respawn__prevPosCount
+        resize(spawn_dynamic_respawn__prevPositions, dynamic_respawn__prevPosCount)
       spawn_dynamic_respawn__curIterIdx = on_dynamic_respawn__curIterIdx
 
 [unused_argument(pos, margin)]
@@ -120,6 +125,60 @@ def save_dynamic_respawn_positions(evt : Event)
 
     dynamic_respawn__curIterIdx = (dynamic_respawn__curIterIdx + 1) % dynamic_respawn__prevPosCount
     dynamic_respawn__prevPositions[dynamic_respawn__curIterIdx] = humanPos
+
+
+def private copy_vehicle_spawn_positions_from(source_eid : EntityId;
+                                              vehicle_pos : float3;
+                                              max_dist_sq : float;
+                                              var positions : Point3List&) : bool
+  var copied = false
+  query(source_eid) <| $ [es] (dynamic_respawn__prevPositions aka source_dynamic_respawn__prevPositions : Point3List)
+    for trailPos in source_dynamic_respawn__prevPositions
+      let horzDistSq = length_sq(float3(trailPos.x, vehicle_pos.y, trailPos.z) - vehicle_pos)
+      if horzDistSq < square(3.5) || horzDistSq > max_dist_sq
+        continue
+      var pos = trailPos
+      if !project_to_nearest_navmesh_point(pos, float3(1.5, 3., 1.5))
+        continue
+      let spawnPos = pos + float3(0., 1., 0.)
+      var isDup = false
+      for prev in positions
+        if length_sq(prev - spawnPos) < square(1.5)
+          isDup = true
+          break
+      if !isDup
+        push(positions, spawnPos)
+    copied = length(positions) > 0
+  return copied
+
+[es(REQUIRE=squad_dynamic_respawn, on_event=ParallelUpdateFrameDelayed)]
+def save_dynamic_respawn_vehicle_positions(evt : Event)
+  query() <| $ [es] (unit__ref : UnitRef;
+                     vehicle_seats__seatEids : EidList;
+                     vehicle__controlledByDriver : EntityId;
+                     dynamic_respawn__vehiclePointsUpdatePeriod : float = 1.;
+                     dynamic_respawn__vehiclePointsMaxDist : float = 25.;
+                     var dynamic_respawn__vehiclePointsNextUpdateAtTime : float&;
+                     var dynamic_respawn__curIterIdx : int&;
+                     var dynamic_respawn__prevPositions : Point3List&)
+    let curTime = get_sync_time()
+    if dynamic_respawn__vehiclePointsNextUpdateAtTime > curTime
+      return
+    dynamic_respawn__vehiclePointsNextUpdateAtTime = curTime + dynamic_respawn__vehiclePointsUpdatePeriod
+    clear(dynamic_respawn__prevPositions)
+    dynamic_respawn__curIterIdx = 0
+    let unit = unit__ref.unit
+    if !unit.isAlive || unit.isDelayed || unit.isLoading
+      return
+    let vehiclePos = unit.pos
+    let maxDistSq = square(dynamic_respawn__vehiclePointsMaxDist)
+    if !copy_vehicle_spawn_positions_from(vehicle__controlledByDriver, vehiclePos, maxDistSq, dynamic_respawn__prevPositions)
+      for seatEid in vehicle_seats__seatEids
+        let ownerEid = get_Eid(seatEid, "seat__ownerEid") ?? INVALID_ENTITY_ID
+        if ownerEid == INVALID_ENTITY_ID || ownerEid == vehicle__controlledByDriver || !(get_bool(ownerEid, "isAlive") ?? false)
+          continue
+        if copy_vehicle_spawn_positions_from(ownerEid, vehiclePos, maxDistSq, dynamic_respawn__prevPositions)
+          break
 
 
 [es(tag=server, REQUIRE=squad_dynamic_respawn, on_event=ParallelUpdateFrameDelayed)]
@@ -179,6 +238,12 @@ def private is_extra_spawn_player(player_id : int) : bool
     return true
   return res
 
+[unused_argument(local_player)]
+def private is_in_local_squad(p : MPlayer; local_player : MPlayer) : bool
+  static_if typeinfo has_field<squadId>(p)
+    return p.squadId != INVALID_SQUAD_ID && p.squadId == local_player.squadId
+  return p.isInHeroSquad
+
 def private refresh_extra_spawn_players(local_player_id : int; var extra_players : IntList&)
   let maxCount = get_spawn_on_players_count()
   if maxCount <= 0
@@ -191,7 +256,7 @@ def private refresh_extra_spawn_players(local_player_id : int; var extra_players
   var kept : array<int>
   for pid in extra_players
     let p = player_get_by_id(pid)
-    if p != null && p.team == localTeam && !p.isInHeroSquad && !p.isSpectator
+    if p != null && p.team == localTeam && !is_in_local_squad(*p, *localPlayer) && !p.isSpectator
       kept |> push(pid)
   if length(kept) != length(extra_players)
     extra_players |> clear()
@@ -204,7 +269,7 @@ def private refresh_extra_spawn_players(local_player_id : int; var extra_players
     let p = player_get_by_id(candidate_base_player_id)
     if p == null || p.isLocal || p.isSpectator || p.team != localTeam
       return
-    if p.isInHeroSquad
+    if is_in_local_squad(*p, *localPlayer)
       squadmatesCount++
       return
     for pid in extra_players
@@ -259,7 +324,7 @@ def squadmates_spawn_position(evt : Event;
   let needSpawnerEntity = canSpawnOnPlayer || get_spawn_on_players_count() > 0
 
   let ownedUnit = getOwnedUnit(*player)
-  if needSpawnerEntity && ownedUnit != null && (ownedUnit.isHuman || ownedUnit.isTank)
+  if needSpawnerEntity && ownedUnit != null && (ownedUnit.isHuman || has(ownedUnit.eid, "vehicle_seats__seatEids"))
     if !player_spawn__eid
       player_spawn__eid = createEntity("squad_dynamic_respawn") <| $(var init : ComponentsInitializer)
         set(init, "transform", ownedUnit.unitTm)
@@ -397,7 +462,8 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
   ecs::query(spawnOnEid) <| $ [es] (unit__ref : UnitRef;
                                     dynamic_respawn__onUnitAllowed : bool = true;
                                     dynamic_respawn__onUnitCanBlockSpawn : bool = false;
-                                    dynamic_respawn__prevPositions : Point3List const?)
+                                    dynamic_respawn__prevPositions : Point3List const?;
+                                    vehicle_seats__seatEids : EidList const?)
     let unit = unit__ref.unit
     if !unit.isAlive || unit.isDelayed || (!dynamic_respawn__onUnitAllowed && dynamic_respawn__onUnitCanBlockSpawn)
       print("[SPSQUAD] spawn on unit {spawnOnEid} rejected: alive={unit.isAlive} delayed={unit.isDelayed} allowed={dynamic_respawn__onUnitAllowed} canBlock={dynamic_respawn__onUnitCanBlockSpawn}")
@@ -442,29 +508,52 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
           else
             print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} FALLBACK (verify failed) requestPos=({evt.requestPos}) unitPos=({unitPos}) fallbackPos=({fallbackPos}) closestDelta={sqrt(verifyDebugDeltaSq)} navmesh={foundNavmesh}")
 
-    elif unit.isTank
-      evt.spawnTm = unit.unitTm
-      let traceSpawnPoints = [float3(-1., 0., 0.), float3(0., 0., 1.), float3(0., 0., -1.)]
-      let yExt = float3(0., 1., 0.)
-      let pos = unit.pos + yExt
-      for traceDir in traceSpawnPoints
-        var t = dynamic_respawn__vehicleDistTraces
-        var norm : float3
-        if !traceray_normalized(pos, traceDir, t, norm, ETF_ALL | ETF_RI_PHYS)
-          evt.verified = true
-          evt.spawnTm = unit.unitTm
-          evt.spawnTm[3] = evt.spawnTm[3] + traceDir * t
-          dropObjectOnNavmesh(evt.spawnTm, 1.5, 1.)
-          print("[SPSQUAD] spawn unit {eid} on tank {spawnOnEid} VERIFIED traceDir=({traceDir}) finalPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
-          break
-      if !evt.verified
+    elif vehicle_seats__seatEids != null
+      let seatNo = find_free_passenger_seat_no(eid, *vehicle_seats__seatEids)
+      if seatNo >= 0
         evt.spawnTm = unit.unitTm
-        var resPos : float3
-        if find_random_point_around_circle(unitPos, dynamic_respawn__vehicleDistTraces, resPos)
-          evt.spawnTm[3] = resPos
-          print("[SPSQUAD] spawn unit {eid} on tank {spawnOnEid} FALLBACK (navmesh) fallbackPos=({resPos}) unitPos=({unitPos})")
-        else
-          evt.spawnTm[3] = evt.spawnTm[3] + dynamic_respawn__vehicleFallbackOffset 
-          print("[SPSQUAD] spawn unit {eid} on tank {spawnOnEid} FALLBACK (offset) fallbackPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
+        evt.verified = true
+        enter_vehicle_now(eid, spawnOnEid, seatNo)
+        print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} VERIFIED seatNo={seatNo} unitPos=({unitPos})")
+      else
+        evt.spawnTm = unit.unitTm
+        let requestPosCorrectly = length(evt.requestPos) > 0.f 
+        if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_inside_capzone(evt.requestPos, dynamic_respawn__capzoneMargin)
+          for pos in *dynamic_respawn__prevPositions
+            if length_sq(pos - evt.requestPos) < 100.f 
+              evt.verified = true
+              evt.spawnTm[3] = evt.requestPos
+              print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} VERIFIED nearby (no free seat, client invis point) requestPos=({evt.requestPos}) unitPos=({unitPos})")
+              break
+        if !evt.verified && dynamic_respawn__prevPositions != null && length(*dynamic_respawn__prevPositions) > 0
+          let pick = rnd_int(0, length(*dynamic_respawn__prevPositions) - 1)
+          let fallbackPos = (*dynamic_respawn__prevPositions)[pick]
+          if !is_spawn_pos_inside_capzone(fallbackPos, dynamic_respawn__capzoneMargin)
+            evt.verified = true
+            evt.spawnTm[3] = fallbackPos
+            print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} FALLBACK nearby (no free seat, server candidate) fallbackPos=({fallbackPos}) unitPos=({unitPos})")
+        if !evt.verified
+          let traceSpawnPoints = [float3(-1., 0., 0.), float3(0., 0., 1.), float3(0., 0., -1.)]
+          let yExt = float3(0., 1., 0.)
+          let pos = unit.pos + yExt
+          for traceDir in traceSpawnPoints
+            var t = dynamic_respawn__vehicleDistTraces
+            var norm : float3
+            if !traceray_normalized(pos, traceDir, t, norm, ETF_ALL | ETF_RI_PHYS)
+              evt.verified = true
+              evt.spawnTm = unit.unitTm
+              evt.spawnTm[3] = evt.spawnTm[3] + traceDir * t
+              dropObjectOnNavmesh(evt.spawnTm, 1.5, 1.)
+              print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} VERIFIED nearby (no free seat) traceDir=({traceDir}) finalPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
+              break
+        if !evt.verified
+          evt.spawnTm = unit.unitTm
+          var resPos : float3
+          if find_random_point_around_circle(unitPos, dynamic_respawn__vehicleDistTraces, resPos)
+            evt.spawnTm[3] = resPos
+            print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} FALLBACK (navmesh, no free seat) fallbackPos=({resPos}) unitPos=({unitPos})")
+          else
+            evt.spawnTm[3] = evt.spawnTm[3] + dynamic_respawn__vehicleFallbackOffset 
+            print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} FALLBACK (offset, no free seat) fallbackPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
   if dynamic_respawn__spawnOnUnitEid != null
     *dynamic_respawn__spawnOnUnitEid = evt.verified ? spawnOnEid : INVALID_ENTITY_ID

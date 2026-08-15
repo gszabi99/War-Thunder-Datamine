@@ -98,6 +98,30 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_HUMAN_MAIN_WEAPON"
+    checkAssign = false
+  }
+  {
+    id = "ID_HUMAN_PISTOL"
+    checkAssign = false
+  }
+  {
+    id = "ID_HUMAN_SPECIAL_1"
+    checkAssign = false
+  }
+  {
+    id = "ID_HUMAN_MELEE"
+    checkAssign = false
+  }
+  {
+    id = "ID_HUMAN_NEXT_SLOT"
+    checkAssign = false
+  }
+  {
+    id = "ID_HUMAN_PREV_SLOT"
+    checkAssign = false
+  }
+  {
     id = "ID_HUMAN_HOLD_BREATH"
     checkAssign = false
   }
@@ -344,6 +368,11 @@ return [
   }
   {
     id = "ID_TOGGLE_VIEW_HUMAN_UAV"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SCOUT_HUMAN_DRONE"
     checkAssign = false
     needShowInHelp = true
   }

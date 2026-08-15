@@ -204,9 +204,14 @@ let getMeasureUnitsNames = @() optionsMeasureUnits.isInitialized()
   ? measureType.types.reduce(@(acc, v) acc.__update({ [v.name] = v.getMeasureUnitsLocKey() }), {})
   : null
 
+let pushMeasureUnits = @() updateExtWatched({
+  measureUnitsNames = getMeasureUnitsNames()
+  measureUnitsCfg = optionsMeasureUnits.getSelectedUnitsCfg()
+})
+
 addListenersWithoutEnv({
-  MeasureUnitsInited = @(_) updateExtWatched({ measureUnitsNames = getMeasureUnitsNames() })
-  MeasureUnitsChanged = @(_) updateExtWatched({ measureUnitsNames = getMeasureUnitsNames() })
+  MeasureUnitsInited = @(_) pushMeasureUnits()
+  MeasureUnitsChanged = @(_) pushMeasureUnits()
 })
 
 ::cross_call_api.measureTypes <- measureType

@@ -112,22 +112,22 @@
     },
     "dm_parts__parts:object": {
       "dm_head:object": {
-        "dmgMult": 2.4,
+        "dmgMult": 3.5,
         "armor": 0.0,
         "type": "head"
       },
       "dm_hindhead:object": {
-        "dmgMult": 2.4,
+        "dmgMult": 3.5,
         "armor": 0.0,
         "type": "head"
       },
       "dm_ears:object": {
-        "dmgMult": 2.4,
+        "dmgMult": 3.5,
         "armor": 0.0,
         "type": "head"
       },
       "dm_face:object": {
-        "dmgMult": 2.4,
+        "dmgMult": 3.5,
         "armor": 0.0,
         "type": "head"
       },
@@ -143,25 +143,25 @@
         "type": "head"
       },
       "Bip01 L Thigh:object": {
-        "dmgMult": 0.2,
+        "dmgMult": 0.35,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "l_leg"
       },
       "Bip01 R Thigh:object": {
-        "dmgMult": 0.2,
+        "dmgMult": 0.35,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "r_leg"
       },
       "Bip01 L Calf:object": {
-        "dmgMult": 0.2,
+        "dmgMult": 0.35,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "l_leg"
       },
       "Bip01 R Calf:object": {
-        "dmgMult": 0.2,
+        "dmgMult": 0.35,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "r_leg"
@@ -209,37 +209,37 @@
         "type": "l_hand"
       },
       "Bip01 R UpperArm:object": {
-        "dmgMult": 0.4,
+        "dmgMult": 0.5,
         "dotMult": 0.8,
         "armor": 0.0,
         "type": "r_hand"
       },
       "Bip01 L UpperArm:object": {
-        "dmgMult": 0.4,
+        "dmgMult": 0.5,
         "dotMult": 0.8,
         "armor": 0.0,
         "type": "l_hand"
       },
       "Bip01 R Forearm:object": {
-        "dmgMult": 0.4,
+        "dmgMult": 0.5,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "r_hand"
       },
       "Bip01 L Forearm:object": {
-        "dmgMult": 0.4,
+        "dmgMult": 0.5,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "l_hand"
       },
       "Bip01 R Hand:object": {
-        "dmgMult": 0.4,
+        "dmgMult": 0.5,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "r_hand"
       },
       "Bip01 L Hand:object": {
-        "dmgMult": 0.4,
+        "dmgMult": 0.5,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "l_hand"
@@ -261,7 +261,7 @@
     "_group": {
       "_tags": "server",
       "hitpoints__dotBaseSpeed": 0.3,
-      "hitpoints__dotSpeedThreshold": 0.6,
+      "hitpoints__dotSpeedThreshold": 0.3,
       "hitpoints__dotInterval": 0.25,
       "hitpoints__dotUpdateAt": 0.0,
       "dm_parts__dotMult:list<r>": {},
@@ -562,7 +562,7 @@
     "human_weap_anim__isSecondScopeActiveVarId": -1,
     "human_weap_anim__aimStateVarId": -1,
     "human_weap_anim__grenadeThrowDirectionVarId": -1,
-    "human_weap__grenadeThrowDirection": 1.0,
+    "human_weap__grenadeThrowDirection": 0.0,
     "human_weap_anim__aimStateSpeed": 6.0,
     "human_weap_anim__aimStateValue": 0.0,
     "human_weap__prevGunAngles": [
@@ -1425,7 +1425,23 @@
     "human_phys__crawlThreshold": -0.1,
     "human_phys__crawlTransitionMoveSpeedMult": 0.0,
     "human_phys__grenadeThrowDirectionAngle": 2.5,
-    "human_phys__grenadeThrowOffset": 0.2,
+    "human_phys__grenadeThrowLeftDirectionAngle": -80.0,
+    "human_phys__grenadeThrowRightDirectionAngle": 80.0,
+    "human_phys__grenadeThrowOffset": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "human_phys__grenadeThrowLeftOffset": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "human_phys__grenadeThrowRightOffset": [
+      0.2,
+      0.0,
+      0.0
+    ],
     "human_net_phys__minStaminaLevelToHoldBreath": 0.24,
     "human_net_phys__drainStaminaSpeedOnHoldBreath": 2.5,
     "human_sprint_leap__isLeaping": false,
@@ -1515,7 +1531,7 @@
       "_tags": "render"
     },
     "human__damageTypeMults:object": {
-      "generic": 1.3,
+      "generic": 1.7,
       "shatter": 2.5,
       "secondaryShatter": 2.5
     },
@@ -1877,12 +1893,39 @@
     "human_anim__comboStateDead": -1,
     "human_anim__ladderQuickDescentProgressVar": "ladder_drop_slide_width",
     "human_anim__ladderQuickDescentProgressVarId": -1,
-    "human_anim__leanSpineRotateAngles": [
+    "human_anim__fullBodyRootRotateValue": 0.0,
+    "human_anim__rotateLeftElbowVarId": -1,
+    "human_anim__rotateRightElbowVarId": -1,
+    "human_anim__leftElbowRotateStand": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "human_anim__rightElbowRotateStand": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "human_anim__leftElbowRotateCrouch": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "human_anim__rightElbowRotateCrouch": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "human_anim__leanSpineRotateAnglesStand": [
       10.0,
       0.0,
       0.0
     ],
-    "human_anim__fullBodyRootRotateValue": 0.0,
+    "human_anim__leanSpineRotateAnglesCrouch": [
+      10.0,
+      0.0,
+      0.0
+    ],
     "human_anim__isFpv:b": {
       "value": false,
       "_track": true,

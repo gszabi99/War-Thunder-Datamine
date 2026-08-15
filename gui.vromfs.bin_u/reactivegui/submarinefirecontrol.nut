@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
+let { ALTITUDE, SPEED, DISTANCE } = require("%rGui/options/measureUnits.nut")
 
 let { format } = require("string")
 let { fabs, floor } = require("math")
@@ -86,20 +86,20 @@ let processingBlock = @() {
     @() {
       watch = [TargetLength, CalcProgress]
       children = CalcProgress.get() < 0.3 ? null
-        : mkText({ text = "".concat(loc("fcs_target_length"), cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(TargetLength.get())) })
+        : mkText({ text = "".concat(loc("fcs_target_length"), ALTITUDE.getMeasureUnitsText(TargetLength.get())) })
     }
     @() {
       watch = [TargetHeight, CalcProgress]
       children = CalcProgress.get() < 0.45 ? null
         : mkText({
-          text = "".concat(loc("fcs_target_height"), cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(TargetHeight.get()))
+          text = "".concat(loc("fcs_target_height"), ALTITUDE.getMeasureUnitsText(TargetHeight.get()))
         })
     }
     @() {
       watch = [TargetSpeed, CalcProgress]
       children = CalcProgress.get() < 0.60 ? null
         : mkText({
-          text = "".concat(loc("fcs_target_speed"), cross_call.measureTypes.SPEED.getMeasureUnitsText(TargetSpeed.get()))
+          text = "".concat(loc("fcs_target_speed"), SPEED.getMeasureUnitsText(TargetSpeed.get()))
         })
     }
     @() {
@@ -131,7 +131,7 @@ let hydrophoneProcessingBlock = @() {
       watch = [hydrophoneDistance, CalcProgress]
       children = CalcProgress.get() < 0.6 ? null
         : mkText({ text = "".concat(loc("fcs_target_distance"),
-          cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(hydrophoneDistance.get())) })
+          ALTITUDE.getMeasureUnitsText(hydrophoneDistance.get())) })
     }
   ]
 }
@@ -178,7 +178,7 @@ let calculatingBlock = @() {
           @() {
             watch = [TargetDistance, TorpedoDistToLive]
             children = mkText({
-              text = cross_call.measureTypes.DISTANCE.getMeasureUnitsText(TargetDistance.get())
+              text = DISTANCE.getMeasureUnitsText(TargetDistance.get())
               color = distanceColor(TargetDistance.get(), TorpedoDistToLive.get())
             })
           }

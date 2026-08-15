@@ -454,9 +454,8 @@ enumsAddTypes(g_hud_action_bar_type, {
       return isAircraft ? "#ui/gameuiskin#scouting_with_uav" : this._icon
     }
     getShortcut = @(_actionItem, hudUnitType = null)
-      hudUnitType == HUD_UNIT_TYPE.AIRCRAFT
-      || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE
-        ? "ID_SCOUT_UAV"
+      hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE ? "ID_SCOUT_HUMAN_DRONE"
+        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? "ID_SCOUT_UAV"
         : "ID_SCOUT"
   }
 

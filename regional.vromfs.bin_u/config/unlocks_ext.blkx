@@ -5147,6 +5147,100 @@
       }
     },
     {
+      "id": "2026_08_15_title_truth_alone_triumphs",
+      "locDescId": "2026_08_15_title_truth_alone_triumphs/desc",
+      "userLogId": "2026_08_15_title_truth_alone_triumphs_trophy",
+      "icon": "https://static-ggc.gaijin.net/items/belt.png",
+      "lockStyle": "lock",
+      "hideWhenUnlocked": "title_truth_alone_triumphs",
+      "chapter": "holidays",
+      "group": "moments_of_valor_india",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "visibleDaysAfter": 1.0,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "2026_08_15_mig-21_bison_3_battles",
+          "2026_08_15_uk_vijayanta_3_battles"
+        ],
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2026-08-15 09:00:00",
+          "endDate": "2026-08-24 12:30:00"
+        }
+      }
+    },
+    {
+      "id": "2026_08_15_mig-21_bison_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "moments_of_valor_india",
+      "hideWhenUnlocked": "title_truth_alone_triumphs",
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "mig-21_bison",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-15 09:00:00",
+            "endDate": "2026-08-24 12:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_08_15_uk_vijayanta_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "moments_of_valor_india",
+      "hideWhenUnlocked": "title_truth_alone_triumphs",
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "uk_vijayanta",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-15 09:00:00",
+            "endDate": "2026-08-24 12:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_08_14_us_airborne_day_decals",
       "locId": "unlocks/group/us_airborne_day",
       "locDescId": "gift_decals_trophy/desc",
@@ -25777,6 +25871,12 @@
     },
     {
       "id": "title_altitude_speed_maneuver_fire",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_truth_alone_triumphs",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -121252,9 +121352,9 @@
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "infantry_cbt",
-      "manualOpen": true,
       "visibleDays": 1.0,
       "visibleDaysAfter": 1.0,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 2147483646,
@@ -121290,9 +121390,9 @@
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "infantry_cbt",
-      "manualOpen": true,
       "visibleDays": 1.0,
       "visibleDaysAfter": 1.0,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 2147483646,

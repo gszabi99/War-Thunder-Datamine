@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_tier_available, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
-from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, fakeBullets_prefix
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, fakeBullets_prefix, infantryDefaultBeltName
 
 let { get_bullets_locId_by_caliber, get_modifications_locId_by_caliber } = require("%scripts/options/optionsStorage.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -1375,6 +1375,9 @@ function getFakeBulletsModByName(unit, modName) {
       isDefaultForGroup = groupIdx + firstFakeIdx
     }
   }
+
+  if (unit.isHuman()) 
+    return modName == infantryDefaultBeltName ? { name = modName, isDefaultForGroup = 0 } : null
 
   
   let groupIndex = getBulletGroupIndex(unit.name, { name = modName })

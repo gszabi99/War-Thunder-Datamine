@@ -3153,6 +3153,16 @@ NEED_STOP_FOR_RADAR = {
     isHideOnWatchedHeroChanged = false
   }
 
+  DRONE_CONTROL_YAW = {
+    hintType  = g_hud_hint_types.COMMON
+    locId     = "controls/human_uav_yaw"
+    showEvent = "hint:drone_switch_camera_type"
+    shortcuts = "human_uav_yaw"
+    lifeTime  = 5.0
+    isHideOnDeath = @(_eventData) true
+    isHideOnWatchedHeroChanged = false
+  }
+
   DRONE_RESPAWN_IS_MISSING = {
     hintType  = g_hud_hint_types.COMMON
     locId     = "hints/drone/respawn_is_missing"

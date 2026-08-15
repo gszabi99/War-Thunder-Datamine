@@ -74,6 +74,14 @@ function getMeasureCfg(unitNo) {
   return OptionsMeasureUnits.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
+
+
+function getSelectedUnitsCfg() {
+  if (!isInitialized())
+    return null
+  return OptionsMeasureUnits.unitsCfg.map(@(_, unitNo) getMeasureCfg(unitNo))
+}
+
 function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false, isPresize = true) {
   let unit = getMeasureCfg(unitNo)
   if (!unit)
@@ -110,6 +118,7 @@ return {
   isInitialized = isInitialized
   getOption = getOption
   getMeasureCfg = getMeasureCfg
+  getSelectedUnitsCfg = getSelectedUnitsCfg
   countMeasure = countMeasure
   isMetricSystem = isMetricSystem
 }

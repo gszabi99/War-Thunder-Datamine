@@ -234,6 +234,39 @@ def find_highest_free_seat(player : EntityId; vehicle_seats__seatEids : EidList)
       break
   return res
 
+def is_free_passenger_seat(seat_eid : EntityId) : bool
+  if !(get_bool(seat_eid, "seat__isPassenger") ?? false)
+    return false
+  if get_bool(seat_eid, "seat__isLocked") ?? false
+    return false
+  if !(get_bool(seat_eid, "seats_order__canPlaceManually") ?? true)
+    return false
+  let ownerEid = get_Eid(seat_eid, "seat__ownerEid") ?? INVALID_ENTITY_ID
+  return ownerEid == INVALID_ENTITY_ID || !(get_bool(seat_eid, "seat__isOwnerAlive") ?? false)
+
+def check_soldier_can_enter_seat(soldier_eid : EntityId; seat_eid : EntityId; vehicle_seats__seatEids : EidList)
+  var canEnter = false
+  query(seat_eid) <| $ [es] (seat__adjacentSeat : int = -1)
+    canEnter = is_free_passenger_seat(seat_eid) && can_enter_seat_with_only_owner_access(seat_eid, soldier_eid)
+
+    if canEnter && seat__adjacentSeat > -1
+      let adjacentSeatEid = vehicle_seats__seatEids[seat__adjacentSeat]
+      query(adjacentSeatEid) <| $ [es] (seat__ownerEid aka adjacent_seat__ownerEid : EntityId)
+        canEnter = adjacent_seat__ownerEid == INVALID_ENTITY_ID || !(get_bool(adjacent_seat__ownerEid, "isAlive") ?? true)
+  return canEnter
+
+def find_free_passenger_seat_no(soldier_eid : EntityId; vehicle_seats__seatEids : EidList) : int
+  var res = -1
+  for orderSeatEid in vehicle_seats__seatEids
+    let orderSeatNo = get_int(orderSeatEid, "seats_order__seatNo") ?? -1
+    if orderSeatNo < 0
+      continue
+    let seatEid = vehicle_seats__seatEids[orderSeatNo]
+    if check_soldier_can_enter_seat(soldier_eid, seatEid, vehicle_seats__seatEids)
+      res = orderSeatNo
+      break
+  return res
+
 def find_nearest_free_seat(player : EntityId;
                            requester_pos : float3;
                            look_dir : float3;

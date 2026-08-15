@@ -3318,7 +3318,7 @@ class FindSafeFromGrenadePos : BehNodeAdapter
     let agentTeam = agent.teamId
 
     var dir = agent.pos - closestGrenadePos
-    var dist = length(dir)
+    let dist = length(dir)
     dir *= safediv(closestGrenadeRad * 1.2, dist)
     var wishPos = closestGrenadePos + dir
     let NUM_ITERS = 5
@@ -3332,11 +3332,10 @@ class FindSafeFromGrenadePos : BehNodeAdapter
         if i == NUM_ITERS - 1
           return EBehResult.ER_FAILED
         let randAng = gfrnd() * TWOPI
-        let randDist = gfrnd() * closestGrenadeRad
-        wishPos = wishPos + float3(sin(randAng), 0.0, cos(randAng)) * randDist
-        dir = wishPos - closestGrenadePos
-        dist = length(dir)
-        wishPos = closestGrenadePos + dir * safediv(dist, closestGrenadeRad * 1.2)
+        let randDist = cvt(gfrnd(), 0.0, 1.0, 0.9, 1.7) * closestGrenadeRad
+        dir = float3(sin(randAng), 0.0, cos(randAng))
+        wishPos = closestGrenadePos + dir * randDist
+        
       else
         
         let minDistAwaySq = square(5.0)
@@ -3366,6 +3365,10 @@ class FindSafeFromGrenadePos : BehNodeAdapter
                   else
                     wishPos = pathPos
                     
+                    
+                    
+                    
+                    
                     break
             skips = skip
             skip += 1
@@ -3373,10 +3376,15 @@ class FindSafeFromGrenadePos : BehNodeAdapter
             continue
           wishPos = pathPos
           
+          
+          
+          
+          
           break
         break
 
     owner.blackBoard |> set(posParam, wishPos)
+    
     return EBehResult.ER_SUCCESS
 
 

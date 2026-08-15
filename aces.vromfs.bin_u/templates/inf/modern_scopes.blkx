@@ -1107,6 +1107,11 @@
     "gunmod__zoomFactor": 2.5,
     "gunmod__camShiftMin": 0.13,
     "gunmod__camShiftMax": 0.13,
+    "gunmod__bipodCamOffset": [
+      0.01,
+      0.03,
+      0.15
+    ],
     "weap__focusPlaneShift": 0.3,
     "weap__dofNearAmountPercent": 2.0,
     "gunmod__camNode": "collimator_view",
@@ -1129,30 +1134,31 @@
     },
     "attachmentUpdate:tag": {}
   },
-  "scope_1p69_giperon_base": {
+  "scope_1p69_giperion_base": {
     "animchar__res": "1p69_giperon_sight_char",
     "collres__res": "1p69_giperon_sight_collision",
-    "item__template": "scope_1p69_giperon_item",
-    "item__proto": "scope_1p69_giperon_item",
-    "item__name": "items/scope_1p69_giperon",
+    "item__template": "scope_1p69_giperion_item",
+    "item__proto": "scope_1p69_giperion_item",
+    "item__name": "items/scope_1p69_giperion",
     "item__locDetails": "",
     "gunAttachable__slotName": "scope",
     "gunAttachable__gunSlotName": "scope",
-    "gunAttachable__slotTag": "scope_1p69_giperon",
+    "gunAttachable__slotTag": "scope_1p69_giperion",
     "item__weight": 0.9,
     "item__volume": 0.9,
     "gunmod__type": "optics_sniper_zoom",
     "gunAttachable:tag": {}
   },
-  "scope_1p69_giperon": {
+  "scope_1p69_giperion": {
     "_use": [
       "scope_collimator_gunmod",
-      "scope_1p69_giperon_base"
+      "scope_1p69_giperion_base"
     ],
     "gunmod__variableScope": true,
     "gunmod__zoomFactor": 2.0,
     "gunmod__camShiftMin": 0.15,
     "gunmod__camShiftMax": 0.15,
+    "gunmod__bipodScopeOffset": 0.12,
     "gunmod__distortionParams": [
       0.02,
       0.1,
@@ -1218,10 +1224,10 @@
       ]
     }
   },
-  "scope_1p69_giperon_item": {
+  "scope_1p69_giperion_item": {
     "_use": [
       "item_scope",
-      "scope_1p69_giperon_base"
+      "scope_1p69_giperion_base"
     ]
   },
   "scope_shakhin_item": {

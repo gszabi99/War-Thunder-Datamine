@@ -129,7 +129,10 @@ ecs.register_es("hero_ui_weapons_es",
             isVariableScope = comp["gunmod__variableScope"]
             hasSwitchableSights = (comp["sightPresets"]?.len() ?? 0) > 1
             currentSightPreset = comp["weap__current_sight_preset"]
-            sightPresetsData = (comp["sightPresets"]?.getAll() ?? []).map(@(p) p?.loc ?? "")
+            sightPresetsData = (comp["sightPresets"]?.getAll() ?? []).map(@(p) {
+              distance = p?.distance ?? 0
+              locId = p?.loc ?? ""
+            })
           }.__update(modsDesc)
           return v
         })
@@ -160,7 +163,10 @@ ecs.register_es("hero_ui_weapons_es",
         launcherEid
         hasSwitchableSights = (comp["sightPresets"]?.len() ?? 0) > 1
         currentSightPreset = comp["weap__current_sight_preset"]
-        sightPresetsData = (comp["sightPresets"]?.getAll() ?? []).map(@(p) p?.loc ?? "")
+        sightPresetsData = (comp["sightPresets"]?.getAll() ?? []).map(@(p) {
+          distance = p?.distance ?? 0
+          locId = p?.loc ?? ""
+        })
       }
       if (desc.launcherEid)
         launcherQuery(desc.launcherEid, function(_, lcomp) {
@@ -279,7 +285,8 @@ let heroModsByWeaponSlot = Computed(function(){
           slot = attachedItemModSlotName
           active = isModActive ?? true
         })
-        modWeapon = mods[attachedItemModSlotName]
+        if (isModActive)
+          modWeapon = mods[attachedItemModSlotName]
       }
     }
     if (mods.len()>0)

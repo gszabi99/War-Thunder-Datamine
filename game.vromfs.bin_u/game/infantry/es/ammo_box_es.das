@@ -110,7 +110,9 @@ def try_refill_ammoholder_for_gun(requester_eid : EntityId;
                                   var new_box_use_count : int&;
                                   var item_container : EidList;
                                   is_suitable_ammo_cb : block<(itemTemplate : string) : bool>)
-  let ammoTplComp = ammo_template |> getTemplateByName
+  var ammoTplComp = ammo_template |> getTemplateByName
+  if ammoTplComp == null
+    ammoTplComp = ammo_template |> buildTemplateByName
   if ammoTplComp == null
     logerr("Template '{ammo_template}' not exist in entity '{getEntityTemplateName(gun_eid)}'")
     return
@@ -188,7 +190,7 @@ def try_to_refill_ammo(requester; box_use_count; box_team; any_team : bool; resu
           ammoTempl = ammoHolders[0]
 
         if numReserveAmmo > 0
-          let ammoHolderIdx = find_index(ammoHolders, ammoTempl)
+          let ammoHolderIdx = find_index(ammoHolders, get_base_template_name(ammoTempl))
           let ammoInGun = (ammoHolderIdx == gun__curAmmoHolderIndex) ? gun__ammo : 0
           try_refill_ammoholder_for_gun(requester,
                                         human_weap__gunEids[int(slotId)],
@@ -343,9 +345,14 @@ def private init_gun_initial_components(weaponIndex : int;
   item__ownedByTeam = team
   for ammoHolder in gun__ammoHolders
     let ammoHolderName = ammoHolder ?? ""
-    let numAmmosToCreate = get_int(inventory__itemCreateTemplates, ammoHolderName) ?? 0
+    var numAmmosToCreate = 0
+    for it in inventory__itemCreateTemplates
+      if get_base_template_name(it.key) == ammoHolderName
+        numAmmosToCreate = it.value ?? 0
+        if numAmmosToCreate > 0
+          gun__reserveAmmoTemplate := it.key
+        break
     if numAmmosToCreate > 0
-      gun__reserveAmmoTemplate := ammoHolderName
       gun__numReserveAmmo = numAmmosToCreate
       break
   let weapInfo = get_ecs_object(human_weap__weapInfo[weaponIndex])

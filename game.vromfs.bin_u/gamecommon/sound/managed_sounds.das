@@ -179,6 +179,8 @@ def managed_sound_group_processing_update(info : ParallelUpdateFrameDelayed;
   let enemyStepsIdx = int(ManagedSoundGroupType.MSND_HUMAN_STEPS_ENEMY)
   let friendlyGunIdx = int(ManagedSoundGroupType.MSND_HUMAN_GUN)
   let enemyGunIdx = int(ManagedSoundGroupType.MSND_HUMAN_GUN_ENEMY)
+  let friendlyOneshotGunIdx = int(ManagedSoundGroupType.MSND_HUMAN_GUN_ONESHOT)
+  let enemyOneshotGunIdx = int(ManagedSoundGroupType.MSND_HUMAN_GUN_ONESHOT_ENEMY)
 
   query() <| $ [es(REQUIRE=humanSteps, REQUIRE_NOT=(deadEntity, shootingRangeDummy, watchedHero))] (eid : EntityId;
                                                                                                     team : int)
@@ -190,7 +192,8 @@ def managed_sound_group_processing_update(info : ParallelUpdateFrameDelayed;
                                                                                      gun__owner : EntityId;
                                                                                      var managed_sound__isStealed : bool&;
                                                                                      var managed_sound__pos : float3&;
-                                                                                     managed_sound_human_gun__team : int)
+                                                                                     managed_sound_human_gun__team : int;
+                                                                                     managed_sound_human_gun__isOneshot : bool)
     var isAimingAtListener = false
     var isVisibleToListener = false
     if !filter_human_gun(eid, gun__owner, heroPos, managed_sound__pos, isAimingAtListener, isVisibleToListener)
@@ -200,7 +203,9 @@ def managed_sound_group_processing_update(info : ParallelUpdateFrameDelayed;
       return
 
     let friendly = (managed_sound_human_gun__team == heroTeam && managed_sound_human_gun__team != -1 && heroTeam != -1)
-    let idx = friendly ? friendlyGunIdx : enemyGunIdx
+    var idx = friendly ? friendlyGunIdx : enemyGunIdx
+    if managed_sound_human_gun__isOneshot
+      idx = friendly ? friendlyOneshotGunIdx : enemyOneshotGunIdx
     managedSoundsEids[idx] |> push(eid)
 
   for i in range(0, cnt)
@@ -227,6 +232,14 @@ def managed_sound_human_gun_on_appear(evt : Event;
                                       var managed_sound_human_gun__team : int&)
   query(gun__owner) <| $ [es] (team : int)
     managed_sound_human_gun__team = team
+
+
+[es(tag=sound, on_appear, REQUIRE=humanGun)]
+def managed_sound_human_gun_oneshot_on_appear(evt : Event;
+                                              @shared_comp gun_sound__shotPath : Object;
+                                              sound_tags : Object;
+                                              var managed_sound_human_gun__isOneshot : bool&)
+  managed_sound_human_gun__isOneshot = is_oneshot_gun_sound(gun_sound__shotPath, sound_tags)
 
 
 [es(tag=sound, on_appear, track=(team, human_weap__gunEids))]

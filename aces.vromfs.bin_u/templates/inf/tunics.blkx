@@ -1284,10 +1284,18 @@
   "attachable_wear_fama_jacket_sleevless_item": {
     "_use": [
       "attachable_tunic",
-      "hands_collapser_in_rolled_sleeves"
+      "hands_collapser_in_rolled_sleeves",
+      "node_collapser"
     ],
     "item__uniqueName": "attachable_wear_fama_jacket_sleevless_item",
     "animchar__res": "fama_jacket_sleevless_char",
-    "collres__res": "fama_jacket_sleevless_collision"
+    "collres__res": "fama_jacket_sleevless_collision",
+    "animchar_node_collapser__camThreshold": 0.12,
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine1": "Bip01 Neck"
+      }
+    }
   }
 }

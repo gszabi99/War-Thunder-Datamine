@@ -47,7 +47,9 @@ function updateBulletCountOptions(unit, bulletGroups) {
   foreach (bulGroup in bulletGroups) {
     let { active, bulletsCount, selectedName, maxCntPerPilon = 1 } = bulGroup
     let name = active ? bulGroup.getBulletNameForCode(selectedName) : ""
-    let count = active ? bulletsCount * maxCntPerPilon : 0
+    let count = !active ? 0
+      : unit.isHuman() ? 1
+      : bulletsCount * maxCntPerPilon
     set_option(USEROPT_BULLETS0 + bulIdx, name)
     set_unit_option(unitName, USEROPT_BULLETS0 + bulIdx, name)
     set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)

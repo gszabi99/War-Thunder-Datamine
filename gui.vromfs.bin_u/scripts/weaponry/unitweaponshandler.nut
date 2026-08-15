@@ -158,16 +158,17 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local lastBgBlock = null
     local line = 0
     let showItemParams = this.getShowItemParamsForBullets()
+    let totalWidth = itemWidth * columns.len() * sizeMultiplier
     for (; !isLineEmpty; line++) {
       isLineEmpty = true
       local needHeader = false
-      local bgBlock = this.getBgBlockBaseTemplate(itemWidth * columns.len())
+      local bgBlock = this.getBgBlockBaseTemplate(totalWidth, sizeMultiplier)
 
       let cellsRow = array(columns.len(), null)
       foreach (idx, column in columns) {
         let cell = getTblValue(line, column)
         if ((!cell || !cell.header) && bgBlock.columnsList.len())
-          bgBlock.columnsList[bgBlock.columnsList.len() - 1].width += itemWidth
+          bgBlock.columnsList[bgBlock.columnsList.len() - 1].width += itemWidth * sizeMultiplier
 
         if (!cell || cell.itemType == weaponsItem.unknown)
           continue
@@ -176,7 +177,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
         isLineEmpty = false
         if (!needHeader)
-          bgBlock.offsetX = itemWidth * idx
+          bgBlock.offsetX = itemWidth * idx * sizeMultiplier
         needHeader = needHeader || cell.header != null
 
         if (cell.header)
@@ -190,19 +191,19 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (needHeader) {
         lineOffset += this.headerOffset
-        bgBlock.offsetY = lineOffset + line
+        bgBlock.offsetY = (lineOffset + line) * sizeMultiplier
         view.bgBlocks.append(bgBlock)
         lastBgBlock = bgBlock
       }
       else if (lastBgBlock) {
         bgBlock = lastBgBlock
-        bgBlock.height++
+        bgBlock.height += sizeMultiplier
       }
 
       bgBlock.rows.append(
       {
-        width = itemWidth * columns.len() - bgBlock.offsetX
-        top = bgBlock.rows.len()
+        width = totalWidth - bgBlock.offsetX
+        top = bgBlock.rows.len() * sizeMultiplier
       })
 
       view.weaponryList = "".concat(view.weaponryList,
@@ -211,23 +212,26 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         ))
     }
 
-    this.scene.height = $"{lineOffset + line}@modCellHeight"
+    this.scene.height = $"{(lineOffset + line) * sizeMultiplier}@modCellHeight"
     if (!this.needRecountWidth)
-      this.scene.width = $"{itemWidth * columns.len()}@modCellWidth"
+      this.scene.width = $"{totalWidth}@modCellWidth"
     let data = handyman.renderCached("%gui/weaponry/weaponry.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 
-  function getBgBlockBaseTemplate(width) {
-    return {
+  function getBgBlockBaseTemplate(width, sizeMultiplier = 1) {
+    let res = {
       width
-      height = 1
+      height = sizeMultiplier
       offsetX = 0
       offsetY = 0
       headerClass = "tiny"
       columnsList = []
       rows = []
     }
+    if (sizeMultiplier != 1)
+      res.tierHeight <- sizeMultiplier 
+    return res
   }
 
   function getColumnConfig(id, header, needDivLine = false, width = 1) {
@@ -316,6 +320,16 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     if (hasPairBulletsGroup)
       res.itemWidth = 1.5
+
+    
+    if (this.unit.isHuman()) {
+      if (res.columns.len() == 0)
+        res.columns.append([])
+      foreach (gIdx in activeGroupsId)
+        res.columns[0].append(this.getCellConfig(this.getBulletsItemId(gIdx),
+          groups[gIdx].getHeader(), weaponsItem.modification, gIdx))
+      return res
+    }
 
     let maxColumns = max((this.modsInRow / res.itemWidth), 1)
     let offset = res.columns.len() < maxColumns ? res.columns.len() : 0

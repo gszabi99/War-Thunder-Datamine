@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 from "%rGui/airState.nut" import *
 
-let cross_call = require("%rGui/globals/cross_call.nut")
+let { CLIMBSPEED, DISTANCE_SHORT } = require("%rGui/options/measureUnits.nut")
 
 let math = require("%sqstd/math.nut")
 let string = require("string")
@@ -220,7 +220,7 @@ function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = 
               watch = [VerticalSpeed, IsMfdEnabled]
               text = IsMfdEnabled.get() ?
                 math.round_by_value(VerticalSpeed.get(), 1).tostring() :
-                cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.get())
+                CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.get())
               behavior = Behaviors.RecalcHandler
               function onRecalcLayout(_initial, elem) {
                 if (elem.getWidth() > 1 && elem.getHeight() > 1) {
@@ -1321,7 +1321,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
         color = colorWatch.get()
         text = IsMfdEnabled.get() ?
           math.round_by_value(VerticalSpeed.get(), 1).tostring() :
-          cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.get())
+          CLIMBSPEED.getMeasureUnitsText(VerticalSpeed.get())
       }) : null,
       @() HudStyle.styleLineForeground.__merge({
         rendObj = ROBJ_VECTOR_CANVAS
@@ -1668,7 +1668,7 @@ function launchDistanceMaxComponent(colorWatch, width, height, posX, posY) {
 
   let getAgmLaunchDistanceMax = function() {
     return IsAgmLaunchZoneVisible.get() ?
-      cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(AgmLaunchZoneDistMax.get()) : ""
+      DISTANCE_SHORT.getMeasureUnitsText(AgmLaunchZoneDistMax.get()) : ""
   }
 
   let launchDistanceMax = @() HudStyle.styleText.__merge({
@@ -1700,7 +1700,7 @@ function rangeFinderComponent(colorWatch, posX, posY) {
   let rangefinder = @() HudStyle.styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
-    text = cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(RangefinderDist.get())
+    text = DISTANCE_SHORT.getMeasureUnitsText(RangefinderDist.get())
     opacity = IsRangefinderEnabled.get() ? 1 : 0
     color = colorWatch.get()
     watch = [RangefinderDist, IsRangefinderEnabled, colorWatch]

@@ -14,7 +14,7 @@ require %game.unit.unit_events
 require %game.unit.repair_system_events
 require %game.unit.repair_system_common
 require %game.events
-
+require %daslib/type_traits
 
 def load_repair_parts(unit : Unit?; blk : DataBlock;
                       override_by_part_id : bool;
@@ -166,7 +166,10 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
     )
 
   
-  set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, true)
+  static_if typeinfo safe_has_property < isTransport > (*unit)
+    set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, !unit.isTransport)
+  else
+    set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, true)
   set_flag(repair_system_state, RepairState.REPAIR_PENALTY_WITHOUT_TOOLKIT, false)
 
   if unit.isShip

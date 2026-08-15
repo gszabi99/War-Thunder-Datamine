@@ -22,6 +22,7 @@ enum INFO_DETAIL {
 }
 
 const fakeBullets_prefix = "fake"
+const infantryDefaultBeltName = "default_bullets"
 return {
   UNIT_WEAPONS_ZERO    = 0
   UNIT_WEAPONS_WARNING = 1
@@ -33,4 +34,5 @@ return {
 
   weaponsItem
   fakeBullets_prefix
+  infantryDefaultBeltName
 }

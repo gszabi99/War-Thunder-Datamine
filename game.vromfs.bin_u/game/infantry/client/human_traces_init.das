@@ -5,16 +5,25 @@ require PhysMat
 require Unit
 require app
 require DngHuman
-
+require DagorSystem
 require %appGame.wt_events
 require %appGame.infantry.es.team_common
 require %game.events
 
-def init_lod_nodes_list(animchar : AnimcharBaseComponent&; var node_ids : IntList; node_names : StringList)
+def init_lod_nodes_list(animchar : AnimcharBaseComponent&;
+                        var node_ids : IntList;
+                        node_names : StringList;
+                        can_skip_nodes = false)
   let nodesCount = length(node_names)
   resize(node_ids, nodesCount)
   for i in range(0, nodesCount)
-    node_ids[i] = *animchar.nodeTree |> geomtree_findNodeIndex(string(node_names[i]))
+    let nodeId = *animchar.nodeTree |> geomtree_findNodeIndex(string(node_names[i]))
+    let nodeIdValid = nodeId != -1
+    if !nodeIdValid
+      if !can_skip_nodes
+        logerr("incorrect node name in los visibility {string(node_names[i])}")
+      continue 
+    node_ids[i] = nodeId
 
 [es(on_appear)]
 def init_los_trace_material(evt : Event; nodes_los__traceMatName : string; var nodes_los__traceMatId : int&)
@@ -30,11 +39,13 @@ def init_los_lods_nodes(evt : Event;
                         var nodes_los__nodeIdlod2 : IntList;
                         nodes_los__nodeNamesLod2 : StringList;
                         var nodes_los__nodeIdlod3 : IntList;
-                        nodes_los__nodeNamesLod3 : StringList)
-  init_lod_nodes_list(animchar, nodes_los__nodeIdlod0, nodes_los__nodeNamesLod0)
-  init_lod_nodes_list(animchar, nodes_los__nodeIdlod1, nodes_los__nodeNamesLod1)
-  init_lod_nodes_list(animchar, nodes_los__nodeIdlod2, nodes_los__nodeNamesLod2)
-  init_lod_nodes_list(animchar, nodes_los__nodeIdlod3, nodes_los__nodeNamesLod3)
+                        nodes_los__nodeNamesLod3 : StringList;
+                        shootingRangeDummy : Tag const?)
+  let canSkipNodes = shootingRangeDummy != null
+  init_lod_nodes_list(animchar, nodes_los__nodeIdlod0, nodes_los__nodeNamesLod0, canSkipNodes)
+  init_lod_nodes_list(animchar, nodes_los__nodeIdlod1, nodes_los__nodeNamesLod1, canSkipNodes)
+  init_lod_nodes_list(animchar, nodes_los__nodeIdlod2, nodes_los__nodeNamesLod2, canSkipNodes)
+  init_lod_nodes_list(animchar, nodes_los__nodeIdlod3, nodes_los__nodeNamesLod3, canSkipNodes)
 
 [es(tag=gameClient)]
 def markers_update_time_es(evt : EventEntityDied;

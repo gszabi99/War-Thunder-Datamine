@@ -15,6 +15,7 @@ let { shopIsModificationPurchased } = require("chardResearch")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let BulletGroup = require("%scripts/weaponry/unitBulletsGroup.nut")
 let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
+let { getUnitAmmoBelts, InfantryBeltGroup } = require("%scripts/weaponry/infantryBelts.nut")
 
 let UnitBulletsManager = class {
   unit = null  
@@ -286,6 +287,14 @@ let UnitBulletsManager = class {
     }) : 0 
     if (!this.unit)
       return
+
+    if (this.unit.isHuman()) {
+      let belts = getUnitAmmoBelts(this.unit.name)
+      if (belts.len() > 1)
+        this.bulGroups.append(InfantryBeltGroup(this.unit, this.bulGroups.len(), belts,
+          { isForcedAvailable = this.isForcedAvailable }))
+      return
+    }
 
     
     let bulletDataByGroup = {}

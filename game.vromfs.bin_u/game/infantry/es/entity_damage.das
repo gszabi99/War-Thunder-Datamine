@@ -922,15 +922,28 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
 
     
     let partArmorTotal = calc_total_armor(partArmor, entity_mods__armorMult, entity_mods__defArmor, waterArmor)
-    let changesHp = calc_changes_after_armor(projPropsId, kinetic_proj_params, partArmorTotal, penetration, distance,
+    let binaryDamageMult = get_float(armorSegmentEid, "item__armorBinaryDamageMult")
+    var changesHp : ChangesAfterArmor
+    if binaryDamageMult != null && partArmorTotal > 0.0
+      if penetration > partArmorTotal
+        changesHp = calc_changes_after_armor(projPropsId, kinetic_proj_params, 0.0, penetration, distance,
                                              piercingShift, projectileSpeed, pos)
+        changesHp.damage *= *binaryDamageMult
+        changesHp.piercingShiftAfterArmor = calc_penetration_shift(projPropsId, kinetic_proj_params, penetration - partArmorTotal, distance, 1.0, piercingShift)
+        changesHp.armorEfficiency = 1.0 - *binaryDamageMult
+      else
+        changesHp.piercingShiftAfterArmor = calc_penetration_shift(projPropsId, kinetic_proj_params, penetration - partArmorTotal, distance, 1.0, piercingShift)
+        changesHp.armorEfficiency = 1.0
+    else
+      changesHp = calc_changes_after_armor(projPropsId, kinetic_proj_params, partArmorTotal, penetration, distance,
+                                           piercingShift, projectileSpeed, pos)
     let damageToHp = changesHp.damage * partDmgMult
     let piercingShiftAfterArmor = changesHp.piercingShiftAfterArmor
     let armorEfficiency = changesHp.armorEfficiency
     if outputDebug
       damage_debug_msg("---ARMOR PROTECTION (HUMAN)---")
       damage_debug_msg("penetration: {penetration}")
-      damage_debug_msg("base armor: {partArmor}, total armor: {partArmorTotal}, efficiency: {armorEfficiency}")
+      damage_debug_msg("base armor: {partArmor}, total armor: {partArmorTotal}, efficiency: {armorEfficiency}, binary: {binaryDamageMult != null}")
       damage_debug_msg("base damage: {changesHp.damage}, damage: {damageToHp}")
 
     

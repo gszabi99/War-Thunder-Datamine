@@ -239,11 +239,11 @@
           0.0
         ],
         "offset": [
-          0.5,
+          0.35,
           0.0,
-          0.0
+          -0.13
         ],
-        "capsuleRadiusScale": 0.8,
+        "capsuleRadiusScale": 0.5,
         "haveCollision": false
       }
     }
@@ -284,11 +284,11 @@
           0.0
         ],
         "offset": [
-          0.5,
+          0.35,
           0.0,
-          0.0
+          -0.13
         ],
-        "capsuleRadiusScale": 0.8,
+        "capsuleRadiusScale": 0.5,
         "haveCollision": false
       }
     }
@@ -935,7 +935,26 @@
           }
         ]
       }
-    ]
+    ],
+    "Ammunition": {
+      "index": 0,
+      "AmmunitionSet": [
+        {
+          "name": "belt_default",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_default"
+        },
+        {
+          "name": "belt_t",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_2",
+          "reqModification": "5_56mm_tracer_ammo_belt"
+        },
+        {
+          "name": "belt_ap",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_1",
+          "reqModification": "5_56mm_ap_ammo_belt"
+        }
+      ]
+    }
   },
   "weapon_presets": {
     "preset": [

@@ -630,18 +630,26 @@
       "driver": "vehicle_seat_driver",
       "passenger4": "vehicle_seat_open_fire_ready"
     },
-    "_group": {
-      "_tags": "server",
-      "dependent_templates:ecs::TemplatesListToInstantiate": {},
-      "dependent_templates_list_shared:shared:list<t>": {
-        "template_name": [
-          "vehicle_seat_fire_ready",
-          "vehicle_seat_open_fire_ready",
-          "vehicle_seat_default",
-          "vehicle_seat_driver"
-        ]
+    "_group": [
+      {
+        "_tags": "server",
+        "dependent_templates:ecs::TemplatesListToInstantiate": {},
+        "dependent_templates_list_shared:shared:list<t>": {
+          "template_name": [
+            "vehicle_seat_fire_ready",
+            "vehicle_seat_open_fire_ready",
+            "vehicle_seat_default",
+            "vehicle_seat_driver"
+          ]
+        }
+      },
+      {
+        "_hide": true,
+        "dynamic_respawn__curIterIdx": 0,
+        "dynamic_respawn__vehiclePointsNextUpdateAtTime": -1.0,
+        "dynamic_respawn__prevPositions:list<p3>": {}
       }
-    }
+    ]
   },
   "base_vehicle_seat": {
     "_use": "replicating",

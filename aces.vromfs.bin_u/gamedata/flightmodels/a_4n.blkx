@@ -2396,6 +2396,10 @@
         "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm12b.blk"
       },
       {
+        "name": "a_4n_rocket_agm_65a",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a.blk"
+      },
+      {
         "name": "a_4n_default_mk81_snakeye",
         "blk": "gameData/FlightModels/weaponPresets/a_4n_default_mk81_snakeye.blk"
       },
@@ -2432,12 +2436,12 @@
         "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_62.blk"
       },
       {
-        "name": "a_4n_rocket_agm_65a",
-        "blk": "gameData/FlightModels/weaponPresets/a_4n_rocket_agm_65a.blk"
-      },
-      {
         "name": "a_4n_bomb_guided_gbu8",
         "blk": "gameData/FlightModels/weaponPresets/a_4n_bomb_guided_gbu8.blk"
+      },
+      {
+        "name": "a_4n_agm_45b_10",
+        "blk": "gameData/FlightModels/weaponPresets/a_4n_agm_45b_10.blk"
       },
       {
         "name": "a_4n_mk4_mod0",
@@ -2694,6 +2698,22 @@
             }
           },
           {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot1",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_001"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/aero_5a_launcher_agm_45b_10.blk",
+              "emitter": "aero_5a_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "mk81_x1",
             "ShowNodes": {
@@ -2860,6 +2880,22 @@
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
               "emitter": "agm_12b_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot2",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/aero_5a_launcher_agm_45b_10.blk",
+              "emitter": "aero_5a_002",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3371,6 +3407,22 @@
             }
           },
           {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot4",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_004"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/aero_5a_launcher_agm_45b_10.blk",
+              "emitter": "aero_5a_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_small_group_x6",
             "name": "mk81_x6",
             "ShowNodes": {
@@ -3672,6 +3724,22 @@
             }
           },
           {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot5",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_005"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/aero_5a_launcher_agm_45b_10.blk",
+              "emitter": "aero_5a_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "mk81_x1",
             "ShowNodes": {
@@ -3884,24 +3952,29 @@
       "tier": 3,
       "modClass": "weapon"
     },
+    "us_arm": {
+      "prevModification": "us_2_75_in_ffar_lau_3a",
+      "tier": 4,
+      "modClass": "weapon"
+    },
     "fj_4b_agm_12b": {
       "tier": 1,
       "modClass": "weapon"
     },
     "us_agm_62": {
-      "reqModification": "fj_4b_agm_12b",
+      "prevModification": "fj_4b_agm_12b",
       "tier": 2,
       "modClass": "weapon"
     },
     "us_agm_65a": {
-      "reqModification": "us_agm_62",
+      "prevModification": "us_agm_62",
       "tier": 3,
       "modClass": "weapon"
     },
     "us_gbu_8": {
       "modClass": "weapon",
       "tier": 4,
-      "reqModification": "us_agm_65a"
+      "prevModification": "us_agm_65a"
     },
     "us_blu27_b": {
       "tier": 1,
@@ -3917,7 +3990,7 @@
       "prevModification": "us_blu27_b"
     },
     "fr_aam_shafrir_2": {
-      "reqModification": "countermeasures_belt_pack",
+      "prevModification": "countermeasures_belt_pack",
       "tier": 3,
       "modClass": "weapon"
     },

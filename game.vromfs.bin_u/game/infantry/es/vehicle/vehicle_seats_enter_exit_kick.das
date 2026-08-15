@@ -81,13 +81,12 @@ def private vehicle_trace_exit_pos(var human_net_phys : HumanActor?; var exitPos
   pos = entityTM * localCcdPos
   exitPos += localCcdPos
   let rayMatId = phys.rayMatId
-  let additionalCollRad = 0.2
-  let collRad = phys.collRad + additionalCollRad
+  let collRad = phys.collRad
   
   var toNewCcdOutput = ShapeQueryOutput()
   if distance_sq(pos, exitPos) > 1e-6
     sphere_cast(pos, exitPos, collRad, toNewCcdOutput, rayMatId)
-  let sphereCastThreshold = 0.9
+  let sphereCastThreshold = 0.99
   if !forcibly && toNewCcdOutput.t < sphereCastThreshold
     return false
   let exit = lerp(pos, exitPos, float3(toNewCcdOutput.t))
@@ -180,18 +179,21 @@ def private vehicle_teleport_entity_by_bounding_box(eid : EntityId; collres : Co
     let vehicleForward = vehicle_tm[0]
     let vehicleLeft = vehicle_tm[2]
     let relativeVehicleTm = inverse(vehicle_tm) * requesterTm
-    let vehicleForwardOffset = -sign(relativeVehicleTm[3].x) * 0.5 * (vehicleBox.width.z + collRad) * vehicleForward
+    let vehicleBackOffset = -(vehicleBox.width.x + collRad) * 0.5 * vehicleForward
+    let vehicleForwardOffset = sign(relativeVehicleTm[3].x) * vehicleBackOffset
     let vehicleSideOffset = sign(relativeVehicleTm[3].z) * 0.5 * (vehicleBox.width.z + collRad) * vehicleLeft
 
     let existWishPos = fixed_array<float3>(
       
-      requesterTm[3] + vehicleSideOffset,
-      requesterTm[3] - vehicleSideOffset,
+      requesterTm[3] + vehicleSideOffset - relativeVehicleTm[3].z * vehicleLeft,
+      requesterTm[3] - vehicleSideOffset - relativeVehicleTm[3].z * vehicleLeft,
       
       vehicle_tm[3] + vehicleForwardOffset + vehicleSideOffset,
       vehicle_tm[3] + vehicleForwardOffset - vehicleSideOffset,
       vehicle_tm[3] - vehicleForwardOffset + vehicleSideOffset,
-      vehicle_tm[3] - vehicleForwardOffset - vehicleSideOffset)
+      vehicle_tm[3] - vehicleForwardOffset - vehicleSideOffset,
+      
+      vehicle_tm[3] + vehicleBackOffset)
 
     for i in range(0, length(existWishPos))
       var exitPos = existWishPos[i]

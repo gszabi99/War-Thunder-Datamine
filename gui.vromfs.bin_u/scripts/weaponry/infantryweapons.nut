@@ -101,6 +101,9 @@ function getWeaponsForInfantryUnit(unit) {
 }
 
 function convertInfantryBlkPresetToData(presetBlk, name) {
+  if (!presetBlk)
+    return null
+
   let presetItem = {
     name
     soldiers = []

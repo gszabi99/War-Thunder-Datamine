@@ -43,6 +43,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 let { getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
+let { getInfantryBeltAnnotation } = require("%scripts/weaponry/infantryBelts.nut")
 
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM,
@@ -717,6 +718,12 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     else {
       desc = "{0}\n{1}".subst(loc($"modification/{item.name}/desc", ""), desc)
       addDesc = weaponryEffects.getDescForHuman(calcHumanModEffects(unit, item, "ecsGunModTemplate"))
+    }
+
+    if (unit.isHuman()) {
+      let beltAnnotation = getInfantryBeltAnnotation(unit, item.name)
+      if (beltAnnotation != "")
+        desc = "\n".join([desc, beltAnnotation], true)
     }
   }
   else if (item.type == weaponsItem.spare) {

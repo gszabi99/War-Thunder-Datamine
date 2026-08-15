@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
+let { DISTANCE_SHORT } = require("%rGui/options/measureUnits.nut")
 
 let string = require("string")
 let { floor } = require("math")
@@ -84,14 +84,14 @@ let shellAltitude = {
   children = [
     styleShipHudText.__merge({ text = $"{loc("hud/depth")} " })
     mkShellComp(altitude,
-        @() cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -altitude.get()), false))
+        @() DISTANCE_SHORT.getMeasureUnitsText(max(0, -altitude.get()), false))
   ]
 }
 
 let shellChildren = [
   shellAltitude
   mkShellComp(remainingDist, @() remainingDist.get() <= 0.0 ? "" :
-          cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(remainingDist.get()))
+          DISTANCE_SHORT.getMeasureUnitsText(remainingDist.get()))
   mkShellComp([isOperated, isTrackingTarget],
               @() isOperated.get() ? loc("hud/shell_operated") :
               string.format("%s: %s", loc("hud/shell_homing"), isTrackingTarget.get() ? loc("hud/shell_tracking") : loc("hud/shell_searching")))

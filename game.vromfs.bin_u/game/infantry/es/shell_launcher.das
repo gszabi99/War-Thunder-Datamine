@@ -56,8 +56,11 @@ def launch_shell_es(evt : CmdLaunchShell;
                     human_weap__throwMode : bool;
                     human_weap__grenadeThrowDirection : float;
                     human_phys__grenadeThrowDirectionAngle : float;
-                    human_phys__grenadeThrowOffset : float;
-                    human_net_phys__aimDir : float3;
+                    human_phys__grenadeThrowLeftDirectionAngle : float;
+                    human_phys__grenadeThrowRightDirectionAngle : float;
+                    human_phys__grenadeThrowOffset : float3;
+                    human_phys__grenadeThrowLeftOffset : float3;
+                    human_phys__grenadeThrowRightOffset : float3;
                     human_net_phys : HumanActor const?;
                     var human_weap__localProjectileEid : EntityId?;
                     var human_weap__lastShotGunEid : EntityId?;
@@ -110,10 +113,15 @@ def launch_shell_es(evt : CmdLaunchShell;
                                                                       curState.gunAngles.y,
                                                                       curState.leanPosition,
                                                                       curState.height)
-      let throwPoint = baseThrowPoint + human_net_phys__aimDir * human_phys__grenadeThrowOffset
+      let throwOffset = (human_weap__grenadeThrowDirection == -1.f ? human_phys__grenadeThrowLeftOffset :
+                         human_weap__grenadeThrowDirection == 1.f ? human_phys__grenadeThrowRightOffset :
+                         human_phys__grenadeThrowOffset)
+      let throwPoint = baseThrowPoint + rotate(launchTm, throwOffset)
       let inBodyPoint = *animchar.nodeTree |> geomtree_getNodeWpos(trajectory__startNodeIdx)
 
-      let throwAngle = -human_weap__grenadeThrowDirection * human_phys__grenadeThrowDirectionAngle
+      let throwAngle = (human_weap__grenadeThrowDirection == -1.f ? human_phys__grenadeThrowLeftDirectionAngle :
+                        human_weap__grenadeThrowDirection == 1.f ? human_phys__grenadeThrowRightDirectionAngle :
+                        human_phys__grenadeThrowDirectionAngle)
       let rotTm = make_rot_cw_zyx(float3(0.0, deg_to_rad(throwAngle), 0.0))
 
       let throwPointOffset = throwPoint - inBodyPoint
@@ -203,6 +211,14 @@ def create_shell_smoke_fx(shell__shell_id__shell_id : PropsId; pos : float3)
           dmgProps.smokeExplosionFxId, false, fxName);
 
 
+[unused_argument(eid)]
+def do_shell_explosion(pos : float3; shell_id : PropsId; owner : EntityId; eid : EntityId)
+  static_if typeinfo(builtin_function_exists @@ < (arg0 : float3 const& implicit; arg1 : PropsId const implicit; arg2 : EntityId; arg3 : EntityId) : void > Weapon::do_explosion)
+    do_explosion(pos, shell_id, owner, eid)
+  else
+    do_explosion(pos, shell_id, owner)
+
+
 def clear_projectile_entity_impl(eid : EntityId;
                                  human_weap__grenadeThrower : EntityId;
                                  human_weap__gunEids : EidList;
@@ -266,7 +282,7 @@ def shell_explode_server_es(info : UpdateStageInfoAct;
   let pos = *animchar.nodeTree |> geomtree_getNodeWpos(shell__explNodeIdx)
   entity_destroyer__destroyAtTime = info.curTime + shell__destroyDelay
 
-  do_explosion(pos, shell__shell_id__shell_id, shell__owner)
+  do_shell_explosion(pos, shell__shell_id__shell_id, shell__owner, eid)
   create_shell_smoke_fx(shell__shell_id__shell_id, pos)
   sendEvent(eid, EventShellExplodedServer(pos = pos, vel = proj__velocity))
 
@@ -334,7 +350,7 @@ def shell_explode_client_es(info : UpdateStageInfoAct;
   if clientSide == null
     spawn_explosion_effect(shell_explosion_fx__infoTemplate, pos)
 
-  do_explosion(pos, shell__shell_id__shell_id, shell__owner)
+  do_shell_explosion(pos, shell__shell_id__shell_id, shell__owner, eid)
   if is_server()
     sendEvent(eid, EventShellExplodedServer(pos = pos, vel = proj__velocity))
     create_shell_smoke_fx(shell__shell_id__shell_id, pos)
@@ -368,12 +384,13 @@ def explode_shell_on_contact(evt : EventProjectilePhysContact;
                                             shellId = props_pack_for_net(shell__shell_id__shell_id),
                                             shellOwner = shell__owner))
 
-  do_explosion(evt.pos, shell__shell_id__shell_id, shell__owner)
+  do_shell_explosion(evt.pos, shell__shell_id__shell_id, shell__owner, eid)
   sendEvent(eid, EventShellExplodedServer(pos = evt.pos, vel = evt.vel))
 
 [es(tag=netClient, REQUIRE=shell__explodeOnContact)]
-def explode_shell_on_server_shell_contact(evt : EventShellExplodeNetClient)
-  do_explosion(evt.pos, PropsId(evt.shellId), evt.shellOwner)
+def explode_shell_on_server_shell_contact(evt : EventShellExplodeNetClient;
+                                          eid : EntityId)
+  do_shell_explosion(evt.pos, PropsId(evt.shellId), evt.shellOwner, eid)
 
 [es(tag=gameClient, REQUIRE=shell__explodeOnContact)]
 def explode_fx_on_server_shell_contact(evt : EventShellExplodeNetClient;

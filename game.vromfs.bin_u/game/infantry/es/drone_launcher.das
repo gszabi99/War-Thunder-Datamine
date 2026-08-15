@@ -91,17 +91,26 @@ def drone_launcher_on_owner_changed(evt : Event;
     return true
 
 
-[es(on_appear)]
-def drone_launcher_appear(evt : Event;
-                          drone_launcher__firstLaunchTimeout : float;
-                          drone_launcher__maxLaunches : int;
-                          var drone_launcher__state : int&;
-                          var drone_launcher__nextUseAtTime : float&;
-                          var drone_launcher__launchesRemaining : int&)
-  drone_launcher__state = drone_launcher__firstLaunchTimeout > 0.0 ? int(DroneLauncherState.DLS_OFFLINE) : int(DroneLauncherState.DLS_READY)
-  drone_launcher__nextUseAtTime = get_sync_time() + drone_launcher__firstLaunchTimeout
-  if drone_launcher__maxLaunches > 0
-    drone_launcher__launchesRemaining = drone_launcher__maxLaunches
+[es(tag=server, on_appear, REQUIRE=drone_launcher)]
+def drone_launcher_lock_until_spawn(evt : Event;
+                                    var drone_launcher__state : int&;
+                                    var drone_launcher__launchesRemaining : int&)
+  drone_launcher__state = int(DroneLauncherState.DLS_OFFLINE)
+  drone_launcher__launchesRemaining = 0
+
+
+[es(tag=server, on_event=(EventUnitRespawn, EventUnitSpawned))]
+def drone_launcher_reset_on_unit_spawn(evt : Event;
+                                       human_weap__gunEids : EidList)
+  for gunEid in human_weap__gunEids
+    query(gunEid) <| $ [es(REQUIRE=drone_launcher)] (drone_launcher__firstLaunchTimeout : float;
+                                                     drone_launcher__maxLaunches : int;
+                                                     var drone_launcher__state : int&;
+                                                     var drone_launcher__nextUseAtTime : float&;
+                                                     var drone_launcher__launchesRemaining : int&)
+      drone_launcher__state = drone_launcher__firstLaunchTimeout > 0.0 ? int(DroneLauncherState.DLS_OFFLINE) : int(DroneLauncherState.DLS_READY)
+      drone_launcher__nextUseAtTime = get_sync_time() + drone_launcher__firstLaunchTimeout
+      drone_launcher__launchesRemaining = drone_launcher__maxLaunches > 0 ? drone_launcher__maxLaunches : -1
 
 
 [es(tag=server, on_appear)]

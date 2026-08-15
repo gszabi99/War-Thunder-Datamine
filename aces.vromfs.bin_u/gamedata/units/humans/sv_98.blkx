@@ -164,6 +164,11 @@
   "customClassIco": "!#ui/gameuiskin#infantry_ico.svg",
   "supportUnitClass": "structures/ussr_122mm_m30",
   "supportUnitTag": "artillery",
+  "helmetProtectionTemplate": "rank3_helmet_medium_class_3a_protection",
+  "bodyProtectionTemplate": "rank3_body_armor_medium_class_3_protection",
+  "commonSkinPreset": "appearanceArmor03",
+  "armorDefaultLangId": "modification/bulletproof_vest_medium",
+  "armorDefaultIcon": "!#ui/gameuiskin#medium_armor.avif",
   "cockpit": {
     "headPos": [
       0.0,
@@ -234,11 +239,11 @@
           0.0
         ],
         "offset": [
-          0.5,
+          0.35,
           0.0,
-          0.0
+          -0.13
         ],
-        "capsuleRadiusScale": 0.8,
+        "capsuleRadiusScale": 0.5,
         "haveCollision": false
       }
     }
@@ -279,11 +284,11 @@
           0.0
         ],
         "offset": [
-          0.5,
+          0.35,
           0.0,
-          0.0
+          -0.13
         ],
-        "capsuleRadiusScale": 0.8,
+        "capsuleRadiusScale": 0.5,
         "haveCollision": false
       }
     }
@@ -764,5 +769,130 @@
       "equipTime": 0.5
     }
   },
-  "modifications": {}
+  "spawn_count": {
+    "numSpawnsPerBattleSimulation": 1,
+    "numSpawnsPerBattleArcade": 2,
+    "numSpawnsPerBattleHistorical": 2
+  },
+  "modifications": {
+    "scope_1p69_giperion": {},
+    "shotgun_ks_p": {},
+    "at_laucher_rpg_7": {},
+    "mpads_igla": {},
+    "strike_drone": {},
+    "fpv_drone": {},
+    "stun_grenade": {},
+    "smoke_grenade": {},
+    "explosive_charge": {},
+    "bulletproof_vest_light": {},
+    "bulletproof_vest_light_ghillie": {},
+    "sidearms_pistol_mp_443": {},
+    "human_medkit": {}
+  },
+  "WeaponSlots": {
+    "WeaponSlot": [
+      {
+        "index": 2,
+        "WeaponPreset": [
+          {
+            "name": "ussr_recon_drone",
+            "ecsTemplate": "uav_inf_recon_drone_item"
+          },
+          {
+            "name": "ussr_kamikaze_drone",
+            "ecsTemplate": "ussr_uav_inf_strike_drone_item",
+            "reqModification": "strike_drone"
+          },
+          {
+            "name": "ussr_fpv_drone",
+            "ecsTemplate": "uav_inf_fpv_strike_drone_item",
+            "reqModification": "fpv_drone"
+          },
+          {
+            "name": "ks_p",
+            "ecsTemplate": "ks_p_18_5_gun",
+            "inventoryItemEcsTemplate": "ks_p_18_5_magazine",
+            "inventoryItemNum": 5,
+            "reqModification": "shotgun_ks_p"
+          },
+          {
+            "name": "rpg_7_default",
+            "ecsTemplate": "rpg_7_default_gun",
+            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "rpg_7",
+            "ecsTemplate": "rpg_7_gun",
+            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
+            "inventoryItemNum": 4,
+            "reqModification": "at_laucher_rpg_7"
+          },
+          {
+            "name": "mpads_igla",
+            "ecsTemplate": "mpads_igla_gun",
+            "inventoryItemEcsTemplate": "9m39_missile_item",
+            "inventoryItemNum": 2,
+            "reqModification": "mpads_igla"
+          },
+          {
+            "name": "medic_box",
+            "ecsTemplate": "medic_box_item"
+          },
+          {
+            "name": "ammo_box",
+            "ecsTemplate": "ammo_box_item"
+          },
+          {
+            "name": "explosives_box_item",
+            "ecsTemplate": "explosives_box_item"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "WeaponPreset": [
+          {
+            "name": "frag_grenade",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 4
+          },
+          {
+            "name": "frag_grenade_medium",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 2
+          },
+          {
+            "name": "frag_grenade_light",
+            "inventoryItemEcsTemplate": "f1_grenade_item",
+            "inventoryItemNum": 1
+          },
+          {
+            "name": "smoke_grenade",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 2,
+            "reqModification": "smoke_grenade"
+          },
+          {
+            "name": "smoke_grenade_light",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 1,
+            "reqModification": "smoke_grenade"
+          }
+        ]
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "svd_m_default",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/ussr_class_sniper_preset_1.blk"
+      },
+      {
+        "name": "svd_m_preset_2",
+        "blk": "gameData/units/humans/weaponPresets/presetsSolo/ussr_class_specop_preset_5.blk"
+      }
+    ]
+  }
 }

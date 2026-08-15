@@ -4009,7 +4009,7 @@
     },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/mgun/m110a1_sdmr"
+      "path": "/weapon/rifle/m110a1_sdmr"
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
@@ -6257,9 +6257,15 @@
     "gun__saveAmmoInChamberOnReload": true,
     "gun__length": 0.4,
     "gun__recoilAmount": 0.059,
+    "gun__mountCrawlLowerExtra": 0.12,
     "gun__recoilDirAmount": 0.78,
     "gun__recoilDir": 0.4,
     "gun__visualRecoilMult": 8.0,
+    "gun__bipodCamOffset": [
+      0.02,
+      0.05,
+      0.05
+    ],
     "meleeSoundType": "mgun",
     "_group": [
       {
@@ -6430,6 +6436,12 @@
     "gun__recoilRiseMult": 0.3,
     "weapon__aimNodeOffset": 0.3,
     "meleeSoundType": "mgun",
+    "gun__mountCrawlLowerExtra": 0.17,
+    "gun__bipodCamOffset": [
+      0.01,
+      0.04,
+      0.07
+    ],
     "_group": {
       "_tags": "sound",
       "gun_sound__forceOneshot": true
@@ -6439,32 +6451,32 @@
       "options:array": {
         "suppressor:object": {
           "suppressor": true,
-          "path": "/weapon/mgun/m110a1_sdmr/suppressed"
+          "path": "/weapon/rifle/m110a1_sdmr/suppressed"
         },
         "default:object": {
-          "path": "/weapon/mgun/m110a1_sdmr"
+          "path": "/weapon/rifle/m110a1_sdmr"
         }
       }
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
       "foley_start:object": {
-        "path": "/weapon/mgun/m110a1_sdmr/reload_foley_start"
+        "path": "/weapon/rifle/m110a1_sdmr/reload_foley_start"
       },
       "mag_out:object": {
-        "path": "/weapon/mgun/m110a1_sdmr/reload_mag_out"
+        "path": "/weapon/rifle/m110a1_sdmr/reload_mag_out"
       },
       "mag_in:object": {
-        "path": "/weapon/mgun/m110a1_sdmr/reload_mag_in"
+        "path": "/weapon/rifle/m110a1_sdmr/reload_mag_in"
       },
       "mag_punch:object": {
-        "path": "/weapon/mgun/m110a1_sdmr/reload_mag_punch"
+        "path": "/weapon/rifle/m110a1_sdmr/reload_mag_punch"
       },
       "mag_punch_2:object": {
-        "path": "/weapon/mgun/m110a1_sdmr/reload_mag_punch_2"
+        "path": "/weapon/rifle/m110a1_sdmr/reload_mag_punch_2"
       },
       "foley_end:object": {
-        "path": "/weapon/mgun/m110a1_sdmr/reload_foley_end"
+        "path": "/weapon/rifle/m110a1_sdmr/reload_foley_end"
       },
       "ammo_drop:object": {
         "hero": "player/weapon/_common/magazine_drop",
@@ -7983,6 +7995,11 @@
     "gun__recoilRiseMult": 0.3,
     "meleeSoundType": "mgun",
     "gun__adsSpeedMult": 0.5,
+    "gun__bipodCamOffset": [
+      0.01,
+      0.05,
+      0.05
+    ],
     "_group": [
       {
         "_tags": "gameClient",
@@ -8172,6 +8189,11 @@
       0.7,
       3.0,
       3.0
+    ],
+    "gun__bipodCamOffset": [
+      0.01,
+      0.05,
+      0.05
     ],
     "meleeSoundType": "mgun",
     "_group": {
@@ -10482,6 +10504,7 @@
       "reload_wait_bolt_action_finished",
       "antitank_launcher_muzzle_small_preset",
       "backblast_base",
+      "antivehicle_gun_aim_sound",
       "camera_shake_on_reload_disposable_launcher"
     ],
     "combatBallisticCoef": 0.1,
@@ -10605,6 +10628,7 @@
       "launcher_bulky_preset",
       "rpg_2",
       "antitank_launcher_muzzle_med_preset",
+      "antivehicle_gun_aim_sound",
       "camera_shake_on_reload_rpg_7",
       "backblast_base"
     ],
@@ -10693,6 +10717,7 @@
       "launcher_bulky_preset",
       "rpg_7",
       "antitank_launcher_muzzle_med_preset",
+      "antivehicle_gun_aim_sound",
       "camera_shake_on_reload_rpg_7",
       "backblast_base"
     ],
@@ -10725,24 +10750,28 @@
       "preset:object": [
         {
           "loc": "sight/200m",
+          "distance": 200.0,
           "useAnimNodeIndex": 0.0,
           "additionalVertAngle": 0.03737,
           "aimNodeOffset": 0.2
         },
         {
           "loc": "sight/300m",
+          "distance": 300.0,
           "useAnimNodeIndex": 1.0,
           "additionalVertAngle": 0.03265,
           "aimNodeOffset": 0.2
         },
         {
           "loc": "sight/400m",
+          "distance": 400.0,
           "useAnimNodeIndex": 2.0,
           "additionalVertAngle": 0.02693,
           "aimNodeOffset": 0.2
         },
         {
           "loc": "sight/500m",
+          "distance": 500.0,
           "useAnimNodeIndex": 3.0,
           "additionalVertAngle": 0.02284,
           "aimNodeOffset": 0.2
@@ -10755,6 +10784,9 @@
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
+      "foley_start:object": {
+        "path": "/weapon/antivehicle/rpg_7/reload_foley_start"
+      },
       "reload1:object": {
         "path": "/weapon/antivehicle/rpg_7/reload1/change_ammo"
       },
@@ -10763,6 +10795,9 @@
       },
       "reload3:object": {
         "path": "/weapon/antivehicle/rpg_7/reload3/change_ammo"
+      },
+      "foley_end:object": {
+        "path": "/weapon/antivehicle/rpg_7/reload_foley_end"
       }
     }
   },
@@ -10819,6 +10854,7 @@
       "launcher_bulky_preset",
       "pslr_1",
       "antitank_launcher_muzzle_med_preset",
+      "antivehicle_gun_aim_sound",
       "camera_shake_on_reload_rpg_7",
       "backblast_base"
     ],
@@ -10846,21 +10882,25 @@
       "preset:object": [
         {
           "loc": "sight/0m",
+          "distance": 0.0,
           "useAnimNodeIndex": 0.0,
           "additionalVertAngle": 0.0
         },
         {
           "loc": "sight/100m",
+          "distance": 100.0,
           "useAnimNodeIndex": 1.0,
           "additionalVertAngle": -0.0043
         },
         {
           "loc": "sight/200m",
+          "distance": 200.0,
           "useAnimNodeIndex": 2.0,
           "additionalVertAngle": -0.0068
         },
         {
           "loc": "sight/300m",
+          "distance": 300.0,
           "useAnimNodeIndex": 3.0,
           "additionalVertAngle": -0.0105
         }
@@ -10935,6 +10975,7 @@
       "launcher_bulky_preset",
       "mpads_fim_92e_stinger",
       "mpads_muzzle_preset",
+      "antivehicle_gun_aim_sound",
       "gun_guidance_state_sound",
       "missile_lock",
       "backblast_base"
@@ -11030,6 +11071,7 @@
       "launcher_bulky_preset",
       "mpads_igla",
       "mpads_muzzle_preset",
+      "antivehicle_gun_aim_sound",
       "gun_guidance_state_sound",
       "missile_lock",
       "backblast_base"
@@ -11167,6 +11209,7 @@
       "launcher_bulky_preset",
       "fgm_148_javelin",
       "grenade_launcher_muzzle_preset",
+      "antivehicle_gun_aim_sound",
       "gun_guidance_state_sound",
       "missile_lock"
     ],
@@ -11515,8 +11558,7 @@
     "_use": [
       "main_weap_slots",
       "ironsights_open_at_rifle",
-      "assault_rifle_deviation_preset",
-      "ammo_set_762_54_r_sv_98"
+      "assault_rifle_deviation_preset"
     ],
     "animchar__res": "sv_98_char",
     "gun__blk": "gameData/weapons/human_weapons/sv_98.blk",
@@ -11537,7 +11579,7 @@
     "gun__altReloadTime": 3.0,
     "gun__quickReloadTime": 2.5,
     "gun__projectileVelocityMult": 0.96407187,
-    "gun__adsSpeedMult": 0.34,
+    "gun__adsSpeedMult": 0.5,
     "gun_shell_ejection__timeMult": 0.6,
     "hangar_weapon__pivotOffset": [
       0.0,
@@ -11554,11 +11596,11 @@
     },
     "gun_mods__slots:object": {
       "scope:object": {
-        "scope_1p69_giperion": "scope_1p69_giperon"
+        "scope_1p69_giperion": "scope_1p69_giperion"
       }
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n1_sc.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x54_r_7n37_hc.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -11583,11 +11625,12 @@
       "sv_98",
       "sniper_rifle_muzzle_preset",
       "visual_magazine_fullness",
-      "rifle_gun_shot_dry_sound"
+      "rifle_gun_shot_dry_sound",
+      "rifle_gun_aim_sound"
     ],
     "gun_shell_ejection__templateName": "7_62x54_ejected_shell",
     "gun__length": 0.4,
-    "gun__recoilAmount": 0.15,
+    "gun__recoilAmount": 0.025,
     "gun__recoilDirAmount": 0.7,
     "gun__recoilDir": 0.1,
     "gun__visualRecoilMult": 6.0,
@@ -11600,6 +11643,11 @@
     "gun_anim_var__fpsGunOffsetAlong": -0.02,
     "gun_anim_var__fpsGunOffsetAcross": 0.06,
     "gun_anim_var__fpsGunOffsetUp": -0.03,
+    "gun__bipodCamOffset": [
+      0.01,
+      0.05,
+      0.0
+    ],
     "anim_irq__eventNames:object": {
       "newMagazineShown:object": {
         "irqName": "ammo_refresh",
@@ -11613,24 +11661,35 @@
     },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/rifle/sv_98"
+      "options:array": {
+        "suppressor:object": {
+          "suppressor": true,
+          "path": "/weapon/rifle/sv_98/suppressed"
+        },
+        "default:object": {
+          "path": "/weapon/rifle/sv_98"
+        }
+      }
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
-      "reload:object": {
-        "path": "/weapon/rifle/sv_98/reload"
-      },
-      "reload_prepare:object": {
+      "foley_start:object": {
         "path": "/weapon/rifle/sv_98/reload_foley_start"
       },
-      "reload_loop:object": {
+      "mag_in:object": {
         "path": "/weapon/rifle/sv_98/reload_mag_in"
       },
-      "reload_post:object": {
-        "path": "/weapon/rifle/sv_98/reload_foley_end"
+      "mag_out:object": {
+        "path": "/weapon/rifle/sv_98/reload_mag_out"
       },
-      "boltAction:object": {
+      "shutter_in:object": {
         "path": "/weapon/rifle/sv_98/reload_shutter_in"
+      },
+      "shutter_out:object": {
+        "path": "/weapon/rifle/sv_98/reload_shutter_out"
+      },
+      "foley_end:object": {
+        "path": "/weapon/rifle/sv_98/reload_foley_end"
       }
     },
     "gun__mountPoints:shared:array": {
@@ -11646,7 +11705,186 @@
         "angle": 33.0,
         "length": 0.23
       }
+    },
+    "gun__canZoomInBoltAction:tag": {}
+  },
+  "m24": {
+    "_use": [
+      "main_weap_slots",
+      "ironsights_open_at_rifle",
+      "reload_single_bullet",
+      "assault_rifle_deviation_preset"
+    ],
+    "gun_reload_state__prepareTime": 0.55,
+    "gun_reload_state__bulletSingleTime": 0.45,
+    "gun_reload_state__postTime": 0.55,
+    "gun_anim__reloadStyle": 1,
+    "gun_anim__heroReloadStyle": 1,
+    "animchar__res": "m24_char",
+    "gun__blk": "gameData/weapons/human_weapons/m24.blk",
+    "item__template": "m24_gun_item",
+    "item__proto": "gameData/weapons/human_weapons/m24.blk",
+    "item__locDetails": "7.62x51mm;",
+    "item__weapTemplate": "m24_gun",
+    "item__name": "items/m24",
+    "item__weapType": "sniper_rifle",
+    "item__weight": 5.5,
+    "gun__inertialMass": 7.0,
+    "gun__locName": "M24 SWS",
+    "gun__statName": "sniper",
+    "gun__shotFreq": 1.2,
+    "gun__automaticReload": false,
+    "gun_spread__maxDeltaAngle": 0.042,
+    "gun__reloadTime": 3.5,
+    "gun__altReloadTime": 3.0,
+    "gun__quickReloadTime": 2.5,
+    "gun__adsSpeedMult": 0.5,
+    "hangar_weapon__pivotOffset": [
+      0.0,
+      -0.01,
+      -0.03
+    ],
+    "gun__projectileVelocityMult": 1.0179949,
+    "multiStateReloadSystem:tag": {},
+    "item__id:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "gun_shell_ejection__onShootRelease:tag": {},
+    "gun__ammoHolders:array": {
+      "ammoHolders": "m24_magazine"
+    },
+    "gun_mods__slots:object": {
+      "scope:object": {
+        "scope_leupold_mark_4_variable": "scope_leupold_mark_4_variable"
+      }
+    },
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x51_m993_hc.blk"
+    },
+    "gun__firingModes:array": {
+      "mode:object": {
+        "modeType": "manual"
+      }
+    },
+    "gun__firingModeNames:array": {
+      "mode": "bolt_action"
+    },
+    "unit_slot_override:object": {
+      "item__iconScale": 1.1,
+      "item__iconOffset": [
+        0.05,
+        0.0
+      ]
     }
+  },
+  "m24_gun": {
+    "_use": [
+      "equipable_gun",
+      "rifle_ww2_preset",
+      "m24",
+      "sniper_rifle_muzzle_preset",
+      "rifle_gun_shot_dry_sound",
+      "rifle_gun_aim_sound"
+    ],
+    "gun_shell_ejection__templateName": "7_62x51_ejected_shell",
+    "gun__length": 0.4,
+    "gun__recoilAmount": 0.025,
+    "gun__recoilDirAmount": 0.65,
+    "gun__recoilDir": 0.3,
+    "gun__visualRecoilMult": 6.0,
+    "gun__visualBoltRecoilMult": 0.0,
+    "gun__disableToggleAim": true,
+    "meleeSoundType": "rifle",
+    "gun_anim_var__tpsGunOffsetAlong": -0.055,
+    "gun_anim_var__tpsGunOffsetAcross": 0.015,
+    "gun_anim_var__tpsGunOffsetUp": -0.08,
+    "gun_anim_var__fpsGunOffsetAlong": -0.04,
+    "gun_anim_var__fpsGunOffsetAcross": 0.07,
+    "gun_anim_var__fpsGunOffsetUp": -0.03,
+    "gun__bipodCamOffset": [
+      0.02,
+      0.05,
+      0.05
+    ],
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
+    "gun_sound__shotPath:shared:object": {
+      "_tags": "sound",
+      "options:array": {
+        "suppressor:object": {
+          "suppressor": true,
+          "path": "/weapon/rifle/m24/suppressed"
+        },
+        "default:object": {
+          "path": "/weapon/rifle/m24"
+        }
+      }
+    },
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "reload:object": {
+        "path": "/weapon/rifle/m24/reload"
+      },
+      "reload_prepare:object": {
+        "path": "/weapon/rifle/m24/reload_prepare"
+      },
+      "reload_loop:object": {
+        "path": "/weapon/rifle/m24/reload_loop"
+      },
+      "reload_post:object": {
+        "path": "/weapon/rifle/m24/reload_post"
+      },
+      "boltAction:object": {
+        "path": "/weapon/rifle/m24/bolt_action"
+      }
+    },
+    "gun__mountPoints:shared:array": {
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.47,
+            0.0,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 23.0,
+          "length": 0.2
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.65,
+            0.029,
+            0.0
+          ]
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            -0.03,
+            -0.069,
+            0.0
+          ]
+        }
+      ]
+    },
+    "gun__canZoomInBoltAction:tag": {}
   },
   "as_val": {
     "_use": [

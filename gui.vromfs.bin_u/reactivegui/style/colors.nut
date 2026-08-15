@@ -78,6 +78,7 @@ colors.hud <- {
   infantryShortcutCommonTextColor = 0xFF27323F
   infantryShortcutDisableTextColor = 0x990F0C19
   infantryHudCommonColor = 0xFFD2D2D1
+  infantryHudActiveColor = 0xFFFFFFFF
   infantryHudInactiveColor = 0xB3B3B3B3
   infantryHudDisabledColor = 0x77777777
 }

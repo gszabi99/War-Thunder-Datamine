@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let cross_call = require("%rGui/globals/cross_call.nut")
+let { DISTANCE, SPEED } = require("%rGui/options/measureUnits.nut")
 let { PI, floor, cos, sin, fabs } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { shuffle } = require("%sqStdLibs/helpers/u.nut")
@@ -246,7 +246,7 @@ function mkShotResultText(fcsShotStateValue) {
 
   if(fcsShotStateValue.shotDiscrepancy != 0
     && [FCSShotState.SHOT_SHORT, FCSShotState.SHOT_OVER].contains(fcsShotStateValue.shotState)) {
-      let valueString = $"{cross_call.measureTypes.DISTANCE.getMeasureUnitsText(fcsShotStateValue.shotDiscrepancy)}"
+      let valueString = $"{DISTANCE.getMeasureUnitsText(fcsShotStateValue.shotDiscrepancy)}"
       resultText = $"{resultText}: {valueString}"
   }
   return {
@@ -485,7 +485,7 @@ let targetSpeedValueComp = {
       rendObj = ROBJ_TEXT
       color = greenColor
       font = Fonts.very_tiny_text_hud
-      text = cross_call.measureTypes.SPEED.getMeasureUnitsText(TargetSpeed.get(), false)
+      text = SPEED.getMeasureUnitsText(TargetSpeed.get(), false)
     },
     @(){
       watch = [isInitializedMeasureUnits, measureUnitsNames]

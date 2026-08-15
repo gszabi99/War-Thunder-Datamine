@@ -29,6 +29,25 @@ def animchar_server_update_es(info : ParallelUpdateFrameDelayed;
   animchar_set_tm(animchar, resultTm, true)
   animchar |> animchar_recalc_wtm()
 
+
+[es(tag=(net, server), track=isInVehicle, REQUIRE=(isInVehicle, animchar__onlyServerUpdate), REQUIRE_NOT=animchar__actOnDemand)]
+def animchar_in_vehicle_server_update_es(info : Event;
+                                         transform : float3x4;
+                                         animchar__updatable : bool;
+                                         var animchar : AnimcharBaseComponent;
+                                         animchar__turnDir = false)
+  if !animchar__updatable
+    return
+
+  var resultTm = transform
+  if animchar__turnDir
+    resultTm[0] = transform[2]
+    resultTm[2] = -transform[0]
+  animchar_set_tm(animchar, resultTm, true)
+  animchar_act(animchar, 1., true)
+  animchar |> animchar_recalc_wtm()
+
+
 [es(tag=(net, server), REQUIRE=animchar__onlyServerUpdate, REQUIRE_NOT=animchar__actOnDemand, on_event=ParallelUpdateFrameDelayed)]
 def animchar_server_full_update_es(evt : Event;
                                    transform : float3x4;

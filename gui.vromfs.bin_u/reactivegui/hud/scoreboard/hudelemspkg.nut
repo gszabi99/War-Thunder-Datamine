@@ -200,7 +200,11 @@ function mkMultArrowSlotTrigger(cycle, slot) {
   return $"{TOTAL_DOMINATION_MULT_ANIM_ID}_{cycle}_{slot}"
 }
 
-let arrCountFromMult = @(mult) mult < 2 ? 0 : clamp((mult + 1) / 2, 2, 4)
+let arrCountFromMult = @(mult) mult < 1 ? 0
+  : mult < 2 ? 1
+  : mult < 4 ? 2
+  : mult < 10 ? 3
+  : 4
 
 let totalDomMultArrCount = keepref(Computed(@() arrCountFromMult(totalDomMult.get())))
 
@@ -378,7 +382,7 @@ console.register_command(function(mult = 7, team = 2, enable = 1) {
     }
   totalDomEnabled.set(true)
   totalDomTeam.set(clamp(team, 1, 2))
-  totalDomMult.set(clamp(mult, 2, 7))
+  totalDomMult.set(clamp(mult, 1, 10))
 }, "debug.total_dom.show_arrows")
 
 return {

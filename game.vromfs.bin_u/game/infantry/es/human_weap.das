@@ -318,6 +318,78 @@ def human_init_weapon_preset_es(evt : CmdInitComponent;
                 set(inventory__itemCreateTemplates, inventoryItemTemplate, inventoryItemNum)
 
 
+[es(tag=server, REQUIRE=(unit__ref, human), after=(human_weap_modifications_init_es, human_init_weapon_from_modification_es, human_init_weapon_preset_es))]
+def human_init_ammo_belt_es(evt : CmdInitComponent;
+                            eid : EntityId;
+                            ownedByPlr : EntityId;
+                            unit__ref : UnitRef;
+                            human_weap__weapTemplates : Object;
+                            var inventory__itemCreateTemplates : Object)
+  let player = player_get_by_eid(ownedByPlr)
+  if player == null
+    return
+
+  let weaponSlotsBlk = datablock_get_block_by_name(evt.data.modelBlk, "WeaponSlots")
+  if weaponSlotsBlk == null
+    return
+
+  var isBotPlayer = false
+  query(ownedByPlr) <| $ [es(REQUIRE=playerIsBot)] ()
+    isBotPlayer = true
+
+  datablock_for_each_block(*weaponSlotsBlk, "Ammunition") <| $(ammunitionBlk)
+    let slotIndex = datablock_getInt(ammunitionBlk, "index", -1)
+    if slotIndex < 0 || slotIndex >= int(HUWeaponSlots.EWS_NUM)
+      return
+    let slotName = get_human_weapon_slot_name(slotIndex)
+
+    let weapTemplate = human_weap__weapTemplates |> get_ecs_string(slotName)
+    let weapTemplateName = weapTemplate != null ? string(*weapTemplate) : ""
+    if weapTemplateName == ""
+      return
+    let gunTemplate = getTemplateByName(weapTemplateName)
+    if gunTemplate == null
+      return
+    let gunAmmoHolders = get_ecs_array(getTemplateComponent(*gunTemplate, "gun__ammoHolders"))
+    if gunAmmoHolders == null
+      return
+
+    let requestedBeltName = get_unit_creation_bullets_name(*evt.data, slotName)
+
+    var chosenAmmoTypeTemplate = ""
+    var defaultAmmoTypeTemplate = ""
+    datablock_for_each_block(ammunitionBlk, "AmmunitionSet") <| $(setBlk)
+      let ammoTypeTemplate = datablock_getStr(setBlk, "ammoTypeEcsTemplate", "")
+      if ammoTypeTemplate == ""
+        return
+      let reqModification = datablock_getStr(setBlk, "reqModification", "")
+      if defaultAmmoTypeTemplate == "" && reqModification == ""
+        defaultAmmoTypeTemplate = clone_string(ammoTypeTemplate)
+      let isRequestedSet = datablock_getStr(setBlk, "name", "") == requestedBeltName || reqModification == requestedBeltName
+      if chosenAmmoTypeTemplate == "" && requestedBeltName != "" && isRequestedSet
+        if isBotPlayer || reqModification == "" || hasMod(*unit__ref.unit.unitMod, reqModification)
+          chosenAmmoTypeTemplate = clone_string(ammoTypeTemplate)
+        else
+          print("soldier {eid} ({getEntityTemplateName(eid)}) of a player {ownedByPlr} doesn't have {reqModification} modification for ammo belt {requestedBeltName}")
+
+    if chosenAmmoTypeTemplate == ""
+      chosenAmmoTypeTemplate = defaultAmmoTypeTemplate
+    if chosenAmmoTypeTemplate == ""
+      return
+    if getTemplateByName(chosenAmmoTypeTemplate) == null
+      logerr("unknown ammo belt template '{chosenAmmoTypeTemplate}' in Ammunition block of {getEntityTemplateName(eid)}")
+      return
+
+    for ammoHolder in *gunAmmoHolders
+      let holderName = ammoHolder ?? ""
+      if holderName == ""
+        continue
+      let count = get_int(inventory__itemCreateTemplates, holderName) ?? 0
+      if count > 0
+        erase(inventory__itemCreateTemplates, holderName)
+        set(inventory__itemCreateTemplates, "{holderName}+{chosenAmmoTypeTemplate}", count)
+
+
 [es(tag=server, REQUIRE=(unit__ref, human))]
 def human_init_gun_skin_es(evt : CmdInitComponent;
                            var human__gunObjTexReplace : Object;
@@ -848,7 +920,7 @@ def update_total_ammo(gun_eid : EntityId;
     gun__totalAmmo = get_total_ammo_count(itemContainer, gun__wishAmmoItemType, gun_eid)
 
 
-[es(tag=server, track=(human_weap__gunEids, itemContainer))]
+[es(tag=server, track=(human_weap__gunEids, itemContainer), on_event=EventUpdatedItemContainer)]
 def human_weap_update_total_count_es(evt : Event;
                                      human_weap__gunEids : EidList;
                                      human_weap__gunMods : Array;

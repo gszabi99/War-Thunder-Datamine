@@ -2063,6 +2063,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_105d_rockets_agm_12c.blk"
       },
       {
+        "name": "f_105d_agm_45b_10",
+        "blk": "gameData/FlightModels/weaponPresets/f_105d_agm_45b_10.blk"
+      },
+      {
         "name": "f_105d_bomb_mk82_mdd6",
         "blk": "gameData/FlightModels/weaponPresets/f_105d_bomb_mk82_mdd6.blk"
       },
@@ -2280,6 +2284,27 @@
               "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
               "emitter": "agm_12b_001",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot1",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_l_o_rock"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "pylon_l_o_b_mk83",
+              "emitterOffset": [
+                -0.3,
+                -0.04,
+                0.0
+              ],
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -3077,7 +3102,7 @@
             "reqModification": "fj_4b_agm_12b",
             "ShowNodes": {
               "node": [
-                "pylon_r_o_bomb",
+                "pylon_r_o_rock",
                 "aero_5a_004"
               ]
             },
@@ -3088,6 +3113,27 @@
               "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
               "emitter": "agm_12b_004",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_10_slot5",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_r_o_rock"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_45b_10.blk",
+              "emitter": "pylon_r_o_b_mk83",
+              "emitterOffset": [
+                -0.3,
+                -0.04,
+                0.0
+              ],
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -3604,6 +3650,11 @@
       "tier": 3,
       "modClass": "weapon"
     },
+    "us_arm": {
+      "prevModification": "f4c_zuni",
+      "tier": 4,
+      "modClass": "weapon"
+    },
     "us_aim_9b": {
       "tier": 1,
       "modClass": "weapon"
@@ -3614,7 +3665,7 @@
       "modClass": "weapon"
     },
     "fj_4b_agm_12b": {
-      "reqModification": "f4c_zuni",
+      "prevModification": "us_aim_9e",
       "tier": 3,
       "modClass": "weapon"
     },

@@ -786,7 +786,7 @@ def human_input_es(info : UpdateStageUpdateInput;
   else
     phys.producedCT |> human_control_state_set_control_bit(HumanPhysControlType.HCT_SPRINT, sprint || isLadderQuickMoving)
 
-  human_net_phys |> set_ct_controlbit(HumanPhysControlType.HCT_ZOOM_VIEW, ShortcutEventId.ID_HUMAN_ZOOM)
+  phys.producedCT |> human_control_state_set_control_bit(HumanPhysControlType.HCT_ZOOM_VIEW, aim)
 
   
   

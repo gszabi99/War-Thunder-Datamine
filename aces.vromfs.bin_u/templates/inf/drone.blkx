@@ -212,6 +212,7 @@
     ],
     "unit__className": "uav_inf_recon_drone",
     "unit__nonStabilizedOpticCamera": true,
+    "unit__keepOpticCameraDir": true,
     "drone__coverageArea": [
       400.0,
       800.0
@@ -222,8 +223,15 @@
       0.0
     ],
     "drone__start_velocity_speed": 0.0,
+    "_group": {
+      "_tags": "gameClient",
+      "unit__savedOpticCameraDir": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
     "isQuadrocopterHints:tag": {},
-    "whitelistedDetector:tag": {},
     "canBeWirelesslyMonitored:tag": {},
     "drone_type__recon:tag": {}
   },
@@ -271,6 +279,7 @@
       "aircraft"
     ],
     "unit__className": "uav_inf_strike_drone",
+    "unit__rotateIconOnMap": true,
     "drone__start_velocity_speed": 25.0,
     "drone__coverageArea": [
       600.0,
@@ -303,6 +312,7 @@
       "aircraft"
     ],
     "unit__className": "uav_inf_fpv_strike_drone",
+    "unit__rotateIconOnMap": true,
     "drone__start_velocity_speed": 1.0,
     "drone__coverageArea": [
       600.0,

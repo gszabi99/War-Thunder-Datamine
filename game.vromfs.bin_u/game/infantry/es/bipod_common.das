@@ -254,7 +254,7 @@ def private check_place_gun_barrel_diff(tm : float3x4; diff : float3; barrel_off
 
 
 def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : EntityId; at_pos : float3; aim_dir : float3; is_crawl : bool;
-                         gun_pos_stand : float3; gun_pos_crouch : float3; gun_pos_crawl : float3; human_height : float; human_radius : float; is_human_moving : bool;
+                         gun_pos_stand : float3; gun_pos_crouch : float3; gun_pos_crawl : float3; crawl_lower_extra : float; human_height : float; human_radius : float; is_human_moving : bool;
                          var placeable : bool&; var placeCrawl : bool&;
                          var placePos : float3&; var placeHeight : float&; var placeOffset : float3&;
                          var placeNormal : float3&; var placeYawLimit : float&; var placeRecoilMult : float&;
@@ -322,7 +322,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
         bipod__solveForCrawl    = is_crawl
         bipod__solveForGun      = gun_eid
         bipod__solveGunPosHigh  = is_crawl ? gun_pos_crawl : (gun_pos_stand + BIPOD_STAND_HIGHER)
-        bipod__solveGunPosLow   = is_crawl ? (gun_pos_crawl + BIPOD_CRAWL_LOWER) : gun_pos_crouch
+        bipod__solveGunPosLow   = is_crawl ? (gun_pos_crawl + BIPOD_CRAWL_LOWER - float3(0.0, crawl_lower_extra, 0.0)) : gun_pos_crouch
         bipod__solveHumanRadius = human_radius
         bipod__solveHumanHeight = is_crawl ? human_radius : human_height
         bipod__solveLastPos     = at_pos
@@ -702,6 +702,7 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
 
     query(human_weap__currentGunEid) <| $ [es] (gun__bipodOffset : float3;
                                                 gun__bipodRecoilMult : float;
+                                                gun__mountCrawlLowerExtra : float = 0.0;
                                                 @shared_comp gun__mountPoints : Array;
                                                 gun__barrelTipOffset : float3;
                                                 gun__barrelRadius : float)
@@ -726,7 +727,7 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
       let humanMoving = human_net_phys.phys.currentState.moveState != HUMoveState.EMS_STAND
 
       update_bipod_placing(eid, full_check, human_weap__currentGunEid, curPos, aimDir, isCrawl,
-                           gunPosStand, gunPosCrouch, gunPosCrawl, humanHeight, humanRadius, humanMoving,
+                           gunPosStand, gunPosCrouch, gunPosCrawl, gun__mountCrawlLowerExtra, humanHeight, humanRadius, humanMoving,
                            bipod__placeable, bipod__placeCrawl,
                            bipod__placePos, bipod__placeHeight, bipod__placeOffset,
                            bipod__placeNormal, bipod__placeYawLimit, bipod__placeRecoilMult,

@@ -33,6 +33,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getModsListByType } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
 let { getArmorIconViewData } = require("%scripts/weaponry/infantryArmor.nut")
+let { getInfantryBeltBulletsSet } = require("%scripts/weaponry/infantryBelts.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -86,6 +87,12 @@ function getItemImage(unit, item) {
 }
 
 function getBulletImageConfig(unit, item) {
+  if (unit?.isHuman() ?? false) { 
+    let beltSet = getInfantryBeltBulletsSet(unit, item.name)
+    return beltSet == null ? null
+      : { iconBulletName = item.name, bulletImg = getBulletsIconView(beltSet) }
+  }
+
   let bIcoItem = isBullets(item) ? item : getModifIconItem(unit, item)
   if (bIcoItem == null)
     return null

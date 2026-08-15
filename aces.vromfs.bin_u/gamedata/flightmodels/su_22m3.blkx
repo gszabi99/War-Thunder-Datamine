@@ -3326,6 +3326,10 @@
         "blk": "gameData/FlightModels/weaponPresets/su_22m3_rocket_kh29l.blk"
       },
       {
+        "name": "su_22m3_kh_27ps",
+        "blk": "gameData/FlightModels/weaponPresets/su_22m3_kh_27ps.blk"
+      },
+      {
         "name": "su_22m3_bomb_ofab100_120",
         "blk": "gameData/FlightModels/weaponPresets/su_22m3_bomb_ofab100_120.blk"
       },
@@ -4310,6 +4314,44 @@
             }
           },
           {
+            "iconType": "arm_type_c",
+            "name": "kh_27ps_slot4",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_2r",
+                "apu_68_b007"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_27ps.blk",
+              "emitter": "apu_68_kh25_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "externalSensorIndex": 3
+            },
+            "sensors": {
+              "sensor": {
+                "blk": "gameData/sensors/su_kh_27ps_viuga_esm.blk",
+                "external": true
+              },
+              "sensorsMode": [
+                {
+                  "blockSensorIndex": 3
+                },
+                {
+                  "blockSensorIndex": 0
+                }
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "l_086_viuga_17_slot5"
+            }
+          },
+          {
             "iconType": "rockets_he_small_group_x7",
             "name": "container_s3k",
             "ShowNodes": {
@@ -4350,7 +4392,59 @@
         "index": 5,
         "tier": 6,
         "order": 9,
-        "notUseforDisbalanceCalculation": true
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "rls_type_s",
+          "name": "l_086_viuga_17_slot5",
+          "Weapon": {
+            "trigger": "targetingPod",
+            "blk": "gameData/Weapons/equipment/su_l_086_viuga_17.blk",
+            "emitter": "su_aim_pod_viuga_17",
+            "bullets": 1
+          },
+          "BannedWeaponPreset": [
+            {
+              "slot": 4,
+              "preset": "fuse_containers_left_ofab_100_120_x4"
+            },
+            {
+              "slot": 4,
+              "preset": "fuse_containers_left_fab_250_x3"
+            },
+            {
+              "slot": 4,
+              "preset": "fuse_left_fab_500_x2"
+            },
+            {
+              "slot": 4,
+              "preset": "fuse_containers_left_fab_250sh_x3"
+            },
+            {
+              "slot": 4,
+              "preset": "fuse_left_fab_500sh_x2"
+            },
+            {
+              "slot": 6,
+              "preset": "fuse_containers_right_ofab_100_120_x4"
+            },
+            {
+              "slot": 6,
+              "preset": "fuse_containers_right_fab_250_x3"
+            },
+            {
+              "slot": 6,
+              "preset": "fuse_right_fab_500_x2"
+            },
+            {
+              "slot": 6,
+              "preset": "fuse_containers_right_fab_250sh_x3"
+            },
+            {
+              "slot": 6,
+              "preset": "fuse_right_fab_500sh_x2"
+            }
+          ]
+        }
       },
       {
         "index": 6,
@@ -4571,6 +4665,44 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "arm_type_c",
+            "name": "kh_27ps_slot6",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_1r",
+                "apu_68_b008"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_27ps.blk",
+              "emitter": "apu_68_kh25_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "externalSensorIndex": 3
+            },
+            "sensors": {
+              "sensor": {
+                "blk": "gameData/sensors/su_kh_27ps_viuga_esm.blk",
+                "external": true
+              },
+              "sensorsMode": [
+                {
+                  "blockSensorIndex": 3
+                },
+                {
+                  "blockSensorIndex": 0
+                }
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "l_086_viuga_17_slot5"
             }
           },
           {
@@ -5583,6 +5715,11 @@
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 3
+    },
+    "su_arm": {
+      "prevModification": "su_17_s25",
+      "modClass": "weapon",
+      "tier": 4
     },
     "zb_500": {
       "modClass": "weapon",

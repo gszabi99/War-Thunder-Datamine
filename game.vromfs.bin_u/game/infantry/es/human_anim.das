@@ -417,6 +417,8 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__leanSpineRotateVarId : int&;
                          var human_anim__gunLengthCompensationVarId : int&;
                          var human_anim__fullBodyRootRotateVarId : int&;
+                         var human_anim__rotateLeftElbowVarId : int&;
+                         var human_anim__rotateRightElbowVarId : int&;
                          var human_anim__bodyDirVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
@@ -448,6 +450,8 @@ def init_human_anim_vars(evt : Event;
   human_anim__leanSpineRotateVarId = phys_vars |> registerVar("torso_lean_rotate", 0.0)
   human_anim__gunLengthCompensationVarId = phys_vars |> registerVar("gun_length_compensation", 0.0)
   human_anim__fullBodyRootRotateVarId = phys_vars |> registerVar("full_body_root_rotate", 0.0)
+  human_anim__rotateLeftElbowVarId = phys_vars |> registerVar("rotate_left_elbow", 0.0)
+  human_anim__rotateRightElbowVarId = phys_vars |> registerVar("rotate_right_elbow", 0.0)
 
 
 def private calc_head_pitch_yaw(state : HumanPhysState)
@@ -1360,14 +1364,27 @@ def human_death_anim_update_ragdoll_power(info : ParallelUpdateFrameDelayed;
 [es(tag=gameClient, after=human_anim_es)]
 def human_spine_rotate_on_lean_update(info : ParallelUpdateFrameDelayed;
                                       human_anim__leanSpineRotateVarId : int;
-                                      human_anim__leanSpineRotateAngles : float3;
+                                      human_anim__leanSpineRotateAnglesStand : float3;
+                                      human_anim__leanSpineRotateAnglesCrouch : float3;
                                       human_net_phys : HumanActor;
                                       var phys_vars : PhysVars)
   assume phys = human_net_phys.phys
+
+  var leanSpineRotate = 0.f
+
   let interpK = get_phys_interpk_clamped(phys, info.curTime)
   let lean = lerp(phys.previousState.leanPosition, phys.currentState.leanPosition, interpK)
-  let leanRotate = cvt(lean, -45.0, 0.0, human_anim__leanSpineRotateAngles.x, human_anim__leanSpineRotateAngles.y)
-  phys_vars |> setVar(human_anim__leanSpineRotateVarId, leanRotate)
+  let isCrouching = phys.currentState.standState == HUStandState.ESS_CROUCH
+  let isStanding = phys.currentState.standState == HUStandState.ESS_STAND
+
+  if isStanding
+    leanSpineRotate = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.0, human_anim__leanSpineRotateAnglesStand.x, human_anim__leanSpineRotateAnglesStand.y)
+                                   : cvt(lean, 0.f, phys.leanDegrees, human_anim__leanSpineRotateAnglesStand.y, human_anim__leanSpineRotateAnglesStand.z))
+  elif isCrouching
+    leanSpineRotate = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.0, human_anim__leanSpineRotateAnglesCrouch.x, human_anim__leanSpineRotateAnglesCrouch.y)
+                                   : cvt(lean, 0.f, phys.leanDegrees, human_anim__leanSpineRotateAnglesCrouch.y, human_anim__leanSpineRotateAnglesCrouch.z))
+
+  phys_vars |> setVar(human_anim__leanSpineRotateVarId, leanSpineRotate)
 
 
 [es(before=human_anim_es)]
@@ -1382,3 +1399,40 @@ def human_anim_on_finish_equipping_es(info : ParallelUpdateFrameDelayed;
                                 previousWeapState != HUWeaponEquipState.EES_EQUIPED)
   if finishedChangingWeapon
     phys_vars |> setVar(human_anim__changeWeaponVarId, 0.0)
+
+
+[es(tag=gameClient, after=human_anim_es)]
+def update_rotate_right_elbow_es(info : ParallelUpdateFrameDelayed;
+                                 human_anim__rotateLeftElbowVarId : int;
+                                 human_anim__rotateRightElbowVarId : int;
+                                 human_anim__leftElbowRotateStand : float3;
+                                 human_anim__rightElbowRotateStand : float3;
+                                 human_anim__leftElbowRotateCrouch : float3;
+                                 human_anim__rightElbowRotateCrouch : float3;
+                                 bipod__enabled : bool;
+                                 human_net_phys : HumanActor;
+                                 var phys_vars : PhysVars)
+  assume phys = human_net_phys.phys
+  assume previousState = phys.previousState
+  assume currentState = phys.currentState
+
+  var leftElbow = 0.f
+  var rightElbow = 0.f
+
+  let interpK = get_phys_interpk_clamped(phys, info.curTime)
+  let lean = lerp(previousState.leanPosition, currentState.leanPosition, interpK)
+  let isStanding = currentState.standState == HUStandState.ESS_STAND
+  let isCrouching = currentState.standState == HUStandState.ESS_CROUCH
+  if isStanding && !bipod__enabled
+    leftElbow = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.f, human_anim__leftElbowRotateStand.x, human_anim__leftElbowRotateStand.y)
+                            : cvt(lean, 0.f, phys.leanDegrees, human_anim__leftElbowRotateStand.y, human_anim__leftElbowRotateStand.z))
+    rightElbow = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.f, human_anim__rightElbowRotateStand.x, human_anim__rightElbowRotateStand.y)
+                             : cvt(lean, 0.f, phys.leanDegrees, human_anim__rightElbowRotateStand.y, human_anim__rightElbowRotateStand.z))
+  elif isCrouching && !bipod__enabled
+    leftElbow = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.f, human_anim__leftElbowRotateCrouch.x, human_anim__leftElbowRotateCrouch.y)
+                            : cvt(lean, 0.f, phys.leanDegrees, human_anim__leftElbowRotateCrouch.y, human_anim__leftElbowRotateCrouch.z))
+    rightElbow = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.f, human_anim__rightElbowRotateCrouch.x, human_anim__rightElbowRotateCrouch.y)
+                             : cvt(lean, 0.f, phys.leanDegrees, human_anim__rightElbowRotateCrouch.y, human_anim__rightElbowRotateCrouch.z))
+
+  phys_vars |> setVar(human_anim__rotateLeftElbowVarId, leftElbow)
+  phys_vars |> setVar(human_anim__rotateRightElbowVarId, rightElbow)

@@ -94,12 +94,16 @@ def managed_sound_group_debug_draw(evt : UpdateStageInfoRenderDebug;
       let color = managed_sound__isStealed ? E3DCOLOR(0xC8FF0000) : (distSq <= closeRadiusSq ? E3DCOLOR(0xC800FF00) : E3DCOLOR(0xC8FFFF00))
       add_debug_text_mark(pos, "           {sndState} d={roundi(dist)}", -1, 0.0, color)
 
-  if typeIdx == int(ManagedSoundGroupType.MSND_HUMAN_GUN) || typeIdx == int(ManagedSoundGroupType.MSND_HUMAN_GUN_ENEMY)
+  if is_human_gun_sound_group(typeIdx)
+    let isOneshotGroup = is_oneshot_gun_sound_group(typeIdx)
     query() <| $ [es(REQUIRE=humanGun, REQUIRE_NOT=(deadEntity, shootingRangeDummy))] (eid : EntityId;
                                                                                        managed_sound__isStealed : bool;
                                                                                        gun_sound__event : SoundEvent;
                                                                                        gun__owner : EntityId;
-                                                                                       managed_sound_human_gun__team : int)
+                                                                                       managed_sound_human_gun__team : int;
+                                                                                       managed_sound_human_gun__isOneshot : bool)
+      if managed_sound_human_gun__isOneshot != isOneshotGroup
+        return
       var isAimingAtListener = false
       var isVisibleToListener = false
       var managedSoundPos = float3(0, 0, 0);
