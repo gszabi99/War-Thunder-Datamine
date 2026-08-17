@@ -189,6 +189,41 @@
       }
     }
   },
+  "sam_site_hawk_1970": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "us_ai_sam_launcher_m192",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "death_substract_tickets": 30,
+            "count": 3,
+            "rearmTimeOnField": 20.0,
+            "bulletsCount:list<i>": {
+              "c": 3
+            }
+          },
+          {
+            "name": "us_ai_sam_radar_an_mpq_46",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "death_substract_tickets": 100,
+            "count": 1
+          },
+          {
+            "name": "us_ai_sam_radar_cwar",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "detector_radar",
+            "death_substract_tickets": 100,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
   "sam_site_patriot": {
     "_use": "sam_site",
     "_group": {

@@ -84,7 +84,7 @@ def server_recreate_guns(eid : EntityId;
       currentGunSlot = slotId
     let weaponSlotName = get_human_weapon_slot_name(slotId)
     let weapTempl = human_weap__weapTemplates |> get_ecs_string(weaponSlotName)
-    let weapTemplStr = weapTempl != null ? *weapTempl |> string() : ""
+    let weapTemplStr = (weapTempl != null && !empty(*weapTempl)) ? *weapTempl |> string() : ""
     
     
     var gunInitComps : Object? = null
@@ -318,7 +318,14 @@ def human_init_weapon_preset_es(evt : CmdInitComponent;
                 set(inventory__itemCreateTemplates, inventoryItemTemplate, inventoryItemNum)
 
 
-[es(tag=server, REQUIRE=(unit__ref, human), after=(human_weap_modifications_init_es, human_init_weapon_from_modification_es, human_init_weapon_preset_es))]
+[unused_argument(data, slot_name)]
+def private get_requested_belt_name(data : UnitCreationData; slot_name : string) : string
+  static_if typeinfo(builtin_function_exists @@ < (arg0 : Unit::UnitCreationData&; arg1 : string) : string > _::get_unit_creation_bullets_name)
+    return get_unit_creation_bullets_name(data, slot_name)
+  return ""
+
+
+[unused_argument(unit__ref), es(tag=server, REQUIRE=(unit__ref, human), after=(human_weap_modifications_init_es, human_init_weapon_from_modification_es, human_init_weapon_preset_es))]
 def human_init_ammo_belt_es(evt : CmdInitComponent;
                             eid : EntityId;
                             ownedByPlr : EntityId;
@@ -354,7 +361,7 @@ def human_init_ammo_belt_es(evt : CmdInitComponent;
     if gunAmmoHolders == null
       return
 
-    let requestedBeltName = get_unit_creation_bullets_name(*evt.data, slotName)
+    let requestedBeltName = get_requested_belt_name(*evt.data, slotName)
 
     var chosenAmmoTypeTemplate = ""
     var defaultAmmoTypeTemplate = ""

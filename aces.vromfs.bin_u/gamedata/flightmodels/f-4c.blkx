@@ -3400,6 +3400,18 @@
         "blk": "gameData/flightModels/weaponPresets/f_4c_aim9e.blk"
       },
       {
+        "name": "f_4c_agm_45b_3b",
+        "blk": "gameData/flightModels/weaponPresets/f_4c_agm_45b_3b.blk"
+      },
+      {
+        "name": "f_4c_agm_45b_4",
+        "blk": "gameData/flightModels/weaponPresets/f_4c_agm_45b_4.blk"
+      },
+      {
+        "name": "f_4c_agm_45b_6",
+        "blk": "gameData/flightModels/weaponPresets/f_4c_agm_45b_6.blk"
+      },
+      {
         "name": "f_4c_bomb_mk84_air",
         "blk": "gameData/flightModels/weaponPresets/f_4c_bomb_mk84_air.blk"
       }
@@ -3551,9 +3563,9 @@
             }
           },
           {
-            "iconType": "napalm_middle",
+            "iconType": "napalm_large",
             "name": "mer_blu_27_x1",
-            "reqModification": "us_750lb_m117a1",
+            "reqModification": "us_blu_1",
             "ShowNodes": {
               "node": "pylon_l_out"
             },
@@ -3569,7 +3581,7 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "mer_blu_1_x2_left",
-            "reqModification": "us_750lb_m117a1",
+            "reqModification": "us_blu_1",
             "ShowNodes": {
               "node": "pylon_l_out"
             },
@@ -3646,6 +3658,54 @@
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
               "emitter": "agm_12b_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_3b_slot1",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_l_out"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_3b.blk",
+              "emitter": "2000lb_mk_84_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_c",
+            "name": "agm_45b_4_slot1",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_l_out"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_4.blk",
+              "emitter": "2000lb_mk_84_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_s",
+            "name": "agm_45b_6_slot1",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_l_out"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_6.blk",
+              "emitter": "2000lb_mk_84_001",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3825,7 +3885,7 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "ter_blu_1_x2",
-            "reqModification": "us_750lb_m117a1",
+            "reqModification": "us_blu_1",
             "ShowNodes": {
               "node": [
                 "pylon_l_in",
@@ -3848,6 +3908,7 @@
             "ShowNodes": {
               "node": [
                 "pylon_l_in",
+                "pylon_l_in_upor",
                 "lau_34a_002"
               ]
             },
@@ -3874,6 +3935,78 @@
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/us_agm_12c_bullpup.blk",
               "emitter": "agm_12c_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_3b_slot2",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_l_in",
+                "pylon_l_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_3b.blk",
+              "emitter": "ter_001",
+              "emitterOffset": [
+                -0.03,
+                0.03,
+                0.0
+              ],
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_c",
+            "name": "agm_45b_4_slot2",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_l_in",
+                "pylon_l_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_4.blk",
+              "emitter": "ter_001",
+              "emitterOffset": [
+                -0.03,
+                0.03,
+                0.0
+              ],
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_s",
+            "name": "agm_45b_6_slot2",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_l_in",
+                "pylon_l_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_6.blk",
+              "emitter": "ter_001",
+              "emitterOffset": [
+                -0.03,
+                0.03,
+                0.0
+              ],
               "bullets": 1,
               "external": true,
               "separate": true
@@ -4082,9 +4215,9 @@
             }
           },
           {
-            "iconType": "napalm_middle_group_x2",
+            "iconType": "napalm_large_group_x2",
             "name": "mer_blu_27_x2",
-            "reqModification": "us_750lb_m117a1",
+            "reqModification": "us_blu_1",
             "ShowNodes": {
               "node": "pylon_centr"
             },
@@ -4100,7 +4233,7 @@
           {
             "iconType": "napalm_large_group_x3",
             "name": "mer_blu_1_x3",
-            "reqModification": "us_750lb_m117a1",
+            "reqModification": "us_blu_1",
             "ShowNodes": {
               "node": "pylon_centr"
             },
@@ -4474,7 +4607,7 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "ter_blu_1_x2",
-            "reqModification": "us_750lb_m117a1",
+            "reqModification": "us_blu_1",
             "ShowNodes": {
               "node": [
                 "pylon_r_in",
@@ -4497,6 +4630,7 @@
             "ShowNodes": {
               "node": [
                 "pylon_r_in",
+                "pylon_r_in_upor",
                 "lau_34a_003"
               ]
             },
@@ -4523,6 +4657,78 @@
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/us_agm_12c_bullpup.blk",
               "emitter": "agm_12c_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_3b_slot10",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_r_in",
+                "pylon_r_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_3b.blk",
+              "emitter": "ter_002",
+              "emitterOffset": [
+                -0.03,
+                0.03,
+                0.0
+              ],
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_c",
+            "name": "agm_45b_4_slot10",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_r_in",
+                "pylon_r_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_4.blk",
+              "emitter": "ter_002",
+              "emitterOffset": [
+                -0.03,
+                0.03,
+                0.0
+              ],
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_s",
+            "name": "agm_45b_6_slot10",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_r_in",
+                "pylon_r_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_6.blk",
+              "emitter": "ter_002",
+              "emitterOffset": [
+                -0.03,
+                0.03,
+                0.0
+              ],
               "bullets": 1,
               "external": true,
               "separate": true
@@ -4629,9 +4835,9 @@
             }
           },
           {
-            "iconType": "napalm_middle",
+            "iconType": "napalm_large",
             "name": "mer_blu_27_x1",
-            "reqModification": "us_750lb_m117a1",
+            "reqModification": "us_blu_1",
             "ShowNodes": {
               "node": "pylon_r_out"
             },
@@ -4647,7 +4853,7 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "mer_blu_1_x2_right",
-            "reqModification": "us_750lb_m117a1",
+            "reqModification": "us_blu_1",
             "ShowNodes": {
               "node": "pylon_r_out"
             },
@@ -4724,6 +4930,54 @@
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk",
               "emitter": "agm_12b_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_b",
+            "name": "agm_45b_3b_slot11",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_r_out"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_3b.blk",
+              "emitter": "2000lb_mk_84_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_c",
+            "name": "agm_45b_4_slot11",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_r_out"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_4.blk",
+              "emitter": "2000lb_mk_84_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_s",
+            "name": "agm_45b_6_slot11",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_r_out"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_6.blk",
+              "emitter": "2000lb_mk_84_003",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -5583,14 +5837,23 @@
       "tier": 2,
       "modClass": "weapon"
     },
+    "us_arm": {
+      "prevModification": "fj_4b_agm_12c",
+      "tier": 4,
+      "modClass": "weapon"
+    },
+    "us_blu_1": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "us_2_75_in_ffar_lau_3a": {
-      "reqModification": "fj_4b_agm_12c",
-      "tier": 3,
+      "prevModification": "us_blu_1",
+      "tier": 2,
       "modClass": "weapon"
     },
     "f4c_zuni": {
       "reqModification": "us_2_75_in_ffar_lau_3a",
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon"
     },
     "us_aim_9b": {

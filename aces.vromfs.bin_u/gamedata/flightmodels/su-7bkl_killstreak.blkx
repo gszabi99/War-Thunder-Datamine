@@ -30,6 +30,9 @@
   "autopilotImpl": "FBW",
   "paratrooper": "su_k_36_ejection_para",
   "extinguisherNum": 1,
+  "havePointOfInterestDesignator": true,
+  "haveCCRPForBombs": true,
+  "hideDefaultWeaponPresetInGui": true,
   "customClassIco": "!#ui/gameuiskin#su-7bkl_ico.svg",
   "customImage": "!#ui/unitskin#su-7bkl.ddsx",
   "customTooltipImage": "!#ui/aircrafts/su-7bkl.avif",
@@ -3082,13 +3085,27 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "su_7bkl_rn24",
-      "blk": "gameData/FlightModels/weaponPresets/su_7bkl_rn24.blk",
-      "tags": {
-        "free": true
+    "preset": [
+      {
+        "name": "su_7bkl_killstreak_default",
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+      },
+      {
+        "name": "su_7bkl_rn24",
+        "blk": "gameData/FlightModels/weaponPresets/su_7bkl_rn24.blk",
+        "reqModification": "mi_24_fab_250"
+      },
+      {
+        "name": "su_7bkl_rn24_5kt_nt",
+        "blk": "gameData/FlightModels/weaponPresets/su_7bkl_rn24_5kt_nt.blk",
+        "reqModification": "mi_24_fab_250"
+      },
+      {
+        "name": "su_7bkl_rn24_30kt_nt",
+        "blk": "gameData/FlightModels/weaponPresets/su_7bkl_rn24_30kt_nt.blk",
+        "reqModification": "mi_24_fab_250"
       }
-    }
+    ]
   },
   "default_skin": {
     "name": "su_7bkl_killstreak",

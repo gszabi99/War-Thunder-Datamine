@@ -6,12 +6,13 @@
     ],
     "equip_storage__capacity": 1200.0,
     "equip_storage__current": 0.0,
-    "equip_storage__repairTime": 600.0,
+    "equip_storage__repairTime": 900.0,
     "equip_storage__repairTimer": -1.0,
     "_replicated": [
       "equip_storage__current",
       "equip_storage__repairTimer"
     ],
+    "equip_storage:tag": {},
     "_group": {
       "_tags": "server",
       "on_death_substract_team_tickets_num": 30,
@@ -125,7 +126,7 @@
             }
           },
           {
-            "name": "wheeled_vehicles/ussr_kamaz_4310_awning",
+            "name": "wheeled_vehicles/ussr_kamaz_4310_awning_ammo_carrier",
             "templateName": "simple_tank+nuclear_escalation_tank",
             "count": 4
           }
@@ -153,7 +154,7 @@
             }
           },
           {
-            "name": "wheeled_vehicles/us_m939_awning",
+            "name": "wheeled_vehicles/us_m939_awning_ammo_carrier",
             "templateName": "simple_tank+nuclear_escalation_tank",
             "count": 4
           }
@@ -270,7 +271,7 @@
             }
           },
           {
-            "name": "wheeled_vehicles/ussr_kamaz_4310_awning",
+            "name": "wheeled_vehicles/ussr_kamaz_4310_awning_ammo_carrier",
             "templateName": "simple_tank+nuclear_escalation_tank",
             "count": 4
           }
@@ -296,7 +297,114 @@
             }
           },
           {
-            "name": "wheeled_vehicles/us_m939_awning",
+            "name": "wheeled_vehicles/us_m939_awning_ammo_carrier",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      }
+    }
+  },
+  "fuel_factory_1970": {
+    "_use": [
+      "equip_factory",
+      "factory_air_defence_preset_1970"
+    ],
+    "fuel_factory:tag": {},
+    "_group": {
+      "_tags": "server",
+      "equip_factory__columnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_zsu_23_4",
+            "templateName": "tank+nuclear_escalation_spaa_with_threat_radar",
+            "death_substract_tickets": 20,
+            "threatSearchRad": 5000.0,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "wheeled_vehicles/ussr_zil_131_fuel_carrier",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      },
+      "equip_factory__columnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "us_m163_vulcan",
+            "templateName": "tank+nuclear_escalation_tank",
+            "death_substract_tickets": 20,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "wheeled_vehicles/us_m35a2_fuel_carrier",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      }
+    }
+  },
+  "ammo_factory_1970": {
+    "_use": [
+      "equip_factory",
+      "factory_air_defence_preset_1970"
+    ],
+    "ammo_factory:tag": {},
+    "unit_fx": {},
+    "_group": {
+      "_tags": "server",
+      "equip_factory__columnUnitsSettings1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_zsu_23_4",
+            "templateName": "tank+nuclear_escalation_spaa_with_threat_radar",
+            "death_substract_tickets": 20,
+            "threatSearchRad": 5000.0,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "wheeled_vehicles/ussr_zil_131_awning_ammo_carrier",
+            "templateName": "simple_tank+nuclear_escalation_tank",
+            "count": 4
+          }
+        ]
+      },
+      "equip_factory__columnUnitsSettings2:array": {
+        "unit:object": [
+          {
+            "name": "us_m163_vulcan",
+            "templateName": "tank+nuclear_escalation_tank",
+            "death_substract_tickets": 20,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "wheeled_vehicles/us_m35a2_awning_ammo_carrier",
             "templateName": "simple_tank+nuclear_escalation_tank",
             "count": 4
           }

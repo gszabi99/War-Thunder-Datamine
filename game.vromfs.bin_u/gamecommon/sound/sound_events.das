@@ -2,7 +2,7 @@ module sound_events shared
 require ecs
 require DagorDataBlock
 
-[cpp_event(broadcast, with_scheme)]
+[cpp_event(broadcast)]
 struct EventPlayExplosionSound
   pos : float3
   explosionSoundType : string

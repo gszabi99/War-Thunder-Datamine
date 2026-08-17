@@ -98,7 +98,10 @@ def set_rearm_on_field_time_es(evt : Event;
 [es(no_order, tag=server, on_event=EventOnUnitDead)]
 def activate_restore_timer_es(evt : Event;
                               restore_unit_by_timer__restoreTime : float;
+                              restore_unit_by_timer__isRestoringActive : bool;
                               var restore_unit_by_timer__restoreAtTime : float&)
+  if !restore_unit_by_timer__isRestoringActive
+    return
   restore_unit_by_timer__restoreAtTime = get_sync_time() + restore_unit_by_timer__restoreTime
 
 [es(no_order, tag=server)]

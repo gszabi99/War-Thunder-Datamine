@@ -16,6 +16,7 @@ require %game.sound.sound_events
 require strings
 require app
 require Sound
+require %daslib/type_traits
 
 
 def gm_engine_sound_init(modelBlk : DataBlock?;
@@ -321,7 +322,7 @@ def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
     return
 
   var insideCovered = false
-  static_if typeinfo has_field<isHeroInside>(*unit)
+  static_if typeinfo safe_has_property < isHeroInside > (*unit)
     insideCovered = unit.isHeroInside
   else
     ecs::query() <| $ [es(REQUIRE=controlledHero)] (isInVehicle : bool = false;

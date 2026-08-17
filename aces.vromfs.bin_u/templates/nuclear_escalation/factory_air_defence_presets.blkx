@@ -144,5 +144,73 @@
         }
       }
     }
+  },
+  "factory_air_defence_preset_1970": {
+    "_group": {
+      "_tags": "server",
+      "units_spawn_on_init__unitSettingsTeam1:array": {
+        "unit:object": [
+          {
+            "name": "ussr_zsu_57_2",
+            "templateName": "tank+nuclear_escalation_spaa_radar_off",
+            "death_substract_tickets": 20,
+            "spawnName": "spaa",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "ussr_zsu_23_4",
+            "templateName": "tank+nuclear_escalation_spaa_radar_on",
+            "death_substract_tickets": 20,
+            "spawnName": "spaa",
+            "threatSearchRad": 5000.0,
+            "count": 2,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          }
+        ]
+      },
+      "units_spawn_on_init__unitSettingsTeam2:array": {
+        "unit:object": [
+          {
+            "name": "us_m42_duster",
+            "templateName": "tank+nuclear_escalation_spaa_radar_off",
+            "death_substract_tickets": 20,
+            "spawnName": "spaa",
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
+            "name": "us_m163_vulcan",
+            "templateName": "tank+nuclear_escalation_spaa_radar_off",
+            "death_substract_tickets": 20,
+            "spawnName": "spaa",
+            "count": 2,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          }
+        ]
+      }
+    }
   }
 }

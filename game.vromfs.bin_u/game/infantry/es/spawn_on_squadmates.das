@@ -18,6 +18,7 @@ require math.base
 require DagorRandom
 require matching
 require %appGame.infantry.es.vehicle.vehicle_seats_common
+require %daslib/type_traits
 
 [es(tag=server, on_event=EventEcsMissionLoaded)]
 def player_spawn_init_mode(evt : Event)
@@ -240,7 +241,7 @@ def private is_extra_spawn_player(player_id : int) : bool
 
 [unused_argument(local_player)]
 def private is_in_local_squad(p : MPlayer; local_player : MPlayer) : bool
-  static_if typeinfo has_field<squadId>(p)
+  static_if typeinfo safe_has_property < squadId > (p)
     return p.squadId != INVALID_SQUAD_ID && p.squadId == local_player.squadId
   return p.isInHeroSquad
 
@@ -438,6 +439,20 @@ def set_phys_height_on_spawn_selected(evt : Event;
     basePrevState.height = 1.f
     baseCurState.height = 1.f
 
+def private try_spawn_into_free_seat(soldier_eid : EntityId; vehicle_eid : EntityId; var spawn_tm : float3x4&) : int
+  var seatNo = -1
+  query(vehicle_eid) <| $ [es] (unit__ref : UnitRef;
+                                vehicle_seats__seatEids : EidList)
+    let unit = unit__ref.unit
+    if !unit.isAlive || unit.isDelayed
+      return
+    seatNo = find_free_passenger_seat_no(soldier_eid, vehicle_seats__seatEids)
+    if seatNo < 0
+      return
+    spawn_tm = unit.unitTm
+    enter_vehicle_now(soldier_eid, vehicle_eid, seatNo)
+  return seatNo
+
 [unused_argument(dynamic_respawn__capzoneMargin), es(REQUIRE=human)]
 def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
                                             eid : EntityId;
@@ -463,6 +478,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
                                     dynamic_respawn__onUnitAllowed : bool = true;
                                     dynamic_respawn__onUnitCanBlockSpawn : bool = false;
                                     dynamic_respawn__prevPositions : Point3List const?;
+                                    human_anim__vehicleSelected : EntityId const?;
                                     vehicle_seats__seatEids : EidList const?)
     let unit = unit__ref.unit
     if !unit.isAlive || unit.isDelayed || (!dynamic_respawn__onUnitAllowed && dynamic_respawn__onUnitCanBlockSpawn)
@@ -470,6 +486,13 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
       return
     let unitPos = unit.unitTm[3]
     if unit.isHuman
+      let vehicleEid = human_anim__vehicleSelected ?? INVALID_ENTITY_ID
+      if vehicleEid != INVALID_ENTITY_ID
+        let seatNo = try_spawn_into_free_seat(eid, vehicleEid, evt.spawnTm)
+        if seatNo >= 0
+          evt.verified = true
+          print("[SPSQUAD] spawn unit {eid} on passenger {spawnOnEid} VERIFIED seatNo={seatNo} vehicle={vehicleEid} unitPos=({unitPos})")
+          return
       evt.spawnTm = unit.unitTm
       var verifyDebugDeltaSq = FLT_MAX
       let requestPosCorrectly = length(evt.requestPos) > 0.f 
@@ -509,11 +532,9 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
             print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} FALLBACK (verify failed) requestPos=({evt.requestPos}) unitPos=({unitPos}) fallbackPos=({fallbackPos}) closestDelta={sqrt(verifyDebugDeltaSq)} navmesh={foundNavmesh}")
 
     elif vehicle_seats__seatEids != null
-      let seatNo = find_free_passenger_seat_no(eid, *vehicle_seats__seatEids)
+      let seatNo = try_spawn_into_free_seat(eid, spawnOnEid, evt.spawnTm)
       if seatNo >= 0
-        evt.spawnTm = unit.unitTm
         evt.verified = true
-        enter_vehicle_now(eid, spawnOnEid, seatNo)
         print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} VERIFIED seatNo={seatNo} unitPos=({unitPos})")
       else
         evt.spawnTm = unit.unitTm
