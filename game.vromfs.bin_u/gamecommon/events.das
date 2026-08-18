@@ -11,7 +11,6 @@ require %game.unit.extinguish_system_events
 require %game.unit.aircraft_events
 require %game.unit.ship_events
 require %game.unit.unit_proximity_damage_events
-require %game.sound.sound_events
 require Weapon
 require DaWeapons
 require PropsManager
