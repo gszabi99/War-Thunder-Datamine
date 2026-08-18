@@ -2788,7 +2788,6 @@
       "trackConnector": true
     },
     "collisionProps": {
-      "cls_turret": "convex_hull",
       "cls_turret_01": "convex_hull",
       "cls_body": "convex_hull"
     },
@@ -3378,14 +3377,11 @@
       "cutDamage": 1000.0,
       "deviation": 0.7,
       "rotation": 1.5,
-      "collisionNode": "cls_turret"
+      "collisionNode": "cls_turret_01"
     }
   },
   "copyCollResMatrixToVehiclePhys": {
-    "node": [
-      "cls_turret_01",
-      "cls_turret"
-    ]
+    "node": "cls_turret_01"
   },
   "unitFx": {
     "event": [

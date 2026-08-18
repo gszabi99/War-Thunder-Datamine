@@ -1,12 +1,13 @@
 require ecs
+require ecs.safe
 require DagorMath
 require math.base
 require strings
 require Sound
 require ECSGlobalTags
-require sound_utils.modules.sound_player_common
 
 let FAR_LOD_IDX = 1
+let OTHER_SOUND_PATH_KEY = "other"
 let AIM_AT_LISTENER_CONE_COS = 0.866 
 
 
@@ -47,9 +48,45 @@ def is_oneshot_gun_sound_path(shot_path : string) : bool
   return shot_path |> starts_with("/weapon/antivehicle/") || shot_path |> starts_with("/weapon/pistol/") || shot_path |> starts_with("/weapon/rifle/")
 
 
+def private read_sound_path_tag(tag : string; tags : Object) : bool
+  return tags[tag] ?? false
+
+
+def private test_sound_path_tags(opt : Object; all_tags : Object) : bool
+  for it in opt
+    let tag = get_bool(it.value)
+    if tag != null && *tag != read_sound_path_tag(it.key, all_tags)
+      return false
+  return true
+
+
+def private get_other_option_path_string(opt : Object const; var result : string&) : bool
+  if has(opt, OTHER_SOUND_PATH_KEY)
+    result = opt[OTHER_SOUND_PATH_KEY] ?? "error"
+    return true
+  elif has(opt, "path")
+    result = opt.path ?? "error"
+    return true
+  return false
+
+
+def private get_other_option_path(path : Object; tags : Object; var result : string&) : bool
+  if !has(path, "options")
+    if test_sound_path_tags(path, tags)
+      return get_other_option_path_string(path, result)
+    return false
+  let opts = *(path["options"]) as Array
+  if opts != null
+    for it in *opts
+      let opt = it as Object
+      if opt != null && test_sound_path_tags(*opt, tags)
+        return get_other_option_path_string(*opt, result)
+  return false
+
+
 def is_oneshot_gun_sound(shot_path : Object; tags : Object) : bool
   var path = ""
-  if !sound_player_common::get_option_path(shot_path, tags, false, path)
+  if !get_other_option_path(shot_path, tags, path)
     return false
   return is_oneshot_gun_sound_path(path)
 
