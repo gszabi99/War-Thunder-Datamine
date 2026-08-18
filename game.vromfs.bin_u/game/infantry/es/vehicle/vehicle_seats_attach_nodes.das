@@ -24,7 +24,7 @@ def init_attach_nodes(evt : Event;
     if seat == null
       return
 
-    let tree = get_entity_geom_node_tree(unit__ref, null)
+    let tree = get_entity_visual_node_tree(unit__ref)
     if tree == null
       return
     if get_entity_coll_res(unit__ref, null) == null

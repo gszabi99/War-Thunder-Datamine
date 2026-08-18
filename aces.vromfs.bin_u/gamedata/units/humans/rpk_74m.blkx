@@ -794,6 +794,10 @@
     "muzzle_hexagon_suppressor": {
       "reqModification": "muzzle_zenith_dtk_3_compensator"
     },
+    "5_45mm_tracer_ammo_belt": {},
+    "5_45mm_ap_ammo_belt": {
+      "reqModification": "5_45mm_tracer_ammo_belt"
+    },
     "shotgun_ks_p": {},
     "at_laucher_rpg_7": {},
     "mpads_igla": {},
@@ -899,7 +903,26 @@
           }
         ]
       }
-    ]
+    ],
+    "Ammunition": {
+      "index": 0,
+      "AmmunitionSet": [
+        {
+          "name": "belt_default",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_default"
+        },
+        {
+          "name": "belt_t",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_2",
+          "reqModification": "5_45mm_tracer_ammo_belt"
+        },
+        {
+          "name": "belt_ap",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_1",
+          "reqModification": "5_45mm_ap_ammo_belt"
+        }
+      ]
+    }
   },
   "weapon_presets": {
     "preset": [

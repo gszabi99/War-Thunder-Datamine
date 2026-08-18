@@ -806,11 +806,19 @@
       "reqModification": "muzzle_223cb_compensator"
     },
     "5_56mm_tracer_ammo_belt": {},
-    "5_56mm_ap_ammo_belt": {},
+    "5_56mm_ep_ammo_belt": {
+      "tier": 1,
+      "reqModification": "5_56mm_tracer_ammo_belt"
+    },
+    "5_56mm_ap_ammo_belt": {
+      "tier": 2,
+      "reqModification": "5_56mm_ep_ammo_belt"
+    },
     "magazine_magpul_pmag_30_round": {
       "prevModification": "5_56mm_ap_ammo_belt"
     },
     "magazine_magpul_pmag_40_round": {
+      "tier": 3,
       "reqModification": "magazine_magpul_pmag_30_round"
     },
     "magazine_magpul_pmag_60_round": {
@@ -945,8 +953,13 @@
         },
         {
           "name": "belt_t",
-          "ammoTypeEcsTemplate": "ammo_holder_belt_type_2",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_3",
           "reqModification": "5_56mm_tracer_ammo_belt"
+        },
+        {
+          "name": "belt_ep",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_2",
+          "reqModification": "5_56mm_ep_ammo_belt"
         },
         {
           "name": "belt_ap",

@@ -789,6 +789,10 @@
     "muzzle_m110a1_suppressor": {
       "reqModification": "muzzle_m11_sd_compensator"
     },
+    "7_62mm_51_tracer_ammo_belt": {},
+    "7_62mm_51_ap_ammo_belt": {
+      "reqModification": "7_62mm_51_tracer_ammo_belt"
+    },
     "shotgun_mossberg_590": {},
     "at_laucher_at_4": {},
     "mpads_stinger": {},
@@ -900,7 +904,26 @@
           }
         ]
       }
-    ]
+    ],
+    "Ammunition": {
+      "index": 0,
+      "AmmunitionSet": [
+        {
+          "name": "belt_default",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_default"
+        },
+        {
+          "name": "belt_t",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_2",
+          "reqModification": "7_62mm_51_tracer_ammo_belt"
+        },
+        {
+          "name": "belt_ap",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_1",
+          "reqModification": "7_62mm_51_ap_ammo_belt"
+        }
+      ]
+    }
   },
   "weapon_presets": {
     "preset": [

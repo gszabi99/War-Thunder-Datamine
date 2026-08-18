@@ -797,6 +797,10 @@
       "reqModification": "grip_angled_magpul"
     },
     "muzzle_xm5_suppressor": {},
+    "6_8mm_tracer_ammo_belt": {},
+    "6_8mm_ap_ammo_belt": {
+      "reqModification": "6_8mm_tracer_ammo_belt"
+    },
     "shotgun_mossberg_590": {},
     "machinegun_reapr": {},
     "at_laucher_at_4": {},
@@ -925,7 +929,26 @@
           }
         ]
       }
-    ]
+    ],
+    "Ammunition": {
+      "index": 0,
+      "AmmunitionSet": [
+        {
+          "name": "belt_default",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_default"
+        },
+        {
+          "name": "belt_t",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_2",
+          "reqModification": "6_8mm_tracer_ammo_belt"
+        },
+        {
+          "name": "belt_ap",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_1",
+          "reqModification": "6_8mm_ap_ammo_belt"
+        }
+      ]
+    }
   },
   "weapon_presets": {
     "preset": [

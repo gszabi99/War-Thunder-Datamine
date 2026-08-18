@@ -18,7 +18,7 @@ def init_entracne_node(evt : Event;
     if entranceNode == ""
       return
 
-    let tree = get_entity_geom_node_tree(unit__ref, null)
+    let tree = get_entity_visual_node_tree(unit__ref)
     if tree == null
       return
 

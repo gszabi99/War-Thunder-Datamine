@@ -22,7 +22,7 @@ def get_seat_tm(human_eid, vehicle_eid; var out_tm : float3x4&; useSpring : bool
   query(vehicle_eid) <| $ [es] (vehicle_seats__seatEids : EidList;
                                 unit__ref : UnitRef;
                                 transform : float3x4)
-    let tree = get_entity_geom_node_tree(unit__ref, null)
+    let tree = get_entity_visual_node_tree(unit__ref)
     if tree == null
       return
     if get_entity_coll_res(unit__ref, null) == null
@@ -73,7 +73,7 @@ def human_vehicle_seats_inertia_angles_es(info : ParallelUpdateFrameDelayed;
   query(seat__vehicleEid) <| $ [es] (unit__ref : UnitRef;
                                      transform : float3x4;
                                      vehicle_acceleration__viscAcceleration : float3)
-    let tree = get_entity_geom_node_tree(unit__ref, null)
+    let tree = get_entity_visual_node_tree(unit__ref)
     if tree == null
       return
     if get_entity_coll_res(unit__ref, null) == null

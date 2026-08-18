@@ -259,7 +259,7 @@ def vehicle_seats_enter_exit_kick_server_es(evt : CmdKickFromVehicle;
                                             
   let requester = evt.eid
 
-  let tree = get_entity_geom_node_tree(unit__ref, null)
+  let tree = get_entity_visual_node_tree(unit__ref)
   if get_entity_coll_res(unit__ref, null) == null
     return
   assume collres = *get_entity_coll_res(unit__ref, null)

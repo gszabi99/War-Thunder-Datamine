@@ -26,7 +26,7 @@ def get_vehicle_enter_seat(hero_eid : EntityId; aim_tm : float3x4; seat_check_of
   query(vehicle_eid) <| $ [es] (unit__ref : UnitRef;
                                 transform aka vehicle_transform : float3x4;
                                 vehicle_seats__seatEids : EidList)
-    let tree = get_entity_geom_node_tree(unit__ref, null)
+    let tree = get_entity_visual_node_tree(unit__ref)
     if tree == null
       return
     if get_entity_coll_res(unit__ref, null) == null

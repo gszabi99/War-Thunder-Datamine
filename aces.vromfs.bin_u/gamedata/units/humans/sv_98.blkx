@@ -776,6 +776,10 @@
   },
   "modifications": {
     "scope_1p69_giperion": {},
+    "7_62mm_54_precision_ammo_belt": {},
+    "7_62mm_54_ap_ammo_belt": {
+      "reqModification": "7_62mm_54_precision_ammo_belt"
+    },
     "shotgun_ks_p": {},
     "at_laucher_rpg_7": {},
     "mpads_igla": {},
@@ -881,7 +885,26 @@
           }
         ]
       }
-    ]
+    ],
+    "Ammunition": {
+      "index": 0,
+      "AmmunitionSet": [
+        {
+          "name": "belt_default",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_default"
+        },
+        {
+          "name": "belt_precision",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_1",
+          "reqModification": "7_62mm_54_precision_ammo_belt"
+        },
+        {
+          "name": "belt_ap",
+          "ammoTypeEcsTemplate": "ammo_holder_belt_type_2",
+          "reqModification": "7_62mm_54_ap_ammo_belt"
+        }
+      ]
+    }
   },
   "weapon_presets": {
     "preset": [
