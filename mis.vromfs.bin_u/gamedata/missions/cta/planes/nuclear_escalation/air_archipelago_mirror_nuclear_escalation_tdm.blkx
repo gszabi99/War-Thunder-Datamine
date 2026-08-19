@@ -406,50 +406,17 @@
       "events": {
         "initMission": {}
       },
-      "conditions": {},
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "has_strategic_bombers",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
       "actions": {
-        "__missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "missions/random_airfield_spawn",
-            "radius": -1.0,
-            "target": [
-              "t1_airfield_01",
-              "t1_airfield_02",
-              "t1_airfield_03"
-            ],
-            "team": "A",
-            "isAirfield": true,
-            "tags": {
-              "air": true,
-              "tank": false,
-              "ship": false
-            }
-          },
-          {
-            "loc_name": "missions/random_airfield_spawn",
-            "radius": -1.0,
-            "target": [
-              "t2_airfield_01",
-              "t2_airfield_02",
-              "t2_airfield_03"
-            ],
-            "team": "B",
-            "isAirfield": true,
-            "tags": {
-              "air": true,
-              "tank": false,
-              "ship": false
-            }
-          }
-        ],
-        "comment": [
-          {
-            "value": "airfields"
-          },
-          {
-            "value": "aircraft carriers"
-          }
-        ],
+        "comment": {
+          "value": "airfields"
+        },
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/airfield_spawn1",
@@ -606,57 +573,166 @@
               "tank": false,
               "ship": false
             }
-          },
+          }
+        ],
+        "triggerEnable": {
+          "target": "create_spawns_for_strategic_bombers"
+        }
+      },
+      "else_actions": {
+        "comment": {
+          "value": "airfields"
+        },
+        "missionMarkAsRespawnPoint": [
           {
-            "loc_name": "missions/aircraft_carrier1",
+            "loc_name": "missions/airfield_spawn1",
             "radius": -1.0,
-            "target": "t1_aircraftcarrier_01",
+            "target": "t1_airfield_01",
             "team": "A",
             "isAirfield": true,
-            "showCarrierAsUnitMarker": true,
             "tags": {
-              "carrier_take_off": true
+              "air": true,
+              "tank": false,
+              "ship": false
             }
           },
           {
-            "loc_name": "missions/aircraft_carrier2",
+            "loc_name": "missions/airfield_spawn2",
             "radius": -1.0,
-            "target": "t1_aircraftcarrier_02",
+            "target": "t1_airfield_02",
             "team": "A",
             "isAirfield": true,
-            "showCarrierAsUnitMarker": true,
             "tags": {
-              "carrier_take_off": true
+              "air": true,
+              "tank": false,
+              "ship": false
             }
           },
           {
-            "loc_name": "missions/aircraft_carrier1",
+            "loc_name": "missions/airfield_spawn3",
             "radius": -1.0,
-            "target": "t2_aircraftcarrier_01",
-            "team": "B",
+            "target": "t1_airfield_03",
+            "team": "A",
             "isAirfield": true,
-            "showCarrierAsUnitMarker": true,
             "tags": {
-              "carrier_take_off": true
+              "air": true,
+              "tank": false,
+              "ship": false
             }
           },
           {
-            "loc_name": "missions/aircraft_carrier2",
+            "loc_name": "missions/airfield_spawn4",
             "radius": -1.0,
-            "target": "t2_aircraftcarrier_02",
+            "target": "t1_airfield_04",
+            "team": "A",
+            "isAirfield": true,
+            "tags": {
+              "air": true,
+              "tank": false,
+              "ship": false
+            }
+          },
+          {
+            "loc_name": "missions/airfield_spawn5",
+            "radius": -1.0,
+            "target": "t1_airfield_05",
+            "team": "A",
+            "isAirfield": true,
+            "tags": {
+              "air": true,
+              "tank": false,
+              "ship": false
+            }
+          },
+          {
+            "loc_name": "missions/main_base",
+            "radius": -1.0,
+            "target": "t1_airfield_main",
+            "team": "A",
+            "isAirfield": true,
+            "tags": {
+              "air": true,
+              "tank": false,
+              "ship": false
+            }
+          },
+          {
+            "loc_name": "missions/airfield_spawn1",
+            "radius": -1.0,
+            "target": "t2_airfield_01",
             "team": "B",
             "isAirfield": true,
-            "showCarrierAsUnitMarker": true,
             "tags": {
-              "carrier_take_off": true
+              "air": true,
+              "tank": false,
+              "ship": false
+            }
+          },
+          {
+            "loc_name": "missions/airfield_spawn2",
+            "radius": -1.0,
+            "target": "t2_airfield_02",
+            "team": "B",
+            "isAirfield": true,
+            "tags": {
+              "air": true,
+              "tank": false,
+              "ship": false
+            }
+          },
+          {
+            "loc_name": "missions/airfield_spawn3",
+            "radius": -1.0,
+            "target": "t2_airfield_03",
+            "team": "B",
+            "isAirfield": true,
+            "tags": {
+              "air": true,
+              "tank": false,
+              "ship": false
+            }
+          },
+          {
+            "loc_name": "missions/airfield_spawn4",
+            "radius": -1.0,
+            "target": "t2_airfield_04",
+            "team": "B",
+            "isAirfield": true,
+            "tags": {
+              "air": true,
+              "tank": false,
+              "ship": false
+            }
+          },
+          {
+            "loc_name": "missions/airfield_spawn5",
+            "radius": -1.0,
+            "target": "t2_airfield_05",
+            "team": "B",
+            "isAirfield": true,
+            "tags": {
+              "air": true,
+              "tank": false,
+              "ship": false
+            }
+          },
+          {
+            "loc_name": "missions/main_base",
+            "radius": -1.0,
+            "target": "t2_airfield_main",
+            "team": "B",
+            "isAirfield": true,
+            "tags": {
+              "air": true,
+              "tank": false,
+              "ship": false
             }
           }
         ]
-      },
-      "else_actions": {}
+      }
     },
     "create_spawns_for_strategic_bombers": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -666,13 +742,7 @@
       "events": {
         "initMission": {}
       },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "has_strategic_bombers",
-          "value": true,
-          "comparasion_func": "equal"
-        }
-      },
+      "conditions": {},
       "actions": {
         "comment": {
           "value": "nuclear strategic bomber spawns"
@@ -794,14 +864,72 @@
           }
         ]
       },
-      "else_actions": {
+      "else_actions": {}
+    },
+    "create_spawns_on_carriers": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
         "comment": {
-          "value": "no strategic bombers"
+          "value": "aircraft carriers"
         },
-        "triggerDisable": {
-          "target": "create_spawns_for_strategic_bombers"
-        }
-      }
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "missions/aircraft_carrier1",
+            "radius": -1.0,
+            "target": "t1_aircraftcarrier_01",
+            "team": "A",
+            "isAirfield": true,
+            "showCarrierAsUnitMarker": true,
+            "tags": {
+              "carrier_take_off": true
+            }
+          },
+          {
+            "loc_name": "missions/aircraft_carrier2",
+            "radius": -1.0,
+            "target": "t1_aircraftcarrier_02",
+            "team": "A",
+            "isAirfield": true,
+            "showCarrierAsUnitMarker": true,
+            "tags": {
+              "carrier_take_off": true
+            }
+          },
+          {
+            "loc_name": "missions/aircraft_carrier1",
+            "radius": -1.0,
+            "target": "t2_aircraftcarrier_01",
+            "team": "B",
+            "isAirfield": true,
+            "showCarrierAsUnitMarker": true,
+            "tags": {
+              "carrier_take_off": true
+            }
+          },
+          {
+            "loc_name": "missions/aircraft_carrier2",
+            "radius": -1.0,
+            "target": "t2_aircraftcarrier_02",
+            "team": "B",
+            "isAirfield": true,
+            "showCarrierAsUnitMarker": true,
+            "tags": {
+              "carrier_take_off": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
     },
     "set_up_airfields": {
       "is_enabled": true,

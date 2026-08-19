@@ -217,7 +217,6 @@ def repair_system_init_mod_handle_es(evt : EventUnitInitModification;
 [es(no_order)]
 def repair_system_update_es(act : UpdateStageInfoAct;
                             eid : EntityId;
-                            curFrameDt : float;
                             var unit__ref : UnitRef;
                             var repair_system_state : uint&;
                             var repair_system_remaining_repair_time : float&;
@@ -233,9 +232,9 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                             repair_system_parts_speed_mult : FloatList;
                             var repair_system_parts_hp : Point4List&;        
                             var repair_system_parts_state : UInt32List&)
-  if curFrameDt == 0.f
-    return
   var unit = unit__ref.unit
+  if unit.isDelayed
+    return
   let gm = unit |> as_gm()
 
   
@@ -280,7 +279,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   
   if get_flag(repair_system_state, RepairState.IS_BOT) && unit.isGroundModel && unit.isAuthority
     if repair_system_scheduled_bot_repair_time >= 0.0f
-      repair_system_scheduled_bot_repair_time += curFrameDt
+      repair_system_scheduled_bot_repair_time += act.dt
       
       if repair_system_scheduled_bot_repair_time > get_game_params().timeAfterHitForRepairTankBots
         if is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
@@ -310,7 +309,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
     
     elif repair_system_delay_time_to_repair <= 0.0f && repair_system_remaining_repair_time <= 0.0f && !unit.isBurn && get_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR)
-      repair_system_auto_check_delay -= curFrameDt
+      repair_system_auto_check_delay -= act.dt
       if repair_system_auto_check_delay < 0.0f
         if is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
             repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
@@ -340,7 +339,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
         
         if repair_system_delay_time_to_repair > 0.0f
-          repair_system_delay_time_to_repair -= curFrameDt
+          repair_system_delay_time_to_repair -= act.dt
 
           
           if repair_system_delay_time_to_repair <= 0.0f
@@ -390,7 +389,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
               
               let needed_hp = get_part_needed_hp(dmData, part_id, part_hp, repair_system_repair_hp_multiplier)
-              part_hp.x = get_part_current_hp(dmData, part_id, part_state, part_hp) + part_mult * repair_system_speed_multiplier * curFrameDt
+              part_hp.x = get_part_current_hp(dmData, part_id, part_state, part_hp) + part_mult * repair_system_speed_multiplier * act.dt
               set_flag(part_state, DmPartRepairState.IN_PROGRESS, part_hp.x < needed_hp)
 
               

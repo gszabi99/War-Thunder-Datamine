@@ -529,7 +529,6 @@ def find_next_slots_to_replenish(weap : WeaponController const?; stowage_id : in
 [es, with_bundle(v)]
 def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDelayed;
                                                    eid : EntityId;
-                                                   curUnitTickDt : float;
                                                    var unit__ref : UnitRef;
                                                    v : tuple<
                                                      ammo_stowage__ammoState : uint;
@@ -561,8 +560,6 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
                                                      ammo_per_type_data__state : UInt32List -const;
                                                      ammo_per_type_data__numAmmoFs : IntList -const
                                                      >)
-  if curUnitTickDt == 0.f
-    return
   var unit = unit__ref.unit
   if unit.isDelayed
     return
@@ -779,7 +776,6 @@ def get_source_stowage_for_sharing_ammo(weap : WeaponController const?; stowage_
 [es, with_bundle(v)]
 def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                                         eid : EntityId;
-                                        curUnitTickDt : float;
                                         var unit__ref : UnitRef;
                                         v : tuple<
                                           ammo_stowage__ammoState : uint;
@@ -805,14 +801,12 @@ def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                                           >)
   if !get_flag(v.ammo_stowage__ammoState, AmmoState.ENABLE_AMMO_SHARING)
     return
-  if curUnitTickDt == 0.f
-    return
   var unit = unit__ref.unit
   if unit.isAlive && !unit.isDelayed
     for stowage_id, clusters_range in iter_range(v.ammo_stowages__clustersRange), v.ammo_stowages__clustersRange
       if get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.RESTORING_STOWAGE)
         if v.ammo_stowages__restoreTimers[stowage_id].x > 0.0f
-          v.ammo_stowages__restoreTimers[stowage_id].x -= curUnitTickDt
+          v.ammo_stowages__restoreTimers[stowage_id].x -= info.dt
           if v.ammo_stowages__restoreTimers[stowage_id].x <= 0.0f
             for restoreClusterId  in v.ammo_stowages__clustersRange[stowage_id].x..v.ammo_stowages__clustersRange[stowage_id].y
               let slots_range = v.ammo_clusters__slotsRange[restoreClusterId]
@@ -824,8 +818,8 @@ def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                 ))
         else
           if v.ammo_stowages__restoreTimers[stowage_id].y > 0.0f
-            v.ammo_stowages__restoreTimers[stowage_id].y -= curUnitTickDt
-            v.ammo_stowages__restoreTimers[stowage_id].w -= curUnitTickDt
+            v.ammo_stowages__restoreTimers[stowage_id].y -= info.dt
+            v.ammo_stowages__restoreTimers[stowage_id].w -= info.dt
             if v.ammo_stowages__restoreTimers[stowage_id].y <= 0.0f
               var ammoRestoring = false
               for restoreClusterId  in v.ammo_stowages__clustersRange[stowage_id].x..v.ammo_stowages__clustersRange[stowage_id].y
@@ -858,7 +852,7 @@ def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                 set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.RESTORING_STOWAGE, false)
                 v.ammo_stowages__restoreTimers[stowage_id].y = -1.0f
       else
-        v.ammo_stowages__restoreTimers[stowage_id].z -= curUnitTickDt
+        v.ammo_stowages__restoreTimers[stowage_id].z -= info.dt
         if v.ammo_stowages__restoreTimers[stowage_id].z < 0.0f
           v.ammo_stowages__restoreTimers[stowage_id].z = 1.0f
           for cluster_id in clusters_range.x..clusters_range.y
