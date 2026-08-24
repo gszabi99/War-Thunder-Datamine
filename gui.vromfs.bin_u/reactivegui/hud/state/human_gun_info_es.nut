@@ -273,9 +273,11 @@ let heroModsByWeaponSlot = Computed(function(){
   foreach (slotNum, modsByEids in heroModsByWeaponSlotRaw.get()) {
     let mods = {}
     let iconAttachments = []
-    local modWeapon
+    local modWeapon = null
+    local activeModWeapon = null
     foreach (mod in (modsByEids ?? [])){
-      let {animchar = null, weaponMod = false, attachedItemModSlotName = null, isModActive = null } = mod
+      let { animchar = null, weaponMod = false, isModActive = null,
+        attachedItemModSlotName = null, isWeapon = false } = mod
       if (attachedItemModSlotName==null)
         continue
       mods[attachedItemModSlotName] <- mod
@@ -285,12 +287,16 @@ let heroModsByWeaponSlot = Computed(function(){
           slot = attachedItemModSlotName
           active = isModActive ?? true
         })
-        if (isModActive)
-          modWeapon = mods[attachedItemModSlotName]
+        if (isWeapon) {
+          modWeapon = mods[mod.attachedItemModSlotName]
+          if (isModActive)
+            activeModWeapon = mods[mod.attachedItemModSlotName]
+
+        }
       }
     }
     if (mods.len()>0)
-      res[slotNum] = {mods, iconAttachments, modWeapon}
+      res[slotNum] = {mods, iconAttachments, modWeapon, activeModWeapon}
   }
   return res
 })

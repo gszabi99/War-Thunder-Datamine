@@ -289,10 +289,13 @@ def human_weap_request_reload_es(evt : CmdRequestReload;
     
     
     elif isQuickReloadRequested && !human_weap__isQuickReload
-      query(gunEid) <| $ [es] (gun__quickReloadTime : float;
+      query(gunEid) <| $ [es] (gun__ammo : int;
+                               gun__quickReloadTime : float;
                                gun__reloadFinishMult : float = 0.9;
                                var gun_anim__reloadStyle : int&;
                                var gun_anim__heroReloadStyle : int&)
+        if gun__ammo <= 0
+          return
         gun_anim__reloadStyle = int(GunReloadStyle.RELOAD_STYLE_QUICK)
         gun_anim__heroReloadStyle = gun_anim__reloadStyle
         human_weap__reloadAtTime = human_weap__reloadStartTime + gun__quickReloadTime
@@ -360,7 +363,7 @@ def human_weap_request_reload_es(evt : CmdRequestReload;
                           prereq = isDualMagReload,
                           reloadTime = gun__dualMagReloadTime),
           GunReloadData(reloadStyle = GunReloadStyle.RELOAD_STYLE_QUICK,
-                          prereq = (isQuickReloadRequested || haveAmmoInChamber && ammoLeftInMag == 0),
+                          prereq = (isQuickReloadRequested && gun__ammo > 0) || (haveAmmoInChamber && ammoLeftInMag == 0),
                           reloadTime = gun__quickReloadTime),
           GunReloadData(reloadStyle = GunReloadStyle.RELOAD_STYLE_ALT_JAMMED,
                           prereq = (storeMagOnSoldier && shouldJam),

@@ -8,11 +8,11 @@ let { infantryHudInactiveColor, infantryHudActiveColor } = hud
 let { measureUnitsCfg, DISTANCE_SHORT } = require("%rGui/options/measureUnits.nut")
 
 let sightPresetsData = Computed(@()
-  humanCurGunModeInfo.get()?.modWeapon?.sightPresetsData
+  humanCurGunModeInfo.get()?.activeModWeapon?.sightPresetsData
   ?? humanCurGunInfo.get()?.sightPresetsData
   ?? [])
 let currentPresetIdx = Computed(@()
-  humanCurGunModeInfo.get()?.modWeapon?.currentSightPreset
+  humanCurGunModeInfo.get()?.activeModWeapon?.currentSightPreset
   ?? humanCurGunInfo.get()?.currentSightPreset
   ?? 0)
 

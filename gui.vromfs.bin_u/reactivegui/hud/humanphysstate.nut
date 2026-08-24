@@ -11,9 +11,9 @@ let { canHoldBreath, canScopeChange, canSightChange, canBipodFocus
 
 let isWeaponHaveAmmo = Computed(@() humanCurGunStaticInfo.get()?.haveAmmo ?? false)
 let isWeaponHasVariableScope = Computed(@()
-  humanCurGunModeInfo.get()?.mods.scope?.isVariableScope ?? false)
+  humanCurGunModeInfo.get()?.mods.scope.isVariableScope ?? false)
 let isWeaponModHasSwitchableSights = Computed(@()
-  humanCurGunModeInfo.get()?.modWeapon?.hasSwitchableSights
+  humanCurGunModeInfo.get()?.activeModWeapon.hasSwitchableSights
   ?? humanCurGunInfo.get()?.hasSwitchableSights
   ?? false)
 
@@ -34,7 +34,7 @@ let showScopeChange = keepref(Computed(@()
 let showSightChange = keepref(Computed(@()
   isAdsActive.get()
   && isWeaponModHasSwitchableSights.get()
-  && ((humanCurGunModeInfo.get()?.modWeapon?.isModActive ?? false)
+  && ((humanCurGunModeInfo.get()?.activeModWeapon?.isModActive ?? false)
     || (humanCurGunInfo.get()?.hasSwitchableSights ?? false))
 ))
 

@@ -4,6 +4,7 @@ require app
 require MPlayer
 require Unit
 require Grid
+require GridCollision
 require Mission
 require Dacoll
 require HumanPhys
@@ -439,6 +440,12 @@ def set_phys_height_on_spawn_selected(evt : Event;
     basePrevState.height = 1.f
     baseCurState.height = 1.f
 
+def private is_spawn_pos_blocked_by_vehicle(pos : float3) : bool
+  let fromPos = pos + float3(0., 6., 0.)
+  let traceDir = float3(0., -1., 0.)
+  var t = 6.5
+  return trace_entities_in_grid_by_capsule(ecs_hash("vehicles"), fromPos, traceDir, t, 0.35, INVALID_ENTITY_ID)
+
 def private try_spawn_into_free_seat(soldier_eid : EntityId; vehicle_eid : EntityId; var spawn_tm : float3x4&) : int
   var seatNo = -1
   query(vehicle_eid) <| $ [es] (unit__ref : UnitRef;
@@ -496,7 +503,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
       evt.spawnTm = unit.unitTm
       var verifyDebugDeltaSq = FLT_MAX
       let requestPosCorrectly = length(evt.requestPos) > 0.f 
-      if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_inside_capzone(evt.requestPos, dynamic_respawn__capzoneMargin)
+      if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_inside_capzone(evt.requestPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(evt.requestPos)
         for pos in *dynamic_respawn__prevPositions
           let distSq = length_sq(pos - evt.requestPos)
           if distSq < verifyDebugDeltaSq
@@ -520,8 +527,8 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
         if foundNavmesh
           evt.spawnTm[3] = resPos
         dropObjectOnNavmesh(evt.spawnTm, 2.5, 1.)
-        if is_spawn_pos_inside_capzone(evt.spawnTm[3], dynamic_respawn__capzoneMargin)
-          print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} FALLBACK REJECTED (inside capture zone) fallbackPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
+        if is_spawn_pos_inside_capzone(evt.spawnTm[3], dynamic_respawn__capzoneMargin) || is_spawn_pos_blocked_by_vehicle(evt.spawnTm[3])
+          print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} FALLBACK REJECTED (capzone or blocked by vehicle) fallbackPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
           return
         evt.verified = true
         let fallbackPos = evt.spawnTm[3]
@@ -539,7 +546,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
       else
         evt.spawnTm = unit.unitTm
         let requestPosCorrectly = length(evt.requestPos) > 0.f 
-        if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_inside_capzone(evt.requestPos, dynamic_respawn__capzoneMargin)
+        if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_inside_capzone(evt.requestPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(evt.requestPos)
           for pos in *dynamic_respawn__prevPositions
             if length_sq(pos - evt.requestPos) < 100.f 
               evt.verified = true
@@ -549,7 +556,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
         if !evt.verified && dynamic_respawn__prevPositions != null && length(*dynamic_respawn__prevPositions) > 0
           let pick = rnd_int(0, length(*dynamic_respawn__prevPositions) - 1)
           let fallbackPos = (*dynamic_respawn__prevPositions)[pick]
-          if !is_spawn_pos_inside_capzone(fallbackPos, dynamic_respawn__capzoneMargin)
+          if !is_spawn_pos_inside_capzone(fallbackPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(fallbackPos)
             evt.verified = true
             evt.spawnTm[3] = fallbackPos
             print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} FALLBACK nearby (no free seat, server candidate) fallbackPos=({fallbackPos}) unitPos=({unitPos})")
@@ -561,10 +568,12 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
             var t = dynamic_respawn__vehicleDistTraces
             var norm : float3
             if !traceray_normalized(pos, traceDir, t, norm, ETF_ALL | ETF_RI_PHYS)
-              evt.verified = true
               evt.spawnTm = unit.unitTm
               evt.spawnTm[3] = evt.spawnTm[3] + traceDir * t
               dropObjectOnNavmesh(evt.spawnTm, 1.5, 1.)
+              if is_spawn_pos_blocked_by_vehicle(evt.spawnTm[3])
+                continue
+              evt.verified = true
               print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} VERIFIED nearby (no free seat) traceDir=({traceDir}) finalPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
               break
         if !evt.verified
