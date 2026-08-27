@@ -334,6 +334,10 @@
         "hero": "player/walker/ww2_soldier/hit/bullet_body",
         "enemy": "enemy/walker/ww2_soldier/hit/bullet_body"
       },
+      "bullet_big:object": {
+        "watched": "player/walker/ww2_soldier/hit/bullet_body_big",
+        "other": "enemy/walker/ww2_soldier/hit/bullet_body_big"
+      },
       "shell:object": {
         "hero": "impact/shell",
         "enemy": "impact/shell"
@@ -341,7 +345,9 @@
     },
     "_group": {
       "_tags": "sound",
-      "projectile_sound__shellCaliberThreshold": 0.025
+      "projectile_sound__shellCaliberThreshold": 0.025,
+      "projectile_sound__bigCaliberThreshold": 0.0125,
+      "projectile_sound__bigCaliberDamageThreshold": 15.0
     }
   },
   "human_steps_sound_paths": {

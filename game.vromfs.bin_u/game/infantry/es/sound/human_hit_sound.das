@@ -10,6 +10,8 @@ require %appGame.infantry.es.hitpoints_common
 require sound_utils.modules.sound_player_common
 require strings
 require DagorConsole
+require PropsManager
+require BallisticsProps
 
 
 def damage_type_to_sound_path(damage_type : int)
@@ -51,11 +53,28 @@ def human_entity_hit_sound(evt : EventOnEntityHit;
                            sound_tags : Object;
                            dm_parts__type : StringList const?;
                            dm_parts__partsArmor : FloatList const?;
+                           dm_parts__dmgMult : FloatList const?;
+                           projectile_sound__bigCaliberThreshold : float;
+                           projectile_sound__bigCaliberDamageThreshold : float;
                            human_hit_sound__prefix = "infantry/")
 
   if eid == evt.victim && evt.damageType == int(DamageType.DM_PROJECTILE)
-    var path : string
-    var pathObj = entity_intersected_with_projectile_sound__paths.bullet ?as Object
+    assume __paths = entity_intersected_with_projectile_sound__paths
+
+    let partDmgMult = dm_parts__dmgMult != null ? ((*dm_parts__dmgMult)?[evt.collNodeId] ?? 1.0) : 1.0
+    let normalizedDeltaHp = partDmgMult > 0.0 ? evt.deltaHp / partDmgMult : evt.deltaHp
+
+    var isBigCaliber = false
+    if normalizedDeltaHp > projectile_sound__bigCaliberDamageThreshold
+      let offenderGunEid = get_Eid(evt.offender, "human_weap__currentGunEid") ?? INVALID_ENTITY_ID
+      query(offenderGunEid) <| $ [es] (gun__curShellId : PropsId)
+        get_props_ProjBallisticsProperties(gun__curShellId) <| $(props : ProjBallisticsProperties)
+          isBigCaliber = props.caliber >= projectile_sound__bigCaliberThreshold
+
+    var pathObj = __paths.bullet ?as Object
+    if isBigCaliber
+      let bigPath = __paths.bullet_big ?as Object
+      pathObj = bigPath != null ? bigPath : pathObj
 
     if dm_parts__type != null && uint(evt.collNodeId) < uint(length(*dm_parts__type))
       let part = get_desc(*pathObj, "part_{(*dm_parts__type)[evt.collNodeId]}")
