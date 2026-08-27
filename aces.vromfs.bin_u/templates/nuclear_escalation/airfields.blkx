@@ -268,10 +268,25 @@
       "units_spawn_on_init__unitSettingsTeam1:array": {
         "unit:object": [
           {
+            "name": "ussr_zsu_23_4",
+            "templateName": "tank+nuclear_escalation_spaa_radar_on",
+            "death_substract_tickets": 20,
+            "threatSearchRad": 5000.0,
+            "count": 3,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            }
+          },
+          {
             "name": "ussr_9a33bm3",
             "templateName": "tank+nuclear_escalation_spaa_radar_on",
             "death_substract_tickets": 20,
             "threatSearchRad": 12500.0,
+            "count": 3,
             "dontCreateChar": true,
             "mods:list<t>": {
               "m": [
@@ -283,79 +298,11 @@
             "bulletsCount:list<i>": {
               "c": 4
             }
-          },
-          {
-            "name": "cn_type_65_aa",
-            "templateName": "tank+nuclear_escalation_spaa_radar_off",
-            "death_substract_tickets": 20,
-            "count": 2,
-            "dontCreateChar": true,
-            "mods:list<t>": {
-              "m": [
-                "tank_tool_kit",
-                "manual_extinguisher"
-              ]
-            }
-          },
-          {
-            "name": "ussr_zsu_23_4",
-            "templateName": "tank+nuclear_escalation_spaa_radar_on",
-            "death_substract_tickets": 20,
-            "threatSearchRad": 5000.0,
-            "count": 2,
-            "dontCreateChar": true,
-            "mods:list<t>": {
-              "m": [
-                "tank_tool_kit",
-                "manual_extinguisher"
-              ]
-            }
-          },
-          {
-            "name": "ussr_zsu_57_2",
-            "templateName": "tank+nuclear_escalation_spaa_radar_off",
-            "death_substract_tickets": 20,
-            "count": 1,
-            "dontCreateChar": true,
-            "mods:list<t>": {
-              "m": [
-                "tank_tool_kit",
-                "manual_extinguisher"
-              ]
-            }
           }
         ]
       },
       "units_spawn_on_init__unitSettingsTeam2:array": {
         "unit:object": [
-          {
-            "name": "uk_ai_sam_rapier",
-            "templateName": "tank+nuclear_escalation_spaa_radar_on",
-            "death_substract_tickets": 20,
-            "threatSearchRad": 12000.0,
-            "dontCreateChar": true,
-            "mods:list<t>": {
-              "m": [
-                "tank_tool_kit",
-                "manual_extinguisher"
-              ]
-            },
-            "bulletNames:list<t>": {},
-            "bulletsCount:list<i>": {}
-          },
-          {
-            "name": "us_m42_duster",
-            "templateName": "tank+nuclear_escalation_spaa_radar_off",
-            "death_substract_tickets": 20,
-            "count": 2,
-            "dontCreateChar": true,
-            "mods:list<t>": {
-              "m": [
-                "tank_tool_kit",
-                "manual_extinguisher"
-              ]
-            }
-          },
           {
             "name": "us_m163_vulcan",
             "templateName": "tank+nuclear_escalation_spaa_radar_off",
@@ -367,6 +314,26 @@
                 "tank_tool_kit",
                 "manual_extinguisher"
               ]
+            }
+          },
+          {
+            "name": "germ_flarakpz_1",
+            "templateName": "tank+nuclear_escalation_spaa_radar_on",
+            "death_substract_tickets": 20,
+            "threatSearchRad": 12000.0,
+            "count": 3,
+            "dontCreateChar": true,
+            "mods:list<t>": {
+              "m": [
+                "tank_tool_kit",
+                "manual_extinguisher"
+              ]
+            },
+            "bulletNames:list<t>": {
+              "name": "163mm_roland_1_aam"
+            },
+            "bulletsCount:list<i>": {
+              "c": 10
             }
           }
         ]

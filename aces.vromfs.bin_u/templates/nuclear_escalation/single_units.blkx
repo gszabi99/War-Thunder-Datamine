@@ -45,6 +45,31 @@
       }
     }
   },
+  "aa_cover_ussr_9a33bm3_4_missiles": {
+    "_use": "units_spawn_on_init",
+    "_group": {
+      "_tags": "server",
+      "units_spawn_on_init__unitSettings:array": {
+        "unit:object": {
+          "name": "ussr_9a33bm3",
+          "templateName": "tank+nuclear_escalation_spaa_radar_on",
+          "death_substract_tickets": 20,
+          "threatSearchRad": 12500.0,
+          "dontCreateChar": true,
+          "mods:list<t>": {
+            "m": [
+              "tank_tool_kit",
+              "manual_extinguisher"
+            ]
+          },
+          "bulletNames:list<t>": {},
+          "bulletsCount:list<i>": {
+            "c": 4
+          }
+        }
+      }
+    }
+  },
   "aa_cover_germ_flakpz_1a2_Gepard": {
     "_use": "units_spawn_on_init",
     "_group": {
@@ -72,11 +97,10 @@
       }
     }
   },
-  "aa_cover_germ_flarakpz_1": {
+  "aa_cover_germ_flarakpz_1_roland_3": {
     "_use": "units_spawn_on_init",
     "_group": {
       "_tags": "server",
-      "nuclear_escalation_target__tag": "",
       "units_spawn_on_init__unitSettings:array": {
         "unit:object": {
           "name": "germ_flarakpz_1",
@@ -92,6 +116,33 @@
           },
           "bulletNames:list<t>": {
             "name": "163mm_roland_3_aam"
+          },
+          "bulletsCount:list<i>": {
+            "c": 10
+          }
+        }
+      }
+    }
+  },
+  "aa_cover_germ_flarakpz_1_roland_1": {
+    "_use": "units_spawn_on_init",
+    "_group": {
+      "_tags": "server",
+      "units_spawn_on_init__unitSettings:array": {
+        "unit:object": {
+          "name": "germ_flarakpz_1",
+          "templateName": "tank+nuclear_escalation_spaa_radar_on",
+          "death_substract_tickets": 20,
+          "threatSearchRad": 12000.0,
+          "dontCreateChar": true,
+          "mods:list<t>": {
+            "m": [
+              "tank_tool_kit",
+              "manual_extinguisher"
+            ]
+          },
+          "bulletNames:list<t>": {
+            "name": "163mm_roland_1_aam"
           },
           "bulletsCount:list<i>": {
             "c": 10
@@ -227,31 +278,6 @@
               "tank_tool_kit",
               "manual_extinguisher"
             ]
-          }
-        }
-      }
-    }
-  },
-  "aa_cover_ussr_9a33bm3_4_missiles": {
-    "_use": "units_spawn_on_init",
-    "_group": {
-      "_tags": "server",
-      "units_spawn_on_init__unitSettings:array": {
-        "unit:object": {
-          "name": "ussr_9a33bm3",
-          "templateName": "tank+nuclear_escalation_spaa_radar_on",
-          "death_substract_tickets": 20,
-          "threatSearchRad": 12500.0,
-          "dontCreateChar": true,
-          "mods:list<t>": {
-            "m": [
-              "tank_tool_kit",
-              "manual_extinguisher"
-            ]
-          },
-          "bulletNames:list<t>": {},
-          "bulletsCount:list<i>": {
-            "c": 4
           }
         }
       }

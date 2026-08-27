@@ -5177,6 +5177,36 @@
       }
     },
     {
+      "id": "2026_08_26_infantry_cbt_3_3_poll",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "cbt_human_combined_rb",
+              "cbt_human_combined_rb_americas"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-26 09:00:00",
+            "endDate": "2026-08-30 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_08_19_infantry_cbt_3_2_poll",
       "type": "achievement",
       "hidden": true,
@@ -5245,6 +5275,7 @@
       "type": "trophy",
       "amount_trophies": 1,
       "visibleDaysAfter": 1.0,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 2,
@@ -5338,7 +5369,7 @@
       "group": "us_airborne_day",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -5382,7 +5413,7 @@
       "group": "pl_armed_forces",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -5606,7 +5637,7 @@
       "group": "vks_day",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -26015,6 +26046,12 @@
     },
     {
       "id": "title_truth_alone_triumphs",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_fighting_for_justice",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -144840,90 +144877,6 @@
       }
     },
     {
-      "id": "gift_uussr_t_72b3_arena_coupon",
-      "type": "inventory",
-      "userLogId": "50354",
-      "chapter": "2026_01_tank",
-      "lockStyle": "lock",
-      "icon": "!https://static-ggc.gaijin.net/units/ussr_t_72b3_arena.png",
-      "hidden": true,
-      "isForceVisibleInTree": true,
-      "mode": {
-        "type": "char_unlocks",
-        "num": 8,
-        "unlock": [
-          "22_01_2026_tank_stage",
-          "24_01_2026_tank_stage",
-          "26_01_2026_tank_stage",
-          "28_01_2026_tank_stage",
-          "30_01_2026_tank_stage",
-          "01_02_2026_tank_stage",
-          "03_02_2026_tank_stage",
-          "05_02_2026_tank_stage",
-          "07_02_2026_tank_stage"
-        ]
-      }
-    },
-    {
-      "id": "gift_ussr_t_72b3_arena_tradable_coupon",
-      "locDescId": "gift_coupon_upgrade/desc",
-      "type": "inventory",
-      "userLogId": "215166",
-      "chapter": "2026_01_tank",
-      "group": "coupon_upgrade",
-      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
-      "lockStyle": "lock",
-      "hidden": true,
-      "isForceVisibleInTree": true,
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 750000000,
-        "mulMode3": 1.0,
-        "mulMode4": 1.33,
-        "mulMode5": 1.8,
-        "forceShowMulMode": 3,
-        "mulRank1": 0.9,
-        "mulRank2": 0.9,
-        "mulRank3": 0.9,
-        "mulRank4": 0.9,
-        "mulRank5": 1.0,
-        "mulRank6": 1.1,
-        "mulRank7": 1.2,
-        "mulRank8": 1.2,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "minRankForEvent": 1,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": false,
-            "value": [
-              "tank_event_in_random_battles_arcade",
-              "tank_event_in_random_battles_historical",
-              "tank_random_battles_simulation"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "timeRange",
-            "beginDate": "2026-01-22 11:00:00",
-            "endDate": "2026-02-09 11:30:00"
-          }
-        ]
-      }
-    },
-    {
       "id": "gift_2026_01_tank_trophy_1",
       "locId": "item/gift_prize_trophy",
       "locDescId": "gift_prize_trophy/desc",
@@ -145111,6 +145064,91 @@
           "03_02_2026_tank_stage",
           "05_02_2026_tank_stage",
           "07_02_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_uussr_t_72b3_arena_coupon",
+      "type": "inventory",
+      "userLogId": "50354",
+      "chapter": "2026_01_tank",
+      "lockStyle": "lock",
+      "icon": "!https://static-ggc.gaijin.net/units/ussr_t_72b3_arena.png",
+      "hidden": true,
+      "isForceVisibleInTree": true,
+      "isMainReward": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 8,
+        "unlock": [
+          "22_01_2026_tank_stage",
+          "24_01_2026_tank_stage",
+          "26_01_2026_tank_stage",
+          "28_01_2026_tank_stage",
+          "30_01_2026_tank_stage",
+          "01_02_2026_tank_stage",
+          "03_02_2026_tank_stage",
+          "05_02_2026_tank_stage",
+          "07_02_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_ussr_t_72b3_arena_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215166",
+      "chapter": "2026_01_tank",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "hidden": true,
+      "isForceVisibleInTree": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 750000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-01-22 11:00:00",
+            "endDate": "2026-02-09 11:30:00"
+          }
         ]
       }
     },
@@ -145736,91 +145774,6 @@
       }
     },
     {
-      "id": "gift_f_16a_block_5_netherlands_coupon",
-      "type": "inventory",
-      "userLogId": "50356",
-      "chapter": "2026_02_air",
-      "icon": "!https://static-ggc.gaijin.net/units/f-5ag_norway.png",
-      "lockStyle": "lock",
-      "hidden": true,
-      "isForceVisibleInTree": true,
-      "mode": {
-        "type": "char_unlocks",
-        "num": 8,
-        "unlock": [
-          "19_02_2026_aircraft_stage",
-          "21_02_2026_aircraft_stage",
-          "23_02_2026_aircraft_stage",
-          "25_02_2026_aircraft_stage",
-          "27_02_2026_aircraft_stage",
-          "01_03_2026_aircraft_stage",
-          "03_03_2026_aircraft_stage",
-          "05_03_2026_aircraft_stage",
-          "07_03_2026_aircraft_stage"
-        ]
-      }
-    },
-    {
-      "id": "gift_f_16a_block_5_netherlands_tradable_coupon",
-      "locDescId": "gift_coupon_upgrade/desc",
-      "type": "inventory",
-      "userLogId": "215168",
-      "chapter": "2026_02_air",
-      "group": "coupon_upgrade",
-      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
-      "lockStyle": "lock",
-      "hidden": true,
-      "isForceVisibleInTree": true,
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 750000000,
-        "mulMode0": 1.0,
-        "mulMode1": 1.4,
-        "mulMode2": 2.3,
-        "forceShowMulMode": 0,
-        "mulRank1": 0.9,
-        "mulRank2": 0.9,
-        "mulRank3": 0.9,
-        "mulRank4": 0.9,
-        "mulRank5": 1.0,
-        "mulRank6": 1.1,
-        "mulRank7": 1.2,
-        "mulRank8": 1.2,
-        "mulRank9": 1.2,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "minRankForEvent": 1,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": false,
-            "value": [
-              "air_arcade",
-              "air_realistic",
-              "air_simulation_timeDelay_battles"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "timeRange",
-            "beginDate": "2026-02-19 11:00:00",
-            "endDate": "2026-03-09 11:30:00"
-          }
-        ]
-      }
-    },
-    {
       "id": "gift_2026_02_aircraft_trophy_1",
       "locId": "item/gift_prize_trophy",
       "locDescId": "gift_prize_trophy/desc",
@@ -146011,6 +145964,92 @@
           "03_03_2026_aircraft_stage",
           "05_03_2026_aircraft_stage",
           "07_03_2026_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_f_16a_block_5_netherlands_coupon",
+      "type": "inventory",
+      "userLogId": "50356",
+      "chapter": "2026_02_air",
+      "icon": "!https://static-ggc.gaijin.net/units/f-5ag_norway.png",
+      "lockStyle": "lock",
+      "hidden": true,
+      "isForceVisibleInTree": true,
+      "isMainReward": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 8,
+        "unlock": [
+          "19_02_2026_aircraft_stage",
+          "21_02_2026_aircraft_stage",
+          "23_02_2026_aircraft_stage",
+          "25_02_2026_aircraft_stage",
+          "27_02_2026_aircraft_stage",
+          "01_03_2026_aircraft_stage",
+          "03_03_2026_aircraft_stage",
+          "05_03_2026_aircraft_stage",
+          "07_03_2026_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_f_16a_block_5_netherlands_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215168",
+      "chapter": "2026_02_air",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "hidden": true,
+      "isForceVisibleInTree": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 750000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "mulRank9": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-02-19 11:00:00",
+            "endDate": "2026-03-09 11:30:00"
+          }
         ]
       }
     },
@@ -146645,86 +146684,6 @@
       }
     },
     {
-      "id": "gift_us_battleship_oklahoma_coupon",
-      "type": "inventory",
-      "userLogId": "50358",
-      "chapter": "2026_03_ship",
-      "icon": "!https://static-ggc.gaijin.net/units/us_battleship_oklahoma.png",
-      "lockStyle": "lock",
-      "hidden": true,
-      "isForceVisibleInTree": true,
-      "mode": {
-        "type": "char_unlocks",
-        "num": 8,
-        "unlock": [
-          "12_03_2026_ship_stage",
-          "14_03_2026_ship_stage",
-          "16_03_2026_ship_stage",
-          "18_03_2026_ship_stage",
-          "20_03_2026_ship_stage",
-          "22_03_2026_ship_stage",
-          "24_03_2026_ship_stage",
-          "26_03_2026_ship_stage",
-          "28_03_2026_ship_stage"
-        ]
-      }
-    },
-    {
-      "id": "gift_us_battleship_oklahoma_tradable_coupon",
-      "locDescId": "gift_coupon_upgrade/desc",
-      "type": "inventory",
-      "userLogId": "215170",
-      "chapter": "2026_03_ship",
-      "group": "coupon_upgrade",
-      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
-      "lockStyle": "lock",
-      "hidden": true,
-      "isForceVisibleInTree": true,
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 750000000,
-        "mulMode6": 1.9,
-        "mulMode7": 2.2,
-        "mulRank1": 0.9,
-        "mulRank2": 0.9,
-        "mulRank3": 0.9,
-        "mulRank4": 1.0,
-        "mulRank5": 1.2,
-        "mulRank6": 1.2,
-        "mulRank7": 1.2,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "minRankForEvent": 1,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": true,
-            "value": [
-              "ship_event_in_random_battles_arcade",
-              "ship_event_in_random_battles_realistic"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "timeRange",
-            "beginDate": "2026-03-12 11:00:00",
-            "endDate": "2026-03-30 11:30:00"
-          }
-        ]
-      }
-    },
-    {
       "id": "gift_2026_03_ship_trophy_1",
       "locId": "item/gift_prize_trophy",
       "locDescId": "gift_prize_trophy/desc",
@@ -146913,6 +146872,87 @@
           "24_03_2026_ship_stage",
           "26_03_2026_ship_stage",
           "28_03_2026_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_us_battleship_oklahoma_coupon",
+      "type": "inventory",
+      "userLogId": "50358",
+      "chapter": "2026_03_ship",
+      "icon": "!https://static-ggc.gaijin.net/units/us_battleship_oklahoma.png",
+      "lockStyle": "lock",
+      "hidden": true,
+      "isForceVisibleInTree": true,
+      "isMainReward": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 8,
+        "unlock": [
+          "12_03_2026_ship_stage",
+          "14_03_2026_ship_stage",
+          "16_03_2026_ship_stage",
+          "18_03_2026_ship_stage",
+          "20_03_2026_ship_stage",
+          "22_03_2026_ship_stage",
+          "24_03_2026_ship_stage",
+          "26_03_2026_ship_stage",
+          "28_03_2026_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_us_battleship_oklahoma_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215170",
+      "chapter": "2026_03_ship",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "hidden": true,
+      "isForceVisibleInTree": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 750000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "mulRank7": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-03-12 11:00:00",
+            "endDate": "2026-03-30 11:30:00"
+          }
         ]
       }
     },
@@ -150695,88 +150735,6 @@
       }
     },
     {
-      "id": "gift_uk_fv107_scimitar_mk2_coupon",
-      "type": "inventory",
-      "userLogId": "50372",
-      "chapter": "2026_07_tank",
-      "icon": "!https://static-ggc.gaijin.net/units/uk_fv107_scimitar_mk2.png",
-      "lockStyle": "lock",
-      "hidden": true,
-      "isForceVisibleInTree": true,
-      "mode": {
-        "type": "char_unlocks",
-        "num": 7,
-        "unlock": [
-          "22_07_2026_tank_stage",
-          "24_07_2026_tank_stage",
-          "26_07_2026_tank_stage",
-          "28_07_2026_tank_stage",
-          "30_07_2026_tank_stage",
-          "01_08_2026_tank_stage",
-          "03_08_2026_tank_stage"
-        ]
-      }
-    },
-    {
-      "id": "gift_uk_fv107_scimitar_mk2_tradable_coupon",
-      "locDescId": "gift_coupon_upgrade/desc",
-      "type": "inventory",
-      "userLogId": "215184",
-      "chapter": "2026_07_tank",
-      "group": "coupon_upgrade",
-      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
-      "lockStyle": "lock",
-      "hidden": true,
-      "isForceVisibleInTree": true,
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 600000000,
-        "mulMode3": 1.0,
-        "mulMode4": 1.33,
-        "mulMode5": 1.8,
-        "forceShowMulMode": 3,
-        "mulRank1": 0.9,
-        "mulRank2": 0.9,
-        "mulRank3": 0.9,
-        "mulRank4": 0.9,
-        "mulRank5": 1.0,
-        "mulRank6": 1.1,
-        "mulRank7": 1.2,
-        "mulRank8": 1.2,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "minRankForEvent": 1,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": false,
-            "value": [
-              "tank_event_in_random_battles_arcade",
-              "tank_event_in_random_battles_historical",
-              "tank_random_battles_simulation"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "timeRange",
-            "beginDate": "2026-07-22 11:00:00",
-            "endDate": "2026-08-05 11:30:00"
-          }
-        ]
-      }
-    },
-    {
       "id": "gift_2026_07_tank_trophy_1",
       "locId": "item/gift_prize_trophy",
       "locDescId": "gift_prize_trophy/desc",
@@ -150925,6 +150883,89 @@
           "30_07_2026_tank_stage",
           "01_08_2026_tank_stage",
           "03_08_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_uk_fv107_scimitar_mk2_coupon",
+      "type": "inventory",
+      "userLogId": "50372",
+      "chapter": "2026_07_tank",
+      "icon": "!https://static-ggc.gaijin.net/units/uk_fv107_scimitar_mk2.png",
+      "lockStyle": "lock",
+      "hidden": true,
+      "isForceVisibleInTree": true,
+      "isMainReward": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "22_07_2026_tank_stage",
+          "24_07_2026_tank_stage",
+          "26_07_2026_tank_stage",
+          "28_07_2026_tank_stage",
+          "30_07_2026_tank_stage",
+          "01_08_2026_tank_stage",
+          "03_08_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_uk_fv107_scimitar_mk2_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215184",
+      "chapter": "2026_07_tank",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "hidden": true,
+      "isForceVisibleInTree": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 600000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-07-22 11:00:00",
+            "endDate": "2026-08-05 11:30:00"
+          }
         ]
       }
     },

@@ -305,11 +305,8 @@
       }
     }
   },
-  "fuel_factory_1970": {
-    "_use": [
-      "equip_factory",
-      "factory_air_defence_preset_1970"
-    ],
+  "fuel_factory_1970_common": {
+    "_use": "equip_factory",
     "fuel_factory:tag": {},
     "_group": {
       "_tags": "server",
@@ -358,11 +355,20 @@
       }
     }
   },
-  "ammo_factory_1970": {
+  "fuel_factory_1970_early": {
     "_use": [
-      "equip_factory",
-      "factory_air_defence_preset_1970"
-    ],
+      "fuel_factory_1970_common",
+      "factory_air_defence_preset_1970_early"
+    ]
+  },
+  "fuel_factory_1970_late": {
+    "_use": [
+      "fuel_factory_1970_common",
+      "factory_air_defence_preset_1970_late"
+    ]
+  },
+  "ammo_factory_1970_common": {
+    "_use": "equip_factory",
     "ammo_factory:tag": {},
     "unit_fx": {},
     "_group": {
@@ -411,5 +417,17 @@
         ]
       }
     }
+  },
+  "ammo_factory_1970_early": {
+    "_use": [
+      "ammo_factory_1970_common",
+      "factory_air_defence_preset_1970_early"
+    ]
+  },
+  "ammo_factory_1970_late": {
+    "_use": [
+      "ammo_factory_1970_common",
+      "factory_air_defence_preset_1970_late"
+    ]
   }
 }

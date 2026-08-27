@@ -1841,8 +1841,8 @@
         "bullets": 270,
         "rearmCartridgeTime": 20.0,
         "fireConeAngle": 5.0,
-        "ChainfireTime": 1.0,
-        "DelayAfterShoot": 2.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 1.5,
         "accuracyAir": 1.5,
         "accuracyGnd": 0.0,
         "errMeasureVel": 0.0,
@@ -1853,8 +1853,10 @@
         "errTargetting": 3.0,
         "forestallTime": 0.1,
         "targetMsl": true,
-        "shellGroundRangeMax": 500.0,
+        "shellGroundRangeMax": 1500.0,
         "AttackShellMaxRadius": 3000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
@@ -1962,7 +1964,149 @@
               ]
             ]
           }
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              50.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              4000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              5000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              5000.0
+            ],
+            "priority": 20
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 500,
+            "reactionTime": 2.0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              5.0,
+              8000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "reactionTime": 2.0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1500.0
+            ],
+            "altRange": [
+              5.0,
+              8000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 300,
+            "reactionTime": 2.0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              120.0,
+              700.0
+            ],
+            "massRange": [
+              1000.0,
+              3500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              5.0,
+              8000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "reactionTime": 2.0
+          }
+        ]
       },
       {
         "trigger": "gunner0",
@@ -1992,8 +2136,8 @@
         "bullets": 270,
         "rearmCartridgeTime": 20.0,
         "fireConeAngle": 5.0,
-        "ChainfireTime": 1.0,
-        "DelayAfterShoot": 2.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 1.5,
         "accuracyAir": 1.5,
         "accuracyGnd": 0.0,
         "errMeasureVel": 0.0,
@@ -2004,8 +2148,10 @@
         "errTargetting": 3.0,
         "forestallTime": 0.1,
         "targetMsl": true,
-        "shellGroundRangeMax": 500.0,
+        "shellGroundRangeMax": 1500.0,
         "AttackShellMaxRadius": 3000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "reuseYawTrigger": 10,
         "reusePitchTrigger": 10,
         "timeOffset": 0.06,
@@ -2059,7 +2205,149 @@
               ]
             ]
           }
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              50.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              4000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              5000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              5000.0
+            ],
+            "priority": 20
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              250.0,
+              1250.0
+            ],
+            "massRange": [
+              180.0,
+              750.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 500,
+            "reactionTime": 2.0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              5.0,
+              8000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "reactionTime": 2.0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1500.0
+            ],
+            "altRange": [
+              5.0,
+              8000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 300,
+            "reactionTime": 2.0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              120.0,
+              700.0
+            ],
+            "massRange": [
+              1000.0,
+              3500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              5.0,
+              8000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "reactionTime": 2.0
+          }
+        ]
       },
       {
         "trigger": "gunner1",
