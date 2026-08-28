@@ -6,7 +6,7 @@
       "userLogId": "2022_02_22_shield_paveza_decor_trophy",
       "amount_trophies": 1,
       "chapter": "test",
-      "hidden": false,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 1460065408,
@@ -5220,6 +5220,161 @@
       }
     },
     {
+      "id": "2026_08_28_title_victory_marshal_unlock",
+      "locId": "title/title_victory_marshal",
+      "userLogId": "2026_08_28_title_victory_marshal_trophy",
+      "hideWhenUnlocked": "title_victory_marshal",
+      "reqFeature": "pixelstormAccount",
+      "chapter": "holidays",
+      "group": "completion_bagration",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 4,
+        "unlock": [
+          "2026_08_28_t34_play_3_battles",
+          "2026_08_28_is2_play_3_battles",
+          "2026_08_28_pe2_play_3_battles",
+          "2026_08_28_il2_play_3_battles"
+        ],
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2026-08-28 11:00:00",
+          "endDate": "2026-08-31 11:00:00"
+        }
+      }
+    },
+    {
+      "id": "2026_08_28_t34_play_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "completion_bagration",
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "ussr_t_34_85E",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-28 11:00:00",
+            "endDate": "2026-08-31 11:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_08_28_is2_play_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "completion_bagration",
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "ussr_is_2_1944_revenge",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-28 11:00:00",
+            "endDate": "2026-08-31 11:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_08_28_pe2_play_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "completion_bagration",
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "pe-2-205",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-28 11:00:00",
+            "endDate": "2026-08-31 11:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_08_28_il2_play_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "completion_bagration",
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "il-2m_mstitel",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-08-28 11:00:00",
+            "endDate": "2026-08-31 11:00:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_08_28_completion_bagration_decal",
       "locId": "decals/mound_of_glory_decal",
       "locDescId": "gift_decal_trophy/desc",
@@ -5252,7 +5407,7 @@
           },
           {
             "type": "timeRange",
-            "beginDate": "2026-08-27 11:00:00",
+            "beginDate": "2026-08-28 11:00:00",
             "endDate": "2026-08-31 11:30:00"
           }
         ]
@@ -5296,7 +5451,7 @@
           },
           {
             "type": "timeRange",
-            "beginDate": "2026-08-27 11:00:00",
+            "beginDate": "2026-08-28 11:00:00",
             "endDate": "2026-08-31 11:30:00"
           }
         ]
