@@ -44,8 +44,12 @@ let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
 let { isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
-const CHEST_OPEN_FINISHED_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
-const CHEST_SHOW_FINISHED_ANIM_TIMER_ID = "timer_finish_show_chest_animation"
+const CHEST_OPEN_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
+const CHEST_SHOW_ANIM_TIMER_ID = "timer_finish_show_chest_animation"
+const NEXT_PRIZE_ANIM_DELAY_SEC = 1
+const CHEST_OPEN_ANIM_DURATION_SEC = 2
+const CHEST_SHOW_ANIM_DURATION_SEC = 2
+const PRIZES_LOG_WAIT_MAX_ATTEMPTS = 5
 
 
 let decolorizeRegExp = regexp2(@"\<color(/?[^>]+)>")
@@ -112,48 +116,123 @@ let additionalSortParamByType = {
   gold = @(prize, _count = 1) prize?.gold ?? 0
 }
 
-function canGetTrophyPrize(prize, prizeItemId) {
-  let prizeInLog = prizeItemId != null ? lastTrophiesFromLog?[prizeItemId.tostring()] : null
+function canGetTrophyPrize(prize) {
   if (prize?.unit) {
     if (prize?.mod)
       return true
 
-    if (prizeInLog?.unit == prize?.unit)
-      return true
-
     let unit = getAircraftByName(prize.unit)
-    let isBought = unit?.isBought() ?? false
-    return !isBought
+    return !(unit?.isBought() ?? false)
   }
 
   if (prize?.resourceType) {
-    if (prizeInLog?.resourceType == prize?.resourceType && prizeInLog?.resource == prize?.resource)
-      return true
     let decoratorType = getTypeByResourceType(prize.resourceType)
     return !decoratorType.isPlayerHaveDecorator(prize?.resource ?? "")
   }
 
   if (prize?.unlock)
-    return prizeInLog?.unlock == prize?.unlock || !isUnlockOpened(prize.unlock)
+    return !isUnlockOpened(prize.unlock)
   return true
 }
 
+function getTrophyPrizeLogMatch(prize, prizeInLog) {
+  local isConfirmed = false
+  local isConfirmable = true
+  if (prize?.unit) {
+    
+    
+    isConfirmable = !prize?.mod
+    isConfirmed = isConfirmable && prize.unit == prizeInLog?.unit
+  }
+  else if (prize?.resourceType)
+    isConfirmed = prize.resourceType == prizeInLog?.resourceType && prize?.resource == prizeInLog?.resource
+  else if (prize?.unlock)
+    isConfirmed = prize.unlock == prizeInLog?.unlock
+  else if (prize?.warpoints)
+    isConfirmed = prize.warpoints == prizeInLog?.warpoints
+  else if (prize?.gold)
+    isConfirmed = prize.gold == prizeInLog?.gold
+  else
+    isConfirmable = false
+  return { isConfirmed, isConfirmable }
+}
+
+
+
 function parseTrophyContent(trophy, prizeItemId) {
   let content = trophy.getContent()
+  let prizeInLog = prizeItemId != null ? lastTrophiesFromLog?[prizeItemId.tostring()] : null
+
   local allReceivedPrizes = []
-  let availablePrizes = []
   let allPrizes = []
+  local confirmedPrize = null
+  local hasConfirmableContent = false
 
   foreach (trophyPrize in content) {
+    let { isConfirmable, isConfirmed } = getTrophyPrizeLogMatch(trophyPrize, prizeInLog)
+    if (isConfirmed)
+      confirmedPrize = trophyPrize
+
     if (trophyPrize?.availableIfAllPrizesReceived) {
       allReceivedPrizes.append(trophyPrize)
       continue
     }
     allPrizes.append(trophyPrize)
-    if (canGetTrophyPrize(trophyPrize, prizeItemId))
-      availablePrizes.append(trophyPrize)
+    if (isConfirmable)
+      hasConfirmableContent = true
   }
-  return {allReceivedPrizes, allPrizes, availablePrizes}
+
+  let availablePrizes = confirmedPrize != null
+    ? [confirmedPrize]
+    : allPrizes.filter(@(p) canGetTrophyPrize(p))
+
+  return {
+    allReceivedPrizes
+    allPrizes
+    availablePrizes
+    hasConfirmableContent
+    
+    prizeEntryFoundInLog = prizeInLog != null
+  }
+}
+
+function refreshLastTrophiesFromLog() {
+  let itemsLogs = gerRecentItemsLogs(15)
+  lastTrophiesFromLog = {}
+  foreach (itemLog in itemsLogs) {
+    let key = itemLog?.trophyItemId ?? itemLog?.itemId
+    if (key != null)
+      lastTrophiesFromLog[key.tostring()] <- itemLog
+  }
+}
+
+function resolvePrizeTrophyContent(prize) {
+  let offerType = getTrophyRewardType(prize)
+  let item = findItemById(prize?.item)
+  let contentItem = (item && offerType == "item") ? item.getContentItem() : null
+  let isTrophy = contentItem != null && contentItem.iType == itemType.TROPHY
+  return {
+    item
+    contentItem
+    isTrophy
+    
+    
+    prizeItemId = isTrophy ? (prize?.itemId ?? prize?.trophyItemId ?? -1) : null
+  }
+}
+
+function needsLogConfirmWait(prizes) {
+  refreshLastTrophiesFromLog()
+  foreach (prize in prizes) {
+    let { isTrophy, contentItem, prizeItemId } = resolvePrizeTrophyContent(prize)
+    if (!isTrophy)
+      continue
+    let { allPrizes, hasConfirmableContent, prizeEntryFoundInLog }
+      = parseTrophyContent(contentItem, prizeItemId)
+    if (allPrizes.len() > 1 && hasConfirmableContent && !prizeEntryFoundInLog)
+      return true
+  }
+  return false
 }
 
 let getDefaultPrizeTooltipId = @(prize) getTooltipType("PRIZE").getTooltipId(isDataBlock(prize) ? convertBlk(prize) : prize)
@@ -638,11 +717,7 @@ function addRaysInScreenCoords(props, raysArray) {
 }
 
 function getPrizesView(prizes, bgDelay = 0) {
-  let itemsLogs = gerRecentItemsLogs(15)
-  lastTrophiesFromLog = {}
-  foreach (itemLog in itemsLogs)
-    if (itemLog?.trophyItemId)
-      lastTrophiesFromLog[itemLog.trophyItemId.tostring()] <- itemLog
+  refreshLastTrophiesFromLog()
 
   let count = prizes.len()
   let chestItemWidth = min(to_pixels("0.99@rw") / count, to_pixels("1@itemWidth"))
@@ -651,30 +726,28 @@ function getPrizesView(prizes, bgDelay = 0) {
   let res = []
   foreach (prize in prizes) {
     local offerType = getTrophyRewardType(prize)
-    let item = findItemById(prize?.item)
     local sortIdx = -1
     local additionalSortParam = 0
 
-    let params = {item}
-    if (item && offerType == "item") {
-      let contentItem = item.getContentItem()
-      if (contentItem) {
-        if (contentItem.iType == itemType.TROPHY) {
-          offerType = "trophy"
-          params.trophy <- contentItem
-          params.prizeItemId <- prize.itemId ?? prize?.trophyItemId ?? -1
-          params.parsedContent <- parseTrophyContent(contentItem, params?.prizeItemId)
+    let { item, contentItem, isTrophy, prizeItemId } = resolvePrizeTrophyContent(prize)
+    let params = { item }
+    if (contentItem) {
+      if (isTrophy) {
+        offerType = "trophy"
+        params.trophy <- contentItem
+        params.prizeItemId <- prizeItemId
+        params.parsedContent <- parseTrophyContent(contentItem, prizeItemId)
 
-          let trophyPrizeForSort = offerTypes.trophy.getPrizeForSort(contentItem, params) ?? prize
-          sortIdx = getSortIdxByPrize(trophyPrizeForSort)
+        let trophyPrizeForSort = offerTypes.trophy.getPrizeForSort(contentItem, params) ?? prize
+        sortIdx = getSortIdxByPrize(trophyPrizeForSort)
 
-          let rewardType = getTrophyRewardType(trophyPrizeForSort )
-          additionalSortParam = additionalSortParamByType?[rewardType](trophyPrizeForSort) ?? 0
-        } else {
-          let itemCount = (prize?.count ?? 1) * (item?.metaBlk.count ?? 1)
-          sortIdx = sortIdxItemsByType.indexof(contentItem.iType)
-          additionalSortParam = additionalSortParamByType?[contentItem.iType](contentItem, itemCount) ?? 0
-        }
+        let rewardType = getTrophyRewardType(trophyPrizeForSort )
+        additionalSortParam = additionalSortParamByType?[rewardType](trophyPrizeForSort) ?? 0
+      }
+      else {
+        let itemCount = (prize?.count ?? 1) * (item?.metaBlk.count ?? 1)
+        sortIdx = sortIdxItemsByType.indexof(contentItem.iType)
+        additionalSortParam = additionalSortParamByType?[contentItem.iType](contentItem, itemCount) ?? 0
       }
     }
 
@@ -755,6 +828,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   isChestShowAnimInProgress = false
   isAnimationsInProgress = false
   lastRecivedPrizes = null
+  prizesLogWaitAttempts = 0
   useAmount = 1
   maxUseAmount = 1
 
@@ -797,17 +871,17 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
     this.isChestShowAnimInProgress = true
     showObjById("chest_preview", true, this.scene)
-    clearTimer(CHEST_SHOW_FINISHED_ANIM_TIMER_ID)
+    clearTimer(CHEST_SHOW_ANIM_TIMER_ID)
     let cb = Callback(@() this.onShowAnimFinished(), this)
-    setTimeout(2, @() cb(), CHEST_SHOW_FINISHED_ANIM_TIMER_ID)
+    setTimeout(CHEST_SHOW_ANIM_DURATION_SEC, @() cb(), CHEST_SHOW_ANIM_TIMER_ID)
   }
 
   function onShowAnimFinished() {
     this.isChestShowAnimInProgress = false
-    if (this.lastRecivedPrizes != null) {
-      this.showReceivedPrizes(this.lastRecivedPrizes)
-      this.lastRecivedPrizes = null
-    }
+    let prizes = this.lastRecivedPrizes
+    this.lastRecivedPrizes = null
+    if (prizes != null)
+      this.showReceivedPrizes(prizes)
   }
 
   function initUsestatRewardsOnce() {
@@ -985,6 +1059,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
     this.needOpenChestWhenReceive = false
     this.isInOpeningProcess = true
+    this.resetPrizesLogWait()
     showObjById("prizes_list", false, this.scene)
     inventoryChest.doMainAction(null, null, {
       shouldSkipMsgBox = true
@@ -1024,12 +1099,12 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     showObjById("blue_bg", true, prizeObj)
     this.guiScene.playSound("choose")
     let cb = Callback(@() this.startNextPrizeAnimation(), this)
-    setTimeout(1, @() cb(), NEXT_PRIZE_ANIM_TIMER_ID)
+    setTimeout(NEXT_PRIZE_ANIM_DELAY_SEC, @() cb(), NEXT_PRIZE_ANIM_TIMER_ID)
   }
 
   function startOpening() {
     this.hasAlreadyOpened = true
-    clearTimer(CHEST_OPEN_FINISHED_ANIM_TIMER_ID)
+    clearTimer(CHEST_OPEN_ANIM_TIMER_ID)
     this.guiScene.playSound("chest_open")
 
     showObjById("chest_preview", false, this.scene)
@@ -1046,7 +1121,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     chestOutNest.findObject("open_chest_anim_icon")["background-image"] = this.chestItem.getIconName()
 
     let cb = Callback(@() this.onOpenAnimFinish(), this)
-    setTimeout(2, @() cb(), CHEST_OPEN_FINISHED_ANIM_TIMER_ID)
+    setTimeout(CHEST_OPEN_ANIM_DURATION_SEC, @() cb(), CHEST_OPEN_ANIM_TIMER_ID)
   }
 
   function onOpenAnimFinish() {
@@ -1060,8 +1135,9 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function onSkipAnimations() {
     clearTimer(NEXT_PRIZE_ANIM_TIMER_ID)
-    clearTimer(CHEST_OPEN_FINISHED_ANIM_TIMER_ID)
-    clearTimer(CHEST_SHOW_FINISHED_ANIM_TIMER_ID)
+    clearTimer(CHEST_OPEN_ANIM_TIMER_ID)
+    clearTimer(CHEST_SHOW_ANIM_TIMER_ID)
+    this.forcePrizesLogWaitToMax()
 
     this.onShowAnimFinished()
 
@@ -1087,15 +1163,44 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     showObjById("skip_anim", false, this.scene)
   }
 
+  function resetPrizesLogWait() {
+    this.prizesLogWaitAttempts = 0
+  }
+
+  function forcePrizesLogWaitToMax() {
+    this.prizesLogWaitAttempts = PRIZES_LOG_WAIT_MAX_ATTEMPTS
+  }
+
+  function retryPrizesLogWait(prizes) {
+    this.lastRecivedPrizes = prizes
+    this.prizesLogWaitAttempts += 1
+    this.startChestShowAmim()
+    this.updateButtons()
+    this.updateUseAmountControls()
+  }
+
   function showReceivedPrizes(prizes) {
+    if (!this.isValid())
+      return
+
     this.isInOpeningProcess = false
     this.isAnimationsInProgress = true
     showObjById("skip_anim", true, this.scene)
+
+    let needLogConfirm = needsLogConfirmWait(prizes)
+    
     if (this.isChestShowAnimInProgress) {
       this.lastRecivedPrizes = prizes
       this.updateButtons()
+      this.updateUseAmountControls()
       return
     }
+
+    if (needLogConfirm && this.prizesLogWaitAttempts < PRIZES_LOG_WAIT_MAX_ATTEMPTS) {
+      this.retryPrizesLogWait(prizes)
+      return
+    }
+    this.resetPrizesLogWait()
 
     let prizesView = getPrizesView(prizes, 300)
     this.decolorizeText(prizesView)
