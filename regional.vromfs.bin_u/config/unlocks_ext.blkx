@@ -5220,6 +5220,119 @@
       }
     },
     {
+      "id": "2026_09_02_infantry_cbt_3_4_poll",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "cbt_human_combined_rb",
+              "cbt_human_combined_rb_americas"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-09-02 09:00:00",
+            "endDate": "2026-09-06 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_09_02_cn_nra_88th_div_decal",
+      "locId": "decals/cn_nra_88th_div_decal",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2026_09_02_cn_nra_88th_div_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "victory_over_japan",
+      "costGold": 199,
+      "visibleDaysAfter": 1.0,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "chardType": "char_static_progress",
+        "num": 3000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_china"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-09-02 09:00:00",
+            "endDate": "2026-09-05 09:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_09_02_vj_day_2026_decal",
+      "locId": "decals/vj_day_2026_decal",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2026_09_02_vj_day_2026_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "victory_over_japan",
+      "costGold": 199,
+      "visibleDaysAfter": 1.0,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "chardType": "char_static_progress",
+        "num": 3000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerCountry",
+            "country": [
+              "country_usa",
+              "country_britain",
+              "country_ussr",
+              "country_china"
+            ]
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-09-02 09:00:00",
+            "endDate": "2026-09-05 09:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_08_28_title_victory_marshal_unlock",
       "locId": "title/title_victory_marshal",
       "userLogId": "2026_08_28_title_victory_marshal_trophy",
@@ -5385,7 +5498,7 @@
       "group": "completion_bagration",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -5424,7 +5537,7 @@
       "group": "completion_bagration",
       "costGold": 499,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -108855,7 +108968,7 @@
           {
             "type": "timeRange",
             "beginDate": "2025-09-23 11:00:00",
-            "endDate": "2025-09-26 11:30:00"
+            "endDate": "2026-09-26 11:30:00"
           }
         ]
       }
@@ -152553,8 +152666,8 @@
       "userLogId": "50378",
       "chapter": "2026_08_ship",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 7,
@@ -152578,8 +152691,8 @@
       "group": "coupon_upgrade",
       "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 2147483646,
@@ -152633,8 +152746,8 @@
       "amount_trophies": 1,
       "chapter": "2026_08_ship",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 1,
@@ -152659,7 +152772,7 @@
       "chapter": "2026_08_ship",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 2,
@@ -152683,8 +152796,8 @@
       "amount_trophies": 1,
       "chapter": "2026_08_ship",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 3,
@@ -152710,7 +152823,7 @@
       "icon": "!https://static-ggc.gaijin.net/ship_flags/ship_flag_ussr_05.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 4,
@@ -152734,8 +152847,8 @@
       "amount_trophies": 1,
       "chapter": "2026_08_ship",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 5,
@@ -152761,7 +152874,7 @@
       "icon": "!https://static-ggc.gaijin.net/loading_screen/battleship_oktyabrskaya_revolutsiya.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 6,
@@ -152780,6 +152893,7 @@
       "id": "25_08_2026_ship_stage",
       "locId": "marathon_ship_stage_7/name",
       "chapter": "2026_08_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 999,
@@ -152838,6 +152952,7 @@
       "id": "23_08_2026_ship_stage",
       "locId": "marathon_ship_stage_6/name",
       "chapter": "2026_08_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 999,
@@ -152896,6 +153011,7 @@
       "id": "21_08_2026_ship_stage",
       "locId": "marathon_ship_stage_5/name",
       "chapter": "2026_08_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 999,
@@ -152954,6 +153070,7 @@
       "id": "19_08_2026_ship_stage",
       "locId": "marathon_ship_stage_4/name",
       "chapter": "2026_08_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 999,
@@ -153012,6 +153129,7 @@
       "id": "17_08_2026_ship_stage",
       "locId": "marathon_ship_stage_3/name",
       "chapter": "2026_08_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 999,
@@ -153070,6 +153188,7 @@
       "id": "15_08_2026_ship_stage",
       "locId": "marathon_ship_stage_2/name",
       "chapter": "2026_08_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 999,
@@ -153128,6 +153247,7 @@
       "id": "13_08_2026_ship_stage",
       "locId": "marathon_ship_stage_1/name",
       "chapter": "2026_08_ship",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 999,
